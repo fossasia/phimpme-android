@@ -1,0 +1,14 @@
+<project name="android-viewflow" default="jar" basedir=".">
+  <description>
+  	A view switcher library for Android  
+  </description>
+  <!-- set global properties for this build -->
+  <property name="src" location="src" />
+  <property name="bin" location="bin" />
+
+  <target name="jar">
+    <jar destfile="android-viewflow.jar" basedir="bin/">
+      <include name="org/**" />
+    </jar>
+  </target>
+</project>
