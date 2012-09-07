@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    <RelativeLayout 
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:layout_marginLeft="10dp"
+			    android:padding="10dp"> 
+        <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Google Map"
+                    android:textColor="@color/white"
+                    android:layout_centerInParent="true" />
+            <ImageButton 
+		        android:id="@+id/btnswitch"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:src="@drawable/osm"
+		        android:layout_alignParentRight="true"
+        />
+    </RelativeLayout>
+
+	<!-- key of a danh -->
+        <com.google.android.maps.MapView
+             android:id="@+id/mapStore"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:apiKey="0GKm7nFVzZxfA91Kg5mfCLZBhnEr04Ii7cyJDeA"
+             android:clickable="true"
+             android:enabled="true" />
+       <!-- key of a luong -->
+       <!--  <com.google.android.maps.MapView
+             android:id="@+id/mapStore"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:apiKey="0JUjEnluAYlhZt0DIdHY6XfK5gExTuxPtEDN46w"
+             android:clickable="true"
+             android:enabled="true" /> -->
+</LinearLayout>

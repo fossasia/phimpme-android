@@ -1,0 +1,313 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*<a name="line.1"></a>
+<FONT color="green">002</FONT>     * Licensed to the Apache Software Foundation (ASF) under one or more<a name="line.2"></a>
+<FONT color="green">003</FONT>     * contributor license agreements.  See the NOTICE file distributed with<a name="line.3"></a>
+<FONT color="green">004</FONT>     * this work for additional information regarding copyright ownership.<a name="line.4"></a>
+<FONT color="green">005</FONT>     * The ASF licenses this file to You under the Apache License, Version 2.0<a name="line.5"></a>
+<FONT color="green">006</FONT>     * (the "License"); you may not use this file except in compliance with<a name="line.6"></a>
+<FONT color="green">007</FONT>     * the License.  You may obtain a copy of the License at<a name="line.7"></a>
+<FONT color="green">008</FONT>     * <a name="line.8"></a>
+<FONT color="green">009</FONT>     *      http://www.apache.org/licenses/LICENSE-2.0<a name="line.9"></a>
+<FONT color="green">010</FONT>     * <a name="line.10"></a>
+<FONT color="green">011</FONT>     * Unless required by applicable law or agreed to in writing, software<a name="line.11"></a>
+<FONT color="green">012</FONT>     * distributed under the License is distributed on an "AS IS" BASIS,<a name="line.12"></a>
+<FONT color="green">013</FONT>     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<a name="line.13"></a>
+<FONT color="green">014</FONT>     * See the License for the specific language governing permissions and<a name="line.14"></a>
+<FONT color="green">015</FONT>     * limitations under the License.<a name="line.15"></a>
+<FONT color="green">016</FONT>     */<a name="line.16"></a>
+<FONT color="green">017</FONT>    package org.apache.commons.lang3.exception;<a name="line.17"></a>
+<FONT color="green">018</FONT>    <a name="line.18"></a>
+<FONT color="green">019</FONT>    import java.util.List;<a name="line.19"></a>
+<FONT color="green">020</FONT>    import java.util.Set;<a name="line.20"></a>
+<FONT color="green">021</FONT>    <a name="line.21"></a>
+<FONT color="green">022</FONT>    import org.apache.commons.lang3.tuple.Pair;<a name="line.22"></a>
+<FONT color="green">023</FONT>    <a name="line.23"></a>
+<FONT color="green">024</FONT>    /**<a name="line.24"></a>
+<FONT color="green">025</FONT>     * &lt;p&gt;<a name="line.25"></a>
+<FONT color="green">026</FONT>     * A runtime exception that provides an easy and safe way to add contextual information.<a name="line.26"></a>
+<FONT color="green">027</FONT>     * &lt;/p&gt;&lt;p&gt;<a name="line.27"></a>
+<FONT color="green">028</FONT>     * An exception trace itself is often insufficient to provide rapid diagnosis of the issue.<a name="line.28"></a>
+<FONT color="green">029</FONT>     * Frequently what is needed is a select few pieces of local contextual data.<a name="line.29"></a>
+<FONT color="green">030</FONT>     * Providing this data is tricky however, due to concerns over formatting and nulls.<a name="line.30"></a>
+<FONT color="green">031</FONT>     * &lt;/p&gt;&lt;p&gt;<a name="line.31"></a>
+<FONT color="green">032</FONT>     * The contexted exception approach allows the exception to be created together with a<a name="line.32"></a>
+<FONT color="green">033</FONT>     * list of context label-value pairs. This additional information is automatically included in<a name="line.33"></a>
+<FONT color="green">034</FONT>     * the message and printed stack trace.<a name="line.34"></a>
+<FONT color="green">035</FONT>     * &lt;/p&gt;&lt;p&gt;<a name="line.35"></a>
+<FONT color="green">036</FONT>     * A checked version of this exception is provided by ContextedException.<a name="line.36"></a>
+<FONT color="green">037</FONT>     * &lt;/p&gt;<a name="line.37"></a>
+<FONT color="green">038</FONT>     * &lt;p&gt;<a name="line.38"></a>
+<FONT color="green">039</FONT>     * To use this class write code as follows:<a name="line.39"></a>
+<FONT color="green">040</FONT>     * &lt;/p&gt;<a name="line.40"></a>
+<FONT color="green">041</FONT>     * &lt;pre&gt;<a name="line.41"></a>
+<FONT color="green">042</FONT>     *   try {<a name="line.42"></a>
+<FONT color="green">043</FONT>     *     ...<a name="line.43"></a>
+<FONT color="green">044</FONT>     *   } catch (Exception e) {<a name="line.44"></a>
+<FONT color="green">045</FONT>     *     throw new ContextedRuntimeException("Error posting account transaction", e)<a name="line.45"></a>
+<FONT color="green">046</FONT>     *          .addContextValue("Account Number", accountNumber)<a name="line.46"></a>
+<FONT color="green">047</FONT>     *          .addContextValue("Amount Posted", amountPosted)<a name="line.47"></a>
+<FONT color="green">048</FONT>     *          .addContextValue("Previous Balance", previousBalance)<a name="line.48"></a>
+<FONT color="green">049</FONT>     *   }<a name="line.49"></a>
+<FONT color="green">050</FONT>     * }<a name="line.50"></a>
+<FONT color="green">051</FONT>     * &lt;/pre&gt; or improve diagnose data at a higher level:<a name="line.51"></a>
+<FONT color="green">052</FONT>     * &lt;pre&gt;<a name="line.52"></a>
+<FONT color="green">053</FONT>     *   try {<a name="line.53"></a>
+<FONT color="green">054</FONT>     *     ...<a name="line.54"></a>
+<FONT color="green">055</FONT>     *   } catch (ContextedRuntimeException e) {<a name="line.55"></a>
+<FONT color="green">056</FONT>     *     throw e.setContextValue("Transaction Id", transactionId);<a name="line.56"></a>
+<FONT color="green">057</FONT>     *   } catch (Exception e) {<a name="line.57"></a>
+<FONT color="green">058</FONT>     *     if (e instanceof ExceptionContext) {<a name="line.58"></a>
+<FONT color="green">059</FONT>     *       e.setContextValue("Transaction Id", transactionId);<a name="line.59"></a>
+<FONT color="green">060</FONT>     *     }<a name="line.60"></a>
+<FONT color="green">061</FONT>     *     throw e;<a name="line.61"></a>
+<FONT color="green">062</FONT>     *   }<a name="line.62"></a>
+<FONT color="green">063</FONT>     * }<a name="line.63"></a>
+<FONT color="green">064</FONT>     * &lt;/pre&gt;<a name="line.64"></a>
+<FONT color="green">065</FONT>     * &lt;/p&gt;&lt;p&gt;<a name="line.65"></a>
+<FONT color="green">066</FONT>     * The output in a printStacktrace() (which often is written to a log) would look something like the following:<a name="line.66"></a>
+<FONT color="green">067</FONT>     * &lt;pre&gt;<a name="line.67"></a>
+<FONT color="green">068</FONT>     * org.apache.commons.lang3.exception.ContextedRuntimeException: java.lang.Exception: Error posting account transaction<a name="line.68"></a>
+<FONT color="green">069</FONT>     *  Exception Context:<a name="line.69"></a>
+<FONT color="green">070</FONT>     *  [1:Account Number=null]<a name="line.70"></a>
+<FONT color="green">071</FONT>     *  [2:Amount Posted=100.00]<a name="line.71"></a>
+<FONT color="green">072</FONT>     *  [3:Previous Balance=-2.17]<a name="line.72"></a>
+<FONT color="green">073</FONT>     *  [4:Transaction Id=94ef1d15-d443-46c4-822b-637f26244899]<a name="line.73"></a>
+<FONT color="green">074</FONT>     *<a name="line.74"></a>
+<FONT color="green">075</FONT>     *  ---------------------------------<a name="line.75"></a>
+<FONT color="green">076</FONT>     *  at org.apache.commons.lang3.exception.ContextedRuntimeExceptionTest.testAddValue(ContextedExceptionTest.java:88)<a name="line.76"></a>
+<FONT color="green">077</FONT>     *  ..... (rest of trace)<a name="line.77"></a>
+<FONT color="green">078</FONT>     * &lt;/pre&gt;<a name="line.78"></a>
+<FONT color="green">079</FONT>     * &lt;/p&gt;<a name="line.79"></a>
+<FONT color="green">080</FONT>     * <a name="line.80"></a>
+<FONT color="green">081</FONT>     * @see ContextedException<a name="line.81"></a>
+<FONT color="green">082</FONT>     * @since 3.0<a name="line.82"></a>
+<FONT color="green">083</FONT>     */<a name="line.83"></a>
+<FONT color="green">084</FONT>    public class ContextedRuntimeException extends RuntimeException implements ExceptionContext {<a name="line.84"></a>
+<FONT color="green">085</FONT>    <a name="line.85"></a>
+<FONT color="green">086</FONT>        /** The serialization version. */<a name="line.86"></a>
+<FONT color="green">087</FONT>        private static final long serialVersionUID = 20110706L;<a name="line.87"></a>
+<FONT color="green">088</FONT>        /** The context where the data is stored. */<a name="line.88"></a>
+<FONT color="green">089</FONT>        private final ExceptionContext exceptionContext;<a name="line.89"></a>
+<FONT color="green">090</FONT>    <a name="line.90"></a>
+<FONT color="green">091</FONT>        /**<a name="line.91"></a>
+<FONT color="green">092</FONT>         * Instantiates ContextedRuntimeException without message or cause.<a name="line.92"></a>
+<FONT color="green">093</FONT>         * &lt;p&gt;<a name="line.93"></a>
+<FONT color="green">094</FONT>         * The context information is stored using a default implementation.<a name="line.94"></a>
+<FONT color="green">095</FONT>         */<a name="line.95"></a>
+<FONT color="green">096</FONT>        public ContextedRuntimeException() {<a name="line.96"></a>
+<FONT color="green">097</FONT>            super();<a name="line.97"></a>
+<FONT color="green">098</FONT>            exceptionContext = new DefaultExceptionContext();<a name="line.98"></a>
+<FONT color="green">099</FONT>        }<a name="line.99"></a>
+<FONT color="green">100</FONT>    <a name="line.100"></a>
+<FONT color="green">101</FONT>        /**<a name="line.101"></a>
+<FONT color="green">102</FONT>         * Instantiates ContextedRuntimeException with message, but without cause.<a name="line.102"></a>
+<FONT color="green">103</FONT>         * &lt;p&gt;<a name="line.103"></a>
+<FONT color="green">104</FONT>         * The context information is stored using a default implementation.<a name="line.104"></a>
+<FONT color="green">105</FONT>         * <a name="line.105"></a>
+<FONT color="green">106</FONT>         * @param message  the exception message, may be null<a name="line.106"></a>
+<FONT color="green">107</FONT>         */<a name="line.107"></a>
+<FONT color="green">108</FONT>        public ContextedRuntimeException(String message) {<a name="line.108"></a>
+<FONT color="green">109</FONT>            super(message);<a name="line.109"></a>
+<FONT color="green">110</FONT>            exceptionContext = new DefaultExceptionContext();<a name="line.110"></a>
+<FONT color="green">111</FONT>        }<a name="line.111"></a>
+<FONT color="green">112</FONT>    <a name="line.112"></a>
+<FONT color="green">113</FONT>        /**<a name="line.113"></a>
+<FONT color="green">114</FONT>         * Instantiates ContextedRuntimeException with cause, but without message.<a name="line.114"></a>
+<FONT color="green">115</FONT>         * &lt;p&gt;<a name="line.115"></a>
+<FONT color="green">116</FONT>         * The context information is stored using a default implementation.<a name="line.116"></a>
+<FONT color="green">117</FONT>         * <a name="line.117"></a>
+<FONT color="green">118</FONT>         * @param cause  the underlying cause of the exception, may be null<a name="line.118"></a>
+<FONT color="green">119</FONT>         */<a name="line.119"></a>
+<FONT color="green">120</FONT>        public ContextedRuntimeException(Throwable cause) {<a name="line.120"></a>
+<FONT color="green">121</FONT>            super(cause);<a name="line.121"></a>
+<FONT color="green">122</FONT>            exceptionContext = new DefaultExceptionContext();<a name="line.122"></a>
+<FONT color="green">123</FONT>        }<a name="line.123"></a>
+<FONT color="green">124</FONT>    <a name="line.124"></a>
+<FONT color="green">125</FONT>        /**<a name="line.125"></a>
+<FONT color="green">126</FONT>         * Instantiates ContextedRuntimeException with cause and message.<a name="line.126"></a>
+<FONT color="green">127</FONT>         * &lt;p&gt;<a name="line.127"></a>
+<FONT color="green">128</FONT>         * The context information is stored using a default implementation.<a name="line.128"></a>
+<FONT color="green">129</FONT>         * <a name="line.129"></a>
+<FONT color="green">130</FONT>         * @param message  the exception message, may be null<a name="line.130"></a>
+<FONT color="green">131</FONT>         * @param cause  the underlying cause of the exception, may be null<a name="line.131"></a>
+<FONT color="green">132</FONT>         */<a name="line.132"></a>
+<FONT color="green">133</FONT>        public ContextedRuntimeException(String message, Throwable cause) {<a name="line.133"></a>
+<FONT color="green">134</FONT>            super(message, cause);<a name="line.134"></a>
+<FONT color="green">135</FONT>            exceptionContext = new DefaultExceptionContext();<a name="line.135"></a>
+<FONT color="green">136</FONT>        }<a name="line.136"></a>
+<FONT color="green">137</FONT>    <a name="line.137"></a>
+<FONT color="green">138</FONT>        /**<a name="line.138"></a>
+<FONT color="green">139</FONT>         * Instantiates ContextedRuntimeException with cause, message, and ExceptionContext.<a name="line.139"></a>
+<FONT color="green">140</FONT>         * <a name="line.140"></a>
+<FONT color="green">141</FONT>         * @param message  the exception message, may be null<a name="line.141"></a>
+<FONT color="green">142</FONT>         * @param cause  the underlying cause of the exception, may be null<a name="line.142"></a>
+<FONT color="green">143</FONT>         * @param context  the context used to store the additional information, null uses default implementation<a name="line.143"></a>
+<FONT color="green">144</FONT>         */<a name="line.144"></a>
+<FONT color="green">145</FONT>        public ContextedRuntimeException(String message, Throwable cause, ExceptionContext context) {<a name="line.145"></a>
+<FONT color="green">146</FONT>            super(message, cause);<a name="line.146"></a>
+<FONT color="green">147</FONT>            if (context == null) {<a name="line.147"></a>
+<FONT color="green">148</FONT>                context = new DefaultExceptionContext();<a name="line.148"></a>
+<FONT color="green">149</FONT>            }<a name="line.149"></a>
+<FONT color="green">150</FONT>            exceptionContext = context;<a name="line.150"></a>
+<FONT color="green">151</FONT>        }<a name="line.151"></a>
+<FONT color="green">152</FONT>    <a name="line.152"></a>
+<FONT color="green">153</FONT>        //-----------------------------------------------------------------------<a name="line.153"></a>
+<FONT color="green">154</FONT>        /**<a name="line.154"></a>
+<FONT color="green">155</FONT>         * Adds information helpful to a developer in diagnosing and correcting the problem.<a name="line.155"></a>
+<FONT color="green">156</FONT>         * For the information to be meaningful, the value passed should have a reasonable<a name="line.156"></a>
+<FONT color="green">157</FONT>         * toString() implementation.<a name="line.157"></a>
+<FONT color="green">158</FONT>         * Different values can be added with the same label multiple times.<a name="line.158"></a>
+<FONT color="green">159</FONT>         * &lt;p&gt;<a name="line.159"></a>
+<FONT color="green">160</FONT>         * Note: This exception is only serializable if the object added is serializable.<a name="line.160"></a>
+<FONT color="green">161</FONT>         * &lt;/p&gt;<a name="line.161"></a>
+<FONT color="green">162</FONT>         * <a name="line.162"></a>
+<FONT color="green">163</FONT>         * @param label  a textual label associated with information, {@code null} not recommended<a name="line.163"></a>
+<FONT color="green">164</FONT>         * @param value  information needed to understand exception, may be {@code null}<a name="line.164"></a>
+<FONT color="green">165</FONT>         * @return {@code this}, for method chaining, not {@code null}<a name="line.165"></a>
+<FONT color="green">166</FONT>         */<a name="line.166"></a>
+<FONT color="green">167</FONT>        public ContextedRuntimeException addContextValue(String label, Object value) {        <a name="line.167"></a>
+<FONT color="green">168</FONT>            exceptionContext.addContextValue(label, value);<a name="line.168"></a>
+<FONT color="green">169</FONT>            return this;<a name="line.169"></a>
+<FONT color="green">170</FONT>        }<a name="line.170"></a>
+<FONT color="green">171</FONT>    <a name="line.171"></a>
+<FONT color="green">172</FONT>        /**<a name="line.172"></a>
+<FONT color="green">173</FONT>         * Sets information helpful to a developer in diagnosing and correcting the problem.<a name="line.173"></a>
+<FONT color="green">174</FONT>         * For the information to be meaningful, the value passed should have a reasonable<a name="line.174"></a>
+<FONT color="green">175</FONT>         * toString() implementation.<a name="line.175"></a>
+<FONT color="green">176</FONT>         * Any existing values with the same labels are removed before the new one is added.<a name="line.176"></a>
+<FONT color="green">177</FONT>         * &lt;p&gt;<a name="line.177"></a>
+<FONT color="green">178</FONT>         * Note: This exception is only serializable if the object added as value is serializable.<a name="line.178"></a>
+<FONT color="green">179</FONT>         * &lt;/p&gt;<a name="line.179"></a>
+<FONT color="green">180</FONT>         * <a name="line.180"></a>
+<FONT color="green">181</FONT>         * @param label  a textual label associated with information, {@code null} not recommended<a name="line.181"></a>
+<FONT color="green">182</FONT>         * @param value  information needed to understand exception, may be {@code null}<a name="line.182"></a>
+<FONT color="green">183</FONT>         * @return {@code this}, for method chaining, not {@code null}<a name="line.183"></a>
+<FONT color="green">184</FONT>         */<a name="line.184"></a>
+<FONT color="green">185</FONT>        public ContextedRuntimeException setContextValue(String label, Object value) {        <a name="line.185"></a>
+<FONT color="green">186</FONT>            exceptionContext.setContextValue(label, value);<a name="line.186"></a>
+<FONT color="green">187</FONT>            return this;<a name="line.187"></a>
+<FONT color="green">188</FONT>        }<a name="line.188"></a>
+<FONT color="green">189</FONT>    <a name="line.189"></a>
+<FONT color="green">190</FONT>        /**<a name="line.190"></a>
+<FONT color="green">191</FONT>         * {@inheritDoc}<a name="line.191"></a>
+<FONT color="green">192</FONT>         */<a name="line.192"></a>
+<FONT color="green">193</FONT>        public List&lt;Object&gt; getContextValues(String label) {<a name="line.193"></a>
+<FONT color="green">194</FONT>            return this.exceptionContext.getContextValues(label);<a name="line.194"></a>
+<FONT color="green">195</FONT>        }<a name="line.195"></a>
+<FONT color="green">196</FONT>    <a name="line.196"></a>
+<FONT color="green">197</FONT>        /**<a name="line.197"></a>
+<FONT color="green">198</FONT>         * {@inheritDoc}<a name="line.198"></a>
+<FONT color="green">199</FONT>         */<a name="line.199"></a>
+<FONT color="green">200</FONT>        public Object getFirstContextValue(String label) {<a name="line.200"></a>
+<FONT color="green">201</FONT>            return this.exceptionContext.getFirstContextValue(label);<a name="line.201"></a>
+<FONT color="green">202</FONT>        }<a name="line.202"></a>
+<FONT color="green">203</FONT>    <a name="line.203"></a>
+<FONT color="green">204</FONT>        /**<a name="line.204"></a>
+<FONT color="green">205</FONT>         * {@inheritDoc}<a name="line.205"></a>
+<FONT color="green">206</FONT>         */<a name="line.206"></a>
+<FONT color="green">207</FONT>        public List&lt;Pair&lt;String, Object&gt;&gt; getContextEntries() {<a name="line.207"></a>
+<FONT color="green">208</FONT>            return this.exceptionContext.getContextEntries();<a name="line.208"></a>
+<FONT color="green">209</FONT>        }<a name="line.209"></a>
+<FONT color="green">210</FONT>    <a name="line.210"></a>
+<FONT color="green">211</FONT>        /**<a name="line.211"></a>
+<FONT color="green">212</FONT>         * {@inheritDoc}<a name="line.212"></a>
+<FONT color="green">213</FONT>         */<a name="line.213"></a>
+<FONT color="green">214</FONT>        public Set&lt;String&gt; getContextLabels() {<a name="line.214"></a>
+<FONT color="green">215</FONT>            return exceptionContext.getContextLabels();<a name="line.215"></a>
+<FONT color="green">216</FONT>        }<a name="line.216"></a>
+<FONT color="green">217</FONT>    <a name="line.217"></a>
+<FONT color="green">218</FONT>        /**<a name="line.218"></a>
+<FONT color="green">219</FONT>         * Provides the message explaining the exception, including the contextual data.<a name="line.219"></a>
+<FONT color="green">220</FONT>         * <a name="line.220"></a>
+<FONT color="green">221</FONT>         * @see java.lang.Throwable#getMessage()<a name="line.221"></a>
+<FONT color="green">222</FONT>         * @return the message, never null<a name="line.222"></a>
+<FONT color="green">223</FONT>         */<a name="line.223"></a>
+<FONT color="green">224</FONT>        @Override<a name="line.224"></a>
+<FONT color="green">225</FONT>        public String getMessage(){<a name="line.225"></a>
+<FONT color="green">226</FONT>            return getFormattedExceptionMessage(super.getMessage());<a name="line.226"></a>
+<FONT color="green">227</FONT>        }<a name="line.227"></a>
+<FONT color="green">228</FONT>    <a name="line.228"></a>
+<FONT color="green">229</FONT>        /**<a name="line.229"></a>
+<FONT color="green">230</FONT>         * Provides the message explaining the exception without the contextual data.<a name="line.230"></a>
+<FONT color="green">231</FONT>         * <a name="line.231"></a>
+<FONT color="green">232</FONT>         * @see java.lang.Throwable#getMessage()<a name="line.232"></a>
+<FONT color="green">233</FONT>         * @return the message<a name="line.233"></a>
+<FONT color="green">234</FONT>         * @since 3.0.1<a name="line.234"></a>
+<FONT color="green">235</FONT>         */<a name="line.235"></a>
+<FONT color="green">236</FONT>        public String getRawMessage() {<a name="line.236"></a>
+<FONT color="green">237</FONT>            return super.getMessage();<a name="line.237"></a>
+<FONT color="green">238</FONT>        }<a name="line.238"></a>
+<FONT color="green">239</FONT>    <a name="line.239"></a>
+<FONT color="green">240</FONT>        /**<a name="line.240"></a>
+<FONT color="green">241</FONT>         * {@inheritDoc}<a name="line.241"></a>
+<FONT color="green">242</FONT>         */<a name="line.242"></a>
+<FONT color="green">243</FONT>        public String getFormattedExceptionMessage(String baseMessage) {<a name="line.243"></a>
+<FONT color="green">244</FONT>            return exceptionContext.getFormattedExceptionMessage(baseMessage);<a name="line.244"></a>
+<FONT color="green">245</FONT>        }<a name="line.245"></a>
+<FONT color="green">246</FONT>    <a name="line.246"></a>
+<FONT color="green">247</FONT>    }<a name="line.247"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

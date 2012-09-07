@@ -1,0 +1,487 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*<a name="line.1"></a>
+<FONT color="green">002</FONT>     * Licensed to the Apache Software Foundation (ASF) under one or more<a name="line.2"></a>
+<FONT color="green">003</FONT>     * contributor license agreements.  See the NOTICE file distributed with<a name="line.3"></a>
+<FONT color="green">004</FONT>     * this work for additional information regarding copyright ownership.<a name="line.4"></a>
+<FONT color="green">005</FONT>     * The ASF licenses this file to You under the Apache License, Version 2.0<a name="line.5"></a>
+<FONT color="green">006</FONT>     * (the "License"); you may not use this file except in compliance with<a name="line.6"></a>
+<FONT color="green">007</FONT>     * the License.  You may obtain a copy of the License at<a name="line.7"></a>
+<FONT color="green">008</FONT>     *<a name="line.8"></a>
+<FONT color="green">009</FONT>     *      http://www.apache.org/licenses/LICENSE-2.0<a name="line.9"></a>
+<FONT color="green">010</FONT>     *<a name="line.10"></a>
+<FONT color="green">011</FONT>     * Unless required by applicable law or agreed to in writing, software<a name="line.11"></a>
+<FONT color="green">012</FONT>     * distributed under the License is distributed on an "AS IS" BASIS,<a name="line.12"></a>
+<FONT color="green">013</FONT>     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<a name="line.13"></a>
+<FONT color="green">014</FONT>     * See the License for the specific language governing permissions and<a name="line.14"></a>
+<FONT color="green">015</FONT>     * limitations under the License.<a name="line.15"></a>
+<FONT color="green">016</FONT>     */<a name="line.16"></a>
+<FONT color="green">017</FONT>    package org.apache.commons.lang3.concurrent;<a name="line.17"></a>
+<FONT color="green">018</FONT>    <a name="line.18"></a>
+<FONT color="green">019</FONT>    import java.util.concurrent.ScheduledExecutorService;<a name="line.19"></a>
+<FONT color="green">020</FONT>    import java.util.concurrent.ScheduledFuture;<a name="line.20"></a>
+<FONT color="green">021</FONT>    import java.util.concurrent.ScheduledThreadPoolExecutor;<a name="line.21"></a>
+<FONT color="green">022</FONT>    import java.util.concurrent.TimeUnit;<a name="line.22"></a>
+<FONT color="green">023</FONT>    <a name="line.23"></a>
+<FONT color="green">024</FONT>    /**<a name="line.24"></a>
+<FONT color="green">025</FONT>     * &lt;p&gt;<a name="line.25"></a>
+<FONT color="green">026</FONT>     * A specialized &lt;em&gt;semaphore&lt;/em&gt; implementation that provides a number of<a name="line.26"></a>
+<FONT color="green">027</FONT>     * permits in a given time frame.<a name="line.27"></a>
+<FONT color="green">028</FONT>     * &lt;/p&gt;<a name="line.28"></a>
+<FONT color="green">029</FONT>     * &lt;p&gt;<a name="line.29"></a>
+<FONT color="green">030</FONT>     * This class is similar to the {@code java.util.concurrent.Semaphore} class<a name="line.30"></a>
+<FONT color="green">031</FONT>     * provided by the JDK in that it manages a configurable number of permits.<a name="line.31"></a>
+<FONT color="green">032</FONT>     * Using the {@link #acquire()} method a permit can be requested by a thread.<a name="line.32"></a>
+<FONT color="green">033</FONT>     * However, there is an additional timing dimension: there is no {@code<a name="line.33"></a>
+<FONT color="green">034</FONT>     * release()} method for freeing a permit, but all permits are automatically<a name="line.34"></a>
+<FONT color="green">035</FONT>     * released at the end of a configurable time frame. If a thread calls<a name="line.35"></a>
+<FONT color="green">036</FONT>     * {@link #acquire()} and the available permits are already exhausted for this<a name="line.36"></a>
+<FONT color="green">037</FONT>     * time frame, the thread is blocked. When the time frame ends all permits<a name="line.37"></a>
+<FONT color="green">038</FONT>     * requested so far are restored, and blocking threads are waked up again, so<a name="line.38"></a>
+<FONT color="green">039</FONT>     * that they can try to acquire a new permit. This basically means that in the<a name="line.39"></a>
+<FONT color="green">040</FONT>     * specified time frame only the given number of operations is possible.<a name="line.40"></a>
+<FONT color="green">041</FONT>     * &lt;/p&gt;<a name="line.41"></a>
+<FONT color="green">042</FONT>     * &lt;p&gt;<a name="line.42"></a>
+<FONT color="green">043</FONT>     * A use case for this class is to artificially limit the load produced by a<a name="line.43"></a>
+<FONT color="green">044</FONT>     * process. As an example consider an application that issues database queries<a name="line.44"></a>
+<FONT color="green">045</FONT>     * on a production system in a background process to gather statistical<a name="line.45"></a>
+<FONT color="green">046</FONT>     * information. This background processing should not produce so much database<a name="line.46"></a>
+<FONT color="green">047</FONT>     * load that the functionality and the performance of the production system are<a name="line.47"></a>
+<FONT color="green">048</FONT>     * impacted. Here a {@code TimedSemaphore} could be installed to guarantee that<a name="line.48"></a>
+<FONT color="green">049</FONT>     * only a given number of database queries are issued per second.<a name="line.49"></a>
+<FONT color="green">050</FONT>     * &lt;/p&gt;<a name="line.50"></a>
+<FONT color="green">051</FONT>     * &lt;p&gt;<a name="line.51"></a>
+<FONT color="green">052</FONT>     * A thread class for performing database queries could look as follows:<a name="line.52"></a>
+<FONT color="green">053</FONT>     *<a name="line.53"></a>
+<FONT color="green">054</FONT>     * &lt;pre&gt;<a name="line.54"></a>
+<FONT color="green">055</FONT>     * public class StatisticsThread extends Thread {<a name="line.55"></a>
+<FONT color="green">056</FONT>     *     // The semaphore for limiting database load.<a name="line.56"></a>
+<FONT color="green">057</FONT>     *     private final TimedSemaphore semaphore;<a name="line.57"></a>
+<FONT color="green">058</FONT>     *     // Create an instance and set the semaphore<a name="line.58"></a>
+<FONT color="green">059</FONT>     *     public StatisticsThread(TimedSemaphore timedSemaphore) {<a name="line.59"></a>
+<FONT color="green">060</FONT>     *         semaphore = timedSemaphore;<a name="line.60"></a>
+<FONT color="green">061</FONT>     *     }<a name="line.61"></a>
+<FONT color="green">062</FONT>     *     // Gather statistics<a name="line.62"></a>
+<FONT color="green">063</FONT>     *     public void run() {<a name="line.63"></a>
+<FONT color="green">064</FONT>     *         try {<a name="line.64"></a>
+<FONT color="green">065</FONT>     *             while(true) {<a name="line.65"></a>
+<FONT color="green">066</FONT>     *                 semaphore.acquire();   // limit database load<a name="line.66"></a>
+<FONT color="green">067</FONT>     *                 performQuery();        // issue a query<a name="line.67"></a>
+<FONT color="green">068</FONT>     *             }<a name="line.68"></a>
+<FONT color="green">069</FONT>     *         } catch(InterruptedException) {<a name="line.69"></a>
+<FONT color="green">070</FONT>     *             // fall through<a name="line.70"></a>
+<FONT color="green">071</FONT>     *         }<a name="line.71"></a>
+<FONT color="green">072</FONT>     *     }<a name="line.72"></a>
+<FONT color="green">073</FONT>     *     ...<a name="line.73"></a>
+<FONT color="green">074</FONT>     * }<a name="line.74"></a>
+<FONT color="green">075</FONT>     * &lt;/pre&gt;<a name="line.75"></a>
+<FONT color="green">076</FONT>     *<a name="line.76"></a>
+<FONT color="green">077</FONT>     * The following code fragment shows how a {@code TimedSemaphore} is created<a name="line.77"></a>
+<FONT color="green">078</FONT>     * that allows only 10 operations per second and passed to the statistics<a name="line.78"></a>
+<FONT color="green">079</FONT>     * thread:<a name="line.79"></a>
+<FONT color="green">080</FONT>     *<a name="line.80"></a>
+<FONT color="green">081</FONT>     * &lt;pre&gt;<a name="line.81"></a>
+<FONT color="green">082</FONT>     * TimedSemaphore sem = new TimedSemaphore(1, TimeUnit.SECOND, 10);<a name="line.82"></a>
+<FONT color="green">083</FONT>     * StatisticsThread thread = new StatisticsThread(sem);<a name="line.83"></a>
+<FONT color="green">084</FONT>     * thread.start();<a name="line.84"></a>
+<FONT color="green">085</FONT>     * &lt;/pre&gt;<a name="line.85"></a>
+<FONT color="green">086</FONT>     *<a name="line.86"></a>
+<FONT color="green">087</FONT>     * &lt;/p&gt;<a name="line.87"></a>
+<FONT color="green">088</FONT>     * &lt;p&gt;<a name="line.88"></a>
+<FONT color="green">089</FONT>     * When creating an instance the time period for the semaphore must be<a name="line.89"></a>
+<FONT color="green">090</FONT>     * specified. {@code TimedSemaphore} uses an executor service with a<a name="line.90"></a>
+<FONT color="green">091</FONT>     * corresponding period to monitor this interval. The {@code<a name="line.91"></a>
+<FONT color="green">092</FONT>     * ScheduledExecutorService} to be used for this purpose can be provided at<a name="line.92"></a>
+<FONT color="green">093</FONT>     * construction time. Alternatively the class creates an internal executor<a name="line.93"></a>
+<FONT color="green">094</FONT>     * service.<a name="line.94"></a>
+<FONT color="green">095</FONT>     * &lt;/p&gt;<a name="line.95"></a>
+<FONT color="green">096</FONT>     * &lt;p&gt;<a name="line.96"></a>
+<FONT color="green">097</FONT>     * Client code that uses {@code TimedSemaphore} has to call the<a name="line.97"></a>
+<FONT color="green">098</FONT>     * {@link #acquire()} method in aach processing step. {@code TimedSemaphore}<a name="line.98"></a>
+<FONT color="green">099</FONT>     * keeps track of the number of invocations of the {@link #acquire()} method and<a name="line.99"></a>
+<FONT color="green">100</FONT>     * blocks the calling thread if the counter exceeds the limit specified. When<a name="line.100"></a>
+<FONT color="green">101</FONT>     * the timer signals the end of the time period the counter is reset and all<a name="line.101"></a>
+<FONT color="green">102</FONT>     * waiting threads are released. Then another cycle can start.<a name="line.102"></a>
+<FONT color="green">103</FONT>     * &lt;/p&gt;<a name="line.103"></a>
+<FONT color="green">104</FONT>     * &lt;p&gt;<a name="line.104"></a>
+<FONT color="green">105</FONT>     * It is possible to modify the limit at any time using the<a name="line.105"></a>
+<FONT color="green">106</FONT>     * {@link #setLimit(int)} method. This is useful if the load produced by an<a name="line.106"></a>
+<FONT color="green">107</FONT>     * operation has to be adapted dynamically. In the example scenario with the<a name="line.107"></a>
+<FONT color="green">108</FONT>     * thread collecting statistics it may make sense to specify a low limit during<a name="line.108"></a>
+<FONT color="green">109</FONT>     * day time while allowing a higher load in the night time. Reducing the limit<a name="line.109"></a>
+<FONT color="green">110</FONT>     * takes effect immediately by blocking incoming callers. If the limit is<a name="line.110"></a>
+<FONT color="green">111</FONT>     * increased, waiting threads are not released immediately, but wake up when the<a name="line.111"></a>
+<FONT color="green">112</FONT>     * timer runs out. Then, in the next period more processing steps can be<a name="line.112"></a>
+<FONT color="green">113</FONT>     * performed without blocking. By setting the limit to 0 the semaphore can be<a name="line.113"></a>
+<FONT color="green">114</FONT>     * switched off: in this mode the {@link #acquire()} method never blocks, but<a name="line.114"></a>
+<FONT color="green">115</FONT>     * lets all callers pass directly.<a name="line.115"></a>
+<FONT color="green">116</FONT>     * &lt;/p&gt;<a name="line.116"></a>
+<FONT color="green">117</FONT>     * &lt;p&gt;<a name="line.117"></a>
+<FONT color="green">118</FONT>     * When the {@code TimedSemaphore} is no more needed its {@link #shutdown()}<a name="line.118"></a>
+<FONT color="green">119</FONT>     * method should be called. This causes the periodic task that monitors the time<a name="line.119"></a>
+<FONT color="green">120</FONT>     * interval to be canceled. If the {@code ScheduledExecutorService} has been<a name="line.120"></a>
+<FONT color="green">121</FONT>     * created by the semaphore at construction time, it is also shut down.<a name="line.121"></a>
+<FONT color="green">122</FONT>     * resources. After that {@link #acquire()} must not be called any more.<a name="line.122"></a>
+<FONT color="green">123</FONT>     * &lt;/p&gt;<a name="line.123"></a>
+<FONT color="green">124</FONT>     *<a name="line.124"></a>
+<FONT color="green">125</FONT>     * @since 3.0<a name="line.125"></a>
+<FONT color="green">126</FONT>     * @version $Id: TimedSemaphore.java 1199894 2011-11-09 17:53:59Z ggregory $<a name="line.126"></a>
+<FONT color="green">127</FONT>     */<a name="line.127"></a>
+<FONT color="green">128</FONT>    public class TimedSemaphore {<a name="line.128"></a>
+<FONT color="green">129</FONT>        /**<a name="line.129"></a>
+<FONT color="green">130</FONT>         * Constant for a value representing no limit. If the limit is set to a<a name="line.130"></a>
+<FONT color="green">131</FONT>         * value less or equal this constant, the {@code TimedSemaphore} will be<a name="line.131"></a>
+<FONT color="green">132</FONT>         * effectively switched off.<a name="line.132"></a>
+<FONT color="green">133</FONT>         */<a name="line.133"></a>
+<FONT color="green">134</FONT>        public static final int NO_LIMIT = 0;<a name="line.134"></a>
+<FONT color="green">135</FONT>    <a name="line.135"></a>
+<FONT color="green">136</FONT>        /** Constant for the thread pool size for the executor. */<a name="line.136"></a>
+<FONT color="green">137</FONT>        private static final int THREAD_POOL_SIZE = 1;<a name="line.137"></a>
+<FONT color="green">138</FONT>    <a name="line.138"></a>
+<FONT color="green">139</FONT>        /** The executor service for managing the timer thread. */<a name="line.139"></a>
+<FONT color="green">140</FONT>        private final ScheduledExecutorService executorService;<a name="line.140"></a>
+<FONT color="green">141</FONT>    <a name="line.141"></a>
+<FONT color="green">142</FONT>        /** Stores the period for this timed semaphore. */<a name="line.142"></a>
+<FONT color="green">143</FONT>        private final long period;<a name="line.143"></a>
+<FONT color="green">144</FONT>    <a name="line.144"></a>
+<FONT color="green">145</FONT>        /** The time unit for the period. */<a name="line.145"></a>
+<FONT color="green">146</FONT>        private final TimeUnit unit;<a name="line.146"></a>
+<FONT color="green">147</FONT>    <a name="line.147"></a>
+<FONT color="green">148</FONT>        /** A flag whether the executor service was created by this object. */<a name="line.148"></a>
+<FONT color="green">149</FONT>        private final boolean ownExecutor;<a name="line.149"></a>
+<FONT color="green">150</FONT>    <a name="line.150"></a>
+<FONT color="green">151</FONT>        /** A future object representing the timer task. */<a name="line.151"></a>
+<FONT color="green">152</FONT>        private ScheduledFuture&lt;?&gt; task;<a name="line.152"></a>
+<FONT color="green">153</FONT>    <a name="line.153"></a>
+<FONT color="green">154</FONT>        /** Stores the total number of invocations of the acquire() method. */<a name="line.154"></a>
+<FONT color="green">155</FONT>        private long totalAcquireCount;<a name="line.155"></a>
+<FONT color="green">156</FONT>    <a name="line.156"></a>
+<FONT color="green">157</FONT>        /**<a name="line.157"></a>
+<FONT color="green">158</FONT>         * The counter for the periods. This counter is increased every time a<a name="line.158"></a>
+<FONT color="green">159</FONT>         * period ends.<a name="line.159"></a>
+<FONT color="green">160</FONT>         */<a name="line.160"></a>
+<FONT color="green">161</FONT>        private long periodCount;<a name="line.161"></a>
+<FONT color="green">162</FONT>    <a name="line.162"></a>
+<FONT color="green">163</FONT>        /** The limit. */<a name="line.163"></a>
+<FONT color="green">164</FONT>        private int limit;<a name="line.164"></a>
+<FONT color="green">165</FONT>    <a name="line.165"></a>
+<FONT color="green">166</FONT>        /** The current counter. */<a name="line.166"></a>
+<FONT color="green">167</FONT>        private int acquireCount;<a name="line.167"></a>
+<FONT color="green">168</FONT>    <a name="line.168"></a>
+<FONT color="green">169</FONT>        /** The number of invocations of acquire() in the last period. */<a name="line.169"></a>
+<FONT color="green">170</FONT>        private int lastCallsPerPeriod;<a name="line.170"></a>
+<FONT color="green">171</FONT>    <a name="line.171"></a>
+<FONT color="green">172</FONT>        /** A flag whether shutdown() was called. */<a name="line.172"></a>
+<FONT color="green">173</FONT>        private boolean shutdown;<a name="line.173"></a>
+<FONT color="green">174</FONT>    <a name="line.174"></a>
+<FONT color="green">175</FONT>        /**<a name="line.175"></a>
+<FONT color="green">176</FONT>         * Creates a new instance of {@link TimedSemaphore} and initializes it with<a name="line.176"></a>
+<FONT color="green">177</FONT>         * the given time period and the limit.<a name="line.177"></a>
+<FONT color="green">178</FONT>         *<a name="line.178"></a>
+<FONT color="green">179</FONT>         * @param timePeriod the time period<a name="line.179"></a>
+<FONT color="green">180</FONT>         * @param timeUnit the unit for the period<a name="line.180"></a>
+<FONT color="green">181</FONT>         * @param limit the limit for the semaphore<a name="line.181"></a>
+<FONT color="green">182</FONT>         * @throws IllegalArgumentException if the period is less or equals 0<a name="line.182"></a>
+<FONT color="green">183</FONT>         */<a name="line.183"></a>
+<FONT color="green">184</FONT>        public TimedSemaphore(long timePeriod, TimeUnit timeUnit, int limit) {<a name="line.184"></a>
+<FONT color="green">185</FONT>            this(null, timePeriod, timeUnit, limit);<a name="line.185"></a>
+<FONT color="green">186</FONT>        }<a name="line.186"></a>
+<FONT color="green">187</FONT>    <a name="line.187"></a>
+<FONT color="green">188</FONT>        /**<a name="line.188"></a>
+<FONT color="green">189</FONT>         * Creates a new instance of {@link TimedSemaphore} and initializes it with<a name="line.189"></a>
+<FONT color="green">190</FONT>         * an executor service, the given time period, and the limit. The executor<a name="line.190"></a>
+<FONT color="green">191</FONT>         * service will be used for creating a periodic task for monitoring the time<a name="line.191"></a>
+<FONT color="green">192</FONT>         * period. It can be &lt;b&gt;null&lt;/b&gt;, then a default service will be created.<a name="line.192"></a>
+<FONT color="green">193</FONT>         *<a name="line.193"></a>
+<FONT color="green">194</FONT>         * @param service the executor service<a name="line.194"></a>
+<FONT color="green">195</FONT>         * @param timePeriod the time period<a name="line.195"></a>
+<FONT color="green">196</FONT>         * @param timeUnit the unit for the period<a name="line.196"></a>
+<FONT color="green">197</FONT>         * @param limit the limit for the semaphore<a name="line.197"></a>
+<FONT color="green">198</FONT>         * @throws IllegalArgumentException if the period is less or equals 0<a name="line.198"></a>
+<FONT color="green">199</FONT>         */<a name="line.199"></a>
+<FONT color="green">200</FONT>        public TimedSemaphore(ScheduledExecutorService service, long timePeriod,<a name="line.200"></a>
+<FONT color="green">201</FONT>                TimeUnit timeUnit, int limit) {<a name="line.201"></a>
+<FONT color="green">202</FONT>            if (timePeriod &lt;= 0) {<a name="line.202"></a>
+<FONT color="green">203</FONT>                throw new IllegalArgumentException("Time period must be greater 0!");<a name="line.203"></a>
+<FONT color="green">204</FONT>            }<a name="line.204"></a>
+<FONT color="green">205</FONT>    <a name="line.205"></a>
+<FONT color="green">206</FONT>            period = timePeriod;<a name="line.206"></a>
+<FONT color="green">207</FONT>            unit = timeUnit;<a name="line.207"></a>
+<FONT color="green">208</FONT>    <a name="line.208"></a>
+<FONT color="green">209</FONT>            if (service != null) {<a name="line.209"></a>
+<FONT color="green">210</FONT>                executorService = service;<a name="line.210"></a>
+<FONT color="green">211</FONT>                ownExecutor = false;<a name="line.211"></a>
+<FONT color="green">212</FONT>            } else {<a name="line.212"></a>
+<FONT color="green">213</FONT>                ScheduledThreadPoolExecutor s = new ScheduledThreadPoolExecutor(<a name="line.213"></a>
+<FONT color="green">214</FONT>                        THREAD_POOL_SIZE);<a name="line.214"></a>
+<FONT color="green">215</FONT>                s.setContinueExistingPeriodicTasksAfterShutdownPolicy(false);<a name="line.215"></a>
+<FONT color="green">216</FONT>                s.setExecuteExistingDelayedTasksAfterShutdownPolicy(false);<a name="line.216"></a>
+<FONT color="green">217</FONT>                executorService = s;<a name="line.217"></a>
+<FONT color="green">218</FONT>                ownExecutor = true;<a name="line.218"></a>
+<FONT color="green">219</FONT>            }<a name="line.219"></a>
+<FONT color="green">220</FONT>    <a name="line.220"></a>
+<FONT color="green">221</FONT>            setLimit(limit);<a name="line.221"></a>
+<FONT color="green">222</FONT>        }<a name="line.222"></a>
+<FONT color="green">223</FONT>    <a name="line.223"></a>
+<FONT color="green">224</FONT>        /**<a name="line.224"></a>
+<FONT color="green">225</FONT>         * Returns the limit enforced by this semaphore. The limit determines how<a name="line.225"></a>
+<FONT color="green">226</FONT>         * many invocations of {@link #acquire()} are allowed within the monitored<a name="line.226"></a>
+<FONT color="green">227</FONT>         * period.<a name="line.227"></a>
+<FONT color="green">228</FONT>         *<a name="line.228"></a>
+<FONT color="green">229</FONT>         * @return the limit<a name="line.229"></a>
+<FONT color="green">230</FONT>         */<a name="line.230"></a>
+<FONT color="green">231</FONT>        public final synchronized int getLimit() {<a name="line.231"></a>
+<FONT color="green">232</FONT>            return limit;<a name="line.232"></a>
+<FONT color="green">233</FONT>        }<a name="line.233"></a>
+<FONT color="green">234</FONT>    <a name="line.234"></a>
+<FONT color="green">235</FONT>        /**<a name="line.235"></a>
+<FONT color="green">236</FONT>         * Sets the limit. This is the number of times the {@link #acquire()} method<a name="line.236"></a>
+<FONT color="green">237</FONT>         * can be called within the time period specified. If this limit is reached,<a name="line.237"></a>
+<FONT color="green">238</FONT>         * further invocations of {@link #acquire()} will block. Setting the limit<a name="line.238"></a>
+<FONT color="green">239</FONT>         * to a value &amp;lt;= {@link #NO_LIMIT} will cause the limit to be disabled,<a name="line.239"></a>
+<FONT color="green">240</FONT>         * i.e. an arbitrary number of{@link #acquire()} invocations is allowed in<a name="line.240"></a>
+<FONT color="green">241</FONT>         * the time period.<a name="line.241"></a>
+<FONT color="green">242</FONT>         *<a name="line.242"></a>
+<FONT color="green">243</FONT>         * @param limit the limit<a name="line.243"></a>
+<FONT color="green">244</FONT>         */<a name="line.244"></a>
+<FONT color="green">245</FONT>        public final synchronized void setLimit(int limit) {<a name="line.245"></a>
+<FONT color="green">246</FONT>            this.limit = limit;<a name="line.246"></a>
+<FONT color="green">247</FONT>        }<a name="line.247"></a>
+<FONT color="green">248</FONT>    <a name="line.248"></a>
+<FONT color="green">249</FONT>        /**<a name="line.249"></a>
+<FONT color="green">250</FONT>         * Initializes a shutdown. After that the object cannot be used any more.<a name="line.250"></a>
+<FONT color="green">251</FONT>         * This method can be invoked an arbitrary number of times. All invocations<a name="line.251"></a>
+<FONT color="green">252</FONT>         * after the first one do not have any effect.<a name="line.252"></a>
+<FONT color="green">253</FONT>         */<a name="line.253"></a>
+<FONT color="green">254</FONT>        public synchronized void shutdown() {<a name="line.254"></a>
+<FONT color="green">255</FONT>            if (!shutdown) {<a name="line.255"></a>
+<FONT color="green">256</FONT>    <a name="line.256"></a>
+<FONT color="green">257</FONT>                if (ownExecutor) {<a name="line.257"></a>
+<FONT color="green">258</FONT>                    // if the executor was created by this instance, it has<a name="line.258"></a>
+<FONT color="green">259</FONT>                    // to be shutdown<a name="line.259"></a>
+<FONT color="green">260</FONT>                    getExecutorService().shutdownNow();<a name="line.260"></a>
+<FONT color="green">261</FONT>                }<a name="line.261"></a>
+<FONT color="green">262</FONT>                if (task != null) {<a name="line.262"></a>
+<FONT color="green">263</FONT>                    task.cancel(false);<a name="line.263"></a>
+<FONT color="green">264</FONT>                }<a name="line.264"></a>
+<FONT color="green">265</FONT>    <a name="line.265"></a>
+<FONT color="green">266</FONT>                shutdown = true;<a name="line.266"></a>
+<FONT color="green">267</FONT>            }<a name="line.267"></a>
+<FONT color="green">268</FONT>        }<a name="line.268"></a>
+<FONT color="green">269</FONT>    <a name="line.269"></a>
+<FONT color="green">270</FONT>        /**<a name="line.270"></a>
+<FONT color="green">271</FONT>         * Tests whether the {@link #shutdown()} method has been called on this<a name="line.271"></a>
+<FONT color="green">272</FONT>         * object. If this method returns &lt;b&gt;true&lt;/b&gt;, this instance cannot be used<a name="line.272"></a>
+<FONT color="green">273</FONT>         * any longer.<a name="line.273"></a>
+<FONT color="green">274</FONT>         *<a name="line.274"></a>
+<FONT color="green">275</FONT>         * @return a flag whether a shutdown has been performed<a name="line.275"></a>
+<FONT color="green">276</FONT>         */<a name="line.276"></a>
+<FONT color="green">277</FONT>        public synchronized boolean isShutdown() {<a name="line.277"></a>
+<FONT color="green">278</FONT>            return shutdown;<a name="line.278"></a>
+<FONT color="green">279</FONT>        }<a name="line.279"></a>
+<FONT color="green">280</FONT>    <a name="line.280"></a>
+<FONT color="green">281</FONT>        /**<a name="line.281"></a>
+<FONT color="green">282</FONT>         * Tries to acquire a permit from this semaphore. This method will block if<a name="line.282"></a>
+<FONT color="green">283</FONT>         * the limit for the current period has already been reached. If<a name="line.283"></a>
+<FONT color="green">284</FONT>         * {@link #shutdown()} has already been invoked, calling this method will<a name="line.284"></a>
+<FONT color="green">285</FONT>         * cause an exception. The very first call of this method starts the timer<a name="line.285"></a>
+<FONT color="green">286</FONT>         * task which monitors the time period set for this {@code TimedSemaphore}.<a name="line.286"></a>
+<FONT color="green">287</FONT>         * From now on the semaphore is active.<a name="line.287"></a>
+<FONT color="green">288</FONT>         *<a name="line.288"></a>
+<FONT color="green">289</FONT>         * @throws InterruptedException if the thread gets interrupted<a name="line.289"></a>
+<FONT color="green">290</FONT>         * @throws IllegalStateException if this semaphore is already shut down<a name="line.290"></a>
+<FONT color="green">291</FONT>         */<a name="line.291"></a>
+<FONT color="green">292</FONT>        public synchronized void acquire() throws InterruptedException {<a name="line.292"></a>
+<FONT color="green">293</FONT>            if (isShutdown()) {<a name="line.293"></a>
+<FONT color="green">294</FONT>                throw new IllegalStateException("TimedSemaphore is shut down!");<a name="line.294"></a>
+<FONT color="green">295</FONT>            }<a name="line.295"></a>
+<FONT color="green">296</FONT>    <a name="line.296"></a>
+<FONT color="green">297</FONT>            if (task == null) {<a name="line.297"></a>
+<FONT color="green">298</FONT>                task = startTimer();<a name="line.298"></a>
+<FONT color="green">299</FONT>            }<a name="line.299"></a>
+<FONT color="green">300</FONT>    <a name="line.300"></a>
+<FONT color="green">301</FONT>            boolean canPass = false;<a name="line.301"></a>
+<FONT color="green">302</FONT>            do {<a name="line.302"></a>
+<FONT color="green">303</FONT>                canPass = getLimit() &lt;= NO_LIMIT || acquireCount &lt; getLimit();<a name="line.303"></a>
+<FONT color="green">304</FONT>                if (!canPass) {<a name="line.304"></a>
+<FONT color="green">305</FONT>                    wait();<a name="line.305"></a>
+<FONT color="green">306</FONT>                } else {<a name="line.306"></a>
+<FONT color="green">307</FONT>                    acquireCount++;<a name="line.307"></a>
+<FONT color="green">308</FONT>                }<a name="line.308"></a>
+<FONT color="green">309</FONT>            } while (!canPass);<a name="line.309"></a>
+<FONT color="green">310</FONT>        }<a name="line.310"></a>
+<FONT color="green">311</FONT>    <a name="line.311"></a>
+<FONT color="green">312</FONT>        /**<a name="line.312"></a>
+<FONT color="green">313</FONT>         * Returns the number of (successful) acquire invocations during the last<a name="line.313"></a>
+<FONT color="green">314</FONT>         * period. This is the number of times the {@link #acquire()} method was<a name="line.314"></a>
+<FONT color="green">315</FONT>         * called without blocking. This can be useful for testing or debugging<a name="line.315"></a>
+<FONT color="green">316</FONT>         * purposes or to determine a meaningful threshold value. If a limit is set,<a name="line.316"></a>
+<FONT color="green">317</FONT>         * the value returned by this method won't be greater than this limit.<a name="line.317"></a>
+<FONT color="green">318</FONT>         *<a name="line.318"></a>
+<FONT color="green">319</FONT>         * @return the number of non-blocking invocations of the {@link #acquire()}<a name="line.319"></a>
+<FONT color="green">320</FONT>         * method<a name="line.320"></a>
+<FONT color="green">321</FONT>         */<a name="line.321"></a>
+<FONT color="green">322</FONT>        public synchronized int getLastAcquiresPerPeriod() {<a name="line.322"></a>
+<FONT color="green">323</FONT>            return lastCallsPerPeriod;<a name="line.323"></a>
+<FONT color="green">324</FONT>        }<a name="line.324"></a>
+<FONT color="green">325</FONT>    <a name="line.325"></a>
+<FONT color="green">326</FONT>        /**<a name="line.326"></a>
+<FONT color="green">327</FONT>         * Returns the number of invocations of the {@link #acquire()} method for<a name="line.327"></a>
+<FONT color="green">328</FONT>         * the current period. This may be useful for testing or debugging purposes.<a name="line.328"></a>
+<FONT color="green">329</FONT>         *<a name="line.329"></a>
+<FONT color="green">330</FONT>         * @return the current number of {@link #acquire()} invocations<a name="line.330"></a>
+<FONT color="green">331</FONT>         */<a name="line.331"></a>
+<FONT color="green">332</FONT>        public synchronized int getAcquireCount() {<a name="line.332"></a>
+<FONT color="green">333</FONT>            return acquireCount;<a name="line.333"></a>
+<FONT color="green">334</FONT>        }<a name="line.334"></a>
+<FONT color="green">335</FONT>    <a name="line.335"></a>
+<FONT color="green">336</FONT>        /**<a name="line.336"></a>
+<FONT color="green">337</FONT>         * Returns the number of calls to the {@link #acquire()} method that can<a name="line.337"></a>
+<FONT color="green">338</FONT>         * still be performed in the current period without blocking. This method<a name="line.338"></a>
+<FONT color="green">339</FONT>         * can give an indication whether it is safe to call the {@link #acquire()}<a name="line.339"></a>
+<FONT color="green">340</FONT>         * method without risking to be suspended. However, there is no guarantee<a name="line.340"></a>
+<FONT color="green">341</FONT>         * that a subsequent call to {@link #acquire()} actually is not-blocking<a name="line.341"></a>
+<FONT color="green">342</FONT>         * because in the mean time other threads may have invoked the semaphore.<a name="line.342"></a>
+<FONT color="green">343</FONT>         *<a name="line.343"></a>
+<FONT color="green">344</FONT>         * @return the current number of available {@link #acquire()} calls in the<a name="line.344"></a>
+<FONT color="green">345</FONT>         * current period<a name="line.345"></a>
+<FONT color="green">346</FONT>         */<a name="line.346"></a>
+<FONT color="green">347</FONT>        public synchronized int getAvailablePermits() {<a name="line.347"></a>
+<FONT color="green">348</FONT>            return getLimit() - getAcquireCount();<a name="line.348"></a>
+<FONT color="green">349</FONT>        }<a name="line.349"></a>
+<FONT color="green">350</FONT>    <a name="line.350"></a>
+<FONT color="green">351</FONT>        /**<a name="line.351"></a>
+<FONT color="green">352</FONT>         * Returns the average number of successful (i.e. non-blocking)<a name="line.352"></a>
+<FONT color="green">353</FONT>         * {@link #acquire()} invocations for the entire life-time of this {@code<a name="line.353"></a>
+<FONT color="green">354</FONT>         * TimedSemaphore}. This method can be used for instance for statistical<a name="line.354"></a>
+<FONT color="green">355</FONT>         * calculations.<a name="line.355"></a>
+<FONT color="green">356</FONT>         *<a name="line.356"></a>
+<FONT color="green">357</FONT>         * @return the average number of {@link #acquire()} invocations per time<a name="line.357"></a>
+<FONT color="green">358</FONT>         * unit<a name="line.358"></a>
+<FONT color="green">359</FONT>         */<a name="line.359"></a>
+<FONT color="green">360</FONT>        public synchronized double getAverageCallsPerPeriod() {<a name="line.360"></a>
+<FONT color="green">361</FONT>            return periodCount == 0 ? 0 : (double) totalAcquireCount<a name="line.361"></a>
+<FONT color="green">362</FONT>                    / (double) periodCount;<a name="line.362"></a>
+<FONT color="green">363</FONT>        }<a name="line.363"></a>
+<FONT color="green">364</FONT>    <a name="line.364"></a>
+<FONT color="green">365</FONT>        /**<a name="line.365"></a>
+<FONT color="green">366</FONT>         * Returns the time period. This is the time monitored by this semaphore.<a name="line.366"></a>
+<FONT color="green">367</FONT>         * Only a given number of invocations of the {@link #acquire()} method is<a name="line.367"></a>
+<FONT color="green">368</FONT>         * possible in this period.<a name="line.368"></a>
+<FONT color="green">369</FONT>         *<a name="line.369"></a>
+<FONT color="green">370</FONT>         * @return the time period<a name="line.370"></a>
+<FONT color="green">371</FONT>         */<a name="line.371"></a>
+<FONT color="green">372</FONT>        public long getPeriod() {<a name="line.372"></a>
+<FONT color="green">373</FONT>            return period;<a name="line.373"></a>
+<FONT color="green">374</FONT>        }<a name="line.374"></a>
+<FONT color="green">375</FONT>    <a name="line.375"></a>
+<FONT color="green">376</FONT>        /**<a name="line.376"></a>
+<FONT color="green">377</FONT>         * Returns the time unit. This is the unit used by {@link #getPeriod()}.<a name="line.377"></a>
+<FONT color="green">378</FONT>         *<a name="line.378"></a>
+<FONT color="green">379</FONT>         * @return the time unit<a name="line.379"></a>
+<FONT color="green">380</FONT>         */<a name="line.380"></a>
+<FONT color="green">381</FONT>        public TimeUnit getUnit() {<a name="line.381"></a>
+<FONT color="green">382</FONT>            return unit;<a name="line.382"></a>
+<FONT color="green">383</FONT>        }<a name="line.383"></a>
+<FONT color="green">384</FONT>    <a name="line.384"></a>
+<FONT color="green">385</FONT>        /**<a name="line.385"></a>
+<FONT color="green">386</FONT>         * Returns the executor service used by this instance.<a name="line.386"></a>
+<FONT color="green">387</FONT>         *<a name="line.387"></a>
+<FONT color="green">388</FONT>         * @return the executor service<a name="line.388"></a>
+<FONT color="green">389</FONT>         */<a name="line.389"></a>
+<FONT color="green">390</FONT>        protected ScheduledExecutorService getExecutorService() {<a name="line.390"></a>
+<FONT color="green">391</FONT>            return executorService;<a name="line.391"></a>
+<FONT color="green">392</FONT>        }<a name="line.392"></a>
+<FONT color="green">393</FONT>    <a name="line.393"></a>
+<FONT color="green">394</FONT>        /**<a name="line.394"></a>
+<FONT color="green">395</FONT>         * Starts the timer. This method is called when {@link #acquire()} is called<a name="line.395"></a>
+<FONT color="green">396</FONT>         * for the first time. It schedules a task to be executed at fixed rate to<a name="line.396"></a>
+<FONT color="green">397</FONT>         * monitor the time period specified.<a name="line.397"></a>
+<FONT color="green">398</FONT>         *<a name="line.398"></a>
+<FONT color="green">399</FONT>         * @return a future object representing the task scheduled<a name="line.399"></a>
+<FONT color="green">400</FONT>         */<a name="line.400"></a>
+<FONT color="green">401</FONT>        protected ScheduledFuture&lt;?&gt; startTimer() {<a name="line.401"></a>
+<FONT color="green">402</FONT>            return getExecutorService().scheduleAtFixedRate(new Runnable() {<a name="line.402"></a>
+<FONT color="green">403</FONT>                public void run() {<a name="line.403"></a>
+<FONT color="green">404</FONT>                    endOfPeriod();<a name="line.404"></a>
+<FONT color="green">405</FONT>                }<a name="line.405"></a>
+<FONT color="green">406</FONT>            }, getPeriod(), getPeriod(), getUnit());<a name="line.406"></a>
+<FONT color="green">407</FONT>        }<a name="line.407"></a>
+<FONT color="green">408</FONT>    <a name="line.408"></a>
+<FONT color="green">409</FONT>        /**<a name="line.409"></a>
+<FONT color="green">410</FONT>         * The current time period is finished. This method is called by the timer<a name="line.410"></a>
+<FONT color="green">411</FONT>         * used internally to monitor the time period. It resets the counter and<a name="line.411"></a>
+<FONT color="green">412</FONT>         * releases the threads waiting for this barrier.<a name="line.412"></a>
+<FONT color="green">413</FONT>         */<a name="line.413"></a>
+<FONT color="green">414</FONT>        synchronized void endOfPeriod() {<a name="line.414"></a>
+<FONT color="green">415</FONT>            lastCallsPerPeriod = acquireCount;<a name="line.415"></a>
+<FONT color="green">416</FONT>            totalAcquireCount += acquireCount;<a name="line.416"></a>
+<FONT color="green">417</FONT>            periodCount++;<a name="line.417"></a>
+<FONT color="green">418</FONT>            acquireCount = 0;<a name="line.418"></a>
+<FONT color="green">419</FONT>            notifyAll();<a name="line.419"></a>
+<FONT color="green">420</FONT>        }<a name="line.420"></a>
+<FONT color="green">421</FONT>    }<a name="line.421"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

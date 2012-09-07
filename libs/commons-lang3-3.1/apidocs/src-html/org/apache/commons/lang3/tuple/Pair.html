@@ -1,0 +1,242 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*<a name="line.1"></a>
+<FONT color="green">002</FONT>     * Licensed to the Apache Software Foundation (ASF) under one or more<a name="line.2"></a>
+<FONT color="green">003</FONT>     * contributor license agreements.  See the NOTICE file distributed with<a name="line.3"></a>
+<FONT color="green">004</FONT>     * this work for additional information regarding copyright ownership.<a name="line.4"></a>
+<FONT color="green">005</FONT>     * The ASF licenses this file to You under the Apache License, Version 2.0<a name="line.5"></a>
+<FONT color="green">006</FONT>     * (the "License"); you may not use this file except in compliance with<a name="line.6"></a>
+<FONT color="green">007</FONT>     * the License.  You may obtain a copy of the License at<a name="line.7"></a>
+<FONT color="green">008</FONT>     *<a name="line.8"></a>
+<FONT color="green">009</FONT>     *      http://www.apache.org/licenses/LICENSE-2.0<a name="line.9"></a>
+<FONT color="green">010</FONT>     *<a name="line.10"></a>
+<FONT color="green">011</FONT>     * Unless required by applicable law or agreed to in writing, software<a name="line.11"></a>
+<FONT color="green">012</FONT>     * distributed under the License is distributed on an "AS IS" BASIS,<a name="line.12"></a>
+<FONT color="green">013</FONT>     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<a name="line.13"></a>
+<FONT color="green">014</FONT>     * See the License for the specific language governing permissions and<a name="line.14"></a>
+<FONT color="green">015</FONT>     * limitations under the License.<a name="line.15"></a>
+<FONT color="green">016</FONT>     */<a name="line.16"></a>
+<FONT color="green">017</FONT>    package org.apache.commons.lang3.tuple;<a name="line.17"></a>
+<FONT color="green">018</FONT>    <a name="line.18"></a>
+<FONT color="green">019</FONT>    import java.io.Serializable;<a name="line.19"></a>
+<FONT color="green">020</FONT>    import java.util.Map;<a name="line.20"></a>
+<FONT color="green">021</FONT>    <a name="line.21"></a>
+<FONT color="green">022</FONT>    import org.apache.commons.lang3.ObjectUtils;<a name="line.22"></a>
+<FONT color="green">023</FONT>    import org.apache.commons.lang3.builder.CompareToBuilder;<a name="line.23"></a>
+<FONT color="green">024</FONT>    <a name="line.24"></a>
+<FONT color="green">025</FONT>    /**<a name="line.25"></a>
+<FONT color="green">026</FONT>     * &lt;p&gt;A pair consisting of two elements.&lt;/p&gt;<a name="line.26"></a>
+<FONT color="green">027</FONT>     * <a name="line.27"></a>
+<FONT color="green">028</FONT>     * &lt;p&gt;This class is an abstract implementation defining the basic API.<a name="line.28"></a>
+<FONT color="green">029</FONT>     * It refers to the elements as 'left' and 'right'. It also implements the<a name="line.29"></a>
+<FONT color="green">030</FONT>     * {@code Map.Entry} interface where the key is 'left' and the value is 'right'.&lt;/p&gt;<a name="line.30"></a>
+<FONT color="green">031</FONT>     * <a name="line.31"></a>
+<FONT color="green">032</FONT>     * &lt;p&gt;Subclass implementations may be mutable or immutable.<a name="line.32"></a>
+<FONT color="green">033</FONT>     * However, there is no restriction on the type of the stored objects that may be stored.<a name="line.33"></a>
+<FONT color="green">034</FONT>     * If mutable objects are stored in the pair, then the pair itself effectively becomes mutable.&lt;/p&gt;<a name="line.34"></a>
+<FONT color="green">035</FONT>     *<a name="line.35"></a>
+<FONT color="green">036</FONT>     * @param &lt;L&gt; the left element type<a name="line.36"></a>
+<FONT color="green">037</FONT>     * @param &lt;R&gt; the right element type<a name="line.37"></a>
+<FONT color="green">038</FONT>     *<a name="line.38"></a>
+<FONT color="green">039</FONT>     * @since Lang 3.0<a name="line.39"></a>
+<FONT color="green">040</FONT>     * @version $Id: Pair.java 1142401 2011-07-03 08:30:12Z bayard $<a name="line.40"></a>
+<FONT color="green">041</FONT>     */<a name="line.41"></a>
+<FONT color="green">042</FONT>    public abstract class Pair&lt;L, R&gt; implements Map.Entry&lt;L, R&gt;, Comparable&lt;Pair&lt;L, R&gt;&gt;, Serializable {<a name="line.42"></a>
+<FONT color="green">043</FONT>    <a name="line.43"></a>
+<FONT color="green">044</FONT>        /** Serialization version */<a name="line.44"></a>
+<FONT color="green">045</FONT>        private static final long serialVersionUID = 4954918890077093841L;<a name="line.45"></a>
+<FONT color="green">046</FONT>    <a name="line.46"></a>
+<FONT color="green">047</FONT>        /**<a name="line.47"></a>
+<FONT color="green">048</FONT>         * &lt;p&gt;Obtains an immutable pair of from two objects inferring the generic types.&lt;/p&gt;<a name="line.48"></a>
+<FONT color="green">049</FONT>         * <a name="line.49"></a>
+<FONT color="green">050</FONT>         * &lt;p&gt;This factory allows the pair to be created using inference to<a name="line.50"></a>
+<FONT color="green">051</FONT>         * obtain the generic types.&lt;/p&gt;<a name="line.51"></a>
+<FONT color="green">052</FONT>         * <a name="line.52"></a>
+<FONT color="green">053</FONT>         * @param &lt;L&gt; the left element type<a name="line.53"></a>
+<FONT color="green">054</FONT>         * @param &lt;R&gt; the right element type<a name="line.54"></a>
+<FONT color="green">055</FONT>         * @param left  the left element, may be null<a name="line.55"></a>
+<FONT color="green">056</FONT>         * @param right  the right element, may be null<a name="line.56"></a>
+<FONT color="green">057</FONT>         * @return a pair formed from the two parameters, not null<a name="line.57"></a>
+<FONT color="green">058</FONT>         */<a name="line.58"></a>
+<FONT color="green">059</FONT>        public static &lt;L, R&gt; Pair&lt;L, R&gt; of(L left, R right) {<a name="line.59"></a>
+<FONT color="green">060</FONT>            return new ImmutablePair&lt;L, R&gt;(left, right);<a name="line.60"></a>
+<FONT color="green">061</FONT>        }<a name="line.61"></a>
+<FONT color="green">062</FONT>    <a name="line.62"></a>
+<FONT color="green">063</FONT>        //-----------------------------------------------------------------------<a name="line.63"></a>
+<FONT color="green">064</FONT>        /**<a name="line.64"></a>
+<FONT color="green">065</FONT>         * &lt;p&gt;Gets the left element from this pair.&lt;/p&gt;<a name="line.65"></a>
+<FONT color="green">066</FONT>         * <a name="line.66"></a>
+<FONT color="green">067</FONT>         * &lt;p&gt;When treated as a key-value pair, this is the key.&lt;/p&gt;<a name="line.67"></a>
+<FONT color="green">068</FONT>         * <a name="line.68"></a>
+<FONT color="green">069</FONT>         * @return the left element, may be null<a name="line.69"></a>
+<FONT color="green">070</FONT>         */<a name="line.70"></a>
+<FONT color="green">071</FONT>        public abstract L getLeft();<a name="line.71"></a>
+<FONT color="green">072</FONT>    <a name="line.72"></a>
+<FONT color="green">073</FONT>        /**<a name="line.73"></a>
+<FONT color="green">074</FONT>         * &lt;p&gt;Gets the right element from this pair.&lt;/p&gt;<a name="line.74"></a>
+<FONT color="green">075</FONT>         * <a name="line.75"></a>
+<FONT color="green">076</FONT>         * &lt;p&gt;When treated as a key-value pair, this is the value.&lt;/p&gt;<a name="line.76"></a>
+<FONT color="green">077</FONT>         * <a name="line.77"></a>
+<FONT color="green">078</FONT>         * @return the right element, may be null<a name="line.78"></a>
+<FONT color="green">079</FONT>         */<a name="line.79"></a>
+<FONT color="green">080</FONT>        public abstract R getRight();<a name="line.80"></a>
+<FONT color="green">081</FONT>    <a name="line.81"></a>
+<FONT color="green">082</FONT>        /**<a name="line.82"></a>
+<FONT color="green">083</FONT>         * &lt;p&gt;Gets the key from this pair.&lt;/p&gt;<a name="line.83"></a>
+<FONT color="green">084</FONT>         * <a name="line.84"></a>
+<FONT color="green">085</FONT>         * &lt;p&gt;This method implements the {@code Map.Entry} interface returning the<a name="line.85"></a>
+<FONT color="green">086</FONT>         * left element as the key.&lt;/p&gt;<a name="line.86"></a>
+<FONT color="green">087</FONT>         * <a name="line.87"></a>
+<FONT color="green">088</FONT>         * @return the left element as the key, may be null<a name="line.88"></a>
+<FONT color="green">089</FONT>         */<a name="line.89"></a>
+<FONT color="green">090</FONT>        public final L getKey() {<a name="line.90"></a>
+<FONT color="green">091</FONT>            return getLeft();<a name="line.91"></a>
+<FONT color="green">092</FONT>        }<a name="line.92"></a>
+<FONT color="green">093</FONT>    <a name="line.93"></a>
+<FONT color="green">094</FONT>        /**<a name="line.94"></a>
+<FONT color="green">095</FONT>         * &lt;p&gt;Gets the value from this pair.&lt;/p&gt;<a name="line.95"></a>
+<FONT color="green">096</FONT>         * <a name="line.96"></a>
+<FONT color="green">097</FONT>         * &lt;p&gt;This method implements the {@code Map.Entry} interface returning the<a name="line.97"></a>
+<FONT color="green">098</FONT>         * right element as the value.&lt;/p&gt;<a name="line.98"></a>
+<FONT color="green">099</FONT>         * <a name="line.99"></a>
+<FONT color="green">100</FONT>         * @return the right element as the value, may be null<a name="line.100"></a>
+<FONT color="green">101</FONT>         */<a name="line.101"></a>
+<FONT color="green">102</FONT>        public R getValue() {<a name="line.102"></a>
+<FONT color="green">103</FONT>            return getRight();<a name="line.103"></a>
+<FONT color="green">104</FONT>        }<a name="line.104"></a>
+<FONT color="green">105</FONT>    <a name="line.105"></a>
+<FONT color="green">106</FONT>        //-----------------------------------------------------------------------<a name="line.106"></a>
+<FONT color="green">107</FONT>        /**<a name="line.107"></a>
+<FONT color="green">108</FONT>         * &lt;p&gt;Compares the pair based on the left element followed by the right element.<a name="line.108"></a>
+<FONT color="green">109</FONT>         * The types must be {@code Comparable}.&lt;/p&gt;<a name="line.109"></a>
+<FONT color="green">110</FONT>         * <a name="line.110"></a>
+<FONT color="green">111</FONT>         * @param other  the other pair, not null<a name="line.111"></a>
+<FONT color="green">112</FONT>         * @return negative if this is less, zero if equal, positive if greater<a name="line.112"></a>
+<FONT color="green">113</FONT>         */<a name="line.113"></a>
+<FONT color="green">114</FONT>        public int compareTo(Pair&lt;L, R&gt; other) {<a name="line.114"></a>
+<FONT color="green">115</FONT>          return new CompareToBuilder().append(getLeft(), other.getLeft())<a name="line.115"></a>
+<FONT color="green">116</FONT>                  .append(getRight(), other.getRight()).toComparison();<a name="line.116"></a>
+<FONT color="green">117</FONT>        }<a name="line.117"></a>
+<FONT color="green">118</FONT>    <a name="line.118"></a>
+<FONT color="green">119</FONT>        /**<a name="line.119"></a>
+<FONT color="green">120</FONT>         * &lt;p&gt;Compares this pair to another based on the two elements.&lt;/p&gt;<a name="line.120"></a>
+<FONT color="green">121</FONT>         * <a name="line.121"></a>
+<FONT color="green">122</FONT>         * @param obj  the object to compare to, null returns false<a name="line.122"></a>
+<FONT color="green">123</FONT>         * @return true if the elements of the pair are equal<a name="line.123"></a>
+<FONT color="green">124</FONT>         */<a name="line.124"></a>
+<FONT color="green">125</FONT>        @Override<a name="line.125"></a>
+<FONT color="green">126</FONT>        public boolean equals(Object obj) {<a name="line.126"></a>
+<FONT color="green">127</FONT>            if (obj == this) {<a name="line.127"></a>
+<FONT color="green">128</FONT>                return true;<a name="line.128"></a>
+<FONT color="green">129</FONT>            }<a name="line.129"></a>
+<FONT color="green">130</FONT>            if (obj instanceof Map.Entry&lt;?, ?&gt;) {<a name="line.130"></a>
+<FONT color="green">131</FONT>                Map.Entry&lt;?, ?&gt; other = (Map.Entry&lt;?, ?&gt;) obj;<a name="line.131"></a>
+<FONT color="green">132</FONT>                return ObjectUtils.equals(getKey(), other.getKey())<a name="line.132"></a>
+<FONT color="green">133</FONT>                        &amp;&amp; ObjectUtils.equals(getValue(), other.getValue());<a name="line.133"></a>
+<FONT color="green">134</FONT>            }<a name="line.134"></a>
+<FONT color="green">135</FONT>            return false;<a name="line.135"></a>
+<FONT color="green">136</FONT>        }<a name="line.136"></a>
+<FONT color="green">137</FONT>    <a name="line.137"></a>
+<FONT color="green">138</FONT>        /**<a name="line.138"></a>
+<FONT color="green">139</FONT>         * &lt;p&gt;Returns a suitable hash code.<a name="line.139"></a>
+<FONT color="green">140</FONT>         * The hash code follows the definition in {@code Map.Entry}.&lt;/p&gt;<a name="line.140"></a>
+<FONT color="green">141</FONT>         * <a name="line.141"></a>
+<FONT color="green">142</FONT>         * @return the hash code<a name="line.142"></a>
+<FONT color="green">143</FONT>         */<a name="line.143"></a>
+<FONT color="green">144</FONT>        @Override<a name="line.144"></a>
+<FONT color="green">145</FONT>        public int hashCode() {<a name="line.145"></a>
+<FONT color="green">146</FONT>            // see Map.Entry API specification<a name="line.146"></a>
+<FONT color="green">147</FONT>            return (getKey() == null ? 0 : getKey().hashCode()) ^<a name="line.147"></a>
+<FONT color="green">148</FONT>                    (getValue() == null ? 0 : getValue().hashCode());<a name="line.148"></a>
+<FONT color="green">149</FONT>        }<a name="line.149"></a>
+<FONT color="green">150</FONT>    <a name="line.150"></a>
+<FONT color="green">151</FONT>        /**<a name="line.151"></a>
+<FONT color="green">152</FONT>         * &lt;p&gt;Returns a String representation of this pair using the format {@code ($left,$right)}.&lt;/p&gt;<a name="line.152"></a>
+<FONT color="green">153</FONT>         * <a name="line.153"></a>
+<FONT color="green">154</FONT>         * @return a string describing this object, not null<a name="line.154"></a>
+<FONT color="green">155</FONT>         */<a name="line.155"></a>
+<FONT color="green">156</FONT>        @Override<a name="line.156"></a>
+<FONT color="green">157</FONT>        public String toString() {<a name="line.157"></a>
+<FONT color="green">158</FONT>            return new StringBuilder().append('(').append(getLeft()).append(',').append(getRight()).append(')').toString();<a name="line.158"></a>
+<FONT color="green">159</FONT>        }<a name="line.159"></a>
+<FONT color="green">160</FONT>    <a name="line.160"></a>
+<FONT color="green">161</FONT>        /**<a name="line.161"></a>
+<FONT color="green">162</FONT>         * &lt;p&gt;Formats the receiver using the given format.&lt;/p&gt;<a name="line.162"></a>
+<FONT color="green">163</FONT>         * <a name="line.163"></a>
+<FONT color="green">164</FONT>         * &lt;p&gt;This uses {@link java.util.Formattable} to perform the formatting. Two variables may<a name="line.164"></a>
+<FONT color="green">165</FONT>         * be used to embed the left and right elements. Use {@code %1$s} for the left<a name="line.165"></a>
+<FONT color="green">166</FONT>         * element (key) and {@code %2$s} for the right element (value).<a name="line.166"></a>
+<FONT color="green">167</FONT>         * The default format used by {@code toString()} is {@code (%1$s,%2$s)}.&lt;/p&gt;<a name="line.167"></a>
+<FONT color="green">168</FONT>         * <a name="line.168"></a>
+<FONT color="green">169</FONT>         * @param format  the format string, optionally containing {@code %1$s} and {@code %2$s}, not null<a name="line.169"></a>
+<FONT color="green">170</FONT>         * @return the formatted string, not null<a name="line.170"></a>
+<FONT color="green">171</FONT>         */<a name="line.171"></a>
+<FONT color="green">172</FONT>        public String toString(String format) {<a name="line.172"></a>
+<FONT color="green">173</FONT>            return String.format(format, getLeft(), getRight());<a name="line.173"></a>
+<FONT color="green">174</FONT>        }<a name="line.174"></a>
+<FONT color="green">175</FONT>    <a name="line.175"></a>
+<FONT color="green">176</FONT>    }<a name="line.176"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>

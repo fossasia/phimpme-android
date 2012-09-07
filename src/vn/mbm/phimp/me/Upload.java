@@ -1,0 +1,1066 @@
+package vn.mbm.phimp.me;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+
+import org.json.JSONObject;
+
+import vn.mbm.phimp.me.database.AccountItem;
+import vn.mbm.phimp.me.database.DrupalItem;
+import vn.mbm.phimp.me.database.ImageshackItem;
+import vn.mbm.phimp.me.image.CropImage;
+import vn.mbm.phimp.me.services.DeviantArtService;
+import vn.mbm.phimp.me.services.DrupalServices;
+import vn.mbm.phimp.me.services.FacebookServices;
+import vn.mbm.phimp.me.services.FlickrServices;
+import vn.mbm.phimp.me.services.ImageshackServices;
+import vn.mbm.phimp.me.services.ImgurServices;
+import vn.mbm.phimp.me.services.KaixinServices;
+import vn.mbm.phimp.me.services.PicasaServices;
+import vn.mbm.phimp.me.services.QQServices;
+import vn.mbm.phimp.me.services.S500pxService;
+import vn.mbm.phimp.me.services.SohuServices;
+import vn.mbm.phimp.me.services.TumblrServices;
+import vn.mbm.phimp.me.services.TwitterServices;
+import vn.mbm.phimp.me.services.VKServices;
+import vn.mbm.phimp.me.utils.Commons;
+import vn.mbm.phimp.me.utils.geoDegrees;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.res.Resources;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.location.Location;
+import android.location.LocationListener;
+import android.media.ExifInterface;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.maps.GeoPoint;
+import com.tani.app.ui.IconContextMenu;
+
+public class Upload extends Activity 
+{
+	private final int CONTEXT_MENU_ID = 1;
+	private final int DIALOG_ADD_PHOTO = 2;
+	private final int DIALOG_ADD_ACCOUNT_DRUPAL = 3;
+	private final int DIALOG_ADD_ACCOUNT_IMAGESHACK = 4;
+	
+	private final int SELECT_IMAGE_FROM_GALLERY = 3;
+	
+	private final int TAKE_PICTURE = 4;
+	private final int GET_POSITION_ON_MAP = 5;
+	
+	private IconContextMenu iconContextMenu = null;
+	private final int CROP_IMAGE = 0;
+	private final int SERVICES_FACEBOOK_ACTION = 1;
+	private final int SERVICES_FLICKR_ACTION = 2;
+	private final int SERVICES_PICASA_ACTION = 3;
+	private final int SERVICES_TUMBLR_ACTION = 4;
+	private final int SERVICES_TWITTER_ACTION = 5;
+	private final int SERVICES_DRUPAL_ACTION = 6;
+	private final int SERVICES_DEVIANTART_ACTION = 7;
+	private final int SERVICES_IMAGESHACK_ACTION = 8;
+	//private final int SERVICES_QQ_ACTION = 9;
+	private final int SERVICES_VK_ACTION = 10;
+	private final int SERVICES_500PX_ACTION = 11;
+	private final int SERVICES_IMGUR_ACTION=13;
+
+	private final int SERVICES_KAIXIN_ACTION = 12;
+	private final int SERVICES_SOHU_ACTION=15;
+	private static Uri camera_img_uri;
+	public static ProgressDialog progLoading;
+	static Context ctx;
+	
+	ListView listAccounts;
+	GridView listPhotoUpload;
+	
+	ImageButton btnAdd;
+	ImageButton btnPhotoAdd;
+	/*ImageButton btnUseCurrentPosition;*/
+	ImageButton btnUseMap;
+	ImageView imgPreview;
+	
+	Button btnUpload;
+	
+	EditText txtPhotoTitle;
+	EditText txtPhotoDescription;
+	EditText txtLongtitude;
+	EditText txtLatitude;
+	EditText txtTags;
+	
+	String[] id;
+	String[] name;
+	String[] service;
+	public static String imagelist ="";
+	Bitmap bmp_scale = null;
+	
+	static boolean upload_photo_process = false;
+	
+	public boolean checkListAccount()
+	{
+		boolean check=false;
+		for (String s: PhimpMe.checked_accounts.keySet())
+    	{
+    		if (PhimpMe.checked_accounts.get(s)==true) check=true; 
+    		
+    	}			
+		return check;
+	}
+	
+	public static ProgressDialog uploadDialog;
+	
+	ProgressDialog pd;
+	ProgressDialog gpsloading;
+	long totalSize;
+	
+	@Override
+    public void onCreate(Bundle savedInstanceState) 
+    {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.upload);
+		
+		Resources res = getResources();
+		if (PhimpMe.IdList.size() == 5) {PhimpMe.IdList.clear();PhimpMe.IdList.add(0);}
+		PhimpMe.IdList.add(2);
+		ctx = this;
+		Log.d("Upload","Upload Start");
+		
+		listAccounts = (ListView) findViewById(R.id.listUploadAccounts);
+		
+		listPhotoUpload= (GridView) findViewById(R.id.photolistview);
+		if(!imagelist.equals(""))
+		listPhotoUpload.setAdapter(new ImageAdapter(ctx));
+		listPhotoUpload.setOnItemClickListener(new OnItemClickListener(){
+			
+			public void onItemClick(AdapterView<?> parent, View v, int position,long id)
+			{
+				String path[]= imagelist.split("#");
+				Intent _intent = new Intent();
+				_intent.setClass(ctx, CropImage.class);
+				_intent.putExtra("image-path", path[position]);
+				_intent.putExtra("position", position);
+				_intent.putExtra("aspectX", 0);
+				_intent.putExtra("aspectY", 0);
+				_intent.putExtra("scale", true);
+				_intent.putExtra("activityName", "Upload");
+				startActivityForResult(_intent, CROP_IMAGE);
+	        }			
+		});
+		
+		btnUpload = (Button) findViewById(R.id.btnUploadPhoto);
+		if (savedInstanceState != null)
+		{
+		}
+		
+		btnUpload.setOnClickListener(new OnClickListener() 
+		{
+			@Override
+			public void onClick(View v)
+			{
+				if (!upload_photo_process)
+				{
+					if (PhimpMe.checked_accounts.size() > 0)					
+					{		
+						Log.d("Hon",String.valueOf(PhimpMe.checked_accounts.size()));
+						if (checkListAccount())	
+						{
+							if (imagelist != "")
+							{
+								Log.d("Upload", "start");														
+								Bundle data = new Bundle();
+								data.putStringArray("id", id);
+								data.putStringArray("service", service);
+								data.putStringArray("name", name);
+								data.putString("imagelist", imagelist);
+								Intent uitent = new Intent(ctx, UploadProgress.class);
+								uitent.putExtras(data);
+								Log.d("UploadProgress","start");
+								startActivity(uitent);
+							}
+							else
+							{
+								Commons.AlertLog(ctx, getString(R.string.error_upload_no_photo), getString(R.string.accept)).show();
+							}
+						}						
+					else
+					{
+						Commons.AlertLog(ctx, getString(R.string.upload_infor_choose_account), getString(R.string.accept)).show();
+					}
+				}
+					else
+					{
+						Commons.AlertLog(ctx, getString(R.string.error_upload_no_accounts), getString(R.string.accept)).show();
+						
+					}
+				}
+				else
+				{
+					Commons.AlertLog(ctx, getString(R.string.error_upload_process_still_running), getString(R.string.accept)).show();
+				}
+			}
+		});
+		
+		btnAdd = (ImageButton) findViewById(R.id.btnUploadAccountAdd);
+		btnAdd.setOnTouchListener(new OnTouchListener() 
+		{
+			@SuppressWarnings("deprecation")
+			@Override
+			public boolean onTouch(View v, MotionEvent event) 
+			{
+				showDialog(CONTEXT_MENU_ID);
+				return false;
+			}
+		});
+		
+		btnPhotoAdd = (ImageButton) findViewById(R.id.btnUploadPhotoAdd);
+		btnPhotoAdd.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(ctx, PhotoSelect.class);
+				startActivityForResult(intent, SELECT_IMAGE_FROM_GALLERY);
+			}
+		});
+		/*btnPhotoAdd.setOnTouchListener(new OnTouchListener() 
+		{
+			@SuppressWarnings("deprecation")
+			@Override
+			public boolean onTouch(View v, MotionEvent event) 
+			{
+				showDialog(DIALOG_ADD_PHOTO);
+				return false;
+			}
+		});*/				
+		/*
+		 * Thong - Init services
+		 */
+		TumblrServices.init();
+		FlickrServices.init();
+		TwitterServices.init();
+		S500pxService.init();
+
+		/*
+		 * Thong - Init accounts
+		 */
+		if ((PhimpMe.add_account_upload) || (name == null))
+		{
+			reloadAccountsList();
+		}
+		
+		iconContextMenu = new IconContextMenu(this, CONTEXT_MENU_ID);
+		//iconContextMenu.addItem(res, DrupalServices.title, DrupalServices.icon, SERVICES_DRUPAL_ACTION);
+        iconContextMenu.addItem(res, FacebookServices.title, FacebookServices.icon, SERVICES_FACEBOOK_ACTION);
+        iconContextMenu.addItem(res, FlickrServices.title, FlickrServices.icon, SERVICES_FLICKR_ACTION);
+        iconContextMenu.addItem(res, PicasaServices.title, PicasaServices.icon, SERVICES_PICASA_ACTION);
+        iconContextMenu.addItem(res, TumblrServices.title, TumblrServices.icon, SERVICES_TUMBLR_ACTION);
+        iconContextMenu.addItem(res, TwitterServices.title, TwitterServices.icon, SERVICES_TWITTER_ACTION);
+        iconContextMenu.addItem(res, DeviantArtService.title, DeviantArtService.icon, SERVICES_DEVIANTART_ACTION);
+        iconContextMenu.addItem(res, ImageshackServices.title, ImageshackServices.icon, SERVICES_IMAGESHACK_ACTION);
+        
+        //iconContextMenu.addItem(res, QQServices.title, QQServices.icon, SERVICES_QQ_ACTION);
+        iconContextMenu.addItem(res, VKServices.title, VKServices.icon, SERVICES_VK_ACTION);
+        //iconContextMenu.addItem(res, S500pxService.title, S500pxService.icon, SERVICES_500PX_ACTION);
+        iconContextMenu.addItem(res, ImgurServices.title, ImgurServices.icon, SERVICES_IMGUR_ACTION);
+
+        //iconContextMenu.addItem(res, KaixinServices.title, KaixinServices.icon, SERVICES_KAIXIN_ACTION);
+        iconContextMenu.addItem(res, SohuServices.title, SohuServices.icon, SERVICES_SOHU_ACTION);
+        iconContextMenu.setOnClickListener(new IconContextMenu.IconContextMenuOnClickListener() {
+			@SuppressWarnings("deprecation")
+			@Override
+			public void onClick(int menuId) 
+			{
+				switch(menuId) 
+				{
+				case SERVICES_FACEBOOK_ACTION:
+					String fauthURL = FacebookServices.getAuthenticateLink();
+					Intent fauthApp = new Intent(ctx, Webkit.class);
+					fauthApp.putExtra("URL", fauthURL);
+					ctx.startActivity(fauthApp);
+					PhimpMe.add_account_upload = true;
+					PhimpMe.add_account_setting = true;
+					break;
+				case SERVICES_FLICKR_ACTION:
+					String flickr_oauth_request_token_url = FlickrServices.OAuthRequestToken();
+					Intent flickr_authApp = new Intent(ctx, Webkit.class);
+					flickr_authApp.putExtra("URL", flickr_oauth_request_token_url);
+					ctx.startActivity(flickr_authApp);
+					PhimpMe.add_account_upload = true;
+					PhimpMe.add_account_setting = true;
+					break;
+				case SERVICES_PICASA_ACTION:
+					String picasa_oauth_request_token_url = PicasaServices.OAuthGetAuthenticateLink();
+					Intent picasa_authApp = new Intent(ctx, Webkit.class);
+					picasa_authApp.putExtra("URL", picasa_oauth_request_token_url);
+					ctx.startActivity(picasa_authApp);
+					PhimpMe.add_account_upload = true;
+					PhimpMe.add_account_setting = true;
+					break;
+				case SERVICES_TUMBLR_ACTION:
+					String tumblr_oauth_request_token_url = TumblrServices.oauthRequestToken();
+					Intent tauthApp = new Intent(ctx, Webkit.class);
+					tauthApp.putExtra("URL", tumblr_oauth_request_token_url);
+					ctx.startActivity(tauthApp);
+					PhimpMe.add_account_upload = true;
+					PhimpMe.add_account_setting = true;
+					break;
+				case SERVICES_TWITTER_ACTION:
+					String twitter_oauth_request_token_url = TwitterServices.OAuthRequestToken();
+					Intent twitter_authApp = new Intent(ctx, Webkit.class);
+					twitter_authApp.putExtra("URL", twitter_oauth_request_token_url);
+					ctx.startActivity(twitter_authApp);
+					PhimpMe.add_account_upload = true;
+					PhimpMe.add_account_setting = true;
+					break;
+				case SERVICES_DRUPAL_ACTION:
+					showDialog(DIALOG_ADD_ACCOUNT_DRUPAL);
+					break;
+				case SERVICES_DEVIANTART_ACTION:
+					String deviantart_oauth_url = DeviantArtService.getAuthenticateCode();
+					Intent deviantart = new Intent(ctx,Webkit.class);
+					deviantart.putExtra("URL", deviantart_oauth_url);
+					ctx.startActivity(deviantart);
+					PhimpMe.add_account_upload = true;
+					PhimpMe.add_account_setting = true;
+					break;
+				case SERVICES_IMAGESHACK_ACTION:
+					showDialog(DIALOG_ADD_ACCOUNT_IMAGESHACK);
+					break;
+				case SERVICES_VK_ACTION:										
+					Intent vk_authApp = new Intent(ctx, Webkit.class);
+					vk_authApp.putExtra("URL", VKServices.getAuthorzingUrl());
+					ctx.startActivity(vk_authApp);
+					PhimpMe.add_account_upload = true;
+					PhimpMe.add_account_setting = true;
+					break;
+
+				case SERVICES_IMGUR_ACTION:
+					String Imgur_oauth_request_token_url = ImgurServices.OAuthRequestToken();
+					Intent Imgur_authApp = new Intent(ctx, Webkit.class);
+					Imgur_authApp.putExtra("URL", Imgur_oauth_request_token_url);
+					ctx.startActivity(Imgur_authApp);
+					PhimpMe.add_account_upload = true;
+					PhimpMe.add_account_setting = true;
+					break;
+
+				case SERVICES_KAIXIN_ACTION:
+					String kaixin_oauth_url = KaixinServices.getAuthenticateCode();
+					Intent kaixin = new Intent(ctx,Webkit.class);
+					kaixin.putExtra("URL", kaixin_oauth_url);
+					ctx.startActivity(kaixin);
+					PhimpMe.add_account_upload = true;
+					PhimpMe.add_account_setting = true;
+					break;	
+				case SERVICES_500PX_ACTION:
+					String s500px_oauth_request_token_url = S500pxService.OAuthRequestToken();
+					Intent s500px_authApp = new Intent(ctx, Webkit.class);
+					s500px_authApp.putExtra("URL", s500px_oauth_request_token_url);
+					ctx.startActivity(s500px_authApp);
+					PhimpMe.add_account_upload = true;
+					PhimpMe.add_account_setting = true;
+					break;
+				case SERVICES_SOHU_ACTION:
+					String sohu_oauth_request_token_url = SohuServices.OAuthRequestToken();
+					Intent sohu_authApp = new Intent(ctx, Webkit.class);
+					sohu_authApp.putExtra("URL", sohu_oauth_request_token_url);
+					ctx.startActivity(sohu_authApp);
+					PhimpMe.add_account_upload = true;
+					PhimpMe.add_account_setting = true;
+					break;
+				
+				}
+			}
+		});  
+    }	
+	
+	class ImageAdapter extends BaseAdapter {
+		    private String[] path;
+		    private LayoutInflater mInflater;		   
+		    public ImageAdapter(Context c) {
+		    	mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);		    	
+		        path = imagelist.split("#");		        
+		        
+		    }
+
+		    public int getCount() {
+		        return path.length;
+		    }		   
+		    public Object getItem(int position) {
+		        return null;
+		    }
+
+		    public long getItemId(int position) {
+		        return 0;
+		    }				   
+		    @SuppressWarnings("deprecation")
+			public View getView(int position, View convertView, ViewGroup parent) {
+				GridItem holder;
+				if (convertView == null) {
+					holder = new GridItem();
+					convertView = mInflater.inflate(R.layout.gridviewitem, null);
+					holder.imageview = (ImageView) convertView
+							.findViewById(R.id.ImageGrid);
+					holder.imageview.setMaxWidth(100);
+					holder.imageview.setMaxHeight(100);
+					holder.imageview.setScaleType(ImageView.ScaleType.CENTER_CROP);
+		            holder.imageview.setPadding(8, 8, 8, 8);
+					holder.title = (TextView) convertView
+							.findViewById(R.id.ImTitle);
+					holder.tags = (TextView) convertView
+							.findViewById(R.id.ImTags);
+					holder.lati = (TextView) convertView
+							.findViewById(R.id.ImLati);
+					holder.longi = (TextView) convertView
+						.findViewById(R.id.ImLongi);
+					convertView.setTag(holder);					
+				} else {					
+					holder = (GridItem) convertView.getTag();
+				}
+				 String tmp[] = path[position].split(";");
+				 Uri imageUri = Uri.parse(tmp[0]);	
+				 Log.d("imageUri",imageUri.toString());				 			    
+			     ContentResolver cr = getContentResolver();				    
+			     String [] proj={MediaStore.Images.Media._ID};			     
+			     Cursor cursor = managedQuery(
+							MediaStore.Images.Media.EXTERNAL_CONTENT_URI, proj,
+							MediaStore.Images.Media.DATA + " = '" + imageUri+"'", null, MediaStore.Images.Media._ID);			    
+			     if (cursor.getCount() == 0) {
+			     cursor = managedQuery(
+								MediaStore.Images.Media.EXTERNAL_CONTENT_URI, proj,
+								null, null, MediaStore.Images.Media._ID+" DESC");			    	 
+			     }else
+			     {
+			     cursor.moveToFirst();
+				 holder.imageview.setScaleType(ImageView.ScaleType.FIT_XY);
+				 try{
+				 holder.imageview.setImageBitmap(MediaStore.Images.Thumbnails.getThumbnail(cr, Integer.valueOf(cursor.getString(0)),MediaStore.Images.Thumbnails.MICRO_KIND, null));
+				 }catch(Exception e)
+				 {
+					 e.printStackTrace();
+				 }}
+				if (tmp.length < 2) 
+					{
+					 File f =  new File(path[position].split(";")[0]);
+					 holder.title.setText(f.getName());
+					 ExifInterface exif_data = null;
+    				 geoDegrees _g = null;
+    				 String la = "";
+    				 String lo = "";
+    				 try 
+    				 {
+    					 exif_data = new ExifInterface(f.getAbsolutePath());
+    					 _g = new geoDegrees(exif_data);
+    					 if (_g.isValid())
+    					 {
+    						 la = _g.getLatitude() + "";
+    						 lo = _g.getLongitude() + "";
+    					 }
+    				 } 
+    				 catch (IOException e) 
+    				 {
+						e.printStackTrace();
+    				 }
+    				 finally
+    				 {
+    					 exif_data = null;
+    					 _g = null;
+    				 }
+    				 holder.lati.setText("Latiude: "+la);
+    				 holder.longi.setText("Longitude: "+lo);
+    				 holder.tags.setText("Tags: ");
+					}
+				else{
+					try{
+						JSONObject js = new JSONObject(tmp[1]);
+						if (js.getString("name").equals("")){ File f =  new File(path[position].split(";")[0]);
+						holder.title.setText(f.getName());}else
+						holder.title.setText(js.getString("name"));
+						holder.lati.setText("Latiude: "+js.getString("lati"));
+						holder.longi.setText("Longitude: "+js.getString("logi"));
+						holder.tags.setText("Tags: "+js.getString("tags"));
+					}catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+				}
+				cursor.close();
+				return convertView;				
+			}	
+		}
+
+		class ViewHolder {
+			ImageView imageview;
+			CheckBox checkbox;
+			}
+		    		 			
+	class GridItem{
+		ImageView imageview;
+		TextView title;
+		TextView lati;
+		TextView longi;
+		TextView tags;
+		}
+	private class AccountsAdapter extends ArrayAdapter<String>
+	{
+		private final Activity context;
+		private String[] id;
+		private String[] name;
+		private String[] service;
+		
+		public AccountsAdapter(Activity context, String[] id, String[] name, String[] service) 
+		{
+			super(context, R.layout.uploads_account_item, id);
+			this.context = context;
+			this.id = id;
+			this.name = name;
+			this.service = service;
+		}
+		
+		class ViewHolder
+		{
+			public ImageView imgIcon;
+			public TextView txtName;
+			public CheckBox chkCheck;
+		}
+
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent)
+		{
+			ViewHolder holder;
+			
+			View view = convertView;
+			
+			if (view == null)
+			{
+				LayoutInflater inflater = context.getLayoutInflater();
+				view = inflater.inflate(R.layout.uploads_account_item, null, true);
+				holder = new ViewHolder();
+				
+				holder.imgIcon = (ImageView) view.findViewById(R.id.imgServiceIcon);
+				holder.txtName = (TextView) view.findViewById(R.id.txtAccountName);
+				holder.chkCheck = (CheckBox) view.findViewById(R.id.chkboxCheck);
+				
+				view.setTag(holder);
+			}
+			else
+			{
+				holder = (ViewHolder) view.getTag();
+			}
+			
+			if (service[position].equals("tumblr"))
+			{
+				holder.imgIcon.setImageResource(TumblrServices.icon);
+			}
+			else if (service[position].equals("facebook"))
+			{
+				holder.imgIcon.setImageResource(FacebookServices.icon);
+			}
+			else if (service[position].equals("flickr"))
+			{
+				holder.imgIcon.setImageResource(FlickrServices.icon);
+			}
+			else if (service[position].equals("picasa"))
+			{
+				holder.imgIcon.setImageResource(PicasaServices.icon);
+			}
+			else if (service[position].equals("twitter"))
+			{
+				holder.imgIcon.setImageResource(TwitterServices.icon);
+			}
+			else if (service[position].equals("drupal"))
+			{
+				holder.imgIcon.setImageResource(DrupalServices.icon);
+			}
+			else if (service[position].equals("deviantart"))
+			{
+				holder.imgIcon.setImageResource(DeviantArtService.icon);
+			}
+			else if (service[position].equals("imageshack"))
+			{
+				holder.imgIcon.setImageResource(ImageshackServices.icon);
+			}
+			else if (service[position].equals("qq"))
+			{
+				holder.imgIcon.setImageResource(QQServices.icon);
+			}
+			else if (service[position].equals("vkontakte"))
+			{
+				holder.imgIcon.setImageResource(VKServices.icon);
+			}
+			
+			else if (service[position].equals("imgur"))
+			{
+				holder.imgIcon.setImageResource(ImgurServices.icon);
+			}
+			else if (service[position].equals("kaixin"))
+			{
+				holder.imgIcon.setImageResource(KaixinServices.icon);
+
+			}
+			else if (service[position].equals("500px"))
+			{
+				holder.imgIcon.setImageResource(S500pxService.icon);
+			}
+			else if (service[position].equals("sohu"))
+			{
+				holder.imgIcon.setImageResource(SohuServices.icon);
+			}
+			boolean c = false;
+			
+			try
+			{
+				c = PhimpMe.checked_accounts.get(id[position]);
+			}
+			catch (Exception e) 
+			{
+				PhimpMe.checked_accounts.remove(id[position]);
+				PhimpMe.checked_accounts.put(id[position], false);
+			}
+			
+			holder.chkCheck.setChecked(c);
+			
+			String acc_name = name[position];
+			
+			holder.txtName.setText(acc_name);		
+			holder.chkCheck.setOnClickListener(new checkboxClickListener(position));
+			return view;
+		}
+	}
+	
+	private class checkboxClickListener implements OnClickListener
+	{
+		private int pos;
+		
+		public checkboxClickListener(int position)
+		{
+			this.pos = position;
+		}
+		
+		@Override
+		public void onClick(View v) 
+		{
+			String _id = id[this.pos];
+			
+			if (((CheckBox) v).isChecked()) 
+			{
+				PhimpMe.checked_accounts.remove(_id);
+				PhimpMe.checked_accounts.put(_id, true);
+			}
+			else 
+			{
+				PhimpMe.checked_accounts.remove(_id);
+				PhimpMe.checked_accounts.put(_id, false);
+			}
+		}
+	}
+	@Override
+	protected void onResume()
+	{
+		Log.d("thong", "Upload - onResume()");
+		Log.d("imagelist",imagelist);
+		super.onResume();
+		PhimpMe.showTabs();
+		if (PhimpMe.add_account_upload)
+		{
+			reloadAccountsList();
+			PhimpMe.add_account_upload = false;
+		}
+		Log.d("imagelist",imagelist);
+		if (!imagelist.equals("")){
+			listPhotoUpload.setAdapter(new ImageAdapter(ctx));
+		}
+		if (PhimpMe.IdList.size() == 5) {PhimpMe.IdList.clear();PhimpMe.IdList.add(0);}
+		PhimpMe.IdList.add(2);
+	}
+	
+	private void reloadAccountsList()
+	{
+		ArrayList<AccountItem> accounts = AccountItem.getAllAccounts(ctx);
+		id = new String[accounts.size()];
+		name = new String[accounts.size()];
+		service = new String[accounts.size()];
+		for (int i = 0; i < accounts.size(); i++)
+		{
+			AccountItem item = accounts.get(i);
+			id[i] = item.getID();
+			name[i] = item.getName();
+			service[i] = item.getService();
+		}
+		accounts = null;
+		
+		listAccounts.setAdapter(new AccountsAdapter(this, id, name, service));
+		
+	}
+	
+	/**
+	 * create context menu
+	 */
+	@SuppressWarnings("deprecation")
+	@Override
+	protected Dialog onCreateDialog(int id) 
+	{
+		switch (id)
+		{
+			case CONTEXT_MENU_ID:
+				return iconContextMenu.createMenu(getString(R.string.services));
+			case DIALOG_ADD_PHOTO:				
+				final CharSequence[] items = {
+						//this.getString(R.string.camera),
+						this.getString(R.string.gallery),
+						this.getString(R.string.cancel)
+				};
+				
+				return new AlertDialog.Builder(this).setIcon(R.drawable.icon).setTitle("Add photos")
+						.setItems(items, new DialogInterface.OnClickListener() 
+						{
+							@Override
+							public void onClick(DialogInterface dialog, int which) 
+							{
+								switch (which)
+								{
+								/*case 0:
+									startCameraActivity();
+									break;*/
+								case 0:									
+									Intent intent = new Intent(ctx, PhotoSelect.class);
+									//progLoading = ProgressDialog.show(ctx, getString(R.string.loading), getString(R.string.photos_loading), true, false);
+									startActivityForResult(intent, SELECT_IMAGE_FROM_GALLERY);
+									break;
+								case 1:
+									dialog.cancel();
+									break;
+								}
+							}
+						}).create();
+			case DIALOG_ADD_ACCOUNT_DRUPAL:
+				LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(LAYOUT_INFLATER_SERVICE);
+				final View layout = inflater.inflate(R.layout.dialog_add_account_drupal, (ViewGroup) findViewById(R.id.lytDialogAddAccountDrupal));
+				
+				return new AlertDialog.Builder(Upload.this)
+					.setTitle(DrupalServices.title)
+					.setMessage("")
+					.setView(layout)
+					.setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener() 
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which) 
+						{
+							try
+							{
+								String username = ((EditText) layout.findViewById(R.id.txtDialogAddAccountDrupalUsername)).getText().toString();
+								String password = ((EditText) layout.findViewById(R.id.txtDialogAddAccountDrupalPassword)).getText().toString();
+								String siteurl = ((EditText) layout.findViewById(R.id.txtDialogAddAccountDrupalSiteurl)).getText().toString();
+								
+								String result = DrupalServices.login(username, password, siteurl);
+								
+								JSONObject json = new JSONObject(result);
+								JSONObject user = json.getJSONObject("user");
+								String user_id = user.getString("uid");
+								String email = user.getString("mail");
+								
+								long account_id = AccountItem.insertAccount(ctx, null, username, "drupal", "1");
+								
+								if (account_id > 0)
+								{
+									if (DrupalItem.insertAccount(ctx, String.valueOf(account_id), user_id, username, password, siteurl, email))
+									{
+										Toast.makeText(ctx, "Insert account '" + username + "' (Drupal) SUCCESS!", Toast.LENGTH_LONG).show();
+									}
+									else
+									{
+									}
+								}
+								
+								PhimpMe.add_account_setting = true;
+								
+								reloadAccountsList();
+							}
+							catch (Exception e) 
+							{
+								Toast.makeText(Upload.this, "Error: " + e.toString(), Toast.LENGTH_LONG).show();
+								
+								e.printStackTrace();
+							}
+						}
+					})
+					.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() 
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which) 
+						{
+							
+						}
+					})
+					.create();
+				//Imageshack Dialog
+			case DIALOG_ADD_ACCOUNT_IMAGESHACK:
+				LayoutInflater inflater1 = (LayoutInflater) ctx.getSystemService(LAYOUT_INFLATER_SERVICE);
+				final View layout1 = inflater1.inflate(R.layout.dialog_add_account_imageshack, (ViewGroup) findViewById(R.id.lytDialogAddAccountImageshack));
+				
+				return new AlertDialog.Builder(Upload.this)
+					.setTitle(ImageshackServices.title)
+					.setMessage("")
+					.setView(layout1)
+					.setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener() 
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which) 
+						{
+							try
+							{
+								String username = ((EditText) layout1.findViewById(R.id.txtDialogAddAccountImageshackUsername)).getText().toString();
+								String password = ((EditText) layout1.findViewById(R.id.txtDialogAddAccountImageshackPassword)).getText().toString();								
+								
+								String result = ImageshackServices.login(username, password);
+								
+								
+								JSONObject json = new JSONObject(result);	
+								String status = json.getString("status");
+								String registratorcode = "";
+								if (status.equals("true")){
+								registratorcode = json.getString("myimages");
+								long account_id = AccountItem.insertAccount(ctx, null, username, "imageshack", "1");
+								
+								if (account_id > 0)
+								{								
+									if (ImageshackItem.insertAccount(ctx, String.valueOf(account_id), registratorcode, username))
+									{
+										Toast.makeText(ctx, "Insert account '" + username + "' (Imageshack) SUCCESS!", Toast.LENGTH_LONG).show();
+									}
+									else
+									{
+										Toast.makeText(ctx, "Insert account '" + username + "' (Imageshack) FAIL!", Toast.LENGTH_LONG).show();
+									}
+								}
+								}else
+								{
+								Toast.makeText(ctx, "Login Imageshack Fail !", Toast.LENGTH_LONG).show();	
+								}															
+								
+								PhimpMe.add_account_setting = true;
+								
+								reloadAccountsList();
+							}
+							catch (Exception e) 
+							{
+								Toast.makeText(Upload.this, "Error: " + e.toString(), Toast.LENGTH_LONG).show();
+								
+								e.printStackTrace();
+							}
+						}
+					})
+					.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() 
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which) 
+						{
+							
+						}
+					})
+					.create();
+			default:
+				return super.onCreateDialog(id);
+		}
+	}
+	
+	/*
+	 * Start Camera Activity
+	 */
+	public void startCameraActivity() 
+	{
+		try 
+		{
+			Date d = new Date();
+			String filename = "phimp.me_" + d.getTime() + ".jpg";
+			
+			ContentValues values = new ContentValues();
+			values.put(MediaStore.Images.Media.TITLE, filename);
+			values.put(MediaStore.Images.Media.DESCRIPTION, "Image capture by Camera using Phimp.Me");
+			
+			camera_img_uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+			
+			Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, camera_img_uri);
+			startActivityForResult(cameraIntent, TAKE_PICTURE);
+		} 
+		catch (Exception e) 
+		{
+			
+		}
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
+	{
+		switch (requestCode) 
+		{
+			case TAKE_PICTURE: 
+			{
+				if (resultCode == Activity.RESULT_OK) 
+				{
+					String[] projection = { MediaStore.Images.Media.DATA}; 
+		            @SuppressWarnings("deprecation")
+					Cursor cursor = managedQuery(camera_img_uri, projection, null, null, null); 
+		            int column_index_data = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA); 
+		            cursor.moveToFirst();
+		            if (imagelist =="")
+		            imagelist = cursor.getString(column_index_data);
+		            else imagelist += "," + cursor.getString(column_index_data);		            
+					listPhotoUpload.setAdapter(new ImageAdapter(this));
+				}
+				break;
+			}
+			case SELECT_IMAGE_FROM_GALLERY: 
+			{
+				if (resultCode == Activity.RESULT_OK) 
+				{
+					imagelist = data.getStringExtra("Ids");					
+					listPhotoUpload.setAdapter(new ImageAdapter(this));
+				}
+				else
+				{
+					
+				}
+				break;
+			}
+			case CROP_IMAGE:{				
+				if (resultCode == Activity.RESULT_OK){
+					String imagepath = data.getStringExtra("Impath");
+					String saveUri = data.getStringExtra("saveUri");
+					String lati = data.getStringExtra("lati");
+					String logi = data.getStringExtra("logi");
+					String name = data.getStringExtra("name");
+					String tag = data.getStringExtra("tags");
+					String json = "{\"name\":\""+name+"\","+"\"tags\":\""+tag+"\","+"\"lati\":\""+lati+"\","+"\"logi\":\""+logi+"\"}";					
+					imagelist = imagelist.replace(imagepath, saveUri+";"+json);
+					Log.d("image",imagelist);
+					listPhotoUpload.setAdapter(new ImageAdapter(this));
+				}
+				break;
+			}
+			case GET_POSITION_ON_MAP:
+			{
+				if (resultCode == Activity.RESULT_OK)
+				{
+					txtLatitude.setText(PhimpMe.UploadLatitude + "");
+					
+					txtLongtitude.setText(PhimpMe.UploadLongitude + "");
+				}
+				break;
+			}
+		}
+	}
+	
+	
+	public class MyLocationListener implements LocationListener
+	{
+
+		@Override
+		public void onLocationChanged(Location loc)
+		{
+			if (loc != null)
+			{
+				PhimpMe.curLatitude = loc.getLatitude();
+				PhimpMe.curLongtitude = loc.getLongitude();
+				PhimpMe.UploadLatitude = loc.getLatitude();
+				PhimpMe.UploadLongitude = loc.getLongitude();
+				int _lat = (int) (PhimpMe.curLatitude * 1000000);
+				int _long = (int) (PhimpMe.curLongtitude * 1000000);
+				PhimpMe.currentGeoPoint = new GeoPoint(_lat, _long);
+				gpsloading.dismiss();
+				txtLatitude.setText(PhimpMe.curLatitude + "");
+				txtLongtitude.setText(PhimpMe.curLongtitude + "");
+			}
+			else
+			{
+			}
+		}
+
+		
+		
+
+		@Override
+		public void onProviderDisabled(String provider)
+		{
+		}
+
+
+		@Override
+		public void onProviderEnabled(String provider)
+		{
+		}
+
+		@Override
+		public void onStatusChanged(String provider, int status, Bundle extras)
+		{
+		}
+	}
+	
+	/*@Override
+	public boolean onKeyDown(int keycode, KeyEvent event)
+    {
+    	if (keycode == KeyEvent.KEYCODE_BACK){
+    		AlertDialog.Builder alertbox = new AlertDialog.Builder(ctx);
+            alertbox.setMessage(getString(R.string.exit_message));
+            alertbox.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {
+                	Activity current = getParent();
+                	current.finish();
+                	//System.exit(0);
+                }
+            });
+            alertbox.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
+            {
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {
+                	//Resume to current process
+                }
+            });
+            alertbox.create().show();
+    		PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
+    		PhimpMe.mTabHost.setCurrentTab(PhimpMe.IdList.get(PhimpMe.IdList.size()-1));
+    	}  	
+        //return super.onKeyDown(keycode, event);
+    	return true;
+    }*/
+	@Override
+	public void onBackPressed(){
+		PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
+		PhimpMe.mTabHost.setCurrentTab(PhimpMe.IdList.get(PhimpMe.IdList.size()-1));
+		PhimpMe.showTabs();
+	}
+}

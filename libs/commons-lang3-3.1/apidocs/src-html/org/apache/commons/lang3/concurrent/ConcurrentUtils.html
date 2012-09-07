@@ -1,0 +1,452 @@
+<HTML>
+<BODY BGCOLOR="white">
+<PRE>
+<FONT color="green">001</FONT>    /*<a name="line.1"></a>
+<FONT color="green">002</FONT>     * Licensed to the Apache Software Foundation (ASF) under one or more<a name="line.2"></a>
+<FONT color="green">003</FONT>     * contributor license agreements.  See the NOTICE file distributed with<a name="line.3"></a>
+<FONT color="green">004</FONT>     * this work for additional information regarding copyright ownership.<a name="line.4"></a>
+<FONT color="green">005</FONT>     * The ASF licenses this file to You under the Apache License, Version 2.0<a name="line.5"></a>
+<FONT color="green">006</FONT>     * (the "License"); you may not use this file except in compliance with<a name="line.6"></a>
+<FONT color="green">007</FONT>     * the License.  You may obtain a copy of the License at<a name="line.7"></a>
+<FONT color="green">008</FONT>     *<a name="line.8"></a>
+<FONT color="green">009</FONT>     *      http://www.apache.org/licenses/LICENSE-2.0<a name="line.9"></a>
+<FONT color="green">010</FONT>     *<a name="line.10"></a>
+<FONT color="green">011</FONT>     * Unless required by applicable law or agreed to in writing, software<a name="line.11"></a>
+<FONT color="green">012</FONT>     * distributed under the License is distributed on an "AS IS" BASIS,<a name="line.12"></a>
+<FONT color="green">013</FONT>     * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<a name="line.13"></a>
+<FONT color="green">014</FONT>     * See the License for the specific language governing permissions and<a name="line.14"></a>
+<FONT color="green">015</FONT>     * limitations under the License.<a name="line.15"></a>
+<FONT color="green">016</FONT>     */<a name="line.16"></a>
+<FONT color="green">017</FONT>    package org.apache.commons.lang3.concurrent;<a name="line.17"></a>
+<FONT color="green">018</FONT>    <a name="line.18"></a>
+<FONT color="green">019</FONT>    import java.util.concurrent.ConcurrentMap;<a name="line.19"></a>
+<FONT color="green">020</FONT>    import java.util.concurrent.ExecutionException;<a name="line.20"></a>
+<FONT color="green">021</FONT>    import java.util.concurrent.Future;<a name="line.21"></a>
+<FONT color="green">022</FONT>    import java.util.concurrent.TimeUnit;<a name="line.22"></a>
+<FONT color="green">023</FONT>    <a name="line.23"></a>
+<FONT color="green">024</FONT>    /**<a name="line.24"></a>
+<FONT color="green">025</FONT>     * &lt;p&gt;<a name="line.25"></a>
+<FONT color="green">026</FONT>     * An utility class providing functionality related to the {@code<a name="line.26"></a>
+<FONT color="green">027</FONT>     * java.util.concurrent} package.<a name="line.27"></a>
+<FONT color="green">028</FONT>     * &lt;/p&gt;<a name="line.28"></a>
+<FONT color="green">029</FONT>     *<a name="line.29"></a>
+<FONT color="green">030</FONT>     * @since 3.0<a name="line.30"></a>
+<FONT color="green">031</FONT>     * @version $Id: ConcurrentUtils.java 1199894 2011-11-09 17:53:59Z ggregory $<a name="line.31"></a>
+<FONT color="green">032</FONT>     */<a name="line.32"></a>
+<FONT color="green">033</FONT>    public class ConcurrentUtils {<a name="line.33"></a>
+<FONT color="green">034</FONT>    <a name="line.34"></a>
+<FONT color="green">035</FONT>        /**<a name="line.35"></a>
+<FONT color="green">036</FONT>         * Private constructor so that no instances can be created. This class<a name="line.36"></a>
+<FONT color="green">037</FONT>         * contains only static utility methods.<a name="line.37"></a>
+<FONT color="green">038</FONT>         */<a name="line.38"></a>
+<FONT color="green">039</FONT>        private ConcurrentUtils() {<a name="line.39"></a>
+<FONT color="green">040</FONT>        }<a name="line.40"></a>
+<FONT color="green">041</FONT>    <a name="line.41"></a>
+<FONT color="green">042</FONT>        /**<a name="line.42"></a>
+<FONT color="green">043</FONT>         * Inspects the cause of the specified {@code ExecutionException} and<a name="line.43"></a>
+<FONT color="green">044</FONT>         * creates a {@code ConcurrentException} with the checked cause if<a name="line.44"></a>
+<FONT color="green">045</FONT>         * necessary. This method performs the following checks on the cause of the<a name="line.45"></a>
+<FONT color="green">046</FONT>         * passed in exception:<a name="line.46"></a>
+<FONT color="green">047</FONT>         * &lt;ul&gt;<a name="line.47"></a>
+<FONT color="green">048</FONT>         * &lt;li&gt;If the passed in exception is &lt;b&gt;null&lt;/b&gt; or the cause is<a name="line.48"></a>
+<FONT color="green">049</FONT>         * &lt;b&gt;null&lt;/b&gt;, this method returns &lt;b&gt;null&lt;/b&gt;.&lt;/li&gt;<a name="line.49"></a>
+<FONT color="green">050</FONT>         * &lt;li&gt;If the cause is a runtime exception, it is directly thrown.&lt;/li&gt;<a name="line.50"></a>
+<FONT color="green">051</FONT>         * &lt;li&gt;If the cause is an error, it is directly thrown, too.&lt;/li&gt;<a name="line.51"></a>
+<FONT color="green">052</FONT>         * &lt;li&gt;In any other case the cause is a checked exception. The method then<a name="line.52"></a>
+<FONT color="green">053</FONT>         * creates a {@link ConcurrentException}, initializes it with the cause, and<a name="line.53"></a>
+<FONT color="green">054</FONT>         * returns it.&lt;/li&gt;<a name="line.54"></a>
+<FONT color="green">055</FONT>         * &lt;/ul&gt;<a name="line.55"></a>
+<FONT color="green">056</FONT>         *<a name="line.56"></a>
+<FONT color="green">057</FONT>         * @param ex the exception to be processed<a name="line.57"></a>
+<FONT color="green">058</FONT>         * @return a {@code ConcurrentException} with the checked cause<a name="line.58"></a>
+<FONT color="green">059</FONT>         */<a name="line.59"></a>
+<FONT color="green">060</FONT>        public static ConcurrentException extractCause(ExecutionException ex) {<a name="line.60"></a>
+<FONT color="green">061</FONT>            if (ex == null || ex.getCause() == null) {<a name="line.61"></a>
+<FONT color="green">062</FONT>                return null;<a name="line.62"></a>
+<FONT color="green">063</FONT>            }<a name="line.63"></a>
+<FONT color="green">064</FONT>    <a name="line.64"></a>
+<FONT color="green">065</FONT>            throwCause(ex);<a name="line.65"></a>
+<FONT color="green">066</FONT>            return new ConcurrentException(ex.getMessage(), ex.getCause());<a name="line.66"></a>
+<FONT color="green">067</FONT>        }<a name="line.67"></a>
+<FONT color="green">068</FONT>    <a name="line.68"></a>
+<FONT color="green">069</FONT>        /**<a name="line.69"></a>
+<FONT color="green">070</FONT>         * Inspects the cause of the specified {@code ExecutionException} and<a name="line.70"></a>
+<FONT color="green">071</FONT>         * creates a {@code ConcurrentRuntimeException} with the checked cause if<a name="line.71"></a>
+<FONT color="green">072</FONT>         * necessary. This method works exactly like<a name="line.72"></a>
+<FONT color="green">073</FONT>         * {@link #extractCause(ExecutionException)}. The only difference is that<a name="line.73"></a>
+<FONT color="green">074</FONT>         * the cause of the specified {@code ExecutionException} is extracted as a<a name="line.74"></a>
+<FONT color="green">075</FONT>         * runtime exception. This is an alternative for client code that does not<a name="line.75"></a>
+<FONT color="green">076</FONT>         * want to deal with checked exceptions.<a name="line.76"></a>
+<FONT color="green">077</FONT>         *<a name="line.77"></a>
+<FONT color="green">078</FONT>         * @param ex the exception to be processed<a name="line.78"></a>
+<FONT color="green">079</FONT>         * @return a {@code ConcurrentRuntimeException} with the checked cause<a name="line.79"></a>
+<FONT color="green">080</FONT>         */<a name="line.80"></a>
+<FONT color="green">081</FONT>        public static ConcurrentRuntimeException extractCauseUnchecked(<a name="line.81"></a>
+<FONT color="green">082</FONT>                ExecutionException ex) {<a name="line.82"></a>
+<FONT color="green">083</FONT>            if (ex == null || ex.getCause() == null) {<a name="line.83"></a>
+<FONT color="green">084</FONT>                return null;<a name="line.84"></a>
+<FONT color="green">085</FONT>            }<a name="line.85"></a>
+<FONT color="green">086</FONT>    <a name="line.86"></a>
+<FONT color="green">087</FONT>            throwCause(ex);<a name="line.87"></a>
+<FONT color="green">088</FONT>            return new ConcurrentRuntimeException(ex.getMessage(), ex.getCause());<a name="line.88"></a>
+<FONT color="green">089</FONT>        }<a name="line.89"></a>
+<FONT color="green">090</FONT>    <a name="line.90"></a>
+<FONT color="green">091</FONT>        /**<a name="line.91"></a>
+<FONT color="green">092</FONT>         * Handles the specified {@code ExecutionException}. This method calls<a name="line.92"></a>
+<FONT color="green">093</FONT>         * {@link #extractCause(ExecutionException)} for obtaining the cause of the<a name="line.93"></a>
+<FONT color="green">094</FONT>         * exception - which might already cause an unchecked exception or an error<a name="line.94"></a>
+<FONT color="green">095</FONT>         * being thrown. If the cause is a checked exception however, it is wrapped<a name="line.95"></a>
+<FONT color="green">096</FONT>         * in a {@code ConcurrentException}, which is thrown. If the passed in<a name="line.96"></a>
+<FONT color="green">097</FONT>         * exception is &lt;b&gt;null&lt;/b&gt; or has no cause, the method simply returns<a name="line.97"></a>
+<FONT color="green">098</FONT>         * without throwing an exception.<a name="line.98"></a>
+<FONT color="green">099</FONT>         *<a name="line.99"></a>
+<FONT color="green">100</FONT>         * @param ex the exception to be handled<a name="line.100"></a>
+<FONT color="green">101</FONT>         * @throws ConcurrentException if the cause of the {@code<a name="line.101"></a>
+<FONT color="green">102</FONT>         * ExecutionException} is a checked exception<a name="line.102"></a>
+<FONT color="green">103</FONT>         */<a name="line.103"></a>
+<FONT color="green">104</FONT>        public static void handleCause(ExecutionException ex)<a name="line.104"></a>
+<FONT color="green">105</FONT>                throws ConcurrentException {<a name="line.105"></a>
+<FONT color="green">106</FONT>            ConcurrentException cex = extractCause(ex);<a name="line.106"></a>
+<FONT color="green">107</FONT>    <a name="line.107"></a>
+<FONT color="green">108</FONT>            if (cex != null) {<a name="line.108"></a>
+<FONT color="green">109</FONT>                throw cex;<a name="line.109"></a>
+<FONT color="green">110</FONT>            }<a name="line.110"></a>
+<FONT color="green">111</FONT>        }<a name="line.111"></a>
+<FONT color="green">112</FONT>    <a name="line.112"></a>
+<FONT color="green">113</FONT>        /**<a name="line.113"></a>
+<FONT color="green">114</FONT>         * Handles the specified {@code ExecutionException} and transforms it into a<a name="line.114"></a>
+<FONT color="green">115</FONT>         * runtime exception. This method works exactly like<a name="line.115"></a>
+<FONT color="green">116</FONT>         * {@link #handleCause(ExecutionException)}, but instead of a<a name="line.116"></a>
+<FONT color="green">117</FONT>         * {@link ConcurrentException} it throws a<a name="line.117"></a>
+<FONT color="green">118</FONT>         * {@link ConcurrentRuntimeException}. This is an alternative for client<a name="line.118"></a>
+<FONT color="green">119</FONT>         * code that does not want to deal with checked exceptions.<a name="line.119"></a>
+<FONT color="green">120</FONT>         *<a name="line.120"></a>
+<FONT color="green">121</FONT>         * @param ex the exception to be handled<a name="line.121"></a>
+<FONT color="green">122</FONT>         * @throws ConcurrentRuntimeException if the cause of the {@code<a name="line.122"></a>
+<FONT color="green">123</FONT>         * ExecutionException} is a checked exception; this exception is then<a name="line.123"></a>
+<FONT color="green">124</FONT>         * wrapped in the thrown runtime exception<a name="line.124"></a>
+<FONT color="green">125</FONT>         */<a name="line.125"></a>
+<FONT color="green">126</FONT>        public static void handleCauseUnchecked(ExecutionException ex) {<a name="line.126"></a>
+<FONT color="green">127</FONT>            ConcurrentRuntimeException crex = extractCauseUnchecked(ex);<a name="line.127"></a>
+<FONT color="green">128</FONT>    <a name="line.128"></a>
+<FONT color="green">129</FONT>            if (crex != null) {<a name="line.129"></a>
+<FONT color="green">130</FONT>                throw crex;<a name="line.130"></a>
+<FONT color="green">131</FONT>            }<a name="line.131"></a>
+<FONT color="green">132</FONT>        }<a name="line.132"></a>
+<FONT color="green">133</FONT>    <a name="line.133"></a>
+<FONT color="green">134</FONT>        /**<a name="line.134"></a>
+<FONT color="green">135</FONT>         * Tests whether the specified {@code Throwable} is a checked exception. If<a name="line.135"></a>
+<FONT color="green">136</FONT>         * not, an exception is thrown.<a name="line.136"></a>
+<FONT color="green">137</FONT>         *<a name="line.137"></a>
+<FONT color="green">138</FONT>         * @param ex the {@code Throwable} to check<a name="line.138"></a>
+<FONT color="green">139</FONT>         * @return a flag whether the passed in exception is a checked exception<a name="line.139"></a>
+<FONT color="green">140</FONT>         * @throws IllegalArgumentException if the {@code Throwable} is not a<a name="line.140"></a>
+<FONT color="green">141</FONT>         * checked exception<a name="line.141"></a>
+<FONT color="green">142</FONT>         */<a name="line.142"></a>
+<FONT color="green">143</FONT>        static Throwable checkedException(Throwable ex) {<a name="line.143"></a>
+<FONT color="green">144</FONT>            if (ex != null &amp;&amp; !(ex instanceof RuntimeException)<a name="line.144"></a>
+<FONT color="green">145</FONT>                    &amp;&amp; !(ex instanceof Error)) {<a name="line.145"></a>
+<FONT color="green">146</FONT>                return ex;<a name="line.146"></a>
+<FONT color="green">147</FONT>            } else {<a name="line.147"></a>
+<FONT color="green">148</FONT>                throw new IllegalArgumentException("Not a checked exception: " + ex);<a name="line.148"></a>
+<FONT color="green">149</FONT>            }<a name="line.149"></a>
+<FONT color="green">150</FONT>        }<a name="line.150"></a>
+<FONT color="green">151</FONT>    <a name="line.151"></a>
+<FONT color="green">152</FONT>        /**<a name="line.152"></a>
+<FONT color="green">153</FONT>         * Tests whether the cause of the specified {@code ExecutionException}<a name="line.153"></a>
+<FONT color="green">154</FONT>         * should be thrown and does it if necessary.<a name="line.154"></a>
+<FONT color="green">155</FONT>         *<a name="line.155"></a>
+<FONT color="green">156</FONT>         * @param ex the exception in question<a name="line.156"></a>
+<FONT color="green">157</FONT>         */<a name="line.157"></a>
+<FONT color="green">158</FONT>        private static void throwCause(ExecutionException ex) {<a name="line.158"></a>
+<FONT color="green">159</FONT>            if (ex.getCause() instanceof RuntimeException) {<a name="line.159"></a>
+<FONT color="green">160</FONT>                throw (RuntimeException) ex.getCause();<a name="line.160"></a>
+<FONT color="green">161</FONT>            }<a name="line.161"></a>
+<FONT color="green">162</FONT>    <a name="line.162"></a>
+<FONT color="green">163</FONT>            if (ex.getCause() instanceof Error) {<a name="line.163"></a>
+<FONT color="green">164</FONT>                throw (Error) ex.getCause();<a name="line.164"></a>
+<FONT color="green">165</FONT>            }<a name="line.165"></a>
+<FONT color="green">166</FONT>        }<a name="line.166"></a>
+<FONT color="green">167</FONT>    <a name="line.167"></a>
+<FONT color="green">168</FONT>        //-----------------------------------------------------------------------<a name="line.168"></a>
+<FONT color="green">169</FONT>        /**<a name="line.169"></a>
+<FONT color="green">170</FONT>         * Invokes the specified {@code ConcurrentInitializer} and returns the<a name="line.170"></a>
+<FONT color="green">171</FONT>         * object produced by the initializer. This method just invokes the {@code<a name="line.171"></a>
+<FONT color="green">172</FONT>         * get()} method of the given {@code ConcurrentInitializer}. It is<a name="line.172"></a>
+<FONT color="green">173</FONT>         * &lt;b&gt;null&lt;/b&gt;-safe: if the argument is &lt;b&gt;null&lt;/b&gt;, result is also<a name="line.173"></a>
+<FONT color="green">174</FONT>         * &lt;b&gt;null&lt;/b&gt;.<a name="line.174"></a>
+<FONT color="green">175</FONT>         *<a name="line.175"></a>
+<FONT color="green">176</FONT>         * @param &lt;T&gt; the type of the object produced by the initializer<a name="line.176"></a>
+<FONT color="green">177</FONT>         * @param initializer the {@code ConcurrentInitializer} to be invoked<a name="line.177"></a>
+<FONT color="green">178</FONT>         * @return the object managed by the {@code ConcurrentInitializer}<a name="line.178"></a>
+<FONT color="green">179</FONT>         * @throws ConcurrentException if the {@code ConcurrentInitializer} throws<a name="line.179"></a>
+<FONT color="green">180</FONT>         * an exception<a name="line.180"></a>
+<FONT color="green">181</FONT>         */<a name="line.181"></a>
+<FONT color="green">182</FONT>        public static &lt;T&gt; T initialize(ConcurrentInitializer&lt;T&gt; initializer)<a name="line.182"></a>
+<FONT color="green">183</FONT>                throws ConcurrentException {<a name="line.183"></a>
+<FONT color="green">184</FONT>            return initializer != null ? initializer.get() : null;<a name="line.184"></a>
+<FONT color="green">185</FONT>        }<a name="line.185"></a>
+<FONT color="green">186</FONT>    <a name="line.186"></a>
+<FONT color="green">187</FONT>        /**<a name="line.187"></a>
+<FONT color="green">188</FONT>         * Invokes the specified {@code ConcurrentInitializer} and transforms<a name="line.188"></a>
+<FONT color="green">189</FONT>         * occurring exceptions to runtime exceptions. This method works like<a name="line.189"></a>
+<FONT color="green">190</FONT>         * {@link #initialize(ConcurrentInitializer)}, but if the {@code<a name="line.190"></a>
+<FONT color="green">191</FONT>         * ConcurrentInitializer} throws a {@link ConcurrentException}, it is<a name="line.191"></a>
+<FONT color="green">192</FONT>         * caught, and the cause is wrapped in a {@link ConcurrentRuntimeException}.<a name="line.192"></a>
+<FONT color="green">193</FONT>         * So client code does not have to deal with checked exceptions.<a name="line.193"></a>
+<FONT color="green">194</FONT>         *<a name="line.194"></a>
+<FONT color="green">195</FONT>         * @param &lt;T&gt; the type of the object produced by the initializer<a name="line.195"></a>
+<FONT color="green">196</FONT>         * @param initializer the {@code ConcurrentInitializer} to be invoked<a name="line.196"></a>
+<FONT color="green">197</FONT>         * @return the object managed by the {@code ConcurrentInitializer}<a name="line.197"></a>
+<FONT color="green">198</FONT>         * @throws ConcurrentRuntimeException if the initializer throws an exception<a name="line.198"></a>
+<FONT color="green">199</FONT>         */<a name="line.199"></a>
+<FONT color="green">200</FONT>        public static &lt;T&gt; T initializeUnchecked(ConcurrentInitializer&lt;T&gt; initializer) {<a name="line.200"></a>
+<FONT color="green">201</FONT>            try {<a name="line.201"></a>
+<FONT color="green">202</FONT>                return initialize(initializer);<a name="line.202"></a>
+<FONT color="green">203</FONT>            } catch (ConcurrentException cex) {<a name="line.203"></a>
+<FONT color="green">204</FONT>                throw new ConcurrentRuntimeException(cex.getCause());<a name="line.204"></a>
+<FONT color="green">205</FONT>            }<a name="line.205"></a>
+<FONT color="green">206</FONT>        }<a name="line.206"></a>
+<FONT color="green">207</FONT>    <a name="line.207"></a>
+<FONT color="green">208</FONT>        //-----------------------------------------------------------------------<a name="line.208"></a>
+<FONT color="green">209</FONT>        /**<a name="line.209"></a>
+<FONT color="green">210</FONT>         * &lt;p&gt;<a name="line.210"></a>
+<FONT color="green">211</FONT>         * Puts a value in the specified {@code ConcurrentMap} if the key is not yet<a name="line.211"></a>
+<FONT color="green">212</FONT>         * present. This method works similar to the {@code putIfAbsent()} method of<a name="line.212"></a>
+<FONT color="green">213</FONT>         * the {@code ConcurrentMap} interface, but the value returned is different.<a name="line.213"></a>
+<FONT color="green">214</FONT>         * Basically, this method is equivalent to the following code fragment:<a name="line.214"></a>
+<FONT color="green">215</FONT>         *<a name="line.215"></a>
+<FONT color="green">216</FONT>         * &lt;pre&gt;<a name="line.216"></a>
+<FONT color="green">217</FONT>         * if (!map.containsKey(key)) {<a name="line.217"></a>
+<FONT color="green">218</FONT>         *     map.put(key, value);<a name="line.218"></a>
+<FONT color="green">219</FONT>         *     return value;<a name="line.219"></a>
+<FONT color="green">220</FONT>         * } else {<a name="line.220"></a>
+<FONT color="green">221</FONT>         *     return map.get(key);<a name="line.221"></a>
+<FONT color="green">222</FONT>         * }<a name="line.222"></a>
+<FONT color="green">223</FONT>         * &lt;/pre&gt;<a name="line.223"></a>
+<FONT color="green">224</FONT>         *<a name="line.224"></a>
+<FONT color="green">225</FONT>         * except that the action is performed atomically. So this method always<a name="line.225"></a>
+<FONT color="green">226</FONT>         * returns the value which is stored in the map.<a name="line.226"></a>
+<FONT color="green">227</FONT>         * &lt;/p&gt;<a name="line.227"></a>
+<FONT color="green">228</FONT>         * &lt;p&gt;<a name="line.228"></a>
+<FONT color="green">229</FONT>         * This method is &lt;b&gt;null&lt;/b&gt;-safe: It accepts a &lt;b&gt;null&lt;/b&gt; map as input<a name="line.229"></a>
+<FONT color="green">230</FONT>         * without throwing an exception. In this case the return value is<a name="line.230"></a>
+<FONT color="green">231</FONT>         * &lt;b&gt;null&lt;/b&gt;, too.<a name="line.231"></a>
+<FONT color="green">232</FONT>         * &lt;/p&gt;<a name="line.232"></a>
+<FONT color="green">233</FONT>         *<a name="line.233"></a>
+<FONT color="green">234</FONT>         * @param &lt;K&gt; the type of the keys of the map<a name="line.234"></a>
+<FONT color="green">235</FONT>         * @param &lt;V&gt; the type of the values of the map<a name="line.235"></a>
+<FONT color="green">236</FONT>         * @param map the map to be modified<a name="line.236"></a>
+<FONT color="green">237</FONT>         * @param key the key of the value to be added<a name="line.237"></a>
+<FONT color="green">238</FONT>         * @param value the value to be added<a name="line.238"></a>
+<FONT color="green">239</FONT>         * @return the value stored in the map after this operation<a name="line.239"></a>
+<FONT color="green">240</FONT>         */<a name="line.240"></a>
+<FONT color="green">241</FONT>        public static &lt;K, V&gt; V putIfAbsent(ConcurrentMap&lt;K, V&gt; map, K key, V value) {<a name="line.241"></a>
+<FONT color="green">242</FONT>            if (map == null) {<a name="line.242"></a>
+<FONT color="green">243</FONT>                return null;<a name="line.243"></a>
+<FONT color="green">244</FONT>            }<a name="line.244"></a>
+<FONT color="green">245</FONT>    <a name="line.245"></a>
+<FONT color="green">246</FONT>            V result = map.putIfAbsent(key, value);<a name="line.246"></a>
+<FONT color="green">247</FONT>            return result != null ? result : value;<a name="line.247"></a>
+<FONT color="green">248</FONT>        }<a name="line.248"></a>
+<FONT color="green">249</FONT>    <a name="line.249"></a>
+<FONT color="green">250</FONT>        /**<a name="line.250"></a>
+<FONT color="green">251</FONT>         * Checks if a concurrent map contains a key and creates a corresponding<a name="line.251"></a>
+<FONT color="green">252</FONT>         * value if not. This method first checks the presence of the key in the<a name="line.252"></a>
+<FONT color="green">253</FONT>         * given map. If it is already contained, its value is returned. Otherwise<a name="line.253"></a>
+<FONT color="green">254</FONT>         * the {@code get()} method of the passed in {@link ConcurrentInitializer}<a name="line.254"></a>
+<FONT color="green">255</FONT>         * is called. With the resulting object<a name="line.255"></a>
+<FONT color="green">256</FONT>         * {@link #putIfAbsent(ConcurrentMap, Object, Object)} is called. This<a name="line.256"></a>
+<FONT color="green">257</FONT>         * handles the case that in the meantime another thread has added the key to<a name="line.257"></a>
+<FONT color="green">258</FONT>         * the map. Both the map and the initializer can be &lt;b&gt;null&lt;/b&gt;; in this<a name="line.258"></a>
+<FONT color="green">259</FONT>         * case this method simply returns &lt;b&gt;null&lt;/b&gt;.<a name="line.259"></a>
+<FONT color="green">260</FONT>         *<a name="line.260"></a>
+<FONT color="green">261</FONT>         * @param &lt;K&gt; the type of the keys of the map<a name="line.261"></a>
+<FONT color="green">262</FONT>         * @param &lt;V&gt; the type of the values of the map<a name="line.262"></a>
+<FONT color="green">263</FONT>         * @param map the map to be modified<a name="line.263"></a>
+<FONT color="green">264</FONT>         * @param key the key of the value to be added<a name="line.264"></a>
+<FONT color="green">265</FONT>         * @param init the {@link ConcurrentInitializer} for creating the value<a name="line.265"></a>
+<FONT color="green">266</FONT>         * @return the value stored in the map after this operation; this may or may<a name="line.266"></a>
+<FONT color="green">267</FONT>         * not be the object created by the {@link ConcurrentInitializer}<a name="line.267"></a>
+<FONT color="green">268</FONT>         * @throws ConcurrentException if the initializer throws an exception<a name="line.268"></a>
+<FONT color="green">269</FONT>         */<a name="line.269"></a>
+<FONT color="green">270</FONT>        public static &lt;K, V&gt; V createIfAbsent(ConcurrentMap&lt;K, V&gt; map, K key,<a name="line.270"></a>
+<FONT color="green">271</FONT>                ConcurrentInitializer&lt;V&gt; init) throws ConcurrentException {<a name="line.271"></a>
+<FONT color="green">272</FONT>            if (map == null || init == null) {<a name="line.272"></a>
+<FONT color="green">273</FONT>                return null;<a name="line.273"></a>
+<FONT color="green">274</FONT>            }<a name="line.274"></a>
+<FONT color="green">275</FONT>    <a name="line.275"></a>
+<FONT color="green">276</FONT>            V value = map.get(key);<a name="line.276"></a>
+<FONT color="green">277</FONT>            if (value == null) {<a name="line.277"></a>
+<FONT color="green">278</FONT>                return putIfAbsent(map, key, init.get());<a name="line.278"></a>
+<FONT color="green">279</FONT>            }<a name="line.279"></a>
+<FONT color="green">280</FONT>            return value;<a name="line.280"></a>
+<FONT color="green">281</FONT>        }<a name="line.281"></a>
+<FONT color="green">282</FONT>    <a name="line.282"></a>
+<FONT color="green">283</FONT>        /**<a name="line.283"></a>
+<FONT color="green">284</FONT>         * Checks if a concurrent map contains a key and creates a corresponding<a name="line.284"></a>
+<FONT color="green">285</FONT>         * value if not, suppressing checked exceptions. This method calls<a name="line.285"></a>
+<FONT color="green">286</FONT>         * {@code createIfAbsent()}. If a {@link ConcurrentException} is thrown, it<a name="line.286"></a>
+<FONT color="green">287</FONT>         * is caught and re-thrown as a {@link ConcurrentRuntimeException}.<a name="line.287"></a>
+<FONT color="green">288</FONT>         *<a name="line.288"></a>
+<FONT color="green">289</FONT>         * @param &lt;K&gt; the type of the keys of the map<a name="line.289"></a>
+<FONT color="green">290</FONT>         * @param &lt;V&gt; the type of the values of the map<a name="line.290"></a>
+<FONT color="green">291</FONT>         * @param map the map to be modified<a name="line.291"></a>
+<FONT color="green">292</FONT>         * @param key the key of the value to be added<a name="line.292"></a>
+<FONT color="green">293</FONT>         * @param init the {@link ConcurrentInitializer} for creating the value<a name="line.293"></a>
+<FONT color="green">294</FONT>         * @return the value stored in the map after this operation; this may or may<a name="line.294"></a>
+<FONT color="green">295</FONT>         * not be the object created by the {@link ConcurrentInitializer}<a name="line.295"></a>
+<FONT color="green">296</FONT>         * @throws ConcurrentRuntimeException if the initializer throws an exception<a name="line.296"></a>
+<FONT color="green">297</FONT>         */<a name="line.297"></a>
+<FONT color="green">298</FONT>        public static &lt;K, V&gt; V createIfAbsentUnchecked(ConcurrentMap&lt;K, V&gt; map,<a name="line.298"></a>
+<FONT color="green">299</FONT>                K key, ConcurrentInitializer&lt;V&gt; init) {<a name="line.299"></a>
+<FONT color="green">300</FONT>            try {<a name="line.300"></a>
+<FONT color="green">301</FONT>                return createIfAbsent(map, key, init);<a name="line.301"></a>
+<FONT color="green">302</FONT>            } catch (ConcurrentException cex) {<a name="line.302"></a>
+<FONT color="green">303</FONT>                throw new ConcurrentRuntimeException(cex.getCause());<a name="line.303"></a>
+<FONT color="green">304</FONT>            }<a name="line.304"></a>
+<FONT color="green">305</FONT>        }<a name="line.305"></a>
+<FONT color="green">306</FONT>    <a name="line.306"></a>
+<FONT color="green">307</FONT>        //-----------------------------------------------------------------------<a name="line.307"></a>
+<FONT color="green">308</FONT>        /**<a name="line.308"></a>
+<FONT color="green">309</FONT>         * &lt;p&gt;<a name="line.309"></a>
+<FONT color="green">310</FONT>         * Gets an implementation of &lt;code&gt;Future&lt;/code&gt; that is immediately done<a name="line.310"></a>
+<FONT color="green">311</FONT>         * and returns the specified constant value.<a name="line.311"></a>
+<FONT color="green">312</FONT>         * &lt;/p&gt;<a name="line.312"></a>
+<FONT color="green">313</FONT>         * &lt;p&gt;<a name="line.313"></a>
+<FONT color="green">314</FONT>         * This can be useful to return a simple constant immediately from the<a name="line.314"></a>
+<FONT color="green">315</FONT>         * concurrent processing, perhaps as part of avoiding nulls.<a name="line.315"></a>
+<FONT color="green">316</FONT>         * A constant future can also be useful in testing.<a name="line.316"></a>
+<FONT color="green">317</FONT>         * &lt;/p&gt;<a name="line.317"></a>
+<FONT color="green">318</FONT>         *<a name="line.318"></a>
+<FONT color="green">319</FONT>         * @param &lt;T&gt; the type of the value used by this {@code Future} object<a name="line.319"></a>
+<FONT color="green">320</FONT>         * @param value  the constant value to return, may be null<a name="line.320"></a>
+<FONT color="green">321</FONT>         * @return an instance of Future that will return the value, never null<a name="line.321"></a>
+<FONT color="green">322</FONT>         */<a name="line.322"></a>
+<FONT color="green">323</FONT>        public static &lt;T&gt; Future&lt;T&gt; constantFuture(T value) {<a name="line.323"></a>
+<FONT color="green">324</FONT>            return new ConstantFuture&lt;T&gt;(value);<a name="line.324"></a>
+<FONT color="green">325</FONT>        }<a name="line.325"></a>
+<FONT color="green">326</FONT>    <a name="line.326"></a>
+<FONT color="green">327</FONT>        /**<a name="line.327"></a>
+<FONT color="green">328</FONT>         * A specialized {@code Future} implementation which wraps a constant value.<a name="line.328"></a>
+<FONT color="green">329</FONT>         * @param &lt;T&gt; the type of the value wrapped by this class<a name="line.329"></a>
+<FONT color="green">330</FONT>         */<a name="line.330"></a>
+<FONT color="green">331</FONT>        static final class ConstantFuture&lt;T&gt; implements Future&lt;T&gt; {<a name="line.331"></a>
+<FONT color="green">332</FONT>            /** The constant value. */<a name="line.332"></a>
+<FONT color="green">333</FONT>            private final T value;<a name="line.333"></a>
+<FONT color="green">334</FONT>    <a name="line.334"></a>
+<FONT color="green">335</FONT>            /**<a name="line.335"></a>
+<FONT color="green">336</FONT>             * Creates a new instance of {@code ConstantFuture} and initializes it<a name="line.336"></a>
+<FONT color="green">337</FONT>             * with the constant value.<a name="line.337"></a>
+<FONT color="green">338</FONT>             *<a name="line.338"></a>
+<FONT color="green">339</FONT>             * @param value the value (may be &lt;b&gt;null&lt;/b&gt;)<a name="line.339"></a>
+<FONT color="green">340</FONT>             */<a name="line.340"></a>
+<FONT color="green">341</FONT>            ConstantFuture(T value) {<a name="line.341"></a>
+<FONT color="green">342</FONT>                this.value = value;<a name="line.342"></a>
+<FONT color="green">343</FONT>            }<a name="line.343"></a>
+<FONT color="green">344</FONT>    <a name="line.344"></a>
+<FONT color="green">345</FONT>            /**<a name="line.345"></a>
+<FONT color="green">346</FONT>             * {@inheritDoc} This implementation always returns &lt;b&gt;true&lt;/b&gt; because<a name="line.346"></a>
+<FONT color="green">347</FONT>             * the constant object managed by this {@code Future} implementation is<a name="line.347"></a>
+<FONT color="green">348</FONT>             * always available.<a name="line.348"></a>
+<FONT color="green">349</FONT>             */<a name="line.349"></a>
+<FONT color="green">350</FONT>            public boolean isDone() {<a name="line.350"></a>
+<FONT color="green">351</FONT>                return true;<a name="line.351"></a>
+<FONT color="green">352</FONT>            }<a name="line.352"></a>
+<FONT color="green">353</FONT>    <a name="line.353"></a>
+<FONT color="green">354</FONT>            /**<a name="line.354"></a>
+<FONT color="green">355</FONT>             * {@inheritDoc} This implementation just returns the constant value.<a name="line.355"></a>
+<FONT color="green">356</FONT>             */<a name="line.356"></a>
+<FONT color="green">357</FONT>            public T get() {<a name="line.357"></a>
+<FONT color="green">358</FONT>                return value;<a name="line.358"></a>
+<FONT color="green">359</FONT>            }<a name="line.359"></a>
+<FONT color="green">360</FONT>    <a name="line.360"></a>
+<FONT color="green">361</FONT>            /**<a name="line.361"></a>
+<FONT color="green">362</FONT>             * {@inheritDoc} This implementation just returns the constant value; it<a name="line.362"></a>
+<FONT color="green">363</FONT>             * does not block, therefore the timeout has no meaning.<a name="line.363"></a>
+<FONT color="green">364</FONT>             */<a name="line.364"></a>
+<FONT color="green">365</FONT>            public T get(long timeout, TimeUnit unit) {<a name="line.365"></a>
+<FONT color="green">366</FONT>                return value;<a name="line.366"></a>
+<FONT color="green">367</FONT>            }<a name="line.367"></a>
+<FONT color="green">368</FONT>    <a name="line.368"></a>
+<FONT color="green">369</FONT>            /**<a name="line.369"></a>
+<FONT color="green">370</FONT>             * {@inheritDoc} This implementation always returns &lt;b&gt;false&lt;/b&gt;; there<a name="line.370"></a>
+<FONT color="green">371</FONT>             * is no background process which could be cancelled.<a name="line.371"></a>
+<FONT color="green">372</FONT>             */<a name="line.372"></a>
+<FONT color="green">373</FONT>            public boolean isCancelled() {<a name="line.373"></a>
+<FONT color="green">374</FONT>                return false;<a name="line.374"></a>
+<FONT color="green">375</FONT>            }<a name="line.375"></a>
+<FONT color="green">376</FONT>    <a name="line.376"></a>
+<FONT color="green">377</FONT>            /**<a name="line.377"></a>
+<FONT color="green">378</FONT>             * {@inheritDoc} The cancel operation is not supported. This<a name="line.378"></a>
+<FONT color="green">379</FONT>             * implementation always returns &lt;b&gt;false&lt;/b&gt;.<a name="line.379"></a>
+<FONT color="green">380</FONT>             */<a name="line.380"></a>
+<FONT color="green">381</FONT>            public boolean cancel(boolean mayInterruptIfRunning) {<a name="line.381"></a>
+<FONT color="green">382</FONT>                return false;<a name="line.382"></a>
+<FONT color="green">383</FONT>            }<a name="line.383"></a>
+<FONT color="green">384</FONT>        }<a name="line.384"></a>
+<FONT color="green">385</FONT>    <a name="line.385"></a>
+<FONT color="green">386</FONT>    }<a name="line.386"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</PRE>
+</BODY>
+</HTML>
