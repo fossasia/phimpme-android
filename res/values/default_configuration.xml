@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="integer" name="gallery_max_display_photos">20</item>
+    <item type="integer" name="max_filesize_download">5</item>
+    <string name="application_title">Phimp.me</string>
+    <string name="lang_code_english">en</string>
+    <string name="lang_code_german">de</string>
+    <string name="lang_code_vietnamese">vi</string>
+    <string name="default_mbm_username">honnguyen</string>
+    <string name="default_mbm_password">123456</string>
+    <string name="default_mbm_serviceurl">http://phimp.me/api/</string>
+    <item type="id" name="randomID" />
+</resources>

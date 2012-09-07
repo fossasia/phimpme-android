@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp" >
+
+        <TextView
+            android:id="@+id/txtGalleryStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:text="@string/loading" />
+
+        <Button
+            android:id="@+id/btnPublic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@+id/txtGalleryStatus"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:text="@string/refresh" />
+
+        <ImageButton
+            android:id="@+id/btnGalleryMaps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/btnPublic"
+            android:layout_toLeftOf="@+id/btnPublic"
+            android:contentDescription="@string/empty"
+            android:src="@drawable/maps" />
+
+        <ImageButton
+            android:id="@+id/btnBluetoothShare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/btnPublic"
+            android:layout_toLeftOf="@+id/btnGalleryMaps"
+            android:contentDescription="@string/empty"
+            android:src="@drawable/bluetooth" />
+
+    </RelativeLayout>
+
+    	<ScrollView 
+	    android:id="@+id/scrollViewnew"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent" >
+	    <LinearLayout
+	        android:id="@+id/newgalleryContent"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical" >
+	    </LinearLayout>
+	</ScrollView>
+
+</LinearLayout>

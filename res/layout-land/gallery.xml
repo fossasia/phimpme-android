@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tabView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="bottom|left"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:padding="10dp" >
+
+        <TextView
+            android:id="@+id/txtGalleryStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:text="@string/loading" />
+
+        <Button
+            android:id="@+id/btnPersonal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignRight="@+id/txtGalleryStatus"
+            android:text="@string/personalphoto" />
+
+        <Button
+            android:id="@+id/btnPublic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/btnPersonal"
+            android:layout_alignBottom="@+id/btnPersonal"
+            android:layout_toLeftOf="@+id/btnPersonal"
+            android:text="@string/publicphoto" />
+
+        <ImageButton
+            android:id="@+id/btnGalleryMaps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/btnPublic"
+            android:layout_toLeftOf="@+id/btnPublic"
+            android:src="@drawable/maps" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/newest" />
+
+	<RelativeLayout
+	    android:layout_width="wrap_content"
+	    android:layout_height="80dp" >
+
+    <GridView
+        android:id="@+id/gvGalleryContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="auto_fit" >
+    </GridView>
+	</RelativeLayout>
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Personal Photos" />
+
+	<RelativeLayout
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent" >
+
+	    <GridView
+	        android:id="@+id/gvPrivateGalleryContainer"
+	        android:layout_width="wrap_content"
+	        android:layout_height="match_parent"
+	        android:layout_marginRight="0dp"
+	        android:numColumns="auto_fit" >
+	    </GridView>
+	</RelativeLayout>
+
+</LinearLayout>

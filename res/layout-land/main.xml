@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+    <TabHost xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@android:id/tabhost"
+        android:layout_above="@+id/adView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <TabWidget
+    	    android:id="@android:id/tabs"
+    	    android:layout_width="match_parent"
+    	    android:layout_height="wrap_content"
+    	    android:layout_alignParentTop="true"
+    	    android:background="@android:color/white" >
+    	</TabWidget>
+
+   	 	<FrameLayout
+   	 	    android:id="@android:id/tabcontent"
+   	 	    android:layout_width="wrap_content"
+   	 	    android:layout_height="wrap_content"
+   	 	    android:layout_alignParentBottom="true"
+   	 	    android:layout_below="@android:id/tabs"
+   	 	    android:layout_marginBottom="5dp"
+   	 	    android:layout_marginTop="5dp"
+   	 	   	>
+    	</FrameLayout>
+        </LinearLayout>
+    </TabHost>
+
+    <com.google.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        ads:adSize="SMART_BANNER"
+        ads:adUnitId="@string/admob_id"
+        ads:loadAdOnCreate="true"
+        ads:testDevices="TEST_EMULATOR" />
+
+</RelativeLayout>
