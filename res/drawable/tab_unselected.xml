@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+	
+	<item android:left="@dimen/tab_space" android:right="@dimen/tab_space"> 
+		<shape android:shape="rectangle">
+			
+			<gradient android:angle="-90" android:startColor="@color/tabMedium"
+				android:endColor="@color/tabDark" />
+			
+		</shape>
+	</item>
+	<item android:top="1sp" android:bottom="26sp" > 
+		<shape android:shape="rectangle">
+			<solid android:color="@color/tabTransparent"/>
+	</shape>
+		
+	</item>
+</layer-list>

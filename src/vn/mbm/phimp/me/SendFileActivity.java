@@ -2,6 +2,7 @@ package vn.mbm.phimp.me;
 
 import it.kynetics.bluetooth.sendfile.opp.BluetoothShare;
 
+import java.io.File;
 import java.util.Set;
 import java.util.UUID;
 
@@ -78,6 +79,18 @@ public class SendFileActivity extends Activity {
 		select = (ImageButton) findViewById(R.id.select);
 		sendDirectly = (ImageButton) findViewById(R.id.sendDirectly);
 
+		Intent intent = getIntent();
+		Bundle extras = intent.getExtras();
+		if (extras != null) {
+			String imagePath=extras.getString("image-path");
+			File f=new File(imagePath);
+			uri=Uri.fromFile(f);
+			textStatus.setText(imagePath);
+			sendDirectly.setEnabled(true);
+			select.setEnabled(false);
+			
+		}
+		
 		select.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
@@ -128,7 +141,7 @@ public class SendFileActivity extends Activity {
 			}
 		});
 		registerReceiver(ActionFoundReceiver,new IntentFilter(BluetoothDevice.ACTION_FOUND	));
-		unregisterReceiver(ActionFoundReceiver);
+		
 	}
 
 	public void checkBTState(){
@@ -158,6 +171,9 @@ public class SendFileActivity extends Activity {
 			case REQUEST_ENABLE_BT :
 				if (resultCode == RESULT_OK) {
 					checkBTState();
+				}else{
+					finish();
+					unregisterReceiver(ActionFoundReceiver);
 				}
 				break;		
 				

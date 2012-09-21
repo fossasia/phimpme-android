@@ -25,7 +25,9 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <application
         android:icon="@drawable/ic_launcher"
-        android:label="@string/application_title">
+        android:label="@string/application_title"
+        android:largeHeap="true"
+        >
         <uses-library android:name="com.google.android.maps" />  
         		 <service android:name=".CollectUserData" />
        	 	<!-- Start of Crittercism Support Forum Manifest Code -->
@@ -39,16 +41,24 @@
 				<service android:name="com.crittercism.service.CrittercismService" android:process="com.crittercism.service" android:exported="true">
     				<intent-filter><action android:name="com.crittercism.service.CrittercismService" /></intent-filter>
 				</service>
-			<!-- End of Crittercism Support Forum Manifest Code -->      
-            <activity
-            android:name=".PhimpMe"
-            android:configChanges="locale"
-            android:theme="@android:style/Theme.NoTitleBar">
+			<!-- End of Crittercism Support Forum Manifest Code -->    
+			<activity android:name=".SplashScreen"
+                  
+                   android:configChanges="locale"  
+                   android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>  
+            <activity  android:name=".PhimpMe"  
+                android:configChanges="locale"  
+                android:theme="@android:style/Theme.NoTitleBar">
+            <!-- <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
             
         </activity>
         
@@ -64,20 +74,14 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             
-        </activity>
-        <activity
-            android:name=".CameraPreview"
-            android:configChanges="locale"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-            
-        </activity>           
+        </activity>            
         <activity android:name=".Upload" android:theme="@android:style/Theme.NoTitleBar" android:configChanges="keyboardHidden|orientation">
             
         </activity>
         <activity
             android:name=".Gallery"
             android:configChanges="locale"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar">
             
         </activity>
@@ -91,6 +95,7 @@
         <activity
             android:name=".newGallery"
             android:configChanges="locale"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar">
             
         </activity>
@@ -112,6 +117,7 @@
         <activity
             android:name=".Settings"
             android:configChanges="locale"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar">
            
         </activity>

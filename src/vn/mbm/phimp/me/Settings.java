@@ -57,8 +57,10 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
@@ -129,6 +131,7 @@ public class Settings extends Activity
 	TextView tvLangDE;
 	TextView tvLangVI;
 	
+	LinearLayout lytGoogleAdmod;
 	LinearLayout lytLocalGallery;
 	LinearLayout lytMyFeedGallery;
 	LinearLayout lytMyFeedServices;
@@ -153,7 +156,7 @@ public class Settings extends Activity
     {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.settings);
-		
+		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);		
 		Resources res = getResources();
 		if (PhimpMe.IdList.size() == 5) {PhimpMe.IdList.clear();PhimpMe.IdList.add(0);}
 		PhimpMe.IdList.add(3);
@@ -163,6 +166,7 @@ public class Settings extends Activity
 		btnAdd = (ImageButton) findViewById(R.id.btnSettingsAccountAdd);
 		btnAdd.setOnTouchListener(new OnTouchListener() 
 		{
+			@SuppressWarnings("deprecation")
 			@Override
 			public boolean onTouch(View v, MotionEvent event) 
 			{
@@ -183,15 +187,6 @@ public class Settings extends Activity
 					tmp_folder = new File(PhimpMe.DataDirectory.getAbsolutePath() + "/" + RSSUtil.TMP_FOLDER);
 				}catch(Exception e){
 				}	
-		    //btnHelp = (ImageButton) findViewById(R.id.suport_forum);
-		    /*final Intent i = new Intent(this, NewFeedbackSpringboardActivity.class);
-		    btnHelp.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {					
-					startActivity(i);					
-				}
-			});*/
 			btnDelete = (ImageButton)findViewById(R.id.deletebtn);
 			btnDelete.setOnClickListener(new OnClickListener() {
 				
@@ -206,6 +201,7 @@ public class Settings extends Activity
 					            @Override
 					            public void onClick(DialogInterface dialog, int which)
 					            {
+					            	
 					            	if (!rss_folder.exists())
 									{
 					            		error_count++;
@@ -219,19 +215,23 @@ public class Settings extends Activity
 										error_count++;
 									}
 									if(error_count==3){
+										
 										Commons.AlertLog(ctx, "Don't have photos to delete!", "OK").show();	
 										Log.i("Danh","Don't have folder!");
 									}else{
 									//Delete in database
-										boolean del = deletePhotoInDatabase();
+										pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);						            	
+						            	timerDelayRemoveDialog(2000,pro_gress);
+										/*boolean del = deletePhotoInDatabase();
 										if(del==true){
 											newGallery.clearAllPhoto();
 											
 											Commons.AlertLog(ctx, "Successfully", "OK").show();	
 										}else{
+											
 											Commons.AlertLog(ctx, "Don't have photos to delete!", "OK").show();	
 											Log.i("Danh","Don't have photo!");
-										}pro_gress.dismiss();
+										}*/
 										
 									}
 					            }				            
@@ -263,6 +263,69 @@ public class Settings extends Activity
 			}
 		});
 		/*
+		 * Danh - Add Active google admod
+		 */
+		lytGoogleAdmod = (LinearLayout) findViewById(R.id.linearSettingsGoogleAdmod);
+		
+		LinearLayout.LayoutParams lpMargin_g = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		lpMargin_g.setMargins(10, 0, 10, 0);
+		
+		LinearLayout.LayoutParams lpLayoutMargin_g = new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+		lpLayoutMargin_g.setMargins(0, 0, 0, 10);
+		
+		/*
+		 * Active google admod
+		 */
+		LinearLayout lGoogleAdmob = new LinearLayout(ctx);
+		lGoogleAdmob.setLayoutParams(lpLayoutMargin_g);
+		lGoogleAdmob.setGravity(Gravity.CENTER_VERTICAL);
+		lGoogleAdmob.setOrientation(LinearLayout.HORIZONTAL);
+		
+		CheckBox chkGoogleAdmob = new CheckBox(ctx);
+		chkGoogleAdmob.setChecked(PhimpMe.FEEDS_GOOGLE_ADMOB);
+		chkGoogleAdmob.setOnCheckedChangeListener(new OnCheckedChangeListener() 
+		{
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
+			{
+				PhimpMe.FEEDS_GOOGLE_ADMOB = isChecked;
+				FileOutputStream fOut;
+				try {
+					fOut = openFileOutput("google_admob.txt",MODE_WORLD_READABLE);
+					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
+
+					osw.write(""+PhimpMe.FEEDS_GOOGLE_ADMOB);
+
+					osw.flush();
+					osw.close();
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if(isChecked==false){
+					Toast.makeText(ctx, "No Ads would be shown after you restart the application ", Toast.LENGTH_LONG).show();
+				}
+				
+			}
+		});
+		lGoogleAdmob.addView(chkGoogleAdmob);
+		
+		
+				
+		TextView tvGoogleAdmob = new TextView(ctx);
+		tvGoogleAdmob.setText("Activate Ads");
+		tvGoogleAdmob.setGravity(Gravity.CENTER_VERTICAL);
+		tvGoogleAdmob.setTypeface(null, 1);
+		lGoogleAdmob.addView(tvGoogleAdmob);
+		
+		
+				
+		lytGoogleAdmod.addView(lGoogleAdmob);
+		
+		/*
 		 * Danh - Add Local gallery
 		 */
 		lytLocalGallery = (LinearLayout) findViewById(R.id.linearSettingsLocalGallery);
@@ -282,28 +345,15 @@ public class Settings extends Activity
 		lLocalGallery.setOrientation(LinearLayout.HORIZONTAL);
 			
 		CheckBox chkLocalGallery = new CheckBox(ctx);
-		chkLocalGallery.setChecked(PhimpMe.FEEDS_LOCAL_GALLERY);
+		chkLocalGallery.setChecked(PhimpMe.FEEDS_LOCAL_GALLERY);		
 		chkLocalGallery.setOnCheckedChangeListener(new OnCheckedChangeListener() 
 		{
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LOCAL_GALLERY = isChecked;
-				FileOutputStream fOut;
-				try {
-					fOut = openFileOutput("local_gallery.txt",MODE_WORLD_READABLE);
-					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
-
-					osw.write(""+PhimpMe.FEEDS_LOCAL_GALLERY);
-
-					osw.flush();
-					osw.close();
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if(isChecked==true){
+					PhimpMe.check_donwload_local_gallery=true;
 				}
 			}
 		});
@@ -671,17 +721,8 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_FLICKR_PUBLIC = isChecked;
-				FileOutputStream fOut;
-				try {
-					fOut = openFileOutput("flickr_public.txt",MODE_WORLD_READABLE);
-					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
-					osw.write(""+PhimpMe.FEEDS_LIST_FLICKR_PUBLIC);
-					osw.flush();
-					osw.close();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
+				if(isChecked==true){
+					PhimpMe.check_donwload=true;
 				}
 			}
 		});
@@ -715,20 +756,10 @@ public class Settings extends Activity
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
-				PhimpMe.FEEDS_LIST_FLICKR_RECENT = isChecked;				
-				FileOutputStream fOut2;
-				try {
-					fOut2 = openFileOutput("flickr_recent.txt",MODE_WORLD_READABLE);
-					OutputStreamWriter osw = new OutputStreamWriter(fOut2); 
-					osw.write(""+PhimpMe.FEEDS_LIST_FLICKR_RECENT);
-					osw.flush();
-					osw.close();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
+				PhimpMe.FEEDS_LIST_FLICKR_RECENT = isChecked;
+				if(isChecked==true){
+					PhimpMe.check_donwload=true;
 				}
-				
 			}
 		});
 		lFlickrRecent.addView(chkFlickrRecent);
@@ -762,19 +793,8 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_GOOGLE_NEWS = isChecked;
-				FileOutputStream fOut;
-				try {
-					fOut = openFileOutput("google_news.txt",MODE_WORLD_READABLE);
-					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
-
-					osw.write(""+PhimpMe.FEEDS_LIST_GOOGLE_NEWS);
-
-					osw.flush();
-					osw.close();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
+				if(isChecked==true){
+					PhimpMe.check_donwload=true;
 				}
 			}
 		});
@@ -809,17 +829,8 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_GOOGLE_PICASA_PUBLIC = isChecked;
-				FileOutputStream fOut;
-				try {
-					fOut = openFileOutput("public_picasa.txt",MODE_WORLD_READABLE);
-					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
-					osw.write(""+PhimpMe.FEEDS_LIST_GOOGLE_PICASA_PUBLIC );
-					osw.flush();
-					osw.close();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
+				if(isChecked==true){
+					PhimpMe.check_donwload=true;
 				}
 			}
 		});
@@ -853,17 +864,8 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_YAHOO_NEWS = isChecked;
-				FileOutputStream fOut;
-				try {
-					fOut = openFileOutput("yahoo_news.txt",MODE_WORLD_READABLE);
-					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
-					osw.write(""+PhimpMe.FEEDS_LIST_YAHOO_NEWS );
-					osw.flush();
-					osw.close();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
+				if(isChecked==true){
+					PhimpMe.check_donwload=true;
 				}
 			}
 		});
@@ -898,17 +900,8 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_DEVIANTART_PUBLIC = isChecked;
-				FileOutputStream fOut;
-				try {
-					fOut = openFileOutput("deviant_public.txt",MODE_WORLD_READABLE);
-					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
-					osw.write(""+PhimpMe.FEEDS_LIST_DEVIANTART_PUBLIC);
-					osw.flush();
-					osw.close();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
+				if(isChecked==true){
+					PhimpMe.check_donwload=true;
 				}
 			}
 		});
@@ -1019,17 +1012,8 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_FLICKR_PRIVATE = isChecked;
-				FileOutputStream fOut;
-				try {
-					fOut = openFileOutput("flick_private.txt",MODE_WORLD_READABLE);
-					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
-					osw.write(""+PhimpMe.FEEDS_LIST_FLICKR_PRIVATE);
-					osw.flush();
-					osw.close();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
+				if(isChecked==true){
+					PhimpMe.check_donwload=true;
 				}
 			}
 		});
@@ -1064,17 +1048,8 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_GOOGLE_PICASA_PRIVATE = isChecked;
-				FileOutputStream fOut;
-				try {
-					fOut = openFileOutput("picasa_private.txt",MODE_WORLD_READABLE);
-					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
-					osw.write(""+PhimpMe.FEEDS_LIST_GOOGLE_PICASA_PRIVATE);
-					osw.flush();
-					osw.close();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
+				if(isChecked==true){
+					PhimpMe.check_donwload=true;
 				}
 			}
 		});
@@ -1109,17 +1084,8 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_DEVIANTART_PRIVITE = isChecked;
-				FileOutputStream fOut;
-				try {
-					fOut = openFileOutput("deviant_private.txt",MODE_WORLD_READABLE);
-					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
-					osw.write(""+PhimpMe.FEEDS_LIST_DEVIANTART_PRIVITE);
-					osw.flush();
-					osw.close();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
+				if(isChecked==true){
+					PhimpMe.check_donwload=true;
 				}
 			}
 		});
@@ -1157,18 +1123,9 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_VK = isChecked;
-				FileOutputStream fOut;
-				try {
-					fOut = openFileOutput("vk.txt",MODE_WORLD_READABLE);
-					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
-					osw.write(""+PhimpMe.FEEDS_LIST_VK);
-					osw.flush();
-					osw.close();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				if(isChecked==true){
+					PhimpMe.check_donwload=true;
+				}	
 			}
 		});
 		lVK.addView(chkVK);
@@ -1202,17 +1159,8 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_FACEBOOK_PRIVATE = isChecked;
-				FileOutputStream fOut;
-				try {
-					fOut = openFileOutput("facebook.txt",MODE_WORLD_READABLE);
-					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
-					osw.write(""+PhimpMe.FEEDS_LIST_FACEBOOK_PRIVATE);
-					osw.flush();
-					osw.close();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
+				if(isChecked==true){
+					PhimpMe.check_donwload=true;
 				}
 			}
 		});
@@ -1247,17 +1195,8 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_TUMBLR_PRIVATE = isChecked;
-				FileOutputStream fOut;
-				try {
-					fOut = openFileOutput("tumblr_private.txt",MODE_WORLD_READABLE);
-					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
-					osw.write(""+PhimpMe.FEEDS_LIST_TUMBLR_PRIVATE);
-					osw.flush();
-					osw.close();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
+				if(isChecked==true){
+					PhimpMe.check_donwload=true;
 				}
 			}
 		});
@@ -1323,17 +1262,8 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_IMGUR_PERSONAL = isChecked;
-				FileOutputStream fOut;
-				try {
-					fOut = openFileOutput("imgur_personal.txt",MODE_WORLD_READABLE);
-					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
-					osw.write(""+PhimpMe.FEEDS_LIST_IMGUR_PERSONAL);
-					osw.flush();
-					osw.close();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
+				if(isChecked==true){
+					PhimpMe.check_donwload=true;
 				}
 			}
 		});
@@ -1399,17 +1329,8 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_SOHU_PERSONAL = isChecked;
-				FileOutputStream fOut;
-				try {
-					fOut = openFileOutput("sohu_personal.txt",MODE_WORLD_READABLE);
-					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
-					osw.write(""+PhimpMe.FEEDS_LIST_SOHU_PERSONAL);
-					osw.flush();
-					osw.close();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
+				if(isChecked==true){
+					PhimpMe.check_donwload=true;
 				}
 			}
 		});
@@ -2002,11 +1923,26 @@ public class Settings extends Activity
 	/*
 	 * Delete photo in database function
 	 * */
-	
+	public void timerDelayRemoveDialog(long time, final Dialog d){
+	    new Handler().postDelayed(new Runnable() {
+	        public void run() {                	            
+	            boolean del = deletePhotoInDatabase();
+				if(del==true){
+					newGallery.clearAllPhoto();		
+					d.dismiss();
+					Commons.AlertLog(ctx, "Successfully", "OK").show();	
+				}else{	
+					d.dismiss();
+					Commons.AlertLog(ctx, "Don't have photos to delete!", "OK").show();	
+					Log.i("Danh","Don't have photo!");
+				}
+	        }
+	    }, time); 
+	}
 	@SuppressWarnings("static-access")
 	private boolean deletePhotoInDatabase(){
 		Log.d("Danh","Start Delete !");
-		pro_gress = ProgressDialog.show(ctx, "Deleting...", "Delete PhimpMe's photos, please wait!");
+		//pro_gress = ProgressDialog.show(ctx, "Deleting...", "Delete PhimpMe's photos, please wait!");
 		int count=0;
 		try{
 			

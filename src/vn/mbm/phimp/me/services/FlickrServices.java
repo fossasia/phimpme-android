@@ -45,8 +45,8 @@ public class FlickrServices
 	public static final String URL_ACCESS_TOKEN = "http://www.flickr.com/services/oauth/access_token";
 	public static final String URL_AUTHORIZE = "http://www.flickr.com/services/oauth/authorize";
 	
-	public static final String CONSUMER_KEY = "2860b3904c1642bf14de70a2624512f7";
-	public static final String CONSUMER_SECRET = "a8329cdd07bf82f2";
+	public static final String CONSUMER_KEY = "64880e486331b93765e3949a7c8b6207";
+	public static final String CONSUMER_SECRET = "493328c917262ca2";
 	public static final String CALLBACK_URL = "oauth://flickr/";
 	
 	final static String TAG = "flickr";

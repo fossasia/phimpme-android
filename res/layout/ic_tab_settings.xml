@@ -13,17 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:src="@drawable/tab_icon_settings_selector"
-        android:contentDescription="@string/settings" />
-
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|center_horizontal|center_vertical"
-        android:text="@string/settings"
-        android:textColor="@drawable/tab_text_selector"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-    
+        android:contentDescription="@string/settings" /> 
     <View
         android:id="@+id/view1"
         android:layout_width="match_parent"

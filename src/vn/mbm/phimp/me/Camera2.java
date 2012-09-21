@@ -49,12 +49,19 @@ public class Camera2 extends Activity {
 		setContentView(R.layout.camera);
 		if (PhimpMe.IdList.size() == 5) {PhimpMe.IdList.clear();PhimpMe.IdList.add(0);}
 		PhimpMe.IdList.add(1);
-		
 		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);		
 		frame = ((FrameLayout) findViewById(R.id.preview));
 		preview = new Preview(this);
-		mCamera = Camera.open(0);
-		
+		try{
+			PhimpMeGallery.bmp.recycle();
+			PhimpMeGallery.bmp1.recycle();
+		}catch(Exception e){}
+		try{
+		mCamera = Camera.open();}catch(Exception e){
+			mCamera.release();
+			mCamera = Camera.open();
+		}
+		mCamera.setDisplayOrientation(90);
 		preview.setCamera(mCamera);
 		ctx = this;
 		frame.addView(preview);						
@@ -98,6 +105,11 @@ public class Camera2 extends Activity {
 			                mCamera = null;
 			            }
 						mCamera = Camera.open(0);
+
+						mCamera.setDisplayOrientation(90); 
+
+						mCamera.setDisplayOrientation(90);
+
 						preview.switchCamera(mCamera);
 						mCamera.startPreview();
 					}
@@ -151,14 +163,17 @@ public class Camera2 extends Activity {
 	//** Handles data for jpeg picture *//*
 	PictureCallback jpegCallback = new PictureCallback() {
 		public void onPictureTaken(byte[] data, Camera camera) {
+			
 			FileOutputStream outStream = null;
 			Bitmap rotatedBMP = null;
 			String picture = "";
 			Bitmap bmp =null;
+			Log.e("Size",String.valueOf(data.length)) ;
 			try {
+				
 				picture = String.format("/sdcard/phimp.me/take_photo/%d.jpg", System.currentTimeMillis());
-				outStream = new FileOutputStream(picture);										
-	            bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+				outStream = new FileOutputStream(picture);				
+	            bmp = BitmapFactory.decodeByteArray(data, 0, data.length);	            	            
 	            int w = bmp.getWidth();
 	            int h = bmp.getHeight();
 	            Matrix mtx = new Matrix();
@@ -169,8 +184,9 @@ public class Camera2 extends Activity {
 	            rotatedBMP.compress(CompressFormat.JPEG, 100, outStream);
 	            rotatedBMP.recycle();
 	            bmp.recycle();
-	            outStream.flush();
-				outStream.close();	
+	            outStream.flush();	            
+				outStream.close();
+				outStream = null;
 				System.gc();
 				Log.d(TAG, "onPictureTaken - wrote bytes: " + data.length);
 			} catch (FileNotFoundException e) {
@@ -186,6 +202,7 @@ public class Camera2 extends Activity {
 			_intent.putExtra("aspectY", 0);
 			_intent.putExtra("scale", true);
 			_intent.putExtra("activityName", "Camera2");
+			
 			startActivityForResult(_intent, 1);
 		}
 	};
@@ -200,7 +217,10 @@ public class Camera2 extends Activity {
 		if (PhimpMe.IdList.size() == 5) {PhimpMe.IdList.clear();PhimpMe.IdList.add(0);}
 		PhimpMe.IdList.add(1);
 	}
-	
+	@Override
+	protected void onPause(){
+		super.onPause();
+	}
 	/*@Override
 	public boolean onKeyDown(int keycode, KeyEvent event)
     {
@@ -214,8 +234,8 @@ public class Camera2 extends Activity {
     	return true;
     }*/
 	@Override
-	public void onBackPressed(){
-		PhimpMe.showTabs();
+	public void onBackPressed(){		
+		//PhimpMe.showTabs();
 		PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
 		PhimpMe.mTabHost.setCurrentTab(PhimpMe.IdList.get(PhimpMe.IdList.size()-1));		
 	}
@@ -241,10 +261,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 	public void setCamera(Camera camera) {
         this.camera = camera;
         if (camera != null) {
-            //mSupportedPreviewSizes = this.camera.getParameters().getSupportedPreviewSizes();
-        	Camera.Parameters parameters = camera.getParameters();
-        	parameters.setFocusMode(Camera.Parameters.FLASH_MODE_AUTO);
-            camera.setParameters(parameters)        ;              
+            //mSupportedPreviewSizes = this.camera.getParameters().getSupportedPreviewSizes();        	        	
             requestLayout();
         }
     }
@@ -266,8 +283,21 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
     	
         try {
 			camera.setPreviewDisplay(holder);									
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			Camera2.mCamera.release();
+			Camera2.mCamera = null;
+			Camera2.mCamera = Camera.open(PhimpMe.camera_use);
+			Camera2.mCamera.setDisplayOrientation(90);
+			camera = null;
+			camera = Camera2.mCamera;
+			try {
+				camera.setPreviewDisplay(holder);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			requestLayout();
+			
 		}
     }
 
@@ -275,7 +305,9 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
         // Surface will be destroyed when we return, so stop the preview.
         // Because the CameraDevice object is not a shared resource, it's very
         // important to release it when the activity is paused.
+    	try{
         camera.stopPreview();
+    	}catch(Exception e){}
         camera = null;
     }
     @Override
@@ -315,7 +347,6 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
     	//camera.stopPreview();
     	Camera.Parameters parameters = camera.getParameters();        
         Camera.Size previewSize = getBestPreviewSize(w, h, parameters);        
-        camera.setDisplayOrientation(90);            
         parameters.setPreviewSize(previewSize.width,previewSize.height);
         camera.startPreview();
     }

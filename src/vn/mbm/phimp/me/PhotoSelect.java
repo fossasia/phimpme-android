@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -89,6 +90,7 @@ public class PhotoSelect extends Activity {
 	}
 
 	public class ImageAdapter extends BaseAdapter {
+		Context ctx;
 		private LayoutInflater mInflater;
 		public ArrayList<ImageItem> images = new ArrayList<ImageItem>();
 		
@@ -147,7 +149,6 @@ public class PhotoSelect extends Activity {
 						.findViewById(R.id.thumbImage);
 				holder.checkbox = (CheckBox) convertView
 						.findViewById(R.id.itemCheckBox);
-
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
@@ -173,25 +174,33 @@ public class PhotoSelect extends Activity {
 			holder.imageview.setOnClickListener(new OnClickListener() {
 
 				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					int id = v.getId();
-					ImageItem item = images.get(id);
-					Intent intent = new Intent();
-					intent.setAction(Intent.ACTION_VIEW);
-					final String[] columns = { MediaStore.Images.Media.DATA };
-					Cursor imagecursor = managedQuery(
-							MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
-							MediaStore.Images.Media._ID + " = " + item.id, null, MediaStore.Images.Media._ID);
-					if (imagecursor != null && imagecursor.getCount() > 0){
-						imagecursor.moveToPosition(0);
-						String path = imagecursor.getString(imagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
-						Intent _intent = new Intent();
-						_intent.setClass(PhotoSelect.this, PhimpMeGallery.class);
-						_intent.putExtra("image-path", path);						
-						_intent.putExtra("activityName", "PhotoSelect");
-						startActivityForResult(_intent, VIEW_IMAGE);
-						Log.d("file path",path);
+					// TODO Auto-generated method stub	
+					try{						
+						int id = v.getId();
+						ImageItem item = images.get(id);
+						Intent intent = new Intent();
+						intent.setAction(Intent.ACTION_VIEW);				
+						final String[] columns = { MediaStore.Images.Media.DATA };
+						Cursor imagecursor = managedQuery(
+								MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
+								MediaStore.Images.Media._ID + " = " + item.id, null, MediaStore.Images.Media._ID);
+						if (imagecursor != null && imagecursor.getCount() > 0){
+							imagecursor.moveToPosition(0);
+							String path = imagecursor.getString(imagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
+							Intent _intent = new Intent();
+							_intent.setClass(PhotoSelect.this, PhimpMeGallery.class);
+							_intent.putExtra("image-path", path);						
+							_intent.putExtra("aspectX", 0);
+							_intent.putExtra("aspectY", 0);
+							_intent.putExtra("scale", true);
+							_intent.putExtra("activityName", "PhotoSelect");
+							startActivityForResult(_intent, VIEW_IMAGE);
+							Log.d("file path",path);
+						}
+					}catch(Exception e){
+						e.printStackTrace();
 					}
+			
 				}
 			});
 			holder.imageview.setImageBitmap(item.img);

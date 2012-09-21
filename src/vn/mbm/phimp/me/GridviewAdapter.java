@@ -1,27 +1,30 @@
 package vn.mbm.phimp.me;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import vn.mbm.phimp.me.utils.ImageUtil;
 import vn.mbm.phimp.me.utils.RSSPhotoItem;
 import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.RotateAnimation;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 
 public class GridviewAdapter {
 
@@ -32,7 +35,8 @@ class LocalPhotosAdapter extends BaseAdapter {
 	private Context context;
 	private ArrayList<String> filepath;
 	LayoutInflater li;
-
+	HashMap<Integer, Matrix> mImageTransforms = new HashMap<Integer,Matrix>();
+	Matrix mIdentityMatrix = new Matrix();
 	public LocalPhotosAdapter(Context localContext, ArrayList<String> filepath) {
 		this.context = localContext;
 		this.filepath = filepath;
@@ -56,74 +60,63 @@ class LocalPhotosAdapter extends BaseAdapter {
 	public long getItemId(int position) {
 		return position;
 	}
-
+	
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View view;
-		if (convertView == null) {
-			li = (LayoutInflater) context
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        ImageView picturesView;
+        
+        if (convertView == null) {			
+            picturesView = new ImageView(context);
+            String url = filepath.get(position);	
+            picturesView.setImageURI(Uri.withAppendedPath(
+                    MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, "" + url));
+            
+            
+            
+            try {
+				int orient=getOrientation(context, position);
+				Log.i("GV_Adapter","orientation : "+orient);
+				
+	            picturesView.setPadding(2, 2, 2, 2);
+	            picturesView.setScaleType(ScaleType.FIT_XY);	            
+	            picturesView.setLayoutParams(new GridView.LayoutParams(PhimpMe.width, PhimpMe.height));
+	            
+	            try{
+	            	picturesView.setRotation(orient);
+	            }catch(NoSuchMethodError n){
+	            	
+	            }
+	            
+			} catch (Exception e) {
 
-			view = li.inflate(R.layout.gallery_grid_photos_item, null);
-		} else {
-			view = convertView;
-		}
-		String url = filepath.get(position);
+			}                   
+        }
+        else {
+            picturesView = (ImageView)convertView;
+        }        
+        return picturesView;
+
+    }
+	public static int getOrientation(Context context, int position) throws Exception {
 		
-		ImageView load_iv = (ImageView) view
-				.findViewById(R.id.imgGalleryGridItemLoading);
-		ImageView iv = (ImageView) view
-				.findViewById(R.id.imgGalleryGridItemThumbnail);
-		load_iv.setScaleType(ImageView.ScaleType.FIT_XY);
-		load_iv.setVisibility(View.INVISIBLE);
-		try {
+		String[] projection = {MediaStore.Images.Media.DATA};
+        
 
-			InputStream is = new FileInputStream(new File(url));
+	    Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+	    		projection, null, null, MediaStore.Images.Media._ID+ " DESC");
+	    int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+	    cursor.moveToPosition(position);
+        
 
-			BitmapFactory.Options bfOpt = new BitmapFactory.Options();
-
-			bfOpt.inScaled = true;
-			bfOpt.inSampleSize = 2;
-			bfOpt.inPurgeable = true;
-
-			Bitmap bmp = BitmapFactory.decodeStream(is, null, bfOpt);
-			bmp = ImageUtil.scaleCenterCrop(bmp,
-					newGallery.DEFAULT_THUMBNAIL_SIZE,
-					newGallery.DEFAULT_THUMBNAIL_SIZE);
-			iv.setImageBitmap(bmp);
-		} catch (Exception e) {
-		}
-		iv.setVisibility(View.VISIBLE);
-
-		final String tmp_url = url;
-		final int pos = position;
-		iv.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-
-				/*
-				 * Call divices gallery
-				 */
-				/*File f = new File(tmp_url);
-				Intent intent = new Intent();
-				intent.setAction(Intent.ACTION_VIEW);
-				intent.setDataAndType(Uri.fromFile(f), "image/*");
-				((Activity) context).startActivityForResult(intent, 3);*/
-
-				/*
-				 * Danh- call PhimpMe Gallery
-				 */
-
-				Intent _intent = new Intent();
-				_intent.setClass(context, PhimpMeGallery.class);
-				_intent.putExtra("image-path", tmp_url);
-				_intent.putExtra("aspectX", 0);
-				_intent.putExtra("aspectY", 0);
-				_intent.putExtra("scale", true);
-				_intent.putExtra("activityName", "GridviewAdapter");
-				((Activity) context).startActivityForResult(_intent, 3);
-			}
-		});
-		return view;
+        String imagePath = cursor.getString(columnIndex);
+        cursor.close();
+        ExifInterface exif=new ExifInterface(imagePath);
+		int orientation=exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);		
+		if(orientation==3) return 180;
+		else if(orientation==6) return 90;
+		else if(orientation==8) return 270;
+		else  return 0;
+		
+       
 	}
 }
 
@@ -205,6 +198,7 @@ class GridFlickrAdaper extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				_intent.putExtra("image-path", tmp_url);						
@@ -278,7 +272,7 @@ class GridRecentFlickrAdaper extends BaseAdapter {
 			view = convertView;
 		}
 		String url = list_recent_flickr.get(position).getURL();
-
+		Log.i("GV_Adapter","url flickr public : "+url);
 		ImageView load_iv = (ImageView) view
 				.findViewById(R.id.imgGalleryGridItemLoading);
 		ImageView iv = (ImageView) view
@@ -296,6 +290,7 @@ class GridRecentFlickrAdaper extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				_intent.putExtra("image-path", tmp_url);						
@@ -388,6 +383,7 @@ class GridPublicPicasaAdaper extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				_intent.putExtra("image-path", tmp_url);						
@@ -480,6 +476,7 @@ class GridGoogleNewsAdaper extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				_intent.putExtra("image-path", tmp_url);						
@@ -571,6 +568,7 @@ class GridYahooAdapter extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				_intent.putExtra("image-path", tmp_url);						
@@ -662,6 +660,7 @@ class GridDeviantAdapter extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				_intent.putExtra("image-path", tmp_url);						
@@ -754,6 +753,7 @@ class GridFacebookAdapter extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				_intent.putExtra("image-path", tmp_url);						
@@ -846,6 +846,7 @@ class GridTumblrAdapter extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				_intent.putExtra("image-path", tmp_url);						
@@ -940,6 +941,7 @@ class GridVKontakteAdapter extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				_intent.putExtra("image-path", tmp_url);						
@@ -1032,6 +1034,7 @@ class GridPersonalFlickrAdapter extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				_intent.putExtra("image-path", tmp_url);						
@@ -1124,6 +1127,7 @@ class GridPersonalPicasaAdapter extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				_intent.putExtra("image-path", tmp_url);						
@@ -1216,6 +1220,7 @@ class GridPersonalDeviantArtAdapter extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				_intent.putExtra("image-path", tmp_url);						
@@ -1302,6 +1307,7 @@ class GridPersonalImageShackAdapter extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				_intent.putExtra("image-path", tmp_url);						
@@ -1395,6 +1401,7 @@ class GridPersonalImgurAdapter extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				_intent.putExtra("image-path", tmp_url);						
@@ -1487,6 +1494,7 @@ class GridMyFeedServicesAdaper extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				_intent.putExtra("image-path", tmp_url);						
@@ -1579,6 +1587,7 @@ class GridMyFeedServicesAdaper1 extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				_intent.putExtra("image-path", tmp_url);						
@@ -1671,6 +1680,7 @@ class GridMyFeedServicesAdaper2 extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				_intent.putExtra("image-path", tmp_url);						
@@ -1763,6 +1773,7 @@ class GridMyFeedServicesAdaper3 extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				_intent.putExtra("image-path", tmp_url);						
@@ -1855,6 +1866,7 @@ class GridMyFeedServicesAdaper4 extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				_intent.putExtra("image-path", tmp_url);						
@@ -1947,6 +1959,7 @@ class GridMyFeedServicesAdaper5 extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				_intent.putExtra("image-path", tmp_url);						
@@ -2038,6 +2051,7 @@ class GridPersonalKaixinAdapter extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				_intent.putExtra("image-path", tmp_url);						
@@ -2129,6 +2143,7 @@ class GridImgurPublicAdaper extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				_intent.putExtra("image-path", tmp_url);						
@@ -2221,6 +2236,7 @@ class GridPublic500pxAdaper extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				_intent.putExtra("image-path", tmp_url);						
@@ -2315,6 +2331,7 @@ class GridPersonal500pxAdapter extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				_intent.putExtra("image-path", tmp_url);						
@@ -2406,6 +2423,7 @@ class GridPersonalSohuAdapter extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				_intent.putExtra("image-path", tmp_url);						

@@ -25,20 +25,12 @@
 	        android:layout_alignParentRight="true"
 	        android:padding="5dp" >
 
-	        <Button
-	            android:id="@+id/btnPublic"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_alignParentRight="true"
-	            android:layout_centerVertical="true"
-	            android:text="@string/refresh" />
-
 	        <ImageButton
 	            android:id="@+id/btnGalleryMaps"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_alignBottom="@+id/btnPublic"
-	            android:layout_toLeftOf="@+id/btnPublic"
+	            android:layout_alignParentRight="true"
+	            android:layout_centerVertical="true"
 	            android:contentDescription="@string/empty"
 	            android:src="@drawable/maps" />
 
@@ -46,7 +38,7 @@
 	            android:id="@+id/btnBluetoothShare"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_alignParentTop="true"
+	            android:layout_alignTop="@+id/btnGalleryMaps"
 	            android:layout_toLeftOf="@+id/btnGalleryMaps"
 	            android:contentDescription="@string/empty"
 	            android:src="@drawable/bluetooth" />

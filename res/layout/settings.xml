@@ -130,21 +130,22 @@
                     android:contentDescription="@string/empty"
                     android:src="@drawable/edit" />
             </RelativeLayout>
-			
-	        <RelativeLayout 
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:layout_marginLeft="10dp"
-			    android:padding="10dp">
-	
-	       		<TextView
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:padding="10dp" >
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:text="@string/deletephoto"
                     android:textColor="@color/white" />
-		        <ImageButton
+
+                <ImageButton
                     android:id="@+id/deletebtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -152,13 +153,24 @@
                     android:layout_alignParentTop="true"
                     android:contentDescription="@string/empty"
                     android:src="@drawable/delete" />
-			</RelativeLayout>
-            
-	        <RelativeLayout
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp" >
             </RelativeLayout>
+
+            <TextView
+                android:id="@+id/TextView06"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/googleadmod"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/blue_light"
+                android:textStyle="bold" />
+
             <View
                 android:id="@+id/view2"
                 android:layout_width="match_parent"
@@ -166,8 +178,19 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@color/blue_dark" />
-	        
-	        
+
+            <LinearLayout
+                android:id="@+id/linearSettingsGoogleAdmod"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical"
+                android:padding="10dp" >
+
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/TextView02"
                 android:layout_width="match_parent"
@@ -177,7 +200,6 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/blue_light"
                 android:textStyle="bold" />
-            
 
             <View
                 android:id="@+id/View01"
@@ -206,15 +228,15 @@
                     android:textColor="@color/white" />
             </LinearLayout>
 
-			<TextView
-			    android:id="@+id/TextView02"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:layout_margin="10dp"
-			    android:text="@string/myfeed"
-			    android:textAppearance="?android:attr/textAppearanceMedium"
-			    android:textColor="@color/blue_light"
-			    android:textStyle="bold" />
+            <TextView
+                android:id="@+id/TextView02"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/myfeed"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/blue_light"
+                android:textStyle="bold" />
 
             <View
                 android:id="@+id/View01"
@@ -250,10 +272,9 @@
                     android:layout_marginRight="10dp"
                     android:orientation="vertical"
                     android:padding="10dp" >
-
                 </LinearLayout>
-
             </LinearLayout>
+
             <TextView
                 android:id="@+id/TextView03"
                 android:layout_width="match_parent"
