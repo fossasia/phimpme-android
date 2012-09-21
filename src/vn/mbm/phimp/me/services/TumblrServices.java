@@ -30,8 +30,8 @@ public class TumblrServices
 	public static int icon = R.drawable.tumblr;
 	public static String title = "Tumblr";
 	
-	public static final String CONSUMER_KEY = "pyiJHL3Bnabjrrs5CCqwTlYqVCYPlhEqNCZ6atPICBd0WHEau2";
-	public static final String CONSUMER_SECRET = "K9b4L7sAqTLiyWyaHpe4N2qX0MPlL9Oa3X2nOcjICYvzCTQqvt";
+	public static final String CONSUMER_KEY = "xXORQTEkk4Yo7hn4hz67b4YtqqUD9YoZXJomOghDOtUyrx1SIm";
+	public static final String CONSUMER_SECRET = "HzMqz2MnrfQLUU7k6bBXMgi5hF0V09fReTR6I1pfx0GO9LzOsD";
 	
 	public static final String URL_REQUEST_TOKEN = "http://www.tumblr.com/oauth/request_token";
 	public static final String URL_ACCESS_TOKEN = "http://www.tumblr.com/oauth/access_token";

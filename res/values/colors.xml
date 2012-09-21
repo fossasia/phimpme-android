@@ -8,4 +8,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="black">#000000</color>
     <color name="green">#00FF00</color>
+    <color name="tabMedium">#2B2B2B</color>
+	<color name="tabDark">#000000</color>
+	<color name="tabTransparent">#10ffffff</color>
 </resources>

@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +33,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 public class ImageAdapter extends BaseAdapter {
-
+	
 	private LayoutInflater mInflater;
 	private ArrayList<String> filepath;
 	private String imagepath;
@@ -66,8 +68,8 @@ public class ImageAdapter extends BaseAdapter {
 		}
 		try {
 					String url;
-					url= filepath.get(position);									
-					Log.e("ImageAdapter","url : "+url+" at position :"+position);
+					url= filepath.get(position);												
+					Log.i("ImageAdapter","url : "+url+" at position :"+position);
 					
 					InputStream is = new FileInputStream(new File(url));					
 					BitmapFactory.Options bfOpt = new BitmapFactory.Options();
@@ -76,13 +78,38 @@ public class ImageAdapter extends BaseAdapter {
 					bfOpt.inSampleSize = 4;
 					bfOpt.inPurgeable = true;
 	
-					Bitmap bmp = BitmapFactory.decodeStream(is, null, bfOpt);
-					ImageView iv = (ImageView)convertView.findViewById(R.id.imgView);	
-					iv.setImageBitmap(bmp);
+					PhimpMeGallery.bmp = BitmapFactory.decodeStream(is, null, bfOpt);
+					ImageView iv = (ImageView)convertView.findViewById(R.id.imgView);
+					//get orientation value : http://sylvana.net/jpegcrop/exif_orientation.html
+					ExifInterface exif=new ExifInterface(url);
+					int orientation=exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
+					Matrix matrix=new Matrix();
+					if(orientation==3){
+						Log.i("ImageAdapter","orientation 180");
+						matrix.postRotate(180);						
+					}
+					else if(orientation==6){
+						Log.i("ImageAdapter","orientation 90");
+						matrix.postRotate(90);
+					
+					}
+					if(orientation==8){
+						Log.i("ImageAdapter","orientation 270");
+						matrix.postRotate(270);
+						
+					}
+
+						PhimpMeGallery.bmp=Bitmap.createBitmap(PhimpMeGallery.bmp, 0, 0, PhimpMeGallery.bmp.getWidth(), PhimpMeGallery.bmp.getHeight(), matrix, true);
+						matrix.reset();
+						iv.setImageBitmap(PhimpMeGallery.bmp);
+					
+					
 					
 					if(position==1){
-						url=imagepath;											
-						Log.e("ImageAdapter","imagepath : "+imagepath+" at position :"+position);
+						url=imagepath;										
+						Log.i("ImageAdapter","imagepath : "+imagepath+" at position :"+position);
+						
+						
 						InputStream is1 = new FileInputStream(new File(url));
 						
 						BitmapFactory.Options bfOpt1 = new BitmapFactory.Options();
@@ -91,10 +118,27 @@ public class ImageAdapter extends BaseAdapter {
 						bfOpt1.inSampleSize = 4;
 						bfOpt1.inPurgeable = true;
 
-						Bitmap bmp1 = BitmapFactory.decodeStream(is1, null, bfOpt1);
-						ImageView iv1 = (ImageView)convertView.findViewById(R.id.imgView);
+						PhimpMeGallery.bmp1 = BitmapFactory.decodeStream(is1, null, bfOpt1);
+						
+						ExifInterface exif1=new ExifInterface(url);
+						int orientation1=exif1.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
 
-						iv1.setImageBitmap(bmp1);
+						Matrix matrix1=new Matrix();
+						ImageView iv1 = (ImageView)convertView.findViewById(R.id.imgView);					
+						
+						if(orientation1==3){
+							matrix1.postRotate(180);							
+						}
+						if(orientation1==6){
+							matrix1.postRotate(90);
+						}
+						if(orientation1==8){
+							matrix1.postRotate(270);
+						}
+						
+						PhimpMeGallery.bmp1=Bitmap.createBitmap(PhimpMeGallery.bmp1, 0, 0, PhimpMeGallery.bmp1.getWidth(), PhimpMeGallery.bmp1.getHeight(), matrix1, true);
+						matrix1.reset();
+						iv1.setImageBitmap(PhimpMeGallery.bmp1);
 						
 						
 					}
@@ -104,13 +148,10 @@ public class ImageAdapter extends BaseAdapter {
 			} catch (Exception e) {
 			}
 		
-		
-		
-		
+
 		return convertView;
+		
 	}
-	
-	
 
 }
 

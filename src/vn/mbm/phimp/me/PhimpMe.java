@@ -21,28 +21,38 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
+import android.gesture.GestureOverlayView;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.ads.AdRequest;
 import com.google.ads.AdView;
 import com.google.android.maps.GeoPoint;
+
+
 @SuppressWarnings("deprecation")
-public class PhimpMe extends TabActivity 
+public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener//, android.view.GestureDetector.OnGestureListener 
 {
 	public static Context ctx;
 	public static File DataDirectory;
@@ -54,6 +64,8 @@ public class PhimpMe extends TabActivity
 	/* Hon Nguyen */
 	public static String phimp_me_tmp;
 	public static Uri phimp_me_img_uri_temporary;
+	
+	public static boolean FEEDS_GOOGLE_ADMOB;
 	
 	public static boolean FEEDS_LIST_YAHOO_NEWS;
 	public static final String FEEDS_LIST_YAHOO_NEWS_TAG = "feeds_list_yahoo_news";
@@ -153,17 +165,25 @@ public class PhimpMe extends TabActivity
 	boolean serviceDisabled = false;
 	
 	public static boolean check_export = true;
-	public static TabHost mTabHost;
-    @Override
+	public static TabHost mTabHost;	
+	public static boolean check_donwload=false;
+	public static boolean check_donwload_local_gallery=false;	
+	//private GestureDetector gestureScanner;
+	//View.OnTouchListener gestureListener;
+	public static int width,height;
+    @SuppressWarnings("unused")
+	@Override
     public void onCreate(Bundle savedInstanceState) 
     {
     	super.onCreate(savedInstanceState);
-    	ctx = this;
+    	ctx = this;    	
     	Log.d("thong", "PhimpMe - onCreate()");
     	camera_use = 0;
     	if (IdList == null) IdList = new ArrayList<Integer>();
     	    	
         setContentView(R.layout.main);
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);		
+        //gestureScanner = new GestureDetector(this);
         //Crash report
         //Crittercism.init(getApplicationContext(), CRITTERCISM_APP_ID, serviceDisabled);
         add_account_upload = false;
@@ -175,264 +195,50 @@ public class PhimpMe extends TabActivity
         	cachetask.execute(str);
         	
         /*
+         * get window width, height
+         */
+        	Display display=getWindowManager().getDefaultDisplay();
+    		width=height=display.getWidth()/3;
+        /*
          * Google admod
          */
-    	AdView adView = (AdView)this.findViewById(R.id.adView);
-        adView.loadAd(new AdRequest());
+        	SharedPreferences setting = getSharedPreferences(PREFS_NAME, 0);
+        	FEEDS_GOOGLE_ADMOB=setting.getBoolean("Google Admob", true);
+        	File file = getBaseContext().getFileStreamPath("google_admob.txt");
+    		if(file.exists()){
+    			try {
+    				FileInputStream Rfile = openFileInput("google_admob.txt");
+    				
+    				InputStreamReader einputreader = new InputStreamReader(Rfile);
+    				BufferedReader ebuffreader = new BufferedReader(einputreader);
+    				Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
+    				PhimpMe.FEEDS_GOOGLE_ADMOB = tmp;
+    			} catch (FileNotFoundException e) {
+    				e.printStackTrace();
+    			} catch (IOException e) {
+    				e.printStackTrace();
+    			}
+    		}
+    		Log.i("PhimpMe","feed_google_admob : "+FEEDS_GOOGLE_ADMOB);
+    			AdView adView = (AdView)this.findViewById(R.id.adView);
+    	        adView.loadAd(new AdRequest());
+    	        if(FEEDS_GOOGLE_ADMOB==false){
+    	        	//adView.setVisibility(4);
+    	        	adView.destroy();
+    	        }
+    	        
+    	
+        
         /*
          * Export data
          */
         if(check_export = true){
         	//exportDevicesInfomation();
         	//exportInstalledPakage();        	
-        	Intent intent = new Intent(this,CollectUserData.class);
+        	//Intent intent = new Intent(this,CollectUserData.class);
         	//startService(intent);
-        	check_export = false;
-        }        
-        /*
-         * user config
-         */
-        
-        File file = getBaseContext().getFileStreamPath("local_gallery.txt");
-		if(file.exists()){
-			try {
-				FileInputStream Rfile = openFileInput("local_gallery.txt");
-				
-				InputStreamReader einputreader = new InputStreamReader(Rfile);
-				BufferedReader ebuffreader = new BufferedReader(einputreader);
-				Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
-				PhimpMe.FEEDS_LOCAL_GALLERY = tmp;
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		
-		File file1 = getBaseContext().getFileStreamPath("flickr_public.txt");
-		if(file1.exists()){
-			try {
-				FileInputStream Rfile = openFileInput("flickr_public.txt");
-				
-				InputStreamReader einputreader = new InputStreamReader(Rfile);
-				BufferedReader ebuffreader = new BufferedReader(einputreader);
-				Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
-				PhimpMe.FEEDS_LIST_FLICKR_PUBLIC = tmp;
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		File file2 = getBaseContext().getFileStreamPath("flickr_recent.txt");
-		if(file2.exists()){
-			try {
-				FileInputStream Rfile = openFileInput("flickr_recent.txt");
-				
-				InputStreamReader einputreader = new InputStreamReader(Rfile);
-				BufferedReader ebuffreader = new BufferedReader(einputreader);
-				Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
-				PhimpMe.FEEDS_LIST_FLICKR_RECENT = tmp;
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-    	
-		File file3 = getBaseContext().getFileStreamPath("google_news.txt");
-		if(file3.exists()){
-			try {
-				FileInputStream Rfile = openFileInput("google_news.txt");
-				
-				InputStreamReader einputreader = new InputStreamReader(Rfile);
-				BufferedReader ebuffreader = new BufferedReader(einputreader);
-				Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
-				PhimpMe.FEEDS_LIST_GOOGLE_NEWS = tmp;
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-    	
-		File file4 = getBaseContext().getFileStreamPath("public_picasa.txt");
-		if(file4.exists()){
-			try {
-				FileInputStream Rfile = openFileInput("public_picasa.txt");
-				
-				InputStreamReader einputreader = new InputStreamReader(Rfile);
-				BufferedReader ebuffreader = new BufferedReader(einputreader);
-				Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
-				PhimpMe.FEEDS_LIST_GOOGLE_PICASA_PUBLIC = tmp;
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		File file5 = getBaseContext().getFileStreamPath("yahoo_news.txt");
-		if(file5.exists()){
-			try {
-				FileInputStream Rfile = openFileInput("yahoo_news.txt");
-				
-				InputStreamReader einputreader = new InputStreamReader(Rfile);
-				BufferedReader ebuffreader = new BufferedReader(einputreader);
-				Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
-				PhimpMe.FEEDS_LIST_YAHOO_NEWS = tmp;
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-    	
-		File file6 = getBaseContext().getFileStreamPath("deviant_public.txt");
-		if(file6.exists()){
-			try {
-				FileInputStream Rfile = openFileInput("deviant_public.txt");
-				
-				InputStreamReader einputreader = new InputStreamReader(Rfile);
-				BufferedReader ebuffreader = new BufferedReader(einputreader);
-				Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
-				PhimpMe.FEEDS_LIST_DEVIANTART_PUBLIC = tmp;
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-    	
-		File file7 = getBaseContext().getFileStreamPath("flick_private.txt");
-		if(file7.exists()){
-			try {
-				FileInputStream Rfile = openFileInput("flick_private.txt");
-				
-				InputStreamReader einputreader = new InputStreamReader(Rfile);
-				BufferedReader ebuffreader = new BufferedReader(einputreader);
-				Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
-				PhimpMe.FEEDS_LIST_FLICKR_PRIVATE = tmp;
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		File file8 = getBaseContext().getFileStreamPath("picasa_private.txt");
-		if(file8.exists()){
-			try {
-				FileInputStream Rfile = openFileInput("picasa_private.txt");
-				
-				InputStreamReader einputreader = new InputStreamReader(Rfile);
-				BufferedReader ebuffreader = new BufferedReader(einputreader);
-				Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
-				PhimpMe.FEEDS_LIST_GOOGLE_PICASA_PRIVATE = tmp;
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-    	
-		File file9 = getBaseContext().getFileStreamPath("deviant_private.txt");
-		if(file9.exists()){
-			try {
-				FileInputStream Rfile = openFileInput("deviant_private.txt");
-				
-				InputStreamReader einputreader = new InputStreamReader(Rfile);
-				BufferedReader ebuffreader = new BufferedReader(einputreader);
-				Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
-				PhimpMe.FEEDS_LIST_DEVIANTART_PRIVITE = tmp;
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-    	
-		File file10 = getBaseContext().getFileStreamPath("vk.txt");
-		if(file10.exists()){
-			try {
-				FileInputStream Rfile = openFileInput("vk.txt");
-				
-				InputStreamReader einputreader = new InputStreamReader(Rfile);
-				BufferedReader ebuffreader = new BufferedReader(einputreader);
-				Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
-				PhimpMe.FEEDS_LIST_VK = tmp;
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-    	
-		File file11 = getBaseContext().getFileStreamPath("facebook.txt");
-		if(file11.exists()){
-			try {
-				FileInputStream Rfile = openFileInput("facebook.txt");
-				
-				InputStreamReader einputreader = new InputStreamReader(Rfile);
-				BufferedReader ebuffreader = new BufferedReader(einputreader);
-				Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
-				PhimpMe.FEEDS_LIST_FACEBOOK_PRIVATE = tmp;
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-    	
-		File file12 = getBaseContext().getFileStreamPath("tumblr_private.txt");
-		if(file12.exists()){
-			try {
-				FileInputStream Rfile = openFileInput("tumblr_private.txt");
-				
-				InputStreamReader einputreader = new InputStreamReader(Rfile);
-				BufferedReader ebuffreader = new BufferedReader(einputreader);
-				Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
-				PhimpMe.FEEDS_LIST_TUMBLR_PRIVATE = tmp;
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-    	
-		File file13 = getBaseContext().getFileStreamPath("imgur_personal.txt");
-		if(file13.exists()){
-			try {
-				FileInputStream Rfile = openFileInput("imgur_personal.txt");
-				
-				InputStreamReader einputreader = new InputStreamReader(Rfile);
-				BufferedReader ebuffreader = new BufferedReader(einputreader);
-				Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
-				PhimpMe.FEEDS_LIST_IMGUR_PERSONAL = tmp;
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		File file14 = getBaseContext().getFileStreamPath("sohu_personal.txt");
-		if(file14.exists()){
-			try {
-				FileInputStream Rfile = openFileInput("sohu_personal.txt");
-				
-				InputStreamReader einputreader = new InputStreamReader(Rfile);
-				BufferedReader ebuffreader = new BufferedReader(einputreader);
-				Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
-				PhimpMe.FEEDS_LIST_SOHU_PERSONAL = tmp;
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+        	//check_export = false;
+        }       
         TabSpec ts;
         View tbview;
         Intent intent;
@@ -443,10 +249,10 @@ public class PhimpMe extends TabActivity
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         MAX_DISPLAY_PHOTOS = settings.getInt("gallery_max_display_photos", getResources().getInteger(R.integer.gallery_max_display_photos));
         MAX_FILESIZE_DOWNLOAD = settings.getInt("max_filesize_download", getResources().getInteger(R.integer.max_filesize_download));
-        FEEDS_LIST_FLICKR_PUBLIC = settings.getBoolean(FEEDS_LIST_FLICKR_PUBLIC_TAG, true);
-        FEEDS_LIST_FLICKR_RECENT = settings.getBoolean(FEEDS_LIST_FLICKR_RECENT_TAG, true);
         FEEDS_LOCAL_GALLERY=settings.getBoolean(FEEDS_LOCAL_GALLERY_TAG, true);
-        /*FEEDS_LIST_YAHOO_NEWS = settings.getBoolean(FEEDS_LIST_YAHOO_NEWS_TAG, false);       
+        FEEDS_LIST_FLICKR_PUBLIC = settings.getBoolean(FEEDS_LIST_FLICKR_PUBLIC_TAG, false);
+        FEEDS_LIST_FLICKR_RECENT = settings.getBoolean(FEEDS_LIST_FLICKR_RECENT_TAG, false);       
+        FEEDS_LIST_YAHOO_NEWS = settings.getBoolean(FEEDS_LIST_YAHOO_NEWS_TAG, false);       
         FEEDS_LIST_GOOGLE_PICASA_PUBLIC = settings.getBoolean(FEEDS_LIST_GOOGLE_PICASA_PUBLIC_TAG, false);
         FEEDS_LIST_GOOGLE_NEWS = settings.getBoolean(FEEDS_LIST_GOOGLE_NEWS_TAG, false);
         FEEDS_LIST_VK = settings.getBoolean(FEEDS_LIST_VK_TAG, false);
@@ -469,7 +275,7 @@ public class PhimpMe extends TabActivity
         FEEDS_LIST_MYSERVICES2= settings.getBoolean(FEDDS_LIST_MYSERVICES_TAG2, false);
         FEEDS_LIST_MYSERVICES3= settings.getBoolean(FEDDS_LIST_MYSERVICES_TAG3, false);
         FEEDS_LIST_MYSERVICES4= settings.getBoolean(FEDDS_LIST_MYSERVICES_TAG4, false);
-        FEEDS_LIST_MYSERVICES5= settings.getBoolean(FEDDS_LIST_MYSERVICES_TAG5, false);*/
+        FEEDS_LIST_MYSERVICES5= settings.getBoolean(FEDDS_LIST_MYSERVICES_TAG5, false);
         /*
          * Thong - Get data directory
          */
@@ -527,51 +333,76 @@ public class PhimpMe extends TabActivity
         /*
          * Thong - Initial Tab control
          */
+        
         popupTabs = (LinearLayout) findViewById(R.id.popupTabs);
         showTabs();
-        try
-        {
-	        mTabHost = getTabHost();
+        try{
+        mTabHost = getTabHost();        
+        setTabs();
+        mTabHost.setCurrentTab(0);
+        }catch(Exception e){}
+        /*mTabHost.setOnTabChangedListener(new OnTabChangeListener() {
+			
+			public void onTabChanged(String tabId) {
+				// TODO Auto-generated method stub
+				View currentView = mTabHost.getCurrentView();
+				int curTab = mTabHost.getCurrentTab();
+		        int lastTab = (curTab - 1);
+		        try{
+				View lastView = mTabHost.getChildAt(lastTab);
+				lastView.setAnimation(outToLeftAnimation());				
+				
+		        }catch(Exception e){}								
+		        currentView.setAnimation(inFromRightAnimation());
+			}
+		});*/
+        
+       
+}          
+    public Animation inFromRightAnimation() {
+        Animation inFromRight = new TranslateAnimation(
+                Animation.RELATIVE_TO_PARENT, +1.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f);
+        inFromRight.setDuration(500);
+        inFromRight.setInterpolator(new AccelerateInterpolator());
+        return inFromRight;
+    }
+
+	private void setTabs()
+	{
+		addTab("", R.drawable.tab_icon_gallery_selector, newGallery.class);
+		addTab("", R.drawable.tab_icon_camera_selector, Camera2.class);		
+		addTab("", R.drawable.tab_icon_upload_selector, Upload.class);
+		addTab("", R.drawable.tab_icon_settings_selector, Settings.class);
+	}
+	
+	private void addTab(String labelId, int drawableId, Class<?> c)
+	{
 		
-	        intent = new Intent().setClass(ctx, newGallery.class);
-	        tbview = LayoutInflater.from(mTabHost.getContext()).inflate(R.layout.ic_tab_gallery, null);
-	        ts = mTabHost.newTabSpec("gallery");
-	        ts.setIndicator(tbview);
-	        ts.setContent(intent);
-	        mTabHost.addTab(ts);
-	        
-	        intent = new Intent().setClass(ctx, Camera2.class);
-	        tbview = LayoutInflater.from(mTabHost.getContext()).inflate(R.layout.ic_tab_camera, null);	        
-	        ts = mTabHost.newTabSpec("camera");
-	        ts.setIndicator(tbview);
-	        ts.setContent(intent);
-	        mTabHost.addTab(ts);
-	        
-	        intent = new Intent().setClass(ctx, Upload.class);
-	        tbview = LayoutInflater.from(mTabHost.getContext()).inflate(R.layout.ic_tab_upload, null);
-	        ts = mTabHost.newTabSpec("upload");
-	        ts.setIndicator(tbview);
-	        ts.setContent(intent);
-	        mTabHost.addTab(ts);	       	        
-	        	        
-	        
-	        intent = new Intent().setClass(ctx, Settings.class);
-	        tbview = LayoutInflater.from(mTabHost.getContext()).inflate(R.layout.ic_tab_settings, null);
-	        ts = mTabHost.newTabSpec("settings");
-	        ts.setIndicator(tbview);
-	        ts.setContent(intent);
-	        mTabHost.addTab(ts);
-	        
-	        mTabHost.setCurrentTab(0);
-	        
-        }
-        catch (Exception e) 
-        {
-			e.printStackTrace();
-			Toast.makeText(getApplicationContext(), "Error: " + e.toString(), Toast.LENGTH_LONG).show();
-		}
-}
-    
+		Intent intent = new Intent(this, c);
+		TabHost.TabSpec spec = mTabHost.newTabSpec("tab" + labelId);	
+
+		View tabIndicator = LayoutInflater.from(this).inflate(R.layout.tab_indicator, getTabWidget(), false);
+		TextView title = (TextView) tabIndicator.findViewById(R.id.title);
+		title.setText(labelId);
+		ImageView icon = (ImageView) tabIndicator.findViewById(R.id.icon);
+		icon.setImageResource(drawableId);		
+		spec.setIndicator(tabIndicator);
+		spec.setContent(intent);
+		mTabHost.addTab(spec);
+	}
+    public Animation outToLeftAnimation() {
+        Animation outtoLeft = new TranslateAnimation(
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, -1.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f,
+                Animation.RELATIVE_TO_PARENT, 0.0f);
+        outtoLeft.setDuration(500);
+        outtoLeft.setInterpolator(new AccelerateInterpolator());
+        return outtoLeft;
+    }
  // Show Tabs method
     public static void showTabs(){
         popupTabs.setVisibility(ViewGroup.VISIBLE);
@@ -581,6 +412,7 @@ public class PhimpMe extends TabActivity
     public static void hideTabs(){
         popupTabs.setVisibility(ViewGroup.GONE);
     }
+   
     @Override
     protected void onPause()
     {
@@ -671,6 +503,45 @@ public class PhimpMe extends TabActivity
     	}  	
         return super.onKeyDown(keycode, event);
     }
+    /*public boolean onTouchEvent(MotionEvent me) {
+        return gestureScanner.onTouchEvent(me);
+    }*/
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        float dispX = e2.getX() - e1.getX();
+        float dispY = e2.getY() - e1.getY();
+        if (Math.abs(dispX) >= 200 && Math.abs(dispY) <= 100) {
+            // swipe ok
+            if (dispX > 0) {
+                // L-R swipe
+            	changeRtoL();                
+            } else {
+                // R-L swipe            	
+            	changeLtoR();
+                
+            }
+        }
+        return true;
+    }
+
+    private void changeLtoR() {
+        int curTab = mTabHost.getCurrentTab();
+        int nextTab = ((curTab + 1) % 4);
+        mTabHost.setCurrentTab(nextTab);
+    }
+    private void changeRtoL() {    	
+        int curTab = mTabHost.getCurrentTab();
+        if (curTab != 0){
+        int lastTab = ((curTab - 1) % 4);
+        mTabHost.setCurrentTab(lastTab);}
+
+    }
+   /* public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (gestureScanner != null) {
+            if (gestureScanner.onTouchEvent(ev))
+                return true;
+        }
+        return super.dispatchTouchEvent(ev);
+    }*/
 
 public void initialize() {	
 	int id;
@@ -697,7 +568,7 @@ public void initialize() {
 					Bitmap bmp = PhimpMe.cache.getCachePath(path);
 					
 				}
-				else if(c<=20){
+				else if(c<=20){				
 					Cursor cursor = managedQuery(
 							MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
 							MediaStore.Images.Media.DATA+ " = " + "\""+path+"\"", null, MediaStore.Images.Media._ID);									
@@ -709,9 +580,11 @@ public void initialize() {
 								MediaStore.Images.Thumbnails.MICRO_KIND, null);		
 						PhimpMe.cache.saveCacheFile(path, bmp, id);
 					}else id = -1;
+					
 					c++;
+					
 				}
-			
+				
 		}		
 	}
 	//pathcursor.close();
@@ -743,134 +616,24 @@ class CacheTask extends AsyncTask<String, Void, String> {
     	
     }
 }
-
-/*public void exportDevicesInfomation(){
-	JSONObject js=new JSONObject();
+public void onTabChanged(String tabId) {
+	// TODO Auto-generated method stub
 	
-		// the getLaunchIntentForPackage returns an intent that you can use
-	 	String  ANDROID         =   android.os.Build.VERSION.RELEASE;       //The current development codename, or the string "REL" if this is a release build.
-	    String  BOARD           =   android.os.Build.BOARD;                 //The name of the underlying board, like "goldfish".    
-	    String  BOOTLOADER      =   android.os.Build.BOOTLOADER;            //  The system bootloader version number.
-	    String  BRAND           =   android.os.Build.BRAND;                 //The brand (e.g., carrier) the software is customized for, if any.
-	    String  CPU_ABI         =   android.os.Build.CPU_ABI;               //The name of the instruction set (CPU type + ABI convention) of native code.
-	    String  CPU_ABI2        =   android.os.Build.CPU_ABI2;              //  The name of the second instruction set (CPU type + ABI convention) of native code.
-	    String  DEVICE          =   android.os.Build.DEVICE;                //  The name of the industrial design.
-	    String  DISPLAY         =   android.os.Build.DISPLAY;               //A build ID string meant for displaying to the user
-	    String  FINGERPRINT     =   android.os.Build.FINGERPRINT;           //A string that uniquely identifies this build.
-	    String  HARDWARE        =   android.os.Build.HARDWARE;              //The name of the hardware (from the kernel command line or /proc).
-	    String  HOST            =   android.os.Build.HOST;  
-	    String  ID              =   android.os.Build.ID;                    //Either a changelist number, or a label like "M4-rc20".
-	    String  MANUFACTURER    =   android.os.Build.MANUFACTURER;          //The manufacturer of the product/hardware.
-	    String  MODEL           =   android.os.Build.MODEL;                 //The end-user-visible name for the end product.
-	    String  PRODUCT         =   android.os.Build.PRODUCT;               //The name of the overall product.
-	    String  RADIO           =   android.os.Build.PRODUCT;               //The radio firmware version number.
-	    String  TAGS            =   android.os.Build.TAGS;                  //Comma-separated tags describing the build, like "unsigned,debug".
-	    String  TYPE            =   android.os.Build.TYPE;                  //The type of build, like "user" or "eng".
-	    String  USER            =   android.os.Build.USER;                  //
-	   	    
-	    try {
-			js.put("android version", ANDROID);
-			js.put("board", BOARD);
-		    js.put("bootloader", BOOTLOADER);
-		    js.put("brand", BRAND);
-		    js.put("cpu_abi", CPU_ABI);
-		    js.put("cpu_abi2", CPU_ABI2);
-		    js.put("device", DEVICE);
-		    js.put("display", DISPLAY);
-		    js.put("fingerprint", FINGERPRINT);
-		    js.put("hardware", HARDWARE);
-		    js.put("host", HOST);
-		    js.put("id", ID);
-		    js.put("manufacturer", MANUFACTURER);
-		    js.put("model", MODEL);
-		    js.put("product", PRODUCT);
-		    js.put("radio", RADIO);
-		    js.put("tags", TAGS);
-		    js.put("type", TYPE);
-		    js.put("user", USER);
-		    Log.e("Danh", "json value : "+js.toString());
-		    String url = "http://192.168.1.200:8080/pentaho/ViewAction?&solution=bi-developers&path=demo&action=convert.xaction&userid=joe&password=password";
-		    HttpClient client = new DefaultHttpClient();
-		    URI uri = new URI(url);
-		    Log.e("url",url);
-		    HttpPost post = new HttpPost(uri);
-		    List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);    
-		    nameValuePairs.add(new BasicNameValuePair("t", TAGS));
-		    post.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-		    ResponseHandler<String> res = new BasicResponseHandler();
-		    String httpResponse = client.execute(post, res);
-		    Log.e("User data",httpResponse);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}	
-	    //export devices infomation
-	    String filename = "device_information.txt";
-	    File folder = Environment.getExternalStorageDirectory();
-	    String contents = js.toString();
-	    saveToFile(filename, folder, contents);
+}
+public boolean onTouch(View v, MotionEvent event) {
+	// TODO Auto-generated method stub
+	return false;
 }
 
-public void exportInstalledPakage(){
-	JSONArray json_array = new JSONArray();
-	final PackageManager pm = getPackageManager();
-	String contents = null;
-	// get a list of installed apps.
-	List<ApplicationInfo> packages = pm
-			.getInstalledApplications(PackageManager.GET_META_DATA);
-
-	for (ApplicationInfo packageInfo : packages) {
-
-		Log.i("Danh", "Installed package :" + packageInfo.packageName +" version :"+ packageInfo.targetSdkVersion);
-		contents +="\n Name :" + packageInfo.packageName +", targetSdkVersion :"+ packageInfo.targetSdkVersion +". \n";
-		try {
-			JSONObject js1=new JSONObject();
-			js1.put("installed_package", packageInfo.packageName);
-			js1.put("version", packageInfo.targetSdkVersion);
-			json_array.put(js1);
-			
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		
-	}
-	try {
-		Log.i("Danh", json_array.getJSONObject(0).getString("installed_package"));
-		Log.i("Danh", json_array.getJSONObject(0).getString("version"));
-	} catch (JSONException e) {
-		e.printStackTrace();
-	}
-	
-	//export installed pakage
-    String filename = "installed_pakage.txt";
-    File folder = Environment.getExternalStorageDirectory();
-    saveToFile(filename, folder, contents);
+public void onGesture(GestureOverlayView overlay, MotionEvent event) {
+	// TODO Auto-generated method stub
 	
 }
 
-public void saveToFile(String fileName, File directory, String contents){
-	Log.i("Danh", "Saving file.");
+public void onGestureCancelled(GestureOverlayView overlay, MotionEvent event) {
+	// TODO Auto-generated method stub
+	
+}
 
-	if (android.os.Environment.getExternalStorageState().equals(
-			android.os.Environment.MEDIA_MOUNTED)){
-		try {
 
-			if (directory.canWrite()){
-				String path=Environment.getExternalStorageDirectory() + "/phimp.me/";
-				File gpxfile = new File(path, fileName);
-				FileWriter gpxwriter = new FileWriter(gpxfile);
-				BufferedWriter out = new BufferedWriter(gpxwriter);
-				out.write(contents);
-				out.close();
-				Log.i("Danh", "Saved to SD as '" + path + fileName + "'");					
-			}
-
-		} catch (Exception e) {
-			
-			Log.i("Danh", "Could not write file " + e.getMessage());
-		}
-
-	}else{			
-		Log.e("Danh", "No SD card is mounted.");		
-	}
-}*/
 }

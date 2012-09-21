@@ -1,14 +1,18 @@
 package vn.mbm.phimp.me;
 
 import java.util.ArrayList;
+
 import org.taptwo.android.widget.ViewFlow;
 import org.taptwo.android.widget.ViewFlow.ViewSwitchListener;
+
 import vn.mbm.phimp.me.image.CropImage;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -18,13 +22,16 @@ import android.widget.ImageButton;
 
 public class PhimpMeGallery extends Activity{
 	private ViewFlow viewFlow;
-	private static Cursor cursor;
+	static Cursor cursor;
 	private static int columnIndex;
 	public static ArrayList<String> filepath = new ArrayList<String>();
-	private String mImagePath;
+	private String mImagePath="";
 	public static String url;
-
+	ProgressDialog pro_gress;
 	private static ImageButton btnShareBT,btnUpload,btnEdit; 
+	public static Bitmap bmp = null;
+	public static Bitmap bmp1 = null;
+	
 	
 	@SuppressWarnings("deprecation")
 	@Override
@@ -38,8 +45,12 @@ public class PhimpMeGallery extends Activity{
 		btnEdit=(ImageButton)findViewById(R.id.btnEdit);
 		Intent intent=getIntent();
 		Bundle extra=intent.getExtras();
-		mImagePath = extra.getString("image-path");
+		if(extra!=null){
+			mImagePath = extra.getString("image-path");
+		}
 		
+		
+
 		/*
 		 * get photo from memory
 		 */
@@ -73,6 +84,7 @@ public class PhimpMeGallery extends Activity{
 			
 			//set adapter for viewflow
 			viewFlow.setAdapter(new ImageAdapter(PhimpMeGallery.this,array_file,mImagePath), 1);
+			
 		}
 		url=mImagePath;
 		btnShareBT.setOnClickListener(new OnClickListener() {
@@ -109,7 +121,7 @@ public class PhimpMeGallery extends Activity{
 		btnEdit.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
-				Log.e("PhimpMeGallery","url edit : "+url);				
+				Log.i("PhimpMeGallery","url edit : "+url);				
 				Intent intent = new Intent();
 				intent.setClass(PhimpMeGallery.this, CropImage.class);
 				intent.putExtra("image-path", url);			
@@ -128,12 +140,34 @@ public class PhimpMeGallery extends Activity{
 				}else{
 					url= filepath.get(position);
 				}				
-				Log.e("PhimpMeGallery","test_switch : "+position);		
-				Log.e("PhimpMeGallery","url : "+url+" at position :"+position);
-				
-					
+				Log.i("PhimpMeGallery","test_switch : "+position);		
+				Log.i("PhimpMeGallery","url : "+url+" at position :"+position);									
 				
 			}
 		});
 	}
+	
+	/*@Override
+	public void onBackPressed(){		
+		try{
+			
+			Log.i("PhimpMeGallery","onBackPressed");
+			if(bmp!=null && !bmp.isRecycled()){
+				bmp.recycle();
+				Log.i("PhimpMeGallery","recycle bimap");
+			}else{
+				Log.i("PhimpMeGallery","bmp is recycled");
+			}
+				
+			if(bmp1!=null && !bmp1.isRecycled()){
+				bmp1.recycle();
+				Log.i("PhimpMeGallery","recycle bimap1");
+			}else{
+				Log.i("PhimpMeGallery","bmp1 is recycled");
+			}
+		}catch(Exception e){	
+			e.printStackTrace();
+		}
+		super.onBackPressed();
+	}*/
 }

@@ -15,14 +15,7 @@
         android:src="@drawable/tab_icon_camera_selector"
         android:contentDescription="@string/camera" />
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|center_horizontal|center_vertical"
-        android:text="@string/camera"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@drawable/tab_text_selector" />
+  
     
     <View
         android:id="@+id/view1"

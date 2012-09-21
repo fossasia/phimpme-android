@@ -93,10 +93,6 @@ public class CropImage extends MonitoredActivity
     private static Bitmap mBitmapResize;
     private static Bitmap modifiedBitmap;
     private static Bitmap flippedImaged;
-    //private static Bitmap modifiedBitmapResize;
-    //private static Bitmap flippedImagedResize;
-   /// private final BitmapManager.ThreadSet mDecodingThreads =
-	//new BitmapManager.ThreadSet();
     HighlightView mCrop;
 
     private IImage mImage;
@@ -146,12 +142,6 @@ public class CropImage extends MonitoredActivity
     				
     				_itent.putExtra("latitude", txtLatitude.getText().toString());
     				_itent.putExtra("longitude", txtLongtitude.getText().toString());
-    				
-    				/*if ((!txtLatitude.getText().toString().equals("")) && (!txtLongtitude.getText().toString().equals("")))
-    				{
-    					_itent.putExtra("latitude", txtLatitude.getText().toString());
-    					_itent.putExtra("longitude", txtLongtitude.getText().toString());
-    				}*/
     				startActivityForResult(_itent, GET_POSITION_ON_MAP);
     			}
     		});
@@ -192,26 +182,23 @@ public class CropImage extends MonitoredActivity
 				Long longTime = new Long(date.getTime()/1000);
 				newpath = PhimpMe.DataDirectory+"/PhimpMe_Photo_Effect"+"/tmp_"+longTime+".jpg";
 				mSaveUri = getImageUri(newpath);
-				//newpath = PhimpMe.DataDirectory+"/tmp"+"/tmp_"+longTime+".jpg";
-				/*ContentValues values = new ContentValues();
-		        values.put(MediaStore.Images.Media.TITLE, newpath);   
-		        values.put(MediaStore.Images.Media.DESCRIPTION, "Image edit by Phimp.Me"); 
-				mSaveUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);*/
 				Log.d("mSaveUri",mSaveUri.toString());
-				Log.d("p[0]",p[0]);				
-				//decode bitmap
+				Log.d("p[0]",p[0]);	
+				/*mBitmap=getBitmap(p[0]);
+				if(mBitmap.getWidth()>3200 ||mBitmap.getHeight()>2400){
+					//decode bitmap
+					
+					BitmapFactory.Options options = new BitmapFactory.Options();
+			        options.inSampleSize = 4;		    	
+			        mBitmap = BitmapFactory.decodeFile( p[0], options );
+				}*/
+				
 				BitmapFactory.Options options = new BitmapFactory.Options();
 		        options.inSampleSize = 4;		    	
 		        mBitmap = BitmapFactory.decodeFile( p[0], options );
-				
 				modifiedBitmap= flippedImaged = mBitmap;
 				
-				//mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-				//modifiedBitmapResize=flippedImagedResize=mBitmapResize;
-				
-				Log.e("Danh", "mBitmap Width :"+mBitmap.getWidth()+" mBitmap Height : "+mBitmap.getHeight());
-				//Log.e("Danh", "mBitmapResize Width :"+mBitmapResize.getWidth()+" mBitmapResize Height : "+mBitmapResize.getHeight());
-
+				Log.i("CropImage", "mBitmap Width :"+mBitmap.getWidth()+" mBitmap Height : "+mBitmap.getHeight());
 				mAspectX = extras.getInt("aspectX");
 			    mAspectY = extras.getInt("aspectY");
 			    mOutputX = extras.getInt("outputX");
@@ -245,7 +232,7 @@ public class CropImage extends MonitoredActivity
 				    		flippedImaged.recycle();
 				    		}
 				    		setResult(RESULT_CANCELED);
-				    		System.exit(0);
+				    		//System.exit(0);
 							finish();				    					    								
 				    }
 				});
@@ -257,30 +244,6 @@ public class CropImage extends MonitoredActivity
 					new View.OnClickListener() {
 					    public void onClick(View v) 
 					    {
-					    	/*try{
-				    		Matrix matrix = new Matrix();
-							matrix.postRotate(90);
-							Bitmap _b = Bitmap.createBitmap(mBitmap, 0, 0, mBitmap.getWidth(), mBitmap.getHeight(), matrix, true);
-					
-							mBitmap = _b;
-							_b = null;
-
-					    	RotateBitmap rotateBitmap = new RotateBitmap(mBitmap);
-					    	mImageView.setImageRotateBitmapResetBase(rotateBitmap, true);
-					    	mRunFaceDetection.run();
-					    	}catch(OutOfMemoryError o){
-					    		o.printStackTrace();
-					    	}
-					    	Matrix matrix = new Matrix();
-							matrix.postRotate(90);
-							Bitmap _b = Bitmap.createBitmap(mBitmap, 0, 0, mBitmap.getWidth(), mBitmap.getHeight(), matrix, true);
-					
-							mBitmap = _b;
-							_b = null;
-
-					    	RotateBitmap rotateBitmap = new RotateBitmap(mBitmap);
-					    	mImageView.setImageRotateBitmapResetBase(rotateBitmap, true);
-					    	mRunFaceDetection.run();*/
 					    	try{
 					    		doRotate(mImageView, fromDegree, toDegree);
 								fromDegree = (toDegree == 360) ? 0 : toDegree;
@@ -1182,31 +1145,7 @@ public class CropImage extends MonitoredActivity
         }
         }
         
-    //luong-edit
-/*    public Bitmap getResizedBitmap(String file, int width, int height) {
-		   
-	     BitmapFactory.Options bmpFactoryOptions = new BitmapFactory.Options();
-	        bmpFactoryOptions.inJustDecodeBounds = true;
-	        Bitmap bitmap = BitmapFactory.decodeFile(file, bmpFactoryOptions);
-	         
-	        int heightRatio = (int)Math.ceil(bmpFactoryOptions.outHeight/(float)height);
-	        int widthRatio = (int)Math.ceil(bmpFactoryOptions.outWidth/(float)width);
-	         
-	        if (heightRatio > 1 || widthRatio > 1)
-	        {
-	         if (heightRatio > widthRatio)
-	         {
-	          bmpFactoryOptions.inSampleSize = heightRatio;
-	         } else {
-	          bmpFactoryOptions.inSampleSize = widthRatio;
-	         }
-	        }
-	         
-	        bmpFactoryOptions.inJustDecodeBounds = false;
-	        bitmap = BitmapFactory.decodeFile(file, bmpFactoryOptions);
-	     return bitmap;
-   }*/
-
+ 
 }
 
 
