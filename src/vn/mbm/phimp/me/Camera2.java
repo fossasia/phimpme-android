@@ -20,7 +20,9 @@ import android.graphics.Paint;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.ShutterCallback;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -47,8 +49,7 @@ public class Camera2 extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.camera);
-		if (PhimpMe.IdList.size() == 5) {PhimpMe.IdList.clear();PhimpMe.IdList.add(0);}
-		PhimpMe.IdList.add(1);
+		
 		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);		
 		frame = ((FrameLayout) findViewById(R.id.preview));
 		preview = new Preview(this);
@@ -68,7 +69,7 @@ public class Camera2 extends Activity {
 		buttonClick = (ImageButton) findViewById(R.id.takephoto);
 		buttonClick.setOnClickListener( new OnClickListener() {
 			public void onClick(View v) {
-				preview.camera.takePicture(shutterCallback, rawCallback, jpegCallback);
+				preview.camera.takePicture(shutterCallback, rawCallback, jpegCallback);				
 			}
 		});
 		
@@ -194,7 +195,9 @@ public class Camera2 extends Activity {
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
-			}
+			}		
+			sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"
+		            + Environment.getExternalStorageDirectory()))); 
 			Intent _intent = new Intent();			
 			_intent.setClass(ctx, CropImage.class);
 			_intent.putExtra("image-path", picture);			
@@ -203,13 +206,14 @@ public class Camera2 extends Activity {
 			_intent.putExtra("scale", true);
 			_intent.putExtra("activityName", "Camera2");
 			
-			startActivityForResult(_intent, 1);
+			startActivityForResult(_intent, 1);		
 		}
 	};
 	@Override
 	protected void onResume(){
 		super.onResume();
 		PhimpMe.hideTabs();
+		PhimpMe.hideAd();
 		if (mCamera == null){
 			mCamera = Camera.open();
 		}

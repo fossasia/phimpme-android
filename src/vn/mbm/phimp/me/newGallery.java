@@ -40,16 +40,16 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Display;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -395,8 +395,7 @@ public class newGallery extends Activity {
 		setContentView(R.layout.newgallery);
 		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);		
 		ctx = this;
-		if (PhimpMe.IdList.size() == 5) {PhimpMe.IdList.clear();PhimpMe.IdList.add(0);}
-    	PhimpMe.IdList.add(0);
+		
 		txtStatus = (TextView) findViewById(R.id.txtGalleryStatus);
 		color_line = R.color.blue_dark;
 
@@ -3411,15 +3410,16 @@ public class newGallery extends Activity {
 		 * Danh - Open Street Maps
 		 */
 		btnMap = (ImageButton) findViewById(R.id.btnGalleryMaps);
-		btnMap.setOnTouchListener(new OnTouchListener() {
+		btnMap.setOnClickListener(new OnClickListener() {
+			
 			@Override
-			public boolean onTouch(View v, MotionEvent event) {
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
 				Intent i = new Intent();
 				i.setClass(newGallery.this, GalleryMap.class);
 				startActivity(i);
-				return false;
-				
 			}
+			
 		});
 		/*
 		 * Danh - Bluetooth Share
@@ -3479,29 +3479,31 @@ public class newGallery extends Activity {
 	@Override
 	protected void onResume()
 	{
-		super.onResume();
-		
+		super.onResume();		
 		Log.i("newGallery","onResume");
 		PhimpMe.showTabs();		
+		if (PhimpMe.FEEDS_GOOGLE_ADMOB == true){
+			PhimpMe.ShowAd();
+		}
 		if (PhimpMe.IdList.size() == 5) {PhimpMe.IdList.clear();PhimpMe.IdList.add(0);}
-		PhimpMe.IdList.add(0);
-		
+		PhimpMe.IdList.add(0);		
 		if(PhimpMe.FEEDS_LOCAL_GALLERY==true){
 			linear_main.removeView(ln_local_gallery);
 			check_local = 0;
 			loadLocalGallery();
 		}
 		
-
+		Log.i("newGallery", "checkdownload : "+PhimpMe.check_donwload);
 		if(PhimpMe.check_donwload==true){
+			
 			list_thumb = RSSUtil.getLocalPhotos(ctx);
 			list_thumb_personal = RSSUtil.getLocalPhotosPersonal(ctx);
 			PhimpMe.check = 0;
 			pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-			Dialog_download(2000,pro_gress);
+			Dialog_download(1500,pro_gress);
 			//refreshNewPhotos();
-			PhimpMe.check_donwload=false;
-		}				
+			
+		}
 	}
   
 	@SuppressWarnings("deprecation")
@@ -3571,7 +3573,7 @@ public class newGallery extends Activity {
 									.getString(columnIndex));
 						
 					}
-					for (int k = 0; k < PhimpMe.filepath.size(); k++) {
+					/*for (int k = 0; k < PhimpMe.filepath.size(); k++) {
 						String tmp[] = PhimpMe.filepath.get(k).split("/");
 						for (int t = 0; t < tmp.length; t++) {
 							if (tmp[t].equals("phimp.me")) {
@@ -3580,7 +3582,7 @@ public class newGallery extends Activity {
 								break;
 							}
 						}
-					}
+					}*/
 
 					Log.d("Danh",
 							"number image :" + PhimpMe.filepath.size());
@@ -3699,7 +3701,7 @@ public class newGallery extends Activity {
 					            @SuppressWarnings({ "rawtypes" })
 								public void onItemClick(AdapterView parent, View v, int position, long id) {
 					            	pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-					            	timerDelayRemoveDialog(4000,pro_gress);
+					            	Dialog(4000,pro_gress);
 					            	// Get the data location of the image
 					                String[] projection = {MediaStore.Images.Media.DATA};
 					                cursor = managedQuery( MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
@@ -3810,10 +3812,22 @@ public class newGallery extends Activity {
 	public void Dialog_download(long time, final Dialog d){
 	    new Handler().postDelayed(new Runnable() {
 	        public void run() {                
-	            d.dismiss();   
+	            
 	            refreshNewPhotos();
+	            PhimpMe.check_donwload=false;
+	            d.dismiss();   
 	        }
 	    }, time); 
+	}
+	public void Dialog(long time,final Dialog d){
+		new Handler().postDelayed(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				d.dismiss();
+			}
+		}, time);
 	}
 	public void refreshNewPhotos() {
 		
@@ -7228,7 +7242,8 @@ public class newGallery extends Activity {
 			  .size()-my_feed_services_count5*NUMBER_PHOTO_NEED_DOWNLOAD)>0){
 			  btn_my_feed_services_more5.setImageResource(R.drawable.more);
 			  btn_my_feed_services_more5.setEnabled(true); } }
-			 
+			 sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"
+			            + Environment.getExternalStorageDirectory()))); 
 
 		}
 
@@ -7515,6 +7530,8 @@ public class newGallery extends Activity {
 					btn_my_feed_services_more3.setEnabled(true);
 				}
 			}
+			sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"
+		            + Environment.getExternalStorageDirectory()))); 
 		}
 
 	}
@@ -7704,7 +7721,7 @@ public class newGallery extends Activity {
     }*/
 	@Override
 	public void onBackPressed(){
-		PhimpMe.showTabs();				
+		//PhimpMe.showTabs();				
 		if (PhimpMe.IdList.size() > 1){
 			PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
 			PhimpMe.mTabHost.setCurrentTab(PhimpMe.IdList.get(PhimpMe.IdList.size()-1));}

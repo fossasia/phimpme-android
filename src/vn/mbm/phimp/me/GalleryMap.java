@@ -15,6 +15,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -71,7 +72,7 @@ public class GalleryMap extends MapActivity implements LocationListener
 	{
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.gallery_map);
-       
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);		
         ctx = this;
         acti = this;
         try
@@ -88,14 +89,16 @@ public class GalleryMap extends MapActivity implements LocationListener
         
         if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER))
 		{
-			Toast.makeText(ctx, getString(R.string.error_gps_fail) + "\n" + getString(R.string.infor_turn_on_gps), Toast.LENGTH_LONG).show();
+			//Toast.makeText(ctx, getString(R.string.error_gps_fail) + "\n" + getString(R.string.infor_turn_on_gps), Toast.LENGTH_LONG).show();
+        	Intent intent=new Intent("android.location.GPS_ENABLED_CHANGE");
+        	intent.putExtra("enabled", true);
+        	sendBroadcast(intent);
 		}
         try{
         	//progLoading = ProgressDialog.show(ctx, getString(R.string.loading), getString(R.string.infor_loading_photo_in_map), true, false);
             
             map = (MapView)findViewById(R.id.mapStore);
-            map.setBuiltInZoomControls(true);
-            
+            map.setBuiltInZoomControls(true);            
             mc = map.getController();
             mc.setZoom(6);      
             mapOverlays = map.getOverlays();     
@@ -115,7 +118,8 @@ public class GalleryMap extends MapActivity implements LocationListener
 		
         new Thread()
         {
-        	public void run()
+        	@SuppressWarnings("deprecation")
+			public void run()
 			{
         		if ((PhimpMe.currentGeoPoint != null) && (currentPositionOverlay == null))
         		{
@@ -213,7 +217,7 @@ public class GalleryMap extends MapActivity implements LocationListener
             			handler.sendEmptyMessage(num_photos_added);	
     					final MapController mc = map.getController();
        					mc.setZoom(16);
-       					//mc.animateTo(PhimpMe.currentGeoPoint);
+       					mc.animateTo(PhimpMe.currentGeoPoint);
         	        }else
         	         if(num_photos_added < 1){
 
@@ -231,7 +235,7 @@ public class GalleryMap extends MapActivity implements LocationListener
 			}
 			
         }
-     }.start();     
+     }.start();   
 }
 	
 	private Handler handler = new Handler()
@@ -240,7 +244,7 @@ public class GalleryMap extends MapActivity implements LocationListener
 		public void handleMessage(Message msg)
 		{
 			//GalleryMap.progLoading.dismiss();
-			Toast.makeText(ctx, msg.what + " " + getString(R.string.infor_map_have_num_photos), Toast.LENGTH_LONG).show();
+			//Toast.makeText(ctx, msg.what + " " + getString(R.string.infor_map_have_num_photos), Toast.LENGTH_LONG).show();
 		}
 	};
 	
@@ -273,20 +277,8 @@ public class GalleryMap extends MapActivity implements LocationListener
 		finish();
 		lm.removeUpdates(this);
 	}
-
-	@Override
-	protected void onStop()
-	{
-		super.onStop();		
-		Log.d("Hon","On Stop");
-		finish();
-		lm.removeUpdates(this);
-	}
-	@Override
-	protected boolean isRouteDisplayed() {
-		
-		return false;
-	}
+	
+	
 
 	@Override
 	public void onLocationChanged(Location location) {
@@ -425,11 +417,20 @@ public class GalleryMap extends MapActivity implements LocationListener
 		}
 	}
 	public void onBackPressed()
-	{
-		super.onStop();
-		finish();	
-		Log.d("Hon","Backpressed !");		
+	{			
+		Intent intent = new Intent("android.location.GPS_ENABLED_CHANGE");
+		intent.putExtra("enabled", false);
+		sendBroadcast(intent);
+		//this.finish();		
+		Log.d("Hon","Backpressed !");
+		super.onBackPressed();		
 			
+	}
+
+	@Override
+	protected boolean isRouteDisplayed() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }

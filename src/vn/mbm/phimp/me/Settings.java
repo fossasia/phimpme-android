@@ -59,7 +59,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.text.InputType;
 import android.util.Log;
@@ -158,8 +160,7 @@ public class Settings extends Activity
 		setContentView(R.layout.settings);
 		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);		
 		Resources res = getResources();
-		if (PhimpMe.IdList.size() == 5) {PhimpMe.IdList.clear();PhimpMe.IdList.add(0);}
-		PhimpMe.IdList.add(3);
+		
 		ctx = this;
 		lytAccounts = (LinearLayout) findViewById(R.id.linearSettingsAccounts);
 		
@@ -234,6 +235,8 @@ public class Settings extends Activity
 										}*/
 										
 									}
+									sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"
+								            + Environment.getExternalStorageDirectory()))); 
 					            }				            
 					        });
 							alertbox.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() 
@@ -316,7 +319,7 @@ public class Settings extends Activity
 		
 				
 		TextView tvGoogleAdmob = new TextView(ctx);
-		tvGoogleAdmob.setText("Activate Ads");
+		tvGoogleAdmob.setText("Activate Advertising");
 		tvGoogleAdmob.setGravity(Gravity.CENTER_VERTICAL);
 		tvGoogleAdmob.setTypeface(null, 1);
 		lGoogleAdmob.addView(tvGoogleAdmob);
@@ -1593,6 +1596,9 @@ public class Settings extends Activity
 	{
 		super.onResume();
 		PhimpMe.showTabs();
+		if (PhimpMe.FEEDS_GOOGLE_ADMOB == true){
+			PhimpMe.ShowAd();
+		}
 		if (PhimpMe.add_account_setting)
 		{
 			reloadAccountsList();

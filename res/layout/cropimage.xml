@@ -43,7 +43,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="192dp"
                 android:layout_margin="10dp"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:focusable="true" 
+                android:focusableInTouchMode="true" >
 
                 <HorizontalScrollView
                     android:id="@+id/horizontalScrollView1"
@@ -137,7 +139,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:inputType="textNoSuggestions" />
+                    android:inputType="textNoSuggestions" >
+
+                </EditText>
 
                 <LinearLayout
                     android:id="@+id/linearLayout2"
@@ -243,13 +247,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:text="@string/cancel" />
-
-            <Button
-                android:id="@+id/rotate"
-                android:layout_width="100dip"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="@string/rotate_right" />
 
             <Button
                 android:id="@+id/save"

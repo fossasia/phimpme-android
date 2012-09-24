@@ -22,15 +22,22 @@
 		        android:layout_alignParentRight="true"
         />
     </RelativeLayout>
-
-	<!-- key of a danh -->
-        <com.google.android.maps.MapView
+    	  <com.google.android.maps.MapView
+          		 android:id="@+id/mapStore"
+                 android:layout_width="fill_parent"
+                 android:layout_height="fill_parent"
+                 android:clickable="true"
+             	 android:enabled="true" 
+                 android:apiKey="0GKm7nFVzZxfA91Kg5mfCLZBhnEr04Ii7cyJDeA"
+                 />    
+	<!-- key of a danh -->		
+       <!--  <com.google.android.maps.MapView
              android:id="@+id/mapStore"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:apiKey="0GKm7nFVzZxfA91Kg5mfCLZBhnEr04Ii7cyJDeA"
              android:clickable="true"
-             android:enabled="true" />
+             android:enabled="true" /> -->
        <!-- key of a luong -->
        <!--  <com.google.android.maps.MapView
              android:id="@+id/mapStore"
