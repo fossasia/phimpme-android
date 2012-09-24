@@ -27,9 +27,9 @@ public class RSSUtil
 	
 	public static String RSS_ITEM_FOLDER = "rss_items";
 	
-	public static String RSS_THUMB_FOLDER = "rss_thumbs";
+	public static String RSS_THUMB_FOLDER = ".rss_thumbs";
 	
-	public static String TMP_FOLDER = "tmp";
+	public static String TMP_FOLDER = ".tmp";
 	
 	public static int max_photos_in_gallery = 15;
 	

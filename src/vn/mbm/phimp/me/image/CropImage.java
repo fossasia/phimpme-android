@@ -124,6 +124,7 @@ public class CropImage extends MonitoredActivity
     		
     		btnSave=(Button)findViewById(R.id.save);
     		btnSave.setVisibility(4);
+    		ImageButton btnOriginal=(ImageButton)findViewById(R.id.btnOriginal);
     		
     		txtPhotoTitle = (EditText) findViewById(R.id.txtUploadPhotoTitle);
     		
@@ -145,7 +146,6 @@ public class CropImage extends MonitoredActivity
     				startActivityForResult(_itent, GET_POSITION_ON_MAP);
     			}
     		});
-    		
     		mImageView = (CropImageView) findViewById(R.id.image);
     		gpsloading = new ProgressDialog(ctx);
     		gpsloading.setCancelable(true);
@@ -184,18 +184,15 @@ public class CropImage extends MonitoredActivity
 				mSaveUri = getImageUri(newpath);
 				Log.d("mSaveUri",mSaveUri.toString());
 				Log.d("p[0]",p[0]);	
-				/*mBitmap=getBitmap(p[0]);
-				if(mBitmap.getWidth()>3200 ||mBitmap.getHeight()>2400){
-					//decode bitmap
-					
-					BitmapFactory.Options options = new BitmapFactory.Options();
-			        options.inSampleSize = 4;		    	
-			        mBitmap = BitmapFactory.decodeFile( p[0], options );
-				}*/
 				
 				BitmapFactory.Options options = new BitmapFactory.Options();
 		        options.inSampleSize = 4;		    	
 		        mBitmap = BitmapFactory.decodeFile( p[0], options );
+		        if(mBitmap.getWidth() %2 != 0){
+		        	//bitmap width must even
+		        	Log.i("CropImage","mBitmap width not even");
+		        	mBitmap=Bitmap.createScaledBitmap(mBitmap, mBitmap.getWidth()*4, mBitmap.getHeight()*3, false);
+		        }
 				modifiedBitmap= flippedImaged = mBitmap;
 				
 				Log.i("CropImage", "mBitmap Width :"+mBitmap.getWidth()+" mBitmap Height : "+mBitmap.getHeight());
@@ -225,11 +222,11 @@ public class CropImage extends MonitoredActivity
 				    {
 				    	if (btnSave.getVisibility() != 4)
 				    		{
-				    		mBitmapSave.recycle();
-				    		mBitmap.recycle();
-				    		mBitmapResize.recycle();
-				    		modifiedBitmap.recycle();
-				    		flippedImaged.recycle();
+				    		//mBitmapSave.recycle();
+				    		//mBitmap.recycle();
+				    		//mBitmapResize.recycle();
+				    		//modifiedBitmap.recycle();
+				    		//flippedImaged.recycle();
 				    		}
 				    		setResult(RESULT_CANCELED);
 				    		//System.exit(0);
@@ -240,7 +237,7 @@ public class CropImage extends MonitoredActivity
 			/*
 			 * Thong - Add event for button rotate image
 			 */
-			findViewById(R.id.rotate).setOnClickListener(
+			findViewById(R.id.btnRotateLeftRight).setOnClickListener(
 					new View.OnClickListener() {
 					    public void onClick(View v) 
 					    {
@@ -261,31 +258,7 @@ public class CropImage extends MonitoredActivity
 			/*
 			 * Thong - Add event for button rotate image - End
 			 */
-			
-			/*
-			 * Danh - Add event for button rotate left-right image
-			 */
-			findViewById(R.id.btnRotateLeftRight).setOnClickListener(
-					new View.OnClickListener() {
-					    public void onClick(View v) 
-					    {
-					    	try{
-					    		modifiedBitmap = doHorizontalFlip(modifiedBitmap);
-								flippedImaged = doHorizontalFlip(flippedImaged);
-								mImageView.setImageBitmap(changeBrightness(
-										modifiedBitmap, brightnessValue));
-								mBitmapSave = modifiedBitmap;
-					    	}catch(OutOfMemoryError o){
-					    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-					    		//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
-					    		modifiedBitmap=flippedImaged=mBitmapResize;				    		
-					    	}
-					    	btnSave.setVisibility(0);
-					    }
-					});
-			/*
-			 * Danh - Add event for button rotate left-right image - End
-			 */
+						
 			/*
 			 * Danh - Add event for button rotate top-down image
 			 */
@@ -394,7 +367,7 @@ public class CropImage extends MonitoredActivity
 			/*
 			 * Danh - Add event for button Original image effect
 			 */
-			findViewById(R.id.btnOriginal).setOnClickListener(
+			btnOriginal.setOnClickListener(
 					new View.OnClickListener() {
 					    public void onClick(View v) 
 					    {

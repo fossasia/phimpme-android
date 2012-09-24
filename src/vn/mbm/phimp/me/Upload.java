@@ -152,8 +152,7 @@ public class Upload extends Activity
 		setContentView(R.layout.upload);
 		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);		
 		Resources res = getResources();
-		if (PhimpMe.IdList.size() == 5) {PhimpMe.IdList.clear();PhimpMe.IdList.add(0);}
-		PhimpMe.IdList.add(2);
+		
 		ctx = this;
 		Log.d("Upload","Upload Start");
 		
@@ -690,6 +689,9 @@ public class Upload extends Activity
 		Log.d("imagelist",imagelist);
 		super.onResume();
 		PhimpMe.showTabs();
+		if (PhimpMe.FEEDS_GOOGLE_ADMOB == true){
+			PhimpMe.ShowAd();
+		}
 		if (PhimpMe.add_account_upload)
 		{
 			reloadAccountsList();
@@ -1059,8 +1061,11 @@ public class Upload extends Activity
     }*/
 	@Override
 	public void onBackPressed(){
+		Log.e("PhimpMe Size",String.valueOf(PhimpMe.IdList.size()));
 		PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
+		Log.e("PhimpMe Size",String.valueOf(PhimpMe.IdList.size()));
 		PhimpMe.mTabHost.setCurrentTab(PhimpMe.IdList.get(PhimpMe.IdList.size()-1));
-		PhimpMe.showTabs();
+		Log.e("Backpressed","Uploads");
+		//PhimpMe.showTabs();
 	}
 }

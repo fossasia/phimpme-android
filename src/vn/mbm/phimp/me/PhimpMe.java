@@ -168,6 +168,7 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
 	public static TabHost mTabHost;	
 	public static boolean check_donwload=false;
 	public static boolean check_donwload_local_gallery=false;	
+	public static AdView ad;
 	//private GestureDetector gestureScanner;
 	//View.OnTouchListener gestureListener;
 	public static int width,height;
@@ -202,6 +203,7 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
         /*
          * Google admod
          */
+    	ad = (AdView)findViewById(R.id.adView);
         	SharedPreferences setting = getSharedPreferences(PREFS_NAME, 0);
         	FEEDS_GOOGLE_ADMOB=setting.getBoolean("Google Admob", true);
         	File file = getBaseContext().getFileStreamPath("google_admob.txt");
@@ -223,8 +225,8 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
     			AdView adView = (AdView)this.findViewById(R.id.adView);
     	        adView.loadAd(new AdRequest());
     	        if(FEEDS_GOOGLE_ADMOB==false){
-    	        	//adView.setVisibility(4);
-    	        	adView.destroy();
+    	        	adView.setVisibility(ViewGroup.GONE);
+    	        	//adView.destroy();
     	        }
     	        
     	
@@ -412,7 +414,12 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
     public static void hideTabs(){
         popupTabs.setVisibility(ViewGroup.GONE);
     }
-   
+    public static void ShowAd(){
+    	ad.setVisibility(ViewGroup.VISIBLE);
+    }
+   public static void hideAd(){
+	   ad.setVisibility(ViewGroup.GONE);
+   }
     @Override
     protected void onPause()
     {
@@ -464,7 +471,7 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
     @Override
     protected void onResume()
     {
-    	showTabs();
+    	//showTabs();
     	try
     	{
     		super.onResume();

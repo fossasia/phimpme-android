@@ -109,8 +109,7 @@
         <activity
             android:name=".PhotoSelect"
             android:configChanges="locale"
-           >
-            
+           >            
         </activity>
           <activity android:name="vn.mbm.phimp.me.image.CropImage" android:configChanges="locale" android:label="CropLabel" >
         </activity>
@@ -124,9 +123,10 @@
         <activity
             android:name=".GalleryMap"
             android:configChanges="locale"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar">
            
-        </activity>
+        </activity>         
         <activity
             android:name=".OpenStreetMap"
             android:configChanges="locale"

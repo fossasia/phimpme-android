@@ -20,11 +20,15 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 
+import vn.mbm.phimp.me.PhotoSelect.ImageItem;
+
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +46,7 @@ public class ImageAdapter extends BaseAdapter {
 		this.filepath = filepath;
 		this.imagepath = imagepath;
 	}
-
+	
 
 	public int getCount() {
 		//return ids.length;

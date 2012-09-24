@@ -139,35 +139,11 @@ public class PhimpMeGallery extends Activity{
 					url=mImagePath;
 				}else{
 					url= filepath.get(position);
-				}				
-				Log.i("PhimpMeGallery","test_switch : "+position);		
-				Log.i("PhimpMeGallery","url : "+url+" at position :"+position);									
+				}												
 				
 			}
 		});
 	}
 	
-	/*@Override
-	public void onBackPressed(){		
-		try{
-			
-			Log.i("PhimpMeGallery","onBackPressed");
-			if(bmp!=null && !bmp.isRecycled()){
-				bmp.recycle();
-				Log.i("PhimpMeGallery","recycle bimap");
-			}else{
-				Log.i("PhimpMeGallery","bmp is recycled");
-			}
-				
-			if(bmp1!=null && !bmp1.isRecycled()){
-				bmp1.recycle();
-				Log.i("PhimpMeGallery","recycle bimap1");
-			}else{
-				Log.i("PhimpMeGallery","bmp1 is recycled");
-			}
-		}catch(Exception e){	
-			e.printStackTrace();
-		}
-		super.onBackPressed();
-	}*/
+
 }
