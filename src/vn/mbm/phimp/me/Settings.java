@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import org.json.JSONObject;
@@ -73,6 +74,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -84,6 +86,10 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.paypal.android.MEP.CheckoutButton;
+import com.paypal.android.MEP.PayPal;
+import com.paypal.android.MEP.PayPalActivity;
+import com.paypal.android.MEP.PayPalPayment;
 import com.tani.app.ui.IconContextMenu;
 public class Settings extends Activity 
 {
@@ -124,6 +130,8 @@ public class Settings extends Activity
 	ImageButton btnLangVI;
 	ImageButton btnSettingsMaxFilesize;
 	ImageButton btnSettingsMaxDisplayPhotos;
+	Button donatePaypal;
+	EditText donateAmount;
 	
 	TextView txtMaxPhotoSize;
 	TextView txtMaxDisplay;
@@ -162,6 +170,19 @@ public class Settings extends Activity
 		Resources res = getResources();
 		
 		ctx = this;
+		
+		PayPal pp = PayPal.getInstance();
+		
+		//create donate button
+		 final CheckoutButton donateButton = pp.getCheckoutButton(ctx, PayPal.BUTTON_278x43, CheckoutButton.TEXT_DONATE);
+		
+		//Add donate button to the screen
+		((LinearLayout)findViewById(R.id.linearSettingsDonate)).addView(donateButton);
+
+		//initial amount field
+		donateAmount = (EditText) findViewById(R.id.donateAmount);
+		
+				
 		lytAccounts = (LinearLayout) findViewById(R.id.linearSettingsAccounts);
 		
 		btnAdd = (ImageButton) findViewById(R.id.btnSettingsAccountAdd);
@@ -724,9 +745,7 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_FLICKR_PUBLIC = isChecked;
-				if(isChecked==true){
-					PhimpMe.check_donwload=true;
-				}
+				
 			}
 		});
 		lFlickrPublic.addView(chkFlickrPublic);
@@ -760,9 +779,6 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_FLICKR_RECENT = isChecked;
-				if(isChecked==true){
-					PhimpMe.check_donwload=true;
-				}
 			}
 		});
 		lFlickrRecent.addView(chkFlickrRecent);
@@ -796,9 +812,6 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_GOOGLE_NEWS = isChecked;
-				if(isChecked==true){
-					PhimpMe.check_donwload=true;
-				}
 			}
 		});
 		lGoogleNews.addView(chkGoogleNews);
@@ -832,9 +845,6 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_GOOGLE_PICASA_PUBLIC = isChecked;
-				if(isChecked==true){
-					PhimpMe.check_donwload=true;
-				}
 			}
 		});
 		lGooglePicasaPublic.addView(chkGooglePicasaPublic);
@@ -867,9 +877,6 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_YAHOO_NEWS = isChecked;
-				if(isChecked==true){
-					PhimpMe.check_donwload=true;
-				}
 			}
 		});
 		lYahooNews.addView(chkYahooNews);
@@ -903,9 +910,6 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_DEVIANTART_PUBLIC = isChecked;
-				if(isChecked==true){
-					PhimpMe.check_donwload=true;
-				}
 			}
 		});
 		lDeviantArtPublic.addView(chkDeviantArtPublic);
@@ -1015,9 +1019,6 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_FLICKR_PRIVATE = isChecked;
-				if(isChecked==true){
-					PhimpMe.check_donwload=true;
-				}
 			}
 		});
 		lFlickrPrivate.addView(chkFlickrPrivate);
@@ -1051,9 +1052,6 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_GOOGLE_PICASA_PRIVATE = isChecked;
-				if(isChecked==true){
-					PhimpMe.check_donwload=true;
-				}
 			}
 		});
 		lGooglePicasaPrivate.addView(chkGooglePicasaPrivate);
@@ -1087,9 +1085,6 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_DEVIANTART_PRIVITE = isChecked;
-				if(isChecked==true){
-					PhimpMe.check_donwload=true;
-				}
 			}
 		});
 		lDeviantArtPrivite.addView(chkDeviantArtPrivite);
@@ -1126,9 +1121,6 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_VK = isChecked;
-				if(isChecked==true){
-					PhimpMe.check_donwload=true;
-				}	
 			}
 		});
 		lVK.addView(chkVK);
@@ -1162,9 +1154,6 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_FACEBOOK_PRIVATE = isChecked;
-				if(isChecked==true){
-					PhimpMe.check_donwload=true;
-				}
 			}
 		});
 		lFacebook.addView(chkFacebook);
@@ -1198,9 +1187,6 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_TUMBLR_PRIVATE = isChecked;
-				if(isChecked==true){
-					PhimpMe.check_donwload=true;
-				}
 			}
 		});
 		lTumblr.addView(chkTumblr);
@@ -1265,9 +1251,6 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_IMGUR_PERSONAL = isChecked;
-				if(isChecked==true){
-					PhimpMe.check_donwload=true;
-				}
 			}
 		});
 		lImgurPersonal.addView(chkImgurPersonal);
@@ -1332,9 +1315,6 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_SOHU_PERSONAL = isChecked;
-				if(isChecked==true){
-					PhimpMe.check_donwload=true;
-				}
 			}
 		});
 		lSohu.addView(chkSohu);
@@ -1480,7 +1460,59 @@ public class Settings extends Activity
 				}
 			}
 		});
+      //set onclick event for donate button
+        donateButton.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				if(donateAmount.getText().toString().trim() != null){
+					if(!donateAmount.getText().toString().trim().equals("")){
+						if(Double.valueOf(donateAmount.getText().toString().trim()) != 0){
+							donateButton.updateButton();
+							
+							PayPalPayment donate = new PayPalPayment();
+							donate.setCurrencyType("USD");
+							donate.setRecipient("info_1348720997_biz@phimp.me");
+							donate.setSubtotal(new BigDecimal(Double.valueOf(donateAmount.getText().toString().trim())));
+							donate.setPaymentType(PayPal.PAYMENT_TYPE_GOODS);
+							donate.setMerchantName("Phimp.me");
+							
+							Intent paypalIntent = PayPal.getInstance().checkout(donate, ctx);
+							startActivityForResult(paypalIntent, 1);
+						}else{
+							donateButton.updateButton();
+						}
+					}else{
+						donateButton.updateButton();
+						Toast.makeText(ctx, "How much do you want to donate for Phimp.me?", Toast.LENGTH_LONG).show();
+						donateAmount.requestFocus();
+					}
+				}
+			}
+		});
     }
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		switch(resultCode){
+			case RESULT_OK:
+				//String paykey = data.getStringExtra(PayPalActivity.EXTRA_PAY_KEY);
+				
+				Toast.makeText(ctx, "Thank you for donation.", Toast.LENGTH_SHORT).show();
+				donateAmount.setText("");
+				break;
+			case RESULT_CANCELED:
+				Toast.makeText(ctx, "your donation has been canceled", Toast.LENGTH_SHORT).show();
+				break;
+			case PayPalActivity.RESULT_FAILURE:
+				//String errorID = data.getStringExtra(PayPalActivity.EXTRA_ERROR_ID);
+				//String errorMessage = data.getStringExtra(PayPalActivity.EXTRA_ERROR_MESSAGE);
+				
+				Toast.makeText(ctx, "Donation error, your donation has been canceled.", Toast.LENGTH_SHORT).show();
+		}
+	}
 	private class btnDeleteListener implements OnClickListener
 	{
 		private String id;
@@ -1934,7 +1966,10 @@ public class Settings extends Activity
 	        public void run() {                	            
 	            boolean del = deletePhotoInDatabase();
 				if(del==true){
-					newGallery.clearAllPhoto();		
+					newGallery.clearAllPhoto();	
+					sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"
+				            + Environment.getExternalStorageDirectory()))); 
+					
 					d.dismiss();
 					Commons.AlertLog(ctx, "Successfully", "OK").show();	
 				}else{	

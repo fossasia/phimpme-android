@@ -78,6 +78,7 @@ public class CacheStore {
 
     public static CacheStore getInstance() {
         if(INSTANCE == null) createInstance();
+        Log.i("CacheStore", "getInstance");
         return INSTANCE;
     }
     public boolean check(String cachePath) {
@@ -106,12 +107,13 @@ public class CacheStore {
 	            cacheMap.put(cacheUri, fileLocalName);
 	            cacheMap.put("path@"+cacheUri, cacheUri);
 	            cacheMap.put("id@"+cacheUri, cacheId);
-	            //Log.i("CACHE", "Saved file "+cacheUri+" (which is now "+fileUri.toString()+") correctly");
+	            Log.i("CACHE", "Saved file "+cacheUri+" (which is now "+fileUri.toString()+") correctly");
 	            bitmapMap.put(cacheUri, image);
 	            ObjectOutputStream os = new ObjectOutputStream(new BufferedOutputStream(
 	                    new FileOutputStream(new File(fullCacheDir.toString(), CACHE_FILENAME))));
 	            os.writeObject(cacheMap);
 	            os.close();
+	            
 	        } catch (FileNotFoundException e) {
 	            Log.i("CACHE", "Error: File "+cacheUri+" was not found!");
 	            e.printStackTrace();

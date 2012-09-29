@@ -167,7 +167,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:text="@string/googleadmod"
+                android:text="@string/adv"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/blue_light"
                 android:textStyle="bold" />
@@ -190,6 +190,49 @@
                 android:orientation="vertical"
                 android:padding="10dp" >
 
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/TextView07"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/donate"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/blue_light"
+                android:textStyle="bold" />
+
+            <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/blue_dark" />
+
+            <LinearLayout
+                android:id="@+id/linearSettingsDonate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="horizontal"
+                android:padding="10dp" >
+				
+                <EditText
+				    android:id="@+id/donateAmount"
+				    android:layout_width="50dip"
+				    android:layout_height="wrap_content"
+				    android:inputType="numberDecimal" />
+
+				<TextView 
+				    android:text="@string/currency"
+				    android:layout_height="wrap_content"
+				    android:layout_width="wrap_content"
+				    android:layout_marginRight="20dip"
+				    android:textSize="10pt"/>
+				
             </LinearLayout>
 
             <TextView

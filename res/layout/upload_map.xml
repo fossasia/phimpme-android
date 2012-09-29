@@ -21,7 +21,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:apiKey="05xNbF3--7WvvPc91QkhVQF3ijsk9VkSXkZ9ddQ"
+        android:apiKey="05xNbF3--7Wv5kEZfcxKsYdn5yTPBXkUcsaua5g"
         android:clickable="true"
         android:enabled="true" />
     

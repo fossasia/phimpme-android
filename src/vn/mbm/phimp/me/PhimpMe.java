@@ -49,6 +49,7 @@ import android.widget.Toast;
 import com.google.ads.AdRequest;
 import com.google.ads.AdView;
 import com.google.android.maps.GeoPoint;
+import com.paypal.android.MEP.PayPal;
 
 
 @SuppressWarnings("deprecation")
@@ -179,6 +180,18 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
     	super.onCreate(savedInstanceState);
     	ctx = this;    	
     	Log.d("thong", "PhimpMe - onCreate()");
+    	
+    	//Init PayPal library
+        new Thread(new Runnable() 
+    	{
+			@Override
+			public void run() 
+			{
+				initLibrary(ctx);
+				
+			}
+		}).start();
+        
     	camera_use = 0;
     	if (IdList == null) IdList = new ArrayList<Integer>();
     	    	
@@ -600,7 +613,7 @@ public static void stopThread(){
 	cachetask.onCancelled();
 	Log.d("PhimpMe", "Stop Cache Task");
 }
-class CacheTask extends AsyncTask<String, Void, String> {
+public class CacheTask extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... urls) {
     	try{
@@ -642,5 +655,31 @@ public void onGestureCancelled(GestureOverlayView overlay, MotionEvent event) {
 	
 }
 
+public static void initLibrary(Context context) {
+	try {
+		PayPal pp = PayPal.getInstance();
+		// If the library is already initialized, then we don't need to
+		// initialize it again.
+		if ((pp == null) || (!pp.isLibraryInitialized())) 
+		{
+			pp = null;
+			
+			pp = PayPal.initWithAppID(context, "APP-80W284485P519543T", PayPal.ENV_SANDBOX);
 
+			// -- These are required settings.
+			//pp.setLanguage("de_DE");
+			pp.setLanguage("en_US");
+
+			pp.setFeesPayer(PayPal.FEEPAYER_EACHRECEIVER);
+			// Set to true if the transaction will require shipping.
+			pp.setShippingEnabled(true);
+
+			pp.setDynamicAmountCalculationEnabled(false);
+
+		}
+	} catch (IllegalStateException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+}
 }

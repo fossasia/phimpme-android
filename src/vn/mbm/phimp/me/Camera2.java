@@ -7,6 +7,8 @@ import java.util.List;
 
 import vn.mbm.phimp.me.image.CropImage;
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -23,6 +25,7 @@ import android.hardware.Camera.ShutterCallback;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
@@ -198,6 +201,8 @@ public class Camera2 extends Activity {
 			}		
 			sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"
 		            + Environment.getExternalStorageDirectory()))); 
+			ProgressDialog progress=ProgressDialog.show(ctx, "", "Please wait...");			
+			Dialog(2500,progress);
 			Intent _intent = new Intent();			
 			_intent.setClass(ctx, CropImage.class);
 			_intent.putExtra("image-path", picture);			
@@ -209,6 +214,13 @@ public class Camera2 extends Activity {
 			startActivityForResult(_intent, 1);		
 		}
 	};
+	public void Dialog(long time, final Dialog d){
+	    new Handler().postDelayed(new Runnable() {
+	        public void run() {                            
+	            d.dismiss();   
+	        }
+	    }, time); 
+	}
 	@Override
 	protected void onResume(){
 		super.onResume();

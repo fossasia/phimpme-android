@@ -1,15 +1,12 @@
 package vn.mbm.phimp.me;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -42,13 +39,11 @@ public class PhotoSelect extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.photolist);
 		activity = (Activity) this;	
-		imageAdapter = new ImageAdapter();
-		
+		imageAdapter = new ImageAdapter();		
 		imagegrid = (GridView) findViewById(R.id.PhoneImageGrid);
 		imagegrid.setAdapter(imageAdapter);	
 		cachetask = new CacheTask();
-		showFromCache();
-		
+		showFromCache();		
 		final String[] data = { MediaStore.Images.Media.DATA };
 		final String orderBy = MediaStore.Images.Media._ID;
 		pathcursor = managedQuery(
@@ -86,9 +81,9 @@ public class PhotoSelect extends Activity {
 	}
 
 	public void updateUI() {
+		
 		imageAdapter.checkForNewImages();
 	}
-
 	public class ImageAdapter extends BaseAdapter {
 		Context ctx;
 		private LayoutInflater mInflater;
@@ -99,6 +94,7 @@ public class PhotoSelect extends Activity {
 			PhimpMe.cache = CacheStore.getInstance();
 		}		
 		public void checkForNewImages(){
+			
 			//Here we'll only check for newer images
 			final String[] columns = { MediaStore.Images.Thumbnails._ID };
 			final String orderBy = MediaStore.Images.Media._ID;
@@ -175,7 +171,7 @@ public class PhotoSelect extends Activity {
 
 				public void onClick(View v) {
 					// TODO Auto-generated method stub	
-					try{						
+					try{		
 						int id = v.getId();
 						ImageItem item = images.get(id);
 						Intent intent = new Intent();

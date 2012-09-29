@@ -217,7 +217,7 @@ public class GalleryMap extends MapActivity implements LocationListener
             			handler.sendEmptyMessage(num_photos_added);	
     					final MapController mc = map.getController();
        					mc.setZoom(16);
-       					mc.animateTo(PhimpMe.currentGeoPoint);
+       					//mc.animateTo(PhimpMe.currentGeoPoint);
         	        }else
         	         if(num_photos_added < 1){
 

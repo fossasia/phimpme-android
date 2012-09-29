@@ -25,7 +25,7 @@ public class RSSUtil
 {
 	final static String TAG = "rss";
 	
-	public static String RSS_ITEM_FOLDER = "rss_items";
+	public static String RSS_ITEM_FOLDER = ".rss_items";
 	
 	public static String RSS_THUMB_FOLDER = ".rss_thumbs";
 	

@@ -20,7 +20,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.RotateAnimation;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -67,11 +66,10 @@ class LocalPhotosAdapter extends BaseAdapter {
         if (convertView == null) {			
             picturesView = new ImageView(context);
             String url = filepath.get(position);	
+            
             picturesView.setImageURI(Uri.withAppendedPath(
                     MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, "" + url));
-            
-            
-            
+           
             try {
 				int orient=getOrientation(context, position);
 				Log.i("GV_Adapter","orientation : "+orient);
@@ -96,6 +94,7 @@ class LocalPhotosAdapter extends BaseAdapter {
         return picturesView;
 
     }
+	
 	public static int getOrientation(Context context, int position) throws Exception {
 		
 		String[] projection = {MediaStore.Images.Media.DATA};
