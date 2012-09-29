@@ -11,6 +11,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ public class PhimpMeGallery extends Activity{
 	{
 		super.onCreate(savedInstanceState);		
 		setContentView(R.layout.phimpme_gallery_view);
+		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);	
 		viewFlow = (ViewFlow) findViewById(R.id.viewflow);
 		btnShareBT=(ImageButton)findViewById(R.id.btnShareBT);
 		btnUpload=(ImageButton)findViewById(R.id.btnUpLoad);
@@ -129,7 +131,8 @@ public class PhimpMeGallery extends Activity{
 				intent.putExtra("aspectY", 0);
 				intent.putExtra("scale", true);
 				intent.putExtra("activityName", "PhimpMeGallery");
-				startActivityForResult(intent, 1);
+				startActivity(intent);
+				
 			}
 		});
 		

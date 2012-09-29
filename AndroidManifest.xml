@@ -111,7 +111,10 @@
             android:configChanges="locale"
            >            
         </activity>
-          <activity android:name="vn.mbm.phimp.me.image.CropImage" android:configChanges="locale" android:label="CropLabel" >
+          <activity android:name="vn.mbm.phimp.me.image.CropImage" 
+              android:configChanges="locale" 
+              android:label="CropLabel"
+              android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".Settings"
@@ -147,6 +150,7 @@
         </activity>
        <activity
             android:name=".PhimpMeGallery"
+            android:screenOrientation="portrait"
             android:configChanges="locale"
             >
            
@@ -156,6 +160,10 @@
             android:theme="@android:style/Theme.NoTitleBar">
            
         </activity>
+        <!-- Paypal -->
+         <activity android:name="com.paypal.android.MEP.PayPalActivity"
+				  android:theme="@android:style/Theme.Translucent.NoTitleBar"
+				  android:configChanges="keyboardHidden|orientation"/>
         <activity
             android:name="vn.mbm.phimp.me.utils.ViewOriginalImage"
             android:theme="@android:style/Theme.NoTitleBar">

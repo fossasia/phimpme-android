@@ -119,19 +119,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    android:text="@string/brightness" />
-
-                <SeekBar
-                    android:id="@+id/sbBrightness"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:max="255" />
-
-                <TextView
-                    android:id="@+id/TextView02"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
                     android:text="@string/title" />
 
                 <EditText

@@ -19,6 +19,7 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -62,7 +63,6 @@ import android.widget.Toast;
 public class CropImage extends MonitoredActivity 
 {
 	
-	private static SeekBar sbBrightness;
 	private static int brightnessValue = 0;
 	private static float toDegree = 90;
 	private static float fromDegree = 0;
@@ -100,6 +100,7 @@ public class CropImage extends MonitoredActivity
     private final int GET_POSITION_ON_MAP = 5;
     private String mImagePath;
     static int position ;
+    private static boolean check=false;
    // private String activityName;
     ProgressDialog gpsloading;
     ImageButton btnUseMap;
@@ -121,9 +122,8 @@ public class CropImage extends MonitoredActivity
     		Log.d("crop image","start");
     		requestWindowFeature(Window.FEATURE_NO_TITLE);
     		setContentView(R.layout.cropimage);
-    		
+    		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);		
     		btnSave=(Button)findViewById(R.id.save);
-    		btnSave.setVisibility(4);
     		ImageButton btnOriginal=(ImageButton)findViewById(R.id.btnOriginal);
     		
     		txtPhotoTitle = (EditText) findViewById(R.id.txtUploadPhotoTitle);
@@ -188,10 +188,11 @@ public class CropImage extends MonitoredActivity
 				BitmapFactory.Options options = new BitmapFactory.Options();
 		        options.inSampleSize = 4;		    	
 		        mBitmap = BitmapFactory.decodeFile( p[0], options );
-		        if(mBitmap.getWidth() %2 != 0){
-		        	//bitmap width must even
-		        	Log.i("CropImage","mBitmap width not even");
-		        	mBitmap=Bitmap.createScaledBitmap(mBitmap, mBitmap.getWidth()*4, mBitmap.getHeight()*3, false);
+		        if(mBitmap.getWidth() %2 != 0||mBitmap.getHeight() %2 != 0){
+		        	//bitmap width , height must even
+		        	Log.i("CropImage","mBitmap width or height not even");			        	
+		        	mBitmap=Bitmap.createScaledBitmap(mBitmap, mBitmap.getWidth()*4, mBitmap.getHeight()*4, false);
+	        				        	
 		        }
 				modifiedBitmap= flippedImaged = mBitmap;
 				
@@ -241,6 +242,7 @@ public class CropImage extends MonitoredActivity
 					new View.OnClickListener() {
 					    public void onClick(View v) 
 					    {
+					    	check=true;
 					    	try{
 					    		doRotate(mImageView, fromDegree, toDegree);
 								fromDegree = (toDegree == 360) ? 0 : toDegree;
@@ -248,7 +250,7 @@ public class CropImage extends MonitoredActivity
 								if (toDegree > 360) {
 									toDegree = 90;
 								}
-								btnSave.setVisibility(0);
+								
 					    	}catch(OutOfMemoryError o){
 					    		o.printStackTrace();
 					    	}
@@ -266,18 +268,20 @@ public class CropImage extends MonitoredActivity
 					new View.OnClickListener() {
 					    public void onClick(View v) 
 					    {
+					    	check=true;
 					    	try{
 					    		modifiedBitmap = doVerticalFlip(modifiedBitmap);
 								flippedImaged = doVerticalFlip(flippedImaged);
 								mImageView.setImageBitmap(changeBrightness(
 										modifiedBitmap, brightnessValue));
 								mBitmapSave = modifiedBitmap;
+								
 					    	}catch(OutOfMemoryError o){
 					    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
 					    		//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
 					    		modifiedBitmap=flippedImaged=mBitmapResize;
 					    	}
-					    	btnSave.setVisibility(0);
+					    	
 					    }
 					});
 			/*
@@ -290,6 +294,7 @@ public class CropImage extends MonitoredActivity
 					new View.OnClickListener() {
 					    public void onClick(View v) 
 					    {
+					    	check=true;
 					    	try{
 
 					    		modifiedBitmap = null;
@@ -297,6 +302,7 @@ public class CropImage extends MonitoredActivity
 								mImageView.setImageBitmap(changeBrightness(
 										modifiedBitmap, brightnessValue));
 								mBitmapSave = modifiedBitmap;
+								
 					    	}catch(OutOfMemoryError o){								
 
 					    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
@@ -305,7 +311,7 @@ public class CropImage extends MonitoredActivity
 				    		
 
 					    	}
-					    	btnSave.setVisibility(0);
+					    	
 					    }
 					});
 			/*
@@ -318,6 +324,7 @@ public class CropImage extends MonitoredActivity
 					new View.OnClickListener() {
 					    public void onClick(View v) 
 					    {
+					    	check=true;
 					    	try{
 
 					    		modifiedBitmap = null;
@@ -325,13 +332,14 @@ public class CropImage extends MonitoredActivity
 								mImageView.setImageBitmap(changeBrightness(
 										modifiedBitmap, brightnessValue));
 								mBitmapSave = modifiedBitmap;
+								
 					    	}catch(OutOfMemoryError o){
 					    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
 					    		//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
 								modifiedBitmap=flippedImaged=mBitmapResize;
 
 					    	}
-					    	btnSave.setVisibility(0);
+					    
 					    }
 					});
 			/*
@@ -344,6 +352,7 @@ public class CropImage extends MonitoredActivity
 					new View.OnClickListener() {
 					    public void onClick(View v) 
 					    {
+					    	check=true;
 					    	try{
 					    		
 					    		modifiedBitmap = null;
@@ -351,6 +360,7 @@ public class CropImage extends MonitoredActivity
 								mImageView.setImageBitmap(changeBrightness(
 										modifiedBitmap, brightnessValue));
 								mBitmapSave = modifiedBitmap;
+								
 					    	}catch(OutOfMemoryError o){
 
 					    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
@@ -358,7 +368,7 @@ public class CropImage extends MonitoredActivity
 					    		modifiedBitmap=flippedImaged=mBitmapResize;
 
 					    	}
-					    	btnSave.setVisibility(0);
+					    	
 					    }
 					});
 			/*
@@ -371,44 +381,48 @@ public class CropImage extends MonitoredActivity
 					new View.OnClickListener() {
 					    public void onClick(View v) 
 					    {
+					    	check=false;
 					    	try{
-					    		sbBrightness.setProgress(0);
+					    	
 								doRotate(mImageView, 0, 0);
 								fromDegree = 0;
 								toDegree = 90;
 								mImageView.setImageBitmap(mBitmap);
 								modifiedBitmap = flippedImaged = mBitmap;
+								
 					    	}catch(OutOfMemoryError o){
-					    		sbBrightness.setProgress(0);
+
 								doRotate(mImageView, 0, 0);
 								fromDegree = 0;
 								toDegree = 90;
 								mImageView.setImageBitmap(mBitmapResize);
 								modifiedBitmap = flippedImaged = mBitmapResize;
 					    	}
-					    	btnSave.setVisibility(4);
+					    	
 					    }
 					});
 			/*
 			 * Danh - Add event for button Original image effect - End
 			 */
 			
-			/*
-			 * Danh - Add event for brightness bar
-			 */
-			sbBrightness = (SeekBar) findViewById(R.id.sbBrightness);
-			sbBrightness.setOnSeekBarChangeListener(brightnessBarSeekListener);
-			
-			
-			/*
-			 * Danh - Add event for brightness bar - End
-			 */
-			
 			btnSave.setOnClickListener(
 					new View.OnClickListener() {
 					    public void onClick(View v)
 					    {
-					    	onSaveClicked();
+					    	if(check==true){
+					    		onSaveClicked();
+					    		//finish();
+						    	Intent intent=new Intent(ctx, PhimpMe.class);
+						    	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						    	startActivity(intent);
+					    	}else{
+					    		
+					    		//finish();
+					    		Intent intent=new Intent(ctx, PhimpMe.class);
+						    	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+						    	startActivity(intent);
+					    	}
+					    	
 					    }
 				});			
 			startFaceDetection();
@@ -419,14 +433,14 @@ public class CropImage extends MonitoredActivity
     }
     public static void ConvertToOriginal() {
     	try{
-    		sbBrightness.setProgress(0);
+
 			doRotate(mImageView, 0, 0);
 			fromDegree = 0;
 			toDegree = 90;
 			mImageView.setImageBitmap(mBitmap);
 			modifiedBitmap = flippedImaged = mBitmap;
     	}catch(OutOfMemoryError o){
-    		sbBrightness.setProgress(0);
+
 			doRotate(mImageView, 0, 0);
 			fromDegree = 0;
 			toDegree = 90;
@@ -541,7 +555,6 @@ public class CropImage extends MonitoredActivity
 		}
 
 		public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
-			
 			try{
 				brightnessValue = progress;
 				ColorMatrix sepiaMatrix = new ColorMatrix();
@@ -786,7 +799,7 @@ public class CropImage extends MonitoredActivity
     		extras.putParcelable("data", croppedImage);
     		setResult(RESULT_OK,(new Intent()).setAction("inline-data").putExtras(extras));
     		finish();
-    		//Log.e("WhitePost", "CropImage - Put Bitmap on bundle");
+    		
     	} 
     	else 
     	{
@@ -863,10 +876,9 @@ public class CropImage extends MonitoredActivity
 		intent.putExtra("lati", txtLatitude.getText().toString());
 		intent.putExtra("logi",txtLongtitude.getText().toString());
 		intent.putExtra("tags",txtTags.getText().toString());
-		intent.putExtra("name", txtPhotoTitle.getText().toString());
-		Log.d("name",txtPhotoTitle.getText().toString());
-		Log.e("Danh","Image path output save : "+mImagePath);
-		setResult(RESULT_OK,intent);
+		intent.putExtra("name", txtPhotoTitle.getText().toString());		
+		Log.i("Danh","Image path output save : "+mImagePath);
+		setResult(RESULT_OK,intent);		
 		finish();
     }
 

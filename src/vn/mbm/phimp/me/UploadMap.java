@@ -17,6 +17,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -41,8 +42,9 @@ public class UploadMap extends MapActivity
 	Button btnCancel;
 	ImageButton btnLocation;
 	Button btnClear;
-	
+	LocationListener ll;
 	private static final int DIALOG_ADD_CURRENT = 1;
+	private static final int TURN_ON_GPS = 2;
 	
 	MapView mv;
 	
@@ -68,9 +70,10 @@ public class UploadMap extends MapActivity
 	
 	int latitude;
 	int longitude;
-	
+	LocationManager lm ;
 	ProgressDialog gpsloading;
 	
+	@SuppressWarnings("deprecation")
 	@Override
     public void onCreate(Bundle savedInstanceState) 
 	{
@@ -91,7 +94,14 @@ public class UploadMap extends MapActivity
         marker = getResources().getDrawable(R.drawable.upload_marker);
         pinoverlays = new SitesOverlay(marker);
         ctx = this;
-
+        lm = (LocationManager) ctx.getSystemService(LOCATION_SERVICE);        
+        //Turn on GPS    
+        
+    	String provider1 = android.provider.Settings.Secure.getString(getContentResolver(), android.provider.Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+    	  if(!provider1.contains("gps")){
+    	    showDialog(TURN_ON_GPS);
+    	   
+    	  }
         btnSave.setOnClickListener(new OnClickListener() 
         {
 			@Override
@@ -123,6 +133,7 @@ public class UploadMap extends MapActivity
         
         btnLocation.setOnClickListener(new OnClickListener() 
         {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void onClick(View v) 
 			{
@@ -153,7 +164,7 @@ public class UploadMap extends MapActivity
 		});
         
         marker.setBounds(0, 0, marker.getIntrinsicWidth(),marker.getIntrinsicHeight());
-         gpsloading = new ProgressDialog(ctx);
+        gpsloading = new ProgressDialog(ctx);
 		gpsloading.setCancelable(true);
 		gpsloading.setCanceledOnTouchOutside(false);
 		gpsloading.setTitle(getString(R.string.loading));
@@ -407,10 +418,10 @@ public class UploadMap extends MapActivity
 									{
 										try
 								        {
-								        	LocationManager lm = (LocationManager) ctx.getSystemService(LOCATION_SERVICE);
+								        	
 								        	if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER))
 											{
-												gpsloading.dismiss();
+												gpsloading.dismiss();												
 												Commons.AlertLog(ctx, getString(R.string.error_gps_fail) + "\n" + getString(R.string.infor_turn_on_gps), getString(R.string.accept)).show();
 											}
 								        	else
@@ -461,6 +472,30 @@ public class UploadMap extends MapActivity
 									e.printStackTrace();
 								}
 							}
+						}
+					})
+					.create();
+			}
+			case TURN_ON_GPS:
+			{
+				return new AlertDialog.Builder(ctx)
+					.setTitle("")
+					.setMessage("Do you want turn on GPS ?")
+					.setPositiveButton("Yes", new DialogInterface.OnClickListener() 
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which) 
+						{							
+							
+							startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+						}
+					})
+					.setNegativeButton("No", new DialogInterface.OnClickListener() 
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which) 
+						{
+							
 						}
 					})
 					.create();

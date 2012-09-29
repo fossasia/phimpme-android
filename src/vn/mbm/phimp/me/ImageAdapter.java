@@ -79,7 +79,7 @@ public class ImageAdapter extends BaseAdapter {
 					BitmapFactory.Options bfOpt = new BitmapFactory.Options();
 	
 					bfOpt.inScaled = true;
-					bfOpt.inSampleSize = 4;
+					bfOpt.inSampleSize = 2;
 					bfOpt.inPurgeable = true;
 	
 					PhimpMeGallery.bmp = BitmapFactory.decodeStream(is, null, bfOpt);
