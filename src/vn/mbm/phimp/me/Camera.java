@@ -3,7 +3,7 @@ package vn.mbm.phimp.me;
 import java.io.File;
 import java.util.Date;
 
-import vn.mbm.phimp.me.image.CropImage;
+import vn.mbm.phimp.me.gallery3d.media.CropImage;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;

@@ -39,7 +39,7 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <!-- <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
@@ -61,7 +61,7 @@
             android:layout_alignParentTop="true"
             android:contentDescription="@string/empty"
             android:src="@drawable/add" />
-    </RelativeLayout>
+    </RelativeLayout> -->
 
     <RelativeLayout
         android:layout_width="match_parent"

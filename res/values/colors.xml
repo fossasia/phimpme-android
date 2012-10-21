@@ -11,4 +11,5 @@
     <color name="tabMedium">#2B2B2B</color>
 	<color name="tabDark">#000000</color>
 	<color name="tabTransparent">#10ffffff</color>
+	<color name="overscroll">#33b5e5</color>
 </resources>

@@ -12,12 +12,17 @@
         android:layout_margin="10dp" >
     </ListView> -->
 
-    <LinearLayout
+    
+<ScrollView 
+	    android:id="@+id/scrollViewnew"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent" >
+	    <LinearLayout
         android:id="@+id/linearUploadProgress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_margin="10dp" >
     </LinearLayout>
-
+</ScrollView>
 </LinearLayout>

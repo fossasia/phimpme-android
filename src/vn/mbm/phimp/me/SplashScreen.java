@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 
 public class SplashScreen extends Activity {
 	
-	protected int _splashTime = 4000; 
+	protected int _splashTime = 2000; 
 	
 	private Thread splashTread;
 

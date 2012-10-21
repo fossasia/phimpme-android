@@ -2,6 +2,7 @@ package vn.mbm.phimp.me;
 
 import java.util.ArrayList;
 
+import vn.mbm.phimp.me.gallery.PhimpMeGallery;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +26,7 @@ import android.widget.Toast;
 public class PhotoSelect extends Activity {
 
 	public ImageAdapter imageAdapter;
-	private final static int VIEW_IMAGE = 3;
+	//private final static int VIEW_IMAGE = 3;
 	public GridView imagegrid;
 	private long lastId;
 	Context ctx;
@@ -34,6 +35,7 @@ public class PhotoSelect extends Activity {
 	static Activity activity = new Activity();
 	Cursor pathcursor;
 	/** Called when the activity is first created. */
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -68,10 +70,11 @@ public class PhotoSelect extends Activity {
 							"Please select at least one image",
 							Toast.LENGTH_LONG).show();
 				} else {
+					
 					selectImages = selectImages.substring(0,selectImages.lastIndexOf("#"));
 					Log.d("SelectImage", selectImages);
-					Intent intent = activity.getIntent();
-					intent.putExtra("Ids",selectImages);				
+					Intent intent = activity.getIntent();					
+					intent.putExtra("Ids",selectImages);							
 					activity.setResult(RESULT_OK,intent);
 					activity.finish();
 				}
@@ -88,11 +91,11 @@ public class PhotoSelect extends Activity {
 		Context ctx;
 		private LayoutInflater mInflater;
 		public ArrayList<ImageItem> images = new ArrayList<ImageItem>();
-		
 		public ImageAdapter() {
 			mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			PhimpMe.cache = CacheStore.getInstance();
 		}		
+		@SuppressWarnings("deprecation")
 		public void checkForNewImages(){
 			
 			//Here we'll only check for newer images
@@ -169,9 +172,11 @@ public class PhotoSelect extends Activity {
 			});
 			holder.imageview.setOnClickListener(new OnClickListener() {
 
+				@SuppressWarnings("deprecation")
 				public void onClick(View v) {
 					// TODO Auto-generated method stub	
-					try{		
+					try{	
+
 						int id = v.getId();
 						ImageItem item = images.get(id);
 						Intent intent = new Intent();
@@ -183,14 +188,17 @@ public class PhotoSelect extends Activity {
 						if (imagecursor != null && imagecursor.getCount() > 0){
 							imagecursor.moveToPosition(0);
 							String path = imagecursor.getString(imagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
+							ArrayList<String> file = new ArrayList<String>();
+							file.add(path);
 							Intent _intent = new Intent();
 							_intent.setClass(PhotoSelect.this, PhimpMeGallery.class);
-							_intent.putExtra("image-path", path);						
+							//_intent.putExtra("image-path", path);
+							PhimpMeGallery.setFileList(file);
 							_intent.putExtra("aspectX", 0);
 							_intent.putExtra("aspectY", 0);
 							_intent.putExtra("scale", true);
 							_intent.putExtra("activityName", "PhotoSelect");
-							startActivityForResult(_intent, VIEW_IMAGE);
+							startActivity(_intent);
 							Log.d("file path",path);
 						}
 					}catch(Exception e){
@@ -206,7 +214,7 @@ public class PhotoSelect extends Activity {
 		}	
 	}
 
-	class ViewHolder {
+	class ViewHolder {		
 		ImageView imageview;
 		CheckBox checkbox;
 	}
@@ -257,7 +265,7 @@ public class PhotoSelect extends Activity {
 	    protected String doInBackground(Cursor... cursor) {
 	    	try{
 	    		 Log.d("Luong", "Run View Photo Task");
-	    		 
+	    		
 	    		 Cursor pathcursor = cursor[0];
 	    		 int path_column_index = pathcursor
 	 					.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -321,3 +329,4 @@ public class PhotoSelect extends Activity {
 		cachetask.onCancelled();
 	}
 }
+   

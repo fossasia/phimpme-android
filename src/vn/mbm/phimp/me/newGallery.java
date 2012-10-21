@@ -20,6 +20,7 @@ import vn.mbm.phimp.me.feedservice.Tumblr;
 import vn.mbm.phimp.me.feedservice.Vkontakte;
 import vn.mbm.phimp.me.feedservice.Yahoo;
 import vn.mbm.phimp.me.feedservice.s500px;
+import vn.mbm.phimp.me.gridview.adapter.LocalPhotosAdapter;
 import vn.mbm.phimp.me.utils.Commons;
 import vn.mbm.phimp.me.utils.ImageUtil;
 import vn.mbm.phimp.me.utils.RSSPhotoItem;
@@ -46,11 +47,10 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -74,9 +74,11 @@ public class newGallery extends Activity {
 	public static ArrayList<RSSPhotoItem> list_thumb_moment = new ArrayList<RSSPhotoItem>();
 
 	public static final int NUMBER_PHOTO_NEED_DOWNLOAD = 6;
+	public static int number_resume_download = 6;
+	public static int count_photo = 1;
 	public static int HIGHT_DISPLAY_PHOTOS = 0;
 	public int hight_display;
-
+	public static CacheStore cache;
 	static ArrayList<Bitmap> bitmap_list = new ArrayList<Bitmap>();
 	static ArrayList<Bitmap> bitmap_p_flickr = new ArrayList<Bitmap>();
 	static ArrayList<Bitmap> bitmap_recent_flickr = new ArrayList<Bitmap>();
@@ -104,11 +106,13 @@ public class newGallery extends Activity {
 
 	static ArrayList<Bitmap> bitmap_personal_kaixin = new ArrayList<Bitmap>();
 	static ArrayList<Bitmap> bitmap_personal_sohu = new ArrayList<Bitmap>();
-
+	static ArrayList<RSSPhotoItem> tmp_list = new ArrayList<RSSPhotoItem>();
+	static ArrayList<RSSPhotoItem_Personal> tmp_list_personal = new ArrayList<RSSPhotoItem_Personal>();
+	
 	static ArrayList<String> listService = new ArrayList<String>();
 	//Button btnPublic;
 	Button delete;
-	public static TextView txtStatus;
+	//public static TextView txtStatus;
 	private static GridFlickrAdaper flickradapter;
 	private static GridRecentFlickrAdaper recentflickradapter;
 	private static GridPublicPicasaAdaper publicpicasaadapter;
@@ -132,9 +136,8 @@ public class newGallery extends Activity {
 	private static GridPersonalKaixinAdapter personal_kaixinadapter;
 	private static GridPersonal500pxAdapter personal_500pxadapter;
 	private static GridPublic500pxAdaper public500pxadapter;
-
-	private static GridPersonalSohuAdapter personal_sohuadapter;
-
+	
+	private static GridPersonalSohuAdapter personal_sohuadapter;	
 	private static LocalPhotosAdapter local_adapter;
 	static int current_process;
 	static int current_page;
@@ -142,8 +145,8 @@ public class newGallery extends Activity {
 	private static int columnIndex;
 	static int check_local = 0;
 	public static ProgressDialog pro_gress;
-	ImageButton btnMap,btnBluetoothShare;
-	
+	//ImageButton btnMap,btnBluetoothShare;
+	public static int update_number = 0;
 	static LinearLayout linear_main;
 	ViewFlipper vf;
 	File rss_folder;
@@ -404,7 +407,7 @@ public class newGallery extends Activity {
 	static int cols = 3;
 	int rows = 2;
 	int position = 0;
-
+	static ArrayList<String> array_ID = new ArrayList<String>();
 	
 	@SuppressWarnings("deprecation")
 	@Override
@@ -414,12 +417,8 @@ public class newGallery extends Activity {
 		setContentView(R.layout.newgallery);
 		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);		
 		ctx = this;
-		
-		txtStatus = (TextView) findViewById(R.id.txtGalleryStatus);
+		cache=CacheStore.getInstance();
 		color_line = R.color.blue_dark;
-
-		txtStatus.setText("");
-
 		// listService.clear();
 		list_thumb.clear();
 		list_thumb = RSSUtil.getLocalPhotos(ctx);
@@ -456,7 +455,6 @@ public class newGallery extends Activity {
 		Display display = ((Activity) ctx).getWindowManager()
 				.getDefaultDisplay();
 		int w = display.getWidth();
-		txtStatus.setWidth(w - 250);
 
 		DEFAULT_THUMBNAIL_SIZE = (int) w / cols;
 		HIGHT_DISPLAY_PHOTOS = DEFAULT_THUMBNAIL_SIZE * rows + 40;
@@ -474,188 +472,6 @@ public class newGallery extends Activity {
 				40, 40);
 		lp_more.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		
-		//landscape local gallery
-				// Local Gallery
-				if (check_local == 1 ) {
-					/*LinearLayout.LayoutParams p_two_row = new LinearLayout.LayoutParams(
-							ViewGroup.LayoutParams.MATCH_PARENT,
-							DEFAULT_THUMBNAIL_SIZE * 2 + 120);
-
-					LinearLayout.LayoutParams p_zero = new LinearLayout.LayoutParams(
-							0, 0);
-
-					LinearLayout.LayoutParams p_one_row = new LinearLayout.LayoutParams(
-							ViewGroup.LayoutParams.MATCH_PARENT,
-							DEFAULT_THUMBNAIL_SIZE + 100);*/
-					
-					Button btn_line = new Button(ctx);
-					btn_line.setHeight(2);
-					btn_line.setWidth(LayoutParams.MATCH_PARENT);
-					btn_line.setBackgroundResource(color_line);
-					Log.e("count", PhimpMe.local_count + "");
-					txtlocal_gallery = new TextView(this);
-					txtlocal_gallery.setText("Local Gallery");
-					gv_local_gallery = new GridView(this);
-					gv_local_gallery.setPadding(0, 10, 0, 0);
-					ln_local_gallery = new LinearLayout(this);
-					ln_local_gallery.setOrientation(LinearLayout.VERTICAL);
-
-					btn_local_more = new ImageButton(this);
-					btn_local_more.setImageResource(R.drawable.more_disable);
-					btn_local_more.setEnabled(false);
-
-					RelativeLayout more_li = new RelativeLayout(this);
-					btn_local_more.setLayoutParams(lp_more);
-					more_li.addView(btn_local_more);
-					more_li.addView(txtlocal_gallery);
-					ln_local_gallery.addView(more_li);
-					ln_local_gallery.addView(btn_line);
-					ln_local_gallery.addView(gv_local_gallery);
-					linear_main.addView(ln_local_gallery);
-
-					Log.d("Danh", "number image :" + PhimpMe.filepath.size());
-					if (PhimpMe.filepath.size() > 0) {
-						final ArrayList<String> array_file;
-						if ((PhimpMe.filepath.size() <= NUMBER_PHOTO_NEED_DOWNLOAD)) {
-							array_file = new ArrayList<String>(PhimpMe.filepath.size());
-							for (int j = 0; j < PhimpMe.filepath.size(); j++) {
-								array_file.add(PhimpMe.filepath.get(j));
-							}
-							int h = 0;
-							if (PhimpMe.filepath.size() <= 3)
-								h = DEFAULT_THUMBNAIL_SIZE + 100;
-							else
-								h = DEFAULT_THUMBNAIL_SIZE * 2 + 100;
-							ln_local_gallery
-									.setLayoutParams(new LinearLayout.LayoutParams(
-											ViewGroup.LayoutParams.WRAP_CONTENT, h));
-
-						} else if ((PhimpMe.filepath.size() - PhimpMe.local_count
-								* NUMBER_PHOTO_NEED_DOWNLOAD) > 0) {
-							array_file = new ArrayList<String>(PhimpMe.local_count
-									* NUMBER_PHOTO_NEED_DOWNLOAD);
-							for (int j = 0; j < PhimpMe.local_count
-									* NUMBER_PHOTO_NEED_DOWNLOAD; j++) {
-								array_file.add(PhimpMe.filepath.get(j));
-							}
-							ln_local_gallery
-									.setLayoutParams(new LinearLayout.LayoutParams(
-											ViewGroup.LayoutParams.WRAP_CONTENT,
-											PhimpMe.local_count
-													* DEFAULT_THUMBNAIL_SIZE * 2 + 100));
-							btn_local_more.setImageResource(R.drawable.more);
-							btn_local_more.setEnabled(true);
-						} else {
-							array_file = new ArrayList<String>(PhimpMe.filepath.size());
-							for (int j = 0; j < PhimpMe.filepath.size(); j++) {
-								array_file.add(PhimpMe.filepath.get(j));
-							}
-							if (PhimpMe.filepath.size() < 3) {
-								hight_display = DEFAULT_THUMBNAIL_SIZE + 100;
-							} else if (PhimpMe.filepath.size() % 3 != 0) {
-								hight_display = DEFAULT_THUMBNAIL_SIZE
-										* (PhimpMe.filepath.size() / 3 + 1) + 100;
-							} else {
-								hight_display = DEFAULT_THUMBNAIL_SIZE
-										* (PhimpMe.filepath.size() / 3) + 100;
-							}
-							ln_local_gallery
-									.setLayoutParams(new LinearLayout.LayoutParams(
-											ViewGroup.LayoutParams.WRAP_CONTENT,
-											hight_display));
-						}
-
-						gv_local_gallery.setNumColumns(cols);
-						local_adapter = new LocalPhotosAdapter(ctx, array_file);
-						gv_local_gallery.setAdapter(local_adapter);
-						gv_local_gallery.setDrawingCacheEnabled(true);						
-						check_local = 1;
-						btn_local_more.setOnClickListener(new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								if (PhimpMe.filepath.size() - PhimpMe.local_count
-										* NUMBER_PHOTO_NEED_DOWNLOAD > 3) {
-									local_rows_display = 2;
-								} else if ((PhimpMe.filepath.size() - PhimpMe.local_count
-										* NUMBER_PHOTO_NEED_DOWNLOAD) > 0) {
-									local_rows_display = 1;
-								}
-								int h = ln_local_gallery.getHeight();
-								int hight_display = h + DEFAULT_THUMBNAIL_SIZE
-										* local_rows_display + 10;
-								LinearLayout.LayoutParams rep = new LinearLayout.LayoutParams(
-										ViewGroup.LayoutParams.WRAP_CONTENT,
-										hight_display);
-								ln_local_gallery.setLayoutParams(rep);
-								ln_local_gallery.setEnabled(true);
-								final ArrayList<String> array_file;
-								if ((PhimpMe.filepath.size() - PhimpMe.local_count
-										* NUMBER_PHOTO_NEED_DOWNLOAD) <= NUMBER_PHOTO_NEED_DOWNLOAD) {
-									array_file = new ArrayList<String>(PhimpMe.filepath
-											.size());
-									for (int i = 0; i < PhimpMe.filepath.size(); i++) {
-										array_file.add(PhimpMe.filepath.get(i));
-									}
-
-								} else {
-									array_file = new ArrayList<String>(
-											PhimpMe.local_count
-													* NUMBER_PHOTO_NEED_DOWNLOAD
-													+ NUMBER_PHOTO_NEED_DOWNLOAD);
-									for (int i = 0; i < PhimpMe.local_count
-											* NUMBER_PHOTO_NEED_DOWNLOAD
-											+ NUMBER_PHOTO_NEED_DOWNLOAD; i++) {
-										array_file.add(PhimpMe.filepath.get(i));
-									}
-								}
-
-								local_adapter = new LocalPhotosAdapter(ctx, array_file);
-								gv_local_gallery.setAdapter(local_adapter);
-
-								PhimpMe.local_count++;
-								if (PhimpMe.filepath.size() - PhimpMe.local_count
-										* NUMBER_PHOTO_NEED_DOWNLOAD <= 0) {
-									btn_local_more
-											.setImageResource(R.drawable.more_disable);
-									btn_local_more.setEnabled(false);
-
-								}
-								check_local = 1;
-							}
-						});
-						
-						gv_local_gallery.setOnItemClickListener(new OnItemClickListener() {
-				            @SuppressWarnings({ "rawtypes" })
-							public void onItemClick(AdapterView parent, View v, int position, long id) {
-				                // Get the data location of the image
-				                String[] projection = {MediaStore.Images.Media.DATA};
-				                cursor = managedQuery( MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-				                        projection, // Which columns to return
-				                        null,       // Return all rows
-				                        null,
-				                        MediaStore.Images.Media._ID+ " DESC");
-				                columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-				                cursor.moveToPosition(position);
-				                // Get image filename
-				                String imagePath = cursor.getString(columnIndex);
-				                Intent _intent = new Intent();
-								_intent.setClass(newGallery.this, PhimpMeGallery.class);
-								_intent.putExtra("image-path", imagePath);
-								_intent.putExtra("aspectX", 0);
-								_intent.putExtra("aspectY", 0);
-								_intent.putExtra("scale", true);
-								_intent.putExtra("activityName", "GridviewAdapter");
-								startActivityForResult(_intent, 3);
-				            }
-				        });
-						
-					} else {
-						linear_main.removeView(more_li);
-						check_local = 1;
-					}
-				}
-
-				
 				for (int i = 0; i < PhimpMe.phimpme_array_list.size(); i++) {
 					if (PhimpMe.phimpme_array_list.get(i).size() == 0)
 						continue;
@@ -3382,48 +3198,15 @@ public class newGallery extends Activity {
 						
 					}
 				}
-		
-		/*
-		 * Danh - Maps
-		 */
-		btnMap = (ImageButton) findViewById(R.id.btnGalleryMaps);
-		btnMap.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent i = new Intent();
-				i.setClass(newGallery.this, GalleryMap.class);
-				startActivity(i);
-			}
-			
-		});
-		/*
-		 * Danh - Bluetooth Share
-		 */
-		btnBluetoothShare = (ImageButton) findViewById(R.id.btnBluetoothShare);
-		btnBluetoothShare.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent i = new Intent();
-				i.setClass(newGallery.this, SendFileActivity.class);
-				startActivity(i);
-			}
-		});
-		
-		PhimpMe.check = 0;		
-		loadLocalGallery();
-		
-		
 	}
 
 	@Override
 	protected void onResume()
 	{
-		super.onResume();		
-		Log.i("newGallery","onResume");
+		super.onResume();
+		
+		Log.e("newGallery","onResume");
+		
 		PhimpMe.showTabs();	
 		
 		if (PhimpMe.FEEDS_GOOGLE_ADMOB == true){
@@ -3434,49 +3217,67 @@ public class newGallery extends Activity {
 			PhimpMe.IdList.clear();
 			PhimpMe.IdList.add(0);
 			}else
-				PhimpMe.IdList.add(0);	
+				PhimpMe.IdList.add(0);
 		
-		if(PhimpMe.FEEDS_LOCAL_GALLERY==true){
-			linear_main.removeView(ln_local_gallery);
-			check_local = 0;
-			PhimpMe.filepath.clear();						
-			pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-			Dialog_Update(1,pro_gress);
-			loadLocalGallery();
-		}
-		//download photo
-		try{
-			//previous tab is setting
-			if(PhimpMe.IdList.get(PhimpMe.IdList.size()-2)==3){
-				Log.i("newGallery","Deactivate");
-				pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);					
-				Dialog_download(1000,pro_gress);				
-			}
-		}catch(Exception e){
-			
-		}
+			CacheTask cachetask = new CacheTask();
+			String[] str = null;
+        	cachetask.execute(str);
+        	if(PhimpMe.FEEDS_LOCAL_GALLERY==true){
+        		Log.d("newGallery","resume load local gallery, number photo : "+number_resume_download);
+    			linear_main.removeView(ln_local_gallery);    			
+    			check_local = 0;
+    			PhimpMe.filepath.clear();
+    			array_ID.clear(); 		
+    			resumeLocalPhoto(number_resume_download);
+    		}  
+        	//download photo
+        	try{
+    			//previous tab is setting
+    			if(PhimpMe.IdList.get(PhimpMe.IdList.size()-2)==5){    					
+    				pro_gress=ProgressDialog.show(ctx, "",getString(R.string.wait), true, false);					
+    				Dialog_download(0,pro_gress);		
+    			}
+    		}catch(Exception e){
+    			
+    		}
 	}
-	public void Dialog_Update(long time, final Dialog d){
-	    new Handler().postDelayed(new Runnable() {
-	        public void run() {                
-	        	d.dismiss();
-	        	updatePhoto();
-	        	linear_main.removeView(ln_local_gallery);
-				check_local = 0;
-				PhimpMe.filepath.clear();
-				loadLocalGallery();
-	               
-	        }
-	    }, time); 
+	
+	public class CacheTask extends AsyncTask<String, Void, String> {
+	    @Override
+	    protected String doInBackground(String... urls) {
+	    	try{
+	    		Log.d("newGallery", "Run Cache Task");
+	    		updatePhoto();
+	    		
+	    	}catch(RuntimeException runex){
+	    		this.onCancelled();
+	    	}
+	    	
+	        return "";
+	    }
+
+	    @Override
+	    protected void onPostExecute(String result) {
+	    	
+	    }
+	    @Override
+	    protected void onCancelled() {
+	    	// TODO Auto-generated method stub
+	    	super.onCancelled();
+	    	
+	    }
 	}
+	@SuppressWarnings("deprecation")
 	public void updatePhoto(){
+			Log.e("newGallery","load update photo");
 			int id;
 			final String[] columns = { MediaStore.Images.Thumbnails._ID};
 			final String[] data = { MediaStore.Images.Media.DATA };
 			final String orderBy = MediaStore.Images.Media._ID;
-			Cursor pathcursor = managedQuery(
+			Cursor pathcursor = this.managedQuery(
 					MediaStore.Images.Media.EXTERNAL_CONTENT_URI, data,
 					null, null, orderBy);	
+			startManagingCursor(pathcursor);
 			if(pathcursor != null){
 				int path_column_index = pathcursor
 						.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -3484,191 +3285,187 @@ public class newGallery extends Activity {
 				int c = 0;
 				for (int i = 0; i< count; i++) {
 					
-						pathcursor.moveToPosition(i);
-						String path = pathcursor.getString(path_column_index);
-						boolean check = PhimpMe.cache.check(path);
-						if(check){
-							@SuppressWarnings("unused")
-							int index = Integer.valueOf(PhimpMe.cache.getCacheId(path));
-							@SuppressWarnings("unused")
-							Bitmap bmp = PhimpMe.cache.getCachePath(path);
+						try{
+							pathcursor.moveToPosition(i);
+							String path = pathcursor.getString(path_column_index);
 							
-						}
-						else if(c<=20){				
-							Cursor cursor = managedQuery(
-									MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
-									MediaStore.Images.Media.DATA+ " = " + "\""+path+"\"", null, MediaStore.Images.Media._ID);									
-							if (cursor != null && cursor.getCount() > 0){
-								cursor.moveToPosition(0);
-								id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID));	
-								Bitmap bmp = MediaStore.Images.Thumbnails.getThumbnail(
-										getApplicationContext().getContentResolver(), id,
-										MediaStore.Images.Thumbnails.MICRO_KIND, null);		
-								PhimpMe.cache.saveCacheFile(path, bmp, id);
-							}else id = -1;
-							
-							c++;
-							
-						}
+							boolean check = cache.check(path);
+							if(check){
+								@SuppressWarnings("unused")
+								int index = Integer.valueOf(cache.getCacheId(path));
+								@SuppressWarnings("unused")
+								Bitmap bmp = cache.getCachePath(path);
+								
+							}
+							else if(c<=20){				
+								Cursor cursor = this.managedQuery(
+										MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
+										MediaStore.Images.Media.DATA+ " = " + "\""+path+"\"", null, MediaStore.Images.Media._ID);									
+								startManagingCursor(cursor);
+								if (cursor != null && cursor.getCount() > 0){
+									cursor.moveToPosition(0);
+									id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID));	
+									Bitmap bmp = MediaStore.Images.Thumbnails.getThumbnail(
+											getApplicationContext().getContentResolver(), id,
+											MediaStore.Images.Thumbnails.MICRO_KIND, null);		
+									cache.saveCacheFile(path, bmp, id);
+									cursor.close();
+								}else id = -1;
+								
+								c++;
+								
+							}
+						}catch(NullPointerException e){}
+						
 						
 				}	
 				pathcursor.close();
-				cursor.close();
-			}
-	}
-	@SuppressWarnings("deprecation")
-	public void loadLocalGallery(){
-		if (check_local == 0){
-				LinearLayout.LayoutParams p_two_row = new LinearLayout.LayoutParams(
-						ViewGroup.LayoutParams.MATCH_PARENT,
-						DEFAULT_THUMBNAIL_SIZE * 2 + 120);
-
-				LinearLayout.LayoutParams p_zero = new LinearLayout.LayoutParams(
-						0, 0);
-
-				LinearLayout.LayoutParams p_one_row = new LinearLayout.LayoutParams(
-						ViewGroup.LayoutParams.MATCH_PARENT,
-						DEFAULT_THUMBNAIL_SIZE + 100);
-				RelativeLayout.LayoutParams lp_more = new RelativeLayout.LayoutParams(
-						40, 40);
-				lp_more.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-				if (check_local == 0) {
-					Log.d("Danh", "check value 1 =" + check_local);
-					Button btn_line = new Button(ctx);
-					btn_line.setHeight(2);
-					btn_line.setWidth(LayoutParams.MATCH_PARENT);
-					btn_line.setBackgroundResource(color_line);
-
-					txtlocal_gallery = new TextView(this);
-					txtlocal_gallery.setText("Local Gallery");
-					txtlocal_gallery.setTextSize(text_size);
-					gv_local_gallery = new GridView(this);
-					gv_local_gallery.setPadding(0, 10, 0, 0);
-					ln_local_gallery = new LinearLayout(this);
-					ln_local_gallery.setOrientation(LinearLayout.VERTICAL);
-
-					btn_local_more = new ImageButton(this);
-					btn_local_more
-							.setImageResource(R.drawable.more_disable);
-					btn_local_more.setEnabled(false);
-
-					RelativeLayout more_li = new RelativeLayout(this);
-					btn_local_more.setLayoutParams(lp_more);
-					more_li.addView(btn_local_more);
-					more_li.addView(txtlocal_gallery);
-					ln_local_gallery.addView(more_li);
-					ln_local_gallery.addView(btn_line);
-					ln_local_gallery.addView(gv_local_gallery);
-
-					PhimpMe.local_count = 1;
-
-					linear_main.addView(ln_local_gallery);
-
-					// get photo
-					String[] projection={MediaStore.Images.Thumbnails._ID};
-					cursor=managedQuery(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, projection, null, null, MediaStore.Images.Thumbnails.IMAGE_ID+ " DESC");
-					columnIndex=cursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails._ID);
-					
-					for (int i = 0; i < cursor.getCount(); i++) {
-						if (cursor.moveToNext())
-							PhimpMe.filepath.add(cursor
-									.getString(columnIndex));
-							
-					}
-					Log.d("newGallery","number image :" + PhimpMe.filepath.size());
-					//btnPublic.setEnabled(true);
-					if (PhimpMe.filepath.size() <= 3) {
-						ln_local_gallery.setLayoutParams(p_one_row);
-
-					} else {
-						ln_local_gallery.setLayoutParams(p_two_row);
-					}
-
-					if (PhimpMe.filepath.size() > 0) {
-						final ArrayList<String> array_file;
-						if (PhimpMe.filepath.size() <= NUMBER_PHOTO_NEED_DOWNLOAD) {
-							array_file = new ArrayList<String>(
-									PhimpMe.filepath.size());
-							for (int i = 0; i < PhimpMe.filepath.size(); i++) {
-								array_file.add(PhimpMe.filepath.get(i));
-							}
-
-						} else {
-							array_file = new ArrayList<String>(
-									NUMBER_PHOTO_NEED_DOWNLOAD);
-							for (int i = 0; i < NUMBER_PHOTO_NEED_DOWNLOAD; i++) {
-								array_file.add(PhimpMe.filepath.get(i));
-							}
-
-							btn_local_more
-									.setImageResource(R.drawable.more);
-							btn_local_more.setEnabled(true);
-						}
-						
-						gv_local_gallery.setNumColumns(cols);
-						local_adapter = new LocalPhotosAdapter(ctx,
-								array_file);
-						gv_local_gallery.setAdapter(local_adapter);
-						gv_local_gallery.setDrawingCacheEnabled(true);
-
-						check_local = 1;
-						btn_local_more
-								.setOnClickListener(new OnClickListener() {
-									@Override
-									public void onClick(View v) {
-										
-										pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-										timerDelayRemoveDialog(1000,pro_gress);										
-									}
-								});
-							gv_local_gallery.setOnItemClickListener(new OnItemClickListener() {
-					            @SuppressWarnings({ "rawtypes" })
-								public void onItemClick(AdapterView parent, View v, int position, long id) {
-					            	pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-					            	Dialog(2000,pro_gress);
-					            	// Get the data location of the image
-					                String[] projection = {MediaStore.Images.Media.DATA};
-					                cursor = managedQuery( MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-					                        projection, // Which columns to return
-					                        null,       // Return all rows
-					                        null,
-					                        MediaStore.Images.Media._ID+ " DESC");
-					                columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-					                cursor.moveToPosition(position);
-					                
-					                // Get image filename
-					                String imagePath = cursor.getString(columnIndex);
-					                
-					                Intent _intent = new Intent();
-									_intent.setClass(newGallery.this, PhimpMeGallery.class);
-									_intent.putExtra("image-path", imagePath);
-									_intent.putExtra("aspectX", 0);
-									_intent.putExtra("aspectY", 0);
-									_intent.putExtra("scale", true);
-									_intent.putExtra("activityName", "GridviewAdapter");
-									startActivityForResult(_intent, 3);
-									
-					            }
-					        });
-					} else {
-						ln_local_gallery.setLayoutParams(p_zero);
-						linear_main.removeView(more_li);
-						check_local = 1;
-					}
-					Log.d("Danh", "check = " + check_local);
-				} else {
-				}
+				
 				
 			}
+			
+			
+	}
+
+	public void resumeLocalPhoto(int resum_number){
+		if (check_local == 0){
+			
+			int row;		
+			row=(int)Math.ceil(resum_number/3);
+			LinearLayout.LayoutParams p_two_row = new LinearLayout.LayoutParams(
+					ViewGroup.LayoutParams.MATCH_PARENT,
+					DEFAULT_THUMBNAIL_SIZE * row + 120);
+
+			LinearLayout.LayoutParams p_zero = new LinearLayout.LayoutParams(
+					0, 0);
+
+			LinearLayout.LayoutParams p_one_row = new LinearLayout.LayoutParams(
+					ViewGroup.LayoutParams.MATCH_PARENT,
+					DEFAULT_THUMBNAIL_SIZE + 100);
+			RelativeLayout.LayoutParams lp_more = new RelativeLayout.LayoutParams(
+					40, 40);
+			lp_more.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			if (check_local == 0) {
+				Log.d("Danh", "check value 1 =" + check_local);
+				Button btn_line = new Button(ctx);
+				btn_line.setHeight(2);
+				btn_line.setWidth(LayoutParams.MATCH_PARENT);
+				btn_line.setBackgroundResource(color_line);
+				
+				Button btn_line_black = new Button(ctx);
+				btn_line_black.setHeight(10);
+				btn_line_black.setWidth(LayoutParams.MATCH_PARENT);
+				btn_line_black.setBackgroundResource(R.color.black);
+				
+				txtlocal_gallery = new TextView(this);
+				txtlocal_gallery.setText(getString(R.string.localphotos));
+				txtlocal_gallery.setTextSize(text_size);
+				
+				gv_local_gallery = new GridView(this);
+				gv_local_gallery.setBackgroundResource(R.color.white);
+				
+				ln_local_gallery = new LinearLayout(this);
+				ln_local_gallery.setOrientation(LinearLayout.VERTICAL);
+				
+				btn_local_more = new ImageButton(this);
+				btn_local_more.setImageResource(R.drawable.more_disable);
+				btn_local_more.setEnabled(false);
+
+				RelativeLayout more_li = new RelativeLayout(this);
+				btn_local_more.setLayoutParams(lp_more);
+				more_li.addView(btn_local_more);
+				more_li.addView(txtlocal_gallery);
+				ln_local_gallery.addView(more_li);
+				ln_local_gallery.addView(btn_line);
+				ln_local_gallery.addView(btn_line_black);
+				ln_local_gallery.addView(gv_local_gallery);
+			
+				PhimpMe.local_count = 1;
+
+				linear_main.addView(ln_local_gallery,0);
+
+				// get photo
+				String[] projection={MediaStore.Images.Thumbnails._ID, MediaStore.Images.Thumbnails.IMAGE_ID};
+				cursor=this.managedQuery(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, projection, null, null, MediaStore.Images.Thumbnails.IMAGE_ID+ " DESC");
+				columnIndex=cursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails._ID);
+				
+				for (int i = 0; i < cursor.getCount(); i++) {
+					if (cursor.moveToNext()){
+						PhimpMe.filepath.add(cursor
+								.getString(columnIndex));
+						array_ID.add(cursor.getString(1));
+					}
+						
+				}
+				Log.d("newGallery","number image :" + PhimpMe.filepath.size());
+				if (PhimpMe.filepath.size() <= 3) {
+					ln_local_gallery.setLayoutParams(p_one_row);
+
+				} else {
+					ln_local_gallery.setLayoutParams(p_two_row);
+				}
+
+				if (PhimpMe.filepath.size() > 0) {
+					final ArrayList<String> array_file;
+					final ArrayList<String> ID;
+					if (PhimpMe.filepath.size() <= resum_number) {
+						array_file = new ArrayList<String>(PhimpMe.filepath.size());
+						ID = new ArrayList<String>(array_ID.size());
+						for (int i = 0; i < PhimpMe.filepath.size(); i++) {
+							array_file.add(PhimpMe.filepath.get(i))	;
+							ID.add(array_ID.get(i));
+						}
+
+					} else {
+						array_file = new ArrayList<String>(resum_number);
+						ID = new ArrayList<String>(resum_number);
+						for (int i = 0; i < resum_number; i++) {
+							array_file.add(PhimpMe.filepath.get(i));
+							ID.add(array_ID.get(i));
+						}
+
+						btn_local_more
+								.setImageResource(R.drawable.more);
+						btn_local_more.setEnabled(true);
+					}
+					
+					gv_local_gallery.setNumColumns(cols);
+					local_adapter = new LocalPhotosAdapter(ctx,
+							array_file,ID);
+					gv_local_gallery.setAdapter(local_adapter);
+					gv_local_gallery.setDrawingCacheEnabled(true);
+
+					check_local = 1;
+					btn_local_more
+							.setOnClickListener(new OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									
+									pro_gress=ProgressDialog.show(ctx, "",getString(R.string.wait), true, false);		
+									timerDelayRemoveDialog(1000,pro_gress);										
+								}
+							});							
+				} else {
+					ln_local_gallery.setLayoutParams(p_zero);
+					linear_main.removeView(more_li);
+					check_local = 1;
+				}
+				Log.d("Danh", "check = " + check_local);
+			} else {
+			}
+			
+		}
 	}
 	public void timerDelayRemoveDialog(long time, final Dialog d){
 	    new Handler().postDelayed(new Runnable() {
 	        public void run() { 
+	        	
+	        	number_resume_download=count_photo* NUMBER_PHOTO_NEED_DOWNLOAD+ NUMBER_PHOTO_NEED_DOWNLOAD;			
 	        	if (PhimpMe.filepath.size()
-						- PhimpMe.local_count
+						- count_photo
 						* NUMBER_PHOTO_NEED_DOWNLOAD > 3) {
 					local_rows_display = 2;
-				} else if ((PhimpMe.filepath.size() - PhimpMe.local_count
+				} else if ((PhimpMe.filepath.size() - count_photo
 						* NUMBER_PHOTO_NEED_DOWNLOAD) > 0) {
 					local_rows_display = 1;
 				}
@@ -3684,40 +3481,35 @@ public class newGallery extends Activity {
 						.setLayoutParams(rep);
 				ln_local_gallery.setEnabled(true);
 				final ArrayList<String> array_file;
-				if ((PhimpMe.filepath.size() - PhimpMe.local_count
+				final ArrayList<String> ID;
+				if ((PhimpMe.filepath.size() - count_photo
 						* NUMBER_PHOTO_NEED_DOWNLOAD) <= NUMBER_PHOTO_NEED_DOWNLOAD) {
-					array_file = new ArrayList<String>(
-							PhimpMe.filepath.size());
-					for (int i = 0; i < PhimpMe.filepath
-							.size(); i++) {
-						array_file
-								.add(PhimpMe.filepath
-										.get(i));
+					array_file = new ArrayList<String>(PhimpMe.filepath.size());
+					ID = new ArrayList<String>(array_ID.size());
+					for (int i = 0; i < PhimpMe.filepath.size(); i++) {
+						array_file.add(PhimpMe.filepath.get(i));
+						ID.add(array_ID.get(i));
 					}
 					
 				} else {
-					array_file = new ArrayList<String>(
-							PhimpMe.local_count
-									* NUMBER_PHOTO_NEED_DOWNLOAD
-									+ NUMBER_PHOTO_NEED_DOWNLOAD);
-					for (int i = 0; i < PhimpMe.local_count
-							* NUMBER_PHOTO_NEED_DOWNLOAD
-							+ NUMBER_PHOTO_NEED_DOWNLOAD; i++) {
-						array_file
-								.add(PhimpMe.filepath
-										.get(i));
+					array_file = new ArrayList<String>(count_photo* NUMBER_PHOTO_NEED_DOWNLOAD+ NUMBER_PHOTO_NEED_DOWNLOAD);
+					ID = new ArrayList<String>(count_photo* NUMBER_PHOTO_NEED_DOWNLOAD+ NUMBER_PHOTO_NEED_DOWNLOAD);
+					for (int i = 0; i <count_photo* NUMBER_PHOTO_NEED_DOWNLOAD+ NUMBER_PHOTO_NEED_DOWNLOAD; i++) {
+						array_file.add(PhimpMe.filepath.get(i));
+						ID.add(array_ID.get(i));
+						
 					}
-					
+					Log.d("newGallery","count_photo : "+count_photo);
 				}
 				
 				local_adapter = new LocalPhotosAdapter(
-						ctx, array_file);
+						ctx, array_file,ID);
 				gv_local_gallery
 						.setAdapter(local_adapter);
 
-				PhimpMe.local_count++;
+				count_photo++;
 				if (PhimpMe.filepath.size()
-						- PhimpMe.local_count
+						- count_photo
 						* NUMBER_PHOTO_NEED_DOWNLOAD <= 0) {
 					
 					btn_local_more
@@ -3725,9 +3517,7 @@ public class newGallery extends Activity {
 					btn_local_more
 							.setEnabled(false);
 					
-				}
-				// PhimpMe.check=1;
-				
+				}			
 				check_local = 1;
 	            d.dismiss();         
 	        }
@@ -3736,15 +3526,20 @@ public class newGallery extends Activity {
 	public void Dialog_download(long time, final Dialog d){
 	    new Handler().postDelayed(new Runnable() {
 	        public void run() {  
-				clearAllPhoto();
-				if(PhimpMe.FEEDS_LOCAL_GALLERY==true){
-					linear_main.removeView(ln_local_gallery);
-					check_local = 0;
-					PhimpMe.filepath.clear();						
-					loadLocalGallery();
+	        	d.dismiss();	        	
+	        	clearAllPhoto();
+				if(PhimpMe.FEEDS_LOCAL_GALLERY==true){						
+					linear_main.removeView(ln_local_gallery);    			
+        			check_local = 0;
+        			PhimpMe.filepath.clear();
+        			array_ID.clear();
+    				number_resume_download=6;
+    				count_photo = 1;
+    				resumeLocalPhoto(number_resume_download);
 				}
+				
 	        	refreshNewPhotos();           	        	
-	            d.dismiss();   
+	               
 	        }
 	    }, time); 
 	}
@@ -3754,7 +3549,6 @@ public class newGallery extends Activity {
 			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				d.dismiss();
 			}
 		}, time);
@@ -3762,8 +3556,8 @@ public class newGallery extends Activity {
 	public void refreshNewPhotos() {
 		
 		if (Commons.checkConnection(newGallery.this)) {
+			
 			if ( 
-				
 					(!PhimpMe.FEEDS_LIST_FLICKR_PUBLIC)
 					&& (!PhimpMe.FEEDS_LIST_FLICKR_RECENT)
 					&& (!PhimpMe.FEEDS_LIST_YAHOO_NEWS)
@@ -3790,389 +3584,448 @@ public class newGallery extends Activity {
 					&& (!PhimpMe.FEEDS_LIST_KAIXIN_PRIVATE)
 
 			) {
-				txtStatus
-						.setText(getString(R.string.error_feeds_services_choose_feed));
 			} 			
 			else if (PhimpMe.FEEDS_LIST_MYSERVICES
 					&& (Settings.etMyFeedServicesTextbox.getText().toString()
 							.equals("") || Settings.etMyFeedServicesTextbox
 							.getText().toString().equals("\n"))) {
-				txtStatus.setText("Please enter Rss Feed Url.");
 			} else if (PhimpMe.FEEDS_LIST_MYSERVICES1
 					&& (Settings.etMyFeedServicesTextbox1.getText().toString()
 							.equals("") || Settings.etMyFeedServicesTextbox1
 							.getText().toString().equals("\n"))) {
-				txtStatus.setText("Please enter Rss Feed Url.");
 			} else if (PhimpMe.FEEDS_LIST_MYSERVICES2
 					&& (Settings.etMyFeedServicesTextbox2.getText().toString()
 							.equals("") || Settings.etMyFeedServicesTextbox2
 							.getText().toString().equals("\n"))) {
-				txtStatus.setText("Please enter Rss Feed Url.");
 			} else if (PhimpMe.FEEDS_LIST_MYSERVICES3
 					&& (Settings.etMyFeedServicesTextbox3.getText().toString()
 							.equals("") || Settings.etMyFeedServicesTextbox3
 							.getText().toString().equals("\n"))) {
-				txtStatus.setText("Please enter Rss Feed Url.");
 			} else if (PhimpMe.FEEDS_LIST_MYSERVICES4
 					&& (Settings.etMyFeedServicesTextbox4.getText().toString()
 							.equals("") || Settings.etMyFeedServicesTextbox4
 							.getText().toString().equals("\n"))) {
-				txtStatus.setText("Please enter Rss Feed Url.");
 			} else if (PhimpMe.FEEDS_LIST_MYSERVICES5
 					&& (Settings.etMyFeedServicesTextbox5.getText().toString()
 							.equals("") || Settings.etMyFeedServicesTextbox5
 							.getText().toString().equals("\n"))) {
-				txtStatus.setText("Please enter Rss Feed Url.");
 			} else {
-				//btnPublic.setEnabled(false);
-				txtStatus.setText("");
-				ArrayList<RSSPhotoItem> tmp_list = new ArrayList<RSSPhotoItem>();
-				ArrayList<RSSPhotoItem_Personal> tmp_list_personal = new ArrayList<RSSPhotoItem_Personal>();
+				tmp_list.clear();
+				tmp_list_personal.clear();
 				list_photos.clear();
 				list_photos_personal.clear();
-				LinearLayout.LayoutParams p_two_row = new LinearLayout.LayoutParams(
+				final LinearLayout.LayoutParams p_two_row = new LinearLayout.LayoutParams(
 						ViewGroup.LayoutParams.WRAP_CONTENT,
 						DEFAULT_THUMBNAIL_SIZE * 2 + 80);
 
-				LinearLayout.LayoutParams p_zero = new LinearLayout.LayoutParams(
+				final LinearLayout.LayoutParams p_zero = new LinearLayout.LayoutParams(
 						0, 0);
 
-				LinearLayout.LayoutParams p_one_row = new LinearLayout.LayoutParams(
+				final LinearLayout.LayoutParams p_one_row = new LinearLayout.LayoutParams(
 						ViewGroup.LayoutParams.WRAP_CONTENT,
 						DEFAULT_THUMBNAIL_SIZE + 80);
-				RelativeLayout.LayoutParams lp_more = new RelativeLayout.LayoutParams(
+				final RelativeLayout.LayoutParams lp_more = new RelativeLayout.LayoutParams(
 						40, 40);
 				lp_more.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 				if (PhimpMe.FEEDS_LIST_FLICKR_PUBLIC) {
-					if (listService.indexOf("public_flickr") == -1) {
-						flickr_public_download=true;
-						Button btn_line = new Button(ctx);
-						btn_line.setHeight(2);
-						btn_line.setWidth(LayoutParams.MATCH_PARENT);
-						btn_line.setBackgroundResource(color_line);
-
-						txtPFlickr = new TextView(this);
-						txtPFlickr.setText("Public Flickr");
-						txtPFlickr.setTextSize(text_size);
-						p_flickr = new GridView(this);
-						p_flickr.setPadding(0, 10, 0, 0);
-						ln_flickr = new LinearLayout(this);
-						btn_flickr_more = new ImageButton(this);
-						btn_flickr_more
-								.setImageResource(R.drawable.more_disable);
-						btn_flickr_more.setEnabled(false);
-						RelativeLayout more_li = new RelativeLayout(this);
-						btn_flickr_more.setLayoutParams(lp_more);
-						more_li.addView(btn_flickr_more);
-						more_li.addView(txtPFlickr);
-						ln_flickr.setOrientation(LinearLayout.VERTICAL);
-						ln_flickr.addView(more_li);
-						ln_flickr.addView(btn_line);
-						ln_flickr.addView(p_flickr);
-
-						ln_flickr.setEnabled(false);
-
-						linear_main.addView(ln_flickr);
-						Log.d("luong test", bitmap_p_flickr.size() + "");
-						flickradapter = new GridFlickrAdaper(list_thumb,
-								bitmap_p_flickr, ctx);
-						p_flickr.setNumColumns(cols);
-						p_flickr.setAdapter(flickradapter);
-						p_flickr.setDrawingCacheEnabled(true);
-						listService.add("public_flickr");
-					}
-					btn_flickr_more.setImageResource(R.drawable.more_disable);
-					btn_flickr_more.setEnabled(false);
-					flickr_count = 1;
-
-					flickradapter.removeItem();
-					tmp_list = Flickr.getPublic(ctx, "");
-					Log.d("thong", "Flickr Public: " + tmp_list.size());
-					list_photos.addAll(tmp_list);
-					// Don't save exist photos
-					ArrayList<RSSPhotoItem> list_save = new ArrayList<RSSPhotoItem>();
-					for (int t = 0; t < tmp_list.size(); t++) {
-						String url = tmp_list.get(t).getURL();
-						String filepath = rss_folder.getAbsolutePath()
-								+ "/"
-								+ url.toLowerCase().replace("://", "")
-										.replace("/", "_");
-						File f = new File(filepath);
-						if (!f.exists()) {
-							list_save.add(tmp_list.get(t));
-						}
-					}
-
-					if (list_save.size() == 0) {
-						ln_flickr.setLayoutParams(p_zero);
-						txtStatus.setText("0 "
-								+ getString(R.string.fetch_images_success));
-						//btnPublic.setEnabled(true);
-					} else if (list_save.size() <= 3) {
-						ln_flickr.setLayoutParams(p_one_row);
-					} else
-						ln_flickr.setLayoutParams(p_two_row);
-					flickr_list_photos.clear();
-					flickr_list_photos.addAll(list_save);
-					array_list.add(flickr_list_photos);
-					if (!checkArray(PhimpMe.phimpme_array_list,flickr_list_photos)) {
-						PhimpMe.phimpme_array_list.add(flickr_list_photos);
-					} else {
-						deleteItem(PhimpMe.phimpme_array_list,flickr_list_photos);
-						PhimpMe.phimpme_array_list.add(flickr_list_photos);
-					}
-					btn_flickr_more.setOnClickListener(new OnClickListener() {
+					new Handler().post(new Runnable() {
+						
 						@Override
-						public void onClick(View v) {
-							btn_flickr_more
-									.setImageResource(R.drawable.more_disable);
+						public void run() {			
+							if (listService.indexOf("public_flickr") == -1) {						
+								flickr_public_download=true;
+								Button btn_line = new Button(ctx);
+								btn_line.setHeight(2);
+								btn_line.setWidth(LayoutParams.MATCH_PARENT);
+								btn_line.setBackgroundResource(color_line);
+		
+								txtPFlickr = new TextView(ctx);
+								txtPFlickr.setText("Public Flickr");
+								txtPFlickr.setTextSize(text_size);
+								p_flickr = new GridView(ctx);
+								p_flickr.setPadding(0, 10, 0, 0);
+								ln_flickr = new LinearLayout(ctx);
+								btn_flickr_more = new ImageButton(ctx);
+								btn_flickr_more
+										.setImageResource(R.drawable.more_disable);
+								btn_flickr_more.setEnabled(false);
+								RelativeLayout more_li = new RelativeLayout(ctx);
+								btn_flickr_more.setLayoutParams(lp_more);
+								more_li.addView(btn_flickr_more);
+								more_li.addView(txtPFlickr);
+								ln_flickr.setOrientation(LinearLayout.VERTICAL);
+								ln_flickr.addView(more_li);
+								ln_flickr.addView(btn_line);
+								ln_flickr.addView(p_flickr);
+		
+								ln_flickr.setEnabled(false);
+		
+								linear_main.addView(ln_flickr);
+								Log.d("luong test", bitmap_p_flickr.size() + "");
+								flickradapter = new GridFlickrAdaper(list_thumb,
+										bitmap_p_flickr, ctx);
+								p_flickr.setNumColumns(cols);
+								p_flickr.setAdapter(flickradapter);
+								p_flickr.setDrawingCacheEnabled(true);
+								listService.add("public_flickr");
+							}
+							btn_flickr_more.setImageResource(R.drawable.more_disable);
 							btn_flickr_more.setEnabled(false);
-							if ((flickr_list_photos.size() - flickr_count
-									* NUMBER_PHOTO_NEED_DOWNLOAD) > 3) {
-								flickr_rows_display = 2;
-							} else if ((flickr_list_photos.size() - flickr_count
-									* NUMBER_PHOTO_NEED_DOWNLOAD) > 0)
-								flickr_rows_display = 1;
-							int h = ln_flickr.getHeight();
-							int hight_display = h + DEFAULT_THUMBNAIL_SIZE
-									* flickr_rows_display;
-							LinearLayout.LayoutParams rep = new LinearLayout.LayoutParams(
-									ViewGroup.LayoutParams.WRAP_CONTENT,
-									hight_display);
-							ln_flickr.setLayoutParams(rep);
-							ln_flickr.setEnabled(true);
-							moreClick(flickr_list_photos, flickr_count);
-							flickr_count++;
-						}
-					});
-					
-				}
+							flickr_count = 1;		
+							flickradapter.removeItem();							
+							tmp_list = Flickr.getPublic(ctx, "");
+							Log.d("thong", "Flickr Public: " + tmp_list.size());
+							list_photos.addAll(tmp_list);
+							// Don't save exist photos
+							ArrayList<RSSPhotoItem> list_save = new ArrayList<RSSPhotoItem>();
+							for (int t = 0; t < tmp_list.size(); t++) {
+								String url = tmp_list.get(t).getURL();
+								String filepath = rss_folder.getAbsolutePath()
+										+ "/"
+										+ url.toLowerCase().replace("://", "")
+												.replace("/", "_");
+								File f = new File(filepath);
+								if (!f.exists()) {
+									list_save.add(tmp_list.get(t));
+								}
+							}
+		
+							if (list_save.size() == 0) {
+								ln_flickr.setLayoutParams(p_zero);
+							} else if (list_save.size() <= 3) {
+								ln_flickr.setLayoutParams(p_one_row);
+							} else
+							ln_flickr.setLayoutParams(p_two_row);
+							flickr_list_photos.clear();
+							flickr_list_photos.addAll(list_save);
+							array_list.add(flickr_list_photos);
+							if (!checkArray(PhimpMe.phimpme_array_list,flickr_list_photos)) {
+								PhimpMe.phimpme_array_list.add(flickr_list_photos);
+							} else {
+								deleteItem(PhimpMe.phimpme_array_list,flickr_list_photos);
+								PhimpMe.phimpme_array_list.add(flickr_list_photos);
+							}
+							for (int i = 0; i < array_list.size(); i++) {
+								if (array_list.get(i).size() > 0) {
+									Log.d("thong", "RunOnUiThread");
+									final RSSPhotoItem[] tmp;
+									if (array_list.get(i).size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
+										tmp = new RSSPhotoItem[array_list.get(i).size()];
+									} else {
+										tmp = new RSSPhotoItem[NUMBER_PHOTO_NEED_DOWNLOAD];
+									}
+									for (int j = 0; j < tmp.length; j++) {
+										tmp[j] = array_list.get(i).get(j);
+									}
+									newGallery.this.runOnUiThread(new Runnable() {
+										@Override
+										public void run() {
+											new DownloadImageAsyncTask().execute(tmp);
+										}
+									});
 
-				if (PhimpMe.FEEDS_LIST_FLICKR_RECENT) {
-					if (listService.indexOf("recent_flickr") == -1) {
-						flick_recent_download=true;
-						Button btn_line = new Button(ctx);
-						btn_line.setHeight(2);
-						btn_line.setWidth(LayoutParams.MATCH_PARENT);
-						btn_line.setBackgroundResource(color_line);
-
-						txtRecentFlickr = new TextView(this);
-						txtRecentFlickr.setText("Recent Flickr");
-						txtRecentFlickr.setTextSize(text_size);
-						recent_flickr = new GridView(this);
-						recent_flickr.setPadding(0, 10, 0, 0);
-						ln_recent_flickr = new LinearLayout(this);
-						btn_recent_flickr_more = new ImageButton(this);
-						btn_recent_flickr_more
-								.setImageResource(R.drawable.more_disable);
-						btn_recent_flickr_more.setEnabled(false);
-
-						RelativeLayout more_li = new RelativeLayout(this);
-						btn_recent_flickr_more.setLayoutParams(lp_more);
-						more_li.addView(btn_recent_flickr_more);
-						more_li.addView(txtRecentFlickr);
-
-						ln_recent_flickr.setOrientation(LinearLayout.VERTICAL);
-
-						ln_recent_flickr.addView(more_li);
-						ln_recent_flickr.addView(btn_line);
-						ln_recent_flickr.addView(recent_flickr);
-
-						ln_recent_flickr.setEnabled(false);
-
-						linear_main.addView(ln_recent_flickr);
-						recentflickradapter = new GridRecentFlickrAdaper(
-								list_thumb, bitmap_recent_flickr, ctx);
-						recent_flickr.setNumColumns(cols);
-						recent_flickr.setAdapter(recentflickradapter);
-						recent_flickr.setDrawingCacheEnabled(true);
-						listService.add("recent_flickr");
-
-					}
-					btn_recent_flickr_more
-							.setImageResource(R.drawable.more_disable);
-					btn_recent_flickr_more.setEnabled(false);
-					recent_flickr_count = 1;
-
-					recentflickradapter.removeItem();
-					tmp_list = Flickr.getRecent(ctx);
-					Log.d("thong", "Flickr Recent: " + tmp_list.size());
-					// Don't save exist photos
-					ArrayList<RSSPhotoItem> list_save = new ArrayList<RSSPhotoItem>();
-					for (int t = 0; t < tmp_list.size(); t++) {
-						String url = tmp_list.get(t).getURL();
-						String filepath = rss_folder.getAbsolutePath()
-								+ "/"
-								+ url.toLowerCase().replace("://", "")
-										.replace("/", "_");
-						File f = new File(filepath);
-						if (!f.exists()) {
-							list_save.add(tmp_list.get(t));
-						}
-					}
-
-					if (list_save.size() == 0) {
-						ln_recent_flickr.setLayoutParams(p_zero);
-						txtStatus.setText("0 "
-								+ getString(R.string.fetch_images_success));
-						//btnPublic.setEnabled(true);
-					} else if (list_save.size() <= 3) {
-						ln_recent_flickr.setLayoutParams(p_one_row);
-					} else
-						ln_recent_flickr.setLayoutParams(p_two_row);
-					list_photos.addAll(tmp_list);
-					recent_flickr_list_photos.clear();
-					recent_flickr_list_photos.addAll(list_save);
-					array_list.add(recent_flickr_list_photos);
-					if (!checkArray(PhimpMe.phimpme_array_list,recent_flickr_list_photos)) {
-						PhimpMe.phimpme_array_list
-								.add(recent_flickr_list_photos);
-					} else {
-						deleteItem(PhimpMe.phimpme_array_list,recent_flickr_list_photos);
-						PhimpMe.phimpme_array_list
-								.add(recent_flickr_list_photos);
-					}
-					btn_recent_flickr_more
-							.setOnClickListener(new OnClickListener() {
+								}
+							}
+							btn_flickr_more.setOnClickListener(new OnClickListener() {
 								@Override
 								public void onClick(View v) {
-									btn_recent_flickr_more
+									btn_flickr_more
 											.setImageResource(R.drawable.more_disable);
-									btn_recent_flickr_more.setEnabled(false);
-									if (recent_flickr_list_photos.size()
-											- recent_flickr_count
-											* NUMBER_PHOTO_NEED_DOWNLOAD > 3) {
-										recent_flickr_rows_display = 2;
-									} else if ((recent_flickr_list_photos
-											.size() - recent_flickr_count
+									btn_flickr_more.setEnabled(false);
+									if ((flickr_list_photos.size() - flickr_count
+											* NUMBER_PHOTO_NEED_DOWNLOAD) > 3) {
+										flickr_rows_display = 2;
+									} else if ((flickr_list_photos.size() - flickr_count
 											* NUMBER_PHOTO_NEED_DOWNLOAD) > 0)
-										recent_flickr_rows_display = 1;
-									int h = ln_recent_flickr.getHeight();
-									int hight_display = h
-											+ DEFAULT_THUMBNAIL_SIZE
-											* recent_flickr_rows_display;
+										flickr_rows_display = 1;
+									int h = ln_flickr.getHeight();
+									int hight_display = h + DEFAULT_THUMBNAIL_SIZE
+											* flickr_rows_display;
 									LinearLayout.LayoutParams rep = new LinearLayout.LayoutParams(
 											ViewGroup.LayoutParams.WRAP_CONTENT,
 											hight_display);
-									ln_recent_flickr.setLayoutParams(rep);
-									ln_recent_flickr.setEnabled(true);
-									moreClick(recent_flickr_list_photos,
-											recent_flickr_count);
-									recent_flickr_count++;
+									ln_flickr.setLayoutParams(rep);
+									ln_flickr.setEnabled(true);
+									moreClick(flickr_list_photos, flickr_count);
+									flickr_count++;
 								}
 							});
+						}});
+				}
+
+				if (PhimpMe.FEEDS_LIST_FLICKR_RECENT) {
+					new Handler().post(new Runnable() {
+						
+						@Override
+						public void run() {										
+						if (listService.indexOf("recent_flickr") == -1) {
+							flick_recent_download=true;
+							Button btn_line = new Button(ctx);
+							btn_line.setHeight(2);
+							btn_line.setWidth(LayoutParams.MATCH_PARENT);
+							btn_line.setBackgroundResource(color_line);
+	
+							txtRecentFlickr = new TextView(ctx);
+							txtRecentFlickr.setText("Recent Flickr");
+							txtRecentFlickr.setTextSize(text_size);
+							recent_flickr = new GridView(ctx);
+							recent_flickr.setPadding(0, 10, 0, 0);
+							ln_recent_flickr = new LinearLayout(ctx);
+							btn_recent_flickr_more = new ImageButton(ctx);
+							btn_recent_flickr_more
+									.setImageResource(R.drawable.more_disable);
+							btn_recent_flickr_more.setEnabled(false);
+	
+							RelativeLayout more_li = new RelativeLayout(ctx);
+							btn_recent_flickr_more.setLayoutParams(lp_more);
+							more_li.addView(btn_recent_flickr_more);
+							more_li.addView(txtRecentFlickr);
+	
+							ln_recent_flickr.setOrientation(LinearLayout.VERTICAL);
+	
+							ln_recent_flickr.addView(more_li);
+							ln_recent_flickr.addView(btn_line);
+							ln_recent_flickr.addView(recent_flickr);
+	
+							ln_recent_flickr.setEnabled(false);
+	
+							linear_main.addView(ln_recent_flickr);
+							recentflickradapter = new GridRecentFlickrAdaper(
+									list_thumb, bitmap_recent_flickr, ctx);
+							recent_flickr.setNumColumns(cols);
+							recent_flickr.setAdapter(recentflickradapter);
+							recent_flickr.setDrawingCacheEnabled(true);
+							listService.add("recent_flickr");
+	
+						}
+						btn_recent_flickr_more
+								.setImageResource(R.drawable.more_disable);
+						btn_recent_flickr_more.setEnabled(false);
+						recent_flickr_count = 1;
+	
+						recentflickradapter.removeItem();
+						tmp_list = Flickr.getRecent(ctx);
+						Log.d("thong", "Flickr Recent: " + tmp_list.size());
+						// Don't save exist photos
+						ArrayList<RSSPhotoItem> list_save = new ArrayList<RSSPhotoItem>();
+						for (int t = 0; t < tmp_list.size(); t++) {
+							String url = tmp_list.get(t).getURL();
+							String filepath = rss_folder.getAbsolutePath()
+									+ "/"
+									+ url.toLowerCase().replace("://", "")
+											.replace("/", "_");
+							File f = new File(filepath);
+							if (!f.exists()) {
+								list_save.add(tmp_list.get(t));
+							}
+						}
+	
+						if (list_save.size() == 0) {
+							ln_recent_flickr.setLayoutParams(p_zero);
+						} else if (list_save.size() <= 3) {
+							ln_recent_flickr.setLayoutParams(p_one_row);
+						} else
+							ln_recent_flickr.setLayoutParams(p_two_row);
+						list_photos.addAll(tmp_list);
+						recent_flickr_list_photos.clear();
+						recent_flickr_list_photos.addAll(list_save);
+						array_list.add(recent_flickr_list_photos);
+						if (!checkArray(PhimpMe.phimpme_array_list,recent_flickr_list_photos)) {
+							PhimpMe.phimpme_array_list
+									.add(recent_flickr_list_photos);
+						} else {
+							deleteItem(PhimpMe.phimpme_array_list,recent_flickr_list_photos);
+							PhimpMe.phimpme_array_list
+									.add(recent_flickr_list_photos);
+						}
+						for (int i = 0; i < array_list.size(); i++) {
+							if (array_list.get(i).size() > 0) {
+								Log.d("thong", "RunOnUiThread");
+								final RSSPhotoItem[] tmp;
+								if (array_list.get(i).size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
+									tmp = new RSSPhotoItem[array_list.get(i).size()];
+								} else {
+									tmp = new RSSPhotoItem[NUMBER_PHOTO_NEED_DOWNLOAD];
+								}
+								for (int j = 0; j < tmp.length; j++) {
+									tmp[j] = array_list.get(i).get(j);
+								}
+								newGallery.this.runOnUiThread(new Runnable() {
+									@Override
+									public void run() {
+
+										new DownloadImageAsyncTask().execute(tmp);
+									}
+								});
+
+							}
+						}
+						btn_recent_flickr_more
+								.setOnClickListener(new OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										btn_recent_flickr_more
+												.setImageResource(R.drawable.more_disable);
+										btn_recent_flickr_more.setEnabled(false);
+										if (recent_flickr_list_photos.size()
+												- recent_flickr_count
+												* NUMBER_PHOTO_NEED_DOWNLOAD > 3) {
+											recent_flickr_rows_display = 2;
+										} else if ((recent_flickr_list_photos
+												.size() - recent_flickr_count
+												* NUMBER_PHOTO_NEED_DOWNLOAD) > 0)
+											recent_flickr_rows_display = 1;
+										int h = ln_recent_flickr.getHeight();
+										int hight_display = h
+												+ DEFAULT_THUMBNAIL_SIZE
+												* recent_flickr_rows_display;
+										LinearLayout.LayoutParams rep = new LinearLayout.LayoutParams(
+												ViewGroup.LayoutParams.WRAP_CONTENT,
+												hight_display);
+										ln_recent_flickr.setLayoutParams(rep);
+										ln_recent_flickr.setEnabled(true);
+										moreClick(recent_flickr_list_photos,
+												recent_flickr_count);
+										recent_flickr_count++;
+									}
+								});
+						}});
 
 				}
 
 				if (PhimpMe.FEEDS_LIST_YAHOO_NEWS) {
-					if (listService.indexOf("public_yahoo") == -1) {
-						yahoo_download=true;
-						Button btn_line = new Button(ctx);
-						btn_line.setHeight(2);
-						btn_line.setWidth(LayoutParams.MATCH_PARENT);
-						btn_line.setBackgroundResource(color_line);
-
-						txtyahoo = new TextView(this);
-						txtyahoo.setText("Public Yahoo");
-						txtyahoo.setTextSize(text_size);
-						p_yahoo = new GridView(this);
-						p_yahoo.setPadding(0, 10, 0, 0);
-						ln_yahoo = new LinearLayout(this);
-						btn_yahoo_more = new ImageButton(this);
-						btn_yahoo_more
-								.setImageResource(R.drawable.more_disable);
-						btn_yahoo_more.setEnabled(false);
-
-						RelativeLayout more_li = new RelativeLayout(this);
-						btn_yahoo_more.setLayoutParams(lp_more);
-						more_li.addView(btn_yahoo_more);
-						more_li.addView(txtyahoo);
-
-						ln_yahoo.setOrientation(LinearLayout.VERTICAL);
-						ln_yahoo.addView(more_li);
-						ln_yahoo.addView(btn_line);
-						ln_yahoo.addView(p_yahoo);
-
-						ln_yahoo.setEnabled(false);
-
-						linear_main.addView(ln_yahoo);
-						yahooadapter = new GridYahooAdapter(list_thumb,
-								bitmap_p_yahoo, ctx);
-						p_yahoo.setNumColumns(cols);
-						p_yahoo.setAdapter(yahooadapter);
-						p_yahoo.setDrawingCacheEnabled(true);
-						listService.add("public_yahoo");
-
-					}
-					btn_yahoo_more.setImageResource(R.drawable.more_disable);
-					btn_yahoo_more.setEnabled(false);
-					yahoo_count = 1;
-					yahooadapter.removeItem();
-					tmp_list = Yahoo.getYahooNews(ctx);
-					Log.d("thong", "Yahoo Public: " + tmp_list.size());
-					// Don't save exist photos
-					ArrayList<RSSPhotoItem> list_save = new ArrayList<RSSPhotoItem>();
-					for (int t = 0; t < tmp_list.size(); t++) {
-						String url = tmp_list.get(t).getURL();
-						String filepath = rss_folder.getAbsolutePath()
-								+ "/"
-								+ url.toLowerCase().replace("://", "")
-										.replace("/", "_");
-						File f = new File(filepath);
-						if (!f.exists()) {
-							list_save.add(tmp_list.get(t));
-						}
-					}
-
-					if (list_save.size() == 0) {
-						ln_yahoo.setLayoutParams(p_zero);
-						txtStatus.setText("0 "
-								+ getString(R.string.fetch_images_success));
-						//btnPublic.setEnabled(true);
-					} else if (list_save.size() <= 3) {
-						ln_yahoo.setLayoutParams(p_one_row);
-					} else
-						ln_yahoo.setLayoutParams(p_two_row);
-					list_photos.addAll(tmp_list);
-					yahoo_list_photos.clear();
-					yahoo_list_photos.addAll(list_save);
-
-					array_list.add(yahoo_list_photos);
-					if (!checkArray(PhimpMe.phimpme_array_list,yahoo_list_photos)) {
-						PhimpMe.phimpme_array_list.add(yahoo_list_photos);
-					} else {
-						deleteItem(PhimpMe.phimpme_array_list,yahoo_list_photos);
-						PhimpMe.phimpme_array_list.add(yahoo_list_photos);
-					}
-					btn_yahoo_more.setOnClickListener(new OnClickListener() {
+					new Handler().post(new Runnable() {						
 						@Override
-						public void onClick(View v) {
-							btn_yahoo_more
-									.setImageResource(R.drawable.more_disable);
+						public void run() {							
+							if (listService.indexOf("public_yahoo") == -1) {
+								yahoo_download=true;
+								Button btn_line = new Button(ctx);
+								btn_line.setHeight(2);
+								btn_line.setWidth(LayoutParams.MATCH_PARENT);
+								btn_line.setBackgroundResource(color_line);
+		
+								txtyahoo = new TextView(ctx);
+								txtyahoo.setText("Public Yahoo");
+								txtyahoo.setTextSize(text_size);
+								p_yahoo = new GridView(ctx);
+								p_yahoo.setPadding(0, 10, 0, 0);
+								ln_yahoo = new LinearLayout(ctx);
+								btn_yahoo_more = new ImageButton(ctx);
+								btn_yahoo_more
+										.setImageResource(R.drawable.more_disable);
+								btn_yahoo_more.setEnabled(false);
+		
+								RelativeLayout more_li = new RelativeLayout(ctx);
+								btn_yahoo_more.setLayoutParams(lp_more);
+								more_li.addView(btn_yahoo_more);
+								more_li.addView(txtyahoo);
+		
+								ln_yahoo.setOrientation(LinearLayout.VERTICAL);
+								ln_yahoo.addView(more_li);
+								ln_yahoo.addView(btn_line);
+								ln_yahoo.addView(p_yahoo);
+		
+								ln_yahoo.setEnabled(false);
+		
+								linear_main.addView(ln_yahoo);
+								yahooadapter = new GridYahooAdapter(list_thumb,
+										bitmap_p_yahoo, ctx);
+								p_yahoo.setNumColumns(cols);
+								p_yahoo.setAdapter(yahooadapter);
+								p_yahoo.setDrawingCacheEnabled(true);
+								listService.add("public_yahoo");
+		
+							}
+							btn_yahoo_more.setImageResource(R.drawable.more_disable);
 							btn_yahoo_more.setEnabled(false);
-							if (yahoo_list_photos.size() - yahoo_count
-									* NUMBER_PHOTO_NEED_DOWNLOAD > 3) {
-								yahoo_rows_display = 2;
-							} else if ((yahoo_list_photos.size() - yahoo_count
-									* NUMBER_PHOTO_NEED_DOWNLOAD) > 0)
-								yahoo_rows_display = 1;
+							yahoo_count = 1;
+							yahooadapter.removeItem();
+							tmp_list = Yahoo.getYahooNews(ctx);
+							Log.d("thong", "Yahoo Public: " + tmp_list.size());
+							// Don't save exist photos
+							ArrayList<RSSPhotoItem> list_save = new ArrayList<RSSPhotoItem>();
+							for (int t = 0; t < tmp_list.size(); t++) {
+								String url = tmp_list.get(t).getURL();
+								String filepath = rss_folder.getAbsolutePath()
+										+ "/"
+										+ url.toLowerCase().replace("://", "")
+												.replace("/", "_");
+								File f = new File(filepath);
+								if (!f.exists()) {
+									list_save.add(tmp_list.get(t));
+								}
+							}
+		
+							if (list_save.size() == 0) {
+								ln_yahoo.setLayoutParams(p_zero);
+							} else if (list_save.size() <= 3) {
+								ln_yahoo.setLayoutParams(p_one_row);
+							} else
+								ln_yahoo.setLayoutParams(p_two_row);
+							list_photos.addAll(tmp_list);
+							yahoo_list_photos.clear();
+							yahoo_list_photos.addAll(list_save);
+		
+							array_list.add(yahoo_list_photos);
+							if (!checkArray(PhimpMe.phimpme_array_list,yahoo_list_photos)) {
+								PhimpMe.phimpme_array_list.add(yahoo_list_photos);
+							} else {
+								deleteItem(PhimpMe.phimpme_array_list,yahoo_list_photos);
+								PhimpMe.phimpme_array_list.add(yahoo_list_photos);
+							}
+							for (int i = 0; i < array_list.size(); i++) {
+								if (array_list.get(i).size() > 0) {
+									Log.d("thong", "RunOnUiThread");
+									final RSSPhotoItem[] tmp;
+									if (array_list.get(i).size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
+										tmp = new RSSPhotoItem[array_list.get(i).size()];
+									} else {
+										tmp = new RSSPhotoItem[NUMBER_PHOTO_NEED_DOWNLOAD];
+									}
+									for (int j = 0; j < tmp.length; j++) {
+										tmp[j] = array_list.get(i).get(j);
+									}
+									newGallery.this.runOnUiThread(new Runnable() {
+										@Override
+										public void run() {
+											new DownloadImageAsyncTask().execute(tmp);
+										}
+									});
 
-							int hight_display = ln_yahoo.getHeight()
-									+ DEFAULT_THUMBNAIL_SIZE
-									* yahoo_rows_display;
-							LinearLayout.LayoutParams rep = new LinearLayout.LayoutParams(
-									ViewGroup.LayoutParams.WRAP_CONTENT,
-									hight_display);
-							ln_yahoo.setLayoutParams(rep);
-							ln_yahoo.setEnabled(true);
-							moreClick(yahoo_list_photos, yahoo_count);
-							yahoo_count++;
-						}
-					});
-
+								}
+							}
+							btn_yahoo_more.setOnClickListener(new OnClickListener() {
+								@Override
+								public void onClick(View v) {
+									btn_yahoo_more
+											.setImageResource(R.drawable.more_disable);
+									btn_yahoo_more.setEnabled(false);
+									if (yahoo_list_photos.size() - yahoo_count
+											* NUMBER_PHOTO_NEED_DOWNLOAD > 3) {
+										yahoo_rows_display = 2;
+									} else if ((yahoo_list_photos.size() - yahoo_count
+											* NUMBER_PHOTO_NEED_DOWNLOAD) > 0)
+										yahoo_rows_display = 1;
+		
+									int hight_display = ln_yahoo.getHeight()
+											+ DEFAULT_THUMBNAIL_SIZE
+											* yahoo_rows_display;
+									LinearLayout.LayoutParams rep = new LinearLayout.LayoutParams(
+											ViewGroup.LayoutParams.WRAP_CONTENT,
+											hight_display);
+									ln_yahoo.setLayoutParams(rep);
+									ln_yahoo.setEnabled(true);
+									moreClick(yahoo_list_photos, yahoo_count);
+									yahoo_count++;
+								}
+							});
+						}});
 				}
 
 				if (PhimpMe.FEEDS_LIST_GOOGLE_PICASA_PUBLIC) {
+					new Handler().post(new Runnable() {						
+						@Override
+						public void run() {			
 					if (listService.indexOf("public_picasa") == -1) {
 						picasa_public_download=true;
 						Button btn_line = new Button(ctx);
@@ -4180,18 +4033,18 @@ public class newGallery extends Activity {
 						btn_line.setWidth(LayoutParams.MATCH_PARENT);
 						btn_line.setBackgroundResource(color_line);
 
-						txtPublicPicasa = new TextView(this);
+						txtPublicPicasa = new TextView(ctx);
 						txtPublicPicasa.setText("Public Picasa");
 						txtPublicPicasa.setTextSize(text_size);
-						p_picasa = new GridView(this);
+						p_picasa = new GridView(ctx);
 						p_picasa.setPadding(0, 10, 0, 0);
-						ln_public_picasa = new LinearLayout(this);
-						btn_public_picasa_more = new ImageButton(this);
+						ln_public_picasa = new LinearLayout(ctx);
+						btn_public_picasa_more = new ImageButton(ctx);
 						btn_public_picasa_more
 								.setImageResource(R.drawable.more_disable);
 						btn_public_picasa_more.setEnabled(false);
 
-						RelativeLayout more_li = new RelativeLayout(this);
+						RelativeLayout more_li = new RelativeLayout(ctx);
 						btn_public_picasa_more.setLayoutParams(lp_more);
 						more_li.addView(btn_public_picasa_more);
 						more_li.addView(txtPublicPicasa);
@@ -4235,9 +4088,6 @@ public class newGallery extends Activity {
 
 					if (list_save.size() == 0) {
 						ln_public_picasa.setLayoutParams(p_zero);
-						txtStatus.setText("0 "
-								+ getString(R.string.fetch_images_success));
-						//btnPublic.setEnabled(true);
 					} else if (list_save.size() <= 3) {
 						ln_public_picasa.setLayoutParams(p_one_row);
 					} else
@@ -4253,6 +4103,28 @@ public class newGallery extends Activity {
 						deleteItem(PhimpMe.phimpme_array_list,public_picasa_list_photos);
 						PhimpMe.phimpme_array_list
 								.add(public_picasa_list_photos);
+					}
+					for (int i = 0; i < array_list.size(); i++) {
+						if (array_list.get(i).size() > 0) {
+							Log.d("thong", "RunOnUiThread");
+							final RSSPhotoItem[] tmp;
+							if (array_list.get(i).size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
+								tmp = new RSSPhotoItem[array_list.get(i).size()];
+							} else {
+								tmp = new RSSPhotoItem[NUMBER_PHOTO_NEED_DOWNLOAD];
+							}
+							for (int j = 0; j < tmp.length; j++) {
+								tmp[j] = array_list.get(i).get(j);
+							}
+							newGallery.this.runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+
+									new DownloadImageAsyncTask().execute(tmp);
+								}
+							});
+
+						}
 					}
 					btn_public_picasa_more
 							.setOnClickListener(new OnClickListener() {
@@ -4284,232 +4156,248 @@ public class newGallery extends Activity {
 									public_picasa_count++;
 								}
 							});
-
+						}});
 				}
 
-				if (PhimpMe.FEEDS_LIST_GOOGLE_NEWS) {
-					if (listService.indexOf("google_news") == -1) {
-						google_new_download=true;
-						Button btn_line = new Button(ctx);
-						btn_line.setHeight(2);
-						btn_line.setWidth(LayoutParams.MATCH_PARENT);
-						btn_line.setBackgroundResource(color_line);
-
-						txtGooglenews = new TextView(this);
-						txtGooglenews.setText("Google News");
-						txtGooglenews.setTextSize(text_size);
-						p_googlenews = new GridView(this);
-						p_googlenews.setPadding(0, 10, 0, 0);
-						ln_googlenews = new LinearLayout(this);
-						btn_googlenews_more = new ImageButton(this);
-						btn_googlenews_more
-								.setImageResource(R.drawable.more_disable);
-						btn_googlenews_more.setEnabled(false);
-
-						RelativeLayout more_li = new RelativeLayout(this);
-						btn_googlenews_more.setLayoutParams(lp_more);
-						more_li.addView(btn_googlenews_more);
-						more_li.addView(txtGooglenews);
-						ln_googlenews.setOrientation(LinearLayout.VERTICAL);
-						ln_googlenews.addView(more_li);
-						ln_googlenews.addView(btn_line);
-						ln_googlenews.addView(p_googlenews);
-
-						ln_googlenews.setEnabled(false);
-
-						linear_main.addView(ln_googlenews);
-						googlenewsadapter = new GridGoogleNewsAdaper(
-								list_thumb, bitmap_google_news, ctx);
-						p_googlenews.setNumColumns(cols);
-						p_googlenews.setAdapter(googlenewsadapter);
-						p_googlenews.setDrawingCacheEnabled(true);
-						listService.add("google_news");
-
-					}
-					btn_googlenews_more
-							.setImageResource(R.drawable.more_disable);
-					btn_googlenews_more.setEnabled(false);
-					googlenews_count = 1;
-
-					googlenewsadapter.removeItem();
-					tmp_list = Google.getNews(ctx);
-					Log.d("thong", "Google News: " + tmp_list.size());
-					// Don't save exist photos
-					ArrayList<RSSPhotoItem> list_save = new ArrayList<RSSPhotoItem>();
-					for (int t = 0; t < tmp_list.size(); t++) {
-						String url = tmp_list.get(t).getURL();
-						String filepath = rss_folder.getAbsolutePath()
-								+ "/"
-								+ url.toLowerCase().replace("://", "")
-										.replace("/", "_");
-						File f = new File(filepath);
-						if (!f.exists()) {
-							list_save.add(tmp_list.get(t));
-						}
-					}
-
-					if (list_save.size() == 0) {
-						ln_googlenews.setLayoutParams(p_zero);
-						txtStatus.setText("0 "
-								+ getString(R.string.fetch_images_success));
-						//btnPublic.setEnabled(true);
-					} else if (list_save.size() <= 3) {
-						ln_googlenews.setLayoutParams(p_one_row);
-					} else
-						ln_googlenews.setLayoutParams(p_two_row);
-					list_photos.addAll(tmp_list);
-					googlenews_list_photos.clear();
-					googlenews_list_photos.addAll(list_save);
-
-					array_list.add(googlenews_list_photos);
-					if (!checkArray(PhimpMe.phimpme_array_list,googlenews_list_photos)) {
-						PhimpMe.phimpme_array_list.add(googlenews_list_photos);
-					} else {
-						deleteItem(PhimpMe.phimpme_array_list,googlenews_list_photos);
-						PhimpMe.phimpme_array_list.add(googlenews_list_photos);
-					}
-
-					btn_googlenews_more
-							.setOnClickListener(new OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									btn_googlenews_more
-											.setImageResource(R.drawable.more_disable);
-									btn_googlenews_more.setEnabled(false);
-									if (googlenews_list_photos.size()
-											- googlenews_count
-											* NUMBER_PHOTO_NEED_DOWNLOAD > 3) {
-										googlenews_rows_display = 2;
-									} else if ((googlenews_list_photos.size() - googlenews_count
-											* NUMBER_PHOTO_NEED_DOWNLOAD) > 0)
-										googlenews_rows_display = 1;
-
-									int hight_display = ln_googlenews
-											.getHeight()
-											+ DEFAULT_THUMBNAIL_SIZE
-											* googlenews_rows_display;
-									LinearLayout.LayoutParams rep = new LinearLayout.LayoutParams(
-											ViewGroup.LayoutParams.WRAP_CONTENT,
-											hight_display);
-									ln_googlenews.setLayoutParams(rep);
-									ln_googlenews.setEnabled(true);
-									moreClick(googlenews_list_photos,
-											googlenews_count);
-									googlenews_count++;
+				if (PhimpMe.FEEDS_LIST_GOOGLE_NEWS) {										
+							if (listService.indexOf("google_news") == -1) {
+								google_new_download=true;
+								Button btn_line = new Button(ctx);
+								btn_line.setHeight(2);
+								btn_line.setWidth(LayoutParams.MATCH_PARENT);
+								btn_line.setBackgroundResource(color_line);
+		
+								txtGooglenews = new TextView(ctx);
+								txtGooglenews.setText("Google News");
+								txtGooglenews.setTextSize(text_size);
+								p_googlenews = new GridView(ctx);
+								p_googlenews.setPadding(0, 10, 0, 0);
+								ln_googlenews = new LinearLayout(ctx);
+								btn_googlenews_more = new ImageButton(ctx);
+								btn_googlenews_more
+										.setImageResource(R.drawable.more_disable);
+								btn_googlenews_more.setEnabled(false);
+		
+								RelativeLayout more_li = new RelativeLayout(ctx);
+								btn_googlenews_more.setLayoutParams(lp_more);
+								more_li.addView(btn_googlenews_more);
+								more_li.addView(txtGooglenews);
+								ln_googlenews.setOrientation(LinearLayout.VERTICAL);
+								ln_googlenews.addView(more_li);
+								ln_googlenews.addView(btn_line);
+								ln_googlenews.addView(p_googlenews);
+		
+								ln_googlenews.setEnabled(false);
+		
+								linear_main.addView(ln_googlenews);
+								googlenewsadapter = new GridGoogleNewsAdaper(
+										list_thumb, bitmap_google_news, ctx);
+								p_googlenews.setNumColumns(cols);
+								p_googlenews.setAdapter(googlenewsadapter);
+								p_googlenews.setDrawingCacheEnabled(true);
+								listService.add("google_news");
+		
+							}
+							btn_googlenews_more
+									.setImageResource(R.drawable.more_disable);
+							btn_googlenews_more.setEnabled(false);
+							googlenews_count = 1;
+		
+							googlenewsadapter.removeItem();
+							tmp_list = Google.getNews(ctx);
+							Log.d("thong", "Google News: " + tmp_list.size());
+							// Don't save exist photos
+							ArrayList<RSSPhotoItem> list_save = new ArrayList<RSSPhotoItem>();
+							for (int t = 0; t < tmp_list.size(); t++) {
+								String url = tmp_list.get(t).getURL();
+								String filepath = rss_folder.getAbsolutePath()
+										+ "/"
+										+ url.toLowerCase().replace("://", "")
+												.replace("/", "_");
+								File f = new File(filepath);
+								if (!f.exists()) {
+									list_save.add(tmp_list.get(t));
 								}
-							});
-
+							}
+		
+							if (list_save.size() == 0) {
+								ln_googlenews.setLayoutParams(p_zero);
+							} else if (list_save.size() <= 3) {
+								ln_googlenews.setLayoutParams(p_one_row);
+							} else
+								ln_googlenews.setLayoutParams(p_two_row);
+							list_photos.addAll(tmp_list);
+							googlenews_list_photos.clear();
+							googlenews_list_photos.addAll(list_save);
+		
+							array_list.add(googlenews_list_photos);
+							if (!checkArray(PhimpMe.phimpme_array_list,googlenews_list_photos)) {
+								PhimpMe.phimpme_array_list.add(googlenews_list_photos);
+							} else {
+								deleteItem(PhimpMe.phimpme_array_list,googlenews_list_photos);
+								PhimpMe.phimpme_array_list.add(googlenews_list_photos);
+							}						
+							btn_googlenews_more
+									.setOnClickListener(new OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											btn_googlenews_more
+													.setImageResource(R.drawable.more_disable);
+											btn_googlenews_more.setEnabled(false);
+											if (googlenews_list_photos.size()
+													- googlenews_count
+													* NUMBER_PHOTO_NEED_DOWNLOAD > 3) {
+												googlenews_rows_display = 2;
+											} else if ((googlenews_list_photos.size() - googlenews_count
+													* NUMBER_PHOTO_NEED_DOWNLOAD) > 0)
+												googlenews_rows_display = 1;
+		
+											int hight_display = ln_googlenews
+													.getHeight()
+													+ DEFAULT_THUMBNAIL_SIZE
+													* googlenews_rows_display;
+											LinearLayout.LayoutParams rep = new LinearLayout.LayoutParams(
+													ViewGroup.LayoutParams.WRAP_CONTENT,
+													hight_display);
+											ln_googlenews.setLayoutParams(rep);
+											ln_googlenews.setEnabled(true);
+											moreClick(googlenews_list_photos,
+													googlenews_count);
+											googlenews_count++;
+										}
+									});					
 				}
-
 				if (PhimpMe.FEEDS_LIST_DEVIANTART_PUBLIC) {
-					if (listService.indexOf("public_deviant") == -1) {
-						public_deviant_download=true;
-						Button btn_line = new Button(ctx);
-						btn_line.setHeight(2);
-						btn_line.setWidth(LayoutParams.MATCH_PARENT);
-						btn_line.setBackgroundResource(color_line);
-
-						txtdeviant = new TextView(this);
-						txtdeviant.setText("Public DeviantArt");
-						txtdeviant.setTextSize(text_size);
-						p_deviant = new GridView(this);
-						p_deviant.setPadding(0, 10, 0, 0);
-						ln_deviant = new LinearLayout(this);
-						btn_public_deviant_more = new ImageButton(this);
-						btn_public_deviant_more
-								.setImageResource(R.drawable.more_disable);
-						btn_public_deviant_more.setEnabled(false);
-
-						RelativeLayout more_li = new RelativeLayout(this);
-						btn_public_deviant_more.setLayoutParams(lp_more);
-						more_li.addView(btn_public_deviant_more);
-						more_li.addView(txtdeviant);
-						ln_deviant.setOrientation(LinearLayout.VERTICAL);
-						ln_deviant.addView(more_li);
-						ln_deviant.addView(btn_line);
-						ln_deviant.addView(p_deviant);
-
-						ln_deviant.setEnabled(false);
-
-						linear_main.addView(ln_deviant);
-						deviantadapter = new GridDeviantAdapter(list_thumb,
-								bitmap_p_deviant, ctx);
-						p_deviant.setNumColumns(cols);
-						p_deviant.setAdapter(deviantadapter);
-						p_deviant.setDrawingCacheEnabled(true);
-						listService.add("public_deviant");
-
-					}
-					btn_public_deviant_more
-							.setImageResource(R.drawable.more_disable);
-					btn_public_deviant_more.setEnabled(false);
-					deviant_count = 1;
-
-					deviantadapter.removeItem();
-					tmp_list = DeviantArt.getPublic(ctx, "DeviantArt");
-					Log.d("thong", "DeviantArt Public: " + tmp_list.size());
-					// Don't save exist photos
-					ArrayList<RSSPhotoItem> list_save = new ArrayList<RSSPhotoItem>();
-					for (int t = 0; t < tmp_list.size(); t++) {
-						String url = tmp_list.get(t).getURL();
-						String filepath = rss_folder.getAbsolutePath()
-								+ "/"
-								+ url.toLowerCase().replace("://", "")
-										.replace("/", "_");
-						File f = new File(filepath);
-						if (!f.exists()) {
-							list_save.add(tmp_list.get(t));
-						}
-					}
-					if (list_save.size() == 0) {
-						ln_deviant.setLayoutParams(p_zero);
-						txtStatus.setText("0 "
-								+ getString(R.string.fetch_images_success));
-						//btnPublic.setEnabled(true);
-					} else if (list_save.size() <= 3) {
-						ln_deviant.setLayoutParams(p_one_row);
-					} else
-						ln_deviant.setLayoutParams(p_two_row);
-					list_photos.addAll(tmp_list);
-					deviant_list_photos.clear();
-					deviant_list_photos.addAll(list_save);
-
-					array_list.add(deviant_list_photos);
-					if (!checkArray(PhimpMe.phimpme_array_list,deviant_list_photos)) {
-						PhimpMe.phimpme_array_list.add(deviant_list_photos);
-					} else {
-						deleteItem(PhimpMe.phimpme_array_list,deviant_list_photos);
-						PhimpMe.phimpme_array_list.add(deviant_list_photos);
-					}
-
-					btn_public_deviant_more
-							.setOnClickListener(new OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									btn_public_deviant_more
-											.setImageResource(R.drawable.more_disable);
-									btn_public_deviant_more.setEnabled(false);
-									if (deviant_list_photos.size()
-											- deviant_count
-											* NUMBER_PHOTO_NEED_DOWNLOAD > 3) {
-										deviant_rows_display = 2;
-									} else if ((deviant_list_photos.size() - deviant_count
-											* NUMBER_PHOTO_NEED_DOWNLOAD) > 0)
-										deviant_rows_display = 1;
-
-									int hight_display = ln_deviant.getHeight()
-											+ DEFAULT_THUMBNAIL_SIZE
-											* deviant_rows_display;
-									LinearLayout.LayoutParams rep = new LinearLayout.LayoutParams(
-											ViewGroup.LayoutParams.WRAP_CONTENT,
-											hight_display);
-									ln_deviant.setLayoutParams(rep);
-									ln_deviant.setEnabled(true);
-									moreClick(deviant_list_photos,
-											deviant_count);
-									deviant_count++;
+					new Handler().post(new Runnable() {						
+						@Override
+						public void run() {			
+							if (listService.indexOf("public_deviant") == -1) {
+								public_deviant_download=true;
+								Button btn_line = new Button(ctx);
+								btn_line.setHeight(2);
+								btn_line.setWidth(LayoutParams.MATCH_PARENT);
+								btn_line.setBackgroundResource(color_line);
+		
+								txtdeviant = new TextView(ctx);
+								txtdeviant.setText("Public DeviantArt");
+								txtdeviant.setTextSize(text_size);
+								p_deviant = new GridView(ctx);
+								p_deviant.setPadding(0, 10, 0, 0);
+								ln_deviant = new LinearLayout(ctx);
+								btn_public_deviant_more = new ImageButton(ctx);
+								btn_public_deviant_more
+										.setImageResource(R.drawable.more_disable);
+								btn_public_deviant_more.setEnabled(false);
+		
+								RelativeLayout more_li = new RelativeLayout(ctx);
+								btn_public_deviant_more.setLayoutParams(lp_more);
+								more_li.addView(btn_public_deviant_more);
+								more_li.addView(txtdeviant);
+								ln_deviant.setOrientation(LinearLayout.VERTICAL);
+								ln_deviant.addView(more_li);
+								ln_deviant.addView(btn_line);
+								ln_deviant.addView(p_deviant);
+		
+								ln_deviant.setEnabled(false);
+		
+								linear_main.addView(ln_deviant);
+								deviantadapter = new GridDeviantAdapter(list_thumb,
+										bitmap_p_deviant, ctx);
+								p_deviant.setNumColumns(cols);
+								p_deviant.setAdapter(deviantadapter);
+								p_deviant.setDrawingCacheEnabled(true);
+								listService.add("public_deviant");
+		
+							}
+							btn_public_deviant_more
+									.setImageResource(R.drawable.more_disable);
+							btn_public_deviant_more.setEnabled(false);
+							deviant_count = 1;
+		
+							deviantadapter.removeItem();
+							tmp_list = DeviantArt.getPublic(ctx, "DeviantArt");
+							Log.d("thong", "DeviantArt Public: " + tmp_list.size());
+							// Don't save exist photos
+							ArrayList<RSSPhotoItem> list_save = new ArrayList<RSSPhotoItem>();
+							for (int t = 0; t < tmp_list.size(); t++) {
+								String url = tmp_list.get(t).getURL();
+								String filepath = rss_folder.getAbsolutePath()
+										+ "/"
+										+ url.toLowerCase().replace("://", "")
+												.replace("/", "_");
+								File f = new File(filepath);
+								if (!f.exists()) {
+									list_save.add(tmp_list.get(t));
 								}
-							});
+							}
+							if (list_save.size() == 0) {
+								ln_deviant.setLayoutParams(p_zero);
+							} else if (list_save.size() <= 3) {
+								ln_deviant.setLayoutParams(p_one_row);
+							} else
+								ln_deviant.setLayoutParams(p_two_row);
+							list_photos.addAll(tmp_list);
+							deviant_list_photos.clear();
+							deviant_list_photos.addAll(list_save);
+		
+							array_list.add(deviant_list_photos);
+							if (!checkArray(PhimpMe.phimpme_array_list,deviant_list_photos)) {
+								PhimpMe.phimpme_array_list.add(deviant_list_photos);
+							} else {
+								deleteItem(PhimpMe.phimpme_array_list,deviant_list_photos);
+								PhimpMe.phimpme_array_list.add(deviant_list_photos);
+							}
+							for (int i = 0; i < array_list.size(); i++) {
+								if (array_list.get(i).size() > 0) {
+									Log.d("thong", "RunOnUiThread");
+									final RSSPhotoItem[] tmp;
+									if (array_list.get(i).size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
+										tmp = new RSSPhotoItem[array_list.get(i).size()];
+									} else {
+										tmp = new RSSPhotoItem[NUMBER_PHOTO_NEED_DOWNLOAD];
+									}
+									for (int j = 0; j < tmp.length; j++) {
+										tmp[j] = array_list.get(i).get(j);
+									}
+									newGallery.this.runOnUiThread(new Runnable() {
+										@Override
+										public void run() {
+
+											new DownloadImageAsyncTask().execute(tmp);
+										}
+									});
+
+								}
+							}
+							btn_public_deviant_more
+									.setOnClickListener(new OnClickListener() {
+										@Override
+										public void onClick(View v) {
+											btn_public_deviant_more
+													.setImageResource(R.drawable.more_disable);
+											btn_public_deviant_more.setEnabled(false);
+											if (deviant_list_photos.size()
+													- deviant_count
+													* NUMBER_PHOTO_NEED_DOWNLOAD > 3) {
+												deviant_rows_display = 2;
+											} else if ((deviant_list_photos.size() - deviant_count
+													* NUMBER_PHOTO_NEED_DOWNLOAD) > 0)
+												deviant_rows_display = 1;
+		
+											int hight_display = ln_deviant.getHeight()
+													+ DEFAULT_THUMBNAIL_SIZE
+													* deviant_rows_display;
+											LinearLayout.LayoutParams rep = new LinearLayout.LayoutParams(
+													ViewGroup.LayoutParams.WRAP_CONTENT,
+													hight_display);
+											ln_deviant.setLayoutParams(rep);
+											ln_deviant.setEnabled(true);
+											moreClick(deviant_list_photos,
+													deviant_count);
+											deviant_count++;
+										}
+									});
+						}});
 
 				}
 				if (PhimpMe.FEEDS_LIST_IMGUR_PUBLIC) {
@@ -4573,9 +4461,6 @@ public class newGallery extends Activity {
 					}
 					if (list_save.size() == 0) {
 						ln_public_imgur.setLayoutParams(p_zero);
-						txtStatus.setText("0 "
-								+ getString(R.string.fetch_images_success));
-						//btnPublic.setEnabled(true);
 					} else if (list_save.size() <= 3) {
 						ln_public_imgur.setLayoutParams(p_one_row);
 					} else
@@ -4685,9 +4570,6 @@ public class newGallery extends Activity {
 					//
 					if (list_save.size() == 0) {
 						ln_public_500px.setLayoutParams(p_zero);
-						txtStatus.setText("0 "
-								+ getString(R.string.fetch_images_success));
-						//btnPublic.setEnabled(true);
 					} else if (list_save.size() <= 3) {
 						ln_public_500px.setLayoutParams(p_one_row);
 					} else
@@ -4733,7 +4615,7 @@ public class newGallery extends Activity {
 								}
 							});
 				}
-				if (PhimpMe.FEEDS_LIST_MYSERVICES) {
+				if (PhimpMe.FEEDS_LIST_MYSERVICES) {					
 					if (listService.indexOf("my_feed_services") == -1) {
 						myfeed_download=true;
 						Button btn_line = new Button(ctx);
@@ -4798,9 +4680,6 @@ public class newGallery extends Activity {
 					//
 					if (list_save.size() == 0) {
 						ln_my_feed_services.setLayoutParams(p_zero);
-						txtStatus.setText("0 "
-								+ getString(R.string.fetch_images_success));
-						//btnPublic.setEnabled(true);
 					} else if (list_save.size() <= 3) {
 						ln_my_feed_services.setLayoutParams(p_one_row);
 					} else
@@ -4920,9 +4799,6 @@ public class newGallery extends Activity {
 
 					if (list_save.size() == 0) {
 						ln_my_feed_services1.setLayoutParams(p_zero);
-						txtStatus.setText("0 "
-								+ getString(R.string.fetch_images_success));
-						//btnPublic.setEnabled(true);
 					} else if (list_save.size() <= 3) {
 						ln_my_feed_services1.setLayoutParams(p_one_row);
 					} else
@@ -5041,9 +4917,6 @@ public class newGallery extends Activity {
 
 					if (list_save.size() == 0) {
 						ln_my_feed_services2.setLayoutParams(p_zero);
-						txtStatus.setText("0 "
-								+ getString(R.string.fetch_images_success));
-						//btnPublic.setEnabled(true);
 					} else if (list_save.size() <= 3) {
 						ln_my_feed_services2.setLayoutParams(p_one_row);
 					} else
@@ -5162,9 +5035,6 @@ public class newGallery extends Activity {
 
 					if (list_save.size() == 0) {
 						ln_my_feed_services3.setLayoutParams(p_zero);
-						txtStatus.setText("0 "
-								+ getString(R.string.fetch_images_success));
-						//btnPublic.setEnabled(true);
 					} else if (list_save.size() <= 3) {
 						ln_my_feed_services3.setLayoutParams(p_one_row);
 					} else
@@ -5283,9 +5153,6 @@ public class newGallery extends Activity {
 
 					if (list_save.size() == 0) {
 						ln_my_feed_services4.setLayoutParams(p_zero);
-						txtStatus.setText("0 "
-								+ getString(R.string.fetch_images_success));
-						//btnPublic.setEnabled(true);
 					} else if (list_save.size() <= 3) {
 						ln_my_feed_services4.setLayoutParams(p_one_row);
 					} else
@@ -5404,9 +5271,6 @@ public class newGallery extends Activity {
 
 					if (list_save.size() == 0) {
 						ln_my_feed_services5.setLayoutParams(p_zero);
-						txtStatus.setText("0 "
-								+ getString(R.string.fetch_images_success));
-						//btnPublic.setEnabled(true);
 					} else if (list_save.size() <= 3) {
 						ln_my_feed_services5.setLayoutParams(p_one_row);
 					} else
@@ -5519,9 +5383,6 @@ public class newGallery extends Activity {
 					//
 					if (list_save.size() == 0) {
 						ln_facebook.setLayoutParams(p_zero);
-						txtStatus.setText("0 "
-								+ getString(R.string.fetch_images_success));
-						//btnPublic.setEnabled(true);
 					} else if (list_save.size() <= 3) {
 						ln_facebook.setLayoutParams(p_one_row);
 					} else
@@ -5629,9 +5490,6 @@ public class newGallery extends Activity {
 					//
 					if (list_save.size() == 0) {
 						ln_tumblr.setLayoutParams(p_zero);
-						txtStatus.setText("0 "
-								+ getString(R.string.fetch_images_success));
-						//btnPublic.setEnabled(true);
 					} else if (list_save.size() <= 3) {
 						ln_tumblr.setLayoutParams(p_one_row);
 					} else
@@ -5743,9 +5601,6 @@ public class newGallery extends Activity {
 
 					if (list_save.size() == 0) {
 						ln_vkontakte.setLayoutParams(p_zero);
-						txtStatus.setText("0 "
-								+ getString(R.string.fetch_images_success));
-						//btnPublic.setEnabled(true);
 					} else if (list_save.size() <= 3) {
 						ln_vkontakte.setLayoutParams(p_one_row);
 					} else
@@ -5862,9 +5717,6 @@ public class newGallery extends Activity {
 
 					if (list_save.size() == 0) {
 						ln_personal_flickr.setLayoutParams(p_zero);
-						txtStatus.setText("0 "
-								+ getString(R.string.fetch_images_success));
-						//btnPublic.setEnabled(true);
 					} else if (list_save.size() <= 3) {
 						ln_personal_flickr.setLayoutParams(p_one_row);
 					} else
@@ -5914,7 +5766,7 @@ public class newGallery extends Activity {
 								}
 							});
 				}
-				if (PhimpMe.FEEDS_LIST_GOOGLE_PICASA_PRIVATE) {
+				if (PhimpMe.FEEDS_LIST_GOOGLE_PICASA_PRIVATE) {					
 					if (listService.indexOf("personal_picasa") == -1) {
 						personal_picasa_download=true;
 						Button btn_line = new Button(ctx);
@@ -5979,9 +5831,6 @@ public class newGallery extends Activity {
 
 					if (list_save.size() == 0) {
 						ln_personal_picasa.setLayoutParams(p_zero);
-						txtStatus.setText("0 "
-								+ getString(R.string.fetch_images_success));
-						//btnPublic.setEnabled(true);
 					} else if (list_save.size() <= 3) {
 						ln_personal_picasa.setLayoutParams(p_one_row);
 					} else
@@ -6095,9 +5944,6 @@ public class newGallery extends Activity {
 
 					if (list_save.size() == 0) {
 						ln_personal_deviantart.setLayoutParams(p_zero);
-						txtStatus.setText("0 "
-								+ getString(R.string.fetch_images_success));
-						//btnPublic.setEnabled(true);
 					} else if (list_save.size() <= 3) {
 						ln_personal_deviantart.setLayoutParams(p_one_row);
 					} else
@@ -6209,9 +6055,6 @@ public class newGallery extends Activity {
 
 					if (list_save.size() == 0) {
 						ln_personal_imgur.setLayoutParams(p_zero);
-						txtStatus.setText("0 "
-								+ getString(R.string.fetch_images_success));
-						//btnPublic.setEnabled(true);
 					} else if (list_save.size() <= 3) {
 						ln_personal_imgur.setLayoutParams(p_one_row);
 					} else
@@ -6326,9 +6169,6 @@ public class newGallery extends Activity {
 
 					if (list_save.size() == 0) {
 						ln_personal_kaixin.setLayoutParams(p_zero);
-						txtStatus.setText("0 "
-								+ getString(R.string.fetch_images_success));
-						//btnPublic.setEnabled(true);
 					} else if (list_save.size() <= 3) {
 						ln_personal_kaixin.setLayoutParams(p_one_row);
 					} else
@@ -6440,8 +6280,6 @@ public class newGallery extends Activity {
 
 					if (list_save.size() == 0) {
 						ln_personal_500px.setLayoutParams(p_zero);
-						txtStatus.setText("0 "
-								+ getString(R.string.fetch_images_success));
 					} else if (list_save.size() <= 3) {
 						ln_personal_500px.setLayoutParams(p_one_row);
 					} else
@@ -6555,9 +6393,6 @@ public class newGallery extends Activity {
 
 					if (list_save.size() == 0) {
 						ln_personal_sohu.setLayoutParams(p_zero);
-						txtStatus.setText("0 "
-								+ getString(R.string.fetch_images_success));
-						//btnPublic.setEnabled(true);
 					} else if (list_save.size() <= 3) {
 						ln_personal_sohu.setLayoutParams(p_one_row);
 					} else
@@ -6611,6 +6446,7 @@ public class newGallery extends Activity {
 				Log.d("luong", "list test: " + array_list.size());
 				Log.d("luong",
 						"list test personal: " + personal_array_list.size());
+				
 				for (int i = 0; i < array_list.size(); i++) {
 					if (array_list.get(i).size() > 0) {
 						Log.d("thong", "RunOnUiThread");
@@ -6659,18 +6495,125 @@ public class newGallery extends Activity {
 				}
 			}
 		} else {
-			txtStatus
-					.setText(getString(R.string.infor_internet_connection_false));
+			Log.e("newGallery", "Don't connect internet");
+			RelativeLayout.LayoutParams lp_more = new RelativeLayout.LayoutParams(
+					40, 40);
+			
+			lp_more.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+			
+			if (PhimpMe.FEEDS_LIST_FLICKR_PUBLIC) {									
+					setOffline(ln_flickr, p_flickr, btn_flickr_more, txtPFlickr, lp_more, "Public Flickr");
+				
+				}
+				if (PhimpMe.FEEDS_LIST_FLICKR_RECENT) {									
+					setOffline(ln_recent_flickr, recent_flickr, btn_recent_flickr_more, txtRecentFlickr, lp_more,"Recent Flickr");
+				}
+				if (PhimpMe.FEEDS_LIST_YAHOO_NEWS) {					
+					setOffline(ln_yahoo, p_yahoo, btn_yahoo_more, txtyahoo, lp_more, "Public Yahoo");
+				}
+				
+				if (PhimpMe.FEEDS_LIST_GOOGLE_PICASA_PUBLIC) {					
+					setOffline(ln_public_picasa, p_picasa, btn_public_picasa_more, txtPublicPicasa, lp_more, "Public Picasa");
+				}
+				
+				if (PhimpMe.FEEDS_LIST_GOOGLE_NEWS) {					
+					setOffline(ln_googlenews, p_googlenews, btn_googlenews_more, txtGooglenews, lp_more, "Google News");
+				}
+				
+				if (PhimpMe.FEEDS_LIST_DEVIANTART_PUBLIC) {					
+					setOffline(ln_deviant, p_deviant, btn_public_deviant_more, txtdeviant, lp_more, "Public DeviantArt");
+				}
+				
+				if (PhimpMe.FEEDS_LIST_MYSERVICES) {					
+					setOffline(ln_my_feed_services, gv_my_feed_services, btn_my_feed_services_more, txtMyFeedServices, lp_more, "My Feed Photo");
+				}
+				
+				if (PhimpMe.FEEDS_LIST_FACEBOOK_PRIVATE) {					
+					setOffline(ln_facebook, gv_personal_facebook, btn_facebook_more, txtfacebook, lp_more, "Personal Facebook");
+				}
+				
+				if (PhimpMe.FEEDS_LIST_TUMBLR_PRIVATE) {					
+					setOffline(ln_tumblr, gv_personal_tumblr, btn_tumblr_more, txttumblr, lp_more, "Tumblr Personal");
+				}
+				
+				if (PhimpMe.FEEDS_LIST_VK) {					
+					setOffline(ln_vkontakte, gv_personal_vkontakte, btn_vkontakte_more, txtvkontakte, lp_more, "Personal Vkontakte");
+
+				}
+				
+				if (PhimpMe.FEEDS_LIST_FLICKR_PRIVATE) {					
+					setOffline(ln_personal_flickr, gv_personal_flickr,btn_personal_flickr_more, txtpersonal_flickr, lp_more, "Personal Flickr");
+				}
+				
+				if (PhimpMe.FEEDS_LIST_GOOGLE_PICASA_PRIVATE) {					
+					setOffline(ln_personal_picasa, gv_personal_picasa, btn_personal_picasa_more, txtpersonal_picasa, lp_more, "Personal Picasa");
+				}
+				
+				if (PhimpMe.FEEDS_LIST_DEVIANTART_PRIVITE) {					
+					setOffline(ln_personal_deviantart, gv_personal_deviantart, btn_personal_deviant_more, txtpersonal_deviantart, lp_more, "Personal DevianArt");
+				}
+				
+				if (PhimpMe.FEEDS_LIST_IMGUR_PERSONAL) {					
+					setOffline(ln_personal_imgur, gv_personal_imgur, btn_personal_imgur_more, txtpersonal_imgur, lp_more, "Personal Imgur");
+				}
+				
+				if (PhimpMe.FEEDS_LIST_SOHU_PERSONAL) {					
+					setOffline(ln_personal_sohu, gv_personal_sohu, btn_personal_sohu_more, txtpersonal_sohu, lp_more, "Personal Sohu");
+				}
+			
 		}
 	}
+	public void setOffline(LinearLayout linear, GridView grid, ImageButton btn, TextView txt, RelativeLayout.LayoutParams lp_more, String text){
+		LinearLayout.LayoutParams p_two_row = new LinearLayout.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT,
+				DEFAULT_THUMBNAIL_SIZE * 2 + 120);
+		
+		Button btn_line = new Button(ctx);
+		btn_line.setHeight(2);
+		btn_line.setWidth(LayoutParams.MATCH_PARENT);
+		btn_line.setBackgroundResource(color_line);
+		
+		Button btn_line_black = new Button(ctx);
+		btn_line_black.setHeight(10);
+		btn_line_black.setWidth(LayoutParams.MATCH_PARENT);
+		btn_line_black.setBackgroundResource(R.color.black);
+		
+		txt = new TextView(this);
+		txt.setText(text);
+		txt.setTextSize(text_size);
+		grid = new GridView(this);
+		grid.setBackgroundResource(R.color.white);
+		linear = new LinearLayout(this);
+		btn = new ImageButton(this);
+		btn.setImageResource(R.drawable.more_disable);
+		btn.setEnabled(false);
 
+		RelativeLayout more_li = new RelativeLayout(this);
+		btn.setLayoutParams(lp_more);
+		more_li.addView(btn);
+		more_li.addView(txt);
+		linear.setOrientation(LinearLayout.VERTICAL);
+
+		linear.addView(more_li);
+		linear.addView(btn_line);
+		linear.addView(btn_line_black);
+		linear.addView(grid);
+		linear.setLayoutParams(p_two_row);
+		linear.setEnabled(false);
+		linear_main.addView(linear);
+		GridviewNotWifiAddapter grid_offline=new GridviewNotWifiAddapter(ctx);
+		grid.setNumColumns(cols);
+		grid.setAdapter(grid_offline);
+		grid.setDrawingCacheEnabled(true);
+		
+	}
 	// download Public photos
 	private class DownloadImageAsyncTask extends
 			AsyncTask<RSSPhotoItem[], String, Long> {
 		int complete_file = 0;
 
 		protected Long doInBackground(RSSPhotoItem[]... items) {
-
+			
 			long size = 0;
 
 			final RSSPhotoItem[] _items = items[0];
@@ -6691,10 +6634,6 @@ public class newGallery extends Activity {
 				newGallery.this.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						
-						String _s = getString(R.string.downloading) + "...";
-						newGallery.txtStatus.setText(_s);
-						//btnPublic.setEnabled(false);
 					}
 				});
 
@@ -6841,17 +6780,11 @@ public class newGallery extends Activity {
 
 		@Override
 		public void onProgressUpdate(String... value) {
-			txtStatus.setText(value.toString());
 
 		}
 
 		@Override
-		protected void onPostExecute(Long result) {
-
-			txtStatus.setText(complete_file + " "
-					+ getString(R.string.fetch_images_success));
-			
-			//btnPublic.setEnabled(true);
+		protected void onPostExecute(Long result) {		
 			for (int i = 0; i < array_list.size(); i++) {
 				if (array_list.get(i).equals(flickr_list_photos)
 						&& (array_list.get(i).size() - flickr_count
@@ -7002,11 +6935,10 @@ public class newGallery extends Activity {
 	// download personal photos
 	private class DownloadImageAsyncTask_Personal extends
 			AsyncTask<RSSPhotoItem_Personal[], String, Long> {
-		int complete_file = 0;
 
 		protected Long doInBackground(RSSPhotoItem_Personal[]... items) {
 			long size = 0;
-
+			
 			final RSSPhotoItem_Personal[] _items = items[0];
 			for (int i = 0; i < _items.length; i++) {
 				RSSPhotoItem_Personal item = _items[i];
@@ -7023,11 +6955,7 @@ public class newGallery extends Activity {
 				newGallery.this.runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
-						
-						String _s = getString(R.string.downloading) + "...";
 
-						newGallery.txtStatus.setText(_s);
-						//btnPublic.setEnabled(false);
 					}
 				});
 
@@ -7068,7 +6996,7 @@ public class newGallery extends Activity {
 								thumb_path, title, latitude, longitude, link,
 								service, description);
 
-						complete_file++;
+						//complete_file++;
 						
 						newGallery.this.runOnUiThread(new Runnable() {
 							@Override
@@ -7145,14 +7073,10 @@ public class newGallery extends Activity {
 
 		@Override
 		public void onProgressUpdate(String... value) {
-			txtStatus.setText(value.toString());
 		}
 
 		@Override
 		protected void onPostExecute(Long result) {
-			txtStatus.setText(complete_file + " "
-					+ getString(R.string.fetch_images_success));
-			//btnPublic.setEnabled(true);
 			for (int i = 0; i < personal_array_list.size(); i++) {
 				if (personal_array_list.get(i).equals(
 						personal_deviantart_list_photos)
@@ -7376,7 +7300,7 @@ public class newGallery extends Activity {
 		if (linear_main.getChildCount() != 0) {
 			linear_main.removeAllViews();			
 		}
-		txtStatus.setText("");
+		//txtStatus.setText("");
 		listService.clear();
 		PhimpMe.check = 0;
 	}
@@ -7442,7 +7366,7 @@ public class newGallery extends Activity {
 			return false;
 		}
 	}
-	/*@Override
+	@Override
 	public boolean onKeyDown(int keycode, KeyEvent event)
     {
     	if (keycode == KeyEvent.KEYCODE_BACK){
@@ -7468,39 +7392,7 @@ public class newGallery extends Activity {
             alertbox.create().show();
     	}  	
         return super.onKeyDown(keycode, event);
-    }*/
-	@Override
-	public void onBackPressed(){
-		//PhimpMe.showTabs();				
-//		/*//int i = -1;
-//		try{
-//			//i = PhimpMe.IdList.get(PhimpMe.IdList.size()-2); 
-//		}catch(ArrayIndexOutOfBoundsException e){}
-//		if (PhimpMe.IdList.size() > 1 && (i !=0)){
-//			PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
-//			PhimpMe.mTabHost.setCurrentTab(PhimpMe.IdList.get(PhimpMe.IdList.size()-1));}
-//		else {*/
-		Log.i("newGallery","back press");
-			AlertDialog.Builder alertbox = new AlertDialog.Builder(ctx);
-            alertbox.setMessage(getString(R.string.exit_message));
-            alertbox.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                	finish();
-                	System.exit(0);
-                }
-            });
-            alertbox.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                	//Resume to current process
-                }
-            });
-            alertbox.create().show();
-		//}
-	}
+    }
+	
 }
+

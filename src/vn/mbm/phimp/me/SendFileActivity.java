@@ -34,7 +34,7 @@ public class SendFileActivity extends Activity {
 
 	private final int ACTIVITY_SELECT_IMAGE = 2;
 	private final BluetoothAdapter btAdapter = BluetoothAdapter.getDefaultAdapter();
-	private ImageButton select;
+	//private ImageButton select;
 	private ImageButton sendDirectly;
 
 	private TextView textStatus;
@@ -76,7 +76,7 @@ public class SendFileActivity extends Activity {
         ///
         
 		textStatus = (TextView) findViewById(R.id.sendStatus);
-		select = (ImageButton) findViewById(R.id.select);
+		//select = (ImageButton) findViewById(R.id.select);
 		sendDirectly = (ImageButton) findViewById(R.id.sendDirectly);
 
 		Intent intent = getIntent();
@@ -84,20 +84,20 @@ public class SendFileActivity extends Activity {
 		if (extras != null) {
 			String imagePath=extras.getString("image-path");
 			File f=new File(imagePath);
-			uri=Uri.fromFile(f);
+			uri=Uri.fromFile(f);			
 			textStatus.setText(imagePath);
-			sendDirectly.setEnabled(true);
-			select.setEnabled(false);
+			//sendDirectly.setEnabled(true);
+			//select.setEnabled(false);
 			
 		}
 		
-		select.setOnClickListener(new View.OnClickListener() {
+		/*select.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
 				Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 				startActivityForResult(i, ACTIVITY_SELECT_IMAGE);
 			}
-		});
+		});*/
 		list_devices.setOnItemClickListener(new OnItemClickListener(){
 
 			public void onItemClick(AdapterView<?> arg0, View arg1, int i,long arg3) {
@@ -107,7 +107,7 @@ public class SendFileActivity extends Activity {
         	
         });
 		checkBTState();
-		sendDirectly.setEnabled(false);
+		//sendDirectly.setEnabled(false);
 		sendDirectly.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
@@ -182,9 +182,9 @@ public class SendFileActivity extends Activity {
 					uri = data.getData();
 					String filePath = uri.getPath();
 					textStatus.setText(filePath);
-					sendDirectly.setEnabled(true);
+					//sendDirectly.setEnabled(true);
 				} else {
-					sendDirectly.setEnabled(false);
+					//sendDirectly.setEnabled(false);
 				}
 				break;
 			default:
@@ -222,5 +222,9 @@ public class SendFileActivity extends Activity {
         Uri contentUri = getContentResolver().insert(BluetoothShare.CONTENT_URI, values);
         Log.v(TAG, "LeavingsentFileToDeviceCalled,"+contentUri);
     }
-	 
+	@Override
+	public void onBackPressed(){
+		finish();
+		unregisterReceiver(ActionFoundReceiver);
+	}
 }

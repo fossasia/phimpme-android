@@ -96,6 +96,7 @@ import vn.mbm.phimp.me.utils.CustomMultiPartEntity;
 import vn.mbm.phimp.me.utils.CustomMultiPartEntity.ProgressListener;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -130,7 +131,7 @@ public class UploadProgress extends Activity
 	{
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.upload_progress);
-
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         lytUploadProgress = (LinearLayout) findViewById(R.id.linearUploadProgress);
         checked_ids.clear();
         lytUploadProgress.removeAllViews();
@@ -422,8 +423,9 @@ public class UploadProgress extends Activity
 				Log.d("Hon",path);
 				//Authorize
 				post.setHeader("Cookie", session_name + "=" + session_id);
+
+				//Get imagedata
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();		
-				@SuppressWarnings("resource")
 				FileInputStream fis = new FileInputStream(f);
 				byte[] buf = new byte[1024];
 			     try {
@@ -445,18 +447,19 @@ public class UploadProgress extends Activity
 					{
 						publishProgress((int) ((num / (float) totalSize) * 100));
 					}
-				});				
+				});			
+				
 				multi.addPart("file", new StringBody(img_data_b64));				
-				JSONObject js = new JSONObject(path.split(";")[1]);
 				String filename = "";
-				filename = js.getString("name");
+				filename=path.split("/")[4];
+				Log.i("Danh-UploadProgress","Filename : "+filename);
 				multi.addPart("filename", new StringBody(filename));
 				totalSize = multi.getContentLength();
 				Log.d("Size",String.valueOf(totalSize));
 				post.setEntity(multi);	
 				String httpResponse = client.execute(post,res);
 				Log.d("drupal", "Upload file step: ");
-				Log.v("drupal", httpResponse);
+				Log.d("drupal", "httpResponse : "+httpResponse);
 				img_data_b64 = "";
 				JSONObject json = new JSONObject(httpResponse);
 				Log.d("Hon",json.toString());
@@ -553,9 +556,9 @@ public class UploadProgress extends Activity
 				String username = acc.getUsername();
 				String password = acc.getPassword();
 				service_url = acc.getSerivceURL();
-
+				
 				/* Login */
-				for (int i = 0; i < path.length ; i++){
+				for (int i = 0; i < (path.length) ; i++){
 				String userId = login(username, password);
 				if (userId == "") {
 					return false;
@@ -565,22 +568,23 @@ public class UploadProgress extends Activity
 				String[] list = getOwnNodes(userId);
 				if (list == null) {
 					return false;
-				}
-				
+				}				
 				/* Choose the first list */
 				String nodeId = list[0];
 				if (nodeId == "") {
 					return false;
-				}
-				
+				}				
 				// The index for the new photo is determined by the amount of existing photos
 				int newIndex;
 				try {
-					newIndex = countMedia(nodeId);
+					
+						newIndex = countMedia(nodeId);	
+					
+					
 				} catch (Exception e) {
 					e.printStackTrace();
 					return false;
-				}
+				}		
 					String fileId = uploadPhoto(path[i]);
 					if (fileId == "") {
 						return false;

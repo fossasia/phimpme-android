@@ -27,6 +27,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/application_title"
         android:largeHeap="true"
+        
         >
         <uses-library android:name="com.google.android.maps" />  
         		 <service android:name=".CollectUserData" />
@@ -42,23 +43,25 @@
     				<intent-filter><action android:name="com.crittercism.service.CrittercismService" /></intent-filter>
 				</service>
 			<!-- End of Crittercism Support Forum Manifest Code -->    
-			<activity android:name=".SplashScreen"
-                  
+			<activity android:name=".SplashScreen"                  
                    android:configChanges="locale"  
+                    android:screenOrientation="portrait"
                    android:theme="@android:style/Theme.NoTitleBar">
-            <intent-filter>
+    		<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>	 
+            
         </activity>  
             <activity  android:name=".PhimpMe"  
                 android:configChanges="locale"  
                 android:theme="@android:style/Theme.NoTitleBar">
-            <!-- <intent-filter>
+           <!-- <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
+            </intent-filter> -->
             
         </activity>
         
@@ -68,6 +71,12 @@
             android:theme="@android:style/Theme.NoTitleBar">
             
         </activity>
+        <activity android:name="vn.mbm.phimp.me.gallery.PhimpMeGallery"
+            android:configChanges="locale"         	
+         	android:theme="@android:style/Theme.NoTitleBar"
+            >
+            
+        </activity>
         <activity
             android:name=".Camera2"
             android:configChanges="locale"
@@ -75,8 +84,10 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             
         </activity>            
-        <activity android:name=".Upload" android:theme="@android:style/Theme.NoTitleBar" android:configChanges="keyboardHidden|orientation">
-            
+        <activity android:name=".Upload" 
+            android:theme="@android:style/Theme.NoTitleBar" 
+            android:configChanges="keyboardHidden|orientation">    
+         
         </activity>
         <activity
             android:name=".Gallery"
@@ -106,21 +117,32 @@
             android:theme="@android:style/Theme.NoTitleBar">
             
         </activity>
+         <activity
+
+            android:name=".BluetoothShareMultipleFile"
+            android:configChanges="locale"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar">
+            
+        </activity>
         <activity
             android:name=".PhotoSelect"
             android:configChanges="locale"
+            android:theme="@android:style/Theme.NoTitleBar"
            >            
         </activity>
           <activity android:name="vn.mbm.phimp.me.image.CropImage" 
               android:configChanges="locale" 
               android:label="CropLabel"
+              android:theme="@android:style/Theme.NoTitleBar"
               android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".Settings"
             android:configChanges="locale"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar">
+            android:theme="@android:style/Theme.NoTitleBar"
+            >
            
         </activity>
         <activity
@@ -145,19 +167,25 @@
         <activity
             android:name=".UploadProgress"
             android:configChanges="locale"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar"
             >
            
         </activity>
-       <activity
+      <!--  <activity
             android:name=".PhimpMeGallery"
             android:screenOrientation="portrait"
             android:configChanges="locale"
+         	android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
             >
            
-        </activity>
+        </activity> -->
         <activity
             android:name="SendFileActivity"
-            android:theme="@android:style/Theme.NoTitleBar">
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:configChanges="locale"
+            android:screenOrientation="portrait"
+            >
            
         </activity>
         <!-- Paypal -->
@@ -184,6 +212,14 @@
             <intent-filter>
                 
             </intent-filter>
+        </activity>
+        <activity 
+            android:name="vn.mbm.phimp.me.gallery3d.media.CropImage"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:configChanges="keyboardHidden|orientation"
+            android:clearTaskOnLaunch="true" 
+            android:noHistory="false"
+            android:stateNotNeeded="true">           
         </activity>
         <activity android:name="vn.mbm.phimp.me.Webkit" android:configChanges="locale" >
            	<intent-filter>

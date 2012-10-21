@@ -42,6 +42,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
+import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -164,12 +165,13 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
 	//Crash Report
 	public static String CRITTERCISM_APP_ID = "4fffa20fbe790e4bc7000002";
 	boolean serviceDisabled = false;
-	
+	public static boolean check_cache ;
 	public static boolean check_export = true;
 	public static TabHost mTabHost;	
 	public static boolean check_donwload=false;
 	public static boolean check_donwload_local_gallery=false;	
 	public static AdView ad;
+	public static int flashStatus =1;
 	//private GestureDetector gestureScanner;
 	//View.OnTouchListener gestureListener;
 	public static int width,height;
@@ -212,7 +214,8 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
          * get window width, height
          */
         	Display display=getWindowManager().getDefaultDisplay();
-    		width=height=display.getWidth()/3;
+    		width=display.getWidth()/3;
+    		height=width;
         /*
          * Google admod
          */
@@ -242,7 +245,250 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
     	        	//adView.destroy();
     	        }
     	        
-    	
+    	        /*
+    	         * user config
+    	         */
+    	        
+    	        File file0 = getBaseContext().getFileStreamPath("local_gallery.txt");
+    			if(file0.exists()){
+    				try {
+    					FileInputStream Rfile = openFileInput("local_gallery.txt");
+    					
+    					InputStreamReader einputreader = new InputStreamReader(Rfile);
+    					BufferedReader ebuffreader = new BufferedReader(einputreader);
+    					Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
+    					PhimpMe.FEEDS_LOCAL_GALLERY = tmp;
+    				} catch (FileNotFoundException e) {
+    					e.printStackTrace();
+    				} catch (IOException e) {
+    					e.printStackTrace();
+    				}
+    			}
+    			
+    			
+    			File file1 = getBaseContext().getFileStreamPath("flickr_public.txt");
+    			if(file1.exists()){
+    				try {
+    					FileInputStream Rfile = openFileInput("flickr_public.txt");
+    					
+    					InputStreamReader einputreader = new InputStreamReader(Rfile);
+    					BufferedReader ebuffreader = new BufferedReader(einputreader);
+    					Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
+    					PhimpMe.FEEDS_LIST_FLICKR_PUBLIC = tmp;
+    				} catch (FileNotFoundException e) {
+    					e.printStackTrace();
+    				} catch (IOException e) {
+    					e.printStackTrace();
+    				}
+    			}
+    			
+    			File file2 = getBaseContext().getFileStreamPath("flickr_recent.txt");
+    			if(file2.exists()){
+    				try {
+    					FileInputStream Rfile = openFileInput("flickr_recent.txt");
+    					
+    					InputStreamReader einputreader = new InputStreamReader(Rfile);
+    					BufferedReader ebuffreader = new BufferedReader(einputreader);
+    					Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
+    					PhimpMe.FEEDS_LIST_FLICKR_RECENT = tmp;
+    				} catch (FileNotFoundException e) {
+    					e.printStackTrace();
+    				} catch (IOException e) {
+    					e.printStackTrace();
+    				}
+    			}
+    	    	
+    			File file3 = getBaseContext().getFileStreamPath("google_news.txt");
+    			if(file3.exists()){
+    				try {
+    					FileInputStream Rfile = openFileInput("google_news.txt");
+    					
+    					InputStreamReader einputreader = new InputStreamReader(Rfile);
+    					BufferedReader ebuffreader = new BufferedReader(einputreader);
+    					Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
+    					PhimpMe.FEEDS_LIST_GOOGLE_NEWS = tmp;
+    				} catch (FileNotFoundException e) {
+    					e.printStackTrace();
+    				} catch (IOException e) {
+    					e.printStackTrace();
+    				}
+    			}
+    	    	
+    			File file4 = getBaseContext().getFileStreamPath("public_picasa.txt");
+    			if(file4.exists()){
+    				try {
+    					FileInputStream Rfile = openFileInput("public_picasa.txt");
+    					
+    					InputStreamReader einputreader = new InputStreamReader(Rfile);
+    					BufferedReader ebuffreader = new BufferedReader(einputreader);
+    					Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
+    					PhimpMe.FEEDS_LIST_GOOGLE_PICASA_PUBLIC = tmp;
+    				} catch (FileNotFoundException e) {
+    					e.printStackTrace();
+    				} catch (IOException e) {
+    					e.printStackTrace();
+    				}
+    			}
+    			
+    			File file5 = getBaseContext().getFileStreamPath("yahoo_news.txt");
+    			if(file5.exists()){
+    				try {
+    					FileInputStream Rfile = openFileInput("yahoo_news.txt");
+    					
+    					InputStreamReader einputreader = new InputStreamReader(Rfile);
+    					BufferedReader ebuffreader = new BufferedReader(einputreader);
+    					Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
+    					PhimpMe.FEEDS_LIST_YAHOO_NEWS = tmp;
+    				} catch (FileNotFoundException e) {
+    					e.printStackTrace();
+    				} catch (IOException e) {
+    					e.printStackTrace();
+    				}
+    			}
+    	    	
+    			File file6 = getBaseContext().getFileStreamPath("deviant_public.txt");
+    			if(file6.exists()){
+    				try {
+    					FileInputStream Rfile = openFileInput("deviant_public.txt");
+    					
+    					InputStreamReader einputreader = new InputStreamReader(Rfile);
+    					BufferedReader ebuffreader = new BufferedReader(einputreader);
+    					Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
+    					PhimpMe.FEEDS_LIST_DEVIANTART_PUBLIC = tmp;
+    				} catch (FileNotFoundException e) {
+    					e.printStackTrace();
+    				} catch (IOException e) {
+    					e.printStackTrace();
+    				}
+    			}
+    	    	
+    			File file7 = getBaseContext().getFileStreamPath("flick_private.txt");
+    			if(file7.exists()){
+    				try {
+    					FileInputStream Rfile = openFileInput("flick_private.txt");
+    					
+    					InputStreamReader einputreader = new InputStreamReader(Rfile);
+    					BufferedReader ebuffreader = new BufferedReader(einputreader);
+    					Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
+    					PhimpMe.FEEDS_LIST_FLICKR_PRIVATE = tmp;
+    				} catch (FileNotFoundException e) {
+    					e.printStackTrace();
+    				} catch (IOException e) {
+    					e.printStackTrace();
+    				}
+    			}
+    			
+    			File file8 = getBaseContext().getFileStreamPath("picasa_private.txt");
+    			if(file8.exists()){
+    				try {
+    					FileInputStream Rfile = openFileInput("picasa_private.txt");
+    					
+    					InputStreamReader einputreader = new InputStreamReader(Rfile);
+    					BufferedReader ebuffreader = new BufferedReader(einputreader);
+    					Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
+    					PhimpMe.FEEDS_LIST_GOOGLE_PICASA_PRIVATE = tmp;
+    				} catch (FileNotFoundException e) {
+    					e.printStackTrace();
+    				} catch (IOException e) {
+    					e.printStackTrace();
+    				}
+    			}
+    	    	
+    			File file9 = getBaseContext().getFileStreamPath("deviant_private.txt");
+    			if(file9.exists()){
+    				try {
+    					FileInputStream Rfile = openFileInput("deviant_private.txt");
+    					
+    					InputStreamReader einputreader = new InputStreamReader(Rfile);
+    					BufferedReader ebuffreader = new BufferedReader(einputreader);
+    					Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
+    					PhimpMe.FEEDS_LIST_DEVIANTART_PRIVITE = tmp;
+    				} catch (FileNotFoundException e) {
+    					e.printStackTrace();
+    				} catch (IOException e) {
+    					e.printStackTrace();
+    				}
+    			}
+    	    	
+    			File file10 = getBaseContext().getFileStreamPath("vk.txt");
+    			if(file10.exists()){
+    				try {
+    					FileInputStream Rfile = openFileInput("vk.txt");
+    					
+    					InputStreamReader einputreader = new InputStreamReader(Rfile);
+    					BufferedReader ebuffreader = new BufferedReader(einputreader);
+    					Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
+    					PhimpMe.FEEDS_LIST_VK = tmp;
+    				} catch (FileNotFoundException e) {
+    					e.printStackTrace();
+    				} catch (IOException e) {
+    					e.printStackTrace();
+    				}
+    			}
+    	    	
+    			File file11 = getBaseContext().getFileStreamPath("facebook.txt");
+    			if(file11.exists()){
+    				try {
+    					FileInputStream Rfile = openFileInput("facebook.txt");
+    					
+    					InputStreamReader einputreader = new InputStreamReader(Rfile);
+    					BufferedReader ebuffreader = new BufferedReader(einputreader);
+    					Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
+    					PhimpMe.FEEDS_LIST_FACEBOOK_PRIVATE = tmp;
+    				} catch (FileNotFoundException e) {
+    					e.printStackTrace();
+    				} catch (IOException e) {
+    					e.printStackTrace();
+    				}
+    			}
+    	    	
+    			File file12 = getBaseContext().getFileStreamPath("tumblr_private.txt");
+    			if(file12.exists()){
+    				try {
+    					FileInputStream Rfile = openFileInput("tumblr_private.txt");
+    					
+    					InputStreamReader einputreader = new InputStreamReader(Rfile);
+    					BufferedReader ebuffreader = new BufferedReader(einputreader);
+    					Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
+    					PhimpMe.FEEDS_LIST_TUMBLR_PRIVATE = tmp;
+    				} catch (FileNotFoundException e) {
+    					e.printStackTrace();
+    				} catch (IOException e) {
+    					e.printStackTrace();
+    				}
+    			}
+    	    	
+    			File file13 = getBaseContext().getFileStreamPath("imgur_personal.txt");
+    			if(file13.exists()){
+    				try {
+    					FileInputStream Rfile = openFileInput("imgur_personal.txt");
+    					
+    					InputStreamReader einputreader = new InputStreamReader(Rfile);
+    					BufferedReader ebuffreader = new BufferedReader(einputreader);
+    					Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
+    					PhimpMe.FEEDS_LIST_IMGUR_PERSONAL = tmp;
+    				} catch (FileNotFoundException e) {
+    					e.printStackTrace();
+    				} catch (IOException e) {
+    					e.printStackTrace();
+    				}
+    			}
+    			
+    			File file14 = getBaseContext().getFileStreamPath("sohu_personal.txt");
+    			if(file14.exists()){
+    				try {
+    					FileInputStream Rfile = openFileInput("sohu_personal.txt");
+    					
+    					InputStreamReader einputreader = new InputStreamReader(Rfile);
+    					BufferedReader ebuffreader = new BufferedReader(einputreader);
+    					Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
+    					PhimpMe.FEEDS_LIST_SOHU_PERSONAL = tmp;
+    				} catch (FileNotFoundException e) {
+    					e.printStackTrace();
+    				} catch (IOException e) {
+    					e.printStackTrace();
+    				}
+    			}
         
         /*
          * Export data
@@ -265,7 +511,7 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
         MAX_DISPLAY_PHOTOS = settings.getInt("gallery_max_display_photos", getResources().getInteger(R.integer.gallery_max_display_photos));
         MAX_FILESIZE_DOWNLOAD = settings.getInt("max_filesize_download", getResources().getInteger(R.integer.max_filesize_download));
         FEEDS_LOCAL_GALLERY=settings.getBoolean(FEEDS_LOCAL_GALLERY_TAG, true);
-        FEEDS_LIST_FLICKR_PUBLIC = settings.getBoolean(FEEDS_LIST_FLICKR_PUBLIC_TAG, false);
+        /*FEEDS_LIST_FLICKR_PUBLIC = settings.getBoolean(FEEDS_LIST_FLICKR_PUBLIC_TAG, false);
         FEEDS_LIST_FLICKR_RECENT = settings.getBoolean(FEEDS_LIST_FLICKR_RECENT_TAG, false);       
         FEEDS_LIST_YAHOO_NEWS = settings.getBoolean(FEEDS_LIST_YAHOO_NEWS_TAG, false);       
         FEEDS_LIST_GOOGLE_PICASA_PUBLIC = settings.getBoolean(FEEDS_LIST_GOOGLE_PICASA_PUBLIC_TAG, false);
@@ -290,7 +536,7 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
         FEEDS_LIST_MYSERVICES2= settings.getBoolean(FEDDS_LIST_MYSERVICES_TAG2, false);
         FEEDS_LIST_MYSERVICES3= settings.getBoolean(FEDDS_LIST_MYSERVICES_TAG3, false);
         FEEDS_LIST_MYSERVICES4= settings.getBoolean(FEDDS_LIST_MYSERVICES_TAG4, false);
-        FEEDS_LIST_MYSERVICES5= settings.getBoolean(FEDDS_LIST_MYSERVICES_TAG5, false);
+        FEEDS_LIST_MYSERVICES5= settings.getBoolean(FEDDS_LIST_MYSERVICES_TAG5, false);*/
         /*
          * Thong - Get data directory
          */
@@ -355,6 +601,7 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
         mTabHost = getTabHost();        
         setTabs();
         mTabHost.setCurrentTab(0);
+        mTabHost.getTabWidget().getChildAt(2).setVisibility(View.GONE);
         }catch(Exception e){}
         /*mTabHost.setOnTabChangedListener(new OnTabChangeListener() {
 			
@@ -362,50 +609,49 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
 				// TODO Auto-generated method stub
 				View currentView = mTabHost.getCurrentView();
 				int curTab = mTabHost.getCurrentTab();
-		        int lastTab = (curTab - 1);
-		        try{
-				View lastView = mTabHost.getChildAt(lastTab);
-				lastView.setAnimation(outToLeftAnimation());				
-				
-		        }catch(Exception e){}								
-		        currentView.setAnimation(inFromRightAnimation());
+		        if (curTab == 1)
+		        {
+		        	Intent intent = new Intent(ctx,GalleryMap.class);
+		        	startActivity(intent);
+		        }
+		        
 			}
 		});*/
         
        
 }          
-    public Animation inFromRightAnimation() {
+  /*  public Animation inFromRightAnimation() {
         Animation inFromRight = new TranslateAnimation(
-                Animation.RELATIVE_TO_PARENT, +1.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f,
-                Animation.RELATIVE_TO_PARENT, 0.0f);
+        Animation.RELATIVE_TO_PARENT, +1.0f,
+        Animation.RELATIVE_TO_PARENT, 0.0f,
+        Animation.RELATIVE_TO_PARENT, 0.0f,
+        Animation.RELATIVE_TO_PARENT, 0.0f);
         inFromRight.setDuration(500);
         inFromRight.setInterpolator(new AccelerateInterpolator());
         return inFromRight;
-    }
+    }*/
 
 	private void setTabs()
 	{
 		addTab("", R.drawable.tab_icon_gallery_selector, newGallery.class);
+		addTab("", R.drawable.tab_icon_map_selector, OpenStreetMap.class);
+		addTab("", R.drawable.tab_icon_map_selector, GalleryMap.class);
 		addTab("", R.drawable.tab_icon_camera_selector, Camera2.class);		
 		addTab("", R.drawable.tab_icon_upload_selector, Upload.class);
-		addTab("", R.drawable.tab_icon_settings_selector, Settings.class);
+		addTab("", R.drawable.tab_icon_settings_selector, Settings.class);		
 	}
 	
 	private void addTab(String labelId, int drawableId, Class<?> c)
 	{
-		
-		Intent intent = new Intent(this, c);
-		TabHost.TabSpec spec = mTabHost.newTabSpec("tab" + labelId);	
-
+		TabHost.TabSpec spec = mTabHost.newTabSpec("tab" + labelId);							
 		View tabIndicator = LayoutInflater.from(this).inflate(R.layout.tab_indicator, getTabWidget(), false);
 		TextView title = (TextView) tabIndicator.findViewById(R.id.title);
 		title.setText(labelId);
 		ImageView icon = (ImageView) tabIndicator.findViewById(R.id.icon);
-		icon.setImageResource(drawableId);		
-		spec.setIndicator(tabIndicator);
-		spec.setContent(intent);
+		icon.setImageResource(drawableId);
+		spec.setIndicator(tabIndicator);	
+		Intent intent = new Intent(this, c);		
+		spec.setContent(intent);					
 		mTabHost.addTab(spec);
 	}
     public Animation outToLeftAnimation() {
@@ -482,13 +728,12 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
     	}
     }
     @Override
-    protected void onResume()
+    public void onResume()
     {
     	//showTabs();
     	try
     	{
     		super.onResume();
-    		
     	}
     	catch (Exception e) 
     	{
@@ -568,7 +813,7 @@ public void initialize() {
 	final String[] columns = { MediaStore.Images.Thumbnails._ID};
 	final String[] data = { MediaStore.Images.Media.DATA };
 	final String orderBy = MediaStore.Images.Media._ID;
-	Cursor pathcursor = managedQuery(
+	Cursor pathcursor = this.managedQuery(
 			MediaStore.Images.Media.EXTERNAL_CONTENT_URI, data,
 			null, null, orderBy);	
 	if(pathcursor != null){
@@ -589,7 +834,7 @@ public void initialize() {
 					
 				}
 				else if(c<=20){				
-					Cursor cursor = managedQuery(
+					Cursor cursor = this.managedQuery(
 							MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
 							MediaStore.Images.Media.DATA+ " = " + "\""+path+"\"", null, MediaStore.Images.Media._ID);									
 					if (cursor != null && cursor.getCount() > 0){
@@ -604,8 +849,9 @@ public void initialize() {
 					c++;
 					
 				}
-				
-		}		
+			
+		}	
+		newGallery.update_number++;
 	}
 	//pathcursor.close();
 }

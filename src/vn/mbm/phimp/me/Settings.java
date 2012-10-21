@@ -217,7 +217,7 @@ public class Settings extends Activity
 					
 							AlertDialog.Builder alertbox = new AlertDialog.Builder(ctx);
 							alertbox.setMessage(getString(R.string.ask_delete_photo));
-							alertbox.setTitle("Carefully!");
+							alertbox.setTitle(R.string.carefully);
 							alertbox.setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener()
 					        {
 					            @Override
@@ -238,11 +238,11 @@ public class Settings extends Activity
 									}
 									if(error_count==3){
 										
-										Commons.AlertLog(ctx, "Don't have photos to delete!", "OK").show();	
+										Commons.AlertLog(ctx, getString(R.string.no_photo_delete), "OK").show();	
 										Log.i("Danh","Don't have folder!");
 									}else{
 									//Delete in database
-										pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);						            	
+										pro_gress=ProgressDialog.show(ctx, "", getString(R.string.wait), true, false);						            	
 						            	timerDelayRemoveDialog(2000,pro_gress);
 										/*boolean del = deletePhotoInDatabase();
 										if(del==true){
@@ -462,6 +462,7 @@ public class Settings extends Activity
 
 		btnMore.setOnClickListener(new OnClickListener() {
 		
+			@SuppressWarnings("deprecation")
 			@Override
 			public void onClick(View v) {
 
@@ -744,8 +745,19 @@ public class Settings extends Activity
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
-				PhimpMe.FEEDS_LIST_FLICKR_PUBLIC = isChecked;
-				
+				PhimpMe.FEEDS_LIST_FLICKR_PUBLIC = isChecked;			
+				FileOutputStream fOut;
+				try {
+					fOut = openFileOutput("flickr_public.txt",MODE_WORLD_READABLE);
+					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
+					osw.write(""+PhimpMe.FEEDS_LIST_FLICKR_PUBLIC);
+					osw.flush();
+					osw.close();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		lFlickrPublic.addView(chkFlickrPublic);
@@ -779,6 +791,18 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_FLICKR_RECENT = isChecked;
+				FileOutputStream fOut2;
+				try {
+					fOut2 = openFileOutput("flickr_recent.txt",MODE_WORLD_READABLE);
+					OutputStreamWriter osw = new OutputStreamWriter(fOut2); 
+					osw.write(""+PhimpMe.FEEDS_LIST_FLICKR_RECENT);
+					osw.flush();
+					osw.close();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		lFlickrRecent.addView(chkFlickrRecent);
@@ -812,6 +836,20 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_GOOGLE_NEWS = isChecked;
+				FileOutputStream fOut;
+				try {
+					fOut = openFileOutput("google_news.txt",MODE_WORLD_READABLE);
+					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
+
+					osw.write(""+PhimpMe.FEEDS_LIST_GOOGLE_NEWS);
+
+					osw.flush();
+					osw.close();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		lGoogleNews.addView(chkGoogleNews);
@@ -845,6 +883,18 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_GOOGLE_PICASA_PUBLIC = isChecked;
+				FileOutputStream fOut;
+				try {
+					fOut = openFileOutput("public_picasa.txt",MODE_WORLD_READABLE);
+					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
+					osw.write(""+PhimpMe.FEEDS_LIST_GOOGLE_PICASA_PUBLIC );
+					osw.flush();
+					osw.close();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		lGooglePicasaPublic.addView(chkGooglePicasaPublic);
@@ -877,6 +927,18 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_YAHOO_NEWS = isChecked;
+				FileOutputStream fOut;
+				try {
+					fOut = openFileOutput("yahoo_news.txt",MODE_WORLD_READABLE);
+					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
+					osw.write(""+PhimpMe.FEEDS_LIST_YAHOO_NEWS );
+					osw.flush();
+					osw.close();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		lYahooNews.addView(chkYahooNews);
@@ -910,6 +972,18 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_DEVIANTART_PUBLIC = isChecked;
+				FileOutputStream fOut;
+				try {
+					fOut = openFileOutput("deviant_public.txt",MODE_WORLD_READABLE);
+					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
+					osw.write(""+PhimpMe.FEEDS_LIST_DEVIANTART_PUBLIC);
+					osw.flush();
+					osw.close();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		lDeviantArtPublic.addView(chkDeviantArtPublic);
@@ -1019,6 +1093,18 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_FLICKR_PRIVATE = isChecked;
+				FileOutputStream fOut;
+				try {
+					fOut = openFileOutput("flick_private.txt",MODE_WORLD_READABLE);
+					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
+					osw.write(""+PhimpMe.FEEDS_LIST_FLICKR_PRIVATE);
+					osw.flush();
+					osw.close();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		lFlickrPrivate.addView(chkFlickrPrivate);
@@ -1052,6 +1138,18 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_GOOGLE_PICASA_PRIVATE = isChecked;
+				FileOutputStream fOut;
+				try {
+					fOut = openFileOutput("picasa_private.txt",MODE_WORLD_READABLE);
+					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
+					osw.write(""+PhimpMe.FEEDS_LIST_GOOGLE_PICASA_PRIVATE);
+					osw.flush();
+					osw.close();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		lGooglePicasaPrivate.addView(chkGooglePicasaPrivate);
@@ -1085,6 +1183,18 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_DEVIANTART_PRIVITE = isChecked;
+				FileOutputStream fOut;
+				try {
+					fOut = openFileOutput("deviant_private.txt",MODE_WORLD_READABLE);
+					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
+					osw.write(""+PhimpMe.FEEDS_LIST_DEVIANTART_PRIVITE);
+					osw.flush();
+					osw.close();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		lDeviantArtPrivite.addView(chkDeviantArtPrivite);
@@ -1121,6 +1231,18 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_VK = isChecked;
+				FileOutputStream fOut;
+				try {
+					fOut = openFileOutput("vk.txt",MODE_WORLD_READABLE);
+					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
+					osw.write(""+PhimpMe.FEEDS_LIST_VK);
+					osw.flush();
+					osw.close();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		lVK.addView(chkVK);
@@ -1154,6 +1276,18 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_FACEBOOK_PRIVATE = isChecked;
+				FileOutputStream fOut;
+				try {
+					fOut = openFileOutput("facebook.txt",MODE_WORLD_READABLE);
+					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
+					osw.write(""+PhimpMe.FEEDS_LIST_FACEBOOK_PRIVATE);
+					osw.flush();
+					osw.close();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		lFacebook.addView(chkFacebook);
@@ -1187,6 +1321,18 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_TUMBLR_PRIVATE = isChecked;
+				FileOutputStream fOut;
+				try {
+					fOut = openFileOutput("tumblr_private.txt",MODE_WORLD_READABLE);
+					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
+					osw.write(""+PhimpMe.FEEDS_LIST_TUMBLR_PRIVATE);
+					osw.flush();
+					osw.close();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		lTumblr.addView(chkTumblr);
@@ -1251,6 +1397,18 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_IMGUR_PERSONAL = isChecked;
+				FileOutputStream fOut;
+				try {
+					fOut = openFileOutput("imgur_personal.txt",MODE_WORLD_READABLE);
+					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
+					osw.write(""+PhimpMe.FEEDS_LIST_IMGUR_PERSONAL);
+					osw.flush();
+					osw.close();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		lImgurPersonal.addView(chkImgurPersonal);
@@ -1315,6 +1473,18 @@ public class Settings extends Activity
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) 
 			{
 				PhimpMe.FEEDS_LIST_SOHU_PERSONAL = isChecked;
+				FileOutputStream fOut;
+				try {
+					fOut = openFileOutput("sohu_personal.txt",MODE_WORLD_READABLE);
+					OutputStreamWriter osw = new OutputStreamWriter(fOut); 
+					osw.write(""+PhimpMe.FEEDS_LIST_SOHU_PERSONAL);
+					osw.flush();
+					osw.close();
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		lSohu.addView(chkSohu);
@@ -1344,7 +1514,7 @@ public class Settings extends Activity
 		reloadAccountsList();
 		
 		iconContextMenu = new IconContextMenu(this, CONTEXT_MENU_ID);
-		//iconContextMenu.addItem(res, DrupalServices.title, DrupalServices.icon, SERVICES_DRUPAL_ACTION);
+		iconContextMenu.addItem(res, DrupalServices.title, DrupalServices.icon, SERVICES_DRUPAL_ACTION);
         iconContextMenu.addItem(res, FacebookServices.title, FacebookServices.icon, SERVICES_FACEBOOK_ACTION);
         iconContextMenu.addItem(res, FlickrServices.title, FlickrServices.icon, SERVICES_FLICKR_ACTION);
         iconContextMenu.addItem(res, PicasaServices.title, PicasaServices.icon, SERVICES_PICASA_ACTION);
@@ -1637,7 +1807,7 @@ public class Settings extends Activity
 			PhimpMe.add_account_setting = false;
 		}
 		if (PhimpMe.IdList.size() == 5) {PhimpMe.IdList.clear();PhimpMe.IdList.add(0);}
-		PhimpMe.IdList.add(3);
+		PhimpMe.IdList.add(5);
 	}
 	
 	class ViewHolder
@@ -1758,7 +1928,7 @@ public class Settings extends Activity
 			case DIALOG_FILE_SIZE_SETTINGS:
 				final EditText in = new EditText(Settings.this);
 				in.setInputType(InputType.TYPE_CLASS_NUMBER);
-				in.setMaxEms(5);
+				in.setMaxEms(2);
 				return new AlertDialog.Builder(Settings.this)
 					.setTitle(getString(R.string.max_file_size_download))
 					.setMessage("")
@@ -1846,7 +2016,7 @@ public class Settings extends Activity
 							{
 								String username = ((EditText) layout.findViewById(R.id.txtDialogAddAccountDrupalUsername)).getText().toString();
 								String password = ((EditText) layout.findViewById(R.id.txtDialogAddAccountDrupalPassword)).getText().toString();
-								String siteurl = ((EditText) layout.findViewById(R.id.txtDialogAddAccountDrupalSiteurl)).getText().toString();
+								String siteurl = ((EditText) layout.findViewById(R.id.txtDialogAddAccountDrupalSiteurl)).getText().toString();//"http://phimp.me/api/";
 								
 								String result = DrupalServices.login(username, password, siteurl);
 								
@@ -1861,11 +2031,11 @@ public class Settings extends Activity
 								{
 									if (DrupalItem.insertAccount(ctx, String.valueOf(account_id), user_id, username, password, siteurl, email))
 									{
-										Toast.makeText(ctx, "Insert account '" + username + "' (PhimpMe) SUCCESS!", Toast.LENGTH_LONG).show();
+										Toast.makeText(ctx, "Insert account '" + username + "' (Drupal) SUCCESS!", Toast.LENGTH_LONG).show();
 									}
 									else
 									{
-										Toast.makeText(ctx, "Insert account '" + username + "' (PhimpMe) FAIL!", Toast.LENGTH_LONG).show();
+										Toast.makeText(ctx, "Insert account '" + username + "' (Drupal) FAIL!", Toast.LENGTH_LONG).show();
 									}
 								}
 								

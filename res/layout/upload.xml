@@ -4,19 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical" 
-    android:paddingTop="10dp"
     >
 	<RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp" >
+        >
 
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
             android:text="@string/accounts"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/blue_light"
@@ -28,8 +29,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:src="@drawable/add"
-            android:contentDescription="@string/empty" />
+            android:layout_marginRight="8dp"
+            android:contentDescription="@string/empty"
+            android:src="@drawable/add" />
+
     </RelativeLayout>
 
     <View
@@ -69,15 +72,26 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:src="@drawable/add"
-            android:contentDescription="@string/empty" />
+            android:contentDescription="@string/empty"
+            android:src="@drawable/add" />
+
+        <ImageButton
+            android:id="@+id/upload_sendDirectly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/btnUploadPhotoAdd"
+            android:layout_marginRight="19dp"
+            android:layout_toLeftOf="@+id/btnUploadPhotoAdd"
+            android:contentDescription="@string/empty"
+            android:src="@drawable/bluetooth" />
 
         <Button
             android:id="@+id/btnUploadPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:layout_toLeftOf="@+id/upload_sendDirectly"
             android:enabled="true"
             android:text="@string/upload" />
 
