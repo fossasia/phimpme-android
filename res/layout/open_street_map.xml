@@ -3,29 +3,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    <RelativeLayout 
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:layout_marginLeft="10dp"
-			    android:padding="10dp">
-        
-        <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Open Street Map"
-                    android:textColor="@color/white"
-                    android:layout_centerInParent="true"/>
-	    <ImageButton 
-	        android:id="@+id/btnsw"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:src="@drawable/maps"
-	        android:layout_alignParentRight="true"
-	        />
-    </RelativeLayout>
-   <org.osmdroid.views.MapView
-	    android:id="@+id/openmapview"
-	    android:layout_width="fill_parent"
-        android:layout_height="fill_parent"/> 
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <ImageButton
+            android:id="@+id/btnsw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:src="@drawable/maps" />
+
+        <org.osmdroid.views.MapView
+            android:id="@+id/openmapview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+        </org.osmdroid.views.MapView>
+
+    </RelativeLayout> 
 
 </LinearLayout>

@@ -4,50 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical" 
     >
-
-	<RelativeLayout
-	    android:id="@+id/RelativeLayout1"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:padding="10dp" >
-
-	    <TextView
-	        android:id="@+id/txtGalleryStatus"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentLeft="true"
-	        android:layout_centerVertical="true"
-	        android:text="@string/loading" />
-
-	    <RelativeLayout
-	        android:id="@+id/RelativeLayout"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentRight="true"
-	        android:padding="5dp" >
-
-	        <ImageButton
-	            android:id="@+id/btnGalleryMaps"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_alignParentRight="true"
-	            android:layout_centerVertical="true"
-	            android:contentDescription="@string/empty"
-	            android:src="@drawable/maps" />
-
-	        <ImageButton
-	            android:id="@+id/btnBluetoothShare"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_alignTop="@+id/btnGalleryMaps"
-	            android:layout_toLeftOf="@+id/btnGalleryMaps"
-	            android:contentDescription="@string/empty"
-	            android:src="@drawable/bluetooth" />
-
-	    </RelativeLayout>
-
-	</RelativeLayout>
-    
 	<ScrollView 
 	    android:id="@+id/scrollViewnew"
         android:layout_width="fill_parent"

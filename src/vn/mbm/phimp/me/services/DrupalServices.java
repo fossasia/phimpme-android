@@ -22,7 +22,7 @@ import android.util.Log;
 public class DrupalServices 
 {
 	public static int icon = R.drawable.drupal;
-	public static String title = "PhimpMe";
+	public static String title = "Drupal";
 	
 	public static final String TAG = "drupal";
 	

@@ -1,13 +1,12 @@
 package vn.mbm.phimp.me.utils.map;
 
-import java.io.File;
 import java.util.ArrayList;
 
+import vn.mbm.phimp.me.gallery.PhimpMeGallery;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.util.Log;
 
 import com.google.android.maps.MapView;
@@ -44,12 +43,18 @@ public class CustomItemizedOverlay<Item extends OverlayItem> extends BalloonItem
 	{
 
 			Log.d("Danh","OnballonTap function called");
-			String path = item.getFullPath();
-			File f = new File(path);
-			Intent myitent = new Intent();			
-			myitent.setAction(Intent.ACTION_VIEW);
-			myitent.setDataAndType(Uri.fromFile(f), "image/*");
-			((Activity) c).startActivityForResult(myitent, 3);
+			String path = item.getFullPath();			
+			/*newGallery.pro_gress=ProgressDialog.show(c, "", "Please wait...", true, false);
+			newGallery n=new newGallery();
+			n.Dialog(4000, newGallery.pro_gress);*/
+			Intent _intent = new Intent();
+			_intent.setClass(c, PhimpMeGallery.class);
+			//_intent.putExtra("image-path", path);
+			ArrayList<String> list = new ArrayList<String>();
+			list.add(path);
+			PhimpMeGallery.setFileList(list);
+			_intent.putExtra("activityName", "GridviewAdapter");
+			((Activity) c).startActivityForResult(_intent, 3);
 			
 			return true;
 		

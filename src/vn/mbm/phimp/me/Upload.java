@@ -10,7 +10,7 @@ import org.json.JSONObject;
 import vn.mbm.phimp.me.database.AccountItem;
 import vn.mbm.phimp.me.database.DrupalItem;
 import vn.mbm.phimp.me.database.ImageshackItem;
-import vn.mbm.phimp.me.image.CropImage;
+import vn.mbm.phimp.me.gallery3d.media.CropImage;
 import vn.mbm.phimp.me.services.DeviantArtService;
 import vn.mbm.phimp.me.services.DrupalServices;
 import vn.mbm.phimp.me.services.FacebookServices;
@@ -108,6 +108,12 @@ public class Upload extends Activity
 	
 	ImageButton btnAdd;
 	ImageButton btnPhotoAdd;
+	
+	//bluetooth share
+	public static ImageButton btnBluetoothShare;
+	
+	static String[] path;
+	Uri uri;
 	/*ImageButton btnUseCurrentPosition;*/
 	ImageButton btnUseMap;
 	ImageView imgPreview;
@@ -178,6 +184,32 @@ public class Upload extends Activity
 	        }			
 		});
 		
+		/*
+		 * bluetooth share
+		 */
+        btnBluetoothShare=(ImageButton)findViewById(R.id.upload_sendDirectly);              
+        btnBluetoothShare.setOnClickListener(new OnClickListener() {			
+			@Override
+			public void onClick(View v) {
+				if (imagelist != "")
+				{
+					
+					Intent intent=new Intent();
+					intent.setClass(Upload.this, BluetoothShareMultipleFile.class);
+					intent.putExtra("imagelist", imagelist);
+					intent.putExtra("activityName", "Upload");
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					startActivity(intent);
+					
+				}
+				else
+				{
+					Commons.AlertLog(ctx, "Do not have photo to share", getString(R.string.accept)).show();
+				}
+				
+			}
+		});
+
 		btnUpload = (Button) findViewById(R.id.btnUploadPhoto);
 		if (savedInstanceState != null)
 		{
@@ -205,7 +237,7 @@ public class Upload extends Activity
 								data.putString("imagelist", imagelist);
 								Intent uitent = new Intent(ctx, UploadProgress.class);
 								uitent.putExtras(data);
-								Log.d("UploadProgress","start");
+								Log.d("UploadProgress","start : "+name);
 								startActivity(uitent);
 							}
 							else
@@ -278,7 +310,7 @@ public class Upload extends Activity
 		}
 		
 		iconContextMenu = new IconContextMenu(this, CONTEXT_MENU_ID);
-		//iconContextMenu.addItem(res, DrupalServices.title, DrupalServices.icon, SERVICES_DRUPAL_ACTION);
+		iconContextMenu.addItem(res, DrupalServices.title, DrupalServices.icon, SERVICES_DRUPAL_ACTION);
         iconContextMenu.addItem(res, FacebookServices.title, FacebookServices.icon, SERVICES_FACEBOOK_ACTION);
         iconContextMenu.addItem(res, FlickrServices.title, FlickrServices.icon, SERVICES_FLICKR_ACTION);
         iconContextMenu.addItem(res, PicasaServices.title, PicasaServices.icon, SERVICES_PICASA_ACTION);
@@ -682,13 +714,14 @@ public class Upload extends Activity
 			}
 		}
 	}
+
 	@Override
-	protected void onResume()
+	public void onResume()
 	{
 		Log.d("thong", "Upload - onResume()");
-		Log.d("imagelist",imagelist);
 		super.onResume();
 		PhimpMe.showTabs();
+	 
 		if (PhimpMe.FEEDS_GOOGLE_ADMOB == true){
 			PhimpMe.ShowAd();
 		}
@@ -701,8 +734,11 @@ public class Upload extends Activity
 		if (!imagelist.equals("")){
 			listPhotoUpload.setAdapter(new ImageAdapter(ctx));
 		}
-		if (PhimpMe.IdList.size() == 5) {PhimpMe.IdList.clear();PhimpMe.IdList.add(0);}
-		PhimpMe.IdList.add(2);
+		if (PhimpMe.IdList.size() == 5) {
+			PhimpMe.IdList.clear();
+			PhimpMe.IdList.add(0);
+			}
+		PhimpMe.IdList.add(4);
 	}
 	
 	private void reloadAccountsList()
@@ -755,7 +791,7 @@ public class Upload extends Activity
 									break;*/
 								case 0:									
 									Intent intent = new Intent(ctx, PhotoSelect.class);
-									//progLoading = ProgressDialog.show(ctx, getString(R.string.loading), getString(R.string.photos_loading), true, false);
+									//progLoading = ProgressDialog.show(ctx, getString(R.string.loading), getString(R.string.photos_loading), true, false);					
 									startActivityForResult(intent, SELECT_IMAGE_FROM_GALLERY);
 									break;
 								case 1:
@@ -781,7 +817,7 @@ public class Upload extends Activity
 							{
 								String username = ((EditText) layout.findViewById(R.id.txtDialogAddAccountDrupalUsername)).getText().toString();
 								String password = ((EditText) layout.findViewById(R.id.txtDialogAddAccountDrupalPassword)).getText().toString();
-								String siteurl = ((EditText) layout.findViewById(R.id.txtDialogAddAccountDrupalSiteurl)).getText().toString();
+								String siteurl = ((EditText)layout.findViewById(R.id.txtDialogAddAccountDrupalSiteurl)).getText().toString();//"http://phimp.me/api/";
 								
 								String result = DrupalServices.login(username, password, siteurl);
 								
@@ -926,6 +962,7 @@ public class Upload extends Activity
 	{
 		switch (requestCode) 
 		{
+			
 			case TAKE_PICTURE: 
 			{
 				if (resultCode == Activity.RESULT_OK) 
@@ -1032,40 +1069,17 @@ public class Upload extends Activity
 	public boolean onKeyDown(int keycode, KeyEvent event)
     {
     	if (keycode == KeyEvent.KEYCODE_BACK){
-    		AlertDialog.Builder alertbox = new AlertDialog.Builder(ctx);
-            alertbox.setMessage(getString(R.string.exit_message));
-            alertbox.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                	Activity current = getParent();
-                	current.finish();
-                	//System.exit(0);
-                }
-            });
-            alertbox.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                	//Resume to current process
-                }
-            });
-            alertbox.create().show();
     		PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
     		PhimpMe.mTabHost.setCurrentTab(PhimpMe.IdList.get(PhimpMe.IdList.size()-1));
-    	}  	
-        //return super.onKeyDown(keycode, event);
-    	return true;
+    		PhimpMe.showTabs();
+    	}
+        return super.onKeyDown(keycode, event);
+
     }*/
 	@Override
-	public void onBackPressed(){
-		Log.e("PhimpMe Size",String.valueOf(PhimpMe.IdList.size()));
+	public void onBackPressed(){ 				
 		PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
-		Log.e("PhimpMe Size",String.valueOf(PhimpMe.IdList.size()));
-		PhimpMe.mTabHost.setCurrentTab(PhimpMe.IdList.get(PhimpMe.IdList.size()-1));
-		Log.e("Backpressed","Uploads");
-		//PhimpMe.showTabs();
+		PhimpMe.mTabHost.setCurrentTab(0);	
 	}
+	
 }

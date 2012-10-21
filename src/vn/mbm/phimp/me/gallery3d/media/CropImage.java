@@ -17,14 +17,22 @@
 package vn.mbm.phimp.me.gallery3d.media;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
 
+import org.json.JSONObject;
+
+import vn.mbm.phimp.me.PhimpMe;
+import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.UploadMap;
 import vn.mbm.phimp.me.gallery3d.app.App;
 import vn.mbm.phimp.me.gallery3d.app.Res;
 import android.app.Activity;
@@ -32,9 +40,14 @@ import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.PorterDuff;
@@ -50,10 +63,16 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.RotateAnimation;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 /**
@@ -66,7 +85,8 @@ public class CropImage extends MonitoredActivity {
     public static final int CROP_MSG_INTERNAL = 100;    
     
     private App mApp = null;     
-    
+    private static float toDegree = 90;
+	private static float fromDegree = 0;
     // These are various options can be specified in the intent.
     private Bitmap.CompressFormat mOutputFormat = Bitmap.CompressFormat.JPEG; // only
                                                                               // used
@@ -92,10 +112,27 @@ public class CropImage extends MonitoredActivity {
     private ContentResolver mContentResolver;
 
     private Bitmap mBitmap;
+    //private static Bitmap mBitmapSave;
+    private static Bitmap mBitmapResize;
+    private static Bitmap modifiedBitmap;
+    private static Bitmap flippedImaged;
+    private static int brightnessValue = 0;
+    private final int GET_POSITION_ON_MAP = 5;
     private MediaItem mItem;
     private final BitmapManager.ThreadSet mDecodingThreads = new BitmapManager.ThreadSet();
     HighlightView mCrop;
-
+    private String mImagePath;
+    private String newpath;
+    static String p[] = null;
+    static String activitynam;
+    int screen_w;
+    ProgressDialog gpsloading;
+    ImageButton btnUseMap;
+    EditText txtPhotoTitle;	
+	EditText txtLongtitude;
+	EditText txtLatitude;
+	EditText txtTags;
+    Context ctx;
     static private final HashMap<Context, MediaScannerConnection> mConnectionMap = new HashMap<Context, MediaScannerConnection>();
     
     @SuppressWarnings("static-access")
@@ -210,17 +247,36 @@ public class CropImage extends MonitoredActivity {
     	((Activity) context).finish();
     }        
     
-    @SuppressWarnings("static-access")
+    @SuppressWarnings({ "static-access", "deprecation" })
 	@Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         mApp = new App(CropImage.this);
         mContentResolver = getContentResolver();
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);	
         setContentView(Res.layout.gallery3d_cropimage);
-
+        ctx = this;
         mImageView = (CropImageView) findViewById(Res.id.image);
-
+        txtPhotoTitle = (EditText) findViewById(R.id.txtUploadPhotoTitle);
+		
+		txtLongtitude = (EditText) findViewById(R.id.txtUploadPhotoLongtitude);
+		
+		txtLatitude = (EditText) findViewById(R.id.txtUploadPhotoLatitude);
+		
+		txtTags = (EditText) findViewById(R.id.txtUploadPhotoTags);
+		btnUseMap = (ImageButton) findViewById(R.id.btnUploadPhotoPutPos);
+		btnUseMap.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) 
+			{
+				Intent _itent = new Intent(ctx, UploadMap.class);				
+				_itent.putExtra("latitude", txtLatitude.getText().toString());
+				_itent.putExtra("longitude", txtLongtitude.getText().toString());
+				startActivityForResult(_itent, GET_POSITION_ON_MAP);
+			}
+		});
         // CR: remove TODO's.
         // TODO: we may need to show this indicator for the main gallery
         // application
@@ -235,14 +291,41 @@ public class CropImage extends MonitoredActivity {
                 mAspectX = 1;
                 mAspectY = 1;
             }
-            mSaveUri = (Uri) extras.getParcelable(MediaStore.EXTRA_OUTPUT);
+            Date date = new Date();
+			Long longTime = new Long(date.getTime()/1000);
+            newpath = PhimpMe.DataDirectory+"/PhimpMe_Photo_Effect"+"/tmp_"+longTime+".jpg";
+			mSaveUri = Uri.fromFile(new File(newpath));
+            //mSaveUri = (Uri) extras.getParcelable(MediaStore.EXTRA_OUTPUT);
             if (mSaveUri != null) {
                 String outputFormatString = extras.getString("outputFormat");
                 if (outputFormatString != null) {
                     mOutputFormat = Bitmap.CompressFormat.valueOf(outputFormatString);
                 }
             }
-            mBitmap = (Bitmap) extras.getParcelable("data");
+            //mBitmap = (Bitmap) extras.getParcelable("data");
+            mImagePath = extras.getString("image-path");
+            activitynam = extras.getString("activityName");
+			p = mImagePath.split(";");
+			try{
+			if (p.length == 2){
+				JSONObject js = new JSONObject(p[1]);
+				txtLatitude.setText(js.getString("lati"));
+				txtLongtitude.setText(js.getString("logi"));
+				txtPhotoTitle.setText(js.getString("name"));
+				txtTags.setText(js.getString("tags"));
+			}
+			}catch(Exception e){}
+			gpsloading = new ProgressDialog(ctx);
+    		gpsloading.setCancelable(true);
+    		gpsloading.setCanceledOnTouchOutside(false);
+    		gpsloading.setTitle(getString(R.string.loading));
+    		gpsloading.setMessage(getString(R.string.infor_upload_loading_current_position));
+    		gpsloading.setIndeterminate(true);
+			WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+			Display display = wm.getDefaultDisplay();	
+			screen_w = display.getWidth();
+            mBitmap = decodeSampledBitmapFromFile(this, p[0], screen_w);
+            modifiedBitmap= flippedImaged = mBitmap;
             mAspectX = extras.getInt("aspectX");
             mAspectY = extras.getInt("aspectY");
             mOutputX = extras.getInt("outputX");
@@ -301,9 +384,154 @@ public class CropImage extends MonitoredActivity {
         findViewById(Res.id.save).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 onSaveClicked();
+                if (!activitynam.equals("Upload")){
+	                Intent intent=new Intent(ctx, PhimpMe.class);
+			    	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			    	startActivity(intent);
+		    	}
             }
         });
+        findViewById(R.id.btnRotateLeftRight).setOnClickListener(
+				new View.OnClickListener() {
+				    public void onClick(View v) 
+				    {					    	
+				    	try{
+				    		doRotate(mImageView, fromDegree, toDegree);
+							fromDegree = (toDegree == 360) ? 0 : toDegree;
+							toDegree += 90;
+							if (toDegree > 360) {
+								toDegree = 90;
+							}
+							
+				    	}catch(OutOfMemoryError o){
+				    		o.printStackTrace();
+				    	}
+				    	
+				    }
+				});
+        findViewById(R.id.btnRotateTopDown).setOnClickListener(
+				new View.OnClickListener() {
+				    public void onClick(View v) 
+				    {
+				    	try{
+				    		modifiedBitmap = doVerticalFlip(modifiedBitmap);
+							flippedImaged = doVerticalFlip(flippedImaged);
+							mImageView.setImageBitmap(changeBrightness(
+									modifiedBitmap, brightnessValue));
+							mBitmap = modifiedBitmap;
+							
+				    	}catch(OutOfMemoryError o){
+				    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+				    		//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
+				    		modifiedBitmap=flippedImaged=mBitmapResize;
+				    	}
+				    	
+				    }
+				});
+        findViewById(R.id.btnBlackAndWhite).setOnClickListener(
+				new View.OnClickListener() {
+				    public void onClick(View v) 
+				    {
+				    	try{
 
+				    		modifiedBitmap = null;
+							modifiedBitmap = convertToBW(flippedImaged);
+							mImageView.setImageBitmap(changeBrightness(
+									modifiedBitmap, brightnessValue));
+							mBitmap = modifiedBitmap;
+							
+				    	}catch(OutOfMemoryError o){								
+
+				    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+				    		//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
+				    		modifiedBitmap=flippedImaged=mBitmapResize;
+			    		
+
+				    	}
+				    	
+				    }
+				});
+        findViewById(R.id.btnSaphia).setOnClickListener(
+				new View.OnClickListener() {
+				    public void onClick(View v) 
+				    {
+				    	try{
+
+				    		modifiedBitmap = null;
+							modifiedBitmap = convertToSepia(flippedImaged);
+							mImageView.setImageBitmap(changeBrightness(
+									modifiedBitmap, brightnessValue));
+							mBitmap = modifiedBitmap;
+							
+				    	}catch(OutOfMemoryError o){
+				    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+				    		//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
+							modifiedBitmap=flippedImaged=mBitmapResize;
+
+				    	}
+				    
+				    }
+				});
+		/*
+		 * Danh - Add event for button Sepia image effect - End
+		 */
+		/*
+		 * Danh - Add event for button Negative image effect
+		 */
+		findViewById(R.id.btnNagative).setOnClickListener(
+				new View.OnClickListener() {
+				    public void onClick(View v) 
+				    {
+				    	try{
+				    		
+				    		modifiedBitmap = null;
+							modifiedBitmap = convertToNegative(flippedImaged);
+							mImageView.setImageBitmap(changeBrightness(
+									modifiedBitmap, brightnessValue));
+							mBitmap = modifiedBitmap;
+							
+				    	}catch(OutOfMemoryError o){
+
+				    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+				    		//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
+				    		modifiedBitmap=flippedImaged=mBitmapResize;
+
+				    	}
+				    	
+				    }
+				});
+		/*
+		 * Danh - Add event for button Negative image effect - End
+		 */
+		/*
+		 * Danh - Add event for button Original image effect
+		 */
+		ImageButton btnOriginal=(ImageButton)findViewById(R.id.btnOriginal);
+		btnOriginal.setOnClickListener(
+				new View.OnClickListener() {
+				    public void onClick(View v) 
+				    {
+				    	try{
+				    	
+							doRotate(mImageView, 0, 0);
+							fromDegree = 0;
+							toDegree = 90;							
+							mBitmap.recycle();
+							mBitmap = decodeSampledBitmapFromFile(ctx, p[0], screen_w);
+							mImageView.setImageBitmap(mBitmap);
+							modifiedBitmap = flippedImaged = mBitmap;
+							
+				    	}catch(OutOfMemoryError o){
+
+							doRotate(mImageView, 0, 0);
+							fromDegree = 0;
+							toDegree = 90;
+							mImageView.setImageBitmap(mBitmapResize);
+							modifiedBitmap = flippedImaged = mBitmapResize;
+				    	}
+				    	
+				    }
+				});
         startFaceDetection();
     }
 
@@ -445,6 +673,252 @@ public class CropImage extends MonitoredActivity {
         }
     }
 
+    public Bitmap getResizedBitmap(Bitmap bm, int newHeight, int newWidth) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
+
+
+        // RECREATE THE NEW BITMAP
+        try{
+        	Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
+        	return resizedBitmap;
+        }catch(OutOfMemoryError o){
+        	Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width/2, height/2, matrix, false);
+        	return resizedBitmap;
+        }
+        }
+    public static void doRotate(ImageView im, float fromDegree, float toDegree) {
+		RotateAnimation ra1 = new RotateAnimation(fromDegree, toDegree,
+				RotateAnimation.RELATIVE_TO_SELF, 0.5f,
+				RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+		ra1.setStartOffset(0);
+		ra1.setDuration(0);
+		ra1.setFillAfter(true);
+		ra1.setFillEnabled(true);
+		im.startAnimation(ra1);
+	}
+    public static Bitmap doHorizontalFlip(Bitmap sampleBitmap) {
+		Matrix matrixHorizontalFlip = new Matrix();
+		matrixHorizontalFlip.preScale(-1.0f, 1.0f);
+		Bitmap des = sampleBitmap.copy(Bitmap.Config.ARGB_8888, true);
+		des = Bitmap.createBitmap(sampleBitmap, 0, 0, sampleBitmap.getWidth(), sampleBitmap.getHeight(),
+				matrixHorizontalFlip, true);
+		return des;
+	}
+
+	public static Bitmap doVerticalFlip(Bitmap sampleBitmap) {
+		Matrix matrixVerticalFlip = new Matrix();
+		matrixVerticalFlip.preScale(1.0f, -1.0f);
+		Bitmap des = sampleBitmap.copy(Bitmap.Config.ARGB_8888, true);
+		des = Bitmap.createBitmap(sampleBitmap, 0, 0, sampleBitmap.getWidth(), sampleBitmap.getHeight(),
+				matrixVerticalFlip, true);
+		return des;
+	}
+    public static Bitmap convertToBW(Bitmap sampleBitmap) {
+		ColorMatrix matrix = new ColorMatrix();
+		matrix.setSaturation(0);
+		ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+		Bitmap desBitmap = sampleBitmap.copy(Bitmap.Config.ARGB_8888, true);
+		Paint p = new Paint();
+		p.setColorFilter(filter);
+		Canvas canvas = new Canvas(desBitmap);
+		canvas.drawBitmap(desBitmap, 0, 0, p);
+		return desBitmap;
+	}
+
+	// This method is originally from this site:
+	// http://android-code-space.blogspot.com/2010/08/convert-image-to-negative-in-android.html
+	public static Bitmap convertToSepia(Bitmap sampleBitmap) {
+		ColorMatrix sepiaMatrix = new ColorMatrix();
+		float[] sepMat = { 0.3930000066757202f, 0.7689999938011169f,
+				0.1889999955892563f, 0, 0, 0.3490000069141388f,
+				0.6859999895095825f, 0.1679999977350235f, 0, 0,
+				0.2720000147819519f, 0.5339999794960022f, 0.1309999972581863f,
+				0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1 };
+		sepiaMatrix.set(sepMat);
+		final ColorMatrixColorFilter colorFilter = new ColorMatrixColorFilter(
+				sepiaMatrix);
+		Bitmap rBitmap = sampleBitmap.copy(Bitmap.Config.ARGB_8888, true);
+		Paint paint = new Paint();
+		paint.setColorFilter(colorFilter);
+		Canvas myCanvas = new Canvas(rBitmap);
+		myCanvas.drawBitmap(rBitmap, 0, 0, paint);
+		return rBitmap;
+	}
+
+	// This method is originally from this site:
+	// http://android-code-space.blogspot.com/2010/08/convert-image-to-negative-in-android.html
+	public static Bitmap convertToNegative(Bitmap sampleBitmap) {
+		ColorMatrix negativeMatrix = new ColorMatrix();
+		float[] negMat = { -1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0,
+				255, 0, 0, 0, 1, 0 };
+		negativeMatrix.set(negMat);
+		final ColorMatrixColorFilter colorFilter = new ColorMatrixColorFilter(
+				negativeMatrix);
+		Bitmap rBitmap = sampleBitmap.copy(Bitmap.Config.ARGB_8888, true);
+		Paint paint = new Paint();
+		paint.setColorFilter(colorFilter);
+		Canvas myCanvas = new Canvas(rBitmap);
+		myCanvas.drawBitmap(rBitmap, 0, 0, paint);
+		return rBitmap;
+	}
+
+	public static Bitmap changeBrightness(Bitmap sampleBitmap,
+			int brightnessValue) {
+		ColorMatrix sepiaMatrix = new ColorMatrix();
+		float[] sepMat = { 1, 0, 0, 0, brightnessValue, 0, 1, 0, 0,
+				brightnessValue, 0, 0, 1, 0, brightnessValue, 0, 0, 0, 1,
+				brightnessValue };
+		sepiaMatrix.set(sepMat);
+		final ColorMatrixColorFilter colorFilter = new ColorMatrixColorFilter(
+				sepiaMatrix);
+		Bitmap rBitmap = sampleBitmap.copy(Bitmap.Config.ARGB_8888, true);
+		Paint paint = new Paint();
+		paint.setColorFilter(colorFilter);
+		Canvas myCanvas = new Canvas(rBitmap);
+		myCanvas.drawBitmap(rBitmap, 0, 0, paint);
+		return rBitmap;
+	}
+    public static int calculateInSampleSize(
+			
+    	    String mfile, int reqWidth) {
+    	    // Raw height and width of image
+    		//Bitmap bm = null;
+    		BitmapFactory.Options bounds = new BitmapFactory.Options();
+    		bounds.inTempStorage = new byte[32 * 1024];
+    		bounds.inDither=false;                   
+    		bounds.inPurgeable=true;                
+    		bounds.inInputShareable=true;     
+    		bounds.inJustDecodeBounds = true;	
+    		File file=new File(mfile);
+    		float rotate = getOrientation(mfile);
+    	    FileInputStream fs=null;
+    	    try {
+    	        fs = new FileInputStream(file);
+    	    } catch (FileNotFoundException e) {
+    	        //TODO do something intelligent
+    	        e.printStackTrace();
+    	    }
+
+    	    try {
+    	        if(fs!=null) BitmapFactory.decodeFileDescriptor(fs.getFD(), null, bounds);	       	        
+    	    } catch (IOException e) {
+    	        //TODO do something intelligent
+    	        e.printStackTrace();
+    	    } finally{ 
+    	        if(fs!=null) {
+    	            try {
+    	                fs.close();
+    	            } catch (IOException e) {
+    	                // TODO Auto-generated catch block
+    	                e.printStackTrace();
+    	            }
+    	        }
+    	    }	
+    	    //final int height = bounds.outHeight;
+    	    final int width;
+    	    if (rotate == 0)
+    	    	width = bounds.outWidth; else
+    	    		width = bounds.outHeight;
+    	    		
+    	    Log.e("Width",String.valueOf(bounds.outWidth));
+    	    Log.e("Height",String.valueOf(bounds.outHeight));
+    	    System.gc();
+    	    int inSampleSize = 1;
+    	    
+    	    if (width > reqWidth) {	        
+    	            inSampleSize = Math.round((float)width / (float)reqWidth);	        
+        }
+        return inSampleSize;
+    	}
+    public static Bitmap decodeSampledBitmapFromFile(Context ctx, String mfile, 
+	        int reqWidth) {
+	    // First decode with inJustDecodeBounds=true to check dimensions
+	    final BitmapFactory.Options options = new BitmapFactory.Options();	 
+	    Bitmap bm = null;
+	    System.gc();	    
+	   // BitmapFactory.decodeResource(res, resId, options);	   		
+		options.inTempStorage = new byte[32* 1024];
+		options.inDither = false;
+		options.inPurgeable = true;
+		options.inInputShareable = true;
+	    // Calculate inSampleSize
+		int inSampleSize = calculateInSampleSize(mfile, reqWidth);
+	    options.inSampleSize = inSampleSize;	    
+	    Log.e("Sample Size", String.valueOf(inSampleSize));
+	    // Decode bitmap with inSampleSize set
+	    options.inJustDecodeBounds = false;
+	    File file=new File(mfile);
+	    FileInputStream fs=null;
+	    try {
+	        fs = new FileInputStream(file);
+	    } catch (FileNotFoundException e) {
+	        //TODO do something intelligent
+	        e.printStackTrace();
+	    }
+	    Matrix matrix = new Matrix();
+	    float rotate = getOrientation(mfile);	    	   
+	    try {
+	        if(fs!=null) {
+	        
+	        	if (rotate == 0) return BitmapFactory.decodeFileDescriptor(fs.getFD(), null, options);
+	        	else {
+	        	 matrix.postRotate(rotate);
+	        	 
+	        	 bm = BitmapFactory.decodeFileDescriptor(fs.getFD(), null, options);
+	        	// if ((bm.getWidth() < reqWidth) && (inSampleSize > 1)){
+	        	Log.e("Width image",String.valueOf(bm.getWidth()));	 
+	        		 return Bitmap.createBitmap(bm,0,0,bm.getWidth(),bm.getHeight(),matrix,true);
+	        		 
+	        		 /*}else{
+	        			 return Bitmap.createBitmap(bm,0,0,bm.getWidth(),bm.getHeight(),matrix,true);}*/
+	        	}
+	        	}	       
+	       
+	    } catch (IOException e) {
+	        //TODO do something intelligent
+	        e.printStackTrace();
+	    } finally{ 
+	        if(fs!=null) {
+	            try {
+	                fs.close();
+	            } catch (IOException e) {
+	                // TODO Auto-generated catch block
+	                e.printStackTrace();
+	            }
+	        }
+	    }	  
+	    return null;
+	}
+	public static float getOrientation(String f)
+	{
+		float degress = 0;
+		try {
+				
+		ExifInterface exif = new ExifInterface(f);
+		int orientation=exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
+		Log.e("Orientation Crop Image",String.valueOf(orientation));
+		if(orientation == 3){
+			degress = 180;					
+		}
+		if(orientation == 6){
+			degress = 90;
+		}
+		if(orientation == 8){
+			degress = 270;
+		}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}					
+		return degress;
+	}
     private void saveOutput(Bitmap croppedImage) {
         if (mSaveUri != null) {
             OutputStream outputStream = null;
@@ -510,10 +984,43 @@ public class CropImage extends MonitoredActivity {
                 }
             }
         }
-        croppedImage.recycle();
+        croppedImage.recycle();        
+		Intent intent = this.getIntent();		
+		intent.putExtra("Impath", mImagePath);
+		intent.putExtra("saveUri",newpath);
+		intent.putExtra("lati", txtLatitude.getText().toString());
+		intent.putExtra("logi",txtLongtitude.getText().toString());
+		intent.putExtra("tags",txtTags.getText().toString());
+		intent.putExtra("name", txtPhotoTitle.getText().toString());		
+		Log.i("CropImage","Image path output save : "+newpath);
+		setResult(RESULT_OK,intent);		
         finish();
     }
-
+    @Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
+	{
+		switch (requestCode) 
+		{			
+			case GET_POSITION_ON_MAP:
+			{
+				if (resultCode == Activity.RESULT_OK)
+				{
+					Log.d("thong", "Upload: Result OK");
+					
+					int lat = data.getIntExtra("latitude", 0);
+					int log = data.getIntExtra("longitude", 0);
+					
+					float _lat = (float) (lat / 1E6);
+					float _log = (float) (log / 1E6);
+					
+					txtLatitude.setText(String.valueOf(_lat));
+					
+					txtLongtitude.setText(String.valueOf(_log));
+				}
+				break;
+			}
+		}
+	}
     @Override
     protected void onResume() {
         super.onResume();
@@ -721,7 +1228,7 @@ class CropImageView extends ImageViewTouchBase {
             hv.invalidate();
         }
     }
-
+    
     @Override
     protected void postTranslate(float deltaX, float deltaY) {
         super.postTranslate(deltaX, deltaY);

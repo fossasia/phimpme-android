@@ -12,8 +12,11 @@ import vn.mbm.phimp.me.utils.map.CustomItemizedOverlay;
 import vn.mbm.phimp.me.utils.map.CustomOverlayItem;
 import vn.mbm.phimp.me.utils.map.Road;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
@@ -51,7 +54,7 @@ public class GalleryMap extends MapActivity implements LocationListener
 	MapController mc;
 	int latitude;
 	int longitude;
-	
+	private static final int TURN_ON_GPS = 1;
 	private static Drawable marker;
 	private static Drawable currentMarker;
 	static ProgressDialog progLoading;
@@ -67,6 +70,7 @@ public class GalleryMap extends MapActivity implements LocationListener
 	ImageButton btnSwitch;
 	ArrayList<String> filepath = new ArrayList<String>();
 	
+	@SuppressWarnings("deprecation")
 	@Override
     public void onCreate(Bundle savedInstanceState) 
 	{
@@ -89,27 +93,28 @@ public class GalleryMap extends MapActivity implements LocationListener
         
         if (!lm.isProviderEnabled(LocationManager.GPS_PROVIDER))
 		{
-			//Toast.makeText(ctx, getString(R.string.error_gps_fail) + "\n" + getString(R.string.infor_turn_on_gps), Toast.LENGTH_LONG).show();
-        	Intent intent=new Intent("android.location.GPS_ENABLED_CHANGE");
-        	intent.putExtra("enabled", true);
-        	sendBroadcast(intent);
+        	showDialog(TURN_ON_GPS);
 		}
         try{
         	//progLoading = ProgressDialog.show(ctx, getString(R.string.loading), getString(R.string.infor_loading_photo_in_map), true, false);
             
             map = (MapView)findViewById(R.id.mapStore);
             map.setBuiltInZoomControls(true);            
-            mc = map.getController();
+            mc = map.getController();            
             mc.setZoom(6);      
             mapOverlays = map.getOverlays();     
             
             btnSwitch = (ImageButton) findViewById(R.id.btnswitch);
+            btnSwitch.bringToFront();
             btnSwitch.setOnClickListener(new OnClickListener(){				
 				@Override
 				public void onClick(View v){
-					acti.finish();
-					Intent i = new Intent(acti, OpenStreetMap.class);
-					startActivity(i);
+					//acti.finish();
+					/*Intent i = new Intent(acti, OpenStreetMap.class);
+					startActivity(i);*/
+					PhimpMe.mTabHost.getTabWidget().getChildAt(2).setVisibility(View.GONE);
+					PhimpMe.mTabHost.getTabWidget().getChildAt(1).setVisibility(View.VISIBLE);
+					PhimpMe.mTabHost.setCurrentTab(1);
 				}
 			});
         }catch(Exception e){
@@ -118,7 +123,7 @@ public class GalleryMap extends MapActivity implements LocationListener
 		
         new Thread()
         {
-        	@SuppressWarnings("deprecation")
+        	
 			public void run()
 			{
         		if ((PhimpMe.currentGeoPoint != null) && (currentPositionOverlay == null))
@@ -162,9 +167,9 @@ public class GalleryMap extends MapActivity implements LocationListener
 				if(count>0){
 					marker = ctx.getResources().getDrawable(R.drawable.pin_photo);	        	        
         	        photosOverlay = new CustomItemizedOverlay<CustomOverlayItem>(marker, map);        	        
+        	        int i;
         	        
-        	        
-        	        for(int i=0; i<filepath.size(); i++){
+        	        for(i=0; i<filepath.size(); i++){
         	        String imagePath=filepath.get(i);
 
 				
@@ -229,8 +234,7 @@ public class GalleryMap extends MapActivity implements LocationListener
     					final MapController mc1 = map.getController();
     					mc1.animateTo(_gp);
     					mc1.setZoom(16);
-        	        }           
-        	        
+        	        }                   	        
 					
 			}
 			
@@ -251,7 +255,11 @@ public class GalleryMap extends MapActivity implements LocationListener
 	@Override
 	protected void onResume()
 	{
-		super.onResume();		
+		super.onResume();	
+		
+		if (PhimpMe.IdList.size() == 5) {PhimpMe.IdList.clear();PhimpMe.IdList.add(0);}
+		PhimpMe.IdList.add(2);		
+		PhimpMe.showTabs();
 		try
 		{
 			lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, ll);
@@ -270,13 +278,13 @@ public class GalleryMap extends MapActivity implements LocationListener
 		}
 	}
 	
-	@Override
+	/*@Override
 	protected void onPause()
 	{
-		super.onPause();
-		finish();
+		//super.onPause();
+		//finish();
 		lm.removeUpdates(this);
-	}
+	}*/
 	
 	
 
@@ -416,14 +424,47 @@ public class GalleryMap extends MapActivity implements LocationListener
 			
 		}
 	}
+	@Override
+	protected Dialog onCreateDialog(int id) 
+	{
+		switch (id)
+		{			
+			case TURN_ON_GPS:
+			{
+				return new AlertDialog.Builder(ctx)
+					.setTitle("")
+					.setMessage("Do you want turn on GPS ?")
+					.setPositiveButton("Yes", new DialogInterface.OnClickListener() 
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which) 
+						{							
+							
+							startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+						}
+					})
+					.setNegativeButton("No", new DialogInterface.OnClickListener() 
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which) 
+						{
+							
+						}
+					})
+					.create();
+			}
+		}
+		return null;
+	}
 	public void onBackPressed()
-	{			
-		Intent intent = new Intent("android.location.GPS_ENABLED_CHANGE");
-		intent.putExtra("enabled", false);
-		sendBroadcast(intent);
-		//this.finish();		
+	{	
+						
+		PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
+		if (PhimpMe.IdList.get(PhimpMe.IdList.size()-1) == 1) PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
+		PhimpMe.mTabHost.setCurrentTab(PhimpMe.IdList.get(PhimpMe.IdList.size()-1));
+		super.onStop();		
 		Log.d("Hon","Backpressed !");
-		super.onBackPressed();		
+					
 			
 	}
 

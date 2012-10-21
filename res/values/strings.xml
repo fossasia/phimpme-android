@@ -99,6 +99,9 @@
     <string name="googleadmod">Google Admod</string>
     <string name="adv">Advertising</string>
     <string name="donate">Donate</string>
-    
+    <string name="phimpmegallery">Phimpme Gallery</string>
+    <string name="wait">Please wait...</string>
+    <string name="carefully">CareFully !</string>
+    <string name="no_photo_delete">"Don't have photo to delete !"</string>
 	 
 </resources>

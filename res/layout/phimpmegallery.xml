@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"    
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:id="@+id/btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black_trans" >
+
+            <ImageButton
+                android:id="@+id/btnEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:src="@drawable/icon_edit" />
+
+            <ImageButton
+                android:id="@+id/btnUpload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/btnEdit"
+                android:src="@drawable/icon_upload_small" />
+
+            <ImageButton
+                android:id="@+id/btnShare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/btnUpload"
+                android:src="@drawable/bluetooth" />
+        </RelativeLayout>
+
+        <vn.mbm.phimp.me.gallery.GalleryView
+            android:id="@+id/gallery"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:animationCache="true"
+            android:clipChildren="true"
+            android:spacing="10dp" >
+
+        </vn.mbm.phimp.me.gallery.GalleryView>
+
+        <View
+            android:id="@+id/overscroll_left"
+            android:layout_width="@dimen/padding_medium"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:background="@drawable/overscroll_left"
+            android:visibility="gone" />
+
+        <View
+            android:id="@+id/overscroll_right"
+            android:layout_width="@dimen/padding_medium"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="right"
+            android:background="@drawable/overscroll_right"
+            android:visibility="gone" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

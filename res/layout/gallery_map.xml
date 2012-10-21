@@ -6,44 +6,35 @@
     <RelativeLayout 
 			    android:layout_width="match_parent"
 			    android:layout_height="wrap_content"
-			    android:layout_marginLeft="10dp"
-			    android:padding="10dp"> 
-        <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Google Map"
-                    android:textColor="@color/white"
-                    android:layout_centerInParent="true" />
-            <ImageButton 
-		        android:id="@+id/btnswitch"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:src="@drawable/osm"
-		        android:layout_alignParentRight="true"
-        />
+			    >
+
+  <ImageButton
+                android:id="@+id/btnswitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_weight="0.8"
+                android:src="@drawable/osm" />
+            <!-- <com.google.android.maps.MapView
+                android:id="@+id/mapStore"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:apiKey="05xNbF3xx7Wv5kEZfcxKsYdn5yTPBXkUcsaua5g"
+                android:clickable="true"
+                android:enabled="true" >
+            </com.google.android.maps.MapView> -->
+
+  <com.google.android.maps.MapView
+      android:id="@+id/mapStore"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:apiKey="05xNbF3--7Wv5kEZfcxKsYdn5yTPBXkUcsaua5g"
+      android:clickable="true"
+      android:enabled="true" >
+  </com.google.android.maps.MapView>
+			
     </RelativeLayout>
-    	  <com.google.android.maps.MapView
-          		 android:id="@+id/mapStore"
-                 android:layout_width="fill_parent"
-                 android:layout_height="fill_parent"
-                 android:clickable="true"
-             	 android:enabled="true" 
-                 android:apiKey="05xNbF3--7Wv5kEZfcxKsYdn5yTPBXkUcsaua5g"
-                 />    
-	<!-- key of a danh -->		
-       <!--  <com.google.android.maps.MapView
-             android:id="@+id/mapStore"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:apiKey="0GKm7nFVzZxfA91Kg5mfCLZBhnEr04Ii7cyJDeA"
-             android:clickable="true"
-             android:enabled="true" /> -->
-       <!-- key of a luong -->
-       <!--  <com.google.android.maps.MapView
-             android:id="@+id/mapStore"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:apiKey="0JUjEnluAYlhZt0DIdHY6XfK5gExTuxPtEDN46w"
-             android:clickable="true"
-             android:enabled="true" /> -->
+  
+
 </LinearLayout>
