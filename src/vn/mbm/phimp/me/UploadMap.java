@@ -17,7 +17,6 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -132,8 +131,7 @@ public class UploadMap extends MapActivity
 		});
         
         btnLocation.setOnClickListener(new OnClickListener() 
-        {
-			@SuppressWarnings("deprecation")
+        {			
 			@Override
 			public void onClick(View v) 
 			{

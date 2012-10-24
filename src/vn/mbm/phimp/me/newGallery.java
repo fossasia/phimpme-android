@@ -3327,6 +3327,7 @@ public class newGallery extends Activity {
 			
 	}
 
+	@SuppressWarnings("deprecation")
 	public void resumeLocalPhoto(int resum_number){
 		if (check_local == 0){
 			
