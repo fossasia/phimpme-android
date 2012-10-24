@@ -59,6 +59,7 @@ import android.media.FaceDetector;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.AttributeSet;
@@ -984,6 +985,9 @@ public class CropImage extends MonitoredActivity {
                 }
             }
         }
+        sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, mSaveUri));
+        sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, 
+                Uri.parse("file://" + Environment.getExternalStorageDirectory())));        
         croppedImage.recycle();        
 		Intent intent = this.getIntent();		
 		intent.putExtra("Impath", mImagePath);
