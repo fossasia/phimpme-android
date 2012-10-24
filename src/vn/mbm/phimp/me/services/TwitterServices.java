@@ -41,8 +41,8 @@ public class TwitterServices
 	public static int icon = R.drawable.twitter;
 	public static String title = "Twitter";
 	
-	public static final String CONSUMER_KEY = "mMT7n87RNG5l7E5LuxCbiQ";
-	public static final String CONSUMER_SECRET = "4bYILcSZr5F4NusiF9hQoJyVCqmLOLIQOYVkMiuFVb4";
+	public static final String CONSUMER_KEY = "toro9gZ33Li6LOGsB7pRPQ";//"mMT7n87RNG5l7E5LuxCbiQ";
+	public static final String CONSUMER_SECRET = "toro9gZ33Li6LOGsB7pRPQ";//"4bYILcSZr5F4NusiF9hQoJyVCqmLOLIQOYVkMiuFVb4";
 	
 	public static final String URL_REQUEST_TOKEN = "https://api.twitter.com/oauth/request_token";
 	public static final String URL_ACCESS_TOKEN = "https://api.twitter.com/oauth/access_token";

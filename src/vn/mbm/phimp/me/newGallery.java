@@ -3698,24 +3698,22 @@ public class newGallery extends Activity {
 							ln_flickr.setLayoutParams(p_two_row);
 							flickr_list_photos.clear();
 							flickr_list_photos.addAll(list_save);
-							array_list.add(flickr_list_photos);
+							//array_list.add(flickr_list_photos);
 							if (!checkArray(PhimpMe.phimpme_array_list,flickr_list_photos)) {
 								PhimpMe.phimpme_array_list.add(flickr_list_photos);
 							} else {
 								deleteItem(PhimpMe.phimpme_array_list,flickr_list_photos);
 								PhimpMe.phimpme_array_list.add(flickr_list_photos);
-							}
-							for (int i = 0; i < array_list.size(); i++) {
-								if (array_list.get(i).size() > 0) {
+							}							
 									Log.d("thong", "RunOnUiThread");
-									final RSSPhotoItem[] tmp;
-									if (array_list.get(i).size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
-										tmp = new RSSPhotoItem[array_list.get(i).size()];
+									final RSSPhotoItem[] tmp;									
+									if (flickr_list_photos.size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
+										tmp = new RSSPhotoItem[flickr_list_photos.size()];
 									} else {
 										tmp = new RSSPhotoItem[NUMBER_PHOTO_NEED_DOWNLOAD];
 									}
 									for (int j = 0; j < tmp.length; j++) {
-										tmp[j] = array_list.get(i).get(j);
+										tmp[j] = flickr_list_photos.get(j);
 									}
 									newGallery.this.runOnUiThread(new Runnable() {
 										@Override
@@ -3724,8 +3722,7 @@ public class newGallery extends Activity {
 										}
 									});
 
-								}
-							}
+							
 							btn_flickr_more.setOnClickListener(new OnClickListener() {
 								@Override
 								public void onClick(View v) {
@@ -3829,7 +3826,7 @@ public class newGallery extends Activity {
 						list_photos.addAll(tmp_list);
 						recent_flickr_list_photos.clear();
 						recent_flickr_list_photos.addAll(list_save);
-						array_list.add(recent_flickr_list_photos);
+						//array_list.add(recent_flickr_list_photos);
 						if (!checkArray(PhimpMe.phimpme_array_list,recent_flickr_list_photos)) {
 							PhimpMe.phimpme_array_list
 									.add(recent_flickr_list_photos);
@@ -3838,17 +3835,16 @@ public class newGallery extends Activity {
 							PhimpMe.phimpme_array_list
 									.add(recent_flickr_list_photos);
 						}
-						for (int i = 0; i < array_list.size(); i++) {
-							if (array_list.get(i).size() > 0) {
+						
 								Log.d("thong", "RunOnUiThread");
 								final RSSPhotoItem[] tmp;
-								if (array_list.get(i).size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
-									tmp = new RSSPhotoItem[array_list.get(i).size()];
+								if (recent_flickr_list_photos.size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
+									tmp = new RSSPhotoItem[recent_flickr_list_photos.size()];
 								} else {
 									tmp = new RSSPhotoItem[NUMBER_PHOTO_NEED_DOWNLOAD];
 								}
 								for (int j = 0; j < tmp.length; j++) {
-									tmp[j] = array_list.get(i).get(j);
+									tmp[j] = recent_flickr_list_photos.get(j);
 								}
 								newGallery.this.runOnUiThread(new Runnable() {
 									@Override
@@ -3858,8 +3854,6 @@ public class newGallery extends Activity {
 									}
 								});
 
-							}
-						}
 						btn_recent_flickr_more
 								.setOnClickListener(new OnClickListener() {
 									@Override
@@ -3966,24 +3960,23 @@ public class newGallery extends Activity {
 							yahoo_list_photos.clear();
 							yahoo_list_photos.addAll(list_save);
 		
-							array_list.add(yahoo_list_photos);
+							//array_list.add(yahoo_list_photos);
 							if (!checkArray(PhimpMe.phimpme_array_list,yahoo_list_photos)) {
 								PhimpMe.phimpme_array_list.add(yahoo_list_photos);
 							} else {
 								deleteItem(PhimpMe.phimpme_array_list,yahoo_list_photos);
 								PhimpMe.phimpme_array_list.add(yahoo_list_photos);
 							}
-							for (int i = 0; i < array_list.size(); i++) {
-								if (array_list.get(i).size() > 0) {
+							
 									Log.d("thong", "RunOnUiThread");
 									final RSSPhotoItem[] tmp;
-									if (array_list.get(i).size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
-										tmp = new RSSPhotoItem[array_list.get(i).size()];
+									if (yahoo_list_photos.size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
+										tmp = new RSSPhotoItem[yahoo_list_photos.size()];
 									} else {
 										tmp = new RSSPhotoItem[NUMBER_PHOTO_NEED_DOWNLOAD];
 									}
 									for (int j = 0; j < tmp.length; j++) {
-										tmp[j] = array_list.get(i).get(j);
+										tmp[j] = yahoo_list_photos.get(j);
 									}
 									newGallery.this.runOnUiThread(new Runnable() {
 										@Override
@@ -3991,9 +3984,7 @@ public class newGallery extends Activity {
 											new DownloadImageAsyncTask().execute(tmp);
 										}
 									});
-
-								}
-							}
+						
 							btn_yahoo_more.setOnClickListener(new OnClickListener() {
 								@Override
 								public void onClick(View v) {
@@ -4095,7 +4086,7 @@ public class newGallery extends Activity {
 					list_photos.addAll(tmp_list);
 					public_picasa_list_photos.clear();
 					public_picasa_list_photos.addAll(list_save);
-					array_list.add(public_picasa_list_photos);
+					//array_list.add(public_picasa_list_photos);
 					if (!checkArray(PhimpMe.phimpme_array_list,public_picasa_list_photos)) {
 						PhimpMe.phimpme_array_list
 								.add(public_picasa_list_photos);
@@ -4104,17 +4095,16 @@ public class newGallery extends Activity {
 						PhimpMe.phimpme_array_list
 								.add(public_picasa_list_photos);
 					}
-					for (int i = 0; i < array_list.size(); i++) {
-						if (array_list.get(i).size() > 0) {
+				
 							Log.d("thong", "RunOnUiThread");
 							final RSSPhotoItem[] tmp;
-							if (array_list.get(i).size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
-								tmp = new RSSPhotoItem[array_list.get(i).size()];
+							if (public_picasa_list_photos.size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
+								tmp = new RSSPhotoItem[public_picasa_list_photos.size()];
 							} else {
 								tmp = new RSSPhotoItem[NUMBER_PHOTO_NEED_DOWNLOAD];
 							}
 							for (int j = 0; j < tmp.length; j++) {
-								tmp[j] = array_list.get(i).get(j);
+								tmp[j] = public_picasa_list_photos.get(j);
 							}
 							newGallery.this.runOnUiThread(new Runnable() {
 								@Override
@@ -4124,8 +4114,6 @@ public class newGallery extends Activity {
 								}
 							});
 
-						}
-					}
 					btn_public_picasa_more
 							.setOnClickListener(new OnClickListener() {
 								@Override
@@ -4340,24 +4328,23 @@ public class newGallery extends Activity {
 							deviant_list_photos.clear();
 							deviant_list_photos.addAll(list_save);
 		
-							array_list.add(deviant_list_photos);
+							//array_list.add(deviant_list_photos);
 							if (!checkArray(PhimpMe.phimpme_array_list,deviant_list_photos)) {
 								PhimpMe.phimpme_array_list.add(deviant_list_photos);
 							} else {
 								deleteItem(PhimpMe.phimpme_array_list,deviant_list_photos);
 								PhimpMe.phimpme_array_list.add(deviant_list_photos);
 							}
-							for (int i = 0; i < array_list.size(); i++) {
-								if (array_list.get(i).size() > 0) {
+							
 									Log.d("thong", "RunOnUiThread");
 									final RSSPhotoItem[] tmp;
-									if (array_list.get(i).size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
-										tmp = new RSSPhotoItem[array_list.get(i).size()];
+									if (deviant_list_photos.size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
+										tmp = new RSSPhotoItem[deviant_list_photos.size()];
 									} else {
 										tmp = new RSSPhotoItem[NUMBER_PHOTO_NEED_DOWNLOAD];
 									}
 									for (int j = 0; j < tmp.length; j++) {
-										tmp[j] = array_list.get(i).get(j);
+										tmp[j] = deviant_list_photos.get(j);
 									}
 									newGallery.this.runOnUiThread(new Runnable() {
 										@Override
@@ -4367,8 +4354,7 @@ public class newGallery extends Activity {
 										}
 									});
 
-								}
-							}
+
 							btn_public_deviant_more
 									.setOnClickListener(new OnClickListener() {
 										@Override
@@ -6445,8 +6431,7 @@ public class newGallery extends Activity {
 						"List photos personal: " + list_photos_personal.size());
 				Log.d("luong", "list test: " + array_list.size());
 				Log.d("luong",
-						"list test personal: " + personal_array_list.size());
-				
+						"list test personal: " + personal_array_list.size());				
 				for (int i = 0; i < array_list.size(); i++) {
 					if (array_list.get(i).size() > 0) {
 						Log.d("thong", "RunOnUiThread");
