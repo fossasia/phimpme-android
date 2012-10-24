@@ -2,6 +2,9 @@ package vn.mbm.phimp.me.gallery;
 
 import java.util.ArrayList;
 
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+
 import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.SendFileActivity;
 import vn.mbm.phimp.me.Upload;
@@ -19,7 +22,7 @@ import android.widget.RelativeLayout;
 
 public class PhimpMeGallery extends Activity {
 	private Gallery gallery;
-	
+	public static ImageLoader imageLoader = ImageLoader.getInstance();
 	private static ArrayList<String> filePath;
 
 
@@ -31,14 +34,16 @@ public class PhimpMeGallery extends Activity {
 	public static int position;
 	public static View overscrollleft;
 	public static View overscrollright;
+	
 	//private Context ctx;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.phimpmegallery);	
 		//requestWindowFeature(Window.FEATURE_NO_TITLE);
-	//	ctx = this;
+	//	ctx = this;		
 		setupUI();
+		
 	}
 	
 	private void setupUI() {	

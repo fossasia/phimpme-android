@@ -15,6 +15,7 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.util.Log;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -43,7 +44,7 @@ public class GalleryImageAdapter extends BaseAdapter {
 		WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 		Display display = wm.getDefaultDisplay();
 		screen_w = display.getWidth();		
-		mFilePath = filepath;
+		mFilePath = filepath;		
 
 	}
 
@@ -98,6 +99,7 @@ public class GalleryImageAdapter extends BaseAdapter {
 		holder.imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
 		
 		return imageView;
+		
 	}
 	public static int calculateInSampleSize(
 			
