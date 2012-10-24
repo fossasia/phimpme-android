@@ -410,6 +410,7 @@ public class UploadProgress extends Activity
 		}
 
 		/* Upload photo */
+		@SuppressWarnings("resource")
 		protected String uploadPhoto(String path)
 		{
 			String fileId = "";
@@ -536,6 +537,7 @@ public class UploadProgress extends Activity
 			}
 		}
 
+		@SuppressWarnings("deprecation")
 		@Override
 		protected Boolean doInBackground(Integer... params)
 		{

@@ -161,6 +161,7 @@ public class Settings extends Activity
 	int error_count = 0;
 	ProgressDialog pro_gress;
 	
+	@SuppressWarnings("deprecation")
 	@Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -188,7 +189,7 @@ public class Settings extends Activity
 		btnAdd = (ImageButton) findViewById(R.id.btnSettingsAccountAdd);
 		btnAdd.setOnTouchListener(new OnTouchListener() 
 		{
-			@SuppressWarnings("deprecation")
+			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) 
 			{
@@ -278,7 +279,7 @@ public class Settings extends Activity
 		txtMaxPhotoSize.setText(PhimpMe.MAX_FILESIZE_DOWNLOAD + "");
 		btnSettingsMaxFilesize = (ImageButton) findViewById(R.id.imgbtnSettingsMaxFilesize);
 		btnSettingsMaxFilesize.setOnTouchListener(new OnTouchListener() 
-		{
+		{			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) 
 			{
@@ -461,8 +462,7 @@ public class Settings extends Activity
 		lytMyFeedMore.addView(lyMore);
 
 		btnMore.setOnClickListener(new OnClickListener() {
-		
-			@SuppressWarnings("deprecation")
+			
 			@Override
 			public void onClick(View v) {
 
@@ -1918,6 +1918,7 @@ public class Settings extends Activity
 	/**
 	 * create context menu
 	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	protected Dialog onCreateDialog(int id) 
 	{

@@ -229,6 +229,7 @@ public class PhotoSelect extends Activity {
 		Log.d("Luong", "Run Show Photo From Cache");
 		final String[] data = { MediaStore.Images.Media.DATA };
 		final String orderBy = MediaStore.Images.Media._ID;
+		@SuppressWarnings("deprecation")
 		final Cursor pathcursor = managedQuery(
 				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, data,
 				null, null, orderBy+ " DESC");
@@ -278,7 +279,8 @@ public class PhotoSelect extends Activity {
 	 				imageItem.path = path;
 	 				boolean check = PhimpMe.cache.check(path);
 	 				if(!check){	 					
-	 					Cursor cur = managedQuery(
+	 					@SuppressWarnings("deprecation")
+						Cursor cur = managedQuery(
 	 							MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
 	 							MediaStore.Images.Media.DATA+ " = " + "\""+path+"\"", null, MediaStore.Images.Media._ID);									
 	 					if (cur != null && cur.getCount() > 0){

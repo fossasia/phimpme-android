@@ -24,6 +24,7 @@ public class Yahoo
 	
 	public static final int ICON = R.drawable.yahoo;
 	
+	@SuppressWarnings("resource")
 	public static ArrayList<RSSPhotoItem> getYahooNews(Context ctx)
 	{
 		ArrayList<RSSPhotoItem> list = new ArrayList<RSSPhotoItem>();

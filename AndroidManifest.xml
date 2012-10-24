@@ -95,14 +95,7 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar">
             
-        </activity>
-        <activity 
-            android:name=".ViewImage">
-            <intent-filter >
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-        </activity>
+        </activity>        
         <activity
             android:name=".newGallery"
             android:configChanges="locale"
