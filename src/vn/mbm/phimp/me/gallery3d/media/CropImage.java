@@ -26,6 +26,7 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
 import org.json.JSONObject;
@@ -42,8 +43,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
@@ -51,6 +54,8 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region;
@@ -473,13 +478,7 @@ public class CropImage extends MonitoredActivity {
 				    
 				    }
 				});
-		/*
-		 * Danh - Add event for button Sepia image effect - End
-		 */
-		/*
-		 * Danh - Add event for button Negative image effect
-		 */
-		findViewById(R.id.btnNagative).setOnClickListener(
+        	findViewById(R.id.btnNagative).setOnClickListener(
 				new View.OnClickListener() {
 				    public void onClick(View v) 
 				    {
@@ -501,12 +500,54 @@ public class CropImage extends MonitoredActivity {
 				    	
 				    }
 				});
-		/*
-		 * Danh - Add event for button Negative image effect - End
-		 */
-		/*
-		 * Danh - Add event for button Original image effect
-		 */
+		ImageButton btnReflection=(ImageButton)findViewById(R.id.btnSnow);
+		btnReflection.setOnClickListener(
+				new View.OnClickListener() {
+				    public void onClick(View v) 
+				    {
+				    	try{
+				    		
+				    		modifiedBitmap = null;
+							modifiedBitmap = applySnowEffect(flippedImaged);
+							mImageView.setImageBitmap(changeBrightness(
+									modifiedBitmap, brightnessValue));
+							mBitmap = modifiedBitmap;
+							
+				    	}catch(OutOfMemoryError o){
+
+				    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+				    		//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
+				    		modifiedBitmap=flippedImaged=mBitmapResize;
+
+				    	}
+				    	
+				    }
+				});
+				
+		ImageButton btnRoundCorner=(ImageButton)findViewById(R.id.btnRoundCorner);
+		btnRoundCorner.setOnClickListener(
+				new View.OnClickListener() {
+				    public void onClick(View v) 
+				    {
+				    	try{
+				    		
+				    		modifiedBitmap = null;
+							modifiedBitmap = roundCorner(flippedImaged,45f);
+							mImageView.setImageBitmap(changeBrightness(
+									modifiedBitmap, brightnessValue));
+							mBitmap = modifiedBitmap;
+							
+				    	}catch(OutOfMemoryError o){
+
+				    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+				    		//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
+				    		modifiedBitmap=flippedImaged=mBitmapResize;
+
+				    	}
+				    	
+				    }
+				});
+		
 		ImageButton btnOriginal=(ImageButton)findViewById(R.id.btnOriginal);
 		btnOriginal.setOnClickListener(
 				new View.OnClickListener() {
@@ -752,7 +793,70 @@ public class CropImage extends MonitoredActivity {
 		myCanvas.drawBitmap(rBitmap, 0, 0, paint);
 		return rBitmap;
 	}
+	
+	public static Bitmap applySnowEffect(Bitmap source) {
+		// get image size
+		int width = source.getWidth();
+		int height = source.getHeight();
+		int[] pixels = new int[width * height];
+		// get pixel array from source
+		source.getPixels(pixels, 0, width, 0, 0, width, height);
+		// random object
+		Random random = new Random();
+		
+		int R, G, B, index = 0, thresHold = 20;
+		// iteration through pixels
+		for(int y = 0; y < height; ++y) {
+			for(int x = 0; x < width; ++x) {
+				// get current index in 2D-matrix
+				index = y * width + x;				
+				// get color
+				R = Color.red(pixels[index]);
+				G = Color.green(pixels[index]);
+				B = Color.blue(pixels[index]);
+				// generate threshold
+				thresHold = random.nextInt(0xFF);				
+				if(R > thresHold && G > thresHold && B > thresHold) {
+					pixels[index] = Color.rgb(0xFF, 0xFF, 0xFF);
+				}							
+			}
+		}
+		// output bitmap				
+		Bitmap bmOut = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+		bmOut.setPixels(pixels, 0, width, 0, 0, width, height);
+		return bmOut;
+	}
+	
+	public static Bitmap roundCorner(Bitmap src, float round) {
+		// image size
+		int width = src.getWidth();
+		int height = src.getHeight();
+		// create bitmap output
+	    Bitmap result = Bitmap.createBitmap(width, height, Config.ARGB_8888);
+	    // set canvas for painting
+	    Canvas canvas = new Canvas(result);
+	    canvas.drawARGB(0, 0, 0, 0);
 
+	    // config paint
+	    final Paint paint = new Paint();
+	    paint.setAntiAlias(true);
+	    paint.setColor(Color.BLACK);
+
+	    // config rectangle for embedding
+	    final Rect rect = new Rect(0, 0, width, height);
+	    final RectF rectF = new RectF(rect);
+
+	    // draw rect to canvas
+	    canvas.drawRoundRect(rectF, round, round, paint);
+
+	    // create Xfer mode
+	    paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
+	    // draw source image to canvas
+	    canvas.drawBitmap(src, rect, rect, paint);
+
+	    // return final image
+	    return result;
+	}
 	// This method is originally from this site:
 	// http://android-code-space.blogspot.com/2010/08/convert-image-to-negative-in-android.html
 	public static Bitmap convertToNegative(Bitmap sampleBitmap) {

@@ -27,17 +27,17 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 public class Camera2 extends Activity{
 	private static final String TAG = "Camera";
@@ -70,8 +70,14 @@ public class Camera2 extends Activity{
 		//mCamera.setDisplayOrientation(90);
 		setCameraDisplayOrientation(this, 0, mCamera);
 		preview.setCamera(mCamera);
+		RelativeLayout.LayoutParams layoutparams = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);		
+		layoutparams.addRule(RelativeLayout.ALIGN_PARENT_LEFT,RelativeLayout.TRUE);
+		layoutparams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT,RelativeLayout.TRUE);
+		layoutparams.addRule(RelativeLayout.ALIGN_PARENT_TOP,RelativeLayout.TRUE);
+		layoutparams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,RelativeLayout.TRUE);
+		preview.setLayoutParams(layoutparams);
 		ctx = this;
-		frame.addView(preview);						
+		frame.addView(preview);			
 		buttonClick = (ImageButton) findViewById(R.id.takephoto);
 		buttonClick.bringToFront();
 		buttonClick.setOnClickListener( new OnClickListener() {
@@ -434,14 +440,14 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
     	}catch(Exception e){}
         camera = null;
     }
-    @Override
+   /* @Override
     public boolean onTouchEvent(MotionEvent event) {
     	if (PhimpMe.popupTabs.getVisibility() == ViewGroup.VISIBLE)
     		PhimpMe.hideTabs();
     	//else Camera2.buttonClick.performClick(); 
     	return true;
     	
-    }
+    }*/
     private Camera.Size getBestPreviewSize(int width, int height,
             Camera.Parameters parameters) {
 			Camera.Size result = null;

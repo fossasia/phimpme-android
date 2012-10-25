@@ -201,7 +201,7 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);		
         //gestureScanner = new GestureDetector(this);
         //Crash report
-        Crittercism.init(getApplicationContext(), CRITTERCISM_APP_ID, serviceDisabled);
+       // Crittercism.init(getApplicationContext(), CRITTERCISM_APP_ID, serviceDisabled);
         add_account_upload = false;
         add_account_setting = false;
         
