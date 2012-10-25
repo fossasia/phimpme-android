@@ -15,7 +15,6 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.util.Log;
 import android.view.Display;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
