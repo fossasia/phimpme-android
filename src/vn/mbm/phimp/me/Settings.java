@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import org.json.JSONObject;
+import org.wordpress.android.NewAccount;
 
 import vn.mbm.phimp.me.database.AccountItem;
 import vn.mbm.phimp.me.database.DeviantArtItem;
@@ -26,6 +27,7 @@ import vn.mbm.phimp.me.database.SohuItem;
 import vn.mbm.phimp.me.database.TumblrItem;
 import vn.mbm.phimp.me.database.TwitterItem;
 import vn.mbm.phimp.me.database.VkItem;
+import vn.mbm.phimp.me.database.WordpressItem;
 import vn.mbm.phimp.me.feedservice.DeviantArt;
 import vn.mbm.phimp.me.feedservice.Facebook;
 import vn.mbm.phimp.me.feedservice.Flickr;
@@ -51,6 +53,7 @@ import vn.mbm.phimp.me.services.TwitterServices;
 import vn.mbm.phimp.me.services.VKServices;
 import vn.mbm.phimp.me.utils.Commons;
 import vn.mbm.phimp.me.utils.RSSUtil;
+import vn.mbm.phimp.me.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -115,6 +118,7 @@ public class Settings extends Activity
 	private final int SERVICES_IMGUR_ACTION=13;
 	private final int SERVICES_500PX_ACTION = 11;
 	private final int SERVICES_SOHU_ACTION =15;
+	private final int SERVICES_WORDPRESS_ACTION =16;
 	public static EditText etMyFeedServicesTextbox;
 	public static EditText etMyFeedServicesTextbox1;
 	public static EditText etMyFeedServicesTextbox2;
@@ -1527,7 +1531,8 @@ public class Settings extends Activity
         //iconContextMenu.addItem(res, KaixinServices.title, KaixinServices.icon, SERVICES_KAIXIN_ACTION);
         iconContextMenu.addItem(res, ImgurServices.title, ImgurServices.icon, SERVICES_IMGUR_ACTION);
         //iconContextMenu.addItem(res, S500pxService.title, S500pxService.icon, SERVICES_500PX_ACTION)
-        iconContextMenu.addItem(res, SohuServices.title, SohuServices.icon, SERVICES_SOHU_ACTION);;
+        iconContextMenu.addItem(res, SohuServices.title, SohuServices.icon, SERVICES_SOHU_ACTION);
+        iconContextMenu.addItem(res, "Wordpress",R.drawable.icon_wordpress , SERVICES_WORDPRESS_ACTION);
         iconContextMenu.setOnClickListener(new IconContextMenu.IconContextMenuOnClickListener() {
 			@Override
 			public void onClick(int menuId) 
@@ -1627,7 +1632,13 @@ public class Settings extends Activity
 					PhimpMe.add_account_upload = true;
 					PhimpMe.add_account_setting = true;
 					break;
-				}
+				case SERVICES_WORDPRESS_ACTION:
+					Intent wordpress = new Intent(ctx, NewAccount.class);
+					ctx.startActivity(wordpress);
+					PhimpMe.add_account_upload = true;
+					PhimpMe.add_account_setting = true;
+					break;
+				}							
 			}
 		});
       //set onclick event for donate button
@@ -1771,6 +1782,10 @@ public class Settings extends Activity
 						{
 							SohuItem.removeAccount(ctx, _id);
 						}
+						if (s.equals("wordpress"))
+						{
+							WordpressItem.removeAccount(ctx, _id);
+						}
 						reloadAccountsList();						
 						PhimpMe.add_account_upload = true;
 		            }
@@ -1900,6 +1915,10 @@ public class Settings extends Activity
 				else if (_service.equals("sohu"))
 				{
 					holder.imgIcon.setImageResource(SohuServices.icon);
+				}
+				else if (_service.equals("wordpress"))
+				{
+					holder.imgIcon.setImageResource(R.drawable.icon_wordpress);
 				}
 				String acc_name = _name;
 				

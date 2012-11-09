@@ -25,8 +25,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.utils.Commons.MySSLSocketFactory;
+import vn.mbm.phimp.me.R;
 import android.util.Log;
 
 

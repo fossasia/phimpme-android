@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import org.json.JSONObject;
+import org.wordpress.android.NewAccount;
 
 import vn.mbm.phimp.me.database.AccountItem;
 import vn.mbm.phimp.me.database.DrupalItem;
@@ -27,6 +28,7 @@ import vn.mbm.phimp.me.services.TwitterServices;
 import vn.mbm.phimp.me.services.VKServices;
 import vn.mbm.phimp.me.utils.Commons;
 import vn.mbm.phimp.me.utils.geoDegrees;
+import vn.mbm.phimp.me.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -99,6 +101,7 @@ public class Upload extends Activity
 
 	private final int SERVICES_KAIXIN_ACTION = 12;
 	private final int SERVICES_SOHU_ACTION=15;
+	private final int SERVICES_WORDPRESS_ACTION =16;
 	private static Uri camera_img_uri;
 	public static ProgressDialog progLoading;
 	static Context ctx;
@@ -326,6 +329,7 @@ public class Upload extends Activity
 
         //iconContextMenu.addItem(res, KaixinServices.title, KaixinServices.icon, SERVICES_KAIXIN_ACTION);
         iconContextMenu.addItem(res, SohuServices.title, SohuServices.icon, SERVICES_SOHU_ACTION);
+        iconContextMenu.addItem(res, "Wordpress",R.drawable.icon_wordpress , SERVICES_WORDPRESS_ACTION);;
         iconContextMenu.setOnClickListener(new IconContextMenu.IconContextMenuOnClickListener() {
 			@SuppressWarnings("deprecation")
 			@Override
@@ -428,7 +432,12 @@ public class Upload extends Activity
 					PhimpMe.add_account_upload = true;
 					PhimpMe.add_account_setting = true;
 					break;
-				
+				case SERVICES_WORDPRESS_ACTION:
+					Intent wordpress = new Intent(ctx, NewAccount.class);
+					ctx.startActivity(wordpress);
+					PhimpMe.add_account_upload = true;
+					PhimpMe.add_account_setting = true;
+					break;
 				}
 			}
 		});  
@@ -665,6 +674,10 @@ public class Upload extends Activity
 			else if (service[position].equals("sohu"))
 			{
 				holder.imgIcon.setImageResource(SohuServices.icon);
+			}
+			else if (service[position].equals("wordpress"))
+			{
+				holder.imgIcon.setImageResource(R.drawable.icon_wordpress);
 			}
 			boolean c = false;
 			

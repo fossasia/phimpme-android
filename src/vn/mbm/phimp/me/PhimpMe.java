@@ -9,11 +9,16 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.wordpress.android.WordPress;
+import org.wordpress.android.WordPressDB;
+
 import vn.mbm.phimp.me.database.AccountDBAdapter;
 import vn.mbm.phimp.me.database.TumblrDBAdapter;
+import vn.mbm.phimp.me.database.WordpressDBAdapter;
 import vn.mbm.phimp.me.utils.Commons;
 import vn.mbm.phimp.me.utils.RSSPhotoItem;
 import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
+import vn.mbm.phimp.me.R;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.TabActivity;
@@ -46,7 +51,6 @@ import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crittercism.app.Crittercism;
 import com.google.ads.AdRequest;
 import com.google.ads.AdView;
 import com.google.android.maps.GeoPoint;
@@ -181,8 +185,8 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
     {
     	super.onCreate(savedInstanceState);
     	ctx = this;    	
-    	Log.d("thong", "PhimpMe - onCreate()");
-    	
+    	Log.d("thong", "PhimpMe - onCreate()");    	
+
     	//Init PayPal library
         new Thread(new Runnable() 
     	{
@@ -585,10 +589,11 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
         	TumblrDBAdapter db2 = new TumblrDBAdapter(ctx);
         	db2.open();
         	db2.close();
-        	
+
         	/* Clear memory */
         	db = null;
         	db2 = null;
+
 		}
         
         /*

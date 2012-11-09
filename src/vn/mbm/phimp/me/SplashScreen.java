@@ -1,5 +1,6 @@
 package vn.mbm.phimp.me;
 
+import vn.mbm.phimp.me.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

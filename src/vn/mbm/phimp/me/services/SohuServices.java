@@ -14,8 +14,8 @@ import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
 
-import vn.mbm.phimp.me.R;
 import winterwell.jtwitter.OAuthSignpostClient;
+import vn.mbm.phimp.me.R;
 import android.util.Log;
 
 public class SohuServices {

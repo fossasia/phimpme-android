@@ -20,9 +20,10 @@ import java.util.HashMap;
 
 import javax.microedition.khronos.opengles.GL11;
 
-import vn.mbm.phimp.me.R.drawable;
+import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.gallery3d.app.App;
 import vn.mbm.phimp.me.gallery3d.app.Res;
+import android.R.drawable;
 
 public final class GridDrawables {
     // The display primitives.
@@ -82,14 +83,14 @@ public final class GridDrawables {
     static {
         // We first populate the spinner textures.
         final int[] textureSpinner = TEXTURE_SPINNER;
-        textureSpinner[0] = drawable.ic_spinner1;
-        textureSpinner[1] = drawable.ic_spinner2;
-        textureSpinner[2] = drawable.ic_spinner3;
-        textureSpinner[3] = drawable.ic_spinner4;
-        textureSpinner[4] = drawable.ic_spinner5;
-        textureSpinner[5] = drawable.ic_spinner6;
-        textureSpinner[6] = drawable.ic_spinner7;
-        textureSpinner[7] = drawable.ic_spinner8;
+        textureSpinner[0] = R.drawable.ic_spinner1;
+        textureSpinner[1] = R.drawable.ic_spinner2;
+        textureSpinner[2] = R.drawable.ic_spinner3;
+        textureSpinner[3] = R.drawable.ic_spinner4;
+        textureSpinner[4] = R.drawable.ic_spinner5;
+        textureSpinner[5] = R.drawable.ic_spinner6;
+        textureSpinner[6] = R.drawable.ic_spinner7;
+        textureSpinner[7] = R.drawable.ic_spinner8;
     }
 
     public GridDrawables(final int itemWidth, final int itemHeight) {
@@ -188,14 +189,14 @@ public final class GridDrawables {
         view.loadTexture(mTextureFrameFocus);
         view.loadTexture(mTextureFramePressed);
 
-        mTextureSpinner[0] = view.getResource(drawable.ic_spinner1);
-        mTextureSpinner[1] = view.getResource(drawable.ic_spinner2);
-        mTextureSpinner[2] = view.getResource(drawable.ic_spinner3);
-        mTextureSpinner[3] = view.getResource(drawable.ic_spinner4);
-        mTextureSpinner[4] = view.getResource(drawable.ic_spinner5);
-        mTextureSpinner[5] = view.getResource(drawable.ic_spinner6);
-        mTextureSpinner[6] = view.getResource(drawable.ic_spinner7);
-        mTextureSpinner[7] = view.getResource(drawable.ic_spinner8);
+        mTextureSpinner[0] = view.getResource(R.drawable.ic_spinner1);
+        mTextureSpinner[1] = view.getResource(R.drawable.ic_spinner2);
+        mTextureSpinner[2] = view.getResource(R.drawable.ic_spinner3);
+        mTextureSpinner[3] = view.getResource(R.drawable.ic_spinner4);
+        mTextureSpinner[4] = view.getResource(R.drawable.ic_spinner5);
+        mTextureSpinner[5] = view.getResource(R.drawable.ic_spinner6);
+        mTextureSpinner[6] = view.getResource(R.drawable.ic_spinner7);
+        mTextureSpinner[7] = view.getResource(R.drawable.ic_spinner8);
     }
 
     public int getIconForSet(MediaSet set, boolean scaled) {
@@ -203,25 +204,25 @@ public final class GridDrawables {
         // version for 3D rendering.
         if (scaled) {
             if (set == null) {
-                return drawable.icon_folder_small;
+                return R.drawable.icon_folder_small;
             }
             if (set.mPicasaAlbumId != Shared.INVALID) {
-                return drawable.icon_picasa_small;
+                return R.drawable.icon_picasa_small;
             } else if (set.mId == LocalDataSource.CAMERA_BUCKET_ID) {
-                return drawable.icon_camera_small;
+                return R.drawable.icon_camera_small;
             } else {
-                return drawable.icon_folder_small;
+                return R.drawable.icon_folder_small;
             }
         } else {
             if (set == null) {
-                return drawable.icon_folder_small_unscaled;
+                return R.drawable.icon_folder_small_unscaled;
             }
             if (set.mPicasaAlbumId != Shared.INVALID) {
-                return drawable.icon_picasa_small_unscaled;
+                return R.drawable.icon_picasa_small_unscaled;
             } else if (set.mId == LocalDataSource.CAMERA_BUCKET_ID) {
-                return drawable.icon_camera_small_unscaled;
+                return R.drawable.icon_camera_small_unscaled;
             } else {
-                return drawable.icon_folder_small_unscaled;
+                return R.drawable.icon_folder_small_unscaled;
             }
         }
     }

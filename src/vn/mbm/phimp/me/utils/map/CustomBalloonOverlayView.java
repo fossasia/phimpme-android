@@ -1,7 +1,7 @@
 package vn.mbm.phimp.me.utils.map;
 
-import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.utils.ImageUtil;
+import vn.mbm.phimp.me.R;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

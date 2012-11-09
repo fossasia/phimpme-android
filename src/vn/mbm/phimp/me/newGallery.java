@@ -27,6 +27,7 @@ import vn.mbm.phimp.me.utils.RSSPhotoItem;
 import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
 import vn.mbm.phimp.me.utils.RSSUtil;
 import vn.mbm.phimp.me.utils.geoDegrees;
+import vn.mbm.phimp.me.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;

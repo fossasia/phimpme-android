@@ -23,12 +23,12 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import vn.mbm.phimp.me.PhimpMe;
-import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.database.AccountItem;
 import vn.mbm.phimp.me.database.FacebookItem;
 import vn.mbm.phimp.me.services.FacebookServices;
 import vn.mbm.phimp.me.utils.Commons.MySSLSocketFactory;
 import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
+import vn.mbm.phimp.me.R;
 import android.content.Context;
 import android.util.Log;
 

@@ -31,9 +31,9 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 import org.json.JSONObject;
 
-import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.utils.Commons.MySSLSocketFactory;
 import winterwell.jtwitter.OAuthSignpostClient;
+import vn.mbm.phimp.me.R;
 import android.util.Log;
 
 public class TwitterServices 

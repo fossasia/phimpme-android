@@ -32,8 +32,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
-import vn.mbm.phimp.me.R;
 import winterwell.jtwitter.OAuthSignpostClient;
+import vn.mbm.phimp.me.R;
 import android.util.Log;
 
 public class FlickrServices 

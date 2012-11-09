@@ -11,6 +11,7 @@ import vn.mbm.phimp.me.utils.geoDegrees;
 import vn.mbm.phimp.me.utils.map.CustomItemizedOverlay;
 import vn.mbm.phimp.me.utils.map.CustomOverlayItem;
 import vn.mbm.phimp.me.utils.map.Road;
+import vn.mbm.phimp.me.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;

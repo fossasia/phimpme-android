@@ -78,9 +78,8 @@
             
         </activity>
         <activity
-            android:name=".Camera2"
-            android:configChanges="locale"
-            android:screenOrientation="portrait"
+            android:name=".Camera2"            
+            android:configChanges="keyboardHidden|locale"           
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             
         </activity>            
@@ -224,6 +223,29 @@
         </activity> 
           <activity android:name="com.google.ads.AdActivity"
               android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
+       
+       <!-- wordpress -->
+       <activity
+            android:name="org.wordpress.android.NewAccount"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait"
+            >
+       </activity>
+       <activity
+            android:name="org.wordpress.android.Signup"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait">
+       </activity>
+       <activity
+            android:name="org.wordpress.android.AddAccount"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait">
+       </activity>
+       <activity
+            android:name="org.wordpress.android.AddAcountSettings"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait">
+       </activity>
        
     </application>
     <dependency>

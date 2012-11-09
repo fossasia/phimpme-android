@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import vn.mbm.phimp.me.gallery.PhimpMeGallery;
 import vn.mbm.phimp.me.utils.RSSPhotoItem;
 import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
+import vn.mbm.phimp.me.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;

@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.Set;
 import java.util.UUID;
 
+import vn.mbm.phimp.me.R;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;

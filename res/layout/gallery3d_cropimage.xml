@@ -23,13 +23,48 @@
         android:layout_height="fill_parent"
         android:orientation="horizontal" >
 
+        <LinearLayout
+            android:id="@+id/linear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip" >
+
+            <ImageButton
+                android:id="@+id/btnOriginal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/empty"
+                android:src="@drawable/icon_normal" />
+
+            <ImageButton
+                android:id="@+id/btnBlackAndWhite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/empty"
+                android:src="@drawable/icon_black_white" />
+
+            <ImageButton
+                android:id="@+id/btnNagative"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/empty"
+                android:src="@drawable/icon_negative" />
+
+            <ImageButton
+                android:id="@+id/btnSaphia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/empty"
+                android:src="@drawable/icon_sapphire" />
+        </LinearLayout>
+
         <view
             android:id="@+id/image"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_above="@+id/scrollView1"
-            android:layout_x="0dip"
-            android:layout_y="0dip"
+            android:layout_below="@+id/linear"                       
             class="vn.mbm.phimp.me.gallery3d.media.CropImageView"
             android:background="#55000000" />
 
@@ -93,48 +128,15 @@
                             android:contentDescription="@string/empty"
                             android:src="@drawable/rotate_left_right" />
 
-						<ImageButton
-                            android:id="@+id/btnOriginal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_toRightOf="@+id/btnOriginal"
-                            android:contentDescription="@string/empty"
-                            android:src="@drawable/icon_normal" />
                         <ImageButton
-                            android:id="@+id/btnBlackAndWhite"
+                            android:id="@+id/btnSnow"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
-                            android:layout_toRightOf="@+id/btnRotateLeftRight"
+                            android:layout_toRightOf="@+id/btnSnow"
                             android:contentDescription="@string/empty"
-                            android:src="@drawable/icon_black_white" />
+                            android:src="@drawable/icon_snow" />
 
-                        <ImageButton
-                            android:id="@+id/btnSaphia"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_toRightOf="@+id/btnBlackAndWhite"
-                            android:contentDescription="@string/empty"
-                            android:src="@drawable/icon_sapphire" />
-
-                        <ImageButton
-                            android:id="@+id/btnNagative"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_toRightOf="@+id/btnSaphia"
-                            android:contentDescription="@string/empty"
-                            android:src="@drawable/icon_negative" />
-						<ImageButton
-						    android:id="@+id/btnSnow"
-						    android:layout_width="wrap_content"
-						    android:layout_height="wrap_content"
-						    android:layout_alignParentTop="true"
-						    android:layout_toRightOf="@+id/btnSnow"
-						    android:contentDescription="@string/empty"
-						    android:src="@drawable/icon_snow" />
                         <ImageButton
                             android:id="@+id/btnRoundCorner"
                             android:layout_width="wrap_content"
@@ -153,8 +155,6 @@
                             android:layout_toRightOf="@+id/btnOriginal"
                             android:contentDescription="@string/empty"
                             android:src="@drawable/rotate_top_down" />
-                        
-                        
                     </LinearLayout>
                 </HorizontalScrollView>
 
@@ -163,7 +163,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                     
                     android:text="@string/title" />
 
                 <EditText
@@ -171,7 +170,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
-                    
                     android:inputType="textNoSuggestions" >
                 </EditText>
 

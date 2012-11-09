@@ -25,8 +25,8 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 
-import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.utils.Commons.MySSLSocketFactory;
+import vn.mbm.phimp.me.R;
 import android.util.Log;
 
 
