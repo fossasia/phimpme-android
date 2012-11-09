@@ -15,6 +15,7 @@ import org.osmdroid.views.overlay.ScaleBarOverlay;
 import vn.mbm.phimp.me.ultils.osmap.ExtendedOverlayItem;
 import vn.mbm.phimp.me.ultils.osmap.ItemizedOverlayWithBubble;
 import vn.mbm.phimp.me.utils.geoDegrees;
+import vn.mbm.phimp.me.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;

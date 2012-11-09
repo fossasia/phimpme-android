@@ -26,9 +26,9 @@ import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.utils.Commons.MySSLSocketFactory;
 import winterwell.jtwitter.OAuthSignpostClient;
+import vn.mbm.phimp.me.R;
 import android.content.Context;
 import android.util.Log;
 

@@ -24,8 +24,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.scribe.oauth.OAuth20ServiceImpl;
 
-import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.utils.Commons.MySSLSocketFactory;
+import vn.mbm.phimp.me.R;
 import android.content.Context;
 import android.util.Log;
 

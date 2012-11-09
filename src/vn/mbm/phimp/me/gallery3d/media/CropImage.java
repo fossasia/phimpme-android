@@ -32,10 +32,10 @@ import java.util.concurrent.CountDownLatch;
 import org.json.JSONObject;
 
 import vn.mbm.phimp.me.PhimpMe;
-import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.UploadMap;
 import vn.mbm.phimp.me.gallery3d.app.App;
 import vn.mbm.phimp.me.gallery3d.app.Res;
+import vn.mbm.phimp.me.R;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -1207,8 +1207,8 @@ public class CropImage extends MonitoredActivity {
 
             // CR: sentences!
             // make the default size about 4/5 of the width or height
-            int cropWidth = Math.min(width, height) * 4 / 5;
-            int cropHeight = cropWidth;
+            int cropWidth = width;//Math.min(width, height) * 1;
+            int cropHeight = height;
 
             if (mAspectX != 0 && mAspectY != 0) {
                 if (mAspectX > mAspectY) {
@@ -1304,6 +1304,8 @@ class CropImageView extends ImageViewTouchBase {
                 }
             }
         }
+        center(true, true);
+        Log.e("Crop Image","Create");
     }
 
     public CropImageView(Context context, AttributeSet attrs) {
@@ -1373,6 +1375,7 @@ class CropImageView extends ImageViewTouchBase {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         CropImage cropImage = (CropImage) getContext();
+        Log.e("On Touch","sfdsfd");
         if (cropImage.mSaving) {
             return false;
         }

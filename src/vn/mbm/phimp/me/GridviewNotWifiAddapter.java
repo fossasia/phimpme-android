@@ -1,5 +1,6 @@
 package vn.mbm.phimp.me;
 
+import vn.mbm.phimp.me.R;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;

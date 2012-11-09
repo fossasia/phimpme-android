@@ -2,10 +2,10 @@ package vn.mbm.phimp.me.gallery;
 
 import java.util.ArrayList;
 
-import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.SendFileActivity;
 import vn.mbm.phimp.me.Upload;
 import vn.mbm.phimp.me.gallery3d.media.CropImage;
+import vn.mbm.phimp.me.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;

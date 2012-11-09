@@ -33,11 +33,10 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 
 public class Camera2 extends Activity{
 	private static final String TAG = "Camera";
@@ -51,13 +50,14 @@ public class Camera2 extends Activity{
 	ImageButton camera_switch;
 	FrameLayout frame;	
 	public int degrees;
+	boolean portrait = true;
 	//** Called when the activity is first created. *//*
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.camera);
 		
-		//setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		//setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_USER);
 		//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_BEHIND);
 		frame = ((FrameLayout) findViewById(R.id.preview));	   
 		preview = new Preview(this);				
@@ -69,14 +69,10 @@ public class Camera2 extends Activity{
 		}
 		//mCamera.setDisplayOrientation(90);
 		setCameraDisplayOrientation(this, 0, mCamera);
-		preview.setCamera(mCamera);
-		RelativeLayout.LayoutParams layoutparams = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);		
-		layoutparams.addRule(RelativeLayout.ALIGN_PARENT_LEFT,RelativeLayout.TRUE);
-		layoutparams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT,RelativeLayout.TRUE);
-		layoutparams.addRule(RelativeLayout.ALIGN_PARENT_TOP,RelativeLayout.TRUE);
-		layoutparams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,RelativeLayout.TRUE);
-		preview.setLayoutParams(layoutparams);
+		preview.setCamera(mCamera);							
 		ctx = this;
+		LayoutParams layparam = new LayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
+		preview.setLayoutParams(layparam);
 		frame.addView(preview);			
 		buttonClick = (ImageButton) findViewById(R.id.takephoto);
 		buttonClick.bringToFront();
@@ -92,8 +88,7 @@ public class Camera2 extends Activity{
 			public void onOrientationChanged(int orientation) {
 				// TODO Auto-generated method stub
 			Log.e("Orientation","Change"+ String.valueOf(orientation));
-			degrees = orientation;
-				
+			degrees = orientation;			
 			}
 		};
 		mOrientation.enable();
@@ -229,11 +224,24 @@ public class Camera2 extends Activity{
 	            if (PhimpMe.camera_use == 0)
 	            	{
 	            	Log.e("Degrees",String.valueOf(degrees));
-	            	if (degrees < 180)
-	            		mtx.postRotate(90);else mtx.postRotate(90+degrees);
+	            	if (degrees > 0 && degrees <=90)
+	            		{
+	            		Log.e("Degree",String.valueOf(degrees));
+	            		mtx.postRotate(90);//else mtx.postRotate(-degrees);
+	            		}
+	            	else if (degrees > 90 && degrees <=180 ){
+	            		mtx.postRotate(180);
+	            	}
 	            	}
 	            else {
-	            	if (degrees > 180) mtx.postRotate(-90);else mtx.postRotate(-90-degrees);
+	            	if (degrees > 0 && degrees <=90)
+            		{
+            		Log.e("Degree",String.valueOf(degrees));
+            		mtx.postRotate(-90);//else mtx.postRotate(-degrees);
+            		}
+	            	else if (degrees > 90 && degrees <=180 ){
+            		mtx.postRotate(-180);
+	            	}
 	            } 
 	            // Rotating Bitmap	      	            
 	            rotatedBMP = Bitmap.createBitmap(bmp, 0, 0, w, h, mtx, true);
@@ -309,8 +317,8 @@ public class Camera2 extends Activity{
 	    // Checks the orientation of the screen
 	    setCameraDisplayOrientation((Activity)ctx, PhimpMe.camera_use, mCamera);
 	    Display display = ((WindowManager) ctx.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-	    //int rotation = display.getRotation();
-	    //setRequestedOrientation(getRotation(rotation));
+	    int rotation = display.getRotation();
+	    setRequestedOrientation(getRotation(rotation));
 	    }*/
 	public static int getRotation(int rotation){
 		int result = 0;
@@ -466,7 +474,9 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 				}
 			}
 			}
+				result = size;
 				}
+			
 
 				return(result);
     }
@@ -477,9 +487,11 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
     	try{
     	camera.stopPreview();
     	Camera.Parameters parameters = camera.getParameters();        
-        Camera.Size previewSize = getBestPreviewSize(w, h, parameters);   
+        Camera.Size previewSize = getBestPreviewSize(w, h, parameters);
+        Log.e("camera W",String.valueOf(previewSize.width));        
         requestLayout();
         parameters.setPreviewSize(previewSize.width,previewSize.height);
+        camera.setParameters(parameters);
         camera.startPreview();
     	}catch(NullPointerException e){}
     }

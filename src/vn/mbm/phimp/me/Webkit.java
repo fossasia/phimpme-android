@@ -26,6 +26,7 @@ import vn.mbm.phimp.me.services.SohuServices;
 import vn.mbm.phimp.me.services.TumblrServices;
 import vn.mbm.phimp.me.services.TwitterServices;
 import vn.mbm.phimp.me.services.VKServices;
+import vn.mbm.phimp.me.R;
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;

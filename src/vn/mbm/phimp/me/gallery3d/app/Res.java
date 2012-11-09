@@ -15,7 +15,6 @@
  */
 
 package vn.mbm.phimp.me.gallery3d.app;
-
 import vn.mbm.phimp.me.R;
 
 public class Res {

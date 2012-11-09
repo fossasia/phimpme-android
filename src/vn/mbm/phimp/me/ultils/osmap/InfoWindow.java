@@ -2,6 +2,7 @@ package vn.mbm.phimp.me.ultils.osmap;
 
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;

@@ -6,12 +6,10 @@ import java.util.ArrayList;
 import org.osmdroid.views.MapView;
 
 import vn.mbm.phimp.me.gallery.PhimpMeGallery;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;

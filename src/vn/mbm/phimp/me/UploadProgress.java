@@ -94,6 +94,7 @@ import vn.mbm.phimp.me.utils.Commons.MySSLSocketFactory;
 import vn.mbm.phimp.me.utils.CustomFilePartEntity;
 import vn.mbm.phimp.me.utils.CustomMultiPartEntity;
 import vn.mbm.phimp.me.utils.CustomMultiPartEntity.ProgressListener;
+import vn.mbm.phimp.me.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;

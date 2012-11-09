@@ -8,8 +8,8 @@ import org.mcsoxford.rss.RSSFeed;
 import org.mcsoxford.rss.RSSItem;
 import org.mcsoxford.rss.RSSReader;
 
-import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.utils.RSSPhotoItem;
+import vn.mbm.phimp.me.R;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;

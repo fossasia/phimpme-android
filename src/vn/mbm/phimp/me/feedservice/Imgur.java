@@ -12,12 +12,12 @@ import org.mcsoxford.rss.RSSItem;
 import org.mcsoxford.rss.RSSReader;
 
 import vn.mbm.phimp.me.PhimpMe;
-import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.database.AccountItem;
 import vn.mbm.phimp.me.database.ImgurItem;
 import vn.mbm.phimp.me.services.ImgurServices;
 import vn.mbm.phimp.me.utils.RSSPhotoItem;
 import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
+import vn.mbm.phimp.me.R;
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
