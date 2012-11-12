@@ -1,17 +1,17 @@
 package vn.mbm.phimp.me;
 
-import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.security.KeyStore;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -25,7 +25,6 @@ import oauth.signpost.http.HttpParameters;
 import oauth.signpost.signature.HmacSha1MessageSigner;
 import oauth.signpost.signature.OAuthMessageSigner;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -42,7 +41,6 @@ import org.apache.http.conn.scheme.SchemeRegistry;
 import org.apache.http.conn.ssl.SSLSocketFactory;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.ContentBody;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.BasicResponseHandler;
@@ -51,7 +49,6 @@ import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
@@ -60,7 +57,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
+import org.wordpress.android.models.MediaFile;
 import org.xml.sax.InputSource;
+import org.xmlrpc.android.XMLRPCClient;
+import org.xmlrpc.android.XMLRPCException;
 
 import vn.mbm.phimp.me.database.DeviantArtItem;
 import vn.mbm.phimp.me.database.DrupalItem;
@@ -69,13 +69,12 @@ import vn.mbm.phimp.me.database.FlickrItem;
 import vn.mbm.phimp.me.database.ImageshackItem;
 import vn.mbm.phimp.me.database.ImageshackPhotoList;
 import vn.mbm.phimp.me.database.ImgurItem;
-import vn.mbm.phimp.me.database.KaixinDBItem;
 import vn.mbm.phimp.me.database.PicasaItem;
-import vn.mbm.phimp.me.database.S500pxItem;
 import vn.mbm.phimp.me.database.SohuItem;
 import vn.mbm.phimp.me.database.TumblrItem;
 import vn.mbm.phimp.me.database.TwitterItem;
 import vn.mbm.phimp.me.database.VkItem;
+import vn.mbm.phimp.me.database.WordpressItem;
 import vn.mbm.phimp.me.services.DeviantArtService;
 import vn.mbm.phimp.me.services.DrupalServices;
 import vn.mbm.phimp.me.services.FacebookServices;
@@ -115,6 +114,7 @@ public class UploadProgress extends Activity
 	Context ctx;
 
 	LinearLayout lytUploadProgress;
+	
 	public static String[] account_id;
 	public static String[] account_name;
 	static String[] account_service;
@@ -237,6 +237,11 @@ public class UploadProgress extends Activity
 				else if (account_service[position].equals("sohu"))
 				{					
 					holder.imgIcon.setImageResource(SohuServices.icon);
+					
+				}
+				else if (account_service[position].equals("wordpress"))
+				{					
+					holder.imgIcon.setImageResource(R.drawable.icon_wordpress);
 					
 				}
 				String acc_name = account_name[position];
@@ -1436,102 +1441,6 @@ public class UploadProgress extends Activity
 				}
 			}
 
-			
-			
-			else if (KaixinServices.title.toLowerCase().equals(_s))
-			{
-				try
-				{
-					KaixinDBItem acc = KaixinDBItem.getItem(ctx, account_id[pos]);
-					String access_token = acc.getToken();
-					String album_id = acc.getAlbumId();
-					String url = "https://api.kaixin001.com/photo/upload.json";
-					url += "?access_token=" + URLEncoder.encode(access_token);
-					Log.d("kaixin", "Upload Photo URL: " + url );
-
-
-					URI uri = new URI(url);
-					HttpClient httpClient = new DefaultHttpClient();;
-					httpClient.getParams( ).setParameter( CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1 );
-			    	try
-				    {
-			    		KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
-				        trustStore.load(null, null);
-
-				        SSLSocketFactory sf = new MySSLSocketFactory(trustStore);
-				        sf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-
-				        HttpParams _params = new BasicHttpParams();
-				        HttpProtocolParams.setVersion(_params, HttpVersion.HTTP_1_1);
-				        HttpProtocolParams.setContentCharset(_params, HTTP.UTF_8);
-
-				        SchemeRegistry registry = new SchemeRegistry();
-				        registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-				        registry.register(new Scheme("https", sf, 443));
-
-				        ClientConnectionManager ccm = new ThreadSafeClientConnManager(_params, registry);
-
-				        httpClient = new DefaultHttpClient(ccm, _params);
-
-				        trustStore = null; //Clean up memory
-				        sf = null; //Clean up memory
-				        _params = null; //Clean up memory
-				        registry = null; //Clean up memory
-				        ccm = null; //Clean up memory
-				    }
-				    catch (Exception e)
-				    {
-				       	httpClient = new DefaultHttpClient();
-				    }
-					HttpPost httppost = new HttpPost(uri);		
-					for (int i = 0; i < path.length ; i++){
-						String p[] = path[i].split(";");	
-					CustomMultiPartEntity multi = new CustomMultiPartEntity(new ProgressListener()
-					{
-						@Override
-						public void transferred(long num)
-						{
-							publishProgress((int) ((num / (float) totalSize) * 100));
-						}
-					});
-					String exp = p[0].substring(p[0].lastIndexOf(".")+1);
-					ContentBody cbFile        = new FileBody( new File(p[0]), "image/"+exp);
-
-				    ContentBody cbAccessToken = new StringBody( access_token );
-				    ContentBody albumid = new StringBody( album_id );
-				    
-				    multi.addPart( "access_token", cbAccessToken );
-				    multi.addPart( "pic",       cbFile        );
-				    multi.addPart( "albumid",       albumid        );
-				    
-					totalSize = multi.getContentLength();
-					httppost.setEntity(multi);
-
-					Log.d("upload kaixin", uri.toString() );
-
-					HttpResponse httpResponse = httpClient.execute(httppost);
-					BufferedReader reader = new BufferedReader(new InputStreamReader(httpResponse.getEntity().getContent(), "UTF-8"));
-				    String sResponse = reader.readLine();
-					Log.i("kaixin", "Response from Upload: " + sResponse);
-					JSONObject json = new JSONObject(sResponse);
-
-
-					if (!json.getString("albumid").equals(""))
-					{
-						result = true;
-					}
-					else
-					{
-						result = false;
-					}
-					}
-				}
-				catch (Exception e)
-				{																					
-						e.printStackTrace();
-						return false;
-				}
-			}
 			else if (ImgurServices.title.toLowerCase().equals(_s))
 			{
 				ImgurItem acc = ImgurItem.getItem(ctx, account_id[pos]);
@@ -1569,6 +1478,7 @@ public class UploadProgress extends Activity
 					multi.addPart("long", new StringBody(logi));					
 					}
 					totalSize = multi.getContentLength();
+					Log.e("UploadProgress", "total size : "+totalSize);
 					httppost.setEntity(multi);
 
 					consumer.setTokenWithSecret(token, token_secret);
@@ -1599,110 +1509,7 @@ public class UploadProgress extends Activity
 					return false;
 				}
 			}
-			else if (S500pxService.title.toLowerCase().equals(_s))
-			{
-				S500pxItem acc = S500pxItem.getItem(ctx, account_id[pos]);
-				String token = acc.getToken();
-				String token_secret = acc.getTokenSecret();
-				//String[] path = imagelist.split(",");				
-				try
-				{
-					OAuthConsumer consumer = new CommonsHttpOAuthConsumer(S500pxService.CONSUMER_KEY,S500pxService.CONSUMER_SECRET);
-					
-					String url="https://api.500px.com/v1/photos?name=photonumber2&description=notanythingtosay&category=0";
-					URI uri = new URI(url);
-					Log.d("==>>",url);					
-					HttpClient httpClient = null;
-				 	try
-				    {
-			    		KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
-				        trustStore.load(null, null);
 
-				        SSLSocketFactory sf = new MySSLSocketFactory(trustStore);
-				        sf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
-
-				        HttpParams _params = new BasicHttpParams();
-				        HttpProtocolParams.setVersion(_params, HttpVersion.HTTP_1_1);
-				        HttpProtocolParams.setContentCharset(_params, HTTP.UTF_8);
-
-				        SchemeRegistry registry = new SchemeRegistry();
-				        registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-				        registry.register(new Scheme("https", sf, 443));
-
-				        ClientConnectionManager ccm = new ThreadSafeClientConnManager(_params, registry);
-
-				        httpClient = new DefaultHttpClient(ccm, _params);
-				        trustStore = null; //Clean up memory
-				        sf = null; //Clean up memory
-				        _params = null; //Clean up memory
-				        registry = null; //Clean up memory
-				        ccm = null; //Clean up memory
-				    } 
-				    catch (Exception e) 
-				    {
-				       	httpClient = new DefaultHttpClient();
-				    }
-					HttpPost httppost = new HttpPost(uri);
-					Log.d("path===>>>", path[0].toString());
-
-					consumer.setTokenWithSecret(token, token_secret);
-					consumer.sign(httppost);						
-				ResponseHandler<String> res = new BasicResponseHandler();
-				String httpResponse = httpClient.execute(httppost, res);
-				Log.d("QTrespone ne==>>>",httpResponse);
-				JSONObject json = new JSONObject(httpResponse);
-				JSONObject json1 = new JSONObject(json.getString("photo"));	
-				
-				String pt=json1.getString("id");
-				Log.d("id ne===>>>",pt);
-				Log.d("upload key ne===>>",json.getString("upload_key"));
-				Log.d("access key ne===>>",token);				
-				consumer.sign(httppost);						
-		    	//String response = httpClient.execute(httppost,res);
-		    	String upload_key = new JSONObject(httpResponse).getString("upload_key");
-		    	json1 = new JSONObject(new JSONObject(httpResponse).getString("photo"));
-		    	String photo_id = json1.getString("id");		    	
-		    	Log.d("reponse",httpResponse);		    			    							
-				
-				String[] path = imagelist.split(",");				
-				String urlup = "https://api.500px.com/v1/upload?consumer_key="+S500pxService.CONSUMER_KEY+"&access_key="+token+"&upload_key="+upload_key+"&photo_id="+photo_id;
-				Log.d("urlup",urlup);
-				URI uriup = new URI(urlup);
-					
-				HttpPost httppostup = new HttpPost(uriup);						
-				consumer.sign(httppostup);						
-					for (int i = 0; i < path.length ; i++){
-					CustomMultiPartEntity multi = new CustomMultiPartEntity(new ProgressListener()
-					{
-						@Override
-						public void transferred(long num)
-						{
-							publishProgress((int) ((num / (float) totalSize) * 100));
-						}
-					});		
-					multi.addPart("file", new FileBody(new File(path[i].split(";")[0])));											
-					totalSize = multi.getContentLength();
-					httppostup.setEntity(multi);								 					
-					ResponseHandler<String> res1 = new BasicResponseHandler();
-					httpResponse = httpClient.execute(httppostup, res1);
-					Log.d("reponse",httpResponse);
-					json = new JSONObject(httpResponse);
-					
-					if (json.getString("error").equals("None."))
-					{
-						result = true;
-					}
-					else
-					{
-						result = false;
-					}					
-			}
-			
-			}catch(Exception e)
-			{
-				e.printStackTrace();
-			}
-			}
 			else if (SohuServices.title.toLowerCase().equals(_s))
 			{
 				SohuItem acc = SohuItem.getItem(ctx, account_id[pos]);
@@ -1759,6 +1566,115 @@ public class UploadProgress extends Activity
 
 					return false;
 				}
+			}
+			
+			else if ("wordpress".equals(_s)){
+				String content="";
+				int featuredImageID=-1;
+				MediaFile mf=new MediaFile();
+				XMLRPCClient client = new XMLRPCClient("https://congdanh0812.wordpress.com/xmlrpc.php","", "");
+				WordpressItem acc = WordpressItem.getItem(ctx, account_id[pos]);
+				String username=acc.getUsername();				
+				Log.e("UploadProgress", "username : "+username );
+				//create temp file for media upload
+				String tempFileName = "wp-" + System.currentTimeMillis();
+				
+				for (int i = 0; i < path.length ; i++){					
+					String imagepath=path[i].split(";")[0];
+					try {
+						ctx.openFileOutput(tempFileName, Context.MODE_PRIVATE);
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();						
+					}
+					
+					File tempFile = ctx.getFileStreamPath(tempFileName);
+					/**
+					 * upload
+					 */
+					//=================get link upload==================================
+					String filename=imagepath.split("/")[5];
+					mf.setFilePath(imagepath);
+					Map<String, Object> m = new HashMap<String, Object>();
+
+					m.put("name", filename);
+					m.put("type", "image/jpeg");					
+					m.put("bits", mf);					
+					m.put("overwrite", true);
+
+					Object[] params1 = { 1, "congdanh0812","congdanh812", m };
+					Object result1 = null;
+					
+					try {
+						result1 = (Object) client.callUploadFile("wp.uploadFile",params1, tempFile);
+						Log.e("UploadProgress","result : "+result1.toString());
+					} catch (XMLRPCException e) {
+						e.printStackTrace();
+					}
+					//=================end===============================================
+					//=================content to upload=================================
+					HashMap<?, ?> contentHash = new HashMap<Object, Object>();
+
+					contentHash = (HashMap<?, ?>) result1;
+
+					String resultURL = contentHash.get("url").toString();
+					
+					
+					try {
+						if (contentHash.get("id") != null) {
+							featuredImageID = Integer.parseInt(contentHash.get("id").toString());						
+						}
+					} catch (NumberFormatException e) {
+						e.printStackTrace();
+					}
+
+					String alignmentCSS = "class=\"" + "alignnone"+ "\" ";
+					if (resultURL != null) {
+							content = content
+									+ "<a href=\""
+									+ resultURL
+									+ "\"><img title=\""
+									+ mf.getTitle() + "\" "
+									+ alignmentCSS
+									+ "alt=\"image\" src=\""
+									+ resultURL + "\" /></a>";
+												
+						}
+					//========end content========================================
+					
+					//========start upload photo to wordpress====================
+					Map<String, Object> contentStruct = new HashMap<String, Object>();
+					contentStruct.put("wp_post_format","standard");
+					contentStruct.put("post_type", "post");
+					contentStruct.put("title", "");
+					contentStruct.put("wp_password", "");
+					contentStruct.put("description", content);
+					contentStruct.put("mt_keywords", "");
+					contentStruct.put("categories", "phimpme");
+					contentStruct.put("mt_excerpt", "");
+					contentStruct.put("post_status","publish");
+					Log.e("UploadProgress","contentStruct : "+contentStruct.toString());
+					if (featuredImageID != -1)
+						contentStruct.put("wp_post_thumbnail", featuredImageID);
+					
+					Object[] params2;				
+					params2 = new Object[] { 1,"congdanh0812", "congdanh812",contentStruct, false };
+					XMLRPCClient client1 = new XMLRPCClient("http://congdanh0812.wordpress.com/xmlrpc.php","", "");
+
+					try {
+						Object result3=null;
+						result3=(Object)client1.call("metaWeblog.newPost", params2);
+						Log.e("UploadProgress","result upload : "+result3.toString());
+						return true;
+					} catch (final XMLRPCException e) {
+						e.printStackTrace();
+					}
+
+					//========finish upload function=============================
+					/**
+					 * end
+					 */
+				}
+				
 			}
 			
 			return result;
