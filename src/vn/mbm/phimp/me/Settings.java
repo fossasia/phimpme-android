@@ -1519,6 +1519,7 @@ public class Settings extends Activity
 		
 		iconContextMenu = new IconContextMenu(this, CONTEXT_MENU_ID);
 		iconContextMenu.addItem(res, DrupalServices.title, DrupalServices.icon, SERVICES_DRUPAL_ACTION);
+		iconContextMenu.addItem(res, "Wordpress",R.drawable.icon_wordpress , SERVICES_WORDPRESS_ACTION);
         iconContextMenu.addItem(res, FacebookServices.title, FacebookServices.icon, SERVICES_FACEBOOK_ACTION);
         iconContextMenu.addItem(res, FlickrServices.title, FlickrServices.icon, SERVICES_FLICKR_ACTION);
         iconContextMenu.addItem(res, PicasaServices.title, PicasaServices.icon, SERVICES_PICASA_ACTION);
@@ -1532,7 +1533,7 @@ public class Settings extends Activity
         iconContextMenu.addItem(res, ImgurServices.title, ImgurServices.icon, SERVICES_IMGUR_ACTION);
         //iconContextMenu.addItem(res, S500pxService.title, S500pxService.icon, SERVICES_500PX_ACTION)
         iconContextMenu.addItem(res, SohuServices.title, SohuServices.icon, SERVICES_SOHU_ACTION);
-        iconContextMenu.addItem(res, "Wordpress",R.drawable.icon_wordpress , SERVICES_WORDPRESS_ACTION);
+        
         iconContextMenu.setOnClickListener(new IconContextMenu.IconContextMenuOnClickListener() {
 			@Override
 			public void onClick(int menuId) 

@@ -8,7 +8,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.http.conn.HttpHostConnectException;
-import org.wordpress.android.models.Blog;
 import org.wordpress.android.util.AlertUtil;
 import org.wordpress.android.util.EscapeUtils;
 import org.xmlpull.v1.XmlPullParser;
@@ -18,9 +17,7 @@ import org.xmlrpc.android.XMLRPCException;
 import org.xmlrpc.android.XMLRPCFault;
 
 import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.database.AccountDBAdapter;
 import vn.mbm.phimp.me.database.AccountItem;
-import vn.mbm.phimp.me.database.TumblrItem;
 import vn.mbm.phimp.me.database.WordpressDBAdapter;
 import vn.mbm.phimp.me.database.WordpressItem;
 import android.app.Activity;
@@ -57,7 +54,7 @@ public class AddAccount extends Activity {
 	private Button mSaveButton;
 	public static Context ctx;
 	private boolean wpcom = false;
-	private String blogURL, xmlrpcURL;
+	private String blogURL, xmlrpcURL,blogXmlrpcRUL;
 	private static final String URL_WORDPRESS = "http://wordpress.com";
 	private ProgressDialog pd;
 	private XMLRPCClient client;
@@ -258,9 +255,8 @@ public class AddAccount extends Activity {
 					blogCtr = 0;
 					// loop this!
 					for (int ctr = 0; ctr < result.length; ctr++) {
-						contentHash = (HashMap<Object, Object>) result[ctr];
-						// check if this blog is already set up
-						boolean match = false;
+						contentHash = (HashMap<Object, Object>) result[ctr];						
+						
 						String matchBlogName = contentHash.get("blogName").toString();
 						if (matchBlogName.length() == 0) {
 							matchBlogName = contentHash.get("url").toString();
@@ -274,7 +270,8 @@ public class AddAccount extends Activity {
 							homeURLs[blogCtr] = contentHash.get("url").toString();
 							blogIds[blogCtr] = Integer.parseInt(contentHash.get("blogid").toString());
 							String blogURL = urls[blogCtr];
-
+							blogXmlrpcRUL=blogURL;
+							Log.e("Add account","blogXmlrpcRUL : "+blogXmlrpcRUL);
 							aBlogNames.add(EscapeUtils.unescapeHtml(blogNames[blogCtr]));
 
 							boolean wpcomFlag = false;
@@ -334,7 +331,7 @@ public class AddAccount extends Activity {
 						{
 							WordpressDBAdapter wp=new WordpressDBAdapter(ctx);
 							wp.open();
-							if (WordpressItem.insertWordpressAccount(ctx,  String.valueOf(account_id), blogURL, username, password, httpuser, httppassword))
+							if (WordpressItem.insertWordpressAccount(ctx,  String.valueOf(account_id), blogXmlrpcRUL, username, password, httpuser, httppassword))
 							{
 								Toast.makeText(ctx, "Insert account '" + username + "' (wordpress) SUCCESS!", Toast.LENGTH_LONG).show();
 								wp.close();

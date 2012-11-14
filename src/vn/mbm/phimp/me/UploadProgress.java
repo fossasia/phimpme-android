@@ -57,6 +57,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
+import org.wordpress.android.AddCatagory;
 import org.wordpress.android.models.MediaFile;
 import org.xml.sax.InputSource;
 import org.xmlrpc.android.XMLRPCClient;
@@ -93,12 +94,13 @@ import vn.mbm.phimp.me.utils.Commons.MySSLSocketFactory;
 import vn.mbm.phimp.me.utils.CustomFilePartEntity;
 import vn.mbm.phimp.me.utils.CustomMultiPartEntity;
 import vn.mbm.phimp.me.utils.CustomMultiPartEntity.ProgressListener;
-import vn.mbm.phimp.me.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
@@ -126,7 +128,7 @@ public class UploadProgress extends Activity
 	static Map<Integer, ViewHolder> viewholders = new TreeMap<Integer, ViewHolder>();
 	static String[] path;
 	static final String default_tag_separate = ",";
-
+	private static int progressStatus=0;
 	@Override
     public void onCreate(Bundle savedInstanceState)
 	{
@@ -456,9 +458,9 @@ public class UploadProgress extends Activity
 					}
 				});			
 				
-				multi.addPart("file", new StringBody(img_data_b64));				
-				String filename = "";
-				filename=path.split("/")[4];
+				multi.addPart("file", new StringBody(img_data_b64));
+				File jpeg=new File(path);
+				String filename=jpeg.getName();				
 				Log.i("Danh-UploadProgress","Filename : "+filename);
 				multi.addPart("filename", new StringBody(filename));
 				totalSize = multi.getContentLength();
@@ -1572,14 +1574,38 @@ public class UploadProgress extends Activity
 				String content="";
 				int featuredImageID=-1;
 				MediaFile mf=new MediaFile();
-				XMLRPCClient client = new XMLRPCClient("https://congdanh0812.wordpress.com/xmlrpc.php","", "");
+				
 				WordpressItem acc = WordpressItem.getItem(ctx, account_id[pos]);
-				String username=acc.getUsername();				
+				String username=acc.getUsername();
+				String password=acc.getPassword();
+				String url=acc.getUrl();
+				//progress bar			  
+				new Thread(new Runnable() {
+		             public void run() {
+		                 while (progressStatus <= 100) {		                     
+		                	 try{ 
+		                         myHandle.sendMessage(myHandle.obtainMessage()); 
+		                         Thread.sleep(100); 
+		                 } 
+		                 catch(Throwable t){   } 
+		                 }
+		             }
+		         }).start();
+
+				// check catagory and set phimpme is default catagory
+				AddCatagory add=new AddCatagory();
+				add.getCategories(url, username, password);
+				
+				String[] theCategories = null;
+				theCategories = new String[1];											
+				theCategories[0] = "phimpme mobile";						
+				
+				XMLRPCClient client = new XMLRPCClient(url,"", "");
 				Log.e("UploadProgress", "username : "+username );
 				//create temp file for media upload
 				String tempFileName = "wp-" + System.currentTimeMillis();
 				
-				for (int i = 0; i < path.length ; i++){					
+				for (int i = 0; i < path.length ; i++){													
 					String imagepath=path[i].split(";")[0];
 					try {
 						ctx.openFileOutput(tempFileName, Context.MODE_PRIVATE);
@@ -1588,29 +1614,29 @@ public class UploadProgress extends Activity
 					}
 					
 					File tempFile = ctx.getFileStreamPath(tempFileName);
-					/**
-					 * upload
-					 */
+					
 					//=================get link upload==================================
-					String filename=imagepath.split("/")[5];
+					
 					mf.setFilePath(imagepath);
 					Map<String, Object> m = new HashMap<String, Object>();
-
+					File jpeg=new File(imagepath);
+					String filename=jpeg.getName();
+					Log.d("UploadProgress", "filename : "+filename);
 					m.put("name", filename);
 					m.put("type", "image/jpeg");					
 					m.put("bits", mf);					
 					m.put("overwrite", true);
 
-					Object[] params1 = { 1, "congdanh0812","congdanh812", m };
+					Object[] params1 = { 1, username,password, m };
 					Object result1 = null;
 					
 					try {
 						result1 = (Object) client.callUploadFile("wp.uploadFile",params1, tempFile);
-						Log.e("UploadProgress","result : "+result1.toString());
+						Log.d("UploadProgress","result : "+result1.toString());
 					} catch (XMLRPCException e) {
 						e.printStackTrace();
 					}
-					//=================end===============================================
+					
 					//=================content to upload=================================
 					HashMap<?, ?> contentHash = new HashMap<Object, Object>();
 
@@ -1639,7 +1665,6 @@ public class UploadProgress extends Activity
 									+ resultURL + "\" /></a>";
 												
 						}
-					//========end content========================================
 					
 					//========start upload photo to wordpress====================
 					Map<String, Object> contentStruct = new HashMap<String, Object>();
@@ -1649,30 +1674,27 @@ public class UploadProgress extends Activity
 					contentStruct.put("wp_password", "");
 					contentStruct.put("description", content);
 					contentStruct.put("mt_keywords", "");
-					contentStruct.put("categories", "phimpme");
+					contentStruct.put("categories", theCategories);
 					contentStruct.put("mt_excerpt", "");
 					contentStruct.put("post_status","publish");
-					Log.e("UploadProgress","contentStruct : "+contentStruct.toString());
+					
 					if (featuredImageID != -1)
 						contentStruct.put("wp_post_thumbnail", featuredImageID);
 					
 					Object[] params2;				
-					params2 = new Object[] { 1,"congdanh0812", "congdanh812",contentStruct, false };
-					XMLRPCClient client1 = new XMLRPCClient("http://congdanh0812.wordpress.com/xmlrpc.php","", "");
+					params2 = new Object[] { 1,username, password,contentStruct, false };
+					XMLRPCClient client1 = new XMLRPCClient(url,"", "");
 
 					try {
 						Object result3=null;
-						result3=(Object)client1.call("metaWeblog.newPost", params2);
-						Log.e("UploadProgress","result upload : "+result3.toString());
+						result3=(Object)client1.call("metaWeblog.newPost", params2);							
+						Log.d("UploadProgress","result upload : "+result3.toString());
 						return true;
 					} catch (final XMLRPCException e) {
 						e.printStackTrace();
 					}
 
-					//========finish upload function=============================
-					/**
-					 * end
-					 */
+
 				}
 				
 			}
@@ -1683,6 +1705,7 @@ public class UploadProgress extends Activity
 		@Override
 		protected void onProgressUpdate(Integer... progress)
 		{
+			
 			int _p = (int) progress[0];
 			tvPC.setText(_p + "...%");
 			pb.setProgress(_p);
@@ -1703,7 +1726,17 @@ public class UploadProgress extends Activity
 				ivOK.setVisibility(View.GONE);
 				ivFail.setVisibility(View.VISIBLE);
 			}
-		}
+		}	
+		
+		Handler myHandle = new Handler(){ 		       
+	        public void handleMessage(Message msg) { 
+	              // TODO Auto-generated method stub 
+	        	progressStatus++;
+	        	tvPC.setText(progressStatus + "...%");
+             	pb.setProgress(progressStatus);	 
+	              
+	        } 
+		}; 
 		
 	}
 }

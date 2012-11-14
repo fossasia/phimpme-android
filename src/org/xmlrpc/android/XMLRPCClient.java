@@ -24,6 +24,7 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.FileEntity;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.params.HttpParams;
 import org.apache.http.params.HttpProtocolParams;
@@ -31,6 +32,9 @@ import org.wordpress.android.WordPress;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 import org.xmlpull.v1.XmlSerializer;
+
+import vn.mbm.phimp.me.utils.CustomMultiPartEntity;
+import vn.mbm.phimp.me.utils.CustomMultiPartEntity.ProgressListener;
 
 import android.util.Log;
 import android.util.Xml;
@@ -377,8 +381,8 @@ public class XMLRPCClient {
 				serializer.endTag(null, TAG_METHOD_CALL);
 				serializer.endDocument();
 				
-				HttpEntity entity = new StringEntity(bodyWriter.toString());
-				//Log.i("WordPress", bodyWriter.toString());
+				HttpEntity entity = new StringEntity(bodyWriter.toString());				
+				//Log.e("WordPress", bodyWriter.toString());
 				postMethod.setEntity(entity);
 			}
 

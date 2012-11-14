@@ -24,6 +24,7 @@ public class NewAccount extends Activity {
 		Button dotComButton = (Button) findViewById(R.id.dotcomExisting);
 		Button dotOrgButton = (Button) findViewById(R.id.dotorgExisting);
 
+		dotOrgButton.setVisibility(View.GONE);
 		
 		createAccountButton.setOnClickListener(new Button.OnClickListener() {
 			public void onClick(View v) {
