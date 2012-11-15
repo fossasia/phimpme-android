@@ -1533,7 +1533,7 @@ public class Settings extends Activity
         iconContextMenu.addItem(res, ImgurServices.title, ImgurServices.icon, SERVICES_IMGUR_ACTION);
         //iconContextMenu.addItem(res, S500pxService.title, S500pxService.icon, SERVICES_500PX_ACTION)
         iconContextMenu.addItem(res, SohuServices.title, SohuServices.icon, SERVICES_SOHU_ACTION);
-        
+        iconContextMenu.addItem(res, "Wordpress.com",R.drawable.icon_wordpress , SERVICES_WORDPRESS_ACTION);
         iconContextMenu.setOnClickListener(new IconContextMenu.IconContextMenuOnClickListener() {
 			@Override
 			public void onClick(int menuId) 
