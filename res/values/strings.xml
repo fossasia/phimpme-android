@@ -38,7 +38,9 @@
     <string name="infor_loading_photo_in_map">Loading photo geolocation data into maps. Please wait for a while.</string>
     <string name="infor_map_have_num_photos"> photos has been displayed on Maps.</string>
     <string name="infor_dialog_add_account_drupal_intro">If you want to add this features on your Drupal. Please see introduction here.</string>
+    <string name="infor_dialog_add_account_wordpress_intro">If you want to add this features on your Wordpress. Please see introduction here.</string>   
     <string name="infor_dialog_add_account_drupal_intro_link">View introduction</string>
+    <string name="infor_dialog_add_account_wordpress_intro_link">View introduction</string>
     <string name="url_drupal_introduction">http://mbm.vn</string>
     <string name="username">Username</string>
     <string name="password">Password</string>

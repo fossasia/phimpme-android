@@ -1570,42 +1570,43 @@ public class UploadProgress extends Activity
 				}
 			}
 			
-			else if ("wordpress".equals(_s)){
-				String content="";
-				int featuredImageID=-1;
-				MediaFile mf=new MediaFile();
-				
-				WordpressItem acc = WordpressItem.getItem(ctx, account_id[pos]);
-				String username=acc.getUsername();
-				String password=acc.getPassword();
-				String url=acc.getUrl();
-				//progress bar			  
-				new Thread(new Runnable() {
+			else if ("wordpress".equals(_s)){				
+				for (int i = 0; i < path.length ; i++){	
+					progressStatus = 0;
+					String content="";
+					int featuredImageID=-1;
+					MediaFile mf=new MediaFile();
+					
+					WordpressItem acc = WordpressItem.getItem(ctx, account_id[pos]);
+					String username=acc.getUsername();
+					String password=acc.getPassword();
+					String url=acc.getUrl();
+					//progress bar			  
+					new Thread(new Runnable() {
 		             public void run() {
-		                 while (progressStatus <= 100) {		                     
+		                 while (progressStatus < 100) {		                     
 		                	 try{ 
 		                         myHandle.sendMessage(myHandle.obtainMessage()); 
 		                         Thread.sleep(100); 
+		                        
 		                 } 
 		                 catch(Throwable t){   } 
 		                 }
 		             }
-		         }).start();
+		         	}).start();
 
-				// check catagory and set phimpme is default catagory
-				AddCatagory add=new AddCatagory();
-				add.getCategories(url, username, password);
-				
-				String[] theCategories = null;
-				theCategories = new String[1];											
-				theCategories[0] = "phimpme mobile";						
-				
-				XMLRPCClient client = new XMLRPCClient(url,"", "");
-				Log.e("UploadProgress", "username : "+username );
-				//create temp file for media upload
-				String tempFileName = "wp-" + System.currentTimeMillis();
-				
-				for (int i = 0; i < path.length ; i++){													
+					// check catagory and set phimpme is default catagory
+					AddCatagory add=new AddCatagory();
+					add.getCategories(url, username, password);
+					
+					String[] theCategories = null;
+					theCategories = new String[1];											
+					theCategories[0] = "phimpme mobile";						
+					
+					XMLRPCClient client = new XMLRPCClient(url,"", "");
+					//create temp file for media upload					
+					String tempFileName = "wp-" + System.currentTimeMillis();
+										
 					String imagepath=path[i].split(";")[0];
 					try {
 						ctx.openFileOutput(tempFileName, Context.MODE_PRIVATE);
@@ -1689,7 +1690,8 @@ public class UploadProgress extends Activity
 						Object result3=null;
 						result3=(Object)client1.call("metaWeblog.newPost", params2);							
 						Log.d("UploadProgress","result upload : "+result3.toString());
-						return true;
+						result=true;	
+						
 					} catch (final XMLRPCException e) {
 						e.printStackTrace();
 					}

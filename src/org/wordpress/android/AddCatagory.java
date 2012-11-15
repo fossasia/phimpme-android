@@ -40,21 +40,21 @@ public class AddCatagory {
         	{
         		HashMap<?, ?> curHash = (HashMap<?, ?>) result[i];
         		String categoryName = curHash.get("categoryName").toString();
-        		Log.e("Add Catagory","List catagory : "+categoryName);
+        		//Log.e("Add Catagory","List catagory : "+categoryName);
         		if(categoryName.equals("phimpme mobile")){
-        			Log.e("Add Catagory","phimpme catagory exists !");
+        			//Log.e("Add Catagory","phimpme catagory exists !");
         			check=true;
         		}
         	}
         	if(check==false){
-        		Log.e("AddCatagory", "creata phimpme catagory");
+        		//Log.e("AddCatagory", "creata phimpme catagory");
         		addCategory(url, username, password);
         	}
 
         	
         }
         else{
-        	Log.e("Add Catagory", "get catagory fail !");
+        	//Log.e("Add Catagory", "get catagory fail !");
         }
 
 
@@ -85,10 +85,10 @@ public class AddCatagory {
 		}
     	
 		if (result == null) {
-			Log.e("AddCatagory","Add catagory fail !");
+			//Log.e("AddCatagory","Add catagory fail !");
 		}
 		else {	
-			Log.e("AddCatagory","Add catagory success !");
+			//Log.e("AddCatagory","Add catagory success !");
 			
 		}
 		
