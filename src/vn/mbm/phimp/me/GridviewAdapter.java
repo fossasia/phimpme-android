@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import vn.mbm.phimp.me.gallery.PhimpMeGallery;
 import vn.mbm.phimp.me.utils.RSSPhotoItem;
 import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
-import vn.mbm.phimp.me.R;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -74,17 +73,7 @@ class GridFlickrAdaper extends BaseAdapter {
 	@Override
 	public long getItemId(int position) {
 		return position;
-	}
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> changePosition(int position){		
-		ArrayList<String> tmpFile = (ArrayList<String>) file_path.clone();		
-		if (position != 0){
-			String tmp = tmpFile.get(0);
-			tmpFile.set(0, tmpFile.get(position));
-			tmpFile.set(position, tmp);
-			}
-			return tmpFile;
-	}
+	}	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view;
@@ -122,8 +111,9 @@ class GridFlickrAdaper extends BaseAdapter {
 				//n.Dialog(4000, newGallery.pro_gress);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
-				PhimpMeGallery.setFileList(changePosition(pos));
+				PhimpMeGallery.setFileList(file_path);
 				_intent.putExtra("activityName", "GridviewAdapter");
+				_intent.putExtra("index", pos);
 				((Activity) ctx).startActivity(_intent);
 			}
 		});
@@ -169,16 +159,7 @@ class GridRecentFlickrAdaper extends BaseAdapter {
 		list_recent_flickr.set(0, item);
 		this.notifyDataSetChanged();
 	}
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> changePosition(int position){		
-		ArrayList<String> tmpFile = (ArrayList<String>) file_path.clone();		
-		if (position != 0){
-			String tmp = tmpFile.get(0);
-			tmpFile.set(0, tmpFile.get(position));
-			tmpFile.set(position, tmp);
-			}
-			return tmpFile;
-	}
+	
 	@Override
 	public int getCount() {
 		return list_recent_flickr.size();
@@ -230,7 +211,8 @@ class GridRecentFlickrAdaper extends BaseAdapter {
 				n.Dialog(4000, newGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
-				PhimpMeGallery.setFileList(changePosition(pos));									
+				PhimpMeGallery.setFileList(file_path);	
+				_intent.putExtra("index", pos);
 				_intent.putExtra("activityName", "GridviewAdapter");
 				((Activity) ctx).startActivityForResult(_intent, 3);
 			}
@@ -271,17 +253,8 @@ class GridPublicPicasaAdaper extends BaseAdapter {
 
 		list_public_picasa.clear();
 		notifyDataSetChanged();
-	}
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> changePosition(int position){		
-		ArrayList<String> tmpFile = (ArrayList<String>) file_path.clone();		
-		if (position != 0){
-			String tmp = tmpFile.get(0);
-			tmpFile.set(0, tmpFile.get(position));
-			tmpFile.set(position, tmp);
-			}
-			return tmpFile;
-	}
+	}	
+	
 	public void setItem(RSSPhotoItem item) {
 		list_public_picasa.set(0, item);
 		this.notifyDataSetChanged();
@@ -340,7 +313,7 @@ class GridPublicPicasaAdaper extends BaseAdapter {
 				n.Dialog(4000, newGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
-				PhimpMeGallery.setFileList(changePosition(pos));
+				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
 				//_intent.putExtra("image-path", tmp_url);						
 				//_intent.putExtra("activityName", "GridviewAdapter");
 				((Activity) ctx).startActivityForResult(_intent, 3);
@@ -388,16 +361,7 @@ class GridGoogleNewsAdaper extends BaseAdapter {
 		list_google_news.set(0, item);
 		this.notifyDataSetChanged();
 	}
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> changePosition(int position){		
-		ArrayList<String> tmpFile = (ArrayList<String>) file_path.clone();		
-		if (position != 0){
-			String tmp = tmpFile.get(0);
-			tmpFile.set(0, tmpFile.get(position));
-			tmpFile.set(position, tmp);
-			}
-			return tmpFile;
-	}
+	
 	@Override
 	public int getCount() {
 		return list_google_news.size();
@@ -451,7 +415,7 @@ class GridGoogleNewsAdaper extends BaseAdapter {
 				n.Dialog(4000, newGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
-				PhimpMeGallery.setFileList(changePosition(pos));
+				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
 				//_intent.putExtra("image-path", tmp_url);						
 				_intent.putExtra("activityName", "GridviewAdapter");
 				((Activity) ctx).startActivityForResult(_intent, 3);
@@ -499,16 +463,7 @@ class GridYahooAdapter extends BaseAdapter {
 		list_yahoo.set(0, item);
 		this.notifyDataSetChanged();
 	}
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> changePosition(int position){		
-		ArrayList<String> tmpFile = (ArrayList<String>) file_path.clone();		
-		if (position != 0){
-			String tmp = tmpFile.get(0);
-			tmpFile.set(0, tmpFile.get(position));
-			tmpFile.set(position, tmp);
-			}
-			return tmpFile;
-	}
+	
 	@Override
 	public int getCount() {
 		return list_yahoo.size();
@@ -562,7 +517,7 @@ class GridYahooAdapter extends BaseAdapter {
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				//_intent.putExtra("image-path", tmp_url);
-				PhimpMeGallery.setFileList(changePosition(pos));
+				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
 				_intent.putExtra("activityName", "GridviewAdapter");
 				((Activity) ctx).startActivityForResult(_intent, 3);
 			}
@@ -624,16 +579,7 @@ class GridDeviantAdapter extends BaseAdapter {
 	public long getItemId(int position) {
 		return position;
 	}
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> changePosition(int position){		
-		ArrayList<String> tmpFile = (ArrayList<String>) file_path.clone();		
-		if (position != 0){
-			String tmp = tmpFile.get(0);
-			tmpFile.set(0, tmpFile.get(position));
-			tmpFile.set(position, tmp);
-			}
-			return tmpFile;
-	}
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view;
@@ -672,7 +618,7 @@ class GridDeviantAdapter extends BaseAdapter {
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				//_intent.putExtra("image-path", tmp_url);
-				PhimpMeGallery.setFileList(changePosition(pos));
+				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
 				_intent.putExtra("activityName", "GridviewAdapter");
 				((Activity) ctx).startActivityForResult(_intent, 3);
 			}
@@ -730,16 +676,7 @@ class GridFacebookAdapter extends BaseAdapter {
 	public Object getItem(int arg0) {
 		return null;
 	}
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> changePosition(int position){		
-		ArrayList<String> tmpFile = (ArrayList<String>) file_path.clone();		
-		if (position != 0){
-			String tmp = tmpFile.get(0);
-			tmpFile.set(0, tmpFile.get(position));
-			tmpFile.set(position, tmp);
-			}
-			return tmpFile;
-	}
+	
 	@Override
 	public long getItemId(int position) {
 		return position;
@@ -783,7 +720,7 @@ class GridFacebookAdapter extends BaseAdapter {
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				//_intent.putExtra("image-path", tmp_url);
-				PhimpMeGallery.setFileList(changePosition(pos));
+				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
 				_intent.putExtra("activityName", "GridviewAdapter");
 				((Activity) ctx).startActivityForResult(_intent, 3);
 			}
@@ -826,16 +763,7 @@ class GridTumblrAdapter extends BaseAdapter {
 		list_tumblr.clear();
 		notifyDataSetChanged();
 	}
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> changePosition(int position){		
-		ArrayList<String> tmpFile = (ArrayList<String>) file_path.clone();		
-		if (position != 0){
-			String tmp = tmpFile.get(0);
-			tmpFile.set(0, tmpFile.get(position));
-			tmpFile.set(position, tmp);
-			}
-			return tmpFile;
-	}
+	
 	public void setItem(RSSPhotoItem_Personal item) {
 		list_tumblr.set(0, item);
 		this.notifyDataSetChanged();
@@ -894,7 +822,7 @@ class GridTumblrAdapter extends BaseAdapter {
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				//_intent.putExtra("image-path", tmp_url);
-				PhimpMeGallery.setFileList(changePosition(pos));
+				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
 				_intent.putExtra("activityName", "GridviewAdapter");
 				((Activity) ctx).startActivityForResult(_intent, 3);
 			}
@@ -942,16 +870,7 @@ class GridVKontakteAdapter extends BaseAdapter {
 		list_vkontakte.set(0, item);
 		this.notifyDataSetChanged();
 	}
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> changePosition(int position){		
-		ArrayList<String> tmpFile = (ArrayList<String>) file_path.clone();		
-		if (position != 0){
-			String tmp = tmpFile.get(0);
-			tmpFile.set(0, tmpFile.get(position));
-			tmpFile.set(position, tmp);
-			}
-			return tmpFile;
-	}
+	
 	@Override
 	public int getCount() {
 		return list_vkontakte.size();
@@ -1006,7 +925,7 @@ class GridVKontakteAdapter extends BaseAdapter {
 				n.Dialog(4000, newGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
-				PhimpMeGallery.setFileList(changePosition(pos));
+				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
 				//_intent.putExtra("image-path", tmp_url);						
 				_intent.putExtra("activityName", "GridviewAdapter");
 				((Activity) ctx).startActivityForResult(_intent, 3);
@@ -1065,16 +984,7 @@ class GridPersonalFlickrAdapter extends BaseAdapter {
 	public Object getItem(int arg0) {
 		return null;
 	}
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> changePosition(int position){		
-		ArrayList<String> tmpFile = (ArrayList<String>) file_path.clone();		
-		if (position != 0){
-			String tmp = tmpFile.get(0);
-			tmpFile.set(0, tmpFile.get(position));
-			tmpFile.set(position, tmp);
-			}
-			return tmpFile;
-	}
+	
 	@Override
 	public long getItemId(int position) {
 		return position;
@@ -1117,7 +1027,7 @@ class GridPersonalFlickrAdapter extends BaseAdapter {
 				n.Dialog(4000, newGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
-				PhimpMeGallery.setFileList(changePosition(pos));
+				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
 				//_intent.putExtra("image-path", tmp_url);						
 				_intent.putExtra("activityName", "GridviewAdapter");
 				((Activity) ctx).startActivityForResult(_intent, 3);
@@ -1170,17 +1080,7 @@ class GridPersonalPicasaAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		return list_picasa.size();
-	}
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> changePosition(int position){		
-		ArrayList<String> tmpFile = (ArrayList<String>) file_path.clone();		
-		if (position != 0){
-			String tmp = tmpFile.get(0);
-			tmpFile.set(0, tmpFile.get(position));
-			tmpFile.set(position, tmp);
-			}
-			return tmpFile;
-	}
+	}	
 	@Override
 	public Object getItem(int arg0) {
 		return null;
@@ -1228,7 +1128,7 @@ class GridPersonalPicasaAdapter extends BaseAdapter {
 				n.Dialog(4000, newGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
-				PhimpMeGallery.setFileList(changePosition(pos));
+				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
 				//_intent.putExtra("image-path", tmp_url);						
 				_intent.putExtra("activityName", "GridviewAdapter");
 				((Activity) ctx).startActivityForResult(_intent, 3);
@@ -1292,16 +1192,7 @@ class GridPersonalDeviantArtAdapter extends BaseAdapter {
 	public long getItemId(int position) {
 		return position;
 	}
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> changePosition(int position){		
-		ArrayList<String> tmpFile = (ArrayList<String>) file_path.clone();		
-		if (position != 0){
-			String tmp = tmpFile.get(0);
-			tmpFile.set(0, tmpFile.get(position));
-			tmpFile.set(position, tmp);
-			}
-			return tmpFile;
-	}	
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view;
@@ -1339,7 +1230,7 @@ class GridPersonalDeviantArtAdapter extends BaseAdapter {
 				n.Dialog(4000, newGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
-				PhimpMeGallery.setFileList(changePosition(pos));
+				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
 				//_intent.putExtra("image-path", tmp_url);						
 				_intent.putExtra("activityName", "GridviewAdapter");
 				((Activity) ctx).startActivityForResult(_intent, 3);
@@ -1392,16 +1283,7 @@ class GridPersonalImageShackAdapter extends BaseAdapter {
 	public Object getItem(int arg0) {
 		return null;
 	}
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> changePosition(int position){		
-		ArrayList<String> tmpFile = (ArrayList<String>) file_path.clone();		
-		if (position != 0){
-			String tmp = tmpFile.get(0);
-			tmpFile.set(0, tmpFile.get(position));
-			tmpFile.set(position, tmp);
-			}
-			return tmpFile;
-	}
+	
 	@Override
 	public long getItemId(int position) {
 		return position;
@@ -1444,7 +1326,7 @@ class GridPersonalImageShackAdapter extends BaseAdapter {
 				n.Dialog(4000, newGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
-				PhimpMeGallery.setFileList(changePosition(pos));
+				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
 				//_intent.putExtra("image-path", tmp_url);						
 				_intent.putExtra("activityName", "GridviewAdapter");
 				((Activity) ctx).startActivityForResult(_intent, 3);
@@ -1498,16 +1380,7 @@ class GridPersonalImgurAdapter extends BaseAdapter {
 	public int getCount() {
 		return list_imgur.size();
 	}
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> changePosition(int position){		
-		ArrayList<String> tmpFile = (ArrayList<String>) file_path.clone();		
-		if (position != 0){
-			String tmp = tmpFile.get(0);
-			tmpFile.set(0, tmpFile.get(position));
-			tmpFile.set(position, tmp);
-			}
-			return tmpFile;
-	}
+	
 	@Override
 	public Object getItem(int arg0) {
 		return null;
@@ -1556,7 +1429,7 @@ class GridPersonalImgurAdapter extends BaseAdapter {
 				n.Dialog(4000, newGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
-				PhimpMeGallery.setFileList(changePosition(pos));
+				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
 				//_intent.putExtra("image-path", tmp_url);						
 				_intent.putExtra("activityName", "GridviewAdapter");
 				((Activity) ctx).startActivityForResult(_intent, 3);
@@ -1608,16 +1481,7 @@ class GridMyFeedServicesAdaper extends BaseAdapter {
 	public int getCount() {
 		return list_my_feed_services.size();
 	}
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> changePosition(int position){		
-		ArrayList<String> tmpFile = (ArrayList<String>) file_path.clone();		
-		if (position != 0){
-			String tmp = tmpFile.get(0);
-			tmpFile.set(0, tmpFile.get(position));
-			tmpFile.set(position, tmp);
-			}
-			return tmpFile;
-	}
+	
 	@Override
 	public Object getItem(int arg0) {
 		return null;
@@ -1667,7 +1531,7 @@ class GridMyFeedServicesAdaper extends BaseAdapter {
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				//_intent.putExtra("image-path", tmp_url);		
-				PhimpMeGallery.setFileList(changePosition(pos));
+				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
 				_intent.putExtra("activityName", "GridviewAdapter");
 				((Activity) ctx).startActivityForResult(_intent, 3);
 			}
@@ -1728,16 +1592,7 @@ class GridMyFeedServicesAdaper1 extends BaseAdapter {
 	public long getItemId(int position) {
 		return position;
 	}
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> changePosition(int position){		
-		ArrayList<String> tmpFile = (ArrayList<String>) file_path.clone();		
-		if (position != 0){
-			String tmp = tmpFile.get(0);
-			tmpFile.set(0, tmpFile.get(position));
-			tmpFile.set(position, tmp);
-			}
-			return tmpFile;
-	}
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view;
@@ -1776,7 +1631,7 @@ class GridMyFeedServicesAdaper1 extends BaseAdapter {
 				n.Dialog(4000, newGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
-				PhimpMeGallery.setFileList(changePosition(pos));
+				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
 				//_intent.putExtra("image-path", tmp_url);						
 				_intent.putExtra("activityName", "GridviewAdapter");
 				((Activity) ctx).startActivityForResult(_intent, 3);
@@ -1812,16 +1667,7 @@ class GridMyFeedServicesAdaper2 extends BaseAdapter {
 		file_path.add(0,list_my_feed_services2.get(0).getURL()); 
 		notifyDataSetChanged();
 	}
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> changePosition(int position){		
-		ArrayList<String> tmpFile = (ArrayList<String>) file_path.clone();		
-		if (position != 0){
-			String tmp = tmpFile.get(0);
-			tmpFile.set(0, tmpFile.get(position));
-			tmpFile.set(position, tmp);
-			}
-			return tmpFile;
-	}
+	
 	public void removeItem() {
 
 		list_my_feed_services2.clear();
@@ -1887,7 +1733,7 @@ class GridMyFeedServicesAdaper2 extends BaseAdapter {
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				//_intent.putExtra("image-path", tmp_url);
-				PhimpMeGallery.setFileList(changePosition(pos));
+				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
 				_intent.putExtra("activityName", "GridviewAdapter");
 				((Activity) ctx).startActivityForResult(_intent, 3);
 			}
@@ -1938,16 +1784,7 @@ class GridMyFeedServicesAdaper3 extends BaseAdapter {
 	public int getCount() {
 		return list_my_feed_services3.size();
 	}
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> changePosition(int position){		
-		ArrayList<String> tmpFile = (ArrayList<String>) file_path.clone();		
-		if (position != 0){
-			String tmp = tmpFile.get(0);
-			tmpFile.set(0, tmpFile.get(position));
-			tmpFile.set(position, tmp);
-			}
-			return tmpFile;
-	}
+	
 	@Override
 	public Object getItem(int arg0) {
 		return null;
@@ -1997,7 +1834,7 @@ class GridMyFeedServicesAdaper3 extends BaseAdapter {
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				//_intent.putExtra("image-path", tmp_url);
-				PhimpMeGallery.setFileList(changePosition(pos));
+				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
 				_intent.putExtra("activityName", "GridviewAdapter");
 				((Activity) ctx).startActivityForResult(_intent, 3);
 			}
@@ -2053,16 +1890,7 @@ class GridMyFeedServicesAdaper4 extends BaseAdapter {
 	public Object getItem(int arg0) {
 		return null;
 	}
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> changePosition(int position){		
-		ArrayList<String> tmpFile = (ArrayList<String>) file_path.clone();		
-		if (position != 0){
-			String tmp = tmpFile.get(0);
-			tmpFile.set(0, tmpFile.get(position));
-			tmpFile.set(position, tmp);
-			}
-			return tmpFile;
-	}
+	
 	@Override
 	public long getItemId(int position) {
 		return position;
@@ -2107,7 +1935,7 @@ class GridMyFeedServicesAdaper4 extends BaseAdapter {
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				//_intent.putExtra("image-path", tmp_url);
-				PhimpMeGallery.setFileList(changePosition(pos));
+				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
 				_intent.putExtra("activityName", "GridviewAdapter");
 				((Activity) ctx).startActivityForResult(_intent, 3);
 			}
@@ -2153,16 +1981,7 @@ class GridMyFeedServicesAdaper5 extends BaseAdapter {
 		list_my_feed_services5.set(0, item);
 		this.notifyDataSetChanged();
 	}
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> changePosition(int position){		
-		ArrayList<String> tmpFile = (ArrayList<String>) file_path.clone();		
-		if (position != 0){
-			String tmp = tmpFile.get(0);
-			tmpFile.set(0, tmpFile.get(position));
-			tmpFile.set(position, tmp);
-			}
-			return tmpFile;
-	}
+	
 	@Override
 	public int getCount() {
 		return list_my_feed_services5.size();
@@ -2216,7 +2035,7 @@ class GridMyFeedServicesAdaper5 extends BaseAdapter {
 				n.Dialog(4000, newGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
-				PhimpMeGallery.setFileList(changePosition(pos));
+				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
 				//_intent.putExtra("image-path", tmp_url);						
 				_intent.putExtra("activityName", "GridviewAdapter");
 				((Activity) ctx).startActivityForResult(_intent, 3);
@@ -2275,16 +2094,7 @@ class GridPersonalKaixinAdapter extends BaseAdapter {
 	public Object getItem(int arg0) {
 		return null;
 	}
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> changePosition(int position){		
-		ArrayList<String> tmpFile = (ArrayList<String>) file_path.clone();		
-		if (position != 0){
-			String tmp = tmpFile.get(0);
-			tmpFile.set(0, tmpFile.get(position));
-			tmpFile.set(position, tmp);
-			}
-			return tmpFile;
-	}
+	
 	@Override
 	public long getItemId(int position) {
 		return position;
@@ -2327,7 +2137,7 @@ class GridPersonalKaixinAdapter extends BaseAdapter {
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				//_intent.putExtra("image-path", tmp_url);
-				PhimpMeGallery.setFileList(changePosition(pos));
+				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
 				_intent.putExtra("activityName", "GridviewAdapter");
 				((Activity) ctx).startActivityForResult(_intent, 3);
 			}
@@ -2383,16 +2193,7 @@ class GridImgurPublicAdaper extends BaseAdapter {
 	public Object getItem(int arg0) {
 		return null;
 	}
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> changePosition(int position){		
-		ArrayList<String> tmpFile = (ArrayList<String>) file_path.clone();		
-		if (position != 0){
-			String tmp = tmpFile.get(0);
-			tmpFile.set(0, tmpFile.get(position));
-			tmpFile.set(position, tmp);
-			}
-			return tmpFile;
-	}
+	
 	@Override
 	public long getItemId(int position) {
 		return position;
@@ -2437,7 +2238,7 @@ class GridImgurPublicAdaper extends BaseAdapter {
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				//_intent.putExtra("image-path", tmp_url);
-				PhimpMeGallery.setFileList(changePosition(pos));
+				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
 				_intent.putExtra("activityName", "GridviewAdapter");
 				((Activity) ctx).startActivityForResult(_intent, 3);
 			}
@@ -2499,16 +2300,7 @@ class GridPublic500pxAdaper extends BaseAdapter {
 	public long getItemId(int position) {
 		return position;
 	}
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> changePosition(int position){		
-		ArrayList<String> tmpFile = (ArrayList<String>) file_path.clone();		
-		if (position != 0){
-			String tmp = tmpFile.get(0);
-			tmpFile.set(0, tmpFile.get(position));
-			tmpFile.set(position, tmp);
-			}
-			return tmpFile;
-	}
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view;
@@ -2548,7 +2340,7 @@ class GridPublic500pxAdaper extends BaseAdapter {
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				//_intent.putExtra("image-path", tmp_url);
-				PhimpMeGallery.setFileList(changePosition(pos));
+				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
 				_intent.putExtra("activityName", "GridviewAdapter");
 				((Activity) ctx).startActivityForResult(_intent, 3);
 			}
@@ -2612,16 +2404,7 @@ class GridPersonal500pxAdapter extends BaseAdapter {
 	public long getItemId(int position) {
 		return position;
 	}
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> changePosition(int position){		
-		ArrayList<String> tmpFile = (ArrayList<String>) file_path.clone();		
-		if (position != 0){
-			String tmp = tmpFile.get(0);
-			tmpFile.set(0, tmpFile.get(position));
-			tmpFile.set(position, tmp);
-			}
-			return tmpFile;
-	}
+	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view;
@@ -2660,7 +2443,7 @@ class GridPersonal500pxAdapter extends BaseAdapter {
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				//_intent.putExtra("image-path", tmp_url);
-				PhimpMeGallery.setFileList(changePosition(pos));
+				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
 				_intent.putExtra("activityName", "GridviewAdapter");
 				((Activity) ctx).startActivityForResult(_intent, 3);
 			}
@@ -2708,16 +2491,7 @@ class GridPersonalSohuAdapter extends BaseAdapter {
 		list_sohu.set(0, item);
 		this.notifyDataSetChanged();
 	}
-	@SuppressWarnings("unchecked")
-	public ArrayList<String> changePosition(int position){		
-		ArrayList<String> tmpFile = (ArrayList<String>) file_path.clone();		
-		if (position != 0){
-			String tmp = tmpFile.get(0);
-			tmpFile.set(0, tmpFile.get(position));
-			tmpFile.set(position, tmp);
-			}
-			return tmpFile;
-	}
+	
 	@Override
 	public int getCount() {
 		return list_sohu.size();
@@ -2736,7 +2510,7 @@ class GridPersonalSohuAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View view;
-		final int post = position;
+		final int pos = position;
 		if (convertView == null) {
 			li = (LayoutInflater) ctx
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -2769,7 +2543,8 @@ class GridPersonalSohuAdapter extends BaseAdapter {
 				n.Dialog(4000, newGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
-				PhimpMeGallery.setFileList(changePosition(post));
+				PhimpMeGallery.setFileList(file_path);
+				_intent.putExtra("index", pos);
 				//_intent.putExtra("image-path", tmp_url);						
 				_intent.putExtra("activityName", "GridviewAdapter");
 				((Activity) ctx).startActivityForResult(_intent, 3);

@@ -119,7 +119,9 @@ public class LocalPhotosAdapter extends BaseAdapter {
 			public void onClick(View v) {
 				Intent intent = new Intent();
 				intent.setClass(context, PhimpMeGallery.class);				
-				PhimpMeGallery.setFileList(changePosition(pos));
+				PhimpMeGallery.setFileList(filepath);//changePosition(pos));
+				//PhimpMeGallery.gallery.setSelection(pos);
+				intent.putExtra("index", pos);
 				((Activity) context).startActivity(intent);
 				
 			}
