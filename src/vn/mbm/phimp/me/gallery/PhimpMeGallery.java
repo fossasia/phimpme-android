@@ -30,7 +30,7 @@ public class PhimpMeGallery extends Activity {
 	public static int position;
 	public static View overscrollleft;
 	public static View overscrollright;
-	
+	public int index = 0;
 	//private Context ctx;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -38,6 +38,11 @@ public class PhimpMeGallery extends Activity {
 		setContentView(R.layout.phimpmegallery);	
 		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 	//	ctx = this;		
+		Intent intent = getIntent();
+		Bundle extract = intent.getExtras();		
+		try{
+		index = extract.getInt("index");
+		}catch(Exception e){}
 		setupUI();
 		
 	}
@@ -50,6 +55,7 @@ public class PhimpMeGallery extends Activity {
 		RelativeLayout layout = (RelativeLayout)findViewById(R.id.btn);
 		layout.bringToFront();
 		gallery.setAdapter(galImageAdapter);
+		gallery.setSelection(index);
 		btnShare = (ImageButton)findViewById(R.id.btnShare);
 		btnShare.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
@@ -80,7 +86,7 @@ public class PhimpMeGallery extends Activity {
 				});
 				builder.show();
 			}
-		});
+		});		
 		btnEdit = (ImageButton)findViewById(R.id.btnEdit);
 		btnEdit.setOnClickListener(new OnClickListener() {
 			
