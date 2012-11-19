@@ -26,6 +26,7 @@ import vn.mbm.phimp.me.services.SohuServices;
 import vn.mbm.phimp.me.services.TumblrServices;
 import vn.mbm.phimp.me.services.TwitterServices;
 import vn.mbm.phimp.me.services.VKServices;
+import vn.mbm.phimp.me.services.Wordpress;
 import vn.mbm.phimp.me.utils.Commons;
 import vn.mbm.phimp.me.utils.geoDegrees;
 import vn.mbm.phimp.me.R;
@@ -47,6 +48,7 @@ import android.location.LocationListener;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -78,7 +80,7 @@ public class Upload extends Activity
 	private final int DIALOG_ADD_PHOTO = 2;
 	private final int DIALOG_ADD_ACCOUNT_DRUPAL = 3;
 	private final int DIALOG_ADD_ACCOUNT_IMAGESHACK = 4;
-	
+	private final int DIALOG_ADD_ACCOUNT_WORDPRESS = 5;
 	private final int SELECT_IMAGE_FROM_GALLERY = 3;
 	
 	private final int TAKE_PICTURE = 4;
@@ -101,7 +103,8 @@ public class Upload extends Activity
 
 	private final int SERVICES_KAIXIN_ACTION = 12;
 	private final int SERVICES_SOHU_ACTION=15;
-	private final int SERVICES_WORDPRESS_ACTION =16;
+	private final int SERVICES_WORDPRESSDOTCOM_ACTION =16;
+	private final int SERVICES_WORDPRESS_ACTION = 17;
 	private static Uri camera_img_uri;
 	public static ProgressDialog progLoading;
 	static Context ctx;
@@ -330,7 +333,7 @@ public class Upload extends Activity
 
         //iconContextMenu.addItem(res, KaixinServices.title, KaixinServices.icon, SERVICES_KAIXIN_ACTION);
         iconContextMenu.addItem(res, SohuServices.title, SohuServices.icon, SERVICES_SOHU_ACTION);
-        iconContextMenu.addItem(res, "Wordpress.com",R.drawable.icon_wordpress , SERVICES_WORDPRESS_ACTION);
+        iconContextMenu.addItem(res, "Wordpress.com",R.drawable.wordpressdotcom_icon , SERVICES_WORDPRESSDOTCOM_ACTION);
         iconContextMenu.setOnClickListener(new IconContextMenu.IconContextMenuOnClickListener() {
 			@SuppressWarnings("deprecation")
 			@Override
@@ -433,11 +436,14 @@ public class Upload extends Activity
 					PhimpMe.add_account_upload = true;
 					PhimpMe.add_account_setting = true;
 					break;
-				case SERVICES_WORDPRESS_ACTION:
+				case SERVICES_WORDPRESSDOTCOM_ACTION:
 					Intent wordpress = new Intent(ctx, NewAccount.class);
 					ctx.startActivity(wordpress);
 					PhimpMe.add_account_upload = true;
 					PhimpMe.add_account_setting = true;
+					break;
+				case SERVICES_WORDPRESS_ACTION:
+					showDialog(DIALOG_ADD_ACCOUNT_WORDPRESS);
 					break;
 				}
 			}
@@ -675,6 +681,10 @@ public class Upload extends Activity
 			else if (service[position].equals("sohu"))
 			{
 				holder.imgIcon.setImageResource(SohuServices.icon);
+			}
+			else if (service[position].equals("wordpressdotcom"))
+			{
+				holder.imgIcon.setImageResource(R.drawable.wordpressdotcom_icon);
 			}
 			else if (service[position].equals("wordpress"))
 			{
@@ -921,6 +931,49 @@ public class Upload extends Activity
 								
 								PhimpMe.add_account_setting = true;
 								
+								reloadAccountsList();
+							}
+							catch (Exception e) 
+							{
+								Toast.makeText(Upload.this, "Error: " + e.toString(), Toast.LENGTH_LONG).show();
+								
+								e.printStackTrace();
+							}
+						}
+					})
+					.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() 
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which) 
+						{
+							
+						}
+					})
+					.create();
+				//wordpress
+			case DIALOG_ADD_ACCOUNT_WORDPRESS:
+				LayoutInflater inflater2 = (LayoutInflater) ctx.getSystemService(LAYOUT_INFLATER_SERVICE);
+				final View layout2 = inflater2.inflate(R.layout.dialog_add_account_wordpress, (ViewGroup) findViewById(R.id.lytDialogAddAccountWordpress));
+				
+				return new AlertDialog.Builder(Upload.this)
+					.setTitle("Wordpress")
+					.setMessage("")
+					.setView(layout2)
+					.setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener() 
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which) 
+						{
+							try
+							{															
+								
+								String username = ((EditText) layout2.findViewById(R.id.txtDialogAddAccountWordpressUsername)).getText().toString();
+								String password = ((EditText) layout2.findViewById(R.id.txtDialogAddAccountWordpressPassword)).getText().toString();
+								String siteurl = ((EditText)layout2.findViewById(R.id.txtDialogAddAccountWordpressSiteurl)).getText().toString();
+								Wordpress w=new Wordpress();
+								w.login(ctx,username,password,siteurl);
+								PhimpMe.add_account_upload=true;
+								PhimpMe.add_account_setting = true;								
 								reloadAccountsList();
 							}
 							catch (Exception e) 

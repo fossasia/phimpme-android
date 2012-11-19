@@ -245,8 +245,8 @@
             android:name="org.wordpress.android.AddAcountSettings"
             android:theme="@android:style/Theme.NoTitleBar"
             android:screenOrientation="portrait">
-       </activity>
-       
+       </activity>       
+     
     </application>
     <dependency>
 		<groupId>com.google.code.gson</groupId>
