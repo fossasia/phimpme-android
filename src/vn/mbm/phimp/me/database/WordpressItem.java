@@ -11,6 +11,7 @@ public class WordpressItem {
 	public String password;
 	public String http_username;
 	public String http_password;
+	public String services;
 	
 	public String getAccountID() { return account_id;	}
 	public void setAccountID(String account_id) { this.account_id = account_id; }
@@ -30,13 +31,16 @@ public class WordpressItem {
 	public String getHttp_password() { return http_password;	}
 	public void setHttp_password(String http_password) { this.http_password = http_password; }
 	
-	public static boolean insertWordpressAccount(Context ctx, String account_id, String url, String username,  String password, String http_username,String http_password)
+	public String getServices() { return services;	}
+	public void setServices(String services) { this.services = services; }
+	
+	public static boolean insertWordpressAccount(Context ctx, String account_id, String url, String username,  String password, String http_username,String http_password,String services)
 	{
 		boolean result;
 		
 		WordpressDBAdapter db = new WordpressDBAdapter(ctx);
 		db.open();
-		result = db.insert(account_id, url,username,password,http_username,http_password);
+		result = db.insert(account_id, url,username,password,http_username,http_password,services);
 		db.close();
 		
 		return result;
@@ -69,6 +73,7 @@ public class WordpressItem {
 			String password = c.getString(3);		
 			String http_username = c.getString(4);
 			String http_password = c.getString(5);
+			String services=c.getString(6);
 			
 			item.setAccountID(account_id);
 			item.setUrl(url);
@@ -76,6 +81,7 @@ public class WordpressItem {
 			item.setPassword(password);
 			item.setHttpUsername(http_username);
 			item.setHttp_password(http_password);
+			item.setServices(services);
 			
 			
 		}

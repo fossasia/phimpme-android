@@ -1,4 +1,4 @@
-package org.wordpress.android;
+package vn.mbm.phimp.me.services;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,167 +22,53 @@ import vn.mbm.phimp.me.database.WordpressDBAdapter;
 import vn.mbm.phimp.me.database.WordpressItem;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.res.Configuration;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.util.Xml;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.webkit.URLUtil;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-public class AddAccount extends Activity {
-	private EditText mUserNameEdit;
-	private EditText mUrlEdit;
-	private EditText mPasswordEdit;
+public class Wordpress extends Activity {	
 	private String httpuser = "";
 	private String httppassword = "";
-	private Button mSettingsButton;
-	private Button mCancelButton;
-	private Button mSaveButton;
+	private String username="";
+	private String password="";
 	public static Context ctx;
-	private boolean wpcom = false;
-	private String blogURL, xmlrpcURL,blogXmlrpcRUL;
-	private static final String URL_WORDPRESS = "http://wordpress.com";	
-	private ProgressDialog pd;
+	
+	private String blogURL, xmlrpcURL,blogXmlrpcRUL;	
 	private XMLRPCClient client;
 	private int blogCtr = 0;
 	private boolean isCustomURL = false;
 	private ArrayList<CharSequence> aBlogNames = new ArrayList<CharSequence>();
-	private ConnectivityManager mSystemService;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.add_wordpress_account);	
-		ctx = this;
-		mSettingsButton = (Button) findViewById(R.id.btn_wp_add_account_setting);
-		mCancelButton = (Button) findViewById(R.id.btn_wp_add_account_cancel);
-		mSaveButton = (Button) findViewById(R.id.btn_wp_add_account_save);
-		
-		mUrlEdit = (EditText) findViewById(R.id.et_wp_add_account_url);
-		mUserNameEdit = (EditText) findViewById(R.id.et_wp_add_account_username);
-		mPasswordEdit = (EditText) findViewById(R.id.et_wp_add_account_password);
-		
-		mSystemService = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-
-		
-		Bundle extras = getIntent().getExtras();
-		if (extras != null) {
-			wpcom = extras.getBoolean("wpcom", false);
-			String username = extras.getString("username");
-			if (username != null) {
-				mUserNameEdit.setText(username);
-			}
-		}
-
-		if (wpcom) {
-			mUrlEdit.setVisibility(View.GONE);
-		} else {
-			ImageView logo = (ImageView) findViewById(R.id.wpcomLogo);
-			logo.setImageDrawable(getResources().getDrawable(R.drawable.wplogo));
-		}
-
-		if (wpcom)
-			mSettingsButton.setVisibility(View.GONE);
-		else
-			mSettingsButton.setOnClickListener(new OnClickListener() {
-				
-				@Override
-				public void onClick(View v) {
-					// TODO Auto-generated method stub
-					Intent settings = new Intent(AddAccount.this, AddAcountSettings.class);
-					settings.putExtra("httpuser", httpuser);
-					settings.putExtra("httppassword", httppassword);
-					startActivityForResult(settings, R.id.btn_wp_add_account_setting);
-				}
-			});
-		
-		mSaveButton.setOnClickListener(new OnClickListener() {			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				if (mSystemService.getActiveNetworkInfo() == null) {
-					AlertUtil.showAlert(AddAccount.this, R.string.no_network_title, R.string.no_network_message);
-				} else {
-					pd = ProgressDialog.show(AddAccount.this, getString(R.string.account_setup), getString(R.string.attempting_configure),
-							true, false);
-
-					Thread action = new Thread() {
-						public void run() {
-							Looper.prepare();
-							configureAccount();
-							Looper.loop();
-						}
-					};
-					action.start();
-				}
-			}
-		});
-		
-		mCancelButton.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Bundle bundle = new Bundle();
-				bundle.putString("returnStatus", "CANCEL");
-				Intent mIntent = new Intent();
-				mIntent.putExtras(bundle);
-				setResult(RESULT_OK, mIntent);
-				finish();
-			}
-		});
 	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		switch (requestCode) {
-		case R.id.btn_wp_add_account_setting:
-			if (resultCode == RESULT_OK) {
-				Bundle extras = data.getExtras();
-				httpuser = extras.getString("httpuser");
-				httppassword = extras.getString("httppassword");
+	public void login( Context context,String user,String pass,String url){
+		ctx=context;
+		username=user;
+		password=pass;
+		blogURL=url;
+		Thread action = new Thread() {
+			public void run() {
+				Looper.prepare();
+				configureAccount();
+				Looper.loop();
 			}
-			break;
-		}
+		};
+		action.start();
 	}
-
-	@Override
-	public void onBackPressed() {
-		Bundle bundle = new Bundle();
-		bundle.putString("returnStatus", "CANCEL");
-		Intent mIntent = new Intent();
-		mIntent.putExtras(bundle);
-		setResult(RESULT_OK, mIntent);
-		finish();
-	}
-
-	private void configureAccount() {
-
-		if (wpcom) {
-			blogURL = URL_WORDPRESS;
-		} else {
-			blogURL = mUrlEdit.getText().toString().trim();
-		}
-		final String username = mUserNameEdit.getText().toString().trim();
-		final String password = mPasswordEdit.getText().toString().trim();
-
+	private void configureAccount() {		
+		
 		if (blogURL.equals("") || username.equals("") || password.equals("")) {
-			pd.dismiss();
-			AlertUtil.showAlert(AddAccount.this, R.string.required_fields, R.string.url_username_password_required);
+			AlertUtil.showAlert(ctx, R.string.required_fields, R.string.url_username_password_required);
 			return;
 		}
 
@@ -192,8 +78,7 @@ public class AddAccount extends Activity {
 		}
 
 		if (!URLUtil.isValidUrl(blogURL)) {
-			pd.dismiss();
-			AlertUtil.showAlert(AddAccount.this, R.string.invalid_url, R.string.invalid_url_message);
+			AlertUtil.showAlert(ctx, R.string.invalid_url, R.string.invalid_url_message);
 			return;
 		}
 
@@ -235,14 +120,14 @@ public class AddAccount extends Activity {
 		}
 
 		if (xmlrpcURL == null) {
-			pd.dismiss();
-			AlertUtil.showAlert(AddAccount.this, R.string.error, R.string.no_site_error);
+			AlertUtil.showAlert(ctx, R.string.error, R.string.no_site_error);
 		} else {
 			// verify settings
 			client = new XMLRPCClient(xmlrpcURL, httpuser, httppassword);
 
 			XMLRPCMethod method = new XMLRPCMethod("wp.getUsersBlogs", new XMLRPCMethodCallback() {
 
+				@SuppressWarnings("unchecked")
 				public void callFinished(Object[] result) {
 
 					final String[] blogNames = new String[result.length];
@@ -271,7 +156,6 @@ public class AddAccount extends Activity {
 							blogIds[blogCtr] = Integer.parseInt(contentHash.get("blogid").toString());
 							String blogURL = urls[blogCtr];
 							blogXmlrpcRUL=blogURL;
-							Log.e("Add account","blogXmlrpcRUL : "+blogXmlrpcRUL);
 							aBlogNames.add(EscapeUtils.unescapeHtml(blogNames[blogCtr]));
 
 							boolean wpcomFlag = false;
@@ -309,44 +193,29 @@ public class AddAccount extends Activity {
 
 							blogCtr++;
 					} // end loop
-					pd.dismiss();
-					Log.e("Danh", "blogCtr : "+blogCtr);
+					
 					if (blogCtr == 0) {
-						String additionalText = "";
-						if (result.length > 0) {
-							additionalText = getString(R.string.additional);
-						}
-						AlertUtil.showAlert(AddAccount.this, R.string.no_blogs_found,
-								String.format(getString(R.string.no_blogs_message), additionalText), getString(R.string.ok),
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog, int whichButton) {
-										dialog.dismiss();
-									}
-								});
+						Toast.makeText(ctx, "Insert account '" + username + "' (wordpress) Fail!", Toast.LENGTH_LONG).show();
+
 					} else {		
 						
 							//save database		        	
-						long account_id = AccountItem.insertAccount(ctx, null, username, "wordpressdotcom", "1");
+						long account_id = AccountItem.insertAccount(ctx, null, username, "wordpress", "1");
 						if (account_id > 0)
 						{
 							WordpressDBAdapter wp=new WordpressDBAdapter(ctx);
 							wp.open();
-							if (WordpressItem.insertWordpressAccount(ctx,  String.valueOf(account_id), blogXmlrpcRUL, username, password, httpuser, httppassword,"wordpressdotcom"))
+							if (WordpressItem.insertWordpressAccount(ctx,  String.valueOf(account_id), blogXmlrpcRUL, username, password, httpuser, httppassword,"wordpress"))
 							{
-								Toast.makeText(ctx, "Insert account '" + username + "' (wordpress.com) SUCCESS!", Toast.LENGTH_LONG).show();
+								Toast.makeText(ctx, "Insert account '" + username + "' (wordpress) SUCCESS!", Toast.LENGTH_LONG).show();
 								wp.close();
 							}							
 							else
 							{
-								Toast.makeText(ctx, "Insert account '" + username + "' (wordpress.com) FAIL!", Toast.LENGTH_LONG).show();
+								Toast.makeText(ctx, "Insert account '" + username + "' (wordpress) FAIL!", Toast.LENGTH_LONG).show();
 							}
 						}
-
-							Bundle bundle = new Bundle();
-							bundle.putString("returnStatus", "SAVE");
-							Intent mIntent = new Intent();
-							mIntent.putExtras(bundle);
-							setResult(RESULT_OK, mIntent);
+							
 							finish();
 						}
 					
@@ -399,20 +268,14 @@ public class AddAccount extends Activity {
 				handler.post(new Runnable() {
 					public void run() {
 						// e.printStackTrace();
-						pd.dismiss();
+						//pd.dismiss();
 						String message = e.getMessage();
 						if (message.contains("code 403")) {
 							// invalid login
-							Thread shake = new Thread() {
-								public void run() {
-									Animation shake = AnimationUtils.loadAnimation(AddAccount.this, R.anim.shake);
-									findViewById(R.id.section1).startAnimation(shake);
-									Toast.makeText(AddAccount.this, getString(R.string.invalid_login), Toast.LENGTH_SHORT).show();
-								}
-							};
-							runOnUiThread(shake);
+							Toast.makeText(ctx, "Username or password wrong !", Toast.LENGTH_LONG).show();
+
 						} else {
-							AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(AddAccount.this);
+							AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ctx);
 							dialogBuilder.setTitle(getString(R.string.connection_error));
 							if (message.contains("404"))
 								message = getString(R.string.xmlrpc_error);
@@ -434,12 +297,12 @@ public class AddAccount extends Activity {
 					public void run() {
 						Throwable couse = e.getCause();
 						e.printStackTrace();
-						pd.dismiss();
+						//pd.dismiss();
 						String message = e.getMessage();
 						if (couse instanceof HttpHostConnectException) {
 
 						} else {
-							AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(AddAccount.this);
+							AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(Wordpress.this);
 							dialogBuilder.setTitle(getString(R.string.connection_error));
 							if (message.contains("404"))
 								message = getString(R.string.xmlrpc_error);

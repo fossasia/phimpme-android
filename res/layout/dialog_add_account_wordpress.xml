@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/lytDialogAddAccountDrupal"
+    android:id="@+id/lytDialogAddAccountWordpress"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical" >
 
     <TextView
         android:id="@+id/textView1"
@@ -72,6 +71,6 @@
         android:layout_marginBottom="20dp"
         android:hint="@string/services_link"
         android:singleLine="true"
-        android:text="@string/default_mbm_serviceurl" />
+        android:text="@string/default_wordpress_url" />
 
 </LinearLayout>

@@ -19,6 +19,7 @@ public class WordpressDBAdapter {
 	public static final String PASSWORD = "password";
 	public static final String HTTP_USER="http_user";
 	public static final String HTTP_PASSWORD = "http_password";
+	public static final String SERVICES = "services";
 	private static final String DATABASE_TABLE = "wordpress";
 	private static final int DATABASE_VERSION = 1;
 	
@@ -29,7 +30,8 @@ public class WordpressDBAdapter {
 			+ USER_NAME +" text null,"
 			+ PASSWORD +" text null,"
 			+ HTTP_USER +" text null,"
-			+ HTTP_PASSWORD +" text null) ;";	
+			+ HTTP_PASSWORD +" text null,"
+			+ SERVICES +" text null) ;";	
 			
 		private Context context;
 			
@@ -80,7 +82,7 @@ public class WordpressDBAdapter {
 			db.close();
 		}
 		
-		public boolean insert(String account_id, String url, String username, String password, String http_username,String http_password ) 
+		public boolean insert(String account_id, String url, String username, String password, String http_username,String http_password,String services ) 
 		{
 			ContentValues initialValues = new ContentValues();
 			initialValues.put(ACCOUNT_ID, account_id);
@@ -89,6 +91,7 @@ public class WordpressDBAdapter {
 			initialValues.put(PASSWORD, password);
 			initialValues.put(HTTP_USER, http_username);			
 			initialValues.put(HTTP_PASSWORD, http_password);
+			initialValues.put(SERVICES, services);
 		
 			long result = db.insert(DATABASE_TABLE, null, initialValues);
 			
@@ -112,7 +115,7 @@ public class WordpressDBAdapter {
 			
 			return db.query(
 					DATABASE_TABLE, 
-					new String[] { ACCOUNT_ID, URL, USER_NAME, PASSWORD,HTTP_USER,HTTP_PASSWORD }, 
+					new String[] { ACCOUNT_ID, URL, USER_NAME, PASSWORD,HTTP_USER,HTTP_PASSWORD,SERVICES }, 
 					selection, 
 					agruments, 
 					null, 
