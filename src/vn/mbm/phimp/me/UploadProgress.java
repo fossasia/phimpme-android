@@ -129,7 +129,7 @@ public class UploadProgress extends Activity
 	static Map<Integer, ViewHolder> viewholders = new TreeMap<Integer, ViewHolder>();
 	static String[] path;
 	static final String default_tag_separate = ",";
-	private static int progressStatus=0;
+	private static int progressStatus=0,progressStatus1=0;
 	private ConnectivityManager mSystemService;
 	@Override
     public void onCreate(Bundle savedInstanceState)
@@ -1718,7 +1718,7 @@ public class UploadProgress extends Activity
 					return false;
 				}else{
 				for (int i = 0; i < path.length ; i++){	
-					progressStatus = 0;
+					progressStatus1 = 0;
 					String content="";
 					int featuredImageID=-1;
 					MediaFile mf=new MediaFile();
@@ -1730,10 +1730,10 @@ public class UploadProgress extends Activity
 					//progress bar			  
 					new Thread(new Runnable() {
 		             public void run() {
-		                 while (progressStatus < 100) {		                     
+		                 while (progressStatus1 < 100) {		                     
 		                	 try{ 
-		                         myHandle.sendMessage(myHandle.obtainMessage()); 
-		                         Thread.sleep(100); 
+		                         myHandle1.sendMessage(myHandle1.obtainMessage()); 
+		                         Thread.sleep(1); 
 		                        
 		                 } 
 		                 catch(Throwable t){   } 
@@ -1874,8 +1874,27 @@ public class UploadProgress extends Activity
 	        public void handleMessage(Message msg) { 
 	              // TODO Auto-generated method stub 
 	        	progressStatus++;
-	        	tvPC.setText(progressStatus + "...%");
+	        	if(progressStatus<100){
+	        		tvPC.setText(progressStatus + "...%");
+	        	}else{
+	        		tvPC.setText("100%");
+	        	}
              	pb.setProgress(progressStatus);	 
+	              
+	        } 
+		}; 
+		Handler myHandle1 = new Handler(){ 		       
+	        public void handleMessage(Message msg) { 
+	              // TODO Auto-generated method stub 
+	        	progressStatus1++;	   
+	        	if(progressStatus1<100){
+	        		tvPC.setText(progressStatus1 + "...%");
+	        	}else{
+	        		tvPC.setText("100%");
+	        	}
+	        	
+             	pb.setProgress(progressStatus1);	 
+             	
 	              
 	        } 
 		}; 
