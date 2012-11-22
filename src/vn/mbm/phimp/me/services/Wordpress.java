@@ -56,6 +56,7 @@ public class Wordpress extends Activity {
 		username=user;
 		password=pass;
 		blogURL=url;
+		Log.e("url",url);
 		Thread action = new Thread() {
 			public void run() {
 				Looper.prepare();
@@ -83,7 +84,7 @@ public class Wordpress extends Activity {
 		}
 
 		// attempt to get the XMLRPC URL via RSD
-		String rsdUrl = getRSDMetaTagHrefRegEx(blogURL);
+		String rsdUrl = getRSDMetaTagHrefRegEx(blogURL);		
 		if (rsdUrl == null) {
 			rsdUrl = getRSDMetaTagHref(blogURL);
 		}
@@ -102,12 +103,13 @@ public class Wordpress extends Activity {
 					xmlrpcURL = blogURL;
 					isCustomURL = true;
 				} catch (XMLRPCException e) {
-					// guess the xmlrpc path
+					// guess the xmlrpc path					
 					String guessURL = blogURL;
 					if (guessURL.substring(guessURL.length() - 1, guessURL.length()).equals("/")) {
 						guessURL = guessURL.substring(0, guessURL.length() - 1);
 					}
-					guessURL += "/xmlrpc.php";
+					//guessURL += "/xmlrpc.php";
+					guessURL += "/index.php/component/xmlrpc/";
 					client = new XMLRPCClient(guessURL, httpuser, httppassword);
 					try {
 						client.call("system.listMethods");
