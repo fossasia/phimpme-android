@@ -19,6 +19,7 @@ import vn.mbm.phimp.me.database.DrupalItem;
 import vn.mbm.phimp.me.database.FacebookItem;
 import vn.mbm.phimp.me.database.FlickrItem;
 import vn.mbm.phimp.me.database.ImageshackItem;
+import vn.mbm.phimp.me.database.JoomlaItem;
 import vn.mbm.phimp.me.database.KaixinDBItem;
 import vn.mbm.phimp.me.database.PicasaItem;
 import vn.mbm.phimp.me.database.QQItem;
@@ -90,6 +91,9 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.joooid.android.model.User;
+import com.joooid.android.xmlrpc.Constants;
+import com.joooid.android.xmlrpc.JoooidRpc;
 import com.paypal.android.MEP.CheckoutButton;
 import com.paypal.android.MEP.PayPal;
 import com.paypal.android.MEP.PayPalActivity;
@@ -103,6 +107,7 @@ public class Settings extends Activity
 	private final int DIALOG_DISPLAY_PHOTOS_SETTINGS = 4;
 	private final int DIALOG_ADD_ACCOUNT_IMAGESHACK = 5;
 	private final int DIALOG_ADD_ACCOUNT_WORDPRESS = 6;
+	private final int DIALOG_ADD_ACCOUNT_JOOMLA = 7;
 	
 	private IconContextMenu iconContextMenu = null;
 	
@@ -122,6 +127,7 @@ public class Settings extends Activity
 	private final int SERVICES_SOHU_ACTION =15;
 	private final int SERVICES_WORDPRESS_ACTION =16;
 	private final int SERVICES_WORDPRESSDOTCOM_ACTION =17;
+	private final int SERVICES_JOOMLA_ACTION =18;
 	public static EditText etMyFeedServicesTextbox;
 	public static EditText etMyFeedServicesTextbox1;
 	public static EditText etMyFeedServicesTextbox2;
@@ -1523,6 +1529,8 @@ public class Settings extends Activity
 		iconContextMenu = new IconContextMenu(this, CONTEXT_MENU_ID);
 		iconContextMenu.addItem(res, DrupalServices.title, DrupalServices.icon, SERVICES_DRUPAL_ACTION);
 		iconContextMenu.addItem(res, "Wordpress",R.drawable.icon_wordpress , SERVICES_WORDPRESS_ACTION);
+		iconContextMenu.addItem(res, "Wordpress.com",R.drawable.wordpressdotcom_icon , SERVICES_WORDPRESSDOTCOM_ACTION);
+		iconContextMenu.addItem(res, "Joomla",R.drawable.joomla , SERVICES_JOOMLA_ACTION); 
         iconContextMenu.addItem(res, FacebookServices.title, FacebookServices.icon, SERVICES_FACEBOOK_ACTION);
         iconContextMenu.addItem(res, FlickrServices.title, FlickrServices.icon, SERVICES_FLICKR_ACTION);
         iconContextMenu.addItem(res, PicasaServices.title, PicasaServices.icon, SERVICES_PICASA_ACTION);
@@ -1536,7 +1544,7 @@ public class Settings extends Activity
         iconContextMenu.addItem(res, ImgurServices.title, ImgurServices.icon, SERVICES_IMGUR_ACTION);
         //iconContextMenu.addItem(res, S500pxService.title, S500pxService.icon, SERVICES_500PX_ACTION)
         iconContextMenu.addItem(res, SohuServices.title, SohuServices.icon, SERVICES_SOHU_ACTION);
-        iconContextMenu.addItem(res, "Wordpress.com",R.drawable.wordpressdotcom_icon , SERVICES_WORDPRESSDOTCOM_ACTION);
+       
         iconContextMenu.setOnClickListener(new IconContextMenu.IconContextMenuOnClickListener() {
 			@Override
 			public void onClick(int menuId) 
@@ -1644,6 +1652,9 @@ public class Settings extends Activity
 					break;
 				case SERVICES_WORDPRESS_ACTION:
 					showDialog(DIALOG_ADD_ACCOUNT_WORDPRESS);
+					break;
+				case SERVICES_JOOMLA_ACTION:
+					showDialog(DIALOG_ADD_ACCOUNT_JOOMLA);
 					break;
 				}							
 			}
@@ -1935,6 +1946,10 @@ public class Settings extends Activity
 				{
 					holder.imgIcon.setImageResource(R.drawable.icon_wordpress);
 				}
+				else if (_service.equals("joomla"))
+				{
+					holder.imgIcon.setImageResource(R.drawable.joomla);
+				}
 				String acc_name = _name;
 				
 				holder.txtName.setText(acc_name);
@@ -2077,6 +2092,56 @@ public class Settings extends Activity
 								PhimpMe.add_account_upload = true;
 								
 								reloadAccountsList();
+							}
+							catch (Exception e) 
+							{
+								Toast.makeText(Settings.this, "Error: " + e.toString(), Toast.LENGTH_LONG).show();
+								
+								e.printStackTrace();
+							}
+						}
+					})
+					.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() 
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which) 
+						{
+							
+						}
+					})
+					.create();
+			case DIALOG_ADD_ACCOUNT_JOOMLA:
+				LayoutInflater inflater3 = (LayoutInflater) ctx.getSystemService(LAYOUT_INFLATER_SERVICE);
+				final View layout3 = inflater3.inflate(R.layout.dialog_add_account_joomla, (ViewGroup) findViewById(R.id.lytDialogAddAccountWordpress));
+				
+				return new AlertDialog.Builder(Settings.this)
+					.setTitle("Joomla")
+					.setMessage("")
+					.setView(layout3)
+					.setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener() 
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which) 
+						{
+							try
+							{															
+								
+								String username = ((EditText) layout3.findViewById(R.id.txtAddJoomlaUsername)).getText().toString();
+								String password = ((EditText) layout3.findViewById(R.id.txtAddJoomlaPassword)).getText().toString();
+								String siteurl = ((EditText)layout3.findViewById(R.id.txtAddJoomlaLink)).getText().toString();
+								JoooidRpc rpcClient = JoooidRpc.getInstance(siteurl, Constants.TASK_WS_URI_J17, username, password, User.JOOMLA_16);
+								User clientUser = rpcClient.userInfo(username, password);
+								if (clientUser.getId() != null){
+									Log.e("User url",clientUser.getJoomlaUrl());
+									Log.e("User uri",clientUser.getJoomlaUri());
+									long account_id = AccountItem.insertAccount(ctx, null, username, "joomla", "1");
+									JoomlaItem.insertJoomlaAccount(ctx,String.valueOf(account_id), clientUser.getJoomlaUrl(), username, password, "joomla");
+									Toast.makeText(ctx, "Insert account '" + username + "' (Joomla) SUCCESS!", Toast.LENGTH_LONG).show();
+								}
+								else Toast.makeText(ctx, "Login Joomla Fail ! Please check again !", Toast.LENGTH_LONG).show();	
+								PhimpMe.add_account_upload=true;
+								PhimpMe.add_account_setting = true;								
+								reloadAccountsList();								
 							}
 							catch (Exception e) 
 							{

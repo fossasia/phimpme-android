@@ -36,7 +36,6 @@ import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout.LayoutParams;
 
 public class Camera2 extends Activity{
 	private static final String TAG = "Camera";
@@ -71,8 +70,8 @@ public class Camera2 extends Activity{
 		setCameraDisplayOrientation(this, 0, mCamera);
 		preview.setCamera(mCamera);							
 		ctx = this;
-		LayoutParams layparam = new LayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
-		preview.setLayoutParams(layparam);
+		//LayoutParams layparam = new LayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
+		//preview.setLayoutParams(layparam);
 		frame.addView(preview);			
 		buttonClick = (ImageButton) findViewById(R.id.takephoto);
 		buttonClick.bringToFront();
@@ -204,17 +203,17 @@ public class Camera2 extends Activity{
 	PictureCallback jpegCallback = new PictureCallback() {
 		
 		public void onPictureTaken(byte[] data, Camera camera) {
-			
+						
 			FileOutputStream outStream = null;
 			Bitmap rotatedBMP = null;
 			String picture = "";
 			Bitmap bmp =null;
+			camera.stopPreview();
 			//ExifInterface exif;
 			//if (mOrientation.canDetectOrientation()) mOrientation.enable();
 			//mOrientation.disable();
 			Log.e("Size",String.valueOf(data.length)) ;
-			try {
-				
+			try {				
 				picture = String.format("/sdcard/phimp.me/take_photo/%d.jpg", System.currentTimeMillis());
 				outStream = new FileOutputStream(picture);				
 	            bmp = BitmapFactory.decodeByteArray(data, 0, data.length);	            	            

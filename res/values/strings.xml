@@ -600,4 +600,5 @@
    <!-- wordpress -->
   <string name="url">Blog URL</string>
   <string name="default_wordpress_url">192.168.1.114/wordpress</string>
+  <string name="joomla_note">If you want use this feature. Please install component joooid in your joomla host !</string>
 </resources>

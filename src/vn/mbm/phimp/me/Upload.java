@@ -11,6 +11,7 @@ import org.wordpress.android.NewAccount;
 import vn.mbm.phimp.me.database.AccountItem;
 import vn.mbm.phimp.me.database.DrupalItem;
 import vn.mbm.phimp.me.database.ImageshackItem;
+import vn.mbm.phimp.me.database.JoomlaItem;
 import vn.mbm.phimp.me.gallery3d.media.CropImage;
 import vn.mbm.phimp.me.services.DeviantArtService;
 import vn.mbm.phimp.me.services.DrupalServices;
@@ -29,7 +30,6 @@ import vn.mbm.phimp.me.services.VKServices;
 import vn.mbm.phimp.me.services.Wordpress;
 import vn.mbm.phimp.me.utils.Commons;
 import vn.mbm.phimp.me.utils.geoDegrees;
-import vn.mbm.phimp.me.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -48,7 +48,7 @@ import android.location.LocationListener;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Looper;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -72,6 +72,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
+import com.joooid.android.model.User;
+import com.joooid.android.xmlrpc.Constants;
+import com.joooid.android.xmlrpc.JoooidRpc;
 import com.tani.app.ui.IconContextMenu;
 
 public class Upload extends Activity 
@@ -81,6 +84,7 @@ public class Upload extends Activity
 	private final int DIALOG_ADD_ACCOUNT_DRUPAL = 3;
 	private final int DIALOG_ADD_ACCOUNT_IMAGESHACK = 4;
 	private final int DIALOG_ADD_ACCOUNT_WORDPRESS = 5;
+	private final int DIALOG_ADD_ACCOUNT_JOOMLA = 6;
 	private final int SELECT_IMAGE_FROM_GALLERY = 3;
 	
 	private final int TAKE_PICTURE = 4;
@@ -105,6 +109,7 @@ public class Upload extends Activity
 	private final int SERVICES_SOHU_ACTION=15;
 	private final int SERVICES_WORDPRESSDOTCOM_ACTION =16;
 	private final int SERVICES_WORDPRESS_ACTION = 17;
+	private final int SERVICES_JOOMLA_ACTION = 18;
 	private static Uri camera_img_uri;
 	public static ProgressDialog progLoading;
 	static Context ctx;
@@ -164,7 +169,8 @@ public class Upload extends Activity
 		setContentView(R.layout.upload);
 		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);		
 		Resources res = getResources();
-		
+		StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy); 
 		ctx = this;
 		Log.d("Upload","Upload Start");
 		
@@ -318,6 +324,8 @@ public class Upload extends Activity
 		iconContextMenu = new IconContextMenu(this, CONTEXT_MENU_ID);
 		iconContextMenu.addItem(res, DrupalServices.title, DrupalServices.icon, SERVICES_DRUPAL_ACTION);
 		iconContextMenu.addItem(res, "Wordpress",R.drawable.icon_wordpress , SERVICES_WORDPRESS_ACTION);
+		iconContextMenu.addItem(res, "Wordpress.com",R.drawable.wordpressdotcom_icon , SERVICES_WORDPRESSDOTCOM_ACTION);
+	    iconContextMenu.addItem(res, "Joomla",R.drawable.joomla , SERVICES_JOOMLA_ACTION);
         iconContextMenu.addItem(res, FacebookServices.title, FacebookServices.icon, SERVICES_FACEBOOK_ACTION);
         iconContextMenu.addItem(res, FlickrServices.title, FlickrServices.icon, SERVICES_FLICKR_ACTION);
         iconContextMenu.addItem(res, PicasaServices.title, PicasaServices.icon, SERVICES_PICASA_ACTION);
@@ -332,8 +340,7 @@ public class Upload extends Activity
         iconContextMenu.addItem(res, ImgurServices.title, ImgurServices.icon, SERVICES_IMGUR_ACTION);
 
         //iconContextMenu.addItem(res, KaixinServices.title, KaixinServices.icon, SERVICES_KAIXIN_ACTION);
-        iconContextMenu.addItem(res, SohuServices.title, SohuServices.icon, SERVICES_SOHU_ACTION);
-        iconContextMenu.addItem(res, "Wordpress.com",R.drawable.wordpressdotcom_icon , SERVICES_WORDPRESSDOTCOM_ACTION);
+        iconContextMenu.addItem(res, SohuServices.title, SohuServices.icon, SERVICES_SOHU_ACTION);       
         iconContextMenu.setOnClickListener(new IconContextMenu.IconContextMenuOnClickListener() {
 			@SuppressWarnings("deprecation")
 			@Override
@@ -445,7 +452,11 @@ public class Upload extends Activity
 				case SERVICES_WORDPRESS_ACTION:
 					showDialog(DIALOG_ADD_ACCOUNT_WORDPRESS);
 					break;
+				case SERVICES_JOOMLA_ACTION:
+					showDialog(DIALOG_ADD_ACCOUNT_JOOMLA);
+					break;	
 				}
+				
 			}
 		});  
     }	
@@ -689,6 +700,10 @@ public class Upload extends Activity
 			else if (service[position].equals("wordpress"))
 			{
 				holder.imgIcon.setImageResource(R.drawable.icon_wordpress);
+			}
+			else if (service[position].equals("joomla"))
+			{
+				holder.imgIcon.setImageResource(R.drawable.joomla);
 			}
 			boolean c = false;
 			
@@ -975,6 +990,61 @@ public class Upload extends Activity
 								PhimpMe.add_account_upload=true;
 								PhimpMe.add_account_setting = true;								
 								reloadAccountsList();
+							}
+							catch (Exception e) 
+							{
+								Toast.makeText(Upload.this, "Error: " + e.toString(), Toast.LENGTH_LONG).show();
+								
+								e.printStackTrace();
+							}
+						}
+					})
+					.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() 
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which) 
+						{
+							
+						}
+					})
+					.create();
+			case DIALOG_ADD_ACCOUNT_JOOMLA:
+				LayoutInflater inflater3 = (LayoutInflater) ctx.getSystemService(LAYOUT_INFLATER_SERVICE);
+				final View layout3 = inflater3.inflate(R.layout.dialog_add_account_joomla, (ViewGroup) findViewById(R.id.lytDialogAddAccountWordpress));
+				
+				return new AlertDialog.Builder(Upload.this)
+					.setTitle("Joomla")
+					.setMessage("")
+					.setView(layout3)
+					.setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener() 
+					{
+						@Override
+						public void onClick(DialogInterface dialog, int which) 
+						{
+							try
+							{															
+								
+								String username = ((EditText) layout3.findViewById(R.id.txtAddJoomlaUsername)).getText().toString();
+								String password = ((EditText) layout3.findViewById(R.id.txtAddJoomlaPassword)).getText().toString();
+								String siteurl = ((EditText)layout3.findViewById(R.id.txtAddJoomlaLink)).getText().toString();
+								JoooidRpc rpcClient = JoooidRpc.getInstance(siteurl, Constants.TASK_WS_URI_J17, username, password, User.JOOMLA_16);
+								User clientUser = rpcClient.userInfo(username, password);
+								if (clientUser.getId() != null){
+									Log.e("User url",clientUser.getJoomlaUrl());
+									Log.e("User uri",clientUser.getJoomlaUri());
+									long account_id = AccountItem.insertAccount(ctx, null, username, "joomla", "1");
+									JoomlaItem.insertJoomlaAccount(ctx,String.valueOf(account_id), clientUser.getJoomlaUrl(), username, password, "joomla");
+									Toast.makeText(ctx, "Insert account '" + username + "' (Joomla) SUCCESS!", Toast.LENGTH_LONG).show();
+								}
+								else Toast.makeText(ctx, "Login Joomla Fail ! Please check again !", Toast.LENGTH_LONG).show();	
+								PhimpMe.add_account_upload=true;
+								PhimpMe.add_account_setting = true;								
+								reloadAccountsList();	
+								//Wordpress w=new Wordpress();
+								//w.login(ctx,username,password,siteurl);
+								//PhimpMe.add_account_upload=true;
+								//PhimpMe.add_account_setting = true;								
+								//reloadAccountsList();
 							}
 							catch (Exception e) 
 							{
