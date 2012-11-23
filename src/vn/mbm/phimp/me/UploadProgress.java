@@ -254,6 +254,11 @@ public class UploadProgress extends Activity
 					holder.imgIcon.setImageResource(R.drawable.wordpressdotcom_icon);
 					
 				}
+				else if (account_service[position].equals("joomla"))
+				{					
+					holder.imgIcon.setImageResource(R.drawable.joomla);
+					
+				}
 				String acc_name = account_name[position];
 
 				holder.txtName.setText(acc_name);
