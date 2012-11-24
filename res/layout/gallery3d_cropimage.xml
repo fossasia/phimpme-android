@@ -27,36 +27,36 @@
             android:id="@+id/linear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dip"
-            android:paddingRight="10dip" >
+            android:gravity="center" >
 
             <ImageButton
                 android:id="@+id/btnOriginal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="wrap_content"              
                 android:contentDescription="@string/empty"
-                android:src="@drawable/icon_normal" />
+                android:src="@drawable/camera_edit_filter_normal_default" />
 
             <ImageButton
                 android:id="@+id/btnBlackAndWhite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/empty"
-                android:src="@drawable/icon_black_white" />
+                android:src="@drawable/camera_edit_filter_inkwell_default" />
 
             <ImageButton
                 android:id="@+id/btnNagative"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/empty"
-                android:src="@drawable/icon_negative" />
+                android:src="@drawable/nagative" />
 
             <ImageButton
                 android:id="@+id/btnSaphia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/empty"
-                android:src="@drawable/icon_sapphire" />
+                android:src="@drawable/saphia" />
+
         </LinearLayout>
 
         <view
@@ -117,6 +117,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:orientation="horizontal" >
 
                         <ImageButton
@@ -126,7 +127,7 @@
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentTop="true"
                             android:contentDescription="@string/empty"
-                            android:src="@drawable/rotate_left_right" />
+                            android:src="@drawable/left_right_rotate" />
 
                         <ImageButton
                             android:id="@+id/btnSnow"
@@ -135,7 +136,7 @@
                             android:layout_alignParentTop="true"
                             android:layout_toRightOf="@+id/btnSnow"
                             android:contentDescription="@string/empty"
-                            android:src="@drawable/icon_snow" />
+                            android:src="@drawable/snow" />
 
                         <ImageButton
                             android:id="@+id/btnRoundCorner"
@@ -144,7 +145,7 @@
                             android:layout_alignParentTop="true"
                             android:layout_toRightOf="@+id/btnRoundCorner"
                             android:contentDescription="@string/empty"
-                            android:src="@drawable/icon_round_corner" />
+                            android:src="@drawable/round_cornor" />
 
                         <ImageButton
                             android:id="@+id/btnRotateTopDown"
@@ -154,7 +155,7 @@
                             android:layout_alignParentTop="true"
                             android:layout_toRightOf="@+id/btnOriginal"
                             android:contentDescription="@string/empty"
-                            android:src="@drawable/rotate_top_down" />
+                            android:src="@drawable/top_down_rotate" />
                     </LinearLayout>
                 </HorizontalScrollView>
 
