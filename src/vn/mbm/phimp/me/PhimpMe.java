@@ -9,16 +9,11 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.wordpress.android.WordPress;
-import org.wordpress.android.WordPressDB;
-
 import vn.mbm.phimp.me.database.AccountDBAdapter;
 import vn.mbm.phimp.me.database.TumblrDBAdapter;
-import vn.mbm.phimp.me.database.WordpressDBAdapter;
 import vn.mbm.phimp.me.utils.Commons;
 import vn.mbm.phimp.me.utils.RSSPhotoItem;
 import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
-import vn.mbm.phimp.me.R;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.TabActivity;
