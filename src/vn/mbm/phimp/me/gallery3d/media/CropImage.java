@@ -313,13 +313,16 @@ public class CropImage extends MonitoredActivity {
             activitynam = extras.getString("activityName");
 			p = mImagePath.split(";");
 			try{
-			if (p.length == 2){
+				txtPhotoTitle.setText(extras.getString("title"));
+				txtLatitude.setText(extras.getString("latitude"));
+				txtLongtitude.setText(extras.getString("longtitude"));
+			/*if (p.length == 2){
 				JSONObject js = new JSONObject(p[1]);
 				txtLatitude.setText(js.getString("lati"));
 				txtLongtitude.setText(js.getString("logi"));
 				txtPhotoTitle.setText(js.getString("name"));
 				txtTags.setText(js.getString("tags"));
-			}
+			}*/
 			}catch(Exception e){}
 			gpsloading = new ProgressDialog(ctx);
     		gpsloading.setCancelable(true);
