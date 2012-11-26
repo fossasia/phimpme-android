@@ -1,15 +1,19 @@
 package vn.mbm.phimp.me.gallery;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import vn.mbm.phimp.me.SendFileActivity;
 import vn.mbm.phimp.me.Upload;
 import vn.mbm.phimp.me.gallery3d.media.CropImage;
+import vn.mbm.phimp.me.utils.geoDegrees;
 import vn.mbm.phimp.me.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.ExifInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,6 +35,7 @@ public class PhimpMeGallery extends Activity {
 	public static View overscrollleft;
 	public static View overscrollright;
 	public int index = 0;
+	private static String longtitude="",latitude="",title="";
 	//private Context ctx;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -93,9 +98,41 @@ public class PhimpMeGallery extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
+				//get image info
+				 File f =  new File(filePath.get(position));				
+				 ExifInterface exif_data = null;
+				 geoDegrees _g = null;
+				 String la = "";
+				 String lo = "";
+				 try 
+				 {
+					 exif_data = new ExifInterface(f.getAbsolutePath());
+					 _g = new geoDegrees(exif_data);
+					 if (_g.isValid())
+					 {
+						 la = _g.getLatitude() + "";
+						 lo = _g.getLongitude() + "";
+					 }
+				 } 
+				 catch (IOException e) 
+				 {
+					e.printStackTrace();
+				 }
+				 finally
+				 {
+					 exif_data = null;
+					 _g = null;
+				 }
+				 longtitude=lo;
+				 latitude=la;
+				 title=f.getName();
+				 
 				Intent intent = new Intent();
 				intent.setClass(PhimpMeGallery.this, CropImage.class);
-				intent.putExtra("image-path", filePath.get(position));			
+				intent.putExtra("image-path", filePath.get(position));
+				intent.putExtra("longtitude", longtitude);
+				intent.putExtra("latitude", latitude);
+				intent.putExtra("title", title);
 				intent.putExtra("aspectX", 0);
 				intent.putExtra("aspectY", 0);
 				intent.putExtra("scale", true);

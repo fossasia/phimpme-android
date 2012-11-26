@@ -141,6 +141,7 @@ public class Upload extends Activity
 	String[] name;
 	String[] service;
 	public static String imagelist ="";
+	private static String longtitude="",latitude="",title="";
 	Bitmap bmp_scale = null;
 	
 	static boolean upload_photo_process = false;
@@ -187,6 +188,9 @@ public class Upload extends Activity
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, CropImage.class);
 				_intent.putExtra("image-path", path[position]);
+				_intent.putExtra("longtitude", longtitude);
+				_intent.putExtra("latitude", latitude);
+				_intent.putExtra("title", title);
 				_intent.putExtra("position", position);
 				_intent.putExtra("aspectX", 0);
 				_intent.putExtra("aspectY", 0);
@@ -553,9 +557,13 @@ public class Upload extends Activity
     					 exif_data = null;
     					 _g = null;
     				 }
+    				 longtitude=lo;
+    				 latitude=la;
+    				 title=f.getName();
     				 holder.lati.setText("Latiude: "+la);
     				 holder.longi.setText("Longitude: "+lo);
     				 holder.tags.setText("Tags: ");
+    				 
 					}
 				else{
 					try{
