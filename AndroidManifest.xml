@@ -163,6 +163,24 @@
             >
            
         </activity>
+        <activity
+            android:name=".DrupalWebviewActivity"
+            android:configChanges="locale"
+            android:theme="@android:style/Theme.NoTitleBar">
+           
+        </activity>
+        <activity
+            android:name=".WordpressWebviewActivity"
+            android:configChanges="locale"
+            android:theme="@android:style/Theme.NoTitleBar">
+           
+        </activity>
+        <activity
+            android:name=".JoomlaWebviewActivity"
+            android:configChanges="locale"
+            android:theme="@android:style/Theme.NoTitleBar">
+           
+        </activity>
       <!--  <activity
             android:name=".PhimpMeGallery"
             android:screenOrientation="portrait"

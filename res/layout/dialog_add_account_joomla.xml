@@ -13,6 +13,12 @@
         android:text="@string/joomla_note"
         android:textColor="@color/white" />
 
+    <Button
+        android:id="@+id/btnJoomlaIntroduction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/infor_dialog_add_account_drupal_intro_link" />
+
     <TextView
         android:id="@+id/TextView01"
         android:layout_width="wrap_content"

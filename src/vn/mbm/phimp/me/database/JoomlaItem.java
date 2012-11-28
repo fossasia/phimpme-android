@@ -10,6 +10,7 @@ public class JoomlaItem {
 	public String username;
 	public String password;
 	public String services;
+	public String cat_id;
 	
 	public String getAccountID() { return account_id;	}
 	public void setAccountID(String account_id) { this.account_id = account_id; }
@@ -27,13 +28,16 @@ public class JoomlaItem {
 	public String getServices() { return services;	}
 	public void setServices(String services) { this.services = services; }
 	
-	public static boolean insertJoomlaAccount(Context ctx, String account_id, String url, String username, String password,String services)
+	public String getCatId(){return cat_id;};
+	public void setCateId(String cat){cat_id = cat;}
+	
+	public static boolean insertJoomlaAccount(Context ctx, String account_id, String url, String username, String password,String services, String cat)
 	{
 		boolean result;
 		
 		JoomlaDBAdapter db = new JoomlaDBAdapter(ctx);
 		db.open();
-		result = db.insert(account_id, url,username,password,services);
+		result = db.insert(account_id, url,username,password,services,cat);
 		db.close();
 		
 		return result;
@@ -65,12 +69,14 @@ public class JoomlaItem {
 			String username = c.getString(2);
 			String password = c.getString(3);		
 			String services=c.getString(4);
+			String cat = c.getString(5);
 			
 			item.setAccountID(account_id);
 			item.setUrl(url);
 			item.setUsername(username);
 			item.setPassword(password);
 			item.setServices(services);
+			item.setCateId(cat);
 			
 			
 		}
