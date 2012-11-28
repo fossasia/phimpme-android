@@ -2135,7 +2135,10 @@ public class Settings extends Activity
 									Log.e("User url",clientUser.getJoomlaUrl());
 									Log.e("User uri",clientUser.getJoomlaUri());
 									long account_id = AccountItem.insertAccount(ctx, null, username, "joomla", "1");
-									JoomlaItem.insertJoomlaAccount(ctx,String.valueOf(account_id), clientUser.getJoomlaUrl(), username, password, "joomla");
+									String cat_id = rpcClient.findCategory(username, password, "phimpme");									
+									if (cat_id.equals("0")) cat_id = rpcClient.newCategory(username, password, "phimpme", "phimpme", "phimpme category", 1, 1,1);
+									else rpcClient.editCategory(username, password, "phimpme", "phimpme", "phimpme category", 1, 1, 1, Integer.parseInt(cat_id));																	
+									JoomlaItem.insertJoomlaAccount(ctx,String.valueOf(account_id), clientUser.getJoomlaUrl(), username, password, "joomla",cat_id);
 									Toast.makeText(ctx, "Insert account '" + username + "' (Joomla) SUCCESS!", Toast.LENGTH_LONG).show();
 								}
 								else Toast.makeText(ctx, "Login Joomla Fail ! Please check again !", Toast.LENGTH_LONG).show();	

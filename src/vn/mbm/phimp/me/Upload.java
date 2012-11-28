@@ -57,6 +57,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -113,7 +114,7 @@ public class Upload extends Activity
 	private static Uri camera_img_uri;
 	public static ProgressDialog progLoading;
 	static Context ctx;
-	
+	private WebView webView;
 	ListView listAccounts;
 	GridView listPhotoUpload;
 	
@@ -849,12 +850,21 @@ public class Upload extends Activity
 						}).create();
 			case DIALOG_ADD_ACCOUNT_DRUPAL:
 				LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(LAYOUT_INFLATER_SERVICE);
-				final View layout = inflater.inflate(R.layout.dialog_add_account_drupal, (ViewGroup) findViewById(R.id.lytDialogAddAccountDrupal));
-				
+				final View layout = inflater.inflate(R.layout.dialog_add_account_drupal, (ViewGroup) findViewById(R.id.lytDialogAddAccountDrupal));								
+				Button btnDrupal=(Button)layout.findViewById(R.id.btnDrupalIntroduction);
+				btnDrupal.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Intent i=new Intent(ctx, DrupalWebviewActivity.class);
+						startActivity(i);
+					}
+				});
 				return new AlertDialog.Builder(Upload.this)
 					.setTitle(DrupalServices.title)
 					.setMessage("")
-					.setView(layout)
+					.setView(layout)					
 					.setPositiveButton(getString(R.string.accept), new DialogInterface.OnClickListener() 
 					{
 						@Override
@@ -889,6 +899,8 @@ public class Upload extends Activity
 								PhimpMe.add_account_setting = true;
 								
 								reloadAccountsList();
+								
+								
 							}
 							catch (Exception e) 
 							{
@@ -975,9 +987,19 @@ public class Upload extends Activity
 					.create();
 				//wordpress
 			case DIALOG_ADD_ACCOUNT_WORDPRESS:
+				
 				LayoutInflater inflater2 = (LayoutInflater) ctx.getSystemService(LAYOUT_INFLATER_SERVICE);
 				final View layout2 = inflater2.inflate(R.layout.dialog_add_account_wordpress, (ViewGroup) findViewById(R.id.lytDialogAddAccountWordpress));
-				
+				Button btnWordpress=(Button)layout2.findViewById(R.id.btnWordpressIntroduction);
+				btnWordpress.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Intent i=new Intent(ctx, WordpressWebviewActivity.class);
+						startActivity(i);
+					}
+				});
 				return new AlertDialog.Builder(Upload.this)
 					.setTitle("Wordpress")
 					.setMessage("")
@@ -1019,7 +1041,16 @@ public class Upload extends Activity
 			case DIALOG_ADD_ACCOUNT_JOOMLA:
 				LayoutInflater inflater3 = (LayoutInflater) ctx.getSystemService(LAYOUT_INFLATER_SERVICE);
 				final View layout3 = inflater3.inflate(R.layout.dialog_add_account_joomla, (ViewGroup) findViewById(R.id.lytDialogAddAccountWordpress));
-				
+				Button btnJoomla=(Button)layout3.findViewById(R.id.btnJoomlaIntroduction);
+				btnJoomla.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Intent i=new Intent(ctx, JoomlaWebviewActivity.class);
+						startActivity(i);
+					}
+				});
 				return new AlertDialog.Builder(Upload.this)
 					.setTitle("Joomla")
 					.setMessage("")
@@ -1041,7 +1072,10 @@ public class Upload extends Activity
 									Log.e("User url",clientUser.getJoomlaUrl());
 									Log.e("User uri",clientUser.getJoomlaUri());
 									long account_id = AccountItem.insertAccount(ctx, null, username, "joomla", "1");
-									JoomlaItem.insertJoomlaAccount(ctx,String.valueOf(account_id), clientUser.getJoomlaUrl(), username, password, "joomla");
+									String cat_id = rpcClient.findCategory(username, password, "phimpme");									
+									if (cat_id.equals("0")) cat_id = rpcClient.newCategory(username, password, "phimpme", "phimpme", "phimpme category", 1, 1,1);
+									else rpcClient.editCategory(username, password, "phimpme", "phimpme", "phimpme category", 1, 1, 1, Integer.parseInt(cat_id));																	
+									JoomlaItem.insertJoomlaAccount(ctx,String.valueOf(account_id), clientUser.getJoomlaUrl(), username, password, "joomla",cat_id);
 									Toast.makeText(ctx, "Insert account '" + username + "' (Joomla) SUCCESS!", Toast.LENGTH_LONG).show();
 								}
 								else Toast.makeText(ctx, "Login Joomla Fail ! Please check again !", Toast.LENGTH_LONG).show();	

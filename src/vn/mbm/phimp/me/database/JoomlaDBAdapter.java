@@ -18,7 +18,8 @@ public class JoomlaDBAdapter {
 	public static final String USER_NAME = "user_name";
 	public static final String PASSWORD = "password";
 	public static final String SERVICES = "services";
-	private static final String DATABASE_TABLE = "Joomla";
+	public static final String CAT_ID = "cat_id";
+	private static final String DATABASE_TABLE = "joomla";
 	private static final int DATABASE_VERSION = 1;
 	
 	private static final String DATABASE_CREATE = 
@@ -27,6 +28,7 @@ public class JoomlaDBAdapter {
 			+ URL +" text null,"
 			+ USER_NAME +" text null,"
 			+ PASSWORD +" text null,"
+			+ CAT_ID + " text null,"
 			+ SERVICES +" text null) ;";	
 			
 		private Context context;
@@ -78,7 +80,7 @@ public class JoomlaDBAdapter {
 			db.close();
 		}
 		
-		public boolean insert(String account_id, String url, String username, String password, String services ) 
+		public boolean insert(String account_id, String url, String username, String password, String services, String cat_id ) 
 		{
 			ContentValues initialValues = new ContentValues();
 			initialValues.put(ACCOUNT_ID, account_id);
@@ -86,6 +88,7 @@ public class JoomlaDBAdapter {
 			initialValues.put(USER_NAME, username);			
 			initialValues.put(PASSWORD, password);
 			initialValues.put(SERVICES, services);
+			initialValues.put(CAT_ID, cat_id);
 		
 			long result = db.insert(DATABASE_TABLE, null, initialValues);
 			
@@ -109,7 +112,7 @@ public class JoomlaDBAdapter {
 			
 			return db.query(
 					DATABASE_TABLE, 
-					new String[] { ACCOUNT_ID, URL, USER_NAME, PASSWORD,SERVICES }, 
+					new String[] { ACCOUNT_ID, URL, USER_NAME, PASSWORD,SERVICES, CAT_ID }, 
 					selection, 
 					agruments, 
 					null, 
