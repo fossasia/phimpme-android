@@ -10,7 +10,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.security.KeyStore;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,6 +72,7 @@ import vn.mbm.phimp.me.database.FlickrItem;
 import vn.mbm.phimp.me.database.ImageshackItem;
 import vn.mbm.phimp.me.database.ImageshackPhotoList;
 import vn.mbm.phimp.me.database.ImgurItem;
+import vn.mbm.phimp.me.database.JoomlaItem;
 import vn.mbm.phimp.me.database.PicasaItem;
 import vn.mbm.phimp.me.database.SohuItem;
 import vn.mbm.phimp.me.database.TumblrItem;
@@ -111,6 +114,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.joooid.android.model.User;
+import com.joooid.android.xmlrpc.Constants;
+import com.joooid.android.xmlrpc.JoooidRpc;
 
 public class UploadProgress extends Activity
 {
@@ -1757,7 +1764,7 @@ public class UploadProgress extends Activity
 					//create temp file for media upload					
 					String tempFileName = "wp-" + System.currentTimeMillis();
 										
-					String imagepath=path[i].split(";")[0];
+					String imagepath = path[i].split(";")[0];
 					try {
 						ctx.openFileOutput(tempFileName, Context.MODE_PRIVATE);
 					} catch (FileNotFoundException e) {
@@ -1840,15 +1847,47 @@ public class UploadProgress extends Activity
 					} catch (final XMLRPCException e) {
 						e.printStackTrace();
 					}
-
-
 				}
 				
 			}
 			}
+			else if ("joomla".equals(_s)){	
+				if (mSystemService.getActiveNetworkInfo() == null) {
+					return false;
+				}else{
+					JoomlaItem user = JoomlaItem.getItem(ctx, account_id[pos]);
+				for (int i = 0; i < path.length ; i++){											
+						JoooidRpc rpcClient = JoooidRpc.getInstance(user.getUrl(),Constants.TASK_WS_URI_J17,user.getUsername(),user.getPassword(),User.JOOMLA_16);
+						
+						try {
+							File mFile = new File(path[i].split(";")[0]);
+							Date mDate = new Date();							
+							String name = String.valueOf(mDate.getTime())+"_"+ mFile.getName();									
+							if (path[i].split(";").length == 2){
+								JSONObject js = new JSONObject(path[i].split(";")[1]);
+								//String lat = js.getString("lati");
+								//tring logi = js.getString("logi");
+								name = js.getString("name");														
+								}
+							name = name.replaceAll("\\s", "");
+							String imgUrl = rpcClient.uploadFile(user.getUsername(), user.getPassword(),name, mFile, "phimpme");
+							String fulltext ="<p><img src=images/phimpme/"+name +" /></p>" ;									
+							Log.e("Image Url",imgUrl);
+							SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+							String currentDate = formatter.format(mDate);
+							rpcClient.newPost(user.getUsername(), user.getPassword(), user.getCatId(), name, name, "Content has create by phimpme app", fulltext, 1, 1, true, currentDate);
+						} catch (com.joooid.android.xmlrpc.XMLRPCException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} catch (JSONException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					}
+				}	
+			}
 			return result;
-		}
-
+		}		
 		@Override
 		protected void onProgressUpdate(Integer... progress)
 		{

@@ -15,7 +15,7 @@ public class JoomlaWebviewActivity extends Activity{
 		webView = (WebView) findViewById(R.id.wvJoomlaIntroduction);
 		webView.getSettings().setJavaScriptEnabled(true);
 
-		String customHtml = "<html><body><h1>Hello, WebView</h1></body></html>";
+		String customHtml = "<html><body><h1>Joomla Introduction</h1></body></html>";
 		webView.loadData(customHtml, "text/html", "UTF-8");
 
 	}
