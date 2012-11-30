@@ -18,7 +18,9 @@ public class WordpressWebviewActivity extends Activity{
 		String customHtml = 
 		"<html>"+
 		    "<body style='background:#cfe'>"+
-		        "<center><h2>Wordpress Introduction</h2></center>"+
+		        "<center><h2>Wordpress Introduction</h2> " +
+		        "------------------------" +
+		        "</center>"+
 		        "<p>"+
 		            "If you want to implement wordpress for Phimpme applicaion, please install some plugin below :"+
 		            "<ol>"+
