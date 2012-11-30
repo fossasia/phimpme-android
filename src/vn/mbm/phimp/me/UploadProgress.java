@@ -1548,6 +1548,7 @@ public class UploadProgress extends Activity
 					OAuthConsumer consumer = new CommonsHttpOAuthConsumer(SohuServices.CONSUMER_KEY, SohuServices.CONSUMER_SECRET);
 					for (int i = 0; i < path.length ; i++){
 					HttpPost httppost = new HttpPost(uri);
+					
 					CustomMultiPartEntity multi = new CustomMultiPartEntity(new ProgressListener()
 					{
 						@Override
@@ -1868,14 +1869,23 @@ public class UploadProgress extends Activity
 								//String lat = js.getString("lati");
 								//tring logi = js.getString("logi");
 								name = js.getString("name");														
-								}
+								}				
+							pb.setProgress(0);
+							pb.setProgress(100);						
 							name = name.replaceAll("\\s", "");
 							String imgUrl = rpcClient.uploadFile(user.getUsername(), user.getPassword(),name, mFile, "phimpme");
 							String fulltext ="<p><img src=images/phimpme/"+name +" /></p>" ;									
 							Log.e("Image Url",imgUrl);
 							SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 							String currentDate = formatter.format(mDate);
-							rpcClient.newPost(user.getUsername(), user.getPassword(), user.getCatId(), name, name, "Content has create by phimpme app", fulltext, 1, 1, true, currentDate);
+							String res = rpcClient.newPost(user.getUsername(), user.getPassword(), user.getCatId(), name, name, "Content has create by phimpme app", fulltext, 1, 1, true, currentDate);
+							try{
+								Integer.parseInt(res);
+								result = true;
+							}
+							catch(NumberFormatException e){
+								result = false;
+							}
 						} catch (com.joooid.android.xmlrpc.XMLRPCException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

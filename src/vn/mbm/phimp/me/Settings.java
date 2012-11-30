@@ -2052,7 +2052,16 @@ public class Settings extends Activity
 			case DIALOG_ADD_ACCOUNT_DRUPAL:
 				LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(LAYOUT_INFLATER_SERVICE);
 				final View layout = inflater.inflate(R.layout.dialog_add_account_drupal, (ViewGroup) findViewById(R.id.lytDialogAddAccountDrupal));
-				
+				Button btnDrupal=(Button)layout.findViewById(R.id.btnDrupalIntroduction);
+				btnDrupal.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Intent i=new Intent(ctx, DrupalWebviewActivity.class);
+						startActivity(i);
+					}
+				});
 				return new AlertDialog.Builder(Settings.this)
 					.setTitle(DrupalServices.title)
 					.setMessage("")
@@ -2113,7 +2122,16 @@ public class Settings extends Activity
 			case DIALOG_ADD_ACCOUNT_JOOMLA:
 				LayoutInflater inflater3 = (LayoutInflater) ctx.getSystemService(LAYOUT_INFLATER_SERVICE);
 				final View layout3 = inflater3.inflate(R.layout.dialog_add_account_joomla, (ViewGroup) findViewById(R.id.lytDialogAddAccountWordpress));
-				
+				Button btnJoomla=(Button)layout3.findViewById(R.id.btnJoomlaIntroduction);
+				btnJoomla.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Intent i=new Intent(ctx, JoomlaWebviewActivity.class);
+						startActivity(i);
+					}
+				});
 				return new AlertDialog.Builder(Settings.this)
 					.setTitle("Joomla")
 					.setMessage("")
@@ -2144,7 +2162,7 @@ public class Settings extends Activity
 								else Toast.makeText(ctx, "Login Joomla Fail ! Please check again !", Toast.LENGTH_LONG).show();	
 								PhimpMe.add_account_upload=true;
 								PhimpMe.add_account_setting = true;								
-								reloadAccountsList();								
+								reloadAccountsList();						
 							}
 							catch (Exception e) 
 							{
@@ -2230,7 +2248,16 @@ public class Settings extends Activity
 			case DIALOG_ADD_ACCOUNT_WORDPRESS:
 				LayoutInflater inflater2 = (LayoutInflater) ctx.getSystemService(LAYOUT_INFLATER_SERVICE);
 				final View layout2 = inflater2.inflate(R.layout.dialog_add_account_wordpress, (ViewGroup) findViewById(R.id.lytDialogAddAccountWordpress));
-				
+				Button btnWordpress=(Button)layout2.findViewById(R.id.btnWordpressIntroduction);
+				btnWordpress.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						Intent i=new Intent(ctx, WordpressWebviewActivity.class);
+						startActivity(i);
+					}
+				});
 				return new AlertDialog.Builder(Settings.this)
 					.setTitle("Wordpress")
 					.setMessage("")
