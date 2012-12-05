@@ -18,11 +18,19 @@
             android:background="@color/black_trans" >
 
             <ImageButton
+                android:id="@+id/btnZoom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/btnShare"
+                android:src="@drawable/icon_zoom" />
+            
+            <ImageButton
                 android:id="@+id/btnEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
+                android:layout_alignParentTop="true"              
                 android:src="@drawable/icon_edit" />
 
             <ImageButton
