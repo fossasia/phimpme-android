@@ -73,6 +73,7 @@
         <activity android:name="vn.mbm.phimp.me.gallery.PhimpMeGallery"
             android:configChanges="locale"         	
          	android:theme="@android:style/Theme.NoTitleBar"
+         	android:screenOrientation="portrait"
             >
             
         </activity>

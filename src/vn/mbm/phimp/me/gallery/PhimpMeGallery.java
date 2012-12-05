@@ -4,19 +4,26 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.SendFileActivity;
 import vn.mbm.phimp.me.Upload;
 import vn.mbm.phimp.me.gallery3d.media.CropImage;
 import vn.mbm.phimp.me.utils.geoDegrees;
-import vn.mbm.phimp.me.R;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.graphics.BitmapFactory;
 import android.media.ExifInterface;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -29,7 +36,7 @@ public class PhimpMeGallery extends Activity {
 	private GalleryImageAdapter galImageAdapter;
 	private ImageButton btnShare;
 	private ImageButton btnEdit;
-	
+	private ImageButton btnZoom;
 	private ImageButton btnUpload;
 	public static int position;
 	public static View overscrollleft;
@@ -42,7 +49,8 @@ public class PhimpMeGallery extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.phimpmegallery);	
 		//requestWindowFeature(Window.FEATURE_NO_TITLE);
-	//	ctx = this;		
+	//	ctx = this;	
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		Intent intent = getIntent();
 		Bundle extract = intent.getExtras();		
 		try{
@@ -138,6 +146,38 @@ public class PhimpMeGallery extends Activity {
 				intent.putExtra("scale", true);
 				intent.putExtra("activityName", "PhimpMeGallery");
 				startActivity(intent);
+			}
+		});
+		btnZoom=(ImageButton)findViewById(R.id.btnZoom);
+		btnZoom.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				TouchImageView imageViewGallery = new TouchImageView(PhimpMeGallery.this);
+
+					BitmapFactory.Options o2 = new BitmapFactory.Options();
+					o2.inPurgeable = true;
+
+					try
+					{
+						WindowManager wm = (WindowManager) PhimpMeGallery.this.getSystemService(Context.WINDOW_SERVICE);
+						Display display = wm.getDefaultDisplay();
+						@SuppressWarnings("deprecation")
+						int screen_w = display.getWidth();		
+						imageViewGallery.setImageBitmap(GalleryImageAdapter.decodeSampledBitmapFromFile(PhimpMeGallery.this, filePath.get(position),  screen_w));
+						imageViewGallery.setMaxZoom(4f);
+						
+						//dialog show zoom photo
+						Dialog d=new Dialog(PhimpMeGallery.this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+						d.setContentView(imageViewGallery);
+						d.setCanceledOnTouchOutside(true);
+						d.show();
+					}
+					catch (Exception ex)
+					{
+						Log.e("Exception", ex.getLocalizedMessage());
+					}
 			}
 		});
 		
