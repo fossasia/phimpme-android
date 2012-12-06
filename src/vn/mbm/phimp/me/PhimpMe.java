@@ -9,17 +9,17 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.wordpress.android.WordPress;
-import org.wordpress.android.WordPressDB;
+import org.acra.ACRA;
+import org.acra.ReportingInteractionMode;
+import org.acra.annotation.ReportsCrashes;
 
 import vn.mbm.phimp.me.database.AccountDBAdapter;
 import vn.mbm.phimp.me.database.TumblrDBAdapter;
-import vn.mbm.phimp.me.database.WordpressDBAdapter;
 import vn.mbm.phimp.me.utils.Commons;
 import vn.mbm.phimp.me.utils.RSSPhotoItem;
 import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
-import vn.mbm.phimp.me.R;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.app.ProgressDialog;
 import android.app.TabActivity;
 import android.content.Context;
@@ -56,7 +56,10 @@ import com.google.ads.AdView;
 import com.google.android.maps.GeoPoint;
 import com.paypal.android.MEP.PayPal;
 
-
+@ReportsCrashes(formKey = "dFRsUzBJSWFKUFc3WmFjaXZab2V0dHc6MQ",
+mode = ReportingInteractionMode.TOAST,
+forceCloseDialogAfterToast = false,
+resToastText = R.string.crash_report_text)
 @SuppressWarnings("deprecation")
 public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener//, android.view.GestureDetector.OnGestureListener 
 {
@@ -183,10 +186,12 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
 	@Override
     public void onCreate(Bundle savedInstanceState) 
     {
+    	
     	super.onCreate(savedInstanceState);
     	ctx = this;    	
     	Log.d("thong", "PhimpMe - onCreate()");    	
-
+    	// The following line triggers the initialization of ACRA
+        //ACRA.init((Application) ctx.getApplicationContext());
     	//Init PayPal library
         new Thread(new Runnable() 
     	{

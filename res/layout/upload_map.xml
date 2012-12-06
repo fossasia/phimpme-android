@@ -15,13 +15,22 @@
         android:clickable="true"
         android:enabled="true" />-->
     
-     <com.google.android.maps.MapView
+ <!--     <com.google.android.maps.MapView
         android:id="@+id/mvUploadMap"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:apiKey="05xNbF3--7Wv5kEZfcxKsYdn5yTPBXkUcsaua5g"
+        android:apiKey="05xNbF3xx7Wv5kEZfcxKsYdn5yTPBXkUcsaua5g"
+        android:clickable="true"
+        android:enabled="true" /> -->
+        <com.google.android.maps.MapView
+        android:id="@+id/mvUploadMap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:apiKey="0GKm7nFVzZxdNS5Nj59Diaf4T7cCsbgk1x09y8w"
         android:clickable="true"
         android:enabled="true" />
     
