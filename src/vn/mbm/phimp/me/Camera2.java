@@ -371,7 +371,9 @@ public class Camera2 extends Activity{
     }*/
 	@Override
 	public void onBackPressed(){		
-		//PhimpMe.showTabs();		
+		//PhimpMe.showTabs();	
+		mCamera.stopPreview();
+		mCamera.release();
 		PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
 		PhimpMe.mTabHost.setCurrentTab(PhimpMe.IdList.get(PhimpMe.IdList.size()-1));		
 	}

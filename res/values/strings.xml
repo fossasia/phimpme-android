@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+   	<string name="crash_report_text">"Errors. An internal error has occurred. Please try again."</string>
+    
     <string name="admob_id">a14ff82a6fc607c</string>
-     <string name="currency">$</string>
+    <string name="currency">$</string>
     <string name="upload">Upload</string>
     <string name="settings">Settings</string>
     <string name="gallery">Gallery</string>
