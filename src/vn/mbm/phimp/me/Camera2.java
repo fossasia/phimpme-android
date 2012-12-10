@@ -1,8 +1,10 @@
 package vn.mbm.phimp.me;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 import vn.mbm.phimp.me.gallery3d.media.CropImage;
@@ -15,52 +17,120 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.ShutterCallback;
+import android.hardware.Camera.Size;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class Camera2 extends Activity{
 	private static final String TAG = "Camera";
 	static Context ctx;
 	public static Camera mCamera;
 	public static Preview preview;
+	ProgressDialog progress;
 	OrientationEventListener mOrientation;
 	//public static Preview preview1;
 	public static ImageButton buttonClick;	
 	ImageButton flash;
 	ImageButton camera_switch;
 	FrameLayout frame;	
-	public int degrees;
+	public int degrees;	
+	private String make;
+	private String model;
+	private String imei;
+	LocationManager locationManager;
+	private LocationListener locationListener;
 	boolean portrait = true;
+	double lat  ;
+	double lon ;
+	int statusScreen = 0;
 	//** Called when the activity is first created. *//*
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.camera);
-		
-		//setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_USER);
+		if (PhimpMe.IdList.size() == 5) {PhimpMe.IdList.clear();PhimpMe.IdList.add(0);}
+		PhimpMe.IdList.add(3);
+		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_BEHIND);
 		frame = ((FrameLayout) findViewById(R.id.preview));	   
-		preview = new Preview(this);				
-	    
+		preview = new Preview(this);
+		//setContentView(preview);
+		locationListener = new LocationListener() {
+
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            public void onProviderDisabled(String provider) {
+
+            }
+
+            public void onLocationChanged(Location location) {
+
+               // Camera2.this.gpsLocationReceived(location);
+                lat = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLatitude();
+                lon = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLongitude();
+            }
+
+        };
+        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        Criteria locationCritera = new Criteria();
+        locationCritera.setAccuracy(Criteria.ACCURACY_COARSE);
+        locationCritera.setAltitudeRequired(false);
+        locationCritera.setBearingRequired(false);
+        locationCritera.setCostAllowed(true);
+        locationCritera.setPowerRequirement(Criteria.NO_REQUIREMENT);
+        String providerName = locationManager.getBestProvider(locationCritera, true);
+
+        if (providerName != null && locationManager.isProviderEnabled(providerName)) {
+           locationManager.requestLocationUpdates(providerName, 20000, 100,Camera2.this.locationListener);
+        } else {
+            // Provider not enabled, prompt user to enable it            
+        }
+        if(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)!=null){
+
+            lat = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude();
+			lon = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude();
+			  }							
+		  else if (locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)!=null){
+			      Log.d("TAG", "Inside NETWORK");			
+		          lat = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLatitude();
+			      lon = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLongitude();			
+			  }			
+			  else{			
+			      Log.d("TAG", "else +++++++ ");
+			      lat = -1;
+			      lon = -1;
+			  }
 		try{
 		mCamera = Camera.open();}catch(Exception e){
 			mCamera.release();
@@ -70,14 +140,16 @@ public class Camera2 extends Activity{
 		setCameraDisplayOrientation(this, 0, mCamera);
 		preview.setCamera(mCamera);							
 		ctx = this;
-		//LayoutParams layparam = new LayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
-		//preview.setLayoutParams(layparam);
+		//LayoutParams layparam = new LayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT));
+		//frame.setLayoutParams(layparam);
+		//preview.setLayoutParams(layparam);		
 		frame.addView(preview);			
 		buttonClick = (ImageButton) findViewById(R.id.takephoto);
 		buttonClick.bringToFront();
 		buttonClick.setOnClickListener( new OnClickListener() {
 			public void onClick(View v) {
-				preview.camera.takePicture(shutterCallback, rawCallback, jpegCallback);				
+				progress = ProgressDialog.show(ctx, "", getString(R.string.wait));			
+				preview.mCamera.takePicture(shutterCallback, rawCallback, jpegCallback);				
 			}
 		});	
 		Log.e("Orirention", String.valueOf(ctx.getResources().getConfiguration().orientation));
@@ -86,8 +158,9 @@ public class Camera2 extends Activity{
 			@Override
 			public void onOrientationChanged(int orientation) {
 				// TODO Auto-generated method stub
-			Log.e("Orientation","Change"+ String.valueOf(orientation));
-			degrees = orientation;			
+			//Log.e("Orientation", String.valueOf(orientation));
+				if (orientation >=350) degrees = 0; else
+					degrees = orientation;	
 			}
 		};
 		mOrientation.enable();
@@ -98,9 +171,9 @@ public class Camera2 extends Activity{
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				/*if (Camera.getNumberOfCameras() <= 1){
+				if (Camera.getNumberOfCameras() <= 1){
 					Toast.makeText(ctx, "Sorry ! Your device has one camera !",Toast.LENGTH_SHORT).show();	
-				}else{*/
+				}else{
 					if (PhimpMe.camera_use == 0) {
 						Log.e("Camera", "0");						
 						PhimpMe.camera_use = 1;
@@ -134,11 +207,11 @@ public class Camera2 extends Activity{
 					}
 				}
 				
-			//}
+			}
 		});
-		Camera.Parameters parameters = preview.camera.getParameters();
+		Camera.Parameters parameters = preview.mCamera.getParameters();
 		parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
-		preview.camera.setParameters(parameters);
+		preview.mCamera.setParameters(parameters);
 		LinearLayout linear = (LinearLayout)findViewById(R.id.lnCam);
 		linear.bringToFront();
 		flash = (ImageButton)findViewById(R.id.flash);		
@@ -149,45 +222,46 @@ public class Camera2 extends Activity{
 				// TODO Auto-generated method stub
 				//Log.e("Flash",preview.camera.getParameters().getFlashMode());
 				try{
-				Camera.Parameters parameters = preview.camera.getParameters();
-				if (preview.camera.getParameters().getFlashMode().equals(Camera.Parameters.FLASH_MODE_OFF))
+				Camera.Parameters parameters = preview.mCamera.getParameters();
+				if (preview.mCamera.getParameters().getFlashMode().equals(Camera.Parameters.FLASH_MODE_OFF))
 					PhimpMe.flashStatus = 0;
 				else
-				if (preview.camera.getParameters().getFlashMode().equals(Camera.Parameters.FLASH_MODE_ON))
+				if (preview.mCamera.getParameters().getFlashMode().equals(Camera.Parameters.FLASH_MODE_ON))
 					PhimpMe.flashStatus = 1;
 				else PhimpMe.flashStatus = 2;
 				if (PhimpMe.flashStatus == 0){
 					flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder));
 					parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
-					preview.camera.setParameters(parameters);
+					preview.mCamera.setParameters(parameters);
 					PhimpMe.flashStatus = 1;
 				}else if (PhimpMe.flashStatus == 1)
 					{
 					flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_a));
 					parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
-					preview.camera.setParameters(parameters);
+					preview.mCamera.setParameters(parameters);
 					PhimpMe.flashStatus = 2;
 				}else
 				{
 					flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_gray));
 					parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-					preview.camera.setParameters(parameters);
+					preview.mCamera.setParameters(parameters);
 					PhimpMe.flashStatus = 0;
 				}
-				Log.e("Flash",preview.camera.getParameters().getFlashMode());
+				Log.e("Flash",preview.mCamera.getParameters().getFlashMode());
 				}catch(Exception e){}
 				//Log.e("Flash",preview.camera.getParameters().getSupportedFlashModes().get(0));
 				
 			}
 		});		
-		
 		Log.d(TAG, "onCreate'd");
-		PhimpMe.hideTabs();
+		//PhimpMe.hideTabs();
 	}
+	
 
 
 	ShutterCallback shutterCallback = new ShutterCallback() {
-		public void onShutter() {
+		public void onShutter() {			
+			//Dialog(1000, progress);
 			Log.d(TAG, "onShutter'd");
 		}
 	};
@@ -195,7 +269,7 @@ public class Camera2 extends Activity{
 	//** Handles data for raw picture *//*
 	PictureCallback rawCallback = new PictureCallback() {
 		public void onPictureTaken(byte[] data, Camera camera) {
-			Log.d(TAG, "onPictureTaken - raw");
+			Log.d(TAG, "onPictureTaken - raw");			
 		}
 	};
 
@@ -203,18 +277,15 @@ public class Camera2 extends Activity{
 	PictureCallback jpegCallback = new PictureCallback() {
 		
 		public void onPictureTaken(byte[] data, Camera camera) {
-						
+			
 			FileOutputStream outStream = null;
 			Bitmap rotatedBMP = null;
 			String picture = "";
 			Bitmap bmp =null;
-			camera.stopPreview();
-			//ExifInterface exif;
-			//if (mOrientation.canDetectOrientation()) mOrientation.enable();
-			//mOrientation.disable();
+			camera.startPreview();			
 			Log.e("Size",String.valueOf(data.length)) ;
 			try {				
-				picture = String.format("/sdcard/phimp.me/take_photo/%d.jpg", System.currentTimeMillis());
+				picture = Environment.getExternalStorageDirectory()+ String.format("/phimp.me/take_photo/%d.jpg", System.currentTimeMillis());
 				outStream = new FileOutputStream(picture);				
 	            bmp = BitmapFactory.decodeByteArray(data, 0, data.length);	            	            
 	            int w = bmp.getWidth();
@@ -223,7 +294,7 @@ public class Camera2 extends Activity{
 	            if (PhimpMe.camera_use == 0)
 	            	{
 	            	Log.e("Degrees",String.valueOf(degrees));
-	            	if (degrees > 0 && degrees <=90)
+	            	if (degrees >= 0 && degrees <=90)
 	            		{
 	            		Log.e("Degree",String.valueOf(degrees));
 	            		mtx.postRotate(90);//else mtx.postRotate(-degrees);
@@ -233,20 +304,20 @@ public class Camera2 extends Activity{
 	            	}
 	            	}
 	            else {
-	            	if (degrees > 0 && degrees <=90)
+	            	if (degrees <= 0 && degrees >= -90)
             		{
             		Log.e("Degree",String.valueOf(degrees));
             		mtx.postRotate(-90);//else mtx.postRotate(-degrees);
             		}
-	            	else if (degrees > 90 && degrees <=180 ){
+	            	else if (degrees < -90 && degrees >= -180 ){
             		mtx.postRotate(-180);
 	            	}
 	            } 
 	            // Rotating Bitmap	      	            
 	            rotatedBMP = Bitmap.createBitmap(bmp, 0, 0, w, h, mtx, true);
-	            rotatedBMP.compress(CompressFormat.JPEG, 80, outStream);
+	            rotatedBMP.compress(CompressFormat.JPEG, 90, outStream);
 	            rotatedBMP.recycle();
-	            Log.e("Width + Height","Width => "+ w+ "Height =>"+ h);
+	           // Log.e("Width + Height","Width => "+ w+ "Height =>"+ h);
 	            bmp.recycle();
 				//outStream.write(data);
 	            outStream.flush();	            
@@ -262,11 +333,23 @@ public class Camera2 extends Activity{
 				e.printStackTrace();
 			} finally {
 			}
-			
-			sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"
-		            + Environment.getExternalStorageDirectory()))); 
-			ProgressDialog progress=ProgressDialog.show(ctx, "", getString(R.string.wait));				
-			Dialog(2500,progress);
+			Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);			
+		    File f = new File(picture);
+		    Uri contentUri = Uri.fromFile(f);
+		    mediaScanIntent.setData(contentUri);
+		    Camera2.this.sendBroadcast(mediaScanIntent);
+			ExifInterface exif;
+			try {
+				Log.e("Exif data","Run");
+				exif = new ExifInterface(picture);
+				createExifData(exif,lat , lon);
+		        exif.saveAttributes();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}           	
+			//sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"
+		      //      + Environment.getExternalStorageDirectory()))); 			
 			Log.e("Camera2", "picture : "+picture);						
 			Intent _intent = new Intent();			
 			_intent.setClass(ctx, CropImage.class);
@@ -276,9 +359,62 @@ public class Camera2 extends Activity{
 			_intent.putExtra("scale", true);
 			_intent.putExtra("activityName", "Camera2");			
 			startActivityForResult(_intent, 1);	
+			progress.dismiss();	
 					
 		}
 	};	
+public void createExifData(ExifInterface exif, double lattude, double longitude){
+
+		 if (lattude < 0) {
+		     exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, "S");
+		     lattude = -lattude;
+		 } else {
+		     exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, "N");
+		 }
+		
+		 exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE,
+		         formatLatLongString(lattude));
+		
+		 if (longitude < 0) {
+		     exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, "W");
+		     longitude = -longitude;
+		 } else {
+		     exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, "E");
+		 }
+		 exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE,
+		         formatLatLongString(longitude));
+		
+		 try {
+		     exif.saveAttributes();
+		 } catch (IOException e) {
+		
+		     e.printStackTrace();
+		 }
+		 make = android.os.Build.MANUFACTURER; // get the make of the device
+		 model = android.os.Build.MODEL; // get the model of the divice
+		
+		 exif.setAttribute(ExifInterface.TAG_MAKE, make);
+		 TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+		 imei = telephonyManager.getDeviceId();
+		 exif.setAttribute(ExifInterface.TAG_MODEL, model+" - "+imei);
+		
+		 exif.setAttribute(ExifInterface.TAG_DATETIME, (new Date(System.currentTimeMillis())).toString()); // set the date & time
+		
+		 Log.d("TAG", "Information : lat ="+ lattude+"  lon ="+ longitude+"  make = "+make+"  model ="+ model+"  imei="+imei+" time ="+(new Date(System.currentTimeMillis())).toString());
+}
+
+private static String formatLatLongString(double d) {
+		 StringBuilder b = new StringBuilder();
+		 b.append((int) d);
+		 b.append("/1,");
+		 d = (d - (int) d) * 60;
+		 b.append((int) d);
+		 b.append("/1,");
+		 d = (d - (int) d) * 60000;
+		 b.append((int) d);
+		 b.append("/1000");
+		 return b.toString();
+}
 	public static void setCameraDisplayOrientation(Activity activity,
 	         int cameraId, android.hardware.Camera camera) {
 	     android.hardware.Camera.CameraInfo info =
@@ -310,15 +446,7 @@ public class Camera2 extends Activity{
 	            
 	        }
 	    }, time); 
-	}
-	/*public void onConfigurationChanged(Configuration newConfig) {
-	    super.onConfigurationChanged(newConfig);
-	    // Checks the orientation of the screen
-	    setCameraDisplayOrientation((Activity)ctx, PhimpMe.camera_use, mCamera);
-	    Display display = ((WindowManager) ctx.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
-	    int rotation = display.getRotation();
-	    setRequestedOrientation(getRotation(rotation));
-	    }*/
+	}	
 	public static int getRotation(int rotation){
 		int result = 0;
 		switch (rotation) {
@@ -341,15 +469,14 @@ public class Camera2 extends Activity{
 	@Override
 	protected void onResume(){
 		super.onResume();		
-		PhimpMe.hideTabs();
-		PhimpMe.hideAd();			
+		//PhimpMe.hideTabs();
+		//PhimpMe.hideAd();			
 		mOrientation.enable();
-		if (mCamera == null){
-			mCamera = Camera.open();
-		}
-		preview.setCamera(mCamera);
-		if (PhimpMe.IdList.size() == 5) {PhimpMe.IdList.clear();PhimpMe.IdList.add(0);}
-		PhimpMe.IdList.add(3);
+		try{
+		mCamera = Camera.open(PhimpMe.camera_use);
+		}catch(Exception e){}
+		setCameraDisplayOrientation((Activity) ctx, PhimpMe.camera_use, mCamera); 
+		preview.setCamera(mCamera);		
 	}
 	@Override
 	protected void onPause(){
@@ -357,151 +484,206 @@ public class Camera2 extends Activity{
 		mOrientation.disable();
 	}
 	
-	/*@Override
+	@Override
 	public boolean onKeyDown(int keycode, KeyEvent event)
     {
     	if (keycode == KeyEvent.KEYCODE_BACK){
     	
     		PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
     		PhimpMe.mTabHost.setCurrentTab(PhimpMe.IdList.get(PhimpMe.IdList.size()-1));
-    		PhimpMe.showTabs();
+    		//PhimpMe.showTabs();
     	}  	
-        //return super.onKeyDown(keycode, event);
-    	return true;
-    }*/
-	@Override
+        return super.onKeyDown(keycode, event);
+    	//return true;
+    }
+	/*@Override
 	public void onBackPressed(){		
 		//PhimpMe.showTabs();	
-		mCamera.stopPreview();
-		mCamera.release();
+		//mCamera.stopPreview();
+		//mCamera.release();
 		PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
 		PhimpMe.mTabHost.setCurrentTab(PhimpMe.IdList.get(PhimpMe.IdList.size()-1));		
-	}
+	}*/
 		
+
+
+// ----------------------------------------------------------------------
+
+/**
+ * A simple wrapper around a Camera and a SurfaceView that renders a centered preview of the Camera
+ * to the surface. We need to center the SurfaceView because not all devices have cameras that
+ * support preview sizes at the same aspect ratio as the device's display.
+ */
 }
+class Preview extends ViewGroup implements SurfaceHolder.Callback {
+    private final String TAG = "Preview";
 
-class Preview extends SurfaceView implements SurfaceHolder.Callback {
-	private static final String TAG = "Preview";
-
+    SurfaceView mSurfaceView;
     SurfaceHolder mHolder;
-    public Camera camera;
-    public List<String> Support_Flash;    
-	@SuppressWarnings("deprecation")
-	Preview(Context context) {
+    Size mPreviewSize;
+    List<Size> mSupportedPreviewSizes;
+    List<String> mSupportFocus;
+    Camera mCamera;
+
+    Preview(Context context) {
         super(context);
-        
+
+        mSurfaceView = new SurfaceView(context);
+        addView(mSurfaceView);
+
         // Install a SurfaceHolder.Callback so we get notified when the
-        // underlying surface is created and destroyed.          
-      
-        mHolder = getHolder();
+        // underlying surface is created and destroyed.
+        mHolder = mSurfaceView.getHolder();
         mHolder.addCallback(this);
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
     }
-	public void setCamera(Camera camera) {
-        this.camera = camera;
-        if (camera != null) {
-            //mSupportedPreviewSizes = this.camera.getParameters().getSupportedPreviewSizes();        	        	
+
+    public void setCamera(Camera camera) {
+        mCamera = camera;
+        if (mCamera != null) {
+            mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
+            mSupportFocus = mCamera.getParameters().getSupportedFocusModes();
+           // mCamera.setDisplayOrientation(90);
             requestLayout();
         }
     }
-	public void switchCamera(Camera camera) {
-	       setCamera(camera);
-	       try {
-	           camera.setPreviewDisplay(mHolder);
-	       } catch (IOException exception) {
-	           Log.e(TAG, "IOException caused by setPreviewDisplay()", exception);
-	       }
-	       
-	       requestLayout();
-	       
-	    }
+
+    public void switchCamera(Camera camera) {
+       setCamera(camera);
+       try {
+           camera.setPreviewDisplay(mHolder);
+       } catch (IOException exception) {
+           Log.e(TAG, "IOException caused by setPreviewDisplay()", exception);
+       }
+       Camera.Parameters parameters = camera.getParameters();
+       parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
+       requestLayout();
+
+       camera.setParameters(parameters);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        // We purposely disregard child measurements because act as a
+        // wrapper to a SurfaceView that centers the camera preview instead
+        // of stretching it.
+        final int width = resolveSize(getSuggestedMinimumWidth(), widthMeasureSpec);
+        final int height = resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec);
+        setMeasuredDimension(width, height);    	
+        if (mSupportedPreviewSizes != null) {
+        	
+            mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, width, height);
+        }
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int l, int t, int r, int b) {
+        if (changed && getChildCount() > 0) {
+            final View child = getChildAt(0);
+
+            final int width = r - l;
+            final int height = b - t;
+            Log.e("Height",String.valueOf(height));
+            int previewWidth = width;
+            int previewHeight = height;
+            if (mPreviewSize != null) {
+                previewWidth = mPreviewSize.width;
+                previewHeight = mPreviewSize.height;
+            }
+
+            // Center the child SurfaceView within the parent.
+            if (width * previewHeight > height * previewWidth) {
+                final int scaledChildWidth = previewWidth * height / previewHeight;
+                Log.e("width",String.valueOf(previewWidth));
+                Log.e("Height",String.valueOf(previewHeight));
+                Log.e("scaled",String.valueOf(scaledChildWidth));
+                child.layout((width - scaledChildWidth) / 2, 0,
+                        (width + scaledChildWidth) / 2, height);
+                Log.e("Height",String.valueOf(height));
+            } else {
+                final int scaledChildHeight = previewHeight * width / previewWidth;
+                Log.e("width",String.valueOf(previewWidth));
+                Log.e("Height",String.valueOf(previewHeight));
+                Log.e("scaled",String.valueOf(scaledChildHeight));
+                child.layout(0, 0,
+                        width, height);
+                /*child.layout(0, (height - scaledChildHeight) / 2,
+                        width, (height + scaledChildHeight) / 2);*/
+                Log.e("Height",String.valueOf(height));
+            }
+        }
+    }
+
     public void surfaceCreated(SurfaceHolder holder) {
         // The Surface has been created, acquire the camera and tell it where
         // to draw.
-    	//camera = Camera.open(cam_use);
-    	
         try {
-			camera.setPreviewDisplay(holder);									
-		} catch (Exception e) {
-			Camera2.mCamera.release();
-			Camera2.mCamera = null;
-			Camera2.mCamera = Camera.open(PhimpMe.camera_use);
-			Camera2.mCamera.setDisplayOrientation(90);
-			camera = null;
-			camera = Camera2.mCamera;
-			try {
-				camera.setPreviewDisplay(holder);
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			requestLayout();
-			
-		}
+            if (mCamera != null) {
+                mCamera.setPreviewDisplay(holder);
+            }
+        } catch (IOException exception) {
+            Log.e(TAG, "IOException caused by setPreviewDisplay()", exception);
+        }
     }
 
     public void surfaceDestroyed(SurfaceHolder holder) {
         // Surface will be destroyed when we return, so stop the preview.
-        // Because the CameraDevice object is not a shared resource, it's very
-        // important to release it when the activity is paused.
-    	try{
-        camera.stopPreview();
-    	}catch(Exception e){}
-        camera = null;
+        if (mCamera != null) {
+            mCamera.stopPreview();
+            mCamera.release();
+        }
     }
-   /* @Override
-    public boolean onTouchEvent(MotionEvent event) {
-    	if (PhimpMe.popupTabs.getVisibility() == ViewGroup.VISIBLE)
-    		PhimpMe.hideTabs();
-    	//else Camera2.buttonClick.performClick(); 
-    	return true;
-    	
-    }*/
-    private Camera.Size getBestPreviewSize(int width, int height,
-            Camera.Parameters parameters) {
-			Camera.Size result = null;
-			
-			for (Camera.Size size : parameters.getSupportedPreviewSizes()) {
-			if (size.width <= width && size.height <= height) {
-			if (result == null) {
-			result = size;
-			}
-			else {
-			int resultArea=result.width * result.height;
-			int newArea=size.width * size.height;
-			
-			if (newArea > resultArea) {
-			result=size;
-				}
-			}
-			}
-				result = size;
-				}
-			
 
-				return(result);
+
+    private Size getOptimalPreviewSize(List<Size> sizes, int w, int h) {
+        final double ASPECT_TOLERANCE = 0.1;
+        double targetRatio = (double) w / h;
+        if (sizes == null) return null;
+
+        Size optimalSize = null;
+        double minDiff = Double.MAX_VALUE;
+
+        int targetHeight = h;
+
+        // Try to find an size match aspect ratio and size
+        for (Size size : sizes) {
+            double ratio = (double) size.width / size.height;
+            if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE) continue;
+            if (Math.abs(size.height - targetHeight) < minDiff) {
+                optimalSize = size;
+                minDiff = Math.abs(size.height - targetHeight);
+            }
+        }
+
+        // Cannot find the one match the aspect ratio, ignore the requirement
+        if (optimalSize == null) {
+            minDiff = Double.MAX_VALUE;
+            for (Size size : sizes) {
+                if (Math.abs(size.height - targetHeight) < minDiff) {
+                    optimalSize = size;
+                    minDiff = Math.abs(size.height - targetHeight);
+                }
+            }
+        }
+        return optimalSize;
     }
-   
+
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
         // Now that the size is known, set up the camera parameters and begin
-        // the preview.    	
-    	try{
-    	camera.stopPreview();
-    	Camera.Parameters parameters = camera.getParameters();        
-        Camera.Size previewSize = getBestPreviewSize(w, h, parameters);
-        Log.e("camera W",String.valueOf(previewSize.width));        
+        // the preview.
+        Camera.Parameters parameters = mCamera.getParameters();
+        try{
+        mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, w, h);
+        if (mSupportFocus.contains(Camera.Parameters.FOCUS_MODE_AUTO))
+        {
+        	parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+        }
+        parameters.setSceneMode(Camera.Parameters.SCENE_MODE_AUTO);
+        parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
+        }catch(Exception e){}
         requestLayout();
-        parameters.setPreviewSize(previewSize.width,previewSize.height);
-        camera.setParameters(parameters);
-        camera.startPreview();
-    	}catch(NullPointerException e){}
-    }
 
-    @Override
-    public void draw(Canvas canvas) {
-    		super.draw(canvas);
-    		Paint p= new Paint(Color.RED);
-    		Log.d(TAG,"draw");
-    		canvas.drawText("PREVIEW", canvas.getWidth()/2, canvas.getHeight()/2, p );
+        mCamera.setParameters(parameters);
+        mCamera.startPreview();
     }
 }

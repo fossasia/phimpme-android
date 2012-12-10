@@ -9,7 +9,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.acra.ACRA;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 
@@ -19,7 +18,6 @@ import vn.mbm.phimp.me.utils.Commons;
 import vn.mbm.phimp.me.utils.RSSPhotoItem;
 import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
 import android.app.AlertDialog;
-import android.app.Application;
 import android.app.ProgressDialog;
 import android.app.TabActivity;
 import android.content.Context;
@@ -47,6 +45,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
+import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -613,20 +612,20 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
         mTabHost.setCurrentTab(0);
         mTabHost.getTabWidget().getChildAt(2).setVisibility(View.GONE);
         }catch(Exception e){}
-        /*mTabHost.setOnTabChangedListener(new OnTabChangeListener() {
+        mTabHost.setOnTabChangedListener(new OnTabChangeListener() {
 			
 			public void onTabChanged(String tabId) {
 				// TODO Auto-generated method stub
 				View currentView = mTabHost.getCurrentView();
 				int curTab = mTabHost.getCurrentTab();
-		        if (curTab == 1)
+		        if (curTab == 3)
 		        {
-		        	Intent intent = new Intent(ctx,GalleryMap.class);
+		        	Intent intent = new Intent(ctx,Camera2.class);
 		        	startActivity(intent);
 		        }
 		        
 			}
-		});*/
+		});
         
        
 }          
@@ -646,7 +645,7 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
 		addTab("", R.drawable.tab_icon_gallery_selector, newGallery.class);
 		addTab("", R.drawable.tab_icon_map_selector, OpenStreetMap.class);
 		addTab("", R.drawable.tab_icon_map_selector, GalleryMap.class);
-		addTab("", R.drawable.tab_icon_camera_selector, Camera2.class);		
+		addTab("", R.drawable.tab_icon_camera_selector, Blank.class);		
 		addTab("", R.drawable.tab_icon_upload_selector, Upload.class);
 		addTab("", R.drawable.tab_icon_settings_selector, Settings.class);		
 	}
