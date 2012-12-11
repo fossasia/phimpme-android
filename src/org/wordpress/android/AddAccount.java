@@ -243,6 +243,7 @@ public class AddAccount extends Activity {
 
 			XMLRPCMethod method = new XMLRPCMethod("wp.getUsersBlogs", new XMLRPCMethodCallback() {
 
+				@SuppressWarnings({ "unchecked"})
 				public void callFinished(Object[] result) {
 
 					final String[] blogNames = new String[result.length];

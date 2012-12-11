@@ -124,6 +124,7 @@ public class WebImageCache
 		return(result);
 	}
 	
+	@SuppressWarnings("deprecation")
 	protected Drawable create(String key, Bundle message,
 														int forceStyle) {
 		if (getCacheRoot()!=null) {
@@ -155,6 +156,7 @@ public class WebImageCache
 	
 	class FetchImageTask
 		extends AsyncTaskEx<Object, Void, Void> {
+		@SuppressWarnings("deprecation")
 		@Override
 		protected Void doInBackground(Object... params) {
 			String url=params[1].toString();

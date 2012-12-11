@@ -125,6 +125,7 @@ public class ImageHelper {
 
 	}
 
+	@SuppressWarnings("deprecation")
 	public String getExifOrientation(String path, String orientation) {
 		// get image EXIF orientation if Android 2.0 or higher, using reflection
 		// http://developer.android.com/resources/articles/backward-compatibility.html
@@ -237,6 +238,7 @@ public class ImageHelper {
 				try {
 					inputStream = entity.getContent();
 					Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+					@SuppressWarnings("deprecation")
 					BitmapDrawable bd = new BitmapDrawable(bitmap);
 					bitmap = com.commonsware.cwac.thumbnail.ThumbnailAdapter
 							.getRoundedCornerBitmap(bd.getBitmap());

@@ -658,7 +658,7 @@ public class WordPressDB {
 		Vector<HashMap<String, Object>> shortcuts = this
 				.getQuickPressShortcuts(ctx, id);
 		for (int i = 0; i < shortcuts.size(); i++) {
-			HashMap<String, Object> shortcutHash = shortcuts.get(i);
+			//HashMap<String, Object> shortcutHash = shortcuts.get(i);
 
 			/*Intent shortcutIntent = new Intent();
 			shortcutIntent.setClassName(EditPost.class.getPackage().getName(),
@@ -992,6 +992,7 @@ public class WordPressDB {
 		return returnValue;
 	}
 
+	@SuppressWarnings("deprecation")
 	public boolean savePosts(Vector<?> postValues, int blogID, boolean isPage) {
 		boolean returnValue = false;
 		if (postValues.size() != 0) {

@@ -117,7 +117,7 @@ public class OpenStreetMap extends Activity{
             			if(cursor.moveToNext())
             				PhimpMe.filepath.add(cursor.getString(columnIndex));
             		}						
-            		try{
+            		/*try{
             			for(int k=0; k<PhimpMe.filepath.size(); k++){
                 			String tmp[] = PhimpMe.filepath.get(k).split("/");
                 			for(int t=0; t<tmp.length;t++){
@@ -131,7 +131,7 @@ public class OpenStreetMap extends Activity{
             		}
             		catch(NullPointerException e){
             			
-            		}
+            		}*/
             		int count=PhimpMe.filepath.size();
             		Log.d("OpenStreetMap", "number local image :"+count);
             		//int num_photos_added = 0;

@@ -25,6 +25,7 @@ public abstract class WPCOMReaderBase extends Fragment {
 	private GetPermalinkListener getPermalinkListener;
 	private GetLastSelectedItemListener getLastSelectedItemListener;
 	
+	@SuppressWarnings("deprecation")
 	protected void setDefaultWebViewSettings(WebView wv) {
 		WebSettings webSettings = wv.getSettings();
 		webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);

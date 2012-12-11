@@ -356,6 +356,8 @@ public class Camera2 extends Activity{
 			_intent.putExtra("image-path", picture);			
 			_intent.putExtra("aspectX", 0);
 			_intent.putExtra("aspectY", 0);
+			/*_intent.putExtra("latitude",lat);
+			_intent.putExtra("longtitude",lon);*/
 			_intent.putExtra("scale", true);
 			_intent.putExtra("activityName", "Camera2");			
 			startActivityForResult(_intent, 1);	

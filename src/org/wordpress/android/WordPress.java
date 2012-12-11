@@ -5,9 +5,6 @@ import org.wordpress.android.models.Comment;
 import org.wordpress.android.models.Post;
 
 import android.app.Application;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 
 public class WordPress extends Application {
 	
@@ -30,15 +27,6 @@ public class WordPress extends Application {
 	 * Get versionName from Manifest.xml
 	 * @return versionName
 	 */
-	private String getVersionName(){
-		PackageManager pm = getPackageManager();
-		try {
-			PackageInfo pi = pm.getPackageInfo(getPackageName(), 0);
-			return pi.versionName;
-		} catch (NameNotFoundException e) {
-			return "";
-		}
-	}
 
 	public interface OnPostUploadedListener {
 		public abstract void OnPostUploaded();
