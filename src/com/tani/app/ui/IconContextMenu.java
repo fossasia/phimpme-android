@@ -116,7 +116,8 @@ public class IconContextMenu implements DialogInterface.OnCancelListener,
     public void onDismiss(DialogInterface dialog) {
     }
    
-    private void cleanup() {
+    @SuppressWarnings("deprecation")
+	private void cleanup() {
     	parentActivity.dismissDialog(dialogId);
     }
 	
@@ -163,6 +164,7 @@ public class IconContextMenu implements DialogInterface.OnCancelListener,
 			return item.actionTag;
 		}
 
+		@SuppressWarnings("deprecation")
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			IconContextMenuItem item = (IconContextMenuItem) getItem(position);

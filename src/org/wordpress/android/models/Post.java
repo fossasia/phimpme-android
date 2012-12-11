@@ -459,10 +459,10 @@ public class Post {
 				if (mediaError)
 					WordPress.postUploaded();
 
-				String postOrPage = (String) (post.isPage() ? context
+				/*String postOrPage = (String) (post.isPage() ? context
 						.getResources().getText(R.string.page_id) : context
 						.getResources().getText(R.string.post_id));
-				/*Intent notificationIntent = new Intent(context, Posts.class);
+				Intent notificationIntent = new Intent(context, Posts.class);
 				notificationIntent.setData((Uri
 						.parse("custom://wordpressNotificationIntent"
 								+ post.blogID)));
@@ -487,6 +487,7 @@ public class Post {
 */			}
 		}
 
+		@SuppressWarnings("deprecation")
 		@Override
 		protected Boolean doInBackground(Post... posts) {
 

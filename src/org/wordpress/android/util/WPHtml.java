@@ -706,7 +706,9 @@ class HtmlToSpannedConverter implements ContentHandler {
 		Bitmap resizedBitmap = null;
 		Display display = ((WindowManager) ctx
 				.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+		@SuppressWarnings("deprecation")
 		int width = display.getWidth();
+		@SuppressWarnings("deprecation")
 		int height = display.getHeight();
 		if (width > height)
 			width = height;

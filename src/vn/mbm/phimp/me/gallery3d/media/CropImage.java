@@ -35,6 +35,7 @@ import vn.mbm.phimp.me.PhimpMe;
 import vn.mbm.phimp.me.UploadMap;
 import vn.mbm.phimp.me.gallery3d.app.App;
 import vn.mbm.phimp.me.gallery3d.app.Res;
+import vn.mbm.phimp.me.utils.geoDegrees;
 import vn.mbm.phimp.me.R;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -67,6 +68,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.telephony.TelephonyManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
@@ -299,7 +301,7 @@ public class CropImage extends MonitoredActivity {
             }
             Date date = new Date();
 			Long longTime = new Long(date.getTime()/1000);
-            newpath = PhimpMe.DataDirectory+"/PhimpMe_Photo_Effect"+"/tmp_"+longTime+".jpg";
+            newpath = Environment.getExternalStorageDirectory()+"/phimp.me/PhimpMe_Photo_Effect"+"/tmp_"+longTime+".jpg";
 			mSaveUri = Uri.fromFile(new File(newpath));
             //mSaveUri = (Uri) extras.getParcelable(MediaStore.EXTRA_OUTPUT);
             if (mSaveUri != null) {
@@ -313,15 +315,39 @@ public class CropImage extends MonitoredActivity {
             activitynam = extras.getString("activityName");
 			p = mImagePath.split(";");
 			try{
+				File f =  new File(p[0]);				
+				 ExifInterface exif_data = null;
+				 geoDegrees _g = null;
+				 String la = "";
+				 String lo = "";
+				 try 
+				 {
+					 exif_data = new ExifInterface(f.getAbsolutePath());
+					 _g = new geoDegrees(exif_data);
+					 if (_g.isValid())
+					 {
+						 la = _g.getLatitude() + "";
+						 lo = _g.getLongitude() + "";
+					 }
+				 } 
+				 catch (IOException e) 
+				 {
+					e.printStackTrace();
+				 }
+				 finally
+				 {
+					 exif_data = null;
+					 _g = null;
+				 }
 				txtPhotoTitle.setText(extras.getString("title"));
-				txtLatitude.setText(extras.getString("latitude"));
-				txtLongtitude.setText(extras.getString("longtitude"));
+				txtLatitude.setText(la);
+				txtLongtitude.setText(lo);
 			/*if (p.length == 2){
 				JSONObject js = new JSONObject(p[1]);
 				txtLatitude.setText(js.getString("lati"));
 				txtLongtitude.setText(js.getString("logi"));
 				txtPhotoTitle.setText(js.getString("name"));
-				txtTags.setText(js.getString("tags"));
+				txtTags.setText(js.getString("tags"));				
 			}*/
 			}catch(Exception e){}
 			gpsloading = new ProgressDialog(ctx);
@@ -1033,7 +1059,7 @@ public class CropImage extends MonitoredActivity {
             try {
                 outputStream = mContentResolver.openOutputStream(mSaveUri);
                 if (outputStream != null) {
-                    croppedImage.compress(mOutputFormat, 75, outputStream);
+                    croppedImage.compress(mOutputFormat, 80, outputStream);
                 }
                 // TODO ExifInterface write
             } catch (IOException ex) {
@@ -1092,9 +1118,21 @@ public class CropImage extends MonitoredActivity {
                 }
             }
         }
+        if (!txtLatitude.getText().toString().equals("")){
+        	ExifInterface exif;
+			try {
+				Log.e("Exif data","Run");
+				exif = new ExifInterface(newpath);
+				createExifData(exif,Double.parseDouble(txtLatitude.getText().toString()) , Double.parseDouble(txtLongtitude.getText().toString()));
+		        exif.saveAttributes();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}    
+        }
         sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, mSaveUri));
-        sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, 
-                Uri.parse("file://" + Environment.getExternalStorageDirectory())));        
+        /*sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, 
+                Uri.parse("file://" + Environment.getExternalStorageDirectory())));   */     
         croppedImage.recycle();        
 		Intent intent = this.getIntent();		
 		intent.putExtra("Impath", mImagePath);
@@ -1107,6 +1145,49 @@ public class CropImage extends MonitoredActivity {
 		setResult(RESULT_OK,intent);		
         finish();
     }
+    public void createExifData(ExifInterface exif, double lattude, double longitude){
+
+		 if (lattude < 0) {
+		     exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, "S");
+		     lattude = -lattude;
+		 } else {
+		     exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, "N");
+		 }
+		
+		 exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE,
+		         formatLatLongString(lattude));
+		
+		 if (longitude < 0) {
+		     exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, "W");
+		     longitude = -longitude;
+		 } else {
+		     exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, "E");
+		 }
+		 exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE,
+		         formatLatLongString(longitude));
+		
+		 try {
+		     exif.saveAttributes();
+		 } catch (IOException e) {
+		
+		     e.printStackTrace();
+		 }		 
+		 exif.setAttribute(ExifInterface.TAG_DATETIME, (new Date(System.currentTimeMillis())).toString()); // set the date & time
+				 
+}
+
+private static String formatLatLongString(double d) {
+		 StringBuilder b = new StringBuilder();
+		 b.append((int) d);
+		 b.append("/1,");
+		 d = (d - (int) d) * 60;
+		 b.append((int) d);
+		 b.append("/1,");
+		 d = (d - (int) d) * 60000;
+		 b.append((int) d);
+		 b.append("/1000");
+		 return b.toString();
+}
     @Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{

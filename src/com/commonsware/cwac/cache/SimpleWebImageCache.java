@@ -118,7 +118,7 @@ public class SimpleWebImageCache<B extends AbstractBus, M>
 	
 	class FetchImageTask
 		extends AsyncTaskEx<Object, Void, Void> {
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings({ "unchecked", "deprecation" })
 		@Override
 		protected Void doInBackground(Object... params) {
 			String url=params[1].toString();
@@ -166,7 +166,7 @@ public class SimpleWebImageCache<B extends AbstractBus, M>
 	}
 	
 	class LoadImageTask extends AsyncTaskEx<Object, Void, Void> {
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings({ "unchecked", "deprecation" })
 		@Override
 		protected Void doInBackground(Object... params) {
 			String url=params[1].toString();

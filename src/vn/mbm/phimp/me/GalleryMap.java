@@ -147,7 +147,7 @@ public class GalleryMap extends MapActivity implements LocationListener
         			if(cursor.moveToNext())
         			filepath.add(cursor.getString(columnIndex));
         		}	
-        		try{
+        		/*try{
         			for(int k=0; k<filepath.size(); k++){
             			String tmp[] = filepath.get(k).split("/");
             			for(int t=0; t<tmp.length;t++){
@@ -161,7 +161,7 @@ public class GalleryMap extends MapActivity implements LocationListener
         		}
         		catch(NullPointerException e){
         			
-        		}
+        		}*/
         		int count=filepath.size();
         		Log.d("Danh", "number local image :"+count);
         		int num_photos_added = 0;

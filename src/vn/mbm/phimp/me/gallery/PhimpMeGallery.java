@@ -108,7 +108,7 @@ public class PhimpMeGallery extends Activity {
 				// TODO Auto-generated method stub
 				//get image info
 				 File f =  new File(filePath.get(position));				
-				 ExifInterface exif_data = null;
+				 /*ExifInterface exif_data = null;
 				 geoDegrees _g = null;
 				 String la = "";
 				 String lo = "";
@@ -132,7 +132,7 @@ public class PhimpMeGallery extends Activity {
 					 _g = null;
 				 }
 				 longtitude=lo;
-				 latitude=la;
+				 latitude=la;*/
 				 title=f.getName();
 				 
 				Intent intent = new Intent();
