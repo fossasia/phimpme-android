@@ -1,14 +1,13 @@
 package vn.mbm.phimp.me.gallery;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
+import vn.mbm.phimp.me.PhimpMe;
 import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.SendFileActivity;
 import vn.mbm.phimp.me.Upload;
 import vn.mbm.phimp.me.gallery3d.media.CropImage;
-import vn.mbm.phimp.me.utils.geoDegrees;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -16,17 +15,25 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.database.Cursor;
 import android.graphics.BitmapFactory;
-import android.media.ExifInterface;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AbsListView;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class PhimpMeGallery extends Activity {
 	private Gallery gallery;
@@ -38,18 +45,23 @@ public class PhimpMeGallery extends Activity {
 	private ImageButton btnEdit;
 	private ImageButton btnZoom;
 	private ImageButton btnUpload;
+	ImageButton btnDelete;
 	public static int position;
 	public static View overscrollleft;
 	public static View overscrollright;
 	public int index = 0;
+	public static int num;
 	private static String longtitude="",latitude="",title="";
-	//private Context ctx;
+	private Context ctx;
+	ExpandableListAdapter mAdapter;
+	ExpandableListView expand;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.phimpmegallery);	
 		//requestWindowFeature(Window.FEATURE_NO_TITLE);
-	//	ctx = this;	
+		ctx = this;	
+		num = filePath.size();
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		Intent intent = getIntent();
 		Bundle extract = intent.getExtras();		
@@ -59,7 +71,74 @@ public class PhimpMeGallery extends Activity {
 		setupUI();
 		
 	}
-	
+	public class MyExpandableListAdapter extends BaseExpandableListAdapter {
+        // Sample data set.  children[i] contains the children (String[]) for groups[i].
+        private String[] groups = { getString(R.string.action) };
+        private String[][] children = {
+                { "Arnold", "Barry", "Chuck", "David" },              
+        };
+        
+        public Object getChild(int groupPosition, int childPosition) {
+            return children[groupPosition][childPosition];
+        }
+
+        public long getChildId(int groupPosition, int childPosition) {
+            return childPosition;
+        }
+
+        public int getChildrenCount(int groupPosition) {
+            return children[groupPosition].length;
+        }
+
+        public TextView getGenericView() {
+            // Layout parameters for the ExpandableListView
+            AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, 64);
+
+            TextView textView = new TextView(ctx);
+            textView.setLayoutParams(lp);
+            // Center the text vertically
+            textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
+            // Set the text starting position
+            textView.setPadding(36, 0, 0, 0);
+            return textView;
+        }
+        
+        public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
+                View convertView, ViewGroup parent) {
+            TextView textView = getGenericView();
+            textView.setText(getChild(groupPosition, childPosition).toString());
+            return textView;
+        }
+
+        public Object getGroup(int groupPosition) {
+            return groups[groupPosition];
+        }
+
+        public int getGroupCount() {
+            return groups.length;
+        }
+
+        public long getGroupId(int groupPosition) {
+            return groupPosition;
+        }
+
+        public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
+                ViewGroup parent) {
+            TextView textView = getGenericView();
+            textView.setText(getGroup(groupPosition).toString());
+            return textView;
+        }
+
+        public boolean isChildSelectable(int groupPosition, int childPosition) {
+            return true;
+        }
+
+        public boolean hasStableIds() {
+            return true;
+        }
+
+    }
 	private void setupUI() {	
 		gallery = (Gallery) findViewById(R.id.gallery);			
 		galImageAdapter = new GalleryImageAdapter(this, filePath);
@@ -67,6 +146,9 @@ public class PhimpMeGallery extends Activity {
 		overscrollright = (View)findViewById(R.id.overscroll_right);
 		RelativeLayout layout = (RelativeLayout)findViewById(R.id.btn);
 		layout.bringToFront();
+		expand = (ExpandableListView)findViewById(R.id.lstAction);
+		mAdapter = new MyExpandableListAdapter();
+		expand.setAdapter(mAdapter);
 		gallery.setAdapter(galImageAdapter);
 		gallery.setSelection(index);
 		btnShare = (ImageButton)findViewById(R.id.btnShare);
@@ -148,6 +230,29 @@ public class PhimpMeGallery extends Activity {
 				startActivity(intent);
 			}
 		});
+		btnDelete  = (ImageButton)findViewById(R.id.btnDelete);
+		btnDelete.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				File f = new File(filePath.get(position));
+				if (f.exists()){
+					try{
+						//f.delete();
+						Log.e("file path",f.getAbsolutePath());
+						//Log.e("Delete",String.valueOf(deleteImageFromMediaStore(f.getAbsolutePath())));
+						deleteImageFromMediaStore(f.getAbsolutePath());	
+						PhimpMe.gallery_delete = true;
+						if (f.exists())f.delete();											
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+				}
+				filePath.remove(position);
+				galImageAdapter.notifyDataSetChanged();
+			}
+		});
 		btnZoom=(ImageButton)findViewById(R.id.btnZoom);
 		btnZoom.setOnClickListener(new OnClickListener() {
 			
@@ -181,14 +286,38 @@ public class PhimpMeGallery extends Activity {
 			}
 		});
 		
-	}	
+	}
+	public void deleteImageFromMediaStore(String path) throws Exception{		
+		String[] projection = {MediaStore.Images.Media._ID,MediaStore.Images.Media.DATA};	
+		String selection = "_data like ?";
+        Cursor cursor =ctx.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, selection, new String[] {path}, null);
+        cursor.moveToFirst();
+        String id = cursor.getString(0);
+        ctx.getContentResolver().delete(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection,new String[] {path});
+        cursor = null;
+        String[] proj = {MediaStore.Images.Thumbnails._ID, MediaStore.Images.Thumbnails.IMAGE_ID,MediaStore.Images.Thumbnails.DATA};
+        cursor = ctx.getContentResolver().query(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, proj, "image_id = ?", new String[] {id}, null);
+        Log.e("Gallery",String.valueOf(cursor.getCount()));
+        if (cursor.getCount() >0 ){
+        cursor.moveToFirst();        
+        String thumb = cursor.getString(2);
+        Log.e("Thumb",thumb);
+        File f_thumb = new File(thumb);
+        if (f_thumb.exists()) f_thumb.delete();         
+        ctx.getContentResolver().delete(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, "image_id = ?", new String[] {id});
+        }
+        //result = cursor.getCount();
+        cursor.close();
+		//result = cursor.getCount();//ctx.getContentResolver().delete(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, MediaStore.Images.Media.DATA + " LIKE "+path +"", null);		
+	}
 	public static void setFileList(ArrayList<String> file){
 		//filePath.clear();
 		filePath = file;
 	}
 	public void onBackPressed(){
 		
-		super.onBackPressed();
+		 super.onBackPressed();
+		
 	}
 	
 }
