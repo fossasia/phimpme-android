@@ -6,13 +6,16 @@ import java.util.HashMap;
 import vn.mbm.phimp.me.PhimpMe;
 import vn.mbm.phimp.me.gallery.PhimpMeGallery;
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.provider.BaseColumns;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,14 +29,17 @@ public class LocalPhotosAdapter extends BaseAdapter {
 	
 	private Context context;
 	private ArrayList<String> fileID;
+	//private ArrayList<String> ID;
 	private ArrayList<String> filepath;	
 	LayoutInflater li;
+	String TAG = "LOCAL GALLERY";
 	HashMap<Integer, Matrix> mImageTransforms = new HashMap<Integer,Matrix>();
 	Matrix mIdentityMatrix = new Matrix();
 	public LocalPhotosAdapter(Context localContext, ArrayList<String> fileID, ArrayList<String> ID) {
 		this.context = localContext;
 		this.fileID = fileID;
-		filepath = new ArrayList<String>();	
+		filepath = new ArrayList<String>();
+		//this.ID = ID;
 		convertURI2URL(ID);		
 	}
 
@@ -129,7 +135,6 @@ public class LocalPhotosAdapter extends BaseAdapter {
         return picturesView;
 
     }
-
 
 @SuppressWarnings("deprecation")
 public static int getOrientation(Context context, int position) throws Exception {

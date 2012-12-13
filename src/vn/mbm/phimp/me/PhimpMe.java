@@ -14,6 +14,7 @@ import org.acra.annotation.ReportsCrashes;
 
 import vn.mbm.phimp.me.database.AccountDBAdapter;
 import vn.mbm.phimp.me.database.TumblrDBAdapter;
+import vn.mbm.phimp.me.gallery.PhimpMeGallery;
 import vn.mbm.phimp.me.utils.Commons;
 import vn.mbm.phimp.me.utils.RSSPhotoItem;
 import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
@@ -177,7 +178,10 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
 	public static boolean check_donwload=false;
 	public static boolean check_donwload_local_gallery=false;	
 	public static AdView ad;
-	public static int flashStatus =1;
+	public static int flashStatus = 2;
+	
+	//Gallery
+	public static boolean gallery_delete = false;
 	//private GestureDetector gestureScanner;
 	//View.OnTouchListener gestureListener;
 	public static int width,height;
@@ -740,14 +744,20 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
     public void onResume()
     {
     	//showTabs();
+    	Log.e("PhimpMe","Resume");
     	try
     	{
     		super.onResume();
+    		
     	}
     	catch (Exception e) 
     	{
 			e.printStackTrace();
 		}
+    	if (gallery_delete){
+    		newGallery.update(PhimpMeGallery.num);	
+    		}
+    	
     }
    
     @Override

@@ -10,7 +10,6 @@ import java.util.List;
 import vn.mbm.phimp.me.gallery3d.media.CropImage;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -51,7 +50,7 @@ public class Camera2 extends Activity{
 	static Context ctx;
 	public static Camera mCamera;
 	public static Preview preview;
-	ProgressDialog progress;
+	//ProgressBar progress;
 	OrientationEventListener mOrientation;
 	//public static Preview preview1;
 	public static ImageButton buttonClick;	
@@ -71,12 +70,60 @@ public class Camera2 extends Activity{
 	//** Called when the activity is first created. *//*
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.camera);
+		super.onCreate(savedInstanceState);		
 		if (PhimpMe.IdList.size() == 5) {PhimpMe.IdList.clear();PhimpMe.IdList.add(0);}
-		PhimpMe.IdList.add(3);
-		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_BEHIND);
+		PhimpMe.IdList.add(3);		
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		setLayout(R.layout.camera_land);
+		//Log.e("Orirention", String.valueOf(ctx.getResources().getConfiguration().orientation));
+		mOrientation = new OrientationEventListener(this) {
+			
+			@Override
+			public void onOrientationChanged(int orientation) {
+				// TODO Auto-generated method stub
+			//Log.e("Orientation", String.valueOf(orientation));
+				if (orientation >=350) degrees = 0; else
+					degrees = orientation;	
+				if (orientation >=90 && orientation < 180 && statusScreen == 0){
+					statusScreen = 1;					
+					//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);						
+					/*preview.mCamera.stopPreview();					
+					setCameraDisplayOrientation((Activity) ctx, PhimpMe.camera_use, preview.mCamera);
+					preview.requestLayout();
+					preview.mSurfaceView.requestLayout();
+					preview.mCamera.startPreview();*/
+					//setLayout(R.layout.camera);
+					if (PhimpMe.flashStatus == 0) flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_gray_r1));
+					else if (PhimpMe.flashStatus == 1) flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_r1));
+					else flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_a_r1));
+					buttonClick.setImageDrawable(getResources().getDrawable(R.drawable.icon_camera_r1));
+					camera_switch.setImageDrawable(getResources().getDrawable(R.drawable.camera_32_r1));
+					
+				}else
+					if (orientation >=260 && orientation <= 340 && statusScreen == 0){
+						statusScreen = 1;											
+						if (PhimpMe.flashStatus == 0) flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_gray));
+						else if (PhimpMe.flashStatus == 1) flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder));
+						else flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_a));
+						buttonClick.setImageDrawable(getResources().getDrawable(R.drawable.icon_camera));
+						camera_switch.setImageDrawable(getResources().getDrawable(R.drawable.camera_32));						
+					}else 
+						if (statusScreen == 1){
+						statusScreen = 0;					
+						if (PhimpMe.flashStatus == 0) flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_gray_r));
+						else if (PhimpMe.flashStatus == 1) flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_r));
+						else flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_a_r));
+						buttonClick.setImageDrawable(getResources().getDrawable(R.drawable.icon_camera_r));
+						camera_switch.setImageDrawable(getResources().getDrawable(R.drawable.camera_32_r));											
+				}
+			}
+		};
+		mOrientation.enable();		
+		Log.d(TAG, "onCreate'd");
+		//PhimpMe.hideTabs();
+	}	
+	public void setLayout(int layout){
+		setContentView(layout);
 		frame = ((FrameLayout) findViewById(R.id.preview));	   
 		preview = new Preview(this);
 		//setContentView(preview);
@@ -132,10 +179,8 @@ public class Camera2 extends Activity{
 			      lon = -1;
 			  }
 		try{
-		mCamera = Camera.open();}catch(Exception e){
-			mCamera.release();
-			mCamera = Camera.open();
-		}
+		mCamera = Camera.open();}catch(Exception e){		
+		}       
 		//mCamera.setDisplayOrientation(90);
 		setCameraDisplayOrientation(this, 0, mCamera);
 		preview.setCamera(mCamera);							
@@ -148,22 +193,10 @@ public class Camera2 extends Activity{
 		buttonClick.bringToFront();
 		buttonClick.setOnClickListener( new OnClickListener() {
 			public void onClick(View v) {
-				progress = ProgressDialog.show(ctx, "", getString(R.string.wait));			
-				preview.mCamera.takePicture(shutterCallback, rawCallback, jpegCallback);				
+				//progress = ProgressDialog.show(ctx, "", "");				
+				preview.mCamera.takePicture(shutterCallback, null, jpegCallback);				
 			}
 		});	
-		Log.e("Orirention", String.valueOf(ctx.getResources().getConfiguration().orientation));
-		mOrientation = new OrientationEventListener(this) {
-			
-			@Override
-			public void onOrientationChanged(int orientation) {
-				// TODO Auto-generated method stub
-			//Log.e("Orientation", String.valueOf(orientation));
-				if (orientation >=350) degrees = 0; else
-					degrees = orientation;	
-			}
-		};
-		mOrientation.enable();
 		camera_switch = (ImageButton)findViewById(R.id.switch_camera);
 		if (Camera.getNumberOfCameras() <=1 ) camera_switch.setVisibility(View.GONE);
 		camera_switch.setOnClickListener(new OnClickListener() {
@@ -230,18 +263,21 @@ public class Camera2 extends Activity{
 					PhimpMe.flashStatus = 1;
 				else PhimpMe.flashStatus = 2;
 				if (PhimpMe.flashStatus == 0){
-					flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder));
+					if (statusScreen == 0)	flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_r));
+					else flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder));
 					parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
 					preview.mCamera.setParameters(parameters);
 					PhimpMe.flashStatus = 1;
 				}else if (PhimpMe.flashStatus == 1)
-					{
-					flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_a));
+					{					
+					if (statusScreen == 0)	flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_a_r));
+					else flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_a_r));
 					parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
 					preview.mCamera.setParameters(parameters);
 					PhimpMe.flashStatus = 2;
 				}else
 				{
+					if (statusScreen == 0)flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_gray_r));else
 					flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_gray));
 					parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
 					preview.mCamera.setParameters(parameters);
@@ -253,15 +289,12 @@ public class Camera2 extends Activity{
 				
 			}
 		});		
-		Log.d(TAG, "onCreate'd");
-		//PhimpMe.hideTabs();
+		
 	}
-	
-
-
 	ShutterCallback shutterCallback = new ShutterCallback() {
 		public void onShutter() {			
 			//Dialog(1000, progress);
+			//preview.mCamera.stopPreview();
 			Log.d(TAG, "onShutter'd");
 		}
 	};
@@ -282,7 +315,7 @@ public class Camera2 extends Activity{
 			Bitmap rotatedBMP = null;
 			String picture = "";
 			Bitmap bmp =null;
-			camera.startPreview();			
+			//camera.startPreview();			
 			Log.e("Size",String.valueOf(data.length)) ;
 			try {				
 				picture = Environment.getExternalStorageDirectory()+ String.format("/phimp.me/take_photo/%d.jpg", System.currentTimeMillis());
@@ -361,7 +394,7 @@ public class Camera2 extends Activity{
 			_intent.putExtra("scale", true);
 			_intent.putExtra("activityName", "Camera2");			
 			startActivityForResult(_intent, 1);	
-			progress.dismiss();	
+			//progress.dismiss();	
 					
 		}
 	};	
@@ -477,7 +510,9 @@ private static String formatLatLongString(double d) {
 		try{
 		mCamera = Camera.open(PhimpMe.camera_use);
 		}catch(Exception e){}
-		setCameraDisplayOrientation((Activity) ctx, PhimpMe.camera_use, mCamera); 
+		/*try{
+		setCameraDisplayOrientation((Activity) ctx, PhimpMe.camera_use, mCamera);
+		}catch(RuntimeException e){}*/
 		preview.setCamera(mCamera);		
 	}
 	@Override
@@ -557,7 +592,7 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
        } catch (IOException exception) {
            Log.e(TAG, "IOException caused by setPreviewDisplay()", exception);
        }
-       Camera.Parameters parameters = camera.getParameters();
+       Camera.Parameters parameters = camera.getParameters();       
        parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
        requestLayout();
 
@@ -572,10 +607,11 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
         final int width = resolveSize(getSuggestedMinimumWidth(), widthMeasureSpec);
         final int height = resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec);
         setMeasuredDimension(width, height);    	
-        if (mSupportedPreviewSizes != null) {
+       /* if (mSupportedPreviewSizes != null) {
         	
             mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, width, height);
-        }
+        }*/
+        //mPreviewSize = getBestPreviewSize(widthMeasureSpec, heightMeasureSpec, parameters)
     }
 
     @Override
@@ -587,7 +623,7 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
             final int height = b - t;
             Log.e("Height",String.valueOf(height));
             int previewWidth = width;
-            int previewHeight = height;
+            int previewHeight = height;            
             if (mPreviewSize != null) {
                 previewWidth = mPreviewSize.width;
                 previewHeight = mPreviewSize.height;
@@ -607,15 +643,38 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
                 Log.e("width",String.valueOf(previewWidth));
                 Log.e("Height",String.valueOf(previewHeight));
                 Log.e("scaled",String.valueOf(scaledChildHeight));
+               /* child.layout(0, 0,
+                        width, height);*/
                 child.layout(0, 0,
                         width, height);
-                /*child.layout(0, (height - scaledChildHeight) / 2,
-                        width, (height + scaledChildHeight) / 2);*/
+                /*child.layout(0, 0 ,
+                        previewWidth, previewHeight);*/
                 Log.e("Height",String.valueOf(height));
             }
         }
     }
+ /*private Camera.Size getBestPreviewSize(int width, int height,
+            Camera.Parameters parameters) {
+		Camera.Size result=null;
+		
+		for (Camera.Size size : parameters.getSupportedPreviewSizes()) {
+			if (size.width<=width && size.height<=height) {
+			if (result==null) {
+			result=size;
+		}
+		else {
+			int resultArea=result.width*result.height;
+			int newArea=size.width*size.height;
+		
+		if (newArea>resultArea) {
+			result=size;
+				}
+			}
+		}
+}
 
+		return(result);
+}*/
     public void surfaceCreated(SurfaceHolder holder) {
         // The Surface has been created, acquire the camera and tell it where
         // to draw.
@@ -673,7 +732,9 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
         // Now that the size is known, set up the camera parameters and begin
         // the preview.
+    	Log.e("Surface","Change");
         Camera.Parameters parameters = mCamera.getParameters();
+        
         try{
         mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, w, h);
         if (mSupportFocus.contains(Camera.Parameters.FOCUS_MODE_AUTO))

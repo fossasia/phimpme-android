@@ -151,15 +151,15 @@ public class newGallery extends Activity {
 	static LinearLayout linear_main;
 	ViewFlipper vf;
 	File rss_folder;
-	int text_size = 20;
-	int color_line;
+	static int text_size = 20;
+	static int color_line;
 
 	// Local gallery
-	LinearLayout ln_local_gallery;
-	TextView txtlocal_gallery;
-	GridView gv_local_gallery;
-	ImageButton btn_local_more;
-	int local_rows_display = 0;
+	static LinearLayout ln_local_gallery;
+	static TextView txtlocal_gallery;
+	static GridView gv_local_gallery;
+	static ImageButton btn_local_more;
+	static int local_rows_display = 0;
 	// Flickr Public
 	static LinearLayout ln_flickr;
 	TextView txtPFlickr;
@@ -3242,7 +3242,14 @@ public class newGallery extends Activity {
     			
     		}
 	}
-	
+	public static void update(int num){
+		Log.e("Gallery","Update");
+		linear_main.removeView(ln_local_gallery);    			
+		check_local = 0;
+		PhimpMe.filepath.clear();
+		array_ID.clear(); 		
+		resumeLocalPhoto(num);
+	}
 	public class CacheTask extends AsyncTask<String, Void, String> {
 	    @Override
 	    protected String doInBackground(String... urls) {
@@ -3329,7 +3336,7 @@ public class newGallery extends Activity {
 	}
 
 	@SuppressWarnings("deprecation")
-	public void resumeLocalPhoto(int resum_number){
+	public static void resumeLocalPhoto(int resum_number){
 		if (check_local == 0){
 			
 			int row;		
@@ -3359,21 +3366,21 @@ public class newGallery extends Activity {
 				btn_line_black.setWidth(LayoutParams.MATCH_PARENT);
 				btn_line_black.setBackgroundResource(R.color.black);
 				
-				txtlocal_gallery = new TextView(this);
-				txtlocal_gallery.setText(getString(R.string.localphotos));
+				txtlocal_gallery = new TextView(ctx);
+				txtlocal_gallery.setText(ctx.getString(R.string.localphotos));
 				txtlocal_gallery.setTextSize(text_size);
 				
-				gv_local_gallery = new GridView(this);
+				gv_local_gallery = new GridView(ctx);
 				gv_local_gallery.setBackgroundResource(R.color.white);
 				
-				ln_local_gallery = new LinearLayout(this);
+				ln_local_gallery = new LinearLayout(ctx);
 				ln_local_gallery.setOrientation(LinearLayout.VERTICAL);
 				
-				btn_local_more = new ImageButton(this);
+				btn_local_more = new ImageButton(ctx);
 				btn_local_more.setImageResource(R.drawable.more_disable);
 				btn_local_more.setEnabled(false);
 
-				RelativeLayout more_li = new RelativeLayout(this);
+				RelativeLayout more_li = new RelativeLayout(ctx);
 				btn_local_more.setLayoutParams(lp_more);
 				more_li.addView(btn_local_more);
 				more_li.addView(txtlocal_gallery);
@@ -3388,7 +3395,8 @@ public class newGallery extends Activity {
 
 				// get photo
 				String[] projection={MediaStore.Images.Thumbnails._ID, MediaStore.Images.Thumbnails.IMAGE_ID};
-				cursor=this.managedQuery(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, projection, null, null, MediaStore.Images.Thumbnails.IMAGE_ID+ " DESC");
+				cursor = ((Activity) ctx).managedQuery(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, projection, null, null, MediaStore.Images.Thumbnails.IMAGE_ID+ " DESC");
+				
 				columnIndex=cursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails._ID);
 				
 				for (int i = 0; i < cursor.getCount(); i++) {
@@ -3443,7 +3451,7 @@ public class newGallery extends Activity {
 								@Override
 								public void onClick(View v) {
 									
-									pro_gress=ProgressDialog.show(ctx, "",getString(R.string.wait), true, false);		
+									pro_gress=ProgressDialog.show(ctx, "",ctx.getString(R.string.wait), true, false);		
 									timerDelayRemoveDialog(1000,pro_gress);										
 								}
 							});							
@@ -3458,7 +3466,7 @@ public class newGallery extends Activity {
 			
 		}
 	}
-	public void timerDelayRemoveDialog(long time, final Dialog d){
+	public static void timerDelayRemoveDialog(long time, final Dialog d){
 	    new Handler().postDelayed(new Runnable() {
 	        public void run() { 
 	        	

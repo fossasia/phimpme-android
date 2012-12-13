@@ -87,8 +87,9 @@
             
         </activity>
         <activity
-            android:name=".Camera2"            
-            android:configChanges="keyboardHidden|locale"           
+            android:name=".Camera2"     
+            
+            android:configChanges="keyboardHidden|locale|orientation"           
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             
         </activity>            
