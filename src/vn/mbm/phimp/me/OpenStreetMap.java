@@ -53,7 +53,8 @@ public class OpenStreetMap extends Activity{
 	MyLocationOverlay myLocationOverlay = null;
 	LocationManager lm;
 	LocationListener ll;
-	static String path;	
+	static String path = "";	
+	static boolean check=false;
 	protected ItemizedOverlayWithBubble<ExtendedOverlayItem> itineraryMarkers; 
 	private GeoPoint currentLocation;
 
@@ -70,7 +71,7 @@ public class OpenStreetMap extends Activity{
         /* location manager */
         currentLocation = null;        		
         try{
-        	Log.e("find location","dsfdsfdsf");
+        	//Log.e("find location","dsfdsfdsf");
         	lm = (LocationManager) ctx.getSystemService(LOCATION_SERVICE);
         	Criteria criteria = new Criteria();
 			String provider = lm.getBestProvider(criteria, true);
@@ -80,24 +81,40 @@ public class OpenStreetMap extends Activity{
         if (!android.provider.Settings.Secure.getString(getContentResolver(), android.provider.Settings.Secure.LOCATION_PROVIDERS_ALLOWED).contains("gps")){
         	showDialog(TURN_ON_GPS);
         }
+        check=false;
+        //show only one photo into map
+        Intent intent=getIntent();
+        Bundle extract=intent.getExtras();
+        if(extract !=null){
+        	Log.e("OpenStreetMap","check : "+check);
+        	check=true;
+        	path=extract.getString("image-path");
+        }
         myOpenMapView = (MapView)findViewById(R.id.openmapview);
         myOpenMapView.setBuiltInZoomControls(true);
         myOpenMapView.setMultiTouchControls(true);
         myMapController = myOpenMapView.getController();        
-        myMapController.setZoom(10);        
+        myMapController.setZoom(16);        
         //if (currentLocation != null) myMapController.animateTo(currentLocation);
         btnS = (ImageButton)findViewById(R.id.btnsw);
         btnS.bringToFront();
         btnS.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
+				Log.e("OpenStreetMap","check : "+check);
+				if(check==true){
+					acti.finish();
+					Intent i = new Intent(acti, GalleryMap.class);
+					i.putExtra("image-path", path);
+					startActivity(i);
+					
+				}
+				else{
+					PhimpMe.mTabHost.getTabWidget().getChildAt(1).setVisibility(View.GONE);
+					PhimpMe.mTabHost.getTabWidget().getChildAt(2).setVisibility(View.VISIBLE);
+					PhimpMe.mTabHost.setCurrentTab(2);
+				}
 				
-				//Intent i = new Intent(acti, GalleryMap.class);
-				//startActivity(i);
-				//PhimpMe.mTabHost.removeView(PhimpMe.mTabHost.getCurrentTabView());
-				PhimpMe.mTabHost.getTabWidget().getChildAt(1).setVisibility(View.GONE);
-				PhimpMe.mTabHost.getTabWidget().getChildAt(2).setVisibility(View.VISIBLE);
-				PhimpMe.mTabHost.setCurrentTab(2);
 			}
 		});
      
@@ -107,7 +124,74 @@ public class OpenStreetMap extends Activity{
              */
         new Thread(){
         	public void run(){
-            		String[] projection = {MediaStore.Images.Media.DATA};
+        		
+        			//show only one photo into map
+
+        		if(!path.equals("")){
+
+
+
+        		Intent intent=getIntent();
+                Bundle extract=intent.getExtras();
+        		if(extract !=null && extract.getString("image-path")!=null){
+        			String path=extract.getString("image-path");
+
+
+
+
+        			File f =  new File(path);
+	    	        ExifInterface exif_data = null;
+	    			 geoDegrees _g = null;
+	    			 try 
+	    			 {
+	    				 exif_data = new ExifInterface(f.getAbsolutePath());
+	    				 _g = new geoDegrees(exif_data);
+	    				 if (_g.isValid())
+	    				 {
+	    					 
+	    					 try
+	         				{    	
+	    						 
+	    						 String la = _g.getLatitude() + "";
+    	    					 String lo = _g.getLongitude() + "";
+    	    					 int _latitude = (int) (Float.parseFloat(la) * 1000000);
+    	        				 int _longitude = (int) (Float.parseFloat(lo) * 1000000);
+    	    					 Log.d("OpenStreetMap ", "Longtitude :" +_longitude +" Latitude :"+_latitude);
+	         					 if ((_latitude != 0) && (_longitude != 0))
+	         					 {
+	         						GeoPoint _gp = new GeoPoint(_latitude, _longitude);
+	         						ExtendedOverlayItem _item = new ExtendedOverlayItem(f.getName(),"",path,_gp,ctx);
+	         						
+	         						
+	         						anotherOverlayItemArray = new ArrayList<ExtendedOverlayItem>();
+	         				        anotherOverlayItemArray.add(_item);	      				       
+	         				       ItemizedOverlayWithBubble<ExtendedOverlayItem> anotherItemizedIconOverlay  = 
+	         				    		   new ItemizedOverlayWithBubble<ExtendedOverlayItem>(ctx,anotherOverlayItemArray,myOpenMapView);        	         	
+	         						myOpenMapView.getOverlays().add(anotherItemizedIconOverlay);
+	         						myMapController.animateTo(_gp);
+	         					 }
+	         				}
+	         				catch (Exception e) 
+	         				{
+	 							e.printStackTrace();
+	 						}
+	    				 }
+	    			 } 
+	    			 catch (IOException e) 
+	    			 {
+	    				e.printStackTrace();
+	    			 }
+	    			 finally
+	    			 {
+	    				 exif_data = null;
+	    				 _g = null;
+	    			 }
+        		}
+        		}
+        		//show all photo in gallery
+        		else{
+        			Log.e("Show all","Openstreetmap" );
+        			String[] projection = {MediaStore.Images.Media.DATA};
             		Cursor cursor = managedQuery( MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                             projection,
                             null,null,
@@ -117,21 +201,7 @@ public class OpenStreetMap extends Activity{
             			if(cursor.moveToNext())
             				PhimpMe.filepath.add(cursor.getString(columnIndex));
             		}						
-            		/*try{
-            			for(int k=0; k<PhimpMe.filepath.size(); k++){
-                			String tmp[] = PhimpMe.filepath.get(k).split("/");
-                			for(int t=0; t<tmp.length;t++){
-                				if(tmp[t].equals("phimp.me")){					
-                					PhimpMe.filepath.remove(k);
-                					k--;
-                					break;
-                				}
-                			}
-                		}
-            		}
-            		catch(NullPointerException e){
-            			
-            		}*/
+            		
             		int count=PhimpMe.filepath.size();
             		Log.d("OpenStreetMap", "number local image :"+count);
             		//int num_photos_added = 0;
@@ -197,6 +267,8 @@ public class OpenStreetMap extends Activity{
         				}            	        
             	        
     			}
+        		}
+            		
         	}
         }.start();
     				/*Toast.makeText(OpenStreetMap.this, 
@@ -356,10 +428,15 @@ public class OpenStreetMap extends Activity{
 		myLocationOverlay.disableMyLocation();
 		myLocationOverlay.disableCompass();
 	}
-	public void onBackPressed(){		
-		PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
-		if (PhimpMe.IdList.get(PhimpMe.IdList.size()-1) == 2) PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
-		PhimpMe.mTabHost.setCurrentTab(PhimpMe.IdList.get(PhimpMe.IdList.size()-1));		
+	public void onBackPressed(){	
+		if(check==true){
+			acti.finish();
+		}else{
+			PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
+			if (PhimpMe.IdList.get(PhimpMe.IdList.size()-1) == 2) PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
+			PhimpMe.mTabHost.setCurrentTab(PhimpMe.IdList.get(PhimpMe.IdList.size()-1));	
+		}
+			
 	}	
 	public class MyLocationListener implements LocationListener
 	{

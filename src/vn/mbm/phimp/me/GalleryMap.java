@@ -70,7 +70,8 @@ public class GalleryMap extends MapActivity implements LocationListener
 	public Activity acti;
 	ImageButton btnSwitch;
 	ArrayList<String> filepath = new ArrayList<String>();
-	
+	private static boolean check=false;
+	private static String image_path="";
 	@SuppressWarnings("deprecation")
 	@Override
     public void onCreate(Bundle savedInstanceState) 
@@ -80,6 +81,13 @@ public class GalleryMap extends MapActivity implements LocationListener
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);		
         ctx = this;
         acti = this;
+        check=false;
+        Intent intent=getIntent();
+        Bundle extract=intent.getExtras();
+        if(extract!=null){
+        	check=true;
+        	image_path=extract.getString("image-path");
+        }
         try
         {
         	lm = (LocationManager) ctx.getSystemService(LOCATION_SERVICE);
@@ -110,12 +118,20 @@ public class GalleryMap extends MapActivity implements LocationListener
             btnSwitch.setOnClickListener(new OnClickListener(){				
 				@Override
 				public void onClick(View v){
-					//acti.finish();
-					/*Intent i = new Intent(acti, OpenStreetMap.class);
-					startActivity(i);*/
-					PhimpMe.mTabHost.getTabWidget().getChildAt(2).setVisibility(View.GONE);
-					PhimpMe.mTabHost.getTabWidget().getChildAt(1).setVisibility(View.VISIBLE);
-					PhimpMe.mTabHost.setCurrentTab(1);
+					Log.e("GalleryMap","check : "+check);
+					if(check==true){
+						acti.finish();
+						Intent i = new Intent(acti, OpenStreetMap.class);
+						i.putExtra("image-path", image_path);
+						startActivity(i);
+						
+					}
+					else{
+						PhimpMe.mTabHost.getTabWidget().getChildAt(2).setVisibility(View.GONE);
+						PhimpMe.mTabHost.getTabWidget().getChildAt(1).setVisibility(View.VISIBLE);
+						PhimpMe.mTabHost.setCurrentTab(1);
+					}
+					
 				}
 			});
         }catch(Exception e){
@@ -137,6 +153,64 @@ public class GalleryMap extends MapActivity implements LocationListener
 		        	PhimpMe.addCurrentPin = true;
 		        	mc.animateTo(PhimpMe.currentGeoPoint);
         		}
+        		marker = ctx.getResources().getDrawable(R.drawable.pin_photo);	        	        
+    	        photosOverlay = new CustomItemizedOverlay<CustomOverlayItem>(marker, map);      
+        		//show only one photo in map from gallery view  
+    	        Intent intent=getIntent();
+    	        Bundle extract=intent.getExtras();
+                if(extract != null && extract.getString("image-path")!=null){
+                	  	 
+                	Log.e("GalleryMap","Show only one photo");
+                	String image_path=extract.getString("image-path");
+                	File f =  new File(image_path);
+	    	        ExifInterface exif_data = null;
+	    			 geoDegrees _g = null;
+	    			 try 
+	    			 {
+	    				 exif_data = new ExifInterface(f.getAbsolutePath());
+	    				 _g = new geoDegrees(exif_data);
+	    				 if (_g.isValid())
+	    				 {
+	    					 
+	    					 try
+	         				{    	
+	    						 
+	    						 String la = _g.getLatitude() + "";
+    	    					 String lo = _g.getLongitude() + "";
+    	    					 int _latitude = (int) (Float.parseFloat(la) * 1000000);
+    	        				 int _longitude = (int) (Float.parseFloat(lo) * 1000000);
+    	    					 Log.e("GalleryMap ", "Longtitude :" +_longitude +" Latitude :"+_latitude);
+	         					if ((_latitude != 0) && (_longitude != 0))
+	         					{
+	         						GeoPoint _gp = new GeoPoint(_latitude, _longitude);
+	         						CustomOverlayItem _item = new CustomOverlayItem(_gp, f.getName(),"Local Photos", f.getPath(), image_path);
+	         						photosOverlay.addOverlay(_item);
+	         						mapOverlays.add(photosOverlay);     			
+	         	 					final MapController mc = map.getController();
+	         	 					mc.animateTo(_gp);
+	         	    				mc.setZoom(16);
+	         					}
+	         				}
+	         				catch (Exception e) 
+	         				{
+	 							e.printStackTrace();
+	 						}
+	    				 }
+	    			 } 
+	    			 catch (IOException e) 
+	    			 {
+	    				e.printStackTrace();
+	    			 }
+	    			 finally
+	    			 {
+	    				 exif_data = null;
+	    				 _g = null;
+	    			 } 	
+	    			 
+                }
+                
+                //show all photo in gallery
+                else {              
         		String[] projection = {MediaStore.Images.Media.DATA};
         		Cursor cursor = managedQuery( MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                         projection,
@@ -147,27 +221,13 @@ public class GalleryMap extends MapActivity implements LocationListener
         			if(cursor.moveToNext())
         			filepath.add(cursor.getString(columnIndex));
         		}	
-        		/*try{
-        			for(int k=0; k<filepath.size(); k++){
-            			String tmp[] = filepath.get(k).split("/");
-            			for(int t=0; t<tmp.length;t++){
-            				if(tmp[t].equals("phimp.me")){					
-            					filepath.remove(k);
-            					k--;
-            					break;
-            				}
-            			}
-            		}
-        		}
-        		catch(NullPointerException e){
-        			
-        		}*/
+        		
         		int count=filepath.size();
         		Log.d("Danh", "number local image :"+count);
         		int num_photos_added = 0;
 				if(count>0){
-					marker = ctx.getResources().getDrawable(R.drawable.pin_photo);	        	        
-        	        photosOverlay = new CustomItemizedOverlay<CustomOverlayItem>(marker, map);        	        
+					/*marker = ctx.getResources().getDrawable(R.drawable.pin_photo);	        	        
+        	        photosOverlay = new CustomItemizedOverlay<CustomOverlayItem>(marker, map);      */  	        
         	        int i;
         	        
         	        for(i=0; i<filepath.size(); i++){
@@ -235,10 +295,10 @@ public class GalleryMap extends MapActivity implements LocationListener
     					final MapController mc1 = map.getController();
     					mc1.animateTo(_gp);
     					mc1.setZoom(16);
-        	        }                   	        
-					
-			}
-			
+        	        }                   	        				
+				}
+				
+          }
         }
      }.start();   
 }
@@ -457,14 +517,19 @@ public class GalleryMap extends MapActivity implements LocationListener
 		}
 		return null;
 	}
+	
 	public void onBackPressed()
 	{	
-						
-		PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
-		if (PhimpMe.IdList.get(PhimpMe.IdList.size()-1) == 1) PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
-		PhimpMe.mTabHost.setCurrentTab(PhimpMe.IdList.get(PhimpMe.IdList.size()-1));
-		super.onStop();		
-		Log.d("Hon","Backpressed !");
+		if(check==false){
+			PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
+			if (PhimpMe.IdList.get(PhimpMe.IdList.size()-1) == 1) PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
+			PhimpMe.mTabHost.setCurrentTab(PhimpMe.IdList.get(PhimpMe.IdList.size()-1));
+			super.onStop();		
+			Log.d("Hon","Backpressed !");
+		}else{
+			acti.finish();
+		}
+		
 					
 			
 	}

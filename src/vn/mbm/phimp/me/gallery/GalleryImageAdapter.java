@@ -88,8 +88,11 @@ public class GalleryImageAdapter extends BaseAdapter {
 		}
 		
 				
-	
-	    holder.imageView.setImageBitmap(decodeSampledBitmapFromFile(context, mFilePath.get(position),  screen_w));	
+		try{
+			holder.imageView.setImageBitmap(decodeSampledBitmapFromFile(context, mFilePath.get(position),  screen_w));
+		}catch(IndexOutOfBoundsException e){
+			holder.imageView.setImageDrawable(context.getResources().getDrawable(R.drawable.image_not_found));
+		}
 		//holder.imageView.setImageBitmap(BitmapFactory.decodeResource(context.getResources(),R.drawable.image_not_found, null));
 		//bm = null;
 	    

@@ -6,14 +6,12 @@ import java.util.HashMap;
 import vn.mbm.phimp.me.PhimpMe;
 import vn.mbm.phimp.me.gallery.PhimpMeGallery;
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.provider.BaseColumns;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -124,10 +122,12 @@ public class LocalPhotosAdapter extends BaseAdapter {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
-				intent.setClass(context, PhimpMeGallery.class);				
+				intent.setClass(context, PhimpMeGallery.class);		
+				Log.e("Size file Path",String.valueOf(filepath.size()));
 				PhimpMeGallery.setFileList(filepath);//changePosition(pos));
 				//PhimpMeGallery.gallery.setSelection(pos);
 				intent.putExtra("index", pos);
+				intent.putExtra("from", "local");
 				((Activity) context).startActivity(intent);
 				
 			}
