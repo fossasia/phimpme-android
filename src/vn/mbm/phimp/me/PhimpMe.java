@@ -32,6 +32,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Display;
@@ -191,7 +192,7 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
     {
     	
     	super.onCreate(savedInstanceState);
-    	ctx = this;    	
+    	ctx = this;      	
     	Log.d("thong", "PhimpMe - onCreate()");    	
     	// The following line triggers the initialization of ACRA
         //ACRA.init((Application) ctx.getApplicationContext());

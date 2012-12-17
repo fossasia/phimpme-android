@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="match_parent"    
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -16,8 +15,15 @@
             android:id="@+id/btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/black_trans"
-            android:visibility="gone" >
+            android:background="@color/black_trans" >
+
+			<ImageButton
+			    android:id="@+id/btnShowInMap"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_alignParentTop="true"
+			    android:layout_toLeftOf="@+id/btnZoom"
+			    android:src="@drawable/maps" />
 
             <ImageButton
                 android:id="@+id/btnZoom"
@@ -26,13 +32,13 @@
                 android:layout_alignParentTop="true"
                 android:layout_toLeftOf="@+id/btnShare"
                 android:src="@drawable/icon_zoom" />
-
+            
             <ImageButton
                 android:id="@+id/btnEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
+                android:layout_alignParentTop="true"              
                 android:src="@drawable/icon_edit" />
 
             <ImageButton
@@ -58,6 +64,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:src="@drawable/delete" />
+
         </RelativeLayout>
 
         <vn.mbm.phimp.me.gallery.GalleryView
@@ -71,6 +78,7 @@
             android:animationCache="true"
             android:clipChildren="true"
             android:spacing="10dp" >
+
         </vn.mbm.phimp.me.gallery.GalleryView>
 
         <View
@@ -90,17 +98,6 @@
             android:background="@drawable/overscroll_right"
             android:visibility="gone" />
 
-        <ExpandableListView
-            android:id="@+id/lstAction"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="106dp"
-            android:background="@color/black_trans"
-            tools:listitem="@android:layout/simple_list_item_1" >
-
-        </ExpandableListView>
     </RelativeLayout>
 
 </RelativeLayout>

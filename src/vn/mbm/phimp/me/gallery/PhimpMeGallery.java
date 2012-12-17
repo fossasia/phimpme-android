@@ -3,6 +3,7 @@ package vn.mbm.phimp.me.gallery;
 import java.io.File;
 import java.util.ArrayList;
 
+import vn.mbm.phimp.me.GalleryMap;
 import vn.mbm.phimp.me.PhimpMe;
 import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.SendFileActivity;
@@ -21,19 +22,12 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AbsListView;
-import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListAdapter;
-import android.widget.ExpandableListView;
 import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 public class PhimpMeGallery extends Activity {
 	private Gallery gallery;
@@ -41,20 +35,18 @@ public class PhimpMeGallery extends Activity {
 
 
 	private GalleryImageAdapter galImageAdapter;
-	private ImageButton btnShare;
-	private ImageButton btnEdit;
-	private ImageButton btnZoom;
-	private ImageButton btnUpload;
-	ImageButton btnDelete;
+
+
+	private ImageButton btnShare,btnEdit,btnZoom,btnUpload,btnShowInMap,btnDelete;
+
 	public static int position;
 	public static View overscrollleft;
 	public static View overscrollright;
 	public int index = 0;
+	public String from = "";
 	public static int num;
 	private static String longtitude="",latitude="",title="";
 	private Context ctx;
-	ExpandableListAdapter mAdapter;
-	ExpandableListView expand;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -67,88 +59,21 @@ public class PhimpMeGallery extends Activity {
 		Bundle extract = intent.getExtras();		
 		try{
 		index = extract.getInt("index");
-		}catch(Exception e){}
+		from = extract.getString("from");
+		}catch(Exception e){
+			from = "";
+		}
 		setupUI();
 		
 	}
-	public class MyExpandableListAdapter extends BaseExpandableListAdapter {
-        // Sample data set.  children[i] contains the children (String[]) for groups[i].
-        private String[] groups = { getString(R.string.action) };
-        private String[][] children = {
-                { "Arnold", "Barry", "Chuck", "David" },              
-        };
-        
-        public Object getChild(int groupPosition, int childPosition) {
-            return children[groupPosition][childPosition];
-        }
-
-        public long getChildId(int groupPosition, int childPosition) {
-            return childPosition;
-        }
-
-        public int getChildrenCount(int groupPosition) {
-            return children[groupPosition].length;
-        }
-
-        public TextView getGenericView() {
-            // Layout parameters for the ExpandableListView
-            AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, 64);
-
-            TextView textView = new TextView(ctx);
-            textView.setLayoutParams(lp);
-            // Center the text vertically
-            textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
-            // Set the text starting position
-            textView.setPadding(36, 0, 0, 0);
-            return textView;
-        }
-        
-        public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
-                View convertView, ViewGroup parent) {
-            TextView textView = getGenericView();
-            textView.setText(getChild(groupPosition, childPosition).toString());
-            return textView;
-        }
-
-        public Object getGroup(int groupPosition) {
-            return groups[groupPosition];
-        }
-
-        public int getGroupCount() {
-            return groups.length;
-        }
-
-        public long getGroupId(int groupPosition) {
-            return groupPosition;
-        }
-
-        public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
-                ViewGroup parent) {
-            TextView textView = getGenericView();
-            textView.setText(getGroup(groupPosition).toString());
-            return textView;
-        }
-
-        public boolean isChildSelectable(int groupPosition, int childPosition) {
-            return true;
-        }
-
-        public boolean hasStableIds() {
-            return true;
-        }
-
-    }
+	
 	private void setupUI() {	
 		gallery = (Gallery) findViewById(R.id.gallery);			
 		galImageAdapter = new GalleryImageAdapter(this, filePath);
 		overscrollleft = (View)findViewById(R.id.overscroll_left);
 		overscrollright = (View)findViewById(R.id.overscroll_right);
 		RelativeLayout layout = (RelativeLayout)findViewById(R.id.btn);
-		layout.bringToFront();
-		expand = (ExpandableListView)findViewById(R.id.lstAction);
-		mAdapter = new MyExpandableListAdapter();
-		expand.setAdapter(mAdapter);
+		layout.bringToFront();		
 		gallery.setAdapter(galImageAdapter);
 		gallery.setSelection(index);
 		btnShare = (ImageButton)findViewById(R.id.btnShare);
@@ -230,7 +155,8 @@ public class PhimpMeGallery extends Activity {
 				startActivity(intent);
 			}
 		});
-		btnDelete  = (ImageButton)findViewById(R.id.btnDelete);
+		btnDelete  = (ImageButton)findViewById(R.id.btnDelete);		
+		if (from != null && from.equals("local")){
 		btnDelete.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -252,7 +178,7 @@ public class PhimpMeGallery extends Activity {
 				filePath.remove(position);
 				galImageAdapter.notifyDataSetChanged();
 			}
-		});
+		});}else btnDelete.setVisibility(View.GONE);
 		btnZoom=(ImageButton)findViewById(R.id.btnZoom);
 		btnZoom.setOnClickListener(new OnClickListener() {
 			
@@ -283,6 +209,18 @@ public class PhimpMeGallery extends Activity {
 					{
 						Log.e("Exception", ex.getLocalizedMessage());
 					}
+			}
+		});
+		btnShowInMap=(ImageButton)findViewById(R.id.btnShowInMap);
+		btnShowInMap.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				Intent i=new Intent();
+				i.setClass(PhimpMeGallery.this, GalleryMap.class);
+				i.putExtra("image-path", filePath.get(position));
+				startActivity(i);
 			}
 		});
 		

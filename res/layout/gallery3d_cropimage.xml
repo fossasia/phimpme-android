@@ -61,10 +61,10 @@
 
         <view
             android:id="@+id/image"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:layout_above="@+id/scrollView1"
-            android:layout_below="@+id/linear"                       
+            android:layout_below="@+id/linear"
             class="vn.mbm.phimp.me.gallery3d.media.CropImageView"
             android:background="#55000000" />
 
@@ -104,15 +104,15 @@
                 android:id="@+id/LinearLayout01"
                 android:layout_width="match_parent"
                 android:layout_height="192dp"
-                android:layout_margin="10dp"
+                
                 android:focusable="true"
                 android:focusableInTouchMode="true"
                 android:orientation="vertical" >
 
-                <HorizontalScrollView
+                <!-- <HorizontalScrollView
                     android:id="@+id/horizontalScrollView1"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content" > -->
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -157,7 +157,7 @@
                             android:contentDescription="@string/empty"
                             android:src="@drawable/top_down_rotate" />
                     </LinearLayout>
-                </HorizontalScrollView>
+               <!--  </HorizontalScrollView> -->
 
                 <TextView
                     android:id="@+id/TextView02"
