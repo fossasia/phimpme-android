@@ -145,13 +145,15 @@ public class GalleryMap extends MapActivity implements LocationListener
 			{
         		if ((PhimpMe.currentGeoPoint != null) && (currentPositionOverlay == null))
         		{
-        			currentMarker = ctx.getResources().getDrawable(R.drawable.pin_user);
-		        	currentPositionOverlay = new CustomItemizedOverlay<CustomOverlayItem>(currentMarker, map);
-		        	CustomOverlayItem overlayItem = new CustomOverlayItem(PhimpMe.currentGeoPoint, "My Position", "Geo Location : "+PhimpMe.currentGeoPoint.toString(), "http://ia.media-imdb.com/images/M/MV5BMzk2OTg4MTk1NF5BMl5BanBnXkFtZTcwNjExNTgzNA@@._V1._SX40_CR0,0,40,54_.jpg", "http://ia.media-imdb.com/images/M/MV5BMzk2OTg4MTk1NF5BMl5BanBnXkFtZTcwNjExNTgzNA@@._V1._SX40_CR0,0,40,54_.jpg");
+        			currentMarker = ctx.getResources().getDrawable(R.drawable.pin_user);        
+        		    currentPositionOverlay = new CustomItemizedOverlay<CustomOverlayItem>(currentMarker, map);
+		        	CustomOverlayItem overlayItem = new CustomOverlayItem(PhimpMe.currentGeoPoint, "My Position", "Geo Location : "+PhimpMe.currentGeoPoint.toString(), "", "");
 		        	currentPositionOverlay.addOverlay(overlayItem);
 		        	mapOverlays.add(currentPositionOverlay);		        	
 		        	PhimpMe.addCurrentPin = true;
+		        	mc.setZoom(16);
 		        	mc.animateTo(PhimpMe.currentGeoPoint);
+		        	
         		}
         		marker = ctx.getResources().getDrawable(R.drawable.pin_photo);	        	        
     	        photosOverlay = new CustomItemizedOverlay<CustomOverlayItem>(marker, map);      
@@ -287,14 +289,15 @@ public class GalleryMap extends MapActivity implements LocationListener
         	        }else
         	         if(num_photos_added < 1){
 
-        	        	GeoPoint _gp = new GeoPoint(10031200, 105775280);
+        	        	/*GeoPoint _gp = new GeoPoint(10031200, 105775280);
     					CustomOverlayItem _item = new CustomOverlayItem(_gp, null,null, null, null);
     					photosOverlay.addOverlay(_item);
     					handler.sendEmptyMessage(0);	
             	        mapOverlays.add(photosOverlay);
     					final MapController mc1 = map.getController();
     					mc1.animateTo(_gp);
-    					mc1.setZoom(16);
+    					mc1.setZoom(16);*/
+        	        	
         	        }                   	        				
 				}
 				

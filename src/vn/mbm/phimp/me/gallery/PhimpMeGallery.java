@@ -3,7 +3,7 @@ package vn.mbm.phimp.me.gallery;
 import java.io.File;
 import java.util.ArrayList;
 
-import vn.mbm.phimp.me.GalleryMap;
+import vn.mbm.phimp.me.OpenStreetMap;
 import vn.mbm.phimp.me.PhimpMe;
 import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.SendFileActivity;
@@ -53,7 +53,8 @@ public class PhimpMeGallery extends Activity {
 		setContentView(R.layout.phimpmegallery);	
 		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 		ctx = this;	
-		num = filePath.size();
+		PhimpMe.gallery_delete = false;
+		//num = filePath.size();
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		Intent intent = getIntent();
 		Bundle extract = intent.getExtras();		
@@ -90,6 +91,7 @@ public class PhimpMeGallery extends Activity {
 				
 			}
 		});
+		
 		btnUpload = (ImageButton)findViewById(R.id.btnUpload);
 		btnUpload.setOnClickListener(new OnClickListener() {			
 			@Override
@@ -157,26 +159,45 @@ public class PhimpMeGallery extends Activity {
 		});
 		btnDelete  = (ImageButton)findViewById(R.id.btnDelete);		
 		if (from != null && from.equals("local")){
-		btnDelete.setOnClickListener(new OnClickListener() {
-			
+			num = filePath.size();
+		btnDelete.setOnClickListener(new OnClickListener() {			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				File f = new File(filePath.get(position));
-				if (f.exists()){
-					try{
-						//f.delete();
-						Log.e("file path",f.getAbsolutePath());
-						//Log.e("Delete",String.valueOf(deleteImageFromMediaStore(f.getAbsolutePath())));
-						deleteImageFromMediaStore(f.getAbsolutePath());	
-						PhimpMe.gallery_delete = true;
-						if (f.exists())f.delete();											
-					}catch(Exception e){
-						e.printStackTrace();
+				new AlertDialog.Builder(ctx)
+				.setTitle("")
+				.setMessage(getString(R.string.ask_delete))
+				.setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() 
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int which) 
+					{													
+						File f = new File(filePath.get(position));
+						if (f.exists()){
+							try{
+								//f.delete();
+								Log.e("file path",f.getAbsolutePath());
+								//Log.e("Delete",String.valueOf(deleteImageFromMediaStore(f.getAbsolutePath())));
+								deleteImageFromMediaStore(f.getAbsolutePath());	
+								PhimpMe.gallery_delete = true;
+								if (f.exists())f.delete();											
+							}catch(Exception e){
+								e.printStackTrace();
+							}
+						}
+						filePath.remove(position);
+						galImageAdapter.notifyDataSetChanged();
 					}
-				}
-				filePath.remove(position);
-				galImageAdapter.notifyDataSetChanged();
+				})
+				.setNegativeButton("No", new DialogInterface.OnClickListener() 
+				{
+					@Override
+					public void onClick(DialogInterface dialog, int which) 
+					{
+						
+					}
+				})
+				.show();				
 			}
 		});}else btnDelete.setVisibility(View.GONE);
 		btnZoom=(ImageButton)findViewById(R.id.btnZoom);
@@ -218,11 +239,18 @@ public class PhimpMeGallery extends Activity {
 			public void onClick(View arg0) {
 				// TODO Auto-generated method stub
 				Intent i=new Intent();
-				i.setClass(PhimpMeGallery.this, GalleryMap.class);
+				i.setClass(PhimpMeGallery.this, OpenStreetMap.class);
 				i.putExtra("image-path", filePath.get(position));
 				startActivity(i);
 			}
 		});
+		if (from != null && from.equals("Map")){
+			btnShare.setVisibility(View.GONE);
+			btnEdit.setVisibility(View.GONE);
+			btnShowInMap.setVisibility(View.GONE);
+			btnUpload.setVisibility(View.GONE);
+			btnZoom.setVisibility(View.GONE);
+		}
 		
 	}
 	public void deleteImageFromMediaStore(String path) throws Exception{		
