@@ -84,14 +84,14 @@ public class Camera2 extends Activity{
 			//Log.e("Orientation", String.valueOf(orientation));
 				if (orientation >=350) degrees = 0; else
 					degrees = orientation;	
-				if (orientation >=90 && orientation < 180 && statusScreen == 0){
+				/*if (orientation >=90 && orientation < 180 && statusScreen == 0){
 					statusScreen = 1;					
 					//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);						
-					/*preview.mCamera.stopPreview();					
+					preview.mCamera.stopPreview();					
 					setCameraDisplayOrientation((Activity) ctx, PhimpMe.camera_use, preview.mCamera);
 					preview.requestLayout();
 					preview.mSurfaceView.requestLayout();
-					preview.mCamera.startPreview();*/
+					preview.mCamera.startPreview();
 					//setLayout(R.layout.camera);
 					if (PhimpMe.flashStatus == 0) flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_gray_r1));
 					else if (PhimpMe.flashStatus == 1) flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_r1));
@@ -115,7 +115,7 @@ public class Camera2 extends Activity{
 						else flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_a_r));
 						buttonClick.setImageDrawable(getResources().getDrawable(R.drawable.icon_camera_r));
 						camera_switch.setImageDrawable(getResources().getDrawable(R.drawable.camera_32_r));											
-				}
+				}*/
 			}
 		};
 		mOrientation.enable();		
@@ -562,7 +562,8 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
     List<String> mSupportFocus;
     Camera mCamera;
 
-    Preview(Context context) {
+    @SuppressWarnings("deprecation")
+	Preview(Context context) {
         super(context);
 
         mSurfaceView = new SurfaceView(context);

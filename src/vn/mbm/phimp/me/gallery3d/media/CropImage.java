@@ -29,14 +29,12 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
-import org.json.JSONObject;
-
 import vn.mbm.phimp.me.PhimpMe;
+import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.UploadMap;
 import vn.mbm.phimp.me.gallery3d.app.App;
 import vn.mbm.phimp.me.gallery3d.app.Res;
 import vn.mbm.phimp.me.utils.geoDegrees;
-import vn.mbm.phimp.me.R;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -68,7 +66,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.telephony.TelephonyManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
@@ -92,9 +89,9 @@ public class CropImage extends MonitoredActivity {
 	public static final int CROP_MSG = 10;	
     public static final int CROP_MSG_INTERNAL = 100;    
     
-    private App mApp = null;     
-    private static float toDegree = 90;
-	private static float fromDegree = 0;
+    private App mApp = null;         
+	//private static float toDegree = 90;
+	//private static float fromDegree = 0;
     // These are various options can be specified in the intent.
     private Bitmap.CompressFormat mOutputFormat = Bitmap.CompressFormat.JPEG; // only
                                                                               // used
@@ -431,12 +428,17 @@ public class CropImage extends MonitoredActivity {
 				    public void onClick(View v) 
 				    {					    	
 				    	try{
-				    		doRotate(mImageView, fromDegree, toDegree);
+				    		/*doRotate(mImageView, fromDegree, toDegree);
 							fromDegree = (toDegree == 360) ? 0 : toDegree;
 							toDegree += 90;
 							if (toDegree > 360) {
 								toDegree = 90;
-							}
+							}*/
+				    		doRotate90(mImageView);
+				    		mImageView.mHighlightViews.clear();
+				    		mBitmap.recycle();
+				    		mBitmap = modifiedBitmap;
+				    		startFaceDetection();
 							
 				    	}catch(OutOfMemoryError o){
 				    		o.printStackTrace();
@@ -584,9 +586,9 @@ public class CropImage extends MonitoredActivity {
 				    {
 				    	try{
 				    	
-							doRotate(mImageView, 0, 0);
-							fromDegree = 0;
-							toDegree = 90;							
+							//doRotate(mImageView, 0, 0);
+							//fromDegree = 0;
+							//toDegree = 90;							
 							mBitmap.recycle();
 							mBitmap = decodeSampledBitmapFromFile(ctx, p[0], screen_w);
 							mImageView.setImageBitmap(mBitmap);
@@ -594,9 +596,9 @@ public class CropImage extends MonitoredActivity {
 							
 				    	}catch(OutOfMemoryError o){
 
-							doRotate(mImageView, 0, 0);
-							fromDegree = 0;
-							toDegree = 90;
+							//doRotate(mImageView, 0, 0);
+							//fromDegree = 0;
+							//toDegree = 90;
 							mImageView.setImageBitmap(mBitmapResize);
 							modifiedBitmap = flippedImaged = mBitmapResize;
 				    	}
@@ -774,6 +776,17 @@ public class CropImage extends MonitoredActivity {
 		ra1.setFillEnabled(true);
 		im.startAnimation(ra1);
 	}
+    public static void doRotate90(ImageView image){
+    	image.setDrawingCacheEnabled(true);    	
+    	Bitmap bm = modifiedBitmap;
+    	Matrix mx = new Matrix();
+    	//float scaleW = (float)bm.getHeight()/bm.getWidth();
+    	//float scaleH = (float)bm.getWidth()/bm.getHeight();
+    	mx.setRotate(90);
+    	//modifiedBitmap.recycle();
+    	modifiedBitmap = Bitmap.createBitmap(bm,0,0,bm.getWidth(),bm.getHeight(),mx,true);
+    	image.setImageBitmap(modifiedBitmap);    	
+    }
     public static Bitmap doHorizontalFlip(Bitmap sampleBitmap) {
 		Matrix matrixHorizontalFlip = new Matrix();
 		matrixHorizontalFlip.preScale(-1.0f, 1.0f);
@@ -1141,7 +1154,7 @@ public class CropImage extends MonitoredActivity {
 		intent.putExtra("logi",txtLongtitude.getText().toString());
 		intent.putExtra("tags",txtTags.getText().toString());
 		intent.putExtra("name", txtPhotoTitle.getText().toString());		
-		Log.i("CropImage","Image path output save : "+newpath);
+		//Log.i("CropImage","Image path output save : "+newpath);
 		setResult(RESULT_OK,intent);		
         finish();
     }

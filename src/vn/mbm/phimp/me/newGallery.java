@@ -6873,37 +6873,38 @@ public class newGallery extends Activity {
 
 			Log.e("Flickr count",flickr_count+"");
 			 for(int i=0; i<PhimpMe.phimpme_array_list.size(); i++){
+			
 				 Log.e("flickr not save", filckr_list_not_save.size()+"");
 			  if((filckr_list_not_save
-			  .size()-flickr_count*NUMBER_PHOTO_NEED_DOWNLOAD)>0 ||filckr_list_not_save.size() == 0){
+			  .size()-flickr_count*NUMBER_PHOTO_NEED_DOWNLOAD)>0){
 			  btn_flickr_more.setImageResource(R.drawable.more);
 			  btn_flickr_more.setEnabled(true); }
 			  if((recent_filckr_list_not_save
-			  .size()-recent_flickr_count*NUMBER_PHOTO_NEED_DOWNLOAD)>0 ||recent_filckr_list_not_save.size() == 0){
+			  .size()-recent_flickr_count*NUMBER_PHOTO_NEED_DOWNLOAD)>0){
 			  btn_recent_flickr_more.setImageResource(R.drawable.more);
 			  btn_recent_flickr_more.setEnabled(true); }
 			  if((pub_deviant_list_not_save
-			  .size()-deviant_count*NUMBER_PHOTO_NEED_DOWNLOAD)>0 ||pub_deviant_list_not_save.size() == 0){
+			  .size()-deviant_count*NUMBER_PHOTO_NEED_DOWNLOAD)>0){
 			  btn_public_deviant_more.setImageResource(R.drawable.more);
 			  btn_public_deviant_more.setEnabled(true); }
 			  if((google_news_list_not_save
-			  .size()-googlenews_count*NUMBER_PHOTO_NEED_DOWNLOAD)>0|| google_news_list_not_save.size() == 0){
+			  .size()-googlenews_count*NUMBER_PHOTO_NEED_DOWNLOAD)>0){
 			  btn_googlenews_more.setImageResource(R.drawable.more);
 			  btn_googlenews_more.setEnabled(true); }
 			  if((pub_picasa_list_not_save
-			  .size()-public_picasa_count*NUMBER_PHOTO_NEED_DOWNLOAD)>0 || pub_picasa_list_not_save.size()==0){
+			  .size()-public_picasa_count*NUMBER_PHOTO_NEED_DOWNLOAD)>0 ){
 			  btn_public_picasa_more.setImageResource(R.drawable.more);
 			  btn_public_picasa_more.setEnabled(true); }
 			  if((yahoo_list_not_save
-			  .size()-yahoo_count*NUMBER_PHOTO_NEED_DOWNLOAD)>0 ||yahoo_list_not_save.size()==0){
+			  .size()-yahoo_count*NUMBER_PHOTO_NEED_DOWNLOAD)>0){
 			  btn_yahoo_more.setImageResource(R.drawable.more);
 			  btn_yahoo_more.setEnabled(true); }
 			  if((my_feed_list_not_save.size(
-			  )-my_feed_services_count*NUMBER_PHOTO_NEED_DOWNLOAD)>0||my_feed1_list_not_save.size() ==0){
+			  )-my_feed_services_count*NUMBER_PHOTO_NEED_DOWNLOAD)>0){
 			  btn_my_feed_services_more.setImageResource(R.drawable.more);
 			  btn_my_feed_services_more.setEnabled(true); }
 			  if((my_feed1_list_not_save
-			  .size()-my_feed_services_count1*NUMBER_PHOTO_NEED_DOWNLOAD)>0||my_feed2_list_not_save.size()==0){
+			  .size()-my_feed_services_count1*NUMBER_PHOTO_NEED_DOWNLOAD)>0){
 			  btn_my_feed_services_more1.setImageResource(R.drawable.more);
 			  btn_my_feed_services_more1.setEnabled(true);
 			  }if((my_feed2_list_not_save
@@ -6921,7 +6922,7 @@ public class newGallery extends Activity {
 			  }if((my_feed5_list_not_save
 			  .size()-my_feed_services_count5*NUMBER_PHOTO_NEED_DOWNLOAD)>0){
 			  btn_my_feed_services_more5.setImageResource(R.drawable.more);
-			  btn_my_feed_services_more5.setEnabled(true); } }
+			  btn_my_feed_services_more5.setEnabled(true); }}
 			 sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"
 			            + Environment.getExternalStorageDirectory()))); 
 			 

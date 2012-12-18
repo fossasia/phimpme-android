@@ -1,6 +1,5 @@
 package vn.mbm.phimp.me.ultils.osmap;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import org.osmdroid.views.MapView;
@@ -83,9 +82,10 @@ public class DefaultInfoWindow extends InfoWindow {
 				intent.setClass(ctx, PhimpMeGallery.class);
 				intent.putExtra("image-path",item.getFilepath() );
 				((Activity ) ctx).startActivity(intent);*/
-				File f = new File(item.getFilepath());
+				//File f = new File(item.getFilepath());
 				Intent myitent = new Intent();	
 				myitent.setClass(ctx, PhimpMeGallery.class);
+				myitent.putExtra("from","Map");
 				ArrayList<String>listFile = new ArrayList<String>();
 				listFile.add(item.getFilepath());
 				PhimpMeGallery.setFileList(listFile);
