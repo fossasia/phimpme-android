@@ -666,6 +666,9 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
 		Intent intent = new Intent(this, c);		
 		spec.setContent(intent);					
 		mTabHost.addTab(spec);
+		
+		
+     
 	}
     public Animation outToLeftAnimation() {
         Animation outtoLeft = new TranslateAnimation(

@@ -168,7 +168,7 @@ public class newGallery extends Activity {
 	ArrayList<RSSPhotoItem> filckr_list_not_save = new ArrayList<RSSPhotoItem>();
 	int flickr_rows_display = 0;
 	int flickr_count = 1;
-	ImageButton btn_flickr_more;
+	public static ImageButton btn_flickr_more;
 	public static boolean flickr_public_download;
 	// Flickr Recent
 	static LinearLayout ln_recent_flickr;
@@ -3708,22 +3708,24 @@ public class newGallery extends Activity {
 							ln_flickr.setLayoutParams(p_two_row);
 							flickr_list_photos.clear();
 							flickr_list_photos.addAll(list_save);
-							//array_list.add(flickr_list_photos);
+							array_list.add(flickr_list_photos);
 							if (!checkArray(PhimpMe.phimpme_array_list,flickr_list_photos)) {
 								PhimpMe.phimpme_array_list.add(flickr_list_photos);
 							} else {
 								deleteItem(PhimpMe.phimpme_array_list,flickr_list_photos);
 								PhimpMe.phimpme_array_list.add(flickr_list_photos);
 							}							
-									Log.d("thong", "RunOnUiThread");
-									final RSSPhotoItem[] tmp;									
-									if (flickr_list_photos.size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
-										tmp = new RSSPhotoItem[flickr_list_photos.size()];
+							/*for (int i = 0; i < array_list.size(); i++) {
+								if (array_list.get(i).size() > 0) {
+									Log.e("thong", "RunOnUiThread , ArrayList size :"+array_list.size());
+									final RSSPhotoItem[] tmp;
+									if (array_list.get(i).size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
+										tmp = new RSSPhotoItem[array_list.get(i).size()];
 									} else {
 										tmp = new RSSPhotoItem[NUMBER_PHOTO_NEED_DOWNLOAD];
 									}
 									for (int j = 0; j < tmp.length; j++) {
-										tmp[j] = flickr_list_photos.get(j);
+										tmp[j] = array_list.get(i).get(j);
 									}
 									newGallery.this.runOnUiThread(new Runnable() {
 										@Override
@@ -3732,7 +3734,24 @@ public class newGallery extends Activity {
 										}
 									});
 
-							
+								}
+							}*/
+							Log.d("thong", "RunOnUiThread");
+							final RSSPhotoItem[] tmp;									
+							if (flickr_list_photos.size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
+								tmp = new RSSPhotoItem[flickr_list_photos.size()];
+							} else {
+								tmp = new RSSPhotoItem[NUMBER_PHOTO_NEED_DOWNLOAD];
+							}
+							for (int j = 0; j < tmp.length; j++) {
+								tmp[j] = flickr_list_photos.get(j);
+							}
+							newGallery.this.runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									new DownloadImageAsyncTask().execute(tmp);
+								}
+							});
 							btn_flickr_more.setOnClickListener(new OnClickListener() {
 								@Override
 								public void onClick(View v) {
@@ -3836,7 +3855,7 @@ public class newGallery extends Activity {
 						list_photos.addAll(tmp_list);
 						recent_flickr_list_photos.clear();
 						recent_flickr_list_photos.addAll(list_save);
-						//array_list.add(recent_flickr_list_photos);
+						array_list.add(recent_flickr_list_photos);
 						if (!checkArray(PhimpMe.phimpme_array_list,recent_flickr_list_photos)) {
 							PhimpMe.phimpme_array_list
 									.add(recent_flickr_list_photos);
@@ -3845,16 +3864,17 @@ public class newGallery extends Activity {
 							PhimpMe.phimpme_array_list
 									.add(recent_flickr_list_photos);
 						}
-						
+						/*for (int i = 0; i < array_list.size(); i++) {
+							if (array_list.get(i).size() > 0) {
 								Log.d("thong", "RunOnUiThread");
 								final RSSPhotoItem[] tmp;
-								if (recent_flickr_list_photos.size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
-									tmp = new RSSPhotoItem[recent_flickr_list_photos.size()];
+								if (array_list.get(i).size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
+									tmp = new RSSPhotoItem[array_list.get(i).size()];
 								} else {
 									tmp = new RSSPhotoItem[NUMBER_PHOTO_NEED_DOWNLOAD];
 								}
 								for (int j = 0; j < tmp.length; j++) {
-									tmp[j] = recent_flickr_list_photos.get(j);
+									tmp[j] = array_list.get(i).get(j);
 								}
 								newGallery.this.runOnUiThread(new Runnable() {
 									@Override
@@ -3864,6 +3884,25 @@ public class newGallery extends Activity {
 									}
 								});
 
+							}
+						}	*/
+						Log.d("thong", "RunOnUiThread");
+						final RSSPhotoItem[] tmp;
+						if (recent_flickr_list_photos.size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
+							tmp = new RSSPhotoItem[recent_flickr_list_photos.size()];
+						} else {
+							tmp = new RSSPhotoItem[NUMBER_PHOTO_NEED_DOWNLOAD];
+						}
+						for (int j = 0; j < tmp.length; j++) {
+							tmp[j] = recent_flickr_list_photos.get(j);
+						}
+						newGallery.this.runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+
+								new DownloadImageAsyncTask().execute(tmp);
+							}
+						});
 						btn_recent_flickr_more
 								.setOnClickListener(new OnClickListener() {
 									@Override
@@ -3970,23 +4009,24 @@ public class newGallery extends Activity {
 							yahoo_list_photos.clear();
 							yahoo_list_photos.addAll(list_save);
 		
-							//array_list.add(yahoo_list_photos);
+							array_list.add(yahoo_list_photos);
 							if (!checkArray(PhimpMe.phimpme_array_list,yahoo_list_photos)) {
 								PhimpMe.phimpme_array_list.add(yahoo_list_photos);
 							} else {
 								deleteItem(PhimpMe.phimpme_array_list,yahoo_list_photos);
 								PhimpMe.phimpme_array_list.add(yahoo_list_photos);
 							}
-							
+							/*for (int i = 0; i < array_list.size(); i++) {
+								if (array_list.get(i).size() > 0) {
 									Log.d("thong", "RunOnUiThread");
 									final RSSPhotoItem[] tmp;
-									if (yahoo_list_photos.size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
-										tmp = new RSSPhotoItem[yahoo_list_photos.size()];
+									if (array_list.get(i).size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
+										tmp = new RSSPhotoItem[array_list.get(i).size()];
 									} else {
 										tmp = new RSSPhotoItem[NUMBER_PHOTO_NEED_DOWNLOAD];
 									}
 									for (int j = 0; j < tmp.length; j++) {
-										tmp[j] = yahoo_list_photos.get(j);
+										tmp[j] = array_list.get(i).get(j);
 									}
 									newGallery.this.runOnUiThread(new Runnable() {
 										@Override
@@ -3994,7 +4034,26 @@ public class newGallery extends Activity {
 											new DownloadImageAsyncTask().execute(tmp);
 										}
 									});
-						
+
+								}
+							}*/
+							Log.d("thong", "RunOnUiThread");
+							final RSSPhotoItem[] tmp;
+							if (yahoo_list_photos.size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
+								tmp = new RSSPhotoItem[yahoo_list_photos.size()];
+							} else {
+								tmp = new RSSPhotoItem[NUMBER_PHOTO_NEED_DOWNLOAD];
+							}
+							for (int j = 0; j < tmp.length; j++) {
+								tmp[j] = yahoo_list_photos.get(j);
+							}
+							newGallery.this.runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
+									new DownloadImageAsyncTask().execute(tmp);
+								}
+							});
+				
 							btn_yahoo_more.setOnClickListener(new OnClickListener() {
 								@Override
 								public void onClick(View v) {
@@ -4096,7 +4155,7 @@ public class newGallery extends Activity {
 					list_photos.addAll(tmp_list);
 					public_picasa_list_photos.clear();
 					public_picasa_list_photos.addAll(list_save);
-					//array_list.add(public_picasa_list_photos);
+					array_list.add(public_picasa_list_photos);
 					if (!checkArray(PhimpMe.phimpme_array_list,public_picasa_list_photos)) {
 						PhimpMe.phimpme_array_list
 								.add(public_picasa_list_photos);
@@ -4105,16 +4164,17 @@ public class newGallery extends Activity {
 						PhimpMe.phimpme_array_list
 								.add(public_picasa_list_photos);
 					}
-				
+					/*for (int i = 0; i < array_list.size(); i++) {
+						if (array_list.get(i).size() > 0) {
 							Log.d("thong", "RunOnUiThread");
 							final RSSPhotoItem[] tmp;
-							if (public_picasa_list_photos.size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
-								tmp = new RSSPhotoItem[public_picasa_list_photos.size()];
+							if (array_list.get(i).size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
+								tmp = new RSSPhotoItem[array_list.get(i).size()];
 							} else {
 								tmp = new RSSPhotoItem[NUMBER_PHOTO_NEED_DOWNLOAD];
 							}
 							for (int j = 0; j < tmp.length; j++) {
-								tmp[j] = public_picasa_list_photos.get(j);
+								tmp[j] = array_list.get(i).get(j);
 							}
 							newGallery.this.runOnUiThread(new Runnable() {
 								@Override
@@ -4124,6 +4184,25 @@ public class newGallery extends Activity {
 								}
 							});
 
+						}
+					}*/
+					Log.d("thong", "RunOnUiThread");
+					final RSSPhotoItem[] tmp;
+					if (public_picasa_list_photos.size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
+						tmp = new RSSPhotoItem[public_picasa_list_photos.size()];
+					} else {
+						tmp = new RSSPhotoItem[NUMBER_PHOTO_NEED_DOWNLOAD];
+					}
+					for (int j = 0; j < tmp.length; j++) {
+						tmp[j] = public_picasa_list_photos.get(j);
+					}
+					newGallery.this.runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+
+							new DownloadImageAsyncTask().execute(tmp);
+						}
+					});
 					btn_public_picasa_more
 							.setOnClickListener(new OnClickListener() {
 								@Override
@@ -4338,23 +4417,24 @@ public class newGallery extends Activity {
 							deviant_list_photos.clear();
 							deviant_list_photos.addAll(list_save);
 		
-							//array_list.add(deviant_list_photos);
+							array_list.add(deviant_list_photos);
 							if (!checkArray(PhimpMe.phimpme_array_list,deviant_list_photos)) {
 								PhimpMe.phimpme_array_list.add(deviant_list_photos);
 							} else {
 								deleteItem(PhimpMe.phimpme_array_list,deviant_list_photos);
 								PhimpMe.phimpme_array_list.add(deviant_list_photos);
 							}
-							
+							/*for (int i = 0; i < array_list.size(); i++) {
+								if (array_list.get(i).size() > 0) {
 									Log.d("thong", "RunOnUiThread");
 									final RSSPhotoItem[] tmp;
-									if (deviant_list_photos.size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
-										tmp = new RSSPhotoItem[deviant_list_photos.size()];
+									if (array_list.get(i).size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
+										tmp = new RSSPhotoItem[array_list.get(i).size()];
 									} else {
 										tmp = new RSSPhotoItem[NUMBER_PHOTO_NEED_DOWNLOAD];
 									}
 									for (int j = 0; j < tmp.length; j++) {
-										tmp[j] = deviant_list_photos.get(j);
+										tmp[j] = array_list.get(i).get(j);
 									}
 									newGallery.this.runOnUiThread(new Runnable() {
 										@Override
@@ -4364,7 +4444,25 @@ public class newGallery extends Activity {
 										}
 									});
 
+								}
+							}*/
+							Log.d("thong", "RunOnUiThread");
+							final RSSPhotoItem[] tmp;
+							if (deviant_list_photos.size() < NUMBER_PHOTO_NEED_DOWNLOAD) {
+								tmp = new RSSPhotoItem[deviant_list_photos.size()];
+							} else {
+								tmp = new RSSPhotoItem[NUMBER_PHOTO_NEED_DOWNLOAD];
+							}
+							for (int j = 0; j < tmp.length; j++) {
+								tmp[j] = deviant_list_photos.get(j);
+							}
+							newGallery.this.runOnUiThread(new Runnable() {
+								@Override
+								public void run() {
 
+									new DownloadImageAsyncTask().execute(tmp);
+								}
+							});
 							btn_public_deviant_more
 									.setOnClickListener(new OnClickListener() {
 										@Override
@@ -6670,97 +6768,117 @@ public class newGallery extends Activity {
 								service, description);
 						
 						complete_file++;
-						
 						newGallery.this.runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
-								bitmap_list.add(BitmapFactory
-										.decodeFile(thumb_path));
+								bitmap_list.add(BitmapFactory.decodeFile(thumb_path));
 								RSSPhotoItem newitem = new RSSPhotoItem();
 								newitem.setTitle(title);
 								newitem.setURL(urlstr);
 								
 								if (service.equals("public_flickr")) {
-									bitmap_p_flickr.add(0, BitmapFactory
-											.decodeFile(thumb_path));
+									bitmap_p_flickr.add(0, BitmapFactory.decodeFile(thumb_path));
 									flickradapter.addItem(newitem);
-
+									//Log.e("newGallery","complete_file public flick : "+complete_file);
+									if(complete_file % 6 ==0){
+										btn_flickr_more.setImageResource(R.drawable.more);
+										btn_flickr_more.setEnabled(true);
+									}
 								}
 								if (service.equals("recent_flickr")) {
-									bitmap_recent_flickr.add(0, BitmapFactory
-											.decodeFile(thumb_path));
+									bitmap_recent_flickr.add(0, BitmapFactory.decodeFile(thumb_path));
 									recentflickradapter.addItem(newitem);
+									//Log.e("newGallery","complete_file recent flick : "+complete_file);
+									if(complete_file % 6 ==0){
+										btn_recent_flickr_more.setImageResource(R.drawable.more);
+										btn_recent_flickr_more.setEnabled(true);
+									}
+									
 
 								}
 								if (service.equals("public_picasa")) {
-									bitmap_public_picasa.add(0, BitmapFactory
-											.decodeFile(thumb_path));
+									bitmap_public_picasa.add(0, BitmapFactory.decodeFile(thumb_path));
 									publicpicasaadapter.addItem(newitem);
+									if(complete_file % 6 ==0){
+										btn_public_picasa_more.setImageResource(R.drawable.more);
+										btn_public_picasa_more.setEnabled(true);
+									}
 
 								}
 								if (service.equals("google_news")) {
-									bitmap_google_news.add(0, BitmapFactory
-											.decodeFile(thumb_path));
+									bitmap_google_news.add(0, BitmapFactory.decodeFile(thumb_path));
 									googlenewsadapter.addItem(newitem);
+									if(complete_file % 6 ==0){
+										btn_googlenews_more.setImageResource(R.drawable.more);
+										btn_googlenews_more.setEnabled(true);
+									}
 
 								}
 								if (service.equals("public_deviant")) {
-									bitmap_p_deviant.add(0, BitmapFactory
-											.decodeFile(thumb_path));
+									bitmap_p_deviant.add(0, BitmapFactory.decodeFile(thumb_path));
 									deviantadapter.addItem(newitem);
+									if(complete_file % 6 ==0){
+										btn_public_deviant_more.setImageResource(R.drawable.more);
+										btn_public_deviant_more.setEnabled(true);
+									}
 
 								}
 								if (service.equals("public_yahoo")) {
-									bitmap_p_yahoo.add(0, BitmapFactory
-											.decodeFile(thumb_path));
+									bitmap_p_yahoo.add(0, BitmapFactory.decodeFile(thumb_path));
 									yahooadapter.addItem(newitem);
+									if(complete_file % 6 ==0){
+										btn_yahoo_more.setImageResource(R.drawable.more);
+										btn_yahoo_more.setEnabled(true);
+									}
 
 								}
 								if (service.equals("my_feed_services")) {
-									bitmap_my_feed_services.add(0,
-											BitmapFactory
-													.decodeFile(thumb_path));
+									bitmap_my_feed_services.add(0,BitmapFactory.decodeFile(thumb_path));
 									my_feed_services_adapter.addItem(newitem);
-								}
-								if (service.equals("public_imgur")) {
-									bitmap_public_imgur.add(0, BitmapFactory
-											.decodeFile(thumb_path));
-									public_imguradapter.addItem(newitem);
-								}
-								if (service.equals("public_500px")) {
-									bitmap_public_500px.add(0, BitmapFactory
-											.decodeFile(thumb_path));
-									public500pxadapter.addItem(newitem);
-								}
+									if(complete_file % 6 ==0){
+										btn_my_feed_services_more.setImageResource(R.drawable.more);
+										btn_my_feed_services_more.setEnabled(true);
+									}
+								}																
 								if (service.equals("my_feed_services1")) {
-									bitmap_my_feed_services1.add(0,
-											BitmapFactory
-													.decodeFile(thumb_path));
+									bitmap_my_feed_services1.add(0,BitmapFactory.decodeFile(thumb_path));
 									my_feed_services_adapter1.addItem(newitem);
+									if(complete_file % 6 ==0){
+										btn_my_feed_services_more1.setImageResource(R.drawable.more);
+										btn_my_feed_services_more1.setEnabled(true);
+									}
 								}
 								if (service.equals("my_feed_services2")) {
-									bitmap_my_feed_services2.add(0,
-											BitmapFactory
-													.decodeFile(thumb_path));
+									bitmap_my_feed_services2.add(0,BitmapFactory.decodeFile(thumb_path));
 									my_feed_services_adapter2.addItem(newitem);
+									if(complete_file % 6 ==0){
+										btn_my_feed_services_more2.setImageResource(R.drawable.more);
+										btn_my_feed_services_more2.setEnabled(true);
+									}
 								}
 								if (service.equals("my_feed_services3")) {
-									bitmap_my_feed_services3.add(0,
-											BitmapFactory
-													.decodeFile(thumb_path));
+									bitmap_my_feed_services3.add(0,BitmapFactory.decodeFile(thumb_path));
 									my_feed_services_adapter3.addItem(newitem);
+									if(complete_file % 6 ==0){
+										btn_my_feed_services_more3.setImageResource(R.drawable.more);
+										btn_my_feed_services_more3.setEnabled(true);
+									}
 								}
 								if (service.equals("my_feed_services4")) {
-									bitmap_my_feed_services4.add(0,
-											BitmapFactory
-													.decodeFile(thumb_path));
+									bitmap_my_feed_services4.add(0,BitmapFactory.decodeFile(thumb_path));
 									my_feed_services_adapter4.addItem(newitem);
+									if(complete_file % 6 ==0){
+										btn_my_feed_services_more4.setImageResource(R.drawable.more);
+										btn_my_feed_services_more4.setEnabled(true);
+									}
 								}
 								if (service.equals("my_feed_services5")) {
-									bitmap_my_feed_services5.add(0,
-											BitmapFactory
-													.decodeFile(thumb_path));
+									bitmap_my_feed_services5.add(0,BitmapFactory.decodeFile(thumb_path));
 									my_feed_services_adapter5.addItem(newitem);
+									if(complete_file % 6 ==0){
+										btn_my_feed_services_more5.setImageResource(R.drawable.more);
+										btn_my_feed_services_more5.setEnabled(true);
+									}
 								}
 								newitem = null;
 							}
@@ -6779,102 +6897,8 @@ public class newGallery extends Activity {
 		}
 
 		@Override
-		protected void onPostExecute(Long result) {		
-			for (int i = 0; i < array_list.size(); i++) {
-				Log.e("Array size",array_list.get(i).size()+"");
-				if (array_list.get(i).equals(flickr_list_photos)
-						&& (array_list.get(i).size() - flickr_count
-								* NUMBER_PHOTO_NEED_DOWNLOAD) >= 0) {
-					btn_flickr_more.setImageResource(R.drawable.more);
-					btn_flickr_more.setEnabled(true);
-					if (complete_file < NUMBER_PHOTO_NEED_DOWNLOAD) {
-
-					}
-				}
-				if (array_list.get(i).equals(recent_flickr_list_photos)
-						&& (array_list.get(i).size() - recent_flickr_count
-								* NUMBER_PHOTO_NEED_DOWNLOAD) > 0) {
-					btn_recent_flickr_more.setImageResource(R.drawable.more);
-					btn_recent_flickr_more.setEnabled(true);
-				}
-				if (array_list.get(i).equals(deviant_list_photos)
-						&& (array_list.get(i).size() - deviant_count
-								* NUMBER_PHOTO_NEED_DOWNLOAD) > 0) {
-					btn_public_deviant_more.setImageResource(R.drawable.more);
-					btn_public_deviant_more.setEnabled(true);
-				}
-				if (array_list.get(i).equals(googlenews_list_photos)
-						&& (array_list.get(i).size() - googlenews_count
-								* NUMBER_PHOTO_NEED_DOWNLOAD) > 0) {
-					btn_googlenews_more.setImageResource(R.drawable.more);
-					btn_googlenews_more.setEnabled(true);
-				}
-				if (array_list.get(i).equals(public_picasa_list_photos)
-						&& (array_list.get(i).size() - public_picasa_count
-								* NUMBER_PHOTO_NEED_DOWNLOAD) > 0) {
-					btn_public_picasa_more.setImageResource(R.drawable.more);
-					btn_public_picasa_more.setEnabled(true);
-				}
-				if (array_list.get(i).equals(yahoo_list_photos)
-						&& (array_list.get(i).size() - yahoo_count
-								* NUMBER_PHOTO_NEED_DOWNLOAD) > 0) {
-					btn_yahoo_more.setImageResource(R.drawable.more);
-					btn_yahoo_more.setEnabled(true);
-				}
-				if (array_list.get(i).equals(public_imgur_list_photos)
-						&& (array_list.get(i).size() - public_imgur_count
-								* NUMBER_PHOTO_NEED_DOWNLOAD) > 0) {
-					btn_yahoo_more.setImageResource(R.drawable.more);
-					btn_yahoo_more.setEnabled(true);
-				}
-				if (array_list.get(i).equals(my_feed_services_list_photos)
-						&& (array_list.get(i).size() - my_feed_services_count
-								* NUMBER_PHOTO_NEED_DOWNLOAD) > 0) {
-					btn_my_feed_services_more.setImageResource(R.drawable.more);
-					btn_my_feed_services_more.setEnabled(true);
-				}
-				if (array_list.get(i).equals(my_feed_services_list_photos1)
-						&& (array_list.get(i).size() - my_feed_services_count1
-								* NUMBER_PHOTO_NEED_DOWNLOAD) > 0) {
-					btn_my_feed_services_more1
-							.setImageResource(R.drawable.more);
-					btn_my_feed_services_more1.setEnabled(true);
-				}
-				if (array_list.get(i).equals(my_feed_services_list_photos2)
-						&& (array_list.get(i).size() - my_feed_services_count2
-								* NUMBER_PHOTO_NEED_DOWNLOAD) > 0) {
-					btn_my_feed_services_more2
-							.setImageResource(R.drawable.more);
-					btn_my_feed_services_more2.setEnabled(true);
-				}
-				if (array_list.get(i).equals(my_feed_services_list_photos3)
-						&& (array_list.get(i).size() - my_feed_services_count3
-								* NUMBER_PHOTO_NEED_DOWNLOAD) > 0) {
-					btn_my_feed_services_more3
-							.setImageResource(R.drawable.more);
-					btn_my_feed_services_more3.setEnabled(true);
-				}
-				if (array_list.get(i).equals(my_feed_services_list_photos4)
-						&& (array_list.get(i).size() - my_feed_services_count4
-								* NUMBER_PHOTO_NEED_DOWNLOAD) > 0) {
-					btn_my_feed_services_more4
-							.setImageResource(R.drawable.more);
-					btn_my_feed_services_more4.setEnabled(true);
-				}
-				if (array_list.get(i).equals(my_feed_services_list_photos5)
-						&& (array_list.get(i).size() - my_feed_services_count5
-								* NUMBER_PHOTO_NEED_DOWNLOAD) > 0) {
-					btn_my_feed_services_more5
-							.setImageResource(R.drawable.more);
-					btn_my_feed_services_more5.setEnabled(true);
-				}
-
-			}
-
-			Log.e("Flickr count",flickr_count+"");
+		protected void onPostExecute(Long result) {				
 			 for(int i=0; i<PhimpMe.phimpme_array_list.size(); i++){
-			
-				 Log.e("flickr not save", filckr_list_not_save.size()+"");
 			  if((filckr_list_not_save
 			  .size()-flickr_count*NUMBER_PHOTO_NEED_DOWNLOAD)>0){
 			  btn_flickr_more.setImageResource(R.drawable.more);
@@ -6933,7 +6957,7 @@ public class newGallery extends Activity {
 	// download personal photos
 	private class DownloadImageAsyncTask_Personal extends
 			AsyncTask<RSSPhotoItem_Personal[], String, Long> {
-
+		int complete_file = 0;
 		protected Long doInBackground(RSSPhotoItem_Personal[]... items) {
 			long size = 0;
 			
@@ -6994,7 +7018,7 @@ public class newGallery extends Activity {
 								thumb_path, title, latitude, longitude, link,
 								service, description);
 
-						//complete_file++;
+						complete_file++;
 						
 						newGallery.this.runOnUiThread(new Runnable() {
 							@Override
@@ -7005,57 +7029,76 @@ public class newGallery extends Activity {
 								newitem.setTitle(title);
 								newitem.setURL(urlstr);
 								if (service.equals("personal_facebook")) {
-									bitmap_personal_facebook.add(0,
-											BitmapFactory
-													.decodeFile(thumb_path));
+									bitmap_personal_facebook.add(0,BitmapFactory.decodeFile(thumb_path));
 									facebookadapter.addItem(newitem);
+									if(complete_file % 6 ==0){
+										btn_facebook_more.setImageResource(R.drawable.more);
+										btn_facebook_more.setEnabled(true);
+									}
 								}
 								if (service.equals("personal_tumblr")) {
-									bitmap_personal_tumblr.add(0, BitmapFactory
-											.decodeFile(thumb_path));
+									bitmap_personal_tumblr.add(0, BitmapFactory.decodeFile(thumb_path));
 									tumblradapter.addItem(newitem);
+									if(complete_file % 6 ==0){
+										btn_tumblr_more.setImageResource(R.drawable.more);
+										btn_tumblr_more.setEnabled(true);
+									}
 								}
 								if (service.equals("personal_vkontakte")) {
-									bitmap_personal_vkontakte.add(0,
-											BitmapFactory
-													.decodeFile(thumb_path));
+									bitmap_personal_vkontakte.add(0,BitmapFactory.decodeFile(thumb_path));
 									vkontakteadapter.addItem(newitem);
+									if(complete_file % 6 ==0){
+										btn_vkontakte_more.setImageResource(R.drawable.more);
+										btn_vkontakte_more.setEnabled(true);
+									}
 								}
 								if (service.equals("personal_flickr")) {
-									bitmap_personal_flickr.add(0, BitmapFactory
-											.decodeFile(thumb_path));
+									bitmap_personal_flickr.add(0, BitmapFactory.decodeFile(thumb_path));
 									personal_flickradapter.addItem(newitem);
+									if(complete_file % 6 ==0){
+										btn_personal_flickr_more.setImageResource(R.drawable.more);
+										btn_personal_flickr_more.setEnabled(true);
+									}
 								}
 								if (service.equals("personal_picasa")) {
-									bitmap_personal_picasa.add(0, BitmapFactory
-											.decodeFile(thumb_path));
+									bitmap_personal_picasa.add(0, BitmapFactory.decodeFile(thumb_path));
 									personal_picasaadapter.addItem(newitem);
+									if(complete_file % 6 ==0){
+										btn_personal_picasa_more.setImageResource(R.drawable.more);
+										btn_personal_picasa_more.setEnabled(true);
+									}
 								}
 								if (service.equals("personal_deviantart")) {
-									bitmap_personal_deviantart.add(0,
-											BitmapFactory
-													.decodeFile(thumb_path));
+									bitmap_personal_deviantart.add(0,BitmapFactory.decodeFile(thumb_path));
 									personal_deviantartadapter.addItem(newitem);
+									if(complete_file % 6 ==0){
+										btn_personal_deviant_more.setImageResource(R.drawable.more);
+										btn_personal_deviant_more.setEnabled(true);
+									}
 								}
 								if (service.equals("personal_imgur")) {
-									bitmap_personal_imgur.add(0, BitmapFactory
-											.decodeFile(thumb_path));
+									bitmap_personal_imgur.add(0, BitmapFactory.decodeFile(thumb_path));
 									personal_imguradapter.addItem(newitem);
+									if(complete_file % 6 ==0){
+										btn_personal_imgur_more.setImageResource(R.drawable.more);
+										btn_personal_imgur_more.setEnabled(true);
+									}
 								}
 								if (service.equals("personal_kaixin")) {
-									bitmap_personal_kaixin.add(0, BitmapFactory
-											.decodeFile(thumb_path));
+									bitmap_personal_kaixin.add(0, BitmapFactory.decodeFile(thumb_path));
 									personal_kaixinadapter.addItem(newitem);
-								}
-								if (service.equals("personal_500px")) {
-									bitmap_personal_500px.add(0, BitmapFactory
-											.decodeFile(thumb_path));
-									personal_500pxadapter.addItem(newitem);
-								}
+									if(complete_file % 6 ==0){
+										btn_personal_kaixin_more.setImageResource(R.drawable.more);
+										btn_personal_kaixin_more.setEnabled(true);
+									}
+								}								
 								if (service.equals("personal_sohu")) {
-									bitmap_personal_sohu.add(0, BitmapFactory
-											.decodeFile(thumb_path));
+									bitmap_personal_sohu.add(0, BitmapFactory.decodeFile(thumb_path));
 									personal_sohuadapter.addItem(newitem);
+									if(complete_file % 6 ==0){
+										btn_personal_sohu_more.setImageResource(R.drawable.more);
+										btn_personal_sohu_more.setEnabled(true);
+									}
 								}
 
 								newitem = null;
@@ -7075,78 +7118,6 @@ public class newGallery extends Activity {
 
 		@Override
 		protected void onPostExecute(Long result) {
-			for (int i = 0; i < personal_array_list.size(); i++) {
-				if (personal_array_list.get(i).equals(
-						personal_deviantart_list_photos)
-						&& (personal_array_list.get(i).size() - personal_deviantart_count
-								* NUMBER_PHOTO_NEED_DOWNLOAD) > 0) {
-					btn_personal_deviant_more.setImageResource(R.drawable.more);
-					btn_personal_deviant_more.setEnabled(true);
-				}
-				if (personal_array_list.get(i).equals(
-						personal_facebook_list_photos)
-						&& (personal_array_list.get(i).size() - personal_facebook_count
-								* NUMBER_PHOTO_NEED_DOWNLOAD) > 0) {
-					btn_facebook_more.setImageResource(R.drawable.more);
-					btn_facebook_more.setEnabled(true);
-				}
-				if (personal_array_list.get(i).equals(
-						personal_flickr_list_photos)
-						&& (personal_array_list.get(i).size() - personal_flickr_count
-								* NUMBER_PHOTO_NEED_DOWNLOAD) > 0) {
-					btn_personal_flickr_more.setImageResource(R.drawable.more);
-					btn_personal_flickr_more.setEnabled(true);
-				}
-				if (personal_array_list.get(i).equals(
-						personal_picasa_list_photos)
-						&& (personal_array_list.get(i).size() - personal_picasa_count
-								* NUMBER_PHOTO_NEED_DOWNLOAD) > 0) {
-					btn_personal_picasa_more.setImageResource(R.drawable.more);
-					btn_personal_picasa_more.setEnabled(true);
-				}
-				if (personal_array_list.get(i).equals(
-						personal_tumblr_list_photos)
-						&& (personal_array_list.get(i).size() - personal_tumblr_count
-								* NUMBER_PHOTO_NEED_DOWNLOAD) > 0) {
-					btn_tumblr_more.setImageResource(R.drawable.more);
-					btn_tumblr_more.setEnabled(true);
-				}
-				if (personal_array_list.get(i).equals(
-						personal_vkontakte_list_photos)
-						&& (personal_array_list.get(i).size() - personal_vkontakte_count
-								* NUMBER_PHOTO_NEED_DOWNLOAD) > 0) {
-					btn_vkontakte_more.setImageResource(R.drawable.more);
-					btn_vkontakte_more.setEnabled(true);
-				}
-				if (personal_array_list.get(i).equals(
-						personal_imgur_list_photos)
-						&& (personal_array_list.get(i).size() - personal_imgur_count
-								* NUMBER_PHOTO_NEED_DOWNLOAD) > 0) {
-					btn_personal_imgur_more.setImageResource(R.drawable.more);
-					btn_personal_imgur_more.setEnabled(true);
-				}
-				if (personal_array_list.get(i).equals(
-						personal_kaixin_list_photos)
-						&& (personal_array_list.get(i).size() - personal_kaixin_count
-								* NUMBER_PHOTO_NEED_DOWNLOAD) > 0) {
-					btn_personal_kaixin_more.setImageResource(R.drawable.more);
-					btn_personal_kaixin_more.setEnabled(true);
-				}
-				if (personal_array_list.get(i).equals(
-						personal_500px_list_photos)
-						&& (personal_array_list.get(i).size() - personal_500px_count
-								* NUMBER_PHOTO_NEED_DOWNLOAD) > 0) {
-					btn_personal_500px_more.setImageResource(R.drawable.more);
-					btn_personal_500px_more.setEnabled(true);
-				}
-				if (personal_array_list.get(i)
-						.equals(personal_sohu_list_photos)
-						&& (personal_array_list.get(i).size() - personal_sohu_count
-								* NUMBER_PHOTO_NEED_DOWNLOAD) > 0) {
-					btn_personal_sohu_more.setImageResource(R.drawable.more);
-					btn_personal_sohu_more.setEnabled(true);
-				}
-			}
 			for (int i = 0; i < PhimpMe.phimpme_personal_array_list.size(); i++) {
 				if ((per_deviant_list_not_save.size() - personal_deviantart_count
 						* NUMBER_PHOTO_NEED_DOWNLOAD) > 0) {

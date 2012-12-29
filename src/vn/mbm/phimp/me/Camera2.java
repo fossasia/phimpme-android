@@ -525,23 +525,14 @@ private static String formatLatLongString(double d) {
 	public boolean onKeyDown(int keycode, KeyEvent event)
     {
     	if (keycode == KeyEvent.KEYCODE_BACK){
-    	
-    		PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
-    		PhimpMe.mTabHost.setCurrentTab(PhimpMe.IdList.get(PhimpMe.IdList.size()-1));
-    		//PhimpMe.showTabs();
+    		finish();
+    		Intent i=new Intent(Camera2.this, PhimpMe.class);
+    		startActivity(i);
+    		
     	}  	
         return super.onKeyDown(keycode, event);
     	//return true;
-    }
-	/*@Override
-	public void onBackPressed(){		
-		//PhimpMe.showTabs();	
-		//mCamera.stopPreview();
-		//mCamera.release();
-		PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
-		PhimpMe.mTabHost.setCurrentTab(PhimpMe.IdList.get(PhimpMe.IdList.size()-1));		
-	}*/
-		
+    }		
 
 
 // ----------------------------------------------------------------------
@@ -608,11 +599,7 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
         final int width = resolveSize(getSuggestedMinimumWidth(), widthMeasureSpec);
         final int height = resolveSize(getSuggestedMinimumHeight(), heightMeasureSpec);
         setMeasuredDimension(width, height);    	
-       /* if (mSupportedPreviewSizes != null) {
-        	
-            mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, width, height);
-        }*/
-        //mPreviewSize = getBestPreviewSize(widthMeasureSpec, heightMeasureSpec, parameters)
+       
     }
 
     @Override
@@ -654,28 +641,7 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
             }
         }
     }
- /*private Camera.Size getBestPreviewSize(int width, int height,
-            Camera.Parameters parameters) {
-		Camera.Size result=null;
-		
-		for (Camera.Size size : parameters.getSupportedPreviewSizes()) {
-			if (size.width<=width && size.height<=height) {
-			if (result==null) {
-			result=size;
-		}
-		else {
-			int resultArea=result.width*result.height;
-			int newArea=size.width*size.height;
-		
-		if (newArea>resultArea) {
-			result=size;
-				}
-			}
-		}
-}
-
-		return(result);
-}*/
+ 
     public void surfaceCreated(SurfaceHolder holder) {
         // The Surface has been created, acquire the camera and tell it where
         // to draw.
@@ -746,7 +712,6 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
         parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
         }catch(Exception e){}
         requestLayout();
-
         mCamera.setParameters(parameters);
         mCamera.startPreview();
     }
