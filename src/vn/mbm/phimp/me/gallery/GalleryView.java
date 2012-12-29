@@ -74,7 +74,6 @@ public GalleryView(Context context, AttributeSet attrs) {
     private boolean isScrollingLeft(MotionEvent e1, MotionEvent e2) {
         return e2.getX() > e1.getX();   
     }  
-    @Override
     protected void onOverScrolled(int scrollX, int scrollY, boolean clampedX, boolean clampedY) 
     {
        Log.e("fade","onOverScrolled\n");

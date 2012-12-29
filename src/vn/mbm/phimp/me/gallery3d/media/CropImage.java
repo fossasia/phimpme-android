@@ -36,9 +36,11 @@ import vn.mbm.phimp.me.gallery3d.app.App;
 import vn.mbm.phimp.me.gallery3d.app.Res;
 import vn.mbm.phimp.me.utils.geoDegrees;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
@@ -415,12 +417,84 @@ public class CropImage extends MonitoredActivity {
 
         findViewById(Res.id.save).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                onSaveClicked();
-                if (!activitynam.equals("Upload")){
-	                Intent intent=new Intent(ctx, PhimpMe.class);
-			    	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			    	startActivity(intent);
-		    	}
+            	if(txtLongtitude.getText().toString().equals("")&& !txtLatitude.getText().toString().equals("")){
+            		AlertDialog.Builder builder=new AlertDialog.Builder(ctx);
+            		builder.setMessage("Please enter Longtitude !");
+            		builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which)
+                        {                        	
+                        }
+                    });
+            		builder.create().show();
+            	}else if(!txtLongtitude.getText().toString().equals("")&& txtLatitude.getText().toString().equals("")){
+            		AlertDialog.Builder builder=new AlertDialog.Builder(ctx);
+            		builder.setMessage("Please enter Latitude !");
+            		builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which)
+                        {                        	
+                        }
+                    });
+            		builder.create().show();
+            	}
+            	else{
+            		//========================save ==============================
+            		//don't have geolocation
+            		if(txtLongtitude.getText().toString().equals("") && txtLatitude.getText().toString().equals("")){
+            			onSaveClicked();
+                        if (!activitynam.equals("Upload")){
+        	                Intent intent=new Intent(ctx, PhimpMe.class);
+        			    	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        			    	startActivity(intent);
+        		    	}
+            		}else{
+            			//have geolocation
+            			double lon=Double.parseDouble((txtLongtitude.getText().toString()));
+                    	double la=Double.parseDouble((txtLatitude.getText().toString()));
+                    	//Log.e("CropImage", "Longtitude : "+lon+", Latitude : "+la);
+                    	if((lon>180 ||lon+180 <0)){
+                    		Log.e("CropImage","Longtitude is limit");
+                    		AlertDialog.Builder builder=new AlertDialog.Builder(ctx);
+                    		builder.setMessage("Longtitude has minimum value is -180 and maximum value is 180. Please try again !");
+                    		builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which)
+                                {   
+                                	txtLongtitude.requestFocus();
+                                }
+                            });
+                    		builder.create().show();
+                    	}else if((la > 90 ||la + 90 <0)){
+                    		Log.e("CropImage","Latitude is limit");
+                    		AlertDialog.Builder builder=new AlertDialog.Builder(ctx);
+                    		builder.setMessage("Latitude has minimum value is -90 and maximum value is 90. Please try again !");
+                    		builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which)
+                                {   
+                                	txtLatitude.requestFocus();
+                                }
+                            });
+                    		builder.create().show();
+                    	}
+                    	else{
+                    		onSaveClicked();
+                            if (!activitynam.equals("Upload")){
+            	                Intent intent=new Intent(ctx, PhimpMe.class);
+            			    	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            			    	startActivity(intent);
+            		    	}
+                    	}
+            		}
+            		
+            	}
+            	
+                
             }
         });
         findViewById(R.id.btnRotateLeftRight).setOnClickListener(

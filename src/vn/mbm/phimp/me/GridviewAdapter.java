@@ -86,8 +86,7 @@ class GridFlickrAdaper extends BaseAdapter {
 		} else {
 			view = convertView;
 		}
-		String url = list_flickr.get(position).getURL();
-		Log.e("URL",url);
+		
 		ImageView load_iv = (ImageView) view
 				.findViewById(R.id.imgGalleryGridItemLoading);
 		ImageView iv = (ImageView) view
@@ -96,7 +95,7 @@ class GridFlickrAdaper extends BaseAdapter {
 		load_iv.setScaleType(ImageView.ScaleType.FIT_XY);
 		load_iv.setVisibility(View.INVISIBLE);
 		try {
-			iv.setImageBitmap(bitmap_p_flickr.get(position));
+			iv.setImageBitmap(bitmap_p_flickr.get(position));			
 		} catch (Exception e) {
 		}
 		iv.setVisibility(View.VISIBLE);
