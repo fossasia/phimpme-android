@@ -32,7 +32,7 @@ import android.widget.RelativeLayout;
 public class PhimpMeGallery extends Activity {
 	private Gallery gallery;
 	private static ArrayList<String> filePath;
-
+	
 
 	private GalleryImageAdapter galImageAdapter;
 
@@ -44,6 +44,7 @@ public class PhimpMeGallery extends Activity {
 	public static View overscrollright;
 	public int index = 0;
 	public String from = "";
+	
 	public static int num;
 	private static String longtitude="",latitude="",title="";
 	private Context ctx;
@@ -61,6 +62,7 @@ public class PhimpMeGallery extends Activity {
 		try{
 		index = extract.getInt("index");
 		from = extract.getString("from");
+		
 		}catch(Exception e){
 			from = "";
 		}
@@ -102,7 +104,8 @@ public class PhimpMeGallery extends Activity {
 				builder.setMessage("This photo have been add to list upload photo !");
 				builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {					
 					@Override
-					public void onClick(DialogInterface dialog, int which) {		
+					public void onClick(DialogInterface dialog, int which) {
+						
 						Upload.imagelist+=filePath.get(position)+"#";
 					}
 				});
@@ -185,6 +188,9 @@ public class PhimpMeGallery extends Activity {
 								e.printStackTrace();
 							}
 						}
+						//remove deleted photo in upload list
+						Upload.imagelist=Upload.imagelist.replace(f.getAbsolutePath()+"#", "");						
+						
 						filePath.remove(position);
 						galImageAdapter.notifyDataSetChanged();
 					}

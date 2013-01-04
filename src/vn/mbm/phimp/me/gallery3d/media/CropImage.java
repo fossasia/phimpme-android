@@ -370,7 +370,8 @@ public class CropImage extends MonitoredActivity {
         }
 
         if (mBitmap == null) {
-            // Create a MediaItem representing the URI.
+        	Toast.makeText(ctx, "Sorry,can't load this photo !",Toast.LENGTH_SHORT).show();
+            /*// Create a MediaItem representing the URI.
             Uri target = intent.getData();
             String targetScheme = target.getScheme();
             int rotation = 0;
@@ -396,7 +397,7 @@ public class CropImage extends MonitoredActivity {
 
             if (mBitmap != null && rotation != 0f) {
                 mBitmap = Util.rotate(mBitmap, rotation);
-            }
+            }*/
         }
 
         if (mBitmap == null) {

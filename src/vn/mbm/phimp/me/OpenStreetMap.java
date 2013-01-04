@@ -167,7 +167,7 @@ public class OpenStreetMap extends Activity{
 	         				        anotherOverlayItemArray.add(_item);	      				       
 	         				       ItemizedOverlayWithBubble<ExtendedOverlayItem> anotherItemizedIconOverlay  = 
 	         				    		   new ItemizedOverlayWithBubble<ExtendedOverlayItem>(ctx,anotherOverlayItemArray,myOpenMapView);        	         	
-	         						myOpenMapView.getOverlays().add(anotherItemizedIconOverlay);
+	         						myOpenMapView.getOverlays().add(anotherItemizedIconOverlay);	         						
 	         						myMapController.animateTo(_gp);
 	         					 }
 	         				}
