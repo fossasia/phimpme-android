@@ -2311,7 +2311,8 @@ public class Settings extends Activity
 					newGallery.clearAllPhoto();	
 					sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"
 				            + Environment.getExternalStorageDirectory()))); 
-					
+					//remove deleted photo in upload list
+					Upload.imagelist="";	
 					d.dismiss();
 					Commons.AlertLog(ctx, "Successfully", "OK").show();	
 				}else{	

@@ -6775,6 +6775,7 @@ public class newGallery extends Activity {
 								RSSPhotoItem newitem = new RSSPhotoItem();
 								newitem.setTitle(title);
 								newitem.setURL(urlstr);
+								newitem.setThumb(thumb_path);
 								
 								if (service.equals("public_flickr")) {
 									bitmap_p_flickr.add(0, BitmapFactory.decodeFile(thumb_path));

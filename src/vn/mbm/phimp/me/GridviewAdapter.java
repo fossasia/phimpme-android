@@ -25,6 +25,7 @@ public class GridviewAdapter {
 class GridFlickrAdaper extends BaseAdapter {
 	ArrayList<RSSPhotoItem> list_flickr = new ArrayList<RSSPhotoItem>();
 	ArrayList<String> file_path = new ArrayList<String>();
+	
 	private LayoutInflater li;
 	private ArrayList<Bitmap> bitmap_p_flickr;
 	Context ctx;
@@ -38,7 +39,8 @@ class GridFlickrAdaper extends BaseAdapter {
 		for (int i = 0; i < list_thumb.size(); i++)
 			if (list_thumb.get(i).getService().equals("public_flickr")) {
 				list_flickr.add(list_thumb.get(i));				
-				file_path.add(list_thumb.get(i).getURL());
+				file_path.add(list_thumb.get(i).getURL());				
+				
 			}
 	}
 
@@ -110,9 +112,10 @@ class GridFlickrAdaper extends BaseAdapter {
 				//n.Dialog(4000, newGallery.pro_gress);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
-				PhimpMeGallery.setFileList(file_path);
+				PhimpMeGallery.setFileList(file_path);	
 				_intent.putExtra("activityName", "GridviewAdapter");
 				_intent.putExtra("index", pos);
+				
 				((Activity) ctx).startActivity(_intent);
 			}
 		});

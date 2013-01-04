@@ -43,6 +43,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.media.ExifInterface;
@@ -57,7 +58,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -114,7 +114,7 @@ public class Upload extends Activity
 	private static Uri camera_img_uri;
 	public static ProgressDialog progLoading;
 	static Context ctx;
-	private WebView webView;
+	//private WebView webView;
 	ListView listAccounts;
 	GridView listPhotoUpload;
 	
@@ -511,22 +511,26 @@ public class Upload extends Activity
 				}
 				 String tmp[] = path[position].split(";");
 				 Uri imageUri = Uri.parse(tmp[0]);	
-				 Log.d("imageUri",imageUri.toString());				 			    
+				 Log.e("imageUri",imageUri.toString());	
 			     ContentResolver cr = getContentResolver();				    
 			     String [] proj={MediaStore.Images.Media._ID};			     
 			     Cursor cursor = managedQuery(
 							MediaStore.Images.Media.EXTERNAL_CONTENT_URI, proj,
-							MediaStore.Images.Media.DATA + " = '" + imageUri+"'", null, MediaStore.Images.Media._ID);			    
-			     if (cursor.getCount() == 0) {
-			     cursor = managedQuery(
-								MediaStore.Images.Media.EXTERNAL_CONTENT_URI, proj,
-								null, null, MediaStore.Images.Media._ID+" DESC");			    	 
+							MediaStore.Images.Media.DATA + " = '"+ imageUri+"'", null, MediaStore.Images.Media._ID);			    
+			   if (cursor.getCount() == 0) {			    	
+				   //download photo
+				   
+				   String thumb_path=tmp[0].replace(".rss_items", ".rss_thumbs");
+				   Log.e("Upload","thumb_path : "+thumb_path);
+				   holder.imageview.setImageBitmap(BitmapFactory.decodeFile(thumb_path));
+				   
 			     }else
 			     {
 			     cursor.moveToFirst();
 				 holder.imageview.setScaleType(ImageView.ScaleType.FIT_XY);
 				 try{
 				 holder.imageview.setImageBitmap(MediaStore.Images.Thumbnails.getThumbnail(cr, Integer.valueOf(cursor.getString(0)),MediaStore.Images.Thumbnails.MICRO_KIND, null));
+
 				 }catch(Exception e)
 				 {
 					 e.printStackTrace();
