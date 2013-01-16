@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@anim/cycle_5"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"    
+    android:layout_height="match_parent"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -9,21 +11,23 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
         android:orientation="horizontal" >
 
         <RelativeLayout
             android:id="@+id/btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:background="@color/black_trans" >
 
-			<ImageButton
-			    android:id="@+id/btnShowInMap"
-			    android:layout_width="wrap_content"
-			    android:layout_height="wrap_content"
-			    android:layout_alignParentTop="true"
-			    android:layout_toLeftOf="@+id/btnZoom"
-			    android:src="@drawable/maps" />
+        <!--     <ImageButton
+                android:id="@+id/btnShowInMap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/btnZoom"
+                android:src="@drawable/maps" />
 
             <ImageButton
                 android:id="@+id/btnZoom"
@@ -32,13 +36,13 @@
                 android:layout_alignParentTop="true"
                 android:layout_toLeftOf="@+id/btnShare"
                 android:src="@drawable/icon_zoom" />
-            
+
             <ImageButton
                 android:id="@+id/btnEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"              
+                android:layout_alignParentTop="true"
                 android:src="@drawable/icon_edit" />
 
             <ImageButton
@@ -63,7 +67,21 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
-                android:src="@drawable/delete" />
+                android:src="@drawable/delete" /> -->
+
+            <ExpandableListView
+                android:id="@+id/menu"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:animateLayoutChanges="true"
+                android:background="@color/grey"
+                android:childIndicatorLeft="@dimen/padding_large"
+                android:drawSelectorOnTop="false"
+                android:headerDividersEnabled="true"
+                tools:listitem="@android:layout/simple_expandable_list_item_1" >
+
+            </ExpandableListView>
 
         </RelativeLayout>
 
@@ -78,7 +96,6 @@
             android:animationCache="true"
             android:clipChildren="true"
             android:spacing="10dp" >
-
         </vn.mbm.phimp.me.gallery.GalleryView>
 
         <View

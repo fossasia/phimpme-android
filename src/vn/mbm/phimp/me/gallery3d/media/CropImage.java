@@ -31,7 +31,7 @@ import java.util.concurrent.CountDownLatch;
 
 import vn.mbm.phimp.me.PhimpMe;
 import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.UploadMap;
+import vn.mbm.phimp.me.UploadOSMap;
 import vn.mbm.phimp.me.gallery3d.app.App;
 import vn.mbm.phimp.me.gallery3d.app.Res;
 import vn.mbm.phimp.me.utils.geoDegrees;
@@ -140,6 +140,9 @@ public class CropImage extends MonitoredActivity {
 	EditText txtLatitude;
 	EditText txtTags;
     Context ctx;
+    
+    public static int latitude,longitude;
+    public static String from="";
     static private final HashMap<Context, MediaScannerConnection> mConnectionMap = new HashMap<Context, MediaScannerConnection>();
     
     @SuppressWarnings("static-access")
@@ -278,7 +281,7 @@ public class CropImage extends MonitoredActivity {
 			@Override
 			public void onClick(View v) 
 			{
-				Intent _itent = new Intent(ctx, UploadMap.class);				
+				Intent _itent = new Intent(ctx, UploadOSMap.class);				
 				_itent.putExtra("latitude", txtLatitude.getText().toString());
 				_itent.putExtra("longitude", txtLongtitude.getText().toString());
 				startActivityForResult(_itent, GET_POSITION_ON_MAP);
@@ -291,13 +294,16 @@ public class CropImage extends MonitoredActivity {
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-
+       
+        
         if (extras != null) {
             if (extras.getString("circleCrop") != null) {
                 mCircleCrop = true;
                 mAspectX = 1;
                 mAspectY = 1;
             }
+           
+            
             Date date = new Date();
 			Long longTime = new Long(date.getTime()/1000);
             newpath = Environment.getExternalStorageDirectory()+"/phimp.me/PhimpMe_Photo_Effect"+"/tmp_"+longTime+".jpg";
@@ -800,10 +806,12 @@ public class CropImage extends MonitoredActivity {
                 // Set the cropped bitmap as the new bitmap.
                 croppedImage.recycle();
                 croppedImage = b;
+               
             }
         }
 
         // Return the cropped image directly or save it to the specified URI.
+        
         Bundle myExtras = getIntent().getExtras();
         if (myExtras != null && (myExtras.getParcelable("data") != null || myExtras.getBoolean("return-data"))) {
             Bundle extras = new Bundle();
@@ -1284,18 +1292,18 @@ private static String formatLatLongString(double d) {
 			case GET_POSITION_ON_MAP:
 			{
 				if (resultCode == Activity.RESULT_OK)
-				{
-					Log.d("thong", "Upload: Result OK");
-					
+				{/*
+					txtLatitude.setText("");
+					txtLongtitude.setText("");
 					int lat = data.getIntExtra("latitude", 0);
 					int log = data.getIntExtra("longitude", 0);
-					
 					float _lat = (float) (lat / 1E6);
 					float _log = (float) (log / 1E6);
 					
+					Log.e("thong", "CropImage: Result OK, latitude : "+_lat+",longitude : "+_log);
 					txtLatitude.setText(String.valueOf(_lat));
 					
-					txtLongtitude.setText(String.valueOf(_log));
+					txtLongtitude.setText(String.valueOf(_log));*/
 				}
 				break;
 			}
@@ -1305,6 +1313,17 @@ private static String formatLatLongString(double d) {
     protected void onResume() {
         super.onResume();
     	mApp.onResume();
+    	
+		//get Geolocation from Map
+    	
+		if(from.equals("Map")){
+			float _latitude=(float)(latitude/1E6);
+	    	float _longitude=(float)(longitude/1E6);
+			Log.e("CropImage-onResume","Latitude : "+_latitude+",longitude : "+_longitude);
+			txtLatitude.setText(String.valueOf(_latitude));
+			txtLongtitude.setText(String.valueOf(_longitude));
+			from="";
+		}
     }    
     
     @Override
