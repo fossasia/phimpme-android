@@ -3,6 +3,7 @@ package vn.mbm.phimp.me;
 import java.util.ArrayList;
 import java.util.List;
 
+import vn.mbm.phimp.me.gallery3d.media.CropImage;
 import vn.mbm.phimp.me.utils.Commons;
 import vn.mbm.phimp.me.R;
 import android.app.AlertDialog;
@@ -72,7 +73,7 @@ public class UploadMap extends MapActivity
 	int longitude;
 	LocationManager lm ;
 	ProgressDialog gpsloading;
-	
+	ImageButton btnSwitch;
 	@SuppressWarnings("deprecation")
 	@Override
     public void onCreate(Bundle savedInstanceState) 
@@ -109,9 +110,13 @@ public class UploadMap extends MapActivity
 			{
 				if (addPinIcon)
 				{
-					data.putExtra("latitude", latitude);
+					Log.e("UploadMap","latitude : "+latitude+", longitude : "+longitude);
+					/*data.putExtra("latitude", latitude);
 					data.putExtra("longitude", longitude);
-					setResult(RESULT_OK, data);
+					setResult(RESULT_OK, data);*/
+					CropImage.from="Map";
+					CropImage.latitude=latitude;
+					CropImage.longitude=longitude;
 					finish();
 				}
 				else
@@ -161,7 +166,19 @@ public class UploadMap extends MapActivity
 		        addPinIcon = false;
 			}
 		});
-        
+        btnSwitch=(ImageButton)findViewById(R.id.btnswitchOSM_UploadMap);
+        btnSwitch.bringToFront();
+        btnSwitch.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				finish();
+				//Intent intent=new Intent(UploadMap.this, UploadOSMap.class);
+				Intent intent=new Intent(UploadMap.this, UploadOSMap.class);
+				startActivity(intent);
+			}
+		});
         marker.setBounds(0, 0, marker.getIntrinsicWidth(),marker.getIntrinsicHeight());
         gpsloading = new ProgressDialog(ctx);
 		gpsloading.setCancelable(true);

@@ -27,14 +27,9 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <application
         android:icon="@drawable/ic_launcher"
-<<<<<<< HEAD
         android:label="@string/application_title"        
         android:largeHeap="true"
-        android:name="ACRAReport"
-=======
-        android:label="@string/application_title"
-        android:largeHeap="true"       
->>>>>>> d37486b288cf6ed62bef95320dcc8b5f9010dda0
+        android:name="ACRAReport"   
         >
         <uses-library android:name="com.google.android.maps" />  
         		 <service android:name=".CollectUserData" />
@@ -171,6 +166,13 @@
             android:theme="@android:style/Theme.NoTitleBar">
            
         </activity>
+        <activity
+            android:name=".UploadOSMap"
+            android:configChanges="locale"
+            android:theme="@android:style/Theme.NoTitleBar">
+           
+        </activity>
+        
         <activity
             android:name=".UploadProgress"
             android:configChanges="locale"

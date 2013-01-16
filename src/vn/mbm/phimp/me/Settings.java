@@ -2334,7 +2334,7 @@ public class Settings extends Activity
 			DownloadedPhotoDBItem itm = new DownloadedPhotoDBItem();
 			ArrayList<DownloadedPhotoDBItem> list_photo_delete = new ArrayList<DownloadedPhotoDBItem>();
 			list_photo_delete = itm.getAll(ctx);
-			Log.d("Danh","Number photo need delete : "+list_photo_delete.size());
+			Log.e("Setting-Delete","Number photo need delete : "+list_photo_delete.size());
 			if(list_photo_delete.size()==0){
 				count++;
 			}else{
@@ -2342,8 +2342,8 @@ public class Settings extends Activity
 					itm.removeAccount(ctx, list_photo_delete.get(i).getID());
 					File f1 = new File(list_photo_delete.get(i).getFilePath());
 					File f2 = new File(list_photo_delete.get(i).getThumbPath());
-					Log.i("Danh", "FilePath :"+list_photo_delete.get(i).getFilePath());
-					Log.i("Danh", "ThumbPath :"+list_photo_delete.get(i).getThumbPath());
+					Log.i("Setting-Delete", "FilePath :"+list_photo_delete.get(i).getFilePath());
+					Log.i("Setting-Delete", "ThumbPath :"+list_photo_delete.get(i).getThumbPath());
 					f1.delete();
 					f2.delete();
 				}

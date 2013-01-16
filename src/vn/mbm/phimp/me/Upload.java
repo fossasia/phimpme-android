@@ -511,14 +511,14 @@ public class Upload extends Activity
 				}
 				 String tmp[] = path[position].split(";");
 				 Uri imageUri = Uri.parse(tmp[0]);	
-				 Log.e("imageUri",imageUri.toString());	
+				 Log.d("imageUri",imageUri.toString()+  ",length path : "+path.length);	
 			     ContentResolver cr = getContentResolver();				    
 			     String [] proj={MediaStore.Images.Media._ID};			     
 			     Cursor cursor = managedQuery(
 							MediaStore.Images.Media.EXTERNAL_CONTENT_URI, proj,
 							MediaStore.Images.Media.DATA + " = '"+ imageUri+"'", null, MediaStore.Images.Media._ID);			    
 			   if (cursor.getCount() == 0) {			    	
-				   //download photo
+				   // display download photo in list upload photo
 				   
 				   String thumb_path=tmp[0].replace(".rss_items", ".rss_thumbs");
 				   Log.e("Upload","thumb_path : "+thumb_path);
@@ -537,6 +537,7 @@ public class Upload extends Activity
 				 }}
 				if (tmp.length < 2) 
 					{
+						
 					 File f =  new File(path[position].split(";")[0]);
 					 holder.title.setText(f.getName());
 					 ExifInterface exif_data = null;
