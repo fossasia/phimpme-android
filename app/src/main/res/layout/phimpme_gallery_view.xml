@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView1"
+        android:layout_width="match_parent"
+        android:layout_height="65dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:orientation="horizontal" >
+			<ImageButton
+	            android:id="@+id/btnShareBT"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:contentDescription="@string/empty"
+	            android:src="@drawable/bluetooth" />           
+			<ImageButton
+	            android:id="@+id/btnUpLoad"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:contentDescription="@string/empty"
+	            android:src="@drawable/icon_upload_small" />  
+	            <ImageButton
+	            android:id="@+id/btnEdit"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:contentDescription="@string/empty"
+	            android:src="@drawable/icon_edit" />                 
+            
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <LinearLayout
+        android:id="@+id/LinearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical" >
+
+	    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res/vn.mbm.phimp.me"
+		android:orientation="vertical" android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+		
+		<org.taptwo.android.widget.ViewFlow
+		    android:id="@+id/viewflow"
+		    android:layout_width="fill_parent"
+		    android:layout_height="460dp"
+		     >
+		</org.taptwo.android.widget.ViewFlow>
+	
+		</FrameLayout>
+    </LinearLayout>
+
+</LinearLayout>
