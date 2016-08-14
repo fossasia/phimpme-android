@@ -44,15 +44,18 @@
         </LinearLayout>
 
     </TabHost>
-    <com.google.ads.AdView
-        android:id="@+id/adView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        ads:adSize="SMART_BANNER"
-        ads:adUnitId="@string/admob_id"
-        ads:loadAdOnCreate="true"
-        ads:testDevices="TEST_EMULATOR" />
+
 
 </RelativeLayout>
+
+
+    <!--<com.google.ads.AdView-->
+    <!--android:id="@+id/adView"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--ads:adSize="SMART_BANNER"-->
+    <!--ads:adUnitId="@string/admob_id"-->
+    <!--ads:loadAdOnCreate="true"-->
+    <!--ads:testDevices="TEST_EMULATOR" />-->

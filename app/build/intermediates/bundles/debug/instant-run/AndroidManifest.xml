@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="vn.mbm.phimp.me"
+    android:versionCode="1"
+    android:versionName="1.5" >
+
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="22" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="com.android.browser.permission.WRITE_HISTORY_BOOKMARKS" />
+    <uses-permission android:name="com.android.browser.permission.READ_HISTORY_BOOKMARKS" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <dependency>
+        <groupId>
+com.google.code.gson
+        </groupId>
+
+        <artifactId>
+gson
+        </artifactId>
+
+        <version>
+1.7.1
+        </version>
+    </dependency>
+    <!-- Optional permission for Analytics to run. -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <permission
+        android:name="vn.mbm.phimp.me.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="vn.mbm.phimp.me.permission.C2D_MESSAGE" />
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <application
+        name="vn.mbm.phimp.me.ACRAReport"
+        android:name="com.android.tools.fd.runtime.BootstrapApplication"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/application_title"
+        android:largeHeap="true" >
+        <uses-library android:name="com.google.android.maps" />
+
+        <service android:name="vn.mbm.phimp.me.CollectUserData" />
+        <!-- Start of Crittercism Support Forum Manifest Code -->
+        <activity
+            android:name="com.crittercism.NewFeedbackSpringboardActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+        <activity
+            android:name="com.crittercism.NewFeedbackIssueListActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+        <activity
+            android:name="com.crittercism.NewFeedbackQuestionListActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+        <activity
+            android:name="com.crittercism.NewFeedbackItemDetailsActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+        <activity
+            android:name="com.crittercism.NewFeedbackCreateActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+        <activity android:name="com.crittercism.NotificationActivity" />
+
+        <service
+            android:name="com.crittercism.service.CrittercismService"
+            android:exported="true"
+            android:process="com.crittercism.service" >
+            <intent-filter>
+                <action android:name="com.crittercism.service.CrittercismService" />
+            </intent-filter>
+        </service>
+        <!-- End of Crittercism Support Forum Manifest Code -->
+        <activity
+            android:name="vn.mbm.phimp.me.SplashScreen"
+            android:configChanges="locale"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="vn.mbm.phimp.me.PhimpMe"
+            android:configChanges="locale"
+            android:theme="@android:style/Theme.NoTitleBar" >
+
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            -->
+
+        </activity>
+        <activity
+            android:name="vn.mbm.phimp.me.Camera"
+            android:configChanges="locale"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="vn.mbm.phimp.me.Blank"
+            android:configChanges="locale"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="vn.mbm.phimp.me.gallery.PhimpMeGallery"
+            android:configChanges="locale"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="vn.mbm.phimp.me.Camera2"
+            android:configChanges="keyboardHidden|locale|orientation"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="vn.mbm.phimp.me.Upload"
+            android:configChanges="keyboardHidden|orientation"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <!-- <activity -->
+        <!-- android:name=".gallery3d.media.Gallery" -->
+        <!-- android:configChanges="locale" -->
+        <!-- android:screenOrientation="portrait" -->
+        <!-- android:theme="@android:style/Theme.NoTitleBar"> -->
+        <!--  -->
+        <!-- </activity> -->
+        <activity
+            android:name="vn.mbm.phimp.me.newGallery"
+            android:configChanges="locale"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <!-- <activity -->
+        <!-- android:name=".PersonalGallery" -->
+        <!-- android:configChanges="locale" -->
+        <!-- android:theme="@android:style/Theme.NoTitleBar"> -->
+        <!-- </activity> -->
+        <activity
+            android:name="vn.mbm.phimp.me.BluetoothShareMultipleFile"
+            android:configChanges="locale"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="vn.mbm.phimp.me.PhotoSelect"
+            android:configChanges="locale"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="vn.mbm.phimp.me.image.CropImage"
+            android:configChanges="locale"
+            android:label="CropLabel"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="vn.mbm.phimp.me.Settings"
+            android:configChanges="locale"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="vn.mbm.phimp.me.GalleryMap"
+            android:configChanges="locale"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="vn.mbm.phimp.me.OpenStreetMap"
+            android:configChanges="locale"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="vn.mbm.phimp.me.UploadMap"
+            android:configChanges="locale"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <!-- <activity -->
+        <!-- android:name=".UploadOSMap" -->
+        <!-- android:configChanges="locale" -->
+        <!-- android:theme="@android:style/Theme.NoTitleBar"> -->
+        <!-- </activity> -->
+
+        <activity
+            android:name="vn.mbm.phimp.me.UploadProgress"
+            android:configChanges="locale"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="vn.mbm.phimp.me.DrupalWebviewActivity"
+            android:configChanges="locale"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="vn.mbm.phimp.me.WordpressWebviewActivity"
+            android:configChanges="locale"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="vn.mbm.phimp.me.JoomlaWebviewActivity"
+            android:configChanges="locale"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <!--
+        <activity
+            android:name=".PhimpMeGallery"
+            android:screenOrientation="portrait"
+            android:configChanges="locale"
+         	android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
+            >
+           
+        </activity>
+        -->
+        <activity
+            android:name="vn.mbm.phimp.me.SendFileActivity"
+            android:configChanges="locale"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <!-- Paypal -->
+        <activity
+            android:name="com.paypal.android.MEP.PayPalActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!-- <activity -->
+        <!-- android:name="vn.mbm.phimp.me.utils.ViewOriginalImage" -->
+        <!-- android:theme="@android:style/Theme.NoTitleBar"> -->
+        <!--  -->
+        <!-- </activity> -->
+        <!-- <activity -->
+        <!-- android:name="vn.mbm.phimp.me.utils.ViewOriginalImageWebKit" -->
+        <!-- android:theme="@android:style/Theme.NoTitleBar"> -->
+        <!--  -->
+        <!-- </activity> -->
+        <activity
+            android:name="vn.mbm.phimp.me.gallery3d.media.Gallery"
+            android:clearTaskOnLaunch="true"
+            android:configChanges="keyboardHidden|orientation"
+            android:noHistory="false"
+            android:stateNotNeeded="true"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="vn.mbm.phimp.me.gallery3d.media.CropImage"
+            android:clearTaskOnLaunch="true"
+            android:configChanges="keyboardHidden|orientation"
+            android:noHistory="false"
+            android:stateNotNeeded="true"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="vn.mbm.phimp.me.Webkit"
+            android:configChanges="locale" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="tumblr"
+                    android:scheme="oauth" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.google.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
+
+        <!-- wordpress -->
+        <activity
+            android:name="org.wordpress.android.NewAccount"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="org.wordpress.android.Signup"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="org.wordpress.android.AddAccount"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="org.wordpress.android.AddAcountSettings"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar" >
+        </activity>
+
+        <!-- Include the AdActivity and InAppPurchaseActivity configChanges and themes. -->
+        <activity
+            android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:theme="@android:style/Theme.Translucent" />
+        <activity
+            android:name="com.google.android.gms.ads.purchase.InAppPurchaseActivity"
+            android:theme="@style/Theme.IAPTheme" />
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <provider
+            android:name="com.google.firebase.provider.FirebaseInitProvider"
+            android:authorities="vn.mbm.phimp.me.firebaseinitprovider"
+            android:exported="false"
+            android:initOrder="100" />
+
+        <activity
+            android:name="com.google.android.gms.appinvite.PreviewActivity"
+            android:exported="true"
+            android:theme="@style/Theme.AppInvite.Preview" >
+            <intent-filter>
+                <action android:name="com.google.android.gms.appinvite.ACTION_PREVIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.google.android.gms.auth.api.signin.internal.SignInHubActivity"
+            android:excludeFromRecents="true"
+            android:exported="false"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!--
+Service handling Google Sign-In user revocation. For apps that do not integrate with
+            Google Sign-In, this service will never be started.
+        -->
+        <service
+            android:name="com.google.android.gms.auth.api.signin.RevocationBoundService"
+            android:exported="true"
+            android:permission="com.google.android.gms.auth.api.signin.permission.REVOCATION_NOTIFICATION" />
+
+        <receiver
+            android:name="com.google.firebase.iid.FirebaseInstanceIdReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <category android:name="vn.mbm.phimp.me" />
+            </intent-filter>
+        </receiver>
+        <!--
+ Internal (not exported) receiver used by the app to start its own exported services
+             without risk of being spoofed.
+        -->
+        <receiver
+            android:name="com.google.firebase.iid.FirebaseInstanceIdInternalReceiver"
+            android:exported="false" />
+        <!--
+ FirebaseInstanceIdService performs security checks at runtime,
+             no need for explicit permissions despite exported="true"
+        -->
+        <service
+            android:name="com.google.firebase.iid.FirebaseInstanceIdService"
+            android:exported="true" >
+            <intent-filter android:priority="-500" >
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.google.firebase.crash.internal.service.FirebaseCrashReceiverService"
+            android:process=":background_crash" />
+        <service
+            android:name="com.google.firebase.crash.internal.service.FirebaseCrashSenderService"
+            android:process=":background_crash" />
+
+        <receiver
+            android:name="com.google.android.gms.measurement.AppMeasurementReceiver"
+            android:enabled="true" >
+            <intent-filter>
+                <action android:name="com.google.android.gms.measurement.UPLOAD" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.google.android.gms.measurement.AppMeasurementService"
+            android:enabled="true"
+            android:exported="false" />
+        <!--
+ FirebaseMessagingService performs security checks at runtime,
+             no need for explicit permissions despite exported="true"
+        -->
+        <service
+            android:name="com.google.firebase.messaging.FirebaseMessagingService"
+            android:exported="true" >
+            <intent-filter android:priority="-500" >
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service
+            android:name="com.google.android.gms.tagmanager.TagManagerService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <activity
+            android:name="com.google.android.gms.tagmanager.TagManagerPreviewActivity"
+            android:noHistory="true" > <!-- optional, removes the previewActivity from the activity stack. -->
+            <intent-filter>
+                <data android:scheme="tagmanager.c.vn.mbm.phimp.me" />
+
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

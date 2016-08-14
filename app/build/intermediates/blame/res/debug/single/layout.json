@@ -24,12 +24,12 @@
         "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/layout/add_wordpress_account.xml"
     },
     {
-        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/layout/photolist.xml",
-        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/layout/photolist.xml"
-    },
-    {
         "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/layout/dialog_add_account_joomla.xml",
         "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/layout/dialog_add_account_joomla.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/layout/photolist.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/layout/photolist.xml"
     },
     {
         "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/layout/public_flick.xml",
@@ -56,16 +56,16 @@
         "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/layout/gallery_map.xml"
     },
     {
-        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/layout/select_dialog_item_material.xml",
-        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/layout/select_dialog_item_material.xml"
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/layout/gallery_grid_photos_item.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/layout/gallery_grid_photos_item.xml"
     },
     {
         "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/layout/drupal_introduction.xml",
         "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/layout/drupal_introduction.xml"
     },
     {
-        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/layout/gallery_grid_photos_item.xml",
-        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/layout/gallery_grid_photos_item.xml"
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/layout/select_dialog_item_material.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/layout/select_dialog_item_material.xml"
     },
     {
         "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/layout/dialog_add_account_drupal.xml",
@@ -112,12 +112,12 @@
         "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/layout/abc_activity_chooser_view.xml"
     },
     {
-        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/layout/ic_tab_personal_gallery.xml",
-        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/layout/ic_tab_personal_gallery.xml"
-    },
-    {
         "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/layout/new_wordpress_account.xml",
         "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/layout/new_wordpress_account.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/layout/ic_tab_personal_gallery.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/layout/ic_tab_personal_gallery.xml"
     },
     {
         "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/layout/notification_template_media.xml",
