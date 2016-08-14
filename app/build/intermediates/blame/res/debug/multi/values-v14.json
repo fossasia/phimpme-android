@@ -1,0 +1,205 @@
+[
+    {
+        "outputFile": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/values-v14/values-v14.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endLine": 6,
+                    "endColumn": 12,
+                    "endOffset": 326
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-v14/values-v14.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 286,
+                        "endLine": 8,
+                        "endColumn": 12,
+                        "endOffset": 557
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 7,
+                    "startColumn": 4,
+                    "startOffset": 331,
+                    "endColumn": 70,
+                    "endOffset": 397
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-v14/values-v14.xml",
+                    "position": {
+                        "startLine": 11,
+                        "startColumn": 4,
+                        "startOffset": 788,
+                        "endColumn": 70,
+                        "endOffset": 854
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 8,
+                    "startColumn": 4,
+                    "startOffset": 402,
+                    "endColumn": 82,
+                    "endOffset": 480
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-v14/values-v14.xml",
+                    "position": {
+                        "startLine": 12,
+                        "startColumn": 4,
+                        "startOffset": 859,
+                        "endColumn": 82,
+                        "endOffset": 937
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 9,
+                    "startColumn": 4,
+                    "startOffset": 485,
+                    "endLine": 14,
+                    "endColumn": 12,
+                    "endOffset": 890
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-v14/values-v14.xml",
+                    "position": {
+                        "startLine": 13,
+                        "startColumn": 4,
+                        "startOffset": 942,
+                        "endLine": 18,
+                        "endColumn": 12,
+                        "endOffset": 1347
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 15,
+                    "startColumn": 4,
+                    "startOffset": 895,
+                    "endLine": 20,
+                    "endColumn": 12,
+                    "endOffset": 1312
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-v14/values-v14.xml",
+                    "position": {
+                        "startLine": 19,
+                        "startColumn": 4,
+                        "startOffset": 1352,
+                        "endLine": 24,
+                        "endColumn": 12,
+                        "endOffset": 1769
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 21,
+                    "startColumn": 4,
+                    "startOffset": 1317,
+                    "endColumn": 119,
+                    "endOffset": 1432
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-v14/values-v14.xml",
+                    "position": {
+                        "startLine": 27,
+                        "startColumn": 4,
+                        "startOffset": 1995,
+                        "endColumn": 119,
+                        "endOffset": 2110
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 22,
+                    "startColumn": 4,
+                    "startOffset": 1437,
+                    "endColumn": 62,
+                    "endOffset": 1495
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-v14/values-v14.xml",
+                    "position": {
+                        "startLine": 28,
+                        "startColumn": 4,
+                        "startOffset": 2115,
+                        "endColumn": 62,
+                        "endOffset": 2173
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 23,
+                    "startColumn": 4,
+                    "startOffset": 1500,
+                    "endLine": 25,
+                    "endColumn": 12,
+                    "endOffset": 1649
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-v14/values-v14.xml",
+                    "position": {
+                        "startLine": 29,
+                        "startColumn": 4,
+                        "startOffset": 2178,
+                        "endLine": 31,
+                        "endColumn": 12,
+                        "endOffset": 2327
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 26,
+                    "startColumn": 4,
+                    "startOffset": 1654,
+                    "endColumn": 62,
+                    "endOffset": 1712
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-v14/values-v14.xml",
+                    "position": {
+                        "startLine": 32,
+                        "startColumn": 4,
+                        "startOffset": 2332,
+                        "endColumn": 62,
+                        "endOffset": 2390
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 27,
+                    "startColumn": 4,
+                    "startOffset": 1717,
+                    "endColumn": 131,
+                    "endOffset": 1844
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-v14/values-v14.xml",
+                    "position": {
+                        "startLine": 33,
+                        "startColumn": 4,
+                        "startOffset": 2395,
+                        "endColumn": 131,
+                        "endOffset": 2522
+                    }
+                }
+            }
+        ]
+    }
+]

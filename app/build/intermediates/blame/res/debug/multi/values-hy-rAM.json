@@ -1,0 +1,558 @@
+[
+    {
+        "outputFile": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/values-hy-rAM/values-hy-rAM.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 102,
+                    "endOffset": 153
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 280,
+                        "endColumn": 102,
+                        "endOffset": 378
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 158,
+                    "endColumn": 107,
+                    "endOffset": 261
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 4,
+                        "startOffset": 383,
+                        "endColumn": 107,
+                        "endOffset": 486
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 4,
+                    "startColumn": 4,
+                    "startOffset": 266,
+                    "endColumn": 122,
+                    "endOffset": 384
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 4,
+                        "startOffset": 491,
+                        "endColumn": 122,
+                        "endOffset": 609
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 5,
+                    "startColumn": 4,
+                    "startOffset": 389,
+                    "endColumn": 100,
+                    "endOffset": 485
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 4,
+                        "startOffset": 614,
+                        "endColumn": 100,
+                        "endOffset": 710
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 6,
+                    "startColumn": 4,
+                    "startOffset": 490,
+                    "endColumn": 109,
+                    "endOffset": 595
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 8,
+                        "startColumn": 4,
+                        "startOffset": 715,
+                        "endColumn": 109,
+                        "endOffset": 820
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 7,
+                    "startColumn": 4,
+                    "startOffset": 600,
+                    "endColumn": 89,
+                    "endOffset": 685
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 9,
+                        "startColumn": 4,
+                        "startOffset": 825,
+                        "endColumn": 89,
+                        "endOffset": 910
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 8,
+                    "startColumn": 4,
+                    "startOffset": 690,
+                    "endColumn": 105,
+                    "endOffset": 791
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 10,
+                        "startColumn": 4,
+                        "startOffset": 915,
+                        "endColumn": 105,
+                        "endOffset": 1016
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 9,
+                    "startColumn": 4,
+                    "startOffset": 796,
+                    "endColumn": 114,
+                    "endOffset": 906
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 11,
+                        "startColumn": 4,
+                        "startOffset": 1021,
+                        "endColumn": 114,
+                        "endOffset": 1131
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 10,
+                    "startColumn": 4,
+                    "startOffset": 911,
+                    "endColumn": 84,
+                    "endOffset": 991
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 12,
+                        "startColumn": 4,
+                        "startOffset": 1136,
+                        "endColumn": 84,
+                        "endOffset": 1216
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 11,
+                    "startColumn": 4,
+                    "startOffset": 996,
+                    "endColumn": 106,
+                    "endOffset": 1098
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 13,
+                        "startColumn": 4,
+                        "startOffset": 1221,
+                        "endColumn": 106,
+                        "endOffset": 1323
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 12,
+                    "startColumn": 4,
+                    "startOffset": 1103,
+                    "endColumn": 106,
+                    "endOffset": 1205
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 14,
+                        "startColumn": 4,
+                        "startOffset": 1328,
+                        "endColumn": 106,
+                        "endOffset": 1430
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 13,
+                    "startColumn": 4,
+                    "startOffset": 1210,
+                    "endColumn": 98,
+                    "endOffset": 1304
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 15,
+                        "startColumn": 4,
+                        "startOffset": 1435,
+                        "endColumn": 98,
+                        "endOffset": 1529
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 14,
+                    "startColumn": 4,
+                    "startOffset": 1309,
+                    "endColumn": 109,
+                    "endOffset": 1414
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 16,
+                        "startColumn": 4,
+                        "startOffset": 1534,
+                        "endColumn": 109,
+                        "endOffset": 1639
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 15,
+                    "startColumn": 4,
+                    "startOffset": 1419,
+                    "endColumn": 106,
+                    "endOffset": 1521
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 17,
+                        "startColumn": 4,
+                        "startOffset": 1644,
+                        "endColumn": 106,
+                        "endOffset": 1746
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 16,
+                    "startColumn": 4,
+                    "startOffset": 1526,
+                    "endColumn": 100,
+                    "endOffset": 1622
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 18,
+                        "startColumn": 4,
+                        "startOffset": 1751,
+                        "endColumn": 100,
+                        "endOffset": 1847
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 17,
+                    "startColumn": 4,
+                    "startOffset": 1627,
+                    "endColumn": 119,
+                    "endOffset": 1742
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 19,
+                        "startColumn": 4,
+                        "startOffset": 1852,
+                        "endColumn": 119,
+                        "endOffset": 1967
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 18,
+                    "startColumn": 4,
+                    "startOffset": 1747,
+                    "endColumn": 98,
+                    "endOffset": 1841
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 20,
+                        "startColumn": 4,
+                        "startOffset": 1972,
+                        "endColumn": 98,
+                        "endOffset": 2066
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 19,
+                    "startColumn": 4,
+                    "startOffset": 1846,
+                    "endColumn": 111,
+                    "endOffset": 1953
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 282,
+                        "endColumn": 111,
+                        "endOffset": 389
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 20,
+                    "startColumn": 4,
+                    "startOffset": 1958,
+                    "endColumn": 112,
+                    "endOffset": 2066
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 4,
+                        "startOffset": 394,
+                        "endColumn": 112,
+                        "endOffset": 502
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 21,
+                    "startColumn": 4,
+                    "startOffset": 2071,
+                    "endColumn": 100,
+                    "endOffset": 2167
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 4,
+                        "startOffset": 507,
+                        "endColumn": 100,
+                        "endOffset": 603
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 22,
+                    "startColumn": 4,
+                    "startOffset": 2172,
+                    "endColumn": 101,
+                    "endOffset": 2269
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 4,
+                        "startOffset": 608,
+                        "endColumn": 101,
+                        "endOffset": 705
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 23,
+                    "startColumn": 4,
+                    "startOffset": 2274,
+                    "endColumn": 131,
+                    "endOffset": 2401
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 8,
+                        "startColumn": 4,
+                        "startOffset": 710,
+                        "endColumn": 131,
+                        "endOffset": 837
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 24,
+                    "startColumn": 4,
+                    "startOffset": 2406,
+                    "endColumn": 95,
+                    "endOffset": 2497
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 9,
+                        "startColumn": 4,
+                        "startOffset": 842,
+                        "endColumn": 95,
+                        "endOffset": 933
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 25,
+                    "startColumn": 4,
+                    "startOffset": 2502,
+                    "endColumn": 98,
+                    "endOffset": 2596
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 10,
+                        "startColumn": 4,
+                        "startOffset": 938,
+                        "endColumn": 98,
+                        "endOffset": 1032
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 26,
+                    "startColumn": 4,
+                    "startOffset": 2601,
+                    "endColumn": 136,
+                    "endOffset": 2733
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 11,
+                        "startColumn": 4,
+                        "startOffset": 1037,
+                        "endColumn": 136,
+                        "endOffset": 1169
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 27,
+                    "startColumn": 4,
+                    "startOffset": 2738,
+                    "endColumn": 112,
+                    "endOffset": 2846
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 12,
+                        "startColumn": 4,
+                        "startOffset": 1174,
+                        "endColumn": 112,
+                        "endOffset": 1282
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 28,
+                    "startColumn": 4,
+                    "startOffset": 2851,
+                    "endColumn": 87,
+                    "endOffset": 2934
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 13,
+                        "startColumn": 4,
+                        "startOffset": 1287,
+                        "endColumn": 87,
+                        "endOffset": 1370
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 29,
+                    "startColumn": 4,
+                    "startOffset": 2939,
+                    "endColumn": 92,
+                    "endOffset": 3027
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 14,
+                        "startColumn": 4,
+                        "startOffset": 1375,
+                        "endColumn": 92,
+                        "endOffset": 1463
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 30,
+                    "startColumn": 4,
+                    "startOffset": 3032,
+                    "endColumn": 100,
+                    "endOffset": 3128
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-hy-rAM/values-hy-rAM.xml",
+                    "position": {
+                        "startLine": 21,
+                        "startColumn": 4,
+                        "startOffset": 2071,
+                        "endColumn": 100,
+                        "endOffset": 2167
+                    }
+                }
+            }
+        ]
+    }
+]

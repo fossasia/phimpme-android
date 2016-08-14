@@ -1,0 +1,558 @@
+[
+    {
+        "outputFile": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/values-ta-rIN/values-ta-rIN.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 113,
+                    "endOffset": 164
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 280,
+                        "endColumn": 113,
+                        "endOffset": 389
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 3,
+                    "startColumn": 4,
+                    "startOffset": 169,
+                    "endColumn": 107,
+                    "endOffset": 272
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 4,
+                        "startOffset": 394,
+                        "endColumn": 107,
+                        "endOffset": 497
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 4,
+                    "startColumn": 4,
+                    "startOffset": 277,
+                    "endColumn": 122,
+                    "endOffset": 395
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 4,
+                        "startOffset": 502,
+                        "endColumn": 122,
+                        "endOffset": 620
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 5,
+                    "startColumn": 4,
+                    "startOffset": 400,
+                    "endColumn": 104,
+                    "endOffset": 500
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 4,
+                        "startOffset": 625,
+                        "endColumn": 104,
+                        "endOffset": 725
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 6,
+                    "startColumn": 4,
+                    "startOffset": 505,
+                    "endColumn": 114,
+                    "endOffset": 615
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 8,
+                        "startColumn": 4,
+                        "startOffset": 730,
+                        "endColumn": 114,
+                        "endOffset": 840
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 7,
+                    "startColumn": 4,
+                    "startOffset": 620,
+                    "endColumn": 88,
+                    "endOffset": 704
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 9,
+                        "startColumn": 4,
+                        "startOffset": 845,
+                        "endColumn": 88,
+                        "endOffset": 929
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 8,
+                    "startColumn": 4,
+                    "startOffset": 709,
+                    "endColumn": 106,
+                    "endOffset": 811
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 10,
+                        "startColumn": 4,
+                        "startOffset": 934,
+                        "endColumn": 106,
+                        "endOffset": 1036
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 9,
+                    "startColumn": 4,
+                    "startOffset": 816,
+                    "endColumn": 125,
+                    "endOffset": 937
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 11,
+                        "startColumn": 4,
+                        "startOffset": 1041,
+                        "endColumn": 125,
+                        "endOffset": 1162
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 10,
+                    "startColumn": 4,
+                    "startOffset": 942,
+                    "endColumn": 81,
+                    "endOffset": 1019
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 12,
+                        "startColumn": 4,
+                        "startOffset": 1167,
+                        "endColumn": 81,
+                        "endOffset": 1244
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 11,
+                    "startColumn": 4,
+                    "startOffset": 1024,
+                    "endColumn": 101,
+                    "endOffset": 1121
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 13,
+                        "startColumn": 4,
+                        "startOffset": 1249,
+                        "endColumn": 101,
+                        "endOffset": 1346
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 12,
+                    "startColumn": 4,
+                    "startOffset": 1126,
+                    "endColumn": 103,
+                    "endOffset": 1225
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 14,
+                        "startColumn": 4,
+                        "startOffset": 1351,
+                        "endColumn": 103,
+                        "endOffset": 1450
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 13,
+                    "startColumn": 4,
+                    "startOffset": 1230,
+                    "endColumn": 96,
+                    "endOffset": 1322
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 15,
+                        "startColumn": 4,
+                        "startOffset": 1455,
+                        "endColumn": 96,
+                        "endOffset": 1547
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 14,
+                    "startColumn": 4,
+                    "startOffset": 1327,
+                    "endColumn": 109,
+                    "endOffset": 1432
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 16,
+                        "startColumn": 4,
+                        "startOffset": 1552,
+                        "endColumn": 109,
+                        "endOffset": 1657
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 15,
+                    "startColumn": 4,
+                    "startOffset": 1437,
+                    "endColumn": 101,
+                    "endOffset": 1534
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 17,
+                        "startColumn": 4,
+                        "startOffset": 1662,
+                        "endColumn": 101,
+                        "endOffset": 1759
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 16,
+                    "startColumn": 4,
+                    "startOffset": 1539,
+                    "endColumn": 106,
+                    "endOffset": 1641
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 18,
+                        "startColumn": 4,
+                        "startOffset": 1764,
+                        "endColumn": 106,
+                        "endOffset": 1866
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 17,
+                    "startColumn": 4,
+                    "startOffset": 1646,
+                    "endColumn": 118,
+                    "endOffset": 1760
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 19,
+                        "startColumn": 4,
+                        "startOffset": 1871,
+                        "endColumn": 118,
+                        "endOffset": 1985
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 18,
+                    "startColumn": 4,
+                    "startOffset": 1765,
+                    "endColumn": 99,
+                    "endOffset": 1860
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 20,
+                        "startColumn": 4,
+                        "startOffset": 1990,
+                        "endColumn": 99,
+                        "endOffset": 2085
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 19,
+                    "startColumn": 4,
+                    "startOffset": 1865,
+                    "endColumn": 107,
+                    "endOffset": 1968
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 282,
+                        "endColumn": 107,
+                        "endOffset": 385
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 20,
+                    "startColumn": 4,
+                    "startOffset": 1973,
+                    "endColumn": 115,
+                    "endOffset": 2084
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 4,
+                        "startOffset": 390,
+                        "endColumn": 115,
+                        "endOffset": 501
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 21,
+                    "startColumn": 4,
+                    "startOffset": 2089,
+                    "endColumn": 109,
+                    "endOffset": 2194
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 4,
+                        "startOffset": 506,
+                        "endColumn": 109,
+                        "endOffset": 611
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 22,
+                    "startColumn": 4,
+                    "startOffset": 2199,
+                    "endColumn": 100,
+                    "endOffset": 2295
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 7,
+                        "startColumn": 4,
+                        "startOffset": 616,
+                        "endColumn": 100,
+                        "endOffset": 712
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 23,
+                    "startColumn": 4,
+                    "startOffset": 2300,
+                    "endColumn": 119,
+                    "endOffset": 2415
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 8,
+                        "startColumn": 4,
+                        "startOffset": 717,
+                        "endColumn": 119,
+                        "endOffset": 832
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 24,
+                    "startColumn": 4,
+                    "startOffset": 2420,
+                    "endColumn": 101,
+                    "endOffset": 2517
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 9,
+                        "startColumn": 4,
+                        "startOffset": 837,
+                        "endColumn": 101,
+                        "endOffset": 934
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 25,
+                    "startColumn": 4,
+                    "startOffset": 2522,
+                    "endColumn": 95,
+                    "endOffset": 2613
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 10,
+                        "startColumn": 4,
+                        "startOffset": 939,
+                        "endColumn": 95,
+                        "endOffset": 1030
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 26,
+                    "startColumn": 4,
+                    "startOffset": 2618,
+                    "endColumn": 118,
+                    "endOffset": 2732
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 11,
+                        "startColumn": 4,
+                        "startOffset": 1035,
+                        "endColumn": 118,
+                        "endOffset": 1149
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 27,
+                    "startColumn": 4,
+                    "startOffset": 2737,
+                    "endColumn": 108,
+                    "endOffset": 2841
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 12,
+                        "startColumn": 4,
+                        "startOffset": 1154,
+                        "endColumn": 108,
+                        "endOffset": 1258
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 28,
+                    "startColumn": 4,
+                    "startOffset": 2846,
+                    "endColumn": 86,
+                    "endOffset": 2928
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 13,
+                        "startColumn": 4,
+                        "startOffset": 1263,
+                        "endColumn": 86,
+                        "endOffset": 1345
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 29,
+                    "startColumn": 4,
+                    "startOffset": 2933,
+                    "endColumn": 95,
+                    "endOffset": 3024
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 14,
+                        "startColumn": 4,
+                        "startOffset": 1350,
+                        "endColumn": 95,
+                        "endOffset": 1441
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 30,
+                    "startColumn": 4,
+                    "startOffset": 3029,
+                    "endColumn": 100,
+                    "endOffset": 3125
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/values-ta-rIN/values-ta-rIN.xml",
+                    "position": {
+                        "startLine": 21,
+                        "startColumn": 4,
+                        "startOffset": 2090,
+                        "endColumn": 100,
+                        "endOffset": 2186
+                    }
+                }
+            }
+        ]
+    }
+]

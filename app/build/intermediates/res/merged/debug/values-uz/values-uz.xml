@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
+    <string msgid="4770915072144378781" name="common_google_play_services_api_unavailable_text">"<ns1:g id="APP_NAME">%1$s</ns1:g> ilovasining ishlashi uchun zarur bo‘lgan bir yoki bir nechta Google Play xizmatlari yo‘q. Yordam olish uchun ilovaning ishlab chiquvchisi bilan bog‘laning."</string>
+    <string msgid="2050101795821476669" name="common_google_play_services_enable_button">"Google Play xizmatlarini yoqish"</string>
+    <string msgid="7045129128108380659" name="common_google_play_services_enable_text">"Google Play xizmatlari yoqilmaguncha, <ns1:g id="APP_NAME">%1$s</ns1:g> ishlamaydi."</string>
+    <string msgid="3147157405986503375" name="common_google_play_services_enable_title">"Google Play xizmatlarini yoqish"</string>
+    <string msgid="7118643132557593940" name="common_google_play_services_install_button">"Google Play xizmatlarini o‘rnatish"</string>
+    <string msgid="1666261992894286769" name="common_google_play_services_install_text_phone">"<ns1:g id="APP_NAME">%1$s</ns1:g> ishlashi uchun telefoningizga Google Play xizmatlarini o‘rnatish lozim."</string>
+    <string msgid="1701766622451829291" name="common_google_play_services_install_text_tablet">"<ns1:g id="APP_NAME">%1$s</ns1:g> ishlashi uchun planshetingizga Google Play xizmatlarini o‘rnatish lozim."</string>
+    <string msgid="7442193194585196676" name="common_google_play_services_install_title">"Google Play xizmatlarini o‘rnatish"</string>
+    <string msgid="479501935061677276" name="common_google_play_services_invalid_account_text">"Ushbu qurilmada ko‘rsatilgan hisob mavjud emas. Boshqa hisobni tanlang."</string>
+    <string msgid="5775407690646375078" name="common_google_play_services_invalid_account_title">"Hisob haqiqiy emas"</string>
+    <string msgid="6857745590248226927" name="common_google_play_services_network_error_text">"Google Play xizmatlariga ulanish uchun internetga ulanish lozim."</string>
+    <string msgid="4183541461338112307" name="common_google_play_services_network_error_title">"Tarmoq xatosi"</string>
+    <string msgid="180394615667698242" name="common_google_play_services_notification_ticker">"Google Play xizmatlari xatosi"</string>
+    <string msgid="8897126254633757462" name="common_google_play_services_resolution_required_text">"<ns1:g id="APP_NAME">%1$s</ns1:g> ilovasi talab qilgan amalni bajaring."</string>
+    <string msgid="7524004365913123453" name="common_google_play_services_resolution_required_title">"Amal bajarish talab qilinadi"</string>
+    <string msgid="3111284987662714014" name="common_google_play_services_restricted_profile_text">"Cheklangan profildan hisoblarga kirish qo‘llab-quvvatlanmaydi."</string>
+    <string msgid="8137798410446890929" name="common_google_play_services_restricted_profile_title">"Cheklangan profil"</string>
+    <string msgid="2431909537598981235" name="common_google_play_services_sign_in_failed_text">"Ko‘rsatilgan hisobga kirishda xatolik yuz berdi. Boshqa hisob tanlang."</string>
+    <string msgid="4402642931312190213" name="common_google_play_services_sign_in_failed_title">"Kirish amalga oshmadi"</string>
+    <string msgid="9089562800660647919" name="common_google_play_services_unknown_issue">"<ns1:g id="APP_NAME">%1$s</ns1:g> ilovasi Google Play xizmatlari bilan muammoga uchradi. Agar muammo hal bo‘lmasa, yordam olish uchun ilovaning ishlab chiquvchisi bilan bog‘laning."</string>
+    <string msgid="1064791666906610763" name="common_google_play_services_unsupported_text">"<ns1:g id="APP_NAME">%1$s</ns1:g> ilovasi Google Play xizmatlarisiz ishlamaydi, biroq qurilmangiz ularni qo‘llab-quvvatlamaydi. Yordam olish uchun qurilmaning ishlab chiqaruvchisi bilan bog‘laning."</string>
+    <string msgid="539866123733096737" name="common_google_play_services_unsupported_title">"Google Play xizmatlari"</string>
+    <string msgid="8172070149091615356" name="common_google_play_services_update_button">"Yangilash"</string>
+    <string msgid="7773943415006962566" name="common_google_play_services_update_text">"Google Play xizmatlari yangilanmaguncha, <ns1:g id="APP_NAME">%1$s</ns1:g> ishga tushmaydi."</string>
+    <string msgid="8706675115216073244" name="common_google_play_services_update_title">"Google Play xizmatlarini yangilash"</string>
+    <string msgid="7894275749778928941" name="common_google_play_services_updating_text">"<ns1:g id="APP_NAME">%1$s</ns1:g> ilovasining ishlashi uchun zarur Google Play xizmatlari hozirda yangilanmoqda."</string>
+    <string msgid="2270671469198016014" name="common_google_play_services_updating_title">"Google Play xizmatlari yangilanmoqda"</string>
+    <string msgid="2804989272736383918" name="common_google_play_services_wear_update_text">"Google Play xizmatlarining yangi versiyasi zarur. U o‘zini qisqa vaqt ichida yangilaydi."</string>
+    <string msgid="5201977337835724196" name="common_open_on_phone">"Telefonda ochish"</string>
+    <string msgid="3441753203274453993" name="common_signin_button_text">"Kirish"</string>
+    <string msgid="669893613918351210" name="common_signin_button_text_long">"Google orqali kirish"</string>
+    <string msgid="1303870564366209730" name="place_autocomplete_clear_button">"Qidiruv maydonini tozalash"</string>
+    <string msgid="2809095107724486040" name="place_autocomplete_search_hint">"Qidirish"</string>
+</resources>

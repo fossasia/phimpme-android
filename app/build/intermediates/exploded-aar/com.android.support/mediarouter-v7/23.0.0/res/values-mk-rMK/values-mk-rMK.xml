@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/mnc-release/frameworks/support/v7/mediarouter/res/values-mk-rMK/strings.xml -->
+    <eat-comment/>
+    <string msgid="8327680881775995150" name="mr_media_route_button_content_description">"Емитувај"</string>
+    <string msgid="7553005460920830010" name="mr_media_route_chooser_searching">"Се пребаруваат уреди..."</string>
+    <string msgid="7106830097177242655" name="mr_media_route_chooser_title">"Поврзи се со уредот"</string>
+    <string msgid="109793632378378069" name="mr_media_route_controller_disconnect">"Исклучи се"</string>
+    <string msgid="3641544772007543920" name="mr_media_route_controller_no_info_available">"Нема достапни информации"</string>
+    <string msgid="8315773974194466049" name="mr_media_route_controller_pause">"Пауза"</string>
+    <string msgid="5214423499524760404" name="mr_media_route_controller_play">"Репродуцирај"</string>
+    <string msgid="379358765881274425" name="mr_media_route_controller_settings_description">"Поставки на маршрутата"</string>
+    <string msgid="5398645111664294430" name="mr_media_route_controller_stop">"Запри префрлување"</string>
+    <string msgid="5441529851481176817" name="mr_system_route_name">"Систем"</string>
+    <string msgid="7498112907524977311" name="mr_user_route_category_name">"Уреди"</string>
+</resources>

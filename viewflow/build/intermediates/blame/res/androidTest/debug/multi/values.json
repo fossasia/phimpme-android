@@ -1,0 +1,45 @@
+[
+    {
+        "outputFile": "/home/pa1pal/AndroidStudioProjects/phimpme-android/viewflow/build/intermediates/res/merged/androidTest/debug/values/values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 5,
+                    "startColumn": 4,
+                    "startOffset": 1257,
+                    "endColumn": 45,
+                    "endOffset": 1298
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/viewflow/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 5,
+                        "startColumn": 4,
+                        "startOffset": 1257,
+                        "endColumn": 45,
+                        "endOffset": 1298
+                    }
+                }
+            },
+            {
+                "to": {
+                    "startLine": 6,
+                    "startColumn": 4,
+                    "startOffset": 1303,
+                    "endColumn": 46,
+                    "endOffset": 1345
+                },
+                "from": {
+                    "file": "/home/pa1pal/AndroidStudioProjects/phimpme-android/viewflow/build/intermediates/bundles/debug/res/values/values.xml",
+                    "position": {
+                        "startLine": 6,
+                        "startColumn": 4,
+                        "startOffset": 1303,
+                        "endColumn": 46,
+                        "endOffset": 1345
+                    }
+                }
+            }
+        ]
+    }
+]

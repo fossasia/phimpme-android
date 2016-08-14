@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="uk.co.jasonfry.android.tools">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/libs/uk.co.jasonfry.android.tools.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

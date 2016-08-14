@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/layout-xlarge-v4/take_photo.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/layout-xlarge/take_photo.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/layout-xlarge-v4/newgallery.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/layout-xlarge/newgallery.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/layout-xlarge-v4/main.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/layout-xlarge/main.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/layout-xlarge-v4/gallery.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/layout-xlarge/gallery.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/layout-xlarge-v4/camera.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/layout-xlarge/camera.xml"
+    }
+]

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
+    <declare-styleable name="LoadingImageView"><attr format="enum" name="imageAspectRatioAdjust"><enum name="none" value="0"/><enum name="adjust_width" value="1"/><enum name="adjust_height" value="2"/></attr><attr format="float" name="imageAspectRatio"/><attr format="boolean" name="circleCrop"/></declare-styleable>
+    <!-- From: file:/tmp/tmp-deduplicated45833751059379318/blaze-out/intel-linux-android-4.8-libcxx-x86-opt/genfiles/java/com/google/android/gmscore/integ/res/values/gmscore_version.xml -->
+    <eat-comment/>
+    <integer name="google_play_services_version">9080000</integer>
+    <!-- From: file:/tmp/tmp-deduplicated45833751059379318/java/com/google/android/gmscore/integ/client/common/res/values/strings.xml -->
+    <eat-comment/>
+    <string name="common_google_play_services_unknown_issue"><ns1:g id="app_name">%1$s</ns1:g> is having trouble with Google Play services. If the problem persists, please contact the developer for assistance.</string>
+</resources>

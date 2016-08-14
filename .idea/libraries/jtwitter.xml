@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jtwitter">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/libs/jtwitter.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

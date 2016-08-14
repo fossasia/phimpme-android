@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- From: file:/tmp/tmp-deduplicated1795802546432009098/blaze-out/intel-linux-android-4.8-libcxx-x86-opt/genfiles/java/com/google/android/gmscore/integ/client/base/res/values-tr/strings.xml -->
+    <eat-comment/>
+    <string msgid="4770915072144378781" name="common_google_play_services_api_unavailable_text">"<ns1:g id="APP_NAME">%1$s</ns1:g>, şu anda kullanılamayan bir veya daha fazla Google Play hizmetini gerektiriyor. Yardım için lütfen geliştiriciyle iletişim kurun."</string>
+    <string msgid="2050101795821476669" name="common_google_play_services_enable_button">"Google Play hizmetlerini etkinleştir"</string>
+    <string msgid="7045129128108380659" name="common_google_play_services_enable_text">"Google Play hizmetlerini etkinleştirmezseniz <ns1:g id="APP_NAME">%1$s</ns1:g> çalışmaz."</string>
+    <string msgid="3147157405986503375" name="common_google_play_services_enable_title">"Google Play hizmetlerini etkinleştirin"</string>
+    <string msgid="7118643132557593940" name="common_google_play_services_install_button">"Google Play hizmetlerini yükle"</string>
+    <string msgid="1666261992894286769" name="common_google_play_services_install_text_phone">"<ns1:g id="APP_NAME">%1$s</ns1:g>, şu anda telefonunuzda bulunmayan Google Play hizmetleri olmadan çalışmaz."</string>
+    <string msgid="1701766622451829291" name="common_google_play_services_install_text_tablet">"<ns1:g id="APP_NAME">%1$s</ns1:g>, şu anda tabletinizde bulunmayan Google Play hizmetleri olmadan çalışmaz."</string>
+    <string msgid="7442193194585196676" name="common_google_play_services_install_title">"Google Play hizmetlerini edinin"</string>
+    <string msgid="479501935061677276" name="common_google_play_services_invalid_account_text">"Belirtilen hesap bu cihazda mevcut değil. Lütfen farklı bir hesap seçin."</string>
+    <string msgid="5775407690646375078" name="common_google_play_services_invalid_account_title">"Geçersiz Hesap"</string>
+    <string msgid="6857745590248226927" name="common_google_play_services_network_error_text">"Google Play hizmetlerine bağlanmak için bir veri bağlantısı gerekiyor."</string>
+    <string msgid="4183541461338112307" name="common_google_play_services_network_error_title">"Ağ Hatası"</string>
+    <string msgid="180394615667698242" name="common_google_play_services_notification_ticker">"Google Play Hizmetleri hatası"</string>
+    <string msgid="8897126254633757462" name="common_google_play_services_resolution_required_text">"<ns1:g id="APP_NAME">%1$s</ns1:g> uygulamasının gerek duyduğu işlemi lütfen tamamlayın."</string>
+    <string msgid="7524004365913123453" name="common_google_play_services_resolution_required_title">"Google Play hizmetleri bir işlem gerektiriyor"</string>
+    <string msgid="3111284987662714014" name="common_google_play_services_restricted_profile_text">"Kısıtlı bir profilden hesaplara erişim desteklenmiyor."</string>
+    <string msgid="8137798410446890929" name="common_google_play_services_restricted_profile_title">"Kısıtlı Profil"</string>
+    <string msgid="2431909537598981235" name="common_google_play_services_sign_in_failed_text">"Belirtilen hesapta oturum açılırken hata oluştu. Lütfen farklı bir hesap seçin."</string>
+    <string msgid="4402642931312190213" name="common_google_play_services_sign_in_failed_title">"Oturum açılamadı"</string>
+    <string msgid="1064791666906610763" name="common_google_play_services_unsupported_text">"<ns1:g id="APP_NAME">%1$s</ns1:g>, cihazınız tarafından desteklenmeyen Google Play hizmetlerine ihtiyaç duyuyor. Yardım için üreticiyle iletişim kurun."</string>
+    <string msgid="539866123733096737" name="common_google_play_services_unsupported_title">"Google Play hizmetleri"</string>
+    <string msgid="8172070149091615356" name="common_google_play_services_update_button">"Güncelle"</string>
+    <string msgid="7773943415006962566" name="common_google_play_services_update_text">"Google Play hizmetlerini güncellemezseniz <ns1:g id="APP_NAME">%1$s</ns1:g> çalışmayacak."</string>
+    <string msgid="8706675115216073244" name="common_google_play_services_update_title">"Google Play hizmetlerini güncelleyin"</string>
+    <string msgid="7894275749778928941" name="common_google_play_services_updating_text">"<ns1:g id="APP_NAME">%1$s</ns1:g>, şu anda güncellenmekte olan Google Play hizmetleri olmadan çalışmaz."</string>
+    <string msgid="2270671469198016014" name="common_google_play_services_updating_title">"Google Play hizmetleri güncelleniyor"</string>
+    <string msgid="2804989272736383918" name="common_google_play_services_wear_update_text">"Google Play hizmetlerinin yeni sürümü gerekiyor. Kendisini kısa süre içinde güncelleyecektir."</string>
+    <string msgid="5201977337835724196" name="common_open_on_phone">"Telefonda aç"</string>
+    <string msgid="3441753203274453993" name="common_signin_button_text">"Oturum aç"</string>
+    <string msgid="669893613918351210" name="common_signin_button_text_long">"Google\'da oturum aç"</string>
+</resources>

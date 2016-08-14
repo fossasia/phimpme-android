@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="jdom-1.1.1-android-fork">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/libs/jdom-1.1.1-android-fork.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

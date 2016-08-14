@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="signpost-commonshttp4-1.2.1.2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/libs/signpost-commonshttp4-1.2.1.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

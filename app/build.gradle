@@ -1,0 +1,48 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 'Google Inc.:Google APIs:23'
+    buildToolsVersion "24.0.0"
+
+    defaultConfig {
+        applicationId "vn.mbm.phimp.me"
+        minSdkVersion 16
+        targetSdkVersion 23
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+android {
+    useLibrary 'org.apache.http.legacy'
+}
+dependencies {
+    compile 'com.android.support:support-v4:23.0.0'
+    compile files('libs/CWAC-AdapterWrapper.jar')
+    compile files('libs/CWAC-Bus.jar')
+    compile files('libs/CWAC-Task.jar')
+    //compile 'com.paypal.sdk:paypal-android-sdk:2.14.4'
+    compile files('libs/PayPal_MPL.jar')
+    compile files('libs/acra-4.4.0.jar')
+    compile files('libs/android-rss-1.0.0.jar')
+    compile files('libs/crittercism_v2_1_3_rev1.jar')
+    compile files('libs/httpmime-4.1.1.jar')
+    compile files('libs/jdom-1.1.1-android-fork.jar')
+    compile files('libs/joooidapi.jar')
+    compile files('libs/jtwitter.jar')
+    compile files('libs/osmdroid-android-3.0.8.jar')
+    compile files('libs/scribe-1.2.3.jar')
+    compile files('libs/signpost-commonshttp4-1.2.1.2.jar')
+    compile files('libs/signpost-core-1.2.1.2.jar')
+    compile files('libs/slf4j-android-1.5.8.jar')
+    compile files('libs/tagsoup-1.2.1.jar')
+    compile files('libs/uk.co.jasonfry.android.tools.jar')
+    compile 'com.google.android.gms:play-services:9.0.2'
+    compile 'com.google.android.gms:play-services-maps:9.0.2'
+    compile project(':viewflow')
+    compile 'com.google.android.gms:play-services-ads:9.0.2'
+}

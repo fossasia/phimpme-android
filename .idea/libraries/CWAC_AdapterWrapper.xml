@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="CWAC-AdapterWrapper">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/libs/CWAC-AdapterWrapper.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

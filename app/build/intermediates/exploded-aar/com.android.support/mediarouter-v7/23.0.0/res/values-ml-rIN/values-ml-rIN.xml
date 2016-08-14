@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- From: file:/usr/local/google/buildbot/repo_clients/https___googleplex-android.googlesource.com_a_platform_manifest.git/mnc-release/frameworks/support/v7/mediarouter/res/values-ml-rIN/strings.xml -->
+    <eat-comment/>
+    <string msgid="8327680881775995150" name="mr_media_route_button_content_description">"കാസ്‌റ്റുചെയ്യുക"</string>
+    <string msgid="7553005460920830010" name="mr_media_route_chooser_searching">"ഉപകരണങ്ങൾക്കായി തിരയുന്നു…"</string>
+    <string msgid="7106830097177242655" name="mr_media_route_chooser_title">"ഉപകരണത്തിലേക്ക് കണക്റ്റുചെയ്യുക"</string>
+    <string msgid="109793632378378069" name="mr_media_route_controller_disconnect">"വിച്ഛേദിക്കുക"</string>
+    <string msgid="3641544772007543920" name="mr_media_route_controller_no_info_available">"വിവരങ്ങളൊന്നും ലഭ്യമല്ല"</string>
+    <string msgid="8315773974194466049" name="mr_media_route_controller_pause">"താൽക്കാലികമായി നിർത്തുക"</string>
+    <string msgid="5214423499524760404" name="mr_media_route_controller_play">"പ്ലേ ചെയ്യുക"</string>
+    <string msgid="379358765881274425" name="mr_media_route_controller_settings_description">"റൂട്ട് ക്രമീകരണം"</string>
+    <string msgid="5398645111664294430" name="mr_media_route_controller_stop">"കാസ്റ്റുചെയ്യൽ നിർത്തുക"</string>
+    <string msgid="5441529851481176817" name="mr_system_route_name">"സിസ്റ്റം"</string>
+    <string msgid="7498112907524977311" name="mr_user_route_category_name">"ഉപകരണങ്ങൾ"</string>
+</resources>

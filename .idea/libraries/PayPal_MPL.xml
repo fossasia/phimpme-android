@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="PayPal_MPL">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/libs/PayPal_MPL.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

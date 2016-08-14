@@ -1,0 +1,826 @@
+[
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/thunder_a_r1.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/thunder_a_r1.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/pathbar_join.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/pathbar_join.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/camera_edit_filter_rise_default.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/camera_edit_filter_rise_default.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/grid_placeholder.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/grid_placeholder.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/abc_text_cursor_material.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/drawable/abc_text_cursor_material.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/common_plus_signin_btn_icon_light.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/drawable/common_plus_signin_btn_icon_light.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/camera_32_r.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/camera_32_r.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/jessica.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/jessica.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/tab_bg_selector.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/tab_bg_selector.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/thunder_gray_r.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/thunder_gray_r.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/indicator_autocrop.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/indicator_autocrop.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/tab_icon_map_selector.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/tab_icon_map_selector.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/transparent.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/transparent.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/ic_fs_details.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/ic_fs_details.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/scroller_pressed_new.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/scroller_pressed_new.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/icon_share.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/icon_share.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/tab_bg_unselected.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/tab_bg_unselected.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/left_right_rotate.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/left_right_rotate.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/camera_edit_filter_toaster_default.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/camera_edit_filter_toaster_default.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/tab_selected.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/tab_selected.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/abc_btn_borderless_material.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/drawable/abc_btn_borderless_material.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/tencent_qq.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/tencent_qq.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/top_down_rotate.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/top_down_rotate.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/icon_normal.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/icon_normal.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/thunder_gray_r1.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/thunder_gray_r1.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/common_plus_signin_btn_text_light.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/drawable/common_plus_signin_btn_text_light.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/mr_ic_media_route_connecting_mono_dark.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/drawable/mr_ic_media_route_connecting_mono_dark.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/grey_wp_button.9.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/grey_wp_button.9.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/camera_grey.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/camera_grey.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/stack_frame_focus.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/stack_frame_focus.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/btn_camera_pressed.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/btn_camera_pressed.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/kaixin.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/kaixin.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/camera_edit_filter_sierra_default.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/camera_edit_filter_sierra_default.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/icon_location_small.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/icon_location_small.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/icon_play.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/icon_play.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/tab_icon_upload_selector.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/tab_icon_upload_selector.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/overscroll_right.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/overscroll_right.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/mr_ic_pause_dark.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/drawable/mr_ic_pause_dark.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/tab_text_selector.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/tab_text_selector.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/abc_dialog_material_background_light.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/drawable/abc_dialog_material_background_light.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/tab_unselected.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/tab_unselected.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/balloon_overlay_close.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/balloon_overlay_close.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/abc_spinner_textfield_background_material.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/drawable/abc_spinner_textfield_background_material.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/wpcom.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/wpcom.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/bluetooth.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/bluetooth.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/scroller_new.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/scroller_new.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/abc_switch_thumb_material.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/drawable/abc_switch_thumb_material.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/common_google_signin_btn_icon_dark.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/drawable/common_google_signin_btn_icon_dark.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/tab_bg_selected.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/tab_bg_selected.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/icon_folder_small_unscaled.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/icon_folder_small_unscaled.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/abc_btn_default_mtrl_shape.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/drawable/abc_btn_default_mtrl_shape.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/icon_home_small.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/icon_home_small.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/abc_tab_indicator_material.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/drawable/abc_tab_indicator_material.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/upload_marker.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/upload_marker.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/photo_inner.9.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/photo_inner.9.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/icon_wordpress.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/icon_wordpress.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/grey_wp_button_down.9.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/grey_wp_button_down.9.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/mr_ic_settings_light.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/drawable/mr_ic_settings_light.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/ic_menu_mapmode.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/ic_menu_mapmode.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/balloon_overlay_bg_selector.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/balloon_overlay_bg_selector.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/btn_hud_zoom_out_pressed.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/btn_hud_zoom_out_pressed.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/wp_button.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/wp_button.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/common_google_signin_btn_text_light.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/drawable/common_google_signin_btn_text_light.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/saphia.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/saphia.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/wifi_icon.jpg",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/wifi_icon.jpg"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/camera_crop_width.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/camera_crop_width.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/mode_stack.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/mode_stack.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/icon_zoom.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/icon_zoom.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/btn_hud_zoom_in_normal.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/btn_hud_zoom_in_normal.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/grid_frame.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/grid_frame.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/camera_edit_filter_normal_default.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/camera_edit_filter_normal_default.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/abc_cab_background_top_material.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/drawable/abc_cab_background_top_material.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/abc_list_selector_holo_light.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/drawable/abc_list_selector_holo_light.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/thunder_a_r.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/thunder_a_r.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/rotate_top_down.jpg",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/rotate_top_down.jpg"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/ic_menu_rotate_right.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/ic_menu_rotate_right.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/selection_menu_bg_pressed_right.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/selection_menu_bg_pressed_right.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/abc_item_background_holo_dark.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/drawable/abc_item_background_holo_dark.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/popup_triangle_bottom.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/popup_triangle_bottom.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/common_plus_signin_btn_icon_dark.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/drawable/common_plus_signin_btn_icon_dark.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/grid_check_off.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/grid_check_off.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/icon_camera_small_unscaled.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/icon_camera_small_unscaled.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/default_background.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/default_background.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/s500px.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/s500px.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/app_background.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/app_background.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/mr_ic_media_route_connecting_mono_light.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/drawable/mr_ic_media_route_connecting_mono_light.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/rotate_left_right.jpg",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/rotate_left_right.jpg"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/tab_icon_camera_selector.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/tab_icon_camera_selector.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/backwards.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/backwards.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/stack_frame.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/stack_frame.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/camera_edit_filter_inkwell_default.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/camera_edit_filter_inkwell_default.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/balloon_overlay_focused.9.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/balloon_overlay_focused.9.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/sohu.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/sohu.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/wordpressdotcom_icon.jpg",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/wordpressdotcom_icon.jpg"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/camera_edit_filter_xpro_default.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/camera_edit_filter_xpro_default.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/tab_press.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/tab_press.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/btn_camera.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/btn_camera.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/osm.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/osm.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/icon_delete.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/icon_delete.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/gallery_zoom_out.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/gallery_zoom_out.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/nagative.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/nagative.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/ic_menu_rotate_left.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/ic_menu_rotate_left.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/camera_32.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/camera_32.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/cast_ic_notification_connecting.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-cast/9.0.2/res/drawable/cast_ic_notification_connecting.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/imageshack.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/imageshack.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/abc_textfield_search_material.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/drawable/abc_textfield_search_material.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/icon_sapphire.jpg",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/icon_sapphire.jpg"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/image_border.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/image_border.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/abc_btn_check_material.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/drawable/abc_btn_check_material.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/stack_frame_gold.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/stack_frame_gold.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/icon_edit.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/icon_edit.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/btn_location_filter_unscaled.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/btn_location_filter_unscaled.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/selection_lower_bg.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/selection_lower_bg.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/pin_user.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/pin_user.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/tab_indicator.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/tab_indicator.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/balloon_overlay_unfocused.9.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/balloon_overlay_unfocused.9.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/pathbar_cap.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/pathbar_cap.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/help.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/help.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/imgur.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/imgur.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/thunder_gray.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/thunder_gray.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/thunder_a.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/thunder_a.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/camera_edit_filter_walden_default.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/camera_edit_filter_walden_default.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/tab_icon_settings_selector.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/tab_icon_settings_selector.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/bonuspack_bubble_black.9.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/bonuspack_bubble_black.9.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/mr_ic_settings_dark.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/drawable/mr_ic_settings_dark.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/sapia.jpg",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/sapia.jpg"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/btn_moreinfo.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/btn_moreinfo.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/abc_list_selector_background_transition_holo_dark.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/drawable/abc_list_selector_background_transition_holo_dark.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/abc_item_background_holo_light.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/drawable/abc_item_background_holo_light.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/videooverlay.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/videooverlay.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/popup.9.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/popup.9.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/selection_menu_divider.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/selection_menu_divider.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/joomla.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/joomla.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/mr_ic_cast_dark.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/drawable/mr_ic_cast_dark.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/mr_ic_play_light.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/drawable/mr_ic_play_light.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/image_not_found.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/image_not_found.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/ic_menu_crop.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/ic_menu_crop.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/common_google_signin_btn_icon_light.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/drawable/common_google_signin_btn_icon_light.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/tab_icon_gallery_selector.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/tab_icon_gallery_selector.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/tab_border_selector.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/tab_border_selector.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/selected_image_border.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/selected_image_border.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/appwidget_bg.9.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/appwidget_bg.9.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/grey_wp_button_active.9.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/grey_wp_button_active.9.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/round_cornor.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/round_cornor.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/abc_cab_background_internal_bg.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/drawable/abc_cab_background_internal_bg.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/common_plus_signin_btn_text_dark.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/drawable/common_plus_signin_btn_text_dark.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/mode_grid.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/mode_grid.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/abc_edit_text_material.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/drawable/abc_edit_text_material.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/new_account_logo.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/new_account_logo.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/icon_folder_small.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/icon_folder_small.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/icon_black_white.jpg",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/icon_black_white.jpg"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/icon_snow.jpg",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/icon_snow.jpg"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/moreinfo_arrow_pressed.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/moreinfo_arrow_pressed.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/gallery_zoom_out_touch.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/gallery_zoom_out_touch.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/android.jpg",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/android.jpg"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/mr_ic_media_route_mono_light.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/drawable/mr_ic_media_route_mono_light.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/icon_upload_small.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/icon_upload_small.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/snow.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/snow.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/ic_menu_view_details.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/ic_menu_view_details.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/gallery_zoom_in.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/gallery_zoom_in.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/thunder_r1.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/thunder_r1.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/selection_menu_bg_pressed.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/selection_menu_bg_pressed.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/popup_option_selected.9.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/popup_option_selected.9.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/wplogo.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/wplogo.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/grid_check_on.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/grid_check_on.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/common_google_signin_btn_text_dark.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/9.0.2/res/drawable/common_google_signin_btn_text_dark.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/nagetive.jpg",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/nagetive.jpg"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/bonuspack_bubble.9.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/bonuspack_bubble.9.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/camera_32_r1.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/camera_32_r1.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/selection_menu_bg_pressed_left.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/selection_menu_bg_pressed_left.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/mr_ic_pause_light.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/drawable/mr_ic_pause_light.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/thunder_r.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/thunder_r.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/icon_folder.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/icon_folder.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/thunder.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/thunder.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/ogriginal.jpg",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/ogriginal.jpg"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/overscroll_left.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/overscroll_left.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/icon_more.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/icon_more.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/abc_ratingbar_full_material.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/drawable/abc_ratingbar_full_material.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/pin_photo.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/pin_photo.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/icon_round_corner.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/icon_round_corner.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/abc_dialog_material_background_dark.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/drawable/abc_dialog_material_background_dark.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/selection_menu_bg.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/selection_menu_bg.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/home_gradient.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/home_gradient.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/dashboard_wp_logo.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/dashboard_wp_logo.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/icon_picasa_small.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/icon_picasa_small.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/mr_ic_media_route_mono_dark.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/drawable/mr_ic_media_route_mono_dark.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/camera_crop_height.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/camera_crop_height.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/abc_btn_colored_material.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/drawable/abc_btn_colored_material.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/pathbar_bg.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/pathbar_bg.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/mr_ic_cast_light.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/drawable/mr_ic_cast_light.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/abc_list_selector_background_transition_holo_light.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/drawable/abc_list_selector_background_transition_holo_light.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/abc_btn_radio_material.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/drawable/abc_btn_radio_material.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/delete.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/delete.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/icon_negative.jpg",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/icon_negative.jpg"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/abc_list_selector_holo_dark.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.0/res/drawable/abc_list_selector_holo_dark.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/gallery_zoom_in_touch.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/gallery_zoom_in_touch.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/icon_picasa_small_unscaled.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/icon_picasa_small_unscaled.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/tab_focus.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/tab_focus.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/blackwhite.jpg",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/blackwhite.jpg"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/btn_hud_zoom_out_normal.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/btn_hud_zoom_out_normal.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/moreinfo_arrow.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/moreinfo_arrow.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/icon.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/icon.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/mr_ic_play_dark.xml",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/exploded-aar/com.android.support/mediarouter-v7/23.0.0/res/drawable/mr_ic_play_dark.xml"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/icon_camera_small.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/icon_camera_small.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/btn_hud_zoom_in_pressed.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/btn_hud_zoom_in_pressed.png"
+    },
+    {
+        "merged": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/res/merged/debug/drawable/ic_menu_set_as.png",
+        "source": "/home/pa1pal/AndroidStudioProjects/phimpme-android/app/src/main/res/drawable/ic_menu_set_as.png"
+    }
+]

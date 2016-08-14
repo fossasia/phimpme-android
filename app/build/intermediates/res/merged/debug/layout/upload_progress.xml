@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <!-- <ListView
+        android:id="@+id/lstUploadProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp" >
+    </ListView> -->
+
+    
+<ScrollView 
+	    android:id="@+id/scrollViewnew"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent" >
+	    <LinearLayout
+        android:id="@+id/linearUploadProgress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="10dp" >
+    </LinearLayout>
+</ScrollView>
+</LinearLayout>

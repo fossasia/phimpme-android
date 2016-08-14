@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:state_enabled="false"
+        android:drawable="@drawable/common_plus_signin_btn_text_light_disabled" />
+    <item
+        android:state_pressed="true"
+        android:drawable="@drawable/common_plus_signin_btn_text_light_pressed" />
+    <item
+        android:state_focused="true"
+        android:drawable="@drawable/common_plus_signin_btn_text_light_focused" />
+    <item
+        android:drawable="@drawable/common_plus_signin_btn_text_light_normal" />
+</selector>
+<!-- From: file:/tmp/tmp-deduplicated1795802546432009098/java/com/google/android/gmscore/integ/client/base/res/drawable/common_plus_signin_btn_text_light.xml -->

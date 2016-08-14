@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main$Generated" generated="true"><source path="/home/pa1pal/AndroidStudioProjects/phimpme-android/viewflow/src/main/res"/><source path="/home/pa1pal/AndroidStudioProjects/phimpme-android/viewflow/build/generated/res/rs/release"/><source path="/home/pa1pal/AndroidStudioProjects/phimpme-android/viewflow/build/generated/res/resValues/release"/></dataSet><dataSet config="release$Generated" generated="true"><source path="/home/pa1pal/AndroidStudioProjects/phimpme-android/viewflow/src/release/res"/></dataSet><dataSet config="main" generated-set="main$Generated"><source path="/home/pa1pal/AndroidStudioProjects/phimpme-android/viewflow/src/main/res"><file name="icon" path="/home/pa1pal/AndroidStudioProjects/phimpme-android/viewflow/src/main/res/drawable/icon.png" qualifiers="" type="drawable"/><file path="/home/pa1pal/AndroidStudioProjects/phimpme-android/viewflow/src/main/res/values/attrs.xml" qualifiers=""><declare-styleable name="ViewFlow">
+        <attr format="integer" name="sidebuffer"/>
+    </declare-styleable><declare-styleable name="TitleFlowIndicator">
+        <attr format="dimension" name="titlePadding"/>
+        <!-- Left/right padding of not active view titles. -->
+        <attr format="dimension" name="clipPadding"/>
+        <attr format="color" name="selectedColor"/>
+        <attr format="boolean" name="selectedBold"/>
+        <attr format="dimension" name="selectedSize"/>
+        <attr format="color" name="textColor"/>
+        <attr format="dimension" name="textSize"/>
+        <attr format="dimension" name="footerLineHeight"/>
+        <attr format="color" name="footerColor"/>
+        <attr format="dimension" name="footerTriangleHeight"/>
+        <attr format="string" name="customTypeface"/>
+    </declare-styleable><declare-styleable name="CircleFlowIndicator">
+        <attr format="color" name="activeColor"/>
+        <attr format="color" name="inactiveColor"/>
+        <attr format="dimension" name="radius"/>
+        <attr format="dimension" name="spacing"/>
+		<attr format="boolean" name="centered"/>
+		<attr format="integer" name="fadeOut"/>
+		<attr name="inactiveType">
+			<flag name="stroke" value="0"/>
+			<flag name="fill" value="1"/>
+		</attr>
+		<attr name="activeType">
+			<flag name="stroke" value="0"/>
+			<flag name="fill" value="1"/>
+		</attr>
+		<attr format="boolean" name="snap"/>
+    </declare-styleable></file><file path="/home/pa1pal/AndroidStudioProjects/phimpme-android/viewflow/src/main/res/values/strings.xml" qualifiers=""><string name="hello">Hello World!</string><string name="app_name">ViewFlow</string></file></source><source path="/home/pa1pal/AndroidStudioProjects/phimpme-android/viewflow/build/generated/res/rs/release"/><source path="/home/pa1pal/AndroidStudioProjects/phimpme-android/viewflow/build/generated/res/resValues/release"/></dataSet><dataSet config="release" generated-set="release$Generated"><source path="/home/pa1pal/AndroidStudioProjects/phimpme-android/viewflow/src/release/res"/></dataSet><mergedItems><configuration qualifiers=""><declare-styleable name="TitleFlowIndicator"><attr format="dimension" name="titlePadding"/><attr format="dimension" name="clipPadding"/><attr format="color" name="selectedColor"/><attr format="boolean" name="selectedBold"/><attr format="dimension" name="selectedSize"/><attr format="color" name="textColor"/><attr format="dimension" name="textSize"/><attr format="dimension" name="footerLineHeight"/><attr format="color" name="footerColor"/><attr format="dimension" name="footerTriangleHeight"/><attr format="string" name="customTypeface"/></declare-styleable><declare-styleable name="CircleFlowIndicator"><attr format="color" name="activeColor"/><attr format="color" name="inactiveColor"/><attr format="dimension" name="radius"/><attr format="dimension" name="spacing"/><attr format="boolean" name="centered"/><attr format="integer" name="fadeOut"/><attr name="inactiveType"><flag name="stroke" value="0"/><flag name="fill" value="1"/></attr><attr name="activeType"><flag name="stroke" value="0"/><flag name="fill" value="1"/></attr><attr format="boolean" name="snap"/></declare-styleable><declare-styleable name="ViewFlow"><attr format="integer" name="sidebuffer"/></declare-styleable></configuration></mergedItems></merger>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- From: file:/tmp/tmp-deduplicated1795802546432009098/blaze-out/intel-linux-android-4.8-libcxx-x86-opt/genfiles/java/com/google/android/gmscore/integ/client/base/res/values-my/strings.xml -->
+    <eat-comment/>
+    <string msgid="4770915072144378781" name="common_google_play_services_api_unavailable_text">"<ns1:g id="APP_NAME">%1$s</ns1:g> သည် ယခုမရရှိနိုင်သေးသည့် Google Play ဝန်ဆောင်မှု တစ်ခုသို့မဟုတ် တစ်ခုထက်ပို၍ လိုအပ်သည်။ အကူအညီလိုလျှင် ဆော့ဖ်ဝဲအင်ဂျင်နီယာကို ဆက်သွယ်ပါ။"</string>
+    <string msgid="2050101795821476669" name="common_google_play_services_enable_button">"Google ပလေး ၀န်ဆောင်မှုများ ဖွင့်ရန်"</string>
+    <string msgid="7045129128108380659" name="common_google_play_services_enable_text">"Google Play ဝန်ဆောင်မှုများကို မဖွင့်သ၍ <ns1:g id="APP_NAME">%1$s</ns1:g> သည်အလုပ်လုပ်မည်မဟုတ်ပါ။"</string>
+    <string msgid="3147157405986503375" name="common_google_play_services_enable_title">"Google Play ဝန်ဆောင်မှုများ ဖွင့်ရန်"</string>
+    <string msgid="7118643132557593940" name="common_google_play_services_install_button">"Google Play ဝန်ဆောင်မှုများကိုရယူရန်"</string>
+    <string msgid="1666261992894286769" name="common_google_play_services_install_text_phone">"သင့်ဖုန်းတွင် Google Play ဝန်ဆောင်မှုများမရှိသောကြောင့် <ns1:g id="APP_NAME">%1$s</ns1:g> ကိုဖွင့်၍မရပါ။"</string>
+    <string msgid="1701766622451829291" name="common_google_play_services_install_text_tablet">"သင့်တပ်ဘလက်တွင် Google Play ဝန်ဆောင်မှုများမရှိသောကြောင့် <ns1:g id="APP_NAME">%1$s</ns1:g> ကိုဖွင့်၍မရပါ။"</string>
+    <string msgid="7442193194585196676" name="common_google_play_services_install_title">"Google Play ဝန်ဆောင်မှုများရယူရန်"</string>
+    <string msgid="479501935061677276" name="common_google_play_services_invalid_account_text">"ဤကိရိယာမှာ ဖေါ်ပြပါ အကောင့်မရှိပါ။ ကျေးဇူးပြု၍ အခြား အကောင့်ကို ရွေးပါ။"</string>
+    <string msgid="5775407690646375078" name="common_google_play_services_invalid_account_title">"မမှန်သည့် အကောင့်"</string>
+    <string msgid="6857745590248226927" name="common_google_play_services_network_error_text">"Google Play ဝန်ဆောင်မှုများသို့ ဆက်သွယ်ရန် ဒေတာချိတ်ဆက်မှု လိုအပ်သည်။"</string>
+    <string msgid="4183541461338112307" name="common_google_play_services_network_error_title">"ကွန်ရက် အမှား"</string>
+    <string msgid="180394615667698242" name="common_google_play_services_notification_ticker">"Google ပလေး ဝန်ဆောင်မှုများ အမှား"</string>
+    <string msgid="8897126254633757462" name="common_google_play_services_resolution_required_text">"<ns1:g id="APP_NAME">%1$s</ns1:g> မှလိုအပ်သည့် လုပ်ဆောင်ချက်ကို ပြီးမြောက်အောင်လုပ်ပါ။"</string>
+    <string msgid="7524004365913123453" name="common_google_play_services_resolution_required_title">"Google Play ဝန်ဆောင်မှုများ လုပ်ဆောင်ချက်တစ်ခု လိုအပ်သည်"</string>
+    <string msgid="3111284987662714014" name="common_google_play_services_restricted_profile_text">"တားမြစ်ထားသည့် ကိုယ်ရေးအချက်အလက်မှ အကောင့်များကိုသုံးစွဲခွင့်မရှိပါ။"</string>
+    <string msgid="8137798410446890929" name="common_google_play_services_restricted_profile_title">"တားမြစ်ထားသည့် ကိုယ်ရေးအချက်အလက်များ"</string>
+    <string msgid="2431909537598981235" name="common_google_play_services_sign_in_failed_text">"သတ်မှတ်ထားသောအကောင့်သို့ လက်မှတ်ထိုးဝင်ရောက်ရာတွင် မှားယွင်းနေပါသည်။ ကျေးဇူးပြု၍ အခြားအကောင့်တစ်ခုကို ရွေးချယ်ပါ။"</string>
+    <string msgid="4402642931312190213" name="common_google_play_services_sign_in_failed_title">"လက်မှတ်ထိုးဝင်ရောက်ခြင်း မအောင်မြင်ပါ"</string>
+    <string msgid="1064791666906610763" name="common_google_play_services_unsupported_text">"<ns1:g id="APP_NAME">%1$s</ns1:g> သည်သင့်စက်ပစ္စည်းမှ မထောက်ပံ့သည့် Google Play ဝန်ဆောင်မှုများအပေါ် မှီခိုနေရသည်။ အကူအညီလိုလျှင် ထုတ်လုပ်သူကို ဆက်သွယ်ပါ။"</string>
+    <string msgid="539866123733096737" name="common_google_play_services_unsupported_title">"Google ပလေး ဝန်ဆောင်မှုများ"</string>
+    <string msgid="8172070149091615356" name="common_google_play_services_update_button">"အပ်ဒိတ်"</string>
+    <string msgid="7773943415006962566" name="common_google_play_services_update_text">"Google Play ဝန်ဆောင်မှုများအား မွမ်းမံခြင်းမရှိပါက <ns1:g id="APP_NAME">%1$s</ns1:g> အလုပ်လုပ်မည် မဟုတ်ပါ။"</string>
+    <string msgid="8706675115216073244" name="common_google_play_services_update_title">"Google Play ဝန်ဆောင်မှုများကို အပ်ဒိတ်လုပ်ရန်"</string>
+    <string msgid="7894275749778928941" name="common_google_play_services_updating_text">"Google Play ဝန်ဆောင်မှုများကို လက်ရှိအပ်ဒိတ်လုပ်နေသောကြောင့် <ns1:g id="APP_NAME">%1$s</ns1:g> ကိုဖွင့်၍ရမည်မဟုတ်ပါ။"</string>
+    <string msgid="2270671469198016014" name="common_google_play_services_updating_title">"Google Play ဝန်ဆောင်မှုများကို အပ်ဒိတ်လုပ်နေသည်"</string>
+    <string msgid="2804989272736383918" name="common_google_play_services_wear_update_text">"Google Play ဝန်ဆောင်မှုဗားရှင်းအသစ်များ လိုအပ်နေသည်။ အချိန်အနည်းငယ်အကြာတွင် ၎င်းကိုယ်တိုင်အပ်ဒိတ်လုပ်ပါ လိမ့်မည်။"</string>
+    <string msgid="5201977337835724196" name="common_open_on_phone">"ဖုန်းပေါ်မှာ ဖွင့်ပါ"</string>
+    <string msgid="3441753203274453993" name="common_signin_button_text">"လက်မှတ်ထိုး ဝင်ရန်"</string>
+    <string msgid="669893613918351210" name="common_signin_button_text_long">"Google ဖြင့် လက်မှတ်ထိုးဝင်ရေ"</string>
+</resources>

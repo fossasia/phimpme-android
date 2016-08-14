@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="osmdroid-android-3.0.8">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/libs/osmdroid-android-3.0.8.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
