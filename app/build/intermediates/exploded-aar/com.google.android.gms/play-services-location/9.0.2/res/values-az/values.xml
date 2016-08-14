@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- From: file:/tmp/tmp-deduplicated8610070021123746277/blaze-out/intel-linux-android-4.8-libcxx-x86-opt/genfiles/java/com/google/android/gmscore/integ/client/places/res/values-az/strings.xml -->
-    <eat-comment/>
-    <string msgid="1303870564366209730" name="place_autocomplete_clear_button">"Axtarışı təmizləyin"</string>
-    <string msgid="2809095107724486040" name="place_autocomplete_search_hint">"Axtarın"</string>
-</resources>

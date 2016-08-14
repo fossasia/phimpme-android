@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:ns1="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- From: file:/tmp/tmp-deduplicated45833751059379318/blaze-out/intel-linux-android-4.8-libcxx-x86-opt/genfiles/java/com/google/android/gmscore/integ/client/common/res/values-km/strings.xml -->
-    <eat-comment/>
-    <string msgid="9089562800660647919" name="common_google_play_services_unknown_issue">"<ns1:g id="APP_NAME">%1$s</ns1:g> កំពុងមានបញ្ហាជាមួយសេវាកម្ម Google Play។ ប្រសិនបើបញ្ហានេះនៅតែបន្តកើតមាន សូមទាក់ទងអ្នកអភិវឌ្ឍន៍ដើម្បីទទួលបានជំនួយ។"</string>
-</resources>

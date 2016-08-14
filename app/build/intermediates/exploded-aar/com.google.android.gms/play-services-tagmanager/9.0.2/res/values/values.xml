@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- From: file:/tmp/tmp-deduplicated2742581038210945366/java/com/google/android/gmscore/integ/client/tagmanager/res/values/tagmanager_strings.xml -->
-    <eat-comment/>
-    <string name="tagmanager_preview_dialog_button">Continue</string>
-    <string name="tagmanager_preview_dialog_message">Preview mode updated.</string>
-    <string name="tagmanager_preview_dialog_title">Preview</string>
-</resources>

@@ -1,2 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="debug"><source path="/home/pa1pal/AndroidStudioProjects/phimpme-android/viewflow/build/intermediates/bundles/debug/assets"/></dataSet><dataSet config="main"><source path="/home/pa1pal/AndroidStudioProjects/phimpme-android/viewflow/src/androidTest/assets"/><source path="/home/pa1pal/AndroidStudioProjects/phimpme-android/viewflow/build/generated/assets/shaders/androidTest/debug"/></dataSet></merger>

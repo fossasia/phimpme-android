@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- From: file:/tmp/tmp-deduplicated2157320643488654369/java/com/google/android/gmscore/integ/client/appinvite/res/values-v11/styles.xml -->
-    <eat-comment/>
-    <style name="Theme.AppInvite.Preview.Base" parent="@android:style/Theme.Holo.Light.DialogWhenLarge.NoActionBar"/>
-</resources>

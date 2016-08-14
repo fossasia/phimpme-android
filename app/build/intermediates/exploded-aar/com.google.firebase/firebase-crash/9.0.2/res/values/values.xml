@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!-- From: file:/tmp/tmp-deduplicated2779727999986662063/java/com/google/android/gmscore/integ/client/crash/res/values/ids.xml -->
-    <eat-comment/>
-    <item name="crash_reporting_present" type="id"/>
-</resources>
