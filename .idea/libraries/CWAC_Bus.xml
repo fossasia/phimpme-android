@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="CWAC-Bus">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/app/libs/CWAC-Bus.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>
