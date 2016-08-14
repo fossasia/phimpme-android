@@ -1,5 +1,0 @@
-CHANGED,/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/transforms/instantRun/debug/folders/4000/5/enhanced/vn/mbm/phimp/me/Upload$override.class
-CHANGED,/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/transforms/instantRun/debug/folders/4000/5/enhanced/vn/mbm/phimp/me/Settings$override.class
-CHANGED,/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/transforms/instantRun/debug/folders/4000/5/enhanced/vn/mbm/phimp/me/PhimpMe$override.class
-CHANGED,/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/transforms/instantRun/debug/folders/4000/5/enhanced/com/android/tools/fd/runtime/AppPatchesLoaderImpl.class
-CHANGED,/home/pa1pal/AndroidStudioProjects/phimpme-android/app/build/intermediates/transforms/instantRun/debug/folders/4000/5/enhanced/vn/mbm/phimp/me/newGallery$override.class
