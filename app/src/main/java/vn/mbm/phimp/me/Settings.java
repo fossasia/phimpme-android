@@ -1838,7 +1838,7 @@ public class Settings extends Activity
 		super.onResume();
 		PhimpMe.showTabs();
 		if (PhimpMe.FEEDS_GOOGLE_ADMOB == true){
-			PhimpMe.ShowAd();
+			//PhimpMe.ShowAd();
 		}
 		if (PhimpMe.add_account_setting)
 		{

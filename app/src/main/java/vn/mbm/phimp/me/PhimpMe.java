@@ -9,9 +9,6 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.acra.ReportingInteractionMode;
-import org.acra.annotation.ReportsCrashes;
-
 import vn.mbm.phimp.me.database.AccountDBAdapter;
 import vn.mbm.phimp.me.database.TumblrDBAdapter;
 import vn.mbm.phimp.me.gallery.PhimpMeGallery;
@@ -56,11 +53,11 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.maps.GeoPoint;
 import com.paypal.android.MEP.PayPal;
-
-@ReportsCrashes(formKey = "dFRsUzBJSWFKUFc3WmFjaXZab2V0dHc6MQ",
-        mode = ReportingInteractionMode.TOAST,
-        forceCloseDialogAfterToast = false,
-        resToastText = R.string.crash_report_text)
+//
+//@ReportsCrashes(formKey = "dFRsUzBJSWFKUFc3WmFjaXZab2V0dHc6MQ",
+//        mode = ReportingInteractionMode.TOAST,
+//        forceCloseDialogAfterToast = false,
+//        resToastText = R.string.crash_report_text)
 @SuppressWarnings("deprecation")
 public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener//, android.view.GestureDetector.OnGestureListener 
 {
@@ -230,7 +227,7 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
         /*
          * Google admod
          */
-        ad = (AdView) findViewById(R.id.adView);
+        //ad = (AdView) findViewById(R.id.adView);
         SharedPreferences setting = getSharedPreferences(PREFS_NAME, 0);
         FEEDS_GOOGLE_ADMOB = setting.getBoolean("Google Admob", true);
         File file = getBaseContext().getFileStreamPath("google_admob.txt");
@@ -249,16 +246,16 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
             }
         }
         Log.i("PhimpMe", "feed_google_admob : " + FEEDS_GOOGLE_ADMOB);
-        AdView adView = (AdView) this.findViewById(R.id.adView);
-
-        AdRequest request = new AdRequest.Builder()       // All emulators
-                .addTestDevice("AC98C820A50B4AD8A2106EDE96FB87D4")  // An example device ID
-                .build();
-        adView.loadAd(request);
-        if (FEEDS_GOOGLE_ADMOB == false) {
-            adView.setVisibility(ViewGroup.GONE);
-            //adView.destroy();
-        }
+//        AdView adView = (AdView) this.findViewById(R.id.adView);
+//
+//        AdRequest request = new AdRequest.Builder()       // All emulators
+//                .addTestDevice("AC98C820A50B4AD8A2106EDE96FB87D4")  // An example device ID
+//                .build();
+//        adView.loadAd(request);
+//        if (FEEDS_GOOGLE_ADMOB == false) {
+//            adView.setVisibility(ViewGroup.GONE);
+//            //adView.destroy();
+//        }
     	        
     	        /*
     	         * user config
@@ -682,9 +679,9 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
         popupTabs.setVisibility(ViewGroup.GONE);
     }
 
-    public static void ShowAd() {
-        ad.setVisibility(ViewGroup.VISIBLE);
-    }
+//    public static void ShowAd() {
+//        ad.setVisibility(ViewGroup.VISIBLE);
+//    }
 
     public static void hideAd() {
         ad.setVisibility(ViewGroup.GONE);
@@ -875,7 +872,7 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
                 Log.d("luong", "Run Cache Task");
                 initialize();
             } catch (RuntimeException runex) {
-                this.onCancelled();
+
             }
 
             return "";
