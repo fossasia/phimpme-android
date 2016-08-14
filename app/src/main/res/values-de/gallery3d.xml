@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  Copyright (C) 2007 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+ -->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name" msgid="1928079047368929634">"Galerie"</string>
+  <string-array name="months_abbreviated">
+    <item msgid="9066537518640988368">"Jan."</item>
+    <item msgid="4680813504147866612">"Feb."</item>
+    <item msgid="1934595560893153574">"März"</item>
+    <item msgid="9020107212348500338">"Apr."</item>
+    <item msgid="5734859077892484949">"Mai"</item>
+    <item msgid="8546985030184126468">"Juni"</item>
+    <item msgid="3639654472839533748">"Juli"</item>
+    <item msgid="8434242278630875235">"Aug."</item>
+    <item msgid="8493511009771049442">"Sep."</item>
+    <item msgid="685181459001441496">"Okt."</item>
+    <item msgid="6662413035764778250">"Nov."</item>
+    <item msgid="3784870986696899313">"Dez."</item>
+  </string-array>
+    <string name="gadget_title" msgid="259405922673466798">"Bildrahmen"</string>
+    <string name="details_ms" msgid="940634969189855292">"%1$02d:%2$02d"</string>
+    <string name="details_hms" msgid="3215779248094151255">"%1$d:%2$02d:%3$02d"</string>
+    <string name="movie_view_label" msgid="3697303290960009886">"Filme"</string>
+    <string name="loading_video" msgid="4013492720121891585">"Video wird geladen..."</string>
+    <string name="resume_playing_title" msgid="8996677350649355013">"Mit Video fortfahren"</string>
+    <string name="resume_playing_message" msgid="5184414518126703481">"Mit Wiedergabe fortfahren ab %s ?"</string>
+    <string name="resume_playing_resume" msgid="3847915469173852416">"Mit Wiedergabe fortfahren"</string>
+    <string name="resume_playing_restart" msgid="5471008499835769292">"Starten"</string>
+    <string name="camera" msgid="2730811566218090802">"Kamera"</string>
+    <string name="crop_save_text" msgid="8140440041190264400">"Speichern"</string>
+    <string name="crop_discard_text" msgid="5303657888280340603">"Verwerfen"</string>
+    <string name="multiface_crop_help" msgid="3127018992717032779">"Tippen Sie zum Beginnen auf ein Gesicht."</string>
+    <string name="saving_image" msgid="7270334453636349407">"Bild wird gespeichert..."</string>
+    <string name="crop_label" msgid="521114301871349328">"Bild zuschneiden"</string>
+    <string name="running_face_detection" msgid="4094707964259463039">"Bitte warten..."</string>
+    <string name="set_image" msgid="2331476809308010401">"Bild festlegen als"</string>
+    <string name="wallpaper" msgid="9222901738515471972">"Hintergrund wird eingestellt, bitte warten..."</string>
+    <string name="camera_setas_wallpaper" msgid="797463183863414289">"Hintergrund"</string>
+    <string name="details_ok" msgid="6848594369924424312">"OK"</string>
+    <string name="loading_new" msgid="7893793767294787579">"Neue Alben und Fotos werden geladen"</string>
+    <string name="initializing" msgid="2374228157398540466">"Wird geladen"</string>
+    <string name="pick_prompt" msgid="576608096149718121">"Ein Element aus Ihrer Sammlung auswählen"</string>
+    <string name="no_items" msgid="3117870234034732172">"Ihre Galerie ist leer."</string>
+    <string name="pick" msgid="7248789132035843128">"Auswählen"</string>
+    <string name="delete" msgid="2839695998251824487">"Löschen"</string>
+    <string name="confirm_delete" msgid="5731757674837098707">"Löschen bestätigen"</string>
+    <string name="share" msgid="3619042788254195341">"Weitergeben"</string>
+    <string name="no_sd_card" msgid="2666880203366429182">"SD-Karte wurde entfernt oder ist nicht vorhanden."</string>
+    <string name="more" msgid="1526449516720792387">"Mehr"</string>
+    <string name="select_all" msgid="8623593677101437957">"Alles auswählen"</string>
+    <string name="deselect_all" msgid="7397531298370285581">"Auswahl für alle aufheben"</string>
+    <string name="slideshow" msgid="4355906903247112975">"Diashow"</string>
+    <string name="menu" msgid="1819649153380636719">"Menü"</string>
+    <string name="details" msgid="8415120088556445230">"Details"</string>
+    <string name="album_selected" msgid="3441280740465738452">"Album ausgewählt"</string>
+    <string name="item_selected" msgid="6137767503817908841">"Element ausgewählt"</string>
+    <string name="albums_selected" msgid="1815225920157190983">"Alben ausgewählt"</string>
+    <string name="items_selected" msgid="8548754404879264861">"Elemente ausgewählt"</string>
+    <string name="album" msgid="5198388817734336004">"Album"</string>
+    <string name="start" msgid="4316892252528232165">"Starten"</string>
+    <string name="end" msgid="3645506196012005500">"Ende"</string>
+    <string name="location" msgid="3432705876921618314">"Ort"</string>
+    <string name="location_unknown" msgid="6310139243003315255">"Unbekannter Standort"</string>
+    <string name="title" msgid="7622928349908052569">"Titel"</string>
+    <string name="type" msgid="4329478642546287192">"Typ"</string>
+    <string name="taken_on" msgid="3269486910757192479">"Aufgenommen am"</string>
+    <string name="added_on" msgid="5194321063173381814">"Hinzugefügt am"</string>
+    <string name="show_on_map" msgid="6157544221201750980">"Auf Karte anzeigen"</string>
+    <string name="rotate_left" msgid="7412075232752726934">"Nach links drehen"</string>
+    <string name="rotate_right" msgid="7340681085011826618">"Nach rechts drehen"</string>
+    <string name="crop" msgid="7970750655414797277">"Zuschneiden"</string>
+    <string name="set_as" msgid="3636764710790507868">"Festlegen als"</string>
+    <string name="set_as_wallpaper" msgid="5704970402417438945">"Als Hintergrundbild festlegen"</string>
+    <string name="item" msgid="636303673288563698">"Element"</string>
+    <string name="items" msgid="6403254716052150916">"Elemente"</string>
+    <string name="around" msgid="2223906282110417412">"Ungefähr an folgender Adresse:"</string>
+    <string name="date_unknown" msgid="4277113471036917386">"Datum unbekannt"</string>
+    <string name="video_err" msgid="7917736494827857757">"Video kann nicht wiedergegeben werden."</string>
+</resources>
