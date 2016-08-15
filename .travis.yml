@@ -1,4 +1,5 @@
 language: android
+
 android:
   components:
     # Uncomment the lines below if you want to
@@ -7,10 +8,10 @@ android:
     # - tools
 
     # The BuildTools version used by your project
-    - build-tools-19.1.0
+    - build-tools-24.0.0
 
     # The SDK version used to compile your project
-    - android-22
+    - Google Inc.:Google APIs:23
 
     # Additional components
     - extra-google-google_play_services
