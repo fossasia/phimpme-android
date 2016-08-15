@@ -1,6 +1,8 @@
 # phimpme-android
 Phimp.me - Photo App
 
+[![Build Status](https://travis-ci.org/fossasia/phimpme-android.svg?branch=master)](https://travis-ci.org/fossasia/phimpme-android)
+
 ## Maintainers
 The project is maintained by
 - Hon Nguyen ([@vanhonit](https://github.com/vanhonit))
