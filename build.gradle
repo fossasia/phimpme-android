@@ -15,3 +15,11 @@ allprojects {
         mavenCentral()
     }
 }
+
+apply plugin: 'jacoco'
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
+}
