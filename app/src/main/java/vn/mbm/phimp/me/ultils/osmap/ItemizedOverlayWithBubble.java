@@ -26,7 +26,8 @@ import android.util.Log;
 public class ItemizedOverlayWithBubble<Item extends OverlayItem> extends ItemizedIconOverlay<Item> {
 	protected List<Item> mItemsList;
 	protected InfoWindow mBubble; //only one for all items of this overlay => one at a time
-	protected OverlayItem mItemWithBubble; //the item currently showing the bubble. Null if none. 
+    @SuppressWarnings("unchecked")
+    protected OverlayItem mItemWithBubble; //the item currently showing the bubble. Null if none.
 
 	static int layoutResId = 0;
 	
@@ -121,6 +122,7 @@ public class ItemizedOverlayWithBubble<Item extends OverlayItem> extends Itemize
 		hideBubble();
 	}
 
+    @SuppressWarnings("unchecked")
 	@Override public void draw(final Canvas canvas, final MapView mapView, final boolean shadow) {
 		//1. Fixing drawing focused item on top in ItemizedOverlay (osmdroid issue 354):
 		if (shadow) {
@@ -139,6 +141,7 @@ public class ItemizedOverlayWithBubble<Item extends OverlayItem> extends Itemize
 			}
 		}
 		//draw focused item last:
+
 		if (mItemWithBubble != null){
 	        pj.toMapPixels(mItemWithBubble.mGeoPoint, mCurScreenCoords);
 	        onDrawItem(canvas, (Item)mItemWithBubble, mCurScreenCoords);
