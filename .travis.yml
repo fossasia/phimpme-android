@@ -25,3 +25,6 @@ android:
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+
+notifications:
+  slack: fossasia:JgzycrBUs0nKnmJhsAxCB4bL
