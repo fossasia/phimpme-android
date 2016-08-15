@@ -25,5 +25,12 @@ android:
     # Latest artifacts in local repository
     - extra-google-m2repository
     - extra-android-m2repository
+
     # Specify at least one system image
     - sys-img-armeabi-v7a-google_apis-$ANDROID_API_LEVEL
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+notifications:
+  slack: fossasia:JgzycrBUs0nKnmJhsAxCB4bL
