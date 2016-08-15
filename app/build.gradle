@@ -16,12 +16,32 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/maven/org.apache.maven/maven-artifact/pom.xml'
+        exclude 'licenses/javolution.license.TXT'
+        exclude 'META-INF/maven/org.apache.maven.wagon/wagon-http-shared/pom.properties'
+        exclude 'META-INF/maven/*'
+        exclude 'org/codehaus/classworlds/uberjar/boot/Bootstrapper.class'
+    }
+
+    lintOptions {
+        abortOnError false
+        disable "Instantiatable"
+    }
+    tasks.withType(JavaCompile) {
+        configure(options) {
+            // TODO
+            compilerArgs << "-Xlint:unchecked"
+            compilerArgs << "-Xlint:-rawtypes"
+        }
+    }
+
 }
 android {
     useLibrary 'org.apache.http.legacy'
 }
 dependencies {
-    compile 'com.android.support:support-v4:23.0.0'
     compile files('libs/CWAC-AdapterWrapper.jar')
     compile files('libs/CWAC-Bus.jar')
     compile files('libs/CWAC-Task.jar')
@@ -40,8 +60,8 @@ dependencies {
     compile files('libs/slf4j-android-1.5.8.jar')
     compile files('libs/tagsoup-1.2.1.jar')
     compile files('libs/uk.co.jasonfry.android.tools.jar')
-    compile 'com.google.android.gms:play-services:9.0.2'
-    compile 'com.google.android.gms:play-services-maps:9.0.2'
     compile project(':viewflow')
+    compile 'com.android.support:support-v4:24.0.0'
+    compile 'com.google.android.gms:play-services-maps:9.0.2'
     compile 'com.google.android.gms:play-services-ads:9.0.2'
 }

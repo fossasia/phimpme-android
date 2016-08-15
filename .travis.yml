@@ -1,12 +1,6 @@
 language: android
-jdk: oraclejdk7
+jdk: oraclejdk8
 # Use the Travis Container-Based Infrastructure
-sudo: false
-
-cache:
-  directories:
-    - ${TRAVIS_BUILD_DIR}/gradle/caches/
-    - ${TRAVIS_BUILD_DIR}/gradle/wrapper/dists/
 
 env:
   global:
@@ -20,7 +14,6 @@ android:
   components:
     - tools
     - platform-tools
-    - tools
     - build-tools-$ANDROID_BUILD_TOOLS_VERSION
     - android-$ANDROID_API_LEVEL
     # For Google APIs
@@ -34,6 +27,3 @@ android:
     - extra-android-m2repository
     # Specify at least one system image
     - sys-img-armeabi-v7a-google_apis-$ANDROID_API_LEVEL
-
-script:
-  - ./gradlew clean check connectedCheck -x library:signArchives -PdisablePreDex
