@@ -28,7 +28,6 @@
 		    android:layout_width="match_parent"
 		    android:layout_height="match_parent"
 		    android:layout_alignParentLeft="true"
-		    android:layout_below="@+id/wpcomLogo"
 		    android:orientation="vertical" >
 
 		    <TextView
@@ -36,7 +35,6 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_alignParentLeft="true"
-		        android:layout_below="@+id/wpcomLogo"
 		        android:paddingLeft="20dp"
 		        android:text="@string/account_details"
 		        android:textColor="@color/black" />

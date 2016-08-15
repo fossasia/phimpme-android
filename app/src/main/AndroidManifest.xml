@@ -132,12 +132,12 @@
             android:theme="@android:style/Theme.NoTitleBar"
            >            
         </activity>
-          <activity android:name="vn.mbm.phimp.me.image.CropImage" 
-              android:configChanges="locale" 
-              android:label="CropLabel"
-              android:theme="@android:style/Theme.NoTitleBar"
-              android:screenOrientation="portrait" >
-        </activity>
+          <!--<activity android:name="vn.mbm.phimp.me.image.CropImage" -->
+              <!--android:configChanges="locale" -->
+              <!--android:label="CropLabel"-->
+              <!--android:theme="@android:style/Theme.NoTitleBar"-->
+              <!--android:screenOrientation="portrait" >-->
+        <!--</activity>-->
         <activity
             android:name=".Settings"
             android:configChanges="locale"
@@ -235,14 +235,14 @@
             android:noHistory="false"
             android:stateNotNeeded="true">
         </activity>
-        <activity 
-            android:name="vn.mbm.phimp.me.gallery3d.media.CropImage"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:configChanges="keyboardHidden|orientation"
-            android:clearTaskOnLaunch="true" 
-            android:noHistory="false"
-            android:stateNotNeeded="true">           
-        </activity>
+        <!--<activity -->
+            <!--android:name="vn.mbm.phimp.me.gallery3d.media.CropImage"-->
+            <!--android:theme="@android:style/Theme.NoTitleBar.Fullscreen"-->
+            <!--android:configChanges="keyboardHidden|orientation"-->
+            <!--android:clearTaskOnLaunch="true" -->
+            <!--android:noHistory="false"-->
+            <!--android:stateNotNeeded="true">           -->
+        <!--</activity>-->
         <activity android:name="vn.mbm.phimp.me.Webkit" android:configChanges="locale" >
            	<intent-filter>
                 <action android:name="android.intent.action.VIEW"/>	
@@ -251,9 +251,9 @@
 			  	<data android:scheme="oauth" android:host="tumblr"/>
             </intent-filter>
         </activity> 
-          <activity android:name="com.google.ads.AdActivity"
-              android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
-       
+          <!--<activity android:name="com.google.ads.AdActivity"-->
+              <!--android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>-->
+       <!---->
        <!-- wordpress -->
        <activity
             android:name="org.wordpress.android.NewAccount"
