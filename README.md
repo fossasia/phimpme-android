@@ -2,6 +2,8 @@
 Phimp.me - Photo App
 
 [![Build Status](https://travis-ci.org/fossasia/phimpme-android.svg?branch=master)](https://travis-ci.org/fossasia/phimpme-android)
+[![codecov](https://codecov.io/gh/fossasia/phimpme-android/branch/master/graph/badge.svg)](https://codecov.io/gh/fossasia/phimpme-android)
+
 
 ## Maintainers
 The project is maintained by
