@@ -8,6 +8,7 @@ env:
     - ANDROID_BUILD_TOOLS_VERSION=24.0.0
     - ANDROID_ABI=armeabi-v7a
     - ANDROID_TAG=google_apis
+    - ANDROID_TARGET=android-23
     - ADB_INSTALL_TIMEOUT=20 # minutes (2 minutes by default)
 
 android:
@@ -28,6 +29,15 @@ android:
 
     # Specify at least one system image
     - sys-img-armeabi-v7a-google_apis-$ANDROID_API_LEVEL
+
+
+script:
+  - ./gradlew build jacocoTestReport assembleAndroidTest
+    - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi armeabi-v7a-google_apis
+    - emulator -avd test -no-skin -no-audio -no-window &
+    - android-wait-for-emulator
+    - adb shell setprop dalvik.vm.dexopt-flags v=n,o=v
+    - ./gradlew connectedCheck
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
