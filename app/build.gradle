@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+
 apply plugin: 'jacoco-android'
 
 android {
@@ -15,6 +16,9 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+
+        }
+        debug {
             testCoverageEnabled true
         }
     }
