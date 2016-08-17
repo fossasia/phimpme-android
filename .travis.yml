@@ -1,5 +1,4 @@
 language: android
-jdk: oraclejdk8
 # Use the Travis Container-Based Infrastructure
 
 env:
@@ -35,6 +34,8 @@ script: "./build.sh"
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+  - chmod +x $HOME/build/pa1pal/phimpme-android/upload-apk.sh
+  - sh $HOME/build/pa1pal/phimpme-android/upload-apk.sh
 
 notifications:
   slack: fossasia:JgzycrBUs0nKnmJhsAxCB4bL
