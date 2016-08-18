@@ -1,4 +1,5 @@
 language: android
+jdk: oraclejdk8
 # Use the Travis Container-Based Infrastructure
 
 env:
@@ -28,7 +29,6 @@ android:
 
     # Specify at least one system image
     - sys-img-armeabi-v7a-google_apis-$ANDROID_API_LEVEL
-    - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
 
 script: "./build.sh"
 
