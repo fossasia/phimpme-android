@@ -3,7 +3,7 @@ apply plugin: 'jacoco-android'
 
 android {
     compileSdkVersion 'Google Inc.:Google APIs:23'
-    buildToolsVersion "23.0.3"
+    buildToolsVersion "24.0.0"
 
     defaultConfig {
         applicationId "vn.mbm.phimp.me"
