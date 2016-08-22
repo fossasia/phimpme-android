@@ -200,7 +200,6 @@ public class Camera2 extends Activity{
 		camera_switch = (ImageButton)findViewById(R.id.switch_camera);
 		if (Camera.getNumberOfCameras() <=1 ) camera_switch.setVisibility(View.GONE);
 		camera_switch.setOnClickListener(new OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -585,8 +584,15 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
            Log.e(TAG, "IOException caused by setPreviewDisplay()", exception);
        }
        Camera.Parameters parameters = camera.getParameters();       
-       parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
-       requestLayout();
+       //parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
+		for (Camera.Size size : parameters.getSupportedPictureSizes()) {
+			if (1600 <= size.width & size.width <= 1920) {
+				parameters.setPreviewSize(size.width, size.height);
+				parameters.setPictureSize(size.width, size.height);
+				break;
+			}
+		}
+		requestLayout();
 
        camera.setParameters(parameters);
     }
