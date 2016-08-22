@@ -235,14 +235,16 @@
             android:noHistory="false"
             android:stateNotNeeded="true">
         </activity>
-        <!--<activity -->
-            <!--android:name="vn.mbm.phimp.me.gallery3d.media.CropImage"-->
-            <!--android:theme="@android:style/Theme.NoTitleBar.Fullscreen"-->
-            <!--android:configChanges="keyboardHidden|orientation"-->
-            <!--android:clearTaskOnLaunch="true" -->
-            <!--android:noHistory="false"-->
-            <!--android:stateNotNeeded="true">           -->
-        <!--</activity>-->
+
+        <activity
+            android:name="vn.mbm.phimp.me.gallery3d.media.CropImage"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:configChanges="keyboardHidden|orientation"
+            android:clearTaskOnLaunch="true"
+            android:noHistory="false"
+            android:stateNotNeeded="true">
+        </activity>
+
         <activity android:name="vn.mbm.phimp.me.Webkit" android:configChanges="locale" >
            	<intent-filter>
                 <action android:name="android.intent.action.VIEW"/>	
