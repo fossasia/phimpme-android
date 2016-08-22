@@ -210,7 +210,6 @@ public class Upload extends Activity
 			public void onClick(View v) {
 				if (imagelist != "")
 				{
-					
 					Intent intent=new Intent();
 					intent.setClass(Upload.this, BluetoothShareMultipleFile.class);
 					intent.putExtra("imagelist", imagelist);
