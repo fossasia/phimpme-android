@@ -346,7 +346,6 @@ public class Settings extends Activity
 				if(isChecked==false){
 					Toast.makeText(ctx, "No Ads would be shown after you restart the application ", Toast.LENGTH_LONG).show();
 				}
-				
 			}
 		});
 		lGoogleAdmob.addView(chkGoogleAdmob);

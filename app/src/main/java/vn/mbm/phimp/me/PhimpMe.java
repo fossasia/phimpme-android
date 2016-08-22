@@ -314,7 +314,6 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
         if (file3.exists()) {
             try {
                 FileInputStream Rfile = openFileInput("google_news.txt");
-
                 InputStreamReader einputreader = new InputStreamReader(Rfile);
                 BufferedReader ebuffreader = new BufferedReader(einputreader);
                 Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
