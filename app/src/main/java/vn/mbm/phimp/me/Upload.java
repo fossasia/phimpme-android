@@ -12,6 +12,7 @@ import vn.mbm.phimp.me.database.AccountItem;
 import vn.mbm.phimp.me.database.DrupalItem;
 import vn.mbm.phimp.me.database.ImageshackItem;
 import vn.mbm.phimp.me.database.JoomlaItem;
+import vn.mbm.phimp.me.feedservice.FacebookActivity;
 import vn.mbm.phimp.me.gallery3d.media.CropImage;
 import vn.mbm.phimp.me.services.DeviantArtService;
 import vn.mbm.phimp.me.services.DrupalServices;
@@ -353,12 +354,15 @@ public class Upload extends Activity
 				switch(menuId) 
 				{
 				case SERVICES_FACEBOOK_ACTION:
-					String fauthURL = FacebookServices.getAuthenticateLink();
-					Intent fauthApp = new Intent(ctx, Webkit.class);
-					fauthApp.putExtra("URL", fauthURL);
-					ctx.startActivity(fauthApp);
-					PhimpMe.add_account_upload = true;
-					PhimpMe.add_account_setting = true;
+					Intent fbauth = new Intent(ctx, FacebookActivity.class);
+
+                    ctx.startActivity(fbauth);
+//					String fauthURL = FacebookServices.getAuthenticateLink();
+//					Intent fauthApp = new Intent(ctx, Webkit.class);
+//					fauthApp.putExtra("URL", fauthURL);
+//					ctx.startActivity(fauthApp);
+//					PhimpMe.add_account_upload = true;
+//					PhimpMe.add_account_setting = true;
 					break;
 				case SERVICES_FLICKR_ACTION:
 					String flickr_oauth_request_token_url = FlickrServices.OAuthRequestToken();
