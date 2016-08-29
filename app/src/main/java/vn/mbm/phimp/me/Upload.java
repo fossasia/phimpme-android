@@ -30,6 +30,7 @@ import vn.mbm.phimp.me.services.TwitterServices;
 import vn.mbm.phimp.me.services.VKServices;
 import vn.mbm.phimp.me.services.Wordpress;
 import vn.mbm.phimp.me.utils.Commons;
+import vn.mbm.phimp.me.utils.PrefManager;
 import vn.mbm.phimp.me.utils.geoDegrees;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -354,9 +355,14 @@ public class Upload extends Activity
 				switch(menuId) 
 				{
 				case SERVICES_FACEBOOK_ACTION:
-					Intent fbauth = new Intent(ctx, FacebookActivity.class);
+					if (!(PrefManager.getBoolean(PrefManager.LOGIN_STATUS, false))){
+						Intent fbauth = new Intent(ctx, FacebookActivity.class);
+						ctx.startActivity(fbauth);
+					}
+					else {
+						Toast.makeText(ctx, "Account already logged in", Toast.LENGTH_SHORT).show();
+					}
 
-                    ctx.startActivity(fbauth);
 //					String fauthURL = FacebookServices.getAuthenticateLink();
 //					Intent fauthApp = new Intent(ctx, Webkit.class);
 //					fauthApp.putExtra("URL", fauthURL);
