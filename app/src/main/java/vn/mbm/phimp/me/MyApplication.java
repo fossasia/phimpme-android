@@ -1,6 +1,7 @@
 package vn.mbm.phimp.me;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -18,10 +19,17 @@ import java.security.NoSuchAlgorithmException;
  * Date: 8/26/16
  */
 public class MyApplication extends Application {
+
+    private static MyApplication instance;
+
+    public static MyApplication getInstance() {
+        return instance;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
-
+        instance = this;
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
 
