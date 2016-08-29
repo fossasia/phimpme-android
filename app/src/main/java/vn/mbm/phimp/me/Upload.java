@@ -361,8 +361,8 @@ public class Upload extends Activity
 //					Intent fauthApp = new Intent(ctx, Webkit.class);
 //					fauthApp.putExtra("URL", fauthURL);
 //					ctx.startActivity(fauthApp);
-//					PhimpMe.add_account_upload = true;
-//					PhimpMe.add_account_setting = true;
+					PhimpMe.add_account_upload = true;
+					PhimpMe.add_account_setting = true;
 					break;
 				case SERVICES_FLICKR_ACTION:
 					String flickr_oauth_request_token_url = FlickrServices.OAuthRequestToken();
