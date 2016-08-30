@@ -256,9 +256,7 @@ public class Webkit extends Activity
 				
 				String access_token = tmp[0].replace("access_token=", "");
 				Log.d("webkit", "Access_token: " + access_token);
-				
-				
-								
+
 				try
 				{
 					String access_token_change= FacebookServices.change_access_token(access_token);

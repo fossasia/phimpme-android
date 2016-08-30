@@ -63,6 +63,7 @@
     <string name="newest">The Newest photo</string>
     <string name="owner">The Owner Photo</string>
 
+  <string name="facebook_app_id">1781584438783986</string>
     <string name="imageshack_note">Please note, that imageshack does not provide a gallery page of uploaded pictures at this time. Phimp.me will keep a list of images uploaded to imageshack for you. The app will only show images uploaded with the phimp.me app due to imageshack\'s current limitations.</string>
 
     <string name="person">Personal</string>
