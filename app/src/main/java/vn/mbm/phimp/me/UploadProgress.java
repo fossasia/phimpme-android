@@ -733,7 +733,7 @@ public class UploadProgress extends Activity
 				{
 					FacebookItem acc = FacebookItem.getItem(ctx, account_id[pos]);
 					String access_token = acc.getAccessToken();
-					String url = "https://graph.facebook.com/me/photos";
+					String url = "https://graph.facebook.com/v2.4/me/photos";
 
 					url += "?access_token=" + access_token;
 
