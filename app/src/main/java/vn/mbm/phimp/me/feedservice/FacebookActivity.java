@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInstaller;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.service.textservice.SpellCheckerService;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -67,7 +69,7 @@ public class FacebookActivity extends Activity {
                 final AccessToken accessToken = loginResult.getAccessToken();
                 final Profile profile = Profile.getCurrentProfile();
                 GraphRequest request = GraphRequest.newMeRequest(
-                        loginResult.getAccessToken(),
+                        AccessToken.getCurrentAccessToken(),
                         new GraphRequest.GraphJSONObjectCallback() {
                             @Override
                             public void onCompleted(JSONObject object, GraphResponse response) {
@@ -125,6 +127,7 @@ public class FacebookActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
