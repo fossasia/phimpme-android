@@ -26,12 +26,14 @@
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.CAMERA" />
     <application
+        android:name=".MyApplication"
         android:icon="@drawable/ic_launcher"
         android:label="@string/application_title"        
         android:largeHeap="true"
-        android:name="ACRAReport"
         tools:replace="android:icon, android:label"
         >
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+
         <uses-library android:name="com.google.android.maps" />  
         		 <service android:name=".CollectUserData" />
        	 	<!-- Start of Crittercism Support Forum Manifest Code -->
@@ -277,8 +279,18 @@
             android:name="org.wordpress.android.AddAcountSettings"
             android:theme="@android:style/Theme.NoTitleBar"
             android:screenOrientation="portrait">
-       </activity>       
-     
+       </activity>
+
+        <activity android:name=".feedservice.FacebookActivity"
+            android:configChanges=
+                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
+
+        <provider android:authorities="com.facebook.app.FacebookContentProvider1781584438783986"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true"/>
+
     </application>
     <dependency>
 		<groupId>com.google.code.gson</groupId>
