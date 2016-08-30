@@ -45,6 +45,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Handler;
 
 import vn.mbm.phimp.me.database.AccountItem;
@@ -258,15 +259,24 @@ public class Upload extends Activity {
                         Log.d("Hon", String.valueOf(PhimpMe.checked_accounts.size()));
                         if (checkListAccount()) {
                             if (imagelist != "") {
+                                String[] images = imagelist.split("#");
+                                ArrayList<Bitmap> imagesBitmapArray = new ArrayList<Bitmap>();
 
-                                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-                                Bitmap image = BitmapFactory.decodeFile(imagelist, bmOptions);
+                                for (int i=0; i<images.length; i++){
+                                    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                                    imagesBitmapArray.add(i, BitmapFactory.decodeFile(images[i], bmOptions));
+                                }
 
-                                SharePhoto photo = new SharePhoto.Builder()
-                                        .setBitmap(image)
-                                        .build();
+                                List<SharePhoto> photos = new ArrayList<SharePhoto>();
+                                for (int i=0; i<images.length; i++){
+                                    SharePhoto photo = new SharePhoto.Builder()
+                                            .setBitmap(imagesBitmapArray.get(i))
+                                            .build();
+                                    photos.add(photo);
+                                }
+
                                 SharePhotoContent content = new SharePhotoContent.Builder()
-                                        .addPhoto(photo)
+                                        .addPhotos(photos)
                                         .build();
 
 
