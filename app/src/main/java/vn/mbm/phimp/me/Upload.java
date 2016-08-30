@@ -28,6 +28,9 @@ import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.facebook.*;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareDialog;
 import com.google.android.maps.GeoPoint;
 import com.joooid.android.model.User;
 import com.joooid.android.xmlrpc.Constants;
@@ -116,6 +119,7 @@ public class Upload extends Activity {
 
     static Context ctx;
 
+    CallbackManager callbackManager;
     //private WebView webView;
     ListView listAccounts;
 
@@ -185,6 +189,9 @@ public class Upload extends Activity {
         super.onCreate(savedInstanceState);
 
         FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
+
+        final ShareDialog shareDialog = new ShareDialog(this);
         setContentView(R.layout.upload);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Resources res = getResources();
@@ -218,7 +225,7 @@ public class Upload extends Activity {
         });
 
 		/*
-		 * bluetooth share
+         * bluetooth share
 		 */
         btnBluetoothShare = (ImageButton) findViewById(R.id.upload_sendDirectly);
         btnBluetoothShare.setOnClickListener(new OnClickListener() {
@@ -251,41 +258,56 @@ public class Upload extends Activity {
                         Log.d("Hon", String.valueOf(PhimpMe.checked_accounts.size()));
                         if (checkListAccount()) {
                             if (imagelist != "") {
-                                android.os.Handler handler = new android.os.Handler();
-                                handler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-                                        Bitmap image = BitmapFactory.decodeFile(imagelist, bmOptions);
-                                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                                        image.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                                        byte[] byteArray = stream.toByteArray();
 
-                                        AccessToken at = AccessToken.getCurrentAccessToken();
-                                        String path = "me/photos";
-                                        Bundle params = new Bundle();
-                                        params.putByteArray("source", byteArray);
-                                        HttpMethod method = HttpMethod.POST;
-/* make the API call */
-                                        GraphRequest.Callback cb = new GraphRequest.Callback() {
+                                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                                Bitmap image = BitmapFactory.decodeFile(imagelist, bmOptions);
 
-                                            @Override
-                                            public void onCompleted(GraphResponse graphResponse) {
-                                                //check graphResponse for success or failure
-                                                if (graphResponse.getError() == null) {
-                                                    Toast.makeText(ctx, "Successfully posted to Facebook", Toast.LENGTH_SHORT).show();
-                                                } else {
-                                                    Toast.makeText(ctx, "Facebook: There was an error, Please Try Again", Toast.LENGTH_SHORT).show();
+                                SharePhoto photo = new SharePhoto.Builder()
+                                        .setBitmap(image)
+                                        .build();
+                                SharePhotoContent content = new SharePhotoContent.Builder()
+                                        .addPhoto(photo)
+                                        .build();
 
-                                                }
-                                            }
-                                        };
 
-                                        GraphRequest request = new GraphRequest(at, path, params, method, cb);
-                                        request.setParameters(params);
-                                        request.executeAsync();
-                                    }
-                                }, 1000);
+                                shareDialog.show(content);
+
+//                                android.os.Handler handler = new android.os.Handler();
+//                                handler.postDelayed(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+//                                        Bitmap image = BitmapFactory.decodeFile(imagelist, bmOptions);
+//                                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                                        image.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//                                        byte[] byteArray = stream.toByteArray();
+//
+//                                        //AccessToken at =
+//                                        String path = "/me/photos";
+//                                        Bundle params = new Bundle();
+//                                        params.putByteArray("source", byteArray);
+//                                        HttpMethod method = HttpMethod.POST;
+///* make the API call */
+//                                        //GraphRequest.Callback cb =
+//
+//                                        GraphRequest request = new GraphRequest(AccessToken.getCurrentAccessToken(), path, params, method, new GraphRequest.Callback() {
+//
+//                                            @Override
+//                                            public void onCompleted(GraphResponse graphResponse) {
+//                                                //check graphResponse for success or failure
+//                                                if (graphResponse.getError() == null) {
+//                                                    Toast.makeText(ctx, "Successfully posted to Facebook", Toast.LENGTH_SHORT).show();
+//                                                } else {
+//                                                    Toast.makeText(ctx, "Facebook: There was an error, Please Try Again", Toast.LENGTH_SHORT).show();
+//
+//                                                }
+//                                            }
+//                                        });
+//
+//                                        request.setParameters(params);
+//                                        request.executeAsync();
+//                                    }
+//                                }, 1000);
 
                                 //Bitmap image = imagelist;
 //								SharePhoto photo = new SharePhoto.Builder()
@@ -1197,6 +1219,7 @@ public class Upload extends Activity {
         return super.onKeyDown(keycode, event);
 
     }*/
+
     @Override
     public void onBackPressed() {
         PhimpMe.IdList.remove(PhimpMe.IdList.size() - 1);
