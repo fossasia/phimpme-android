@@ -129,7 +129,7 @@
         app:backgroundTint="@color/colorFAB2"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp"
-        android:src="@drawable/ic_add" />
+        android:src="@drawable/ic_mode_edit_white_24dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabupload"
@@ -142,7 +142,7 @@
         app:elevation="6dp"
         app:backgroundTint="@color/colorFAB1"
         app:pressedTranslationZ="12dp"
-        android:src="@drawable/ic_add" />
+        android:src="@drawable/ic_file_upload_white_24dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabshare"
@@ -155,7 +155,7 @@
         app:elevation="6dp"
         app:backgroundTint="@color/colorFAB1"
         app:pressedTranslationZ="12dp"
-        android:src="@drawable/ic_add" />
+        android:src="@drawable/ic_share_white_24dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
