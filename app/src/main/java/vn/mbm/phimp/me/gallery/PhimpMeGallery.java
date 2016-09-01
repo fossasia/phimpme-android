@@ -6,10 +6,13 @@ import java.util.ArrayList;
 
 import vn.mbm.phimp.me.PhimpMe;
 import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.SendFileActivity;
+import vn.mbm.phimp.me.Upload;
 import vn.mbm.phimp.me.image.CropImage;
 import vn.mbm.phimp.me.utils.geoDegrees;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
@@ -17,6 +20,7 @@ import android.media.ExifInterface;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
@@ -329,13 +333,32 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                 intent.putExtra("activityName", "PhimpMeGallery");
                 startActivity(intent);
 
-                Log.d("Raj", "Fab 1");
+                Log.d("", "Fab 1");
                 break;
             case R.id.fabupload:
-                Log.d("Raj", "Fab 2");
+                AlertDialog.Builder builder=new AlertDialog.Builder(PhimpMeGallery.this);
+                builder.setMessage("This photo have been add to list upload photo !");
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        Upload.imagelist+=filePath.get(position)+"#";
+                    }
+                });
+                builder.show();
                 break;
             case R.id.fabshare:
-                Log.d("Raj", "Fab 2");
+
+                Intent shareIntent=new Intent();
+                shareIntent.setClass(PhimpMeGallery.this, SendFileActivity.class);
+                shareIntent.putExtra("image-path", filePath.get(position));
+                shareIntent.putExtra("aspectX", 0);
+                shareIntent.putExtra("aspectY", 0);
+                shareIntent.putExtra("scale", true);
+                shareIntent.putExtra("activityName", "PhimpMeGallery");
+                startActivityForResult(shareIntent, 1);
+
+                Log.d("Pawan", "Share");
                 break;
         }
     }

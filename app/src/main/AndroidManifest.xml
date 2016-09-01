@@ -25,6 +25,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.MEDIA_CON" />
     <application
         android:name=".MyApplication"
         android:icon="@drawable/ic_launcher"
