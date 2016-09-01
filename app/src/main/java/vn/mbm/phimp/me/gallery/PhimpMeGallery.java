@@ -1,50 +1,42 @@
 package vn.mbm.phimp.me.gallery;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
-import vn.mbm.phimp.me.OpenStreetMap;
 import vn.mbm.phimp.me.PhimpMe;
 import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.SendFileActivity;
-import vn.mbm.phimp.me.Upload;
-import vn.mbm.phimp.me.gallery3d.media.CropImage;
-import android.R.menu;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
+import vn.mbm.phimp.me.image.CropImage;
+import vn.mbm.phimp.me.utils.geoDegrees;
+
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
+import android.media.ExifInterface;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListAdapter;
-import android.widget.ExpandableListView;
 import android.widget.Gallery;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
-public class PhimpMeGallery extends Activity {
+public class PhimpMeGallery extends AppCompatActivity implements View.OnClickListener{
 	private Gallery gallery;
 	private static ArrayList<String> filePath;
-	
-
+    private Boolean isFabOpen = false;
+    private FloatingActionButton fab, fabEdit, fabUpload, fabShare;
+    private Animation fab_open,fab_close,rotate_forward,rotate_backward;
 	private GalleryImageAdapter galImageAdapter;
-
 
 	private ImageButton btnShare,btnEdit,btnZoom,btnUpload,btnShowInMap,btnDelete;
 
@@ -76,6 +68,16 @@ public class PhimpMeGallery extends Activity {
 		}catch(Exception e){
 			from = "";
 		}
+
+        fab = (FloatingActionButton)findViewById(R.id.fab);
+        fabEdit = (FloatingActionButton)findViewById(R.id.fabedit);
+        fabUpload = (FloatingActionButton)findViewById(R.id.fabupload);
+        fabShare = (FloatingActionButton)findViewById(R.id.fabshare);
+
+        fab.setOnClickListener(this);
+        fabEdit.setOnClickListener(this);
+        fabUpload.setOnClickListener(this);
+        fabShare.setOnClickListener(this);
 		setupUI();
 		
 	}
@@ -85,12 +87,16 @@ public class PhimpMeGallery extends Activity {
 		galImageAdapter = new GalleryImageAdapter(this, filePath);
 		overscrollleft = (View)findViewById(R.id.overscroll_left);
 		overscrollright = (View)findViewById(R.id.overscroll_right);
-		RelativeLayout layout = (RelativeLayout)findViewById(R.id.btn);		
-		layout.bringToFront();		
+        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
+        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
+        rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_backward);
+		//RelativeLayout layout = (RelativeLayout)findViewById(R.id.btn);
+		//layout.bringToFront();
 		gallery.setAdapter(galImageAdapter);
-		ExpandableListView menu = (ExpandableListView)findViewById(R.id.menu);		
-		ExpandableListAdapter menuadapter = new MyExpandableListAdapter();	
-		menu.setAdapter(menuadapter);		
+		//ExpandableListView menu = (ExpandableListView)findViewById(R.id.menu);
+		//ExpandableListAdapter menuadapter = new MyExpandableListAdapter();
+		//menu.setAdapter(menuadapter);
 		gallery.setSelection(index);
 		/*btnShare = (ImageButton)findViewById(R.id.btnShare);
 		btnShare.setOnClickListener(new OnClickListener() {
@@ -273,7 +279,68 @@ public class PhimpMeGallery extends Activity {
 		}*/
 		
 	}
-	public class MyExpandableListAdapter extends BaseExpandableListAdapter {
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        switch (id){
+            case R.id.fab:
+                animateFAB();
+                break;
+            case R.id.fabedit:
+
+                File f =  new File(filePath.get(position));
+                ExifInterface exif_data = null;
+                geoDegrees _g = null;
+                String la = "";
+                String lo = "";
+                try
+                {
+                    exif_data = new ExifInterface(f.getAbsolutePath());
+                    _g = new geoDegrees(exif_data);
+                    if (_g.isValid())
+                    {
+                        la = _g.getLatitude() + "";
+                        lo = _g.getLongitude() + "";
+                    }
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+                finally
+                {
+                    exif_data = null;
+                    _g = null;
+                }
+                longtitude=lo;
+                latitude=la;
+                title=f.getName();
+
+                Intent intent = new Intent();
+                intent.setClass(PhimpMeGallery.this, CropImage.class);
+                intent.putExtra("image-path", filePath.get(position));
+                intent.putExtra("longtitude", longtitude);
+                intent.putExtra("latitude", latitude);
+                intent.putExtra("title", title);
+                intent.putExtra("aspectX", 0);
+                intent.putExtra("aspectY", 0);
+                intent.putExtra("scale", true);
+                intent.putExtra("activityName", "PhimpMeGallery");
+                startActivity(intent);
+
+                Log.d("Raj", "Fab 1");
+                break;
+            case R.id.fabupload:
+                Log.d("Raj", "Fab 2");
+                break;
+            case R.id.fabshare:
+                Log.d("Raj", "Fab 2");
+                break;
+        }
+    }
+
+    public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         // Sample data set.  children[i] contains the children (String[]) for groups[i].
         private String[] groups = { getString(R.string.menu) };
         private String[][] children = {
@@ -352,6 +419,35 @@ public class PhimpMeGallery extends Activity {
         }
 
     }
+
+    public void animateFAB(){
+
+        if(isFabOpen){
+
+            fab.startAnimation(rotate_backward);
+            fabEdit.startAnimation(fab_close);
+            fabUpload.startAnimation(fab_close);
+            fabShare.startAnimation(fab_close);
+
+            fabEdit.setClickable(false);
+            fabUpload.setClickable(false);
+            fabShare.setClickable(false);
+            isFabOpen = false;
+
+        } else {
+
+            fab.startAnimation(rotate_forward);
+            fabEdit.startAnimation(fab_open);
+            fabUpload.startAnimation(fab_open);
+            fabShare.startAnimation(fab_open);
+            fabEdit.setClickable(true);
+            fabUpload.setClickable(true);
+            fabShare.setClickable(true);
+            isFabOpen = true;
+
+        }
+    }
+
 	public void deleteImageFromMediaStore(String path) throws Exception{		
 		String[] projection = {MediaStore.Images.Media._ID,MediaStore.Images.Media.DATA};	
 		String selection = "_data like ?";
