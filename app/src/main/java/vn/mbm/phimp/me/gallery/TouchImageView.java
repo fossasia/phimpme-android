@@ -67,7 +67,6 @@ public class TouchImageView extends ImageView
 
 		setOnTouchListener(new OnTouchListener()
 		{
-			
 			public boolean onTouch(View v, MotionEvent event)
 			{
 				mScaleDetector.onTouchEvent(event);

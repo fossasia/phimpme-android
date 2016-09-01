@@ -83,8 +83,8 @@
              
         </activity>
         <activity android:name="vn.mbm.phimp.me.gallery.PhimpMeGallery"
-            android:configChanges="locale"         	
-         	android:theme="@android:style/Theme.NoTitleBar"
+            android:configChanges="locale"
+            android:theme="@style/Theme.AppCompat"
          	android:screenOrientation="portrait"
             >
             
@@ -134,12 +134,12 @@
             android:theme="@android:style/Theme.NoTitleBar"
            >            
         </activity>
-          <!--<activity android:name="vn.mbm.phimp.me.image.CropImage" -->
-              <!--android:configChanges="locale" -->
-              <!--android:label="CropLabel"-->
-              <!--android:theme="@android:style/Theme.NoTitleBar"-->
-              <!--android:screenOrientation="portrait" >-->
-        <!--</activity>-->
+          <activity android:name="vn.mbm.phimp.me.image.CropImage"
+              android:configChanges="locale"
+              android:label="CropLabel"
+              android:theme="@android:style/Theme.NoTitleBar"
+              android:screenOrientation="portrait" >
+        </activity>
         <activity
             android:name=".Settings"
             android:configChanges="locale"
