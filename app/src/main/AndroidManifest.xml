@@ -25,6 +25,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.MEDIA_CON" />
     <application
         android:name=".MyApplication"
         android:icon="@drawable/ic_launcher"
@@ -83,8 +84,8 @@
              
         </activity>
         <activity android:name="vn.mbm.phimp.me.gallery.PhimpMeGallery"
-            android:configChanges="locale"         	
-         	android:theme="@android:style/Theme.NoTitleBar"
+            android:configChanges="locale"
+            android:theme="@style/Theme.AppCompat"
          	android:screenOrientation="portrait"
             >
             
@@ -134,12 +135,12 @@
             android:theme="@android:style/Theme.NoTitleBar"
            >            
         </activity>
-          <!--<activity android:name="vn.mbm.phimp.me.image.CropImage" -->
-              <!--android:configChanges="locale" -->
-              <!--android:label="CropLabel"-->
-              <!--android:theme="@android:style/Theme.NoTitleBar"-->
-              <!--android:screenOrientation="portrait" >-->
-        <!--</activity>-->
+          <activity android:name="vn.mbm.phimp.me.image.CropImage"
+              android:configChanges="locale"
+              android:label="CropLabel"
+              android:theme="@android:style/Theme.NoTitleBar"
+              android:screenOrientation="portrait" >
+        </activity>
         <activity
             android:name=".Settings"
             android:configChanges="locale"

@@ -35,6 +35,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region;
 import android.media.FaceDetector;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -852,15 +853,14 @@ public class CropImage extends MonitoredActivity
 		    		
 		}		                      
         sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, mSaveUri));
-        sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, 
+        sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE,
                 Uri.parse("file://" + Environment.getExternalStorageDirectory())));
-        
-        mBitmapSave.recycle();
+
+		mBitmapSave.recycle();
 		croppedImage.recycle();
 		Intent intent = this.getIntent();
 		while(isMediaScannerRunning())
 		{
-			
 				new Thread(){
 					public void run(){
 						try{
