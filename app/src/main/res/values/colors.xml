@@ -12,4 +12,8 @@
 	<color name="tabDark">#000000</color>
 	<color name="tabTransparent">#10ffffff</color>
 	<color name="overscroll">#33b5e5</color>
+    <color name="colorFAB1">#2196F3</color>
+    <color name="colorFAB2">#2196F3</color>
+    <color name="colorFAB3">#2196F3</color>
+    <color name="colorAccent">#F44336</color>
 </resources>
