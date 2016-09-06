@@ -398,46 +398,34 @@ public class Upload extends Activity {
         }
 
         iconContextMenu = new IconContextMenu(this, CONTEXT_MENU_ID);
-        iconContextMenu.addItem(res, DrupalServices.title, DrupalServices.icon, SERVICES_DRUPAL_ACTION);
-        iconContextMenu.addItem(res, "Wordpress", R.drawable.icon_wordpress, SERVICES_WORDPRESS_ACTION);
-        iconContextMenu.addItem(res, "Wordpress.com", R.drawable.wordpressdotcom_icon, SERVICES_WORDPRESSDOTCOM_ACTION);
-        iconContextMenu.addItem(res, "Joomla", R.drawable.joomla, SERVICES_JOOMLA_ACTION);
+//        iconContextMenu.addItem(res, DrupalServices.title, DrupalServices.icon, SERVICES_DRUPAL_ACTION);
+//        iconContextMenu.addItem(res, "Wordpress", R.drawable.icon_wordpress, SERVICES_WORDPRESS_ACTION);
+//        iconContextMenu.addItem(res, "Wordpress.com", R.drawable.wordpressdotcom_icon, SERVICES_WORDPRESSDOTCOM_ACTION);
+//        iconContextMenu.addItem(res, "Joomla", R.drawable.joomla, SERVICES_JOOMLA_ACTION);
         iconContextMenu.addItem(res, FacebookServices.title, FacebookServices.icon, SERVICES_FACEBOOK_ACTION);
-        iconContextMenu.addItem(res, FlickrServices.title, FlickrServices.icon, SERVICES_FLICKR_ACTION);
-        iconContextMenu.addItem(res, PicasaServices.title, PicasaServices.icon, SERVICES_PICASA_ACTION);
-        iconContextMenu.addItem(res, TumblrServices.title, TumblrServices.icon, SERVICES_TUMBLR_ACTION);
-        iconContextMenu.addItem(res, TwitterServices.title, TwitterServices.icon, SERVICES_TWITTER_ACTION);
-        iconContextMenu.addItem(res, DeviantArtService.title, DeviantArtService.icon, SERVICES_DEVIANTART_ACTION);
-        iconContextMenu.addItem(res, ImageshackServices.title, ImageshackServices.icon, SERVICES_IMAGESHACK_ACTION);
+//        iconContextMenu.addItem(res, FlickrServices.title, FlickrServices.icon, SERVICES_FLICKR_ACTION);
+//        iconContextMenu.addItem(res, PicasaServices.title, PicasaServices.icon, SERVICES_PICASA_ACTION);
+//        iconContextMenu.addItem(res, TumblrServices.title, TumblrServices.icon, SERVICES_TUMBLR_ACTION);
+//        iconContextMenu.addItem(res, TwitterServices.title, TwitterServices.icon, SERVICES_TWITTER_ACTION);
+//        iconContextMenu.addItem(res, DeviantArtService.title, DeviantArtService.icon, SERVICES_DEVIANTART_ACTION);
+//        iconContextMenu.addItem(res, ImageshackServices.title, ImageshackServices.icon, SERVICES_IMAGESHACK_ACTION);
 
         //iconContextMenu.addItem(res, QQServices.title, QQServices.icon, SERVICES_QQ_ACTION);
-        iconContextMenu.addItem(res, VKServices.title, VKServices.icon, SERVICES_VK_ACTION);
+        //iconContextMenu.addItem(res, VKServices.title, VKServices.icon, SERVICES_VK_ACTION);
         //iconContextMenu.addItem(res, S500pxService.title, S500pxService.icon, SERVICES_500PX_ACTION);
-        iconContextMenu.addItem(res, ImgurServices.title, ImgurServices.icon, SERVICES_IMGUR_ACTION);
+        //iconContextMenu.addItem(res, ImgurServices.title, ImgurServices.icon, SERVICES_IMGUR_ACTION);
 
         //iconContextMenu.addItem(res, KaixinServices.title, KaixinServices.icon, SERVICES_KAIXIN_ACTION);
-        iconContextMenu.addItem(res, SohuServices.title, SohuServices.icon, SERVICES_SOHU_ACTION);
+        //iconContextMenu.addItem(res, SohuServices.title, SohuServices.icon, SERVICES_SOHU_ACTION);
         iconContextMenu.setOnClickListener(new IconContextMenu.IconContextMenuOnClickListener() {
             @SuppressWarnings("deprecation")
             @Override
             public void onClick(int menuId) {
                 switch (menuId) {
                     case SERVICES_FACEBOOK_ACTION:
-//					if (!(PrefManager.getBoolean(PrefManager.LOGIN_STATUS, false))){
-//						Intent fbauth = new Intent(ctx, FacebookActivity.class);
-//						ctx.startActivity(fbauth);
-//					}
-//					else {
-//						Toast.makeText(ctx, "Account already logged in", Toast.LENGTH_SHORT).show();
-//					}
-
                         Intent fbauth = new Intent(ctx, FacebookActivity.class);
                         ctx.startActivity(fbauth);
 
-//					String fauthURL = FacebookServices.getAuthenticateLink();
-//					Intent fauthApp = new Intent(ctx, Webkit.class);
-//					fauthApp.putExtra("URL", fauthURL);
-//					ctx.startActivity(fauthApp);
                         PhimpMe.add_account_upload = true;
                         PhimpMe.add_account_setting = true;
                         break;
