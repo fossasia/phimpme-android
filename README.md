@@ -33,7 +33,6 @@ Before you begin, you should already have the Android Studio SDK downloaded and 
 7. If the app was built succesfully, you can test it by running it on either a real device or an emulated one by going to *Run>Run 'app'* or presing the Run icon in the toolbar.
 
 ## Screenshots
-![alt-tag](docs/screenshots/ss.png)
 <table>
   <tr>
     <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/home.png"></td>></td>
