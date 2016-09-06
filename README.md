@@ -34,6 +34,15 @@ Before you begin, you should already have the Android Studio SDK downloaded and 
 
 ## Screenshots
 ![alt-tag](docs/screenshots/ss.png)
+<table>
+  <tr>
+    <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/home.png"></td>></td>
+  <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/upload.png"></td>
+    <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/fbupload.png"></td>
+ <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/settings.png"></td>
+ 
+  </tr>
+  </table>
 
 ## License
 
