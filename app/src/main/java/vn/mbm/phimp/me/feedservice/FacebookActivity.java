@@ -51,6 +51,7 @@ public class FacebookActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FacebookSdk.sdkInitialize(this);
         ctx = this;
         activity = (Activity) this;
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -67,6 +68,7 @@ public class FacebookActivity extends Activity {
             public void onSuccess(LoginResult loginResult) {
 
                 final AccessToken accessToken = loginResult.getAccessToken();
+                final String at = loginResult.getAccessToken().getToken();
                 final Profile profile = Profile.getCurrentProfile();
                 GraphRequest request = GraphRequest.newMeRequest(
                         AccessToken.getCurrentAccessToken(),
@@ -86,7 +88,7 @@ public class FacebookActivity extends Activity {
                                         long account_id = AccountItem.insertAccount(ctx, null, user_fullname, "facebook", "1");
                                         Log.d("ID", String.valueOf(account_id));
                                         if (account_id > 0) {
-                                            if (FacebookItem.insertFacebookAccount(ctx, String.valueOf(account_id), String.valueOf(accessToken), user_id, user_name, user_fullname, email, profile_url)) {
+                                            if (FacebookItem.insertFacebookAccount(ctx, String.valueOf(account_id), at, user_id, user_name, user_fullname, email, profile_url)) {
                                                 Toast.makeText(ctx, "Insert account '" + user_fullname + "' (Facebook) SUCCESS!", Toast.LENGTH_LONG).show();
                                             } else {
                                                 Toast.makeText(ctx, "Insert account '" + user_fullname + "' (Facebook) FAIL!", Toast.LENGTH_LONG).show();
@@ -127,7 +129,6 @@ public class FacebookActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
