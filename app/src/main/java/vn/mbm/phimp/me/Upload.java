@@ -259,85 +259,16 @@ public class Upload extends Activity {
                         Log.d("Hon", String.valueOf(PhimpMe.checked_accounts.size()));
                         if (checkListAccount()) {
                             if (imagelist != "") {
-                                String[] images = imagelist.split("#");
-                                ArrayList<Bitmap> imagesBitmapArray = new ArrayList<Bitmap>();
-
-                                for (int i=0; i<images.length; i++){
-                                    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-                                    imagesBitmapArray.add(i, BitmapFactory.decodeFile(images[i], bmOptions));
-                                }
-
-                                List<SharePhoto> photos = new ArrayList<SharePhoto>();
-                                for (int i=0; i<images.length; i++){
-                                    SharePhoto photo = new SharePhoto.Builder()
-                                            .setBitmap(imagesBitmapArray.get(i))
-                                            .build();
-                                    photos.add(photo);
-                                }
-
-                                SharePhotoContent content = new SharePhotoContent.Builder()
-                                        .addPhotos(photos)
-                                        .build();
-
-
-                                shareDialog.show(content);
-
-//                                android.os.Handler handler = new android.os.Handler();
-//                                handler.postDelayed(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-//                                        Bitmap image = BitmapFactory.decodeFile(imagelist, bmOptions);
-//                                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                                        image.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//                                        byte[] byteArray = stream.toByteArray();
-//
-//                                        //AccessToken at =
-//                                        String path = "/me/photos";
-//                                        Bundle params = new Bundle();
-//                                        params.putByteArray("source", byteArray);
-//                                        HttpMethod method = HttpMethod.POST;
-///* make the API call */
-//                                        //GraphRequest.Callback cb =
-//
-//                                        GraphRequest request = new GraphRequest(AccessToken.getCurrentAccessToken(), path, params, method, new GraphRequest.Callback() {
-//
-//                                            @Override
-//                                            public void onCompleted(GraphResponse graphResponse) {
-//                                                //check graphResponse for success or failure
-//                                                if (graphResponse.getError() == null) {
-//                                                    Toast.makeText(ctx, "Successfully posted to Facebook", Toast.LENGTH_SHORT).show();
-//                                                } else {
-//                                                    Toast.makeText(ctx, "Facebook: There was an error, Please Try Again", Toast.LENGTH_SHORT).show();
-//
-//                                                }
-//                                            }
-//                                        });
-//
-//                                        request.setParameters(params);
-//                                        request.executeAsync();
-//                                    }
-//                                }, 1000);
-
-                                //Bitmap image = imagelist;
-//								SharePhoto photo = new SharePhoto.Builder()
-//										.setBitmap(image)
-//										.build();
-//								SharePhotoContent content = new SharePhotoContent.Builder()
-//										.addPhoto(photo)
-//										.build();
-
-
-//								Log.d("Upload", "start");
-//								Bundle data = new Bundle();
-//								data.putStringArray("id", id);
-//								data.putStringArray("service", service);
-//								data.putStringArray("name", name);
-//								data.putString("imagelist", imagelist);
-//								Intent uitent = new Intent(ctx, UploadProgress.class);
-//								uitent.putExtras(data);
-//								Log.d("UploadProgress","start : "+name);
-//								startActivity(uitent);
+                                Log.d("Upload", "start");
+                                Bundle data = new Bundle();
+                                data.putStringArray("id", id);
+                                data.putStringArray("service", service);
+                                data.putStringArray("name", name);
+                                data.putString("imagelist", imagelist);
+                                Intent uitent = new Intent(ctx, UploadProgress.class);
+                                uitent.putExtras(data);
+                                Log.d("UploadProgress","start : "+name);
+                                startActivity(uitent);
                             } else {
                                 Commons.AlertLog(ctx, getString(R.string.error_upload_no_photo), getString(R.string.accept)).show();
                             }
@@ -372,16 +303,16 @@ public class Upload extends Activity {
                 startActivityForResult(intent, SELECT_IMAGE_FROM_GALLERY);
             }
         });
-		/*btnPhotoAdd.setOnTouchListener(new OnTouchListener() 
+		/*btnPhotoAdd.setOnTouchListener(new OnTouchListener()
 		{
 			@SuppressWarnings("deprecation")
 			@Override
-			public boolean onTouch(View v, MotionEvent event) 
+			public boolean onTouch(View v, MotionEvent event)
 			{
 				showDialog(DIALOG_ADD_PHOTO);
 				return false;
 			}
-		});*/				
+		});*/
 		/*
 		 * Thong - Init services
 		 */
@@ -398,9 +329,9 @@ public class Upload extends Activity {
         }
 
         iconContextMenu = new IconContextMenu(this, CONTEXT_MENU_ID);
-//        iconContextMenu.addItem(res, DrupalServices.title, DrupalServices.icon, SERVICES_DRUPAL_ACTION);
-//        iconContextMenu.addItem(res, "Wordpress", R.drawable.icon_wordpress, SERVICES_WORDPRESS_ACTION);
-//        iconContextMenu.addItem(res, "Wordpress.com", R.drawable.wordpressdotcom_icon, SERVICES_WORDPRESSDOTCOM_ACTION);
+        //iconContextMenu.addItem(res, DrupalServices.title, DrupalServices.icon, SERVICES_DRUPAL_ACTION);
+        iconContextMenu.addItem(res, "Wordpress", R.drawable.icon_wordpress, SERVICES_WORDPRESS_ACTION);
+        //iconContextMenu.addItem(res, "Wordpress.com", R.drawable.wordpressdotcom_icon, SERVICES_WORDPRESSDOTCOM_ACTION);
 //        iconContextMenu.addItem(res, "Joomla", R.drawable.joomla, SERVICES_JOOMLA_ACTION);
         iconContextMenu.addItem(res, FacebookServices.title, FacebookServices.icon, SERVICES_FACEBOOK_ACTION);
 //        iconContextMenu.addItem(res, FlickrServices.title, FlickrServices.icon, SERVICES_FLICKR_ACTION);
