@@ -31,10 +31,14 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +53,8 @@ import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import android.support.design.widget.BottomNavigationView;
+
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.maps.GeoPoint;
@@ -59,7 +65,7 @@ import com.paypal.android.MEP.PayPal;
 //        forceCloseDialogAfterToast = false,
 //        resToastText = R.string.crash_report_text)
 @SuppressWarnings("deprecation")
-public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener//, android.view.GestureDetector.OnGestureListener 
+public class PhimpMe extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener //, android.view.GestureDetector.OnGestureListener
 {
     public static Context ctx;
     public static File DataDirectory;
@@ -154,7 +160,7 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
     public static Double curLatitude, curLongtitude;
 
     public static Double UploadLatitude, UploadLongitude;
-    public static LinearLayout popupTabs;
+    public static LinearLayout popupTabs; // !?!
     public static int camera_use;
     //LOCAL
     public static ArrayList<String> filepath = new ArrayList<String>();
@@ -172,7 +178,7 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
     boolean serviceDisabled = false;
     public static boolean check_cache;
     public static boolean check_export = true;
-    public static TabHost mTabHost;
+    public static BottomNavigationView mBottomNav;
     public static boolean check_donwload = false;
     public static boolean check_donwload_local_gallery = false;
     public static AdView ad;
@@ -183,6 +189,8 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
     //private GestureDetector gestureScanner;
     //View.OnTouchListener gestureListener;
     public static int width, height;
+
+    HomeScreenState currentScreen = HomeScreenState.GALLERY;
 
     @SuppressWarnings("unused")
     @Override
@@ -511,7 +519,7 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
             //startService(intent);
             //check_export = false;
         }
-        TabSpec ts;
+        TabSpec ts; // !?
         View tbview;
         Intent intent;
      
@@ -597,31 +605,64 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
          * Thong - Initial Tab control
          */
 
-        popupTabs = (LinearLayout) findViewById(R.id.popupTabs);
-        showTabs();
         try {
-            mTabHost = getTabHost();
-            setTabs();
-            mTabHost.setCurrentTab(0);
-            mTabHost.getTabWidget().getChildAt(2).setVisibility(View.GONE);
+            mBottomNav = (BottomNavigationView) findViewById(R.id.navigation_view);
         } catch (Exception e) {
         }
-        mTabHost.setOnTabChangedListener(new OnTabChangeListener() {
+        mBottomNav.setOnNavigationItemSelectedListener(this);
 
-            public void onTabChanged(String tabId) {
-                // TODO Auto-generated method stub
-                View currentView = mTabHost.getCurrentView();
-                int curTab = mTabHost.getCurrentTab();
-                if (curTab == 3) {
-                    Intent intent = new Intent(ctx, Camera2.class);
-                    startActivity(intent);
-                }
+        mBottomNav.getMenu().getItem(0).setChecked(true);
 
-            }
-        });
-
+        // Initialising fragment container
+        if (findViewById(R.id.fragment_container) != null) {
+            newGallery frag = new newGallery();
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, frag)
+                    .commit();
+        }
 
     }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.tab_gallery:
+                if (currentScreen != HomeScreenState.GALLERY) {
+                    newGallery frag = new newGallery();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, frag)
+                            .commit();
+                    currentScreen = HomeScreenState.GALLERY;
+                }
+                break;
+            case R.id.tab_camera:
+                Intent intent = new Intent(this, Camera2.class);
+                startActivity(intent);
+                break;
+            case R.id.tab_upload:
+                if (currentScreen != HomeScreenState.UPLOAD) {
+                    Upload frag = new Upload();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, frag)
+                            .commit();
+                    currentScreen = HomeScreenState.UPLOAD;
+                }
+                break;
+            case R.id.tab_settings:
+                if (currentScreen != HomeScreenState.SETTINGS) {
+                    Settings frag = new Settings();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, frag)
+                            .commit();
+                    currentScreen = HomeScreenState.SETTINGS;
+                }
+                break;
+
+        }
+
+        return true;
+    }
+
   /*  public Animation inFromRightAnimation() {
         Animation inFromRight = new TranslateAnimation(
         Animation.RELATIVE_TO_PARENT, +1.0f,
@@ -633,28 +674,37 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
         return inFromRight;
     }*/
 
-    private void setTabs() {
-        addTab("", R.drawable.tab_icon_gallery_selector, newGallery.class);
-        addTab("", R.drawable.tab_icon_map_selector, OpenStreetMap.class);
-        addTab("", R.drawable.tab_icon_map_selector, GalleryMap.class);
-        addTab("", R.drawable.tab_icon_camera_selector, Blank.class);
-        addTab("", R.drawable.tab_icon_upload_selector, Upload.class);
-        addTab("", R.drawable.tab_icon_settings_selector, Settings.class);
-    }
+    // navigation bar tabs
+//    private void setTabs() {
+//        addTab("", R.drawable.tab_icon_gallery_selector, newGallery.class);
+//        addTab("", R.drawable.tab_icon_map_selector, OpenStreetMap.class);
+//        addTab("", R.drawable.tab_icon_map_selector, GalleryMap.class);
+//        addTab("", R.drawable.tab_icon_camera_selector, Blank.class);
+//        addTab("", R.drawable.tab_icon_upload_selector, Upload.class);
+//        addTab("", R.drawable.tab_icon_settings_selector, Settings.class);
+//    }
+//
+//    private void addTab(String labelId, int drawableId, Class<?> c) {
+//        TabHost.TabSpec spec = mTabHost.newTabSpec("tab" + labelId);
+//        View tabIndicator = LayoutInflater.from(this).inflate(R.layout.tab_indicator, getTabWidget(), false);
+//        TextView title = (TextView) tabIndicator.findViewById(R.id.title);
+//        title.setText(labelId);
+//        ImageView icon = (ImageView) tabIndicator.findViewById(R.id.icon);
+//        icon.setImageResource(drawableId);
+//        spec.setIndicator(tabIndicator);
+//        Intent intent = new Intent(this, c);
+//        spec.setContent(intent);
+//        mTabHost.addTab(spec);
+//
+//
+//    }
 
-    private void addTab(String labelId, int drawableId, Class<?> c) {
-        TabHost.TabSpec spec = mTabHost.newTabSpec("tab" + labelId);
-        View tabIndicator = LayoutInflater.from(this).inflate(R.layout.tab_indicator, getTabWidget(), false);
-        TextView title = (TextView) tabIndicator.findViewById(R.id.title);
-        title.setText(labelId);
-        ImageView icon = (ImageView) tabIndicator.findViewById(R.id.icon);
-        icon.setImageResource(drawableId);
-        spec.setIndicator(tabIndicator);
-        Intent intent = new Intent(this, c);
-        spec.setContent(intent);
-        mTabHost.addTab(spec);
 
-
+    enum HomeScreenState {
+        // todo: add as needed
+        GALLERY,
+        UPLOAD,
+        SETTINGS
     }
 
     public Animation outToLeftAnimation() {
@@ -670,12 +720,12 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
 
     // Show Tabs method
     public static void showTabs() {
-        popupTabs.setVisibility(ViewGroup.VISIBLE);
+        mBottomNav.setVisibility(ViewGroup.VISIBLE);
     }
 
     // Hide Tabs method
     public static void hideTabs() {
-        popupTabs.setVisibility(ViewGroup.GONE);
+//        mBottomNav.setVisibility(ViewGroup.GONE);
     }
 
 //    public static void ShowAd() {
@@ -750,22 +800,33 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
     @Override
     public boolean onKeyDown(int keycode, KeyEvent event) {
         if (keycode == KeyEvent.KEYCODE_BACK) {
-            AlertDialog.Builder alertbox = new AlertDialog.Builder(ctx);
-            alertbox.setMessage(getString(R.string.exit_message));
-            alertbox.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    finish();
-                    System.exit(0);
-                }
-            });
-            alertbox.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //Resume to current process
-                }
-            });
-            alertbox.create().show();
+            if (currentScreen != HomeScreenState.GALLERY) {
+                newGallery frag = new newGallery();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, frag)
+                        .commit();
+                currentScreen = HomeScreenState.GALLERY;
+            }
+            else {
+                AlertDialog.Builder alertbox = new AlertDialog.Builder(ctx);
+                alertbox.setMessage(getString(R.string.exit_message));
+                alertbox.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                        System.exit(0);
+                    }
+                });
+                alertbox.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Resume to current process
+                    }
+                });
+                alertbox.create().show();
+
+            }
+
         }
         return super.onKeyDown(keycode, event);
     }
@@ -780,19 +841,22 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
             // swipe ok
             if (dispX > 0) {
                 // L-R swipe
-                changeRtoL();
+                //changeRtoL();
             } else {
                 // R-L swipe            	
-                changeLtoR();
+                //changeLtoR();
 
             }
         }
         return true;
     }
 
+    // fixme: properly implement changeLtoR and changeRtoL
+    // Currently the above function is the only use of this
+    /*
     private void changeLtoR() {
         int curTab = mTabHost.getCurrentTab();
-        int nextTab = ((curTab + 1) % 4);
+        int nextTab = ((curTab + 1) % 4); // !?! (why mod 4)
         mTabHost.setCurrentTab(nextTab);
     }
 
@@ -804,6 +868,7 @@ public class PhimpMe extends TabActivity implements TabHost.OnTabChangeListener/
         }
 
     }
+    */
    /* public boolean dispatchTouchEvent(MotionEvent ev) {
         if (gestureScanner != null) {
             if (gestureScanner.onTouchEvent(ev))
