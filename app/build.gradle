@@ -42,6 +42,10 @@ android {
         }
     }
 
+    dexOptions {
+    	jumboMode = true
+    }
+
 }
 android {
     useLibrary 'org.apache.http.legacy'
