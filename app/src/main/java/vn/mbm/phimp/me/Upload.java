@@ -3,6 +3,7 @@ package vn.mbm.phimp.me;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.*;
 import android.content.pm.ActivityInfo;
@@ -17,6 +18,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -58,7 +60,7 @@ import vn.mbm.phimp.me.services.*;
 import vn.mbm.phimp.me.utils.Commons;
 import vn.mbm.phimp.me.utils.geoDegrees;
 
-public class Upload extends Activity {
+public class Upload extends android.support.v4.app.Fragment {
     private final int CONTEXT_MENU_ID = 1;
 
     private final int DIALOG_ADD_PHOTO = 2;
@@ -185,25 +187,30 @@ public class Upload extends Activity {
 
     long totalSize;
 
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.upload, container, false);
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FacebookSdk.sdkInitialize(getApplicationContext());
+        FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
 
-        final ShareDialog shareDialog = new ShareDialog(this);
-        setContentView(R.layout.upload);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        final ShareDialog shareDialog = new ShareDialog(getActivity());
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Resources res = getResources();
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        ctx = this;
+        ctx = getContext();
         Log.d("Upload", "Upload Start");
 
-        listAccounts = (ListView) findViewById(R.id.listUploadAccounts);
+        listAccounts = (ListView) getView().findViewById(R.id.listUploadAccounts);
 
-        listPhotoUpload = (GridView) findViewById(R.id.photolistview);
+        listPhotoUpload = (GridView) getView().findViewById(R.id.photolistview);
         if (!imagelist.equals(""))
             listPhotoUpload.setAdapter(new ImageAdapter(ctx));
         listPhotoUpload.setOnItemClickListener(new OnItemClickListener() {
@@ -228,13 +235,13 @@ public class Upload extends Activity {
 		/*
          * bluetooth share
 		 */
-        btnBluetoothShare = (ImageButton) findViewById(R.id.upload_sendDirectly);
+        btnBluetoothShare = (ImageButton) getView().findViewById(R.id.upload_sendDirectly);
         btnBluetoothShare.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (imagelist != "") {
                     Intent intent = new Intent();
-                    intent.setClass(Upload.this, BluetoothShareMultipleFile.class);
+                    intent.setClass(getContext(), BluetoothShareMultipleFile.class);
                     intent.putExtra("imagelist", imagelist);
                     intent.putExtra("activityName", "Upload");
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -247,7 +254,7 @@ public class Upload extends Activity {
             }
         });
 
-        btnUpload = (Button) findViewById(R.id.btnUploadPhoto);
+        btnUpload = (Button) getView().findViewById(R.id.btnUploadPhoto);
         if (savedInstanceState != null) {
         }
 
@@ -285,17 +292,17 @@ public class Upload extends Activity {
             }
         });
 
-        btnAdd = (ImageButton) findViewById(R.id.btnUploadAccountAdd);
+        btnAdd = (ImageButton) getView().findViewById(R.id.btnUploadAccountAdd);
         btnAdd.setOnTouchListener(new OnTouchListener() {
             @SuppressWarnings("deprecation")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                showDialog(CONTEXT_MENU_ID);
+                getActivity().showDialog(CONTEXT_MENU_ID);
                 return false;
             }
         });
 
-        btnPhotoAdd = (ImageButton) findViewById(R.id.btnUploadPhotoAdd);
+        btnPhotoAdd = (ImageButton) getView().findViewById(R.id.btnUploadPhotoAdd);
         btnPhotoAdd.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -328,7 +335,7 @@ public class Upload extends Activity {
             reloadAccountsList();
         }
 
-        iconContextMenu = new IconContextMenu(this, CONTEXT_MENU_ID);
+        iconContextMenu = new IconContextMenu(getActivity(), CONTEXT_MENU_ID);
         //iconContextMenu.addItem(res, DrupalServices.title, DrupalServices.icon, SERVICES_DRUPAL_ACTION);
         iconContextMenu.addItem(res, "Wordpress", R.drawable.icon_wordpress, SERVICES_WORDPRESS_ACTION);
         //iconContextMenu.addItem(res, "Wordpress.com", R.drawable.wordpressdotcom_icon, SERVICES_WORDPRESSDOTCOM_ACTION);
@@ -393,7 +400,7 @@ public class Upload extends Activity {
                         PhimpMe.add_account_setting = true;
                         break;
                     case SERVICES_DRUPAL_ACTION:
-                        showDialog(DIALOG_ADD_ACCOUNT_DRUPAL);
+                        getActivity().showDialog(DIALOG_ADD_ACCOUNT_DRUPAL);
                         break;
                     case SERVICES_DEVIANTART_ACTION:
                         String deviantart_oauth_url = DeviantArtService.getAuthenticateCode();
@@ -404,7 +411,7 @@ public class Upload extends Activity {
                         PhimpMe.add_account_setting = true;
                         break;
                     case SERVICES_IMAGESHACK_ACTION:
-                        showDialog(DIALOG_ADD_ACCOUNT_IMAGESHACK);
+                        getActivity().showDialog(DIALOG_ADD_ACCOUNT_IMAGESHACK);
                         break;
                     case SERVICES_VK_ACTION:
                         Intent vk_authApp = new Intent(ctx, Webkit.class);
@@ -454,10 +461,10 @@ public class Upload extends Activity {
                         PhimpMe.add_account_setting = true;
                         break;
                     case SERVICES_WORDPRESS_ACTION:
-                        showDialog(DIALOG_ADD_ACCOUNT_WORDPRESS);
+                        getActivity().showDialog(DIALOG_ADD_ACCOUNT_WORDPRESS);
                         break;
                     case SERVICES_JOOMLA_ACTION:
-                        showDialog(DIALOG_ADD_ACCOUNT_JOOMLA);
+                        getActivity().showDialog(DIALOG_ADD_ACCOUNT_JOOMLA);
                         break;
                 }
 
@@ -471,7 +478,7 @@ public class Upload extends Activity {
         private LayoutInflater mInflater;
 
         public ImageAdapter(Context c) {
-            mInflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             path = imagelist.split("#");
 
         }
@@ -515,9 +522,9 @@ public class Upload extends Activity {
             String tmp[] = path[position].split(";");
             Uri imageUri = Uri.parse(tmp[0]);
             Log.d("imageUri", imageUri.toString() + ",length path : " + path.length);
-            ContentResolver cr = getContentResolver();
+            ContentResolver cr = getActivity().getContentResolver();
             String[] proj = {MediaStore.Images.Media._ID};
-            Cursor cursor = managedQuery(
+            Cursor cursor = getActivity().managedQuery(
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI, proj,
                     MediaStore.Images.Media.DATA + " = '" + imageUri + "'", null, MediaStore.Images.Media._ID);
             if (cursor.getCount() == 0) {
@@ -761,7 +768,7 @@ public class Upload extends Activity {
         }
         accounts = null;
 
-        listAccounts.setAdapter(new AccountsAdapter(this, id, name, service));
+        listAccounts.setAdapter(new AccountsAdapter(getActivity(), id, name, service));
 
     }
 
@@ -769,7 +776,7 @@ public class Upload extends Activity {
      * create context menu
      */
     @SuppressWarnings("deprecation")
-    @Override
+    //@Override
     protected Dialog onCreateDialog(int id) {
         switch (id) {
             case CONTEXT_MENU_ID:
@@ -781,7 +788,7 @@ public class Upload extends Activity {
                         this.getString(R.string.cancel)
                 };
 
-                return new AlertDialog.Builder(this).setIcon(R.drawable.icon).setTitle("Add photos")
+                return new AlertDialog.Builder(getContext()).setIcon(R.drawable.icon).setTitle("Add photos")
                         .setItems(items, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -801,8 +808,8 @@ public class Upload extends Activity {
                             }
                         }).create();
             case DIALOG_ADD_ACCOUNT_DRUPAL:
-                LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(LAYOUT_INFLATER_SERVICE);
-                final View layout = inflater.inflate(R.layout.dialog_add_account_drupal, (ViewGroup) findViewById(R.id.lytDialogAddAccountDrupal));
+                LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(getActivity().LAYOUT_INFLATER_SERVICE);
+                final View layout = inflater.inflate(R.layout.dialog_add_account_drupal, (ViewGroup) getView().findViewById(R.id.lytDialogAddAccountDrupal));
                 Button btnDrupal = (Button) layout.findViewById(R.id.btnDrupalIntroduction);
                 btnDrupal.setOnClickListener(new OnClickListener() {
 
@@ -813,7 +820,7 @@ public class Upload extends Activity {
                         startActivity(i);
                     }
                 });
-                return new AlertDialog.Builder(Upload.this)
+                return new AlertDialog.Builder(getContext())
                         .setTitle(DrupalServices.title)
                         .setMessage("")
                         .setView(layout)
@@ -847,7 +854,7 @@ public class Upload extends Activity {
 
 
                                 } catch (Exception e) {
-                                    Toast.makeText(Upload.this, "Error: " + e.toString(), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getContext(), "Error: " + e.toString(), Toast.LENGTH_LONG).show();
 
                                     e.printStackTrace();
                                 }
@@ -862,10 +869,10 @@ public class Upload extends Activity {
                         .create();
             //Imageshack Dialog
             case DIALOG_ADD_ACCOUNT_IMAGESHACK:
-                LayoutInflater inflater1 = (LayoutInflater) ctx.getSystemService(LAYOUT_INFLATER_SERVICE);
-                final View layout1 = inflater1.inflate(R.layout.dialog_add_account_imageshack, (ViewGroup) findViewById(R.id.lytDialogAddAccountImageshack));
+                LayoutInflater inflater1 = (LayoutInflater) ctx.getSystemService(getActivity().LAYOUT_INFLATER_SERVICE);
+                final View layout1 = inflater1.inflate(R.layout.dialog_add_account_imageshack, (ViewGroup) getView().findViewById(R.id.lytDialogAddAccountImageshack));
 
-                return new AlertDialog.Builder(Upload.this)
+                return new AlertDialog.Builder(getContext())
                         .setTitle(ImageshackServices.title)
                         .setMessage("")
                         .setView(layout1)
@@ -901,7 +908,7 @@ public class Upload extends Activity {
 
                                     reloadAccountsList();
                                 } catch (Exception e) {
-                                    Toast.makeText(Upload.this, "Error: " + e.toString(), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity(), "Error: " + e.toString(), Toast.LENGTH_LONG).show();
 
                                     e.printStackTrace();
                                 }
@@ -917,8 +924,8 @@ public class Upload extends Activity {
             //wordpress
             case DIALOG_ADD_ACCOUNT_WORDPRESS:
 
-                LayoutInflater inflater2 = (LayoutInflater) ctx.getSystemService(LAYOUT_INFLATER_SERVICE);
-                final View layout2 = inflater2.inflate(R.layout.dialog_add_account_wordpress, (ViewGroup) findViewById(R.id.lytDialogAddAccountWordpress));
+                LayoutInflater inflater2 = (LayoutInflater) ctx.getSystemService(getActivity().LAYOUT_INFLATER_SERVICE);
+                final View layout2 = inflater2.inflate(R.layout.dialog_add_account_wordpress, (ViewGroup) getView().findViewById(R.id.lytDialogAddAccountWordpress));
                 Button btnWordpress = (Button) layout2.findViewById(R.id.btnWordpressIntroduction);
                 btnWordpress.setOnClickListener(new OnClickListener() {
 
@@ -929,7 +936,7 @@ public class Upload extends Activity {
                         startActivity(i);
                     }
                 });
-                return new AlertDialog.Builder(Upload.this)
+                return new AlertDialog.Builder(getContext())
                         .setTitle("Wordpress")
                         .setMessage("")
                         .setView(layout2)
@@ -947,7 +954,7 @@ public class Upload extends Activity {
                                     PhimpMe.add_account_setting = true;
                                     reloadAccountsList();
                                 } catch (Exception e) {
-                                    Toast.makeText(Upload.this, "Error: " + e.toString(), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getContext(), "Error: " + e.toString(), Toast.LENGTH_LONG).show();
 
                                     e.printStackTrace();
                                 }
@@ -961,8 +968,8 @@ public class Upload extends Activity {
                         })
                         .create();
             case DIALOG_ADD_ACCOUNT_JOOMLA:
-                LayoutInflater inflater3 = (LayoutInflater) ctx.getSystemService(LAYOUT_INFLATER_SERVICE);
-                final View layout3 = inflater3.inflate(R.layout.dialog_add_account_joomla, (ViewGroup) findViewById(R.id.lytDialogAddAccountWordpress));
+                LayoutInflater inflater3 = (LayoutInflater) ctx.getSystemService(getActivity().LAYOUT_INFLATER_SERVICE);
+                final View layout3 = inflater3.inflate(R.layout.dialog_add_account_joomla, (ViewGroup) getView().findViewById(R.id.lytDialogAddAccountWordpress));
                 Button btnJoomla = (Button) layout3.findViewById(R.id.btnJoomlaIntroduction);
                 btnJoomla.setOnClickListener(new OnClickListener() {
 
@@ -973,7 +980,7 @@ public class Upload extends Activity {
                         startActivity(i);
                     }
                 });
-                return new AlertDialog.Builder(Upload.this)
+                return new AlertDialog.Builder(getContext())
                         .setTitle("Joomla")
                         .setMessage("")
                         .setView(layout3)
@@ -1009,7 +1016,7 @@ public class Upload extends Activity {
                                     //PhimpMe.add_account_setting = true;
                                     //reloadAccountsList();
                                 } catch (Exception e) {
-                                    Toast.makeText(Upload.this, "Error: " + e.toString(), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getContext(), "Error: " + e.toString(), Toast.LENGTH_LONG).show();
 
                                     e.printStackTrace();
                                 }
@@ -1023,7 +1030,7 @@ public class Upload extends Activity {
                         })
                         .create();
             default:
-                return super.onCreateDialog(id);
+                return null;//super.onCreateDialog(id);
         }
     }
 
@@ -1039,7 +1046,7 @@ public class Upload extends Activity {
             values.put(MediaStore.Images.Media.TITLE, filename);
             values.put(MediaStore.Images.Media.DESCRIPTION, "Image capture by Camera using Phimp.Me");
 
-            camera_img_uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            camera_img_uri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
             Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, camera_img_uri);
@@ -1049,28 +1056,29 @@ public class Upload extends Activity {
         }
     }
 
+    // TODO: this might not be safe; was protected.
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
 
             case TAKE_PICTURE: {
                 if (resultCode == Activity.RESULT_OK) {
                     String[] projection = {MediaStore.Images.Media.DATA};
                     @SuppressWarnings("deprecation")
-                    Cursor cursor = managedQuery(camera_img_uri, projection, null, null, null);
+                    Cursor cursor = getActivity().managedQuery(camera_img_uri, projection, null, null, null);
                     int column_index_data = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                     cursor.moveToFirst();
                     if (imagelist == "")
                         imagelist = cursor.getString(column_index_data);
                     else imagelist += "," + cursor.getString(column_index_data);
-                    listPhotoUpload.setAdapter(new ImageAdapter(this));
+                    listPhotoUpload.setAdapter(new ImageAdapter(getContext()));
                 }
                 break;
             }
             case SELECT_IMAGE_FROM_GALLERY: {
                 if (resultCode == Activity.RESULT_OK) {
                     imagelist = data.getStringExtra("Ids");
-                    listPhotoUpload.setAdapter(new ImageAdapter(this));
+                    listPhotoUpload.setAdapter(new ImageAdapter(getContext()));
                 } else {
 
                 }
@@ -1087,7 +1095,7 @@ public class Upload extends Activity {
                     String json = "{\"name\":\"" + name + "\"," + "\"tags\":\"" + tag + "\"," + "\"lati\":\"" + lati + "\"," + "\"logi\":\"" + logi + "\"}";
                     imagelist = imagelist.replace(imagepath, saveUri + ";" + json);
                     Log.d("image", imagelist);
-                    listPhotoUpload.setAdapter(new ImageAdapter(this));
+                    listPhotoUpload.setAdapter(new ImageAdapter(getContext()));
                 }
                 break;
             }
@@ -1149,10 +1157,10 @@ public class Upload extends Activity {
 
     }*/
 
-    @Override
-    public void onBackPressed() {
-        PhimpMe.IdList.remove(PhimpMe.IdList.size() - 1);
-        PhimpMe.mTabHost.setCurrentTab(0);
-    }
+//    @Override
+//    public void onBackPressed() {
+//        PhimpMe.IdList.remove(PhimpMe.IdList.size() - 1);
+////        PhimpMe.mTabHost.setCurrentTab(0);
+//    }
 
 }

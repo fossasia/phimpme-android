@@ -127,9 +127,9 @@ public class GalleryMap extends MapActivity implements LocationListener
 						
 					}
 					else{
-						PhimpMe.mTabHost.getTabWidget().getChildAt(2).setVisibility(View.GONE);
-						PhimpMe.mTabHost.getTabWidget().getChildAt(1).setVisibility(View.VISIBLE);
-						PhimpMe.mTabHost.setCurrentTab(1);
+//						PhimpMe.mTabHost.getTabWidget().getChildAt(2).setVisibility(View.GONE);
+//						PhimpMe.mTabHost.getTabWidget().getChildAt(1).setVisibility(View.VISIBLE);
+//						PhimpMe.mTabHost.setCurrentTab(1);
 					}
 					
 				}
@@ -526,7 +526,7 @@ public class GalleryMap extends MapActivity implements LocationListener
 		if(check==false){
 			PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
 			if (PhimpMe.IdList.get(PhimpMe.IdList.size()-1) == 1) PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
-			PhimpMe.mTabHost.setCurrentTab(PhimpMe.IdList.get(PhimpMe.IdList.size()-1));
+//			PhimpMe.mTabHost.setCurrentTab(PhimpMe.IdList.get(PhimpMe.IdList.size()-1));
 			super.onStop();		
 			Log.d("Hon","Backpressed !");
 		}else{
