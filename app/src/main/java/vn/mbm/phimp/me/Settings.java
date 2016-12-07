@@ -69,6 +69,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
@@ -99,7 +101,7 @@ import com.paypal.android.MEP.PayPal;
 import com.paypal.android.MEP.PayPalActivity;
 import com.paypal.android.MEP.PayPalPayment;
 import com.tani.app.ui.IconContextMenu;
-public class Settings extends Activity 
+public class Settings extends Fragment
 {
 	private final int CONTEXT_MENU_ID = 1;
 	private final int DIALOG_FILE_SIZE_SETTINGS = 2;
@@ -173,17 +175,22 @@ public class Settings extends Activity
 	File tmp_folder;
 	int error_count = 0;
 	ProgressDialog pro_gress;
-	
+
+	@Nullable
+	@Override
+	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.settings, container, false);
+	}
+
 	@SuppressWarnings("deprecation")
 	@Override
-    public void onCreate(Bundle savedInstanceState)
+    public void onViewCreated(View view, Bundle savedInstanceState)
     {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.settings);
-		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);		
+		getActivity().setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		Resources res = getResources();
 		
-		ctx = this;
+		ctx = getContext();
 		
 		PayPal pp = PayPal.getInstance();
 		
@@ -191,13 +198,13 @@ public class Settings extends Activity
 		 final CheckoutButton donateButton = pp.getCheckoutButton(ctx, PayPal.BUTTON_278x43, CheckoutButton.TEXT_DONATE);
 		
 		//Add donate button to the screen
-		//((LinearLayout)findViewById(R.id.linearSettingsDonate)).addView(donateButton);
+		//((LinearLayout)getView().findViewById(R.id.linearSettingsDonate)).addView(donateButton);
 
 		//initial amount field
-		//donateAmount = (EditText) findViewById(R.id.donateAmount);
+		//donateAmount = (EditText) getView().findViewById(R.id.donateAmount);
 		
 				
-		lytAccounts = (LinearLayout) findViewById(R.id.linearSettingsAccounts);
+		lytAccounts = (LinearLayout) getView().findViewById(R.id.linearSettingsAccounts);
 		
 
 		try{
@@ -213,7 +220,7 @@ public class Settings extends Activity
 					tmp_folder = new File(PhimpMe.DataDirectory.getAbsolutePath() + "/" + RSSUtil.TMP_FOLDER);
 				}catch(Exception e){
 				}	
-			btnDelete = (ImageButton)findViewById(R.id.deletebtn);
+			btnDelete = (ImageButton)getView().findViewById(R.id.deletebtn);
 			btnDelete.setOnClickListener(new OnClickListener() {
 				
 				@Override
@@ -260,7 +267,7 @@ public class Settings extends Activity
 										}*/
 										
 									}
-									sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"
+									getActivity().sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"
 								            + Environment.getExternalStorageDirectory()))); 
 					            }				            
 					        });
@@ -278,22 +285,22 @@ public class Settings extends Activity
 				
 			});			
 		}catch (Exception e){}
-		txtMaxPhotoSize = (TextView) findViewById(R.id.txtMaxFilesizeDownload);
+		txtMaxPhotoSize = (TextView) getView().findViewById(R.id.txtMaxFilesizeDownload);
 		txtMaxPhotoSize.setText(PhimpMe.MAX_FILESIZE_DOWNLOAD + "");
-		btnSettingsMaxFilesize = (ImageButton) findViewById(R.id.imgbtnSettingsMaxFilesize);
+		btnSettingsMaxFilesize = (ImageButton) getView().findViewById(R.id.imgbtnSettingsMaxFilesize);
 		btnSettingsMaxFilesize.setOnTouchListener(new OnTouchListener() 
 		{			
 			@Override
 			public boolean onTouch(View v, MotionEvent event) 
 			{
-				showDialog(DIALOG_FILE_SIZE_SETTINGS);
+				getActivity().showDialog(DIALOG_FILE_SIZE_SETTINGS);
 				return false;
 			}
 		});
 		/*
 		 * Danh - Add Active google admod
 		 */
-		//lytGoogleAdmod = (LinearLayout) findViewById(R.id.linearSettingsGoogleAdmod);
+		//lytGoogleAdmod = (LinearLayout) getView().findViewById(R.id.linearSettingsGoogleAdmod);
 		
 		LinearLayout.LayoutParams lpMargin_g = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		lpMargin_g.setMargins(10, 0, 10, 0);
@@ -356,7 +363,7 @@ public class Settings extends Activity
 		/*
 		 * Danh - Add Local gallery
 		 */
-		lytLocalGallery = (LinearLayout) findViewById(R.id.linearSettingsLocalGallery);
+		lytLocalGallery = (LinearLayout) getView().findViewById(R.id.linearSettingsLocalGallery);
 		
 		LinearLayout.LayoutParams lpMargin_ = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		lpMargin_.setMargins(10, 0, 10, 0);
@@ -521,9 +528,10 @@ public class Settings extends Activity
 			}
 		}
 	}
-	
+
+	// TODO: this may not be safe; was protected
 	@Override
-	protected void onResume()
+	public void onResume()
 	{
 		super.onResume();
 		PhimpMe.showTabs();
@@ -664,7 +672,7 @@ public class Settings extends Activity
 	            boolean del = deletePhotoInDatabase();
 				if(del==true){
 					newGallery.clearAllPhoto();	
-					sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"
+					getActivity().sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"
 				            + Environment.getExternalStorageDirectory()))); 
 					//remove deleted photo in upload list
 					Upload.imagelist="";	
@@ -771,12 +779,13 @@ public class Settings extends Activity
 	        //return super.onKeyDown(keycode, event);
 	    	return true;
     }*/
-	@Override
-	public void onBackPressed(){
-		PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
-		PhimpMe.mTabHost.setCurrentTab(PhimpMe.IdList.get(PhimpMe.IdList.size()-1));
-		PhimpMe.showTabs();
-	}
+
+//	@Override
+//	public void onBackPressed(){
+//		PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
+////		PhimpMe.mTabHost.setCurrentTab(PhimpMe.IdList.get(PhimpMe.IdList.size()-1));
+//		PhimpMe.showTabs();
+//	}
 	
 	
 }

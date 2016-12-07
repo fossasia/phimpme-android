@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/tab_gallery"
+        android:icon="@drawable/ic_gallery"
+        android:title="@string/gallery"
+        />
+    <!--TODO: Put this back at some point-->
+    <!--<item-->
+        <!--android:id="@+id/tab_map"-->
+        <!--android:icon="@drawable/ic_map"-->
+        <!--android:title="@string/view_map"-->
+        <!--/>-->
+    <item
+        android:id="@+id/tab_camera"
+        android:icon="@drawable/ic_camera"
+        android:title="@string/camera"
+        />
+    <item
+        android:id="@+id/tab_upload"
+        android:icon="@drawable/ic_upload"
+        android:title="@string/upload"
+        />
+    <item
+        android:id="@+id/tab_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/settings"
+        />
+</menu>

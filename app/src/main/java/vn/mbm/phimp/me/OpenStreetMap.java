@@ -31,14 +31,18 @@ import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 
-public class OpenStreetMap extends Activity{
+public class OpenStreetMap extends Fragment{
 	protected static final int GONE = 8;
 	private MapView myOpenMapView;
 	private MapController myMapController;
@@ -59,44 +63,51 @@ public class OpenStreetMap extends Activity{
 	private GeoPoint currentLocation;
 
 	ImageButton btnS;
-    /** Called when the activity is first created. */
+
+	@Nullable
+	@Override
+	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.open_street_map, container, false);
+	}
+
+	/** Called when the activity is first created. */
     @SuppressWarnings("deprecation")
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);        
         try{
-        ctx = this;
-        acti = this;        
-        setContentView(R.layout.open_street_map);
+        ctx = getContext();
+        acti = getActivity();
+//        setContentView(R.layout.open_street_map);
         /* location manager */
         currentLocation = null;        		
         try{
         	//Log.e("find location","dsfdsfdsf");
-        	lm = (LocationManager) ctx.getSystemService(LOCATION_SERVICE);
+        	lm = (LocationManager) ctx.getSystemService(getActivity().LOCATION_SERVICE);
         	Criteria criteria = new Criteria();
 			String provider = lm.getBestProvider(criteria, true);
 			ll = new MyLocationListener();
 			lm.requestLocationUpdates(provider, 0, 0, ll);
         }catch(Exception e){}
-        if (!android.provider.Settings.Secure.getString(getContentResolver(), android.provider.Settings.Secure.LOCATION_PROVIDERS_ALLOWED).contains("gps")){
-        	showDialog(TURN_ON_GPS);
+        if (!android.provider.Settings.Secure.getString(getActivity().getContentResolver(), android.provider.Settings.Secure.LOCATION_PROVIDERS_ALLOWED).contains("gps")){
+        	getActivity().showDialog(TURN_ON_GPS);
         }
         check=false;
         //show only one photo into map
-        Intent intent=getIntent();
+        Intent intent=getActivity().getIntent();
         Bundle extract=intent.getExtras();
         if(extract !=null){
         	Log.e("OpenStreetMap","check : "+check);
         	check=true;
         	path=extract.getString("image-path");
         }
-        myOpenMapView = (MapView)findViewById(R.id.openmapview);
+        myOpenMapView = (MapView)getView().findViewById(R.id.openmapview);
         myOpenMapView.setBuiltInZoomControls(true);
         myOpenMapView.setMultiTouchControls(true);
         myMapController = myOpenMapView.getController();        
         myMapController.setZoom(16);        
         //if (currentLocation != null) myMapController.animateTo(currentLocation);
-        btnS = (ImageButton)findViewById(R.id.btnsw);
+        btnS = (ImageButton)getView().findViewById(R.id.btnsw);
         btnS.bringToFront();
         btnS.setOnClickListener(new OnClickListener() {			
 			@Override
@@ -110,9 +121,9 @@ public class OpenStreetMap extends Activity{
 					
 				}
 				else{
-					PhimpMe.mTabHost.getTabWidget().getChildAt(1).setVisibility(View.GONE);
-					PhimpMe.mTabHost.getTabWidget().getChildAt(2).setVisibility(View.VISIBLE);
-					PhimpMe.mTabHost.setCurrentTab(2);
+//					PhimpMe.mTabHost.getTabWidget().getChildAt(1).setVisibility(View.GONE);
+//					PhimpMe.mTabHost.getTabWidget().getChildAt(2).setVisibility(View.VISIBLE);
+//					PhimpMe.mTabHost.setCurrentTab(2);
 				}
 				
 			}
@@ -131,7 +142,7 @@ public class OpenStreetMap extends Activity{
 
 
 
-        		Intent intent=getIntent();
+        		Intent intent=getActivity().getIntent();
                 Bundle extract=intent.getExtras();
         		if(extract !=null && extract.getString("image-path")!=null){
         			String path=extract.getString("image-path");
@@ -192,7 +203,7 @@ public class OpenStreetMap extends Activity{
         		else{
         			Log.e("Show all","Openstreetmap" );
         			String[] projection = {MediaStore.Images.Media.DATA};
-            		Cursor cursor = managedQuery( MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+            		Cursor cursor = getActivity().managedQuery( MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                             projection,
                             null,null,
                             null);
@@ -278,11 +289,11 @@ public class OpenStreetMap extends Activity{
             
                 
             //Add Scale Bar
-            ScaleBarOverlay myScaleBarOverlay = new ScaleBarOverlay(this);
+            ScaleBarOverlay myScaleBarOverlay = new ScaleBarOverlay(getContext());
             myOpenMapView.getOverlays().add(myScaleBarOverlay);
             
             //Add MyLocationOverlay
-            myLocationOverlay = new MyLocationOverlay(this, myOpenMapView);
+            myLocationOverlay = new MyLocationOverlay(getContext(), myOpenMapView);
             myOpenMapView.getOverlays().add(myLocationOverlay);
             myOpenMapView.postInvalidate();
                   
@@ -313,8 +324,7 @@ public class OpenStreetMap extends Activity{
 
 		public boolean onItemSingleTapUp( final int index, final OverlayItem item) {
 			//setupView(ctx,myOpenMapView);	
-			Toast.makeText(OpenStreetMap.this, 
-					
+			Toast.makeText(getContext(),
 					 "Latitude :"+ item.mGeoPoint.getLatitudeE6() + "\n"
 					 + "Longtitude: " + item.mGeoPoint.getLongitudeE6(), 
 					Toast.LENGTH_LONG).show();
@@ -334,8 +344,7 @@ public class OpenStreetMap extends Activity{
     	
     };
     
-    @Override
-	protected Dialog onCreateDialog(int id) 
+    protected Dialog onCreateDialog(int id)
 	{
 		switch (id)
 		{			
@@ -406,9 +415,11 @@ public class OpenStreetMap extends Activity{
 	    	
 	    }
 	}*/
-  
+
+	// TODO: may not be safe; was protected
+	// ditto for onPause()
     @Override
-	protected void onResume() {
+	public void onResume() {
 		// TODO Auto-generated method stub
     	try{
 		super.onResume();
@@ -421,23 +432,14 @@ public class OpenStreetMap extends Activity{
 	}
 
 	@Override
-	protected void onPause() {
+	public void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
 		
 		myLocationOverlay.disableMyLocation();
 		myLocationOverlay.disableCompass();
 	}
-	public void onBackPressed(){	
-		if(check==true){
-			acti.finish();
-		}else{
-			PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
-			if (PhimpMe.IdList.get(PhimpMe.IdList.size()-1) == 2) PhimpMe.IdList.remove(PhimpMe.IdList.size()-1);
-			PhimpMe.mTabHost.setCurrentTab(PhimpMe.IdList.get(PhimpMe.IdList.size()-1));	
-		}
-			
-	}	
+
 	public class MyLocationListener implements LocationListener
 	{
 		@Override

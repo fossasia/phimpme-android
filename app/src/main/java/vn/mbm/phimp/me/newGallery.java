@@ -46,9 +46,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -61,7 +64,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-public class newGallery extends Activity {
+public class newGallery extends Fragment {
 	private static Context ctx;
 	static ArrayList<RSSPhotoItem> list_photos = new ArrayList<RSSPhotoItem>();
 	static ArrayList<ArrayList<RSSPhotoItem>> array_list = new ArrayList<ArrayList<RSSPhotoItem>>();
@@ -409,15 +412,21 @@ public class newGallery extends Activity {
 	int rows = 2;
 	int position = 0;
 	static ArrayList<String> array_ID = new ArrayList<String>();
-	
+
+	@Nullable
+	@Override
+	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.newgallery, container, false);
+	}
+
+
 	@SuppressWarnings("deprecation")
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onViewCreated (View view, @Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.i("newGallery","onCreate");
-		setContentView(R.layout.newgallery);
-		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);		
-		ctx = this;
+		getActivity().setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		ctx = getContext();
 		cache=CacheStore.getInstance();
 		color_line = R.color.blue_dark;
 		// listService.clear();
@@ -468,7 +477,7 @@ public class newGallery extends Activity {
 			rss_folder.mkdirs();
 		}
 
-		linear_main = (LinearLayout) findViewById(R.id.newgalleryContent);
+		linear_main = (LinearLayout) getView().findViewById(R.id.newgalleryContent);
 		RelativeLayout.LayoutParams lp_more = new RelativeLayout.LayoutParams(
 				40, 40);
 		lp_more.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
@@ -484,16 +493,16 @@ public class newGallery extends Activity {
 							btn_line.setWidth(LayoutParams.MATCH_PARENT);
 							btn_line.setBackgroundResource(color_line);
 
-							txtPFlickr = new TextView(this);
+							txtPFlickr = new TextView(getContext());
 							txtPFlickr.setText("Public Flickr");
 							txtPFlickr.setTextSize(text_size);
-							p_flickr = new GridView(this);
+							p_flickr = new GridView(getContext());
 							p_flickr.setPadding(0, 10, 0, 0);
-							ln_flickr = new LinearLayout(this);
-							btn_flickr_more = new ImageButton(this);
+							ln_flickr = new LinearLayout(getContext());
+							btn_flickr_more = new ImageButton(getContext());
 							btn_flickr_more.setImageResource(R.drawable.more_disable);
 							btn_flickr_more.setEnabled(false);
-							RelativeLayout more_li = new RelativeLayout(this);
+							RelativeLayout more_li = new RelativeLayout(getContext());
 							btn_flickr_more.setLayoutParams(lp_more);
 							more_li.addView(btn_flickr_more);
 							more_li.addView(txtPFlickr);
@@ -592,18 +601,18 @@ public class newGallery extends Activity {
 							btn_line.setWidth(LayoutParams.MATCH_PARENT);
 							btn_line.setBackgroundResource(color_line);
 
-							txtRecentFlickr = new TextView(this);
+							txtRecentFlickr = new TextView(getContext());
 							txtRecentFlickr.setText("Recent Flickr");
 							txtRecentFlickr.setTextSize(text_size);
-							recent_flickr = new GridView(this);
+							recent_flickr = new GridView(getContext());
 							recent_flickr.setPadding(0, 10, 0, 0);
-							ln_recent_flickr = new LinearLayout(this);
-							btn_recent_flickr_more = new ImageButton(this);
+							ln_recent_flickr = new LinearLayout(getContext());
+							btn_recent_flickr_more = new ImageButton(getContext());
 							btn_recent_flickr_more
 									.setImageResource(R.drawable.more_disable);
 							btn_recent_flickr_more.setEnabled(false);
 
-							RelativeLayout more_li = new RelativeLayout(this);
+							RelativeLayout more_li = new RelativeLayout(getContext());
 							btn_recent_flickr_more.setLayoutParams(lp_more);
 							more_li.addView(btn_recent_flickr_more);
 							more_li.addView(txtRecentFlickr);
@@ -707,17 +716,17 @@ public class newGallery extends Activity {
 							btn_line.setWidth(LayoutParams.MATCH_PARENT);
 							btn_line.setBackgroundResource(color_line);
 
-							txtyahoo = new TextView(this);
+							txtyahoo = new TextView(getContext());
 							txtyahoo.setText("Public Yahoo");
 							txtyahoo.setTextSize(text_size);
-							p_yahoo = new GridView(this);
+							p_yahoo = new GridView(getContext());
 							p_yahoo.setPadding(0, 10, 0, 0);
-							ln_yahoo = new LinearLayout(this);
-							btn_yahoo_more = new ImageButton(this);
+							ln_yahoo = new LinearLayout(getContext());
+							btn_yahoo_more = new ImageButton(getContext());
 							btn_yahoo_more.setImageResource(R.drawable.more_disable);
 							btn_yahoo_more.setEnabled(false);
 
-							RelativeLayout more_li = new RelativeLayout(this);
+							RelativeLayout more_li = new RelativeLayout(getContext());
 							btn_yahoo_more.setLayoutParams(lp_more);
 							more_li.addView(btn_yahoo_more);
 							more_li.addView(txtyahoo);
@@ -817,18 +826,18 @@ public class newGallery extends Activity {
 							btn_line.setWidth(LayoutParams.MATCH_PARENT);
 							btn_line.setBackgroundResource(color_line);
 
-							txtPublicPicasa = new TextView(this);
+							txtPublicPicasa = new TextView(getContext());
 							txtPublicPicasa.setText("Public Picasa");
 							txtPublicPicasa.setTextSize(text_size);
-							p_picasa = new GridView(this);
+							p_picasa = new GridView(getContext());
 							p_picasa.setPadding(0, 10, 0, 0);
-							ln_public_picasa = new LinearLayout(this);
-							btn_public_picasa_more = new ImageButton(this);
+							ln_public_picasa = new LinearLayout(getContext());
+							btn_public_picasa_more = new ImageButton(getContext());
 							btn_public_picasa_more
 									.setImageResource(R.drawable.more_disable);
 							btn_public_picasa_more.setEnabled(false);
 
-							RelativeLayout more_li = new RelativeLayout(this);
+							RelativeLayout more_li = new RelativeLayout(getContext());
 							btn_public_picasa_more.setLayoutParams(lp_more);
 							more_li.addView(btn_public_picasa_more);
 							more_li.addView(txtPublicPicasa);
@@ -930,18 +939,18 @@ public class newGallery extends Activity {
 							btn_line.setWidth(LayoutParams.MATCH_PARENT);
 							btn_line.setBackgroundResource(color_line);
 
-							txtGooglenews = new TextView(this);
+							txtGooglenews = new TextView(getContext());
 							txtGooglenews.setText("Google News");
 							txtGooglenews.setTextSize(text_size);
-							p_googlenews = new GridView(this);
+							p_googlenews = new GridView(getContext());
 							p_googlenews.setPadding(0, 10, 0, 0);
-							ln_googlenews = new LinearLayout(this);
-							btn_googlenews_more = new ImageButton(this);
+							ln_googlenews = new LinearLayout(getContext());
+							btn_googlenews_more = new ImageButton(getContext());
 							btn_googlenews_more
 									.setImageResource(R.drawable.more_disable);
 							btn_googlenews_more.setEnabled(false);
 
-							RelativeLayout more_li = new RelativeLayout(this);
+							RelativeLayout more_li = new RelativeLayout(getContext());
 							btn_googlenews_more.setLayoutParams(lp_more);
 							more_li.addView(btn_googlenews_more);
 							more_li.addView(txtGooglenews);
@@ -1041,18 +1050,18 @@ public class newGallery extends Activity {
 							btn_line.setWidth(LayoutParams.MATCH_PARENT);
 							btn_line.setBackgroundResource(color_line);
 
-							txtdeviant = new TextView(this);
+							txtdeviant = new TextView(getContext());
 							txtdeviant.setText("Public DeviantArt");
 							txtdeviant.setTextSize(text_size);
-							p_deviant = new GridView(this);
+							p_deviant = new GridView(getContext());
 							p_deviant.setPadding(0, 10, 0, 0);
-							ln_deviant = new LinearLayout(this);
-							btn_public_deviant_more = new ImageButton(this);
+							ln_deviant = new LinearLayout(getContext());
+							btn_public_deviant_more = new ImageButton(getContext());
 							btn_public_deviant_more
 									.setImageResource(R.drawable.more_disable);
 							btn_public_deviant_more.setEnabled(false);
 
-							RelativeLayout more_li = new RelativeLayout(this);
+							RelativeLayout more_li = new RelativeLayout(getContext());
 							btn_public_deviant_more.setLayoutParams(lp_more);
 							more_li.addView(btn_public_deviant_more);
 							more_li.addView(txtdeviant);
@@ -1155,18 +1164,18 @@ public class newGallery extends Activity {
 							btn_line.setWidth(LayoutParams.MATCH_PARENT);
 							btn_line.setBackgroundResource(color_line);
 
-							txtpublic_imgur = new TextView(this);
+							txtpublic_imgur = new TextView(getContext());
 							txtpublic_imgur.setText("Public Imgur");
 							txtpublic_imgur.setTextSize(text_size);
-							gv_public_imgur = new GridView(this);
+							gv_public_imgur = new GridView(getContext());
 							gv_public_imgur.setPadding(0, 10, 0, 0);
-							ln_public_imgur = new LinearLayout(this);
-							btn_public_imgur_more = new ImageButton(this);
+							ln_public_imgur = new LinearLayout(getContext());
+							btn_public_imgur_more = new ImageButton(getContext());
 							btn_public_imgur_more
 									.setImageResource(R.drawable.more_disable);
 							btn_public_imgur_more.setEnabled(false);
 
-							RelativeLayout more_li = new RelativeLayout(this);
+							RelativeLayout more_li = new RelativeLayout(getContext());
 							btn_public_imgur_more.setLayoutParams(lp_more);
 							more_li.addView(btn_public_imgur_more);
 							more_li.addView(txtpublic_imgur);
@@ -1263,16 +1272,16 @@ public class newGallery extends Activity {
 						 */
 						if (PhimpMe.phimpme_array_list.get(i).get(0).getService()
 								.equals("public_500px")) {
-							txtPublic500px = new TextView(this);
+							txtPublic500px = new TextView(getContext());
 							txtPublic500px.setText("Public 500px");
-							p_500px = new GridView(this);
-							ln_public_500px = new LinearLayout(this);
-							btn_public_500px_more = new ImageButton(this);
+							p_500px = new GridView(getContext());
+							ln_public_500px = new LinearLayout(getContext());
+							btn_public_500px_more = new ImageButton(getContext());
 							btn_public_500px_more
 									.setImageResource(R.drawable.more_disable);
 							btn_public_500px_more.setEnabled(false);
 
-							RelativeLayout more_li = new RelativeLayout(this);
+							RelativeLayout more_li = new RelativeLayout(getContext());
 							btn_public_500px_more.setLayoutParams(lp_more);
 							more_li.addView(btn_public_500px_more);
 
@@ -1373,18 +1382,18 @@ public class newGallery extends Activity {
 							btn_line.setWidth(LayoutParams.MATCH_PARENT);
 							btn_line.setBackgroundResource(color_line);
 
-							txtMyFeedServices = new TextView(this);
+							txtMyFeedServices = new TextView(getContext());
 							txtMyFeedServices.setText("My Feed Photo");
 							txtMyFeedServices.setTextSize(text_size);
-							gv_my_feed_services = new GridView(this);
+							gv_my_feed_services = new GridView(getContext());
 							gv_my_feed_services.setPadding(0, 10, 0, 0);
-							ln_my_feed_services = new LinearLayout(this);
-							btn_my_feed_services_more = new ImageButton(this);
+							ln_my_feed_services = new LinearLayout(getContext());
+							btn_my_feed_services_more = new ImageButton(getContext());
 							btn_my_feed_services_more
 									.setImageResource(R.drawable.more_disable);
 							btn_my_feed_services_more.setEnabled(false);
 
-							RelativeLayout more_li = new RelativeLayout(this);
+							RelativeLayout more_li = new RelativeLayout(getContext());
 							btn_my_feed_services_more.setLayoutParams(lp_more);
 							more_li.addView(btn_my_feed_services_more);
 							more_li.addView(txtMyFeedServices);
@@ -1489,18 +1498,18 @@ public class newGallery extends Activity {
 							btn_line.setWidth(LayoutParams.MATCH_PARENT);
 							btn_line.setBackgroundResource(color_line);
 
-							txtMyFeedServices1 = new TextView(this);
+							txtMyFeedServices1 = new TextView(getContext());
 							txtMyFeedServices1.setText("My Feed Photo");
 							txtMyFeedServices1.setTextSize(text_size);
-							gv_my_feed_services1 = new GridView(this);
+							gv_my_feed_services1 = new GridView(getContext());
 							gv_my_feed_services1.setPadding(0, 10, 0, 0);
-							ln_my_feed_services1 = new LinearLayout(this);
-							btn_my_feed_services_more1 = new ImageButton(this);
+							ln_my_feed_services1 = new LinearLayout(getContext());
+							btn_my_feed_services_more1 = new ImageButton(getContext());
 							btn_my_feed_services_more1
 									.setImageResource(R.drawable.more_disable);
 							btn_my_feed_services_more1.setEnabled(false);
 
-							RelativeLayout more_li = new RelativeLayout(this);
+							RelativeLayout more_li = new RelativeLayout(getContext());
 							btn_my_feed_services_more1.setLayoutParams(lp_more);
 							more_li.addView(btn_my_feed_services_more1);
 							more_li.addView(txtMyFeedServices1);
@@ -1605,18 +1614,18 @@ public class newGallery extends Activity {
 							btn_line.setWidth(LayoutParams.MATCH_PARENT);
 							btn_line.setBackgroundResource(color_line);
 
-							txtMyFeedServices2 = new TextView(this);
+							txtMyFeedServices2 = new TextView(getContext());
 							txtMyFeedServices2.setText("My Feed Photo");
 							txtMyFeedServices2.setTextSize(text_size);
-							gv_my_feed_services2 = new GridView(this);
+							gv_my_feed_services2 = new GridView(getContext());
 							gv_my_feed_services2.setPadding(0, 10, 0, 0);
-							ln_my_feed_services2 = new LinearLayout(this);
-							btn_my_feed_services_more2 = new ImageButton(this);
+							ln_my_feed_services2 = new LinearLayout(getContext());
+							btn_my_feed_services_more2 = new ImageButton(getContext());
 							btn_my_feed_services_more2
 									.setImageResource(R.drawable.more_disable);
 							btn_my_feed_services_more2.setEnabled(false);
 
-							RelativeLayout more_li = new RelativeLayout(this);
+							RelativeLayout more_li = new RelativeLayout(getContext());
 							btn_my_feed_services_more2.setLayoutParams(lp_more);
 							more_li.addView(btn_my_feed_services_more2);
 							more_li.addView(txtMyFeedServices2);
@@ -1721,18 +1730,18 @@ public class newGallery extends Activity {
 							btn_line.setWidth(LayoutParams.MATCH_PARENT);
 							btn_line.setBackgroundResource(color_line);
 
-							txtMyFeedServices3 = new TextView(this);
+							txtMyFeedServices3 = new TextView(getContext());
 							txtMyFeedServices3.setText("My Feed Photo");
 							txtMyFeedServices3.setTextSize(text_size);
-							gv_my_feed_services3 = new GridView(this);
+							gv_my_feed_services3 = new GridView(getContext());
 							gv_my_feed_services3.setPadding(0, 10, 0, 0);
-							ln_my_feed_services3 = new LinearLayout(this);
-							btn_my_feed_services_more3 = new ImageButton(this);
+							ln_my_feed_services3 = new LinearLayout(getContext());
+							btn_my_feed_services_more3 = new ImageButton(getContext());
 							btn_my_feed_services_more3
 									.setImageResource(R.drawable.more_disable);
 							btn_my_feed_services_more3.setEnabled(false);
 
-							RelativeLayout more_li = new RelativeLayout(this);
+							RelativeLayout more_li = new RelativeLayout(getContext());
 							btn_my_feed_services_more3.setLayoutParams(lp_more);
 							more_li.addView(btn_my_feed_services_more3);
 							more_li.addView(txtMyFeedServices3);
@@ -1837,18 +1846,18 @@ public class newGallery extends Activity {
 							btn_line.setWidth(LayoutParams.MATCH_PARENT);
 							btn_line.setBackgroundResource(color_line);
 
-							txtMyFeedServices4 = new TextView(this);
+							txtMyFeedServices4 = new TextView(getContext());
 							txtMyFeedServices4.setText("My Feed Photo");
 							txtMyFeedServices4.setTextSize(text_size);
-							gv_my_feed_services4 = new GridView(this);
+							gv_my_feed_services4 = new GridView(getContext());
 							gv_my_feed_services4.setPadding(0, 10, 0, 0);
-							ln_my_feed_services4 = new LinearLayout(this);
-							btn_my_feed_services_more4 = new ImageButton(this);
+							ln_my_feed_services4 = new LinearLayout(getContext());
+							btn_my_feed_services_more4 = new ImageButton(getContext());
 							btn_my_feed_services_more4
 									.setImageResource(R.drawable.more_disable);
 							btn_my_feed_services_more4.setEnabled(false);
 
-							RelativeLayout more_li = new RelativeLayout(this);
+							RelativeLayout more_li = new RelativeLayout(getContext());
 							btn_my_feed_services_more4.setLayoutParams(lp_more);
 							more_li.addView(btn_my_feed_services_more4);
 							more_li.addView(txtMyFeedServices4);
@@ -1954,18 +1963,18 @@ public class newGallery extends Activity {
 							btn_line.setWidth(LayoutParams.MATCH_PARENT);
 							btn_line.setBackgroundResource(color_line);
 
-							txtMyFeedServices5 = new TextView(this);
+							txtMyFeedServices5 = new TextView(getContext());
 							txtMyFeedServices5.setText("My Feed Photo");
 							txtMyFeedServices5.setTextSize(text_size);
-							gv_my_feed_services5 = new GridView(this);
+							gv_my_feed_services5 = new GridView(getContext());
 							gv_my_feed_services5.setPadding(0, 10, 0, 0);
-							ln_my_feed_services5 = new LinearLayout(this);
-							btn_my_feed_services_more5 = new ImageButton(this);
+							ln_my_feed_services5 = new LinearLayout(getContext());
+							btn_my_feed_services_more5 = new ImageButton(getContext());
 							btn_my_feed_services_more5
 									.setImageResource(R.drawable.more_disable);
 							btn_my_feed_services_more5.setEnabled(false);
 
-							RelativeLayout more_li = new RelativeLayout(this);
+							RelativeLayout more_li = new RelativeLayout(getContext());
 							btn_my_feed_services_more5.setLayoutParams(lp_more);
 							more_li.addView(btn_my_feed_services_more5);
 							more_li.addView(txtMyFeedServices5);
@@ -2078,17 +2087,17 @@ public class newGallery extends Activity {
 							btn_line.setWidth(LayoutParams.MATCH_PARENT);
 							btn_line.setBackgroundResource(color_line);
 
-							txtfacebook = new TextView(this);
+							txtfacebook = new TextView(getContext());
 							txtfacebook.setText("Personal Facebook");
 							txtfacebook.setTextSize(text_size);
-							gv_personal_facebook = new GridView(this);
+							gv_personal_facebook = new GridView(getContext());
 							gv_personal_facebook.setPadding(0, 10, 0, 0);
-							ln_facebook = new LinearLayout(this);
-							btn_facebook_more = new ImageButton(this);
+							ln_facebook = new LinearLayout(getContext());
+							btn_facebook_more = new ImageButton(getContext());
 							btn_facebook_more.setImageResource(R.drawable.more_disable);
 							btn_facebook_more.setEnabled(false);
 
-							RelativeLayout more_li = new RelativeLayout(this);
+							RelativeLayout more_li = new RelativeLayout(getContext());
 							btn_facebook_more.setLayoutParams(lp_more);
 							more_li.addView(btn_facebook_more);
 							more_li.addView(txtfacebook);
@@ -2188,17 +2197,17 @@ public class newGallery extends Activity {
 							btn_line.setWidth(LayoutParams.MATCH_PARENT);
 							btn_line.setBackgroundResource(color_line);
 
-							txttumblr = new TextView(this);
+							txttumblr = new TextView(getContext());
 							txttumblr.setText("Tumblr Personal");
 							txttumblr.setTextSize(text_size);
-							gv_personal_tumblr = new GridView(this);
+							gv_personal_tumblr = new GridView(getContext());
 							gv_personal_tumblr.setPadding(0, 10, 0, 0);
-							ln_tumblr = new LinearLayout(this);
-							btn_tumblr_more = new ImageButton(this);
+							ln_tumblr = new LinearLayout(getContext());
+							btn_tumblr_more = new ImageButton(getContext());
 							btn_tumblr_more.setImageResource(R.drawable.more_disable);
 							btn_tumblr_more.setEnabled(false);
 
-							RelativeLayout more_li = new RelativeLayout(this);
+							RelativeLayout more_li = new RelativeLayout(getContext());
 							btn_tumblr_more.setLayoutParams(lp_more);
 							more_li.addView(btn_tumblr_more);
 							more_li.addView(txttumblr);
@@ -2298,18 +2307,18 @@ public class newGallery extends Activity {
 							btn_line.setWidth(LayoutParams.MATCH_PARENT);
 							btn_line.setBackgroundResource(color_line);
 
-							txtvkontakte = new TextView(this);
+							txtvkontakte = new TextView(getContext());
 							txtvkontakte.setText("Vkontakte Personal");
 							txtvkontakte.setTextSize(text_size);
-							gv_personal_vkontakte = new GridView(this);
+							gv_personal_vkontakte = new GridView(getContext());
 							gv_personal_vkontakte.setPadding(0, 10, 0, 0);
-							ln_vkontakte = new LinearLayout(this);
-							btn_vkontakte_more = new ImageButton(this);
+							ln_vkontakte = new LinearLayout(getContext());
+							btn_vkontakte_more = new ImageButton(getContext());
 							btn_vkontakte_more
 									.setImageResource(R.drawable.more_disable);
 							btn_vkontakte_more.setEnabled(false);
 
-							RelativeLayout more_li = new RelativeLayout(this);
+							RelativeLayout more_li = new RelativeLayout(getContext());
 							btn_vkontakte_more.setLayoutParams(lp_more);
 							more_li.addView(btn_vkontakte_more);
 							more_li.addView(txtvkontakte);
@@ -2410,18 +2419,18 @@ public class newGallery extends Activity {
 							btn_line.setWidth(LayoutParams.MATCH_PARENT);
 							btn_line.setBackgroundResource(color_line);
 
-							txtpersonal_flickr = new TextView(this);
+							txtpersonal_flickr = new TextView(getContext());
 							txtpersonal_flickr.setText("Personal Flickr");
 							txtpersonal_flickr.setTextSize(text_size);
-							gv_personal_flickr = new GridView(this);
+							gv_personal_flickr = new GridView(getContext());
 							gv_personal_flickr.setPadding(0, 10, 0, 0);
-							ln_personal_flickr = new LinearLayout(this);
-							btn_personal_flickr_more = new ImageButton(this);
+							ln_personal_flickr = new LinearLayout(getContext());
+							btn_personal_flickr_more = new ImageButton(getContext());
 							btn_personal_flickr_more
 									.setImageResource(R.drawable.more_disable);
 							btn_personal_flickr_more.setEnabled(false);
 
-							RelativeLayout more_li = new RelativeLayout(this);
+							RelativeLayout more_li = new RelativeLayout(getContext());
 							btn_personal_flickr_more.setLayoutParams(lp_more);
 							more_li.addView(btn_personal_flickr_more);
 							more_li.addView(txtpersonal_flickr);
@@ -2523,18 +2532,18 @@ public class newGallery extends Activity {
 							btn_line.setWidth(LayoutParams.MATCH_PARENT);
 							btn_line.setBackgroundResource(color_line);
 
-							txtpersonal_picasa = new TextView(this);
+							txtpersonal_picasa = new TextView(getContext());
 							txtpersonal_picasa.setText("Personal Picasa");
 							txtpersonal_picasa.setTextSize(text_size);
-							gv_personal_picasa = new GridView(this);
+							gv_personal_picasa = new GridView(getContext());
 							gv_personal_picasa.setPadding(0, 10, 0, 0);
-							ln_personal_picasa = new LinearLayout(this);
-							btn_personal_picasa_more = new ImageButton(this);
+							ln_personal_picasa = new LinearLayout(getContext());
+							btn_personal_picasa_more = new ImageButton(getContext());
 							btn_personal_picasa_more
 									.setImageResource(R.drawable.more_disable);
 							btn_personal_picasa_more.setEnabled(false);
 
-							RelativeLayout more_li = new RelativeLayout(this);
+							RelativeLayout more_li = new RelativeLayout(getContext());
 							btn_personal_picasa_more.setLayoutParams(lp_more);
 							more_li.addView(btn_personal_picasa_more);
 							more_li.addView(txtpersonal_picasa);
@@ -2636,18 +2645,18 @@ public class newGallery extends Activity {
 							btn_line.setWidth(LayoutParams.MATCH_PARENT);
 							btn_line.setBackgroundResource(color_line);
 
-							txtpersonal_deviantart = new TextView(this);
+							txtpersonal_deviantart = new TextView(getContext());
 							txtpersonal_deviantart.setText("Personal DeviantArt");
 							txtpersonal_deviantart.setTextSize(text_size);
-							gv_personal_deviantart = new GridView(this);
+							gv_personal_deviantart = new GridView(getContext());
 							gv_personal_deviantart.setPadding(0, 10, 0, 0);
-							ln_personal_deviantart = new LinearLayout(this);
-							btn_personal_deviant_more = new ImageButton(this);
+							ln_personal_deviantart = new LinearLayout(getContext());
+							btn_personal_deviant_more = new ImageButton(getContext());
 							btn_personal_deviant_more
 									.setImageResource(R.drawable.more_disable);
 							btn_personal_deviant_more.setEnabled(false);
 
-							RelativeLayout more_li = new RelativeLayout(this);
+							RelativeLayout more_li = new RelativeLayout(getContext());
 							btn_personal_deviant_more.setLayoutParams(lp_more);
 							more_li.addView(btn_personal_deviant_more);
 							more_li.addView(txtpersonal_deviantart);
@@ -2753,18 +2762,18 @@ public class newGallery extends Activity {
 							btn_line.setWidth(LayoutParams.MATCH_PARENT);
 							btn_line.setBackgroundResource(color_line);
 
-							txtpersonal_imgur = new TextView(this);
+							txtpersonal_imgur = new TextView(getContext());
 							txtpersonal_imgur.setText("Personal Imgur");
 							txtpersonal_imgur.setTextSize(text_size);
-							gv_personal_imgur = new GridView(this);
+							gv_personal_imgur = new GridView(getContext());
 							gv_personal_imgur.setPadding(0, 10, 0, 0);
-							ln_personal_imgur = new LinearLayout(this);
-							btn_personal_imgur_more = new ImageButton(this);
+							ln_personal_imgur = new LinearLayout(getContext());
+							btn_personal_imgur_more = new ImageButton(getContext());
 							btn_personal_imgur_more
 									.setImageResource(R.drawable.more_disable);
 							btn_personal_imgur_more.setEnabled(false);
 
-							RelativeLayout more_li = new RelativeLayout(this);
+							RelativeLayout more_li = new RelativeLayout(getContext());
 							btn_personal_imgur_more.setLayoutParams(lp_more);
 							more_li.addView(btn_personal_imgur_more);
 							more_li.addView(txtpersonal_imgur);
@@ -2866,19 +2875,19 @@ public class newGallery extends Activity {
 							btn_line.setWidth(LayoutParams.MATCH_PARENT);
 							btn_line.setBackgroundResource(color_line);
 
-							txtpersonal_kaixin = new TextView(this);
+							txtpersonal_kaixin = new TextView(getContext());
 							txtpersonal_kaixin.setText("Personal Kaixin");
 							txtpersonal_kaixin.setTextSize(text_size);
-							gv_personal_kaixin = new GridView(this);
+							gv_personal_kaixin = new GridView(getContext());
 							gv_personal_kaixin.setPadding(0, 10, 0, 0);
-							ln_personal_kaixin = new LinearLayout(this);
+							ln_personal_kaixin = new LinearLayout(getContext());
 
-							btn_personal_kaixin_more = new ImageButton(this);
+							btn_personal_kaixin_more = new ImageButton(getContext());
 							btn_personal_kaixin_more
 									.setImageResource(R.drawable.more_disable);
 							btn_personal_kaixin_more.setEnabled(false);
 
-							RelativeLayout more_li = new RelativeLayout(this);
+							RelativeLayout more_li = new RelativeLayout(getContext());
 							btn_personal_kaixin_more.setLayoutParams(lp_more);
 							more_li.addView(btn_personal_kaixin_more);
 							more_li.addView(txtpersonal_kaixin);
@@ -2982,18 +2991,18 @@ public class newGallery extends Activity {
 							btn_line.setWidth(LayoutParams.MATCH_PARENT);
 							btn_line.setBackgroundResource(color_line);
 
-							txtpersonal_500px = new TextView(this);
+							txtpersonal_500px = new TextView(getContext());
 							txtpersonal_500px.setText("Personal 500px");
 							txtpersonal_500px.setTextSize(text_size);
-							gv_personal_500px = new GridView(this);
+							gv_personal_500px = new GridView(getContext());
 							gv_personal_500px.setPadding(0, 10, 0, 0);
-							ln_personal_500px = new LinearLayout(this);
-							btn_personal_500px_more = new ImageButton(this);
+							ln_personal_500px = new LinearLayout(getContext());
+							btn_personal_500px_more = new ImageButton(getContext());
 							btn_personal_500px_more
 									.setImageResource(R.drawable.more_disable);
 							btn_personal_500px_more.setEnabled(false);
 
-							RelativeLayout more_li = new RelativeLayout(this);
+							RelativeLayout more_li = new RelativeLayout(getContext());
 							btn_personal_500px_more.setLayoutParams(lp_more);
 							more_li.addView(btn_personal_500px_more);
 							more_li.addView(txtpersonal_500px);
@@ -3088,18 +3097,18 @@ public class newGallery extends Activity {
 							btn_line.setWidth(LayoutParams.MATCH_PARENT);
 							btn_line.setBackgroundResource(color_line);
 
-							txtpersonal_sohu = new TextView(this);
+							txtpersonal_sohu = new TextView(getContext());
 							txtpersonal_sohu.setText("Personal Sohu");
 							txtpersonal_sohu.setTextSize(text_size);
-							gv_personal_sohu = new GridView(this);
+							gv_personal_sohu = new GridView(getContext());
 							gv_personal_sohu.setPadding(0, 10, 0, 0);
-							ln_personal_sohu = new LinearLayout(this);
-							btn_personal_sohu_more = new ImageButton(this);
+							ln_personal_sohu = new LinearLayout(getContext());
+							btn_personal_sohu_more = new ImageButton(getContext());
 							btn_personal_sohu_more
 									.setImageResource(R.drawable.more_disable);
 							btn_personal_sohu_more.setEnabled(false);
 
-							RelativeLayout more_li = new RelativeLayout(this);
+							RelativeLayout more_li = new RelativeLayout(getContext());
 							btn_personal_sohu_more.setLayoutParams(lp_more);
 							more_li.addView(btn_personal_sohu_more);
 							more_li.addView(txtpersonal_sohu);
@@ -3201,8 +3210,9 @@ public class newGallery extends Activity {
 				}
 	}
 
+	// TODO: this might not be safe; was protected.
 	@Override
-	protected void onResume()
+	public void onResume()
 	{
 		super.onResume();
 		
@@ -3258,7 +3268,8 @@ public class newGallery extends Activity {
 	    		updatePhoto();
 	    		
 	    	}catch(RuntimeException runex){
-	    		this.onCancelled();
+	    		//this.onCancelled();
+				cancel(false);
 	    	}
 	    	
 	        return "";
@@ -3282,10 +3293,10 @@ public class newGallery extends Activity {
 			final String[] columns = { MediaStore.Images.Thumbnails._ID};
 			final String[] data = { MediaStore.Images.Media.DATA };
 			final String orderBy = MediaStore.Images.Media._ID;
-			Cursor pathcursor = this.managedQuery(
+			Cursor pathcursor = getActivity().managedQuery(
 					MediaStore.Images.Media.EXTERNAL_CONTENT_URI, data,
 					null, null, orderBy);	
-			startManagingCursor(pathcursor);
+			getActivity().startManagingCursor(pathcursor);
 			if(pathcursor != null){
 				int path_column_index = pathcursor
 						.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -3306,15 +3317,15 @@ public class newGallery extends Activity {
 								
 							}
 							else if(c<=20){				
-								Cursor cursor = this.managedQuery(
+								Cursor cursor = getActivity().managedQuery(
 										MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
 										MediaStore.Images.Media.DATA+ " = " + "\""+path+"\"", null, MediaStore.Images.Media._ID);									
-								startManagingCursor(cursor);
+								getActivity().startManagingCursor(cursor);
 								if (cursor != null && cursor.getCount() > 0){
 									cursor.moveToPosition(0);
 									id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID));	
 									Bitmap bmp = MediaStore.Images.Thumbnails.getThumbnail(
-											getApplicationContext().getContentResolver(), id,
+											getActivity().getApplicationContext().getContentResolver(), id,
 											MediaStore.Images.Thumbnails.MICRO_KIND, null);		
 									cache.saveCacheFile(path, bmp, id);
 									cursor.close();
@@ -3565,7 +3576,7 @@ public class newGallery extends Activity {
 	}
 	public void refreshNewPhotos() {
 		
-		if (Commons.checkConnection(newGallery.this)) {
+		if (Commons.checkConnection(getActivity())) {
 			
 			if ( 
 					(!PhimpMe.FEEDS_LIST_FLICKR_PUBLIC)
@@ -3727,7 +3738,7 @@ public class newGallery extends Activity {
 									for (int j = 0; j < tmp.length; j++) {
 										tmp[j] = array_list.get(i).get(j);
 									}
-									newGallery.this.runOnUiThread(new Runnable() {
+									getActivity().runOnUiThread(new Runnable() {
 										@Override
 										public void run() {
 											new DownloadImageAsyncTask().execute(tmp);
@@ -3746,7 +3757,7 @@ public class newGallery extends Activity {
 							for (int j = 0; j < tmp.length; j++) {
 								tmp[j] = flickr_list_photos.get(j);
 							}
-							newGallery.this.runOnUiThread(new Runnable() {
+							getActivity().runOnUiThread(new Runnable() {
 								@Override
 								public void run() {
 									new DownloadImageAsyncTask().execute(tmp);
@@ -3876,7 +3887,7 @@ public class newGallery extends Activity {
 								for (int j = 0; j < tmp.length; j++) {
 									tmp[j] = array_list.get(i).get(j);
 								}
-								newGallery.this.runOnUiThread(new Runnable() {
+								getActivity().runOnUiThread(new Runnable() {
 									@Override
 									public void run() {
 
@@ -3896,7 +3907,7 @@ public class newGallery extends Activity {
 						for (int j = 0; j < tmp.length; j++) {
 							tmp[j] = recent_flickr_list_photos.get(j);
 						}
-						newGallery.this.runOnUiThread(new Runnable() {
+						getActivity().runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
 
@@ -4028,7 +4039,7 @@ public class newGallery extends Activity {
 									for (int j = 0; j < tmp.length; j++) {
 										tmp[j] = array_list.get(i).get(j);
 									}
-									newGallery.this.runOnUiThread(new Runnable() {
+									getActivity().runOnUiThread(new Runnable() {
 										@Override
 										public void run() {
 											new DownloadImageAsyncTask().execute(tmp);
@@ -4047,7 +4058,7 @@ public class newGallery extends Activity {
 							for (int j = 0; j < tmp.length; j++) {
 								tmp[j] = yahoo_list_photos.get(j);
 							}
-							newGallery.this.runOnUiThread(new Runnable() {
+							getActivity().runOnUiThread(new Runnable() {
 								@Override
 								public void run() {
 									new DownloadImageAsyncTask().execute(tmp);
@@ -4176,7 +4187,7 @@ public class newGallery extends Activity {
 							for (int j = 0; j < tmp.length; j++) {
 								tmp[j] = array_list.get(i).get(j);
 							}
-							newGallery.this.runOnUiThread(new Runnable() {
+							getActivity().runOnUiThread(new Runnable() {
 								@Override
 								public void run() {
 
@@ -4196,7 +4207,7 @@ public class newGallery extends Activity {
 					for (int j = 0; j < tmp.length; j++) {
 						tmp[j] = public_picasa_list_photos.get(j);
 					}
-					newGallery.this.runOnUiThread(new Runnable() {
+					getActivity().runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
 
@@ -4436,7 +4447,7 @@ public class newGallery extends Activity {
 									for (int j = 0; j < tmp.length; j++) {
 										tmp[j] = array_list.get(i).get(j);
 									}
-									newGallery.this.runOnUiThread(new Runnable() {
+									getActivity().runOnUiThread(new Runnable() {
 										@Override
 										public void run() {
 
@@ -4456,7 +4467,7 @@ public class newGallery extends Activity {
 							for (int j = 0; j < tmp.length; j++) {
 								tmp[j] = deviant_list_photos.get(j);
 							}
-							newGallery.this.runOnUiThread(new Runnable() {
+							getActivity().runOnUiThread(new Runnable() {
 								@Override
 								public void run() {
 
@@ -4501,18 +4512,18 @@ public class newGallery extends Activity {
 						btn_line.setWidth(LayoutParams.MATCH_PARENT);
 						btn_line.setBackgroundResource(color_line);
 
-						txtpublic_imgur = new TextView(this);
+						txtpublic_imgur = new TextView(getContext());
 						txtpublic_imgur.setText("Public Imgur");
 						txtpublic_imgur.setTextSize(text_size);
-						gv_public_imgur = new GridView(this);
+						gv_public_imgur = new GridView(getContext());
 						gv_public_imgur.setPadding(0, 10, 0, 0);
-						ln_public_imgur = new LinearLayout(this);
-						btn_public_imgur_more = new ImageButton(this);
+						ln_public_imgur = new LinearLayout(getContext());
+						btn_public_imgur_more = new ImageButton(getContext());
 						btn_public_imgur_more
 								.setImageResource(R.drawable.more_disable);
 						btn_public_imgur_more.setEnabled(false);
 
-						RelativeLayout more_li = new RelativeLayout(this);
+						RelativeLayout more_li = new RelativeLayout(getContext());
 						btn_public_imgur_more.setLayoutParams(lp_more);
 						more_li.addView(btn_public_imgur_more);
 						more_li.addView(txtpublic_imgur);
@@ -4610,18 +4621,18 @@ public class newGallery extends Activity {
 						btn_line.setWidth(LayoutParams.MATCH_PARENT);
 						btn_line.setBackgroundResource(color_line);
 
-						txtPublic500px = new TextView(this);
+						txtPublic500px = new TextView(getContext());
 						txtPublic500px.setText("Public 500px");
 						txtPublic500px.setTextSize(text_size);
-						p_500px = new GridView(this);
+						p_500px = new GridView(getContext());
 						p_500px.addView(btn_line);
-						ln_public_500px = new LinearLayout(this);
-						btn_public_500px_more = new ImageButton(this);
+						ln_public_500px = new LinearLayout(getContext());
+						btn_public_500px_more = new ImageButton(getContext());
 						btn_public_500px_more
 								.setImageResource(R.drawable.more_disable);
 						btn_public_500px_more.setEnabled(false);
 
-						RelativeLayout more_li = new RelativeLayout(this);
+						RelativeLayout more_li = new RelativeLayout(getContext());
 						btn_public_500px_more.setLayoutParams(lp_more);
 						more_li.addView(btn_public_500px_more);
 						more_li.addView(txtPublic500px);
@@ -4717,18 +4728,18 @@ public class newGallery extends Activity {
 						btn_line.setWidth(LayoutParams.MATCH_PARENT);
 						btn_line.setBackgroundResource(color_line);
 
-						txtMyFeedServices = new TextView(this);
+						txtMyFeedServices = new TextView(getContext());
 						txtMyFeedServices.setText("My Feed Photo");
 						txtMyFeedServices.setTextSize(text_size);
-						gv_my_feed_services = new GridView(this);
+						gv_my_feed_services = new GridView(getContext());
 						gv_my_feed_services.setPadding(0, 10, 0, 0);
-						ln_my_feed_services = new LinearLayout(this);
-						btn_my_feed_services_more = new ImageButton(this);
+						ln_my_feed_services = new LinearLayout(getContext());
+						btn_my_feed_services_more = new ImageButton(getContext());
 						btn_my_feed_services_more
 								.setImageResource(R.drawable.more_disable);
 						btn_my_feed_services_more.setEnabled(false);
 
-						RelativeLayout more_li = new RelativeLayout(this);
+						RelativeLayout more_li = new RelativeLayout(getContext());
 						btn_my_feed_services_more.setLayoutParams(lp_more);
 						more_li.addView(btn_my_feed_services_more);
 						more_li.addView(txtMyFeedServices);
@@ -4835,18 +4846,18 @@ public class newGallery extends Activity {
 						btn_line.setWidth(LayoutParams.MATCH_PARENT);
 						btn_line.setBackgroundResource(color_line);
 
-						txtMyFeedServices1 = new TextView(this);
+						txtMyFeedServices1 = new TextView(getContext());
 						txtMyFeedServices1.setText("My Feed Photo");
 						txtMyFeedServices1.setTextSize(text_size);
-						gv_my_feed_services1 = new GridView(this);
+						gv_my_feed_services1 = new GridView(getContext());
 						gv_my_feed_services1.setPadding(0, 10, 0, 0);
-						ln_my_feed_services1 = new LinearLayout(this);
-						btn_my_feed_services_more1 = new ImageButton(this);
+						ln_my_feed_services1 = new LinearLayout(getContext());
+						btn_my_feed_services_more1 = new ImageButton(getContext());
 						btn_my_feed_services_more1
 								.setImageResource(R.drawable.more_disable);
 						btn_my_feed_services_more1.setEnabled(false);
 
-						RelativeLayout more_li = new RelativeLayout(this);
+						RelativeLayout more_li = new RelativeLayout(getContext());
 						btn_my_feed_services_more1.setLayoutParams(lp_more);
 						more_li.addView(btn_my_feed_services_more1);
 						more_li.addView(txtMyFeedServices1);
@@ -4953,18 +4964,18 @@ public class newGallery extends Activity {
 						btn_line.setWidth(LayoutParams.MATCH_PARENT);
 						btn_line.setBackgroundResource(color_line);
 
-						txtMyFeedServices2 = new TextView(this);
+						txtMyFeedServices2 = new TextView(getContext());
 						txtMyFeedServices2.setText("My Feed Photo");
 						txtMyFeedServices2.setTextSize(text_size);
-						gv_my_feed_services2 = new GridView(this);
+						gv_my_feed_services2 = new GridView(getContext());
 						gv_my_feed_services2.setPadding(0, 10, 0, 0);
-						ln_my_feed_services2 = new LinearLayout(this);
-						btn_my_feed_services_more2 = new ImageButton(this);
+						ln_my_feed_services2 = new LinearLayout(getContext());
+						btn_my_feed_services_more2 = new ImageButton(getContext());
 						btn_my_feed_services_more2
 								.setImageResource(R.drawable.more_disable);
 						btn_my_feed_services_more2.setEnabled(false);
 
-						RelativeLayout more_li = new RelativeLayout(this);
+						RelativeLayout more_li = new RelativeLayout(getContext());
 						btn_my_feed_services_more2.setLayoutParams(lp_more);
 						more_li.addView(btn_my_feed_services_more2);
 						more_li.addView(txtMyFeedServices2);
@@ -5071,18 +5082,18 @@ public class newGallery extends Activity {
 						btn_line.setWidth(LayoutParams.MATCH_PARENT);
 						btn_line.setBackgroundResource(color_line);
 
-						txtMyFeedServices3 = new TextView(this);
+						txtMyFeedServices3 = new TextView(getContext());
 						txtMyFeedServices3.setText("My Feed Photo");
 						txtMyFeedServices3.setTextSize(text_size);
-						gv_my_feed_services3 = new GridView(this);
+						gv_my_feed_services3 = new GridView(getContext());
 						gv_my_feed_services3.setPadding(0, 10, 0, 0);
-						ln_my_feed_services3 = new LinearLayout(this);
-						btn_my_feed_services_more3 = new ImageButton(this);
+						ln_my_feed_services3 = new LinearLayout(getContext());
+						btn_my_feed_services_more3 = new ImageButton(getContext());
 						btn_my_feed_services_more3
 								.setImageResource(R.drawable.more_disable);
 						btn_my_feed_services_more3.setEnabled(false);
 
-						RelativeLayout more_li = new RelativeLayout(this);
+						RelativeLayout more_li = new RelativeLayout(getContext());
 						btn_my_feed_services_more3.setLayoutParams(lp_more);
 						more_li.addView(btn_my_feed_services_more3);
 						more_li.addView(txtMyFeedServices3);
@@ -5189,18 +5200,18 @@ public class newGallery extends Activity {
 						btn_line.setWidth(LayoutParams.MATCH_PARENT);
 						btn_line.setBackgroundResource(color_line);
 
-						txtMyFeedServices4 = new TextView(this);
+						txtMyFeedServices4 = new TextView(getContext());
 						txtMyFeedServices4.setText("My Feed Photo");
 						txtMyFeedServices4.setTextSize(text_size);
-						gv_my_feed_services4 = new GridView(this);
+						gv_my_feed_services4 = new GridView(getContext());
 						gv_my_feed_services4.setPadding(0, 10, 0, 0);
-						ln_my_feed_services4 = new LinearLayout(this);
-						btn_my_feed_services_more4 = new ImageButton(this);
+						ln_my_feed_services4 = new LinearLayout(getContext());
+						btn_my_feed_services_more4 = new ImageButton(getContext());
 						btn_my_feed_services_more4
 								.setImageResource(R.drawable.more_disable);
 						btn_my_feed_services_more4.setEnabled(false);
 
-						RelativeLayout more_li = new RelativeLayout(this);
+						RelativeLayout more_li = new RelativeLayout(getContext());
 						btn_my_feed_services_more4.setLayoutParams(lp_more);
 						more_li.addView(btn_my_feed_services_more4);
 						more_li.addView(txtMyFeedServices4);
@@ -5307,18 +5318,18 @@ public class newGallery extends Activity {
 						btn_line.setWidth(LayoutParams.MATCH_PARENT);
 						btn_line.setBackgroundResource(color_line);
 
-						txtMyFeedServices5 = new TextView(this);
+						txtMyFeedServices5 = new TextView(getContext());
 						txtMyFeedServices5.setText("My Feed Photo");
 						txtMyFeedServices5.setTextSize(text_size);
-						gv_my_feed_services5 = new GridView(this);
+						gv_my_feed_services5 = new GridView(getContext());
 						gv_my_feed_services5.setPadding(0, 10, 0, 0);
-						ln_my_feed_services5 = new LinearLayout(this);
-						btn_my_feed_services_more5 = new ImageButton(this);
+						ln_my_feed_services5 = new LinearLayout(getContext());
+						btn_my_feed_services_more5 = new ImageButton(getContext());
 						btn_my_feed_services_more5
 								.setImageResource(R.drawable.more_disable);
 						btn_my_feed_services_more5.setEnabled(false);
 
-						RelativeLayout more_li = new RelativeLayout(this);
+						RelativeLayout more_li = new RelativeLayout(getContext());
 						btn_my_feed_services_more5.setLayoutParams(lp_more);
 						more_li.addView(btn_my_feed_services_more5);
 						more_li.addView(txtMyFeedServices5);
@@ -5422,18 +5433,18 @@ public class newGallery extends Activity {
 						btn_line.setWidth(LayoutParams.MATCH_PARENT);
 						btn_line.setBackgroundResource(color_line);
 
-						txtfacebook = new TextView(this);
+						txtfacebook = new TextView(getContext());
 						txtfacebook.setText("Personal Facebook");
 						txtfacebook.setTextSize(text_size);
-						gv_personal_facebook = new GridView(this);
+						gv_personal_facebook = new GridView(getContext());
 						gv_personal_facebook.setPadding(0, 10, 0, 0);
-						ln_facebook = new LinearLayout(this);
-						btn_facebook_more = new ImageButton(this);
+						ln_facebook = new LinearLayout(getContext());
+						btn_facebook_more = new ImageButton(getContext());
 						btn_facebook_more
 								.setImageResource(R.drawable.more_disable);
 						btn_facebook_more.setEnabled(false);
 
-						RelativeLayout more_li = new RelativeLayout(this);
+						RelativeLayout more_li = new RelativeLayout(getContext());
 						btn_facebook_more.setLayoutParams(lp_more);
 						more_li.addView(btn_facebook_more);
 						more_li.addView(txtfacebook);
@@ -5531,18 +5542,18 @@ public class newGallery extends Activity {
 						btn_line.setWidth(LayoutParams.MATCH_PARENT);
 						btn_line.setBackgroundResource(color_line);
 
-						txttumblr = new TextView(this);
+						txttumblr = new TextView(getContext());
 						txttumblr.setText("Tumblr Personal");
 						txttumblr.setTextSize(text_size);
-						gv_personal_tumblr = new GridView(this);
+						gv_personal_tumblr = new GridView(getContext());
 						gv_personal_tumblr.setPadding(0, 10, 0, 0);
-						ln_tumblr = new LinearLayout(this);
-						btn_tumblr_more = new ImageButton(this);
+						ln_tumblr = new LinearLayout(getContext());
+						btn_tumblr_more = new ImageButton(getContext());
 						btn_tumblr_more
 								.setImageResource(R.drawable.more_disable);
 						btn_tumblr_more.setEnabled(false);
 
-						RelativeLayout more_li = new RelativeLayout(this);
+						RelativeLayout more_li = new RelativeLayout(getContext());
 						btn_tumblr_more.setLayoutParams(lp_more);
 						more_li.addView(btn_tumblr_more);
 						more_li.addView(txttumblr);
@@ -5638,18 +5649,18 @@ public class newGallery extends Activity {
 						btn_line.setWidth(LayoutParams.MATCH_PARENT);
 						btn_line.setBackgroundResource(color_line);
 
-						txtvkontakte = new TextView(this);
+						txtvkontakte = new TextView(getContext());
 						txtvkontakte.setText("Vkontakte Personal");
 						txtvkontakte.setTextSize(text_size);
-						gv_personal_vkontakte = new GridView(this);
+						gv_personal_vkontakte = new GridView(getContext());
 						gv_personal_vkontakte.setPadding(0, 10, 0, 0);
-						ln_vkontakte = new LinearLayout(this);
-						btn_vkontakte_more = new ImageButton(this);
+						ln_vkontakte = new LinearLayout(getContext());
+						btn_vkontakte_more = new ImageButton(getContext());
 						btn_vkontakte_more
 								.setImageResource(R.drawable.more_disable);
 						btn_vkontakte_more.setEnabled(false);
 
-						RelativeLayout more_li = new RelativeLayout(this);
+						RelativeLayout more_li = new RelativeLayout(getContext());
 						btn_vkontakte_more.setLayoutParams(lp_more);
 						more_li.addView(btn_vkontakte_more);
 						more_li.addView(txtvkontakte);
@@ -5752,18 +5763,18 @@ public class newGallery extends Activity {
 						btn_line.setWidth(LayoutParams.MATCH_PARENT);
 						btn_line.setBackgroundResource(color_line);
 
-						txtpersonal_flickr = new TextView(this);
+						txtpersonal_flickr = new TextView(getContext());
 						txtpersonal_flickr.setText("Personal Flickr");
 						txtpersonal_flickr.setTextSize(text_size);
-						gv_personal_flickr = new GridView(this);
+						gv_personal_flickr = new GridView(getContext());
 						gv_personal_flickr.setPadding(0, 10, 0, 0);
-						ln_personal_flickr = new LinearLayout(this);
-						btn_personal_flickr_more = new ImageButton(this);
+						ln_personal_flickr = new LinearLayout(getContext());
+						btn_personal_flickr_more = new ImageButton(getContext());
 						btn_personal_flickr_more
 								.setImageResource(R.drawable.more_disable);
 						btn_personal_flickr_more.setEnabled(false);
 
-						RelativeLayout more_li = new RelativeLayout(this);
+						RelativeLayout more_li = new RelativeLayout(getContext());
 						btn_personal_flickr_more.setLayoutParams(lp_more);
 						more_li.addView(btn_personal_flickr_more);
 						more_li.addView(txtpersonal_flickr);
@@ -5868,18 +5879,18 @@ public class newGallery extends Activity {
 						btn_line.setWidth(LayoutParams.MATCH_PARENT);
 						btn_line.setBackgroundResource(color_line);
 
-						txtpersonal_picasa = new TextView(this);
+						txtpersonal_picasa = new TextView(getContext());
 						txtpersonal_picasa.setText("Personal Picasa");
 						txtpersonal_picasa.setTextSize(text_size);
-						gv_personal_picasa = new GridView(this);
+						gv_personal_picasa = new GridView(getContext());
 						gv_personal_picasa.setPadding(0, 10, 0, 0);
-						ln_personal_picasa = new LinearLayout(this);
-						btn_personal_picasa_more = new ImageButton(this);
+						ln_personal_picasa = new LinearLayout(getContext());
+						btn_personal_picasa_more = new ImageButton(getContext());
 						btn_personal_picasa_more
 								.setImageResource(R.drawable.more_disable);
 						btn_personal_picasa_more.setEnabled(false);
 
-						RelativeLayout more_li = new RelativeLayout(this);
+						RelativeLayout more_li = new RelativeLayout(getContext());
 						btn_personal_picasa_more.setLayoutParams(lp_more);
 						more_li.addView(btn_personal_picasa_more);
 						more_li.addView(txtpersonal_picasa);
@@ -5981,18 +5992,18 @@ public class newGallery extends Activity {
 						btn_line.setWidth(LayoutParams.MATCH_PARENT);
 						btn_line.setBackgroundResource(color_line);
 
-						txtpersonal_deviantart = new TextView(this);
+						txtpersonal_deviantart = new TextView(getContext());
 						txtpersonal_deviantart.setText("Personal DeviantArt");
 						txtpersonal_deviantart.setTextSize(text_size);
-						gv_personal_deviantart = new GridView(this);
+						gv_personal_deviantart = new GridView(getContext());
 						gv_personal_deviantart.setPadding(0, 10, 0, 0);
-						ln_personal_deviantart = new LinearLayout(this);
-						btn_personal_deviant_more = new ImageButton(this);
+						ln_personal_deviantart = new LinearLayout(getContext());
+						btn_personal_deviant_more = new ImageButton(getContext());
 						btn_personal_deviant_more
 								.setImageResource(R.drawable.more_disable);
 						btn_personal_deviant_more.setEnabled(false);
 
-						RelativeLayout more_li = new RelativeLayout(this);
+						RelativeLayout more_li = new RelativeLayout(getContext());
 						btn_personal_deviant_more.setLayoutParams(lp_more);
 						more_li.addView(btn_personal_deviant_more);
 						more_li.addView(txtpersonal_deviantart);
@@ -6095,18 +6106,18 @@ public class newGallery extends Activity {
 						btn_line.setWidth(LayoutParams.MATCH_PARENT);
 						btn_line.setBackgroundResource(color_line);
 
-						txtpersonal_imgur = new TextView(this);
+						txtpersonal_imgur = new TextView(getContext());
 						txtpersonal_imgur.setText("Personal Imgur");
 						txtpersonal_imgur.setTextSize(text_size);
-						gv_personal_imgur = new GridView(this);
+						gv_personal_imgur = new GridView(getContext());
 						gv_personal_imgur.setPadding(0, 10, 0, 0);
-						ln_personal_imgur = new LinearLayout(this);
-						btn_personal_imgur_more = new ImageButton(this);
+						ln_personal_imgur = new LinearLayout(getContext());
+						btn_personal_imgur_more = new ImageButton(getContext());
 						btn_personal_imgur_more
 								.setImageResource(R.drawable.more_disable);
 						btn_personal_imgur_more.setEnabled(false);
 
-						RelativeLayout more_li = new RelativeLayout(this);
+						RelativeLayout more_li = new RelativeLayout(getContext());
 						btn_personal_imgur_more.setLayoutParams(lp_more);
 						more_li.addView(btn_personal_imgur_more);
 						more_li.addView(txtpersonal_imgur);
@@ -6205,19 +6216,19 @@ public class newGallery extends Activity {
 						btn_line.setWidth(LayoutParams.MATCH_PARENT);
 						btn_line.setBackgroundResource(color_line);
 
-						txtpersonal_kaixin = new TextView(this);
+						txtpersonal_kaixin = new TextView(getContext());
 						txtpersonal_kaixin.setText("Personal Kaixin");
 						txtpersonal_kaixin.setTextSize(text_size);
-						gv_personal_kaixin = new GridView(this);
+						gv_personal_kaixin = new GridView(getContext());
 						gv_personal_kaixin.setPadding(0, 10, 0, 0);
-						ln_personal_kaixin = new LinearLayout(this);
+						ln_personal_kaixin = new LinearLayout(getContext());
 
-						btn_personal_kaixin_more = new ImageButton(this);
+						btn_personal_kaixin_more = new ImageButton(getContext());
 						btn_personal_kaixin_more
 								.setImageResource(R.drawable.more_disable);
 						btn_personal_kaixin_more.setEnabled(false);
 
-						RelativeLayout more_li = new RelativeLayout(this);
+						RelativeLayout more_li = new RelativeLayout(getContext());
 						btn_personal_kaixin_more.setLayoutParams(lp_more);
 						more_li.addView(btn_personal_kaixin_more);
 						more_li.addView(txtpersonal_kaixin);
@@ -6319,18 +6330,18 @@ public class newGallery extends Activity {
 						btn_line.setWidth(LayoutParams.MATCH_PARENT);
 						btn_line.setBackgroundResource(color_line);
 
-						txtpersonal_500px = new TextView(this);
+						txtpersonal_500px = new TextView(getContext());
 						txtpersonal_500px.setText("Personal 500px");
 						txtpersonal_500px.setTextSize(text_size);
-						gv_personal_500px = new GridView(this);
+						gv_personal_500px = new GridView(getContext());
 						gv_personal_500px.setPadding(0, 10, 0, 0);
-						ln_personal_500px = new LinearLayout(this);
-						btn_personal_500px_more = new ImageButton(this);
+						ln_personal_500px = new LinearLayout(getContext());
+						btn_personal_500px_more = new ImageButton(getContext());
 						btn_personal_500px_more
 								.setImageResource(R.drawable.more_disable);
 						btn_personal_500px_more.setEnabled(false);
 
-						RelativeLayout more_li = new RelativeLayout(this);
+						RelativeLayout more_li = new RelativeLayout(getContext());
 						btn_personal_500px_more.setLayoutParams(lp_more);
 						more_li.addView(btn_personal_500px_more);
 						more_li.addView(txtpersonal_500px);
@@ -6432,18 +6443,18 @@ public class newGallery extends Activity {
 						btn_line.setWidth(LayoutParams.MATCH_PARENT);
 						btn_line.setBackgroundResource(color_line);
 
-						txtpersonal_sohu = new TextView(this);
+						txtpersonal_sohu = new TextView(getContext());
 						txtpersonal_sohu.setText("Personal Sohu");
 						txtpersonal_sohu.setTextSize(text_size);
-						gv_personal_sohu = new GridView(this);
+						gv_personal_sohu = new GridView(getContext());
 						gv_personal_sohu.setPadding(0, 10, 0, 0);
-						ln_personal_sohu = new LinearLayout(this);
-						btn_personal_sohu_more = new ImageButton(this);
+						ln_personal_sohu = new LinearLayout(getContext());
+						btn_personal_sohu_more = new ImageButton(getContext());
 						btn_personal_sohu_more
 								.setImageResource(R.drawable.more_disable);
 						btn_personal_sohu_more.setEnabled(false);
 
-						RelativeLayout more_li = new RelativeLayout(this);
+						RelativeLayout more_li = new RelativeLayout(getContext());
 						btn_personal_sohu_more.setLayoutParams(lp_more);
 						more_li.addView(btn_personal_sohu_more);
 						more_li.addView(txtpersonal_sohu);
@@ -6552,7 +6563,7 @@ public class newGallery extends Activity {
 						for (int j = 0; j < tmp.length; j++) {
 							tmp[j] = array_list.get(i).get(j);
 						}
-						newGallery.this.runOnUiThread(new Runnable() {
+						getActivity().runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
 
@@ -6575,7 +6586,7 @@ public class newGallery extends Activity {
 						for (int j = 0; j < tmp.length; j++) {
 							tmp[j] = personal_array_list.get(i).get(j);
 						}
-						newGallery.this.runOnUiThread(new Runnable() {
+						getActivity().runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
 
@@ -6671,17 +6682,17 @@ public class newGallery extends Activity {
 		btn_line_black.setWidth(LayoutParams.MATCH_PARENT);
 		btn_line_black.setBackgroundResource(R.color.black);
 		
-		txt = new TextView(this);
+		txt = new TextView(getContext());
 		txt.setText(text);
 		txt.setTextSize(text_size);
-		grid = new GridView(this);
+		grid = new GridView(getContext());
 		grid.setBackgroundResource(R.color.white);
-		linear = new LinearLayout(this);
-		btn = new ImageButton(this);
+		linear = new LinearLayout(getContext());
+		btn = new ImageButton(getContext());
 		btn.setImageResource(R.drawable.more_disable);
 		btn.setEnabled(false);
 
-		RelativeLayout more_li = new RelativeLayout(this);
+		RelativeLayout more_li = new RelativeLayout(getContext());
 		btn.setLayoutParams(lp_more);
 		more_li.addView(btn);
 		more_li.addView(txt);
@@ -6724,7 +6735,7 @@ public class newGallery extends Activity {
 								.replace("/", "_");
 				File f = new File(filepath);
 				
-				newGallery.this.runOnUiThread(new Runnable() {
+				getActivity().runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
 					}
@@ -6768,7 +6779,7 @@ public class newGallery extends Activity {
 								service, description);
 						
 						complete_file++;
-						newGallery.this.runOnUiThread(new Runnable() {
+						getActivity().runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
 								bitmap_list.add(BitmapFactory.decodeFile(thumb_path));
@@ -6948,7 +6959,7 @@ public class newGallery extends Activity {
 			  .size()-my_feed_services_count5*NUMBER_PHOTO_NEED_DOWNLOAD)>0){
 			  btn_my_feed_services_more5.setImageResource(R.drawable.more);
 			  btn_my_feed_services_more5.setEnabled(true); }}
-			 sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"
+			 getActivity().sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"
 			            + Environment.getExternalStorageDirectory()))); 
 			 
 		}
@@ -6975,7 +6986,7 @@ public class newGallery extends Activity {
 								.replace("/", "_");
 				File f = new File(filepath);
 				
-				newGallery.this.runOnUiThread(new Runnable() {
+				getActivity().runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
 
@@ -7021,7 +7032,7 @@ public class newGallery extends Activity {
 
 						complete_file++;
 						
-						newGallery.this.runOnUiThread(new Runnable() {
+						getActivity().runOnUiThread(new Runnable() {
 							@Override
 							public void run() {
 								bitmap_list.add(0,
@@ -7174,7 +7185,7 @@ public class newGallery extends Activity {
 					btn_my_feed_services_more3.setEnabled(true);
 				}
 			}
-			sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"
+			getActivity().sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"
 		            + Environment.getExternalStorageDirectory()))); 
 		}
 
@@ -7197,7 +7208,7 @@ public class newGallery extends Activity {
 				for (int j = 0; j < tmp.length; j++) {
 					tmp[j] = list.get(count * NUMBER_PHOTO_NEED_DOWNLOAD + j);
 				}
-				newGallery.this.runOnUiThread(new Runnable() {
+				getActivity().runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
 
@@ -7223,7 +7234,7 @@ public class newGallery extends Activity {
 				for (int j = 0; j < tmp.length; j++) {
 					tmp[j] = list.get(count * NUMBER_PHOTO_NEED_DOWNLOAD + j);
 				}
-				newGallery.this.runOnUiThread(new Runnable() {
+				getActivity().runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
 
@@ -7336,33 +7347,7 @@ public class newGallery extends Activity {
 			return false;
 		}
 	}
-	@Override
-	public boolean onKeyDown(int keycode, KeyEvent event)
-    {
-    	if (keycode == KeyEvent.KEYCODE_BACK){
-    		AlertDialog.Builder alertbox = new AlertDialog.Builder(ctx);
-            alertbox.setMessage(getString(R.string.exit_message));
-            alertbox.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                	finish();
-                	System.exit(0);
-                }
-            });
-            alertbox.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
-            {
-                @Override
-                public void onClick(DialogInterface dialog, int which)
-                {
-                	//Resume to current process
-                }
-            });
-            alertbox.create().show();
-    	}  	
-        return super.onKeyDown(keycode, event);
-    }
+
 	
 }
 
