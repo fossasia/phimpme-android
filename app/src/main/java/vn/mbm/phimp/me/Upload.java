@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -297,7 +298,8 @@ public class Upload extends android.support.v4.app.Fragment {
             @SuppressWarnings("deprecation")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                getActivity().showDialog(CONTEXT_MENU_ID);
+                DialogFragment newFragment = new AddAccountDialogFragment();
+                newFragment.show(getFragmentManager(), "dialog");
                 return false;
             }
         });
