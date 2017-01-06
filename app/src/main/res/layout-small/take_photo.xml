@@ -29,6 +29,6 @@
 	    android:layout_height="wrap_content"
 	    android:layout_weight="1"
 	    android:background="@color/black"
-	    android:src="@drawable/icon_camera" />
+	    android:src="@drawable/takepic" />
 
 </LinearLayout>

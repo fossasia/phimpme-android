@@ -1418,7 +1418,13 @@ class CropImageView extends ImageViewTouchBase
     {
 		mHighlightViews.add(hv);
 		invalidate();
-    } 
+    }
 
-
+	@Override
+	protected void onMeasure(int widthM, int heightM)
+	{
+		super.onMeasure(widthM, heightM);
+		int width = getMeasuredWidth();
+		setMeasuredDimension(width, width);
+	}
 }

@@ -262,22 +262,22 @@ public class Camera2 extends Activity{
 					PhimpMe.flashStatus = 1;
 				else PhimpMe.flashStatus = 2;
 				if (PhimpMe.flashStatus == 0){
-					if (statusScreen == 0)	flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_r));
-					else flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder));
+					if (statusScreen == 0)	flash.setImageDrawable(getResources().getDrawable(R.drawable.flash_on_r));
+					else flash.setImageDrawable(getResources().getDrawable(R.drawable.flash_on));
 					parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
 					preview.mCamera.setParameters(parameters);
 					PhimpMe.flashStatus = 1;
 				}else if (PhimpMe.flashStatus == 1)
 					{					
-					if (statusScreen == 0)	flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_a_r));
-					else flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_a_r));
+					if (statusScreen == 0)	flash.setImageDrawable(getResources().getDrawable(R.drawable.flash_off_r));
+					else flash.setImageDrawable(getResources().getDrawable(R.drawable.flash_off));
 					parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
 					preview.mCamera.setParameters(parameters);
 					PhimpMe.flashStatus = 2;
 				}else
 				{
-					if (statusScreen == 0)flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_gray_r));else
-					flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_gray));
+					if (statusScreen == 0)flash.setImageDrawable(getResources().getDrawable(R.drawable.flash_auto_r));else
+					flash.setImageDrawable(getResources().getDrawable(R.drawable.flash_auto));
 					parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
 					preview.mCamera.setParameters(parameters);
 					PhimpMe.flashStatus = 0;
