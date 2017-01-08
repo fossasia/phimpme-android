@@ -14,31 +14,41 @@
             android:id="@+id/lnCam"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
             android:gravity="center|left"
             android:orientation="vertical" >
-
-            <ImageButton
-                android:id="@+id/flash"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center"
-                android:src="@drawable/thunder_a_r" />
 
             <ImageButton
                 android:id="@+id/switch_camera"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|center"
-                android:src="@drawable/camera_32_r" />
+                android:layout_marginBottom="10dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/camera_switch_r" />
+
+            <ImageButton
+                android:id="@+id/flash"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center_horizontal|center"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/flash_auto_r" />
+
         </LinearLayout>
 
         <ImageButton
             android:id="@+id/takephoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="fitCenter"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
-            android:src="@drawable/icon_camera_r" />
+            android:background="@drawable/roundedbutton"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/takepic_r" />
 
         <FrameLayout
             android:id="@+id/preview"

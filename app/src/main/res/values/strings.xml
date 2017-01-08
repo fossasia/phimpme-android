@@ -57,7 +57,7 @@
     <string name="error_upload_map_no_position">Please drop pin on the map to get position.</string>
     <string name="ask_delete_account">Are you sure you want to delete this account?</string>
     <string name="tags">Tags</string>
-    <string name="tags_hint">A comma-seperated list of tags to apply to the photo.</string>
+    <string name="tags_hint">Tags (comma-separated)</string>
     <string name="clear">Clear</string>
     <string name="select">Select</string>
     <string name="newest">The Newest photo</string>
