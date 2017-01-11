@@ -1,5 +1,6 @@
 language: android
-jdk: oraclejdk8
+jdk: 
+ - oraclejdk8
 # Use the Travis Container-Based Infrastructure
 
 env:
@@ -30,12 +31,12 @@ android:
     # Specify at least one system image
     - sys-img-armeabi-v7a-google_apis-$ANDROID_API_LEVEL
 
-script: "./build.sh"
+script: 
+ - ./gradlew build
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-  - chmod +x $HOME/build/fossasia/phimpme-android/upload-apk.sh
-  - sh $HOME/build/fossasia/phimpme-android/upload-apk.sh
+  - ./upload-apk.sh
 
 notifications:
   slack: fossasia:JgzycrBUs0nKnmJhsAxCB4bL
