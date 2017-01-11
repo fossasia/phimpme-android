@@ -8,7 +8,7 @@ cd $HOME
 git config --global user.email "noreply@travis.com"
 git config --global user.name "Travis CI" 
 #clone the repository in the buildApk folder
-git clone --quiet --branch=apk  https://heredroky:$GITHUB_API_KEY@github.com/heredroky/phimpme-android  apk > /dev/null
+git clone --quiet --branch=apk https://fossasia:$GITHUB_API_KEY@github.com/fossasia/phimpme-android apk > /dev/null
 cd apk  
 #copy the data in the sample-apk folder in the branch apk
 cp -Rf $HOME/buildApk/* sample-apk/ 
