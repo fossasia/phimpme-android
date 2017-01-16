@@ -62,13 +62,6 @@
         android:gravity="center"
         android:padding="5dp" >
 
-        <ImageButton
-            android:id="@+id/btnUploadMapLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:src="@drawable/location" />
-
         <Button
             android:id="@+id/btnUploadMapClear"
             android:layout_width="wrap_content"
@@ -90,6 +83,17 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@+id/btnUploadMapSave"
             android:text="@string/cancel" />
+
+        <ImageButton
+            android:id="@+id/btnUploadMapLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/transparent"
+            android:src="@drawable/location"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp" />
 
     </RelativeLayout>
 

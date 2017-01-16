@@ -3,7 +3,7 @@
   android:id="@+id/main"
   android:layout_width="fill_parent"
   android:layout_height="fill_parent"
-  android:background="@drawable/home_gradient">
+  android:background="#EEEEEE">
   <LinearLayout
     android:id="@+id/LinearLayout01"
     android:layout_width="fill_parent"
@@ -11,6 +11,7 @@
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:layout_gravity="center">
+
     <ImageView
       android:scaleType="centerInside"
       android:layout_width="200dip"
@@ -50,9 +51,10 @@
       android:shadowDx="0"
       android:shadowDy="2"
       android:shadowRadius="1"
-      android:textStyle="bold"
       android:background="@drawable/wp_button"
-      android:text="@string/new_to_wp" />
+      android:text="@string/new_to_wp"
+      android:textColor="#000000"/>
+
     <Button
       android:id="@+id/dotcomExisting"
       android:layout_width="280dip"
@@ -63,9 +65,10 @@
       android:shadowDx="0"
       android:shadowDy="2"
       android:shadowRadius="1"
-      android:textStyle="bold"
       android:background="@drawable/wp_button"
-      android:text="@string/i_have_wp_blog" />
+      android:text="@string/i_have_wp_blog"
+      android:textColor="#000000"/>
+
     <Button
       android:id="@+id/dotorgExisting"
       android:layout_width="280dip"
@@ -76,8 +79,9 @@
       android:shadowDx="0"
       android:shadowDy="2"
       android:shadowRadius="1"
-      android:textStyle="bold"
       android:background="@drawable/wp_button"
-      android:text="@string/i_have_blog" />
+      android:text="@string/i_have_blog"
+      android:textColor="#000000"/>
+
   </LinearLayout>
 </ScrollView>
