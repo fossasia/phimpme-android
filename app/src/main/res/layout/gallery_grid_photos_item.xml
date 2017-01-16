@@ -21,6 +21,7 @@
             android:layout_marginRight="10dp"
             android:src="@drawable/add" />
 
+
         <View
             android:id="@+id/view1"
             android:layout_width="wrap_content"
@@ -28,15 +29,17 @@
             android:background="@color/white"
             />
 
-        <ImageView
-            android:id="@+id/imgGalleryGridItemLoading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ProgressBar android:id="@+id/imgGalleryGridItemLoading"
+            style="?android:attr/progressBarStyleLarge"
+            android:indeterminate="false"
+            android:progressDrawable="@drawable/circular_progress_bar"
+            android:background="@drawable/circle_shape"
+            android:max="100"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/arrows"
-            android:visibility="visible"
-            android:contentDescription="@string/empty" />
+            android:progress="65"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <ImageView
             android:id="@+id/imgGalleryGridItemThumbnail"
