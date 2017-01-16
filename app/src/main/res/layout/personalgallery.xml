@@ -27,17 +27,17 @@
             android:layout_alignRight="@+id/txtGalleryStatus"
             android:text="@string/refresh" />
 
-        <ImageButton
+		<ImageButton
             android:id="@+id/btnGalleryMaps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="15dp"
-            android:layout_toLeftOf="@+id/btnRefresh"
-            android:src="@drawable/maps"
-            android:contentDescription="@string/empty" />
+			android:src="@drawable/maps"
+            android:contentDescription="@string/empty"
+			android:layout_alignParentTop="true"
+			android:layout_toLeftOf="@+id/btnRefresh"
+			android:layout_alignBottom="@+id/btnRefresh" />
 
-    </RelativeLayout>
+	</RelativeLayout>
     
 	<RelativeLayout
 	    android:layout_width="wrap_content"

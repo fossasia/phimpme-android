@@ -9,7 +9,6 @@
         android:id="@+id/RelativeLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        
         android:padding="10dp" >
 
         <TextView
@@ -26,19 +25,28 @@
             android:layout_height="wrap_content"
             android:layout_alignRight="@+id/txtGalleryStatus"
             android:layout_centerVertical="true"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="10dp"
             android:text="@string/refresh" />
 
         <ImageButton
             android:id="@+id/btnGalleryMaps"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/btnPublic"
-            android:layout_toLeftOf="@+id/btnPublic"
-            android:contentDescription="@string/empty"
-            android:src="@drawable/maps" />
+			android:contentDescription="@string/empty"
+            android:src="@drawable/maps"
+			android:layout_alignBottom="@+id/btnPublic"
+			android:layout_toLeftOf="@+id/btnPublic"
+			android:layout_alignParentTop="true" />
 
     </RelativeLayout>
+
+	<FrameLayout
+		android:layout_width="match_parent"
+		android:layout_height="0.5dp"
+		android:background="#FFFFFF"
+		android:layout_marginLeft="10dp"
+		android:layout_marginRight="10dp"
+		android:layout_marginBottom="10dp" />
 
    	<TextView
         android:id="@+id/textView1"
@@ -66,7 +74,8 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/personal" />
+        android:text="@string/personal"
+		android:layout_marginTop="5dp" />
 
 	<GridView
 	    android:id="@+id/gvPrivateGalleryContainer"
