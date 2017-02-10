@@ -8,13 +8,23 @@ Phimp.me - Photo App
 ##Communication
 Chat: [PhimpMe Slack Channel](http://fossasia.slack.com/messages/phimpme/) | [Get a Slack Invite](http://fossasia-slack.herokuapp.com/)
 
-## Documentation
+## Screenshots
 
-### Development Setup
+  <table>
+    <tr>
+     <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/home.png"></td></td>
+     <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/upload.png"></td>
+     <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/fbupload.png"></td>
+     <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/settings.png"></td>
+    </tr>
+  </table>
+
+
+## Development Setup
 
 Before you begin, you should already have the Android Studio SDK downloaded and set up correctly. You can find a guide on how to do this here: [Setting up Android Studio](http://developer.android.com/sdk/installing/index.html?pkg=studio)
 
-### Setting up the Android Project
+**Setting up the Android Project**
 
 1. Download the *phimpme-android* project source. You can do this either by forking and cloning the repository (recommended if you plan on pushing changes) or by downloading it as a ZIP file and extracting it.
 
@@ -31,17 +41,6 @@ Before you begin, you should already have the Android Studio SDK downloaded and 
 6. To Build the app, go to *Build>Make Project* (or alternatively press the Make Project icon in the toolbar).
 
 7. If the app was built succesfully, you can test it by running it on either a real device or an emulated one by going to *Run>Run 'app'* or presing the Run icon in the toolbar.
-
-## Screenshots
-<table>
-  <tr>
-    <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/home.png"></td>></td>
-  <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/upload.png"></td>
-    <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/fbupload.png"></td>
- <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/settings.png"></td>
- 
-  </tr>
-  </table>
 
 ## License
 
