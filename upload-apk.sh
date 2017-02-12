@@ -9,13 +9,20 @@ git config --global user.email "noreply@travis.com"
 git config --global user.name "Travis CI" 
 #clone the repository in the buildApk folder
 git clone --quiet --branch=apk https://fossasia:$GITHUB_API_KEY@github.com/fossasia/phimpme-android apk > /dev/null
-cd apk  
-#copy the data in the sample-apk folder in the branch apk
-cp -Rf $HOME/buildApk/* sample-apk/ 
+cp -Rf $HOME/buildApk/*
+cd apk
+
+git checkout --orphan workaround
+git add -A
+
 #add files
-git add -f .
+#git add -f .
 #commit and skip the tests
-git commit -m "Travis build pushed [skip ci]"
+
+git commit -am "Travis build pushed [skip ci]"
+
+git branch -D apk
+git branch -m apk
+
 #push to the branch apk
-git push -fq origin apk > /dev/null
-echo -e "Apk updated"
+git push origin apk --force --quiet> /dev/null
