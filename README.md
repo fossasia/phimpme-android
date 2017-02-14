@@ -20,7 +20,22 @@ Please join our chat channel on Slack: http://fossasia.slack.com/messages/phimpm
     </tr>
   </table>
 
-
+## Features
+**Feature**|**Description**|**Status**
+-----|-----|-----
+Home Screen|Show local captured images|Need Enhancement
+ |Grid view of images.|Need Enhancement
+ |Edit, Upload, share option on image click|Working
+Map Activity|Show photos on the map|Not working
+Camera|Capture Image, Toggle Camera|Working
+ |Apply filters, Flash on/off|Working
+Upload|Select account on which you want to upload|Not working
+ |Select images which you want to upload|Crashing
+ |Share images with bluetooth|Working
+ |Upload button which upload the image|Crashing
+Settings|Add Accounts|Not working
+ |Photos settings|Working
+ |Local photos : choose folder|Not working
 ## Development Setup
 
 Before you begin, you should already have the Android Studio SDK downloaded and set up correctly. You can find a guide on how to do this here: [Setting up Android Studio](http://developer.android.com/sdk/installing/index.html?pkg=studio)
