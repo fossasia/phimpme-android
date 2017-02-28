@@ -31,25 +31,21 @@ import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.facebook.*;
-import com.facebook.share.model.SharePhoto;
-import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
-import com.google.android.maps.GeoPoint;
 import com.joooid.android.model.User;
 import com.joooid.android.xmlrpc.Constants;
 import com.joooid.android.xmlrpc.JoooidRpc;
 import com.tani.app.ui.IconContextMenu;
 
 import org.json.JSONObject;
+import org.osmdroid.util.GeoPoint;
 import org.wordpress.android.NewAccount;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.logging.Handler;
+
 
 import vn.mbm.phimp.me.database.AccountItem;
 import vn.mbm.phimp.me.database.DrupalItem;
@@ -1124,7 +1120,6 @@ public class Upload extends android.support.v4.app.Fragment {
                 PhimpMe.UploadLongitude = loc.getLongitude();
                 int _lat = (int) (PhimpMe.curLatitude * 1000000);
                 int _long = (int) (PhimpMe.curLongtitude * 1000000);
-                PhimpMe.currentGeoPoint = new GeoPoint(_lat, _long);
                 gpsloading.dismiss();
                 txtLatitude.setText(PhimpMe.curLatitude + "");
                 txtLongtitude.setText(PhimpMe.curLongtitude + "");

@@ -150,25 +150,7 @@
             >
            
         </activity>
-        <activity
-            android:name=".GalleryMap"
-            android:configChanges="locale"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
-           
-        </activity>         
-        <activity
-            android:name=".OpenStreetMap"
-            android:configChanges="locale"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
-           
-        </activity>
-        <activity
-            android:name=".UploadMap"
-            android:configChanges="locale"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
-           
-        </activity>
+
         <!--<activity-->
             <!--android:name=".UploadOSMap"-->
             <!--android:configChanges="locale"-->
