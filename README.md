@@ -6,17 +6,32 @@ Phimp.me is a Photo App for Android that aims to replace proprietary photo appli
 [![codecov](https://codecov.io/gh/fossasia/phimpme-android/branch/master/graph/badge.svg)](https://codecov.io/gh/fossasia/phimpme-android)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ad1ba4cbecf04d3baa96a04c9a14d8cc)](https://www.codacy.com/app/mb/phimpme-android?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fossasia/phimpme-android&amp;utm_campaign=Badge_Grade)
 
-##Communication
+## Communication
 Please join our chat channel on Slack: http://fossasia.slack.com/messages/phimpme/. You need to invite yourself first here: http://fossasia-slack.herokuapp.com/
 
+## How to Contribute
+This is an Open Source project and we would be happy to see contributors who report bugs and file feature requests submitting pull requests as well. Please report issues here https://github.com/fossasia/phimpme-android/issues
+
+### Branch Policy
+We have the following branches
+ * **development**
+	 All development goes on in this branch. If you're making a contribution,
+	 you are supposed to make a pull request to _development_.
+	 Make sure it pass a build check on Travis
+ * **master**
+   This contains the stable code. After significant features/bugfixes are accumulated on development, we move it to master.
+ 
+ * **apk**
+   This branch contains automatically generated apk file for testing.
+   
 ## Screenshots
 
   <table>
     <tr>
-     <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/home.png"></td></td>
-     <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/upload.png"></td>
-     <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/fbupload.png"></td>
-     <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/settings.png"></td>
+     <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/s1.png"></td></td>
+     <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/s2.png"></td>
+     <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/s3.png"></td>
+     <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/s4.png"></td>
     </tr>
   </table>
 
