@@ -3293,10 +3293,9 @@ public class newGallery extends Fragment {
 			final String[] columns = { MediaStore.Images.Thumbnails._ID};
 			final String[] data = { MediaStore.Images.Media.DATA };
 			final String orderBy = MediaStore.Images.Media._ID;
-			Cursor pathcursor = getActivity().managedQuery(
+			Cursor pathcursor = getActivity().getContentResolver().query(
 					MediaStore.Images.Media.EXTERNAL_CONTENT_URI, data,
-					null, null, orderBy);	
-			getActivity().startManagingCursor(pathcursor);
+					null, null, orderBy);
 			if(pathcursor != null){
 				int path_column_index = pathcursor
 						.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -3317,10 +3316,9 @@ public class newGallery extends Fragment {
 								
 							}
 							else if(c<=20){				
-								Cursor cursor = getActivity().managedQuery(
+								Cursor cursor = getActivity().getContentResolver().query(
 										MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
-										MediaStore.Images.Media.DATA+ " = " + "\""+path+"\"", null, MediaStore.Images.Media._ID);									
-								getActivity().startManagingCursor(cursor);
+										MediaStore.Images.Media.DATA+ " = " + "\""+path+"\"", null, MediaStore.Images.Media._ID);
 								if (cursor != null && cursor.getCount() > 0){
 									cursor.moveToPosition(0);
 									id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID));	
@@ -3406,7 +3404,13 @@ public class newGallery extends Fragment {
 
 				// get photo
 				String[] projection={MediaStore.Images.Thumbnails._ID, MediaStore.Images.Thumbnails.IMAGE_ID};
-				cursor = ((Activity) ctx).managedQuery(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, projection, null, null, MediaStore.Images.Thumbnails.IMAGE_ID+ " DESC");
+				cursor = ((Activity) ctx).getContentResolver().query(
+						MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI,
+						projection,
+						null,
+						null,
+						MediaStore.Images.Thumbnails.IMAGE_ID+ " DESC"
+				);
 				
 				columnIndex=cursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails._ID);
 				
