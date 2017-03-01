@@ -13,10 +13,10 @@ Please join our chat channel on Slack: http://fossasia.slack.com/messages/phimpm
 
   <table>
     <tr>
-     <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/home.png"></td></td>
-     <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/upload.png"></td>
-     <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/fbupload.png"></td>
-     <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/settings.png"></td>
+     <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/s1.png"></td></td>
+     <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/s2.png"></td>
+     <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/s3.png"></td>
+     <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/s4.png"></td>
     </tr>
   </table>
 
