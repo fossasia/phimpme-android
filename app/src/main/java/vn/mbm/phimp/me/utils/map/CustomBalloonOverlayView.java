@@ -12,10 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.google.android.maps.OverlayItem;
-import com.readystatesoftware.mapviewballoons.BalloonOverlayView;
+/*import com.google.android.maps.OverlayItem;
+import com.readystatesoftware.mapviewballoons.BalloonOverlayView;*/
 
-public class CustomBalloonOverlayView<Item extends OverlayItem> extends BalloonOverlayView<CustomOverlayItem>{
+/*public class CustomBalloonOverlayView<Item extends OverlayItem> extends BalloonOverlayView<CustomOverlayItem>{
 
 	//private TextView title;
 	//private TextView snippet;
@@ -94,4 +94,4 @@ public class CustomBalloonOverlayView<Item extends OverlayItem> extends BalloonO
 	}
 
 	
-}
+}*/

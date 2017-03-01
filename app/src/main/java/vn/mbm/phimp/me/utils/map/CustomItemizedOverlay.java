@@ -1,4 +1,4 @@
-package vn.mbm.phimp.me.utils.map;
+/*package vn.mbm.phimp.me.utils.map;
 
 import java.util.ArrayList;
 
@@ -47,7 +47,7 @@ public class CustomItemizedOverlay<Item extends OverlayItem> extends BalloonItem
 			/*newGallery.pro_gress=ProgressDialog.show(c, "", "Please wait...", true, false);
 			newGallery n=new newGallery();
 			n.Dialog(4000, newGallery.pro_gress);*/
-			if (path != null){
+			/*if (path != null){
 			Intent _intent = new Intent();
 			_intent.setClass(c, PhimpMeGallery.class);
 			//_intent.putExtra("image-path", path);
@@ -84,4 +84,4 @@ public class CustomItemizedOverlay<Item extends OverlayItem> extends BalloonItem
     	return false;
 	}*/
 	
-}
+//}

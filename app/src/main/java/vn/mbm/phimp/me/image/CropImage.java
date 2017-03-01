@@ -13,7 +13,7 @@ import org.json.JSONObject;
 
 import vn.mbm.phimp.me.PhimpMe;
 import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.UploadMap;
+//import vn.mbm.phimp.me.UploadMap;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -35,7 +35,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region;
 import android.media.FaceDetector;
-import android.media.MediaScannerConnection;
+//import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -46,7 +46,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
+//import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.RotateAnimation;
@@ -135,7 +135,7 @@ public class CropImage extends MonitoredActivity
     		
     		txtTags = (EditText) findViewById(R.id.txtUploadPhotoTags);
     		btnUseMap = (ImageButton) findViewById(R.id.btnUploadPhotoPutPos);
-    		btnUseMap.setOnClickListener(new OnClickListener() {
+    		/*btnUseMap.setOnClickListener(new OnClickListener() {
     			
     			@Override
     			public void onClick(View v) 
@@ -146,7 +146,7 @@ public class CropImage extends MonitoredActivity
     				_itent.putExtra("longitude", txtLongtitude.getText().toString());
     				startActivityForResult(_itent, GET_POSITION_ON_MAP);
     			}
-    		});
+    		});*/
     		mImageView = (CropImageView) findViewById(R.id.image);
     		gpsloading = new ProgressDialog(ctx);
     		gpsloading.setCancelable(true);
