@@ -231,7 +231,7 @@ public class PhotoSelect extends Activity {
 		final String[] data = { MediaStore.Images.Media.DATA };
 		final String orderBy = MediaStore.Images.Media._ID;
 		@SuppressWarnings("deprecation")
-		final Cursor pathcursor = managedQuery(
+		final Cursor pathcursor = getContentResolver().query(
 				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, data,
 				null, null, orderBy+ " DESC");
 		if(pathcursor != null){
@@ -281,7 +281,7 @@ public class PhotoSelect extends Activity {
 	 				boolean check = PhimpMe.cache.check(path);
 	 				if(!check){	 					
 	 					@SuppressWarnings("deprecation")
-						Cursor cur = managedQuery(
+						Cursor cur = getContentResolver().query(
 	 							MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
 	 							MediaStore.Images.Media.DATA+ " = " + "\""+path+"\"", null, MediaStore.Images.Media._ID);									
 	 					if (cur != null && cur.getCount() > 0){

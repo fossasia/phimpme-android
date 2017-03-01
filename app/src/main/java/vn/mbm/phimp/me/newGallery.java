@@ -3404,7 +3404,12 @@ public class newGallery extends Fragment {
 
 				// get photo
 				String[] projection={MediaStore.Images.Thumbnails._ID, MediaStore.Images.Thumbnails.IMAGE_ID};
-				cursor = ((Activity) ctx).managedQuery(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, projection, null, null, MediaStore.Images.Thumbnails.IMAGE_ID+ " DESC");
+				cursor = ((Activity) ctx).getContentResolver().query(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI,
+						projection,
+						null,
+						null,
+						MediaStore.Images.Thumbnails.IMAGE_ID+ " DESC"
+				);
 				
 				columnIndex=cursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails._ID);
 				
