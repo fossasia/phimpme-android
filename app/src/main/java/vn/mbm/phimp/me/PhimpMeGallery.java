@@ -57,9 +57,13 @@ public class PhimpMeGallery extends Activity{
 		 * get photo from memory
 		 */
 		String[] projection = { MediaStore.Images.Media.DATA };		
-		cursor = managedQuery(
+		cursor = getContentResolver().query(
 				MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-				projection, null, null, null);
+				projection,
+				null,
+				null,
+				null
+		);
 		columnIndex = cursor
 				.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
 		for (int i = 0; i < cursor.getCount(); i++) {
