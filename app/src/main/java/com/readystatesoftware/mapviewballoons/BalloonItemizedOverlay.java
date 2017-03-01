@@ -17,16 +17,16 @@ package com.readystatesoftware.mapviewballoons;
 
 
 
-import java.util.List;
+/*import java.util.List;*/
 
-import vn.mbm.phimp.me.R;
-import android.graphics.drawable.Drawable;
+//import vn.mbm.phimp.me.R;
+/*import android.graphics.drawable.Drawable;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.view.ViewGroup.LayoutParams;
+import android.view.ViewGroup.LayoutParams;*/
 
-import com.google.android.maps.GeoPoint;
+/*import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
@@ -39,7 +39,7 @@ import com.google.android.maps.OverlayItem;
  * 
  * @author Jeff Gilfelt
  */
-public abstract class BalloonItemizedOverlay<Item extends OverlayItem> extends ItemizedOverlay<Item> {
+/*public abstract class BalloonItemizedOverlay<Item extends OverlayItem> extends ItemizedOverlay<Item> {
 
 	private MapView mapView;
 	private BalloonOverlayView<Item> balloonView;
@@ -55,7 +55,7 @@ public abstract class BalloonItemizedOverlay<Item extends OverlayItem> extends I
 	 * @param defaultMarker - A bounded Drawable to be drawn on the map for each item in the overlay.
 	 * @param mapView - The view upon which the overlay items are to be drawn.
 	 */
-	public BalloonItemizedOverlay(Drawable defaultMarker, MapView mapView) {
+	/*public BalloonItemizedOverlay(Drawable defaultMarker, MapView mapView) {
 		super(defaultMarker);
 		this.mapView = mapView;
 		viewOffset = 0;
@@ -71,7 +71,7 @@ public abstract class BalloonItemizedOverlay<Item extends OverlayItem> extends I
 	 * @param pixels - The padding between the center point and the bottom of the
 	 * information balloon.
 	 */
-	public void setBalloonBottomOffset(int pixels) {
+	/*public void setBalloonBottomOffset(int pixels) {
 		viewOffset = pixels;
 	}
 	public int getBalloonBottomOffset() {
@@ -86,14 +86,14 @@ public abstract class BalloonItemizedOverlay<Item extends OverlayItem> extends I
 	 * @param item - The item whose balloon is tapped.
 	 * @return true if you handled the tap, otherwise false.
 	 */
-	protected boolean onBalloonTap(int index, Item item) {
+	/*protected boolean onBalloonTap(int index, Item item) {
 		return false;
 	}
 
 	/* (non-Javadoc)
 	 * @see com.google.android.maps.ItemizedOverlay#onTap(int)
 	 */
-	@Override
+	/*@Override
 	//protected final boolean onTap(int index) {
 	public final boolean onTap(int index) {
 		
@@ -111,7 +111,7 @@ public abstract class BalloonItemizedOverlay<Item extends OverlayItem> extends I
 	 * Creates the balloon view. Override to create a sub-classed view that
 	 * can populate additional sub-views.
 	 */
-	protected BalloonOverlayView<Item> createBalloonOverlayView() {
+	/*protected BalloonOverlayView<Item> createBalloonOverlayView() {
 		return new BalloonOverlayView<Item>(getMapView().getContext(), getBalloonBottomOffset());
 	}
 	
@@ -119,14 +119,14 @@ public abstract class BalloonItemizedOverlay<Item extends OverlayItem> extends I
 	 * Expose map view to subclasses.
 	 * Helps with creation of balloon views. 
 	 */
-	protected MapView getMapView() {
+	/*protected MapView getMapView() {
 		return mapView;
 	}
 	
 	/**
 	 * Sets the visibility of this overlay's balloon view to GONE. 
 	 */
-	protected void hideBalloon() {
+	/*protected void hideBalloon() {
 		if (balloonView != null) {
 			balloonView.setVisibility(View.GONE);
 		}
@@ -138,7 +138,7 @@ public abstract class BalloonItemizedOverlay<Item extends OverlayItem> extends I
 	 * 
 	 * @param overlays - list of overlays (including this) on the MapView.
 	 */
-	private void hideOtherBalloons(List<Overlay> overlays) {
+	/*private void hideOtherBalloons(List<Overlay> overlays) {
 		
 		for (Overlay overlay : overlays) {
 			if (overlay instanceof BalloonItemizedOverlay<?> && overlay != this) {
@@ -152,7 +152,7 @@ public abstract class BalloonItemizedOverlay<Item extends OverlayItem> extends I
 	 * Sets the onTouchListener for the balloon being displayed, calling the
 	 * overridden {@link #onBalloonTap} method.
 	 */
-	private OnTouchListener createBalloonTouchListener() {
+	/*private OnTouchListener createBalloonTouchListener() {
 		return new OnTouchListener() {
 			
 			float startX;
@@ -193,7 +193,7 @@ public abstract class BalloonItemizedOverlay<Item extends OverlayItem> extends I
 	/* (non-Javadoc)
 	 * @see com.google.android.maps.ItemizedOverlay#getFocus()
 	 */
-	@Override
+	/*@Override
 	public Item getFocus() {
 		return currentFocussedItem;
 	}
@@ -201,7 +201,7 @@ public abstract class BalloonItemizedOverlay<Item extends OverlayItem> extends I
 	/* (non-Javadoc)
 	 * @see com.google.android.maps.ItemizedOverlay#setFocus(Item)
 	 */
-	@Override
+	/*@Override
 	public void setFocus(Item item) {
 		currentFocussedItem = item;
 		
@@ -218,7 +218,7 @@ public abstract class BalloonItemizedOverlay<Item extends OverlayItem> extends I
 	 * balloon or by inflating it from xml. 
 	 * @return true if the balloon was recycled false otherwise 
 	 */
-	private boolean createAndDisplayBalloonOverlay(){
+	/*private boolean createAndDisplayBalloonOverlay(){
 		boolean isRecycled;
 		if (balloonView == null) {
 			balloonView = createBalloonOverlayView();
@@ -256,4 +256,4 @@ public abstract class BalloonItemizedOverlay<Item extends OverlayItem> extends I
 		return isRecycled;
 	}
 	
-}
+}*/
