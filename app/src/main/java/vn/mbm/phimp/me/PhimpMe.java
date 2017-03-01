@@ -18,7 +18,6 @@ import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.app.TabActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,12 +31,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -45,20 +42,17 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TabHost;
-import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import android.support.design.widget.BottomNavigationView;
 
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.maps.GeoPoint;
 import com.paypal.android.MEP.PayPal;
+
+import org.osmdroid.util.GeoPoint;
+
 //
 //@ReportsCrashes(formKey = "dFRsUzBJSWFKUFc3WmFjaXZab2V0dHc6MQ",
 //        mode = ReportingInteractionMode.TOAST,
@@ -151,22 +145,15 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
 
     public static boolean add_account_upload, add_account_setting;
     public static HashMap<String, Boolean> checked_accounts = new HashMap<String, Boolean>();
-    public static Uri UploadPhotoPreview;
-
-    public static boolean addCurrentPin = false;
-
-    public static GeoPoint currentGeoPoint;
 
     public static Double curLatitude, curLongtitude;
 
-    public static Double UploadLatitude, UploadLongitude;
-    public static LinearLayout popupTabs; // !?!
+    public static Double UploadLatitude, UploadLongitude;// !?!
     public static int camera_use;
     //LOCAL
     public static ArrayList<String> filepath = new ArrayList<String>();
     public static ArrayList<Integer> IdList;
     public static int local_count = 1;
-    ProgressDialog progConfig;
     //new Gallery
     static ArrayList<ArrayList<RSSPhotoItem>> phimpme_array_list = new ArrayList<ArrayList<RSSPhotoItem>>();
     static ArrayList<ArrayList<RSSPhotoItem_Personal>> phimpme_personal_array_list = new ArrayList<ArrayList<RSSPhotoItem_Personal>>();
@@ -174,12 +161,8 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     public static CacheStore cache;
     public static CacheTask cachetask;
     //Crash Report
-    public static String CRITTERCISM_APP_ID = "4fffa20fbe790e4bc7000002";
-    boolean serviceDisabled = false;
-    public static boolean check_cache;
     public static boolean check_export = true;
     public static BottomNavigationView mBottomNav;
-    public static boolean check_donwload = false;
     public static boolean check_donwload_local_gallery = false;
     public static AdView ad;
     public static int flashStatus = 2;
@@ -364,6 +347,8 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                 e.printStackTrace();
             }
         }
+
+
 
         File file6 = getBaseContext().getFileStreamPath("deviant_public.txt");
         if (file6.exists()) {

@@ -2,15 +2,13 @@ apply plugin: 'com.android.application'
 apply plugin: 'jacoco-android'
 
 android {
-    compileSdkVersion 'Google Inc.:Google APIs:23'
-    buildToolsVersion "24.0.0"
-
+    compileSdkVersion 25
+    buildToolsVersion "25.0.1"
     defaultConfig {
         applicationId "vn.mbm.phimp.me"
         minSdkVersion 16
-        targetSdkVersion 22
+        targetSdkVersion 25
     }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -21,7 +19,6 @@ android {
             testCoverageEnabled true
         }
     }
-
     packagingOptions {
         exclude 'META-INF/maven/org.apache.maven/maven-artifact/pom.xml'
         exclude 'licenses/javolution.license.TXT'
@@ -29,7 +26,6 @@ android {
         exclude 'META-INF/maven/*'
         exclude 'org/codehaus/classworlds/uberjar/boot/Bootstrapper.class'
     }
-
     lintOptions {
         abortOnError false
         disable "Instantiatable"
@@ -41,11 +37,11 @@ android {
             compilerArgs << "-Xlint:-rawtypes"
         }
     }
-
     dexOptions {
-    	jumboMode = true
+        jumboMode = true
     }
-
+    productFlavors {
+    }
 }
 android {
     useLibrary 'org.apache.http.legacy'

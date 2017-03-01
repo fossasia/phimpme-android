@@ -109,26 +109,6 @@ public class OpenStreetMap extends Fragment{
         //if (currentLocation != null) myMapController.animateTo(currentLocation);
         btnS = (ImageButton)getView().findViewById(R.id.btnsw);
         btnS.bringToFront();
-        btnS.setOnClickListener(new OnClickListener() {			
-			@Override
-			public void onClick(View v) {
-				Log.e("OpenStreetMap","check : "+check);
-				if(check==true){
-					acti.finish();
-					Intent i = new Intent(acti, GalleryMap.class);
-					i.putExtra("image-path", path);
-					startActivity(i);
-					
-				}
-				else{
-//					PhimpMe.mTabHost.getTabWidget().getChildAt(1).setVisibility(View.GONE);
-//					PhimpMe.mTabHost.getTabWidget().getChildAt(2).setVisibility(View.VISIBLE);
-//					PhimpMe.mTabHost.setCurrentTab(2);
-				}
-				
-			}
-		});
-     
 
             /*
              * Pin photo

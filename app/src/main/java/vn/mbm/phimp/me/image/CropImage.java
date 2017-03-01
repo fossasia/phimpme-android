@@ -13,7 +13,6 @@ import org.json.JSONObject;
 
 import vn.mbm.phimp.me.PhimpMe;
 import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.UploadMap;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -135,18 +134,6 @@ public class CropImage extends MonitoredActivity
     		
     		txtTags = (EditText) findViewById(R.id.txtUploadPhotoTags);
     		btnUseMap = (ImageButton) findViewById(R.id.btnUploadPhotoPutPos);
-    		btnUseMap.setOnClickListener(new OnClickListener() {
-    			
-    			@Override
-    			public void onClick(View v) 
-    			{
-    				Intent _itent = new Intent(ctx, UploadMap.class);
-    				
-    				_itent.putExtra("latitude", txtLatitude.getText().toString());
-    				_itent.putExtra("longitude", txtLongtitude.getText().toString());
-    				startActivityForResult(_itent, GET_POSITION_ON_MAP);
-    			}
-    		});
     		mImageView = (CropImageView) findViewById(R.id.image);
     		gpsloading = new ProgressDialog(ctx);
     		gpsloading.setCancelable(true);
@@ -592,7 +579,7 @@ public class CropImage extends MonitoredActivity
 				
 				mImageView.setImageBitmap(rBitmap);
 			}
-			btnSave.setVisibility(0);
+			btnSave.setVisibility(View.INVISIBLE);
 		}
 	};
     private Uri getImageUri(String path) 

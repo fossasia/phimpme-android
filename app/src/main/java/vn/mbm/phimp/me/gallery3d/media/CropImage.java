@@ -31,7 +31,6 @@ import java.util.concurrent.CountDownLatch;
 
 import vn.mbm.phimp.me.PhimpMe;
 import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.UploadMap;
 import vn.mbm.phimp.me.gallery3d.app.App;
 import vn.mbm.phimp.me.gallery3d.app.Res;
 import vn.mbm.phimp.me.utils.geoDegrees;
@@ -276,17 +275,6 @@ public class CropImage extends MonitoredActivity {
 		
 		txtTags = (EditText) findViewById(R.id.txtUploadPhotoTags);
 		btnUseMap = (ImageButton) findViewById(R.id.btnUploadPhotoPutPos);
-		btnUseMap.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) 
-			{
-				Intent _itent = new Intent(ctx, UploadMap.class);
-				_itent.putExtra("latitude", txtLatitude.getText().toString());
-				_itent.putExtra("longitude", txtLongtitude.getText().toString());
-				startActivityForResult(_itent, GET_POSITION_ON_MAP);
-			}
-		});
         // CR: remove TODO's.
         // TODO: we may need to show this indicator for the main gallery
         // application
