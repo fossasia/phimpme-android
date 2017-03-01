@@ -294,13 +294,11 @@ public class Upload extends android.support.v4.app.Fragment {
         });
 
         btnAdd = (ImageButton) getView().findViewById(R.id.btnUploadAccountAdd);
-        btnAdd.setOnTouchListener(new OnTouchListener() {
-            @SuppressWarnings("deprecation")
+        btnAdd.setOnClickListener(new OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public void onClick(View v) {
                 DialogFragment newFragment = new AddAccountDialogFragment();
                 newFragment.show(getFragmentManager(), "dialog");
-                return false;
             }
         });
 
