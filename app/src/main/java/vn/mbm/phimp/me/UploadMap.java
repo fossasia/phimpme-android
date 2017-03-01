@@ -1,4 +1,4 @@
-package vn.mbm.phimp.me;
+/*package vn.mbm.phimp.me;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,7 +114,7 @@ public class UploadMap extends MapActivity
 					/*data.putExtra("latitude", latitude);
 					data.putExtra("longitude", longitude);
 					setResult(RESULT_OK, data);*/
-					CropImage.from="Map";
+					/*CropImage.from="Map";
 					CropImage.latitude=latitude;
 					CropImage.longitude=longitude;
 					finish();
@@ -205,7 +205,7 @@ public class UploadMap extends MapActivity
 	/*
 	 * https://github.com/commonsguy/cw-advandroid/tree/master/Maps/NooYawkTouch
 	 */
-	private class SitesOverlay extends ItemizedOverlay<OverlayItem> 
+	/*private class SitesOverlay extends ItemizedOverlay<OverlayItem>
 	{
 	    private List<OverlayItem> items=new ArrayList<OverlayItem>();
 	    private Drawable marker=null;
@@ -358,7 +358,7 @@ public class UploadMap extends MapActivity
 	 * Reference:
 	 * 	http://stackoverflow.com/questions/4806061/how-do-i-respond-to-a-tap-on-an-android-mapview-but-ignore-pinch-zoom
 	 */
-	class mapOverlay extends com.google.android.maps.Overlay
+	/*class mapOverlay extends com.google.android.maps.Overlay
 	{
 		private boolean isPinch = false;
 		
@@ -407,7 +407,7 @@ public class UploadMap extends MapActivity
 	        return super.onTouchEvent(e,mapview);
 	    }
 	}
-	
+
 	@Override
 	protected Dialog onCreateDialog(int id) 
 	{
@@ -580,3 +580,4 @@ public class UploadMap extends MapActivity
 		}
 	}
 }
+*/

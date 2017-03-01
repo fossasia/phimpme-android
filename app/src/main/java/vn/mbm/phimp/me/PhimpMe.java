@@ -45,19 +45,19 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.ImageView;
+//import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TabHost;
-import android.widget.TabHost.OnTabChangeListener;
+//import android.widget.TabHost;
+//import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
-import android.widget.TextView;
+//import android.widget.TextView;
 import android.widget.Toast;
 
 import android.support.design.widget.BottomNavigationView;
 
-import com.google.android.gms.ads.AdRequest;
+//import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-import com.google.android.maps.GeoPoint;
+//import com.google.android.maps.GeoPoint;
 import com.paypal.android.MEP.PayPal;
 //
 //@ReportsCrashes(formKey = "dFRsUzBJSWFKUFc3WmFjaXZab2V0dHc6MQ",
@@ -155,7 +155,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
 
     public static boolean addCurrentPin = false;
 
-    public static GeoPoint currentGeoPoint;
+    //public static GeoPoint currentGeoPoint;
 
     public static Double curLatitude, curLongtitude;
 
