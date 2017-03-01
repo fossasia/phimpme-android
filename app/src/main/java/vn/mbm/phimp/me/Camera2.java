@@ -1,18 +1,12 @@
 package vn.mbm.phimp.me;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-
-import vn.mbm.phimp.me.gallery3d.media.CropImage;
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -30,9 +24,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -45,49 +41,76 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-public class Camera2 extends Activity{
-	private static final String TAG = "Camera";
-	static Context ctx;
-	public static Camera mCamera;
-	public static Preview preview;
-	//ProgressBar progress;
-	OrientationEventListener mOrientation;
-	//public static Preview preview1;
-	public static ImageButton buttonClick;	
-	ImageButton flash;
-	ImageButton camera_switch;
-	FrameLayout frame;	
-	public int degrees;	
-	private String make;
-	private String model;
-	private String imei;
-	LocationManager locationManager;
-	private LocationListener locationListener;
-	boolean portrait = true;
-	double lat  ;
-	double lon ;
-	int statusScreen = 0;
-	//** Called when the activity is first created. *//*
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);		
-		if (PhimpMe.IdList.size() == 5) {PhimpMe.IdList.clear();PhimpMe.IdList.add(0);}
-		PhimpMe.IdList.add(3);		
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		setLayout(R.layout.camera_land);
-		//Log.e("Orirention", String.valueOf(ctx.getResources().getConfiguration().orientation));
-		mOrientation = new OrientationEventListener(this) {
-			
-			@Override
-			public void onOrientationChanged(int orientation) {
-				// TODO Auto-generated method stub
-			//Log.e("Orientation", String.valueOf(orientation));
-				if (orientation >=350) degrees = 0; else
-					degrees = orientation;	
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+
+import vn.mbm.phimp.me.gallery3d.media.CropImage;
+
+public class Camera2 extends android.support.v4.app.Fragment {
+    private static final String TAG = "Camera";
+    static Context ctx;
+    public static Camera mCamera;
+    public static Preview preview;
+    //ProgressBar progress;
+    OrientationEventListener mOrientation;
+    //public static Preview preview1;
+    public static ImageButton buttonClick;
+    ImageButton flash;
+    ImageButton camera_switch;
+    FrameLayout frame;
+    public int degrees;
+    private String make;
+    private String model;
+    private String imei;
+    LocationManager locationManager;
+    private LocationListener locationListener;
+    boolean portrait = true;
+    double lat;
+    double lon;
+    int statusScreen = 0;
+    View view;
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+         view=  inflater.inflate(R.layout.camera, container, false);
+        setLayout();
+        return view;
+    }
+
+    public Camera2() {
+        super();
+
+    }
+
+    //** Called when the activity is first created. *//*
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (PhimpMe.IdList.size() == 5) {
+            PhimpMe.IdList.clear();
+            PhimpMe.IdList.add(0);
+        }
+        PhimpMe.IdList.add(3);
+//        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+        //Log.e("Orirention", String.valueOf(ctx.getResources().getConfiguration().orientation));
+        mOrientation = new OrientationEventListener(getContext()) {
+
+            @Override
+            public void onOrientationChanged(int orientation) {
+                // TODO Auto-generated method stub
+                //Log.e("Orientation", String.valueOf(orientation));
+                if (orientation >= 350) degrees = 0;
+                else
+                    degrees = orientation;
 				/*if (orientation >=90 && orientation < 180 && statusScreen == 0){
-					statusScreen = 1;					
-					//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);						
-					preview.mCamera.stopPreview();					
+					statusScreen = 1;
+					//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+					preview.mCamera.stopPreview();
 					setCameraDisplayOrientation((Activity) ctx, PhimpMe.camera_use, preview.mCamera);
 					preview.requestLayout();
 					preview.mSurfaceView.requestLayout();
@@ -98,36 +121,37 @@ public class Camera2 extends Activity{
 					else flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_a_r1));
 					buttonClick.setImageDrawable(getResources().getDrawable(R.drawable.icon_camera_r1));
 					camera_switch.setImageDrawable(getResources().getDrawable(R.drawable.camera_32_r1));
-					
+
 				}else
 					if (orientation >=260 && orientation <= 340 && statusScreen == 0){
-						statusScreen = 1;											
+						statusScreen = 1;
 						if (PhimpMe.flashStatus == 0) flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_gray));
 						else if (PhimpMe.flashStatus == 1) flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder));
 						else flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_a));
 						buttonClick.setImageDrawable(getResources().getDrawable(R.drawable.icon_camera));
-						camera_switch.setImageDrawable(getResources().getDrawable(R.drawable.camera_32));						
-					}else 
+						camera_switch.setImageDrawable(getResources().getDrawable(R.drawable.camera_32));
+					}else
 						if (statusScreen == 1){
-						statusScreen = 0;					
+						statusScreen = 0;
 						if (PhimpMe.flashStatus == 0) flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_gray_r));
 						else if (PhimpMe.flashStatus == 1) flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_r));
 						else flash.setImageDrawable(getResources().getDrawable(R.drawable.thunder_a_r));
 						buttonClick.setImageDrawable(getResources().getDrawable(R.drawable.icon_camera_r));
-						camera_switch.setImageDrawable(getResources().getDrawable(R.drawable.camera_32_r));											
+						camera_switch.setImageDrawable(getResources().getDrawable(R.drawable.camera_32_r));
 				}*/
-			}
-		};
-		mOrientation.enable();		
-		Log.d(TAG, "onCreate'd");
-		//PhimpMe.hideTabs();
-	}	
-	public void setLayout(int layout){
-		setContentView(layout);
-		frame = ((FrameLayout) findViewById(R.id.preview));	   
-		preview = new Preview(this);
-		//setContentView(preview);
-		locationListener = new LocationListener() {
+            }
+        };
+        mOrientation.enable();
+        Log.d(TAG, "onCreate'd");
+        //PhimpMe.hideTabs();
+    }
+
+    public void setLayout() {
+//		setContentView(layout);
+        frame = ((FrameLayout) view.findViewById(R.id.preview));
+        preview = new Preview(getActivity());
+        //setContentView(preview);
+        locationListener = new LocationListener() {
 
             public void onStatusChanged(String provider, int status, Bundle extras) {
 
@@ -143,13 +167,23 @@ public class Camera2 extends Activity{
 
             public void onLocationChanged(Location location) {
 
-               // Camera2.this.gpsLocationReceived(location);
+                // Camera2.this.gpsLocationReceived(location);
+                if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
                 lat = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLatitude();
                 lon = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLongitude();
             }
 
         };
-        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
         Criteria locationCritera = new Criteria();
         locationCritera.setAccuracy(Criteria.ACCURACY_COARSE);
         locationCritera.setAltitudeRequired(false);
@@ -182,14 +216,14 @@ public class Camera2 extends Activity{
 		mCamera = Camera.open();}catch(Exception e){		
 		}       
 		//mCamera.setDisplayOrientation(90);
-		setCameraDisplayOrientation(this, 0, mCamera);
+		setCameraDisplayOrientation(getActivity(), 0, mCamera);
 		preview.setCamera(mCamera);							
-		ctx = this;
+		ctx = getActivity();
 		//LayoutParams layparam = new LayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT));
 		//frame.setLayoutParams(layparam);
 		//preview.setLayoutParams(layparam);		
 		frame.addView(preview);			
-		buttonClick = (ImageButton) findViewById(R.id.takephoto);
+		buttonClick = (ImageButton) view.findViewById(R.id.takephoto);
 		buttonClick.bringToFront();
 		buttonClick.setOnClickListener( new OnClickListener() {
 			public void onClick(View v) {
@@ -197,7 +231,7 @@ public class Camera2 extends Activity{
 				preview.mCamera.takePicture(shutterCallback, null, jpegCallback);				
 			}
 		});	
-		camera_switch = (ImageButton)findViewById(R.id.switch_camera);
+		camera_switch = (ImageButton)view.findViewById(R.id.switch_camera);
 		if (Camera.getNumberOfCameras() <=1 ) camera_switch.setVisibility(View.GONE);
 		camera_switch.setOnClickListener(new OnClickListener() {
 			@Override
@@ -244,9 +278,9 @@ public class Camera2 extends Activity{
 		Camera.Parameters parameters = preview.mCamera.getParameters();
 		parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
 		preview.mCamera.setParameters(parameters);
-		LinearLayout linear = (LinearLayout)findViewById(R.id.lnCam);
+		LinearLayout linear = (LinearLayout)view.findViewById(R.id.lnCam);
 		linear.bringToFront();
-		flash = (ImageButton)findViewById(R.id.flash);		
+		flash = (ImageButton)view.findViewById(R.id.flash);		
 		
 		flash.setOnClickListener(new OnClickListener() {			
 			@Override
@@ -369,7 +403,7 @@ public class Camera2 extends Activity{
 		    File f = new File(picture);
 		    Uri contentUri = Uri.fromFile(f);
 		    mediaScanIntent.setData(contentUri);
-		    Camera2.this.sendBroadcast(mediaScanIntent);
+		    Camera2.ctx.sendBroadcast(mediaScanIntent);
 			ExifInterface exif;
 			try {
 				Log.e("Exif data","Run");
@@ -428,7 +462,7 @@ public void createExifData(ExifInterface exif, double lattude, double longitude)
 		 model = android.os.Build.MODEL; // get the model of the divice
 		
 		 exif.setAttribute(ExifInterface.TAG_MAKE, make);
-		 TelephonyManager telephonyManager = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+		 TelephonyManager telephonyManager = (TelephonyManager)getActivity().getSystemService(Context.TELEPHONY_SERVICE);
 		 imei = telephonyManager.getDeviceId();
 		 exif.setAttribute(ExifInterface.TAG_MODEL, model+" - "+imei);
 		
@@ -501,7 +535,7 @@ private static String formatLatLongString(double d) {
 		
 	}
 	@Override
-	protected void onResume(){
+	public void onResume(){
 		super.onResume();		
 		//PhimpMe.hideTabs();
 		//PhimpMe.hideAd();			
@@ -509,29 +543,29 @@ private static String formatLatLongString(double d) {
 		try{
 		mCamera = Camera.open(PhimpMe.camera_use);
 		}catch(Exception e){}
-		/*try{
+		try{
 		setCameraDisplayOrientation((Activity) ctx, PhimpMe.camera_use, mCamera);
-		}catch(RuntimeException e){}*/
+		}catch(RuntimeException e){}
 		preview.setCamera(mCamera);		
 	}
 	@Override
-	protected void onPause(){
-		super.onPause();		
+	public void onPause(){
+		super.onPause();
 		mOrientation.disable();
 	}
 	
-	@Override
-	public boolean onKeyDown(int keycode, KeyEvent event)
-    {
-    	if (keycode == KeyEvent.KEYCODE_BACK){
-    		finish();
-    		Intent i=new Intent(Camera2.this, PhimpMe.class);
-    		startActivity(i);
-    		
-    	}  	
-        return super.onKeyDown(keycode, event);
-    	//return true;
-    }		
+//	@Override
+//	public boolean onKeyDown(int keycode, KeyEvent event)
+//    {
+//    	if (keycode == KeyEvent.KEYCODE_BACK){
+////    		finish();
+//    		Intent i=new Intent(getActivity(), PhimpMe.class);
+//    		startActivity(i);
+//
+//    	}
+//        return super.onKeyDown(keycode, event);
+//    	//return true;
+//    }
 
 
 // ----------------------------------------------------------------------
