@@ -882,9 +882,13 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
         final String[] columns = {MediaStore.Images.Thumbnails._ID};
         final String[] data = {MediaStore.Images.Media.DATA};
         final String orderBy = MediaStore.Images.Media._ID;
-        Cursor pathcursor = this.managedQuery(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, data,
-                null, null, orderBy);
+        Cursor pathcursor = this.getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                data,
+                null,
+                null,
+                orderBy
+        );
         if (pathcursor != null) {
             int path_column_index = pathcursor
                     .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -902,7 +906,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                     Bitmap bmp = PhimpMe.cache.getCachePath(path);
 
                 } else if (c <= 20) {
-                    Cursor cursor = this.managedQuery(
+                    Cursor cursor = this.getContentResolver().query(
                             MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
                             MediaStore.Images.Media.DATA + " = " + "\"" + path + "\"", null, MediaStore.Images.Media._ID);
                     if (cursor != null && cursor.getCount() > 0) {
