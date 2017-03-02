@@ -1,19 +1,5 @@
 package vn.mbm.phimp.me.image;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.concurrent.CountDownLatch;
-
-import org.json.JSONObject;
-
-import vn.mbm.phimp.me.PhimpMe;
-import vn.mbm.phimp.me.R;
-//import vn.mbm.phimp.me.UploadMap;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
@@ -35,7 +21,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region;
 import android.media.FaceDetector;
-//import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -46,7 +31,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-//import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.RotateAnimation;
@@ -57,6 +41,24 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Toast;
+
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.concurrent.CountDownLatch;
+
+import vn.mbm.phimp.me.PhimpMe;
+import vn.mbm.phimp.me.R;
+
+//import vn.mbm.phimp.me.UploadMap;
+//import android.media.MediaScannerConnection;
+//import android.view.View.OnClickListener;
 
 /**
  * The activity can crop specific region of interest from an image.
@@ -222,7 +224,7 @@ public class CropImage extends MonitoredActivity
 				{
 				    public void onClick(View v) 
 				    {
-				    	if (btnSave.getVisibility() != 4)
+				    	if (btnSave.getVisibility() != View.VISIBLE)
 				    		{
 				    		//mBitmapSave.recycle();
 				    		//mBitmap.recycle();
@@ -592,7 +594,7 @@ public class CropImage extends MonitoredActivity
 				
 				mImageView.setImageBitmap(rBitmap);
 			}
-			btnSave.setVisibility(0);
+			btnSave.setVisibility(View.INVISIBLE);
 		}
 	};
     private Uri getImageUri(String path) 
@@ -1319,8 +1321,8 @@ class CropImageView extends ImageViewTouchBase
 			    			event.getY() - mLastY);
 			    	mLastX = event.getX();
 			    	mLastY = event.getY();
-		
-			    	if (true) 
+
+			    	if (true)
 			    	{
 					    // This section of code is optional. It has some user
 					    // benefit in that moving the crop rectangle against
