@@ -635,6 +635,8 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                     currentScreen = HomeScreenState.GALLERY;
                 }
                 break;
+            case R.id.tab_add:
+                break;
             case R.id.tab_camera:
                 Intent intent = new Intent(this, Camera2.class);
                 startActivity(intent);

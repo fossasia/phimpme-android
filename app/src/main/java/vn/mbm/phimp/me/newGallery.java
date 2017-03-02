@@ -428,7 +428,7 @@ public class newGallery extends Fragment {
 		getActivity().setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		ctx = getContext();
 		cache=CacheStore.getInstance();
-		color_line = R.color.blue_dark;
+		color_line = R.color.colorPrimary;
 		// listService.clear();
 		list_thumb.clear();
 		list_thumb = RSSUtil.getLocalPhotos(ctx);
@@ -2995,7 +2995,7 @@ public class newGallery extends Fragment {
 							txtpersonal_500px.setText("Personal 500px");
 							txtpersonal_500px.setTextSize(text_size);
 							gv_personal_500px = new GridView(getContext());
-							gv_personal_500px.setPadding(0, 10, 0, 0);
+							gv_personal_500px.setPadding(0, 0, 0, 0);
 							ln_personal_500px = new LinearLayout(getContext());
 							btn_personal_500px_more = new ImageButton(getContext());
 							btn_personal_500px_more
@@ -3393,7 +3393,7 @@ public class newGallery extends Fragment {
 				btn_local_more.setLayoutParams(lp_more);
 				more_li.addView(btn_local_more);
 				more_li.addView(txtlocal_gallery);
-				ln_local_gallery.addView(more_li);
+				//ln_local_gallery.addView(more_li); //Removing this and adding in the bottom tab
 				ln_local_gallery.addView(btn_line);
 				ln_local_gallery.addView(btn_line_black);
 				ln_local_gallery.addView(gv_local_gallery);
