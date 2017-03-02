@@ -49,7 +49,7 @@ public class PhotoSelect extends Activity {
 		showFromCache();		
 		final String[] data = { MediaStore.Images.Media.DATA };
 		final String orderBy = MediaStore.Images.Media._ID;
-		pathcursor = managedQuery(
+		pathcursor = getContentResolver().query(
 				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, data,
 				null, null, orderBy);	
 		final Button selectBtn = (Button) findViewById(R.id.selectBtn);
@@ -102,7 +102,7 @@ public class PhotoSelect extends Activity {
 			//Here we'll only check for newer images
 			final String[] columns = { MediaStore.Images.Thumbnails._ID };
 			final String orderBy = MediaStore.Images.Media._ID;
-			Cursor imagecursor = managedQuery(
+			Cursor imagecursor = getContentResolver().query(
 					MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
 					MediaStore.Images.Media._ID + " > " + lastId , null, orderBy);
 			int image_column_index = imagecursor
@@ -183,7 +183,7 @@ public class PhotoSelect extends Activity {
 						Intent intent = new Intent();
 						intent.setAction(Intent.ACTION_VIEW);				
 						final String[] columns = { MediaStore.Images.Media.DATA };
-						Cursor imagecursor = managedQuery(
+						Cursor imagecursor = getContentResolver().query(
 								MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
 								MediaStore.Images.Media._ID + " = " + item.id, null, MediaStore.Images.Media._ID);
 						if (imagecursor != null && imagecursor.getCount() > 0){
@@ -230,8 +230,7 @@ public class PhotoSelect extends Activity {
 		Log.d("Luong", "Run Show Photo From Cache");
 		final String[] data = { MediaStore.Images.Media.DATA };
 		final String orderBy = MediaStore.Images.Media._ID;
-		@SuppressWarnings("deprecation")
-		final Cursor pathcursor = managedQuery(
+		final Cursor pathcursor = getContentResolver().query(
 				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, data,
 				null, null, orderBy+ " DESC");
 		if(pathcursor != null){
@@ -280,8 +279,7 @@ public class PhotoSelect extends Activity {
 	 				imageItem.path = path;
 	 				boolean check = PhimpMe.cache.check(path);
 	 				if(!check){	 					
-	 					@SuppressWarnings("deprecation")
-						Cursor cur = managedQuery(
+						Cursor cur = getContentResolver().query(
 	 							MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
 	 							MediaStore.Images.Media.DATA+ " = " + "\""+path+"\"", null, MediaStore.Images.Media._ID);									
 	 					if (cur != null && cur.getCount() > 0){
@@ -292,6 +290,7 @@ public class PhotoSelect extends Activity {
 	 								getApplicationContext().getContentResolver(), id,
 	 								MediaStore.Images.Thumbnails.MICRO_KIND, null);		
 	 						PhimpMe.cache.saveCacheFile(imageItem.path, imageItem.img, imageItem.id);
+							cur.close();
 	 					}else imageItem.id = -1;
 	 					PhotoSelect.this.runOnUiThread(new Runnable() {
 						

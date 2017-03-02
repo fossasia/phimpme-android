@@ -3,7 +3,11 @@ apply plugin: 'jacoco-android'
 
 android {
     compileSdkVersion 25
+<<<<<<< HEAD
     buildToolsVersion "25.0.1"
+=======
+    buildToolsVersion "25.0.2"
+>>>>>>> refs/remotes/fossasia/development
 
     defaultConfig {
         applicationId "vn.mbm.phimp.me"
