@@ -524,9 +524,13 @@ public class Upload extends android.support.v4.app.Fragment {
             Log.d("imageUri", imageUri.toString() + ",length path : " + path.length);
             ContentResolver cr = getActivity().getContentResolver();
             String[] proj = {MediaStore.Images.Media._ID};
-            Cursor cursor = getActivity().managedQuery(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, proj,
-                    MediaStore.Images.Media.DATA + " = '" + imageUri + "'", null, MediaStore.Images.Media._ID);
+            Cursor cursor = getActivity().getContentResolver().query(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    proj,
+                    MediaStore.Images.Media.DATA + " = '" + imageUri + "'",
+                    null,
+                    MediaStore.Images.Media._ID
+            );
             if (cursor.getCount() == 0) {
                 // display download photo in list upload photo
 
@@ -1064,14 +1068,22 @@ public class Upload extends android.support.v4.app.Fragment {
             case TAKE_PICTURE: {
                 if (resultCode == Activity.RESULT_OK) {
                     String[] projection = {MediaStore.Images.Media.DATA};
-                    @SuppressWarnings("deprecation")
-                    Cursor cursor = getActivity().managedQuery(camera_img_uri, projection, null, null, null);
-                    int column_index_data = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                    cursor.moveToFirst();
-                    if (imagelist == "")
-                        imagelist = cursor.getString(column_index_data);
-                    else imagelist += "," + cursor.getString(column_index_data);
-                    listPhotoUpload.setAdapter(new ImageAdapter(getContext()));
+                    Cursor cursor = getActivity().getContentResolver().query(
+                            camera_img_uri,
+                            projection,
+                            null,
+                            null,
+                            null
+                    );
+                    if (cursor != null) {
+                        int column_index_data = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                        cursor.moveToFirst();
+                        if (imagelist == "")
+                            imagelist = cursor.getString(column_index_data);
+                        else imagelist += "," + cursor.getString(column_index_data);
+                        listPhotoUpload.setAdapter(new ImageAdapter(getContext()));
+                        cursor.close();
+                    }
                 }
                 break;
             }
