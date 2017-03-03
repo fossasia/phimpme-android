@@ -70,6 +70,7 @@ dependencies {
     compile files('libs/tagsoup-1.2.1.jar')
     compile files('libs/uk.co.jasonfry.android.tools.jar')
     compile project(':viewflow')
+    compile 'com.vistrav:ask:2.4'
     compile 'com.android.support:support-v4:25.0.1'
     compile 'com.google.android.gms:play-services-maps:9.0.2'
     compile 'com.google.android.gms:play-services-ads:9.0.2'
