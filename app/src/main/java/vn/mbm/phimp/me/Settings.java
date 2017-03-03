@@ -66,6 +66,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -101,6 +102,9 @@ import com.paypal.android.MEP.PayPal;
 import com.paypal.android.MEP.PayPalActivity;
 import com.paypal.android.MEP.PayPalPayment;
 import com.tani.app.ui.IconContextMenu;
+
+import static android.os.Environment.getExternalStorageDirectory;
+
 public class Settings extends Fragment
 {
 	private final int CONTEXT_MENU_ID = 1;
@@ -267,8 +271,18 @@ public class Settings extends Fragment
 										}*/
 										
 									}
-									getActivity().sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"
-								            + Environment.getExternalStorageDirectory()))); 
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                                        Intent mediaScanIntent = new Intent(
+                                                Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                                        Uri contentUri = Uri.fromFile(getExternalStorageDirectory());
+                                        mediaScanIntent.setData(contentUri);
+                                        getActivity().sendBroadcast(mediaScanIntent);
+                                    } else {
+                                        getActivity().sendBroadcast(new Intent(
+                                                Intent.ACTION_MEDIA_MOUNTED,
+                                                Uri.parse("file://"
+                                                        + getExternalStorageDirectory())));
+                                    }
 					            }				            
 					        });
 							alertbox.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() 
@@ -671,9 +685,19 @@ public class Settings extends Fragment
 	        public void run() {                	            
 	            boolean del = deletePhotoInDatabase();
 				if(del==true){
-					newGallery.clearAllPhoto();	
-					getActivity().sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"
-				            + Environment.getExternalStorageDirectory()))); 
+					newGallery.clearAllPhoto();
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                        Intent mediaScanIntent = new Intent(
+                                Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                        Uri contentUri = Uri.fromFile(getExternalStorageDirectory());
+                        mediaScanIntent.setData(contentUri);
+                        getActivity().sendBroadcast(mediaScanIntent);
+                    } else {
+                        getActivity().sendBroadcast(new Intent(
+                                Intent.ACTION_MEDIA_MOUNTED,
+                                Uri.parse("file://"
+                                        + getExternalStorageDirectory())));
+                    }
 					//remove deleted photo in upload list
 					Upload.imagelist="";	
 					d.dismiss();
