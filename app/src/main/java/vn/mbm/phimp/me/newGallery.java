@@ -55,12 +55,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -159,6 +162,12 @@ public class newGallery extends Fragment {
 
 	// Local gallery
 	static LinearLayout ln_local_gallery;
+	static LinearLayout localPhotosFrame;
+	static ScrollView localPhotosScroll;
+	static GridView localPhotosGrid;
+	static PhotosAdapter photosAdapter;
+	static Activity localActivity;
+	static Cursor pathcursor;
 	static TextView txtlocal_gallery;
 	static GridView gv_local_gallery;
 	static ImageButton btn_local_more;
@@ -426,6 +435,18 @@ public class newGallery extends Fragment {
 		super.onCreate(savedInstanceState);
 		Log.i("newGallery","onCreate");
 		getActivity().setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		// Views related to local photos
+		localPhotosFrame = (LinearLayout) view.findViewById(R.id.tabUpload);
+		localPhotosFrame.setVisibility(View.GONE);
+		localPhotosScroll = (ScrollView) view.findViewById(R.id.scrollViewnew);
+		localPhotosScroll.setVisibility(View.VISIBLE);
+
+		// Initiate Grid View
+		localPhotosGrid = (GridView) view.findViewById(R.id.gridLocalPhotos);
+		// Initiate and set Adapter
+		photosAdapter = new PhotosAdapter();
+		localPhotosGrid.setAdapter(photosAdapter);
+		localActivity = getActivity();
 		ctx = getContext();
 		cache=CacheStore.getInstance();
 		color_line = R.color.blue_dark;
@@ -3230,10 +3251,10 @@ public class newGallery extends Fragment {
 			}else
 				PhimpMe.IdList.add(0);
 		
-			CacheTask cachetask = new CacheTask();
-			String[] str = null;
-        	cachetask.execute(str);
-        	if(PhimpMe.FEEDS_LOCAL_GALLERY==true){
+			//CacheTask cachetask = new CacheTask();
+			//String[] str = null;
+        	//cachetask.execute(str);
+        	if(PhimpMe.FEEDS_LOCAL_GALLERY){
         		Log.d("newGallery","resume load local gallery, number photo : "+number_resume_download);
     			linear_main.removeView(ln_local_gallery);    			
     			check_local = 0;
@@ -3265,7 +3286,7 @@ public class newGallery extends Fragment {
 	    protected String doInBackground(String... urls) {
 	    	try{
 	    		Log.d("newGallery", "Run Cache Task");
-	    		updatePhoto();
+	    		//updatePhoto();
 	    		
 	    	}catch(RuntimeException runex){
 	    		//this.onCancelled();
@@ -3277,7 +3298,7 @@ public class newGallery extends Fragment {
 
 	    @Override
 	    protected void onPostExecute(String result) {
-	    	
+
 	    }
 	    @Override
 	    protected void onCancelled() {
@@ -3286,7 +3307,7 @@ public class newGallery extends Fragment {
 	    	
 	    }
 	}
-	@SuppressWarnings("deprecation")
+
 	public void updatePhoto(){
 			Log.e("newGallery","load update photo");
 			int id;
@@ -3344,143 +3365,311 @@ public class newGallery extends Fragment {
 			
 	}
 
-	@SuppressWarnings("deprecation")
-	public static void resumeLocalPhoto(int resum_number){
-		if (check_local == 0){
-			
-			int row;		
-			row=(int)Math.ceil(resum_number/3);
-			LinearLayout.LayoutParams p_two_row = new LinearLayout.LayoutParams(
-					ViewGroup.LayoutParams.MATCH_PARENT,
-					DEFAULT_THUMBNAIL_SIZE * row + 120);
+	/**
+	 * Adapter for Local Photos
+	 */
+	public class PhotosAdapter extends BaseAdapter {
 
-			LinearLayout.LayoutParams p_zero = new LinearLayout.LayoutParams(
-					0, 0);
+		private LayoutInflater mInflater;
+		public ArrayList<ImageItem> images = new ArrayList<>();
 
-			LinearLayout.LayoutParams p_one_row = new LinearLayout.LayoutParams(
-					ViewGroup.LayoutParams.MATCH_PARENT,
-					DEFAULT_THUMBNAIL_SIZE + 100);
-			RelativeLayout.LayoutParams lp_more = new RelativeLayout.LayoutParams(
-					40, 40);
-			lp_more.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			if (check_local == 0) {
-				Log.d("Danh", "check value 1 =" + check_local);
-				Button btn_line = new Button(ctx);
-				btn_line.setHeight(2);
-				btn_line.setWidth(LayoutParams.MATCH_PARENT);
-				btn_line.setBackgroundResource(color_line);
-				
-				Button btn_line_black = new Button(ctx);
-				btn_line_black.setHeight(10);
-				btn_line_black.setWidth(LayoutParams.MATCH_PARENT);
-				btn_line_black.setBackgroundResource(R.color.black);
-				
-				txtlocal_gallery = new TextView(ctx);
-				txtlocal_gallery.setText(ctx.getString(R.string.localphotos));
-				txtlocal_gallery.setTextSize(text_size);
-				
-				gv_local_gallery = new GridView(ctx);
-				gv_local_gallery.setBackgroundResource(R.color.white);
-				
-				ln_local_gallery = new LinearLayout(ctx);
-				ln_local_gallery.setOrientation(LinearLayout.VERTICAL);
-				
-				btn_local_more = new ImageButton(ctx);
-				btn_local_more.setImageResource(R.drawable.more_disable);
-				btn_local_more.setEnabled(false);
+		// Constructor
+		PhotosAdapter() {
+			mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			PhimpMe.cache = CacheStore.getInstance();
+		}
 
-				RelativeLayout more_li = new RelativeLayout(ctx);
-				btn_local_more.setLayoutParams(lp_more);
-				more_li.addView(btn_local_more);
-				more_li.addView(txtlocal_gallery);
-				ln_local_gallery.addView(more_li);
-				ln_local_gallery.addView(btn_line);
-				ln_local_gallery.addView(btn_line_black);
-				ln_local_gallery.addView(gv_local_gallery);
-			
-				PhimpMe.local_count = 1;
+		public int getCount() {
+			return images.size();
+		}
 
-				linear_main.addView(ln_local_gallery,0);
+		public Object getItem(int position) {
+			return position;
+		}
 
-				// get photo
-				String[] projection={MediaStore.Images.Thumbnails._ID, MediaStore.Images.Thumbnails.IMAGE_ID};
-				cursor = ((Activity) ctx).getContentResolver().query(
-						MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI,
-						projection,
-						null,
-						null,
-						MediaStore.Images.Thumbnails.IMAGE_ID+ " DESC"
-				);
-				
-				columnIndex=cursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails._ID);
-				
-				for (int i = 0; i < cursor.getCount(); i++) {
-					if (cursor.moveToNext()){
-						PhimpMe.filepath.add(cursor
-								.getString(columnIndex));
-						array_ID.add(cursor.getString(1));
-					}
-						
-				}
-				Log.d("newGallery","number image :" + PhimpMe.filepath.size());
-				if (PhimpMe.filepath.size() <= 3) {
-					ln_local_gallery.setLayoutParams(p_one_row);
+		public long getItemId(int position) {
+			return position;
+		}
 
-				} else {
-					ln_local_gallery.setLayoutParams(p_two_row);
-				}
+		public void addItem(ImageItem item) {
+			images.add(item);
+			notifyDataSetChanged();
+		}
 
-				if (PhimpMe.filepath.size() > 0) {
-					final ArrayList<String> array_file;
-					final ArrayList<String> ID;
-					if (PhimpMe.filepath.size() <= resum_number) {
-						array_file = new ArrayList<String>(PhimpMe.filepath.size());
-						ID = new ArrayList<String>(array_ID.size());
-						for (int i = 0; i < PhimpMe.filepath.size(); i++) {
-							array_file.add(PhimpMe.filepath.get(i))	;
-							ID.add(array_ID.get(i));
-						}
+		public View getView(int position, View convertView, ViewGroup parent) {
 
-					} else {
-						array_file = new ArrayList<String>(resum_number);
-						ID = new ArrayList<String>(resum_number);
-						for (int i = 0; i < resum_number; i++) {
-							array_file.add(PhimpMe.filepath.get(i));
-							ID.add(array_ID.get(i));
-						}
+			ViewHolder holder;
 
-						btn_local_more
-								.setImageResource(R.drawable.more);
-						btn_local_more.setEnabled(true);
-					}
-					
-					gv_local_gallery.setNumColumns(cols);
-					local_adapter = new LocalPhotosAdapter(ctx,
-							array_file,ID);
-					gv_local_gallery.setAdapter(local_adapter);
-					gv_local_gallery.setDrawingCacheEnabled(true);
-
-					check_local = 1;
-					btn_local_more
-							.setOnClickListener(new OnClickListener() {
-								@Override
-								public void onClick(View v) {
-									
-									pro_gress=ProgressDialog.show(ctx, "",ctx.getString(R.string.wait), true, false);		
-									timerDelayRemoveDialog(1000,pro_gress);										
-								}
-							});							
-				} else {
-					ln_local_gallery.setLayoutParams(p_zero);
-					linear_main.removeView(more_li);
-					check_local = 1;
-				}
-				Log.d("Danh", "check = " + check_local);
+			if (convertView == null) {
+				holder = new ViewHolder();
+				convertView = mInflater.inflate(R.layout.photoitem_local, null);
+				holder.imageview = (ImageView) convertView.findViewById(R.id.localPhoto);
+				convertView.setTag(holder);
 			} else {
+				holder = (ViewHolder) convertView.getTag();
 			}
-			
+
+			ImageItem item = images.get(position);
+
+			holder.imageview.setId(position);
+
+			holder.imageview.setOnClickListener(new View.OnClickListener() {
+				public void onClick(View view) {
+					try {
+						int id = view.getId();
+						ImageItem item = images.get(id);
+						Intent intent = new Intent();
+						intent.setAction(Intent.ACTION_VIEW);
+						final String[] columns = { MediaStore.Images.Media.DATA };
+						Cursor imagecursor = getActivity().getContentResolver().query(
+								MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
+								MediaStore.Images.Media._ID + " = " + item.id, null, MediaStore.Images.Media._ID);
+						if (imagecursor != null && imagecursor.getCount() > 0){
+							imagecursor.moveToPosition(0);
+							String path = imagecursor.getString(imagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
+							ArrayList<String> file = new ArrayList<>();
+							file.add(path);
+							Intent showImageIntent = new Intent();
+							showImageIntent.setClass(getActivity(), vn.mbm.phimp.me.gallery.PhimpMeGallery.class);
+							vn.mbm.phimp.me.gallery.PhimpMeGallery.setFileList(file);
+							showImageIntent.putExtra("aspectX", 0);
+							showImageIntent.putExtra("aspectY", 0);
+							showImageIntent.putExtra("scale", true);
+							showImageIntent.putExtra("activityName", "LocalPhotos");
+							startActivity(showImageIntent);
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			holder.imageview.setImageBitmap(item.img);
+			return convertView;
 		}
 	}
+
+	private class ViewHolder {
+		ImageView imageview;
+	}
+
+	public static void resumeLocalPhoto(int resum_number){
+		// check_local = 0 will flag that this is local images
+		if (check_local == 0) {
+			// Keep the localPhotos frame and hide the other
+			localPhotosScroll.setVisibility(View.GONE);
+			localPhotosFrame.setVisibility(View.VISIBLE);
+			// Show a progress dialog until the loading is done
+			pro_gress = ProgressDialog.show(ctx, "Loading Gallery!", ctx.getString(R.string.wait),
+					true, false);
+			// Create a cursor to access External Storage
+			// MediaStore.Images.Media.DATA is the full Path of the file
+			final String[] data = { MediaStore.Images.Media.DATA };
+			// Each image has an ID associated with it
+			final String orderBy = MediaStore.Images.Media._ID + " DESC";
+			final Cursor pathcursor = ctx.getContentResolver().query(
+				MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+				data, null, null, orderBy
+			);
+
+			// MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI - May contain no thumbnails
+
+			// If there are content in the cursor, that means there are media in the phone
+			if (pathcursor != null) {
+				// Get the column index of the Images
+				int path_column_index = pathcursor.getColumnIndexOrThrow(
+						MediaStore.Images.Media.DATA);
+				// Count how many images it contains
+				int count = pathcursor.getCount();
+				for (int i = 0; i < count; i++) {
+					// Run through the cursor from the beginning
+					pathcursor.moveToPosition(i);
+					// Create an ImageItem to store data related to an image
+					ImageItem imageItem = new ImageItem();
+					// Cursor contains path of each image
+					String path = pathcursor.getString(path_column_index);
+					// Set imagePath to the imageItem
+					imageItem.path = path;
+					// Check if the PhimpMe Cache has the image in the cache
+					// If it is there, fetch image from the cache
+					boolean cacheHaveThePic = PhimpMe.cache.check(path);
+					if (cacheHaveThePic) {
+						// Set Image id and Image itself to the imageItem
+						imageItem.id = PhimpMe.cache.getCacheId(path);
+						imageItem.img = PhimpMe.cache.getCachePath(path);
+						// Add the image to the gridView
+						// PhotosAdapter has a list of images and it'll notify dataset has changed!
+						photosAdapter.images.add(imageItem);
+					} else {
+						// Otherwise add it to the cache
+						// Access the image using a cursor
+						String[] columns = { MediaStore.Images.Thumbnails._ID };
+						Cursor imageCursor = ctx.getContentResolver().query(
+								MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+								columns,
+								MediaStore.Images.Media.DATA + " = " + "\"" + path + "\"",
+								null,
+								MediaStore.Images.Media._ID
+						);
+						// If the cursor is not empty;
+						if (imageCursor != null && imageCursor.getCount() > 0) {
+							// Move to the beginning of the cursor
+							imageCursor.moveToPosition(0);
+							// Get the ID of the image
+							int id = imageCursor.getInt(
+									imageCursor.getColumnIndexOrThrow(
+											MediaStore.Images.Media._ID));
+							// Set ID to the image item
+							imageItem.id = id;
+							// Set the thumbnail as the Image of the image item
+							imageItem.img = MediaStore.Images.Thumbnails.getThumbnail(
+									ctx.getContentResolver(),
+									id,	MediaStore.Images.Thumbnails.MICRO_KIND, null
+							);
+							// Save the thumbnail in PhimpMe cache
+							if (!PhimpMe.cache.check(imageItem.path)) {
+								PhimpMe.cache.saveCacheFile(
+										imageItem.path,
+										imageItem.img,
+										imageItem.id
+								);
+							}
+							// Close the cursor of the image
+							imageCursor.close();
+						} else {
+							// If there is no image, do not proceed then
+							imageItem.id = -1;
+						}
+						photosAdapter.images.add(imageItem);
+					}
+				}
+				pathcursor.close();
+			}
+			// Dismiss the dialog box
+			pro_gress.dismiss();
+
+			/* Original Content commented out by Padmal */
+			/*
+			Log.d("Danh", "check value 1 =" + check_local);
+			Button btn_line = new Button(ctx);
+			btn_line.setHeight(2);
+			btn_line.setWidth(LayoutParams.MATCH_PARENT);
+			btn_line.setBackgroundResource(color_line);
+
+			Button btn_line_black = new Button(ctx);
+			btn_line_black.setHeight(10);
+			btn_line_black.setWidth(LayoutParams.MATCH_PARENT);
+			btn_line_black.setBackgroundResource(R.color.black);
+
+			txtlocal_gallery = new TextView(ctx);
+			txtlocal_gallery.setText(ctx.getString(R.string.localphotos));
+			txtlocal_gallery.setTextSize(text_size);
+
+			gv_local_gallery = new GridView(ctx);
+			gv_local_gallery.setBackgroundResource(R.color.white);
+
+			ln_local_gallery = new LinearLayout(ctx);
+			ln_local_gallery.setOrientation(LinearLayout.VERTICAL);
+
+			btn_local_more = new ImageButton(ctx);
+			btn_local_more.setImageResource(R.drawable.more_disable);
+			btn_local_more.setEnabled(false);
+
+			RelativeLayout more_li = new RelativeLayout(ctx);
+			btn_local_more.setLayoutParams(lp_more);
+			more_li.addView(btn_local_more);
+			more_li.addView(txtlocal_gallery);
+			ln_local_gallery.addView(more_li);
+			ln_local_gallery.addView(btn_line);
+			ln_local_gallery.addView(btn_line_black);
+			ln_local_gallery.addView(gv_local_gallery);
+
+			PhimpMe.local_count = 1;
+
+			linear_main.addView(ln_local_gallery,0);
+
+			// get photo
+			String[] projection={MediaStore.Images.Thumbnails._ID, MediaStore.Images.Thumbnails.IMAGE_ID};
+			cursor = ((Activity) ctx).getContentResolver().query(
+					MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI,
+					projection,
+					null,
+					null,
+					MediaStore.Images.Thumbnails.IMAGE_ID+ " DESC"
+			);
+
+			columnIndex=cursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails._ID);
+
+			for (int i = 0; i < cursor.getCount(); i++) {
+				if (cursor.moveToNext()){
+					PhimpMe.filepath.add(cursor
+							.getString(columnIndex));
+					array_ID.add(cursor.getString(1));
+				}
+
+			}
+			Log.d("newGallery","number image :" + PhimpMe.filepath.size());
+			if (PhimpMe.filepath.size() <= 3) {
+				ln_local_gallery.setLayoutParams(p_one_row);
+
+			} else {
+				ln_local_gallery.setLayoutParams(p_two_row);
+			}
+
+			if (PhimpMe.filepath.size() > 0) {
+				final ArrayList<String> array_file;
+				final ArrayList<String> ID;
+				if (PhimpMe.filepath.size() <= resum_number) {
+					array_file = new ArrayList<String>(PhimpMe.filepath.size());
+					ID = new ArrayList<String>(array_ID.size());
+					for (int i = 0; i < PhimpMe.filepath.size(); i++) {
+						array_file.add(PhimpMe.filepath.get(i))	;
+						ID.add(array_ID.get(i));
+					}
+
+				} else {
+					array_file = new ArrayList<String>(resum_number);
+					ID = new ArrayList<String>(resum_number);
+					for (int i = 0; i < resum_number; i++) {
+						array_file.add(PhimpMe.filepath.get(i));
+						ID.add(array_ID.get(i));
+					}
+
+					btn_local_more
+							.setImageResource(R.drawable.more);
+					btn_local_more.setEnabled(true);
+				}
+
+				gv_local_gallery.setNumColumns(cols);
+				local_adapter = new LocalPhotosAdapter(ctx,
+						array_file,ID);
+				gv_local_gallery.setAdapter(local_adapter);
+				gv_local_gallery.setDrawingCacheEnabled(true);
+
+				check_local = 1;
+				btn_local_more
+						.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+
+								pro_gress=ProgressDialog.show(ctx, "",ctx.getString(R.string.wait), true, false);
+								timerDelayRemoveDialog(1000,pro_gress);
+							}
+						});
+			} else {
+				ln_local_gallery.setLayoutParams(p_zero);
+				linear_main.removeView(more_li);
+				check_local = 1;
+			}
+			Log.d("Danh", "check = " + check_local);
+			*/
+			/* Original Content ends here */
+		} else {
+			// Hide the localPhotos frame and show the other
+			localPhotosScroll.setVisibility(View.VISIBLE);
+			localPhotosFrame.setVisibility(View.GONE);
+		}
+	}
+
 	public static void timerDelayRemoveDialog(long time, final Dialog d){
 	    new Handler().postDelayed(new Runnable() {
 	        public void run() { 
