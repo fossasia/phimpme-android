@@ -1,5 +1,41 @@
 package vn.mbm.phimp.me;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.database.Cursor;
+import android.gesture.GestureOverlayView;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Display;
+import android.view.KeyEvent;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.LinearLayout;
+import android.widget.TabHost.TabSpec;
+import android.widget.Toast;
+
+import com.google.android.gms.ads.AdView;
+import com.paypal.android.MEP.PayPal;
+import com.vistrav.ask.Ask;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,49 +52,12 @@ import vn.mbm.phimp.me.utils.Commons;
 import vn.mbm.phimp.me.utils.RSSPhotoItem;
 import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
 
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.app.TabActivity;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
-import android.database.Cursor;
-import android.gesture.GestureOverlayView;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.Display;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 //import android.widget.ImageView;
-import android.widget.LinearLayout;
 //import android.widget.TabHost;
 //import android.widget.TabHost.OnTabChangeListener;
-import android.widget.TabHost.TabSpec;
 //import android.widget.TextView;
-import android.widget.Toast;
-
-import android.support.design.widget.BottomNavigationView;
-
 //import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 //import com.google.android.maps.GeoPoint;
-import com.paypal.android.MEP.PayPal;
 //
 //@ReportsCrashes(formKey = "dFRsUzBJSWFKUFc3WmFjaXZab2V0dHc6MQ",
 //        mode = ReportingInteractionMode.TOAST,
@@ -212,7 +211,13 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
 
         camera_use = 0;
         if (IdList == null) IdList = new ArrayList<Integer>();
+        Ask.on(this)
+                .forPermissions(Manifest.permission.ACCESS_FINE_LOCATION
+                        ,Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        ,Manifest.permission.CAMERA,
+                        Manifest.permission.READ_PHONE_STATE)
 
+                .go();
         setContentView(R.layout.main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //gestureScanner = new GestureDetector(this);
@@ -636,8 +641,14 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                 }
                 break;
             case R.id.tab_camera:
-                Intent intent = new Intent(this, Camera2.class);
-                startActivity(intent);
+                if (currentScreen != HomeScreenState.CAMERA) {
+
+                    Camera2 camFrag = new Camera2();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, camFrag)
+                            .commit();
+                    currentScreen = HomeScreenState.CAMERA;
+                }
                 break;
             case R.id.tab_upload:
                 if (currentScreen != HomeScreenState.UPLOAD) {
@@ -704,7 +715,8 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
         // todo: add as needed
         GALLERY,
         UPLOAD,
-        SETTINGS
+        SETTINGS,
+        CAMERA
     }
 
     public Animation outToLeftAnimation() {
