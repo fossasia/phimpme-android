@@ -173,7 +173,6 @@ public class newGallery extends Fragment {
     static GridView gv_local_gallery;
     static ImageButton btn_local_more;
     static int local_rows_display = 0;
-    static LinearLayout ln_local_gallery;
     // Flickr Public
     static LinearLayout ln_flickr;
     TextView txtPFlickr;
