@@ -203,15 +203,16 @@ public class OpenStreetMap extends Fragment{
         		else{
         			Log.e("Show all","Openstreetmap" );
         			String[] projection = {MediaStore.Images.Media.DATA};
-            		Cursor cursor = getActivity().managedQuery( MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                            projection,
-                            null,null,
-                            null);
-            		int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            		for(int i=0; i<cursor.getCount(); i++){
-            			if(cursor.moveToNext())
-            				PhimpMe.filepath.add(cursor.getString(columnIndex));
-            		}						
+            		Cursor cursor = getActivity().getContentResolver().query(
+							MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null, null, null);
+					if (cursor != null) {
+						int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+						for (int i = 0; i < cursor.getCount(); i++) {
+							if (cursor.moveToNext())
+								PhimpMe.filepath.add(cursor.getString(columnIndex));
+						}
+						cursor.close();
+					}
             		
             		int count=PhimpMe.filepath.size();
             		Log.d("OpenStreetMap", "number local image :"+count);
