@@ -1,4 +1,4 @@
-package vn.mbm.phimp.me.utils.map;
+/*package vn.mbm.phimp.me.utils.map;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.OverlayItem;
@@ -29,4 +29,4 @@ public class CustomOverlayItem extends OverlayItem {
 	public void setFullPath(String fullpath) {
 		this.mFullpath = fullpath;
 	}
-}
+}*/

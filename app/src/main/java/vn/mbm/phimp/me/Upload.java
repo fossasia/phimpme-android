@@ -34,7 +34,7 @@ import com.facebook.*;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
-import com.google.android.maps.GeoPoint;
+//import com.google.android.maps.GeoPoint;
 import com.joooid.android.model.User;
 import com.joooid.android.xmlrpc.Constants;
 import com.joooid.android.xmlrpc.JoooidRpc;
@@ -294,13 +294,11 @@ public class Upload extends android.support.v4.app.Fragment {
         });
 
         btnAdd = (ImageButton) getView().findViewById(R.id.btnUploadAccountAdd);
-        btnAdd.setOnTouchListener(new OnTouchListener() {
-            @SuppressWarnings("deprecation")
+        btnAdd.setOnClickListener(new OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public void onClick(View v) {
                 DialogFragment newFragment = new AddAccountDialogFragment();
                 newFragment.show(getFragmentManager(), "dialog");
-                return false;
             }
         });
 
@@ -1125,7 +1123,7 @@ public class Upload extends android.support.v4.app.Fragment {
     }
 
 
-    public class MyLocationListener implements LocationListener {
+    /*public class MyLocationListener implements LocationListener {
 
         @Override
         public void onLocationChanged(Location loc) {
@@ -1142,10 +1140,10 @@ public class Upload extends android.support.v4.app.Fragment {
                 txtLongtitude.setText(PhimpMe.curLongtitude + "");
             } else {
             }
-        }
+        }*/
 
 
-        @Override
+       /* @Override
         public void onProviderDisabled(String provider) {
         }
 
@@ -1157,7 +1155,7 @@ public class Upload extends android.support.v4.app.Fragment {
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
         }
-    }
+    }*/
 
     /*@Override
     public boolean onKeyDown(int keycode, KeyEvent event)
