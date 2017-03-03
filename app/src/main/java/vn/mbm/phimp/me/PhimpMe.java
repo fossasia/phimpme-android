@@ -214,7 +214,8 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
         Ask.on(this)
                 .forPermissions(Manifest.permission.ACCESS_FINE_LOCATION
                         ,Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        ,Manifest.permission.CAMERA)
+                        ,Manifest.permission.CAMERA,
+                        Manifest.permission.READ_PHONE_STATE)
 
                 .go();
         setContentView(R.layout.main);
