@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vn.mbm.phimp.me.LocalPhotoItem
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/localPhoto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:scaleType="centerCrop"
+    android:layout_centerInParent="true" />
