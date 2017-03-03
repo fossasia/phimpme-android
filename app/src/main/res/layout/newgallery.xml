@@ -62,8 +62,9 @@
 			android:numColumns="3"
 			android:verticalSpacing="5dp"
 			android:horizontalSpacing="5dp"
-			android:layout_marginTop="5dp"
-			android:layout_marginBottom="?attr/actionBarSize"
+			android:layout_marginTop="3dp"
+			android:layout_marginLeft="3dp"
+			android:layout_marginRight="3dp"
 			android:gravity="center" />
 
 	</LinearLayout>
