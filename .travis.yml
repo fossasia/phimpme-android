@@ -41,7 +41,7 @@ script:
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-  - ./upload-apk.sh
+  - 'if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./upload-apk.sh; fi'
 
 notifications:
   slack: fossasia:JgzycrBUs0nKnmJhsAxCB4bL
