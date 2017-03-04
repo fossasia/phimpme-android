@@ -10,7 +10,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_below="@android:id/tabs" />
+        android:layout_below="@android:id/tabs"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="4dp" />
+
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation_view"
