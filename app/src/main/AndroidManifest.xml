@@ -79,8 +79,7 @@
         </activity>
          <activity
             android:name=".Blank"
-            android:configChanges="locale"
-            android:theme="@android:style/Theme.NoTitleBar">
+            android:configChanges="locale">
              
         </activity>
         <activity android:name="vn.mbm.phimp.me.gallery.PhimpMeGallery"
@@ -90,8 +89,7 @@
             
         </activity>
         <activity
-            android:name=".Camera2"     
-            
+            android:name=".Camera2"
             android:configChanges="keyboardHidden|locale|orientation"           
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             
@@ -121,7 +119,6 @@
             <!-->-->
         <!--</activity>-->
          <activity
-
             android:name=".BluetoothShareMultipleFile"
             android:configChanges="locale"
             android:screenOrientation="portrait"

@@ -213,8 +213,8 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
         if (IdList == null) IdList = new ArrayList<Integer>();
         Ask.on(this)
                 .forPermissions(Manifest.permission.ACCESS_FINE_LOCATION
-                        ,Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        ,Manifest.permission.CAMERA,
+                        , Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        , Manifest.permission.CAMERA,
                         Manifest.permission.READ_PHONE_STATE)
 
                 .go();
@@ -269,7 +269,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
 //            adView.setVisibility(ViewGroup.GONE);
 //            //adView.destroy();
 //        }
-    	        
+
     	        /*
     	         * user config
     	         */
@@ -818,8 +818,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                         .replace(R.id.fragment_container, frag)
                         .commit();
                 currentScreen = HomeScreenState.GALLERY;
-            }
-            else {
+            } else {
                 AlertDialog.Builder alertbox = new AlertDialog.Builder(ctx);
                 alertbox.setMessage(getString(R.string.exit_message));
                 alertbox.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {

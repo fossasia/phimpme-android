@@ -1,10 +1,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bottomTab"
+    android:orientation="vertical">
+
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
@@ -27,9 +28,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:itemBackground="@color/colorSecondary"
-        app:menu="@menu/navigation"
-        />
+        app:itemBackground="@color/bottomTabBar"
+        app:menu="@menu/navigation" />
 
 </RelativeLayout>
 
