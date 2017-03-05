@@ -34,9 +34,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+
+import com.vistrav.ask.Ask;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -65,8 +66,6 @@ import vn.mbm.phimp.me.utils.RSSPhotoItem;
 import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
 import vn.mbm.phimp.me.utils.RSSUtil;
 import vn.mbm.phimp.me.utils.geoDegrees;
-
-import com.vistrav.ask.Ask;
 
 public class newGallery extends Fragment {
     private static Context ctx;
@@ -166,7 +165,7 @@ public class newGallery extends Fragment {
     static LinearLayout localPhotosFrame;
     //static ScrollView localPhotosScroll;
     static GridView localPhotosGrid;
-    static ImageButton localPhotosMore;
+    static ImageView localPhotosMore;
     static PhotosAdapter photosAdapter;
     static Activity localActivity;
     static Cursor pathcursor;
@@ -456,7 +455,7 @@ public class newGallery extends Fragment {
         localImageList = new ArrayList<>();
         photosAdapter = new PhotosAdapter();
         localPhotosGrid.setAdapter(photosAdapter);
-        localPhotosMore = (ImageButton) view.findViewById(R.id.btnLoadMoreLocalPhotos);
+        localPhotosMore = (ImageView) view.findViewById(R.id.btnLoadMoreLocalPhotos);
         localPhotosMore.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
