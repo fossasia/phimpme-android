@@ -1,40 +1,29 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bottomTab"
+    android:orientation="vertical">
+
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_below="@android:id/tabs"
-        android:layout_marginBottom="4dp"
-        android:layout_marginTop="4dp"
-        android:layout_weight="0.91" >
-    </FrameLayout>
+        android:layout_marginBottom="4dp" />
+
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:itemBackground="@color/colorSecondary"
-        app:menu="@menu/navigation"
-        />
+        app:itemBackground="@color/bottomTabBar"
+        app:menu="@menu/navigation" />
 
 
-</LinearLayout>
+</RelativeLayout>
 
 
-    <!--<com.google.ads.AdView-->
-    <!--android:id="@+id/adView"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignParentBottom="true"-->
-    <!--android:layout_centerHorizontal="true"-->
-    <!--ads:adSize="SMART_BANNER"-->
-    <!--ads:adUnitId="@string/admob_id"-->
-    <!--ads:loadAdOnCreate="true"-->
-    <!--ads:testDevices="TEST_EMULATOR" />-->
+    <!--<com.google.ads.AdView--><!--android:id="@+id/adView"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_alignParentBottom="true"--><!--android:layout_centerHorizontal="true"--><!--ads:adSize="SMART_BANNER"--><!--ads:adUnitId="@string/admob_id"--><!--ads:loadAdOnCreate="true"--><!--ads:testDevices="TEST_EMULATOR" />-->

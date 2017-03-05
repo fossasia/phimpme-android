@@ -13,7 +13,6 @@
             android:id="@+id/lnCam"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:gravity="center" >
 
             <ImageButton
@@ -39,14 +38,14 @@
 
         <ImageButton
             android:id="@+id/takephoto"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:scaleType="fitCenter"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:background="@drawable/roundedbutton"
             android:src="@drawable/takepic"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="60dp"/>
 
         <FrameLayout
             android:id="@+id/preview"
