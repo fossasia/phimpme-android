@@ -6523,7 +6523,7 @@ public class newGallery extends Fragment {
                         txtpersonal_500px.setText("Personal 500px");
                         txtpersonal_500px.setTextSize(text_size);
                         gv_personal_500px = new GridView(getContext());
-                        gv_personal_500px.setPadding(0, 10, 0, 0);
+                        gv_personal_500px.setPadding(0, 0, 0, 0);
                         ln_personal_500px = new LinearLayout(getContext());
                         btn_personal_500px_more = new ImageButton(getContext());
                         btn_personal_500px_more
