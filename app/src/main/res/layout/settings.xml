@@ -88,7 +88,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:text="@string/max_file_size_download"
-                    android:textColor="@color/tabMedium" />
+                    android:textColor="@color/white" />
 
                 <TextView
                     android:id="@+id/txtMaxFilesizeDownload"
@@ -109,7 +109,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@+id/txtMaxFilesizeDownload"
                     android:text="MB"
-                    android:textColor="@color/tabMedium" />
+                    android:textColor="@color/white" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -140,7 +140,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:text="@string/deletephoto"
-                    android:textColor="@color/tabMedium" />
+                    android:textColor="@color/white" />
 
                 <ImageButton
                     android:id="@+id/deletebtn"
@@ -265,7 +265,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:text="@string/choose_folder"
-                    android:textColor="@color/tabMedium" />
+                    android:textColor="@color/white" />
             </LinearLayout>
 
 

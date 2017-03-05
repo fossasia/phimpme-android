@@ -631,7 +631,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.tab_add:
+            case R.id.tab_gallery:
                 break;
             case R.id.tab_camera:
                 if (currentScreen != HomeScreenState.CAMERA) {
