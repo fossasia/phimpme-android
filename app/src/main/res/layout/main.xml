@@ -19,6 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="4dp"
         android:id="@+id/drop_shadow"
+        android:background="@drawable/bottom_bar_shadow"
         android:layout_above="@+id/navigation_view"
         />
 
