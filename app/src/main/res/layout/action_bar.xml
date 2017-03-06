@@ -25,7 +25,9 @@
         android:id="@+id/blavatar_img"
 
         android:layout_marginLeft="6dp"
-        android:layout_marginTop="-1dp" />
+        android:layout_marginTop="-1dp"
+
+          android:layout_width="match_parent" />
       <TextView
         android:text="@string/app_name"
         android:id="@+id/blog_title"
@@ -36,7 +38,6 @@
         android:shadowColor="#FFFFFFFF"
         android:shadowDy="-2"
         android:shadowRadius="2"
-        android:singleLine="True"
         android:textStyle="bold"
         android:layout_toRightOf="@id/blavatar_img"
         android:layout_marginLeft="8dp"
@@ -58,19 +59,27 @@
         android:id="@+id/home_small"
         android:layout_alignParentRight="true"
         android:layout_marginTop="1px"
-        android:scaleType="fitCenter"/>
+        android:scaleType="fitCenter"
+          android:layout_height="match_parent"
+          android:layout_width="match_parent" />
 
       <FrameLayout
         android:layout_toLeftOf="@id/home_small"
         android:layout_marginTop="1px"
-        android:layout_marginRight="1px">
+        android:layout_marginRight="1px"
+          android:layout_height="match_parent"
+          android:layout_width="match_parent" >
         <Button
           android:id="@+id/action_refresh"
-          android:scaleType="fitCenter" />
+          android:scaleType="fitCenter"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent" />
         <ImageView
           android:id="@+id/refresh_icon"
           android:gravity="center"
-          android:scaleType="fitCenter" />
+          android:scaleType="fitCenter"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent" />
       </FrameLayout>
     </RelativeLayout>
   </RelativeLayout>

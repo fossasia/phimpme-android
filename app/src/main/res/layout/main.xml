@@ -1,4 +1,5 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="fill_parent"
@@ -9,15 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_below="@android:id/tabs"
-        android:layout_marginBottom="4dp"
-        android:layout_marginTop="4dp"
-        android:layout_weight="0.91" >
+        android:layout_below="@android:id/tabs">
     </FrameLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation_view"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:itemBackground="@color/colorSecondary"
@@ -25,7 +23,7 @@
         />
 
 
-</LinearLayout>
+</RelativeLayout>
 
 
     <!--<com.google.ads.AdView-->
