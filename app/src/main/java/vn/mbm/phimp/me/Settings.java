@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -116,6 +117,7 @@ public class Settings extends Fragment
 
 	static Context ctx;
 	int i=1;
+    int color = Color.parseColor("#757575");
 	ImageButton btnAdd;
 	ImageButton btnLangUS;
 	ImageButton btnLangDE;
@@ -199,6 +201,8 @@ public class Settings extends Fragment
 			}catch(Exception e){
 			}
 			btnDelete = (ImageView)getView().findViewById(R.id.deletebtn);
+
+            btnDelete.setColorFilter(color);
 			btnDelete.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -276,6 +280,7 @@ public class Settings extends Fragment
 		txtMaxPhotoSize = (TextView) getView().findViewById(R.id.txtMaxFilesizeDownload);
 		txtMaxPhotoSize.setText(PhimpMe.MAX_FILESIZE_DOWNLOAD + "");
 		btnSettingsMaxFilesize = (ImageView) getView().findViewById(R.id.imgbtnSettingsMaxFilesize);
+		btnSettingsMaxFilesize.setColorFilter(color);
 		btnSettingsMaxFilesize.setOnTouchListener(new OnTouchListener()
 		{
 			@Override

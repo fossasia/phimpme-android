@@ -80,6 +80,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
                     android:orientation="vertical">
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -92,7 +93,8 @@
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
                             android:orientation="vertical"
-                            android:padding="10dp" >
+                            android:paddingTop="10dp"
+                            >
 
                             <TextView
                                 android:id="@+id/textView3"
@@ -143,8 +145,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_weight="2"
-                            android:layout_margin="10dp"
-                            android:layout_centerVertical="true"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginEnd="10dp"                            android:layout_centerVertical="true"
                             android:layout_alignParentRight="true"
                             android:contentDescription="@string/empty"
                             android:src="@drawable/ic_mode_edit_black_24dp" />
@@ -159,7 +161,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:padding="10dp" >
+                        android:paddingTop="10dp" >
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -189,17 +191,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-
+                            android:layout_marginRight="10dp"
+                            android:layout_marginEnd="10dp"
                             android:layout_centerVertical="true"
                             android:contentDescription="@string/empty"
                             android:src="@drawable/ic_delete_black_24dp" />
                     </RelativeLayout>
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp" >
-                    </RelativeLayout>
+
                 </LinearLayout>
             </android.support.v7.widget.CardView>
             <!--<TextView-->
@@ -300,7 +299,8 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:orientation="vertical"
-                        android:padding="10dp" >
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp">
 
                         <TextView
                             android:id="@+id/TextView01"
