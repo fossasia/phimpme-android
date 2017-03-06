@@ -50,25 +50,24 @@
     				<intent-filter><action android:name="com.crittercism.service.CrittercismService" /></intent-filter>
 				</service>
 			<!-- End of Crittercism Support Forum Manifest Code -->    
-			<activity android:name=".SplashScreen"                  
+			<activity android:name=".WelcomeActivity"
                    android:configChanges="locale"  
-                    android:screenOrientation="portrait"
-                   android:theme="@android:style/Theme.NoTitleBar">
+                    android:screenOrientation="portrait">
     		<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>	 
             
-        </activity>  
-            <activity  android:name=".PhimpMe"  
+        </activity>
+        <activity android:name=".SplashScreen"
+            android:configChanges="locale"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+
+        <activity  android:name=".PhimpMe"
                 android:configChanges="locale"  
                 android:theme="@style/Theme.AppCompat.NoActionBar">
-           <!-- <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter> -->
             
         </activity>
         
