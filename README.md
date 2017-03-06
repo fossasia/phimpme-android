@@ -28,10 +28,10 @@ We have the following branches
 
   <table>
     <tr>
-     <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/s1.png"></td></td>
-     <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/s2.png"></td>
-     <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/s3.png"></td>
-     <td><img src="https://raw.githubusercontent.com/fossasia/phimpme-android/master/docs/screenshots/s4.png"></td>
+     <td><img src="https://cloud.githubusercontent.com/assets/14369357/23590206/e3d7dc58-0201-11e7-9f5d-b6cfda656ae5.png"></td>
+     <td><img src="https://cloud.githubusercontent.com/assets/14369357/23597630/7e25b2dc-025a-11e7-84d7-8fbed573746f.png"></td>
+     <td><img src="https://cloud.githubusercontent.com/assets/14369357/23597625/7714a886-025a-11e7-8cba-04f83fdac2ed.png"></td>
+     <td><img src="https://cloud.githubusercontent.com/assets/14369357/23597316/c118a304-0257-11e7-9a05-cd44ff4f48b8.png"></td>
     </tr>
   </table>
 
