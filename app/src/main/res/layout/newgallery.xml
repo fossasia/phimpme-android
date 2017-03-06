@@ -4,70 +4,100 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!-- View for non-local Photos -->
-    <ScrollView
-        android:id="@+id/scrollViewnew"
+	<ScrollView
+	    android:id="@+id/scrollViewnew"
         android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible">
+		android:fillViewport="true"
+		android:layout_height="match_parent" >
 
-        <LinearLayout
-            android:id="@+id/newgalleryContent"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"></LinearLayout>
-    </ScrollView>
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="fill_parent"
+			android:orientation="vertical">
 
-    <!-- View for local Photos -->
-    <LinearLayout
-        android:id="@+id/tabUpload"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:visibility="gone">
+			<!-- View for local Photos -->
+			<LinearLayout
+				android:id="@+id/tabUpload"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:visibility="visible"
+				android:orientation="vertical">
+			<android.support.v7.widget.CardView
+				android:layout_width="match_parent"
+				android:layout_margin="8dp"
+				android:layout_height="wrap_content">
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical">
+				<RelativeLayout
+					android:id="@+id/titlebarLocalPhotos"
+					android:layout_width="match_parent"
+					android:background="#F5F5F5"
+					android:layout_height="48dp">
 
-        <RelativeLayout
-            android:id="@+id/titlebarLocalPhotos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+					<TextView
+						android:id="@+id/titleLocalPhotos"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_alignParentLeft="true"
+						android:layout_alignParentStart="true"
+						android:layout_centerVertical="true"
+						android:layout_marginLeft="10dp"
+						android:layout_marginStart="10dp"
+						android:text="Local Photos"
+						android:textColor="@color/black"
+						android:textAppearance="?android:attr/textAppearanceMedium"
 
-            <android.support.design.widget.AppBarLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+						 />
 
-                <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:id="@+id/toolbar_about"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:background="@color/colorPrimary"
-                    app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
+					<ImageView
+						android:id="@+id/btnLoadMoreLocalPhotos"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_alignParentRight="true"
+						android:layout_alignParentEnd="true"
+						android:layout_centerVertical="true"
+						android:layout_marginRight="16dp"
+						android:layout_marginEnd="16dp"
+						android:contentDescription="@string/empty"
+						android:src="@drawable/ic_add_box_black_24dp" />
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Phimp.me"
-                        android:textColor="#ffffff"
-                        android:textSize="20sp" />
-                </android.support.v7.widget.Toolbar>
+				</RelativeLayout>
 
-            </android.support.design.widget.AppBarLayout>
+				<View
+					android:id="@+id/seperatorLocalPhotos"
+					android:layout_width="match_parent"
+					android:layout_height="1dp"
+					android:layout_marginLeft="10dp"
+					android:layout_marginRight="10dp"
+					android:background="#55cacaca" />
 
-        </RelativeLayout>
+				<GridView
+					android:id="@+id/gridLocalPhotos"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:numColumns="3"
+					android:verticalSpacing="5dp"
+					android:horizontalSpacing="5dp"
+					android:layout_marginTop="3dp"
+					android:layout_marginLeft="3dp"
+					android:layout_marginRight="3dp"
+					android:gravity="center" />
+				</LinearLayout>
+			</android.support.v7.widget.CardView>
+			</LinearLayout>
 
+			<!-- View for non-local Photos -->
+			<LinearLayout
+				android:id="@+id/newgalleryContent"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical" >
+			</LinearLayout>
 
-        <GridView
-            android:id="@+id/gridLocalPhotos"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="3dp"
-            android:layout_marginRight="3dp"
-            android:layout_marginTop="3dp"
-            android:gravity="center"
-            android:horizontalSpacing="5dp"
-            android:numColumns="3"
-            android:verticalSpacing="5dp" />
+		</LinearLayout>
 
-    </LinearLayout>
+	</ScrollView>
+
 </LinearLayout>

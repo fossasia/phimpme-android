@@ -15,9 +15,9 @@
     <color name="colorFAB1">#2196F3</color>
     <color name="colorFAB2">#2196F3</color>
     <color name="colorFAB3">#2196F3</color>
-    <color name="colorAccent">#F44336</color>
-    <color name="bottomTab">#424242</color>
-    <color name="bottomTabBar">#212121</color>
-    <color name="colorPrimary">#F44336</color>
-    <color name="colorPrimaryDark">#E53935</color>
+    <color name="colorAccent">#00B0FF</color>
+    <color name="colorSecondary">#ECEFF1</color>
+    <color name="colorPrimaryDark">#01579B</color>
+    <color name="colorPrimary">#03A9F4</color>
+    <color name="colorWindowBackground">#efefef</color>
 </resources>

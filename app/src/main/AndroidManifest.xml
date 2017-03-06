@@ -32,7 +32,8 @@
         android:label="@string/application_title"        
         android:largeHeap="true"
         tools:replace="android:icon, android:label"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Phimpme.Base"
+        >
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
 
         <uses-library android:name="com.google.android.maps" />  
@@ -72,7 +73,8 @@
         
         <activity
             android:name=".Camera"
-            android:configChanges="locale">
+            android:configChanges="locale"
+            >
              
         </activity>
          <activity
@@ -93,7 +95,7 @@
             
         </activity>            
         <activity android:name=".Upload" 
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            
             android:configChanges="keyboardHidden|orientation">    
          
         </activity>
@@ -101,85 +103,97 @@
             <!--android:name=".gallery3d.media.Gallery"-->
             <!--android:configChanges="locale"-->
             <!--android:screenOrientation="portrait"-->
-            <!--android:theme="@style/Theme.AppCompat.NoActionBar">-->
+            <!-->-->
             <!---->
         <!--</activity>        -->
         <activity
             android:name=".newGallery"
             android:configChanges="locale"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            >
             
         </activity>
         <!--<activity-->
             <!--android:name=".PersonalGallery"-->
             <!--android:configChanges="locale"-->
-            <!--android:theme="@style/Theme.AppCompat.NoActionBar">-->
+            <!-->-->
         <!--</activity>-->
          <activity
             android:name=".BluetoothShareMultipleFile"
             android:configChanges="locale"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            >
             
         </activity>
         <activity
             android:name=".PhotoSelect"
             android:configChanges="locale"
+            
            >            
         </activity>
           <activity android:name="vn.mbm.phimp.me.image.CropImage"
               android:configChanges="locale"
               android:label="CropLabel"
+              
               android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name=".Settings"
             android:configChanges="locale"
             android:screenOrientation="portrait"
+            
             >
            
         </activity>
         <activity
             android:name=".GalleryMap"
             android:configChanges="locale"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            >
            
         </activity>         
         <activity
             android:name=".OpenStreetMap"
-            android:configChanges="locale">
+            android:configChanges="locale"
+            >
            
         </activity>
         <activity
             android:name=".UploadMap"
-            android:configChanges="locale">
+            android:configChanges="locale"
+            >
            
         </activity>
         <!--<activity-->
             <!--android:name=".UploadOSMap"-->
             <!--android:configChanges="locale"-->
-            <!--android:theme="@style/Theme.AppCompat.NoActionBar">-->
+            <!-->-->
         <!--</activity>-->
         
         <activity
             android:name=".UploadProgress"
             android:configChanges="locale"
             android:screenOrientation="portrait"
+            
             >
            
         </activity>
         <activity
             android:name=".DrupalWebviewActivity"
-            android:configChanges="locale">
+            android:configChanges="locale"
+            >
            
         </activity>
         <activity
             android:name=".WordpressWebviewActivity"
-            android:configChanges="locale">
+            android:configChanges="locale"
+            >
            
         </activity>
         <activity
             android:name=".JoomlaWebviewActivity"
-            android:configChanges="locale">
+            android:configChanges="locale"
+            >
            
         </activity>
       <!--  <activity
@@ -192,7 +206,7 @@
         </activity> -->
         <activity
             android:name="SendFileActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            
             android:configChanges="locale"
             android:screenOrientation="portrait"
             >
@@ -204,12 +218,12 @@
 				  android:configChanges="keyboardHidden|orientation"/>
         <!--<activity-->
             <!--android:name="vn.mbm.phimp.me.utils.ViewOriginalImage"-->
-            <!--android:theme="@style/Theme.AppCompat.NoActionBar">-->
+            <!-->-->
            <!---->
         <!--</activity>-->
         <!--<activity-->
             <!--android:name="vn.mbm.phimp.me.utils.ViewOriginalImageWebKit"-->
-            <!--android:theme="@style/Theme.AppCompat.NoActionBar">-->
+            <!-->-->
            <!---->
         <!--</activity>-->
         <activity 
@@ -244,23 +258,23 @@
        <!-- wordpress -->
        <activity
             android:name="org.wordpress.android.NewAccount"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            
             android:screenOrientation="portrait"
             >
        </activity>
        <activity
             android:name="org.wordpress.android.Signup"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            
             android:screenOrientation="portrait">
        </activity>
        <activity
             android:name="org.wordpress.android.AddAccount"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            
             android:screenOrientation="portrait">
        </activity>
        <activity
             android:name="org.wordpress.android.AddAcountSettings"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            
             android:screenOrientation="portrait">
        </activity>
 
@@ -275,9 +289,5 @@
             android:exported="true"/>
 
     </application>
-    <dependency>
-		<groupId>com.google.code.gson</groupId>
-		<artifactId>gson</artifactId>
-		<version>1.7.1</version>
-  	</dependency>
+
 </manifest>
