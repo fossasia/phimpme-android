@@ -67,7 +67,6 @@ import com.paypal.android.MEP.PayPal;
 @SuppressWarnings("deprecation")
 public class PhimpMe extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener //, android.view.GestureDetector.OnGestureListener
 {
-    public static Context ctx;
     public static File DataDirectory;
     public static final String PREFS_NAME = "PhimpMePrefs";
     public static final String DATABASE_NAME = "PhimpMe";
@@ -197,7 +196,6 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        ctx = this;
         Log.d("thong", "PhimpMe - onCreate()");
         // The following line triggers the initialization of ACRA
         //ACRA.init((Application) ctx.getApplicationContext());
@@ -205,7 +203,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
         new Thread(new Runnable() {
             @Override
             public void run() {
-                initLibrary(ctx);
+                initLibrary(PhimpMe.this);
 
             }
         }).start();
@@ -560,11 +558,11 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
          * Thong - Get data directory
          */
         try {
-            DataDirectory = new File(Commons.getDataDirectory(ctx).getAbsolutePath() + "/" + DATA_DIRECTORY_NAME);
+            DataDirectory = new File(Commons.getDataDirectory(this).getAbsolutePath() + "/" + DATA_DIRECTORY_NAME);
 
             if (!DataDirectory.exists()) {
                 if (!DataDirectory.mkdirs()) {
-                    Commons.AlertLog(ctx, "Cannot create Data Directory " + DataDirectory.getAbsolutePath(), "OK").show();
+                    Commons.AlertLog(this, "Cannot create Data Directory " + DataDirectory.getAbsolutePath(), "OK").show();
                 } else {
                 }
             } else {
@@ -587,11 +585,11 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
         phimp_me_img_uri_temporary = Uri.fromFile(new File(phimp_me_tmp));
         File database_file = getDatabasePath(DATABASE_NAME);
         if (!database_file.exists()) {
-            AccountDBAdapter db = new AccountDBAdapter(ctx);
+            AccountDBAdapter db = new AccountDBAdapter(this);
             db.open();
             db.close();
 
-            TumblrDBAdapter db2 = new TumblrDBAdapter(ctx);
+            TumblrDBAdapter db2 = new TumblrDBAdapter(this);
             db2.open();
             db2.close();
 
@@ -798,37 +796,31 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     }
 
     @Override
-    public boolean onKeyDown(int keycode, KeyEvent event) {
-        if (keycode == KeyEvent.KEYCODE_BACK) {
-            if (currentScreen != HomeScreenState.GALLERY) {
-                newGallery frag = new newGallery();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, frag)
-                        .commit();
-                currentScreen = HomeScreenState.GALLERY;
-            }
-            else {
-                AlertDialog.Builder alertbox = new AlertDialog.Builder(ctx);
-                alertbox.setMessage(getString(R.string.exit_message));
-                alertbox.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                        System.exit(0);
-                    }
-                });
-                alertbox.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //Resume to current process
-                    }
-                });
-                alertbox.create().show();
-
-            }
+    public void onBackPressed() {
+        if (currentScreen != HomeScreenState.GALLERY) {
+            newGallery frag = new newGallery();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, frag)
+                    .commit();
+            currentScreen = HomeScreenState.GALLERY;
+        } else {
+            AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
+            alertbox.setMessage(getString(R.string.exit_message));
+            alertbox.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    PhimpMe.this.onBackPressed();
+                }
+            });
+            alertbox.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //Resume to current process
+                }
+            });
+            alertbox.create().show();
 
         }
-        return super.onKeyDown(keycode, event);
     }
 
     /*public boolean onTouchEvent(MotionEvent me) {
