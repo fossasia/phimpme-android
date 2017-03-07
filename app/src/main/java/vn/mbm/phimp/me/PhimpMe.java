@@ -796,37 +796,32 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     }
 
     @Override
-    public boolean onKeyDown(int keycode, KeyEvent event) {
-        if (keycode == KeyEvent.KEYCODE_BACK) {
-            if (currentScreen != HomeScreenState.GALLERY) {
-                newGallery frag = new newGallery();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, frag)
-                        .commit();
-                currentScreen = HomeScreenState.GALLERY;
-            }
-            else {
-                AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
-                alertbox.setMessage(getString(R.string.exit_message));
-                alertbox.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                        System.exit(0);
-                    }
-                });
-                alertbox.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //Resume to current process
-                    }
-                });
-                alertbox.create().show();
-
-            }
+    public void onBackPressed() {
+        if (currentScreen != HomeScreenState.GALLERY) {
+            newGallery frag = new newGallery();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, frag)
+                    .commit();
+            currentScreen = HomeScreenState.GALLERY;
+        } else {
+            AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
+            alertbox.setMessage(getString(R.string.exit_message));
+            alertbox.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
+                    System.exit(0);
+                }
+            });
+            alertbox.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //Resume to current process
+                }
+            });
+            alertbox.create().show();
 
         }
-        return super.onKeyDown(keycode, event);
     }
 
     /*public boolean onTouchEvent(MotionEvent me) {
