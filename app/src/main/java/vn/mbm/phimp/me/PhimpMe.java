@@ -809,8 +809,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
             alertbox.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    finish();
-                    System.exit(0);
+                    PhimpMe.this.onBackPressed();
                 }
             });
             alertbox.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
