@@ -90,7 +90,7 @@ public class BluetoothShareMultipleFile extends Activity {
 			path = imagelist.split("#");
 			//sendDirectly.setEnabled(true);
 			//select.setEnabled(false);
-			textStatus.setText("Number photo share : "+path.length);
+			textStatus.setText("Number photo shareSingle : "+path.length);
 		}
 		
 		/*select.setOnClickListener(new View.OnClickListener() {
@@ -218,7 +218,7 @@ public class BluetoothShareMultipleFile extends Activity {
 		 for (int i = 0; i < path.length ; i++){
 			 File file_share=new File(path[i].split(";")[0]);
 			 uri=Uri.fromFile(file_share);
-			 Log.e("Upload", "File share : "+uri.toString());
+			 Log.e("Upload", "File shareSingle : "+uri.toString());
 			 ContentValues values = new ContentValues(); 	
 		     values.put(BluetoothShare.URI, uri.toString());	
 		     values.put(BluetoothShare.DESTINATION, nBluetoothDevice.getAddress());

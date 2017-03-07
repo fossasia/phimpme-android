@@ -6,9 +6,9 @@ import java.util.ArrayList;
 
 import vn.mbm.phimp.me.PhimpMe;
 import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.SendFileActivity;
 import vn.mbm.phimp.me.Upload;
 import vn.mbm.phimp.me.image.CropImage;
+import vn.mbm.phimp.me.image.ImageSharer;
 import vn.mbm.phimp.me.utils.geoDegrees;
 
 import android.content.Context;
@@ -268,14 +268,15 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.fabshare:
 
-                Intent shareIntent=new Intent();
+                ImageSharer.shareSingle(this,filePath.get(position));
+               /* Intent shareIntent=new Intent();
                 shareIntent.setClass(PhimpMeGallery.this, SendFileActivity.class);
                 shareIntent.putExtra("image-path", filePath.get(position));
                 shareIntent.putExtra("aspectX", 0);
                 shareIntent.putExtra("aspectY", 0);
                 shareIntent.putExtra("scale", true);
                 shareIntent.putExtra("activityName", "PhimpMeGallery");
-                startActivityForResult(shareIntent, 1);
+                startActivityForResult(shareIntent, 1);*/
 
                 Log.d("Pawan", "Share");
                 break;
