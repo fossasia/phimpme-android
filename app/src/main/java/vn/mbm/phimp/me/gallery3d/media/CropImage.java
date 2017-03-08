@@ -146,6 +146,8 @@ public class CropImage extends MonitoredActivity {
     private int turns = 0;
     private boolean rotated = false;
     private boolean flipped = false;
+    private int initialWidth = 0;
+    private int initialHeight = 0;
 
     public static int latitude,longitude;
     public static String from="";
@@ -427,6 +429,10 @@ public class CropImage extends MonitoredActivity {
                 finish();
             }
         });
+
+        // Keep track of initial width and height of the image
+        initialWidth = mBitmap.getWidth();
+        initialHeight = mBitmap.getHeight();
 
         findViewById(Res.id.save).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -737,6 +743,11 @@ public class CropImage extends MonitoredActivity {
 
         int width = r.width(); // CR: final == happy panda!
         int height = r.height();
+
+        // Check if the image has been cropped at all
+        if (initialHeight != height | initialWidth != width) {
+            imageEdited = true;
+        }
 
         // If we are circle cropping, we want alpha channel, which is the
         // third param here.
