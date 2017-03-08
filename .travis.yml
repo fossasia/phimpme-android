@@ -44,4 +44,4 @@ after_success:
   - 'if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./upload-apk.sh; fi'
 
 notifications:
-  slack: fossasia:JgzycrBUs0nKnmJhsAxCB4bL
+  slack: $SLACK_ID
