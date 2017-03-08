@@ -30,6 +30,19 @@ android:
 
     # Specify at least one system image
     - sys-img-armeabi-v7a-google_apis-$ANDROID_API_LEVEL
+    
+# prevents reuploading of Cache
+before_cache:
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+
+# list of directoriese to Cahce
+cache:
+  directories:
+    - "${TRAVIS_BUILD_DIR}/android/gradle/caches/"
+    - "${TRAVIS_BUILD_DIR}/android/gradle/wrapper/dists/"
+    - "$HOME/android/.gradle/caches/"
+    - "$HOME/android/.gradle/wrapper/"
+    - "$HOME/.android/build-cache"
 
 licenses:
     - 'android-sdk-preview-license-.+'
