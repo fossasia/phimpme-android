@@ -821,7 +821,8 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, frag)
                         .commit();
-                currentScreen = HomeScreenState.GALLERY;
+                currentScreen = HomeScreenState.GALLERY;                
+                keycode = 0;
             } else {
                 AlertDialog.Builder alertbox = new AlertDialog.Builder(ctx);
                 alertbox.setMessage(getString(R.string.exit_message));
