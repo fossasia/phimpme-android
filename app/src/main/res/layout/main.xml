@@ -1,27 +1,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:ads="http://schemas.android.com/apk/lib/com.google.ads"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    >
+    android:orientation="vertical">
+
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_below="@android:id/tabs"
         android:layout_above="@+id/drop_shadow"
-        >
-    </FrameLayout>
+        android:layout_alignParentTop="true"
+        android:layout_below="@android:id/tabs"></FrameLayout>
 
     <View
+        android:id="@+id/drop_shadow"
         android:layout_width="match_parent"
         android:layout_height="4dp"
-        android:id="@+id/drop_shadow"
-        android:background="@drawable/bottom_bar_shadow"
         android:layout_above="@+id/navigation_view"
-        />
+        android:background="@drawable/bottom_bar_shadow" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation_view"
@@ -29,19 +26,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:itemBackground="@color/colorSecondary"
-        app:menu="@menu/navigation"
-        />
+        app:menu="@menu/navigation" />
 
 </RelativeLayout>
 
 
-    <!--<com.google.ads.AdView-->
-    <!--android:id="@+id/adView"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignParentBottom="true"-->
-    <!--android:layout_centerHorizontal="true"-->
-    <!--ads:adSize="SMART_BANNER"-->
-    <!--ads:adUnitId="@string/admob_id"-->
-    <!--ads:loadAdOnCreate="true"-->
-    <!--ads:testDevices="TEST_EMULATOR" />-->
+    <!--<com.google.ads.AdView--><!--android:id="@+id/adView"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_alignParentBottom="true"--><!--android:layout_centerHorizontal="true"--><!--ads:adSize="SMART_BANNER"--><!--ads:adUnitId="@string/admob_id"--><!--ads:loadAdOnCreate="true"--><!--ads:testDevices="TEST_EMULATOR" />-->

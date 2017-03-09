@@ -4,7 +4,10 @@
         android:id="@+id/tab_gallery"
         android:icon="@drawable/ic_gallery"
         android:title="@string/gallery" />
-    <!--TODO: Put this back at some point-->
+    <item
+        android:id="@+id/tab_map"
+        android:icon="@drawable/ic_map"
+        android:title="@string/map" />
     <item
         android:id="@+id/tab_camera"
         android:icon="@drawable/ic_camera"
