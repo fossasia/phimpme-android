@@ -35,7 +35,7 @@ android:
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 
-# list of directoriese to Cahce
+# list of directories to Cache
 cache:
   directories:
     - "${TRAVIS_BUILD_DIR}/android/gradle/caches/"
