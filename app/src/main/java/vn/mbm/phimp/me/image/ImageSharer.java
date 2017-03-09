@@ -17,7 +17,6 @@ public class ImageSharer {
         share.setType("image/*");
         File imageFileToShare = new File(filePath);
         Uri imageURI = Uri.fromFile(imageFileToShare);
-//                FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", imageFileToShare);
         share.putExtra(Intent.EXTRA_STREAM, imageURI);
         share.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         context.startActivity(Intent.createChooser(share, "Share Image"));
@@ -31,7 +30,7 @@ public class ImageSharer {
 
         for (String path : paths) {
             File imageFileToShare = new File(path);
-            Uri imageURI = Uri.fromFile(imageFileToShare); //FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", imageFileToShare);
+            Uri imageURI = Uri.fromFile(imageFileToShare);
             files.add(imageURI);
         }
         share.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
