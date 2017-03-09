@@ -9,6 +9,7 @@ android {
         applicationId "vn.mbm.phimp.me"
         minSdkVersion 16
         targetSdkVersion 25
+        multiDexEnabled true
     }
 
     buildTypes {

@@ -635,6 +635,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                 if (currentScreen != HomeScreenState.GALLERY) {
                     newGallery frag = new newGallery();
                     getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.fragment_anim_fadein,R.anim.fragment_anim_fadeout)
                             .replace(R.id.fragment_container, frag)
                             .commit();
                     currentScreen = HomeScreenState.GALLERY;
@@ -649,6 +650,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
 
                     Camera2 camFrag = new Camera2();
                     getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.fragment_anim_fadein,R.anim.fragment_anim_fadeout)
                             .replace(R.id.fragment_container, camFrag)
                             .commit();
                     currentScreen = HomeScreenState.CAMERA;
@@ -658,6 +660,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                 if (currentScreen != HomeScreenState.UPLOAD) {
                     Upload frag = new Upload();
                     getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.fragment_anim_fadein,R.anim.fragment_anim_fadeout)
                             .replace(R.id.fragment_container, frag)
                             .commit();
                     currentScreen = HomeScreenState.UPLOAD;
@@ -667,6 +670,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                 if (currentScreen != HomeScreenState.SETTINGS) {
                     Settings frag = new Settings();
                     getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.fragment_anim_fadein,R.anim.fragment_anim_fadeout)
                             .replace(R.id.fragment_container, frag)
                             .commit();
                     currentScreen = HomeScreenState.SETTINGS;

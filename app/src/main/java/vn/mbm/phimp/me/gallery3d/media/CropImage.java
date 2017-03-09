@@ -135,12 +135,20 @@ public class CropImage extends MonitoredActivity {
     int screen_w;
     ProgressDialog gpsloading;
     ImageButton btnUseMap;
-    EditText txtPhotoTitle;	
-	EditText txtLongtitude;
-	EditText txtLatitude;
-	EditText txtTags;
+    EditText txtPhotoTitle;
+    EditText txtLongtitude;
+    EditText txtLatitude;
+    EditText txtTags;
     Context ctx;
-    
+
+    // Variables to fix: Duplicate images
+    private boolean imageEdited = false;
+    private int turns = 0;
+    private boolean rotated = false;
+    private boolean flipped = false;
+    private int initialWidth = 0;
+    private int initialHeight = 0;
+
     public static int latitude,longitude;
     public static String from="";
     static private final HashMap<Context, MediaScannerConnection> mConnectionMap = new HashMap<Context, MediaScannerConnection>();
@@ -422,6 +430,10 @@ public class CropImage extends MonitoredActivity {
             }
         });
 
+        // Keep track of initial width and height of the image
+        initialWidth = mBitmap.getWidth();
+        initialHeight = mBitmap.getHeight();
+
         findViewById(Res.id.save).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	if(txtLongtitude.getText().toString().equals("")&& !txtLatitude.getText().toString().equals("")){
@@ -504,188 +516,176 @@ public class CropImage extends MonitoredActivity {
                 
             }
         });
-        findViewById(R.id.btnRotateLeftRight).setOnClickListener(
-				new View.OnClickListener() {
-				    public void onClick(View v) 
-				    {					    	
-				    	try{
-				    		/*doRotate(mImageView, fromDegree, toDegree);
-							fromDegree = (toDegree == 360) ? 0 : toDegree;
-							toDegree += 90;
-							if (toDegree > 360) {
-								toDegree = 90;
-							}*/
-				    		doRotate90(mImageView);
-				    		mImageView.mHighlightViews.clear();
-				    		mBitmap.recycle();
-				    		mBitmap = modifiedBitmap;
-				    		startFaceDetection();
-							
-				    	}catch(OutOfMemoryError o){
-				    		o.printStackTrace();
-				    	}
-				    	
-				    }
-				});
+
+        findViewById(R.id.btnRotateLeftRight).setOnClickListener (
+                new View.OnClickListener() {
+                    public void onClick (View v) {
+                        try {
+                            /*doRotate(mImageView, fromDegree, toDegree);
+                            fromDegree = (toDegree == 360) ? 0 : toDegree;
+                            toDegree += 90;
+                            if (toDegree > 360) {
+                                toDegree = 90;
+                            }*/
+                            // Flags an edit
+                            if (!imageEdited) {
+                                if (turns % 3 == 0 && turns != 0) {
+                                    imageEdited = false;
+                                    turns = 0;
+                                } else {
+                                    imageEdited = true;
+                                }
+                                turns++;
+                            }
+
+                            doRotate90(mImageView);
+                            mImageView.mHighlightViews.clear();
+                            if (mBitmap != null && !mBitmap.isRecycled()) {
+                                mBitmap.recycle();
+                                mBitmap = null;
+                            }
+                            mBitmap = modifiedBitmap;
+                            startFaceDetection();
+                        } catch (OutOfMemoryError o) {
+                            o.printStackTrace();
+                        }
+                    }
+                });
+
         findViewById(R.id.btnRotateTopDown).setOnClickListener(
-				new View.OnClickListener() {
-				    public void onClick(View v) 
-				    {
-				    	try{
-				    		modifiedBitmap = doVerticalFlip(modifiedBitmap);
-							flippedImaged = doVerticalFlip(flippedImaged);
-							mImageView.setImageBitmap(changeBrightness(
-									modifiedBitmap, brightnessValue));
-							mBitmap = modifiedBitmap;
-							
-				    	}catch(OutOfMemoryError o){
-				    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-				    		//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
-				    		modifiedBitmap=flippedImaged=mBitmapResize;
-				    	}
-				    	
-				    }
-				});
+                new View.OnClickListener() {
+                    public void onClick(View v) {
+                        try {
+                            // Flags an edit
+                            flipped = !flipped;
+                            modifiedBitmap = doVerticalFlip(modifiedBitmap);
+                            flippedImaged = doVerticalFlip(flippedImaged);
+                            mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
+                            mBitmap = modifiedBitmap;
+                        } catch (OutOfMemoryError o) {
+                            mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            //mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
+                            modifiedBitmap=flippedImaged=mBitmapResize;
+                        }
+                    }
+                });
+
         findViewById(R.id.btnBlackAndWhite).setOnClickListener(
-				new View.OnClickListener() {
-				    public void onClick(View v) 
-				    {
-				    	try{
+                new View.OnClickListener() {
+                    public void onClick(View v) {
+                        try {
+                            // Flags an edit
+                            imageEdited = true;
+                            modifiedBitmap = null;
+                            modifiedBitmap = convertToBW(flippedImaged);
+                            mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
+                            mBitmap = modifiedBitmap;
+                        } catch (OutOfMemoryError o) {
+                            mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            //mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
+                            modifiedBitmap=flippedImaged=mBitmapResize;
+                        }
+                    }
+                });
 
-				    		modifiedBitmap = null;
-							modifiedBitmap = convertToBW(flippedImaged);
-							mImageView.setImageBitmap(changeBrightness(
-									modifiedBitmap, brightnessValue));
-							mBitmap = modifiedBitmap;
-							
-				    	}catch(OutOfMemoryError o){								
-
-				    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-				    		//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
-				    		modifiedBitmap=flippedImaged=mBitmapResize;
-			    		
-
-				    	}
-				    	
-				    }
-				});
         findViewById(R.id.btnSaphia).setOnClickListener(
-				new View.OnClickListener() {
-				    public void onClick(View v) 
-				    {
-				    	try{
+                new View.OnClickListener() {
+                    public void onClick(View v) {
+                        try {
+                            // Flags an edit
+                            imageEdited = true;
+                            modifiedBitmap = null;
+                            modifiedBitmap = convertToSepia(flippedImaged);
+                            mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
+                            mBitmap = modifiedBitmap;
+                        } catch (OutOfMemoryError o) {
+                            mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            //mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
+                            modifiedBitmap=flippedImaged=mBitmapResize;
+                        }
+                    }
+                });
 
-				    		modifiedBitmap = null;
-							modifiedBitmap = convertToSepia(flippedImaged);
-							mImageView.setImageBitmap(changeBrightness(
-									modifiedBitmap, brightnessValue));
-							mBitmap = modifiedBitmap;
-							
-				    	}catch(OutOfMemoryError o){
-				    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-				    		//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
-							modifiedBitmap=flippedImaged=mBitmapResize;
+        findViewById(R.id.btnNagative).setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View v) {
+                        try {
+                            // Flags an edit
+                            imageEdited = true;
+                            modifiedBitmap = null;
+                            modifiedBitmap = convertToNegative(flippedImaged);
+                            mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
+                            mBitmap = modifiedBitmap;
+                        } catch (OutOfMemoryError o) {
+                            mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            //mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
+                            modifiedBitmap=flippedImaged=mBitmapResize;
+                        }
+                    }
+                });
 
-				    	}
-				    
-				    }
-				});
-        	findViewById(R.id.btnNagative).setOnClickListener(
-				new View.OnClickListener() {
-				    public void onClick(View v) 
-				    {
-				    	try{
-				    		
-				    		modifiedBitmap = null;
-							modifiedBitmap = convertToNegative(flippedImaged);
-							mImageView.setImageBitmap(changeBrightness(
-									modifiedBitmap, brightnessValue));
-							mBitmap = modifiedBitmap;
-							
-				    	}catch(OutOfMemoryError o){
+        ImageButton btnReflection=(ImageButton)findViewById(R.id.btnSnow);
+        btnReflection.setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View v) {
+                        try {
+                            // Flags an edit
+                            imageEdited = true;
+                            modifiedBitmap = null;
+                            modifiedBitmap = applySnowEffect(flippedImaged);
+                            mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
+                            mBitmap = modifiedBitmap;
+                        } catch (OutOfMemoryError o) {
+                            mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            //mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
+                            modifiedBitmap=flippedImaged=mBitmapResize;
+                        }
+                    }
+                });
 
-				    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-				    		//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
-				    		modifiedBitmap=flippedImaged=mBitmapResize;
+        ImageButton btnRoundCorner=(ImageButton)findViewById(R.id.btnRoundCorner);
+        btnRoundCorner.setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View v) {
+                        try {
+                            // Flags an edit
+                            imageEdited = true;
+                            modifiedBitmap = null;
+                            modifiedBitmap = roundCorner(flippedImaged,45f);
+                            mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
+                            mBitmap = modifiedBitmap;
+                        } catch (OutOfMemoryError o) {
+                            mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            //mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
+                            modifiedBitmap=flippedImaged=mBitmapResize;
+                        }
+                    }
+                });
 
-				    	}
-				    	
-				    }
-				});
-		ImageButton btnReflection=(ImageButton)findViewById(R.id.btnSnow);
-		btnReflection.setOnClickListener(
-				new View.OnClickListener() {
-				    public void onClick(View v) 
-				    {
-				    	try{
-				    		
-				    		modifiedBitmap = null;
-							modifiedBitmap = applySnowEffect(flippedImaged);
-							mImageView.setImageBitmap(changeBrightness(
-									modifiedBitmap, brightnessValue));
-							mBitmap = modifiedBitmap;
-							
-				    	}catch(OutOfMemoryError o){
-
-				    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-				    		//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
-				    		modifiedBitmap=flippedImaged=mBitmapResize;
-
-				    	}
-				    	
-				    }
-				});
-				
-		ImageButton btnRoundCorner=(ImageButton)findViewById(R.id.btnRoundCorner);
-		btnRoundCorner.setOnClickListener(
-				new View.OnClickListener() {
-				    public void onClick(View v) 
-				    {
-				    	try{
-				    		
-				    		modifiedBitmap = null;
-							modifiedBitmap = roundCorner(flippedImaged,45f);
-							mImageView.setImageBitmap(changeBrightness(
-									modifiedBitmap, brightnessValue));
-							mBitmap = modifiedBitmap;
-							
-				    	}catch(OutOfMemoryError o){
-
-				    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-				    		//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
-				    		modifiedBitmap=flippedImaged=mBitmapResize;
-
-				    	}
-				    	
-				    }
-				});
-		
-		ImageButton btnOriginal=(ImageButton)findViewById(R.id.btnOriginal);
+        ImageButton btnOriginal=(ImageButton)findViewById(R.id.btnOriginal);
 		btnOriginal.setOnClickListener(
-				new View.OnClickListener() {
-				    public void onClick(View v) 
-				    {
-				    	try{
-				    	
-							//doRotate(mImageView, 0, 0);
-							//fromDegree = 0;
-							//toDegree = 90;							
-							mBitmap.recycle();
-							mBitmap = decodeSampledBitmapFromFile(ctx, p[0], screen_w);
-							mImageView.setImageBitmap(mBitmap);
-							modifiedBitmap = flippedImaged = mBitmap;
-							
-				    	}catch(OutOfMemoryError o){
+                new View.OnClickListener() {
+                    public void onClick(View v) {
+                        try {
+                            // Flags an edit
+                            imageEdited = false;
+                            // doRotate(mImageView, 0, 0);
+                            // fromDegree = 0;
+                            // toDegree = 90;
+                            mBitmap.recycle();
+                            mBitmap = decodeSampledBitmapFromFile(ctx, p[0], screen_w);
+                            mImageView.setImageBitmap(mBitmap);
+                            modifiedBitmap = flippedImaged = mBitmap;
+                        } catch(OutOfMemoryError o) {
+                            // doRotate(mImageView, 0, 0);
+                            // fromDegree = 0;
+                            // toDegree = 90;
+                            mImageView.setImageBitmap(mBitmapResize);
+                            modifiedBitmap = flippedImaged = mBitmapResize;
+                        }
+                    }
+                });
 
-							//doRotate(mImageView, 0, 0);
-							//fromDegree = 0;
-							//toDegree = 90;
-							mImageView.setImageBitmap(mBitmapResize);
-							modifiedBitmap = flippedImaged = mBitmapResize;
-				    	}
-				    	
-				    }
-				});
         startFaceDetection();
     }
 
@@ -743,6 +743,11 @@ public class CropImage extends MonitoredActivity {
 
         int width = r.width(); // CR: final == happy panda!
         int height = r.height();
+
+        // Check if the image has been cropped at all
+        if (initialHeight != height | initialWidth != width) {
+            imageEdited = true;
+        }
 
         // If we are circle cropping, we want alpha channel, which is the
         // third param here.
@@ -882,10 +887,13 @@ public class CropImage extends MonitoredActivity {
 	public static Bitmap doVerticalFlip(Bitmap sampleBitmap) {
 		Matrix matrixVerticalFlip = new Matrix();
 		matrixVerticalFlip.preScale(1.0f, -1.0f);
-		Bitmap des = sampleBitmap.copy(Bitmap.Config.ARGB_8888, true);
-		des = Bitmap.createBitmap(sampleBitmap, 0, 0, sampleBitmap.getWidth(), sampleBitmap.getHeight(),
-				matrixVerticalFlip, true);
-		return des;
+        try {
+            return Bitmap.createBitmap(sampleBitmap, 0, 0, sampleBitmap.getWidth(), sampleBitmap.getHeight(),
+                    matrixVerticalFlip, true);
+        } catch (Exception e) {
+            return sampleBitmap;
+        }
+
 	}
     public static Bitmap convertToBW(Bitmap sampleBitmap) {
 		ColorMatrix matrix = new ColorMatrix();
@@ -1218,9 +1226,18 @@ public class CropImage extends MonitoredActivity {
         	ExifInterface exif;
 			try {
 				Log.e("Exif data","Run");
-				exif = new ExifInterface(newpath);
-				createExifData(exif,Double.parseDouble(txtLatitude.getText().toString()) , Double.parseDouble(txtLongtitude.getText().toString()));
-		        exif.saveAttributes();
+				// If the image has been edited, it will be saved along with the original image
+				if (imageEdited | flipped) {
+					exif = new ExifInterface(newpath);
+					createExifData(exif, Double.parseDouble(txtLatitude.getText().toString()), Double.parseDouble(txtLongtitude.getText().toString()));
+					exif.saveAttributes();
+				} else {
+					// Else, the temporary image will be deleted!
+					File file = new File(newpath);
+					if(file.exists()) {
+                        file.delete();
+                    }
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
