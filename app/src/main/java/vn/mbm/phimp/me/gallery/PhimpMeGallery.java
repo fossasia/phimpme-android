@@ -256,7 +256,7 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.fabupload:
                 AlertDialog.Builder builder=new AlertDialog.Builder(PhimpMeGallery.this);
-                builder.setMessage("This photo have been add to list upload photo !");
+                builder.setMessage(R.string.Dialog_upload);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

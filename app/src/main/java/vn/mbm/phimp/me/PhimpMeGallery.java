@@ -113,7 +113,7 @@ public class PhimpMeGallery extends Activity{
 				
 				
 				AlertDialog.Builder builder=new AlertDialog.Builder(PhimpMeGallery.this);
-				builder.setMessage("This photo has been added to list upload photo!");
+				builder.setMessage(R.string.Dialog_upload);
 				builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {					
 					@Override
 					public void onClick(DialogInterface dialog, int which) {		
