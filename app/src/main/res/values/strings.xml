@@ -611,5 +611,5 @@
   <string name="delete_all_photos">Delete all Photos</string>
   <string name="hiede_show_photos">Hide or show local photos</string>
   <string name="show_local_photos">Show Local Photos</string>
-  <string name="Dialog_upload">This photo has been added to list upload photo!</string>
+  <string name="dialog_upload">This photo has been added to list upload photo!</string>
 </resources>
