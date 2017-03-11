@@ -15,7 +15,6 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
@@ -30,12 +29,6 @@ public class CameraActivityTest {
         ViewInteraction bottomNavigationItemView = onView(
                 allOf(withId(R.id.tab_camera), isDisplayed()));
         bottomNavigationItemView.perform(click());
-
-        ViewInteraction appCompatImageButton = onView(
-                allOf(withId(R.id.switch_camera),
-                        withParent(withId(R.id.lnCam)),
-                        isDisplayed()));
-        appCompatImageButton.check(matches(isDisplayed()));
 
         ViewInteraction appCompatImageButton2 = onView(
                 allOf(withId(R.id.takephoto), isDisplayed()));
