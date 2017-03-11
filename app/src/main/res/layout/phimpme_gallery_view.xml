@@ -44,8 +44,7 @@
         android:layout_gravity="center"
         android:orientation="vertical" >
 
-	    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		xmlns:app="http://schemas.android.com/apk/res/vn.mbm.phimp.me"
+	    <FrameLayout
 		android:orientation="vertical" android:layout_width="fill_parent"
 		android:layout_height="fill_parent">
 		

@@ -1,3 +1,4 @@
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
@@ -10,10 +11,17 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_below="@android:id/tabs"
-        android:layout_marginBottom="4dp"
-        android:layout_marginTop="4dp"
-        android:layout_weight="0.91" >
+        android:layout_above="@+id/drop_shadow"
+        >
     </FrameLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:id="@+id/drop_shadow"
+        android:background="@drawable/bottom_bar_shadow"
+        android:layout_above="@+id/navigation_view"
+        />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation_view"
@@ -24,6 +32,5 @@
         app:menu="@menu/navigation"
         />
 
-
-</LinearLayout>
+</RelativeLayout>
 

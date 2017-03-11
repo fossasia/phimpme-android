@@ -168,14 +168,22 @@ public class Camera2 extends android.support.v4.app.Fragment {
 			public void onLocationChanged(Location location) {
 
 				// Camera2.this.gpsLocationReceived(location);
-				if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-					// TODO: Consider calling
-					//    ActivityCompat#requestPermissions
-					// here to request the missing permissions, and then overriding
-					//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-					//                                          int[] grantResults)
-					// to handle the case where the user grants the permission. See the documentation
-					// for ActivityCompat#requestPermissions for more details.
+				try {
+					if (ActivityCompat.checkSelfPermission(getActivity(),
+							Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+							ActivityCompat.checkSelfPermission(getContext(),
+									Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+							) {
+						// TODO: Consider calling
+						//    ActivityCompat#requestPermissions
+						// here to request the missing permissions, and then overriding
+						//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+						//                                          int[] grantResults)
+						// to handle the case where the user grants the permission. See the documentation
+						// for ActivityCompat#requestPermissions for more details.
+						return;
+					}
+				} catch (NullPointerException e) {
 					return;
 				}
 				lat = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLatitude();
@@ -619,13 +627,9 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
 		}
 		Camera.Parameters parameters = camera.getParameters();
 		//parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
-		for (Camera.Size size : parameters.getSupportedPictureSizes()) {
-			if (1600 <= size.width & size.width <= 1920) {
-				parameters.setPreviewSize(size.width, size.height);
-				parameters.setPictureSize(size.width, size.height);
-				break;
-			}
-		}
+		List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
+		Camera.Size cs = sizes.get(0);
+		parameters.setPreviewSize(cs.width, cs.height);
 		requestLayout();
 
 		camera.setParameters(parameters);
