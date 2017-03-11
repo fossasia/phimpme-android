@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/tabUpload"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" 
-    >
-	<RelativeLayout
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/textView1"
@@ -47,14 +47,13 @@
         android:id="@+id/listUploadAccounts"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:layout_margin="10dp" >
-    </ListView>
-    
+        android:layout_margin="10dp"></ListView>
+
     <RelativeLayout
         android:id="@+id/relativeLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp" >
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/textView2"
@@ -96,7 +95,7 @@
             android:text="@string/upload" />
 
     </RelativeLayout>
-    
+
     <View
         android:id="@+id/view2"
         android:layout_width="match_parent"
@@ -105,19 +104,19 @@
         android:layout_marginRight="10dp"
         android:background="@color/blue_dark" />
 
-     <ScrollView
+    <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="fill_parent"
         android:layout_height="0px"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp" >
+        android:layout_marginRight="10dp">
 
         <LinearLayout
             android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
             android:layout_height="319dp"
             android:layout_margin="10dp"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/imgUploadPreviewPhotos"
@@ -163,13 +162,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:id="@+id/relativeLayout4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp" >
+                    android:layout_marginBottom="10dp">
 
                     <TextView
                         android:id="@+id/textView5"
@@ -177,6 +176,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="@string/geolocation" />
+
                     <ImageButton
                         android:id="@+id/btnUploadPhotoPutPos"
                         android:layout_width="wrap_content"
@@ -191,7 +191,7 @@
                     android:id="@+id/linearLayout3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp" >
+                    android:layout_marginBottom="10dp">
 
                     <TextView
                         android:id="@+id/textView6"
@@ -211,7 +211,7 @@
                 <LinearLayout
                     android:id="@+id/linearLayout4"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/textView7"
@@ -249,11 +249,11 @@
 
     </ScrollView>
 
-     <GridView
-         android:id="@+id/photolistview"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:numColumns="3" >
-     </GridView>
+    <GridView
+        android:id="@+id/photolistview"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:numColumns="3" />
 
 </LinearLayout>

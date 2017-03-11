@@ -5,6 +5,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+
+import java.io.File;
+
 public class MapImage extends AppCompatActivity {
 
     private ImageView imageView;
@@ -22,6 +26,8 @@ public class MapImage extends AppCompatActivity {
 
     public void displayImage(String path)
     {
-        imageView.setImageURI(Uri.parse(path));
+        File file = new File(path);
+        Uri imageUri = Uri.fromFile(file);
+        Glide.with(this).load(imageUri).into(imageView);
     }
 }
