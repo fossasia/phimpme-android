@@ -2,89 +2,58 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/tabUpload"
     android:layout_width="match_parent"
-
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
 
     <RelativeLayout
-    android:id="@+id/relativeLayout1"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    >
-    <RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp" >
-
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
             android:text="@string/accounts"
-            android:textSize="@dimen/headingText"
-            android:fontFamily="sans-serif-light"
-            />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/blue_light"
+            android:textStyle="bold" />
 
-
-        <ImageView
+        <ImageButton
             android:id="@+id/btnUploadAccountAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:padding="8dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_marginRight="8dp"
             android:contentDescription="@string/empty"
-            android:src="@drawable/ic_add_box_black_24dp" />
+            android:src="@drawable/add" />
 
     </RelativeLayout>
-    <android.support.v7.widget.CardView
+
+    <View
+        android:id="@+id/view1"
         android:layout_width="match_parent"
-        android:layout_marginBottom="10dp"
+        android:layout_height="2dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/noaccounts"
-            android:gravity="center"
-            android:visibility="gone"
-            android:padding="20dp"
-            android:fontFamily="sans-serif-light"
-            android:text="@string/no_accounts_connected"/>
-
-        <ListView
-            android:id="@+id/listUploadAccounts"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"/>
-
+        android:background="@color/blue_dark" />
 
     <ListView
         android:id="@+id/listUploadAccounts"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:layout_margin="10dp"/>
-      
-    </android.support.v7.widget.CardView>
+        android:layout_margin="10dp"></ListView>
 
     <RelativeLayout
         android:id="@+id/relativeLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp">
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
 
         <TextView
             android:id="@+id/textView2"
@@ -92,53 +61,40 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:text="@string/photos"
-            android:fontFamily="sans-serif-light"
-            android:textSize="@dimen/headingText"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/blue_light"
+            android:textStyle="bold" />
 
-            />
-
-        <ImageView
+        <ImageButton
             android:id="@+id/btnUploadPhotoAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:padding="8dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
             android:contentDescription="@string/empty"
-            android:src="@drawable/ic_add_box_black_24dp" />
+            android:src="@drawable/add" />
 
-        <ImageView
+        <ImageButton
             android:id="@+id/upload_sendDirectly"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/btnUploadPhotoAdd"
+            android:layout_marginRight="19dp"
             android:layout_toLeftOf="@+id/btnUploadPhotoAdd"
             android:contentDescription="@string/empty"
-            android:padding="8dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_share_black_24dp" />
+            android:src="@drawable/bluetooth" />
 
-        <ImageView
+        <Button
             android:id="@+id/btnUploadPhoto"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:padding="8dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@drawable/ic_cloud_upload_black_24dp"
+            android:layout_marginRight="14dp"
             android:layout_toLeftOf="@+id/upload_sendDirectly"
             android:enabled="true"
             android:text="@string/upload" />
 
     </RelativeLayout>
-
 
     <View
         android:id="@+id/view2"
@@ -147,6 +103,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@color/blue_dark" />
+
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="fill_parent"
@@ -299,29 +256,4 @@
         android:layout_height="wrap_content"
         android:numColumns="3" />
 
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/nophotos"
-            android:gravity="center"
-            android:padding="20dp"
-            android:fontFamily="sans-serif-light"
-            android:text="@string/nopicture_selected"/>
-
-        <GridView
-            android:id="@+id/photolistview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#fff"
-            android:numColumns="3"
-            android:layout_margin="5dp"
-            android:gravity="center">
-        </GridView>
-    </android.support.v7.widget.CardView>
 </LinearLayout>
