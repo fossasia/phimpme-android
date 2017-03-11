@@ -3283,10 +3283,7 @@ public class newGallery extends Fragment {
         }
         else {
           PhimpMe.showTabs();	
-		
-          if (PhimpMe.FEEDS_GOOGLE_ADMOB == true){
-            //PhimpMe.ShowAd();
-          }
+
 		
           if (PhimpMe.IdList.size() == 5) {
             PhimpMe.IdList.clear();
