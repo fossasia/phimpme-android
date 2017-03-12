@@ -65,21 +65,29 @@
             android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
         <activity android:name="com.crittercism.NotificationActivity" />
 
-        <service
-            android:name="com.crittercism.service.CrittercismService"
-            android:exported="true"
-            android:process="com.crittercism.service">
-            <intent-filter>
-                <action android:name="com.crittercism.service.CrittercismService" />
-            </intent-filter>
-        </service>
-        <!-- End of Crittercism Support Forum Manifest Code -->
-        <activity
-            android:name=".SplashScreen"
-            android:configChanges="locale"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar">
-            <intent-filter>
+
+     
+        <uses-library android:name="com.google.android.maps"
+            android:required="false"/>
+        		 <service android:name=".CollectUserData" />
+       	 	<!-- Start of Crittercism Support Forum Manifest Code -->
+				<activity android:name="com.crittercism.NewFeedbackSpringboardActivity" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
+				<activity android:name="com.crittercism.NewFeedbackIssueListActivity" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
+				<activity android:name="com.crittercism.NewFeedbackQuestionListActivity" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
+				<activity android:name="com.crittercism.NewFeedbackItemDetailsActivity" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
+				<activity android:name="com.crittercism.NewFeedbackCreateActivity" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
+				<activity android:name="com.crittercism.NotificationActivity"/>	
+				
+				<service android:name="com.crittercism.service.CrittercismService" android:process="com.crittercism.service" android:exported="true">
+    				<intent-filter><action android:name="com.crittercism.service.CrittercismService" /></intent-filter>
+				</service>
+			<!-- End of Crittercism Support Forum Manifest Code -->    
+			<activity android:name=".SplashScreen"                  
+                   android:configChanges="locale"  
+                    android:screenOrientation="portrait"
+                   android:theme="@android:style/Theme.NoTitleBar">
+    		<intent-filter>
+
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
