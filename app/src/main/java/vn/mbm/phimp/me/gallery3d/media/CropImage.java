@@ -68,6 +68,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
+import android.renderscript.ScriptIntrinsicConvolve3x3;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
@@ -135,12 +140,20 @@ public class CropImage extends MonitoredActivity {
     int screen_w;
     ProgressDialog gpsloading;
     ImageButton btnUseMap;
-    EditText txtPhotoTitle;	
-	EditText txtLongtitude;
-	EditText txtLatitude;
-	EditText txtTags;
+    EditText txtPhotoTitle;
+    EditText txtLongtitude;
+    EditText txtLatitude;
+    EditText txtTags;
     Context ctx;
-    
+
+    // Variables to fix: Duplicate images
+    private boolean imageEdited = false;
+    private int turns = 0;
+    private boolean rotated = false;
+    private boolean flipped = false;
+    private int initialWidth = 0;
+    private int initialHeight = 0;
+
     public static int latitude,longitude;
     public static String from="";
     static private final HashMap<Context, MediaScannerConnection> mConnectionMap = new HashMap<Context, MediaScannerConnection>();
@@ -422,6 +435,10 @@ public class CropImage extends MonitoredActivity {
             }
         });
 
+        // Keep track of initial width and height of the image
+        initialWidth = mBitmap.getWidth();
+        initialHeight = mBitmap.getHeight();
+
         findViewById(Res.id.save).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             	if(txtLongtitude.getText().toString().equals("")&& !txtLatitude.getText().toString().equals("")){
@@ -504,93 +521,213 @@ public class CropImage extends MonitoredActivity {
                 
             }
         });
-        findViewById(R.id.btnRotateLeftRight).setOnClickListener(
-				new View.OnClickListener() {
-				    public void onClick(View v) 
-				    {					    	
-				    	try{
-				    		/*doRotate(mImageView, fromDegree, toDegree);
-							fromDegree = (toDegree == 360) ? 0 : toDegree;
-							toDegree += 90;
-							if (toDegree > 360) {
-								toDegree = 90;
-							}*/
-				    		doRotate90(mImageView);
-				    		mImageView.mHighlightViews.clear();
-				    		mBitmap.recycle();
-				    		mBitmap = modifiedBitmap;
-				    		startFaceDetection();
-							
-				    	}catch(OutOfMemoryError o){
-				    		o.printStackTrace();
-				    	}
-				    	
-				    }
-				});
+
+        findViewById(R.id.btnRotateLeftRight).setOnClickListener (
+                new View.OnClickListener() {
+                    public void onClick (View v) {
+                        try {
+                            /*doRotate(mImageView, fromDegree, toDegree);
+                            fromDegree = (toDegree == 360) ? 0 : toDegree;
+                            toDegree += 90;
+                            if (toDegree > 360) {
+                                toDegree = 90;
+                            }*/
+                            // Flags an edit
+                            if (!imageEdited) {
+                                if (turns % 3 == 0 && turns != 0) {
+                                    imageEdited = false;
+                                    turns = 0;
+                                } else {
+                                    imageEdited = true;
+                                }
+                                turns++;
+                            }
+
+                            doRotate90(mImageView);
+                            mImageView.mHighlightViews.clear();
+                            if (mBitmap != null && !mBitmap.isRecycled()) {
+                                mBitmap.recycle();
+                                mBitmap = null;
+                            }
+                            mBitmap = modifiedBitmap;
+                            startFaceDetection();
+                        } catch (OutOfMemoryError o) {
+                            o.printStackTrace();
+                        }
+                    }
+                });
+
         findViewById(R.id.btnRotateTopDown).setOnClickListener(
-				new View.OnClickListener() {
-				    public void onClick(View v) 
-				    {
-				    	try{
-				    		modifiedBitmap = doVerticalFlip(modifiedBitmap);
-							flippedImaged = doVerticalFlip(flippedImaged);
-							mImageView.setImageBitmap(changeBrightness(
-									modifiedBitmap, brightnessValue));
-							mBitmap = modifiedBitmap;
-							
-				    	}catch(OutOfMemoryError o){
-				    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-				    		//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
-				    		modifiedBitmap=flippedImaged=mBitmapResize;
-				    	}
-				    	
-				    }
-				});
+                new View.OnClickListener() {
+                    public void onClick(View v) {
+                        try {
+                            // Flags an edit
+                            flipped = !flipped;
+                            modifiedBitmap = doVerticalFlip(modifiedBitmap);
+                            flippedImaged = doVerticalFlip(flippedImaged);
+                            mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
+                            mBitmap = modifiedBitmap;
+                        } catch (OutOfMemoryError o) {
+                            mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            modifiedBitmap = flippedImaged=mBitmapResize;
+                        }
+                    }
+                });
+
         findViewById(R.id.btnBlackAndWhite).setOnClickListener(
-				new View.OnClickListener() {
-				    public void onClick(View v) 
-				    {
-				    	try{
-
-				    		modifiedBitmap = null;
-							modifiedBitmap = convertToBW(flippedImaged);
-							mImageView.setImageBitmap(changeBrightness(
-									modifiedBitmap, brightnessValue));
-							mBitmap = modifiedBitmap;
-							
-				    	}catch(OutOfMemoryError o){								
-
-				    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-				    		//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
-				    		modifiedBitmap=flippedImaged=mBitmapResize;
-			    		
-
-				    	}
-				    	
-				    }
-				});
+                new View.OnClickListener() {
+                    public void onClick(View v) {
+                        try {
+                            // Flags an edit
+                            imageEdited = true;
+                            modifiedBitmap = null;
+                            modifiedBitmap = convertToBW(flippedImaged);
+                            mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
+                            mBitmap = modifiedBitmap;
+                        } catch (OutOfMemoryError o) {
+                            mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            modifiedBitmap = flippedImaged=mBitmapResize;
+                        }
+                    }
+                });
         findViewById(R.id.btnSaphia).setOnClickListener(
 				new View.OnClickListener() {
-				    public void onClick(View v) 
+				    public void onClick(View v)
 				    {
 				    	try{
-
-				    		modifiedBitmap = null;
+                            modifiedBitmap = null;
 							modifiedBitmap = convertToSepia(flippedImaged);
-							mImageView.setImageBitmap(changeBrightness(
-									modifiedBitmap, brightnessValue));
+							mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
 							mBitmap = modifiedBitmap;
-							
 				    	}catch(OutOfMemoryError o){
-				    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-				    		//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
-							modifiedBitmap=flippedImaged=mBitmapResize;
-
+                            mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            modifiedBitmap = flippedImaged=mBitmapResize;
 				    	}
-				    
 				    }
 				});
-        	findViewById(R.id.btnNagative).setOnClickListener(
+        findViewById(R.id.btnalpha).setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View v)
+                    {
+                        try{
+
+                            modifiedBitmap = null;
+                            modifiedBitmap = convertToAlpha(flippedImaged);
+                            mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
+                            mBitmap = modifiedBitmap;
+
+                        }catch(OutOfMemoryError o){
+                            mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            modifiedBitmap = flippedImaged=mBitmapResize;
+                        }
+                    }
+                });
+        findViewById(R.id.btnpink).setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View v)
+                    {
+                        try{
+                            modifiedBitmap = null;
+                            modifiedBitmap = convertToPink(flippedImaged);
+                            mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
+                            mBitmap = modifiedBitmap;
+
+                        }catch(OutOfMemoryError o){
+                            mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            modifiedBitmap = flippedImaged=mBitmapResize;
+                        }
+                    }
+                });
+        findViewById(R.id.btnpolaroid).setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View v)
+                    {
+                        try{
+
+                            modifiedBitmap = null;
+                            modifiedBitmap = convertToPolaroid(flippedImaged);
+                            mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
+                            mBitmap = modifiedBitmap;
+
+                        }catch(OutOfMemoryError o){
+                            mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            modifiedBitmap = flippedImaged=mBitmapResize;
+                        }
+                    }
+                });
+
+        findViewById(R.id.btnblur).setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View v)
+                    {
+                        try{
+
+                            modifiedBitmap = null;
+                            modifiedBitmap = converttoBlur(flippedImaged,9);
+                            mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
+                            mBitmap = modifiedBitmap;
+
+                        }catch(OutOfMemoryError o){
+                            mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            modifiedBitmap = flippedImaged=mBitmapResize;
+                        }
+                    }
+                });
+        findViewById(R.id.btnsharp).setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View v)
+                    {
+                        try{
+
+                            modifiedBitmap = null;
+                            modifiedBitmap = convertToSharp(flippedImaged);
+                            mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
+                            mBitmap = modifiedBitmap;
+
+                        }catch(OutOfMemoryError o){
+                            mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            modifiedBitmap = flippedImaged=mBitmapResize;
+                        }
+                    }
+                });
+
+        findViewById(R.id.btnedge).setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View v)
+                    {
+                        try{
+
+                            modifiedBitmap = null;
+                            modifiedBitmap = convertToEdge(flippedImaged);
+                            mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
+                            mBitmap = modifiedBitmap;
+
+                        }catch(OutOfMemoryError o){
+                            mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            modifiedBitmap = flippedImaged=mBitmapResize;
+                        }
+                    }
+                });
+        findViewById(R.id.btnfuzz).setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View v)
+                    {
+                        try{
+
+                            modifiedBitmap = null;
+                            modifiedBitmap = convertToFuzz(flippedImaged);
+                            mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
+                            mBitmap = modifiedBitmap;
+
+                        }catch(OutOfMemoryError o){
+                            mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            modifiedBitmap = flippedImaged=mBitmapResize;
+                        }
+                    }
+                });
+
+
+        findViewById(R.id.btnNagative).setOnClickListener(
 				new View.OnClickListener() {
 				    public void onClick(View v) 
 				    {
@@ -598,18 +735,14 @@ public class CropImage extends MonitoredActivity {
 				    		
 				    		modifiedBitmap = null;
 							modifiedBitmap = convertToNegative(flippedImaged);
-							mImageView.setImageBitmap(changeBrightness(
-									modifiedBitmap, brightnessValue));
+							mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
 							mBitmap = modifiedBitmap;
 							
 				    	}catch(OutOfMemoryError o){
 
-				    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-				    		//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
-				    		modifiedBitmap=flippedImaged=mBitmapResize;
-
+                            mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            modifiedBitmap = flippedImaged=mBitmapResize;
 				    	}
-				    	
 				    }
 				});
 		ImageButton btnReflection=(ImageButton)findViewById(R.id.btnSnow);
@@ -621,20 +754,18 @@ public class CropImage extends MonitoredActivity {
 				    		
 				    		modifiedBitmap = null;
 							modifiedBitmap = applySnowEffect(flippedImaged);
-							mImageView.setImageBitmap(changeBrightness(
-									modifiedBitmap, brightnessValue));
+							mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
 							mBitmap = modifiedBitmap;
 							
 				    	}catch(OutOfMemoryError o){
 
-				    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-				    		//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
-				    		modifiedBitmap=flippedImaged=mBitmapResize;
-
+                            mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            modifiedBitmap = flippedImaged=mBitmapResize;
 				    	}
-				    	
 				    }
 				});
+
+
 				
 		ImageButton btnRoundCorner=(ImageButton)findViewById(R.id.btnRoundCorner);
 		btnRoundCorner.setOnClickListener(
@@ -645,18 +776,14 @@ public class CropImage extends MonitoredActivity {
 				    		
 				    		modifiedBitmap = null;
 							modifiedBitmap = roundCorner(flippedImaged,45f);
-							mImageView.setImageBitmap(changeBrightness(
-									modifiedBitmap, brightnessValue));
+							mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
 							mBitmap = modifiedBitmap;
 							
 				    	}catch(OutOfMemoryError o){
 
-				    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-				    		//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
-				    		modifiedBitmap=flippedImaged=mBitmapResize;
-
+                            mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            modifiedBitmap = flippedImaged=mBitmapResize;
 				    	}
-				    	
 				    }
 				});
 		
@@ -683,9 +810,9 @@ public class CropImage extends MonitoredActivity {
 							mImageView.setImageBitmap(mBitmapResize);
 							modifiedBitmap = flippedImaged = mBitmapResize;
 				    	}
-				    	
 				    }
 				});
+
         startFaceDetection();
     }
 
@@ -743,6 +870,11 @@ public class CropImage extends MonitoredActivity {
 
         int width = r.width(); // CR: final == happy panda!
         int height = r.height();
+
+        // Check if the image has been cropped at all
+        if (initialHeight != height | initialWidth != width) {
+            imageEdited = true;
+        }
 
         // If we are circle cropping, we want alpha channel, which is the
         // third param here.
@@ -882,10 +1014,13 @@ public class CropImage extends MonitoredActivity {
 	public static Bitmap doVerticalFlip(Bitmap sampleBitmap) {
 		Matrix matrixVerticalFlip = new Matrix();
 		matrixVerticalFlip.preScale(1.0f, -1.0f);
-		Bitmap des = sampleBitmap.copy(Bitmap.Config.ARGB_8888, true);
-		des = Bitmap.createBitmap(sampleBitmap, 0, 0, sampleBitmap.getWidth(), sampleBitmap.getHeight(),
-				matrixVerticalFlip, true);
-		return des;
+        try {
+            return Bitmap.createBitmap(sampleBitmap, 0, 0, sampleBitmap.getWidth(), sampleBitmap.getHeight(),
+                    matrixVerticalFlip, true);
+        } catch (Exception e) {
+            return sampleBitmap;
+        }
+
 	}
     public static Bitmap convertToBW(Bitmap sampleBitmap) {
 		ColorMatrix matrix = new ColorMatrix();
@@ -899,15 +1034,14 @@ public class CropImage extends MonitoredActivity {
 		return desBitmap;
 	}
 
-	// This method is originally from this site:
-	// http://android-code-space.blogspot.com/2010/08/convert-image-to-negative-in-android.html
+
 	public static Bitmap convertToSepia(Bitmap sampleBitmap) {
 		ColorMatrix sepiaMatrix = new ColorMatrix();
-		float[] sepMat = { 0.3930000066757202f, 0.7689999938011169f,
+		float[] sepMat = {0.3930000066757202f, 0.7689999938011169f,
 				0.1889999955892563f, 0, 0, 0.3490000069141388f,
 				0.6859999895095825f, 0.1679999977350235f, 0, 0,
 				0.2720000147819519f, 0.5339999794960022f, 0.1309999972581863f,
-				0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1 };
+				0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1};
 		sepiaMatrix.set(sepMat);
 		final ColorMatrixColorFilter colorFilter = new ColorMatrixColorFilter(
 				sepiaMatrix);
@@ -918,7 +1052,158 @@ public class CropImage extends MonitoredActivity {
 		myCanvas.drawBitmap(rBitmap, 0, 0, paint);
 		return rBitmap;
 	}
-	
+
+    public static Bitmap convertToAlpha(Bitmap sampleBitmap) {
+        ColorMatrix sepiaMatrix = new ColorMatrix();
+        float[] sepMat = { 0,    0,    0, 0,   0,
+                0.3f,    0,    0, 0,  50,
+                0,    0,    0, 0, 255,
+                0.2f, 0.4f, 0.4f, 0, -30 };
+        sepiaMatrix.set(sepMat);
+        final ColorMatrixColorFilter colorFilter = new ColorMatrixColorFilter(
+                sepiaMatrix);
+        Bitmap rBitmap = sampleBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        Paint paint = new Paint();
+        paint.setColorFilter(colorFilter);
+        Canvas myCanvas = new Canvas(rBitmap);
+        myCanvas.drawBitmap(rBitmap, 0, 0, paint);
+        return rBitmap;
+    }
+
+    public static Bitmap convertToPink(Bitmap sampleBitmap) {
+        ColorMatrix sepiaMatrix = new ColorMatrix();
+        float[] sepMat = { 0,    0,    0, 0, 255,
+                0,    0,    0, 0,   0,
+                0.2f,    0,    0, 0,  50,
+                0.2f, 0.2f, 0.2f, 0, -20 };
+        sepiaMatrix.set(sepMat);
+        final ColorMatrixColorFilter colorFilter = new ColorMatrixColorFilter(
+                sepiaMatrix);
+        Bitmap rBitmap = sampleBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        Paint paint = new Paint();
+        paint.setColorFilter(colorFilter);
+        Canvas myCanvas = new Canvas(rBitmap);
+        myCanvas.drawBitmap(rBitmap, 0, 0, paint);
+        return rBitmap;
+    }
+
+    public static Bitmap convertToPolaroid(Bitmap sampleBitmap) {
+        ColorMatrix sepiaMatrix = new ColorMatrix();
+        float[] sepMat = { 1.438f,-0.062f,-0.062f,0,0,
+                0.122f,1.378f,-0.122f,0,0,
+                0.016f,-0.016f,1.483f,0,0,
+				0 , 0 ,0 , 1 , 0 ,
+                0.03f,0.05f,-0.02f,0,1 };
+        sepiaMatrix.set(sepMat);
+        final ColorMatrixColorFilter colorFilter = new ColorMatrixColorFilter(
+                sepiaMatrix);
+        Bitmap rBitmap = sampleBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        Paint paint = new Paint();
+        paint.setColorFilter(colorFilter);
+        Canvas myCanvas = new Canvas(rBitmap);
+        myCanvas.drawBitmap(rBitmap, 0, 0, paint);
+        return rBitmap;
+    }
+
+    private Bitmap converttoBlur(Bitmap original, float radius) {
+
+        Bitmap bitmap = Bitmap.createBitmap(
+                original.getWidth(), original.getHeight(),
+                Bitmap.Config.ARGB_8888);
+
+        RenderScript rs = RenderScript.create(this);
+
+        Allocation allocIn = Allocation.createFromBitmap(rs, original);
+        Allocation allocOut = Allocation.createFromBitmap(rs, bitmap);
+
+        ScriptIntrinsicBlur blur = ScriptIntrinsicBlur.create(
+                rs, Element.U8_4(rs));
+        blur.setInput(allocIn);
+        blur.setRadius(radius);
+        blur.forEach(allocOut);
+
+        allocOut.copyTo(bitmap);
+        rs.destroy();
+        return bitmap;
+    }
+
+    private Bitmap convertToSharp(Bitmap original) {
+        Bitmap bitmap = Bitmap.createBitmap(
+                original.getWidth(), original.getHeight(),
+                Bitmap.Config.ARGB_8888);
+
+        RenderScript rs = RenderScript.create(this);
+
+        Allocation allocIn = Allocation.createFromBitmap(rs, original);
+        Allocation allocOut = Allocation.createFromBitmap(rs, bitmap);
+
+        float[] coefficients = {  0, -1,  0,
+                                 -1 , 5, -1,
+                                  0, -1,  0  };
+
+        ScriptIntrinsicConvolve3x3 convolution
+                = ScriptIntrinsicConvolve3x3.create(rs, Element.U8_4(rs));
+        convolution.setInput(allocIn);
+        convolution.setCoefficients(coefficients);
+        convolution.forEach(allocOut);
+
+        allocOut.copyTo(bitmap);         // {  0, -1,  0,
+        rs.destroy();                    //   -1 , 5, -1,
+        return bitmap;                   //    0, -1,  0  }
+    }
+
+    private Bitmap convertToEdge(Bitmap original ) {
+        Bitmap bitmap = Bitmap.createBitmap(
+                original.getWidth(), original.getHeight(),
+                Bitmap.Config.ARGB_8888);
+
+        RenderScript rs = RenderScript.create(this);
+
+        Allocation allocIn = Allocation.createFromBitmap(rs, original);
+        Allocation allocOut = Allocation.createFromBitmap(rs, bitmap);
+
+        float[] coefficients=  { -1, -1, -1,
+                                       -1 , 8, -1,
+                                     -1, -1, -1  };
+
+        ScriptIntrinsicConvolve3x3 convolution
+                = ScriptIntrinsicConvolve3x3.create(rs, Element.U8_4(rs));
+        convolution.setInput(allocIn);
+        convolution.setCoefficients(coefficients);
+        convolution.forEach(allocOut);
+
+        allocOut.copyTo(bitmap);         // { -1, -1, -1,
+        rs.destroy();                    //   -1 , 8, -1,
+        return bitmap;                   //   -1, -1, -1  }
+    }
+
+    private Bitmap convertToFuzz(Bitmap original) {
+        Bitmap bitmap = Bitmap.createBitmap(
+                original.getWidth(), original.getHeight(),
+                Bitmap.Config.ARGB_8888);
+
+        RenderScript rs = RenderScript.create(this);
+
+        Allocation allocIn = Allocation.createFromBitmap(rs, original);
+        Allocation allocOut = Allocation.createFromBitmap(rs, bitmap);
+
+        float[] coefficients =   {  0,  20/3,  0,
+                                     20/3, -59/3, 20/3,
+                                    1/3,  13/3,  0  };
+
+        ScriptIntrinsicConvolve3x3 convolution
+                = ScriptIntrinsicConvolve3x3.create(rs, Element.U8_4(rs));
+        convolution.setInput(allocIn);
+        convolution.setCoefficients(coefficients);
+        convolution.forEach(allocOut);
+
+        allocOut.copyTo(bitmap);         // {  0,  20,  0,
+        rs.destroy();                    //   20, -59, 20,
+        return bitmap;                   //    1,  13,  0  } / 7
+    }
+
+
+
 	public static Bitmap applySnowEffect(Bitmap source) {
 		// get image size
 		int width = source.getWidth();
@@ -1218,9 +1503,18 @@ public class CropImage extends MonitoredActivity {
         	ExifInterface exif;
 			try {
 				Log.e("Exif data","Run");
-				exif = new ExifInterface(newpath);
-				createExifData(exif,Double.parseDouble(txtLatitude.getText().toString()) , Double.parseDouble(txtLongtitude.getText().toString()));
-		        exif.saveAttributes();
+				// If the image has been edited, it will be saved along with the original image
+				if (imageEdited | flipped) {
+					exif = new ExifInterface(newpath);
+					createExifData(exif, Double.parseDouble(txtLatitude.getText().toString()), Double.parseDouble(txtLongtitude.getText().toString()));
+					exif.saveAttributes();
+				} else {
+					// Else, the temporary image will be deleted!
+					File file = new File(newpath);
+					if(file.exists()) {
+                        file.delete();
+                    }
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

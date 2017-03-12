@@ -25,7 +25,8 @@
                 android:layout_gravity="center_horizontal|center"
                 android:layout_marginBottom="10dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/camera_switch_r" />
+                android:rotation="270"
+                android:src="@drawable/camera_switch" />
 
             <ImageButton
                 android:id="@+id/flash"
@@ -35,7 +36,8 @@
                 android:background="@android:color/transparent"
                 android:layout_gravity="center_horizontal|center"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/flash_auto_r" />
+                android:rotation="270"
+                android:src="@drawable/flash_auto" />
 
         </LinearLayout>
 
@@ -48,7 +50,8 @@
             android:layout_centerInParent="true"
             android:background="@drawable/roundedbutton"
             android:layout_marginRight="20dp"
-            android:src="@drawable/takepic_r" />
+            android:rotation="270"
+            android:src="@drawable/takepic" />
 
         <FrameLayout
             android:id="@+id/preview"

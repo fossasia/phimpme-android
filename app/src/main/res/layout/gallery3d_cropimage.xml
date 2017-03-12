@@ -23,41 +23,108 @@
         android:layout_height="fill_parent"
         android:orientation="horizontal" >
 
-        <LinearLayout
+        <HorizontalScrollView
             android:id="@+id/linear"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center" >
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <LinearLayout
 
-            <ImageButton
-                android:id="@+id/btnOriginal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"              
-                android:contentDescription="@string/empty"
-                android:src="@drawable/camera_edit_filter_normal_default" />
-
-            <ImageButton
-                android:id="@+id/btnBlackAndWhite"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/empty"
-                android:src="@drawable/camera_edit_filter_inkwell_default" />
+                android:gravity="center" >
 
-            <ImageButton
-                android:id="@+id/btnNagative"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/empty"
-                android:src="@drawable/nagative" />
+                <ImageButton
+                    android:id="@+id/btnOriginal"
+                    android:layout_width="100dp"
+                    android:scaleType="centerCrop"
+                    android:layout_height="100dp"
+                    android:background="@null"
+                    android:src="@drawable/original_filter" />
 
-            <ImageButton
-                android:id="@+id/btnSaphia"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/empty"
-                android:src="@drawable/saphia" />
+                <ImageButton
+                    android:id="@+id/btnBlackAndWhite"
+                    android:layout_width="100dp"
+                    android:scaleType="centerCrop"
+                    android:layout_height="100dp"
+                    android:background="@null"
+                    android:src="@drawable/inkwell_filter"/>
 
-        </LinearLayout>
+                <ImageButton
+                    android:id="@+id/btnNagative"
+                    android:layout_width="100dp"
+                    android:scaleType="centerCrop"
+                    android:layout_height="100dp"
+                    android:background="@null"
+                    android:src="@drawable/negative_filter" />
+
+                <ImageButton
+                    android:id="@+id/btnSaphia"
+                    android:layout_width="100dp"
+                    android:scaleType="centerCrop"
+                    android:layout_height="100dp"
+                    android:background="@null"
+                    android:src="@drawable/sepia_filter" />
+
+                <ImageButton
+                    android:id="@+id/btnalpha"
+                    android:layout_width="100dp"
+                    android:scaleType="centerCrop"
+                    android:layout_height="100dp"
+                    android:background="@null"
+                    android:src="@drawable/blue_alpha_filter" />
+
+                <ImageButton
+                    android:id="@+id/btnpink"
+                    android:layout_width="100dp"
+                    android:scaleType="centerCrop"
+                    android:layout_height="100dp"
+                    android:background="@null"
+                    android:src="@drawable/pink_alpha_filter" />
+
+                <ImageButton
+                    android:id="@+id/btnpolaroid"
+                    android:layout_width="100dp"
+                    android:scaleType="centerCrop"
+                    android:layout_height="100dp"
+                    android:background="@null"
+                    android:src="@drawable/polaroid_filter" />
+
+                <ImageButton
+                    android:id="@+id/btnblur"
+                    android:layout_width="100dp"
+                    android:scaleType="centerCrop"
+                    android:layout_height="100dp"
+                    android:background="@null"
+                    android:src="@drawable/blur_filter"/>
+
+                <ImageButton
+                    android:id="@+id/btnsharp"
+                    android:layout_width="100dp"
+                    android:scaleType="centerCrop"
+                    android:layout_height="100dp"
+                    android:background="@null"
+                    android:src="@drawable/sharp_filter"/>
+
+                <ImageButton
+                    android:id="@+id/btnedge"
+                    android:layout_width="100dp"
+                    android:scaleType="centerCrop"
+                    android:layout_height="100dp"
+                    android:background="@null"
+                    android:src="@drawable/edge_filter" />
+
+                <ImageButton
+                    android:id="@+id/btnfuzz"
+                    android:layout_width="100dp"
+                    android:scaleType="centerCrop"
+                    android:layout_height="100dp"
+                    android:background="@null"
+                    android:src="@drawable/fuzz_filter"/>
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+
 
         <view
             android:id="@+id/image"

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-   	<string name="crash_report_text">"Oops ! I crashed, but a report has been sent to my developer to help fix the issue !"</string>
+   	<string name="crash_report_text">"Oops! I crashed, but a report has been sent to my developer to help fix the issue!"</string>
     
     <string name="admob_id">a14ff82a6fc607c</string>
     <string name="currency">$</string>
@@ -21,7 +21,7 @@
     <string name="exit_message">Do you want to exit?</string>
     <string name="cancel">Cancel</string>
     <string name="yes">Yes</string>
-    <string name="gallery_max_display_photos">Max photos display on Gallery page</string>
+    <string name="gallery_max_display_photos">Maximum photos displayed on Gallery page</string>
     <string name="photos">Photos</string>
     <string name="language_settings">Language Settings</string>
     <string name="lang_en">English</string>
@@ -29,7 +29,7 @@
     <string name="lang_vi">Vietnamese</string>
     <string name="empty"></string>
     <string name="description">Description</string>
-    <string name="upload_infor_choose_account">Please select at least one account for upload photo.</string>
+    <string name="upload_infor_choose_account">Please select at least one account to upload photo.</string>
     <string name="accept">Accept</string>
     <string name="geolocation">Geolocation</string>
     <string name="longitude">Longitude</string>
@@ -37,7 +37,7 @@
     <string name="uploading">Uploading</string>
     <string name="error_gps_fail">Getting GPS information fail</string>
     <string name="infor_turn_on_gps">Please turn on your GPS</string>
-    <string name="infor_loading_photo_in_map">Loading photo geolocation data into maps. Please wait for a while.</string>
+    <string name="infor_loading_photo_in_map">Loading photo\'s geolocation data into maps. Please wait for a while.</string>
     <string name="infor_map_have_num_photos"> photos has been displayed on Maps.</string>
     <string name="infor_dialog_add_account_drupal_intro">If you want to add this features on your Drupal. Please see introduction here.</string>
     <string name="infor_dialog_add_account_wordpress_intro">If you want to add this features on your Wordpress. Please see introduction here.</string>   
@@ -49,10 +49,10 @@
     <string name="services_link">Services link</string>
     <string name="infor_choose_feeds_services">Choose feeds services</string>
     <string name="infor_feeds_services">Feeds Services</string>
-    <string name="error_feeds_services_choose_feed">Please select at least one feed service for get photos.</string>
+    <string name="error_feeds_services_choose_feed">Please select at least one feed service to get photos.</string>
     <string name="error_upload_process_still_running">The Upload process is still running</string>
-    <string name="error_upload_no_accounts">Please add an accounts for using to upload photos</string>
-    <string name="error_upload_no_photo">Please add an photos for upload</string>
+    <string name="error_upload_no_accounts">Please add an account to upload photos</string>
+    <string name="error_upload_no_photo">Please add a photo to upload</string>
     <string name="infor_upload_loading_current_position">Loading current position&#8230;&#8230;&#8230;</string>
     <string name="error_upload_map_no_position">Please drop pin on the map to get position.</string>
     <string name="ask_delete_account">Are you sure you want to delete this account?</string>
@@ -70,7 +70,7 @@
     <string name="personal">Personal Photos</string>
     <string name="publicphoto">Public</string>
     <string name="personalphoto">Personal</string>
-    <string name="photos_loading">Loading photos from memory ! Please wait !</string>
+    <string name="photos_loading">Loading photos from memory! Please wait!</string>
     <string name="rotate">Rotate</string>
     <string name="infor_choose_public_feeds_services">Choose Public Feeds Services</string>
     <string name="infor_choose_pesonal_feeds_services">Choose Personal Feeds Services</string>
@@ -78,7 +78,7 @@
     <string name="localphotos">Local Photos</string>
     <string name="choose_folder">Choose folder</string>
     <string name="deletephoto">Delete downloaded photos</string>
-    <string name="ask_delete_photo">Do you want to delete photos downloaded! It will delete all photo of PhimpMe application</string>
+    <string name="ask_delete_photo">Do you want to delete photos downloaded? It will delete all photo of PhimpMe application</string>
 	<string name="ok">OK</string>
 	<string name="feed_url">Please enter Rss Feed URL</string>
 	<string name="myfeed">My Feed Photos</string>
@@ -89,14 +89,14 @@
 	<string name="clearbtn">Clear Cache</string>
 	<string name="brightness">Brightness</string>
 	<string name="support_forum">Support Forum</string>
-	 <string name="plz">Please select photo</string>
+	 <string name="plz">Please select a photo</string>
     <string name="select_file">Select file</string>
     <string name="sent_file">Send file</string>
     <string name="txt_scan">Scan devices</string>
     <string name="txt_listdevice"> Bluetooth devices</string>
     <string name="txt_scanning">Scanning </string>
-    <string name="search_devices">Select device to sent photo</string>
-    <string name="sentphoto">Select device to sent photo</string>
+    <string name="search_devices">Select device to send photo</string>
+    <string name="sentphoto">Select device to send photo</string>
     <string name="bluetoothshare">Bluetooth Share Photo</string>
     <string name="photosent"></string>
     <string name="no_image">No Image</string>
@@ -106,8 +106,8 @@
     <string name="donate">Donate</string>
     <string name="phimpmegallery">Phimpme Gallery</string>
     <string name="wait">Please wait...</string>
-    <string name="carefully">CareFully !</string>
-    <string name="no_photo_delete">"Don't have photo to delete !"</string>
+    <string name="carefully">CareFully!</string>
+    <string name="no_photo_delete">"There is no photo to delete!"</string>
 	 
     <!--  wordpress -->
     
@@ -164,7 +164,7 @@
   <string name="publish">Publish? </string>
   <string name="success">Success</string>
   <string name="decline">Decline</string>
-  <string name="hint_menu_to_add_acc">Select \'Menu\' to add another account or toconfigure comment notifications.</string>
+  <string name="hint_menu_to_add_acc">Select \'Menu\' to add another account or to configure comment notifications.</string>
   <string name="add_account">Add Account</string>
   <string name="notification_settings">Settings</string>
   <string name="notification_sound">Play notification sound</string>
@@ -172,7 +172,7 @@
   <string name="notification_blink">Blink notification light</string>
   <string name="sure_to_remove_account">Are you sure you want to remove this blog?</string>
   <string name="no">No</string>
-  <string name="account_removed_successfully">Blog removed successfully</string>
+  <string name="account_removed_successfully">Blog removed successfully.</string>
   <string name="error">Error</string>
   <string name="could_not_remove_account">Could not remove blog.</string>
   <string name="edit_page">Edit Page</string>
@@ -199,7 +199,7 @@
   <string name="empty_fields">No Content Found</string>
   <string name="title_post_required">Please enter some post content or attach a media item.</string>
   <string name="post_edited">Post edited</string>
-  <string name="post_edited_image_error">Post edited successfully, but an error was encountered when uploading media</string>
+  <string name="post_edited_image_error">Post edited successfully, but an error was encountered while uploading media</string>
   <string name="post_edited_successfully">Post edited successfully</string>
   <string name="attempting_edit_post">Attempting to edit Post</string>
   <string name="cancel_edit">Cancel Edit</string>
@@ -220,8 +220,8 @@
   <string name="no_camera_found">Sorry, no camera was found on your device.</string>
   <string name="more_tag">More</string>
   <string name="wpcom_login_required">A WordPress.com account is required to use this feature</string>
-  <string name="blog_not_found">Sorry, an error occurred when attempting to access this blog.</string>
-  <string name="post_not_found">Sorry, an error occurred when attempting to load the post. Please refresh your posts and try again.</string>
+  <string name="blog_not_found">Sorry, an error occurred while attempting to access this blog.</string>
+  <string name="post_not_found">Sorry, an error occurred while attempting to load the post. Please refresh your posts and try again.</string>
 
   <!-- tab titles -->
   <string name="tab_comments">Comments</string>
@@ -241,7 +241,7 @@
 
   <string name="content">Tap to add text and media</string>
   <string name="page_edited">Page Edited</string>
-  <string name="page_edited_image_error">Page edited successfully, but an error was encountered when uploading media</string>
+  <string name="page_edited_image_error">Page edited successfully, but an error occurred while uploading media</string>
   <string name="page_edited_successfully">Page edited successfully</string>
   <string name="attempting_edit_page">Attempting to edit Page</string>
   <string name="sure_to_cancel_edit_page">Are you sure you want to cancel editing this page?</string>
@@ -262,7 +262,7 @@
   <string name="post_added">Post Added</string>
   <string name="post_id">Post</string>
   <string name="uploaded_successfully">Uploaded Successfully</string>
-  <string name="uploaded_successfully_image_error">added successfully, but an error was encountered when uploading media</string>
+  <string name="uploaded_successfully_image_error">Added successfully, but an error occurred while uploading media</string>
   <string name="upload_failed">Upload Failed</string>
   <string name="permalink_not_found">The permalink was not found.</string>
   <string name="basic_html">Showing basic HTML preview until post status is set to published.</string>
@@ -274,8 +274,8 @@
   <string name="width">Width</string>
   <string name="featured">Use as featured image</string>
   <string name="featured_in_post">Include image in post content</string>
-  <string name="out_of_memory">Device out of memory.</string>
-  <string name="file_not_found">Could not find the media file for upload. Was it deleted or moved?</string>
+  <string name="out_of_memory">Device is out of memory.</string>
+  <string name="file_not_found">Could not find the media file to upload. Was it deleted or moved?</string>
 
   <!-- page view -->
   <string name="page_id">Page</string>
@@ -335,7 +335,7 @@
   <string name="edit_draft">Edit Draft</string>
 
   <string name="delete_draft">Delete Draft</string>
-  <string name="delete_sure">Are you sure you want to delete the draft</string>
+  <string name="delete_sure">Are you sure you want to delete the draft?</string>
 
   <!-- page actions -->
   <string name="page_actions">Page Actions</string>
@@ -352,7 +352,7 @@
   <string name="post_attempt_upload">Attempting to upload post</string>
   <string name="delete_post">Delete Post</string>
   <string name="post_deleted">Post Deleted Successfully</string>
-  <string name="delete_sure_post">Are you sure you want to delete the post</string>
+  <string name="delete_sure_post">Are you sure you want to delete the post?</string>
   <string name="attempt_delete_post">Attempting to delete post</string>
   <string name="html">HTML Editor Activated</string>
   <string name="share_url">Share Post</string>
@@ -477,7 +477,7 @@
   <string name="stats_login">Stats Login</string>
   <string name="no_data_found">No stats data found. Please try again.</string>
   <string name="invalid_login">Incorrect Login</string>
-  <string name="invalid_jp_login">Incorrect login, or blog is not linked to this WordPress.com account.</string>
+  <string name="invalid_jp_login">Incorrect login, or blog is not linked to this WordPress account.</string>
   <string name="site_not_found">or site not found.</string>
   <string name="stats_service_error">Sorry. There was an error trying to connect to your stats. Please try again.</string>
 
@@ -488,7 +488,7 @@
 
   <!-- invalid_url -->
   <string name="invalid_url">Invalid blog URL</string>
-  <string name="invalid_url_message">Please check that the blog URL entered is valid.
+  <string name="invalid_url_message">Please check if the blog URL entered is valid.
   </string>
 
   <!-- post status -->
@@ -591,13 +591,13 @@
   <string name="column_2">Column 2</string>
   
   <!--  Error Messages -->
-  <string name="error_delete_post">Sorry, an error occured while attempting to delete the %s.</string>
+  <string name="error_delete_post">Sorry, an error occurred while attempting to delete the %s.</string>
   <string name="error_refresh">Sorry, %s could not be refreshed at this time. Please try again later.</string>
-  <string name="error_generic">Sorry, an error occured. Please try again later.</string>
-  <string name="error_moderate_comment">Sorry, an error occured while attempting to moderate. Please try again later.</string>
-  <string name="error_edit_comment">Sorry, an error occured while editing the comment. Please try again later.</string>
-  <string name="error_stats">Sorry, an error occured while loading Stats. Please try again later.</string>
-  <string name="error_upload">Sorry, an error occured while uploading the %s. Please try again later.</string>
+  <string name="error_generic">Sorry, an error occurred. Please try again later.</string>
+  <string name="error_moderate_comment">Sorry, an error occurred while attempting to moderate. Please try again later.</string>
+  <string name="error_edit_comment">Sorry, an error occurred while editing the comment. Please try again later.</string>
+  <string name="error_stats">Sorry, an error occurred while loading Stats. Please try again later.</string>
+  <string name="error_upload">Sorry, an error occurred while uploading the %s. Please try again later.</string>
   <string name="error_media_upload">An error occurred while uploading media.</string>
   
    <!-- wordpress -->
@@ -605,10 +605,13 @@
   <string name="default_wordpress_url">192.168.1.114/wordpress</string>
   <string name="joomla_note">If you want use this feature. Please install component joooid in your joomla host !</string>
   <string name="action">Action</string>
-  <string name="ask_delete">Are you sure you want to delete this file ?</string>
-  <string name="no_accounts_connected">No Accounts Connected :(</string>
+  <string name="ask_delete">Are you sure you want to delete this file?</string>
+  <string name="no_accounts_connected">No Accounts Connected:(</string>
   <string name="max_file_size">Maximum File Size</string>
   <string name="delete_all_photos">Delete all Photos</string>
   <string name="hiede_show_photos">Hide or show local photos</string>
   <string name="show_local_photos">Show Local Photos</string>
+  <string name="dialog_upload">This photo has been added to list upload photo!</string>
+  <string name="nopicture_selected">No Picture Selected :(</string>
 </resources>
+
