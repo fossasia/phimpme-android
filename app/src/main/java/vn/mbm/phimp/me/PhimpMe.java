@@ -32,7 +32,6 @@ import android.widget.LinearLayout;
 import android.widget.TabHost.TabSpec;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdView;
 import com.paypal.android.MEP.PayPal;
 import com.vistrav.ask.Ask;
 
@@ -180,7 +179,6 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     public static BottomNavigationView mBottomNav;
     public static boolean check_donwload = false;
     public static boolean check_donwload_local_gallery = false;
-    public static AdView ad;
     public static int flashStatus = 2;
 
     //Gallery
@@ -237,42 +235,6 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
         Display display = getWindowManager().getDefaultDisplay();
         width = display.getWidth() / 3;
         height = width;
-        /*
-         * Google admod
-         */
-        //ad = (AdView) findViewById(R.id.adView);
-        SharedPreferences setting = getSharedPreferences(PREFS_NAME, 0);
-        FEEDS_GOOGLE_ADMOB = setting.getBoolean("Google Admob", true);
-        File file = getBaseContext().getFileStreamPath("google_admob.txt");
-        if (file.exists()) {
-            try {
-                FileInputStream Rfile = openFileInput("google_admob.txt");
-
-                InputStreamReader einputreader = new InputStreamReader(Rfile);
-                BufferedReader ebuffreader = new BufferedReader(einputreader);
-                Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
-                PhimpMe.FEEDS_GOOGLE_ADMOB = tmp;
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        Log.i("PhimpMe", "feed_google_admob : " + FEEDS_GOOGLE_ADMOB);
-//        AdView adView = (AdView) this.findViewById(R.id.adView);
-//
-//        AdRequest request = new AdRequest.Builder()       // All emulators
-//                .addTestDevice("AC98C820A50B4AD8A2106EDE96FB87D4")  // An example device ID
-//                .build();
-//        adView.loadAd(request);
-//        if (FEEDS_GOOGLE_ADMOB == false) {
-//            adView.setVisibility(ViewGroup.GONE);
-//            //adView.destroy();
-//        }
-
-    	        /*
-    	         * user config
-    	         */
 
         File file0 = getBaseContext().getFileStreamPath("local_gallery.txt");
         if (file0.exists()) {
@@ -744,13 +706,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
 //        mBottomNav.setVisibility(ViewGroup.GONE);
     }
 
-//    public static void ShowAd() {
-//        ad.setVisibility(ViewGroup.VISIBLE);
-//    }
 
-    public static void hideAd() {
-        ad.setVisibility(ViewGroup.GONE);
-    }
 
     @Override
     protected void onPause() {

@@ -10,6 +10,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 25
         multiDexEnabled true
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
 
     buildTypes {
@@ -74,8 +75,10 @@ dependencies {
     compile 'com.vistrav:ask:2.4'
     compile 'com.android.support:support-v4:25.0.1'
     compile 'com.google.android.gms:play-services-maps:9.0.2'
-    compile 'com.google.android.gms:play-services-ads:9.0.2'
     compile 'com.facebook.android:facebook-android-sdk:4.+'
     compile 'com.android.support:design:25.0.1'
     compile 'com.android.support:appcompat-v7:25.0.1'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
 }
