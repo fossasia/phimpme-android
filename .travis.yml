@@ -49,7 +49,14 @@ licenses:
     - 'android-sdk-license-.+'
     - 'google-gdk-license-.+'
 
-script: 
+before_script:
+  - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
+  - emulator -avd test -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
+
+script:
+ - ./gradlew connectedAndroidTest
  - ./gradlew build
 
 after_success:
