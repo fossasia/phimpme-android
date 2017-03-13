@@ -1179,8 +1179,6 @@ public class CropImage extends MonitoredActivity {
         return bitmap;                   //    1,  13,  0  } / 7
     }
 
-
-
     public static Bitmap applySnowEffect(Bitmap source) {
         // get image size
         int width = source.getWidth();
