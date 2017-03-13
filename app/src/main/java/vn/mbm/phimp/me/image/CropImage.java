@@ -495,7 +495,6 @@ public class CropImage extends MonitoredActivity
 		canvas.drawBitmap(desBitmap, 0, 0, p);
 		return desBitmap;
 	}
-
 	// This method is originally from this site:
 	// http://android-code-space.blogspot.com/2010/08/convert-image-to-negative-in-android.html
 	public static Bitmap convertToSepia(Bitmap sampleBitmap) {
