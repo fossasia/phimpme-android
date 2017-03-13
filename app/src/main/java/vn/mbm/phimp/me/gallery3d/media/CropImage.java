@@ -93,20 +93,20 @@ import android.widget.Toast;
 public class CropImage extends MonitoredActivity {
     private static final String TAG = "CropImage";
 
-	public static final int CROP_MSG = 10;	
-    public static final int CROP_MSG_INTERNAL = 100;    
-    
-    private App mApp = null;         
-	//private static float toDegree = 90;
-	//private static float fromDegree = 0;
+    public static final int CROP_MSG = 10;
+    public static final int CROP_MSG_INTERNAL = 100;
+
+    private App mApp = null;
+    //private static float toDegree = 90;
+    //private static float fromDegree = 0;
     // These are various options can be specified in the intent.
     private Bitmap.CompressFormat mOutputFormat = Bitmap.CompressFormat.JPEG; // only
-                                                                              // used
-                                                                              // with
-                                                                              // mSaveUri
+    // used
+    // with
+    // mSaveUri
     private Uri mSaveUri = null;
     private int mAspectX, mAspectY; // CR: two definitions per line == sad
-                                    // panda.
+    // panda.
     private boolean mDoFaceDetection = true;
     private boolean mCircleCrop = false;
     private final Handler mHandler = new Handler();
@@ -157,78 +157,78 @@ public class CropImage extends MonitoredActivity {
     public static int latitude,longitude;
     public static String from="";
     static private final HashMap<Context, MediaScannerConnection> mConnectionMap = new HashMap<Context, MediaScannerConnection>();
-    
+
     @SuppressWarnings("static-access")
-	static public void launchCropperOrFinish(final Context context, final MediaItem item) {
-    	final Bundle myExtras = ((Activity) context).getIntent().getExtras();
-    	String cropValue = myExtras != null ? myExtras.getString("crop") : null;
-    	final String contentUri = item.mContentUri;
-    	if (contentUri == null)
-    		return;
-    	if (cropValue != null) {
-    		Bundle newExtras = new Bundle();
-    		if (cropValue.equals("circle")) {
-    			newExtras.putString("circleCrop", "true");
-    		}
-    		Intent cropIntent = new Intent();
-    		cropIntent.setData(Uri.parse(contentUri));
-    		cropIntent.setClass(context, CropImage.class);
-    		cropIntent.putExtras(newExtras);
-    		// Pass through any extras that were passed in.
-    		cropIntent.putExtras(myExtras);
-    		((Activity) context).startActivityForResult(cropIntent, CropImage.CROP_MSG);
-    	} else {
-    		if (contentUri.startsWith("http://")) {
-    			// This is a http uri, we must save it locally first and
-    			// generate a content uri from it.
-    			final ProgressDialog dialog = ProgressDialog.show(context, context.getResources().getString(Res.string.initializing),
-    					context.getResources().getString(Res.string.running_face_detection), true, false);
-    			if (contentUri != null) {
-    				MediaScannerConnection.MediaScannerConnectionClient client = new MediaScannerConnection.MediaScannerConnectionClient() {
-    					public void onMediaScannerConnected() {
-    						MediaScannerConnection connection = mConnectionMap.get(context);    						
-    						if (connection != null) {
-    							try {
-    								final String path = UriTexture.writeHttpDataInDirectory(context, contentUri,
-    										LocalDataSource.DOWNLOAD_BUCKET_NAME);
-    								if (path != null) {
-    									connection.scanFile(path, item.mMimeType);
-    								} else {
-    									shutdown("");
-    								}
-    							} catch (Exception e) {
-    								shutdown("");
-    							}
-    						}
-    					}
+    static public void launchCropperOrFinish(final Context context, final MediaItem item) {
+        final Bundle myExtras = ((Activity) context).getIntent().getExtras();
+        String cropValue = myExtras != null ? myExtras.getString("crop") : null;
+        final String contentUri = item.mContentUri;
+        if (contentUri == null)
+            return;
+        if (cropValue != null) {
+            Bundle newExtras = new Bundle();
+            if (cropValue.equals("circle")) {
+                newExtras.putString("circleCrop", "true");
+            }
+            Intent cropIntent = new Intent();
+            cropIntent.setData(Uri.parse(contentUri));
+            cropIntent.setClass(context, CropImage.class);
+            cropIntent.putExtras(newExtras);
+            // Pass through any extras that were passed in.
+            cropIntent.putExtras(myExtras);
+            ((Activity) context).startActivityForResult(cropIntent, CropImage.CROP_MSG);
+        } else {
+            if (contentUri.startsWith("http://")) {
+                // This is a http uri, we must save it locally first and
+                // generate a content uri from it.
+                final ProgressDialog dialog = ProgressDialog.show(context, context.getResources().getString(Res.string.initializing),
+                        context.getResources().getString(Res.string.running_face_detection), true, false);
+                if (contentUri != null) {
+                    MediaScannerConnection.MediaScannerConnectionClient client = new MediaScannerConnection.MediaScannerConnectionClient() {
+                        public void onMediaScannerConnected() {
+                            MediaScannerConnection connection = mConnectionMap.get(context);
+                            if (connection != null) {
+                                try {
+                                    final String path = UriTexture.writeHttpDataInDirectory(context, contentUri,
+                                            LocalDataSource.DOWNLOAD_BUCKET_NAME);
+                                    if (path != null) {
+                                        connection.scanFile(path, item.mMimeType);
+                                    } else {
+                                        shutdown("");
+                                    }
+                                } catch (Exception e) {
+                                    shutdown("");
+                                }
+                            }
+                        }
 
-    					public void onScanCompleted(String path, Uri uri) {
-    						shutdown(uri.toString());
-    					}
+                        public void onScanCompleted(String path, Uri uri) {
+                            shutdown(uri.toString());
+                        }
 
-    					public void shutdown(String uri) {
-    						dialog.dismiss();
-    						performReturn(context, myExtras, uri.toString());
-    						MediaScannerConnection connection = mConnectionMap.get(context);
-    						if (connection != null) {
-    							connection.disconnect();
-    							mConnectionMap.put(context, null);
-    						}
-    					}
-    				};
-    				MediaScannerConnection connection = new MediaScannerConnection(context, client);
-    				mConnectionMap.put(context, connection); 
-    				connection.connect();
-    			}
-    		} else {
-    			performReturn(context, myExtras, contentUri);
-    		}
-    	}
-    }    
-    
+                        public void shutdown(String uri) {
+                            dialog.dismiss();
+                            performReturn(context, myExtras, uri.toString());
+                            MediaScannerConnection connection = mConnectionMap.get(context);
+                            if (connection != null) {
+                                connection.disconnect();
+                                mConnectionMap.put(context, null);
+                            }
+                        }
+                    };
+                    MediaScannerConnection connection = new MediaScannerConnection(context, client);
+                    mConnectionMap.put(context, connection);
+                    connection.connect();
+                }
+            } else {
+                performReturn(context, myExtras, contentUri);
+            }
+        }
+    }
+
     static private void performReturn(Context context, Bundle myExtras, String contentUri) {
-    	Intent result = new Intent(null, Uri.parse(contentUri));
-    	boolean resultSet = false;
+        Intent result = new Intent(null, Uri.parse(contentUri));
+        boolean resultSet = false;
         if (myExtras != null) {
             final Uri outputUri = (Uri)myExtras.getParcelable(MediaStore.EXTRA_OUTPUT);
             if (outputUri != null) {
@@ -242,7 +242,7 @@ public class CropImage extends MonitoredActivity {
                         Util.closeSilently(inputStream);
                     }
                     ((Activity) context).setResult(Activity.RESULT_OK, new Intent(outputUri.toString())
-                    .putExtras(extras));
+                            .putExtras(extras));
                     resultSet = true;
                 } catch (Exception ex) {
                     Log.e(TAG, "Cannot save to uri " + outputUri.toString());
@@ -251,48 +251,48 @@ public class CropImage extends MonitoredActivity {
                 }
             }
         }
-    	if (!resultSet && myExtras != null && myExtras.getBoolean("return-data")) {
-    		// The size of a transaction should be below 100K.
-    		Bitmap bitmap = null;
-    		try {
-    			bitmap = UriTexture.createFromUri(context, contentUri, 1024, 1024, 0, null);
-    		} catch (IOException e) {
-    			;
-    		} catch (URISyntaxException e) {
-    			;
-    		}
-    		if (bitmap != null) {
-    			result.putExtra("data", bitmap);
-    		}
-    	}
-    	if (!resultSet)
-    	    ((Activity) context).setResult(Activity.RESULT_OK, result);
-    	((Activity) context).finish();
-    }        
-    
+        if (!resultSet && myExtras != null && myExtras.getBoolean("return-data")) {
+            // The size of a transaction should be below 100K.
+            Bitmap bitmap = null;
+            try {
+                bitmap = UriTexture.createFromUri(context, contentUri, 1024, 1024, 0, null);
+            } catch (IOException e) {
+                ;
+            } catch (URISyntaxException e) {
+                ;
+            }
+            if (bitmap != null) {
+                result.putExtra("data", bitmap);
+            }
+        }
+        if (!resultSet)
+            ((Activity) context).setResult(Activity.RESULT_OK, result);
+        ((Activity) context).finish();
+    }
+
     @SuppressWarnings({ "static-access", "deprecation" })
-	@Override
+    @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         mApp = new App(CropImage.this);
         mContentResolver = getContentResolver();
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);	
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(Res.layout.gallery3d_cropimage);
         ctx = this;
         mImageView = (CropImageView) findViewById(Res.id.image);
         txtPhotoTitle = (EditText) findViewById(R.id.txtUploadPhotoTitle);
-		
-		txtLongtitude = (EditText) findViewById(R.id.txtUploadPhotoLongtitude);
-		
-		txtLatitude = (EditText) findViewById(R.id.txtUploadPhotoLatitude);
-		
-		txtTags = (EditText) findViewById(R.id.txtUploadPhotoTags);
-		btnUseMap = (ImageButton) findViewById(R.id.btnUploadPhotoPutPos);
+
+        txtLongtitude = (EditText) findViewById(R.id.txtUploadPhotoLongtitude);
+
+        txtLatitude = (EditText) findViewById(R.id.txtUploadPhotoLatitude);
+
+        txtTags = (EditText) findViewById(R.id.txtUploadPhotoTags);
+        btnUseMap = (ImageButton) findViewById(R.id.btnUploadPhotoPutPos);
 		/*btnUseMap.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
-			public void onClick(View v) 
+			public void onClick(View v)
 			{
 				Intent _itent = new Intent(ctx, UploadMap.class);
 				_itent.putExtra("latitude", txtLatitude.getText().toString());
@@ -307,20 +307,20 @@ public class CropImage extends MonitoredActivity {
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-       
-        
+
+
         if (extras != null) {
             if (extras.getString("circleCrop") != null) {
                 mCircleCrop = true;
                 mAspectX = 1;
                 mAspectY = 1;
             }
-           
-            
+
+
             Date date = new Date();
-			Long longTime = new Long(date.getTime()/1000);
+            Long longTime = new Long(date.getTime()/1000);
             newpath = Environment.getExternalStorageDirectory()+"/phimp.me/PhimpMe_Photo_Effect"+"/tmp_"+longTime+".jpg";
-			mSaveUri = Uri.fromFile(new File(newpath));
+            mSaveUri = Uri.fromFile(new File(newpath));
             //mSaveUri = (Uri) extras.getParcelable(MediaStore.EXTRA_OUTPUT);
             if (mSaveUri != null) {
                 String outputFormatString = extras.getString("outputFormat");
@@ -331,52 +331,52 @@ public class CropImage extends MonitoredActivity {
             //mBitmap = (Bitmap) extras.getParcelable("data");
             mImagePath = extras.getString("image-path");
             activitynam = extras.getString("activityName");
-			p = mImagePath.split(";");
-			try{
-				File f =  new File(p[0]);				
-				 ExifInterface exif_data = null;
-				 geoDegrees _g = null;
-				 String la = "";
-				 String lo = "";
-				 try 
-				 {
-					 exif_data = new ExifInterface(f.getAbsolutePath());
-					 _g = new geoDegrees(exif_data);
-					 if (_g.isValid())
-					 {
-						 la = _g.getLatitude() + "";
-						 lo = _g.getLongitude() + "";
-					 }
-				 } 
-				 catch (IOException e) 
-				 {
-					e.printStackTrace();
-				 }
-				 finally
-				 {
-					 exif_data = null;
-					 _g = null;
-				 }
-				txtPhotoTitle.setText(extras.getString("title"));
-				txtLatitude.setText(la);
-				txtLongtitude.setText(lo);
+            p = mImagePath.split(";");
+            try{
+                File f =  new File(p[0]);
+                ExifInterface exif_data = null;
+                geoDegrees _g = null;
+                String la = "";
+                String lo = "";
+                try
+                {
+                    exif_data = new ExifInterface(f.getAbsolutePath());
+                    _g = new geoDegrees(exif_data);
+                    if (_g.isValid())
+                    {
+                        la = _g.getLatitude() + "";
+                        lo = _g.getLongitude() + "";
+                    }
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+                finally
+                {
+                    exif_data = null;
+                    _g = null;
+                }
+                txtPhotoTitle.setText(extras.getString("title"));
+                txtLatitude.setText(la);
+                txtLongtitude.setText(lo);
 			/*if (p.length == 2){
 				JSONObject js = new JSONObject(p[1]);
 				txtLatitude.setText(js.getString("lati"));
 				txtLongtitude.setText(js.getString("logi"));
 				txtPhotoTitle.setText(js.getString("name"));
-				txtTags.setText(js.getString("tags"));				
+				txtTags.setText(js.getString("tags"));
 			}*/
-			}catch(Exception e){}
-			gpsloading = new ProgressDialog(ctx);
-    		gpsloading.setCancelable(true);
-    		gpsloading.setCanceledOnTouchOutside(false);
-    		gpsloading.setTitle(getString(R.string.loading));
-    		gpsloading.setMessage(getString(R.string.infor_upload_loading_current_position));
-    		gpsloading.setIndeterminate(true);
-			WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-			Display display = wm.getDefaultDisplay();	
-			screen_w = display.getWidth();
+            }catch(Exception e){}
+            gpsloading = new ProgressDialog(ctx);
+            gpsloading.setCancelable(true);
+            gpsloading.setCanceledOnTouchOutside(false);
+            gpsloading.setTitle(getString(R.string.loading));
+            gpsloading.setMessage(getString(R.string.infor_upload_loading_current_position));
+            gpsloading.setIndeterminate(true);
+            WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+            Display display = wm.getDefaultDisplay();
+            screen_w = display.getWidth();
             mBitmap = decodeSampledBitmapFromFile(this, p[0], screen_w);
             modifiedBitmap= flippedImaged = mBitmap;
             mAspectX = extras.getInt("aspectX");
@@ -389,7 +389,7 @@ public class CropImage extends MonitoredActivity {
         }
 
         if (mBitmap == null) {
-        	Toast.makeText(ctx, "Sorry,can't load this photo !",Toast.LENGTH_SHORT).show();
+            Toast.makeText(ctx, "Sorry,can't load this photo !",Toast.LENGTH_SHORT).show();
             /*// Create a MediaItem representing the URI.
             Uri target = intent.getData();
             String targetScheme = target.getScheme();
@@ -441,84 +441,84 @@ public class CropImage extends MonitoredActivity {
 
         findViewById(Res.id.save).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	if(txtLongtitude.getText().toString().equals("")&& !txtLatitude.getText().toString().equals("")){
-            		AlertDialog.Builder builder=new AlertDialog.Builder(ctx);
-            		builder.setMessage("Please enter Longtitude !");
-            		builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
+                if(txtLongtitude.getText().toString().equals("")&& !txtLatitude.getText().toString().equals("")){
+                    AlertDialog.Builder builder=new AlertDialog.Builder(ctx);
+                    builder.setMessage("Please enter Longtitude !");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
                     {
                         @Override
                         public void onClick(DialogInterface dialog, int which)
-                        {                        	
+                        {
                         }
                     });
-            		builder.create().show();
-            	}else if(!txtLongtitude.getText().toString().equals("")&& txtLatitude.getText().toString().equals("")){
-            		AlertDialog.Builder builder=new AlertDialog.Builder(ctx);
-            		builder.setMessage("Please enter Latitude !");
-            		builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
+                    builder.create().show();
+                }else if(!txtLongtitude.getText().toString().equals("")&& txtLatitude.getText().toString().equals("")){
+                    AlertDialog.Builder builder=new AlertDialog.Builder(ctx);
+                    builder.setMessage("Please enter Latitude !");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
                     {
                         @Override
                         public void onClick(DialogInterface dialog, int which)
-                        {                        	
+                        {
                         }
                     });
-            		builder.create().show();
-            	}
-            	else{
-            		//========================save ==============================
-            		//don't have geolocation
-            		if(txtLongtitude.getText().toString().equals("") && txtLatitude.getText().toString().equals("")){
-            			onSaveClicked();
+                    builder.create().show();
+                }
+                else{
+                    //========================save ==============================
+                    //don't have geolocation
+                    if(txtLongtitude.getText().toString().equals("") && txtLatitude.getText().toString().equals("")){
+                        onSaveClicked();
                         if (!activitynam.equals("Upload")){
-        	                Intent intent=new Intent(ctx, PhimpMe.class);
-        			    	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        			    	startActivity(intent);
-        		    	}
-            		}else{
-            			//have geolocation
-            			double lon=Double.parseDouble((txtLongtitude.getText().toString()));
-                    	double la=Double.parseDouble((txtLatitude.getText().toString()));
-                    	//Log.e("CropImage", "Longtitude : "+lon+", Latitude : "+la);
-                    	if((lon>180 ||lon+180 <0)){
-                    		Log.e("CropImage","Longtitude is limit");
-                    		AlertDialog.Builder builder=new AlertDialog.Builder(ctx);
-                    		builder.setMessage("Longtitude has minimum value is -180 and maximum value is 180. Please try again !");
-                    		builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
+                            Intent intent=new Intent(ctx, PhimpMe.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+                        }
+                    }else{
+                        //have geolocation
+                        double lon=Double.parseDouble((txtLongtitude.getText().toString()));
+                        double la=Double.parseDouble((txtLatitude.getText().toString()));
+                        //Log.e("CropImage", "Longtitude : "+lon+", Latitude : "+la);
+                        if((lon>180 ||lon+180 <0)){
+                            Log.e("CropImage","Longtitude is limit");
+                            AlertDialog.Builder builder=new AlertDialog.Builder(ctx);
+                            builder.setMessage("Longtitude has minimum value is -180 and maximum value is 180. Please try again !");
+                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
                             {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which)
-                                {   
-                                	txtLongtitude.requestFocus();
+                                {
+                                    txtLongtitude.requestFocus();
                                 }
                             });
-                    		builder.create().show();
-                    	}else if((la > 90 ||la + 90 <0)){
-                    		Log.e("CropImage","Latitude is limit");
-                    		AlertDialog.Builder builder=new AlertDialog.Builder(ctx);
-                    		builder.setMessage("Latitude has minimum value is -90 and maximum value is 90. Please try again !");
-                    		builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
+                            builder.create().show();
+                        }else if((la > 90 ||la + 90 <0)){
+                            Log.e("CropImage","Latitude is limit");
+                            AlertDialog.Builder builder=new AlertDialog.Builder(ctx);
+                            builder.setMessage("Latitude has minimum value is -90 and maximum value is 90. Please try again !");
+                            builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
                             {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which)
-                                {   
-                                	txtLatitude.requestFocus();
+                                {
+                                    txtLatitude.requestFocus();
                                 }
                             });
-                    		builder.create().show();
-                    	}
-                    	else{
-                    		onSaveClicked();
+                            builder.create().show();
+                        }
+                        else{
+                            onSaveClicked();
                             if (!activitynam.equals("Upload")){
-            	                Intent intent=new Intent(ctx, PhimpMe.class);
-            			    	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            			    	startActivity(intent);
-            		    	}
-                    	}
-            		}
-            		
-            	}
-            	
-                
+                                Intent intent=new Intent(ctx, PhimpMe.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                            }
+                        }
+                    }
+
+                }
+
+
             }
         });
 
@@ -569,7 +569,8 @@ public class CropImage extends MonitoredActivity {
                             mBitmap = modifiedBitmap;
                         } catch (OutOfMemoryError o) {
                             mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-                            modifiedBitmap = flippedImaged=mBitmapResize;
+                            //mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
+                            modifiedBitmap=flippedImaged=mBitmapResize;
                         }
                     }
                 });
@@ -585,239 +586,227 @@ public class CropImage extends MonitoredActivity {
                             mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
                             mBitmap = modifiedBitmap;
                         } catch (OutOfMemoryError o) {
-                            mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-                            modifiedBitmap = flippedImaged=mBitmapResize;
+                            mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            //mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
+                            modifiedBitmap=flippedImaged=mBitmapResize;
                         }
                     }
                 });
+
         findViewById(R.id.btnSaphia).setOnClickListener(
-				new View.OnClickListener() {
-				    public void onClick(View v)
-				    {
-				    	try{
+                new View.OnClickListener() {
+                    public void onClick(View v) {
+                        try {
+                            // Flags an edit
+                            imageEdited = true;
                             modifiedBitmap = null;
-							modifiedBitmap = convertToSepia(flippedImaged);
-							mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
-							mBitmap = modifiedBitmap;
-				    	}catch(OutOfMemoryError o){
-                            mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-                            modifiedBitmap = flippedImaged=mBitmapResize;
-				    	}
-				    }
-				});
+                            modifiedBitmap = convertToSepia(flippedImaged);
+                            mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
+                            mBitmap = modifiedBitmap;
+                        } catch (OutOfMemoryError o) {
+                            mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            modifiedBitmap=flippedImaged=mBitmapResize;
+                        }
+                    }
+                });
         findViewById(R.id.btnalpha).setOnClickListener(
                 new View.OnClickListener() {
-                    public void onClick(View v)
-                    {
-                        try{
-
+                    public void onClick(View v) {
+                        try {
+                            // Flags an edit
+                            imageEdited = true;
                             modifiedBitmap = null;
                             modifiedBitmap = convertToAlpha(flippedImaged);
                             mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
                             mBitmap = modifiedBitmap;
-
-                        }catch(OutOfMemoryError o){
-                            mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-                            modifiedBitmap = flippedImaged=mBitmapResize;
+                        } catch (OutOfMemoryError o) {
+                            mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            modifiedBitmap=flippedImaged=mBitmapResize;
                         }
                     }
                 });
         findViewById(R.id.btnpink).setOnClickListener(
                 new View.OnClickListener() {
-                    public void onClick(View v)
-                    {
-                        try{
+                    public void onClick(View v) {
+                        try {
+                            // Flags an edit
+                            imageEdited = true;
                             modifiedBitmap = null;
                             modifiedBitmap = convertToPink(flippedImaged);
                             mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
                             mBitmap = modifiedBitmap;
-
-                        }catch(OutOfMemoryError o){
-                            mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-                            modifiedBitmap = flippedImaged=mBitmapResize;
+                        } catch (OutOfMemoryError o) {
+                            mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            modifiedBitmap=flippedImaged=mBitmapResize;
                         }
                     }
                 });
         findViewById(R.id.btnpolaroid).setOnClickListener(
                 new View.OnClickListener() {
-                    public void onClick(View v)
-                    {
-                        try{
-
+                    public void onClick(View v) {
+                        try {
+                            // Flags an edit
+                            imageEdited = true;
                             modifiedBitmap = null;
                             modifiedBitmap = convertToPolaroid(flippedImaged);
                             mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
                             mBitmap = modifiedBitmap;
-
-                        }catch(OutOfMemoryError o){
-                            mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-                            modifiedBitmap = flippedImaged=mBitmapResize;
+                        } catch (OutOfMemoryError o) {
+                            mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            modifiedBitmap=flippedImaged=mBitmapResize;
                         }
                     }
                 });
-
         findViewById(R.id.btnblur).setOnClickListener(
                 new View.OnClickListener() {
-                    public void onClick(View v)
-                    {
-                        try{
-
+                    public void onClick(View v) {
+                        try {
+                            // Flags an edit
+                            imageEdited = true;
                             modifiedBitmap = null;
                             modifiedBitmap = converttoBlur(flippedImaged,9);
                             mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
                             mBitmap = modifiedBitmap;
-
-                        }catch(OutOfMemoryError o){
-                            mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-                            modifiedBitmap = flippedImaged=mBitmapResize;
+                        } catch (OutOfMemoryError o) {
+                            mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            modifiedBitmap=flippedImaged=mBitmapResize;
                         }
                     }
                 });
         findViewById(R.id.btnsharp).setOnClickListener(
                 new View.OnClickListener() {
-                    public void onClick(View v)
-                    {
-                        try{
-
+                    public void onClick(View v) {
+                        try {
+                            // Flags an edit
+                            imageEdited = true;
                             modifiedBitmap = null;
                             modifiedBitmap = convertToSharp(flippedImaged);
                             mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
                             mBitmap = modifiedBitmap;
-
-                        }catch(OutOfMemoryError o){
-                            mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-                            modifiedBitmap = flippedImaged=mBitmapResize;
+                        } catch (OutOfMemoryError o) {
+                            mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            modifiedBitmap=flippedImaged=mBitmapResize;
                         }
                     }
                 });
-
         findViewById(R.id.btnedge).setOnClickListener(
                 new View.OnClickListener() {
-                    public void onClick(View v)
-                    {
-                        try{
-
+                    public void onClick(View v) {
+                        try {
+                            // Flags an edit
+                            imageEdited = true;
                             modifiedBitmap = null;
                             modifiedBitmap = convertToEdge(flippedImaged);
                             mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
                             mBitmap = modifiedBitmap;
-
-                        }catch(OutOfMemoryError o){
-                            mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-                            modifiedBitmap = flippedImaged=mBitmapResize;
+                        } catch (OutOfMemoryError o) {
+                            mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            modifiedBitmap=flippedImaged=mBitmapResize;
                         }
                     }
                 });
         findViewById(R.id.btnfuzz).setOnClickListener(
                 new View.OnClickListener() {
-                    public void onClick(View v)
-                    {
-                        try{
-
+                    public void onClick(View v) {
+                        try {
+                            // Flags an edit
+                            imageEdited = true;
                             modifiedBitmap = null;
                             modifiedBitmap = convertToFuzz(flippedImaged);
                             mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
                             mBitmap = modifiedBitmap;
-
-                        }catch(OutOfMemoryError o){
-                            mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-                            modifiedBitmap = flippedImaged=mBitmapResize;
+                        } catch (OutOfMemoryError o) {
+                            mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            modifiedBitmap=flippedImaged=mBitmapResize;
                         }
                     }
                 });
 
-
         findViewById(R.id.btnNagative).setOnClickListener(
-				new View.OnClickListener() {
-				    public void onClick(View v) 
-				    {
-				    	try{
-				    		
-				    		modifiedBitmap = null;
-							modifiedBitmap = convertToNegative(flippedImaged);
-							mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
-							mBitmap = modifiedBitmap;
-							
-				    	}catch(OutOfMemoryError o){
+                new View.OnClickListener() {
+                    public void onClick(View v) {
+                        try {
+                            // Flags an edit
+                            imageEdited = true;
+                            modifiedBitmap = null;
+                            modifiedBitmap = convertToNegative(flippedImaged);
+                            mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
+                            mBitmap = modifiedBitmap;
+                        } catch (OutOfMemoryError o) {
+                            mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            //mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
+                            modifiedBitmap=flippedImaged=mBitmapResize;
+                        }
+                    }
+                });
 
-                            mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-                            modifiedBitmap = flippedImaged=mBitmapResize;
-				    	}
-				    }
-				});
-		ImageButton btnReflection=(ImageButton)findViewById(R.id.btnSnow);
-		btnReflection.setOnClickListener(
-				new View.OnClickListener() {
-				    public void onClick(View v) 
-				    {
-				    	try{
-				    		
-				    		modifiedBitmap = null;
-							modifiedBitmap = applySnowEffect(flippedImaged);
-							mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
-							mBitmap = modifiedBitmap;
-							
-				    	}catch(OutOfMemoryError o){
+        ImageButton btnReflection=(ImageButton)findViewById(R.id.btnSnow);
+        btnReflection.setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View v) {
+                        try {
+                            // Flags an edit
+                            imageEdited = true;
+                            modifiedBitmap = null;
+                            modifiedBitmap = applySnowEffect(flippedImaged);
+                            mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
+                            mBitmap = modifiedBitmap;
+                        } catch (OutOfMemoryError o) {
+                            mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            //mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
+                            modifiedBitmap=flippedImaged=mBitmapResize;
+                        }
+                    }
+                });
 
-                            mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-                            modifiedBitmap = flippedImaged=mBitmapResize;
-				    	}
-				    }
-				});
+        ImageButton btnRoundCorner=(ImageButton)findViewById(R.id.btnRoundCorner);
+        btnRoundCorner.setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View v) {
+                        try {
+                            // Flags an edit
+                            imageEdited = true;
+                            modifiedBitmap = null;
+                            modifiedBitmap = roundCorner(flippedImaged,45f);
+                            mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
+                            mBitmap = modifiedBitmap;
+                        } catch (OutOfMemoryError o) {
+                            mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                            //mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
+                            modifiedBitmap=flippedImaged=mBitmapResize;
+                        }
+                    }
+                });
 
-
-				
-		ImageButton btnRoundCorner=(ImageButton)findViewById(R.id.btnRoundCorner);
-		btnRoundCorner.setOnClickListener(
-				new View.OnClickListener() {
-				    public void onClick(View v) 
-				    {
-				    	try{
-				    		
-				    		modifiedBitmap = null;
-							modifiedBitmap = roundCorner(flippedImaged,45f);
-							mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
-							mBitmap = modifiedBitmap;
-							
-				    	}catch(OutOfMemoryError o){
-
-                            mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-                            modifiedBitmap = flippedImaged=mBitmapResize;
-				    	}
-				    }
-				});
-		
-		ImageButton btnOriginal=(ImageButton)findViewById(R.id.btnOriginal);
-		btnOriginal.setOnClickListener(
-				new View.OnClickListener() {
-				    public void onClick(View v) 
-				    {
-				    	try{
-				    	
-							//doRotate(mImageView, 0, 0);
-							//fromDegree = 0;
-							//toDegree = 90;							
-							mBitmap.recycle();
-							mBitmap = decodeSampledBitmapFromFile(ctx, p[0], screen_w);
-							mImageView.setImageBitmap(mBitmap);
-							modifiedBitmap = flippedImaged = mBitmap;
-							
-				    	}catch(OutOfMemoryError o){
-
-							//doRotate(mImageView, 0, 0);
-							//fromDegree = 0;
-							//toDegree = 90;
-							mImageView.setImageBitmap(mBitmapResize);
-							modifiedBitmap = flippedImaged = mBitmapResize;
-				    	}
-				    }
-				});
+        ImageButton btnOriginal=(ImageButton)findViewById(R.id.btnOriginal);
+        btnOriginal.setOnClickListener(
+                new View.OnClickListener() {
+                    public void onClick(View v) {
+                        try {
+                            // Flags an edit
+                            imageEdited = false;
+                            // doRotate(mImageView, 0, 0);
+                            // fromDegree = 0;
+                            // toDegree = 90;
+                            mBitmap.recycle();
+                            mBitmap = decodeSampledBitmapFromFile(ctx, p[0], screen_w);
+                            mImageView.setImageBitmap(mBitmap);
+                            modifiedBitmap = flippedImaged = mBitmap;
+                        } catch(OutOfMemoryError o) {
+                            // doRotate(mImageView, 0, 0);
+                            // fromDegree = 0;
+                            // toDegree = 90;
+                            mImageView.setImageBitmap(mBitmapResize);
+                            modifiedBitmap = flippedImaged = mBitmapResize;
+                        }
+                    }
+                });
 
         startFaceDetection();
     }
 
     @SuppressWarnings("static-access")
-	private void startFaceDetection() {
+    private void startFaceDetection() {
         if (isFinishing()) {
             return;
         }
@@ -852,7 +841,7 @@ public class CropImage extends MonitoredActivity {
     }
 
     @SuppressWarnings("static-access")
-	private void onSaveClicked() {
+    private void onSaveClicked() {
         // CR: TODO!
         // TODO this code needs to change to use the decode/crop/encode single
         // step api so that we don't require that the whole (possibly large)
@@ -938,12 +927,12 @@ public class CropImage extends MonitoredActivity {
                 // Set the cropped bitmap as the new bitmap.
                 croppedImage.recycle();
                 croppedImage = b;
-               
+
             }
         }
 
         // Return the cropped image directly or save it to the specified URI.
-        
+
         Bundle myExtras = getIntent().getExtras();
         if (myExtras != null && (myExtras.getParcelable("data") != null || myExtras.getBoolean("return-data"))) {
             Bundle extras = new Bundle();
@@ -974,46 +963,46 @@ public class CropImage extends MonitoredActivity {
 
         // RECREATE THE NEW BITMAP
         try{
-        	Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
-        	return resizedBitmap;
+            Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
+            return resizedBitmap;
         }catch(OutOfMemoryError o){
-        	Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width/2, height/2, matrix, false);
-        	return resizedBitmap;
+            Bitmap resizedBitmap = Bitmap.createBitmap(bm, 0, 0, width/2, height/2, matrix, false);
+            return resizedBitmap;
         }
-        }
+    }
     public static void doRotate(ImageView im, float fromDegree, float toDegree) {
-		RotateAnimation ra1 = new RotateAnimation(fromDegree, toDegree,
-				RotateAnimation.RELATIVE_TO_SELF, 0.5f,
-				RotateAnimation.RELATIVE_TO_SELF, 0.5f);
-		ra1.setStartOffset(0);
-		ra1.setDuration(0);
-		ra1.setFillAfter(true);
-		ra1.setFillEnabled(true);
-		im.startAnimation(ra1);
-	}
+        RotateAnimation ra1 = new RotateAnimation(fromDegree, toDegree,
+                RotateAnimation.RELATIVE_TO_SELF, 0.5f,
+                RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+        ra1.setStartOffset(0);
+        ra1.setDuration(0);
+        ra1.setFillAfter(true);
+        ra1.setFillEnabled(true);
+        im.startAnimation(ra1);
+    }
     public static void doRotate90(ImageView image){
-    	image.setDrawingCacheEnabled(true);    	
-    	Bitmap bm = modifiedBitmap;
-    	Matrix mx = new Matrix();
-    	//float scaleW = (float)bm.getHeight()/bm.getWidth();
-    	//float scaleH = (float)bm.getWidth()/bm.getHeight();
-    	mx.setRotate(90);
-    	//modifiedBitmap.recycle();
-    	modifiedBitmap = Bitmap.createBitmap(bm,0,0,bm.getWidth(),bm.getHeight(),mx,true);
-    	image.setImageBitmap(modifiedBitmap);    	
+        image.setDrawingCacheEnabled(true);
+        Bitmap bm = modifiedBitmap;
+        Matrix mx = new Matrix();
+        //float scaleW = (float)bm.getHeight()/bm.getWidth();
+        //float scaleH = (float)bm.getWidth()/bm.getHeight();
+        mx.setRotate(90);
+        //modifiedBitmap.recycle();
+        modifiedBitmap = Bitmap.createBitmap(bm,0,0,bm.getWidth(),bm.getHeight(),mx,true);
+        image.setImageBitmap(modifiedBitmap);
     }
     public static Bitmap doHorizontalFlip(Bitmap sampleBitmap) {
-		Matrix matrixHorizontalFlip = new Matrix();
-		matrixHorizontalFlip.preScale(-1.0f, 1.0f);
-		Bitmap des = sampleBitmap.copy(Bitmap.Config.ARGB_8888, true);
-		des = Bitmap.createBitmap(sampleBitmap, 0, 0, sampleBitmap.getWidth(), sampleBitmap.getHeight(),
-				matrixHorizontalFlip, true);
-		return des;
-	}
+        Matrix matrixHorizontalFlip = new Matrix();
+        matrixHorizontalFlip.preScale(-1.0f, 1.0f);
+        Bitmap des = sampleBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        des = Bitmap.createBitmap(sampleBitmap, 0, 0, sampleBitmap.getWidth(), sampleBitmap.getHeight(),
+                matrixHorizontalFlip, true);
+        return des;
+    }
 
-	public static Bitmap doVerticalFlip(Bitmap sampleBitmap) {
-		Matrix matrixVerticalFlip = new Matrix();
-		matrixVerticalFlip.preScale(1.0f, -1.0f);
+    public static Bitmap doVerticalFlip(Bitmap sampleBitmap) {
+        Matrix matrixVerticalFlip = new Matrix();
+        matrixVerticalFlip.preScale(1.0f, -1.0f);
         try {
             return Bitmap.createBitmap(sampleBitmap, 0, 0, sampleBitmap.getWidth(), sampleBitmap.getHeight(),
                     matrixVerticalFlip, true);
@@ -1021,37 +1010,37 @@ public class CropImage extends MonitoredActivity {
             return sampleBitmap;
         }
 
-	}
+    }
     public static Bitmap convertToBW(Bitmap sampleBitmap) {
-		ColorMatrix matrix = new ColorMatrix();
-		matrix.setSaturation(0);
-		ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-		Bitmap desBitmap = sampleBitmap.copy(Bitmap.Config.ARGB_8888, true);
-		Paint p = new Paint();
-		p.setColorFilter(filter);
-		Canvas canvas = new Canvas(desBitmap);
-		canvas.drawBitmap(desBitmap, 0, 0, p);
-		return desBitmap;
-	}
+        ColorMatrix matrix = new ColorMatrix();
+        matrix.setSaturation(0);
+        ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+        Bitmap desBitmap = sampleBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        Paint p = new Paint();
+        p.setColorFilter(filter);
+        Canvas canvas = new Canvas(desBitmap);
+        canvas.drawBitmap(desBitmap, 0, 0, p);
+        return desBitmap;
+    }
 
 
-	public static Bitmap convertToSepia(Bitmap sampleBitmap) {
-		ColorMatrix sepiaMatrix = new ColorMatrix();
-		float[] sepMat = {0.3930000066757202f, 0.7689999938011169f,
-				0.1889999955892563f, 0, 0, 0.3490000069141388f,
-				0.6859999895095825f, 0.1679999977350235f, 0, 0,
-				0.2720000147819519f, 0.5339999794960022f, 0.1309999972581863f,
-				0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1};
-		sepiaMatrix.set(sepMat);
-		final ColorMatrixColorFilter colorFilter = new ColorMatrixColorFilter(
-				sepiaMatrix);
-		Bitmap rBitmap = sampleBitmap.copy(Bitmap.Config.ARGB_8888, true);
-		Paint paint = new Paint();
-		paint.setColorFilter(colorFilter);
-		Canvas myCanvas = new Canvas(rBitmap);
-		myCanvas.drawBitmap(rBitmap, 0, 0, paint);
-		return rBitmap;
-	}
+    public static Bitmap convertToSepia(Bitmap sampleBitmap) {
+        ColorMatrix sepiaMatrix = new ColorMatrix();
+        float[] sepMat = {0.3930000066757202f, 0.7689999938011169f,
+                0.1889999955892563f, 0, 0, 0.3490000069141388f,
+                0.6859999895095825f, 0.1679999977350235f, 0, 0,
+                0.2720000147819519f, 0.5339999794960022f, 0.1309999972581863f,
+                0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1};
+        sepiaMatrix.set(sepMat);
+        final ColorMatrixColorFilter colorFilter = new ColorMatrixColorFilter(
+                sepiaMatrix);
+        Bitmap rBitmap = sampleBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        Paint paint = new Paint();
+        paint.setColorFilter(colorFilter);
+        Canvas myCanvas = new Canvas(rBitmap);
+        myCanvas.drawBitmap(rBitmap, 0, 0, paint);
+        return rBitmap;
+    }
 
     public static Bitmap convertToAlpha(Bitmap sampleBitmap) {
         ColorMatrix sepiaMatrix = new ColorMatrix();
@@ -1092,7 +1081,7 @@ public class CropImage extends MonitoredActivity {
         float[] sepMat = { 1.438f,-0.062f,-0.062f,0,0,
                 0.122f,1.378f,-0.122f,0,0,
                 0.016f,-0.016f,1.483f,0,0,
-				0 , 0 ,0 , 1 , 0 ,
+                0 , 0 ,0 , 1 , 0 ,
                 0.03f,0.05f,-0.02f,0,1 };
         sepiaMatrix.set(sepMat);
         final ColorMatrixColorFilter colorFilter = new ColorMatrixColorFilter(
@@ -1138,8 +1127,8 @@ public class CropImage extends MonitoredActivity {
         Allocation allocOut = Allocation.createFromBitmap(rs, bitmap);
 
         float[] coefficients = {  0, -1,  0,
-                                 -1 , 5, -1,
-                                  0, -1,  0  };
+                -1 , 5, -1,
+                0, -1,  0  };
 
         ScriptIntrinsicConvolve3x3 convolution
                 = ScriptIntrinsicConvolve3x3.create(rs, Element.U8_4(rs));
@@ -1163,8 +1152,8 @@ public class CropImage extends MonitoredActivity {
         Allocation allocOut = Allocation.createFromBitmap(rs, bitmap);
 
         float[] coefficients=  { -1, -1, -1,
-                                       -1 , 8, -1,
-                                     -1, -1, -1  };
+                -1 , 8, -1,
+                -1, -1, -1  };
 
         ScriptIntrinsicConvolve3x3 convolution
                 = ScriptIntrinsicConvolve3x3.create(rs, Element.U8_4(rs));
@@ -1188,8 +1177,8 @@ public class CropImage extends MonitoredActivity {
         Allocation allocOut = Allocation.createFromBitmap(rs, bitmap);
 
         float[] coefficients =   {  0,  20/3,  0,
-                                     20/3, -59/3, 20/3,
-                                    1/3,  13/3,  0  };
+                20/3, -59/3, 20/3,
+                1/3,  13/3,  0  };
 
         ScriptIntrinsicConvolve3x3 convolution
                 = ScriptIntrinsicConvolve3x3.create(rs, Element.U8_4(rs));
@@ -1204,236 +1193,236 @@ public class CropImage extends MonitoredActivity {
 
 
 
-	public static Bitmap applySnowEffect(Bitmap source) {
-		// get image size
-		int width = source.getWidth();
-		int height = source.getHeight();
-		int[] pixels = new int[width * height];
-		// get pixel array from source
-		source.getPixels(pixels, 0, width, 0, 0, width, height);
-		// random object
-		Random random = new Random();
-		
-		int R, G, B, index = 0, thresHold = 20;
-		// iteration through pixels
-		for(int y = 0; y < height; ++y) {
-			for(int x = 0; x < width; ++x) {
-				// get current index in 2D-matrix
-				index = y * width + x;				
-				// get color
-				R = Color.red(pixels[index]);
-				G = Color.green(pixels[index]);
-				B = Color.blue(pixels[index]);
-				// generate threshold
-				thresHold = random.nextInt(0xFF);				
-				if(R > thresHold && G > thresHold && B > thresHold) {
-					pixels[index] = Color.rgb(0xFF, 0xFF, 0xFF);
-				}							
-			}
-		}
-		// output bitmap				
-		Bitmap bmOut = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
-		bmOut.setPixels(pixels, 0, width, 0, 0, width, height);
-		return bmOut;
-	}
-	
-	public static Bitmap roundCorner(Bitmap src, float round) {
-		// image size
-		int width = src.getWidth();
-		int height = src.getHeight();
-		// create bitmap output
-	    Bitmap result = Bitmap.createBitmap(width, height, Config.ARGB_8888);
-	    // set canvas for painting
-	    Canvas canvas = new Canvas(result);
-	    canvas.drawARGB(0, 0, 0, 0);
+    public static Bitmap applySnowEffect(Bitmap source) {
+        // get image size
+        int width = source.getWidth();
+        int height = source.getHeight();
+        int[] pixels = new int[width * height];
+        // get pixel array from source
+        source.getPixels(pixels, 0, width, 0, 0, width, height);
+        // random object
+        Random random = new Random();
 
-	    // config paint
-	    final Paint paint = new Paint();
-	    paint.setAntiAlias(true);
-	    paint.setColor(Color.BLACK);
+        int R, G, B, index = 0, thresHold = 20;
+        // iteration through pixels
+        for(int y = 0; y < height; ++y) {
+            for(int x = 0; x < width; ++x) {
+                // get current index in 2D-matrix
+                index = y * width + x;
+                // get color
+                R = Color.red(pixels[index]);
+                G = Color.green(pixels[index]);
+                B = Color.blue(pixels[index]);
+                // generate threshold
+                thresHold = random.nextInt(0xFF);
+                if(R > thresHold && G > thresHold && B > thresHold) {
+                    pixels[index] = Color.rgb(0xFF, 0xFF, 0xFF);
+                }
+            }
+        }
+        // output bitmap
+        Bitmap bmOut = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+        bmOut.setPixels(pixels, 0, width, 0, 0, width, height);
+        return bmOut;
+    }
 
-	    // config rectangle for embedding
-	    final Rect rect = new Rect(0, 0, width, height);
-	    final RectF rectF = new RectF(rect);
+    public static Bitmap roundCorner(Bitmap src, float round) {
+        // image size
+        int width = src.getWidth();
+        int height = src.getHeight();
+        // create bitmap output
+        Bitmap result = Bitmap.createBitmap(width, height, Config.ARGB_8888);
+        // set canvas for painting
+        Canvas canvas = new Canvas(result);
+        canvas.drawARGB(0, 0, 0, 0);
 
-	    // draw rect to canvas
-	    canvas.drawRoundRect(rectF, round, round, paint);
+        // config paint
+        final Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setColor(Color.BLACK);
 
-	    // create Xfer mode
-	    paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
-	    // draw source image to canvas
-	    canvas.drawBitmap(src, rect, rect, paint);
+        // config rectangle for embedding
+        final Rect rect = new Rect(0, 0, width, height);
+        final RectF rectF = new RectF(rect);
 
-	    // return final image
-	    return result;
-	}
-	// This method is originally from this site:
-	// http://android-code-space.blogspot.com/2010/08/convert-image-to-negative-in-android.html
-	public static Bitmap convertToNegative(Bitmap sampleBitmap) {
-		ColorMatrix negativeMatrix = new ColorMatrix();
-		float[] negMat = { -1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0,
-				255, 0, 0, 0, 1, 0 };
-		negativeMatrix.set(negMat);
-		final ColorMatrixColorFilter colorFilter = new ColorMatrixColorFilter(
-				negativeMatrix);
-		Bitmap rBitmap = sampleBitmap.copy(Bitmap.Config.ARGB_8888, true);
-		Paint paint = new Paint();
-		paint.setColorFilter(colorFilter);
-		Canvas myCanvas = new Canvas(rBitmap);
-		myCanvas.drawBitmap(rBitmap, 0, 0, paint);
-		return rBitmap;
-	}
+        // draw rect to canvas
+        canvas.drawRoundRect(rectF, round, round, paint);
 
-	public static Bitmap changeBrightness(Bitmap sampleBitmap,
-			int brightnessValue) {
-		ColorMatrix sepiaMatrix = new ColorMatrix();
-		float[] sepMat = { 1, 0, 0, 0, brightnessValue, 0, 1, 0, 0,
-				brightnessValue, 0, 0, 1, 0, brightnessValue, 0, 0, 0, 1,
-				brightnessValue };
-		sepiaMatrix.set(sepMat);
-		final ColorMatrixColorFilter colorFilter = new ColorMatrixColorFilter(
-				sepiaMatrix);
-		Bitmap rBitmap = sampleBitmap.copy(Bitmap.Config.ARGB_8888, true);
-		Paint paint = new Paint();
-		paint.setColorFilter(colorFilter);
-		Canvas myCanvas = new Canvas(rBitmap);
-		myCanvas.drawBitmap(rBitmap, 0, 0, paint);
-		return rBitmap;
-	}
+        // create Xfer mode
+        paint.setXfermode(new PorterDuffXfermode(Mode.SRC_IN));
+        // draw source image to canvas
+        canvas.drawBitmap(src, rect, rect, paint);
+
+        // return final image
+        return result;
+    }
+    // This method is originally from this site:
+    // http://android-code-space.blogspot.com/2010/08/convert-image-to-negative-in-android.html
+    public static Bitmap convertToNegative(Bitmap sampleBitmap) {
+        ColorMatrix negativeMatrix = new ColorMatrix();
+        float[] negMat = { -1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0,
+                255, 0, 0, 0, 1, 0 };
+        negativeMatrix.set(negMat);
+        final ColorMatrixColorFilter colorFilter = new ColorMatrixColorFilter(
+                negativeMatrix);
+        Bitmap rBitmap = sampleBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        Paint paint = new Paint();
+        paint.setColorFilter(colorFilter);
+        Canvas myCanvas = new Canvas(rBitmap);
+        myCanvas.drawBitmap(rBitmap, 0, 0, paint);
+        return rBitmap;
+    }
+
+    public static Bitmap changeBrightness(Bitmap sampleBitmap,
+                                          int brightnessValue) {
+        ColorMatrix sepiaMatrix = new ColorMatrix();
+        float[] sepMat = { 1, 0, 0, 0, brightnessValue, 0, 1, 0, 0,
+                brightnessValue, 0, 0, 1, 0, brightnessValue, 0, 0, 0, 1,
+                brightnessValue };
+        sepiaMatrix.set(sepMat);
+        final ColorMatrixColorFilter colorFilter = new ColorMatrixColorFilter(
+                sepiaMatrix);
+        Bitmap rBitmap = sampleBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        Paint paint = new Paint();
+        paint.setColorFilter(colorFilter);
+        Canvas myCanvas = new Canvas(rBitmap);
+        myCanvas.drawBitmap(rBitmap, 0, 0, paint);
+        return rBitmap;
+    }
     public static int calculateInSampleSize(
-			
-    	    String mfile, int reqWidth) {
-    	    // Raw height and width of image
-    		//Bitmap bm = null;
-    		BitmapFactory.Options bounds = new BitmapFactory.Options();
-    		bounds.inTempStorage = new byte[32 * 1024];
-    		bounds.inDither=false;                   
-    		bounds.inPurgeable=true;                
-    		bounds.inInputShareable=true;     
-    		bounds.inJustDecodeBounds = true;	
-    		File file=new File(mfile);
-    		float rotate = getOrientation(mfile);
-    	    FileInputStream fs=null;
-    	    try {
-    	        fs = new FileInputStream(file);
-    	    } catch (FileNotFoundException e) {
-    	        //TODO do something intelligent
-    	        e.printStackTrace();
-    	    }
 
-    	    try {
-    	        if(fs!=null) BitmapFactory.decodeFileDescriptor(fs.getFD(), null, bounds);	       	        
-    	    } catch (IOException e) {
-    	        //TODO do something intelligent
-    	        e.printStackTrace();
-    	    } finally{ 
-    	        if(fs!=null) {
-    	            try {
-    	                fs.close();
-    	            } catch (IOException e) {
-    	                // TODO Auto-generated catch block
-    	                e.printStackTrace();
-    	            }
-    	        }
-    	    }	
-    	    //final int height = bounds.outHeight;
-    	    final int width;
-    	    if (rotate == 0)
-    	    	width = bounds.outWidth; else
-    	    		width = bounds.outHeight;
-    	    		
-    	    Log.e("Width",String.valueOf(bounds.outWidth));
-    	    Log.e("Height",String.valueOf(bounds.outHeight));
-    	    System.gc();
-    	    int inSampleSize = 1;
-    	    
-    	    if (width > reqWidth) {	        
-    	            inSampleSize = Math.round((float)width / (float)reqWidth);	        
+            String mfile, int reqWidth) {
+        // Raw height and width of image
+        //Bitmap bm = null;
+        BitmapFactory.Options bounds = new BitmapFactory.Options();
+        bounds.inTempStorage = new byte[32 * 1024];
+        bounds.inDither=false;
+        bounds.inPurgeable=true;
+        bounds.inInputShareable=true;
+        bounds.inJustDecodeBounds = true;
+        File file=new File(mfile);
+        float rotate = getOrientation(mfile);
+        FileInputStream fs=null;
+        try {
+            fs = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            //TODO do something intelligent
+            e.printStackTrace();
+        }
+
+        try {
+            if(fs!=null) BitmapFactory.decodeFileDescriptor(fs.getFD(), null, bounds);
+        } catch (IOException e) {
+            //TODO do something intelligent
+            e.printStackTrace();
+        } finally{
+            if(fs!=null) {
+                try {
+                    fs.close();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+        //final int height = bounds.outHeight;
+        final int width;
+        if (rotate == 0)
+            width = bounds.outWidth; else
+            width = bounds.outHeight;
+
+        Log.e("Width",String.valueOf(bounds.outWidth));
+        Log.e("Height",String.valueOf(bounds.outHeight));
+        System.gc();
+        int inSampleSize = 1;
+
+        if (width > reqWidth) {
+            inSampleSize = Math.round((float)width / (float)reqWidth);
         }
         return inSampleSize;
-    	}
-    public static Bitmap decodeSampledBitmapFromFile(Context ctx, String mfile, 
-	        int reqWidth) {
-	    // First decode with inJustDecodeBounds=true to check dimensions
-	    final BitmapFactory.Options options = new BitmapFactory.Options();	 
-	    Bitmap bm = null;
-	    System.gc();	    
-	   // BitmapFactory.decodeResource(res, resId, options);	   		
-		options.inTempStorage = new byte[32* 1024];
-		options.inDither = false;
-		options.inPurgeable = true;
-		options.inInputShareable = true;
-	    // Calculate inSampleSize
-		int inSampleSize = calculateInSampleSize(mfile, reqWidth);
-	    options.inSampleSize = inSampleSize;	    
-	    Log.e("Sample Size", String.valueOf(inSampleSize));
-	    // Decode bitmap with inSampleSize set
-	    options.inJustDecodeBounds = false;
-	    File file=new File(mfile);
-	    FileInputStream fs=null;
-	    try {
-	        fs = new FileInputStream(file);
-	    } catch (FileNotFoundException e) {
-	        //TODO do something intelligent
-	        e.printStackTrace();
-	    }
-	    Matrix matrix = new Matrix();
-	    float rotate = getOrientation(mfile);	    	   
-	    try {
-	        if(fs!=null) {
-	        
-	        	if (rotate == 0) return BitmapFactory.decodeFileDescriptor(fs.getFD(), null, options);
-	        	else {
-	        	 matrix.postRotate(rotate);
-	        	 
-	        	 bm = BitmapFactory.decodeFileDescriptor(fs.getFD(), null, options);
-	        	// if ((bm.getWidth() < reqWidth) && (inSampleSize > 1)){
-	        	Log.e("Width image",String.valueOf(bm.getWidth()));	 
-	        		 return Bitmap.createBitmap(bm,0,0,bm.getWidth(),bm.getHeight(),matrix,true);
-	        		 
+    }
+    public static Bitmap decodeSampledBitmapFromFile(Context ctx, String mfile,
+                                                     int reqWidth) {
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        Bitmap bm = null;
+        System.gc();
+        // BitmapFactory.decodeResource(res, resId, options);
+        options.inTempStorage = new byte[32* 1024];
+        options.inDither = false;
+        options.inPurgeable = true;
+        options.inInputShareable = true;
+        // Calculate inSampleSize
+        int inSampleSize = calculateInSampleSize(mfile, reqWidth);
+        options.inSampleSize = inSampleSize;
+        Log.e("Sample Size", String.valueOf(inSampleSize));
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        File file=new File(mfile);
+        FileInputStream fs=null;
+        try {
+            fs = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            //TODO do something intelligent
+            e.printStackTrace();
+        }
+        Matrix matrix = new Matrix();
+        float rotate = getOrientation(mfile);
+        try {
+            if(fs!=null) {
+
+                if (rotate == 0) return BitmapFactory.decodeFileDescriptor(fs.getFD(), null, options);
+                else {
+                    matrix.postRotate(rotate);
+
+                    bm = BitmapFactory.decodeFileDescriptor(fs.getFD(), null, options);
+                    // if ((bm.getWidth() < reqWidth) && (inSampleSize > 1)){
+                    Log.e("Width image",String.valueOf(bm.getWidth()));
+                    return Bitmap.createBitmap(bm,0,0,bm.getWidth(),bm.getHeight(),matrix,true);
+
 	        		 /*}else{
 	        			 return Bitmap.createBitmap(bm,0,0,bm.getWidth(),bm.getHeight(),matrix,true);}*/
-	        	}
-	        	}	       
-	       
-	    } catch (IOException e) {
-	        //TODO do something intelligent
-	        e.printStackTrace();
-	    } finally{ 
-	        if(fs!=null) {
-	            try {
-	                fs.close();
-	            } catch (IOException e) {
-	                // TODO Auto-generated catch block
-	                e.printStackTrace();
-	            }
-	        }
-	    }	  
-	    return null;
-	}
-	public static float getOrientation(String f)
-	{
-		float degress = 0;
-		try {
-				
-		ExifInterface exif = new ExifInterface(f);
-		int orientation=exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
-		Log.e("Orientation Crop Image",String.valueOf(orientation));
-		if(orientation == 3){
-			degress = 180;					
-		}
-		if(orientation == 6){
-			degress = 90;
-		}
-		if(orientation == 8){
-			degress = 270;
-		}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}					
-		return degress;
-	}
+                }
+            }
+
+        } catch (IOException e) {
+            //TODO do something intelligent
+            e.printStackTrace();
+        } finally{
+            if(fs!=null) {
+                try {
+                    fs.close();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+    public static float getOrientation(String f)
+    {
+        float degress = 0;
+        try {
+
+            ExifInterface exif = new ExifInterface(f);
+            int orientation=exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
+            Log.e("Orientation Crop Image",String.valueOf(orientation));
+            if(orientation == 3){
+                degress = 180;
+            }
+            if(orientation == 6){
+                degress = 90;
+            }
+            if(orientation == 8){
+                degress = 270;
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return degress;
+    }
     private void saveOutput(Bitmap croppedImage) {
         if (mSaveUri != null) {
             OutputStream outputStream = null;
@@ -1473,7 +1462,7 @@ public class CropImage extends MonitoredActivity {
                     String candidate = directory.toString() + "/" + fileName + "-" + x + ".jpg";
                     boolean exists = (new File(candidate)).exists();
                     if (!exists) { // CR: inline the expression for exists
-                                   // here--it's clear enough.
+                        // here--it's clear enough.
                         break;
                     }
                 }
@@ -1500,131 +1489,131 @@ public class CropImage extends MonitoredActivity {
             }
         }
         if (!txtLatitude.getText().toString().equals("")){
-        	ExifInterface exif;
-			try {
-				Log.e("Exif data","Run");
-				// If the image has been edited, it will be saved along with the original image
-				if (imageEdited | flipped) {
-					exif = new ExifInterface(newpath);
-					createExifData(exif, Double.parseDouble(txtLatitude.getText().toString()), Double.parseDouble(txtLongtitude.getText().toString()));
-					exif.saveAttributes();
-				} else {
-					// Else, the temporary image will be deleted!
-					File file = new File(newpath);
-					if(file.exists()) {
+            ExifInterface exif;
+            try {
+                Log.e("Exif data","Run");
+                // If the image has been edited, it will be saved along with the original image
+                if (imageEdited | flipped) {
+                    exif = new ExifInterface(newpath);
+                    createExifData(exif, Double.parseDouble(txtLatitude.getText().toString()), Double.parseDouble(txtLongtitude.getText().toString()));
+                    exif.saveAttributes();
+                } else {
+                    // Else, the temporary image will be deleted!
+                    File file = new File(newpath);
+                    if(file.exists()) {
                         file.delete();
                     }
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}    
+                }
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
         sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, mSaveUri));
-        /*sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, 
-                Uri.parse("file://" + Environment.getExternalStorageDirectory())));   */     
-        croppedImage.recycle();        
-		Intent intent = this.getIntent();		
-		intent.putExtra("Impath", mImagePath);
-		intent.putExtra("saveUri",newpath);
-		intent.putExtra("lati", txtLatitude.getText().toString());
-		intent.putExtra("logi",txtLongtitude.getText().toString());
-		intent.putExtra("tags",txtTags.getText().toString());
-		intent.putExtra("name", txtPhotoTitle.getText().toString());		
-		//Log.i("CropImage","Image path output save : "+newpath);
-		setResult(RESULT_OK,intent);		
+        /*sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED,
+                Uri.parse("file://" + Environment.getExternalStorageDirectory())));   */
+        croppedImage.recycle();
+        Intent intent = this.getIntent();
+        intent.putExtra("Impath", mImagePath);
+        intent.putExtra("saveUri",newpath);
+        intent.putExtra("lati", txtLatitude.getText().toString());
+        intent.putExtra("logi",txtLongtitude.getText().toString());
+        intent.putExtra("tags",txtTags.getText().toString());
+        intent.putExtra("name", txtPhotoTitle.getText().toString());
+        //Log.i("CropImage","Image path output save : "+newpath);
+        setResult(RESULT_OK,intent);
         finish();
     }
     public void createExifData(ExifInterface exif, double lattude, double longitude){
 
-		 if (lattude < 0) {
-		     exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, "S");
-		     lattude = -lattude;
-		 } else {
-		     exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, "N");
-		 }
-		
-		 exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE,
-		         formatLatLongString(lattude));
-		
-		 if (longitude < 0) {
-		     exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, "W");
-		     longitude = -longitude;
-		 } else {
-		     exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, "E");
-		 }
-		 exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE,
-		         formatLatLongString(longitude));
-		
-		 try {
-		     exif.saveAttributes();
-		 } catch (IOException e) {
-		
-		     e.printStackTrace();
-		 }		 
-		 exif.setAttribute(ExifInterface.TAG_DATETIME, (new Date(System.currentTimeMillis())).toString()); // set the date & time
-				 
-}
+        if (lattude < 0) {
+            exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, "S");
+            lattude = -lattude;
+        } else {
+            exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, "N");
+        }
 
-private static String formatLatLongString(double d) {
-		 StringBuilder b = new StringBuilder();
-		 b.append((int) d);
-		 b.append("/1,");
-		 d = (d - (int) d) * 60;
-		 b.append((int) d);
-		 b.append("/1,");
-		 d = (d - (int) d) * 60000;
-		 b.append((int) d);
-		 b.append("/1000");
-		 return b.toString();
-}
+        exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE,
+                formatLatLongString(lattude));
+
+        if (longitude < 0) {
+            exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, "W");
+            longitude = -longitude;
+        } else {
+            exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, "E");
+        }
+        exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE,
+                formatLatLongString(longitude));
+
+        try {
+            exif.saveAttributes();
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
+        exif.setAttribute(ExifInterface.TAG_DATETIME, (new Date(System.currentTimeMillis())).toString()); // set the date & time
+
+    }
+
+    private static String formatLatLongString(double d) {
+        StringBuilder b = new StringBuilder();
+        b.append((int) d);
+        b.append("/1,");
+        d = (d - (int) d) * 60;
+        b.append((int) d);
+        b.append("/1,");
+        d = (d - (int) d) * 60000;
+        b.append((int) d);
+        b.append("/1000");
+        return b.toString();
+    }
     @Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
-	{
-		switch (requestCode) 
-		{			
-			case GET_POSITION_ON_MAP:
-			{
-				if (resultCode == Activity.RESULT_OK)
-				{/*
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        switch (requestCode)
+        {
+            case GET_POSITION_ON_MAP:
+            {
+                if (resultCode == Activity.RESULT_OK)
+                {/*
 					txtLatitude.setText("");
 					txtLongtitude.setText("");
 					int lat = data.getIntExtra("latitude", 0);
 					int log = data.getIntExtra("longitude", 0);
 					float _lat = (float) (lat / 1E6);
 					float _log = (float) (log / 1E6);
-					
+
 					Log.e("thong", "CropImage: Result OK, latitude : "+_lat+",longitude : "+_log);
 					txtLatitude.setText(String.valueOf(_lat));
-					
+
 					txtLongtitude.setText(String.valueOf(_log));*/
-				}
-				break;
-			}
-		}
-	}
+                }
+                break;
+            }
+        }
+    }
     @Override
     protected void onResume() {
         super.onResume();
-    	mApp.onResume();
-    	
-		//get Geolocation from Map
-    	
-		if(from.equals("Map")){
-			float _latitude=(float)(latitude/1E6);
-	    	float _longitude=(float)(longitude/1E6);
-			Log.e("CropImage-onResume","Latitude : "+_latitude+",longitude : "+_longitude);
-			txtLatitude.setText(String.valueOf(_latitude));
-			txtLongtitude.setText(String.valueOf(_longitude));
-			from="";
-		}
-    }    
-    
+        mApp.onResume();
+
+        //get Geolocation from Map
+
+        if(from.equals("Map")){
+            float _latitude=(float)(latitude/1E6);
+            float _longitude=(float)(longitude/1E6);
+            Log.e("CropImage-onResume","Latitude : "+_latitude+",longitude : "+_longitude);
+            txtLatitude.setText(String.valueOf(_latitude));
+            txtLongtitude.setText(String.valueOf(_longitude));
+            from="";
+        }
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
         BitmapManager.instance().cancelThreadDecoding(mDecodingThreads);
-    	mApp.onPause();
+        mApp.onPause();
     }
 
     @Override
@@ -1720,7 +1709,7 @@ private static String formatLatLongString(double d) {
             // 256 pixels wide is enough.
             if (mBitmap.getWidth() > 256) {
                 mScale = 256.0F / mBitmap.getWidth(); // CR: F => f (or change
-                                                      // all f to F).
+                // all f to F).
             }
             Matrix matrix = new Matrix();
             matrix.setScale(mScale, mScale);
@@ -1744,7 +1733,7 @@ private static String formatLatLongString(double d) {
 
             mHandler.post(new Runnable() {
                 @SuppressWarnings("static-access")
-				public void run() {
+                public void run() {
                     mWaitingToPick = mNumFaces > 1;
                     if (mNumFaces > 0) {
                         for (int i = 0; i < mNumFaces; i++) {
@@ -1823,7 +1812,7 @@ class CropImageView extends ImageViewTouchBase {
             hv.invalidate();
         }
     }
-    
+
     @Override
     protected void postTranslate(float deltaX, float deltaY) {
         super.postTranslate(deltaX, deltaY);
@@ -1865,89 +1854,89 @@ class CropImageView extends ImageViewTouchBase {
         }
 
         switch (event.getAction()) {
-        case MotionEvent.ACTION_DOWN: // CR: inline case blocks.
-            if (cropImage.mWaitingToPick) {
-                recomputeFocus(event);
-            } else {
-                for (int i = 0; i < mHighlightViews.size(); i++) { // CR:
-                                                                   // iterator
-                                                                   // for; if
-                                                                   // not, then
-                                                                   // i++ =>
-                                                                   // ++i.
-                    HighlightView hv = mHighlightViews.get(i);
-                    int edge = hv.getHit(event.getX(), event.getY());
-                    if (edge != HighlightView.GROW_NONE) {
-                        mMotionEdge = edge;
-                        mMotionHighlightView = hv;
-                        mLastX = event.getX();
-                        mLastY = event.getY();
-                        // CR: get rid of the extraneous parens below.
-                        mMotionHighlightView.setMode((edge == HighlightView.MOVE) ? HighlightView.ModifyMode.Move
-                                : HighlightView.ModifyMode.Grow);
-                        break;
-                    }
-                }
-            }
-            break;
-        // CR: vertical space before case blocks.
-        case MotionEvent.ACTION_UP:
-            if (cropImage.mWaitingToPick) {
-                for (int i = 0; i < mHighlightViews.size(); i++) {
-                    HighlightView hv = mHighlightViews.get(i);
-                    if (hv.hasFocus()) {
-                        cropImage.mCrop = hv;
-                        for (int j = 0; j < mHighlightViews.size(); j++) {
-                            if (j == i) { // CR: if j != i do your shit; no need
-                                          // for continue.
-                                continue;
-                            }
-                            mHighlightViews.get(j).setHidden(true);
+            case MotionEvent.ACTION_DOWN: // CR: inline case blocks.
+                if (cropImage.mWaitingToPick) {
+                    recomputeFocus(event);
+                } else {
+                    for (int i = 0; i < mHighlightViews.size(); i++) { // CR:
+                        // iterator
+                        // for; if
+                        // not, then
+                        // i++ =>
+                        // ++i.
+                        HighlightView hv = mHighlightViews.get(i);
+                        int edge = hv.getHit(event.getX(), event.getY());
+                        if (edge != HighlightView.GROW_NONE) {
+                            mMotionEdge = edge;
+                            mMotionHighlightView = hv;
+                            mLastX = event.getX();
+                            mLastY = event.getY();
+                            // CR: get rid of the extraneous parens below.
+                            mMotionHighlightView.setMode((edge == HighlightView.MOVE) ? HighlightView.ModifyMode.Move
+                                    : HighlightView.ModifyMode.Grow);
+                            break;
                         }
-                        centerBasedOnHighlightView(hv);
-                        ((CropImage) getContext()).mWaitingToPick = false;
-                        return true;
                     }
                 }
-            } else if (mMotionHighlightView != null) {
-                centerBasedOnHighlightView(mMotionHighlightView);
-                mMotionHighlightView.setMode(HighlightView.ModifyMode.None);
-            }
-            mMotionHighlightView = null;
-            break;
-        case MotionEvent.ACTION_MOVE:
-            if (cropImage.mWaitingToPick) {
-                recomputeFocus(event);
-            } else if (mMotionHighlightView != null) {
-                mMotionHighlightView.handleMotion(mMotionEdge, event.getX() - mLastX, event.getY() - mLastY);
-                mLastX = event.getX();
-                mLastY = event.getY();
-
-                if (true) {
-                    // This section of code is optional. It has some user
-                    // benefit in that moving the crop rectangle against
-                    // the edge of the screen causes scrolling but it means
-                    // that the crop rectangle is no longer fixed under
-                    // the user's finger.
-                    ensureVisible(mMotionHighlightView);
+                break;
+            // CR: vertical space before case blocks.
+            case MotionEvent.ACTION_UP:
+                if (cropImage.mWaitingToPick) {
+                    for (int i = 0; i < mHighlightViews.size(); i++) {
+                        HighlightView hv = mHighlightViews.get(i);
+                        if (hv.hasFocus()) {
+                            cropImage.mCrop = hv;
+                            for (int j = 0; j < mHighlightViews.size(); j++) {
+                                if (j == i) { // CR: if j != i do your shit; no need
+                                    // for continue.
+                                    continue;
+                                }
+                                mHighlightViews.get(j).setHidden(true);
+                            }
+                            centerBasedOnHighlightView(hv);
+                            ((CropImage) getContext()).mWaitingToPick = false;
+                            return true;
+                        }
+                    }
+                } else if (mMotionHighlightView != null) {
+                    centerBasedOnHighlightView(mMotionHighlightView);
+                    mMotionHighlightView.setMode(HighlightView.ModifyMode.None);
                 }
-            }
-            break;
+                mMotionHighlightView = null;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                if (cropImage.mWaitingToPick) {
+                    recomputeFocus(event);
+                } else if (mMotionHighlightView != null) {
+                    mMotionHighlightView.handleMotion(mMotionEdge, event.getX() - mLastX, event.getY() - mLastY);
+                    mLastX = event.getX();
+                    mLastY = event.getY();
+
+                    if (true) {
+                        // This section of code is optional. It has some user
+                        // benefit in that moving the crop rectangle against
+                        // the edge of the screen causes scrolling but it means
+                        // that the crop rectangle is no longer fixed under
+                        // the user's finger.
+                        ensureVisible(mMotionHighlightView);
+                    }
+                }
+                break;
         }
 
         switch (event.getAction()) {
-        case MotionEvent.ACTION_UP:
-            center(true, true);
-            break;
-        case MotionEvent.ACTION_MOVE:
-            // if we're not zoomed then there's no point in even allowing
-            // the user to move the image around. This call to center puts
-            // it back to the normalized location (with false meaning don't
-            // animate).
-            if (getScale() == 1F) {
+            case MotionEvent.ACTION_UP:
                 center(true, true);
-            }
-            break;
+                break;
+            case MotionEvent.ACTION_MOVE:
+                // if we're not zoomed then there's no point in even allowing
+                // the user to move the image around. This call to center puts
+                // it back to the normalized location (with false meaning don't
+                // animate).
+                if (getScale() == 1F) {
+                    center(true, true);
+                }
+                break;
         }
 
         return true;
