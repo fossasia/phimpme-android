@@ -27,6 +27,11 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.StatFs;
 import android.provider.MediaStore;
+import android.renderscript.Allocation;
+import android.renderscript.Element;
+import android.renderscript.RenderScript;
+import android.renderscript.ScriptIntrinsicBlur;
+import android.renderscript.ScriptIntrinsicConvolve3x3;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -345,6 +350,7 @@ public class CropImage extends MonitoredActivity
 					    
 					    }
 					});
+
 			/*
 			 * Danh - Add event for button Sepia image effect - End
 			 */
@@ -489,7 +495,6 @@ public class CropImage extends MonitoredActivity
 		canvas.drawBitmap(desBitmap, 0, 0, p);
 		return desBitmap;
 	}
-
 	// This method is originally from this site:
 	// http://android-code-space.blogspot.com/2010/08/convert-image-to-negative-in-android.html
 	public static Bitmap convertToSepia(Bitmap sampleBitmap) {
@@ -509,6 +514,7 @@ public class CropImage extends MonitoredActivity
 		myCanvas.drawBitmap(rBitmap, 0, 0, paint);
 		return rBitmap;
 	}
+
 
 	// This method is originally from this site:
 	// http://android-code-space.blogspot.com/2010/08/convert-image-to-negative-in-android.html
