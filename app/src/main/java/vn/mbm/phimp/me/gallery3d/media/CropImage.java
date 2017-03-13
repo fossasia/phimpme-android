@@ -101,9 +101,7 @@ public class CropImage extends MonitoredActivity {
     //private static float fromDegree = 0;
     // These are various options can be specified in the intent.
     private Bitmap.CompressFormat mOutputFormat = Bitmap.CompressFormat.JPEG; // only
-    // used
-    // with
-    // mSaveUri
+    // used with mSaveUri
     private Uri mSaveUri = null;
     private int mAspectX, mAspectY; // CR: two definitions per line == sad
     // panda.
@@ -307,16 +305,12 @@ public class CropImage extends MonitoredActivity {
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-
-
         if (extras != null) {
             if (extras.getString("circleCrop") != null) {
                 mCircleCrop = true;
                 mAspectX = 1;
                 mAspectY = 1;
             }
-
-
             Date date = new Date();
             Long longTime = new Long(date.getTime()/1000);
             newpath = Environment.getExternalStorageDirectory()+"/phimp.me/PhimpMe_Photo_Effect"+"/tmp_"+longTime+".jpg";
@@ -447,9 +441,7 @@ public class CropImage extends MonitoredActivity {
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
                     {
                         @Override
-                        public void onClick(DialogInterface dialog, int which)
-                        {
-                        }
+                        public void onClick(DialogInterface dialog, int which) {}
                     });
                     builder.create().show();
                 }else if(!txtLongtitude.getText().toString().equals("")&& txtLatitude.getText().toString().equals("")){
@@ -458,9 +450,7 @@ public class CropImage extends MonitoredActivity {
                     builder.setPositiveButton("OK", new DialogInterface.OnClickListener()
                     {
                         @Override
-                        public void onClick(DialogInterface dialog, int which)
-                        {
-                        }
+                        public void onClick(DialogInterface dialog, int which) {}
                     });
                     builder.create().show();
                 }
@@ -930,9 +920,7 @@ public class CropImage extends MonitoredActivity {
 
             }
         }
-
         // Return the cropped image directly or save it to the specified URI.
-
         Bundle myExtras = getIntent().getExtras();
         if (myExtras != null && (myExtras.getParcelable("data") != null || myExtras.getBoolean("return-data"))) {
             Bundle extras = new Bundle();
