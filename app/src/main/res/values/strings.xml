@@ -613,4 +613,5 @@
   <string name="show_local_photos">Show Local Photos</string>
   <string name="dialog_upload">This photo has been added to list upload photo!</string>
   <string name="nopicture_selected">No Picture Selected :(</string>
+  <string name="title_activity_maps">Maps</string>
 </resources>
