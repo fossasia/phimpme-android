@@ -19,6 +19,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Display;
@@ -3447,7 +3448,7 @@ public class newGallery extends Fragment {
 
 		public View getView(int position, View convertView, ViewGroup parent) {
 
-			ViewHolder holder;
+			final ViewHolder holder;
 
 			if (convertView == null) {
 				holder = new ViewHolder();
@@ -3484,9 +3485,11 @@ public class newGallery extends Fragment {
 							vn.mbm.phimp.me.gallery.PhimpMeGallery.setFileList(file);
 							showImageIntent.putExtra("aspectX", 0);
 							showImageIntent.putExtra("aspectY", 0);
+                            ActivityOptionsCompat options = ActivityOptionsCompat.
+                                    makeSceneTransitionAnimation(getActivity(), (View)holder.imageview, "gridanim");
 							showImageIntent.putExtra("scale", true);
 							showImageIntent.putExtra("activityName", "LocalPhotos");
-							startActivity(showImageIntent);
+							startActivity(showImageIntent,options.toBundle());
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
