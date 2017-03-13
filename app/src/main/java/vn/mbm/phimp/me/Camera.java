@@ -17,6 +17,8 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -57,8 +59,8 @@ public class Camera extends Activity
         _path = Environment.getExternalStorageDirectory() + "/phimp.me/take_photo/"+filename;
         Log.i("Danh","Path 1 :"+_path);
 	}
-	protected void startCameraActivity()
-    {
+
+	protected void startCameraActivity() {
     	Log.i("MakeMachine", "startCameraActivity()" );
     	File file = new File( _path );
     	Uri outputFileUri = Uri.fromFile( file );
