@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-   	<string name="crash_report_text">"Oops! I crashed, but a report has been sent to my developer to help fix the issue!"</string>
-    
+    <string name="crash_report_text">"Oops! I crashed, but a report has been sent to my developer to help fix the issue!"</string>
+    <string name="map">Map</string>
     <string name="admob_id">a14ff82a6fc607c</string>
     <string name="currency">$</string>
     <string name="upload">Upload</string>
