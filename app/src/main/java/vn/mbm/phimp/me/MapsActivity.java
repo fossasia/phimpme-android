@@ -48,6 +48,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mBottomNav.setOnNavigationItemSelectedListener(this);
 
         mBottomNav.getMenu().getItem(1).setChecked(true);
+        mBottomNav.getMenu().getItem(0).setChecked(false);
 
     }
 
@@ -167,6 +168,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             .replace(R.id.map, frag)
                             .commit();
                     currentScreen = PhimpMe.HomeScreenState.GALLERY;
+                    mBottomNav.getMenu().getItem(1).setChecked(false);
+                    mBottomNav.getMenu().getItem(0).setChecked(true);
                 }
                 break;
             case R.id.tab_map:
@@ -182,6 +185,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             .replace(R.id.map, camFrag)
                             .commit();
                     currentScreen = PhimpMe.HomeScreenState.CAMERA;
+                    mBottomNav.getMenu().getItem(1).setChecked(false);
                 }
                 break;
             case R.id.tab_upload:
@@ -192,6 +196,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             .replace(R.id.map, frag)
                             .commit();
                     currentScreen = PhimpMe.HomeScreenState.UPLOAD;
+                    mBottomNav.getMenu().getItem(1).setChecked(false);
                 }
                 break;
             case R.id.tab_settings:
@@ -202,6 +207,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             .replace(R.id.map, frag)
                             .commit();
                     currentScreen = PhimpMe.HomeScreenState.SETTINGS;
+                    mBottomNav.getMenu().getItem(1).setChecked(false);
                 }
                 break;
 
@@ -209,4 +215,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         return true;
     }
+
+
 }
