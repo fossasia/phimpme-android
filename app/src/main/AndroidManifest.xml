@@ -43,7 +43,7 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-        
+
         <service android:name=".CollectUserData" />
         <!-- Start of Crittercism Support Forum Manifest Code -->
         <activity
