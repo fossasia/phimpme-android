@@ -30,13 +30,33 @@ android:
 
     # Specify at least one system image
     - sys-img-armeabi-v7a-google_apis-$ANDROID_API_LEVEL
+    
+# prevents reuploading of Cache
+before_cache:
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+
+# list of directories to Cache
+cache:
+  directories:
+    - "${TRAVIS_BUILD_DIR}/android/gradle/caches/"
+    - "${TRAVIS_BUILD_DIR}/android/gradle/wrapper/dists/"
+    - "$HOME/android/.gradle/caches/"
+    - "$HOME/android/.gradle/wrapper/"
+    - "$HOME/.android/build-cache"
 
 licenses:
     - 'android-sdk-preview-license-.+'
     - 'android-sdk-license-.+'
     - 'google-gdk-license-.+'
 
-script: 
+before_script:
+  - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
+  - emulator -avd test -no-audio -no-window &
+  - sleep 300
+  - adb shell input keyevent 82 &
+
+script:
+ - ./gradlew connectedAndroidTest
  - ./gradlew build
 
 after_success:
