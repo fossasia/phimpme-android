@@ -266,17 +266,10 @@ public class Upload extends android.support.v4.app.Fragment {
         btnBluetoothShare.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (imagelist != "") {
+                if (!imagelist.isEmpty()) {
                     ImageSharer.share(getContext(),imagelist);
-                   /* Intent intent = new Intent();
-                    intent.setClass(getContext(), BluetoothShareMultipleFile.class);
-                    intent.putExtra("imagelist", imagelist);
-                    intent.putExtra("activityName", "Upload");
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);*/
-
                 } else {
-                    Commons.AlertLog(ctx, "Do not have photo to shareSingle", getString(R.string.accept)).show();
+                    Commons.AlertLog(ctx, "Do not have photo to share", getString(R.string.accept)).show();
                 }
 
             }

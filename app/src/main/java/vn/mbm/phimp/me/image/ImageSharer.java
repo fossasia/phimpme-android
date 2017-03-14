@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 
 public class ImageSharer {
-    /**
+    /**This function can be called to share single or multiple images via supported apps.
      * @param context
      * @param imagelist list of images to share separated by #.
      */
@@ -26,6 +26,6 @@ public class ImageSharer {
         }
         share.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
         share.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        context.startActivity(Intent.createChooser(share, "Share " + paths.length + " images"));
+        context.startActivity(Intent.createChooser(share, "Share " + paths.length + " image(s)"));
     }
 }
