@@ -3,17 +3,16 @@ package vn.mbm.phimp.me;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
+import android.content.*;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.location.LocationListener;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,26 +22,19 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.facebook.CallbackManager;
-import com.facebook.FacebookSdk;
+import com.facebook.*;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
+//import com.google.android.maps.GeoPoint;
 import com.joooid.android.model.User;
 import com.joooid.android.xmlrpc.Constants;
 import com.joooid.android.xmlrpc.JoooidRpc;
@@ -51,10 +43,13 @@ import com.tani.app.ui.IconContextMenu;
 import org.json.JSONObject;
 import org.wordpress.android.NewAccount;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.logging.Handler;
 
 import vn.mbm.phimp.me.database.AccountItem;
 import vn.mbm.phimp.me.database.DrupalItem;
@@ -62,25 +57,9 @@ import vn.mbm.phimp.me.database.ImageshackItem;
 import vn.mbm.phimp.me.database.JoomlaItem;
 import vn.mbm.phimp.me.feedservice.FacebookActivity;
 import vn.mbm.phimp.me.gallery3d.media.CropImage;
-import vn.mbm.phimp.me.services.DeviantArtService;
-import vn.mbm.phimp.me.services.DrupalServices;
-import vn.mbm.phimp.me.services.FacebookServices;
-import vn.mbm.phimp.me.services.FlickrServices;
-import vn.mbm.phimp.me.services.ImageshackServices;
-import vn.mbm.phimp.me.services.ImgurServices;
-import vn.mbm.phimp.me.services.KaixinServices;
-import vn.mbm.phimp.me.services.PicasaServices;
-import vn.mbm.phimp.me.services.QQServices;
-import vn.mbm.phimp.me.services.S500pxService;
-import vn.mbm.phimp.me.services.SohuServices;
-import vn.mbm.phimp.me.services.TumblrServices;
-import vn.mbm.phimp.me.services.TwitterServices;
-import vn.mbm.phimp.me.services.VKServices;
-import vn.mbm.phimp.me.services.Wordpress;
+import vn.mbm.phimp.me.services.*;
 import vn.mbm.phimp.me.utils.Commons;
 import vn.mbm.phimp.me.utils.geoDegrees;
-
-//import com.google.android.maps.GeoPoint;
 
 public class Upload extends android.support.v4.app.Fragment {
     private final int CONTEXT_MENU_ID = 1;
@@ -150,12 +129,12 @@ public class Upload extends android.support.v4.app.Fragment {
 
     GridView listPhotoUpload;
 
-    ImageView btnAdd;
+    ImageButton btnAdd;
 
-    ImageView btnPhotoAdd;
+    ImageButton btnPhotoAdd;
 
     //bluetooth share
-    public static ImageView btnBluetoothShare;
+    public static ImageButton btnBluetoothShare;
 
     static String[] path;
 
@@ -166,7 +145,7 @@ public class Upload extends android.support.v4.app.Fragment {
 
     ImageView imgPreview;
 
-    ImageView btnUpload;
+    Button btnUpload;
 
     EditText txtPhotoTitle;
 
@@ -183,8 +162,6 @@ public class Upload extends android.support.v4.app.Fragment {
     String[] name;
 
     String[] service;
-
-    int color ;
 
     public static String imagelist = "";
 
@@ -220,7 +197,7 @@ public class Upload extends android.support.v4.app.Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        color =  getActivity().getResources().getColor(R.color.icongrey);
+
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
 
@@ -259,8 +236,7 @@ public class Upload extends android.support.v4.app.Fragment {
 		/*
          * bluetooth share
 		 */
-        btnBluetoothShare = (ImageView) getView().findViewById(R.id.upload_sendDirectly);
-        btnBluetoothShare.setColorFilter(color);
+        btnBluetoothShare = (ImageButton) getView().findViewById(R.id.upload_sendDirectly);
         btnBluetoothShare.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -279,8 +255,7 @@ public class Upload extends android.support.v4.app.Fragment {
             }
         });
 
-        btnUpload = (ImageView) getView().findViewById(R.id.btnUploadPhoto);
-        btnUpload.setColorFilter(color);
+        btnUpload = (Button) getView().findViewById(R.id.btnUploadPhoto);
         if (savedInstanceState != null) {
         }
 
@@ -318,8 +293,7 @@ public class Upload extends android.support.v4.app.Fragment {
             }
         });
 
-        btnAdd = (ImageView) getView().findViewById(R.id.btnUploadAccountAdd);
-        btnAdd.setColorFilter(color);
+        btnAdd = (ImageButton) getView().findViewById(R.id.btnUploadAccountAdd);
         btnAdd.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -328,8 +302,7 @@ public class Upload extends android.support.v4.app.Fragment {
             }
         });
 
-        btnPhotoAdd = (ImageView) getView().findViewById(R.id.btnUploadPhotoAdd);
-        btnPhotoAdd.setColorFilter(color);
+        btnPhotoAdd = (ImageButton) getView().findViewById(R.id.btnUploadPhotoAdd);
         btnPhotoAdd.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -530,7 +503,10 @@ public class Upload extends android.support.v4.app.Fragment {
                 convertView = mInflater.inflate(R.layout.gridviewitem, null);
                 holder.imageview = (ImageView) convertView
                         .findViewById(R.id.ImageGrid);
+                holder.imageview.setMaxWidth(100);
+                holder.imageview.setMaxHeight(100);
                 holder.imageview.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                holder.imageview.setPadding(8, 8, 8, 8);
                 holder.title = (TextView) convertView
                         .findViewById(R.id.ImTitle);
                 holder.tags = (TextView) convertView
@@ -765,9 +741,7 @@ public class Upload extends android.support.v4.app.Fragment {
         super.onResume();
         PhimpMe.showTabs();
 
-        if (PhimpMe.FEEDS_GOOGLE_ADMOB == true) {
-            //PhimpMe.ShowAd();
-        }
+
         if (PhimpMe.add_account_upload) {
             reloadAccountsList();
             PhimpMe.add_account_upload = false;
@@ -797,10 +771,6 @@ public class Upload extends android.support.v4.app.Fragment {
         accounts = null;
 
         listAccounts.setAdapter(new AccountsAdapter(getActivity(), id, name, service));
-        if(listAccounts.getAdapter().isEmpty()) {
-            listAccounts.setVisibility(View.GONE);
-            getView().findViewById(R.id.noaccounts).setVisibility(View.VISIBLE);
-        }
 
     }
 

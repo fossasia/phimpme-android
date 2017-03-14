@@ -1,12 +1,15 @@
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context="vn.mbm.phimp.me.MapsActivity">
 
-    <FrameLayout
-        android:id="@+id/fragment_container"
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/drop_shadow"
@@ -27,10 +30,4 @@
         android:layout_alignParentBottom="true"
         app:itemBackground="@color/colorSecondary"
         app:menu="@menu/navigation" />
-
 </RelativeLayout>
-
-
-
-    <!--<com.google.ads.AdView--><!--android:id="@+id/adView"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_alignParentBottom="true"--><!--android:layout_centerHorizontal="true"--><!--ads:adSize="SMART_BANNER"--><!--ads:adUnitId="@string/admob_id"--><!--ads:loadAdOnCreate="true"--><!--ads:testDevices="TEST_EMULATOR" />-->
-

@@ -24,7 +24,6 @@ import org.junit.runner.RunWith;
 import java.util.concurrent.TimeUnit;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.Espresso.pressBack;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -80,38 +79,38 @@ public class UploadActivityTest {
                                 allOf(withId(R.id.relativeLayout2),
                                         childAtPosition(
                                                 withId(R.id.tabUpload),
-                                                2)),
+                                                3)),
                                 0),
                         isDisplayed()));
         textView2.check(matches(withText("Photos")));
 
-        ViewInteraction appCompatImageView = onView(
+        ViewInteraction appCompatImageButton = onView(
                 allOf(withId(R.id.btnUploadAccountAdd),
                         withParent(allOf(withId(R.id.relativeLayout1),
                                 withParent(withId(R.id.tabUpload)))),
                         isDisplayed()));
-        appCompatImageView.check(matches(isDisplayed()));
+        appCompatImageButton.check(matches(isDisplayed()));
 
-        ViewInteraction appCompatImageView2 = onView(
-                allOf(withId(R.id.btnUploadPhoto),
+        ViewInteraction appCompatButton = onView(
+                allOf(withId(R.id.btnUploadPhoto), withText("Upload"),
                         withParent(allOf(withId(R.id.relativeLayout2),
                                 withParent(withId(R.id.tabUpload)))),
                         isDisplayed()));
-        appCompatImageView2.check(matches(isDisplayed()));
+        appCompatButton.check(matches(isDisplayed()));
 
-        ViewInteraction appCompatImageView3 = onView(
+        ViewInteraction appCompatImageButton2 = onView(
                 allOf(withId(R.id.upload_sendDirectly),
                         withParent(allOf(withId(R.id.relativeLayout2),
                                 withParent(withId(R.id.tabUpload)))),
                         isDisplayed()));
-        appCompatImageView3.check(matches(isDisplayed()));
+        appCompatImageButton2.check(matches(isDisplayed()));
 
-        ViewInteraction appCompatImageView4 = onView(
+        ViewInteraction appCompatImageButton3 = onView(
                 allOf(withId(R.id.btnUploadPhotoAdd),
                         withParent(allOf(withId(R.id.relativeLayout2),
                                 withParent(withId(R.id.tabUpload)))),
                         isDisplayed()));
-        appCompatImageView4.check(matches(isDisplayed()));
+        appCompatImageButton3.check(matches(isDisplayed()));
 
         Espresso.unregisterIdlingResources(idlingResource);
 
@@ -136,3 +135,4 @@ public class UploadActivityTest {
         };
     }
 }
+
