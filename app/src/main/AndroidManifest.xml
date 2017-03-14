@@ -43,9 +43,7 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-
-        <uses-library android:name="com.google.android.maps" />
-
+        
         <service android:name=".CollectUserData" />
         <!-- Start of Crittercism Support Forum Manifest Code -->
         <activity
