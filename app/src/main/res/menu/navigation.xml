@@ -6,6 +6,10 @@
         android:title="@string/gallery" />
     <!--TODO: Put this back at some point-->
     <item
+        android:id="@+id/tab_map"
+        android:icon="@drawable/ic_map"
+        android:title="Map" />
+    <item
         android:id="@+id/tab_camera"
         android:icon="@drawable/ic_camera"
         android:title="@string/camera" />
