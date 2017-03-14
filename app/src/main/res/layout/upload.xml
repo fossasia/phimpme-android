@@ -96,8 +96,8 @@
 
         <ImageView
             android:id="@+id/upload_sendDirectly"
-            android:layout_width="54dp"
-            android:layout_height="54dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignTop="@+id/btnUploadPhotoAdd"
             android:layout_toLeftOf="@+id/btnUploadPhotoAdd"
             android:contentDescription="@string/empty"
