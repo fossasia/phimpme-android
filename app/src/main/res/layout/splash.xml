@@ -1,52 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="#3e6c8e">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/splash_container"
-    android:background="#e44f4f"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical">
-    <!-- splash screen -->
+
     <ImageView
-        android:layout_width="wrap_content"
+        android:id="@+id/imageView1"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/search"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textColor="#ffffff"
-        android:textSize="30dp"
-        android:text="Phimp.me"
-        android:textStyle="bold"
-        style="@style/QTheme"
-        tools:ignore="HardcodedText,SpUsage" />
+        android:src="@drawable/android"
+        android:layout_gravity="center">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:id="@+id/percent_text"
-        android:text="Loading...."
-        style="@style/Text"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="FOSSASIA"
-        style="@style/Text"/>
-
-    <ProgressBar android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="20dp"
-        android:layout_toLeftOf="@+id/textView27"
-        android:layout_alignBottom="@+id/textView27"
-        android:layout_toStartOf="@+id/textView27"
-        tools:ignore="ObsoleteLayoutParam,RtlHardcoded" />
-</LinearLayout>
-
-
-
+    	</ImageView>
+ </FrameLayout>

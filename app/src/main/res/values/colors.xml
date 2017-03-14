@@ -5,6 +5,7 @@
     <color name="black_trans">#77000000</color>
     <color name="blue">#0099FF</color>
     <color name="grey">#AAAAAA</color>
+    <color name="icongrey">#757575</color>
     <color name="white">#FFFFFFFF</color>
     <color name="black">#000000</color>
     <color name="green">#00FF00</color>
@@ -15,45 +16,9 @@
     <color name="colorFAB1">#2196F3</color>
     <color name="colorFAB2">#2196F3</color>
     <color name="colorFAB3">#2196F3</color>
-    <color name="colorAccent">#F44336</color>
-    <color name="colorSecondary">#009687</color>
-
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="textColorPrimary">#FFFFFF</color>
-    <color name="windowBackground">#FFFFFF</color>
-    <color name="navigationBarColor">#000000</color>
-
-
-    <!-- Screens background color-->
-    <color name="bg_screen1">#f64c73</color>
-    <color name="bg_screen2">#20d2bb</color>
-    <color name="bg_screen3">#3395ff</color>
-    <color name="bg_screen4">#c873f4</color>
-
-    <!-- dots inactive colors -->
-    <color name="dot_dark_screen1">#d1395c</color>
-    <color name="dot_dark_screen2">#14a895</color>
-    <color name="dot_dark_screen3">#2278d4</color>
-    <color name="dot_dark_screen4">#a854d4</color>
-
-    <!-- dots active colors -->
-    <color name="dot_light_screen1">#f98da5</color>
-    <color name="dot_light_screen2">#8cf9eb</color>
-    <color name="dot_light_screen3">#93c6fd</color>
-    <color name="dot_light_screen4">#e4b5fc</color>
-
-    <array name="array_dot_active">
-        <item>@color/dot_light_screen1</item>
-        <item>@color/dot_light_screen2</item>
-        <item>@color/dot_light_screen3</item>
-        <item>@color/dot_light_screen4</item>
-    </array>
-
-    <array name="array_dot_inactive">
-        <item>@color/dot_dark_screen1</item>
-        <item>@color/dot_dark_screen2</item>
-        <item>@color/dot_dark_screen3</item>
-        <item>@color/dot_dark_screen4</item>
-    </array>
+    <color name="colorAccent">#00B0FF</color>
+    <color name="colorSecondary">#ECEFF1</color>
+    <color name="colorPrimaryDark">#01579B</color>
+    <color name="colorPrimary">#03A9F4</color>
+    <color name="colorWindowBackground">#efefef</color>
 </resources>

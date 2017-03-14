@@ -35,7 +35,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:text="@string/photosent"
-            android:textColor="@color/white" />
+            android:textColor="#757575" />
 
     </RelativeLayout>
 
@@ -75,7 +75,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:text="@string/search_devices"
-            android:textColor="@color/white" />
+            android:textColor="#757575" />
 
         <ImageButton
             android:id="@+id/sendDirectly"
@@ -84,7 +84,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:contentDescription="@string/empty"
-            android:src="@drawable/bluetooth" />
+            android:src="@android:drawable/stat_sys_data_bluetooth" />
     </RelativeLayout>
 
     <View
@@ -110,24 +110,25 @@
             android:text="@string/txt_listdevice"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <ProgressBar
-            android:id="@+id/prog_scan"
-            style="?android:attr/progressBarStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="14dp" />
+
 
         <TextView
             android:id="@+id/txt_scanning"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/prog_scan"
             android:text="@string/txt_scanning"
             android:textAppearance="?android:attr/textAppearanceMedium" />
     </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/prog_scan"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+       />
 
     <ListView
         android:id="@+id/list_devices"

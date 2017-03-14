@@ -3,6 +3,7 @@ package vn.mbm.phimp.me;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,7 +33,6 @@ import android.widget.LinearLayout;
 import android.widget.TabHost.TabSpec;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdView;
 import com.paypal.android.MEP.PayPal;
 import com.vistrav.ask.Ask;
 
@@ -180,7 +180,6 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     public static BottomNavigationView mBottomNav;
     public static boolean check_donwload = false;
     public static boolean check_donwload_local_gallery = false;
-    public static AdView ad;
     public static int flashStatus = 2;
 
     //Gallery
@@ -213,8 +212,8 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
         if (IdList == null) IdList = new ArrayList<Integer>();
         Ask.on(this)
                 .forPermissions(Manifest.permission.ACCESS_FINE_LOCATION
-                        ,Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        ,Manifest.permission.CAMERA,
+                        , Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        , Manifest.permission.CAMERA,
                         Manifest.permission.READ_PHONE_STATE)
 
                 .go();
@@ -237,42 +236,6 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
         Display display = getWindowManager().getDefaultDisplay();
         width = display.getWidth() / 3;
         height = width;
-        /*
-         * Google admod
-         */
-        //ad = (AdView) findViewById(R.id.adView);
-        SharedPreferences setting = getSharedPreferences(PREFS_NAME, 0);
-        FEEDS_GOOGLE_ADMOB = setting.getBoolean("Google Admob", true);
-        File file = getBaseContext().getFileStreamPath("google_admob.txt");
-        if (file.exists()) {
-            try {
-                FileInputStream Rfile = openFileInput("google_admob.txt");
-
-                InputStreamReader einputreader = new InputStreamReader(Rfile);
-                BufferedReader ebuffreader = new BufferedReader(einputreader);
-                Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
-                PhimpMe.FEEDS_GOOGLE_ADMOB = tmp;
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        Log.i("PhimpMe", "feed_google_admob : " + FEEDS_GOOGLE_ADMOB);
-//        AdView adView = (AdView) this.findViewById(R.id.adView);
-//
-//        AdRequest request = new AdRequest.Builder()       // All emulators
-//                .addTestDevice("AC98C820A50B4AD8A2106EDE96FB87D4")  // An example device ID
-//                .build();
-//        adView.loadAd(request);
-//        if (FEEDS_GOOGLE_ADMOB == false) {
-//            adView.setVisibility(ViewGroup.GONE);
-//            //adView.destroy();
-//        }
-    	        
-    	        /*
-    	         * user config
-    	         */
 
         File file0 = getBaseContext().getFileStreamPath("local_gallery.txt");
         if (file0.exists()) {
@@ -635,6 +598,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                 if (currentScreen != HomeScreenState.GALLERY) {
                     newGallery frag = new newGallery();
                     getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.fragment_anim_fadein,R.anim.fragment_anim_fadeout)
                             .replace(R.id.fragment_container, frag)
                             .commit();
                     currentScreen = HomeScreenState.GALLERY;
@@ -645,6 +609,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
 
                     Camera2 camFrag = new Camera2();
                     getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.fragment_anim_fadein,R.anim.fragment_anim_fadeout)
                             .replace(R.id.fragment_container, camFrag)
                             .commit();
                     currentScreen = HomeScreenState.CAMERA;
@@ -654,6 +619,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                 if (currentScreen != HomeScreenState.UPLOAD) {
                     Upload frag = new Upload();
                     getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.fragment_anim_fadein,R.anim.fragment_anim_fadeout)
                             .replace(R.id.fragment_container, frag)
                             .commit();
                     currentScreen = HomeScreenState.UPLOAD;
@@ -663,15 +629,44 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                 if (currentScreen != HomeScreenState.SETTINGS) {
                     Settings frag = new Settings();
                     getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.fragment_anim_fadein,R.anim.fragment_anim_fadeout)
                             .replace(R.id.fragment_container, frag)
                             .commit();
                     currentScreen = HomeScreenState.SETTINGS;
                 }
                 break;
+            case R.id.share:
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=vn.mbm.phimp.me");
+                sendIntent.setType("text/plain");
+                startActivity(sendIntent);
+                break;
+           /* case R.id.like:
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("market://details?id=vn.mbm.phimp.me"));
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    intent.setData(Uri.parse("https://play.google.com/store/apps/details?id=vn.mbm.phimp.me"));
+                    startActivity(intent);
+                }
+                break;*/
+
 
         }
 
         return true;
+    }
+    public void launchMarket(View v){
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("market://details?id="+v.getTag()));
+        try {
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            intent.setData(Uri.parse("https://play.google.com/store/apps/details?id="+v.getTag()));
+            startActivity(intent);
+        }
     }
 
   /*  public Animation inFromRightAnimation() {
@@ -740,13 +735,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
 //        mBottomNav.setVisibility(ViewGroup.GONE);
     }
 
-//    public static void ShowAd() {
-//        ad.setVisibility(ViewGroup.VISIBLE);
-//    }
 
-    public static void hideAd() {
-        ad.setVisibility(ViewGroup.GONE);
-    }
 
     @Override
     protected void onPause() {
@@ -818,8 +807,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                         .replace(R.id.fragment_container, frag)
                         .commit();
                 currentScreen = HomeScreenState.GALLERY;
-            }
-            else {
+            } else {
                 AlertDialog.Builder alertbox = new AlertDialog.Builder(ctx);
                 alertbox.setMessage(getString(R.string.exit_message));
                 alertbox.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {

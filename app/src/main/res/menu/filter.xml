@@ -1,0 +1,137 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+  <!--  <item
+        android:id="@+id/capture"
+        android:title="Capture"
+        android:icon="@android:drawable/ic_menu_camera"
+        app:showAsAction="always"
+        />    -->
+
+    <item
+        android:id="@+id/filter0"
+        android:title="Original"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/filter1"
+        android:title="EdgeDectection"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/filter2"
+        android:title="Pixelize"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/filter3"
+        android:title="EMInterference"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/filter4"
+        android:title="TrianglesMosaic"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/filter5"
+        android:title="Legofied"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/filter6"
+        android:title="TileMosaic"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/filter7"
+        android:title="Blueorange"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/filter8"
+        android:title="ChromaticAberration"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/filter9"
+        android:title="BasicDeform"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/filter10"
+        android:title="Contrast"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/filter11"
+        android:title="NoiseWarp"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/filter12"
+        android:title="Refraction"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/filter13"
+        android:title="Mapping"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/filter14"
+        android:title="Crosshatch"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/filter15"
+        android:title="LichtensteinEsque"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/filter16"
+        android:title="AsciiArt"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/filter17"
+        android:title="MoneyFilter"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/filter18"
+        android:title="Cracked"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/filter19"
+        android:title="Polygonization"
+        app:showAsAction="never"
+        />
+
+    <item
+        android:id="@+id/filter20"
+        android:title="JFAVoronoi"
+        app:showAsAction="never"
+        />
+</menu>

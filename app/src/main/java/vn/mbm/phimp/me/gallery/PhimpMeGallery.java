@@ -1,16 +1,5 @@
 package vn.mbm.phimp.me.gallery;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
-import vn.mbm.phimp.me.PhimpMe;
-import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.SendFileActivity;
-import vn.mbm.phimp.me.Upload;
-import vn.mbm.phimp.me.image.CropImage;
-import vn.mbm.phimp.me.utils.geoDegrees;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -34,11 +23,22 @@ import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import vn.mbm.phimp.me.PhimpMe;
+import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.SendFileActivity;
+import vn.mbm.phimp.me.Upload;
+import vn.mbm.phimp.me.image.CropImage;
+import vn.mbm.phimp.me.utils.geoDegrees;
+
 public class PhimpMeGallery extends AppCompatActivity implements View.OnClickListener{
 	private Gallery gallery;
 	private static ArrayList<String> filePath;
     private Boolean isFabOpen = false;
-    private FloatingActionButton fab, fabEdit, fabUpload, fabShare;
+    private FloatingActionButton fab, fabEdit, fabUpload, fabShare, fabShare1;
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
 	private GalleryImageAdapter galImageAdapter;
 
@@ -77,11 +77,13 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
         fabEdit = (FloatingActionButton)findViewById(R.id.fabedit);
         fabUpload = (FloatingActionButton)findViewById(R.id.fabupload);
         fabShare = (FloatingActionButton)findViewById(R.id.fabshare);
+        fabShare1 = (FloatingActionButton)findViewById(R.id.fabshare1);
 
         fab.setOnClickListener(this);
         fabEdit.setOnClickListener(this);
         fabUpload.setOnClickListener(this);
         fabShare.setOnClickListener(this);
+        fabShare1.setOnClickListener(this);
 		setupUI();
 		
 	}
@@ -256,7 +258,7 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.fabupload:
                 AlertDialog.Builder builder=new AlertDialog.Builder(PhimpMeGallery.this);
-                builder.setMessage("This photo have been add to list upload photo !");
+                builder.setMessage(R.string.dialog_upload);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -267,7 +269,6 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                 builder.show();
                 break;
             case R.id.fabshare:
-
                 Intent shareIntent=new Intent();
                 shareIntent.setClass(PhimpMeGallery.this, SendFileActivity.class);
                 shareIntent.putExtra("image-path", filePath.get(position));
@@ -278,6 +279,17 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                 startActivityForResult(shareIntent, 1);
 
                 Log.d("Pawan", "Share");
+                break;
+            case R.id.fabshare1:
+               Intent intent1 = new Intent();
+                intent1.setAction(Intent.ACTION_SEND);
+               // intent1.putExtra(Intent.EXTRA_TEXT, whatsAppMessage);
+               // intent1.setType("text/plain");
+                intent1.putExtra(Intent.EXTRA_STREAM,filePath.get(position));
+                intent1.setType("image/jpg");
+               // intent1.setPackage("com.whatsapp");
+                startActivity(intent1);
+
                 break;
         }
     }
@@ -370,10 +382,12 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
             fabEdit.startAnimation(fab_close);
             fabUpload.startAnimation(fab_close);
             fabShare.startAnimation(fab_close);
+            fabShare1.startAnimation(fab_close);
 
             fabEdit.setClickable(false);
             fabUpload.setClickable(false);
             fabShare.setClickable(false);
+            fabShare1.setClickable(false);
             isFabOpen = false;
 
         } else {
@@ -382,9 +396,13 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
             fabEdit.startAnimation(fab_open);
             fabUpload.startAnimation(fab_open);
             fabShare.startAnimation(fab_open);
+            fabShare1.startAnimation(fab_open);
+
+
             fabEdit.setClickable(true);
             fabUpload.setClickable(true);
             fabShare.setClickable(true);
+            fabShare1.setClickable(true);
             isFabOpen = true;
 
         }

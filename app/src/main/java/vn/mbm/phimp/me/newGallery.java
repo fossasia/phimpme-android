@@ -34,9 +34,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+
+import com.vistrav.ask.Ask;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -65,8 +66,6 @@ import vn.mbm.phimp.me.utils.RSSPhotoItem;
 import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
 import vn.mbm.phimp.me.utils.RSSUtil;
 import vn.mbm.phimp.me.utils.geoDegrees;
-
-import com.vistrav.ask.Ask;
 
 public class newGallery extends Fragment {
     private static Context ctx;
@@ -166,7 +165,7 @@ public class newGallery extends Fragment {
     static LinearLayout localPhotosFrame;
     //static ScrollView localPhotosScroll;
     static GridView localPhotosGrid;
-    static ImageButton localPhotosMore;
+    static ImageView localPhotosMore;
     static PhotosAdapter photosAdapter;
     static Activity localActivity;
     static Cursor pathcursor;
@@ -180,6 +179,7 @@ public class newGallery extends Fragment {
     static int turnsNeeded = 0;
     static int turnsDone = 0;
     static int loadLeft = 0;
+    static int finalImageCount;
     static final int PER_TURN = 21;
     static boolean statsCounted = false;
     static Cursor staticCursor;
@@ -456,7 +456,7 @@ public class newGallery extends Fragment {
         localImageList = new ArrayList<>();
         photosAdapter = new PhotosAdapter();
         localPhotosGrid.setAdapter(photosAdapter);
-        localPhotosMore = (ImageButton) view.findViewById(R.id.btnLoadMoreLocalPhotos);
+        localPhotosMore = (ImageView) view.findViewById(R.id.btnLoadMoreLocalPhotos);
         localPhotosMore.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -3284,10 +3284,7 @@ public class newGallery extends Fragment {
         }
         else {
           PhimpMe.showTabs();	
-		
-          if (PhimpMe.FEEDS_GOOGLE_ADMOB == true){
-            //PhimpMe.ShowAd();
-          }
+
 		
           if (PhimpMe.IdList.size() == 5) {
             PhimpMe.IdList.clear();
@@ -3539,61 +3536,67 @@ public class newGallery extends Fragment {
                     statsCounted = true;
                 }
 
-				for (int i = (turnsDone * PER_TURN); i < localImagesPerTurn; i++) {
-					// Run through the cursor from the beginning
-					staticCursor.moveToPosition(i);
-					// Create an ImageItem to store data related to an image
-					ImageItem imageItem = new ImageItem();
-					// Cursor contains path of each image
-					String path = staticCursor.getString(path_column_index);
-					// Set imagePath to the imageItem
-					imageItem.path = path;
-					// Check if the PhimpMe Cache has the image in the cache
-					// If it is there, fetch image from the cache
-					boolean cacheHaveThePic = PhimpMe.cache.check(path);
-					if (cacheHaveThePic) {
-						// Set Image id and Image itself to the imageItem
-						imageItem.id = PhimpMe.cache.getCacheId(path);
-						imageItem.img = PhimpMe.cache.getCachePath(path);
-						// Add the image to the gridView
-						// PhotosAdapter has a list of images and it'll notify dataset has changed!
-                        photosAdapter.updateImageList(i, imageItem);
-					} else {
-						// Otherwise add it to the cache
-						// Access the image using a cursor
-						String[] columns = { MediaStore.Images.Thumbnails._ID };
-						Cursor imageCursor = ctx.getContentResolver().query(
-								MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-								columns,
-								MediaStore.Images.Media.DATA + " = " + "\"" + path + "\"",
-								null,
-								MediaStore.Images.Media._ID
+                if(localImageCount<localImagesPerTurn){
+                    finalImageCount = localImageCount;
+                } else {
+                    finalImageCount = localImagesPerTurn;
+                }
+
+		for (int i = (turnsDone * PER_TURN); i < finalImageCount; i++) {
+			// Run through the cursor from the beginning
+			staticCursor.moveToPosition(i);
+			// Create an ImageItem to store data related to an image
+			ImageItem imageItem = new ImageItem();
+			// Cursor contains path of each image
+			String path = staticCursor.getString(path_column_index);
+			// Set imagePath to the imageItem
+			imageItem.path = path;
+			// Check if the PhimpMe Cache has the image in the cache
+			// If it is there, fetch image from the cache
+			boolean cacheHaveThePic = PhimpMe.cache.check(path);
+			if (cacheHaveThePic) {
+				// Set Image id and Image itself to the imageItem
+				imageItem.id = PhimpMe.cache.getCacheId(path);
+				imageItem.img = PhimpMe.cache.getCachePath(path);
+				// Add the image to the gridView
+				// PhotosAdapter has a list of images and it'll notify dataset has changed!
+                        	photosAdapter.updateImageList(i, imageItem);
+				} else {
+					// Otherwise add it to the cache
+					// Access the image using a cursor
+					String[] columns = { MediaStore.Images.Thumbnails._ID };
+					Cursor imageCursor = ctx.getContentResolver().query(
+							MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+							columns,
+							MediaStore.Images.Media.DATA + " = " + "\"" + path + "\"",
+							null,
+							MediaStore.Images.Media._ID
+					);
+					// If the cursor is not empty;
+					if (imageCursor != null && imageCursor.getCount() > 0) {
+						// Move to the beginning of the cursor
+						imageCursor.moveToPosition(0);
+						// Get the ID of the image
+						int id = imageCursor.getInt(
+								imageCursor.getColumnIndexOrThrow(
+										MediaStore.Images.Media._ID));
+						// Set ID to the image item
+						imageItem.id = id;
+						// Set the thumbnail as the Image of the image item
+						imageItem.img = MediaStore.Images.Thumbnails.getThumbnail(
+								ctx.getContentResolver(),
+								id,	MediaStore.Images.Thumbnails.MICRO_KIND, null
 						);
-						// If the cursor is not empty;
-						if (imageCursor != null && imageCursor.getCount() > 0) {
-							// Move to the beginning of the cursor
-							imageCursor.moveToPosition(0);
-							// Get the ID of the image
-							int id = imageCursor.getInt(
-									imageCursor.getColumnIndexOrThrow(
-											MediaStore.Images.Media._ID));
-							// Set ID to the image item
-							imageItem.id = id;
-							// Set the thumbnail as the Image of the image item
-							imageItem.img = MediaStore.Images.Thumbnails.getThumbnail(
-									ctx.getContentResolver(),
-									id,	MediaStore.Images.Thumbnails.MICRO_KIND, null
+						// Save the thumbnail in PhimpMe cache
+						if (!PhimpMe.cache.check(imageItem.path)) {
+							PhimpMe.cache.saveCacheFile(
+									imageItem.path,
+									imageItem.img,
+									imageItem.id
 							);
-							// Save the thumbnail in PhimpMe cache
-							if (!PhimpMe.cache.check(imageItem.path)) {
-								PhimpMe.cache.saveCacheFile(
-										imageItem.path,
-										imageItem.img,
-										imageItem.id
-								);
-							}
-							// Close the cursor of the image
-							imageCursor.close();
+						}
+						// Close the cursor of the image
+						imageCursor.close();
 						} else {
 							// If there is no image, do not proceed then
 							imageItem.id = -1;
