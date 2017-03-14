@@ -57,7 +57,7 @@ public class MainActivityTest {
         IdlingResource idlingResource = new ElapsedTimeIdlingResource(waitingTime);
         Espresso.registerIdlingResources(idlingResource);
 
-        ViewInteraction imageView = onView(
+       /* ViewInteraction imageView = onView(
                 allOf(withId(R.id.btnLoadMoreLocalPhotos),
                         childAtPosition(
                                 allOf(withId(R.id.titlebarLocalPhotos),
@@ -77,7 +77,7 @@ public class MainActivityTest {
                                                 0)),
                                 0),
                         isDisplayed()));
-        textView.check(matches(withText("Local Photos")));
+        textView.check(matches(withText("Local Photos")));*/
 
 
         ViewInteraction cameraIcon = onView(
@@ -100,7 +100,7 @@ public class MainActivityTest {
 
     }
 
-    private static Matcher<View> childAtPosition(
+   /* private static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {
 
         return new TypeSafeMatcher<View>() {
@@ -117,6 +117,6 @@ public class MainActivityTest {
                         && view.equals(((ViewGroup) parent).getChildAt(position));
             }
         };
-    }
+    }*/
 }
 
