@@ -16,6 +16,7 @@ import android.view.ViewParent;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.hamcrest.core.IsInstanceOf;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -27,6 +28,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
@@ -54,6 +56,29 @@ public class MainActivityTest {
 
         IdlingResource idlingResource = new ElapsedTimeIdlingResource(waitingTime);
         Espresso.registerIdlingResources(idlingResource);
+
+        ViewInteraction imageView = onView(
+                allOf(withId(R.id.btnLoadMoreLocalPhotos),
+                        childAtPosition(
+                                allOf(withId(R.id.titlebarLocalPhotos),
+                                        childAtPosition(
+                                                IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
+                                                0)),
+                                1),
+                        isDisplayed()));
+        imageView.check(matches(isDisplayed()));
+
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.titleLocalPhotos), withText("Local Photos"),
+                        childAtPosition(
+                                allOf(withId(R.id.titlebarLocalPhotos),
+                                        childAtPosition(
+                                                IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
+                                                0)),
+                                0),
+                        isDisplayed()));
+        textView.check(matches(withText("Local Photos")));
+
 
         ViewInteraction cameraIcon = onView(
                 allOf(withId(R.id.tab_camera), isDisplayed()));

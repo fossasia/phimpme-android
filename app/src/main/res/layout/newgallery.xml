@@ -19,12 +19,13 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
 
             <RelativeLayout
-                android:id="@+id/toolbar_content_carrier"
+                android:id="@+id/titlebarLocalPhotos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/titleLocalPhotos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
