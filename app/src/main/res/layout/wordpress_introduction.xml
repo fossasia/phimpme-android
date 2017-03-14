@@ -1,9 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <!--<WebView xmlns:android="http://schemas.android.com/apk/res/android"-->
-        <!--android:id="@+id/wvWordpressIntroduction"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent" />-->
-<RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_web_site"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <WebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></WebView>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</RelativeLayout>
+<!--<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="fill_parent">
@@ -20,7 +35,7 @@
             android:paddingRight="30dp">
 
 
-            <!-- Username Label -->
+            &lt;!&ndash; Username Label &ndash;&gt;
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -35,7 +50,7 @@
                     android:hint="Wordpress Username" />
             </android.support.design.widget.TextInputLayout>
 
-            <!-- Password Label -->
+            &lt;!&ndash; Password Label &ndash;&gt;
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -67,5 +82,5 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:id="@+id/progressBar"/>
-</RelativeLayout>
+</RelativeLayout>-->
 
