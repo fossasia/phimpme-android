@@ -7,24 +7,15 @@ import android.net.Uri;
 import java.io.File;
 import java.util.ArrayList;
 
-/**
- * Created by harshit on 07-03-2017.
- */
 
 public class ImageSharer {
-    public static void shareSingle(Context context, String filePath) {
-        Intent share = new Intent(Intent.ACTION_SEND);
-        share.setType("image/*");
-        File imageFileToShare = new File(filePath);
-        Uri imageURI = Uri.fromFile(imageFileToShare);
-        share.putExtra(Intent.EXTRA_STREAM, imageURI);
-        share.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        context.startActivity(Intent.createChooser(share, "Share Image"));
-    }
-
-    public static void shareMultiple(Context context, String imagelist) {
+    /**
+     * @param context
+     * @param imagelist list of images to share separated by #.
+     */
+    public static void share(Context context, String imagelist) {
         String[] paths = imagelist.split("#");
-        Intent share = new Intent(Intent.ACTION_SEND_MULTIPLE);
+        Intent share = new Intent(paths.length > 1 ? Intent.ACTION_SEND_MULTIPLE : Intent.ACTION_SEND);
         share.setType("image/*");
         ArrayList<Uri> files = new ArrayList<Uri>();
 
@@ -36,6 +27,5 @@ public class ImageSharer {
         share.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
         share.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         context.startActivity(Intent.createChooser(share, "Share " + paths.length + " images"));
-
     }
 }

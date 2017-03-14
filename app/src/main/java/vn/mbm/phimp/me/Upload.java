@@ -267,7 +267,7 @@ public class Upload extends android.support.v4.app.Fragment {
             @Override
             public void onClick(View v) {
                 if (imagelist != "") {
-                    ImageSharer.shareMultiple(getContext(),imagelist);
+                    ImageSharer.share(getContext(),imagelist);
                    /* Intent intent = new Intent();
                     intent.setClass(getContext(), BluetoothShareMultipleFile.class);
                     intent.putExtra("imagelist", imagelist);

@@ -268,7 +268,7 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.fabshare:
 
-                ImageSharer.shareSingle(this,filePath.get(position));
+                ImageSharer.share(this,filePath.get(position));
                /* Intent shareIntent=new Intent();
                 shareIntent.setClass(PhimpMeGallery.this, SendFileActivity.class);
                 shareIntent.putExtra("image-path", filePath.get(position));
