@@ -278,7 +278,11 @@
             
             android:screenOrientation="portrait">
        </activity>
-
+        <activity
+            android:name=".ImagePickerActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|uiMode">
+        </activity>
         <activity android:name=".feedservice.FacebookActivity"
             android:configChanges=
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
