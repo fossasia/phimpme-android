@@ -101,6 +101,7 @@
             android:layout_alignTop="@+id/btnUploadPhotoAdd"
             android:layout_toLeftOf="@+id/btnUploadPhotoAdd"
             android:contentDescription="@string/empty"
+
             android:padding="8dp"
             android:clickable="true"
             android:focusable="true"

@@ -62,6 +62,7 @@ import vn.mbm.phimp.me.database.ImageshackItem;
 import vn.mbm.phimp.me.database.JoomlaItem;
 import vn.mbm.phimp.me.feedservice.FacebookActivity;
 import vn.mbm.phimp.me.gallery3d.media.CropImage;
+import vn.mbm.phimp.me.image.ImageSharer;
 import vn.mbm.phimp.me.services.DeviantArtService;
 import vn.mbm.phimp.me.services.DrupalServices;
 import vn.mbm.phimp.me.services.FacebookServices;
@@ -154,8 +155,9 @@ public class Upload extends android.support.v4.app.Fragment {
 
     ImageView btnPhotoAdd;
 
-    //bluetooth share
+
     public static ImageView btnBluetoothShare;
+
 
     static String[] path;
 
@@ -257,21 +259,15 @@ public class Upload extends android.support.v4.app.Fragment {
         });
 
 		/*
-         * bluetooth share
+         * bluetooth shareSingle
 		 */
         btnBluetoothShare = (ImageView) getView().findViewById(R.id.upload_sendDirectly);
         btnBluetoothShare.setColorFilter(color);
         btnBluetoothShare.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (imagelist != "") {
-                    Intent intent = new Intent();
-                    intent.setClass(getContext(), BluetoothShareMultipleFile.class);
-                    intent.putExtra("imagelist", imagelist);
-                    intent.putExtra("activityName", "Upload");
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-
+                if (!imagelist.isEmpty()) {
+                    ImageSharer.share(getContext(),imagelist);
                 } else {
                     Commons.AlertLog(ctx, "Do not have photo to share", getString(R.string.accept)).show();
                 }
