@@ -248,14 +248,21 @@
             android:name="org.wordpress.android.AddAccount"
             android:screenOrientation="portrait"></activity>
         <activity
-            android:name="org.wordpress.android.AddAcountSettings"
-            android:screenOrientation="portrait"></activity>
+            android:name="org.wordpress.android.AddAcountSettings"            
+            android:screenOrientation="portrait">
+       </activity>
         <activity
-            android:name=".feedservice.FacebookActivity"
+            android:name=".ImagePickerActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|uiMode">
+        </activity>
+        <activity android:name=".feedservice.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
+            android:screenOrientation="portrait">
+      </activity>
+      
         <provider
             android:name="com.facebook.FacebookContentProvider"
             android:authorities="com.facebook.app.FacebookContentProvider1781584438783986"
