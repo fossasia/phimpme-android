@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,6 +23,7 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -78,7 +80,11 @@ import vn.mbm.phimp.me.services.TwitterServices;
 import vn.mbm.phimp.me.services.VKServices;
 import vn.mbm.phimp.me.services.Wordpress;
 import vn.mbm.phimp.me.utils.Commons;
+import vn.mbm.phimp.me.utils.Image;
+import vn.mbm.phimp.me.utils.Params;
 import vn.mbm.phimp.me.utils.geoDegrees;
+
+import static vn.mbm.phimp.me.utils.Constants.TYPE_MULTI_PICKER;
 
 //import com.google.android.maps.GeoPoint;
 
@@ -333,8 +339,15 @@ public class Upload extends android.support.v4.app.Fragment {
         btnPhotoAdd.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ctx, PhotoSelect.class);
-                startActivityForResult(intent, SELECT_IMAGE_FROM_GALLERY);
+                Intent intent = new Intent(ctx, ImagePickerActivity.class);
+                Params params = new Params();
+                params.setPickerLimit(20);
+                params.setActionButtonColor(fetchAccentColor());
+                params.setToolbarColor(fetchAccentColor());
+                params.setColumnCount(3);
+                params.setButtonTextColor(fetchAccentColor());
+                intent.putExtra(vn.mbm.phimp.me.utils.Constants.KEY_PARAMS, params);
+                startActivityForResult(intent, TYPE_MULTI_PICKER);
             }
         });
 		/*btnPhotoAdd.setOnTouchListener(new OnTouchListener()
@@ -497,6 +510,13 @@ public class Upload extends android.support.v4.app.Fragment {
 
             }
         });
+    }
+    private int fetchAccentColor() {
+        TypedValue typedValue = new TypedValue();
+        TypedArray a = getActivity().obtainStyledAttributes(typedValue.data, new int[]{R.attr.colorAccent});
+        int color = a.getColor(0, 0);
+        a.recycle();
+        return color;
     }
 
     class ImageAdapter extends BaseAdapter {
@@ -1115,10 +1135,22 @@ public class Upload extends android.support.v4.app.Fragment {
                 }
                 break;
             }
-            case SELECT_IMAGE_FROM_GALLERY: {
+            case TYPE_MULTI_PICKER: {
                 if (resultCode == Activity.RESULT_OK) {
-                    imagelist = data.getStringExtra("Ids");
-                    listPhotoUpload.setAdapter(new ImageAdapter(getContext()));
+                    ArrayList<Image> imagesList = data.getParcelableArrayListExtra(vn.mbm.phimp.me.utils.Constants.KEY_BUNDLE_LIST);
+                    if(imagesList.size()>0) {
+                        for (int i = 0; i < imagesList.size(); i++) {
+
+                            if (i != imagesList.size())
+                                imagelist = imagelist.concat(imagesList.get(i).imagePath + "#");
+                            else
+                                imagelist = imagelist.concat(imagesList.get(i).imagePath);
+
+                        }
+                        listPhotoUpload.setAdapter(new ImageAdapter(getContext()));
+
+                    }
+
                 } else {
 
                 }

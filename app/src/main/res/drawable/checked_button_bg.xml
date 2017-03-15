@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:shape="oval"
+    android:useLevel="false">
+    <padding android:left="@dimen/margin_2"
+        android:right="@dimen/margin_2"
+        android:top="@dimen/margin_2"
+        android:bottom="@dimen/margin_2"/>
+    <!--<solid android:color="?attr:colorAccent" />-->
+    <size
+        android:width="@dimen/margin_32"
+        android:height="@dimen/margin_32" />
+</shape>

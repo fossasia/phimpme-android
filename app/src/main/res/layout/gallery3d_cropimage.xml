@@ -191,7 +191,6 @@
                             android:id="@+id/btnRotateLeftRight"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@null"
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentTop="true"
                             android:contentDescription="@string/empty"
@@ -199,31 +198,26 @@
 
                         <ImageButton
                             android:id="@+id/btnSnow"
-                            android:layout_width="100dp"
-                            android:scaleType="centerCrop"
-                            android:layout_height="100dp"
-                            android:background="@null"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
                             android:layout_toRightOf="@+id/btnSnow"
                             android:contentDescription="@string/empty"
-                            android:src="@drawable/snow_filter" />
+                            android:src="@drawable/snow" />
 
                         <ImageButton
                             android:id="@+id/btnRoundCorner"
-                            android:layout_width="100dp"
-                            android:scaleType="centerCrop"
-                            android:layout_height="100dp"
-                            android:background="@null"
-                            android:src="@drawable/round_filter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_alignParentTop="true"
                             android:layout_toRightOf="@+id/btnRoundCorner"
-                            android:contentDescription="@string/empty" />
+                            android:contentDescription="@string/empty"
+                            android:src="@drawable/round_cornor" />
 
                         <ImageButton
                             android:id="@+id/btnRotateTopDown"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@null"
                             android:layout_alignParentRight="true"
                             android:layout_alignParentTop="true"
                             android:layout_toRightOf="@+id/btnOriginal"

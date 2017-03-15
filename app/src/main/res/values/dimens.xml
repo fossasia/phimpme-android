@@ -4,4 +4,43 @@
   <dimen name="padding_large">16dp</dimen>
   <dimen name="fab_margin">16dp</dimen>
   <dimen name="headingText">16sp</dimen>
+
+
+  <dimen name="image_height_portrait">220dp</dimen>
+  <dimen name="image_height_landscape">110dp</dimen>
+
+  <dimen name="thumbnail_width">140dp</dimen>
+  <dimen name="thumbnail_height">100dp</dimen>
+
+  <dimen name="text_size_12">12sp</dimen>
+  <dimen name="text_size_14">14sp</dimen>
+  <dimen name="text_size_15">15sp</dimen>
+  <dimen name="text_size_16">16sp</dimen>
+  <dimen name="text_size_18">18sp</dimen>
+  <dimen name="text_size_20">20sp</dimen>
+
+  <dimen name="margin_1">1dp</dimen>
+  <dimen name="margin_2">2dp</dimen>
+  <dimen name="margin_3">3dp</dimen>
+  <dimen name="margin_5">5dp</dimen>
+  <dimen name="margin_8">8dp</dimen>
+  <dimen name="margin_10">10dp</dimen>
+  <dimen name="margin_15">15dp</dimen>
+  <dimen name="margin_16">16dp</dimen>
+  <dimen name="margin_20">20dp</dimen>
+  <dimen name="margin_30">30dp</dimen>
+  <dimen name="margin_32">32dp</dimen>
+  <dimen name="margin_36">36dp</dimen>
+  <dimen name="margin_40">40dp</dimen>
+  <dimen name="margin_42">42dp</dimen>
+  <dimen name="margin_48">48dp</dimen>
+  <dimen name="margin_50">50dp</dimen>
+  <dimen name="margin_56">56dp</dimen>
+  <dimen name="margin_60">60dp</dimen>
+  <dimen name="margin_70">70dp</dimen>
+  <dimen name="margin_80">80dp</dimen>
+  <dimen name="margin_90">90dp</dimen>
+  <dimen name="margin_100">100dp</dimen>
+  <dimen name="margin_140">140dp</dimen>
+  <dimen name="margin_250">250dp</dimen>
 </resources>
