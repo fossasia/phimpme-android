@@ -1,0 +1,33 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context="vn.mbm.phimp.me.MapsActivity">
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/drop_shadow"
+        android:layout_alignParentTop="true"
+        android:layout_below="@android:id/tabs" />
+
+    <View
+        android:id="@+id/drop_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_above="@+id/navigation_view"
+        android:background="@drawable/bottom_bar_shadow" />
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:itemBackground="@color/colorSecondary"
+        app:menu="@menu/navigation" />
+</RelativeLayout>
