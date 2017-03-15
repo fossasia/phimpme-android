@@ -15,7 +15,6 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -1139,16 +1138,19 @@ public class Upload extends android.support.v4.app.Fragment {
             case TYPE_MULTI_PICKER: {
                 if (resultCode == Activity.RESULT_OK) {
                     ArrayList<Image> imagesList = data.getParcelableArrayListExtra(vn.mbm.phimp.me.utils.Constants.KEY_BUNDLE_LIST);
-                    for (int i =0;i<imagesList.size();i++){
+                    if(imagesList.size()>0) {
+                        for (int i = 0; i < imagesList.size(); i++) {
 
-                        if(i!=imagesList.size())
-                            imagelist = imagelist.concat(imagesList.get(i).imagePath+"#");
-                        else
-                            imagelist = imagelist.concat(imagesList.get(i).imagePath);
+                            if (i != imagesList.size())
+                                imagelist = imagelist.concat(imagesList.get(i).imagePath + "#");
+                            else
+                                imagelist = imagelist.concat(imagesList.get(i).imagePath);
+
+                        }
+                        listPhotoUpload.setAdapter(new ImageAdapter(getContext()));
 
                     }
-                    listPhotoUpload.setAdapter(new ImageAdapter(getContext()));
-                    Log.e("asd",imagesList.get(0).imagePath);
+
                 } else {
 
                 }
