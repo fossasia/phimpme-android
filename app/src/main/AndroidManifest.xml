@@ -259,7 +259,7 @@
         <activity android:name=".feedservice.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
             android:screenOrientation="portrait">
       </activity>
       
