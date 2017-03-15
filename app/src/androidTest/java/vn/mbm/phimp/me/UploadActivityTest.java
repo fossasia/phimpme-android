@@ -63,7 +63,7 @@ public class UploadActivityTest {
         IdlingResource idlingResource = new ElapsedTimeIdlingResource(waitingTime);
         Espresso.registerIdlingResources(idlingResource);
 
-        ViewInteraction textView = onView(
+        /*ViewInteraction textView = onView(
                 allOf(withId(R.id.textView1), withText("Accounts"),
                         childAtPosition(
                                 allOf(withId(R.id.relativeLayout1),
@@ -72,9 +72,9 @@ public class UploadActivityTest {
                                                 0)),
                                 0),
                         isDisplayed()));
-        textView.check(matches(withText("Accounts")));
+        textView.check(matches(withText("Accounts")));*/
 
-        ViewInteraction textView2 = onView(
+        /*ViewInteraction textView2 = onView(
                 allOf(withId(R.id.textView2), withText("Photos"),
                         childAtPosition(
                                 allOf(withId(R.id.relativeLayout2),
@@ -83,7 +83,7 @@ public class UploadActivityTest {
                                                 2)),
                                 0),
                         isDisplayed()));
-        textView2.check(matches(withText("Photos")));
+        textView2.check(matches(withText("Photos")));*/
 
         ViewInteraction appCompatImageView = onView(
                 allOf(withId(R.id.btnUploadAccountAdd),
@@ -117,7 +117,7 @@ public class UploadActivityTest {
 
     }
 
-    private static Matcher<View> childAtPosition(
+    /*private static Matcher<View> childAtPosition(
             final Matcher<View> parentMatcher, final int position) {
 
         return new TypeSafeMatcher<View>() {
@@ -134,5 +134,5 @@ public class UploadActivityTest {
                         && view.equals(((ViewGroup) parent).getChildAt(position));
             }
         };
-    }
+    }*/
 }
