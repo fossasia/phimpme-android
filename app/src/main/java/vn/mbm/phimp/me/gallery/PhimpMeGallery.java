@@ -1,16 +1,5 @@
 package vn.mbm.phimp.me.gallery;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
-import vn.mbm.phimp.me.PhimpMe;
-import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.SendFileActivity;
-import vn.mbm.phimp.me.Upload;
-import vn.mbm.phimp.me.image.CropImage;
-import vn.mbm.phimp.me.utils.geoDegrees;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -34,11 +23,22 @@ import android.widget.Gallery;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import vn.mbm.phimp.me.PhimpMe;
+import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.SendFileActivity;
+import vn.mbm.phimp.me.Upload;
+import vn.mbm.phimp.me.image.CropImage;
+import vn.mbm.phimp.me.utils.geoDegrees;
+
 public class PhimpMeGallery extends AppCompatActivity implements View.OnClickListener{
 	private Gallery gallery;
 	private static ArrayList<String> filePath;
     private Boolean isFabOpen = false;
-    private FloatingActionButton fab, fabEdit, fabUpload, fabShare;
+    private FloatingActionButton fab, fabEdit, fabUpload, fabShare, fabShare1, delete;
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
 	private GalleryImageAdapter galImageAdapter;
 
@@ -53,6 +53,8 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
 	public static int num;
 	private static String longtitude="",latitude="",title="";
 	private Context ctx;
+
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -77,11 +79,15 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
         fabEdit = (FloatingActionButton)findViewById(R.id.fabedit);
         fabUpload = (FloatingActionButton)findViewById(R.id.fabupload);
         fabShare = (FloatingActionButton)findViewById(R.id.fabshare);
+        fabShare1 = (FloatingActionButton)findViewById(R.id.fabshare1);
+        delete = (FloatingActionButton)findViewById(R.id.delete);
 
         fab.setOnClickListener(this);
         fabEdit.setOnClickListener(this);
         fabUpload.setOnClickListener(this);
         fabShare.setOnClickListener(this);
+        fabShare1.setOnClickListener(this);
+        delete.setOnClickListener(this);
 		setupUI();
 		
 	}
@@ -267,7 +273,6 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                 builder.show();
                 break;
             case R.id.fabshare:
-
                 Intent shareIntent=new Intent();
                 shareIntent.setClass(PhimpMeGallery.this, SendFileActivity.class);
                 shareIntent.putExtra("image-path", filePath.get(position));
@@ -279,6 +284,37 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
 
                 Log.d("Pawan", "Share");
                 break;
+                
+            case R.id.fabshare1:
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                sharingIntent.setType("image/*");
+
+                Uri uri = Uri.parse(filePath.get(position));
+                sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
+
+                startActivity(Intent.createChooser(sharingIntent, "Share via"));
+
+                break;
+            case R.id.delete:
+                Uri imageUri = Uri.parse(filePath.get(position));
+                File fdelete = new File(imageUri.toString());
+
+                if (fdelete.exists()) {
+                    if (fdelete.delete()) {
+                        //deleteFileFromMediaStore(mContext.getContentResolver(), f);
+                        sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(fdelete)));
+                        System.out.println("file Deleted :" );
+                        Toast.makeText(this, "Delete Successfully...", Toast.LENGTH_SHORT)
+                                .show();
+                    } else {
+                        System.out.println("file not Deleted :");
+                        Toast.makeText(this, "file not deleted...", Toast.LENGTH_SHORT)
+                                .show();
+                    }
+                }
+                break;
+
         }
     }
 
@@ -370,10 +406,15 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
             fabEdit.startAnimation(fab_close);
             fabUpload.startAnimation(fab_close);
             fabShare.startAnimation(fab_close);
+            fabShare1.startAnimation(fab_close);
+            delete.startAnimation(fab_close);
+
 
             fabEdit.setClickable(false);
             fabUpload.setClickable(false);
             fabShare.setClickable(false);
+            fabShare1.setClickable(false);
+            delete.setClickable(false);
             isFabOpen = false;
 
         } else {
@@ -382,9 +423,15 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
             fabEdit.startAnimation(fab_open);
             fabUpload.startAnimation(fab_open);
             fabShare.startAnimation(fab_open);
+            fabShare1.startAnimation(fab_open);
+            delete.startAnimation(fab_open);
+
+
             fabEdit.setClickable(true);
             fabUpload.setClickable(true);
             fabShare.setClickable(true);
+            fabShare1.setClickable(true);
+            delete.setClickable(true);
             isFabOpen = true;
 
         }
