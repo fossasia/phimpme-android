@@ -1,47 +1,24 @@
 language: android
-jdk: 
- - oraclejdk8
-# Use the Travis Container-Based Infrastructure
-
-env:
-  global:
-    - ANDROID_API_LEVEL=25
-    - ANDROID_BUILD_TOOLS_VERSION=25.0.2
-    - ANDROID_ABI=armeabi-v7a
-    - ANDROID_TAG=google_apis
-    - ANDROID_TARGET=android-25
-    - ADB_INSTALL_TIMEOUT=20 # minutes (2 minutes by default)
-
 android:
   components:
-    - tools
-    - platform-tools
-    - build-tools-$ANDROID_BUILD_TOOLS_VERSION
-    - android-$ANDROID_API_LEVEL
-    # For Google APIs
-    - addon-google_apis-google-$ANDROID_API_LEVEL
-    # Google Play Services
+    # Uncomment the lines below if you want to
+    # use the latest revision of Android SDK Tools
+    # - platform-tools
+    # - tools
+
+    # The BuildTools version used by your project
+    - build-tools-19.1.0
+
+    # The SDK version used to compile your project
+    - android-22
+
+    # Additional components
     - extra-google-google_play_services
-    # Support library
-    - extra-android-support
-    # Latest artifacts in local repository
     - extra-google-m2repository
     - extra-android-m2repository
+    - addon-google_apis-google-19
 
-    # Specify at least one system image
-    - sys-img-armeabi-v7a-google_apis-$ANDROID_API_LEVEL
-
-licenses:
-    - 'android-sdk-preview-license-.+'
-    - 'android-sdk-license-.+'
-    - 'google-gdk-license-.+'
-
-script: 
- - ./gradlew build
-
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
-  - 'if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./upload-apk.sh; fi'
-
-notifications:
-  slack: fossasia:JgzycrBUs0nKnmJhsAxCB4bL
+    # Specify at least one system image,
+    # if you need to run emulator(s) during your tests
+    - sys-img-armeabi-v7a-android-22
+    - sys-img-armeabi-v7a-android-17
