@@ -35,6 +35,8 @@ import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.gallery3d.app.App;
 import vn.mbm.phimp.me.gallery3d.app.Res;
 import vn.mbm.phimp.me.utils.geoDegrees;
+
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -43,6 +45,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
@@ -60,6 +63,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region;
+import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.media.FaceDetector;
 import android.media.MediaScannerConnection;
@@ -68,6 +72,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
@@ -276,17 +281,52 @@ public class CropImage extends MonitoredActivity {
 		
 		txtTags = (EditText) findViewById(R.id.txtUploadPhotoTags);
 		btnUseMap = (ImageButton) findViewById(R.id.btnUploadPhotoPutPos);
-		/*btnUseMap.setOnClickListener(new OnClickListener() {
+		btnUseMap.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) 
 			{
-				Intent _itent = new Intent(ctx, UploadMap.class);
-				_itent.putExtra("latitude", txtLatitude.getText().toString());
-				_itent.putExtra("longitude", txtLongtitude.getText().toString());
-				startActivityForResult(_itent, GET_POSITION_ON_MAP);
+				LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+				if (ActivityCompat.checkSelfPermission(CropImage.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(CropImage.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+					// TODO: Consider calling
+					//    ActivityCompat#requestPermissions
+					// here to request the missing permissions, and then overriding
+					//   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+					//                                          int[] grantResults)
+					// to handle the case where the user grants the permission. See the documentation
+					// for ActivityCompat#requestPermissions for more details.
+					return;
+				}
+				boolean enabled = locationManager
+						.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+				if (!enabled) {
+					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+							CropImage.this);
+					alertDialogBuilder
+							.setMessage("GPS is disabled in your device. Enable it?")
+							.setCancelable(false)
+							.setPositiveButton("Enable GPS",
+									new DialogInterface.OnClickListener() {
+										public void onClick(DialogInterface dialog,
+															int id) {
+											Intent callGPSSettingIntent = new Intent(
+													android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+											CropImage.this.startActivity(callGPSSettingIntent);
+										}
+									});
+					alertDialogBuilder.setNegativeButton("Cancel",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int id) {
+									dialog.cancel();
+								}
+							});
+					AlertDialog alert = alertDialogBuilder.create();
+					alert.show();
+
+				}
 			}
-		});*/
+		});
         // CR: remove TODO's.
         // TODO: we may need to show this indicator for the main gallery
         // application

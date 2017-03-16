@@ -3,8 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/phimpme-a.iml" filepath="$PROJECT_DIR$/phimpme-a.iml" />
       <module fileurl="file://$PROJECT_DIR$/phimpme-android.iml" filepath="$PROJECT_DIR$/phimpme-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/phimpme-android.iml" filepath="$PROJECT_DIR$/phimpme-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/viewflow/viewflow.iml" filepath="$PROJECT_DIR$/viewflow/viewflow.iml" />
       <module fileurl="file://$PROJECT_DIR$/viewflow/viewflow.iml" filepath="$PROJECT_DIR$/viewflow/viewflow.iml" />
       <module fileurl="file://$PROJECT_DIR$/viewflow/viewflow.iml" filepath="$PROJECT_DIR$/viewflow/viewflow.iml" />
     </modules>
