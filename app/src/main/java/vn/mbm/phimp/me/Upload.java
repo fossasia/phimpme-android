@@ -155,6 +155,7 @@ public class Upload extends android.support.v4.app.Fragment {
     ListView listAccounts;
 
     GridView listPhotoUpload;
+    TextView noPhotos;
 
     ImageView btnAdd;
 
@@ -190,7 +191,7 @@ public class Upload extends android.support.v4.app.Fragment {
 
     String[] service;
 
-    int color ;
+    int color;
 
     public static String imagelist = "";
 
@@ -226,7 +227,7 @@ public class Upload extends android.support.v4.app.Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        color =  getActivity().getResources().getColor(R.color.icongrey);
+        color = getActivity().getResources().getColor(R.color.icongrey);
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
 
@@ -241,8 +242,10 @@ public class Upload extends android.support.v4.app.Fragment {
         listAccounts = (ListView) getView().findViewById(R.id.listUploadAccounts);
 
         listPhotoUpload = (GridView) getView().findViewById(R.id.photolistview);
-        if (!imagelist.equals(""))
+        noPhotos = (TextView) getView().findViewById(R.id.nophotos);
+        if (!imagelist.equals("")) {
             listPhotoUpload.setAdapter(new ImageAdapter(ctx));
+        }
         listPhotoUpload.setOnItemClickListener(new OnItemClickListener() {
 
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -306,7 +309,7 @@ public class Upload extends android.support.v4.app.Fragment {
                                 data.putString("imagelist", imagelist);
                                 Intent uitent = new Intent(ctx, UploadProgress.class);
                                 uitent.putExtras(data);
-                                Log.d("UploadProgress","start : "+name);
+                                Log.d("UploadProgress", "start : " + name);
                                 startActivity(uitent);
                             } else {
                                 Commons.AlertLog(ctx, getString(R.string.error_upload_no_photo), getString(R.string.accept)).show();
@@ -350,8 +353,8 @@ public class Upload extends android.support.v4.app.Fragment {
                 startActivityForResult(intent, TYPE_MULTI_PICKER);
             }
         });
-		/*btnPhotoAdd.setOnTouchListener(new OnTouchListener()
-		{
+        /*btnPhotoAdd.setOnTouchListener(new OnTouchListener()
+        {
 			@SuppressWarnings("deprecation")
 			@Override
 			public boolean onTouch(View v, MotionEvent event)
@@ -511,6 +514,7 @@ public class Upload extends android.support.v4.app.Fragment {
             }
         });
     }
+
     private int fetchAccentColor() {
         TypedValue typedValue = new TypedValue();
         TypedArray a = getActivity().obtainStyledAttributes(typedValue.data, new int[]{R.attr.colorAccent});
@@ -525,12 +529,19 @@ public class Upload extends android.support.v4.app.Fragment {
         private LayoutInflater mInflater;
 
         public ImageAdapter(Context c) {
+
             mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             path = imagelist.split("#");
+            if (path.length > 0) {
+                noPhotos.setVisibility(View.GONE);
+                Log.e("Hi", "Removing");
+            }
 
         }
 
         public int getCount() {
+
+
             return path.length;
         }
 
@@ -817,7 +828,7 @@ public class Upload extends android.support.v4.app.Fragment {
         accounts = null;
 
         listAccounts.setAdapter(new AccountsAdapter(getActivity(), id, name, service));
-        if(listAccounts.getAdapter().isEmpty()) {
+        if (listAccounts.getAdapter().isEmpty()) {
             listAccounts.setVisibility(View.GONE);
             getView().findViewById(R.id.noaccounts).setVisibility(View.VISIBLE);
         }
@@ -1138,7 +1149,7 @@ public class Upload extends android.support.v4.app.Fragment {
             case TYPE_MULTI_PICKER: {
                 if (resultCode == Activity.RESULT_OK) {
                     ArrayList<Image> imagesList = data.getParcelableArrayListExtra(vn.mbm.phimp.me.utils.Constants.KEY_BUNDLE_LIST);
-                    if(imagesList.size()>0) {
+                    if (imagesList.size() > 0) {
                         for (int i = 0; i < imagesList.size(); i++) {
 
                             if (i != imagesList.size())
