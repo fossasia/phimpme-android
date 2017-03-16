@@ -601,6 +601,7 @@
     <string name="error_media_upload">An error occurred while uploading media.</string>
 
     <!-- wordpress -->
+    <string name="wordpress">Wordpress</string>
     <string name="url">Blog URL</string>
     <string name="default_wordpress_url">192.168.1.114/wordpress</string>
     <string name="joomla_note">If you want use this feature. Please install component joooid in your joomla host !</string>

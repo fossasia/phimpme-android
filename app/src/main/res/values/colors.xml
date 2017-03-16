@@ -24,4 +24,5 @@
     <color name="custom_progress_bg_color">#EEEEEE</color>
     <color name="custom_progress_message_color">#6D6D6D</color>
     <color name="image_selected">#96dde238</color>
+    <color name="wordpress_add_account">#21759b</color>
 </resources>
