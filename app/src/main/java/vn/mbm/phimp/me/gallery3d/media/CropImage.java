@@ -28,7 +28,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
-
 import vn.mbm.phimp.me.PhimpMe;
 import vn.mbm.phimp.me.R;
 //import vn.mbm.phimp.me.UploadMap;
@@ -38,7 +37,7 @@ import vn.mbm.phimp.me.utils.geoDegrees;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.support.v7.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -63,6 +62,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region;
+import android.location.Location;
 import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.media.FaceDetector;
@@ -302,7 +302,7 @@ public class CropImage extends MonitoredActivity {
 
 				if (!enabled) {
 					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-							CropImage.this);
+							CropImage.this, R.style.AppCompatAlertDialogStyle);
 					alertDialogBuilder
 							.setMessage("GPS is disabled in your device. Enable it?")
 							.setCancelable(false)
@@ -323,6 +323,10 @@ public class CropImage extends MonitoredActivity {
 							});
 					AlertDialog alert = alertDialogBuilder.create();
 					alert.show();
+
+				}else{
+					Location l=locationManager.getLastKnownLocation("gps");
+					Log.d("LOCATION", String.valueOf(l));
 
 				}
 			}
