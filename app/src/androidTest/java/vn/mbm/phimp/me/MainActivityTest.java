@@ -57,28 +57,13 @@ public class MainActivityTest {
         IdlingResource idlingResource = new ElapsedTimeIdlingResource(waitingTime);
         Espresso.registerIdlingResources(idlingResource);
 
-       /* ViewInteraction imageView = onView(
-                allOf(withId(R.id.btnLoadMoreLocalPhotos),
-                        childAtPosition(
-                                allOf(withId(R.id.titlebarLocalPhotos),
-                                        childAtPosition(
-                                                IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                                0)),
-                                1),
-                        isDisplayed()));
-        imageView.check(matches(isDisplayed()));
+        ViewInteraction loadMorePhotos = onView(
+                allOf(withId(R.id.btnLoadMoreLocalPhotos), isDisplayed()));
+        loadMorePhotos.check(matches(isDisplayed()));
 
         ViewInteraction textView = onView(
-                allOf(withId(R.id.titleLocalPhotos), withText("Local Photos"),
-                        childAtPosition(
-                                allOf(withId(R.id.titlebarLocalPhotos),
-                                        childAtPosition(
-                                                IsInstanceOf.<View>instanceOf(android.widget.LinearLayout.class),
-                                                0)),
-                                0),
-                        isDisplayed()));
-        textView.check(matches(withText("Local Photos")));*/
-
+                allOf(withId(R.id.titleLocalPhotos), isDisplayed()));
+        textView.check(matches(withText("Local Photos")));
 
         ViewInteraction cameraIcon = onView(
                 allOf(withId(R.id.tab_camera), isDisplayed()));
@@ -100,23 +85,5 @@ public class MainActivityTest {
 
     }
 
-   /* private static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
-
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("Child at position " + position + " in parent ");
-                parentMatcher.describeTo(description);
-            }
-
-            @Override
-            public boolean matchesSafely(View view) {
-                ViewParent parent = view.getParent();
-                return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
-            }
-        };
-    }*/
 }
 
