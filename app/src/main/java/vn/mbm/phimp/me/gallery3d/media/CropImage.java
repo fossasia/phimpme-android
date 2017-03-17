@@ -324,10 +324,6 @@ public class CropImage extends MonitoredActivity {
 					AlertDialog alert = alertDialogBuilder.create();
 					alert.show();
 
-				}else{
-					Location l=locationManager.getLastKnownLocation("gps");
-					Log.d("LOCATION", String.valueOf(l));
-
 				}
 			}
 		});
