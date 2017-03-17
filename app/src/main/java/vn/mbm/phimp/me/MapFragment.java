@@ -83,7 +83,6 @@ public class MapFragment extends Fragment {
                                 return v;
                             }
                         });
-
                     }
 
                     class LoadMarkers extends AsyncTask<Void, Void, Void> {
@@ -105,7 +104,6 @@ public class MapFragment extends Fragment {
                         protected Void doInBackground(Void... voids) {
                             Uri uri;
                             ArrayList<String> listOfAllImages = new ArrayList<String>();
-
                             Cursor cursor;
                             int column_index_data, column_index_folder_name;
                             String PathOfImage = null;
@@ -155,7 +153,6 @@ public class MapFragment extends Fragment {
 
                         @Override
                         public boolean onMarkerClick(Marker arg0) {
-
                             arg0.showInfoWindow();
                             return true;
                         }

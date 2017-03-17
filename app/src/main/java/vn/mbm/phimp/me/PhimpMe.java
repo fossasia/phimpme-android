@@ -605,7 +605,6 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                 break;
             case R.id.tab_map:
                 if (currentScreen != HomeScreenState.MAP) {
-
                     MapFragment map = new MapFragment();
                     getSupportFragmentManager().beginTransaction()
                             .setCustomAnimations(R.anim.fragment_anim_fadein, R.anim.fragment_anim_fadeout)
