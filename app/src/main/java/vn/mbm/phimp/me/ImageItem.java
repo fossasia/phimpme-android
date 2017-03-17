@@ -10,4 +10,5 @@ class ImageItem {
     int id;
     Bitmap img;
     String path;
+    boolean isSelected;
 }

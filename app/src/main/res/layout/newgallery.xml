@@ -17,33 +17,6 @@
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
-
-            <RelativeLayout
-                android:id="@+id/titlebarLocalPhotos"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/titleLocalPhotos"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="Local Photos"
-                    android:textColor="#ffffff"
-                    android:textSize="20sp" />
-
-                <ImageView
-                    android:id="@+id/btnLoadMoreLocalPhotos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackground"
-                    android:layout_alignParentRight="true"
-                    android:layout_gravity="end"
-                    android:contentDescription="@string/empty"
-                    android:padding="16dp"
-                    android:src="@drawable/ic_add_box_white" />
-            </RelativeLayout>
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
