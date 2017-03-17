@@ -363,7 +363,7 @@ public class Upload extends android.support.v4.app.Fragment {
 				return false;
 			}
 		});*/
-		/*
+        /*
 		 * Thong - Init services
 		 */
         TumblrServices.init();
@@ -534,14 +534,11 @@ public class Upload extends android.support.v4.app.Fragment {
             path = imagelist.split("#");
             if (path.length > 0) {
                 noPhotos.setVisibility(View.GONE);
-                Log.e("Hi", "Removing");
             }
 
         }
 
         public int getCount() {
-
-
             return path.length;
         }
 
