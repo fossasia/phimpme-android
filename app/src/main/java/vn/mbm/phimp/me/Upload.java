@@ -191,6 +191,7 @@ public class Upload extends android.support.v4.app.Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        getActivity().setTitle(getResources().getString(R.string.application_title));
         return inflater.inflate(R.layout.upload, container, false);
     }
 

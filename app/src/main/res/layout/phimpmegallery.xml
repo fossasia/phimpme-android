@@ -118,6 +118,19 @@
     </RelativeLayout>
 
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabdelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="300dp"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:visibility="invisible"
+        app:backgroundTint="@color/colorFAB2"
+        app:elevation="6dp"
+        app:pressedTranslationZ="12dp"
+        android:src="@drawable/ic_delete_white_24dp" />
+
+    <android.support.design.widget.FloatingActionButton
         android:id="@+id/fabedit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

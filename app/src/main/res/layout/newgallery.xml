@@ -48,13 +48,12 @@
 						android:text="Local Photos"
 						android:textColor="@color/black"
 						android:textAppearance="?android:attr/textAppearanceMedium"
-
 						 />
 
 					<ImageView
 						android:id="@+id/btnLoadMoreLocalPhotos"
 						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
+						android:layout_height="match_parent"
 						android:layout_alignParentRight="true"
 						android:layout_alignParentEnd="true"
 						android:layout_centerVertical="true"

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_gallery_delete_selected"
+        android:icon="@drawable/ic_delete_white_24dp"
+        android:title="@string/menu_title_delete"
+        android:orderInCategory="2"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/menu_gallery_deselect_selected"
+        android:icon="@drawable/ic_deselect_white_24dp"
+        android:title="@string/menu_title_deselect"
+        android:orderInCategory="1"
+        app:showAsAction="ifRoom" />
+
+</menu>
