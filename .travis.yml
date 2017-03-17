@@ -17,7 +17,7 @@ android:
     - build-tools-19.1.0
 
     licenses:
-       - '.+'
+     - '.+'
 
     sudo: required
 
