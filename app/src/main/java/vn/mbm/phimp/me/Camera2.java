@@ -91,6 +91,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		view=  inflater.inflate(R.layout.camera, container, false);
+		getActivity().setTitle(getResources().getString(R.string.application_title));
 		setLayout();
 		return view;
 	}

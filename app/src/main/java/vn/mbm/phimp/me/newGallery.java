@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -21,14 +22,20 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -36,6 +43,7 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.vistrav.ask.Ask;
@@ -185,6 +193,7 @@ public class newGallery extends Fragment {
     static boolean statsCounted = false;
     static Cursor staticCursor;
     static ArrayList<ImageItem> localImageList;
+    private ArrayList<String> deletableList;
     // Flickr Public
     static LinearLayout ln_flickr;
     TextView txtPFlickr;
@@ -438,9 +447,9 @@ public class newGallery extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         return inflater.inflate(R.layout.newgallery, container, false);
     }
-
 
     @SuppressWarnings("deprecation")
     @Override
@@ -455,6 +464,8 @@ public class newGallery extends Fragment {
         localPhotosGrid = (GridView) view.findViewById(R.id.gridLocalPhotos);
         // Initiate and set Adapter
         localImageList = new ArrayList<>();
+        deletableList = new ArrayList<>();
+        getActivity().setTitle(getResources().getString(R.string.application_title));
         photosAdapter = new PhotosAdapter();
         localPhotosGrid.setAdapter(photosAdapter);
         localPhotosMore = (ImageView) view.findViewById(R.id.btnLoadMoreLocalPhotos);
@@ -465,12 +476,12 @@ public class newGallery extends Fragment {
                     turnsNeeded -= 1;
                     turnsDone += 1;
                     localImagesPerTurn += PER_TURN;
-                    resumeLocalPhoto(0);
+                    resumeLocalPhoto();
                 } else {
                     localImagesPerTurn += loadLeft;
                     turnsNeeded -= 1;
                     turnsDone += 1;
-                    resumeLocalPhoto(0);
+                    resumeLocalPhoto();
                     localPhotosMore.setClickable(false);
                     localPhotosMore.setEnabled(false);
                 }
@@ -3263,6 +3274,115 @@ public class newGallery extends Fragment {
 				}
 	}
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_gallery, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem deleteMenuItem = menu.findItem(R.id.menu_gallery_delete_selected);
+        MenuItem deselectMenuItem = menu.findItem(R.id.menu_gallery_deselect_selected);
+        deselectMenuItem.setVisible(!deletableList.isEmpty());
+        deleteMenuItem.setVisible(!deletableList.isEmpty());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_gallery_deselect_selected:
+                this.onResume();
+                return true;
+            case R.id.menu_gallery_delete_selected:
+                AlertDialog.Builder deleteAlert = new AlertDialog.Builder(ctx);
+                deleteAlert.setMessage(R.string.delete_images)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                deleteCheckedImages();
+                            }
+                        })
+                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+                // Create the AlertDialog object and show it
+                deleteAlert.create().show();
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void deleteCheckedImages() {
+        for (String path : deletableList) {
+            try {
+                // Delete image from physical storage
+                deleteImageFromMediaStore(path);
+                // Remove from the cache
+                PhimpMe.cache.deleteCachedFile(path);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        Toast.makeText(getActivity(), R.string.images_delete_success, Toast.LENGTH_SHORT).show();
+        this.onResume();
+    }
+
+    public void deleteImageFromMediaStore(String path) throws Exception {
+        // Generate target
+        String[] projection = {MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA};
+        // Query for similar items
+        String selection = "_data like ?";
+        // Create a cursor to access the image
+        Cursor cursor = ctx.getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                projection,
+                selection,
+                new String[] {path},
+                null
+        );
+        // If there is an image under the path name,
+        if (cursor != null) {
+            cursor.moveToFirst();
+            String id = cursor.getString(0);
+            ctx.getContentResolver().delete(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    selection,
+                    new String[]{path}
+            );
+            // Reset cursor to reuse it
+            String[] proj = {
+                    MediaStore.Images.Thumbnails._ID,
+                    MediaStore.Images.Thumbnails.IMAGE_ID,
+                    MediaStore.Images.Thumbnails.DATA
+            };
+            // Point cursor to thumbnails
+            cursor = ctx.getContentResolver().query(
+                    MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI,
+                    proj,
+                    "image_id = ?",
+                    new String[]{id},
+                    null
+            );
+            if (cursor != null) {
+                if (cursor.getCount() > 0) {
+                    cursor.moveToFirst();
+                    String thumb = cursor.getString(2);
+                    File f_thumb = new File(thumb);
+                    if (f_thumb.exists()) f_thumb.delete();
+                    ctx.getContentResolver().delete(
+                            MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI,
+                            "image_id = ?",
+                            new String[]{id}
+                    );
+                }
+                cursor.close();
+            }
+        }
+    }
+
   private boolean checkWriteExternalPermission()
     {
 
@@ -3276,7 +3396,8 @@ public class newGallery extends Fragment {
     public void onResume()
     {
         super.onResume();
-
+        getActivity().setTitle(getResources().getString(R.string.application_title));
+        getActivity().invalidateOptionsMenu();
         Log.e("newGallery","onResume");
         if(!checkWriteExternalPermission()) {
             Ask.on(getActivity())
@@ -3303,10 +3424,11 @@ public class newGallery extends Fragment {
                 PhimpMe.filepath.clear();
                 array_ID.clear();
                 localImageList.clear();
+                deletableList.clear();
                 statsCounted = false;
                 localImagesPerTurn = PER_TURN;
                 turnsDone = 0;
-                resumeLocalPhoto(number_resume_download);
+                resumeLocalPhoto();
               }  
                 //download photo
                 try{
@@ -3327,8 +3449,7 @@ public class newGallery extends Fragment {
 		linear_main.removeView(ln_local_gallery);    			
 		check_local = 0;
 		PhimpMe.filepath.clear();
-		array_ID.clear(); 		
-		resumeLocalPhoto(num);
+		array_ID.clear();
 	}
 	public class CacheTask extends AsyncTask<String, Void, String> {
 	    @Override
@@ -3415,6 +3536,16 @@ public class newGallery extends Fragment {
 	}
 
 	/**
+	 * Holder to nest an Image
+	 */
+	private class ViewHolder {
+
+		ImageView imageview;
+		CheckBox imageSelector;
+
+	}
+
+	/**
 	 * Adapter for Local Photos
 	 */
 	public class PhotosAdapter extends BaseAdapter {
@@ -3425,7 +3556,7 @@ public class newGallery extends Fragment {
 		// Constructor
 		PhotosAdapter() {
 			mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            this.images = localImageList;
+			this.images = localImageList;
 			PhimpMe.cache = CacheStore.getInstance();
 		}
 
@@ -3441,78 +3572,174 @@ public class newGallery extends Fragment {
 			return position;
 		}
 
-        public void updateImageList(int position, ImageItem imageItem) {
-            localImageList.add(position, imageItem);
-            notifyDataSetChanged();
-        }
+		public void updateImageList(int position, ImageItem imageItem) {
+			localImageList.add(position, imageItem);
+			notifyDataSetChanged();
+		}
 
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(final int position, View convertView, final ViewGroup parent) {
 
 			final ViewHolder holder;
+			final ImageItem item = localImageList.get(position);
 
 			if (convertView == null) {
 				holder = new ViewHolder();
 				convertView = mInflater.inflate(R.layout.photoitem_local, null);
 				holder.imageview = (ImageView) convertView.findViewById(R.id.localPhoto);
+				holder.imageSelector = (CheckBox) convertView.findViewById(R.id.localPhotoSelector);
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
 
-            ImageItem item = localImageList.get(position);
-
 			holder.imageview.setId(position);
+			holder.imageview.setAlpha(item.isSelected ? 0.5f : 1.0f);
+			if (item.isSelected) {
+				holder.imageSelector.setVisibility(View.VISIBLE);
+				holder.imageSelector.setChecked(true);
+			} else {
+				holder.imageSelector.setVisibility(View.GONE);
+			}
+			holder.imageview.setImageBitmap(item.img);
 
 			holder.imageview.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View view) {
-					try {
-						int id = view.getId();
-                        ImageItem item = localImageList.get(id);
-						Intent intent = new Intent();
-						intent.setAction(Intent.ACTION_VIEW);
-						final String[] columns = { MediaStore.Images.Media.DATA };
-						Cursor imagecursor = getActivity().getContentResolver().query(
-								MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
-								MediaStore.Images.Media._ID + " = " + item.id, null, MediaStore.Images.Media._ID);
-						if (imagecursor != null && imagecursor.getCount() > 0){
-							imagecursor.moveToPosition(0);
-							String path = imagecursor.getString(imagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
-                            imagecursor.close();
-							ArrayList<String> file = new ArrayList<>();
-							file.add(path);
-							Intent showImageIntent = new Intent();
-							showImageIntent.setClass(getActivity(), vn.mbm.phimp.me.gallery.PhimpMeGallery.class);
-							vn.mbm.phimp.me.gallery.PhimpMeGallery.setFileList(file);
-							showImageIntent.putExtra("aspectX", 0);
-							showImageIntent.putExtra("aspectY", 0);
-                            ActivityOptionsCompat options = ActivityOptionsCompat.
-                                    makeSceneTransitionAnimation(getActivity(), (View)holder.imageview, "gridanim");
-							showImageIntent.putExtra("scale", true);
-							showImageIntent.putExtra("activityName", "LocalPhotos");
-							startActivity(showImageIntent,options.toBundle());
+					// If the image is selected for deletion, deselect it. Otherwise open it
+					if (item.isSelected) {
+						holder.imageSelector.setVisibility(View.GONE);
+						holder.imageview.setAlpha(1.0f);
+						holder.imageSelector.setChecked(false);
+                        item.isSelected = false;
+						deletableList.remove(item.path);
+						int delCount = deletableList.size();
+						String newTitle;
+						if (delCount > 0) {
+							newTitle = delCount + (delCount == 1 ? " image" : " images") + " selected";
+						} else {
+							newTitle = getResources().getString(R.string.application_title);
 						}
-					} catch (Exception e) {
-						e.printStackTrace();
+						getActivity().setTitle(newTitle);
+						getActivity().invalidateOptionsMenu();
+					} else {
+						if (deletableList.isEmpty()) {
+							try {
+								ImageItem item = localImageList.get(view.getId());
+								Intent intent = new Intent();
+								intent.setAction(Intent.ACTION_VIEW);
+								final String[] columns = {MediaStore.Images.Media.DATA};
+								Cursor imagecursor = getActivity().getContentResolver().query(
+										MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
+										MediaStore.Images.Media._ID + " = " + item.id,
+										null, MediaStore.Images.Media._ID);
+								if (imagecursor != null && imagecursor.getCount() > 0) {
+									imagecursor.moveToPosition(0);
+									String path = imagecursor.getString(
+											imagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
+									imagecursor.close();
+									ArrayList<String> file = new ArrayList<>();
+									file.add(path);
+									Intent showImageIntent = new Intent();
+									showImageIntent.setClass(getActivity(), vn.mbm.phimp.me.gallery.PhimpMeGallery.class);
+									vn.mbm.phimp.me.gallery.PhimpMeGallery.setFileList(file);
+									showImageIntent.putExtra("aspectX", 0);
+									showImageIntent.putExtra("aspectY", 0);
+                  ActivityOptionsCompat options = ActivityOptionsCompat.
+                                    makeSceneTransitionAnimation(getActivity(), (View)holder.imageview, "gridanim");
+									showImageIntent.putExtra("scale", true);
+									showImageIntent.putExtra("activityName", "LocalPhotos");
+									startActivity(showImageIntent,options.toBundle());
+								}
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						} else {
+							holder.imageSelector.setVisibility(View.VISIBLE);
+							holder.imageview.setAlpha(0.5f);
+							holder.imageSelector.setChecked(true);
+							item.isSelected = true;
+							deletableList.add(item.path);
+							int delCount = deletableList.size();
+							String newTitle;
+							if (delCount > 0) {
+								newTitle = delCount + (delCount == 1 ? " image" : " images") + " selected";
+							} else {
+								newTitle = getResources().getString(R.string.application_title);
+							}
+							getActivity().setTitle(newTitle);
+							getActivity().invalidateOptionsMenu();
+						}
 					}
 				}
 			});
-			holder.imageview.setImageBitmap(item.img);
+
+			holder.imageview.setOnLongClickListener(new View.OnLongClickListener() {
+				@Override
+				public boolean onLongClick(View v) {
+					if (item.isSelected) {
+						holder.imageSelector.setVisibility(View.GONE);
+						holder.imageview.setAlpha(1.0f);
+						holder.imageSelector.setChecked(false);
+						item.isSelected = false;
+						deletableList.remove(item.path);
+					} else {
+						holder.imageSelector.setVisibility(View.VISIBLE);
+						holder.imageview.setAlpha(0.5f);
+						holder.imageSelector.setChecked(true);
+						item.isSelected = true;
+						deletableList.add(item.path);
+					}
+					int delCount = deletableList.size();
+					String newTitle;
+					if (delCount > 0) {
+						newTitle = delCount + (delCount == 1 ? " image" : " images") + " selected";
+					} else {
+						newTitle = getResources().getString(R.string.application_title);
+					}
+					getActivity().setTitle(newTitle);
+					getActivity().invalidateOptionsMenu();
+					return true;
+				}
+			});
+
+			holder.imageSelector.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+				@Override
+				public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+					// Check box has been unchecked,
+					// 1. Restore alpha level
+					// 2. Remove from deletableList
+					// 3. Hide checkbox
+					// 4. Set checked status to false
+					if (!isChecked) {
+						holder.imageview.setAlpha(1.0f);
+						deletableList.remove(item.path);
+                        item.isSelected = false;
+						holder.imageSelector.setVisibility(View.GONE);
+						int delCount = deletableList.size();
+						String newTitle;
+						if (delCount > 0) {
+							newTitle = delCount + (delCount == 1 ? " image" : " images") + " selected";
+						} else {
+							newTitle = getResources().getString(R.string.application_title);
+						}
+						getActivity().setTitle(newTitle);
+						getActivity().invalidateOptionsMenu();
+					}
+
+				}
+			});
+
 			return convertView;
 		}
 	}
 
-	private class ViewHolder {
-		ImageView imageview;
-	}
-
-	public static void resumeLocalPhoto(int resum_number){
+	public static void resumeLocalPhoto(){
 		// check_local = 0 will flag that this is local images
 		if (check_local == 0) {
 			// Keep the localPhotos frame and hide the other
 			//localPhotosScroll.setVisibility(View.GONE);
 			localPhotosFrame.setVisibility(View.VISIBLE);
 			// Show a progress dialog until the loading is done
-			pro_gress = ProgressDialog.show(ctx, "Loading Gallery!", ctx.getString(R.string.wait),
+			pro_gress = ProgressDialog.show(ctx, ctx.getString(R.string.loading), ctx.getString(R.string.wait),
 					true, false);
 			// Create a cursor to access External Storage
 			// MediaStore.Images.Media.DATA is the full Path of the file
@@ -3532,12 +3759,12 @@ public class newGallery extends Fragment {
 				int path_column_index = staticCursor.getColumnIndexOrThrow(
 						MediaStore.Images.Media.DATA);
 				// Count how many images it contains
-                localImageCount = staticCursor.getCount();
-                if (!statsCounted) {
-                    turnsNeeded = localImageCount / PER_TURN;
-                    loadLeft = localImageCount % PER_TURN;
-                    statsCounted = true;
-                }
+				localImageCount = staticCursor.getCount();
+				if (!statsCounted) {
+					turnsNeeded = localImageCount / PER_TURN;
+					loadLeft = localImageCount % PER_TURN;
+					statsCounted = true;
+				}
 
                 if(localImageCount<localImagesPerTurn){
                     finalImageCount = localImageCount;
@@ -3604,7 +3831,7 @@ public class newGallery extends Fragment {
 							// If there is no image, do not proceed then
 							imageItem.id = -1;
 						}
-                        photosAdapter.updateImageList(i, imageItem);
+						photosAdapter.updateImageList(i, imageItem);
 					}
 				}
 				staticCursor.close();
@@ -3814,7 +4041,7 @@ public class newGallery extends Fragment {
         			array_ID.clear();
     				number_resume_download=6;
     				count_photo = 1;
-    				resumeLocalPhoto(number_resume_download);
+    				//resumeLocalPhoto();
 				}
 				
 	        	refreshNewPhotos();           	        	
