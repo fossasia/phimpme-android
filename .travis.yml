@@ -5,9 +5,45 @@ android:
     # use the latest revision of Android SDK Tools
     # - platform-tools
     # - tools
-
+    - tools
+    - build-tools-24.0.2
+    - android-24
+    - platform-tools
+    - extra-android-support
+    - extra-google-google_play_services
+    - extra-android-m2repository
+    - extra-google-m2repository
     # The BuildTools version used by your project
     - build-tools-19.1.0
+
+    licenses:
+       - '.+'
+
+    sudo: required
+
+    jdk:
+      - oraclejdk8
+
+    install: true
+
+    script:
+      - sudo apt-get update && sudo apt-get install oracle-java8-installer
+      - java -version
+
+    before_script:
+      - chmod +x gradlew
+
+    script:
+     - ./gradlew assembleDebug --stacktrace
+
+    deploy:
+    provider: releases
+    api-key: $GITHUB_APIKEY
+    file: "app/build/outputs/apk/app-debug.apk"
+    skip_cleanup: true
+    on:
+    tags: true
+    all_branches: true
 
     # The SDK version used to compile your project
     - android-22
