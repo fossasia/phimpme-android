@@ -16,8 +16,6 @@ android:
     # The BuildTools version used by your project
     - build-tools-19.1.0
 
-    licenses:
-     - '.+'
 
     sudo: required
 
