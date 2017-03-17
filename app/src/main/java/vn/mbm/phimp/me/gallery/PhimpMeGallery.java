@@ -3,6 +3,7 @@ package vn.mbm.phimp.me.gallery;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import vn.mbm.phimp.me.PhimpMe;
 import vn.mbm.phimp.me.R;
@@ -19,19 +20,23 @@ import android.database.Cursor;
 import android.media.ExifInterface;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageButton;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,60 +45,65 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
     private Gallery gallery;
     private static ArrayList<String> filePath;
     private Boolean isFabOpen = false;
-    private FloatingActionButton fab, fabEdit, fabUpload, fabShare, fabDelete;
+    private FloatingActionButton fab, fabEdit, fabUpload, fabShare, fabInfo, fabDelete;
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
-    private GalleryImageAdapter galImageAdapter;
+	private GalleryImageAdapter galImageAdapter;
+    private PopupWindow pwindo;
+    private Button btnClosePopup;
 
-    private ImageButton btnShare,btnEdit,btnZoom,btnUpload,btnShowInMap,btnDelete;
+	private ImageButton btnShare,btnEdit,btnZoom,btnUpload,btnShowInMap,btnDelete;
 
-    public static int position;
-    public static View overscrollleft;
-    public static View overscrollright;
-    public int index = 0;
-    public String from = "";
-
-    public static int num;
-    private static String longtitude="",latitude="",title="";
-    private Context ctx;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.phimpmegallery);
-        //requestWindowFeature(Window.FEATURE_NO_TITLE);
-        ctx = this;
-
-        PhimpMe.gallery_delete = false;
-        //num = filePath.size();
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        Intent intent = getIntent();
-        Bundle extract = intent.getExtras();
-        try {
-            index = extract.getInt("index");
-            from = extract.getString("from");
-        } catch(Exception e) {
-            from = "";
-        }
+	public static int position;
+	public static View overscrollleft;
+	public static View overscrollright;
+	public int index = 0;
+	public String from = "";
+	
+	public static int num;
+	private static String longtitude="",latitude="",title="";
+	private Context ctx;
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.phimpmegallery);	
+		//requestWindowFeature(Window.FEATURE_NO_TITLE);
+		ctx = this;	
+		
+		PhimpMe.gallery_delete = false;
+		//num = filePath.size();
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+		Intent intent = getIntent();
+		Bundle extract = intent.getExtras();		
+		try{
+		index = extract.getInt("index");
+		from = extract.getString("from");
+		
+		}catch(Exception e){
+			from = "";
+		}
 
         fab = (FloatingActionButton)findViewById(R.id.fab);
         fabEdit = (FloatingActionButton)findViewById(R.id.fabedit);
         fabUpload = (FloatingActionButton)findViewById(R.id.fabupload);
         fabShare = (FloatingActionButton)findViewById(R.id.fabshare);
         fabDelete = (FloatingActionButton) findViewById(R.id.fabdelete);
+        fabInfo = (FloatingActionButton)findViewById(R.id.fabinfo);
 
         fab.setOnClickListener(this);
         fabEdit.setOnClickListener(this);
         fabUpload.setOnClickListener(this);
         fabShare.setOnClickListener(this);
         fabDelete.setOnClickListener(this);
-        setupUI();
-    }
-
-    private void setupUI() {
-        gallery = (Gallery) findViewById(R.id.gallery);
-        galImageAdapter = new GalleryImageAdapter(this, filePath);
-        overscrollleft = (View)findViewById(R.id.overscroll_left);
-        overscrollright = (View)findViewById(R.id.overscroll_right);
+        fabInfo.setOnClickListener(this);
+		setupUI();
+		
+	}
+	
+	private void setupUI() {	
+		gallery = (Gallery) findViewById(R.id.gallery);			
+		galImageAdapter = new GalleryImageAdapter(this, filePath);
+		overscrollleft = (View)findViewById(R.id.overscroll_left);
+		overscrollright = (View)findViewById(R.id.overscroll_right);
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
         rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
@@ -210,6 +220,25 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
         int id = v.getId();
         switch (id){
+            case R.id.fabinfo:
+
+                File file =  new File(filePath.get(position));
+                LayoutInflater inflater = (LayoutInflater) PhimpMeGallery.this
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View layout = inflater.inflate(R.layout.info_popup,
+                        (ViewGroup) findViewById(R.id.popup_element));
+                pwindo = new PopupWindow(layout, AppBarLayout.LayoutParams.WRAP_CONTENT, AppBarLayout.LayoutParams.WRAP_CONTENT, true);
+                getPopUpData(file);
+                pwindo.setAnimationStyle(R.style.Animation);
+                pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
+                btnClosePopup = (Button)layout.findViewById(R.id.button_done);
+                btnClosePopup.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        pwindo.dismiss();
+                        return;
+                    }
+                });
             case R.id.fab:
                 animateFAB();
                 break;
@@ -257,7 +286,7 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.fabupload:
                 AlertDialog.Builder builder=new AlertDialog.Builder(PhimpMeGallery.this);
-                builder.setMessage("This photo have been add to list upload photo !");
+                builder.setMessage(R.string.dialog_upload);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -305,6 +334,22 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                         });
                 // Create the AlertDialog object and show it
                 deleteAlert.create().show();
+        }
+    }
+
+    public void getPopUpData(File file){
+        try {
+            ExifInterface exif_data = new ExifInterface(file.getAbsolutePath());
+            Date lastModDate = new Date(file.lastModified());
+            long length = file.length()/1024;
+            ((TextView)pwindo.getContentView().findViewById(R.id.path)).setText(file.getAbsolutePath());
+            ((TextView)pwindo.getContentView().findViewById(R.id.time)).setText(lastModDate.toString());
+            ((TextView)pwindo.getContentView().findViewById(R.id.image_width)).setText(exif_data.getAttribute(ExifInterface.TAG_IMAGE_WIDTH));
+            ((TextView)pwindo.getContentView().findViewById(R.id.height)).setText(exif_data.getAttribute(ExifInterface.TAG_IMAGE_LENGTH));
+            ((TextView)pwindo.getContentView().findViewById(R.id.size)).setText(Long.toString(length)+ "KB");
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -395,11 +440,13 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
             fabUpload.startAnimation(fab_close);
             fabShare.startAnimation(fab_close);
             fabDelete.startAnimation(fab_close);
+            fabInfo.startAnimation(fab_close);
 
             fabEdit.setClickable(false);
             fabUpload.setClickable(false);
             fabShare.setClickable(false);
             fabDelete.setClickable(false);
+            fabInfo.setClickable(false);
             isFabOpen = false;
         } else {
             fab.startAnimation(rotate_forward);
@@ -407,11 +454,12 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
             fabUpload.startAnimation(fab_open);
             fabShare.startAnimation(fab_open);
             fabDelete.startAnimation(fab_open);
-
+            fabDelete.setClickable(true);
+            fabInfo.startAnimation(fab_open);
             fabEdit.setClickable(true);
             fabUpload.setClickable(true);
             fabShare.setClickable(true);
-            fabDelete.setClickable(true);
+            fabInfo.setClickable(true);
             isFabOpen = true;
         }
     }

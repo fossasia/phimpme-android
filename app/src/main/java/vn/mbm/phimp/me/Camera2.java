@@ -73,6 +73,20 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	double lon;
 	int statusScreen = 0;
 	View view;
+
+	// Directions for Camera Button Orientations
+	private final int NE = 45;
+	private final int SE = 135;
+	private final int SW = 225;
+	private final int NW = 315;
+	// Flag for flasher
+	int state = 0;
+	int camOrientation = 0;
+	// States for Flash
+	private final int FLASH_ON = 0;
+	private final int FLASH_OFF = 1;
+	private final int FLASH_AUTO = 2;
+
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -87,6 +101,49 @@ public class Camera2 extends android.support.v4.app.Fragment {
 
 	}
 
+	private boolean inRange(int SubjectValue, int High, int Low) {
+		// In case of a 360
+		SubjectValue =  (360 + (SubjectValue % 360)) % 360;
+		if (High < Low) {
+			return High <= SubjectValue && SubjectValue <= Low;
+		} else {
+			return High <= SubjectValue || SubjectValue <= Low;
+		}
+	}
+
+	private void setFlashIcon() {
+		switch (state) {
+			case 1:
+				flash.setImageResource(R.drawable.flash_off);
+				break;
+			case 2:
+				flash.setImageResource(R.drawable.flash_auto);
+				break;
+			default:
+				flash.setImageResource(R.drawable.flash_on);
+				break;
+		}
+	}
+
+	private void rotateIcons(int degrees) {
+		flash.setRotation(degrees);
+		camera_switch.setRotation(degrees);
+		buttonClick.setRotation(degrees);
+	}
+
+	private void adjustIconPositions() {
+		setFlashIcon();
+		if (inRange(camOrientation, NW, NE)) {
+			rotateIcons(0);
+		} else if (inRange(camOrientation, NE, SE)) {
+			rotateIcons(270);
+		} else if (inRange(camOrientation, SE, SW)) {
+			rotateIcons(180);
+		} else if (inRange(camOrientation, SW, NW)) {
+			rotateIcons(90);
+		}
+	}
+
 	//** Called when the activity is first created. *//*
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -96,18 +153,22 @@ public class Camera2 extends android.support.v4.app.Fragment {
 			PhimpMe.IdList.add(0);
 		}
 		PhimpMe.IdList.add(3);
-//        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+		//getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
 		//Log.e("Orirention", String.valueOf(ctx.getResources().getConfiguration().orientation));
 		mOrientation = new OrientationEventListener(getContext()) {
-
 			@Override
 			public void onOrientationChanged(int orientation) {
-				// TODO Auto-generated method stub
-				//Log.e("Orientation", String.valueOf(orientation));
-				if (orientation >= 350) degrees = 0;
-				else
+				camOrientation = orientation;
+				adjustIconPositions();
+
+				if (orientation >= 350) {
+					degrees = 0;
+				}
+				else {
 					degrees = orientation;
+				}
+
 				/*if (orientation >=90 && orientation < 180 && statusScreen == 0){
 					statusScreen = 1;
 					//setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
@@ -241,6 +302,8 @@ public class Camera2 extends android.support.v4.app.Fragment {
 			}
 		});
 		camera_switch = (ImageButton)view.findViewById(R.id.switch_camera);
+		camera_switch.setImageResource(R.drawable.camera_switch);
+		buttonClick.setImageResource(R.drawable.takepic);
 		if (Camera.getNumberOfCameras() <=1 ) camera_switch.setVisibility(View.GONE);
 		camera_switch.setOnClickListener(new OnClickListener() {
 			@Override
@@ -290,49 +353,40 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		LinearLayout linear = (LinearLayout)view.findViewById(R.id.lnCam);
 		linear.bringToFront();
 		flash = (ImageButton)view.findViewById(R.id.flash);
-
+		flash.setImageResource(R.drawable.flash_on);
 		flash.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				//Log.e("Flash",preview.camera.getParameters().getFlashMode());
-				try{
+				// Log.e("Flash",preview.camera.getParameters().getFlashMode());
+				try {
+					adjustIconPositions();
+					// Get camera parameters
 					Camera.Parameters parameters = preview.mCamera.getParameters();
-					if (preview.mCamera.getParameters().getFlashMode().equals(Camera.Parameters.FLASH_MODE_OFF))
-						PhimpMe.flashStatus = 0;
-					else
-					if (preview.mCamera.getParameters().getFlashMode().equals(Camera.Parameters.FLASH_MODE_ON))
-						PhimpMe.flashStatus = 1;
-					else PhimpMe.flashStatus = 2;
-					if (PhimpMe.flashStatus == 0){
-						if (statusScreen == 0)	flash.setImageDrawable(getResources().getDrawable(R.drawable.flash_on_r));
-						else flash.setImageDrawable(getResources().getDrawable(R.drawable.flash_on));
-						parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
-						preview.mCamera.setParameters(parameters);
-						PhimpMe.flashStatus = 1;
-					}else if (PhimpMe.flashStatus == 1)
-					{
-						if (statusScreen == 0)	flash.setImageDrawable(getResources().getDrawable(R.drawable.flash_off_r));
-						else flash.setImageDrawable(getResources().getDrawable(R.drawable.flash_off));
-						parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
-						preview.mCamera.setParameters(parameters);
-						PhimpMe.flashStatus = 2;
-					}else
-					{
-						if (statusScreen == 0)flash.setImageDrawable(getResources().getDrawable(R.drawable.flash_auto_r));else
-							flash.setImageDrawable(getResources().getDrawable(R.drawable.flash_auto));
-						parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-						preview.mCamera.setParameters(parameters);
-						PhimpMe.flashStatus = 0;
+					// Switch flash icon
+					switch (state) {
+						case FLASH_ON:
+							state = FLASH_OFF;
+							parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+							break;
+						case FLASH_OFF:
+							state = FLASH_AUTO;
+							parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
+							break;
+						default:
+							state = FLASH_ON;
+							parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
+							break;
 					}
-					Log.e("Flash",preview.mCamera.getParameters().getFlashMode());
-				}catch(Exception e){}
+					preview.mCamera.setParameters(parameters);
+				} catch (Exception e) {
+					Log.e("Flash", e.getMessage());
+				}
 				//Log.e("Flash",preview.camera.getParameters().getSupportedFlashModes().get(0));
-
 			}
 		});
-
 	}
+
 	ShutterCallback shutterCallback = new ShutterCallback() {
 		public void onShutter() {
 			//Dialog(1000, progress);

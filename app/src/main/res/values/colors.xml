@@ -5,6 +5,7 @@
     <color name="black_trans">#77000000</color>
     <color name="blue">#0099FF</color>
     <color name="grey">#AAAAAA</color>
+    <color name="icongrey">#757575</color>
     <color name="white">#FFFFFFFF</color>
     <color name="black">#000000</color>
     <color name="green">#00FF00</color>
@@ -20,4 +21,8 @@
     <color name="colorPrimaryDark">#01579B</color>
     <color name="colorPrimary">#03A9F4</color>
     <color name="colorWindowBackground">#efefef</color>
+    <color name="custom_progress_bg_color">#EEEEEE</color>
+    <color name="custom_progress_message_color">#6D6D6D</color>
+    <color name="image_selected">#96dde238</color>
+    <color name="md_dark_primary_text">#FFFFFFFF</color>
 </resources>
