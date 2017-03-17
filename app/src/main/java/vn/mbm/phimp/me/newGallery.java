@@ -19,6 +19,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Display;
@@ -179,6 +180,7 @@ public class newGallery extends Fragment {
     static int turnsNeeded = 0;
     static int turnsDone = 0;
     static int loadLeft = 0;
+    static int finalImageCount;
     static final int PER_TURN = 21;
     static boolean statsCounted = false;
     static Cursor staticCursor;
@@ -3446,7 +3448,7 @@ public class newGallery extends Fragment {
 
 		public View getView(int position, View convertView, ViewGroup parent) {
 
-			ViewHolder holder;
+			final ViewHolder holder;
 
 			if (convertView == null) {
 				holder = new ViewHolder();
@@ -3483,9 +3485,11 @@ public class newGallery extends Fragment {
 							vn.mbm.phimp.me.gallery.PhimpMeGallery.setFileList(file);
 							showImageIntent.putExtra("aspectX", 0);
 							showImageIntent.putExtra("aspectY", 0);
+                            ActivityOptionsCompat options = ActivityOptionsCompat.
+                                    makeSceneTransitionAnimation(getActivity(), (View)holder.imageview, "gridanim");
 							showImageIntent.putExtra("scale", true);
 							showImageIntent.putExtra("activityName", "LocalPhotos");
-							startActivity(showImageIntent);
+							startActivity(showImageIntent,options.toBundle());
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -3535,61 +3539,67 @@ public class newGallery extends Fragment {
                     statsCounted = true;
                 }
 
-				for (int i = (turnsDone * PER_TURN); i < localImagesPerTurn; i++) {
-					// Run through the cursor from the beginning
-					staticCursor.moveToPosition(i);
-					// Create an ImageItem to store data related to an image
-					ImageItem imageItem = new ImageItem();
-					// Cursor contains path of each image
-					String path = staticCursor.getString(path_column_index);
-					// Set imagePath to the imageItem
-					imageItem.path = path;
-					// Check if the PhimpMe Cache has the image in the cache
-					// If it is there, fetch image from the cache
-					boolean cacheHaveThePic = PhimpMe.cache.check(path);
-					if (cacheHaveThePic) {
-						// Set Image id and Image itself to the imageItem
-						imageItem.id = PhimpMe.cache.getCacheId(path);
-						imageItem.img = PhimpMe.cache.getCachePath(path);
-						// Add the image to the gridView
-						// PhotosAdapter has a list of images and it'll notify dataset has changed!
-                        photosAdapter.updateImageList(i, imageItem);
-					} else {
-						// Otherwise add it to the cache
-						// Access the image using a cursor
-						String[] columns = { MediaStore.Images.Thumbnails._ID };
-						Cursor imageCursor = ctx.getContentResolver().query(
-								MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-								columns,
-								MediaStore.Images.Media.DATA + " = " + "\"" + path + "\"",
-								null,
-								MediaStore.Images.Media._ID
+                if(localImageCount<localImagesPerTurn){
+                    finalImageCount = localImageCount;
+                } else {
+                    finalImageCount = localImagesPerTurn;
+                }
+
+		for (int i = (turnsDone * PER_TURN); i < finalImageCount; i++) {
+			// Run through the cursor from the beginning
+			staticCursor.moveToPosition(i);
+			// Create an ImageItem to store data related to an image
+			ImageItem imageItem = new ImageItem();
+			// Cursor contains path of each image
+			String path = staticCursor.getString(path_column_index);
+			// Set imagePath to the imageItem
+			imageItem.path = path;
+			// Check if the PhimpMe Cache has the image in the cache
+			// If it is there, fetch image from the cache
+			boolean cacheHaveThePic = PhimpMe.cache.check(path);
+			if (cacheHaveThePic) {
+				// Set Image id and Image itself to the imageItem
+				imageItem.id = PhimpMe.cache.getCacheId(path);
+				imageItem.img = PhimpMe.cache.getCachePath(path);
+				// Add the image to the gridView
+				// PhotosAdapter has a list of images and it'll notify dataset has changed!
+                        	photosAdapter.updateImageList(i, imageItem);
+				} else {
+					// Otherwise add it to the cache
+					// Access the image using a cursor
+					String[] columns = { MediaStore.Images.Thumbnails._ID };
+					Cursor imageCursor = ctx.getContentResolver().query(
+							MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+							columns,
+							MediaStore.Images.Media.DATA + " = " + "\"" + path + "\"",
+							null,
+							MediaStore.Images.Media._ID
+					);
+					// If the cursor is not empty;
+					if (imageCursor != null && imageCursor.getCount() > 0) {
+						// Move to the beginning of the cursor
+						imageCursor.moveToPosition(0);
+						// Get the ID of the image
+						int id = imageCursor.getInt(
+								imageCursor.getColumnIndexOrThrow(
+										MediaStore.Images.Media._ID));
+						// Set ID to the image item
+						imageItem.id = id;
+						// Set the thumbnail as the Image of the image item
+						imageItem.img = MediaStore.Images.Thumbnails.getThumbnail(
+								ctx.getContentResolver(),
+								id,	MediaStore.Images.Thumbnails.MICRO_KIND, null
 						);
-						// If the cursor is not empty;
-						if (imageCursor != null && imageCursor.getCount() > 0) {
-							// Move to the beginning of the cursor
-							imageCursor.moveToPosition(0);
-							// Get the ID of the image
-							int id = imageCursor.getInt(
-									imageCursor.getColumnIndexOrThrow(
-											MediaStore.Images.Media._ID));
-							// Set ID to the image item
-							imageItem.id = id;
-							// Set the thumbnail as the Image of the image item
-							imageItem.img = MediaStore.Images.Thumbnails.getThumbnail(
-									ctx.getContentResolver(),
-									id,	MediaStore.Images.Thumbnails.MICRO_KIND, null
+						// Save the thumbnail in PhimpMe cache
+						if (!PhimpMe.cache.check(imageItem.path)) {
+							PhimpMe.cache.saveCacheFile(
+									imageItem.path,
+									imageItem.img,
+									imageItem.id
 							);
-							// Save the thumbnail in PhimpMe cache
-							if (!PhimpMe.cache.check(imageItem.path)) {
-								PhimpMe.cache.saveCacheFile(
-										imageItem.path,
-										imageItem.img,
-										imageItem.id
-								);
-							}
-							// Close the cursor of the image
-							imageCursor.close();
+						}
+						// Close the cursor of the image
+						imageCursor.close();
 						} else {
 							// If there is no image, do not proceed then
 							imageItem.id = -1;

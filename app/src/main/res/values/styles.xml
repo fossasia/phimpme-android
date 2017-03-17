@@ -4,13 +4,21 @@
     <style name="AppTheme" parent="Phimpme.Base">
     </style>
 
-    <style name="Phimpme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Phimpme.Base" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowBackground">@color/colorWindowBackground</item>
 
         <item name="android:windowContentTransitions">true</item>
+    </style>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Animation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_left</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_right</item>
     </style>
 
 </resources>
