@@ -616,4 +616,13 @@
     <string name="title_activity_maps">Map</string>
 
     <item name="image_id" type="id"/>
+
+    <!-- Pop_Up View -->
+    <string name="time">Time:</string>
+    <string name="image_width">Width:</string>
+    <string name="path">Path:</string>
+    <string name="Height">Height:</string>
+    <string name="file_size">File Size:</string>
+    <string name="Done">Done</string>
+
 </resources>
