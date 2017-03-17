@@ -25,4 +25,5 @@
     <color name="custom_progress_message_color">#6D6D6D</color>
     <color name="image_selected">#96dde238</color>
     <color name="wordpress_add_account">#21759b</color>
+    <color name="md_dark_primary_text">#FFFFFFFF</color>
 </resources>
