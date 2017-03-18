@@ -1,4 +1,4 @@
-# A sample Gemfile
+# Gemfile
 source "https://rubygems.org"
 
-# gem "rails"
+gem "danger"
