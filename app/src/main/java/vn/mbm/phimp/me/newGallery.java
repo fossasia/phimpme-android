@@ -23,8 +23,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -446,8 +444,6 @@ public class newGallery extends Fragment {
     int position = 0;
     static ArrayList<String> array_ID = new ArrayList<String>();
 
-    Toolbar toolbar;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -585,11 +581,6 @@ public class newGallery extends Fragment {
     @Override
     public void onViewCreated (View view, @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        toolbar = (Toolbar) view.findViewById(R.id.toolbar_newgallery);
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        toolbar.setTitle("Padmal");
-        Log.d("Padmal", String.valueOf(toolbar.getTitle()));
-        Log.i("newGallery","onCreate");
         getActivity().setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         // Views related to local photos
         localPhotosFrame = (LinearLayout) view.findViewById(R.id.tabUpload);
