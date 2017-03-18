@@ -156,4 +156,30 @@ public class CacheStore {
     		Log.d("Luong", "Delete file " + file.getAbsolutePath());
     	}
     }
+
+    /**
+     *
+     * @param path Path of the file to be deleted
+     */
+    public synchronized void deleteCachedFile(String path) {
+
+        File deletableFile = new File(
+                Environment.getExternalStorageDirectory() + cacheDir + cacheMap.get(path).toString()
+        );
+        if (deletableFile.exists()) {
+            deletableFile.delete();
+        }
+        // Clear image data from cache as well
+        cacheMap.remove(path);
+        cacheMap.remove("path@" + path);
+        cacheMap.remove("id@" + path);
+        bitmapMap.remove(path);
+        try (ObjectOutputStream stream = new ObjectOutputStream(
+            new BufferedOutputStream(new FileOutputStream(new File(
+                Environment.getExternalStorageDirectory().toString(),cacheDir + CACHE_FILENAME))))) {
+            stream.writeObject(cacheMap);
+    } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
