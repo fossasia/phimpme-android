@@ -57,14 +57,6 @@ public class MainActivityTest {
         IdlingResource idlingResource = new ElapsedTimeIdlingResource(waitingTime);
         Espresso.registerIdlingResources(idlingResource);
 
-        ViewInteraction loadMorePhotos = onView(
-                allOf(withId(R.id.btnLoadMoreLocalPhotos), isDisplayed()));
-        loadMorePhotos.check(matches(isDisplayed()));
-
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.titleLocalPhotos), isDisplayed()));
-        textView.check(matches(withText("Local Photos")));
-
         ViewInteraction cameraIcon = onView(
                 allOf(withId(R.id.tab_camera), isDisplayed()));
         cameraIcon.check(matches(isDisplayed()));
