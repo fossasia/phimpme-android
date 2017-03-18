@@ -299,8 +299,9 @@ public class CropImage extends MonitoredActivity {
 				}
 				boolean enabled = locationManager
 						.isProviderEnabled(LocationManager.GPS_PROVIDER);
-
+				//Checks if the GPS active or not.
 				if (!enabled) {
+					//Pops out dialog box.
 					AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
 							CropImage.this, R.style.AppCompatAlertDialogStyle);
 					alertDialogBuilder
@@ -310,6 +311,7 @@ public class CropImage extends MonitoredActivity {
 									new DialogInterface.OnClickListener() {
 										public void onClick(DialogInterface dialog,
 															int id) {
+											//Enable gps
 											Intent callGPSSettingIntent = new Intent(
 													android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 											CropImage.this.startActivity(callGPSSettingIntent);
