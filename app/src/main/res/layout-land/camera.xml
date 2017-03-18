@@ -18,6 +18,14 @@
             android:gravity="center|left"
             android:orientation="vertical" >
 
+            <Spinner
+                android:id="@+id/image_resolution"
+                android:layout_width="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@color/white"
+                android:alpha="0.5"
+                android:layout_height="wrap_content"/>
+
             <ImageButton
                 android:id="@+id/switch_camera"
                 android:layout_width="wrap_content"
