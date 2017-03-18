@@ -28,7 +28,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Created by chetankaushik on 15/03/17.
+ * @author dynamitechetan
+ * @author heysadboy
  */
 
 public class MapFragment extends Fragment {
