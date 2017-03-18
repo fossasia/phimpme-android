@@ -45,7 +45,7 @@ We have the following branches
 **Feature**|**Description**|**Status**
 -----|-----|-----
 Home Screen|Show local captured images|Established
- |Grid view of images|Established
+ |Grid view of images|Diplaying images in grid|Established
  |Edit, Upload, share option on image click|Working
 Map Activity|Show photos on the map|Working
 Camera|Capture Image, Toggle Camera|Working
