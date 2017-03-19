@@ -44,10 +44,10 @@ We have the following branches
 ## Features
 **Feature**|**Description**|**Status**
 -----|-----|-----
-Home Screen|Show local captured images|Need Enhancement
- |Grid view of images.|Need Enhancement
+Home Screen|Show local captured images|Established
+ |Grid view of images|Diplaying images in grid|Established
  |Edit, Upload, share option on image click|Working
-Map Activity|Show photos on the map|Not working
+Map Activity|Show photos on the map|Working
 Camera|Capture Image, Toggle Camera|Working
  |Apply filters, Flash on/off|Working
 Upload|Select account on which you want to upload|Not working
