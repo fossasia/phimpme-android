@@ -116,8 +116,8 @@ public class PhimpMeGallery extends Activity{
 				builder.setMessage(R.string.dialog_upload);
 				builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {					
 					@Override
-					public void onClick(DialogInterface dialog, int which) {		
-						Upload.imagelist+=url+"#";
+					public void onClick(DialogInterface dialog, int which) {
+						Upload.uploadGridList.add(url);
 					}
 				});
 				builder.show();
