@@ -3,7 +3,7 @@
     android:id="@+id/layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/black"
+    android:background="@color/black_trans"
     android:orientation="vertical" >
 
     <RelativeLayout
@@ -18,8 +18,8 @@
 
             <ImageButton
                 android:id="@+id/switch_camera"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/cameraIcon"
+                android:layout_height="@dimen/cameraIcon"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
                 android:background="@android:color/transparent"
@@ -27,8 +27,8 @@
 
             <ImageButton
                 android:id="@+id/flash"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="@dimen/cameraIcon"
+                android:layout_height="@dimen/cameraIcon"
                 android:layout_marginLeft="10dp"
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
