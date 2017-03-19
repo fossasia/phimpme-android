@@ -21,14 +21,14 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -37,6 +37,7 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -166,6 +167,7 @@ public class Upload extends android.support.v4.app.Fragment {
     ListView listAccounts;
 
     GridView listPhotoUpload;
+    TextView noPhotos;
 
     ImageView btnAdd;
 
@@ -201,9 +203,17 @@ public class Upload extends android.support.v4.app.Fragment {
 
     String[] service;
 
-    int color ;
+    int color;
 
-    public static String imagelist = "";
+    // Views to toggle
+    LinearLayout clearPanel, uploadPanel;
+    // Upload panel lable
+    TextView panelLable;
+    // Image buttons to clear panel
+    ImageView removeSelectedBtn, selectAllBtn, clearSelectionBtn;
+    // Upload image list and temporary list to store removable items
+    public static ArrayList<String> uploadGridList = new ArrayList<>();
+    private ArrayList<String> removableList;
 
     private static String longtitude = "", latitude = "", title = "";
 
@@ -237,7 +247,7 @@ public class Upload extends android.support.v4.app.Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        color =  getActivity().getResources().getColor(R.color.icongrey);
+        color = getActivity().getResources().getColor(R.color.icongrey);
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
 
@@ -248,30 +258,73 @@ public class Upload extends android.support.v4.app.Fragment {
         StrictMode.setThreadPolicy(policy);
         ctx = getContext();
         Log.d("Upload", "Upload Start");
-
-        listAccounts = (ListView) getView().findViewById(R.id.listUploadAccounts);
-
-        listPhotoUpload = (GridView) getView().findViewById(R.id.photolistview);
-        if (!imagelist.equals(""))
-            listPhotoUpload.setAdapter(new ImageAdapter(ctx));
-        listPhotoUpload.setOnItemClickListener(new OnItemClickListener() {
-
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                String path[] = imagelist.split("#");
-                Intent _intent = new Intent();
-                _intent.setClass(ctx, CropImage.class);
-                _intent.putExtra("image-path", path[position]);
-                _intent.putExtra("longtitude", longtitude);
-                _intent.putExtra("latitude", latitude);
-                _intent.putExtra("title", title);
-                _intent.putExtra("position", position);
-                _intent.putExtra("aspectX", 0);
-                _intent.putExtra("aspectY", 0);
-                _intent.putExtra("scale", true);
-                _intent.putExtra("activityName", "Upload");
-                startActivityForResult(_intent, CROP_IMAGE);
+        noPhotos = (TextView) view.findViewById(R.id.nophotos);
+        // Initiate toggle panels
+        clearPanel = (LinearLayout) view.findViewById(R.id.clearButtonPanel);
+        uploadPanel = (LinearLayout) view.findViewById(R.id.uploadButtonPanel);
+        clearPanel.setVisibility(View.GONE);
+        uploadPanel.setVisibility(View.VISIBLE);
+        // Set panel title as "Upload"
+        panelLable = (TextView) view.findViewById(R.id.uploadPanelLable);
+        panelLable.setText(R.string.upload);
+        // Initiate removable upload item list
+        removableList = new ArrayList<>();
+        // Initiate clear panel buttons
+        selectAllBtn = (ImageView) view.findViewById(R.id.btnSelectAll);
+        selectAllBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removableList.clear();
+                for (String path : uploadGridList) {
+                    removableList.add(path);
+                }
+                ((ImageAdapter) listPhotoUpload.getAdapter()).notifyDataSetChanged();
+                int delCount = removableList.size();
+                String newTitle;
+                if (delCount > 0) {
+                    newTitle = delCount + (delCount == 1 ? " image" : " images") + " selected";
+                    toggleButtonPanel(true);
+                } else {
+                    newTitle =  getResources().getString(R.string.upload);
+                    toggleButtonPanel(false);
+                }
+                panelLable.setText(newTitle);
             }
         });
+
+        clearSelectionBtn = (ImageView) view.findViewById(R.id.btnDeselectAll);
+        clearSelectionBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removableList.clear();
+                ((ImageAdapter) listPhotoUpload.getAdapter()).notifyDataSetChanged();
+                panelLable.setText(getResources().getString(R.string.upload));
+                toggleButtonPanel(false);
+            }
+        });
+
+        removeSelectedBtn = (ImageView) view.findViewById(R.id.btnClearSelected);
+        removeSelectedBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!removableList.isEmpty()) {
+                    uploadGridList.removeAll(removableList);
+                    removableList.clear();
+                    ((ImageAdapter) listPhotoUpload.getAdapter()).notifyDataSetChanged();
+                    panelLable.setText(getResources().getString(R.string.upload));
+                    toggleButtonPanel(false);
+                    if (uploadGridList.isEmpty()) {
+                        noPhotos.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+        });
+
+        listAccounts = (ListView) getView().findViewById(R.id.listUploadAccounts);
+        listPhotoUpload = (GridView) getView().findViewById(R.id.photolistview);
+        if (!uploadGridList.isEmpty()) {
+            listPhotoUpload.setAdapter(new ImageAdapter(ctx));
+        }
 
 		/*
          * bluetooth share
@@ -281,10 +334,10 @@ public class Upload extends android.support.v4.app.Fragment {
         btnBluetoothShare.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (imagelist != "") {
+                if (!uploadGridList.isEmpty()) {
                     Intent intent = new Intent();
                     intent.setClass(getContext(), BluetoothShareMultipleFile.class);
-                    intent.putExtra("imagelist", imagelist);
+                    intent.putExtra("imagelist", TextUtils.join("#", uploadGridList));
                     intent.putExtra("activityName", "Upload");
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
@@ -308,16 +361,16 @@ public class Upload extends android.support.v4.app.Fragment {
                     if (PhimpMe.checked_accounts.size() > 0) {
                         Log.d("Hon", String.valueOf(PhimpMe.checked_accounts.size()));
                         if (checkListAccount()) {
-                            if (imagelist != "") {
+                            if (!uploadGridList.isEmpty()) {
                                 Log.d("Upload", "start");
                                 Bundle data = new Bundle();
                                 data.putStringArray("id", id);
                                 data.putStringArray("service", service);
                                 data.putStringArray("name", name);
-                                data.putString("imagelist", imagelist);
+                                data.putString("imagelist", TextUtils.join("#", uploadGridList));
                                 Intent uitent = new Intent(ctx, UploadProgress.class);
                                 uitent.putExtras(data);
-                                Log.d("UploadProgress","start : "+name);
+                                Log.d("UploadProgress", "start : " + name);
                                 startActivity(uitent);
                             } else {
                                 Commons.AlertLog(ctx, getString(R.string.error_upload_no_photo), getString(R.string.accept)).show();
@@ -438,8 +491,8 @@ public class Upload extends android.support.v4.app.Fragment {
                 startActivityForResult(intent, TYPE_MULTI_PICKER);
             }
         });
-		/*btnPhotoAdd.setOnTouchListener(new OnTouchListener()
-		{
+        /*btnPhotoAdd.setOnTouchListener(new OnTouchListener()
+        {
 			@SuppressWarnings("deprecation")
 			@Override
 			public boolean onTouch(View v, MotionEvent event)
@@ -448,7 +501,7 @@ public class Upload extends android.support.v4.app.Fragment {
 				return false;
 			}
 		});*/
-		/*
+        /*
 		 * Thong - Init services
 		 */
         TumblrServices.init();
@@ -599,6 +652,7 @@ public class Upload extends android.support.v4.app.Fragment {
             }
         });
     }
+
     private int fetchAccentColor() {
         TypedValue typedValue = new TypedValue();
         TypedArray a = getActivity().obtainStyledAttributes(typedValue.data, new int[]{R.attr.colorAccent});
@@ -608,20 +662,24 @@ public class Upload extends android.support.v4.app.Fragment {
     }
 
     class ImageAdapter extends BaseAdapter {
-        private String[] path;
 
+        private ArrayList<String> uploadImageList = new ArrayList<>();
         private LayoutInflater mInflater;
 
         public ImageAdapter(Context c) {
-            mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            path = imagelist.split("#");
 
+            mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            uploadImageList = uploadGridList;
+            if (!uploadGridList.isEmpty()) {
+                noPhotos.setVisibility(View.GONE);
+            }
         }
 
         public int getCount() {
-            return path.length;
+            return uploadImageList.size();
         }
 
+        @Override
         public Object getItem(int position) {
             return null;
         }
@@ -630,30 +688,26 @@ public class Upload extends android.support.v4.app.Fragment {
             return 0;
         }
 
-        @SuppressWarnings("deprecation")
-        public View getView(int position, View convertView, ViewGroup parent) {
-            GridItem holder;
+        public View getView(final int position, View convertView, final ViewGroup parent) {
+            // Holder for the view
+            final GridItem holder;
+            // Initiate holder
             if (convertView == null) {
                 holder = new GridItem();
                 convertView = mInflater.inflate(R.layout.gridviewitem, null);
-                holder.imageview = (ImageView) convertView
-                        .findViewById(R.id.ImageGrid);
+                holder.imageview = (ImageView) convertView.findViewById(R.id.ImageGrid);
                 holder.imageview.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                holder.title = (TextView) convertView
-                        .findViewById(R.id.ImTitle);
-                holder.tags = (TextView) convertView
-                        .findViewById(R.id.ImTags);
-                holder.lati = (TextView) convertView
-                        .findViewById(R.id.ImLati);
-                holder.longi = (TextView) convertView
-                        .findViewById(R.id.ImLongi);
+                holder.checkView = (ImageView) convertView.findViewById(R.id.ImCheck);
+                holder.title = (TextView) convertView.findViewById(R.id.ImTitle);
+                holder.tags = (TextView) convertView.findViewById(R.id.ImTags);
+                holder.lati = (TextView) convertView.findViewById(R.id.ImLati);
+                holder.longi = (TextView) convertView.findViewById(R.id.ImLongi);
                 convertView.setTag(holder);
             } else {
                 holder = (GridItem) convertView.getTag();
             }
-            String tmp[] = path[position].split(";");
+            final String tmp[] = String.valueOf(uploadImageList.get(position)).split(";");
             Uri imageUri = Uri.parse(tmp[0]);
-            Log.d("imageUri", imageUri.toString() + ",length path : " + path.length);
             ContentResolver cr = getActivity().getContentResolver();
             String[] proj = {MediaStore.Images.Media._ID};
             Cursor cursor = getActivity().getContentResolver().query(
@@ -663,87 +717,185 @@ public class Upload extends android.support.v4.app.Fragment {
                     null,
                     MediaStore.Images.Media._ID
             );
-            if (cursor.getCount() == 0) {
-                // display download photo in list upload photo
-
-                String thumb_path = tmp[0].replace(".rss_items", ".rss_thumbs");
-                Log.e("Upload", "thumb_path : " + thumb_path);
-                holder.imageview.setImageBitmap(BitmapFactory.decodeFile(thumb_path));
-
-            } else {
-                cursor.moveToFirst();
-                holder.imageview.setScaleType(ImageView.ScaleType.FIT_XY);
-                try {
-                    holder.imageview.setImageBitmap(MediaStore.Images.Thumbnails.getThumbnail(cr, Integer.valueOf(cursor.getString(0)), MediaStore.Images.Thumbnails.MICRO_KIND, null));
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            if (tmp.length < 2) {
-
-                File f = new File(path[position].split(";")[0]);
-                holder.title.setText(f.getName());
-                ExifInterface exif_data = null;
-                geoDegrees _g = null;
-                String la = "";
-                String lo = "";
-                try {
-                    exif_data = new ExifInterface(f.getAbsolutePath());
-                    _g = new geoDegrees(exif_data);
-                    if (_g.isValid()) {
-                        la = _g.getLatitude() + "";
-                        lo = _g.getLongitude() + "";
+            if (cursor != null) {
+                if (cursor.getCount() == 0) {
+                    // display download photo in list upload photo
+                    String thumb_path = tmp[0].replace(".rss_items", ".rss_thumbs");
+                    Log.e("Upload", "thumb_path : " + thumb_path);
+                    holder.imageview.setImageBitmap(BitmapFactory.decodeFile(thumb_path));
+                } else {
+                    cursor.moveToFirst();
+                    holder.imageview.setScaleType(ImageView.ScaleType.FIT_XY);
+                    try {
+                        holder.imageview.setImageBitmap(
+                                MediaStore.Images.Thumbnails.getThumbnail(
+                                        cr,
+                                        Integer.valueOf(cursor.getString(0)),
+                                        MediaStore.Images.Thumbnails.MICRO_KIND, null));
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    exif_data = null;
-                    _g = null;
                 }
-                longtitude = lo;
-                latitude = la;
-                title = f.getName();
-                holder.lati.setText("Latiude: " + la);
-                holder.longi.setText("Longitude: " + lo);
-                holder.tags.setText("Tags: ");
-
-            } else {
-                try {
-                    JSONObject js = new JSONObject(tmp[1]);
-                    if (js.getString("name").equals("")) {
-                        File f = new File(path[position].split(";")[0]);
-                        holder.title.setText(f.getName());
-                    } else
-                        holder.title.setText(js.getString("name"));
-                    holder.lati.setText("Latiude: " + js.getString("lati"));
-                    holder.longi.setText("Longitude: " + js.getString("logi"));
-                    holder.tags.setText("Tags: " + js.getString("tags"));
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (tmp.length < 2) {
+                    File f = new File(String.valueOf(uploadImageList.get(position)).split(";")[0]);
+                    holder.title.setText(f.getName());
+                    ExifInterface exif_data = null;
+                    geoDegrees _g = null;
+                    String la = "";
+                    String lo = "";
+                    try {
+                        exif_data = new ExifInterface(f.getAbsolutePath());
+                        _g = new geoDegrees(exif_data);
+                        if (_g.isValid()) {
+                            la = _g.getLatitude() + "";
+                            lo = _g.getLongitude() + "";
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        exif_data = null;
+                        _g = null;
+                    }
+                    longtitude = lo;
+                    latitude = la;
+                    title = f.getName();
+                    String latTxt = "Latitude: " + la;
+                    holder.lati.setText(latTxt);
+                    String lonTxt = "Longitude: " + lo;
+                    holder.longi.setText(lonTxt);
+                    String tagTxt = "Tags: ";
+                    holder.tags.setText(tagTxt);
+                } else {
+                    try {
+                        JSONObject js = new JSONObject(tmp[1]);
+                        if (js.getString("name").equals("")) {
+                            File f = new File(String.valueOf(uploadImageList.get(position)).split(";")[0]);
+                            holder.title.setText(f.getName());
+                        } else {
+                            holder.title.setText(js.getString("name"));
+                        }
+                        String latTxt = "Latitude: " + js.getString("lati");
+                        holder.lati.setText(latTxt);
+                        String lonTxt = "Longitude: " + js.getString("logi");
+                        holder.longi.setText(lonTxt);
+                        String tagTxt = "Tags: " + js.getString("tags");
+                        holder.tags.setText(tagTxt);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
+                cursor.close();
             }
-            cursor.close();
+
+            convertView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // If holder is not selected and no other holders are selected, display Image
+                    // If the holder is selected, deselect it
+                    // If any other holder is selected, select this holder as well
+                    if (holder.isSelected) {
+                        holder.isSelected = false;
+                        holder.imageview.setAlpha(1.0f);
+                        holder.checkView.setVisibility(View.GONE);
+                        removableList.remove(holder.imagePath);
+                        int delCount = removableList.size();
+                        String newTitle;
+                        if (delCount > 0) {
+                            newTitle = delCount + (delCount == 1 ? " image" : " images") + " selected";
+                            toggleButtonPanel(true);
+                        } else {
+                            newTitle =  getResources().getString(R.string.upload);
+                            toggleButtonPanel(false);
+                        }
+                        panelLable.setText(newTitle);
+                    } else {
+                        if (removableList.isEmpty()) {
+                            Intent viewImageIntent = new Intent();
+                            viewImageIntent.setClass(ctx, CropImage.class);
+                            viewImageIntent.putExtra("image-path", holder.imagePath);
+                            viewImageIntent.putExtra("longtitude", longtitude);
+                            viewImageIntent.putExtra("latitude", latitude);
+                            viewImageIntent.putExtra("title", title);
+                            viewImageIntent.putExtra("position", position);
+                            viewImageIntent.putExtra("aspectX", 0);
+                            viewImageIntent.putExtra("aspectY", 0);
+                            viewImageIntent.putExtra("scale", true);
+                            viewImageIntent.putExtra("activityName", "Upload");
+                            startActivityForResult(viewImageIntent, CROP_IMAGE);
+                        } else {
+                            holder.isSelected = true;
+                            holder.imageview.setAlpha(0.5f);
+                            holder.checkView.setVisibility(View.VISIBLE);
+                            removableList.add(holder.imagePath);
+                            int delCount = removableList.size();
+                            String newTitle;
+                            if (delCount > 0) {
+                                newTitle = delCount + (delCount == 1 ? " image" : " images") + " selected";
+                                toggleButtonPanel(true);
+                            } else {
+                                newTitle =  getResources().getString(R.string.upload);
+                                toggleButtonPanel(false);
+                            }
+                            panelLable.setText(newTitle);
+                        }
+                    }
+                }
+            });
+
+            convertView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (holder.isSelected) {
+                        holder.imageview.setAlpha(1.0f);
+                        holder.checkView.setVisibility(View.GONE);
+                        holder.isSelected = false;
+                        removableList.remove(holder.imagePath);
+                    } else {
+                        holder.imageview.setAlpha(0.5f);
+                        holder.checkView.setVisibility(View.VISIBLE);
+                        holder.isSelected = true;
+                        removableList.add(holder.imagePath);
+                    }
+                    int delCount = removableList.size();
+                    String newTitle;
+                    if (delCount > 0) {
+                        newTitle = delCount + (delCount == 1 ? " image" : " images") + " selected";
+                        toggleButtonPanel(true);
+                    } else {
+                        newTitle =  getResources().getString(R.string.upload);
+                        toggleButtonPanel(false);
+                    }
+                    panelLable.setText(newTitle);
+                    return true;
+                }
+            });
+
+            holder.isSelected = removableList.contains(uploadImageList.get(position));
+            holder.imagePath = uploadImageList.get(position);
+            holder.imageview.setAlpha(holder.isSelected ? 0.5f : 1.0f);
+            holder.checkView.setVisibility(holder.isSelected? View.VISIBLE : View.GONE);
+
             return convertView;
         }
     }
 
-    class ViewHolder {
-        ImageView imageview;
-
-        CheckBox checkbox;
-    }
-
+    /**
+     * Upload item
+     */
     class GridItem {
         ImageView imageview;
-
+        ImageView checkView;
         TextView title;
-
         TextView lati;
-
         TextView longi;
-
         TextView tags;
+        boolean isSelected;
+        String imagePath;
+    }
+
+    private void toggleButtonPanel(boolean visibility) {
+        uploadPanel.setVisibility(!visibility ? View.VISIBLE : View.GONE);
+        clearPanel.setVisibility(visibility ? View.VISIBLE : View.GONE);
     }
 
     private class AccountsAdapter extends ArrayAdapter<String> {
@@ -880,8 +1032,7 @@ public class Upload extends android.support.v4.app.Fragment {
             reloadAccountsList();
             PhimpMe.add_account_upload = false;
         }
-        Log.d("imagelist", imagelist);
-        if (!imagelist.equals("")) {
+        if (!uploadGridList.isEmpty()) {
             listPhotoUpload.setAdapter(new ImageAdapter(ctx));
         }
         if (PhimpMe.IdList.size() == 5) {
@@ -905,7 +1056,7 @@ public class Upload extends android.support.v4.app.Fragment {
         accounts = null;
 
         listAccounts.setAdapter(new AccountsAdapter(getActivity(), id, name, service));
-        if(listAccounts.getAdapter().isEmpty()) {
+        if (listAccounts.getAdapter().isEmpty()) {
             listAccounts.setVisibility(View.GONE);
             getView().findViewById(R.id.noaccounts).setVisibility(View.VISIBLE);
         }
@@ -1215,9 +1366,7 @@ public class Upload extends android.support.v4.app.Fragment {
                     if (cursor != null) {
                         int column_index_data = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                         cursor.moveToFirst();
-                        if (imagelist == "")
-                            imagelist = cursor.getString(column_index_data);
-                        else imagelist += "," + cursor.getString(column_index_data);
+                        uploadGridList.add(cursor.getString(column_index_data));
                         listPhotoUpload.setAdapter(new ImageAdapter(getContext()));
                         cursor.close();
                     }
@@ -1227,21 +1376,12 @@ public class Upload extends android.support.v4.app.Fragment {
             case TYPE_MULTI_PICKER: {
                 if (resultCode == Activity.RESULT_OK) {
                     ArrayList<Image> imagesList = data.getParcelableArrayListExtra(vn.mbm.phimp.me.utils.Constants.KEY_BUNDLE_LIST);
-                    if(imagesList.size()>0) {
+                    if (imagesList.size() > 0) {
                         for (int i = 0; i < imagesList.size(); i++) {
-
-                            if (i != imagesList.size())
-                                imagelist = imagelist.concat(imagesList.get(i).imagePath + "#");
-                            else
-                                imagelist = imagelist.concat(imagesList.get(i).imagePath);
-
+                            uploadGridList.add(imagesList.get(i).imagePath);
                         }
                         listPhotoUpload.setAdapter(new ImageAdapter(getContext()));
-
                     }
-
-                } else {
-
                 }
                 break;
             }
@@ -1254,8 +1394,8 @@ public class Upload extends android.support.v4.app.Fragment {
                     String name = data.getStringExtra("name");
                     String tag = data.getStringExtra("tags");
                     String json = "{\"name\":\"" + name + "\"," + "\"tags\":\"" + tag + "\"," + "\"lati\":\"" + lati + "\"," + "\"logi\":\"" + logi + "\"}";
-                    imagelist = imagelist.replace(imagepath, saveUri + ";" + json);
-                    Log.d("image", imagelist);
+                    uploadGridList.remove(imagepath);
+                    uploadGridList.add(saveUri + ";" + json);
                     listPhotoUpload.setAdapter(new ImageAdapter(getContext()));
                 }
                 break;
@@ -1263,7 +1403,6 @@ public class Upload extends android.support.v4.app.Fragment {
             case GET_POSITION_ON_MAP: {
                 if (resultCode == Activity.RESULT_OK) {
                     txtLatitude.setText(PhimpMe.UploadLatitude + "");
-
                     txtLongtitude.setText(PhimpMe.UploadLongitude + "");
                 }
                 break;

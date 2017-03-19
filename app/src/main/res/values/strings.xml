@@ -410,6 +410,13 @@
     <string name="add_media">Add Media</string>
     <string name="media">Media</string>
     <string name="media_error">Error uploading media: Could not create image.</string>
+    <string name="delete_image">Are you sure you want to delete this image?</string>
+    <string name="delete_images">Are you sure you want to delete these images?</string>
+    <string name="menu_title_delete">Delete</string>
+    <string name="menu_title_deselect">Deselect all</string>
+    <string name="image_delete_success">Image deleted!</string>
+    <string name="images_delete_success">Images deleted!</string>
+    <string name="image_delete_fail">Image not found!</string>
 
     <!-- category management -->
     <string name="refresh_categories">Refresh Categories</string>
@@ -607,7 +614,7 @@
     <string name="joomla_note">If you want use this feature. Please install component joooid in your joomla host !</string>
     <string name="action">Action</string>
     <string name="ask_delete">Are you sure you want to delete this file?</string>
-    <string name="no_accounts_connected">No Accounts Connected:(</string>
+    <string name="no_accounts_connected">No Accounts Connected :(</string>
     <string name="max_file_size">Maximum File Size</string>
     <string name="delete_all_photos">Delete all Photos</string>
     <string name="hiede_show_photos">Hide or show local photos</string>
