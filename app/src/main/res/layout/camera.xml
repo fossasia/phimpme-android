@@ -20,7 +20,6 @@
                 android:id="@+id/switch_camera"
                 android:layout_width="@dimen/cameraIcon"
                 android:layout_height="@dimen/cameraIcon"
-                android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/camera_switch" />
