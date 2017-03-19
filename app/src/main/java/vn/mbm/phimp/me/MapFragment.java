@@ -63,10 +63,18 @@ public class MapFragment extends Fragment {
                         googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                             @Override
                             public void onInfoWindowClick(Marker arg0) {
-                                Intent i = new Intent(getActivity(), MapImageActivity.class);
-                                i.putExtra("path", arg0.getTitle());
-                                Log.e("Image", arg0.getTitle());
-                                startActivity(i);
+                                String path = arg0.getTitle();
+
+                                ArrayList<String> file = new ArrayList<>();
+                                file.add(path);
+                                Intent showImageIntent = new Intent();
+                                showImageIntent.setClass(getActivity(), vn.mbm.phimp.me.gallery.PhimpMeGallery.class);
+                                vn.mbm.phimp.me.gallery.PhimpMeGallery.setFileList(file);
+                                showImageIntent.putExtra("aspectX", 0);
+                                showImageIntent.putExtra("aspectY", 0);
+                                showImageIntent.putExtra("scale", true);
+                                showImageIntent.putExtra("activityName", "LocalPhotos");
+                                startActivity(showImageIntent);
                             }
                         });
                         googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {

@@ -249,18 +249,17 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="org.wordpress.android.AddAcountSettings"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ImagePickerActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|uiMode"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".feedservice.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
-
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <provider
             android:name="com.facebook.FacebookContentProvider"
             android:authorities="com.facebook.app.FacebookContentProvider1781584438783986"
@@ -281,7 +280,6 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".MapImageActivity"></activity>
     </application>
 
 </manifest>
