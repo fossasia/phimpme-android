@@ -5,6 +5,8 @@ if git.modified_files.empty? && git.added_files.empty? && git.deleted_files.empt
   fail "This PR has no changes at all, this is likely an issue during development."
 end
 
-if github.pr_body.contains? "Please describe"
+if github.pr_body.include? "Please describe"
   warn "Please update the PR template"
 end
+
+message message(":tada:") if is_version_bump && github.pr_author != "orta"
