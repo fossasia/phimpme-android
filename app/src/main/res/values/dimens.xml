@@ -6,6 +6,8 @@
   <dimen name="headingText">16sp</dimen>
 
 
+  <dimen name="image_selector_size">25dp</dimen>
+
   <dimen name="image_height_portrait">220dp</dimen>
   <dimen name="image_height_landscape">110dp</dimen>
 
