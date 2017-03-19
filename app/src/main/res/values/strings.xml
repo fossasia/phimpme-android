@@ -632,4 +632,7 @@
     <string name="file_size">File Size:</string>
     <string name="Done">Done</string>
 
+    <!-- Settings View -->
+    <string name="select_max_file_size">Select the Max File Size -</string>
+
 </resources>
