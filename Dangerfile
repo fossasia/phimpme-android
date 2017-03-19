@@ -9,4 +9,4 @@ if github.pr_body.include? "Please describe"
   warn "Please update the PR template"
 end
 
-message message(":tada:") if is_version_bump && github.pr_author != "orta"
+message(":tada:") if is_version_bump && github.pr_author != "orta"
