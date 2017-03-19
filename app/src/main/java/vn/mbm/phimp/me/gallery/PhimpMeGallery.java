@@ -291,8 +291,7 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
-                        Upload.imagelist+=filePath.get(position)+"#";
+                        Upload.uploadGridList.add(filePath.get(position));
                     }
                 });
                 builder.show();

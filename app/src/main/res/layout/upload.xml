@@ -106,58 +106,110 @@
         android:paddingRight="10dp">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/uploadPanelLable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:fontFamily="sans-serif-light"
             android:text="@string/photos"
-            android:textSize="@dimen/headingText"
+            android:textSize="@dimen/headingText" />
 
-            />
-
-        <ImageView
-            android:id="@+id/btnUploadPhotoAdd"
+        <LinearLayout
+            android:id="@+id/uploadButtonPanel"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:contentDescription="@string/empty"
-            android:focusable="true"
-            android:padding="8dp"
-            android:src="@drawable/ic_add_box_black_24dp" />
-
-        <ImageView
-            android:id="@+id/upload_sendDirectly"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/btnUploadPhotoAdd"
-            android:layout_toLeftOf="@+id/btnUploadPhotoAdd"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:contentDescription="@string/empty"
-            android:focusable="true"
-            android:padding="8dp"
-            android:src="@drawable/ic_share_black_24dp" />
+            android:layout_alignParentEnd="true">
 
-        <ImageView
-            android:id="@+id/btnUploadPhoto"
+            <ImageView
+                android:id="@+id/btnUploadPhotoAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/empty"
+                android:focusable="true"
+                android:padding="8dp"
+                android:src="@drawable/ic_add_box_black_24dp" />
+
+            <ImageView
+                android:id="@+id/upload_sendDirectly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/btnUploadPhotoAdd"
+                android:layout_toLeftOf="@+id/btnUploadPhotoAdd"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/empty"
+                android:focusable="true"
+                android:padding="8dp"
+                android:src="@drawable/ic_share_black_24dp" />
+
+            <ImageView
+                android:id="@+id/btnUploadPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/upload_sendDirectly"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:enabled="true"
+                android:focusable="true"
+                android:padding="8dp"
+                android:src="@drawable/ic_cloud_upload_black_24dp"
+                android:text="@string/upload" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/clearButtonPanel"
+            android:visibility="gone"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/upload_sendDirectly"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:enabled="true"
-            android:focusable="true"
-            android:padding="8dp"
-            android:src="@drawable/ic_cloud_upload_black_24dp"
-            android:text="@string/upload" />
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/btnSelectAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/empty"
+                android:focusable="true"
+                android:padding="8dp"
+                android:src="@drawable/ic_select_all_black_24dp" />
+
+            <ImageView
+                android:id="@+id/btnClearSelected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/btnUploadPhotoAdd"
+                android:layout_toLeftOf="@+id/btnUploadPhotoAdd"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/empty"
+                android:focusable="true"
+                android:padding="8dp"
+                android:src="@drawable/ic_clear_selected_black_24dp" />
+
+            <ImageView
+                android:id="@+id/btnDeselectAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/upload_sendDirectly"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:enabled="true"
+                android:focusable="true"
+                android:padding="8dp"
+                android:src="@drawable/ic_deselect_black_24dp"
+                android:text="@string/upload" />
+        </LinearLayout>
 
     </RelativeLayout>
-
 
     <ScrollView
         android:id="@+id/scrollView1"

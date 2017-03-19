@@ -681,7 +681,7 @@ public class Settings extends Fragment
 										+ getExternalStorageDirectory())));
 					}
 					//remove deleted photo in upload list
-					Upload.imagelist="";
+					Upload.uploadGridList.clear();
 					d.dismiss();
 					Commons.AlertLog(ctx, "Successfully", "OK").show();
 				}else{
