@@ -14,16 +14,12 @@
      limitations under the License.
 -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto">
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:background="@color/black_trans"
-        android:orientation="horizontal" >
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal">
 
         <HorizontalScrollView
             android:id="@+id/linear"
@@ -147,82 +143,21 @@
 
         </HorizontalScrollView>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:id="@+id/flip"
-            android:gravity="center"
-            android:layout_below="@+id/linear"
-            android:orientation="horizontal" >
-
-            <ImageButton
-                android:id="@+id/btnRotateLeftRight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:contentDescription="@string/empty"
-                android:src="@drawable/ic_rotate_left_white_24dp" />
-
-
-
-            <ImageButton
-                android:id="@+id/btnRotateTopDown"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:src="@drawable/ic_flip_white_24dp" />
-        </LinearLayout>
-
-        <view
+    <view
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:layout_above="@+id/scrollView1"
             android:layout_below="@+id/flip"
-            class="vn.mbm.phimp.me.gallery3d.media.CropImageView"
-            android:background="#55000000" />
+            class="vn.mbm.phimp.me.gallery3d.media.CropImageView" />
 
-        <RelativeLayout
-            android:id="@+id/relativeLayout1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:orientation="horizontal"
-            android:paddingLeft="10dip"
-            android:background="@color/black_trans"
-            android:paddingRight="10dip" >
 
-            <Button
-                android:id="@+id/save"
-                android:layout_width="100dip"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:text="@string/crop_save_text" />
-
-            <Button
-                android:id="@+id/discard"
-                android:layout_width="100dip"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="@string/crop_discard_text" />
-        </RelativeLayout>
-        <android.support.v7.widget.CardView
-            android:id="@+id/scrollView1"
-            android:layout_above="@+id/relativeLayout1"
-            android:layout_width="match_parent"
-            android:layout_margin="4dp"
-            card_view:cardCornerRadius="2dp"
-            android:layout_height="200dp">
             <ScrollView
                 android:layout_width="fill_parent"
                 android:layout_height="200dp"
-                android:padding="4dp"
+                android:id="@+id/scrollView1"
+                android:layout_above="@+id/relativeLayout1"
+                android:padding="8dp"
                 android:layout_alignParentLeft="true" >
 
                 <LinearLayout
@@ -243,6 +178,8 @@
                             android:id="@+id/txtUploadPhotoTitle"
                             android:layout_width="match_parent"
                             android:hint="@string/title"
+                            android:padding="4dp"
+                            android:background="@drawable/edittextbg"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
                             android:inputType="textNoSuggestions" >
@@ -296,6 +233,8 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:padding="4dp"
+                                android:background="@drawable/edittextbg"
                                 android:inputType="numberDecimal|numberSigned" />
 
                         </LinearLayout>
@@ -317,6 +256,8 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:background="@drawable/edittextbg"
+                                android:padding="4dp"
                                 android:inputType="numberDecimal|numberSigned" />
                         </LinearLayout>
                     </LinearLayout>
@@ -331,12 +272,78 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
                             android:hint="@string/tags_hint"
+                            android:padding="4dp"
+                            android:background="@drawable/edittextbg"
                             android:inputType="textNoSuggestions"
                             android:lines="3" />
                     </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
             </ScrollView>
-        </android.support.v7.widget.CardView>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+
+            android:background="@color/black_trans"
+            />
+        <Button
+            android:id="@+id/save"
+            android:layout_width="100dip"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:layout_alignParentLeft="true"
+            android:text="@string/crop_save_text" />
+
+        <Button
+            android:id="@+id/discard"
+            android:layout_width="100dip"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:layout_alignParentRight="true"
+            android:text="@string/crop_discard_text" />
     </RelativeLayout>
-</FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:id="@+id/flip"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_below="@+id/linear"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <ImageButton
+            android:id="@+id/btnRotateLeftRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:contentDescription="@string/empty"
+            android:src="@drawable/ic_rotate_left_black_24dp" />
+
+
+
+        <ImageButton
+            android:id="@+id/btnRotateTopDown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:src="@drawable/ic_flip_black_24dp" />
+    </LinearLayout>
+</RelativeLayout>
 
