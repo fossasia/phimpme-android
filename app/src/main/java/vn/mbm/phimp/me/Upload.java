@@ -301,6 +301,9 @@ public class Upload extends android.support.v4.app.Fragment {
                     ((ImageAdapter) listPhotoUpload.getAdapter()).notifyDataSetChanged();
                     panelLable.setText(getResources().getString(R.string.upload));
                     toggleButtonPanel(false);
+                    if (uploadGridList.isEmpty()) {
+                        noPhotos.setVisibility(View.VISIBLE);
+                    }
                 }
             }
         });

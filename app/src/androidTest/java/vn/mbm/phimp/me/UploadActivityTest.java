@@ -112,6 +112,17 @@ public class UploadActivityTest {
                         isDisplayed()));
         btnUploadAddView.check(matches(isDisplayed()));
 
+        ViewInteraction uploadBtnPanel = onView(
+                allOf(withId(R.id.uploadButtonPanel),
+                        withParent(withId(R.id.relativeLayout2)),
+                        isDisplayed()));
+        uploadBtnPanel.check(matches(isDisplayed()));
+
+        ViewInteraction noPhotosLabel = onView(
+                allOf(withId(R.id.nophotos),
+                        isDisplayed()));
+        noPhotosLabel.check(matches(isDisplayed()));
+
         Espresso.unregisterIdlingResources(idlingResource);
 
     }
