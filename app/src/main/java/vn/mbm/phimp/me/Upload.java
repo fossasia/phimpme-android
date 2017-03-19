@@ -259,6 +259,7 @@ public class Upload extends android.support.v4.app.Fragment {
         removableList = new ArrayList<>();
         // Initiate clear panel buttons
         selectAllBtn = (ImageView) view.findViewById(R.id.btnSelectAll);
+        selectAllBtn.setColorFilter(color);
         selectAllBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -281,6 +282,7 @@ public class Upload extends android.support.v4.app.Fragment {
         });
 
         clearSelectionBtn = (ImageView) view.findViewById(R.id.btnDeselectAll);
+        clearSelectionBtn.setColorFilter(color);
         clearSelectionBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -292,6 +294,7 @@ public class Upload extends android.support.v4.app.Fragment {
         });
 
         removeSelectedBtn = (ImageView) view.findViewById(R.id.btnClearSelected);
+        removeSelectedBtn.setColorFilter(color);
         removeSelectedBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
