@@ -26,6 +26,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.util.Pair;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -53,7 +54,6 @@ import java.util.Date;
 import java.util.List;
 
 import vn.mbm.phimp.me.gallery3d.media.CropImage;
-import vn.mbm.phimp.me.gallery3d.media.Pair;
 
 public class Camera2 extends android.support.v4.app.Fragment {
 	private static final String TAG = "Camera";
@@ -214,7 +214,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	}
 
 	public void setLayout() {
-//		setContentView(layout);
+		//setContentView(layout);
 		frame = ((FrameLayout) view.findViewById(R.id.preview));
 		preview = new Preview(getActivity());
 		//setContentView(preview);
@@ -358,7 +358,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		Camera.Parameters parameters = preview.mCamera.getParameters();
 		parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
 
-//		Adding resolutions for image capture
+		//Adding resolutions for image capture
 		setResolutionSpinner(parameters.getSupportedPictureSizes());
 
 		preview.mCamera.setParameters(parameters);
@@ -864,7 +864,7 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
 		}catch(Exception e){}
 		requestLayout();
 
-//		Setting up resolution of image
+		//Setting up resolution of image
 		Pair<Size, Integer> pair = getApproximatePictureSize(parameters.getSupportedPictureSizes(), mPreviewSize);
 		parameters.setPictureSize(pair.first.width, pair.first.height);
 		Camera2.image_res.setSelection(pair.second);
