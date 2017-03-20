@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.Rect;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.ShutterCallback;
@@ -29,6 +30,7 @@ import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -45,6 +47,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -647,6 +650,7 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
 	List<Size> mSupportedPreviewSizes;
 	List<String> mSupportFocus;
 	Camera mCamera;
+	private static  final int FOCUS_AREA_SIZE= 300;
 
 	@SuppressWarnings("deprecation")
 	Preview(Context context) {
@@ -654,6 +658,16 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
 
 		mSurfaceView = new SurfaceView(context);
 		addView(mSurfaceView);
+        //Set Touch Listener
+		mSurfaceView.setOnTouchListener(new OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                            focusOnTouch(event);
+                        }
+                        return true;
+                    }
+                 });
 
 		// Install a SurfaceHolder.Callback so we get notified when the
 		// underlying surface is created and destroyed.
@@ -671,6 +685,62 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
 			requestLayout();
 		}
 	}
+
+	//Check if tap to focus supported and Set the focus on the Tapped Area
+	private void focusOnTouch(MotionEvent event) {
+            if (mCamera != null ) {
+
+                Camera.Parameters parameters = mCamera.getParameters();
+                if (parameters.getMaxNumMeteringAreas() > 0){
+                    Log.i(TAG,"meteringAreas Supported");
+                    Rect rect = calculateFocusArea(event.getX(), event.getY());
+                    parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+                    List<Camera.Area> meteringAreas = new ArrayList<Camera.Area>();
+                    meteringAreas.add(new Camera.Area(rect, 800));
+                    parameters.setFocusAreas(meteringAreas);
+
+                    mCamera.setParameters(parameters);
+                    mCamera.autoFocus(mAutoFocusTakePictureCallback);
+                }else {
+                    mCamera.autoFocus(mAutoFocusTakePictureCallback);
+                }
+            }
+        }
+
+        //Calculate the Focus Area
+        private Rect calculateFocusArea(float x, float y) {
+            int left = clamp(Float.valueOf((x / mSurfaceView.getWidth()) * 2000 - 1000).intValue(), FOCUS_AREA_SIZE);
+            int top = clamp(Float.valueOf((y / mSurfaceView.getHeight()) * 2000 - 1000).intValue(), FOCUS_AREA_SIZE);
+
+            return new Rect(left, top, left + FOCUS_AREA_SIZE, top + FOCUS_AREA_SIZE);
+        }
+
+        private int clamp(int touchCoordinateInCameraReper, int focusAreaSize) {
+            int result;
+            if (Math.abs(touchCoordinateInCameraReper)+focusAreaSize/2>1000){
+                if (touchCoordinateInCameraReper>0){
+                    result = 1000 - focusAreaSize/2;
+                } else {
+                    result = -1000 + focusAreaSize/2;
+                }
+            } else{
+                result = touchCoordinateInCameraReper - focusAreaSize/2;
+            }
+            return result;
+        }
+
+        private Camera.AutoFocusCallback mAutoFocusTakePictureCallback = new Camera.AutoFocusCallback() {
+            @Override
+            public void onAutoFocus(boolean success, Camera camera) {
+                if (success) {
+                    // do something...
+                    Log.i("tap_to_focus","success!");
+                } else {
+                    // do something...
+                    Log.i("tap_to_focus","fail!");
+                }
+            }
+        };
 
 	public void switchCamera(Camera camera) {
 		setCamera(camera);
