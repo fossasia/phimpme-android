@@ -97,7 +97,7 @@ Before you begin, you should already have the Android Studio SDK downloaded and 
 
 8. Head back to google_maps_api.xml, replace the value of google_maps_key key with the copied API key.
 
-Please not that you should refrain commiting you value of API key. To use the map you need map api key from google, by providing fingerprint of your keystore certificate you used for generating apk (debuge.keystore in case of development environment). Once you get the map api key for specific certificate you MUST use the same certificate debuge.keystore) to generate the apk file to run the app successfully on all the device.
+Please note that you should refrain commiting your value of API key. To use the map you need map api key from google, by providing fingerprint of your keystore certificate you used for generating apk (debuge.keystore in case of development environment). Once you get the map api key for specific certificate you MUST use the same certificate debuge.keystore) to generate the apk file to run the app successfully on all the device.
 
 As the app is currently not on play store so this is the work around.
 
