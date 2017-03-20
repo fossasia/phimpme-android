@@ -16,9 +16,11 @@
 
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal">
 
         <HorizontalScrollView
@@ -179,7 +181,6 @@
                             android:layout_width="match_parent"
                             android:hint="@string/title"
                             android:padding="4dp"
-                            android:background="@drawable/edittextbg"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="10dp"
                             android:inputType="textNoSuggestions" >
@@ -234,7 +235,6 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:padding="4dp"
-                                android:background="@drawable/edittextbg"
                                 android:inputType="numberDecimal|numberSigned" />
 
                         </LinearLayout>
@@ -256,7 +256,6 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:background="@drawable/edittextbg"
                                 android:padding="4dp"
                                 android:inputType="numberDecimal|numberSigned" />
                         </LinearLayout>
@@ -273,7 +272,6 @@
                             android:layout_marginBottom="10dp"
                             android:hint="@string/tags_hint"
                             android:padding="4dp"
-                            android:background="@drawable/edittextbg"
                             android:inputType="textNoSuggestions"
                             android:lines="3" />
                     </android.support.design.widget.TextInputLayout>
@@ -324,7 +322,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
-        <ImageButton
+        <android.support.v7.widget.AppCompatImageView
             android:id="@+id/btnRotateLeftRight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -332,18 +330,20 @@
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:contentDescription="@string/empty"
-            android:src="@drawable/ic_rotate_left_black_24dp" />
+            app:srcCompat="@drawable/ic_rotate_left_black_24dp"
+            tools:ignore="MissingPrefix"/>
 
 
 
-        <ImageButton
+        <android.support.v7.widget.AppCompatImageView
             android:id="@+id/btnRotateTopDown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
-            android:src="@drawable/ic_flip_black_24dp" />
+            app:srcCompat="@drawable/ic_flip_black_24dp"
+            tools:ignore="MissingPrefix"/>
     </LinearLayout>
 </RelativeLayout>
 
