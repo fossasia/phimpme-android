@@ -119,47 +119,47 @@ public class Settings extends Fragment
 	public static EditText etMyFeedServicesTextbox4;
 	public static EditText etMyFeedServicesTextbox5;
 
-	static Context ctx;
-	int i=1;
-    int color = Color.parseColor("#757575");
-	ImageButton btnAdd;
-	ImageButton btnLangUS;
-	ImageButton btnLangDE;
-	ImageButton btnLangVI;
-	ImageView btnSettingsMaxFilesize;
-	ImageButton btnSettingsMaxDisplayPhotos;
-	Button donatePaypal;
-	EditText donateAmount;
+	private static Context ctx;
+	private int i=1;
+    	private int color = Color.parseColor("#757575");
+	private ImageButton btnAdd;
+	private ImageButton btnLangUS;
+	private ImageButton btnLangDE;
+	private ImageButton btnLangVI;
+	private ImageView btnSettingsMaxFilesize;
+	private ImageButton btnSettingsMaxDisplayPhotos;
+	private Button donatePaypal;
+	private EditText donateAmount;
 
-	TextView txtMaxPhotoSize;
-	TextView txtMaxDisplay;
-	TextView txtMB;
-	LinearLayout liFileSize;
-	TextView tvLangEN;
-	TextView tvLangDE;
-	TextView tvLangVI;
-	TextView noaccounttv;
+	private TextView txtMaxPhotoSize;
+	private TextView txtMaxDisplay;
+	private TextView txtMB;
+	private LinearLayout liFileSize;
+	private TextView tvLangEN;
+	private TextView tvLangDE;
+	private TextView tvLangVI;
+	private TextView noaccounttv;
 
-	LinearLayout lytGoogleAdmod;
-	LinearLayout lytLocalGallery;
-	LinearLayout lytMyFeedGallery;
-	LinearLayout lytMyFeedServices;
-	LinearLayout lytMyFeedMore;
-	LinearLayout lytPublicFeedList;
-	LinearLayout lytPrivateFeedList;
-	LinearLayout lytAccounts;
-	LinearLayout lyMore;
+	private LinearLayout lytGoogleAdmod;
+	private LinearLayout lytLocalGallery;
+	private LinearLayout lytMyFeedGallery;
+	private LinearLayout lytMyFeedServices;
+	private LinearLayout lytMyFeedMore;
+	private LinearLayout lytPublicFeedList;
+	private LinearLayout lytPrivateFeedList;
+	private LinearLayout lytAccounts;
+	private LinearLayout lyMore;
 
-	RadioGroup rdgMaxPhotoSizeType;
-	ImageButton btnMore;
-	ImageView btnDelete;
-	//ImageButton btnHelp;
-	File rss_folder;
-	File rss_thums;
-	File tmp_folder;
-	int error_count = 0;
-	ProgressDialog pro_gress;
-    private AlertDialog maxSizeDialog = null;
+	private RadioGroup rdgMaxPhotoSizeType;
+	private ImageButton btnMore;
+	private ImageView btnDelete;
+	//private ImageButton btnHelp;
+	private File rss_folder;
+	private File rss_thums;
+	private File tmp_folder;
+	private int error_count = 0;
+	private ProgressDialog pro_gress;
+    	private AlertDialog maxSizeDialog = null;
 
 
     @Nullable
