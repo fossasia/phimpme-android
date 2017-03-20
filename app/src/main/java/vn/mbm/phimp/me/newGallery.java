@@ -587,8 +587,6 @@ public class newGallery extends Fragment {
         super.onCreate(savedInstanceState);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar_newgallery);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        toolbar.setTitle("Padmal");
-        Log.d("Padmal", String.valueOf(toolbar.getTitle()));
         Log.i("newGallery","onCreate");
         getActivity().setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         // Views related to local photos
