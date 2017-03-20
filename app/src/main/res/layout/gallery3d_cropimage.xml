@@ -23,260 +23,261 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal">
 
-        <HorizontalScrollView
-            android:id="@+id/linear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center" >
+    <HorizontalScrollView
+        android:id="@+id/linear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
 
-                <ImageButton
-                    android:id="@+id/btnOriginal"
-                    android:layout_width="100dp"
-                    android:scaleType="centerCrop"
-                    android:layout_height="100dp"
-                    android:background="@null"
-                    android:src="@drawable/original_filter" />
+            <ImageButton
+                android:id="@+id/btnOriginal"
+                android:layout_width="100dp"
+                android:scaleType="centerCrop"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:src="@drawable/original_filter" />
 
-                <ImageButton
-                    android:id="@+id/btnBlackAndWhite"
-                    android:layout_width="100dp"
-                    android:scaleType="centerCrop"
-                    android:layout_height="100dp"
-                    android:background="@null"
-                    android:src="@drawable/inkwell_filter"/>
+            <ImageButton
+                android:id="@+id/btnBlackAndWhite"
+                android:layout_width="100dp"
+                android:scaleType="centerCrop"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:src="@drawable/inkwell_filter"/>
 
-                <ImageButton
-                    android:id="@+id/btnNagative"
-                    android:layout_width="100dp"
-                    android:scaleType="centerCrop"
-                    android:layout_height="100dp"
-                    android:background="@null"
-                    android:src="@drawable/negative_filter" />
+            <ImageButton
+                android:id="@+id/btnNagative"
+                android:layout_width="100dp"
+                android:scaleType="centerCrop"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:src="@drawable/negative_filter" />
 
-                <ImageButton
-                    android:id="@+id/btnSaphia"
-                    android:layout_width="100dp"
-                    android:scaleType="centerCrop"
-                    android:layout_height="100dp"
-                    android:background="@null"
-                    android:src="@drawable/sepia_filter" />
+            <ImageButton
+                android:id="@+id/btnSaphia"
+                android:layout_width="100dp"
+                android:scaleType="centerCrop"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:src="@drawable/sepia_filter" />
 
-                <ImageButton
-                    android:id="@+id/btnalpha"
-                    android:layout_width="100dp"
-                    android:scaleType="centerCrop"
-                    android:layout_height="100dp"
-                    android:background="@null"
-                    android:src="@drawable/blue_alpha_filter" />
+            <ImageButton
+                android:id="@+id/btnalpha"
+                android:layout_width="100dp"
+                android:scaleType="centerCrop"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:src="@drawable/blue_alpha_filter" />
 
-                <ImageButton
-                    android:id="@+id/btnpink"
-                    android:layout_width="100dp"
-                    android:scaleType="centerCrop"
-                    android:layout_height="100dp"
-                    android:background="@null"
-                    android:src="@drawable/pink_alpha_filter" />
+            <ImageButton
+                android:id="@+id/btnpink"
+                android:layout_width="100dp"
+                android:scaleType="centerCrop"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:src="@drawable/pink_alpha_filter" />
 
-                <ImageButton
-                    android:id="@+id/btnpolaroid"
-                    android:layout_width="100dp"
-                    android:scaleType="centerCrop"
-                    android:layout_height="100dp"
-                    android:background="@null"
-                    android:src="@drawable/polaroid_filter" />
+            <ImageButton
+                android:id="@+id/btnpolaroid"
+                android:layout_width="100dp"
+                android:scaleType="centerCrop"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:src="@drawable/polaroid_filter" />
 
-                <ImageButton
-                    android:id="@+id/btnblur"
-                    android:layout_width="100dp"
-                    android:scaleType="centerCrop"
-                    android:layout_height="100dp"
-                    android:background="@null"
-                    android:src="@drawable/blur_filter"/>
+            <ImageButton
+                android:id="@+id/btnblur"
+                android:layout_width="100dp"
+                android:scaleType="centerCrop"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:src="@drawable/blur_filter"/>
 
-                <ImageButton
-                    android:id="@+id/btnsharp"
-                    android:layout_width="100dp"
-                    android:scaleType="centerCrop"
-                    android:layout_height="100dp"
-                    android:background="@null"
-                    android:src="@drawable/sharp_filter"/>
+            <ImageButton
+                android:id="@+id/btnsharp"
+                android:layout_width="100dp"
+                android:scaleType="centerCrop"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:src="@drawable/sharp_filter"/>
 
-                <ImageButton
-                    android:id="@+id/btnedge"
-                    android:layout_width="100dp"
-                    android:scaleType="centerCrop"
-                    android:layout_height="100dp"
-                    android:background="@null"
-                    android:src="@drawable/edge_filter" />
+            <ImageButton
+                android:id="@+id/btnedge"
+                android:layout_width="100dp"
+                android:scaleType="centerCrop"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:src="@drawable/edge_filter" />
 
-                <ImageButton
-                    android:id="@+id/btnfuzz"
-                    android:layout_width="100dp"
-                    android:scaleType="centerCrop"
-                    android:layout_height="100dp"
-                    android:background="@null"
-                    android:src="@drawable/fuzz_filter"/>
-                <ImageButton
-                    android:id="@+id/btnSnow"
-                    android:layout_width="100dp"
-                    android:scaleType="centerCrop"
-                    android:layout_height="100dp"
-                    android:background="@null"
-                    android:layout_alignParentTop="true"
-                    android:layout_toRightOf="@+id/btnSnow"
-                    android:contentDescription="@string/empty"
-                    android:src="@drawable/snow_filter" />
+            <ImageButton
+                android:id="@+id/btnfuzz"
+                android:layout_width="100dp"
+                android:scaleType="centerCrop"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:src="@drawable/fuzz_filter"/>
+            <ImageButton
+                android:id="@+id/btnSnow"
+                android:layout_width="100dp"
+                android:scaleType="centerCrop"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/btnSnow"
+                android:contentDescription="@string/empty"
+                android:src="@drawable/snow_filter" />
 
-                <ImageButton
-                    android:id="@+id/btnRoundCorner"
-                    android:layout_width="100dp"
-                    android:scaleType="centerCrop"
-                    android:layout_height="100dp"
-                    android:background="@null"
-                    android:src="@drawable/round_filter"
-                    android:layout_alignParentTop="true"
-                    android:layout_toRightOf="@+id/btnRoundCorner"
-                    android:contentDescription="@string/empty" />
-            </LinearLayout>
+            <ImageButton
+                android:id="@+id/btnRoundCorner"
+                android:layout_width="100dp"
+                android:scaleType="centerCrop"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:src="@drawable/round_filter"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/btnRoundCorner"
+                android:contentDescription="@string/empty" />
+        </LinearLayout>
 
 
-        </HorizontalScrollView>
+    </HorizontalScrollView>
 
     <view
-            android:id="@+id/image"
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/scrollView1"
+        android:layout_below="@+id/flip"
+        class="vn.mbm.phimp.me.gallery3d.media.CropImageView" />
+
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:id="@+id/scrollView1"
+        android:layout_above="@+id/relativeLayout1"
+        android:padding="8dp"
+        android:layout_alignParentLeft="true" >
+
+        <LinearLayout
+            android:id="@+id/LinearLayout01"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_above="@+id/scrollView1"
-            android:layout_below="@+id/flip"
-            class="vn.mbm.phimp.me.gallery3d.media.CropImageView" />
+            android:layout_height="192dp"
 
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical" >
 
-            <ScrollView
-                android:layout_width="fill_parent"
-                android:layout_height="200dp"
-                android:id="@+id/scrollView1"
-                android:layout_above="@+id/relativeLayout1"
-                android:padding="8dp"
-                android:layout_alignParentLeft="true" >
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/txtUploadPhotoTitle"
+                    android:layout_width="match_parent"
+                    android:hint="@string/title"
+                    android:padding="4dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:inputType="textNoSuggestions" >
+                </android.support.v7.widget.AppCompatEditText>
+            </android.support.design.widget.TextInputLayout>
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical" >
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayout4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp" >
+
+                    <TextView
+                        android:id="@+id/TextView03"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="@string/geolocation" />
+
+                    <android.support.v7.widget.AppCompatImageButton
+                        android:id="@+id/btnUploadPhotoPutPos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:contentDescription="@string/empty"
+                        app:srcCompat="@drawable/ic_my_location_black_24dp"
+                        tools:ignore="MissingPrefix"/>
+                </RelativeLayout>
 
                 <LinearLayout
-                    android:id="@+id/LinearLayout01"
+                    android:id="@+id/linearLayout3"
                     android:layout_width="match_parent"
-                    android:layout_height="192dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp" >
 
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:orientation="vertical" >
-
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/input_layout_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/txtUploadPhotoTitle"
-                            android:layout_width="match_parent"
-                            android:hint="@string/title"
-                            android:padding="4dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="10dp"
-                            android:inputType="textNoSuggestions" >
-                        </android.support.v7.widget.AppCompatEditText>
-                    </android.support.design.widget.TextInputLayout>
-                    <LinearLayout
-                        android:id="@+id/linearLayout2"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/textView6"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:orientation="vertical" >
+                        android:layout_marginRight="40dp"
+                        android:text="@string/longitude" />
 
-                        <RelativeLayout
-                            android:id="@+id/relativeLayout4"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="10dp" >
+                    <EditText
+                        android:id="@+id/txtUploadPhotoLongtitude"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="4dp"
+                        android:inputType="numberDecimal|numberSigned" />
 
-                            <TextView
-                                android:id="@+id/TextView03"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:text="@string/geolocation" />
-
-                            <ImageButton
-                                android:id="@+id/btnUploadPhotoPutPos"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_alignParentTop="true"
-                                android:contentDescription="@string/empty"
-                                android:src="@drawable/ic_my_location_black_24dp" />
-                        </RelativeLayout>
-
-                        <LinearLayout
-                            android:id="@+id/linearLayout3"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="10dp" >
-
-                            <TextView
-                                android:id="@+id/textView6"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginRight="40dp"
-                                android:text="@string/longitude" />
-
-                            <EditText
-                                android:id="@+id/txtUploadPhotoLongtitude"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:padding="4dp"
-                                android:inputType="numberDecimal|numberSigned" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/linearLayout4"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" >
-
-                            <TextView
-                                android:id="@+id/textView7"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginRight="50dp"
-                                android:text="@string/latitude" />
-
-                            <EditText
-                                android:id="@+id/txtUploadPhotoLatitude"
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:padding="4dp"
-                                android:inputType="numberDecimal|numberSigned" />
-                        </LinearLayout>
-                    </LinearLayout>
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/input_layout_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <android.support.v7.widget.AppCompatEditText
-                            android:id="@+id/txtUploadPhotoTags"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="10dp"
-                            android:hint="@string/tags_hint"
-                            android:padding="4dp"
-                            android:inputType="textNoSuggestions"
-                            android:lines="3" />
-                    </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
-            </ScrollView>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="50dp"
+                        android:text="@string/latitude" />
+
+                    <EditText
+                        android:id="@+id/txtUploadPhotoLatitude"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="4dp"
+                        android:inputType="numberDecimal|numberSigned" />
+                </LinearLayout>
+            </LinearLayout>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/txtUploadPhotoTags"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:hint="@string/tags_hint"
+                    android:padding="4dp"
+                    android:inputType="textNoSuggestions"
+                    android:lines="3" />
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+    </ScrollView>
 
     <RelativeLayout
         android:id="@+id/relativeLayout1"
@@ -332,7 +333,6 @@
             android:contentDescription="@string/empty"
             app:srcCompat="@drawable/ic_rotate_left_black_24dp"
             tools:ignore="MissingPrefix"/>
-
 
 
         <android.support.v7.widget.AppCompatImageView
