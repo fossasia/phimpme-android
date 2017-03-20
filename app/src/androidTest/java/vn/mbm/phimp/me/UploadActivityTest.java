@@ -65,28 +65,6 @@ public class UploadActivityTest {
         IdlingResource idlingResource = new ElapsedTimeIdlingResource(waitingTime);
         Espresso.registerIdlingResources(idlingResource);
 
-        /*ViewInteraction textView = onView(
-                allOf(withId(R.id.textView1), withText("Accounts"),
-                        childAtPosition(
-                                allOf(withId(R.id.relativeLayout1),
-                                        childAtPosition(
-                                                withId(R.id.tabUpload),
-                                                0)),
-                                0),
-                        isDisplayed()));
-        textView.check(matches(withText("Accounts")));*/
-
-        /*ViewInteraction textView2 = onView(
-                allOf(withId(R.id.textView2), withText("Photos"),
-                        childAtPosition(
-                                allOf(withId(R.id.relativeLayout2),
-                                        childAtPosition(
-                                                withId(R.id.tabUpload),
-                                                2)),
-                                0),
-                        isDisplayed()));
-        textView2.check(matches(withText("Photos")));*/
-
         ViewInteraction appCompatImageView = onView(
                 allOf(withId(R.id.btnUploadAccountAdd),
                         withParent(allOf(withId(R.id.relativeLayout1),
@@ -112,26 +90,18 @@ public class UploadActivityTest {
                         isDisplayed()));
         btnUploadAddView.check(matches(isDisplayed()));
 
+        ViewInteraction uploadBtnPanel = onView(
+                allOf(withId(R.id.uploadButtonPanel),
+                        withParent(withId(R.id.relativeLayout2)),
+                        isDisplayed()));
+        uploadBtnPanel.check(matches(isDisplayed()));
+
+        ViewInteraction noPhotosLabel = onView(
+                allOf(withId(R.id.nophotos),
+                        isDisplayed()));
+        noPhotosLabel.check(matches(isDisplayed()));
+
         Espresso.unregisterIdlingResources(idlingResource);
 
     }
-
-    /*private static Matcher<View> childAtPosition(
-            final Matcher<View> parentMatcher, final int position) {
-
-        return new TypeSafeMatcher<View>() {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("Child at position " + position + " in parent ");
-                parentMatcher.describeTo(description);
-            }
-
-            @Override
-            public boolean matchesSafely(View view) {
-                ViewParent parent = view.getParent();
-                return parent instanceof ViewGroup && parentMatcher.matches(parent)
-                        && view.equals(((ViewGroup) parent).getChildAt(position));
-            }
-        };
-    }*/
 }
