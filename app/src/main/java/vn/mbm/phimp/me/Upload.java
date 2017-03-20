@@ -229,6 +229,11 @@ public class Upload extends android.support.v4.app.Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View decorView = getActivity().getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
+        decorView.setSystemUiVisibility(uiOptions);
+
         return inflater.inflate(R.layout.upload, container, false);
     }
 
@@ -274,7 +279,7 @@ public class Upload extends android.support.v4.app.Fragment {
                     newTitle = delCount + (delCount == 1 ? " image" : " images") + " selected";
                     toggleButtonPanel(true);
                 } else {
-                    newTitle =  getResources().getString(R.string.upload);
+                    newTitle = getResources().getString(R.string.upload);
                     toggleButtonPanel(false);
                 }
                 panelLable.setText(newTitle);
@@ -416,7 +421,7 @@ public class Upload extends android.support.v4.app.Fragment {
 			}
 		});*/
         /*
-		 * Thong - Init services
+         * Thong - Init services
 		 */
         TumblrServices.init();
         FlickrServices.init();
@@ -718,7 +723,7 @@ public class Upload extends android.support.v4.app.Fragment {
                             newTitle = delCount + (delCount == 1 ? " image" : " images") + " selected";
                             toggleButtonPanel(true);
                         } else {
-                            newTitle =  getResources().getString(R.string.upload);
+                            newTitle = getResources().getString(R.string.upload);
                             toggleButtonPanel(false);
                         }
                         panelLable.setText(newTitle);
@@ -747,7 +752,7 @@ public class Upload extends android.support.v4.app.Fragment {
                                 newTitle = delCount + (delCount == 1 ? " image" : " images") + " selected";
                                 toggleButtonPanel(true);
                             } else {
-                                newTitle =  getResources().getString(R.string.upload);
+                                newTitle = getResources().getString(R.string.upload);
                                 toggleButtonPanel(false);
                             }
                             panelLable.setText(newTitle);
@@ -776,7 +781,7 @@ public class Upload extends android.support.v4.app.Fragment {
                         newTitle = delCount + (delCount == 1 ? " image" : " images") + " selected";
                         toggleButtonPanel(true);
                     } else {
-                        newTitle =  getResources().getString(R.string.upload);
+                        newTitle = getResources().getString(R.string.upload);
                         toggleButtonPanel(false);
                     }
                     panelLable.setText(newTitle);
@@ -787,7 +792,7 @@ public class Upload extends android.support.v4.app.Fragment {
             holder.isSelected = removableList.contains(uploadImageList.get(position));
             holder.imagePath = uploadImageList.get(position);
             holder.imageview.setAlpha(holder.isSelected ? 0.5f : 1.0f);
-            holder.checkView.setVisibility(holder.isSelected? View.VISIBLE : View.GONE);
+            holder.checkView.setVisibility(holder.isSelected ? View.VISIBLE : View.GONE);
 
             return convertView;
         }
