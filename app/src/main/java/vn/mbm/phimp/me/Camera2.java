@@ -347,7 +347,6 @@ public class Camera2 extends android.support.v4.app.Fragment {
 			}
 		});
 		Camera.Parameters parameters = preview.mCamera.getParameters();
-		parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
 		preview.mCamera.setParameters(parameters);
 		LinearLayout linear = (LinearLayout)view.findViewById(R.id.lnCam);
 		linear.bringToFront();
@@ -799,6 +798,7 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
 		// the preview.
 		Log.e("Surface","Change");
 		Camera.Parameters parameters = mCamera.getParameters();
+        	parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
 
 		try{
 			mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, w, h);
