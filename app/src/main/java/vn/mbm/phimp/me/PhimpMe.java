@@ -788,6 +788,11 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, frag)
                         .commit();
+                mBottomNav.getMenu().getItem(0).setChecked(true);
+                mBottomNav.getMenu().getItem(1).setChecked(false);
+                mBottomNav.getMenu().getItem(2).setChecked(false);
+                mBottomNav.getMenu().getItem(3).setChecked(false);
+                mBottomNav.getMenu().getItem(4).setChecked(false);
                 currentScreen = HomeScreenState.GALLERY;
             } else {
                 AlertDialog.Builder alertbox = new AlertDialog.Builder(ctx);
@@ -810,7 +815,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
             }
 
         }
-        return super.onKeyDown(keycode, event);
+        return false;
     }
 
     /*public boolean onTouchEvent(MotionEvent me) {
