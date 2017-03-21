@@ -28,19 +28,19 @@ We have the following branches
 
   <table>
     <tr>
-     <td><img src="https://cloud.githubusercontent.com/assets/14369357/23590206/e3d7dc58-0201-11e7-9f5d-b6cfda656ae5.png"></td>
-     <td><img src="https://cloud.githubusercontent.com/assets/14369357/23597630/7e25b2dc-025a-11e7-84d7-8fbed573746f.png"></td>
-     <td><img src="https://cloud.githubusercontent.com/assets/14369357/23597625/7714a886-025a-11e7-8cba-04f83fdac2ed.png"></td>
+     <td><img src="https://cloud.githubusercontent.com/assets/14369357/24083573/876f72ec-0cff-11e7-99b0-32431df34b29.png"></td>
+     <td><img src="https://cloud.githubusercontent.com/assets/14369357/24083579/b15bd550-0cff-11e7-96e8-3b628e25aba5.png"></td>
+     <td><img src="https://cloud.githubusercontent.com/assets/14369357/24083571/7dfef5e8-0cff-11e7-8e6f-5ed041919388.png"></td>
     </tr>
   </table>
   
-   <table>
-    <tr>
+   <table>
+    <tr>
      <td><img src="https://raw.githubusercontent.com/heysadboy/phimpme-android/development/docs/screenshots/camera1.png"></td>
      <td><img src="https://raw.githubusercontent.com/heysadboy/phimpme-android/development/docs/screenshots/map.png"></td>
     </tr>
-  </table>
-
+  </table>
+  
 ## Features
 **Feature**|**Description**|**Status**
 -----|-----|-----
@@ -83,7 +83,7 @@ Before you begin, you should already have the Android Studio SDK downloaded and 
 
 1. MapsActivity currently implements the OnMapReadyCallback interface and extends FragmentActivity.
 
-2. The class overrides FragmentActivity�s onCreate() method. It also override OnMapReadyCallback�s onMapReady() method. This method is called when the map is ready to be used. The code declared in this method creates a marker with coordinates near Sydney, Australia and adds the marker to the map.
+2. The class overrides FragmentActivity’s onCreate() method. It also override OnMapReadyCallback’s onMapReady() method. This method is called when the map is ready to be used. The code declared in this method creates a marker with coordinates near Sydney, Australia and adds the marker to the map.
 
 3. To use any of the Google Maps APIs, you need to create an API key and enable any required APIs from the developer console.
 
@@ -93,7 +93,7 @@ Before you begin, you should already have the Android Studio SDK downloaded and 
 
 6. On the next screen, click the Create API key button to continue.
 
-7. When that�s done, copy the API key shown in the API key created dialog and click Close.
+7. When that’s done, copy the API key shown in the API key created dialog and click Close.
 
 8. Head back to google_maps_api.xml, replace the value of google_maps_key key with the copied API key.
 
