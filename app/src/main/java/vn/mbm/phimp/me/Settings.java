@@ -19,10 +19,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
@@ -60,7 +58,6 @@ import vn.mbm.phimp.me.database.TumblrItem;
 import vn.mbm.phimp.me.database.TwitterItem;
 import vn.mbm.phimp.me.database.VkItem;
 import vn.mbm.phimp.me.database.WordpressItem;
-import vn.mbm.phimp.me.gallery3d.media.StringTexture;
 import vn.mbm.phimp.me.services.DeviantArtService;
 import vn.mbm.phimp.me.services.DrupalServices;
 import vn.mbm.phimp.me.services.FacebookServices;
@@ -76,14 +73,12 @@ import vn.mbm.phimp.me.services.TumblrServices;
 import vn.mbm.phimp.me.services.TwitterServices;
 import vn.mbm.phimp.me.services.VKServices;
 import vn.mbm.phimp.me.utils.Commons;
-import vn.mbm.phimp.me.utils.PrefManager;
 import vn.mbm.phimp.me.utils.RSSUtil;
 
 import static android.os.Environment.getExternalStorageDirectory;
 import static vn.mbm.phimp.me.PhimpMe.PREFS_NAME;
 
 
-<<<<<<< HEAD
 public class Settings extends Fragment {
     private final int CONTEXT_MENU_ID = 1;
     private final int DIALOG_FILE_SIZE_SETTINGS = 2;
@@ -119,46 +114,48 @@ public class Settings extends Fragment {
     public static EditText etMyFeedServicesTextbox4;
     public static EditText etMyFeedServicesTextbox5;
 
-    static Context ctx;
-    int i = 1;
-    int color = Color.parseColor("#757575");
-    ImageButton btnAdd;
-    ImageButton btnLangUS;
-    ImageButton btnLangDE;
-    ImageButton btnLangVI;
-    ImageView btnSettingsMaxFilesize;
-    ImageButton btnSettingsMaxDisplayPhotos;
-    Button donatePaypal;
-    EditText donateAmount;
+    private static Context ctx;
+    private int i = 1;
+    private int color = Color.parseColor("#757575");
+    private ImageButton btnAdd;
+    private ImageButton btnLangUS;
+    private ImageButton btnLangDE;
+    private ImageButton btnLangVI;
+    private ImageView btnSettingsMaxFilesize;
+    private ImageButton btnSettingsMaxDisplayPhotos;
+    private Button donatePaypal;
+    private EditText donateAmount;
 
-    TextView txtMaxPhotoSize;
-    TextView txtMaxDisplay;
-    TextView txtMB;
-    LinearLayout liFileSize;
-    TextView tvLangEN;
-    TextView tvLangDE;
-    TextView tvLangVI;
-    TextView noaccounttv;
+    private TextView txtMaxPhotoSize;
+    private TextView txtMaxDisplay;
+    private TextView txtMB;
+    private LinearLayout liFileSize;
+    private TextView tvLangEN;
+    private TextView tvLangDE;
+    private TextView tvLangVI;
+    private TextView noaccounttv;
 
-    LinearLayout lytGoogleAdmod;
-    LinearLayout lytLocalGallery;
-    LinearLayout lytMyFeedGallery;
-    LinearLayout lytMyFeedServices;
-    LinearLayout lytMyFeedMore;
-    LinearLayout lytPublicFeedList;
-    LinearLayout lytPrivateFeedList;
-    LinearLayout lytAccounts;
-    LinearLayout lyMore;
+    private LinearLayout lytGoogleAdmod;
+    private LinearLayout lytLocalGallery;
+    private LinearLayout lytMyFeedGallery;
+    private LinearLayout lytMyFeedServices;
+    private LinearLayout lytMyFeedMore;
+    private LinearLayout lytPublicFeedList;
+    private LinearLayout lytPrivateFeedList;
+    private LinearLayout lytAccounts;
+    private LinearLayout lyMore;
 
-    RadioGroup rdgMaxPhotoSizeType;
-    ImageButton btnMore;
-    ImageView btnDelete;
-    //ImageButton btnHelp;
-    File rss_folder;
-    File rss_thums;
-    File tmp_folder;
-    int error_count = 0;
-    ProgressDialog pro_gress;
+    private RadioGroup rdgMaxPhotoSizeType;
+    private ImageButton btnMore;
+    private ImageView btnDelete;
+    //private ImageButton btnHelp;
+    private File rss_folder;
+    private File rss_thums;
+    private File tmp_folder;
+    private int error_count = 0;
+    private ProgressDialog pro_gress;
+    private AlertDialog maxSizeDialog = null;
+
 
     @Nullable
     @Override
@@ -209,132 +206,6 @@ public class Settings extends Fragment {
             } catch (Exception e) {
             }
             btnDelete = (ImageView) getView().findViewById(R.id.deletebtn);
-=======
-public class Settings extends Fragment
-{
-	private final int CONTEXT_MENU_ID = 1;
-	private final int DIALOG_FILE_SIZE_SETTINGS = 2;
-	private final int DIALOG_ADD_ACCOUNT_DRUPAL = 3;
-	private final int DIALOG_DISPLAY_PHOTOS_SETTINGS = 4;
-	private final int DIALOG_ADD_ACCOUNT_IMAGESHACK = 5;
-	private final int DIALOG_ADD_ACCOUNT_WORDPRESS = 6;
-	private final int DIALOG_ADD_ACCOUNT_JOOMLA = 7;
-
-	private IconContextMenu iconContextMenu = null;
-
-	private final int SERVICES_FACEBOOK_ACTION = 1;
-	private final int SERVICES_FLICKR_ACTION = 2;
-	private final int SERVICES_PICASA_ACTION = 3;
-	private final int SERVICES_TUMBLR_ACTION = 4;
-	private final int SERVICES_TWITTER_ACTION = 5;
-	private final int SERVICES_DRUPAL_ACTION = 6;
-	private final int SERVICES_DEVIANTART_ACTION = 7;
-	private final int SERVICES_IMAGESHACK_ACTION = 8;
-	//private final int SERVICES_QQ_ACTION = 9;
-	private final int SERVICES_VK_ACTION = 10;
-	private final int SERVICES_KAIXIN_ACTION = 12;
-	private final int SERVICES_IMGUR_ACTION=13;
-	private final int SERVICES_500PX_ACTION = 11;
-	private final int SERVICES_SOHU_ACTION =15;
-	private final int SERVICES_WORDPRESS_ACTION =16;
-	private final int SERVICES_WORDPRESSDOTCOM_ACTION =17;
-	private final int SERVICES_JOOMLA_ACTION =18;
-	public static EditText etMyFeedServicesTextbox;
-	public static EditText etMyFeedServicesTextbox1;
-	public static EditText etMyFeedServicesTextbox2;
-	public static EditText etMyFeedServicesTextbox3;
-	public static EditText etMyFeedServicesTextbox4;
-	public static EditText etMyFeedServicesTextbox5;
-
-	private static Context ctx;
-	private int i=1;
-    	private int color = Color.parseColor("#757575");
-	private ImageButton btnAdd;
-	private ImageButton btnLangUS;
-	private ImageButton btnLangDE;
-	private ImageButton btnLangVI;
-	private ImageView btnSettingsMaxFilesize;
-	private ImageButton btnSettingsMaxDisplayPhotos;
-	private Button donatePaypal;
-	private EditText donateAmount;
-
-	private TextView txtMaxPhotoSize;
-	private TextView txtMaxDisplay;
-	private TextView txtMB;
-	private LinearLayout liFileSize;
-	private TextView tvLangEN;
-	private TextView tvLangDE;
-	private TextView tvLangVI;
-	private TextView noaccounttv;
-
-	private LinearLayout lytGoogleAdmod;
-	private LinearLayout lytLocalGallery;
-	private LinearLayout lytMyFeedGallery;
-	private LinearLayout lytMyFeedServices;
-	private LinearLayout lytMyFeedMore;
-	private LinearLayout lytPublicFeedList;
-	private LinearLayout lytPrivateFeedList;
-	private LinearLayout lytAccounts;
-	private LinearLayout lyMore;
-
-	private RadioGroup rdgMaxPhotoSizeType;
-	private ImageButton btnMore;
-	private ImageView btnDelete;
-	//private ImageButton btnHelp;
-	private File rss_folder;
-	private File rss_thums;
-	private File tmp_folder;
-	private int error_count = 0;
-	private ProgressDialog pro_gress;
-    	private AlertDialog maxSizeDialog = null;
-
-
-    @Nullable
-	@Override
-	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.settings, container, false);
-	}
-
-	@SuppressWarnings("deprecation")
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState)
-	{
-		super.onCreate(savedInstanceState);
-		getActivity().setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		Resources res = getResources();
-
-		ctx = getContext();
-
-		PayPal pp = PayPal.getInstance();
-
-		//create donate button
-		final CheckoutButton donateButton = pp.getCheckoutButton(ctx, PayPal.BUTTON_278x43, CheckoutButton.TEXT_DONATE);
-
-		//Add donate button to the screen
-		//((LinearLayout)getView().findViewById(R.id.linearSettingsDonate)).addView(donateButton);
-
-		//initial amount field
-		//donateAmount = (EditText) getView().findViewById(R.id.donateAmount);
-
-
-		lytAccounts = (LinearLayout) getView().findViewById(R.id.linearSettingsAccounts);
-		noaccounttv = (TextView) getView().findViewById(R.id.noaccounttv);
-
-		try{
-			try{
-				rss_folder = new File(PhimpMe.DataDirectory.getAbsolutePath() + "/" + RSSUtil.RSS_ITEM_FOLDER);
-			}catch(Exception e){
-			}
-			try{
-				rss_thums = new File(PhimpMe.DataDirectory.getAbsolutePath() + "/" + RSSUtil.RSS_THUMB_FOLDER);
-			}catch(Exception e){
-			}
-			try{
-				tmp_folder = new File(PhimpMe.DataDirectory.getAbsolutePath() + "/" + RSSUtil.TMP_FOLDER);
-			}catch(Exception e){
-			}
-			btnDelete = (ImageView)getView().findViewById(R.id.deletebtn);
->>>>>>> refs/remotes/fossasia/development
 
             btnDelete.setColorFilter(color);
             btnDelete.setOnClickListener(new OnClickListener() {
@@ -369,15 +240,12 @@ public class Settings extends Fragment
                                         /*boolean del = deletePhotoInDatabase();
 										if(del==true){
 											newGallery.clearAllPhoto();
-
 											Commons.AlertLog(ctx, "Successfully", "OK").show();
 										}else{
-
 											Commons.AlertLog(ctx, "Don't have photos to delete!", "OK").show();
 											Log.i("Danh","Don't have photo!");
 										}*/
 
-<<<<<<< HEAD
                             }
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                                 Intent mediaScanIntent = new Intent(
@@ -410,60 +278,18 @@ public class Settings extends Fragment
         txtMaxPhotoSize.setText(PhimpMe.MAX_FILESIZE_DOWNLOAD + "");
         btnSettingsMaxFilesize = (ImageView) getView().findViewById(R.id.imgbtnSettingsMaxFilesize);
         btnSettingsMaxFilesize.setColorFilter(color);
-        btnSettingsMaxFilesize.setOnTouchListener(new OnTouchListener() {
+        btnSettingsMaxFilesize.setOnClickListener(new OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                getActivity().showDialog(DIALOG_FILE_SIZE_SETTINGS);
-                return false;
-            }
-        });
-=======
-							}
-							if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-								Intent mediaScanIntent = new Intent(
-										Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-								Uri contentUri = Uri.fromFile(getExternalStorageDirectory());
-								mediaScanIntent.setData(contentUri);
-								getActivity().sendBroadcast(mediaScanIntent);
-							} else {
-								getActivity().sendBroadcast(new Intent(
-										Intent.ACTION_MEDIA_MOUNTED,
-										Uri.parse("file://"
-												+ getExternalStorageDirectory())));
-							}
-						}
-					});
-					alertbox.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener()
-					{
-						@Override
-						public void onClick(DialogInterface dialog, int which)
-						{
-
-						}
-					});
-
-					alertbox.show();
-				}
-
-			});
-		}catch (Exception e){}
-		txtMaxPhotoSize = (TextView) getView().findViewById(R.id.txtMaxFilesizeDownload);
-		txtMaxPhotoSize.setText(PhimpMe.MAX_FILESIZE_DOWNLOAD + "");
-		btnSettingsMaxFilesize = (ImageView) getView().findViewById(R.id.imgbtnSettingsMaxFilesize);
-		btnSettingsMaxFilesize.setColorFilter(color);
-        btnSettingsMaxFilesize.setOnClickListener(new OnClickListener()
-		{
-			@Override
-			public void onClick(View v) {
-                final CharSequence[] sizes = {"2 MB", "3 MB" , "5 MB", "10 MB"};
-				// Creating and Building the Dialog
+            public void onClick(View v) {
+                final CharSequence[] sizes = {"2 MB", "3 MB", "5 MB", "10 MB"};
+                // Creating and Building the Dialog
                 final SharedPreferences settings = ctx.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
                 int selectedSize = settings.getInt("radio_button_selected", 2);
                 Log.d("selected size", String.valueOf(selectedSize));
                 AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
                 builder.setTitle(getString(R.string.select_max_file_size));
-				builder.setSingleChoiceItems(sizes, selectedSize, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int item) {
+                builder.setSingleChoiceItems(sizes, selectedSize, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int item) {
                         SharedPreferences.Editor editor = settings.edit();
                         PhimpMe.MAX_FILESIZE_DOWNLOAD = Integer.parseInt(sizes[item].subSequence(0, sizes[item].toString().indexOf(" ")).toString());
                         editor.putInt("max_filesize_download", PhimpMe.MAX_FILESIZE_DOWNLOAD);
@@ -472,13 +298,12 @@ public class Settings extends Fragment
                         Log.d("item selected", String.valueOf(item));
                         txtMaxPhotoSize.setText(PhimpMe.MAX_FILESIZE_DOWNLOAD + "");
                         maxSizeDialog.dismiss();
-					}
-				});
+                    }
+                });
                 maxSizeDialog = builder.create();
-				maxSizeDialog.show();
-			}
-		} );
->>>>>>> refs/remotes/fossasia/development
+                maxSizeDialog.show();
+            }
+        });
 		/*
 		 * Danh - Add Active google admod
 		 */
@@ -498,7 +323,6 @@ public class Settings extends Fragment
 		lGoogleAdmob.setLayoutParams(lpLayoutMargin_g);
 		lGoogleAdmob.setGravity(Gravity.CENTER_VERTICAL);
 		lGoogleAdmob.setOrientation(LinearLayout.HORIZONTAL);
-
 		CheckBox chkGoogleAdmob = new CheckBox(ctx);
 		chkGoogleAdmob.setChecked(PhimpMe.FEEDS_GOOGLE_ADMOB);
 		chkGoogleAdmob.setOnCheckedChangeListener(new OnCheckedChangeListener()
@@ -511,9 +335,7 @@ public class Settings extends Fragment
 				try {
 					fOut = openFileOutput("google_admob.txt",MODE_WORLD_READABLE);
 					OutputStreamWriter osw = new OutputStreamWriter(fOut);
-
 					osw.write(""+PhimpMe.FEEDS_GOOGLE_ADMOB);
-
 					osw.flush();
 					osw.close();
 				} catch (FileNotFoundException e) {
@@ -529,17 +351,11 @@ public class Settings extends Fragment
 			}
 		});
 		lGoogleAdmob.addView(chkGoogleAdmob);
-
-
-
 		TextView tvGoogleAdmob = new TextView(ctx);
 		tvGoogleAdmob.setText("Activate Advertising");
 		tvGoogleAdmob.setGravity(Gravity.CENTER_VERTICAL);
 		tvGoogleAdmob.setTypeface(null, 1);
 		lGoogleAdmob.addView(tvGoogleAdmob);
-
-
-
 		lytGoogleAdmod.addView(lGoogleAdmob);
 		*/
 		/*

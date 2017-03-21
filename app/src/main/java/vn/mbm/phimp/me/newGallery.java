@@ -36,8 +36,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -3451,7 +3449,6 @@ public class newGallery extends Fragment {
         }
     }
 
-<<<<<<< HEAD
     public static void update(int num) {
         Log.e("Gallery", "Update");
         linear_main.removeView(ln_local_gallery);
@@ -3581,156 +3578,12 @@ public class newGallery extends Fragment {
 
             final ViewHolder holder;
             final ImageItem item = localImageList.get(position);
-=======
-	public static void update(int num){
-		Log.e("Gallery","Update");
-		linear_main.removeView(ln_local_gallery);    			
-		check_local = 0;
-		PhimpMe.filepath.clear();
-		array_ID.clear();
-	}
-	public class CacheTask extends AsyncTask<String, Void, String> {
-	    @Override
-	    protected String doInBackground(String... urls) {
-	    	try{
-	    		Log.d("newGallery", "Run Cache Task");
-	    		//updatePhoto();
-	    		
-	    	}catch(RuntimeException runex){
-	    		//this.onCancelled();
-				cancel(false);
-	    	}
-	    	
-	        return "";
-	    }
-
-	    @Override
-	    protected void onPostExecute(String result) {
-
-	    }
-	    @Override
-	    protected void onCancelled() {
-	    	// TODO Auto-generated method stub
-	    	super.onCancelled();
-	    	
-	    }
-	}
-
-	public void updatePhoto(){
-			Log.e("newGallery","load update photo");
-			int id;
-			final String[] columns = { MediaStore.Images.Thumbnails._ID};
-			final String[] data = { MediaStore.Images.Media.DATA };
-			final String orderBy = MediaStore.Images.Media._ID;
-			Cursor pathcursor = getActivity().getContentResolver().query(
-					MediaStore.Images.Media.EXTERNAL_CONTENT_URI, data,
-					null, null, orderBy);
-			if(pathcursor != null){
-				int path_column_index = pathcursor
-						.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-				int count = pathcursor.getCount();
-				int c = 0;
-				for (int i = 0; i< count; i++) {
-					
-						try{
-							pathcursor.moveToPosition(i);
-							String path = pathcursor.getString(path_column_index);
-							
-							boolean check = cache.check(path);
-							if(check){
-								@SuppressWarnings("unused")
-								int index = Integer.valueOf(cache.getCacheId(path));
-								@SuppressWarnings("unused")
-								Bitmap bmp = cache.getCachePath(path);
-								
-							}
-							else if(c<=20){				
-								Cursor cursor = getActivity().getContentResolver().query(
-										MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
-										MediaStore.Images.Media.DATA+ " = " + "\""+path+"\"", null, MediaStore.Images.Media._ID);
-								if (cursor != null && cursor.getCount() > 0){
-									cursor.moveToPosition(0);
-									id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID));	
-									Bitmap bmp = MediaStore.Images.Thumbnails.getThumbnail(
-											getActivity().getApplicationContext().getContentResolver(), id,
-											MediaStore.Images.Thumbnails.MICRO_KIND, null);		
-									cache.saveCacheFile(path, bmp, id);
-									cursor.close();
-								}else id = -1;
-								
-								c++;
-								
-							}
-						}catch(NullPointerException e){}
-						
-						
-				}	
-				pathcursor.close();
-				
-				
-			}
-			
-			
-	}
-
-	/**
-	 * Adapter for Local Photos
-	 */
-	public class PhotosAdapter extends BaseAdapter {
-
-		private LayoutInflater mInflater;
-		public ArrayList<ImageItem> images = new ArrayList<>();
-
-		// Constructor
-		PhotosAdapter() {
-			mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			this.images = localImageList;
-			PhimpMe.cache = CacheStore.getInstance();
-		}
-
-		public int getCount() {
-			return images.size();
-		}
-
-		public Object getItem(int position) {
-			return position;
-		}
-
-		public long getItemId(int position) {
-			return position;
-		}
-
-		public void updateImageList(int position, ImageItem imageItem) {
-			localImageList.add(position, imageItem);
-			notifyDataSetChanged();
-		}
-
-		public View getView(int position, View convertView, ViewGroup parent) {
-
-			final ViewHolder holder;
-			final ImageItem item = localImageList.get(position);
-
-			if (convertView == null) {
-				holder = new ViewHolder();
-				convertView = mInflater.inflate(R.layout.photoitem_local, null);
-				holder.imageview = (ImageView) convertView.findViewById(R.id.localPhoto);
-				holder.imageSelector = (ImageView) convertView.findViewById(R.id.localPhotoSelector);
-				convertView.setTag(holder);
-			} else {
-				holder = (ViewHolder) convertView.getTag();
-			}
-
-			holder.imageview.setId(position);
-			holder.imageview.setAlpha(item.isSelected ? 0.5f : 1.0f);
-			holder.imageSelector.setVisibility(item.isSelected ? View.VISIBLE : View.GONE);
-			holder.imageview.setImageBitmap(item.img);
->>>>>>> refs/remotes/fossasia/development
 
             if (convertView == null) {
                 holder = new ViewHolder();
                 convertView = mInflater.inflate(R.layout.photoitem_local, null);
                 holder.imageview = (ImageView) convertView.findViewById(R.id.localPhoto);
-                holder.imageSelector = (CheckBox) convertView.findViewById(R.id.localPhotoSelector);
+                holder.imageSelector = (ImageView) convertView.findViewById(R.id.localPhotoSelector);
                 convertView.setTag(holder);
             } else {
                 holder = (ViewHolder) convertView.getTag();
@@ -3738,12 +3591,7 @@ public class newGallery extends Fragment {
 
             holder.imageview.setId(position);
             holder.imageview.setAlpha(item.isSelected ? 0.5f : 1.0f);
-            if (item.isSelected) {
-                holder.imageSelector.setVisibility(View.VISIBLE);
-                holder.imageSelector.setChecked(true);
-            } else {
-                holder.imageSelector.setVisibility(View.GONE);
-            }
+            holder.imageSelector.setVisibility(item.isSelected ? View.VISIBLE : View.GONE);
             holder.imageview.setImageBitmap(item.img);
 
             holder.imageview.setOnClickListener(new View.OnClickListener() {
@@ -3841,47 +3689,15 @@ public class newGallery extends Fragment {
                 }
             });
             return convertView;
-<<<<<<< HEAD
         }
     }
-=======
-		}
-	}
-
-	/**
-	 * Holder to nest an Image
-	 */
-	private class ViewHolder {
-		ImageView imageview;
-		ImageView imageSelector;
-	}
-
-	public static void resumeLocalPhoto(){
-		// check_local = 0 will flag that this is local images
-		if (check_local == 0) {
-			// Keep the localPhotos frame and hide the other
-			//localPhotosScroll.setVisibility(View.GONE);
-			localPhotosFrame.setVisibility(View.VISIBLE);
-			// Show a progress dialog until the loading is done
-			pro_gress = ProgressDialog.show(ctx, ctx.getString(R.string.loading), ctx.getString(R.string.wait),
-					true, false);
-			// Create a cursor to access External Storage
-			// MediaStore.Images.Media.DATA is the full Path of the file
-			final String[] data = { MediaStore.Images.Media.DATA };
-			// Each image has an ID associated with it
-			final String orderBy = MediaStore.Images.Media._ID + " DESC";
-			staticCursor = ctx.getContentResolver().query(
-				MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-				data, null, null, orderBy
-			);
->>>>>>> refs/remotes/fossasia/development
 
     /**
      * Holder to nest an Image
      */
     private class ViewHolder {
         ImageView imageview;
-        CheckBox imageSelector;
+        ImageView imageSelector;
     }
 
     public static void resumeLocalPhoto() {
