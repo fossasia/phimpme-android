@@ -122,15 +122,6 @@
                             android:text="Negative"
                             android:src="@drawable/negative" />
                         <ImageButton
-                            android:id="@+id/btnOriginal"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:scaleType="centerCrop"
-                            android:layout_alignParentTop="true"
-                            android:background="@drawable/transparent"
-                            android:src="@drawable/original"
-                            android:text="Original" />
-                        <ImageButton
                             android:id="@+id/btnRotateTopDown"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
