@@ -182,23 +182,23 @@ public class Settings extends Fragment
 		PayPal pp = PayPal.getInstance();
 
 		ImageView shareApp = (ImageView)getView().findViewById(R.id.share_app);
-        shareApp.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    Intent shareIntent = new Intent();
-                    shareIntent.setAction(Intent.ACTION_SEND);
-                    shareIntent.setType("text/plain");
-                    shareIntent.putExtra(Intent.EXTRA_TEXT,
-                            String.format(getString(R.string.whatsapp_promo_msg_template),
-                                    String.format(getString(R.string.app_share_url),ctx.getPackageName())));
-                    startActivity(shareIntent);
-                }
-                catch (Exception e) {
-                    Toast.makeText(ctx, getString(R.string.error_msg_retry), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        	shareApp.setOnClickListener(new OnClickListener() {
+            	    @Override
+            	    public void onClick(View v) {
+                        try {
+                            Intent shareIntent = new Intent();
+                            shareIntent.setAction(Intent.ACTION_SEND);
+                            shareIntent.setType("text/plain");
+                            shareIntent.putExtra(Intent.EXTRA_TEXT,
+                                    String.format(getString(R.string.whatsapp_promo_msg_template),
+                                            String.format(getString(R.string.app_share_url),ctx.getPackageName())));
+                            startActivity(shareIntent);
+                         }
+                         catch (Exception e) {
+                             Toast.makeText(ctx, getString(R.string.error_msg_retry), Toast.LENGTH_SHORT).show();
+                         }
+                     }
+        	 });
 
 		//create donate button
 		final CheckoutButton donateButton = pp.getCheckoutButton(ctx, PayPal.BUTTON_278x43, CheckoutButton.TEXT_DONATE);
