@@ -35,8 +35,14 @@ import java.util.ArrayList;
 public class MapFragment extends Fragment {
     SupportMapFragment mSupportMapFragment;
     ArrayList<String> images;
-    ProgressDialog progressDialog ;
+    ProgressDialog progressDialog;
+
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View decorView = getActivity().getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
+        decorView.setSystemUiVisibility(uiOptions);
+
         return inflater.inflate(R.layout.mapfragment, container, false);
     }
 
@@ -69,6 +75,7 @@ public class MapFragment extends Fragment {
                             public View getInfoWindow(Marker arg0) {
                                 return null;
                             }
+
                             // Defines the contents of the InfoWindow
                             @Override
                             public View getInfoContents(Marker arg0) {
@@ -88,7 +95,7 @@ public class MapFragment extends Fragment {
 
                     class LoadMarkers extends AsyncTask<Void, Void, Void> {
                         @Override
-                        protected void onPreExecute(){
+                        protected void onPreExecute() {
                             super.onPreExecute();
                             progressDialog = new ProgressDialog(getActivity());
                             progressDialog.setMessage("Loading...");
