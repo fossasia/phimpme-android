@@ -31,6 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:background="#55000000"
             android:paddingLeft="10dip"
             android:paddingRight="10dip"
             android:paddingTop="10dip"
@@ -60,6 +61,7 @@
 
         <ScrollView
             android:id="@+id/scrollView1"
+            android:background="#55000000"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" >
 
@@ -76,7 +78,6 @@
                     android:id="@+id/horizontalScrollView1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#55000000"
                     android:padding="10dp" >
 
                     <LinearLayout
