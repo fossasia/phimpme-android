@@ -325,6 +325,8 @@ public class CropImage extends MonitoredActivity {
                     AlertDialog alert = alertDialogBuilder.create();
                     alert.show();
 
+                }else{
+                    Toast.makeText(CropImage.this,"GPS is enabled",Toast.LENGTH_SHORT).show();
                 }
             }
 
