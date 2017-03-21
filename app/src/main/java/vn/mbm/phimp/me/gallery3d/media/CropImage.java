@@ -301,6 +301,7 @@ public class CropImage extends MonitoredActivity {
                 //Checks if GPS is active or not.
                 if (!enabled) {
                     //Added dialog box.
+                    //Added material design.
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                             CropImage.this, R.style.AppCompatAlertDialogStyle);
                     alertDialogBuilder
