@@ -3451,6 +3451,7 @@ public class newGallery extends Fragment {
         }
     }
 
+<<<<<<< HEAD
     public static void update(int num) {
         Log.e("Gallery", "Update");
         linear_main.removeView(ln_local_gallery);
@@ -3580,6 +3581,150 @@ public class newGallery extends Fragment {
 
             final ViewHolder holder;
             final ImageItem item = localImageList.get(position);
+=======
+	public static void update(int num){
+		Log.e("Gallery","Update");
+		linear_main.removeView(ln_local_gallery);    			
+		check_local = 0;
+		PhimpMe.filepath.clear();
+		array_ID.clear();
+	}
+	public class CacheTask extends AsyncTask<String, Void, String> {
+	    @Override
+	    protected String doInBackground(String... urls) {
+	    	try{
+	    		Log.d("newGallery", "Run Cache Task");
+	    		//updatePhoto();
+	    		
+	    	}catch(RuntimeException runex){
+	    		//this.onCancelled();
+				cancel(false);
+	    	}
+	    	
+	        return "";
+	    }
+
+	    @Override
+	    protected void onPostExecute(String result) {
+
+	    }
+	    @Override
+	    protected void onCancelled() {
+	    	// TODO Auto-generated method stub
+	    	super.onCancelled();
+	    	
+	    }
+	}
+
+	public void updatePhoto(){
+			Log.e("newGallery","load update photo");
+			int id;
+			final String[] columns = { MediaStore.Images.Thumbnails._ID};
+			final String[] data = { MediaStore.Images.Media.DATA };
+			final String orderBy = MediaStore.Images.Media._ID;
+			Cursor pathcursor = getActivity().getContentResolver().query(
+					MediaStore.Images.Media.EXTERNAL_CONTENT_URI, data,
+					null, null, orderBy);
+			if(pathcursor != null){
+				int path_column_index = pathcursor
+						.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+				int count = pathcursor.getCount();
+				int c = 0;
+				for (int i = 0; i< count; i++) {
+					
+						try{
+							pathcursor.moveToPosition(i);
+							String path = pathcursor.getString(path_column_index);
+							
+							boolean check = cache.check(path);
+							if(check){
+								@SuppressWarnings("unused")
+								int index = Integer.valueOf(cache.getCacheId(path));
+								@SuppressWarnings("unused")
+								Bitmap bmp = cache.getCachePath(path);
+								
+							}
+							else if(c<=20){				
+								Cursor cursor = getActivity().getContentResolver().query(
+										MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
+										MediaStore.Images.Media.DATA+ " = " + "\""+path+"\"", null, MediaStore.Images.Media._ID);
+								if (cursor != null && cursor.getCount() > 0){
+									cursor.moveToPosition(0);
+									id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID));	
+									Bitmap bmp = MediaStore.Images.Thumbnails.getThumbnail(
+											getActivity().getApplicationContext().getContentResolver(), id,
+											MediaStore.Images.Thumbnails.MICRO_KIND, null);		
+									cache.saveCacheFile(path, bmp, id);
+									cursor.close();
+								}else id = -1;
+								
+								c++;
+								
+							}
+						}catch(NullPointerException e){}
+						
+						
+				}	
+				pathcursor.close();
+				
+				
+			}
+			
+			
+	}
+
+	/**
+	 * Adapter for Local Photos
+	 */
+	public class PhotosAdapter extends BaseAdapter {
+
+		private LayoutInflater mInflater;
+		public ArrayList<ImageItem> images = new ArrayList<>();
+
+		// Constructor
+		PhotosAdapter() {
+			mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			this.images = localImageList;
+			PhimpMe.cache = CacheStore.getInstance();
+		}
+
+		public int getCount() {
+			return images.size();
+		}
+
+		public Object getItem(int position) {
+			return position;
+		}
+
+		public long getItemId(int position) {
+			return position;
+		}
+
+		public void updateImageList(int position, ImageItem imageItem) {
+			localImageList.add(position, imageItem);
+			notifyDataSetChanged();
+		}
+
+		public View getView(int position, View convertView, ViewGroup parent) {
+
+			final ViewHolder holder;
+			final ImageItem item = localImageList.get(position);
+
+			if (convertView == null) {
+				holder = new ViewHolder();
+				convertView = mInflater.inflate(R.layout.photoitem_local, null);
+				holder.imageview = (ImageView) convertView.findViewById(R.id.localPhoto);
+				holder.imageSelector = (ImageView) convertView.findViewById(R.id.localPhotoSelector);
+				convertView.setTag(holder);
+			} else {
+				holder = (ViewHolder) convertView.getTag();
+			}
+
+			holder.imageview.setId(position);
+			holder.imageview.setAlpha(item.isSelected ? 0.5f : 1.0f);
+			holder.imageSelector.setVisibility(item.isSelected ? View.VISIBLE : View.GONE);
+			holder.imageview.setImageBitmap(item.img);
+>>>>>>> refs/remotes/fossasia/development
 
             if (convertView == null) {
                 holder = new ViewHolder();
@@ -3607,7 +3752,6 @@ public class newGallery extends Fragment {
                     if (item.isSelected) {
                         holder.imageSelector.setVisibility(View.GONE);
                         holder.imageview.setAlpha(1.0f);
-                        holder.imageSelector.setChecked(false);
                         item.isSelected = false;
                         deletableList.remove(item.path);
                         int delCount = deletableList.size();
@@ -3654,7 +3798,6 @@ public class newGallery extends Fragment {
                         } else {
                             holder.imageSelector.setVisibility(View.VISIBLE);
                             holder.imageview.setAlpha(0.5f);
-                            holder.imageSelector.setChecked(true);
                             item.isSelected = true;
                             deletableList.add(item.path);
                             int delCount = deletableList.size();
@@ -3677,13 +3820,11 @@ public class newGallery extends Fragment {
                     if (item.isSelected) {
                         holder.imageSelector.setVisibility(View.GONE);
                         holder.imageview.setAlpha(1.0f);
-                        holder.imageSelector.setChecked(false);
                         item.isSelected = false;
                         deletableList.remove(item.path);
                     } else {
                         holder.imageSelector.setVisibility(View.VISIBLE);
                         holder.imageview.setAlpha(0.5f);
-                        holder.imageSelector.setChecked(true);
                         item.isSelected = true;
                         deletableList.add(item.path);
                     }
@@ -3699,34 +3840,41 @@ public class newGallery extends Fragment {
                     return true;
                 }
             });
-            holder.imageSelector.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    // Check box has been unchecked,
-                    // 1. Restore alpha level
-                    // 2. Remove from deletableList
-                    // 3. Hide checkbox
-                    // 4. Set checked status to false
-                    if (!isChecked) {
-                        holder.imageview.setAlpha(1.0f);
-                        deletableList.remove(item.path);
-                        item.isSelected = false;
-                        holder.imageSelector.setVisibility(View.GONE);
-                        int delCount = deletableList.size();
-                        String newTitle;
-                        if (delCount > 0) {
-                            newTitle = delCount + (delCount == 1 ? " image" : " images") + " selected";
-                        } else {
-                            newTitle = getResources().getString(R.string.application_title);
-                        }
-                        getActivity().setTitle(newTitle);
-                        getActivity().invalidateOptionsMenu();
-                    }
-                }
-            });
             return convertView;
+<<<<<<< HEAD
         }
     }
+=======
+		}
+	}
+
+	/**
+	 * Holder to nest an Image
+	 */
+	private class ViewHolder {
+		ImageView imageview;
+		ImageView imageSelector;
+	}
+
+	public static void resumeLocalPhoto(){
+		// check_local = 0 will flag that this is local images
+		if (check_local == 0) {
+			// Keep the localPhotos frame and hide the other
+			//localPhotosScroll.setVisibility(View.GONE);
+			localPhotosFrame.setVisibility(View.VISIBLE);
+			// Show a progress dialog until the loading is done
+			pro_gress = ProgressDialog.show(ctx, ctx.getString(R.string.loading), ctx.getString(R.string.wait),
+					true, false);
+			// Create a cursor to access External Storage
+			// MediaStore.Images.Media.DATA is the full Path of the file
+			final String[] data = { MediaStore.Images.Media.DATA };
+			// Each image has an ID associated with it
+			final String orderBy = MediaStore.Images.Media._ID + " DESC";
+			staticCursor = ctx.getContentResolver().query(
+				MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+				data, null, null, orderBy
+			);
+>>>>>>> refs/remotes/fossasia/development
 
     /**
      * Holder to nest an Image
