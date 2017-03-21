@@ -21,8 +21,8 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:visibility="gone"
-            android:layout_width="25dp"
-            android:layout_height="25dp"/>
+            android:layout_width="@dimen/image_selector_size"
+            android:layout_height="@dimen/image_selector_size"/>
 
     </RelativeLayout>
 

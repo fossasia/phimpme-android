@@ -1,5 +1,7 @@
 package vn.mbm.phimp.me.utils;
 
+import android.graphics.Color;
+
 import java.io.Serializable;
 
 /**
@@ -82,7 +84,7 @@ public class Params implements Serializable{
         }
         else{
             if(toolbarColor != 0)
-                lightColor = Utils.getLightColor(toolbarColor);
+                lightColor = Color.argb((int)(255*0.5), 255, 255, 255);
             return lightColor;
         }
     }
