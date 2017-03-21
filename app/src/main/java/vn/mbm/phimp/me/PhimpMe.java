@@ -603,6 +603,16 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                     currentScreen = HomeScreenState.GALLERY;
                 }
                 break;
+            case R.id.tab_map:
+                if (currentScreen != HomeScreenState.MAP) {
+                    MapFragment map = new MapFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.fragment_anim_fadein, R.anim.fragment_anim_fadeout)
+                            .replace(R.id.fragment_container, map)
+                            .commit();
+                    currentScreen = HomeScreenState.MAP;
+                }
+                break;
             case R.id.tab_camera:
                 if (currentScreen != HomeScreenState.CAMERA) {
 
@@ -682,7 +692,8 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
         GALLERY,
         UPLOAD,
         SETTINGS,
-        CAMERA
+        CAMERA,
+        MAP
     }
 
     public Animation outToLeftAnimation() {

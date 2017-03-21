@@ -6,289 +6,283 @@
     android:versionName="1.5">
 
     <uses-sdk android:minSdkVersion="8" />
-    <uses-feature android:name="android.hardware.camera" />	    
- 	<uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-	<uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-	<uses-permission android:name="android.permission.VIBRATE" />
-	<uses-permission android:name="com.android.browser.permission.WRITE_HISTORY_BOOKMARKS"/>
-	<uses-permission android:name="com.android.browser.permission.READ_HISTORY_BOOKMARKS"/>
-	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    
-    <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="com.android.browser.permission.WRITE_HISTORY_BOOKMARKS" />
+    <uses-permission android:name="com.android.browser.permission.READ_HISTORY_BOOKMARKS" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.MEDIA_CON" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
     <application
         android:name=".MyApplication"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/application_title"        
+        android:label="@string/application_title"
         android:largeHeap="true"
-        tools:replace="android:icon, android:label"
         android:theme="@style/Phimpme.Base"
-        >
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        tools:replace="android:icon, android:label">
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
-        <uses-library android:name="com.google.android.maps"
-            android:required="false"/>
-        		 <service android:name=".CollectUserData" />
-       	 	<!-- Start of Crittercism Support Forum Manifest Code -->
-				<activity android:name="com.crittercism.NewFeedbackSpringboardActivity" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
-				<activity android:name="com.crittercism.NewFeedbackIssueListActivity" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
-				<activity android:name="com.crittercism.NewFeedbackQuestionListActivity" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
-				<activity android:name="com.crittercism.NewFeedbackItemDetailsActivity" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
-				<activity android:name="com.crittercism.NewFeedbackCreateActivity" android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"></activity>
-				<activity android:name="com.crittercism.NotificationActivity"/>	
-				
-				<service android:name="com.crittercism.service.CrittercismService" android:process="com.crittercism.service" android:exported="true">
-    				<intent-filter><action android:name="com.crittercism.service.CrittercismService" /></intent-filter>
-				</service>
-			<!-- End of Crittercism Support Forum Manifest Code -->    
-			<activity android:name=".SplashScreen"                  
-                   android:configChanges="locale"  
-                    android:screenOrientation="portrait"
-                   android:theme="@android:style/Theme.NoTitleBar">
-    		<intent-filter>
+        <uses-library
+            android:name="com.google.android.maps"
+            android:required="false" />
+
+        <service android:name=".CollectUserData" />
+        <!-- Start of Crittercism Support Forum Manifest Code -->
+        <activity
+            android:name="com.crittercism.NewFeedbackSpringboardActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+        <activity
+            android:name="com.crittercism.NewFeedbackIssueListActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+        <activity
+            android:name="com.crittercism.NewFeedbackQuestionListActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+        <activity
+            android:name="com.crittercism.NewFeedbackItemDetailsActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+        <activity
+            android:name="com.crittercism.NewFeedbackCreateActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+        <activity android:name="com.crittercism.NotificationActivity" />
+
+        <service
+            android:name="com.crittercism.service.CrittercismService"
+            android:exported="true"
+            android:process="com.crittercism.service">
+            <intent-filter>
+                <action android:name="com.crittercism.service.CrittercismService" />
+            </intent-filter>
+        </service>
+        <!-- End of Crittercism Support Forum Manifest Code -->
+        <activity
+            android:name=".SplashScreen"
+            android:configChanges="locale"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.NoTitleBar">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>	 
-            
-        </activity>  
-            <activity  android:name=".PhimpMe"  
-                android:configChanges="locale">
-           <!-- <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter> -->
-            
+            </intent-filter>
         </activity>
-        
+        <activity
+            android:name=".PhimpMe"
+            android:configChanges="locale">
+
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            -->
+
+        </activity>
         <activity
             android:name=".Camera"
-            android:configChanges="locale"
-            >
-             
-        </activity>
-         <activity
+            android:configChanges="locale"></activity>
+        <activity
             android:name=".Blank"
-            android:configChanges="locale">
-             
-        </activity>
-        <activity android:name="vn.mbm.phimp.me.gallery.PhimpMeGallery"
+            android:configChanges="locale"></activity>
+        <activity
+            android:name=".gallery.PhimpMeGallery"
             android:configChanges="locale"
-         	android:screenOrientation="portrait"
-            >
-            
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".Camera2"
-            android:configChanges="keyboardHidden|locale|orientation"           
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-            
-        </activity>            
-        <activity android:name=".Upload" 
-            
-            android:configChanges="keyboardHidden|orientation">    
-         
-        </activity>
-        <!--<activity-->
-            <!--android:name=".gallery3d.media.Gallery"-->
-            <!--android:configChanges="locale"-->
-            <!--android:screenOrientation="portrait"-->
-            <!-->-->
-            <!---->
-        <!--</activity>        -->
+            android:configChanges="keyboardHidden|locale|orientation"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+        <activity
+            android:name=".Upload"
+            android:configChanges="keyboardHidden|orientation"></activity>
+        <!-- <activity -->
+        <!-- android:name=".gallery3d.media.Gallery" -->
+        <!-- android:configChanges="locale" -->
+        <!-- android:screenOrientation="portrait" -->
+        <!-- > -->
+        <!--  -->
+        <!-- </activity> -->
         <activity
             android:name=".newGallery"
             android:configChanges="locale"
-            android:screenOrientation="portrait"
-            >
-            
-        </activity>
-        <!--<activity-->
-            <!--android:name=".PersonalGallery"-->
-            <!--android:configChanges="locale"-->
-            <!-->-->
-        <!--</activity>-->
-         <activity
+            android:screenOrientation="portrait"></activity>
+        <!-- <activity -->
+        <!-- android:name=".PersonalGallery" -->
+        <!-- android:configChanges="locale" -->
+        <!-- > -->
+        <!-- </activity> -->
+        <activity
             android:name=".BluetoothShareMultipleFile"
             android:configChanges="locale"
-            android:screenOrientation="portrait"
-            >
-            
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".PhotoSelect"
+            android:configChanges="locale"></activity>
+        <activity
+            android:name=".image.CropImage"
             android:configChanges="locale"
-            
-           >            
-        </activity>
-          <activity android:name="vn.mbm.phimp.me.image.CropImage"
-              android:configChanges="locale"
-              android:label="CropLabel"
-              
-              android:screenOrientation="portrait" >
-        </activity>
+            android:label="CropLabel"
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".Settings"
             android:configChanges="locale"
-            android:screenOrientation="portrait"
-            
-            >
-           
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".GalleryMap"
             android:configChanges="locale"
-            android:screenOrientation="portrait"
-            >
-           
-        </activity>         
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".OpenStreetMap"
-            android:configChanges="locale"
-            >
-           
-        </activity>
+            android:configChanges="locale"></activity>
         <activity
             android:name=".UploadMap"
-            android:configChanges="locale"
-            >
-           
-        </activity>
-        <!--<activity-->
-            <!--android:name=".UploadOSMap"-->
-            <!--android:configChanges="locale"-->
-            <!-->-->
-        <!--</activity>-->
-        
+            android:configChanges="locale"></activity>
+        <!-- <activity -->
+        <!-- android:name=".UploadOSMap" -->
+        <!-- android:configChanges="locale" -->
+        <!-- > -->
+        <!-- </activity> -->
+
         <activity
             android:name=".UploadProgress"
             android:configChanges="locale"
-            android:screenOrientation="portrait"
-            
-            >
-           
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".DrupalWebviewActivity"
-            android:configChanges="locale"
-            >
-           
-        </activity>
+            android:configChanges="locale"></activity>
         <activity
             android:name=".WordpressWebviewActivity"
-            android:configChanges="locale"
-            >
-           
-        </activity>
+            android:configChanges="locale"></activity>
         <activity
             android:name=".JoomlaWebviewActivity"
-            android:configChanges="locale"
-            >
-           
-        </activity>
-      <!--  <activity
+            android:configChanges="locale"></activity>
+        <!--
+        <activity
             android:name=".PhimpMeGallery"
             android:screenOrientation="portrait"
             android:configChanges="locale"
          	android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
             >
            
-        </activity> -->
+        </activity>
+        -->
         <activity
-            android:name="SendFileActivity"
-            
+            android:name=".SendFileActivity"
             android:configChanges="locale"
-            android:screenOrientation="portrait"
-            >
-           
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <!-- Paypal -->
-         <activity android:name="com.paypal.android.MEP.PayPalActivity"
-				  android:theme="@android:style/Theme.Translucent.NoTitleBar"
-				  android:configChanges="keyboardHidden|orientation"/>
-        <!--<activity-->
-            <!--android:name="vn.mbm.phimp.me.utils.ViewOriginalImage"-->
-            <!-->-->
-           <!---->
-        <!--</activity>-->
-        <!--<activity-->
-            <!--android:name="vn.mbm.phimp.me.utils.ViewOriginalImageWebKit"-->
-            <!-->-->
-           <!---->
-        <!--</activity>-->
-        <activity 
-            android:name="vn.mbm.phimp.me.gallery3d.media.Gallery"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+        <activity
+            android:name="com.paypal.android.MEP.PayPalActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:clearTaskOnLaunch="true" 
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <!-- <activity -->
+        <!-- android:name="vn.mbm.phimp.me.utils.ViewOriginalImage" -->
+        <!-- > -->
+        <!--  -->
+        <!-- </activity> -->
+        <!-- <activity -->
+        <!-- android:name="vn.mbm.phimp.me.utils.ViewOriginalImageWebKit" -->
+        <!-- > -->
+        <!--  -->
+        <!-- </activity> -->
+        <activity
+            android:name=".gallery3d.media.Gallery"
+            android:clearTaskOnLaunch="true"
+            android:configChanges="keyboardHidden|orientation"
             android:noHistory="false"
-            android:stateNotNeeded="true">
+            android:stateNotNeeded="true"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+        <activity
+            android:name=".gallery3d.media.CropImage"
+            android:clearTaskOnLaunch="true"
+            android:configChanges="keyboardHidden|orientation"
+            android:noHistory="false"
+            android:hardwareAccelerated="false"
+            android:stateNotNeeded="true"></activity>
+        <activity
+            android:name=".Webkit"
+            android:configChanges="locale">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="tumblr"
+                    android:scheme="oauth" />
+            </intent-filter>
         </activity>
+        <!-- <activity android:name="com.google.ads.AdActivity" -->
+        <!-- android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/> -->
+        <!--  -->
+        <!-- wordpress -->
+        <activity
+            android:name="org.wordpress.android.NewAccount"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name="org.wordpress.android.Signup"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name="org.wordpress.android.AddAccount"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name="org.wordpress.android.AddAcountSettings"            
+            android:screenOrientation="portrait">
+       </activity>
+        <activity
+            android:name=".ImagePickerActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|uiMode">
+        </activity>
+        <activity android:name=".feedservice.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
+      </activity>
+      
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider1781584438783986"
+            android:exported="true" />
+
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
 
         <activity
-            android:name="vn.mbm.phimp.me.gallery3d.media.CropImage"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:configChanges="keyboardHidden|orientation"
-            android:clearTaskOnLaunch="true"
-            android:noHistory="false"
-            android:stateNotNeeded="true">
-        </activity>
-
-        <activity android:name="vn.mbm.phimp.me.Webkit" android:configChanges="locale" >
-           	<intent-filter>
-                <action android:name="android.intent.action.VIEW"/>	
-			   	<category android:name="android.intent.category.DEFAULT"/>
-			   	<category android:name="android.intent.category.BROWSABLE"/>
-			  	<data android:scheme="oauth" android:host="tumblr"/>
-            </intent-filter>
-        </activity> 
-          <!--<activity android:name="com.google.ads.AdActivity"-->
-              <!--android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>-->
-       <!---->
-       <!-- wordpress -->
-       <activity
-            android:name="org.wordpress.android.NewAccount"
-            
-            android:screenOrientation="portrait"
-            >
-       </activity>
-       <activity
-            android:name="org.wordpress.android.Signup"
-            
-            android:screenOrientation="portrait">
-       </activity>
-       <activity
-            android:name="org.wordpress.android.AddAccount"
-            
-            android:screenOrientation="portrait">
-       </activity>
-       <activity
-            android:name="org.wordpress.android.AddAcountSettings"
-            
-            android:screenOrientation="portrait">
-       </activity>
-
-        <activity android:name=".feedservice.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/app_name" />
-
-        <provider android:authorities="com.facebook.app.FacebookContentProvider1781584438783986"
-            android:name="com.facebook.FacebookContentProvider"
-            android:exported="true"/>
-
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps"></activity>
     </application>
 
 </manifest>

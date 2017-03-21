@@ -3,24 +3,56 @@
     android:id="@+id/tabSettings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/toolbar_newgallery"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
+
+            <RelativeLayout
+                android:id="@+id/toolbar_content_carrier"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Settings"
+                    android:textColor="#ffffff"
+                    android:textSize="20sp" />
+
+            </RelativeLayout>
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
 
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/relativeLayout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp" >
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/textView1"
@@ -55,8 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:orientation="vertical" >
-            </LinearLayout>
+                android:orientation="vertical"></LinearLayout>
 
             <TextView
                 android:id="@+id/textView2"
@@ -82,7 +113,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:padding="10dp" >
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/textView3"
@@ -119,7 +150,7 @@
                 android:id="@+id/relativelayoutchil"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp" >
+                android:padding="10dp">
 
                 <ImageButton
                     android:id="@+id/imgbtnSettingsMaxFilesize"
@@ -130,21 +161,22 @@
                     android:contentDescription="@string/empty"
                     android:src="@drawable/edit" />
             </RelativeLayout>
-			
-	        <RelativeLayout 
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:layout_marginLeft="10dp"
-			    android:padding="10dp">
-	
-	       		<TextView
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:padding="10dp">
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
                     android:text="@string/deletephoto"
                     android:textColor="@color/white" />
-		        <ImageButton
+
+                <ImageButton
                     android:id="@+id/deletebtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -152,13 +184,13 @@
                     android:layout_alignParentTop="true"
                     android:contentDescription="@string/empty"
                     android:src="@drawable/delete" />
-			</RelativeLayout>
-            
-	        <RelativeLayout
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp" >
-            </RelativeLayout>
+                android:padding="10dp"></RelativeLayout>
+
             <View
                 android:id="@+id/view2"
                 android:layout_width="match_parent"
@@ -166,8 +198,8 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@color/blue_dark" />
-	        
-	        
+
+
             <TextView
                 android:id="@+id/TextView02"
                 android:layout_width="match_parent"
@@ -177,7 +209,7 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/blue_light"
                 android:textStyle="bold" />
-            
+
 
             <View
                 android:id="@+id/View01"
@@ -195,7 +227,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:orientation="vertical"
-                android:padding="10dp" >
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/TextView01"
@@ -206,15 +238,15 @@
                     android:textColor="@color/white" />
             </LinearLayout>
 
-			<TextView
-			    android:id="@+id/TextView02"
-			    android:layout_width="match_parent"
-			    android:layout_height="wrap_content"
-			    android:layout_margin="10dp"
-			    android:text="@string/myfeed"
-			    android:textAppearance="?android:attr/textAppearanceMedium"
-			    android:textColor="@color/blue_light"
-			    android:textStyle="bold" />
+            <TextView
+                android:id="@+id/TextView02"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="@string/myfeed"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/blue_light"
+                android:textStyle="bold" />
 
             <View
                 android:id="@+id/View01"
@@ -230,7 +262,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:orientation="vertical"
-                android:padding="10dp" >
+                android:padding="10dp">
 
                 <LinearLayout
                     android:id="@+id/linearFeedService"
@@ -238,8 +270,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:orientation="vertical"
-                    android:padding="10dp" >
-                </LinearLayout>
+                    android:padding="10dp"></LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/linearMore"
@@ -249,11 +280,12 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:orientation="vertical"
-                    android:padding="10dp" >
+                    android:padding="10dp">
 
                 </LinearLayout>
 
             </LinearLayout>
+
             <TextView
                 android:id="@+id/TextView03"
                 android:layout_width="match_parent"
@@ -280,7 +312,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:orientation="vertical"
-                android:padding="10dp" >
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/TextView04"
@@ -299,7 +331,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:orientation="vertical"
-                android:padding="10dp" >
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/TextView05"

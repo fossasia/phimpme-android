@@ -58,6 +58,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 
+import vn.mbm.phimp.me.ImagesFilter;
 import vn.mbm.phimp.me.PhimpMe;
 import vn.mbm.phimp.me.R;
 
@@ -306,7 +307,7 @@ public class CropImage extends MonitoredActivity
 					    	try{
 
 					    		modifiedBitmap = null;
-								modifiedBitmap = convertToBW(flippedImaged);
+								modifiedBitmap = ImagesFilter.convertToBW(flippedImaged);
 								mImageView.setImageBitmap(changeBrightness(
 										modifiedBitmap, brightnessValue));
 								mBitmapSave = modifiedBitmap;
@@ -336,7 +337,7 @@ public class CropImage extends MonitoredActivity
 					    	try{
 
 					    		modifiedBitmap = null;
-								modifiedBitmap = convertToSepia(flippedImaged);
+								modifiedBitmap = ImagesFilter.convertToSepia(flippedImaged);
 								mImageView.setImageBitmap(changeBrightness(
 										modifiedBitmap, brightnessValue));
 								mBitmapSave = modifiedBitmap;
@@ -354,6 +355,112 @@ public class CropImage extends MonitoredActivity
 			/*
 			 * Danh - Add event for button Sepia image effect - End
 			 */
+
+            findViewById(R.id.btnalpha).setOnClickListener(
+                    new View.OnClickListener() {
+                        public void onClick(View v) {
+                            check=true;
+                            try {
+                                modifiedBitmap = null;
+                                modifiedBitmap = ImagesFilter.convertToAlpha(flippedImaged);
+                                mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
+                                mBitmap = modifiedBitmap;
+                            } catch (OutOfMemoryError o) {
+                                mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                                modifiedBitmap=flippedImaged=mBitmapResize;
+                            }
+                        }
+                    });
+            findViewById(R.id.btnpink).setOnClickListener(
+                    new View.OnClickListener() {
+                        public void onClick(View v) {
+                            check=true;
+                            try {
+                                modifiedBitmap = null;
+                                modifiedBitmap = ImagesFilter.convertToPink(flippedImaged);
+                                mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
+                                mBitmap = modifiedBitmap;
+                            } catch (OutOfMemoryError o) {
+                                mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                                modifiedBitmap=flippedImaged=mBitmapResize;
+                            }
+                        }
+                    });
+            findViewById(R.id.btnpolaroid).setOnClickListener(
+                    new View.OnClickListener() {
+                        public void onClick(View v) {
+                            check=true;
+                            try {
+                                modifiedBitmap = null;
+                                modifiedBitmap = ImagesFilter.convertToPolaroid(flippedImaged);
+                                mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
+                                mBitmap = modifiedBitmap;
+                            } catch (OutOfMemoryError o) {
+                                mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                                modifiedBitmap=flippedImaged=mBitmapResize;
+                            }
+                        }
+                    });
+            findViewById(R.id.btnblur).setOnClickListener(
+                    new View.OnClickListener() {
+                        public void onClick(View v) {
+                            check=true;
+                            try {
+                                modifiedBitmap = null;
+                                modifiedBitmap = ImagesFilter.converttoBlur(flippedImaged,9,getApplicationContext());
+                                mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
+                                mBitmap = modifiedBitmap;
+                            } catch (OutOfMemoryError o) {
+                                mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                                modifiedBitmap=flippedImaged=mBitmapResize;
+                            }
+                        }
+                    });
+            findViewById(R.id.btnsharp).setOnClickListener(
+                    new View.OnClickListener() {
+                        public void onClick(View v) {
+                            check=true;
+                            try {
+                                modifiedBitmap = null;
+                                modifiedBitmap = ImagesFilter.convertToSharp(flippedImaged,getApplicationContext());
+                                mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
+                                mBitmap = modifiedBitmap;
+                            } catch (OutOfMemoryError o) {
+                                mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                                modifiedBitmap=flippedImaged=mBitmapResize;
+                            }
+                        }
+                    });
+            findViewById(R.id.btnedge).setOnClickListener(
+                    new View.OnClickListener() {
+                        public void onClick(View v) {
+                            check=true;
+                            try {
+                                modifiedBitmap = null;
+                                modifiedBitmap = ImagesFilter.convertToEdge(flippedImaged,getApplicationContext());
+                                mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
+                                mBitmap = modifiedBitmap;
+                            } catch (OutOfMemoryError o) {
+                                mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                                modifiedBitmap=flippedImaged=mBitmapResize;
+                            }
+                        }
+                    });
+            findViewById(R.id.btnfuzz).setOnClickListener(
+                    new View.OnClickListener() {
+                        public void onClick(View v) {
+                            check=true;
+                            try {
+                                modifiedBitmap = null;
+                                modifiedBitmap = ImagesFilter.convertToFuzz(flippedImaged,getApplicationContext());
+                                mImageView.setImageBitmap(changeBrightness(modifiedBitmap, brightnessValue));
+                                mBitmap = modifiedBitmap;
+                            } catch (OutOfMemoryError o) {
+                                mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
+                                modifiedBitmap=flippedImaged=mBitmapResize;
+                            }
+                        }
+                    });
 			/*
 			 * Danh - Add event for button Negative image effect
 			 */
@@ -365,7 +472,7 @@ public class CropImage extends MonitoredActivity
 					    	try{
 					    		
 					    		modifiedBitmap = null;
-								modifiedBitmap = convertToNegative(flippedImaged);
+								modifiedBitmap = ImagesFilter.convertToNegative(flippedImaged);
 								mImageView.setImageBitmap(changeBrightness(
 										modifiedBitmap, brightnessValue));
 								mBitmapSave = modifiedBitmap;
@@ -392,13 +499,13 @@ public class CropImage extends MonitoredActivity
 					    {
 					    	check=false;
 					    	try{
-					    	
+
 								doRotate(mImageView, 0, 0);
 								fromDegree = 0;
 								toDegree = 90;
 								mImageView.setImageBitmap(mBitmap);
 								modifiedBitmap = flippedImaged = mBitmap;
-								
+
 					    	}catch(OutOfMemoryError o){
 
 								doRotate(mImageView, 0, 0);
@@ -483,54 +590,6 @@ public class CropImage extends MonitoredActivity
 		des = Bitmap.createBitmap(sampleBitmap, 0, 0, sampleBitmap.getWidth(), sampleBitmap.getHeight(),
 				matrixVerticalFlip, true);
 		return des;
-	}
-    public static Bitmap convertToBW(Bitmap sampleBitmap) {
-		ColorMatrix matrix = new ColorMatrix();
-		matrix.setSaturation(0);
-		ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-		Bitmap desBitmap = sampleBitmap.copy(Bitmap.Config.ARGB_8888, true);
-		Paint p = new Paint();
-		p.setColorFilter(filter);
-		Canvas canvas = new Canvas(desBitmap);
-		canvas.drawBitmap(desBitmap, 0, 0, p);
-		return desBitmap;
-	}
-	// This method is originally from this site:
-	// http://android-code-space.blogspot.com/2010/08/convert-image-to-negative-in-android.html
-	public static Bitmap convertToSepia(Bitmap sampleBitmap) {
-		ColorMatrix sepiaMatrix = new ColorMatrix();
-		float[] sepMat = { 0.3930000066757202f, 0.7689999938011169f,
-				0.1889999955892563f, 0, 0, 0.3490000069141388f,
-				0.6859999895095825f, 0.1679999977350235f, 0, 0,
-				0.2720000147819519f, 0.5339999794960022f, 0.1309999972581863f,
-				0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1 };
-		sepiaMatrix.set(sepMat);
-		final ColorMatrixColorFilter colorFilter = new ColorMatrixColorFilter(
-				sepiaMatrix);
-		Bitmap rBitmap = sampleBitmap.copy(Bitmap.Config.ARGB_8888, true);
-		Paint paint = new Paint();
-		paint.setColorFilter(colorFilter);
-		Canvas myCanvas = new Canvas(rBitmap);
-		myCanvas.drawBitmap(rBitmap, 0, 0, paint);
-		return rBitmap;
-	}
-
-
-	// This method is originally from this site:
-	// http://android-code-space.blogspot.com/2010/08/convert-image-to-negative-in-android.html
-	public static Bitmap convertToNegative(Bitmap sampleBitmap) {
-		ColorMatrix negativeMatrix = new ColorMatrix();
-		float[] negMat = { -1, 0, 0, 0, 255, 0, -1, 0, 0, 255, 0, 0, -1, 0,
-				255, 0, 0, 0, 1, 0 };
-		negativeMatrix.set(negMat);
-		final ColorMatrixColorFilter colorFilter = new ColorMatrixColorFilter(
-				negativeMatrix);
-		Bitmap rBitmap = sampleBitmap.copy(Bitmap.Config.ARGB_8888, true);
-		Paint paint = new Paint();
-		paint.setColorFilter(colorFilter);
-		Canvas myCanvas = new Canvas(rBitmap);
-		myCanvas.drawBitmap(rBitmap, 0, 0, paint);
-		return rBitmap;
 	}
 
 	public static Bitmap changeBrightness(Bitmap sampleBitmap,
