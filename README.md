@@ -34,13 +34,13 @@ We have the following branches
     </tr>
   </table>
   
-   <table>
-    <tr>
+   <table>
+    <tr>
      <td><img src="https://raw.githubusercontent.com/heysadboy/phimpme-android/development/docs/screenshots/camera1.png"></td>
      <td><img src="https://raw.githubusercontent.com/heysadboy/phimpme-android/development/docs/screenshots/map.png"></td>
     </tr>
-  </table>
-
+  </table>
+  
 ## Features
 **Feature**|**Description**|**Status**
 -----|-----|-----
@@ -83,7 +83,7 @@ Before you begin, you should already have the Android Studio SDK downloaded and 
 
 1. MapsActivity currently implements the OnMapReadyCallback interface and extends FragmentActivity.
 
-2. The class overrides FragmentActivity�s onCreate() method. It also override OnMapReadyCallback�s onMapReady() method. This method is called when the map is ready to be used. The code declared in this method creates a marker with coordinates near Sydney, Australia and adds the marker to the map.
+2. The class overrides FragmentActivity’s onCreate() method. It also override OnMapReadyCallback’s onMapReady() method. This method is called when the map is ready to be used. The code declared in this method creates a marker with coordinates near Sydney, Australia and adds the marker to the map.
 
 3. To use any of the Google Maps APIs, you need to create an API key and enable any required APIs from the developer console.
 
@@ -93,7 +93,7 @@ Before you begin, you should already have the Android Studio SDK downloaded and 
 
 6. On the next screen, click the Create API key button to continue.
 
-7. When that�s done, copy the API key shown in the API key created dialog and click Close.
+7. When that’s done, copy the API key shown in the API key created dialog and click Close.
 
 8. Head back to google_maps_api.xml, replace the value of google_maps_key key with the copied API key.
 
