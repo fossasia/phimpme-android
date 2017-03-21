@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/tabUpload"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -68,7 +69,7 @@
             android:contentDescription="@string/empty"
             android:focusable="true"
             android:padding="8dp"
-            android:src="@drawable/ic_add_box_black_24dp" />
+            app:srcCompat="@drawable/ic_add_box_black_24dp" />
 
     </RelativeLayout>
 
@@ -131,7 +132,7 @@
                 android:contentDescription="@string/empty"
                 android:focusable="true"
                 android:padding="8dp"
-                android:src="@drawable/ic_add_box_black_24dp" />
+                app:srcCompat="@drawable/ic_add_box_black_24dp" />
 
             <ImageView
                 android:id="@+id/upload_sendDirectly"
@@ -144,7 +145,7 @@
                 android:contentDescription="@string/empty"
                 android:focusable="true"
                 android:padding="8dp"
-                android:src="@drawable/ic_share_black_24dp" />
+                app:srcCompat="@drawable/ic_share_black_24dp" />
 
             <ImageView
                 android:id="@+id/btnUploadPhoto"
@@ -157,7 +158,7 @@
                 android:enabled="true"
                 android:focusable="true"
                 android:padding="8dp"
-                android:src="@drawable/ic_cloud_upload_black_24dp"
+                app:srcCompat="@drawable/ic_cloud_upload_black_24dp"
                 android:text="@string/upload" />
         </LinearLayout>
 
@@ -179,7 +180,7 @@
                 android:contentDescription="@string/empty"
                 android:focusable="true"
                 android:padding="8dp"
-                android:src="@drawable/ic_select_all_black_24dp" />
+                app:srcCompat="@drawable/ic_select_all_black_24dp" />
 
             <ImageView
                 android:id="@+id/btnClearSelected"
@@ -192,7 +193,7 @@
                 android:contentDescription="@string/empty"
                 android:focusable="true"
                 android:padding="8dp"
-                android:src="@drawable/ic_clear_selected_black_24dp" />
+                app:srcCompat="@drawable/ic_clear_selected_black_24dp" />
 
             <ImageView
                 android:id="@+id/btnDeselectAll"
@@ -205,7 +206,7 @@
                 android:enabled="true"
                 android:focusable="true"
                 android:padding="8dp"
-                android:src="@drawable/ic_deselect_black_24dp"
+                app:srcCompat="@drawable/ic_deselect_black_24dp"
                 android:text="@string/upload" />
         </LinearLayout>
 
@@ -233,7 +234,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
                 android:contentDescription="@string/empty"
-                android:src="@drawable/icon_gallery" />
+                app:srcCompat="@drawable/icon_gallery" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -291,7 +292,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
                         android:contentDescription="@string/empty"
-                        android:src="@drawable/maps" />
+                        app:srcCompat="@drawable/maps" />
                 </RelativeLayout>
 
                 <LinearLayout

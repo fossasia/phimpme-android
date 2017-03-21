@@ -93,7 +93,6 @@
             <!--
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             -->
@@ -101,21 +100,21 @@
         </activity>
         <activity
             android:name=".Camera"
-            android:configChanges="locale" />
+            android:configChanges="locale"></activity>
         <activity
             android:name=".Blank"
-            android:configChanges="locale" />
+            android:configChanges="locale"></activity>
         <activity
             android:name=".gallery.PhimpMeGallery"
             android:configChanges="locale"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".Camera2"
             android:configChanges="keyboardHidden|locale|orientation"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
         <activity
             android:name=".Upload"
-            android:configChanges="keyboardHidden|orientation" />
+            android:configChanges="keyboardHidden|orientation"></activity>
         <!-- <activity -->
         <!-- android:name=".gallery3d.media.Gallery" -->
         <!-- android:configChanges="locale" -->
@@ -126,7 +125,7 @@
         <activity
             android:name=".newGallery"
             android:configChanges="locale"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <!-- <activity -->
         <!-- android:name=".PersonalGallery" -->
         <!-- android:configChanges="locale" -->
@@ -135,29 +134,29 @@
         <activity
             android:name=".BluetoothShareMultipleFile"
             android:configChanges="locale"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".PhotoSelect"
-            android:configChanges="locale" />
+            android:configChanges="locale"></activity>
         <activity
             android:name=".image.CropImage"
             android:configChanges="locale"
             android:label="CropLabel"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".Settings"
             android:configChanges="locale"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".GalleryMap"
             android:configChanges="locale"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".OpenStreetMap"
-            android:configChanges="locale" />
+            android:configChanges="locale"></activity>
         <activity
             android:name=".UploadMap"
-            android:configChanges="locale" />
+            android:configChanges="locale"></activity>
         <!-- <activity -->
         <!-- android:name=".UploadOSMap" -->
         <!-- android:configChanges="locale" -->
@@ -167,16 +166,16 @@
         <activity
             android:name=".UploadProgress"
             android:configChanges="locale"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".DrupalWebviewActivity"
-            android:configChanges="locale" />
+            android:configChanges="locale"></activity>
         <activity
             android:name=".WordpressWebviewActivity"
-            android:configChanges="locale" />
+            android:configChanges="locale"></activity>
         <activity
             android:name=".JoomlaWebviewActivity"
-            android:configChanges="locale" />
+            android:configChanges="locale"></activity>
         <!--
         <activity
             android:name=".PhimpMeGallery"
@@ -184,13 +183,13 @@
             android:configChanges="locale"
          	android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
             >
-           
+
         </activity>
         -->
         <activity
             android:name=".SendFileActivity"
             android:configChanges="locale"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <!-- Paypal -->
         <activity
             android:name="com.paypal.android.MEP.PayPalActivity"
@@ -212,14 +211,14 @@
             android:configChanges="keyboardHidden|orientation"
             android:noHistory="false"
             android:stateNotNeeded="true"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
         <activity
             android:name=".gallery3d.media.CropImage"
             android:clearTaskOnLaunch="true"
             android:configChanges="keyboardHidden|orientation"
             android:noHistory="false"
-            android:stateNotNeeded="true"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+            android:hardwareAccelerated="false"
+            android:stateNotNeeded="true"></activity>
         <activity
             android:name=".Webkit"
             android:configChanges="locale">
@@ -240,26 +239,29 @@
         <!-- wordpress -->
         <activity
             android:name="org.wordpress.android.NewAccount"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name="org.wordpress.android.Signup"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name="org.wordpress.android.AddAccount"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name="org.wordpress.android.AddAcountSettings"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+        </activity>
         <activity
             android:name=".ImagePickerActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|uiMode"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".feedservice.FacebookActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|uiMode">
+        </activity>
+        <activity android:name=".feedservice.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:screenOrientation="portrait">
+        </activity>
+
         <provider
             android:name="com.facebook.FacebookContentProvider"
             android:authorities="com.facebook.app.FacebookContentProvider1781584438783986"
@@ -271,7 +273,7 @@
              Note that the API key is linked to the encryption key used to sign the APK.
              You need a different API key for each encryption key, including the release key that is used to
              sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -281,6 +283,6 @@
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
     </application>
-    
+
 </manifest>
 
