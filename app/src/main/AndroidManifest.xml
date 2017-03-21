@@ -218,8 +218,8 @@
             android:clearTaskOnLaunch="true"
             android:configChanges="keyboardHidden|orientation"
             android:noHistory="false"
-            android:stateNotNeeded="true"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+            android:hardwareAccelerated="false"
+            android:stateNotNeeded="true"></activity>
         <activity
             android:name=".Webkit"
             android:configChanges="locale">

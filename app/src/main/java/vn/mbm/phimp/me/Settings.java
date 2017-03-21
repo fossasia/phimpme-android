@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -59,6 +60,7 @@ import vn.mbm.phimp.me.database.TumblrItem;
 import vn.mbm.phimp.me.database.TwitterItem;
 import vn.mbm.phimp.me.database.VkItem;
 import vn.mbm.phimp.me.database.WordpressItem;
+import vn.mbm.phimp.me.gallery3d.media.StringTexture;
 import vn.mbm.phimp.me.services.DeviantArtService;
 import vn.mbm.phimp.me.services.DrupalServices;
 import vn.mbm.phimp.me.services.FacebookServices;
@@ -74,9 +76,11 @@ import vn.mbm.phimp.me.services.TumblrServices;
 import vn.mbm.phimp.me.services.TwitterServices;
 import vn.mbm.phimp.me.services.VKServices;
 import vn.mbm.phimp.me.utils.Commons;
+import vn.mbm.phimp.me.utils.PrefManager;
 import vn.mbm.phimp.me.utils.RSSUtil;
 
 import static android.os.Environment.getExternalStorageDirectory;
+import static vn.mbm.phimp.me.PhimpMe.PREFS_NAME;
 
 
 public class Settings extends Fragment
@@ -115,48 +119,50 @@ public class Settings extends Fragment
 	public static EditText etMyFeedServicesTextbox4;
 	public static EditText etMyFeedServicesTextbox5;
 
-	static Context ctx;
-	int i=1;
-    int color = Color.parseColor("#757575");
-	ImageButton btnAdd;
-	ImageButton btnLangUS;
-	ImageButton btnLangDE;
-	ImageButton btnLangVI;
-	ImageView btnSettingsMaxFilesize;
-	ImageButton btnSettingsMaxDisplayPhotos;
-	Button donatePaypal;
-	EditText donateAmount;
+	private static Context ctx;
+	private int i=1;
+    	private int color = Color.parseColor("#757575");
+	private ImageButton btnAdd;
+	private ImageButton btnLangUS;
+	private ImageButton btnLangDE;
+	private ImageButton btnLangVI;
+	private ImageView btnSettingsMaxFilesize;
+	private ImageButton btnSettingsMaxDisplayPhotos;
+	private Button donatePaypal;
+	private EditText donateAmount;
 
-	TextView txtMaxPhotoSize;
-	TextView txtMaxDisplay;
-	TextView txtMB;
-	LinearLayout liFileSize;
-	TextView tvLangEN;
-	TextView tvLangDE;
-	TextView tvLangVI;
-	TextView noaccounttv;
+	private TextView txtMaxPhotoSize;
+	private TextView txtMaxDisplay;
+	private TextView txtMB;
+	private LinearLayout liFileSize;
+	private TextView tvLangEN;
+	private TextView tvLangDE;
+	private TextView tvLangVI;
+	private TextView noaccounttv;
 
-	LinearLayout lytGoogleAdmod;
-	LinearLayout lytLocalGallery;
-	LinearLayout lytMyFeedGallery;
-	LinearLayout lytMyFeedServices;
-	LinearLayout lytMyFeedMore;
-	LinearLayout lytPublicFeedList;
-	LinearLayout lytPrivateFeedList;
-	LinearLayout lytAccounts;
-	LinearLayout lyMore;
+	private LinearLayout lytGoogleAdmod;
+	private LinearLayout lytLocalGallery;
+	private LinearLayout lytMyFeedGallery;
+	private LinearLayout lytMyFeedServices;
+	private LinearLayout lytMyFeedMore;
+	private LinearLayout lytPublicFeedList;
+	private LinearLayout lytPrivateFeedList;
+	private LinearLayout lytAccounts;
+	private LinearLayout lyMore;
 
-	RadioGroup rdgMaxPhotoSizeType;
-	ImageButton btnMore;
-	ImageView btnDelete;
-	//ImageButton btnHelp;
-	File rss_folder;
-	File rss_thums;
-	File tmp_folder;
-	int error_count = 0;
-	ProgressDialog pro_gress;
+	private RadioGroup rdgMaxPhotoSizeType;
+	private ImageButton btnMore;
+	private ImageView btnDelete;
+	//private ImageButton btnHelp;
+	private File rss_folder;
+	private File rss_thums;
+	private File tmp_folder;
+	private int error_count = 0;
+	private ProgressDialog pro_gress;
+    	private AlertDialog maxSizeDialog = null;
 
-	@Nullable
+
+    @Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		return inflater.inflate(R.layout.settings, container, false);
@@ -281,15 +287,33 @@ public class Settings extends Fragment
 		txtMaxPhotoSize.setText(PhimpMe.MAX_FILESIZE_DOWNLOAD + "");
 		btnSettingsMaxFilesize = (ImageView) getView().findViewById(R.id.imgbtnSettingsMaxFilesize);
 		btnSettingsMaxFilesize.setColorFilter(color);
-		btnSettingsMaxFilesize.setOnTouchListener(new OnTouchListener()
+        btnSettingsMaxFilesize.setOnClickListener(new OnClickListener()
 		{
 			@Override
-			public boolean onTouch(View v, MotionEvent event)
-			{
-				getActivity().showDialog(DIALOG_FILE_SIZE_SETTINGS);
-				return false;
+			public void onClick(View v) {
+                final CharSequence[] sizes = {"2 MB", "3 MB" , "5 MB", "10 MB"};
+				// Creating and Building the Dialog
+                final SharedPreferences settings = ctx.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                int selectedSize = settings.getInt("radio_button_selected", 2);
+                Log.d("selected size", String.valueOf(selectedSize));
+                AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+                builder.setTitle(getString(R.string.select_max_file_size));
+				builder.setSingleChoiceItems(sizes, selectedSize, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int item) {
+                        SharedPreferences.Editor editor = settings.edit();
+                        PhimpMe.MAX_FILESIZE_DOWNLOAD = Integer.parseInt(sizes[item].subSequence(0, sizes[item].toString().indexOf(" ")).toString());
+                        editor.putInt("max_filesize_download", PhimpMe.MAX_FILESIZE_DOWNLOAD);
+                        editor.putInt("radio_button_selected", item);
+                        editor.apply();
+                        Log.d("item selected", String.valueOf(item));
+                        txtMaxPhotoSize.setText(PhimpMe.MAX_FILESIZE_DOWNLOAD + "");
+                        maxSizeDialog.dismiss();
+					}
+				});
+                maxSizeDialog = builder.create();
+				maxSizeDialog.show();
 			}
-		});
+		} );
 		/*
 		 * Danh - Add Active google admod
 		 */
