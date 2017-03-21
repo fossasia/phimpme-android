@@ -33,6 +33,15 @@
                     android:textColor="#ffffff"
                     android:textSize="20sp" />
 
+                <ImageView
+                    android:id="@+id/share_app"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/share"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="13dp" />
+
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
 
