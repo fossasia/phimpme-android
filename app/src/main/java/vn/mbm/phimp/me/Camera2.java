@@ -303,8 +303,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		});
 		camera_switch = (ImageButton)view.findViewById(R.id.switch_camera);
 		camera_switch.setImageResource(R.drawable.camera_switch);
-        LinearLayout.LayoutParams parmsswitch = new LinearLayout.LayoutParams(Utils.getScreenWidth(getContext())/15,
-                Utils.getScreenHeight(getContext())/15);
+        LinearLayout.LayoutParams parmsswitch = new LinearLayout.LayoutParams(Utils.getScreenWidth(getContext())/15,Utils.getScreenHeight(getContext())/15);
         camera_switch.setLayoutParams(parmsswitch);
         parmsswitch.setMarginStart(20);
 		buttonClick.setImageResource(R.drawable.takepic);
@@ -358,8 +357,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		linear.bringToFront();
 		flash = (ImageButton)view.findViewById(R.id.flash);
 		flash.setImageResource(R.drawable.flash_on);
-        LinearLayout.LayoutParams parmsflash = new LinearLayout.LayoutParams(Utils.getScreenWidth(getContext())/15,
-                Utils.getScreenHeight(getContext())/15);
+        LinearLayout.LayoutParams parmsflash = new LinearLayout.LayoutParams(Utils.getScreenWidth(getContext())/15,Utils.getScreenHeight(getContext())/15);
         flash.setLayoutParams(parmsflash);
         parmsflash.setMarginStart(10);
 		flash.setOnClickListener(new OnClickListener() {
