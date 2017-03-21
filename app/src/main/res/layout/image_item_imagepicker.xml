@@ -18,10 +18,9 @@
 
     <ImageView
         android:id="@+id/selectedImageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/image_selector_size"
+        android:layout_height="@dimen/image_selector_size"
         android:layout_centerInParent="true"
-        android:background="@drawable/checked_button_bg"
-        android:src="@drawable/ic_done"
+        android:src="@drawable/ic_check_circle_white_48dp"
         android:visibility="gone"/>
 </RelativeLayout>
