@@ -133,7 +133,7 @@ public class CropImage extends MonitoredActivity
     		setContentView(R.layout.cropimage);
     		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);		
     		btnSave=(Button)findViewById(R.id.save);
-    		ImageButton btnOriginal=(ImageButton)findViewById(R.id.btnOriginal);
+    		ImageButton btnOriginal=(ImageButton)findViewById(R.id.btnOriginalImage);
     		
     		txtPhotoTitle = (EditText) findViewById(R.id.txtUploadPhotoTitle);
     		
@@ -1460,7 +1460,9 @@ class CropImageView extends ImageViewTouchBase
 		{
 		    float [] coordinates = new float[] { hv.mCropRect.centerX(), hv.mCropRect.centerY()};
 		    getImageMatrix().mapPoints(coordinates);
-		    zoomTo(zoom, coordinates[0], coordinates[1], 300F);
+
+			// Disabling zoom as it causes disappearance of image
+			//zoomTo(zoom, coordinates[0], coordinates[1], 300F);
 		}
 		ensureVisible(hv);
     }

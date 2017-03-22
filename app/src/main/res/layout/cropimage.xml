@@ -93,6 +93,16 @@
                             android:text="Rotate"
                             android:layout_alignParentLeft="true"/>
                         <ImageButton
+                            android:id="@+id/btnOriginalImage"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:scaleType="centerCrop"
+                            android:layout_alignParentTop="true"
+                            android:background="@drawable/transparent"
+                            android:src="@drawable/ic_crop_img_original"
+                            android:text="Rotate"
+                            android:layout_alignParentLeft="true"/>
+                        <ImageButton
                             android:id="@+id/btnBlackAndWhite"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
