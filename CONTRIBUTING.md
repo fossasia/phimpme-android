@@ -12,6 +12,7 @@ Please note we have a code of conduct, please follow it in all your interactions
 2. Check the that there are no conflicts and your request passes Travis build. Check the log of the pass test if it fails the build.
 3. Give the description of the issue that you want to resolve in the pull request message. The format of the commit message to be fixed    - Fixes #[issue number] [Description of the issue]
 4. Wait for the maintainers to review your pull request and do the changes if requested.
+5. *We use danger, so update the upload_apk_fork.sh file updating your username and adding the token as instructed in it. It enables fast and easy moderation adequate testing. So please do it.*
 
 ## Code of Conduct
 
