@@ -5,11 +5,26 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ImageView
-        android:id="@+id/ImageGrid"
+    <RelativeLayout
         android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@drawable/icon" />
+        android:layout_height="100dp">
+
+        <ImageView
+            android:id="@+id/ImageGrid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/icon" />
+
+        <ImageView
+            android:id="@+id/ImCheck"
+            android:src="@drawable/ic_check_circle_white_48dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            android:layout_width="@dimen/image_selector_size"
+            android:layout_height="@dimen/image_selector_size"/>
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/ImTitle"
