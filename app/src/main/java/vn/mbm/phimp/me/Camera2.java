@@ -150,7 +150,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (PhimpMe.IdList.size() == 5) {
+		if (PhimpMe.IdList != null && PhimpMe.IdList.size() == 5) {
 			PhimpMe.IdList.clear();
 			PhimpMe.IdList.add(0);
 		}
