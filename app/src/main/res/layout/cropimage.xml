@@ -55,8 +55,7 @@
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            class="vn.mbm.phimp.me.image.CropImageView"
-            android:background="#55000000" />
+            class="vn.mbm.phimp.me.image.CropImageView" />
 
         <ScrollView
             android:id="@+id/scrollView1"
@@ -76,7 +75,6 @@
                     android:id="@+id/horizontalScrollView1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#55000000"
                     android:padding="10dp" >
 
                     <LinearLayout
@@ -121,15 +119,6 @@
                             android:background="@drawable/transparent"
                             android:text="Negative"
                             android:src="@drawable/negative" />
-                        <ImageButton
-                            android:id="@+id/btnOriginal"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:scaleType="centerCrop"
-                            android:layout_alignParentTop="true"
-                            android:background="@drawable/transparent"
-                            android:src="@drawable/original"
-                            android:text="Original" />
                         <ImageButton
                             android:id="@+id/btnRotateTopDown"
                             android:layout_width="60dp"

@@ -150,11 +150,4 @@ public class Utils {
         int blue = Color.blue(color);
         return Color.rgb((int)(red * 0.8), (int)(green * 0.8), (int)(blue * 0.8));
     }
-
-    public static int getLightColor(int color){
-        int red = Color.red(color);
-        int green = Color.green(color);
-        int blue = Color.blue(color);
-        return Color.argb((int)(255*0.5), red, green, blue);
-    }
 }

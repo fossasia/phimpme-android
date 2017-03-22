@@ -161,8 +161,6 @@ public class GalleryImagesAdapter extends RecyclerView.Adapter<RecyclerView.View
             selectedImageView = (ImageView) v.findViewById(R.id.selectedImageView);
             parentLayout = (RelativeLayout) v.findViewById(R.id.parentLayout);
             frameLayout = (FrameLayout) v.findViewById(R.id.frameLayout);
-            if(params.getToolbarColor() != 0)
-                Utils.setViewBackgroundColor(activity, selectedImageView, params.getToolbarColor());
         }
 
         public void setId(int position) {
