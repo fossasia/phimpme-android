@@ -961,9 +961,7 @@ public class Upload extends android.support.v4.app.Fragment {
         super.onResume();
         PhimpMe.showTabs();
 
-        if (PhimpMe.FEEDS_GOOGLE_ADMOB == true) {
-            //PhimpMe.ShowAd();
-        }
+
         if (PhimpMe.add_account_upload) {
             reloadAccountsList();
             PhimpMe.add_account_upload = false;
