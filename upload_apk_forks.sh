@@ -22,7 +22,7 @@ git config --global user.name "Travis CI"
 # git clone --quiet --branch=apk htpps://username:authentiToken@github.com/username/phimpme-android apk > /dev/null
 # replacing username with your github username and authentiToken with a personal token for your account.***
 # Your token is advised to have only access to public repositories. Its only needed.
-git clone --quiet --branch=apk https://mohitmanuja:7f3097f23efbcb1ea5c77e3614def842787ecebf@github.com/mohitmanuja/phimpme-android  apk > /dev/null
+git clone --quiet --branch=apk https://mohitmanuja:332f41f643e7c78610a2307e0657262fdab0589a@github.com/mohitmanuja/phimpme-android  apk > /dev/null
 cp -Rf $HOME/buildApk/*
 cd apk
 
