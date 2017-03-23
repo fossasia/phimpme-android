@@ -1,23 +1,12 @@
 package vn.mbm.phimp.me.gallery;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-
-import vn.mbm.phimp.me.PhimpMe;
-import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.SendFileActivity;
-import vn.mbm.phimp.me.Upload;
-import vn.mbm.phimp.me.image.CropImage;
-import vn.mbm.phimp.me.utils.geoDegrees;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
@@ -40,11 +29,29 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+
+import vn.mbm.phimp.me.PhimpMe;
+import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.SendFileActivity;
+import vn.mbm.phimp.me.Upload;
+import vn.mbm.phimp.me.image.CropImage;
+import vn.mbm.phimp.me.utils.geoDegrees;
+
 public class PhimpMeGallery extends AppCompatActivity implements View.OnClickListener{
     private Gallery gallery;
     private static ArrayList<String> filePath;
     private Boolean isFabOpen = false;
-    private FloatingActionButton fab, fabEdit, fabUpload, fabShare, fabInfo, fabDelete;
+    private FloatingActionButton fab;
+    private FloatingActionButton fabEdit;
+    private FloatingActionButton fabUpload;
+    private FloatingActionButton fabshare1;
+    private FloatingActionButton fabShare;
+    private FloatingActionButton fabInfo;
+    private FloatingActionButton fabDelete;
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
 	private GalleryImageAdapter galImageAdapter;
     private PopupWindow pwindo;
@@ -87,6 +94,7 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
         fabShare = (FloatingActionButton)findViewById(R.id.fabshare);
         fabInfo = (FloatingActionButton)findViewById(R.id.fabinfo);
         fabDelete = (FloatingActionButton) findViewById(R.id.fabdelete);
+        fabshare1 = (FloatingActionButton) findViewById(R.id.fabshare1);
 
         fab.setOnClickListener(this);
         fabEdit.setOnClickListener(this);
@@ -94,6 +102,7 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
         fabShare.setOnClickListener(this);
         fabInfo.setOnClickListener(this);
         fabDelete.setOnClickListener(this);
+        fabshare1.setOnClickListener(this);
         setupUI();
 
     }
@@ -336,6 +345,17 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                         });
                 // Create the AlertDialog object and show it
                 deleteAlert.create().show();
+            case R.id.fabshare1:
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                sharingIntent.setType("image/*");
+
+                Uri uri = Uri.parse(filePath.get(position));
+                sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
+
+                startActivity(Intent.createChooser(sharingIntent, "Share via"));
+
+                break;
         }
     }
 
@@ -445,12 +465,14 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
             fabShare.startAnimation(fab_close);
             fabInfo.startAnimation(fab_close);
             fabDelete.startAnimation(fab_close);
+            fabshare1.startAnimation(fab_close);
 
             fabEdit.setClickable(false);
             fabUpload.setClickable(false);
             fabShare.setClickable(false);
             fabInfo.setClickable(false);
             fabDelete.setClickable(false);
+            fabshare1.setClickable(false);
             isFabOpen = false;
 
         } else {
@@ -461,7 +483,11 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
             fabShare.startAnimation(fab_open);
             fabInfo.startAnimation(fab_open);
             fabDelete.startAnimation(fab_open);
+            fabshare1.startAnimation(fab_open);
+
+
             fabDelete.setClickable(true);
+            fabshare1.setClickable(true);
             fabEdit.setClickable(true);
             fabUpload.setClickable(true);
             fabShare.setClickable(true);
