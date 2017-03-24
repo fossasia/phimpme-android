@@ -190,7 +190,7 @@ public class Settings extends Fragment
                     shareIntent.setAction(Intent.ACTION_SEND);
                     shareIntent.setType("text/plain");
                     shareIntent.putExtra(Intent.EXTRA_TEXT,
-                            String.format(getString(R.string.whatsapp_promo_msg_template),
+                            String.format(getString(R.string.promo_msg_template),
                                     String.format(getString(R.string.app_share_url),ctx.getPackageName())));
                     startActivity(shareIntent);
                 }
