@@ -511,6 +511,10 @@
     <string name="quickpress_add_error">Shortcut name can\'t be empty</string>
     <string name="quickpress_add_alert_title">Set shortcut name</string>
 
+    <!-- AlertDialog -->
+    <string name="AlertMessage">Are you sure ?</string>
+    <string name="AlertTitle">Delete Images</string>
+
     <!-- HTTP Authentication -->
     <string name="httpuser">HTTP Username (optional):</string>
     <string name="httppassword">HTTP Password (optional):</string>
