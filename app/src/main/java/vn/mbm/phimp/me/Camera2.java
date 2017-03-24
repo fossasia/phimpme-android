@@ -52,6 +52,7 @@ import java.util.Date;
 import java.util.List;
 
 import vn.mbm.phimp.me.gallery3d.media.CropImage;
+import vn.mbm.phimp.me.utils.Utils;
 
 public class Camera2 extends android.support.v4.app.Fragment {
 	private static final String TAG = "Camera";
@@ -306,6 +307,9 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		camera_switch = (ImageButton)view.findViewById(R.id.switch_camera);
 		camera_switch.setImageResource(R.drawable.camera_switch);
 		buttonClick.setImageResource(R.drawable.takepic);
+        LinearLayout.LayoutParams parmsswitch = new LinearLayout.LayoutParams(Utils.getScreenWidth(getContext())/15,Utils.getScreenHeight(getContext())/15);
+        camera_switch.setLayoutParams(parmsswitch);
+        parmsswitch.setMarginStart(20);
 		if (Camera.getNumberOfCameras() <=1 ) camera_switch.setVisibility(View.GONE);
 		camera_switch.setOnClickListener(new OnClickListener() {
 			@Override
@@ -355,6 +359,9 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		linear.bringToFront();
 		flash = (ImageButton)view.findViewById(R.id.flash);
 		flash.setImageResource(R.drawable.flash_on);
+        LinearLayout.LayoutParams parmsFlash = new LinearLayout.LayoutParams(Utils.getScreenWidth(getContext())/15,Utils.getScreenHeight(getContext())/15);
+        flash.setLayoutParams(parmsFlash);
+        parmsFlash.setMarginStart(10);
 		flash.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
