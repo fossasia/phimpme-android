@@ -58,10 +58,12 @@ before_script:
 script:
  - ./gradlew connectedAndroidTest
  - ./gradlew build
+ - bundle install
+ - bundle exec danger
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
-  - 'if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./upload-apk.sh; fi'
-
+ - bash <(curl -s https://codecov.io/bash)
+ - 'if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./upload-apk.sh; fi'
+ - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then ./upload_apk_forks.sh; fi'
 notifications:
   slack: fossasia:JgzycrBUs0nKnmJhsAxCB4bL
