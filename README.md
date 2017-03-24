@@ -18,6 +18,23 @@ We have the following branches
 	 All development goes on in this branch. If you're making a contribution,
 	 you are supposed to make a pull request to _development_.
 	 Make sure it pass a build check on Travis
+
+	 It is advisable to clone only the development branch using following command:
+	
+	`git clone -b <branch> <remote_repo>`
+
+	Example: 
+
+	`git clone -b my-branch git@github.com:user/myproject.git`
+
+	Alternative (no public key setup needed): 
+
+	`git clone -b my-branch https://git@github.com/username/myproject.git`
+
+	With Git 1.7.10 and later, add --single-branch to prevent fetching of all branches. Example, with development branch:
+	
+	`git clone -b development --single-branch https://github.com/username/phimpme-android.git`
+ 
  * **master**
    This contains the stable code. After significant features/bugfixes are accumulated on development, we move it to master.
  
