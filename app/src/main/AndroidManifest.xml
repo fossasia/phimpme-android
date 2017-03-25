@@ -88,6 +88,7 @@
         </activity>
         <activity
             android:name=".PhimpMe"
+<<<<<<< HEAD
             android:configChanges="locale">
 
             <!--
@@ -98,83 +99,48 @@
             -->
 
         </activity>
+=======
+            android:configChanges="locale" />
+>>>>>>> refs/remotes/fossasia/development
         <activity
             android:name=".Camera"
-            android:configChanges="locale"></activity>
+            android:configChanges="locale" />
         <activity
             android:name=".Blank"
-            android:configChanges="locale"></activity>
+            android:configChanges="locale" />
         <activity
             android:name=".gallery.PhimpMeGallery"
             android:configChanges="locale"
-            android:screenOrientation="portrait"></activity>
-        <activity
-            android:name=".Camera2"
-            android:configChanges="keyboardHidden|locale|orientation"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
-        <activity
-            android:name=".Upload"
-            android:configChanges="keyboardHidden|orientation"></activity>
-        <!-- <activity -->
-        <!-- android:name=".gallery3d.media.Gallery" -->
-        <!-- android:configChanges="locale" -->
-        <!-- android:screenOrientation="portrait" -->
-        <!-- > -->
-        <!--  -->
-        <!-- </activity> -->
-        <activity
-            android:name=".newGallery"
-            android:configChanges="locale"
-            android:screenOrientation="portrait"></activity>
-        <!-- <activity -->
-        <!-- android:name=".PersonalGallery" -->
-        <!-- android:configChanges="locale" -->
-        <!-- > -->
-        <!-- </activity> -->
+            android:screenOrientation="portrait" />
+
+
         <activity
             android:name=".BluetoothShareMultipleFile"
             android:configChanges="locale"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".PhotoSelect"
-            android:configChanges="locale"></activity>
+            android:configChanges="locale" />
         <activity
             android:name=".image.CropImage"
             android:configChanges="locale"
             android:label="CropLabel"
-            android:screenOrientation="portrait"></activity>
-        <activity
-            android:name=".Settings"
-            android:configChanges="locale"
-            android:screenOrientation="portrait"></activity>
-        <activity
-            android:name=".GalleryMap"
-            android:configChanges="locale"
-            android:screenOrientation="portrait"></activity>
-        <activity
-            android:name=".OpenStreetMap"
-            android:configChanges="locale"></activity>
-        <activity
-            android:name=".UploadMap"
-            android:configChanges="locale"></activity>
-        <!-- <activity -->
-        <!-- android:name=".UploadOSMap" -->
-        <!-- android:configChanges="locale" -->
-        <!-- > -->
-        <!-- </activity> -->
+            android:screenOrientation="portrait" />
+
 
         <activity
             android:name=".UploadProgress"
             android:configChanges="locale"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".DrupalWebviewActivity"
-            android:configChanges="locale"></activity>
+            android:configChanges="locale" />
         <activity
             android:name=".WordpressWebviewActivity"
-            android:configChanges="locale"></activity>
+            android:configChanges="locale" />
         <activity
             android:name=".JoomlaWebviewActivity"
+<<<<<<< HEAD
             android:configChanges="locale"></activity>
         <!--
         <activity
@@ -186,39 +152,34 @@
 
         </activity>
         -->
+=======
+            android:configChanges="locale" />
+
+>>>>>>> refs/remotes/fossasia/development
         <activity
             android:name=".SendFileActivity"
             android:configChanges="locale"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <!-- Paypal -->
         <activity
             android:name="com.paypal.android.MEP.PayPalActivity"
             android:configChanges="keyboardHidden|orientation"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <!-- <activity -->
-        <!-- android:name="vn.mbm.phimp.me.utils.ViewOriginalImage" -->
-        <!-- > -->
-        <!--  -->
-        <!-- </activity> -->
-        <!-- <activity -->
-        <!-- android:name="vn.mbm.phimp.me.utils.ViewOriginalImageWebKit" -->
-        <!-- > -->
-        <!--  -->
-        <!-- </activity> -->
+
         <activity
             android:name=".gallery3d.media.Gallery"
             android:clearTaskOnLaunch="true"
             android:configChanges="keyboardHidden|orientation"
             android:noHistory="false"
             android:stateNotNeeded="true"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"></activity>
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity
             android:name=".gallery3d.media.CropImage"
             android:clearTaskOnLaunch="true"
             android:configChanges="keyboardHidden|orientation"
-            android:noHistory="false"
             android:hardwareAccelerated="false"
-            android:stateNotNeeded="true"></activity>
+            android:noHistory="false"
+            android:stateNotNeeded="true" />
         <activity
             android:name=".Webkit"
             android:configChanges="locale">
@@ -233,34 +194,40 @@
                     android:scheme="oauth" />
             </intent-filter>
         </activity>
-        <!-- <activity android:name="com.google.ads.AdActivity" -->
-        <!-- android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/> -->
-        <!--  -->
+
         <!-- wordpress -->
         <activity
             android:name="org.wordpress.android.NewAccount"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name="org.wordpress.android.Signup"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name="org.wordpress.android.AddAccount"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name="org.wordpress.android.AddAcountSettings"
+<<<<<<< HEAD
             android:screenOrientation="portrait">
         </activity>
+=======
+            android:screenOrientation="portrait" />
+>>>>>>> refs/remotes/fossasia/development
         <activity
             android:name=".ImagePickerActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|uiMode">
-        </activity>
-        <activity android:name=".feedservice.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|uiMode"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".feedservice.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/app_name"
+<<<<<<< HEAD
             android:screenOrientation="portrait">
         </activity>
+=======
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+>>>>>>> refs/remotes/fossasia/development
 
         <provider
             android:name="com.facebook.FacebookContentProvider"
