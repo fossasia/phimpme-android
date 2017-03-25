@@ -88,20 +88,7 @@
         </activity>
         <activity
             android:name=".PhimpMe"
-<<<<<<< HEAD
-            android:configChanges="locale">
-
-            <!--
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            -->
-
-        </activity>
-=======
             android:configChanges="locale" />
->>>>>>> refs/remotes/fossasia/development
         <activity
             android:name=".Camera"
             android:configChanges="locale" />
@@ -140,22 +127,8 @@
             android:configChanges="locale" />
         <activity
             android:name=".JoomlaWebviewActivity"
-<<<<<<< HEAD
-            android:configChanges="locale"></activity>
-        <!--
-        <activity
-            android:name=".PhimpMeGallery"
-            android:screenOrientation="portrait"
-            android:configChanges="locale"
-         	android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
-            >
-
-        </activity>
-        -->
-=======
             android:configChanges="locale" />
 
->>>>>>> refs/remotes/fossasia/development
         <activity
             android:name=".SendFileActivity"
             android:configChanges="locale"
@@ -207,12 +180,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name="org.wordpress.android.AddAcountSettings"
-<<<<<<< HEAD
-            android:screenOrientation="portrait">
-        </activity>
-=======
             android:screenOrientation="portrait" />
->>>>>>> refs/remotes/fossasia/development
         <activity
             android:name=".ImagePickerActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|uiMode"
@@ -221,13 +189,8 @@
             android:name=".feedservice.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
-<<<<<<< HEAD
-            android:screenOrientation="portrait">
-        </activity>
-=======
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
->>>>>>> refs/remotes/fossasia/development
 
         <provider
             android:name="com.facebook.FacebookContentProvider"
@@ -252,4 +215,3 @@
     </application>
 
 </manifest>
-
