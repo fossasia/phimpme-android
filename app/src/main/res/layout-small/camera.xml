@@ -35,6 +35,14 @@
                 android:layout_marginLeft="10dp"
                 android:src="@drawable/flash_auto" />
 
+            <Spinner
+                android:id="@+id/image_resolution"
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:background="@color/white"
+                android:alpha="0.5"
+                android:layout_height="wrap_content"/>
+
         </LinearLayout>
 
         <ImageButton

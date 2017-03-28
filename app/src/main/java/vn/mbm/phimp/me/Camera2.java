@@ -27,6 +27,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.util.Pair;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -38,9 +39,12 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.File;
@@ -64,6 +68,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	public static ImageButton buttonClick;
 	ImageButton flash;
 	ImageButton camera_switch;
+	static Spinner image_res;
 	FrameLayout frame;
 	public int degrees;
 	private String make;
@@ -211,7 +216,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	}
 
 	public void setLayout() {
-//		setContentView(layout);
+		//setContentView(layout);
 		frame = ((FrameLayout) view.findViewById(R.id.preview));
 		preview = new Preview(getActivity());
 		//setContentView(preview);
@@ -305,6 +310,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		});
 		camera_switch = (ImageButton)view.findViewById(R.id.switch_camera);
 		camera_switch.setImageResource(R.drawable.camera_switch);
+		image_res = (Spinner)view.findViewById(R.id.image_resolution);
 		buttonClick.setImageResource(R.drawable.takepic);
 		if (Camera.getNumberOfCameras() <=1 ) camera_switch.setVisibility(View.GONE);
 		camera_switch.setOnClickListener(new OnClickListener() {
@@ -327,6 +333,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 						// mCamera.setDisplayOrientation(90);
 						setCameraDisplayOrientation((Activity) ctx, 1, mCamera);
 						preview.switchCamera(mCamera);
+						setResolutionSpinner(mCamera.getParameters().getSupportedPictureSizes());
 						mCamera.startPreview();
 					}else
 					{
@@ -343,6 +350,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 						//mCamera.setDisplayOrientation(90);
 						setCameraDisplayOrientation((Activity) ctx, 0, mCamera);
 						preview.switchCamera(mCamera);
+						setResolutionSpinner(mCamera.getParameters().getSupportedPictureSizes());
 						mCamera.startPreview();
 					}
 				}
@@ -350,6 +358,10 @@ public class Camera2 extends android.support.v4.app.Fragment {
 			}
 		});
 		Camera.Parameters parameters = preview.mCamera.getParameters();
+
+		//Adding resolutions for image capture
+		setResolutionSpinner(parameters.getSupportedPictureSizes());
+
 		preview.mCamera.setParameters(parameters);
 		LinearLayout linear = (LinearLayout)view.findViewById(R.id.lnCam);
 		linear.bringToFront();
@@ -386,6 +398,31 @@ public class Camera2 extends android.support.v4.app.Fragment {
 				//Log.e("Flash",preview.camera.getParameters().getSupportedFlashModes().get(0));
 			}
 		});
+
+		image_res.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+				Camera.Parameters parameters = preview.mCamera.getParameters();
+				parameters.setPictureSize(parameters.getSupportedPictureSizes().get(i).width,parameters.getSupportedPictureSizes().get(i).height);
+				preview.mCamera.setParameters(parameters);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> adapterView) {
+
+			}
+		});
+	}
+
+	private void setResolutionSpinner(List<Camera.Size> sizes) {
+		//Edit by @aman95 : adding resolutions for image capture
+		List<CharSequence> res = new ArrayList<>();
+		for(int i=0; i<sizes.size(); i++) {
+			res.add(i,sizes.get(i).width+"x"+sizes.get(i).height);
+		}
+		//Setting up image resolution spinner
+		ArrayAdapter<CharSequence> imgResAdapter = new ArrayAdapter<CharSequence>(ctx,R.layout.support_simple_spinner_dropdown_item, res);
+		image_res.setAdapter(imgResAdapter);
 	}
 
 	ShutterCallback shutterCallback = new ShutterCallback() {
@@ -863,6 +900,21 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
 		return optimalSize;
 	}
 
+	private Pair<Size, Integer> getApproximatePictureSize(List<Size> sizes, Size previewSize) {
+		Size apprxSize = null;
+		int index = 0;
+		int diff = Integer.MAX_VALUE;
+		for(int i=0; i<sizes.size(); i++) {
+			if(Math.abs((sizes.get(i).height * sizes.get(i).width) - (previewSize.width * previewSize.height)) < diff ) {
+				apprxSize = sizes.get(i);
+				index = i;
+				diff = Math.abs((sizes.get(i).height * sizes.get(i).width) - (previewSize.width * previewSize.height));
+			}
+		}
+
+		return new Pair<>(apprxSize,index);
+	}
+
 	public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
 		// Now that the size is known, set up the camera parameters and begin
 		// the preview.
@@ -880,6 +932,12 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
 			parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
 		}catch(Exception e){}
 		requestLayout();
+
+		//Setting up resolution of image
+		Pair<Size, Integer> pair = getApproximatePictureSize(parameters.getSupportedPictureSizes(), mPreviewSize);
+		parameters.setPictureSize(pair.first.width, pair.first.height);
+		Camera2.image_res.setSelection(pair.second);
+
 		mCamera.setParameters(parameters);
 		mCamera.startPreview();
 	}
