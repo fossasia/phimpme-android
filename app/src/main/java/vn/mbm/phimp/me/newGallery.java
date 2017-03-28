@@ -34,6 +34,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -447,6 +448,8 @@ public class newGallery extends Fragment {
     static ArrayList<String> array_ID = new ArrayList<String>();
 
     Toolbar toolbar;
+
+    private boolean FLAG_IS_LOADING = false;
 
     @Nullable
     @Override
@@ -3445,7 +3448,33 @@ public class newGallery extends Fragment {
               }catch(Exception e){
 
               }
-            
+            localPhotosGrid.setOnScrollListener(new AbsListView.OnScrollListener() {
+                @Override
+                public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+                }
+
+                @Override
+                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                    if ((firstVisibleItem + visibleItemCount == totalItemCount) && (!FLAG_IS_LOADING)){
+                        FLAG_IS_LOADING = true;
+                        if (turnsNeeded > 1) {
+                            turnsNeeded -= 1;
+                            turnsDone += 1;
+                            localImagesPerTurn += PER_TURN;
+                            resumeLocalPhoto();
+                            FLAG_IS_LOADING = false;
+                        } else {
+                            localImagesPerTurn += loadLeft;
+                            turnsNeeded -= 1;
+                            turnsDone += 1;
+                            resumeLocalPhoto();
+                            FLAG_IS_LOADING = false;
+                            galleryMenu.findItem(R.id.menu_gallery_load_more).setVisible(false);
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -3707,6 +3736,7 @@ public class newGallery extends Fragment {
 			// Show a progress dialog until the loading is done
 			pro_gress = ProgressDialog.show(ctx, ctx.getString(R.string.loading), ctx.getString(R.string.wait),
 					true, false);
+
 			// Create a cursor to access External Storage
 			// MediaStore.Images.Media.DATA is the full Path of the file
 			final String[] data = { MediaStore.Images.Media.DATA };
