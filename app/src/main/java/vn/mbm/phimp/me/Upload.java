@@ -83,6 +83,7 @@ import vn.mbm.phimp.me.services.Wordpress;
 import vn.mbm.phimp.me.utils.Commons;
 import vn.mbm.phimp.me.utils.Image;
 import vn.mbm.phimp.me.utils.Params;
+import vn.mbm.phimp.me.utils.PrefManager;
 import vn.mbm.phimp.me.utils.geoDegrees;
 
 import static vn.mbm.phimp.me.utils.Constants.TYPE_MULTI_PICKER;
@@ -163,7 +164,7 @@ public class Upload extends android.support.v4.app.Fragment {
     ImageView btnPhotoAdd;
 
     //bluetooth share
-    public static ImageView shareButton;
+    public static ImageView btnBluetoothShare;
 
     static String[] path;
 
@@ -202,7 +203,6 @@ public class Upload extends android.support.v4.app.Fragment {
     ImageView removeSelectedBtn, selectAllBtn, clearSelectionBtn;
     // Upload image list and temporary list to store removable items
     public static ArrayList<String> uploadGridList = new ArrayList<>();
-    public static ArrayList<Uri> shareUris = new ArrayList<>();
     private ArrayList<String> removableList;
 
     private static String longtitude = "", latitude = "", title = "";
@@ -302,20 +302,20 @@ public class Upload extends android.support.v4.app.Fragment {
             public void onClick(View v) {
                 AlertDialog.Builder d = new AlertDialog.Builder(getContext());
                 d.setMessage(R.string.AlertMessage).setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (!removableList.isEmpty()) {
-                            uploadGridList.removeAll(removableList);
-                            removableList.clear();
-                            ((ImageAdapter) listPhotoUpload.getAdapter()).notifyDataSetChanged();
-                            panelLable.setText(getResources().getString(R.string.upload));
-                            toggleButtonPanel(false);
-                            if (uploadGridList.isEmpty()) {
-                                noPhotos.setVisibility(View.VISIBLE);
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (!removableList.isEmpty()) {
+                                    uploadGridList.removeAll(removableList);
+                                    removableList.clear();
+                                    ((ImageAdapter) listPhotoUpload.getAdapter()).notifyDataSetChanged();
+                                    panelLable.setText(getResources().getString(R.string.upload));
+                                    toggleButtonPanel(false);
+                                    if (uploadGridList.isEmpty()) {
+                                        noPhotos.setVisibility(View.VISIBLE);
+                                    }
+                                }
                             }
-                        }
-                    }
-                }).
+                        }).
                         setNegativeButton("No", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -339,20 +339,22 @@ public class Upload extends android.support.v4.app.Fragment {
             listPhotoUpload.setAdapter(new ImageAdapter(ctx));
         }
 
-      /*
+		/*
          * bluetooth share
-       */
-        shareButton = (ImageView) getView().findViewById(R.id.upload_sendDirectly);
-        shareButton.setColorFilter(color);
-        shareButton.setOnClickListener(new OnClickListener() {
+		 */
+        btnBluetoothShare = (ImageView) getView().findViewById(R.id.upload_sendDirectly);
+        btnBluetoothShare.setColorFilter(color);
+        btnBluetoothShare.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!shareUris.isEmpty()) {
-                    Intent shareIntent = new Intent();
-                    shareIntent.setAction(Intent.ACTION_SEND_MULTIPLE);
-                    shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, shareUris);
-                    shareIntent.setType("image/*");
-                    startActivity(Intent.createChooser(shareIntent, "Share images to.."));
+                if (!uploadGridList.isEmpty()) {
+                    Intent intent = new Intent();
+                    intent.setClass(getContext(), BluetoothShareMultipleFile.class);
+                    intent.putExtra("imagelist", TextUtils.join("#", uploadGridList));
+                    intent.putExtra("activityName", "Upload");
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+
                 } else {
                     Commons.AlertLog(ctx, "Do not have photo to share", getString(R.string.accept)).show();
                 }
@@ -427,25 +429,25 @@ public class Upload extends android.support.v4.app.Fragment {
         });
         /*btnPhotoAdd.setOnTouchListener(new OnTouchListener()
         {
-         @SuppressWarnings("deprecation")
-         @Override
-         public boolean onTouch(View v, MotionEvent event)
-         {
-            showDialog(DIALOG_ADD_PHOTO);
-            return false;
-         }
-      });*/
+			@SuppressWarnings("deprecation")
+			@Override
+			public boolean onTouch(View v, MotionEvent event)
+			{
+				showDialog(DIALOG_ADD_PHOTO);
+				return false;
+			}
+		});*/
         /*
-       * Thong - Init services
-       */
+		 * Thong - Init services
+		 */
         TumblrServices.init();
         FlickrServices.init();
         TwitterServices.init();
         S500pxService.init();
 
-      /*
-       * Thong - Init accounts
-       */
+		/*
+		 * Thong - Init accounts
+		 */
         if ((PhimpMe.add_account_upload) || (name == null)) {
             reloadAccountsList();
         }
@@ -1016,9 +1018,9 @@ public class Upload extends android.support.v4.app.Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which) {
-                        /*case 0:
-                           startCameraActivity();
-                           break;*/
+								/*case 0:
+									startCameraActivity();
+									break;*/
                                     case 0:
                                         Intent intent = new Intent(ctx, PhotoSelect.class);
                                         //progLoading = ProgressDialog.show(ctx, getString(R.string.loading), getString(R.string.photos_loading), true, false);
@@ -1310,7 +1312,6 @@ public class Upload extends android.support.v4.app.Fragment {
                     if (imagesList.size() > 0) {
                         for (int i = 0; i < imagesList.size(); i++) {
                             uploadGridList.add(imagesList.get(i).imagePath);
-                            shareUris.add(imagesList.get(i).uri);
                         }
                         listPhotoUpload.setAdapter(new ImageAdapter(getContext()));
                     }
