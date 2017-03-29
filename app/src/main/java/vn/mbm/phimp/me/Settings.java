@@ -405,8 +405,10 @@ public class Settings extends Fragment
 			{
 				PhimpMe.FEEDS_LOCAL_GALLERY = isChecked;
 				if(isChecked==true){
-					PhimpMe.check_donwload_local_gallery=true;
+				    PhimpMe.check_download_local_gallery=true;
 				}
+				else
+				    PhimpMe.check_download_local_gallery=false;
 			}
 		});
 
