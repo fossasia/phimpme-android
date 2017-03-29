@@ -96,6 +96,11 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+		View decorView = getActivity().getWindow().getDecorView();
+		int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+		decorView.setSystemUiVisibility(uiOptions);
+
 		view=  inflater.inflate(R.layout.camera, container, false);
 		setLayout();
 		return view;
