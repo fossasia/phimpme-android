@@ -17,6 +17,10 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
@@ -63,7 +67,8 @@ import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
 //        forceCloseDialogAfterToast = false,
 //        resToastText = R.string.crash_report_text)
 @SuppressWarnings("deprecation")
-public class PhimpMe extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener //, android.view.GestureDetector.OnGestureListener
+public class PhimpMe extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener,
+        ViewPager.OnPageChangeListener //, android.view.GestureDetector.OnGestureListener
 {
     public static Context ctx;
     public static File DataDirectory;
@@ -186,6 +191,8 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     //private GestureDetector gestureScanner;
     //View.OnTouchListener gestureListener;
     public static int width, height;
+
+    ViewPager mFragmentContainer;
 
     HomeScreenState currentScreen = HomeScreenState.GALLERY;
 
@@ -574,73 +581,104 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
 
         try {
             mBottomNav = (BottomNavigationView) findViewById(R.id.navigation_view);
+            mFragmentContainer = (ViewPager) findViewById(R.id.fragment_container);
         } catch (Exception e) {
         }
         mBottomNav.setOnNavigationItemSelectedListener(this);
 
         mBottomNav.getMenu().getItem(0).setChecked(true);
-
+        if (mFragmentContainer!=null) {
+            mFragmentContainer.setAdapter(new FragmentAdapter(getSupportFragmentManager()));
+            mFragmentContainer.addOnPageChangeListener(this);
+            mFragmentContainer.setOffscreenPageLimit(0);
+        }
         // Initialising fragment container
-        if (findViewById(R.id.fragment_container) != null) {
+       /* if (findViewById(R.id.fragment_container) != null) {
             newGallery frag = new newGallery();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, frag)
                     .commit();
-        }
+        }*/
 
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        resetNavigationBarIndicator();
+        mBottomNav.getMenu().getItem(position).setChecked(true);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    void resetNavigationBarIndicator(){
+        for (int indic = 0; indic < 5; indic++)
+            mBottomNav.getMenu().getItem(indic).setChecked(false);
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.tab_gallery:
-                if (currentScreen != HomeScreenState.GALLERY) {
+                if (currentScreen != HomeScreenState.GALLERY) {/*
                     newGallery frag = new newGallery();
                     getSupportFragmentManager().beginTransaction()
                             .setCustomAnimations(R.anim.fragment_anim_fadein,R.anim.fragment_anim_fadeout)
                             .replace(R.id.fragment_container, frag)
-                            .commit();
+                            .commit();*/
+                    mFragmentContainer.setCurrentItem(0);
                     currentScreen = HomeScreenState.GALLERY;
                 }
                 break;
             case R.id.tab_map:
-                if (currentScreen != HomeScreenState.MAP) {
+                if (currentScreen != HomeScreenState.MAP) {/*
                     MapFragment map = new MapFragment();
                     getSupportFragmentManager().beginTransaction()
                             .setCustomAnimations(R.anim.fragment_anim_fadein, R.anim.fragment_anim_fadeout)
                             .replace(R.id.fragment_container, map)
-                            .commit();
+                            .commit();*/
+                    mFragmentContainer.setCurrentItem(3);
                     currentScreen = HomeScreenState.MAP;
                 }
                 break;
             case R.id.tab_camera:
                 if (currentScreen != HomeScreenState.CAMERA) {
-
+/*
                     Camera2 camFrag = new Camera2();
                     getSupportFragmentManager().beginTransaction()
                             .setCustomAnimations(R.anim.fragment_anim_fadein,R.anim.fragment_anim_fadeout)
                             .replace(R.id.fragment_container, camFrag)
-                            .commit();
+                            .commit();*/
+                    mFragmentContainer.setCurrentItem(2);
                     currentScreen = HomeScreenState.CAMERA;
                 }
                 break;
             case R.id.tab_upload:
-                if (currentScreen != HomeScreenState.UPLOAD) {
+                if (currentScreen != HomeScreenState.UPLOAD) {/*
                     Upload frag = new Upload();
                     getSupportFragmentManager().beginTransaction()
                             .setCustomAnimations(R.anim.fragment_anim_fadein,R.anim.fragment_anim_fadeout)
                             .replace(R.id.fragment_container, frag)
-                            .commit();
+                            .commit();*/
+                    mFragmentContainer.setCurrentItem(1);
                     currentScreen = HomeScreenState.UPLOAD;
                 }
                 break;
             case R.id.tab_settings:
                 if (currentScreen != HomeScreenState.SETTINGS) {
-                    Settings frag = new Settings();
+                    /*Settings frag = new Settings();
                     getSupportFragmentManager().beginTransaction()
                             .setCustomAnimations(R.anim.fragment_anim_fadein,R.anim.fragment_anim_fadeout)
                             .replace(R.id.fragment_container, frag)
-                            .commit();
+                            .commit();*/
+                    mFragmentContainer.setCurrentItem(4);
                     currentScreen = HomeScreenState.SETTINGS;
                 }
                 break;
@@ -649,6 +687,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
 
         return true;
     }
+
 
   /*  public Animation inFromRightAnimation() {
         Animation inFromRight = new TranslateAnimation(
@@ -979,5 +1018,32 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
             e.printStackTrace();
         }
     }
-}
 
+    private class FragmentAdapter extends FragmentStatePagerAdapter{
+
+        public FragmentAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position){
+                case 0:
+                    return new newGallery();
+                case 3:
+                    return new MapFragment();
+                case 2:
+                    return new Camera2();
+                case 1:
+                    return new Upload();
+                default:
+                    return new Settings();
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 5;
+        }
+    }
+}

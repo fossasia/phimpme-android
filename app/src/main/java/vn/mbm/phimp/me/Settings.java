@@ -165,6 +165,11 @@ public class Settings extends Fragment
     @Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+		View decorView = getActivity().getWindow().getDecorView();
+		int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
+		decorView.setSystemUiVisibility(uiOptions);
+
 		return inflater.inflate(R.layout.settings, container, false);
 	}
 
