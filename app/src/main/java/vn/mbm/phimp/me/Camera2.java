@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.Rect;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.ShutterCallback;
@@ -29,6 +30,7 @@ import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -45,10 +47,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import vn.mbm.phimp.me.gallery3d.media.CropImage;
+import vn.mbm.phimp.me.utils.Utils;
 
 public class Camera2 extends android.support.v4.app.Fragment {
 	private static final String TAG = "Camera";
@@ -87,9 +91,16 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	private final int FLASH_OFF = 1;
 	private final int FLASH_AUTO = 2;
 
+	private boolean FLAG_CAPTURE_IN_PROGRESS = false;
+
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+		View decorView = getActivity().getWindow().getDecorView();
+		int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+		decorView.setSystemUiVisibility(uiOptions);
+
 		view=  inflater.inflate(R.layout.camera, container, false);
 		setLayout();
 		return view;
@@ -297,11 +308,17 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		buttonClick.setOnClickListener( new OnClickListener() {
 			public void onClick(View v) {
 				//progress = ProgressDialog.show(ctx, "", "");
-				preview.mCamera.takePicture(shutterCallback, null, jpegCallback);
+				if (!FLAG_CAPTURE_IN_PROGRESS) {
+					FLAG_CAPTURE_IN_PROGRESS = true;
+					preview.mCamera.takePicture(shutterCallback, null, jpegCallback);
+				}
 			}
 		});
 		camera_switch = (ImageButton)view.findViewById(R.id.switch_camera);
 		camera_switch.setImageResource(R.drawable.camera_switch);
+		LinearLayout.LayoutParams parmsswitch = new LinearLayout.LayoutParams(Utils.getScreenWidth(getContext())/15,Utils.getScreenHeight(getContext())/15);
+		camera_switch.setLayoutParams(parmsswitch);
+		parmsswitch.setMarginStart(20);
 		buttonClick.setImageResource(R.drawable.takepic);
 		if (Camera.getNumberOfCameras() <=1 ) camera_switch.setVisibility(View.GONE);
 		camera_switch.setOnClickListener(new OnClickListener() {
@@ -347,12 +364,14 @@ public class Camera2 extends android.support.v4.app.Fragment {
 			}
 		});
 		Camera.Parameters parameters = preview.mCamera.getParameters();
-		parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
 		preview.mCamera.setParameters(parameters);
 		LinearLayout linear = (LinearLayout)view.findViewById(R.id.lnCam);
 		linear.bringToFront();
 		flash = (ImageButton)view.findViewById(R.id.flash);
 		flash.setImageResource(R.drawable.flash_on);
+		LinearLayout.LayoutParams parmFlash = new LinearLayout.LayoutParams(Utils.getScreenWidth(getContext())/15,Utils.getScreenHeight(getContext())/15);
+		camera_switch.setLayoutParams(parmFlash);
+		parmFlash.setMarginStart(10);
 		flash.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -488,6 +507,10 @@ public class Camera2 extends android.support.v4.app.Fragment {
 			_intent.putExtra("longtitude",lon);*/
 			_intent.putExtra("scale", true);
 			_intent.putExtra("activityName", "Camera2");
+
+			//resetting capture progress flag
+			FLAG_CAPTURE_IN_PROGRESS = false;
+
 			startActivityForResult(_intent, 1);
 			//progress.dismiss();
 
@@ -647,6 +670,7 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
 	List<Size> mSupportedPreviewSizes;
 	List<String> mSupportFocus;
 	Camera mCamera;
+	private static  final int FOCUS_AREA_SIZE= 300;
 
 	@SuppressWarnings("deprecation")
 	Preview(Context context) {
@@ -654,6 +678,16 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
 
 		mSurfaceView = new SurfaceView(context);
 		addView(mSurfaceView);
+        //Set Touch Listener
+		mSurfaceView.setOnTouchListener(new OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                            focusOnTouch(event);
+                        }
+                        return true;
+                    }
+                 });
 
 		// Install a SurfaceHolder.Callback so we get notified when the
 		// underlying surface is created and destroyed.
@@ -671,6 +705,62 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
 			requestLayout();
 		}
 	}
+
+	//Check if tap to focus supported and Set the focus on the Tapped Area
+	private void focusOnTouch(MotionEvent event) {
+            if (mCamera != null ) {
+
+                Camera.Parameters parameters = mCamera.getParameters();
+                if (parameters.getMaxNumMeteringAreas() > 0){
+                    Log.i(TAG,"meteringAreas Supported");
+                    Rect rect = calculateFocusArea(event.getX(), event.getY());
+                    parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
+                    List<Camera.Area> meteringAreas = new ArrayList<Camera.Area>();
+                    meteringAreas.add(new Camera.Area(rect, 800));
+                    parameters.setFocusAreas(meteringAreas);
+
+                    mCamera.setParameters(parameters);
+                    mCamera.autoFocus(mAutoFocusTakePictureCallback);
+                }else {
+                    mCamera.autoFocus(mAutoFocusTakePictureCallback);
+                }
+            }
+        }
+
+        //Calculate the Focus Area
+        private Rect calculateFocusArea(float x, float y) {
+            int left = clamp(Float.valueOf((x / mSurfaceView.getWidth()) * 2000 - 1000).intValue(), FOCUS_AREA_SIZE);
+            int top = clamp(Float.valueOf((y / mSurfaceView.getHeight()) * 2000 - 1000).intValue(), FOCUS_AREA_SIZE);
+
+            return new Rect(left, top, left + FOCUS_AREA_SIZE, top + FOCUS_AREA_SIZE);
+        }
+
+        private int clamp(int touchCoordinateInCameraReper, int focusAreaSize) {
+            int result;
+            if (Math.abs(touchCoordinateInCameraReper)+focusAreaSize/2>1000){
+                if (touchCoordinateInCameraReper>0){
+                    result = 1000 - focusAreaSize/2;
+                } else {
+                    result = -1000 + focusAreaSize/2;
+                }
+            } else{
+                result = touchCoordinateInCameraReper - focusAreaSize/2;
+            }
+            return result;
+        }
+
+        private Camera.AutoFocusCallback mAutoFocusTakePictureCallback = new Camera.AutoFocusCallback() {
+            @Override
+            public void onAutoFocus(boolean success, Camera camera) {
+                if (success) {
+                    // do something...
+                    Log.i("tap_to_focus","success!");
+                } else {
+                    // do something...
+                    Log.i("tap_to_focus","fail!");
+                }
+            }
+        };
 
 	public void switchCamera(Camera camera) {
 		setCamera(camera);
@@ -799,6 +889,7 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
 		// the preview.
 		Log.e("Surface","Change");
 		Camera.Parameters parameters = mCamera.getParameters();
+        	parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
 
 		try{
 			mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, w, h);

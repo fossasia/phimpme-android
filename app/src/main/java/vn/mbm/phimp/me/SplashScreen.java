@@ -33,7 +33,6 @@ public class SplashScreen extends Activity {
 	            } catch(InterruptedException e) {} 
 	            finally {
 	                finish();
-	                
 	                Intent i = new Intent();
 	                i.setClass(sPlashScreen, PhimpMe.class);
 	        		startActivity(i);

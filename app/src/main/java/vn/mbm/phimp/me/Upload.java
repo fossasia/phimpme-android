@@ -15,6 +15,7 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -82,6 +83,7 @@ import vn.mbm.phimp.me.services.Wordpress;
 import vn.mbm.phimp.me.utils.Commons;
 import vn.mbm.phimp.me.utils.Image;
 import vn.mbm.phimp.me.utils.Params;
+import vn.mbm.phimp.me.utils.PrefManager;
 import vn.mbm.phimp.me.utils.geoDegrees;
 
 import static vn.mbm.phimp.me.utils.Constants.TYPE_MULTI_PICKER;
@@ -229,6 +231,11 @@ public class Upload extends android.support.v4.app.Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View decorView = getActivity().getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
+        decorView.setSystemUiVisibility(uiOptions);
+
         return inflater.inflate(R.layout.upload, container, false);
     }
 
@@ -298,16 +305,36 @@ public class Upload extends android.support.v4.app.Fragment {
         removeSelectedBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!removableList.isEmpty()) {
-                    uploadGridList.removeAll(removableList);
-                    removableList.clear();
-                    ((ImageAdapter) listPhotoUpload.getAdapter()).notifyDataSetChanged();
-                    panelLable.setText(getResources().getString(R.string.upload));
-                    toggleButtonPanel(false);
-                    if (uploadGridList.isEmpty()) {
-                        noPhotos.setVisibility(View.VISIBLE);
-                    }
-                }
+                AlertDialog.Builder d = new AlertDialog.Builder(getContext());
+                d.setMessage(R.string.AlertMessage).setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (!removableList.isEmpty()) {
+                                    uploadGridList.removeAll(removableList);
+                                    removableList.clear();
+                                    ((ImageAdapter) listPhotoUpload.getAdapter()).notifyDataSetChanged();
+                                    panelLable.setText(getResources().getString(R.string.upload));
+                                    toggleButtonPanel(false);
+                                    if (uploadGridList.isEmpty()) {
+                                        noPhotos.setVisibility(View.VISIBLE);
+                                    }
+                                }
+                            }
+                        }).
+                        setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert = d.create();
+                alert.setTitle(R.string.AlertTitle);
+                alert.show();
+                Button nbutton = alert.getButton(DialogInterface.BUTTON_NEGATIVE);
+                nbutton.setTextColor(Color.BLACK);
+                Button pbutton = alert.getButton(DialogInterface.BUTTON_POSITIVE);
+                pbutton.setTextColor(Color.BLACK);
             }
         });
 
@@ -939,9 +966,7 @@ public class Upload extends android.support.v4.app.Fragment {
         super.onResume();
         PhimpMe.showTabs();
 
-        if (PhimpMe.FEEDS_GOOGLE_ADMOB == true) {
-            //PhimpMe.ShowAd();
-        }
+
         if (PhimpMe.add_account_upload) {
             reloadAccountsList();
             PhimpMe.add_account_upload = false;

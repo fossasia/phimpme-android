@@ -451,6 +451,11 @@ public class newGallery extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View decorView = getActivity().getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
+        decorView.setSystemUiVisibility(uiOptions);
+
         setHasOptionsMenu(true);
         return inflater.inflate(R.layout.newgallery, container, false);
     }
@@ -3581,7 +3586,7 @@ public class newGallery extends Fragment {
 				holder = new ViewHolder();
 				convertView = mInflater.inflate(R.layout.photoitem_local, null);
 				holder.imageview = (ImageView) convertView.findViewById(R.id.localPhoto);
-				holder.imageSelector = (CheckBox) convertView.findViewById(R.id.localPhotoSelector);
+				holder.imageSelector = (ImageView) convertView.findViewById(R.id.localPhotoSelector);
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
@@ -3589,12 +3594,7 @@ public class newGallery extends Fragment {
 
 			holder.imageview.setId(position);
 			holder.imageview.setAlpha(item.isSelected ? 0.5f : 1.0f);
-			if (item.isSelected) {
-				holder.imageSelector.setVisibility(View.VISIBLE);
-				holder.imageSelector.setChecked(true);
-			} else {
-			    holder.imageSelector.setVisibility(View.GONE);
-			}
+			holder.imageSelector.setVisibility(item.isSelected ? View.VISIBLE : View.GONE);
 			holder.imageview.setImageBitmap(item.img);
 
 			holder.imageview.setOnClickListener(new View.OnClickListener() {
@@ -3603,7 +3603,6 @@ public class newGallery extends Fragment {
                     if (item.isSelected) {
                         holder.imageSelector.setVisibility(View.GONE);
                         holder.imageview.setAlpha(1.0f);
-                        holder.imageSelector.setChecked(false);
                         item.isSelected = false;
                         deletableList.remove(item.path);
                         int delCount = deletableList.size();
@@ -3650,7 +3649,6 @@ public class newGallery extends Fragment {
                         } else {
                             holder.imageSelector.setVisibility(View.VISIBLE);
                             holder.imageview.setAlpha(0.5f);
-                            holder.imageSelector.setChecked(true);
                             item.isSelected = true;
                             deletableList.add(item.path);
                             int delCount = deletableList.size();
@@ -3673,13 +3671,11 @@ public class newGallery extends Fragment {
                     if (item.isSelected) {
                         holder.imageSelector.setVisibility(View.GONE);
                         holder.imageview.setAlpha(1.0f);
-                        holder.imageSelector.setChecked(false);
                         item.isSelected = false;
                         deletableList.remove(item.path);
                     } else {
                         holder.imageSelector.setVisibility(View.VISIBLE);
                         holder.imageview.setAlpha(0.5f);
-                        holder.imageSelector.setChecked(true);
                         item.isSelected = true;
                         deletableList.add(item.path);
                     }
@@ -3695,31 +3691,6 @@ public class newGallery extends Fragment {
                     return true;
                 }
             });
-            holder.imageSelector.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    // Check box has been unchecked,
-                    // 1. Restore alpha level
-                    // 2. Remove from deletableList
-                    // 3. Hide checkbox
-                    // 4. Set checked status to false
-                    if (!isChecked) {
-                        holder.imageview.setAlpha(1.0f);
-                        deletableList.remove(item.path);
-                        item.isSelected = false;
-                        holder.imageSelector.setVisibility(View.GONE);
-                        int delCount = deletableList.size();
-                        String newTitle;
-                        if (delCount > 0) {
-                            newTitle = delCount + (delCount == 1 ? " image" : " images") + " selected";
-                        } else {
-                            newTitle = getResources().getString(R.string.application_title);
-                        }
-                        getActivity().setTitle(newTitle);
-                        getActivity().invalidateOptionsMenu();
-                    }
-                }
-            });
             return convertView;
 		}
 	}
@@ -3729,7 +3700,7 @@ public class newGallery extends Fragment {
 	 */
 	private class ViewHolder {
 		ImageView imageview;
-		CheckBox imageSelector;
+		ImageView imageSelector;
 	}
 
 	public static void resumeLocalPhoto(){

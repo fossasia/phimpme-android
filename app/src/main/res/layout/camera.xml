@@ -18,17 +18,15 @@
 
             <ImageButton
                 android:id="@+id/switch_camera"
-                android:layout_width="@dimen/cameraIcon"
-                android:layout_height="@dimen/cameraIcon"
-                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:src="@drawable/camera_switch" />
 
             <ImageButton
                 android:id="@+id/flash"
-                android:layout_width="@dimen/cameraIcon"
-                android:layout_height="@dimen/cameraIcon"
-                android:layout_marginLeft="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:scaleType="fitCenter"
                 android:src="@drawable/flash_auto" />
