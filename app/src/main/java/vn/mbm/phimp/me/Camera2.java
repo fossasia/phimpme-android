@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
@@ -29,6 +30,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.OrientationEventListener;
@@ -38,6 +40,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -672,6 +675,8 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
 	Camera mCamera;
 	private static  final int FOCUS_AREA_SIZE= 300;
 
+	int screen_width = 900,screen_height = 1600;
+
 	@SuppressWarnings("deprecation")
 	Preview(Context context) {
 		super(context);
@@ -729,8 +734,15 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
 
         //Calculate the Focus Area
         private Rect calculateFocusArea(float x, float y) {
-            int left = clamp(Float.valueOf((x / mSurfaceView.getWidth()) * 2000 - 1000).intValue(), FOCUS_AREA_SIZE);
-            int top = clamp(Float.valueOf((y / mSurfaceView.getHeight()) * 2000 - 1000).intValue(), FOCUS_AREA_SIZE);
+			//getting screen size
+			Display display = ((WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+			Point size = new Point();
+			display.getSize(size);
+			screen_width = size.x;
+			screen_height = size.y;
+
+            int left = clamp(Float.valueOf((x / mSurfaceView.getWidth()) * screen_height - screen_width).intValue(), FOCUS_AREA_SIZE);
+            int top = clamp(Float.valueOf((y / mSurfaceView.getHeight()) * screen_height - screen_width).intValue(), FOCUS_AREA_SIZE);
 
             return new Rect(left, top, left + FOCUS_AREA_SIZE, top + FOCUS_AREA_SIZE);
         }
