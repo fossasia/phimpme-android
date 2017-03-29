@@ -18,6 +18,10 @@ git config --global user.email "noreply@travis.com"
 git config --global user.name "Travis CI"
 
 # Clone the fork into the buildApk folder
+# *** Important: For everychange pls update the below line in the following format:
+# git clone --quiet --branch=apk htpps://username:authentiToken@github.com/username/phimpme-android apk > /dev/null
+# replacing username with your github username and authentiToken with a personal token for your account.***
+# Your token is advised to have only access to public repositories. Its only needed.
 git clone --quiet --branch=apk https://$USERNAME:$API_TOKEN@github.com/$USERNAME/phimpme-android  apk > /dev/null
 cp -Rf $HOME/buildApk/*
 cd apk
