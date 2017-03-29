@@ -91,6 +91,8 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	private final int FLASH_OFF = 1;
 	private final int FLASH_AUTO = 2;
 
+	private boolean FLAG_CAPTURE_IN_PROGRESS = false;
+
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -301,7 +303,10 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		buttonClick.setOnClickListener( new OnClickListener() {
 			public void onClick(View v) {
 				//progress = ProgressDialog.show(ctx, "", "");
-				preview.mCamera.takePicture(shutterCallback, null, jpegCallback);
+				if (!FLAG_CAPTURE_IN_PROGRESS) {
+					FLAG_CAPTURE_IN_PROGRESS = true;
+					preview.mCamera.takePicture(shutterCallback, null, jpegCallback);
+				}
 			}
 		});
 		camera_switch = (ImageButton)view.findViewById(R.id.switch_camera);
@@ -497,6 +502,10 @@ public class Camera2 extends android.support.v4.app.Fragment {
 			_intent.putExtra("longtitude",lon);*/
 			_intent.putExtra("scale", true);
 			_intent.putExtra("activityName", "Camera2");
+
+			//resetting capture progress flag
+			FLAG_CAPTURE_IN_PROGRESS = false;
+
 			startActivityForResult(_intent, 1);
 			//progress.dismiss();
 
