@@ -3456,21 +3456,23 @@ public class newGallery extends Fragment {
 
                 @Override
                 public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                    if ((firstVisibleItem + visibleItemCount == totalItemCount) && (!FLAG_IS_LOADING)){
-                        FLAG_IS_LOADING = true;
-                        if (turnsNeeded > 1) {
-                            turnsNeeded -= 1;
-                            turnsDone += 1;
-                            localImagesPerTurn += PER_TURN;
-                            resumeLocalPhoto();
-                            FLAG_IS_LOADING = false;
-                        } else {
-                            localImagesPerTurn += loadLeft;
-                            turnsNeeded -= 1;
-                            turnsDone += 1;
-                            resumeLocalPhoto();
-                            FLAG_IS_LOADING = false;
-                            galleryMenu.findItem(R.id.menu_gallery_load_more).setVisible(false);
+                    if ((visibleItemCount!=0) && (totalItemCount!=0) ) {
+                        if ((firstVisibleItem + visibleItemCount == totalItemCount) && (!FLAG_IS_LOADING)) {
+                            FLAG_IS_LOADING = true;
+                            if (turnsNeeded > 1) {
+                                turnsNeeded -= 1;
+                                turnsDone += 1;
+                                localImagesPerTurn += PER_TURN;
+                                resumeLocalPhoto();
+                                FLAG_IS_LOADING = false;
+                            } else {
+                                localImagesPerTurn += loadLeft;
+                                turnsNeeded -= 1;
+                                turnsDone += 1;
+                                resumeLocalPhoto();
+                                FLAG_IS_LOADING = false;
+                                galleryMenu.findItem(R.id.menu_gallery_load_more).setVisible(false);
+                            }
                         }
                     }
                 }
