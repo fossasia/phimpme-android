@@ -177,8 +177,8 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     public static boolean check_cache;
     public static boolean check_export = true;
     public static BottomNavigationView mBottomNav;
-    public static boolean check_donwload = false;
-    public static boolean check_donwload_local_gallery = false;
+    public static boolean check_download = false;
+    public static boolean check_download_local_gallery = true;
     public static int flashStatus = 2;
 
     //Gallery
@@ -977,6 +977,34 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
         } catch (IllegalStateException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }
+    }
+
+    private class FragmentAdapter extends FragmentStatePagerAdapter{
+
+        public FragmentAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position){
+                case 0:
+                    return new newGallery();
+                case 3:
+                    return new MapFragment();
+                case 2:
+                    return new Camera2();
+                case 1:
+                    return new Upload();
+                default:
+                    return new Settings();
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 5;
         }
     }
 }
