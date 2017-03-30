@@ -61,7 +61,7 @@ script:
  - bundle install
  - bundle exec danger
  - chmod +x upload_apk_forks.sh
- 
+
 after_success:
  - bash <(curl -s https://codecov.io/bash)
  - 'if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./upload-apk.sh; fi'
