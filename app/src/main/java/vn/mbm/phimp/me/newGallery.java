@@ -161,7 +161,7 @@ public class newGallery extends Fragment {
     static int current_page;
     private static Cursor cursor;
     private static int columnIndex;
-    static int check_local = 0;
+    static boolean check_local = true;
     public static ProgressDialog pro_gress;
     //ImageButton btnMap,btnBluetoothShare;
     public static int update_number = 0;
@@ -485,17 +485,21 @@ public class newGallery extends Fragment {
                 this.onResume();
                 return true;
             case R.id.menu_gallery_load_more:
-                if (turnsNeeded > 1) {
-                    turnsNeeded -= 1;
-                    turnsDone += 1;
-                    localImagesPerTurn += PER_TURN;
-                    resumeLocalPhoto();
-                } else {
-                    localImagesPerTurn += loadLeft;
-                    turnsNeeded -= 1;
-                    turnsDone += 1;
-                    resumeLocalPhoto();
-                    galleryMenu.findItem(R.id.menu_gallery_load_more).setVisible(false);
+                if (check_local) { ///now only local images display code has been written.
+                                    ///so turnsNeeded is getting calculated only from number of local images.
+                                    ///when code for loading images from other sources has been written this can be edited accordingly
+                    if (turnsNeeded > 1) {
+                        turnsNeeded -= 1;
+                        turnsDone += 1;
+                        localImagesPerTurn += PER_TURN;
+                        resumeLocalPhoto();
+                    } else {
+                        localImagesPerTurn += loadLeft;
+                        turnsNeeded -= 1;
+                        turnsDone += 1;
+                        resumeLocalPhoto();
+                        galleryMenu.findItem(R.id.menu_gallery_load_more).setVisible(false);
+                    }
                 }
                 return true;
             case R.id.menu_gallery_delete_selected:
@@ -3428,9 +3432,9 @@ public class newGallery extends Fragment {
             //String[] str = null;
                 //cachetask.execute(str);
                 if(PhimpMe.FEEDS_LOCAL_GALLERY){
-                  Log.d("newGallery","resume load local gallery, number photo : "+number_resume_download);
+                  Log.e("newGallery","resume load local gallery, number photo : "+number_resume_download);
                 linear_main.removeView(ln_local_gallery);    			
-                check_local = 0;
+                check_local = true;
                 PhimpMe.filepath.clear();
                 array_ID.clear();
                 localImageList.clear();
@@ -3439,7 +3443,9 @@ public class newGallery extends Fragment {
                 localImagesPerTurn = PER_TURN;
                 turnsDone = 0;
                 resumeLocalPhoto();
-              }  
+              }  else {
+                    check_local = false;
+                }
                 //download photo
                 try{
                 //previous tab is setting
@@ -3457,7 +3463,7 @@ public class newGallery extends Fragment {
 	public static void update(int num){
 		Log.e("Gallery","Update");
 		linear_main.removeView(ln_local_gallery);    			
-		check_local = 0;
+		check_local = true;
 		PhimpMe.filepath.clear();
 		array_ID.clear();
 	}
@@ -3705,7 +3711,7 @@ public class newGallery extends Fragment {
 
 	public static void resumeLocalPhoto(){
 		// check_local = 0 will flag that this is local images
-		if (check_local == 0) {
+		if (check_local) {
 			// Keep the localPhotos frame and hide the other
 			//localPhotosScroll.setVisibility(View.GONE);
 			localPhotosFrame.setVisibility(View.VISIBLE);
@@ -3995,7 +4001,7 @@ public class newGallery extends Fragment {
 							.setEnabled(false);
 					
 				}			
-				check_local = 1;
+				check_local = false;
 	            d.dismiss();         
 	        }
 	    }, time); 
@@ -4007,7 +4013,7 @@ public class newGallery extends Fragment {
 	        	clearAllPhoto();
 				if(PhimpMe.FEEDS_LOCAL_GALLERY==true){						
 					linear_main.removeView(ln_local_gallery);    			
-        			check_local = 0;
+        			check_local = false;
         			PhimpMe.filepath.clear();
         			array_ID.clear();
     				number_resume_download=6;
