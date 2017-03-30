@@ -6,17 +6,17 @@
         android:title="@string/gallery" />
     <!--TODO: Put this back at some point-->
     <item
-        android:id="@+id/tab_upload"
-        android:icon="@drawable/ic_upload"
-        android:title="@string/upload" />
+        android:id="@+id/tab_map"
+        android:icon="@drawable/ic_map"
+        android:title="Map" />
     <item
         android:id="@+id/tab_camera"
         android:icon="@drawable/ic_camera"
         android:title="@string/camera" />
     <item
-        android:id="@+id/tab_map"
-        android:icon="@drawable/ic_map"
-        android:title="Map" />
+        android:id="@+id/tab_upload"
+        android:icon="@drawable/ic_upload"
+        android:title="@string/upload" />
     <item
         android:id="@+id/tab_settings"
         android:icon="@drawable/ic_settings"
