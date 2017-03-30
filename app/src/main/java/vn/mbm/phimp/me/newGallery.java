@@ -473,9 +473,11 @@ public class newGallery extends Fragment {
         MenuItem deleteMenuItem = menu.findItem(R.id.menu_gallery_delete_selected);
         MenuItem deselectMenuItem = menu.findItem(R.id.menu_gallery_deselect_selected);
         MenuItem loadMoreMenuItem = menu.findItem(R.id.menu_gallery_load_more);
+        MenuItem selectAllMenuItem = menu.findItem(R.id.menu_gallery_select_all);
         deselectMenuItem.setVisible(!deletableList.isEmpty());
         deleteMenuItem.setVisible(!deletableList.isEmpty());
         loadMoreMenuItem.setVisible(turnsNeeded > 1);
+        selectAllMenuItem.setVisible(!deletableList.isEmpty());
     }
 
     @Override
@@ -513,6 +515,19 @@ public class newGallery extends Fragment {
                         });
                 // Create the AlertDialog object and show it
                 deleteAlert.create().show();
+            case R.id.menu_gallery_select_all:
+                photosAdapter.selectAllImages();
+                int delCount = deletableList.size();
+                String newTitle;
+                if (delCount > 0) {
+                    newTitle = delCount + (delCount == 1 ? " image" : " images") + " selected";
+                } else {
+                    newTitle = getResources().getString(R.string.application_title);
+                }
+                getActivity().setTitle(newTitle);
+                getActivity().invalidateOptionsMenu();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -3551,22 +3566,30 @@ public class newGallery extends Fragment {
 	public class PhotosAdapter extends BaseAdapter {
 
 		private LayoutInflater mInflater;
-		public ArrayList<ImageItem> images = new ArrayList<>();
 
 		// Constructor
 		PhotosAdapter() {
 			mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			this.images = localImageList;
 			PhimpMe.cache = CacheStore.getInstance();
 		}
 
 		public int getCount() {
-			return images.size();
+			return localImageList.size();
 		}
 
 		public Object getItem(int position) {
 			return position;
 		}
+
+        public void selectAllImages()
+        {
+            for(ImageItem imageItem : localImageList)
+            {
+                imageItem.isSelected = true;
+                deletableList.add(imageItem.path);
+            }
+            notifyDataSetChanged();
+        }
 
 		public long getItemId(int position) {
 			return position;
