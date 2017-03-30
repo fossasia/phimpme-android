@@ -414,6 +414,7 @@
     <string name="delete_images">Are you sure you want to delete these images?</string>
     <string name="menu_title_delete">Delete</string>
     <string name="menu_title_deselect">Deselect all</string>
+    <string name="menu_title_select">Select all</string>
     <string name="image_delete_success">Image deleted!</string>
     <string name="images_delete_success">Images deleted!</string>
     <string name="image_delete_fail">Image not found!</string>
