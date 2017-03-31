@@ -48,15 +48,14 @@ We have the following branches
      <td><img src="https://cloud.githubusercontent.com/assets/14369357/24083573/876f72ec-0cff-11e7-99b0-32431df34b29.png"></td>
      <td><img src="https://cloud.githubusercontent.com/assets/14369357/24083579/b15bd550-0cff-11e7-96e8-3b628e25aba5.png"></td>
      <td><img src="https://cloud.githubusercontent.com/assets/14369357/24083571/7dfef5e8-0cff-11e7-8e6f-5ed041919388.png"></td>
+     <td><img src="https://cloud.githubusercontent.com/assets/22375731/24555932/721cc156-1650-11e7-93f1-2a774b860d1f.png"></td>
+     <td><img src="https://raw.githubusercontent.com/heysadboy/phimpme-android/development/docs/screenshots/camera1.png"></td>
+     <td><img src="https://raw.githubusercontent.com/heysadboy/phimpme-android/development/docs/screenshots/map.png">
+</td>
     </tr>
   </table>
   
-   <table>
-    <tr>
-     <td><img src="https://raw.githubusercontent.com/heysadboy/phimpme-android/development/docs/screenshots/camera1.png"></td>
-     <td><img src="https://raw.githubusercontent.com/heysadboy/phimpme-android/development/docs/screenshots/map.png"></td>
-    </tr>
-  </table>
+   
   
 ## Features
 **Feature**|**Description**|**Status**
