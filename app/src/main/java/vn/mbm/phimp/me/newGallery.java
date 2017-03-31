@@ -3451,7 +3451,7 @@ public class newGallery extends Fragment {
             localPhotosGrid.setOnScrollListener(new AbsListView.OnScrollListener() {
                 @Override
                 public void onScrollStateChanged(AbsListView view, int scrollState) {
-
+                    return;
                 }
 
                 @Override
