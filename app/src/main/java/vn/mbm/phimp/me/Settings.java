@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -159,7 +160,8 @@ public class Settings extends Fragment
 	private File tmp_folder;
 	private int error_count = 0;
 	private ProgressDialog pro_gress;
-    	private AlertDialog maxSizeDialog = null;
+	private AlertDialog maxSizeDialog = null;
+	private Toolbar settingsToolBar;
 
 
     @Nullable
@@ -169,6 +171,8 @@ public class Settings extends Fragment
 		View decorView = getActivity().getWindow().getDecorView();
 		int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
 		decorView.setSystemUiVisibility(uiOptions);
+
+
 
 		return inflater.inflate(R.layout.settings, container, false);
 	}
@@ -194,6 +198,9 @@ public class Settings extends Fragment
 		//initial amount field
 		//donateAmount = (EditText) getView().findViewById(R.id.donateAmount);
 
+
+		settingsToolBar = (Toolbar) getView().findViewById(R.id.toolbar_settings);
+		settingsToolBar.setTitle("Settings");
 
 		lytAccounts = (LinearLayout) getView().findViewById(R.id.linearSettingsAccounts);
 		noaccounttv = (TextView) getView().findViewById(R.id.noaccounttv);

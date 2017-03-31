@@ -23,6 +23,7 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
@@ -226,6 +227,8 @@ public class Upload extends android.support.v4.app.Fragment {
 
     ProgressDialog gpsloading;
 
+    private Toolbar uploadToolBar;
+
     long totalSize;
 
     @Nullable
@@ -236,6 +239,8 @@ public class Upload extends android.support.v4.app.Fragment {
         int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
         decorView.setSystemUiVisibility(uiOptions);
 
+
+
         return inflater.inflate(R.layout.upload, container, false);
     }
 
@@ -245,6 +250,10 @@ public class Upload extends android.support.v4.app.Fragment {
         color = getActivity().getResources().getColor(R.color.icongrey);
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
+
+
+        uploadToolBar = (Toolbar) getView().findViewById(R.id.toolbar_upload);
+        uploadToolBar.setTitle("Upload Photos");
 
         final ShareDialog shareDialog = new ShareDialog(getActivity());
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
