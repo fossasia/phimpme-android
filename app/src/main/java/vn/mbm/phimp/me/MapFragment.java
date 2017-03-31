@@ -1,9 +1,13 @@
 package vn.mbm.phimp.me;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -11,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,9 +38,11 @@ import java.util.ArrayList;
  */
 
 public class MapFragment extends Fragment {
+    public static final int NETWORK_REQUEST_CODE = 1;
     SupportMapFragment mSupportMapFragment;
     ArrayList<String> images;
     ProgressDialog progressDialog ;
+    AlertDialog alertDialog = null;
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View decorView = getActivity().getWindow().getDecorView();
@@ -98,6 +105,11 @@ public class MapFragment extends Fragment {
                             progressDialog = new ProgressDialog(getActivity());
                             progressDialog.setMessage("Loading...");
                             progressDialog.show();
+
+                            WifiManager wifi = (WifiManager)getContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                            if (!wifi.isWifiEnabled()){
+                                showNetworkDialog();
+                            }
                         }
 
                         @Override
@@ -166,6 +178,42 @@ public class MapFragment extends Fragment {
                     });
                 }
             });
+        }
+    }
+
+    public void showNetworkDialog() {
+        progressDialog.hide();
+
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+        dialogBuilder.setTitle(getContext().getString(R.string.net_unavailable))
+                .setMessage(getContext().getString(R.string.turn_on))
+                .setPositiveButton(getContext().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent setNetworkIntent = new Intent("android.settings.SETTINGS");
+                        startActivityForResult(setNetworkIntent, NETWORK_REQUEST_CODE);
+                    }
+                })
+                .setNeutralButton(getContext().getString(R.string.skip), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        alertDialog.dismiss();
+                    }
+                });
+        alertDialog = dialogBuilder.create();
+        alertDialog.show();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == NETWORK_REQUEST_CODE)
+        {
+            getFragmentManager()
+                    .beginTransaction()
+                    .detach(MapFragment.this)
+                    .attach(MapFragment.this)
+                    .commit();
         }
     }
 }

@@ -82,6 +82,7 @@
     <string name="deletephoto">Delete downloaded photos</string>
     <string name="ask_delete_photo">Do you want to delete photos downloaded? It will delete all photo of PhimpMe application</string>
     <string name="ok">OK</string>
+    <string name="skip">SKIP</string>
     <string name="feed_url">Please enter Rss Feed URL</string>
     <string name="myfeed">My Feed Photos</string>
     <string name="feedurl">Enter Feed Url</string>
@@ -516,6 +517,8 @@
     <!-- AlertDialog -->
     <string name="AlertMessage">Are you sure ?</string>
     <string name="AlertTitle">Delete Images</string>
+    <string name="net_unavailable">Network not available</string>
+    <string name="turn_on">Turn on WiFi in Settings</string>
 
     <!-- HTTP Authentication -->
     <string name="httpuser">HTTP Username (optional):</string>
