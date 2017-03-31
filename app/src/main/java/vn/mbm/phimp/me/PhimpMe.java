@@ -34,10 +34,8 @@ import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
 import android.widget.TabHost.TabSpec;
 import android.widget.Toast;
-
 import com.paypal.android.MEP.PayPal;
 import com.vistrav.ask.Ask;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -46,7 +44,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import vn.mbm.phimp.me.database.AccountDBAdapter;
 import vn.mbm.phimp.me.database.TumblrDBAdapter;
 import vn.mbm.phimp.me.gallery.PhimpMeGallery;
