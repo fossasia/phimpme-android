@@ -54,6 +54,12 @@ import java.util.List;
 import vn.mbm.phimp.me.gallery3d.media.CropImage;
 import vn.mbm.phimp.me.utils.Utils;
 
+import static android.hardware.Camera.Parameters.FLASH_MODE_AUTO;
+import static android.hardware.Camera.Parameters.FLASH_MODE_ON;
+import static vn.mbm.phimp.me.Camera2.FLASH_OFF;
+import static vn.mbm.phimp.me.Camera2.FLASH_ON;
+import static vn.mbm.phimp.me.Camera2.state;
+
 public class Camera2 extends android.support.v4.app.Fragment {
 	private static final String TAG = "Camera";
 	static Context ctx;
@@ -84,12 +90,12 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	private final int SW = 225;
 	private final int NW = 315;
 	// Flag for flasher
-	int state = 0;
+	public static int state = 0;
 	int camOrientation = 0;
 	// States for Flash
-	private final int FLASH_ON = 0;
-	private final int FLASH_OFF = 1;
-	private final int FLASH_AUTO = 2;
+	public static final int FLASH_ON = 0;
+	public static final int FLASH_OFF = 1;
+	public static final int FLASH_AUTO = 2;
 
 	private boolean FLAG_CAPTURE_IN_PROGRESS = false;
 
@@ -889,7 +895,17 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
 		// the preview.
 		Log.e("Surface","Change");
 		Camera.Parameters parameters = mCamera.getParameters();
-        	parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
+		switch (state) {
+			case FLASH_ON:
+				parameters.setFlashMode(FLASH_MODE_ON);
+				break;
+			case FLASH_OFF:
+				parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+				break;
+			default:
+				parameters.setFlashMode(FLASH_MODE_AUTO);
+				break;
+		}
 
 		try{
 			mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, w, h);
