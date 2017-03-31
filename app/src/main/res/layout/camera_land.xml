@@ -39,6 +39,17 @@
                 android:rotation="270"
                 android:src="@drawable/flash_auto" />
 
+
+            <ImageButton
+                android:id="@+id/grid_overlay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="fitCenter"
+                android:background="@android:color/transparent"
+                android:layout_gravity="center_horizontal|center"
+                android:layout_marginTop="10dp"
+                android:rotation="270" />
+
         </LinearLayout>
 
         <ImageButton

@@ -7,10 +7,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
@@ -28,6 +32,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -54,6 +59,8 @@ import java.util.List;
 import vn.mbm.phimp.me.gallery3d.media.CropImage;
 import vn.mbm.phimp.me.utils.Utils;
 
+import static vn.mbm.phimp.me.Preview.GRID_ENABLED;
+
 public class Camera2 extends android.support.v4.app.Fragment {
 	private static final String TAG = "Camera";
 	static Context ctx;
@@ -63,7 +70,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	OrientationEventListener mOrientation;
 	//public static Preview preview1;
 	public static ImageButton buttonClick;
-	ImageButton flash;
+	ImageButton flash,grid_overlay_button;
 	ImageButton camera_switch;
 	FrameLayout frame;
 	public int degrees;
@@ -403,6 +410,25 @@ public class Camera2 extends android.support.v4.app.Fragment {
 				//Log.e("Flash",preview.camera.getParameters().getSupportedFlashModes().get(0));
 			}
 		});
+
+		grid_overlay_button = (ImageButton)view.findViewById(R.id.grid_overlay);
+		grid_overlay_button.setLayoutParams(parmFlash);
+		grid_overlay_button.setImageResource(R.drawable.grid_button);
+		grid_overlay_button.setColorFilter(Color.GRAY);
+		grid_overlay_button.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (!GRID_ENABLED){
+					grid_overlay_button.setColorFilter(Color.WHITE);
+					GRID_ENABLED = true;
+					preview.invalidate();						///onDraw gets called when view refreshes
+				}else {
+					grid_overlay_button.setColorFilter(Color.GRAY);
+					GRID_ENABLED = false;
+					preview.invalidate();
+				}
+			}
+		});
 	}
 
 	ShutterCallback shutterCallback = new ShutterCallback() {
@@ -661,7 +687,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
  * support preview sizes at the same aspect ratio as the device's display.
  */
 }
-class Preview extends ViewGroup implements SurfaceHolder.Callback {
+class Preview extends SurfaceView implements SurfaceHolder.Callback {
 	private final String TAG = "Preview";
 
 	SurfaceView mSurfaceView;
@@ -671,14 +697,17 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
 	List<String> mSupportFocus;
 	Camera mCamera;
 	private static  final int FOCUS_AREA_SIZE= 300;
+	Paint paint;
+	public static boolean GRID_ENABLED = false;
 
 	@SuppressWarnings("deprecation")
 	Preview(Context context) {
 		super(context);
 
-		mSurfaceView = new SurfaceView(context);
-		addView(mSurfaceView);
+		mSurfaceView = this;//new SurfaceView(context);
+		//addView(mSurfaceView);
         //Set Touch Listener
+		this.setWillNotDraw(false);
 		mSurfaceView.setOnTouchListener(new OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
@@ -688,6 +717,14 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
                         return true;
                     }
                  });
+
+
+		//setting paint values for drawing grid
+		paint = new Paint();
+		paint.setAntiAlias(true);
+		paint.setStrokeWidth(3);
+		paint.setStyle(Paint.Style.STROKE);
+		paint.setColor(Color.argb(255, 255, 255, 255));
 
 		// Install a SurfaceHolder.Callback so we get notified when the
 		// underlying surface is created and destroyed.
@@ -705,6 +742,23 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
 			requestLayout();
 		}
 	}
+
+
+	@Override
+	protected void onDraw(Canvas canvas)
+	{
+		if (GRID_ENABLED) {
+			DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
+			int screenWidth = metrics.widthPixels;
+			int screenHeight = metrics.heightPixels;
+
+			canvas.drawLine(2 * (screenWidth / 3), 0, 2 * (screenWidth / 3), screenHeight, paint);
+			canvas.drawLine((screenWidth / 3), 0, (screenWidth / 3), screenHeight, paint);
+			canvas.drawLine(0, 2 * (screenHeight / 3), screenWidth, 2 * (screenHeight / 3), paint);
+			canvas.drawLine(0, (screenHeight / 3), screenWidth, (screenHeight / 3), paint);
+		}
+	}
+
 
 	//Check if tap to focus supported and Set the focus on the Tapped Area
 	private void focusOnTouch(MotionEvent event) {
@@ -792,8 +846,8 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
 
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
-		if (changed && getChildCount() > 0) {
-			final View child = getChildAt(0);
+		if (changed && this.mSurfaceView != null) {
+			final View child = this.mSurfaceView;
 
 			final int width = r - l;
 			final int height = b - t;
