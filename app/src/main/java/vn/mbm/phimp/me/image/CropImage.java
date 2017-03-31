@@ -27,11 +27,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.StatFs;
 import android.provider.MediaStore;
-import android.renderscript.Allocation;
-import android.renderscript.Element;
-import android.renderscript.RenderScript;
-import android.renderscript.ScriptIntrinsicBlur;
-import android.renderscript.ScriptIntrinsicConvolve3x3;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -133,7 +128,6 @@ public class CropImage extends MonitoredActivity
     		setContentView(R.layout.cropimage);
     		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);		
     		btnSave=(Button)findViewById(R.id.save);
-    		ImageButton btnOriginal=(ImageButton)findViewById(R.id.btnOriginalImage);
     		
     		txtPhotoTitle = (EditText) findViewById(R.id.txtUploadPhotoTitle);
     		
@@ -464,7 +458,7 @@ public class CropImage extends MonitoredActivity
 			/*
 			 * Danh - Add event for button Negative image effect
 			 */
-			findViewById(R.id.btnNagative).setOnClickListener(
+			findViewById(R.id.btnNegative).setOnClickListener(
 					new View.OnClickListener() {
 					    public void onClick(View v) 
 					    {
@@ -490,37 +484,6 @@ public class CropImage extends MonitoredActivity
 			/*
 			 * Danh - Add event for button Negative image effect - End
 			 */
-			/*
-			 * Danh - Add event for button Original image effect
-			 */
-			btnOriginal.setOnClickListener(
-					new View.OnClickListener() {
-					    public void onClick(View v) 
-					    {
-					    	check=false;
-					    	try{
-
-								doRotate(mImageView, 0, 0);
-								fromDegree = 0;
-								toDegree = 90;
-								mImageView.setImageBitmap(mBitmap);
-								modifiedBitmap = flippedImaged = mBitmap;
-
-					    	}catch(OutOfMemoryError o){
-
-								doRotate(mImageView, 0, 0);
-								fromDegree = 0;
-								toDegree = 90;
-								mImageView.setImageBitmap(mBitmapResize);
-								modifiedBitmap = flippedImaged = mBitmapResize;
-					    	}
-					    	
-					    }
-					});
-			/*
-			 * Danh - Add event for button Original image effect - End
-			 */
-			
 			btnSave.setOnClickListener(
 					new View.OnClickListener() {
 					    public void onClick(View v)
