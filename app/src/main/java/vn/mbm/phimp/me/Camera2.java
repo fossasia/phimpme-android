@@ -714,13 +714,13 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
         //Calculate the Focus Area
         private Rect calculateFocusArea(float x, float y) {
 			//getting screen size
-			screen_width = Utils.getScreenWidth(getContext());
-			screen_height = Utils.getScreenHeight(getContext());
+		screen_width = Utils.getScreenWidth(getContext());
+		screen_height = Utils.getScreenHeight(getContext());
 
-            int left = clamp(Float.valueOf((x / mSurfaceView.getWidth()) * screen_height - screen_width).intValue(), FOCUS_AREA_SIZE);
-            int top = clamp(Float.valueOf((y / mSurfaceView.getHeight()) * screen_height - screen_width).intValue(), FOCUS_AREA_SIZE);
+            	int left = clamp(Float.valueOf((x / mSurfaceView.getWidth()) * screen_height - screen_width).intValue(), FOCUS_AREA_SIZE);
+            	int top = clamp(Float.valueOf((y / mSurfaceView.getHeight()) * screen_height - screen_width).intValue(), FOCUS_AREA_SIZE);
 
-            return new Rect(left, top, left + FOCUS_AREA_SIZE, top + FOCUS_AREA_SIZE);
+            	return new Rect(left, top, left + FOCUS_AREA_SIZE, top + FOCUS_AREA_SIZE);
         }
 
         private int clamp(int touchCoordinateInCameraReper, int focusAreaSize) {
