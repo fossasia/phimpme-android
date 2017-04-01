@@ -60,6 +60,7 @@ import vn.mbm.phimp.me.database.TumblrItem;
 import vn.mbm.phimp.me.database.TwitterItem;
 import vn.mbm.phimp.me.database.VkItem;
 import vn.mbm.phimp.me.database.WordpressItem;
+import vn.mbm.phimp.me.folderchooser.FolderChooserActivity;
 import vn.mbm.phimp.me.gallery3d.media.StringTexture;
 import vn.mbm.phimp.me.services.DeviantArtService;
 import vn.mbm.phimp.me.services.DrupalServices;
@@ -76,6 +77,7 @@ import vn.mbm.phimp.me.services.TumblrServices;
 import vn.mbm.phimp.me.services.TwitterServices;
 import vn.mbm.phimp.me.services.VKServices;
 import vn.mbm.phimp.me.utils.Commons;
+import vn.mbm.phimp.me.utils.FolderChooserPrefSettings;
 import vn.mbm.phimp.me.utils.PrefManager;
 import vn.mbm.phimp.me.utils.RSSUtil;
 
@@ -127,6 +129,7 @@ public class Settings extends Fragment
 	private ImageButton btnLangDE;
 	private ImageButton btnLangVI;
 	private ImageView btnSettingsMaxFilesize;
+    private ImageView btnSettingsWhiteListFolders;
 	private ImageButton btnSettingsMaxDisplayPhotos;
 	private Button donatePaypal;
 	private EditText donateAmount;
@@ -298,18 +301,15 @@ public class Settings extends Fragment
 			public void onClick(View v) {
                 final CharSequence[] sizes = {"2 MB", "3 MB" , "5 MB", "10 MB"};
 				// Creating and Building the Dialog
-                final SharedPreferences settings = ctx.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-                int selectedSize = settings.getInt("radio_button_selected", 2);
-                Log.d("selected size", String.valueOf(selectedSize));
+				int selectedSize = FolderChooserPrefSettings.getInstance().getMaxFileRadioButton();
+				Log.d("selected size", String.valueOf(selectedSize));
                 AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
                 builder.setTitle(getString(R.string.select_max_file_size));
 				builder.setSingleChoiceItems(sizes, selectedSize, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int item) {
-                        SharedPreferences.Editor editor = settings.edit();
                         PhimpMe.MAX_FILESIZE_DOWNLOAD = Integer.parseInt(sizes[item].subSequence(0, sizes[item].toString().indexOf(" ")).toString());
-                        editor.putInt("max_filesize_download", PhimpMe.MAX_FILESIZE_DOWNLOAD);
-                        editor.putInt("radio_button_selected", item);
-                        editor.apply();
+						FolderChooserPrefSettings.getInstance().setMaxFileSize(PhimpMe.MAX_FILESIZE_DOWNLOAD);
+						FolderChooserPrefSettings.getInstance().setMaxFileRadioButton(item);
                         Log.d("item selected", String.valueOf(item));
                         txtMaxPhotoSize.setText(PhimpMe.MAX_FILESIZE_DOWNLOAD + "");
                         maxSizeDialog.dismiss();
@@ -319,6 +319,16 @@ public class Settings extends Fragment
 				maxSizeDialog.show();
 			}
 		} );
+
+        btnSettingsWhiteListFolders = (ImageView) getView().findViewById(R.id.imgbtnSettingsWhitelistFolders);
+        btnSettingsMaxFilesize.setColorFilter(color);
+        btnSettingsWhiteListFolders.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ctx, FolderChooserActivity.class);
+                startActivity(intent);
+            }
+        });
 		/*
 		 * Danh - Add Active google admod
 		 */
