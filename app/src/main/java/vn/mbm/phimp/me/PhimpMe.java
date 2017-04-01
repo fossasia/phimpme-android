@@ -49,7 +49,7 @@ import java.util.List;
 
 import vn.mbm.phimp.me.database.AccountDBAdapter;
 import vn.mbm.phimp.me.database.TumblrDBAdapter;
-import vn.mbm.phimp.me.folderchooser.WhatsappMedia;
+import vn.mbm.phimp.me.folderchooser.PhoneMedia;
 import vn.mbm.phimp.me.gallery.PhimpMeGallery;
 import vn.mbm.phimp.me.utils.Commons;
 import vn.mbm.phimp.me.utils.FolderChooserPrefSettings;
@@ -914,7 +914,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
 //
 //        }
 
-        List<File> files = WhatsappMedia.getUnanalysedFiles();
+        List<File> files = PhoneMedia.getUnanalysedFiles();
         int c = 0;
         for (File file : files)
         {
