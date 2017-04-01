@@ -22,7 +22,7 @@
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
             android:text="WhatsApp"
-            android:textColor="@android:color/black"
+            android:textColor="@color/icongrey"
             android:textSize="15sp" />
 
         <ImageView
