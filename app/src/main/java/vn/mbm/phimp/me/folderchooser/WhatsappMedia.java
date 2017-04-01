@@ -23,10 +23,10 @@ import vn.mbm.phimp.me.utils.Utils;
  * Created by rohanagarwal94 on 1/4/17.
  */
 
-public class WhatsappMedia {
+public class PhoneMedia {
     private static final Set<String> whitelistedPaths = FolderChooserPrefSettings.getInstance().getWhitelistedPaths();
 
-    private WhatsappMedia() {
+    private PhoneMedia() {
     }
 
     public static List<File> getUnanalysedFiles() {
