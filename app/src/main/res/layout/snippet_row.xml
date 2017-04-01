@@ -23,7 +23,7 @@
             android:gravity="center_vertical"
             android:text="WhatsApp"
             android:textColor="@android:color/black"
-            android:textSize="15dp" />
+            android:textSize="15sp" />
 
         <ImageView
             android:id="@+id/add_folder"

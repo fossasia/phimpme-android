@@ -73,6 +73,10 @@ public class Utils {
         }
     }
 
+    public static int compare(long lhs, long rhs) {
+        return lhs < rhs ? -1 : (lhs == rhs ? 0 : 1);
+    }
+
     public static boolean hasCameraFlashHardware(Context context) {
         if (context.getPackageManager().hasSystemFeature(
                 PackageManager.FEATURE_CAMERA_FLASH)) {
