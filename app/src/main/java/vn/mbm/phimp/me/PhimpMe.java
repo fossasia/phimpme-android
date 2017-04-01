@@ -11,6 +11,7 @@ import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.gesture.GestureOverlayView;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -44,10 +45,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
 import vn.mbm.phimp.me.database.AccountDBAdapter;
 import vn.mbm.phimp.me.database.TumblrDBAdapter;
+import vn.mbm.phimp.me.folderchooser.WhatsappMedia;
 import vn.mbm.phimp.me.gallery.PhimpMeGallery;
 import vn.mbm.phimp.me.utils.Commons;
+import vn.mbm.phimp.me.utils.FolderChooserPrefSettings;
 import vn.mbm.phimp.me.utils.RSSPhotoItem;
 import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
 
@@ -495,7 +500,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
          */
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         MAX_DISPLAY_PHOTOS = settings.getInt("gallery_max_display_photos", getResources().getInteger(R.integer.gallery_max_display_photos));
-        MAX_FILESIZE_DOWNLOAD = settings.getInt("max_filesize_download", getResources().getInteger(R.integer.max_filesize_download));
+        MAX_FILESIZE_DOWNLOAD = FolderChooserPrefSettings.getInstance().getMaxFileSize();
         FEEDS_LOCAL_GALLERY = settings.getBoolean(FEEDS_LOCAL_GALLERY_TAG, true);
         /*FEEDS_LIST_FLICKR_PUBLIC = settings.getBoolean(FEEDS_LIST_FLICKR_PUBLIC_TAG, false);
         FEEDS_LIST_FLICKR_RECENT = settings.getBoolean(FEEDS_LIST_FLICKR_RECENT_TAG, false);       
@@ -728,7 +733,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt("gallery_max_display_photos", MAX_DISPLAY_PHOTOS);
-        editor.putInt("max_filesize_download", MAX_FILESIZE_DOWNLOAD);
+        FolderChooserPrefSettings.getInstance().setMaxFileSize(MAX_FILESIZE_DOWNLOAD);
         editor.putBoolean(FEEDS_LIST_YAHOO_NEWS_TAG, FEEDS_LIST_YAHOO_NEWS);
         editor.putBoolean(FEEDS_LIST_FLICKR_PUBLIC_TAG, FEEDS_LIST_FLICKR_PUBLIC);
         editor.putBoolean(FEEDS_LIST_FLICKR_RECENT_TAG, FEEDS_LIST_FLICKR_RECENT);
@@ -857,55 +862,76 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     }*/
 
     public void initialize() {
-        int id;
-        final String[] columns = {MediaStore.Images.Thumbnails._ID};
-        final String[] data = {MediaStore.Images.Media.DATA};
-        final String orderBy = MediaStore.Images.Media._ID;
-        Cursor pathcursor = this.getContentResolver().query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                data,
-                null,
-                null,
-                orderBy
-        );
-        if (pathcursor != null) {
-            int path_column_index = pathcursor
-                    .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            int count = pathcursor.getCount();
-            int c = 0;
-            for (int i = 0; i < count; i++) {
+//        int id;
+//        final String[] columns = {MediaStore.Images.Thumbnails._ID};
+//        final String[] data = {MediaStore.Images.Media.DATA};
+//        final String orderBy = MediaStore.Images.Media._ID;
+//        Cursor pathcursor = this.getContentResolver().query(
+//                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+//                data,
+//                null,
+//                null,
+//                orderBy
+//        );
+//        if (pathcursor != null) {
+//            int path_column_index = pathcursor
+//                    .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+//            int count = pathcursor.getCount();
+//            int c = 0;
+//            for (int i = 0; i < count; i++) {
+//
+//                pathcursor.moveToPosition(i);
+//                String path = pathcursor.getString(path_column_index);
+//                boolean check = cache.check(path);
+//                if (check) {
+//                    @SuppressWarnings("unused")
+//                    int index = Integer.valueOf(PhimpMe.cache.getCacheId(path));
+//                    @SuppressWarnings("unused")
+//                    Bitmap bmp = PhimpMe.cache.getCachePath(path);
+//
+//                } else if (c <= 20) {
+//                    Cursor cursor = this.getContentResolver().query(
+//                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+//                            columns,
+//                            MediaStore.Images.Media.DATA + " = " + "\"" + path + "\"",
+//                            null,
+//                            MediaStore.Images.Media._ID
+//                    );
+//                    if (cursor != null && cursor.getCount() > 0) {
+//                        cursor.moveToPosition(0);
+//                        id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
+//                        Bitmap bmp = MediaStore.Images.Thumbnails.getThumbnail(
+//                                getApplicationContext().getContentResolver(), id,
+//                                MediaStore.Images.Thumbnails.MICRO_KIND, null);
+//                        PhimpMe.cache.saveCacheFile(path, bmp, id);
+//                    } else id = -1;
+//
+//                    c++;
+//                }
+//
+//            }
+//            newGallery.update_number++;
+//
+//        }
 
-                pathcursor.moveToPosition(i);
-                String path = pathcursor.getString(path_column_index);
-                boolean check = cache.check(path);
-                if (check) {
-                    @SuppressWarnings("unused")
-                    int index = Integer.valueOf(PhimpMe.cache.getCacheId(path));
-                    @SuppressWarnings("unused")
-                    Bitmap bmp = PhimpMe.cache.getCachePath(path);
-
-                } else if (c <= 20) {
-                    Cursor cursor = this.getContentResolver().query(
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                            columns,
-                            MediaStore.Images.Media.DATA + " = " + "\"" + path + "\"",
-                            null,
-                            MediaStore.Images.Media._ID
-                    );
-                    if (cursor != null && cursor.getCount() > 0) {
-                        cursor.moveToPosition(0);
-                        id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
-                        Bitmap bmp = MediaStore.Images.Thumbnails.getThumbnail(
-                                getApplicationContext().getContentResolver(), id,
-                                MediaStore.Images.Thumbnails.MICRO_KIND, null);
-                        PhimpMe.cache.saveCacheFile(path, bmp, id);
-                    } else id = -1;
-
-                    c++;
-                }
-
+        List<File> files = WhatsappMedia.getUnanalysedFiles();
+        int c = 0;
+        for (File file : files)
+        {
+            String filePath = file.getPath();
+            boolean check = cache.check(filePath);
+            if (check) {
+                @SuppressWarnings("unused")
+                int index = Integer.valueOf(PhimpMe.cache.getCacheId(filePath));
+                @SuppressWarnings("unused")
+                Bitmap bmp = PhimpMe.cache.getCachePath(filePath);
+                Log.d("index", String.valueOf(index));
+            } else if (c <= 20) {
+                Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+                bitmap = Bitmap.createScaledBitmap(bitmap, 300, 300, false);
+                PhimpMe.cache.saveCacheFile(filePath, bitmap);
+                c++;
             }
-            newGallery.update_number++;
         }
     }
 

@@ -321,7 +321,7 @@ public class Settings extends Fragment
 		} );
 
         btnSettingsWhiteListFolders = (ImageView) getView().findViewById(R.id.imgbtnSettingsWhitelistFolders);
-        btnSettingsMaxFilesize.setColorFilter(color);
+        btnSettingsWhiteListFolders.setColorFilter(color);
         btnSettingsWhiteListFolders.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.io.File;
@@ -24,12 +25,14 @@ public class FolderChooserActivity extends AppCompatActivity implements IFolderC
     private Set<String> whitelistedPaths;
     private WhitelistedFolderListAdapter whitelistedFolderListAdapter;
     private ViewPager viewPager;
+    private ImageView backButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_folder_chooser);
         viewPager = (ViewPager)findViewById(R.id.view_pager);
+        backButton = (ImageView)findViewById(R.id.back_button);
         whitelistedPaths = FolderChooserPrefSettings.getInstance().getWhitelistedPaths();
         WhiteListedFolderAdapter whiteListedFolderAdapter = new WhiteListedFolderAdapter();
         viewPager.setAdapter(whiteListedFolderAdapter);
@@ -39,6 +42,18 @@ public class FolderChooserActivity extends AppCompatActivity implements IFolderC
         if (whitelistedPaths.size() == 0) {
             viewPager.setCurrentItem(1, true);
         }
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (viewPager.getCurrentItem() != 0) {
+                    viewPager.setCurrentItem(0, true);
+                }
+                else {
+                    onBackPressed();
+                }
+            }
+        });
     }
 
     @Override
