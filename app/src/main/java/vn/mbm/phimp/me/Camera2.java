@@ -950,16 +950,12 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		Log.e("Surface","Change");
 		Camera.Parameters parameters = mCamera.getParameters();
 		int state = Camera2.getState();
-		if(state == 1 ){
-			parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-		}
+		if(state == 1 )
+		{ parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF); }
 		else if(state == 2)
-		{
-			parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
-		}
-		else{
-			parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
-		}
+		{ parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO); }
+		else
+		{ parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);	}
 
 		try{
 			mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, w, h);
