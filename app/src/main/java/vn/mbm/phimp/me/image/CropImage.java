@@ -123,22 +123,6 @@ public class CropImage extends MonitoredActivity
 	static String p[] = null;
     private String newpath;
 
-    @Override
-    public void onBackPressed() {
-
-        new AlertDialog.Builder(this)
-		.setTitle(R.string.dialog_title)
-		.setMessage(R.string.dialog_message)
-		.setCancelable(true)
-        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-				CropImage.super.onBackPressed();
-            }
-        }).setNegativeButton(R.string.go_back, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-
-            }}).create().show();
-    }
 
     @Override
     public void onCreate(Bundle icicle) 
@@ -567,6 +551,27 @@ public class CropImage extends MonitoredActivity
     	{
     	}
     }
+
+    @Override
+    public void onBackPressed() {
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.dialog_title)
+                .setMessage(R.string.dialog_message)
+                .setCancelable(true)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        CropImage.super.onBackPressed();
+                    }
+                })
+                .setNegativeButton(R.string.go_back, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }})
+                .create()
+                .show();
+    }
+
     public static void ConvertToOriginal() {
     	try{
 
