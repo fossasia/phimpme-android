@@ -3729,7 +3729,7 @@ public class newGallery extends Fragment {
 		ImageView imageSelector;
 	}
 
-	public static void resumeLocalPhoto(){
+	public void resumeLocalPhoto(){
 		// check_local = 0 will flag that this is local images
 		if (check_local == 0) {
 			// Keep the localPhotos frame and hide the other
