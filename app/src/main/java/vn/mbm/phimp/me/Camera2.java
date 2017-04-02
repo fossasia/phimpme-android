@@ -89,7 +89,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	private final int SW = 225;
 	private final int NW = 315;
 	// Flag for flasher
-	int state = 0;
+	static int state = 0;
 	int camOrientation = 0;
 	// States for Flash
 	private final int FLASH_ON = 0;
@@ -115,6 +115,11 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		super();
 
 	}
+	public static int getState()
+	{
+		return state;
+	}
+
 
 	private boolean inRange(int SubjectValue, int High, int Low) {
 		// In case of a 360
@@ -368,7 +373,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 
 			}
 		});
-		Camera.Parameters parameters = preview.mCamera.getParameters();
+		final Camera.Parameters parameters = preview.mCamera.getParameters();
 		preview.mCamera.setParameters(parameters);
 		LinearLayout linear = (LinearLayout)view.findViewById(R.id.lnCam);
 		linear.bringToFront();
@@ -385,7 +390,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 				try {
 					adjustIconPositions();
 					// Get camera parameters
-					Camera.Parameters parameters = preview.mCamera.getParameters();
+					//Camera.Parameters parameters = preview.mCamera.getParameters();
 					// Switch flash icon
 					switch (state) {
 						case FLASH_ON:
@@ -944,7 +949,17 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		// the preview.
 		Log.e("Surface","Change");
 		Camera.Parameters parameters = mCamera.getParameters();
-        	parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
+		int state = Camera2.getState();
+		if(state == 1 ){
+			parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+		}
+		else if(state == 2)
+		{
+			parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
+		}
+		else{
+			parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
+		}
 
 		try{
 			mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, w, h);
