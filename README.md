@@ -2,6 +2,8 @@
 
 Phimp.me is a Photo App for Android that aims to replace proprietary photo applications. It offers features such as taking photos, adding filters, editing images and uploading them to social networks.
 
+Phimp.me is a Photo App for Android that aims to replace proprietary photo applications. It offers features such as taking photos, adding filters, editing images and uploading them to social networks.
+
 [![Build Status](https://travis-ci.org/fossasia/phimpme-android.svg?branch=master)](https://travis-ci.org/fossasia/phimpme-android)
 [![codecov](https://codecov.io/gh/fossasia/phimpme-android/branch/master/graph/badge.svg)](https://codecov.io/gh/fossasia/phimpme-android)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ad1ba4cbecf04d3baa96a04c9a14d8cc)](https://www.codacy.com/app/mb/phimpme-android?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fossasia/phimpme-android&amp;utm_campaign=Badge_Grade)
@@ -18,6 +20,62 @@ We have the following branches
 	 All development goes on in this branch. If you're making a contribution,
 	 you are supposed to make a pull request to _development_.
 	 Make sure it pass a build check on Travis
+
+	 It is advisable to clone only the development branch using following command:
+	
+	`git clone -b <branch> <remote_repo>`
+
+	Example: 
+
+	`git clone -b my-branch git@github.com:user/myproject.git`
+
+	Alternative (no public key setup needed): 
+
+	`git clone -b my-branch https://git@github.com/username/myproject.git`
+
+	With Git 1.7.10 and later, add --single-branch to prevent fetching of all branches. Example, with development branch:
+	
+	`git clone -b development --single-branch https://github.com/username/phimpme-android.git`
+ 
+ * **master**
+   This contains the stable code. After significant features/bugfixes are accumulated on development, we move it to master.
+ 
+ * **apk**
+   This branch contains automatically generated apk file for testing.
+   
+## Screenshots
+
+  <table>
+    <tr>
+     <td><img src="https://cloud.githubusercontent.com/assets/14369357/24083573/876f72ec-0cff-11e7-99b0-32431df34b29.png"></td>
+     <td><img src="https://cloud.githubusercontent.com/assets/14369357/24083579/b15bd550-0cff-11e7-96e8-3b628e25aba5.png"></td>
+     <td><img src="https://cloud.githubusercontent.com/assets/14369357/24083571/7dfef5e8-0cff-11e7-8e6f-5ed041919388.png"></td>
+     <td><img src="https://cloud.githubusercontent.com/assets/22375731/24555932/721cc156-1650-11e7-93f1-2a774b860d1f.png"></td>
+     <td><img src="https://raw.githubusercontent.com/heysadboy/phimpme-android/development/docs/screenshots/camera1.png"></td>
+     <td><img src="https://raw.githubusercontent.com/heysadboy/phimpme-android/development/docs/screenshots/map.png">
+</td>
+    </tr>
+  </table>
+  
+   
+  
+## Features
+**Feature**|**Description**|**Status**
+-----|-----|-----
+Home Screen|Show local captured images|Established
+ |Grid view of images|Diplaying images in grid|Established
+ |Edit, Upload, share option on image click|Working
+Map Activity|Show photos on the map|Working
+Camera|Capture Image, Toggle Camera|Working
+ |Apply filters, Flash on/off|Working
+Upload|Select account on which you want to upload|Not working
+ |Select images which you want to upload|Crashing
+ |Share images with bluetooth|Working
+ |Upload button which upload the image|Crashing
+Settings|Add Accounts|Not working
+ |Photos settings|Working
+ |Local photos : choose folder|Not working
+## Development Setup
 
 	 It is advisable to clone only the development branch using following command:
 	

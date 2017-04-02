@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -33,6 +34,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -80,11 +82,14 @@ import vn.mbm.phimp.me.utils.PrefManager;
 import vn.mbm.phimp.me.utils.RSSUtil;
 
 import static android.os.Environment.getExternalStorageDirectory;
+import static com.facebook.FacebookSdk.getApplicationContext;
 import static vn.mbm.phimp.me.PhimpMe.PREFS_NAME;
 
 
 public class Settings extends Fragment
 {
+	public  RadioButton radiotDarkBtn ;
+	public static RadioButton radiotLightBtn ;
 	private final int CONTEXT_MENU_ID = 1;
 	private final int DIALOG_FILE_SIZE_SETTINGS = 2;
 	private final int DIALOG_ADD_ACCOUNT_DRUPAL = 3;
@@ -121,7 +126,7 @@ public class Settings extends Fragment
 
 	private static Context ctx;
 	private int i=1;
-    	private int color = Color.parseColor("#757575");
+	private int color = Color.parseColor("#757575");
 	private ImageButton btnAdd;
 	private ImageButton btnLangUS;
 	private ImageButton btnLangDE;
@@ -159,10 +164,10 @@ public class Settings extends Fragment
 	private File tmp_folder;
 	private int error_count = 0;
 	private ProgressDialog pro_gress;
-    	private AlertDialog maxSizeDialog = null;
+	private AlertDialog maxSizeDialog = null;
 
 
-    @Nullable
+	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
@@ -183,7 +188,11 @@ public class Settings extends Fragment
 
 		ctx = getContext();
 
-		PayPal pp = PayPal.getInstance();
+        changeTheme();
+
+
+
+        PayPal pp = PayPal.getInstance();
 
 		//create donate button
 		final CheckoutButton donateButton = pp.getCheckoutButton(ctx, PayPal.BUTTON_278x43, CheckoutButton.TEXT_DONATE);
@@ -213,7 +222,7 @@ public class Settings extends Fragment
 			}
 			btnDelete = (ImageView)getView().findViewById(R.id.deletebtn);
 
-            btnDelete.setColorFilter(color);
+			btnDelete.setColorFilter(color);
 			btnDelete.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -292,30 +301,30 @@ public class Settings extends Fragment
 		txtMaxPhotoSize.setText(PhimpMe.MAX_FILESIZE_DOWNLOAD + "");
 		btnSettingsMaxFilesize = (ImageView) getView().findViewById(R.id.imgbtnSettingsMaxFilesize);
 		btnSettingsMaxFilesize.setColorFilter(color);
-        btnSettingsMaxFilesize.setOnClickListener(new OnClickListener()
+		btnSettingsMaxFilesize.setOnClickListener(new OnClickListener()
 		{
 			@Override
 			public void onClick(View v) {
-                final CharSequence[] sizes = {"2 MB", "3 MB" , "5 MB", "10 MB"};
+				final CharSequence[] sizes = {"2 MB", "3 MB" , "5 MB", "10 MB"};
 				// Creating and Building the Dialog
-                final SharedPreferences settings = ctx.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-                int selectedSize = settings.getInt("radio_button_selected", 2);
-                Log.d("selected size", String.valueOf(selectedSize));
-                AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-                builder.setTitle(getString(R.string.select_max_file_size));
+				final SharedPreferences settings = ctx.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+				int selectedSize = settings.getInt("radio_button_selected", 2);
+				Log.d("selected size", String.valueOf(selectedSize));
+				AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+				builder.setTitle(getString(R.string.select_max_file_size));
 				builder.setSingleChoiceItems(sizes, selectedSize, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int item) {
-                        SharedPreferences.Editor editor = settings.edit();
-                        PhimpMe.MAX_FILESIZE_DOWNLOAD = Integer.parseInt(sizes[item].subSequence(0, sizes[item].toString().indexOf(" ")).toString());
-                        editor.putInt("max_filesize_download", PhimpMe.MAX_FILESIZE_DOWNLOAD);
-                        editor.putInt("radio_button_selected", item);
-                        editor.apply();
-                        Log.d("item selected", String.valueOf(item));
-                        txtMaxPhotoSize.setText(PhimpMe.MAX_FILESIZE_DOWNLOAD + "");
-                        maxSizeDialog.dismiss();
+						SharedPreferences.Editor editor = settings.edit();
+						PhimpMe.MAX_FILESIZE_DOWNLOAD = Integer.parseInt(sizes[item].subSequence(0, sizes[item].toString().indexOf(" ")).toString());
+						editor.putInt("max_filesize_download", PhimpMe.MAX_FILESIZE_DOWNLOAD);
+						editor.putInt("radio_button_selected", item);
+						editor.apply();
+						Log.d("item selected", String.valueOf(item));
+						txtMaxPhotoSize.setText(PhimpMe.MAX_FILESIZE_DOWNLOAD + "");
+						maxSizeDialog.dismiss();
 					}
 				});
-                maxSizeDialog = builder.create();
+				maxSizeDialog = builder.create();
 				maxSizeDialog.show();
 			}
 		} );
@@ -410,10 +419,10 @@ public class Settings extends Fragment
 			{
 				PhimpMe.FEEDS_LOCAL_GALLERY = isChecked;
 				if(isChecked==true){
-				    PhimpMe.check_download_local_gallery=true;
+					PhimpMe.check_download_local_gallery=true;
 				}
 				else
-				    PhimpMe.check_download_local_gallery=false;
+					PhimpMe.check_download_local_gallery=false;
 			}
 		});
 
@@ -434,8 +443,40 @@ public class Settings extends Fragment
 
 	}
 
+    private void changeTheme() {
 
-	private class btnDeleteListener implements OnClickListener
+        radiotDarkBtn = (RadioButton) getView().findViewById(R.id.radiotDarkBtn);
+        radiotLightBtn = (RadioButton)getView().findViewById(R.id.radiotLightBtn);
+
+        if(Utility.getTheme(getApplicationContext()) == PhimpMe.THEME_dark) {
+            radiotLightBtn.setChecked(false);
+            radiotDarkBtn.setChecked(true);
+
+        }else  {
+
+            radiotDarkBtn.setChecked(false);
+            radiotLightBtn.setChecked(true);
+        }
+
+        radiotDarkBtn.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+
+                Utility.setTheme(getApplicationContext(), 2);
+                recreateActivity();
+            }
+        });
+
+        radiotLightBtn.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+
+                Utility.setTheme(getApplicationContext(), 1);
+                recreateActivity();
+            }
+        });
+    }
+
+
+    private class btnDeleteListener implements OnClickListener
 	{
 		private String id;
 		private String name;
@@ -825,4 +866,11 @@ public class Settings extends Fragment
 //	}
 
 
+
+	private void recreateActivity() {
+		Intent i = getApplicationContext().getPackageManager()
+				.getLaunchIntentForPackage(getApplicationContext().getPackageName() );
+		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK );
+		startActivity(i);
+	}
 }

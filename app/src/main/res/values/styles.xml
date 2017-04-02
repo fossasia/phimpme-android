@@ -5,13 +5,38 @@
     </style>
 
     <style name="Phimpme.Base" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimaryTheme">@color/colorPrimary</item>
+        <item name="colorPrimaryDarkTheme">@color/colorPrimaryDark</item>
+        <item name="colorAccentTheme">@color/colorAccent</item>
+        <item name="windowBackgroundTheme">@color/white</item>
+        <item name="IconsColor">@color/icongrey</item>
+        <item name="themeCardColor" >@color/white</item>
+        <item name="BottomNavigationIconsColor" >@drawable/bottom_nav_icon_color_light</item>
         <item name="android:windowBackground">@color/colorWindowBackground</item>
-
         <item name="android:windowContentTransitions">true</item>
     </style>
+
+    <!-- Dark base activity theme -->
+    <style name="AppTheme.Dark"   parent="Theme.AppCompat.NoActionBar">
+        <item name="themeCardColor" >@color/colorCardInverse</item>
+        <item name="BottomNavigationIconsColor" >@drawable/bottom_nav_icon_color_dark</item>
+        <item name="colorPrimaryTheme">@color/colorPrimaryInverse</item>
+        <item name="IconsColor">@color/white</item>
+        <item name="windowBackgroundTheme">@color/ColorWindowBackgroundInverse</item>
+        <item name="colorPrimaryDarkTheme">@color/colorPrimaryDarkInverse</item>
+        <item name="colorAccentTheme">@color/blue_dark</item>
+        <item name="android:windowBackground">@color/ColorWindowBackgroundInverse</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white70</item>
+        <item name="android:textColorHint">@color/white50</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="colorAccent">@color/blue_dark</item>
+        <item name="android:colorForeground">?attr/windowBackgroundTheme</item>
+        <item name="android:colorBackground">?attr/windowBackgroundTheme</item>
+
+    </style>
+
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

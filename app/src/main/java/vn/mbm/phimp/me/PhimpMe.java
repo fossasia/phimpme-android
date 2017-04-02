@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -21,6 +22,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -31,6 +33,7 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TabHost.TabSpec;
 import android.widget.Toast;
@@ -65,7 +68,7 @@ import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
 @SuppressWarnings("deprecation")
 public class PhimpMe extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener //, android.view.GestureDetector.OnGestureListener
 {
-    public static Context ctx;
+    public static Context ctx ;
     public static File DataDirectory;
     public static final String PREFS_NAME = "PhimpMePrefs";
     public static final String DATABASE_NAME = "PhimpMe";
@@ -139,6 +142,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     public static final String FEDDS_LIST_MYSERVICES_TAG5 = "feeds_list_myservices";
     public static String MY_FEED_URL = "";
 
+
     public static boolean FEEDS_LIST_500PX_PRIVATE;
     public static final String FEEDS_LIST_500PX_PRIVATE_TAG = "feeds_list_500px_private";
     public static boolean FEEDS_LIST_500PX_PUBLIC;
@@ -186,6 +190,10 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     //private GestureDetector gestureScanner;
     //View.OnTouchListener gestureListener;
     public static int width, height;
+    public final static int THEME_dark = 2;
+
+
+
 
     HomeScreenState currentScreen = HomeScreenState.GALLERY;
 
@@ -195,6 +203,19 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
 
         super.onCreate(savedInstanceState);
         ctx = this;
+
+        //set dark theme
+
+        if(Utility.getTheme(getApplicationContext()) == THEME_dark ) {
+        setTheme(R.style.AppTheme_Dark);}
+
+
+
+
+
+
+
+
         Log.d("thong", "PhimpMe - onCreate()");
         // The following line triggers the initialization of ACRA
         //ACRA.init((Application) ctx.getApplicationContext());

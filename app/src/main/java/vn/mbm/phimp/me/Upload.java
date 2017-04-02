@@ -266,7 +266,6 @@ public class Upload extends android.support.v4.app.Fragment {
         removableList = new ArrayList<>();
         // Initiate clear panel buttons
         selectAllBtn = (ImageView) view.findViewById(R.id.btnSelectAll);
-        selectAllBtn.setColorFilter(color);
         selectAllBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -289,7 +288,6 @@ public class Upload extends android.support.v4.app.Fragment {
         });
 
         clearSelectionBtn = (ImageView) view.findViewById(R.id.btnDeselectAll);
-        clearSelectionBtn.setColorFilter(color);
         clearSelectionBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -301,7 +299,6 @@ public class Upload extends android.support.v4.app.Fragment {
         });
 
         removeSelectedBtn = (ImageView) view.findViewById(R.id.btnClearSelected);
-        removeSelectedBtn.setColorFilter(color);
         removeSelectedBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -348,7 +345,6 @@ public class Upload extends android.support.v4.app.Fragment {
          * bluetooth share
 		 */
         btnBluetoothShare = (ImageView) getView().findViewById(R.id.upload_sendDirectly);
-        btnBluetoothShare.setColorFilter(color);
         btnBluetoothShare.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -368,7 +364,6 @@ public class Upload extends android.support.v4.app.Fragment {
         });
 
         btnUpload = (ImageView) getView().findViewById(R.id.btnUploadPhoto);
-        btnUpload.setColorFilter(color);
         if (savedInstanceState != null) {
         }
 
@@ -407,7 +402,6 @@ public class Upload extends android.support.v4.app.Fragment {
         });
 
         btnAdd = (ImageView) getView().findViewById(R.id.btnUploadAccountAdd);
-        btnAdd.setColorFilter(color);
         btnAdd.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -417,7 +411,6 @@ public class Upload extends android.support.v4.app.Fragment {
         });
 
         btnPhotoAdd = (ImageView) getView().findViewById(R.id.btnUploadPhotoAdd);
-        btnPhotoAdd.setColorFilter(color);
         btnPhotoAdd.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
