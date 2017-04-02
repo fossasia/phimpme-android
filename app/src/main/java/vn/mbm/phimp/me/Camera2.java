@@ -94,16 +94,9 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	private final int FLASH_OFF = 1;
 	private final int FLASH_AUTO = 2;
 
-	private boolean FLAG_CAPTURE_IN_PROGRESS = false;
-
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-		View decorView = getActivity().getWindow().getDecorView();
-		int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-		decorView.setSystemUiVisibility(uiOptions);
-
 		view=  inflater.inflate(R.layout.camera, container, false);
 		setLayout();
 		return view;
@@ -311,17 +304,11 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		buttonClick.setOnClickListener( new OnClickListener() {
 			public void onClick(View v) {
 				//progress = ProgressDialog.show(ctx, "", "");
-				if (!FLAG_CAPTURE_IN_PROGRESS) {
-					FLAG_CAPTURE_IN_PROGRESS = true;
-					preview.mCamera.takePicture(shutterCallback, null, jpegCallback);
-				}
+				preview.mCamera.takePicture(shutterCallback, null, jpegCallback);
 			}
 		});
 		camera_switch = (ImageButton)view.findViewById(R.id.switch_camera);
 		camera_switch.setImageResource(R.drawable.camera_switch);
-		LinearLayout.LayoutParams parmsswitch = new LinearLayout.LayoutParams(Utils.getScreenWidth(getContext())/15,Utils.getScreenHeight(getContext())/15);
-		camera_switch.setLayoutParams(parmsswitch);
-		parmsswitch.setMarginStart(20);
 		buttonClick.setImageResource(R.drawable.takepic);
 		if (Camera.getNumberOfCameras() <=1 ) camera_switch.setVisibility(View.GONE);
 		camera_switch.setOnClickListener(new OnClickListener() {
@@ -372,9 +359,6 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		linear.bringToFront();
 		flash = (ImageButton)view.findViewById(R.id.flash);
 		flash.setImageResource(R.drawable.flash_on);
-		LinearLayout.LayoutParams parmFlash = new LinearLayout.LayoutParams(Utils.getScreenWidth(getContext())/15,Utils.getScreenHeight(getContext())/15);
-		camera_switch.setLayoutParams(parmFlash);
-		parmFlash.setMarginStart(10);
 		flash.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -510,10 +494,6 @@ public class Camera2 extends android.support.v4.app.Fragment {
 			_intent.putExtra("longtitude",lon);*/
 			_intent.putExtra("scale", true);
 			_intent.putExtra("activityName", "Camera2");
-
-			//resetting capture progress flag
-			FLAG_CAPTURE_IN_PROGRESS = false;
-
 			startActivityForResult(_intent, 1);
 			//progress.dismiss();
 
