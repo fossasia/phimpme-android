@@ -9,7 +9,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
-import android.content.Context;
 import android.media.ExifInterface;
 import android.os.Environment;
 import android.util.Log;
