@@ -15,10 +15,7 @@ import android.text.format.Formatter;
  */
 
 public class FileUtils {
-    private FileUtils() {
-
-    }
-
+    
     public static String getHash(final File file) throws NoSuchAlgorithmException, IOException {
         return md5(file) + "_" + sha1(file);
     }
