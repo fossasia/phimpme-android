@@ -520,7 +520,7 @@ public class newGallery extends Fragment {
                 int imgCount = localImageList.size();
                 String newTitle;
                 if (imgCount > 0) {
-                    newTitle = imgCount + " images" + " selected";
+                    newTitle = imgCount == 1 ? getResources().getString(R.string.single_image_selected) : String.format(getString(R.string.images_selected), imgCount);
                 } else {
                     newTitle = getResources().getString(R.string.application_title);
                 }
@@ -3583,10 +3583,11 @@ public class newGallery extends Fragment {
 
         public void selectAllImages()
         {
-            for(ImageItem imageItem : localImageList)
-            {
-                imageItem.isSelected = true;
-                deletableList.add(imageItem.path);
+            for(ImageItem imageItem : localImageList) {
+                if(!deletableList.contains(imageItem.path)) {
+                    imageItem.isSelected = true;
+                    deletableList.add(imageItem.path);
+                }
             }
             notifyDataSetChanged();
         }

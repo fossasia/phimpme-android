@@ -64,6 +64,8 @@
     <string name="select">Select</string>
     <string name="newest">The Newest photo</string>
     <string name="owner">The Owner Photo</string>
+    <string name="images_selected">%d images selected</string>
+    <string name="single_image_selected">1 image selected</string>
 
     <string name="facebook_app_id">1781584438783986</string>
     <string name="imageshack_note">Please note, that imageshack does not provide a gallery page of uploaded pictures at this time. Phimp.me will keep a list of images uploaded to imageshack for you. The app will only show images uploaded with the phimp.me app due to imageshack\'s current limitations.</string>
@@ -628,6 +630,7 @@
     <string name="dialog_upload">This photo has been added to list upload photo!</string>
     <string name="nopicture_selected">No Picture Selected :(</string>
     <string name="title_activity_maps">Map</string>
+
 
     <item name="image_id" type="id"/>
 
