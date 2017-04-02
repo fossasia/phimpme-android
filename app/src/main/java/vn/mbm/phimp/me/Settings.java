@@ -15,15 +15,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
@@ -62,7 +59,6 @@ import vn.mbm.phimp.me.database.TumblrItem;
 import vn.mbm.phimp.me.database.TwitterItem;
 import vn.mbm.phimp.me.database.VkItem;
 import vn.mbm.phimp.me.database.WordpressItem;
-import vn.mbm.phimp.me.gallery3d.media.StringTexture;
 import vn.mbm.phimp.me.services.DeviantArtService;
 import vn.mbm.phimp.me.services.DrupalServices;
 import vn.mbm.phimp.me.services.FacebookServices;
@@ -78,7 +74,6 @@ import vn.mbm.phimp.me.services.TumblrServices;
 import vn.mbm.phimp.me.services.TwitterServices;
 import vn.mbm.phimp.me.services.VKServices;
 import vn.mbm.phimp.me.utils.Commons;
-import vn.mbm.phimp.me.utils.PrefManager;
 import vn.mbm.phimp.me.utils.RSSUtil;
 
 import static android.os.Environment.getExternalStorageDirectory;
@@ -448,11 +443,11 @@ public class Settings extends Fragment
         radiotDarkBtn = (RadioButton) getView().findViewById(R.id.radiotDarkBtn);
         radiotLightBtn = (RadioButton)getView().findViewById(R.id.radiotLightBtn);
 
-        if(Utility.getTheme(getApplicationContext()) == PhimpMe.THEME_dark) {
+        if(Utility.getTheme(getApplicationContext()) == PhimpMe.ThemeDark) {
             radiotLightBtn.setChecked(false);
             radiotDarkBtn.setChecked(true);
 
-        }else  {
+        }    else  {
 
             radiotDarkBtn.setChecked(false);
             radiotLightBtn.setChecked(true);

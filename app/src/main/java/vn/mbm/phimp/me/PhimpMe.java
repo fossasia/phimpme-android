@@ -14,7 +14,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -22,7 +21,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.AppCompatDelegate;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -33,7 +31,6 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TabHost.TabSpec;
 import android.widget.Toast;
@@ -190,11 +187,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     //private GestureDetector gestureScanner;
     //View.OnTouchListener gestureListener;
     public static int width, height;
-    public final static int THEME_dark = 2;
-
-
-
-
+    public final static int ThemeDark = 2;
     HomeScreenState currentScreen = HomeScreenState.GALLERY;
 
     @SuppressWarnings("unused")
@@ -205,16 +198,8 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
         ctx = this;
 
         //set dark theme
-
-        if(Utility.getTheme(getApplicationContext()) == THEME_dark ) {
+        if (Utility.getTheme(getApplicationContext()) == ThemeDark) {
         setTheme(R.style.AppTheme_Dark);}
-
-
-
-
-
-
-
 
         Log.d("thong", "PhimpMe - onCreate()");
         // The following line triggers the initialization of ACRA
