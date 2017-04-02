@@ -914,25 +914,8 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
 //
 //        }
 
-        List<File> files = PhoneMedia.getUnanalysedFiles();
-        int c = 0;
-        for (File file : files)
-        {
-            String filePath = file.getPath();
-            boolean check = cache.check(filePath);
-            if (check) {
-                @SuppressWarnings("unused")
-                int index = Integer.valueOf(PhimpMe.cache.getCacheId(filePath));
-                @SuppressWarnings("unused")
-                Bitmap bmp = PhimpMe.cache.getCachePath(filePath);
-                Log.d("index", String.valueOf(index));
-            } else if (c <= 20) {
-                Bitmap bitmap = BitmapFactory.decodeFile(filePath);
-                bitmap = Bitmap.createScaledBitmap(bitmap, 300, 300, false);
-                PhimpMe.cache.saveCacheFile(filePath, bitmap);
-                c++;
-            }
-        }
+       PhoneMedia.getUnanalysedFiles();
+
     }
 
     public static void stopThread() {
