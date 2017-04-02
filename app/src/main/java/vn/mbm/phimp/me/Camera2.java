@@ -711,7 +711,7 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
             if (mCamera != null ) {
 
                 Camera.Parameters parameters = mCamera.getParameters();
-                if (parameters.getMaxNumMeteringAreas() > 0){
+                if (parameters.getMaxNumMeteringAreas() > 0 && parameters.getSupportedFocusModes().contains("manual")){
                     Log.i(TAG,"meteringAreas Supported");
                     Rect rect = calculateFocusArea(event.getX(), event.getY());
                     parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
