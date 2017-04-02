@@ -666,7 +666,6 @@ public class Camera2 extends android.support.v4.app.Fragment {
 }
 class Preview extends ViewGroup implements SurfaceHolder.Callback {
 	private final String TAG = "Preview";
-
 	SurfaceView mSurfaceView;
 	SurfaceHolder mHolder;
 	Size mPreviewSize;
