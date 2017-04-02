@@ -1,6 +1,7 @@
 package vn.mbm.phimp.me;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.database.Cursor;
 import android.media.ExifInterface;
 import android.net.Uri;
@@ -35,7 +36,8 @@ import java.util.ArrayList;
 public class MapFragment extends Fragment {
     SupportMapFragment mSupportMapFragment;
     ArrayList<String> images;
-    ProgressDialog progressDialog ;
+    ProgressDialog progressDialog;
+
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View decorView = getActivity().getWindow().getDecorView();
@@ -65,7 +67,18 @@ public class MapFragment extends Fragment {
                         googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                             @Override
                             public void onInfoWindowClick(Marker arg0) {
-                               /*Open Image*/
+                                String path = arg0.getTitle();
+
+                                ArrayList<String> file = new ArrayList<>();
+                                file.add(path);
+                                Intent showImageIntent = new Intent();
+                                showImageIntent.setClass(getActivity(), vn.mbm.phimp.me.gallery.PhimpMeGallery.class);
+                                vn.mbm.phimp.me.gallery.PhimpMeGallery.setFileList(file);
+                                showImageIntent.putExtra("aspectX", 0);
+                                showImageIntent.putExtra("aspectY", 0);
+                                showImageIntent.putExtra("scale", true);
+                                showImageIntent.putExtra("activityName", "LocalPhotos");
+                                startActivity(showImageIntent);
                             }
                         });
                         googleMap.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
@@ -74,6 +87,7 @@ public class MapFragment extends Fragment {
                             public View getInfoWindow(Marker arg0) {
                                 return null;
                             }
+
                             // Defines the contents of the InfoWindow
                             @Override
                             public View getInfoContents(Marker arg0) {
@@ -93,7 +107,7 @@ public class MapFragment extends Fragment {
 
                     class LoadMarkers extends AsyncTask<Void, Void, Void> {
                         @Override
-                        protected void onPreExecute(){
+                        protected void onPreExecute() {
                             super.onPreExecute();
                             progressDialog = new ProgressDialog(getActivity());
                             progressDialog.setMessage("Loading...");

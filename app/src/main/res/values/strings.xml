@@ -628,7 +628,7 @@
     <string name="nopicture_selected">No Picture Selected :(</string>
     <string name="title_activity_maps">Map</string>
 
-    <item name="image_id" type="id"/>
+    <item name="image_id" type="id" />
 
     <!-- Pop_Up View -->
     <string name="time">Time:</string>
