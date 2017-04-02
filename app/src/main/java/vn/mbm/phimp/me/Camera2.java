@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
@@ -32,7 +31,6 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -57,7 +55,6 @@ import java.util.Date;
 import java.util.List;
 
 import vn.mbm.phimp.me.gallery3d.media.CropImage;
-import vn.mbm.phimp.me.gallery3d.media.Util;
 import vn.mbm.phimp.me.utils.Utils;
 
 import static vn.mbm.phimp.me.Preview.GRID_ENABLED;
@@ -414,17 +411,21 @@ public class Camera2 extends android.support.v4.app.Fragment {
 
 		grid_overlay_button = (ImageButton)view.findViewById(R.id.grid_overlay);
 		grid_overlay_button.setLayoutParams(parmFlash);
-		grid_overlay_button.setImageResource(R.drawable.grid_button);
-		grid_overlay_button.setColorFilter(Color.GRAY);
+		if (GRID_ENABLED){
+            grid_overlay_button.setImageResource(R.drawable.ic_grid_on);
+        }else {
+            grid_overlay_button.setImageResource(R.drawable.ic_grid_off);
+        }
+		grid_overlay_button.setColorFilter(Color.WHITE);
 		grid_overlay_button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!GRID_ENABLED){
-                    grid_overlay_button.setColorFilter(Color.WHITE);
+                    grid_overlay_button.setImageResource(R.drawable.ic_grid_on);
 					GRID_ENABLED = true;
                     preview.invalidate();						///onDraw gets called when view refreshes
                 }else {
-                    grid_overlay_button.setColorFilter(Color.GRAY);
+                    grid_overlay_button.setImageResource(R.drawable.ic_grid_off);
                     GRID_ENABLED = false;
                     preview.invalidate();
                 }
