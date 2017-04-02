@@ -37,7 +37,6 @@
                 android:layout_gravity="center_horizontal|center"
                 android:src="@drawable/flash_auto" />
 
-
             <ImageButton
                 android:id="@+id/grid_overlay"
                 android:layout_width="wrap_content"

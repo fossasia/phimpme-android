@@ -57,6 +57,7 @@ import java.util.Date;
 import java.util.List;
 
 import vn.mbm.phimp.me.gallery3d.media.CropImage;
+import vn.mbm.phimp.me.gallery3d.media.Util;
 import vn.mbm.phimp.me.utils.Utils;
 
 import static vn.mbm.phimp.me.Preview.GRID_ENABLED;
@@ -416,19 +417,19 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		grid_overlay_button.setImageResource(R.drawable.grid_button);
 		grid_overlay_button.setColorFilter(Color.GRAY);
 		grid_overlay_button.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (!GRID_ENABLED){
-					grid_overlay_button.setColorFilter(Color.WHITE);
+            @Override
+            public void onClick(View v) {
+                if (!GRID_ENABLED){
+                    grid_overlay_button.setColorFilter(Color.WHITE);
 					GRID_ENABLED = true;
-					preview.invalidate();						///onDraw gets called when view refreshes
-				}else {
-					grid_overlay_button.setColorFilter(Color.GRAY);
-					GRID_ENABLED = false;
-					preview.invalidate();
-				}
-			}
-		});
+                    preview.invalidate();						///onDraw gets called when view refreshes
+                }else {
+                    grid_overlay_button.setColorFilter(Color.GRAY);
+                    GRID_ENABLED = false;
+                    preview.invalidate();
+                }
+            }
+	    });
 	}
 
 	ShutterCallback shutterCallback = new ShutterCallback() {
@@ -748,9 +749,8 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 	protected void onDraw(Canvas canvas)
 	{
 		if (GRID_ENABLED) {
-			DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
-			int screenWidth = metrics.widthPixels;
-			int screenHeight = metrics.heightPixels;
+			int screenWidth = Utils.getScreenWidth(getContext());
+			int screenHeight = Utils.getScreenHeight(getContext());
 
 			canvas.drawLine(2 * (screenWidth / 3), 0, 2 * (screenWidth / 3), screenHeight, paint);
 			canvas.drawLine((screenWidth / 3), 0, (screenWidth / 3), screenHeight, paint);
