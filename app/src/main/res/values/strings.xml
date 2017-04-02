@@ -641,4 +641,9 @@
     <!-- Settings View -->
     <string name="select_max_file_size">Select the Max File Size -</string>
 
+    <!-- edit Image Dialog -->
+    <string name="go_back">Go Back</string>
+    <string name="dialog_message">Do you want to exit and discard changes?</string>
+    <string name="dialog_title">Confirm</string>
+
 </resources>

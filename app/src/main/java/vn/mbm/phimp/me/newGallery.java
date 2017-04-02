@@ -517,7 +517,9 @@ public class newGallery extends Fragment {
                 return super.onOptionsItemSelected(item);
         }
     }
-
+ public boolean checkdeletablelist(){
+     return deletableList.isEmpty();
+ }
     private void deleteCheckedImages() {
         for (String path : deletableList) {
             try {
