@@ -412,20 +412,20 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		grid_overlay_button = (ImageButton)view.findViewById(R.id.grid_overlay);
 		grid_overlay_button.setLayoutParams(parmFlash);
 		if (GRID_ENABLED){
-            grid_overlay_button.setImageResource(R.drawable.ic_grid_on);
-        }else {
             grid_overlay_button.setImageResource(R.drawable.ic_grid_off);
+        }else {
+            grid_overlay_button.setImageResource(R.drawable.ic_grid_on);
         }
 		grid_overlay_button.setColorFilter(Color.WHITE);
 		grid_overlay_button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!GRID_ENABLED){
-                    grid_overlay_button.setImageResource(R.drawable.ic_grid_on);
+                    grid_overlay_button.setImageResource(R.drawable.ic_grid_off);
 					GRID_ENABLED = true;
                     preview.invalidate();						///onDraw gets called when view refreshes
                 }else {
-                    grid_overlay_button.setImageResource(R.drawable.ic_grid_off);
+                    grid_overlay_button.setImageResource(R.drawable.ic_grid_on);
                     GRID_ENABLED = false;
                     preview.invalidate();
                 }
