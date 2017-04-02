@@ -449,6 +449,8 @@ public class newGallery extends Fragment {
 
     Toolbar toolbar;
 
+    private boolean FLAG_IS_LOADING = false;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
