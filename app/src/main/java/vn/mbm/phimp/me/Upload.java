@@ -311,8 +311,7 @@ public class Upload extends android.support.v4.app.Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 if (!removableList.isEmpty()) {
                                     uploadGridList.removeAll(removableList);
-                                    for(String imagePath : removableList)
-                                    {
+                                    for(String imagePath : removableList) {
                                         File imageFile = new File(imagePath);
                                         try {
                                             uploadedImageHashList.remove(FileUtils.getHash(imageFile));
