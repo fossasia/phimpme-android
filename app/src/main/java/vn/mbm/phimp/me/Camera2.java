@@ -60,7 +60,6 @@ import static vn.mbm.phimp.me.Camera2.state;
 import vn.mbm.phimp.me.gallery3d.media.CropImage;
 import vn.mbm.phimp.me.utils.Utils;
 
-
 public class Camera2 extends android.support.v4.app.Fragment {
 	private static final String TAG = "Camera";
 	static Context ctx;
