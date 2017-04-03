@@ -64,6 +64,8 @@
     <string name="select">Select</string>
     <string name="newest">The Newest photo</string>
     <string name="owner">The Owner Photo</string>
+    <string name="images_selected">%d images selected</string>
+    <string name="single_image_selected">1 image selected</string>
 
     <string name="facebook_app_id">1781584438783986</string>
     <string name="imageshack_note">Please note, that imageshack does not provide a gallery page of uploaded pictures at this time. Phimp.me will keep a list of images uploaded to imageshack for you. The app will only show images uploaded with the phimp.me app due to imageshack\'s current limitations.</string>
@@ -416,6 +418,7 @@
     <string name="delete_images">Are you sure you want to delete these images?</string>
     <string name="menu_title_delete">Delete</string>
     <string name="menu_title_deselect">Deselect all</string>
+    <string name="menu_title_select">Select all</string>
     <string name="image_delete_success">Image deleted!</string>
     <string name="images_delete_success">Images deleted!</string>
     <string name="image_delete_fail">Image not found!</string>
@@ -628,6 +631,7 @@
     <string name="nopicture_selected">No Picture Selected :(</string>
     <string name="title_activity_maps">Map</string>
 
+
     <item name="image_id" type="id"/>
 
     <!-- Pop_Up View -->
@@ -640,5 +644,10 @@
 
     <!-- Settings View -->
     <string name="select_max_file_size">Select the Max File Size -</string>
+
+    <!-- edit Image Dialog -->
+    <string name="go_back">Go Back</string>
+    <string name="dialog_message">Do you want to exit and discard changes?</string>
+    <string name="dialog_title">Confirm</string>
 
 </resources>

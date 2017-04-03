@@ -1,9 +1,11 @@
 package vn.mbm.phimp.me.image;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
@@ -100,7 +102,7 @@ public class CropImage extends MonitoredActivity
     HighlightView mCrop;
 
     private IImage mImage;
-    
+
     private final int GET_POSITION_ON_MAP = 5;
     private String mImagePath;
     static int position ;
@@ -115,6 +117,8 @@ public class CropImage extends MonitoredActivity
 	static Context ctx;
 	static String p[] = null;
     private String newpath;
+
+
     @Override
     public void onCreate(Bundle icicle) 
     {
@@ -510,6 +514,27 @@ public class CropImage extends MonitoredActivity
     	{
     	}
     }
+
+    @Override
+    public void onBackPressed() {
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.dialog_title)
+                .setMessage(R.string.dialog_message)
+                .setCancelable(true)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        CropImage.super.onBackPressed();
+                    }
+                })
+                .setNegativeButton(R.string.go_back, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }})
+                .create()
+                .show();
+    }
+
     public static void ConvertToOriginal() {
     	try{
 
