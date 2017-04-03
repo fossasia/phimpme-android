@@ -664,14 +664,14 @@ public class Camera2 extends android.support.v4.app.Fragment {
 class Preview extends ViewGroup implements SurfaceHolder.Callback {
 	private final String TAG = "Preview";
 
-    SurfaceView mSurfaceView;
-    SurfaceHolder mHolder;
-    Size mPreviewSize;
-    List<Size> mSupportedPreviewSizes;
-    List<String> mSupportFocus;
+	SurfaceView mSurfaceView;
+	SurfaceHolder mHolder;
+	Size mPreviewSize;
+	List<Size> mSupportedPreviewSizes;
+	List<String> mSupportFocus;
     int screenwidth,screenheight;
-    Camera mCamera;
-    private static  final int FOCUS_AREA_SIZE= 300;
+	Camera mCamera;
+	private static  final int FOCUS_AREA_SIZE= 300;
 
 	@SuppressWarnings("deprecation")
 	Preview(Context context) {
