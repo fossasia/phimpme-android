@@ -669,7 +669,7 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
 	Size mPreviewSize;
 	List<Size> mSupportedPreviewSizes;
 	List<String> mSupportFocus;
-    int screenwidth,screenheight;
+	int screenwidth,screenheight;
 	Camera mCamera;
 	private static  final int FOCUS_AREA_SIZE= 300;
 
