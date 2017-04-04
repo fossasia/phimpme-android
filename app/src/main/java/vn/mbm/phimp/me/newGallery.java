@@ -131,7 +131,8 @@ public class newGallery extends Fragment {
     //Button btnPublic;
     Button delete;
     //public static TextView txtStatus;
-    private static GridFlickrAdaper flickradapter;
+    private static
+    GridFlickrAdaper flickradapter;
     private static GridRecentFlickrAdaper recentflickradapter;
     private static GridPublicPicasaAdaper publicpicasaadapter;
     private static GridGoogleNewsAdaper googlenewsadapter;

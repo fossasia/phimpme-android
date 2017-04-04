@@ -30,7 +30,9 @@ public class AddAccountDialogFragment extends android.support.v4.app.DialogFragm
                                 PhimpMe.add_account_setting = true;
                                 break;
                             case 1:
-                                getActivity().showDialog(5); // DIALOG_ADD_ACCOUNT_WORDPRESS = 5
+                                //getActivity().showDialog(5); // DIALOG_ADD_ACCOUNT_WORDPRESS = 5
+                                Intent wordpress=new Intent(getContext(),WordpressWebviewActivity.class);
+                                startActivity(wordpress);
                                 break;
                         }
                     }
