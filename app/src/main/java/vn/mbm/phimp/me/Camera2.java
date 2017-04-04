@@ -703,7 +703,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 	Size mPreviewSize;
 	List<Size> mSupportedPreviewSizes;
 	List<String> mSupportFocus;
-    int screenwidth,screenheight;
+	int screenwidth,screenheight;
 	Camera mCamera;
 	private static  final int FOCUS_AREA_SIZE= 300;
 	Paint paint;
@@ -791,7 +791,6 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 
         //Calculate the Focus Area
         private Rect calculateFocusArea(float x, float y) {
-
             screenwidth = Utils.getScreenWidth(getContext());
             screenheight = Utils.getScreenHeight(getContext());
 
