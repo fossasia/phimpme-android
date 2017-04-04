@@ -9,4 +9,3 @@ import java.io.File;
 public interface IFolderChoosen {
     void folderChoosen(File file, boolean isFileAdded);
 }
-

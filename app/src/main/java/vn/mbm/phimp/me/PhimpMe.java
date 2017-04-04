@@ -862,57 +862,57 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     }*/
 
     public void initialize() {
-//        int id;
-//        final String[] columns = {MediaStore.Images.Thumbnails._ID};
-//        final String[] data = {MediaStore.Images.Media.DATA};
-//        final String orderBy = MediaStore.Images.Media._ID;
-//        Cursor pathcursor = this.getContentResolver().query(
-//                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-//                data,
-//                null,
-//                null,
-//                orderBy
-//        );
-//        if (pathcursor != null) {
-//            int path_column_index = pathcursor
-//                    .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-//            int count = pathcursor.getCount();
-//            int c = 0;
-//            for (int i = 0; i < count; i++) {
-//
-//                pathcursor.moveToPosition(i);
-//                String path = pathcursor.getString(path_column_index);
-//                boolean check = cache.check(path);
-//                if (check) {
-//                    @SuppressWarnings("unused")
-//                    int index = Integer.valueOf(PhimpMe.cache.getCacheId(path));
-//                    @SuppressWarnings("unused")
-//                    Bitmap bmp = PhimpMe.cache.getCachePath(path);
-//
-//                } else if (c <= 20) {
-//                    Cursor cursor = this.getContentResolver().query(
-//                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-//                            columns,
-//                            MediaStore.Images.Media.DATA + " = " + "\"" + path + "\"",
-//                            null,
-//                            MediaStore.Images.Media._ID
-//                    );
-//                    if (cursor != null && cursor.getCount() > 0) {
-//                        cursor.moveToPosition(0);
-//                        id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
-//                        Bitmap bmp = MediaStore.Images.Thumbnails.getThumbnail(
-//                                getApplicationContext().getContentResolver(), id,
-//                                MediaStore.Images.Thumbnails.MICRO_KIND, null);
-//                        PhimpMe.cache.saveCacheFile(path, bmp, id);
-//                    } else id = -1;
-//
-//                    c++;
-//                }
-//
-//            }
-//            newGallery.update_number++;
-//
-//        }
+        int id;
+        final String[] columns = {MediaStore.Images.Thumbnails._ID};
+        final String[] data = {MediaStore.Images.Media.DATA};
+        final String orderBy = MediaStore.Images.Media._ID;
+        Cursor pathcursor = this.getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                data,
+                null,
+                null,
+                orderBy
+        );
+        if (pathcursor != null) {
+            int path_column_index = pathcursor
+                    .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            int count = pathcursor.getCount();
+            int c = 0;
+            for (int i = 0; i < count; i++) {
+
+                pathcursor.moveToPosition(i);
+                String path = pathcursor.getString(path_column_index);
+                boolean check = cache.check(path);
+                if (check) {
+                    @SuppressWarnings("unused")
+                    int index = Integer.valueOf(PhimpMe.cache.getCacheId(path));
+                    @SuppressWarnings("unused")
+                    Bitmap bmp = PhimpMe.cache.getCachePath(path);
+
+                } else if (c <= 20) {
+                    Cursor cursor = this.getContentResolver().query(
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                            columns,
+                            MediaStore.Images.Media.DATA + " = " + "\"" + path + "\"",
+                            null,
+                            MediaStore.Images.Media._ID
+                    );
+                    if (cursor != null && cursor.getCount() > 0) {
+                        cursor.moveToPosition(0);
+                        id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
+                        Bitmap bmp = MediaStore.Images.Thumbnails.getThumbnail(
+                                getApplicationContext().getContentResolver(), id,
+                                MediaStore.Images.Thumbnails.MICRO_KIND, null);
+                        PhimpMe.cache.saveCacheFile(path, bmp, id);
+                    } else id = -1;
+
+                    c++;
+                }
+
+            }
+            newGallery.update_number++;
+
+        }
 
        PhoneMedia.getUnanalysedFiles();
 

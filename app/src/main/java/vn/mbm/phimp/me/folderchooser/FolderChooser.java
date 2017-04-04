@@ -10,7 +10,6 @@ import android.widget.ListView;
 
 import vn.mbm.phimp.me.R;
 
-
 /**
  * Created by rohanagarwal94 on 31/3/17.
  */

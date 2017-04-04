@@ -18,12 +18,6 @@ public class StorageUtils {
 
     public static List<StorageInfo> getStorageList(Context context) {
         List<StorageInfo> storageList = new ArrayList<>();
-
-//		final File[] appsDir = ContextCompat.getExternalFilesDirs(context, null);
-//		for (final File file : appsDir) {
-//			File rootFile = file.getParentFile().getParentFile().getParentFile().getParentFile();
-//			storageList.add(new StorageInfo(rootFile, getDisplayName(rootFile)));
-//		}
         File rootFile = Environment.getExternalStorageDirectory();
         storageList.add(new StorageInfo(rootFile, getDisplayName(rootFile)));
 
