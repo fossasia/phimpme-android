@@ -29,7 +29,6 @@
     <color name="md_dark_primary_text">#FFFFFFFF</color>
 
 
-    <color name="colorPrimaryInverse">#212121</color>
     <color name="colorCardInverse">#424242</color>
     <color name="colorPrimaryDarkInverse">#000000</color>
     <color name="colorAccentDarkInverse">#00B0FF</color>

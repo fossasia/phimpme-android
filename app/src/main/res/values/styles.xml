@@ -20,7 +20,7 @@
     <style name="AppTheme.Dark"   parent="Theme.AppCompat.NoActionBar">
         <item name="themeCardColor" >@color/colorCardInverse</item>
         <item name="BottomNavigationIconsColor" >@drawable/bottom_nav_icon_color_dark</item>
-        <item name="colorPrimaryTheme">@color/colorPrimaryInverse</item>
+        <item name="colorPrimaryTheme">@color/primary_material_dark_2</item>
         <item name="IconsColor">@color/white</item>
         <item name="windowBackgroundTheme">@color/ColorWindowBackgroundInverse</item>
         <item name="colorPrimaryDarkTheme">@color/colorPrimaryDarkInverse</item>

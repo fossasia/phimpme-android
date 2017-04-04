@@ -65,7 +65,7 @@ import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
 @SuppressWarnings("deprecation")
 public class PhimpMe extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener //, android.view.GestureDetector.OnGestureListener
 {
-    public static Context ctx ;
+    public static Context ctx;
     public static File DataDirectory;
     public static final String PREFS_NAME = "PhimpMePrefs";
     public static final String DATABASE_NAME = "PhimpMe";
