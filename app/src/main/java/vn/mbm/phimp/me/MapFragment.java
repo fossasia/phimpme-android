@@ -17,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -310,7 +311,7 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
         } else if (mLastKnownLocation != null) {
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                     new LatLng(mLastKnownLocation.getLatitude(),
-                            mLastKnownLocation.getLongitude()), 18f));
+                            mLastKnownLocation.getLongitude()), 14f));
         } else {
             mMap.getUiSettings().setMyLocationButtonEnabled(false);
         }
@@ -347,12 +348,11 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        Log.d("Connection Suspended", String.valueOf(i));
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        Log.d("Connection Suspended", String.valueOf(connectionResult));
     }
 }
-
