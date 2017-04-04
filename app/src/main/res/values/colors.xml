@@ -26,9 +26,10 @@
     <color name="custom_progress_bg_color">#EEEEEE</color>
     <color name="custom_progress_message_color">#6D6D6D</color>
     <color name="image_selected">#96dde238</color>
+    <color name="wordpress_add_account">#21759b</color>
     <color name="md_dark_primary_text">#FFFFFFFF</color>
-
-
+    <color name="wordpress_add_account">#21759b</color>
+    <color name="md_dark_primary_text">#FFFFFFFF</color>
     <color name="colorCardInverse">#424242</color>
     <color name="colorPrimaryDarkInverse">#000000</color>
     <color name="colorAccentDarkInverse">#00B0FF</color>
@@ -38,5 +39,4 @@
     <color name="accent_material_light">#4070ff</color>
     <color name="primary_material_dark_2">#212121</color>
     <color name="secondary_text_material_dark">#8a000000</color>
-
 </resources>
