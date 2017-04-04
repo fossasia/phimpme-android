@@ -10,7 +10,10 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
@@ -51,8 +54,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static android.hardware.Camera.Parameters.FLASH_MODE_AUTO;
+import static android.hardware.Camera.Parameters.FLASH_MODE_ON;
+import static vn.mbm.phimp.me.Camera2.FLASH_OFF;
+import static vn.mbm.phimp.me.Camera2.FLASH_ON;
+import static vn.mbm.phimp.me.Camera2.state;
+
 import vn.mbm.phimp.me.gallery3d.media.CropImage;
 import vn.mbm.phimp.me.utils.Utils;
+
+import static vn.mbm.phimp.me.Preview.GRID_ENABLED;
 
 public class Camera2 extends android.support.v4.app.Fragment {
 	private static final String TAG = "Camera";
@@ -63,7 +74,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	OrientationEventListener mOrientation;
 	//public static Preview preview1;
 	public static ImageButton buttonClick;
-	ImageButton flash;
+	ImageButton flash,grid_overlay_button;
 	ImageButton camera_switch;
 	FrameLayout frame;
 	public int degrees;
@@ -84,12 +95,12 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	private final int SW = 225;
 	private final int NW = 315;
 	// Flag for flasher
-	int state = 0;
+	public static int state = 0;
 	int camOrientation = 0;
 	// States for Flash
-	private final int FLASH_ON = 0;
-	private final int FLASH_OFF = 1;
-	private final int FLASH_AUTO = 2;
+	public static final int FLASH_ON = 0;
+	public static final int FLASH_OFF = 1;
+	public static final int FLASH_AUTO = 2;
 
 	private boolean FLAG_CAPTURE_IN_PROGRESS = false;
 
@@ -403,6 +414,29 @@ public class Camera2 extends android.support.v4.app.Fragment {
 				//Log.e("Flash",preview.camera.getParameters().getSupportedFlashModes().get(0));
 			}
 		});
+
+		grid_overlay_button = (ImageButton)view.findViewById(R.id.grid_overlay);
+		grid_overlay_button.setLayoutParams(parmFlash);
+		if (GRID_ENABLED){
+            grid_overlay_button.setImageResource(R.drawable.ic_grid_off);
+        }else {
+            grid_overlay_button.setImageResource(R.drawable.ic_grid_on);
+        }
+		grid_overlay_button.setColorFilter(Color.WHITE);
+		grid_overlay_button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!GRID_ENABLED){
+                    grid_overlay_button.setImageResource(R.drawable.ic_grid_off);
+					GRID_ENABLED = true;
+                    preview.invalidate();						///onDraw gets called when view refreshes
+                }else {
+                    grid_overlay_button.setImageResource(R.drawable.ic_grid_on);
+                    GRID_ENABLED = false;
+                    preview.invalidate();
+                }
+            }
+	    });
 	}
 
 	ShutterCallback shutterCallback = new ShutterCallback() {
@@ -661,7 +695,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
  * support preview sizes at the same aspect ratio as the device's display.
  */
 }
-class Preview extends ViewGroup implements SurfaceHolder.Callback {
+class Preview extends SurfaceView implements SurfaceHolder.Callback {
 	private final String TAG = "Preview";
 
 	SurfaceView mSurfaceView;
@@ -671,14 +705,17 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
 	List<String> mSupportFocus;
 	Camera mCamera;
 	private static  final int FOCUS_AREA_SIZE= 300;
+	Paint paint;
+	public static boolean GRID_ENABLED = false;
 
 	@SuppressWarnings("deprecation")
 	Preview(Context context) {
 		super(context);
 
-		mSurfaceView = new SurfaceView(context);
-		addView(mSurfaceView);
+		mSurfaceView = this;//new SurfaceView(context);
+		//addView(mSurfaceView);
         //Set Touch Listener
+		this.setWillNotDraw(false);
 		mSurfaceView.setOnTouchListener(new OnTouchListener() {
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
@@ -688,6 +725,14 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
                         return true;
                     }
                  });
+
+
+		//setting paint values for drawing grid
+		paint = new Paint();
+		paint.setAntiAlias(true);
+		paint.setStrokeWidth(3);
+		paint.setStyle(Paint.Style.STROKE);
+		paint.setColor(Color.argb(255, 255, 255, 255));
 
 		// Install a SurfaceHolder.Callback so we get notified when the
 		// underlying surface is created and destroyed.
@@ -706,12 +751,28 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
 		}
 	}
 
+
+	@Override
+	protected void onDraw(Canvas canvas)
+	{
+		if (GRID_ENABLED) {
+			int screenWidth = Utils.getScreenWidth(getContext());
+			int screenHeight = Utils.getScreenHeight(getContext());
+
+			canvas.drawLine(2 * (screenWidth / 3), 0, 2 * (screenWidth / 3), screenHeight, paint);
+			canvas.drawLine((screenWidth / 3), 0, (screenWidth / 3), screenHeight, paint);
+			canvas.drawLine(0, 2 * (screenHeight / 3), screenWidth, 2 * (screenHeight / 3), paint);
+			canvas.drawLine(0, (screenHeight / 3), screenWidth, (screenHeight / 3), paint);
+		}
+	}
+
+
 	//Check if tap to focus supported and Set the focus on the Tapped Area
 	private void focusOnTouch(MotionEvent event) {
             if (mCamera != null ) {
 
                 Camera.Parameters parameters = mCamera.getParameters();
-                if (parameters.getMaxNumMeteringAreas() > 0){
+                if (parameters.getMaxNumMeteringAreas() > 0 && parameters.getSupportedFocusModes().contains("manual")){
                     Log.i(TAG,"meteringAreas Supported");
                     Rect rect = calculateFocusArea(event.getX(), event.getY());
                     parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
@@ -792,8 +853,8 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
 
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
-		if (changed && getChildCount() > 0) {
-			final View child = getChildAt(0);
+		if (changed && this.mSurfaceView != null) {
+			final View child = this.mSurfaceView;
 
 			final int width = r - l;
 			final int height = b - t;
@@ -889,7 +950,17 @@ class Preview extends ViewGroup implements SurfaceHolder.Callback {
 		// the preview.
 		Log.e("Surface","Change");
 		Camera.Parameters parameters = mCamera.getParameters();
-        	parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
+		switch (state) {
+			case FLASH_ON:
+				parameters.setFlashMode(FLASH_MODE_ON);
+				break;
+			case FLASH_OFF:
+				parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+				break;
+			default:
+				parameters.setFlashMode(FLASH_MODE_AUTO);
+				break;
+		}
 
 		try{
 			mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, w, h);

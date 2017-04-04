@@ -49,7 +49,7 @@
                 android:src="@drawable/inkwell_filter"/>
 
             <ImageButton
-                android:id="@+id/btnNagative"
+                android:id="@+id/btnNegative"
                 android:layout_width="100dp"
                 android:scaleType="centerCrop"
                 android:layout_height="100dp"

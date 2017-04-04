@@ -1,9 +1,11 @@
 package vn.mbm.phimp.me.image;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
@@ -27,11 +29,6 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.StatFs;
 import android.provider.MediaStore;
-import android.renderscript.Allocation;
-import android.renderscript.Element;
-import android.renderscript.RenderScript;
-import android.renderscript.ScriptIntrinsicBlur;
-import android.renderscript.ScriptIntrinsicConvolve3x3;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -105,7 +102,7 @@ public class CropImage extends MonitoredActivity
     HighlightView mCrop;
 
     private IImage mImage;
-    
+
     private final int GET_POSITION_ON_MAP = 5;
     private String mImagePath;
     static int position ;
@@ -120,6 +117,8 @@ public class CropImage extends MonitoredActivity
 	static Context ctx;
 	static String p[] = null;
     private String newpath;
+
+
     @Override
     public void onCreate(Bundle icicle) 
     {
@@ -133,7 +132,6 @@ public class CropImage extends MonitoredActivity
     		setContentView(R.layout.cropimage);
     		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);		
     		btnSave=(Button)findViewById(R.id.save);
-    		ImageButton btnOriginal=(ImageButton)findViewById(R.id.btnOriginalImage);
     		
     		txtPhotoTitle = (EditText) findViewById(R.id.txtUploadPhotoTitle);
     		
@@ -464,7 +462,7 @@ public class CropImage extends MonitoredActivity
 			/*
 			 * Danh - Add event for button Negative image effect
 			 */
-			findViewById(R.id.btnNagative).setOnClickListener(
+			findViewById(R.id.btnNegative).setOnClickListener(
 					new View.OnClickListener() {
 					    public void onClick(View v) 
 					    {
@@ -490,37 +488,6 @@ public class CropImage extends MonitoredActivity
 			/*
 			 * Danh - Add event for button Negative image effect - End
 			 */
-			/*
-			 * Danh - Add event for button Original image effect
-			 */
-			btnOriginal.setOnClickListener(
-					new View.OnClickListener() {
-					    public void onClick(View v) 
-					    {
-					    	check=false;
-					    	try{
-
-								doRotate(mImageView, 0, 0);
-								fromDegree = 0;
-								toDegree = 90;
-								mImageView.setImageBitmap(mBitmap);
-								modifiedBitmap = flippedImaged = mBitmap;
-
-					    	}catch(OutOfMemoryError o){
-
-								doRotate(mImageView, 0, 0);
-								fromDegree = 0;
-								toDegree = 90;
-								mImageView.setImageBitmap(mBitmapResize);
-								modifiedBitmap = flippedImaged = mBitmapResize;
-					    	}
-					    	
-					    }
-					});
-			/*
-			 * Danh - Add event for button Original image effect - End
-			 */
-			
 			btnSave.setOnClickListener(
 					new View.OnClickListener() {
 					    public void onClick(View v)
@@ -547,6 +514,27 @@ public class CropImage extends MonitoredActivity
     	{
     	}
     }
+
+    @Override
+    public void onBackPressed() {
+
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.dialog_title)
+                .setMessage(R.string.dialog_message)
+                .setCancelable(true)
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        CropImage.super.onBackPressed();
+                    }
+                })
+                .setNegativeButton(R.string.go_back, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }})
+                .create()
+                .show();
+    }
+
     public static void ConvertToOriginal() {
     	try{
 
