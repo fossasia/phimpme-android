@@ -43,24 +43,35 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.facebook.share.widget.ShareDialog;
 import com.joooid.android.model.User;
 import com.joooid.android.xmlrpc.Constants;
 import com.joooid.android.xmlrpc.JoooidRpc;
 import com.tani.app.ui.IconContextMenu;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.wordpress.android.NewAccount;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import vn.mbm.phimp.me.database.AccountItem;
 import vn.mbm.phimp.me.database.DrupalItem;
+import vn.mbm.phimp.me.database.FacebookItem;
 import vn.mbm.phimp.me.database.ImageshackItem;
 import vn.mbm.phimp.me.database.JoomlaItem;
 import vn.mbm.phimp.me.feedservice.FacebookActivity;
@@ -405,8 +416,85 @@ public class Upload extends android.support.v4.app.Fragment {
         btnAdd.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment newFragment = new AddAccountDialogFragment();
-                newFragment.show(getFragmentManager(), "dialog");
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ctx);
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.dialog_add_account, null);
+                LoginButton facebookAcc = (LoginButton)dialogView.findViewById(R.id.facebook_account);
+                Button wordpressAcc = (Button)dialogView.findViewById(R.id.wordpress_account);
+                dialogBuilder.setView(dialogView);
+                final AlertDialog alertDialog = dialogBuilder.create();
+                facebookAcc.setReadPermissions(Arrays.asList(
+                        "public_profile", "email", "user_birthday", "user_friends"));
+                facebookAcc.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+
+                        final AccessToken accessToken = loginResult.getAccessToken();
+                        final String at = loginResult.getAccessToken().getToken();
+                        final Profile profile = Profile.getCurrentProfile();
+                        GraphRequest request = GraphRequest.newMeRequest(
+                                AccessToken.getCurrentAccessToken(),
+                                new GraphRequest.GraphJSONObjectCallback() {
+                                    @Override
+                                    public void onCompleted(JSONObject object, GraphResponse response) {
+                                        Log.v("LoginActivity", response.toString());
+
+                                        try {
+                                            String email = object.getString("email");
+                                            //String profile_url = object.getString("picture");
+                                            String user_id = accessToken.getUserId();
+                                            String user_name = accessToken.getUserId(); //The username is no longer available in v2.
+                                            String user_fullname = profile.getName();
+                                            String profile_url = String.valueOf(profile.getLinkUri());
+                                            try {
+                                                long account_id = AccountItem.insertAccount(ctx, null, user_fullname, "facebook", "1");
+                                                Log.d("ID", String.valueOf(account_id));
+                                                if (account_id > 0) {
+                                                    if (FacebookItem.insertFacebookAccount(ctx, String.valueOf(account_id), at, user_id, user_name, user_fullname, email, profile_url)) {
+                                                        Toast.makeText(ctx, "Insert account '" + user_fullname + "' (Facebook) SUCCESS!", Toast.LENGTH_LONG).show();
+                                                    } else {
+                                                        Toast.makeText(ctx, "Insert account '" + user_fullname + "' (Facebook) FAIL!", Toast.LENGTH_LONG).show();
+                                                    }
+                                                }
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                                Log.e("webkit", "Facebook Service - " + e.toString());
+                                            }
+
+
+                                            PrefManager.putBoolean(PrefManager.LOGIN_STATUS, true);
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                        Bundle parameters = new Bundle();
+                        parameters.putString("fields", "id,first_name,last_name,picture,name,email,gender,birthday");
+                        request.setParameters(parameters);
+                        request.executeAsync();
+                        //check=true;
+                        PhimpMe.add_account_upload = true;
+                        PhimpMe.add_account_setting = true;
+                        getActivity().finish();
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+
+                    @Override
+                    public void onError(FacebookException error) {
+
+                    }
+                });
+                wordpressAcc.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getActivity().showDialog(5); // DIALOG_ADD_ACCOUNT_WORDPRESS = 5
+                    }
+                });
+                alertDialog.show();
             }
         });
 
@@ -1282,6 +1370,7 @@ public class Upload extends android.support.v4.app.Fragment {
     // TODO: this might not be safe; was protected.
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
 
             case TAKE_PICTURE: {
