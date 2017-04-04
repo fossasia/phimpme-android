@@ -117,22 +117,6 @@ public class PhoneMedia {
         return FileMediaType.OTHER;
     }
 
-    public static boolean isImageCapturedFromCamera(File file) {
-        try {
-            ExifInterface exif = new ExifInterface(file.toString());
-            String cameraMake = exif.getAttribute(ExifInterface.TAG_MAKE);
-            String cameraModel = exif.getAttribute(ExifInterface.TAG_MAKE);
-            if ((cameraMake != null && !cameraMake.isEmpty()) ||
-                    (cameraModel != null && !cameraModel.isEmpty())) {
-                return true;
-            }
-        }
-        catch (Exception e) {
-            Log.d("Exception", String.valueOf(e));
-        }
-        return false;
-    }
-
     private enum FileMediaType {
         IMAGE,
         OTHER

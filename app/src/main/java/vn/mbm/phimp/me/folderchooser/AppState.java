@@ -12,9 +12,6 @@ public class AppState {
 
     private static AppState ourInstance = new AppState();
 
-    private AppState() {
-    }
-
     public static List<StorageInfo> getStorageList() {
         return ourInstance.storageInfos;
     }
