@@ -791,6 +791,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 
         //Calculate the Focus Area
         private Rect calculateFocusArea(float x, float y) {
+
             screenwidth = Utils.getScreenWidth(getContext());
             screenheight = Utils.getScreenHeight(getContext());
 
