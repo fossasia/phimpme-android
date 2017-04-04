@@ -449,9 +449,16 @@ public class newGallery extends Fragment {
 
     Toolbar toolbar;
 
+    private boolean FLAG_IS_LOADING = false;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View decorView = getActivity().getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
+        decorView.setSystemUiVisibility(uiOptions);
+
         setHasOptionsMenu(true);
         return inflater.inflate(R.layout.newgallery, container, false);
     }
@@ -469,9 +476,11 @@ public class newGallery extends Fragment {
         MenuItem deleteMenuItem = menu.findItem(R.id.menu_gallery_delete_selected);
         MenuItem deselectMenuItem = menu.findItem(R.id.menu_gallery_deselect_selected);
         MenuItem loadMoreMenuItem = menu.findItem(R.id.menu_gallery_load_more);
+        MenuItem selectAllMenuItem = menu.findItem(R.id.menu_gallery_select_all);
         deselectMenuItem.setVisible(!deletableList.isEmpty());
         deleteMenuItem.setVisible(!deletableList.isEmpty());
         loadMoreMenuItem.setVisible(turnsNeeded > 1);
+        selectAllMenuItem.setVisible(!deletableList.isEmpty());
     }
 
     @Override
@@ -509,11 +518,26 @@ public class newGallery extends Fragment {
                         });
                 // Create the AlertDialog object and show it
                 deleteAlert.create().show();
+            case R.id.menu_gallery_select_all:
+                photosAdapter.selectAllImages();
+                int imgCount = localImageList.size();
+                String newTitle;
+                if (imgCount > 0) {
+                    newTitle = imgCount == 1 ? getResources().getString(R.string.single_image_selected) : String.format(getString(R.string.images_selected), imgCount);
+                } else {
+                    newTitle = getResources().getString(R.string.application_title);
+                }
+                getActivity().setTitle(newTitle);
+                getActivity().invalidateOptionsMenu();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-
+ public boolean checkdeletablelist(){
+     return deletableList.isEmpty();
+ }
     private void deleteCheckedImages() {
         for (String path : deletableList) {
             try {
@@ -3475,35 +3499,6 @@ public class newGallery extends Fragment {
                     }
                 }
             });
-            localPhotosGrid.setOnScrollListener(new AbsListView.OnScrollListener() {
-                @Override
-                public void onScrollStateChanged(AbsListView view, int scrollState) {
-                    return;                               //redundant
-                }
-
-                @Override
-                public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                    if ((visibleItemCount!=0) && (totalItemCount!=0) ) {
-                        if ((firstVisibleItem + visibleItemCount == totalItemCount) && (!FLAG_IS_LOADING)) {
-                            FLAG_IS_LOADING = true;
-                            if (turnsNeeded > 1) {
-                                turnsNeeded -= 1;
-                                turnsDone += 1;
-                                localImagesPerTurn += PER_TURN;
-                                resumeLocalPhoto();
-                                FLAG_IS_LOADING = false;
-                            } else {
-                                localImagesPerTurn += loadLeft;
-                                turnsNeeded -= 1;
-                                turnsDone += 1;
-                                resumeLocalPhoto();
-                                FLAG_IS_LOADING = false;
-                                galleryMenu.findItem(R.id.menu_gallery_load_more).setVisible(false);
-                            }
-                        }
-                    }
-                }
-            });
         }
     }
 
@@ -3604,17 +3599,15 @@ public class newGallery extends Fragment {
 	public class PhotosAdapter extends BaseAdapter {
 
 		private LayoutInflater mInflater;
-		public ArrayList<ImageItem> images = new ArrayList<>();
 
 		// Constructor
 		PhotosAdapter() {
 			mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			this.images = localImageList;
 			PhimpMe.cache = CacheStore.getInstance();
 		}
 
 		public int getCount() {
-			return images.size();
+			return localImageList.size();
 		}
 
 		public Object getItem(int position) {
@@ -3994,12 +3987,13 @@ public class newGallery extends Fragment {
 			Log.d("Danh", "check = " + check_local);
 			*/
 			/* Original Content ends here */
-		} else {
-			// Hide the localPhotos frame and show the other
-			//localPhotosScroll.setVisibility(View.VISIBLE);
-			localPhotosFrame.setVisibility(View.GONE);
-		}
-	}
+            } else {
+                // Hide the localPhotos frame and show the other
+                //localPhotosScroll.setVisibility(View.VISIBLE);
+                localPhotosFrame.setVisibility(View.GONE);
+            }
+        }
+    }
 
 	public static void timerDelayRemoveDialog(long time, final Dialog d){
 	    new Handler().postDelayed(new Runnable() {
