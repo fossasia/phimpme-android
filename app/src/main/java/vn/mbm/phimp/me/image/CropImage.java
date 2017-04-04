@@ -201,7 +201,7 @@ public class CropImage extends MonitoredActivity
 		        	mBitmap=Bitmap.createScaledBitmap(mBitmap, mBitmap.getWidth()*4, mBitmap.getHeight()*4, false);
 	        				        	
 		        }
-				modifiedBitmap= flippedImaged = mBitmap;
+				modifiedBitmap = flippedImaged = mBitmapSave = mBitmap;
 				
 				Log.i("CropImage", "mBitmap Width :"+mBitmap.getWidth()+" mBitmap Height : "+mBitmap.getHeight());
 				mAspectX = extras.getInt("aspectX");
@@ -249,7 +249,7 @@ public class CropImage extends MonitoredActivity
 					new View.OnClickListener() {
 					    public void onClick(View v) 
 					    {
-					    	check=true;
+					    //	check=true;
 					    	try{
 					    		doRotate(mImageView, fromDegree, toDegree);
 								fromDegree = (toDegree == 360) ? 0 : toDegree;
@@ -275,7 +275,7 @@ public class CropImage extends MonitoredActivity
 					new View.OnClickListener() {
 					    public void onClick(View v) 
 					    {
-					    	check=true;
+					    //	check=true;
 					    	try{
 					    		modifiedBitmap = doVerticalFlip(modifiedBitmap);
 								flippedImaged = doVerticalFlip(flippedImaged);
@@ -301,7 +301,7 @@ public class CropImage extends MonitoredActivity
 					new View.OnClickListener() {
 					    public void onClick(View v) 
 					    {
-					    	check=true;
+					    //	check=true;
 					    	try{
 
 					    		modifiedBitmap = null;
@@ -331,7 +331,7 @@ public class CropImage extends MonitoredActivity
 					new View.OnClickListener() {
 					    public void onClick(View v) 
 					    {
-					    	check=true;
+					    //	check=true;
 					    	try{
 
 					    		modifiedBitmap = null;
@@ -357,7 +357,7 @@ public class CropImage extends MonitoredActivity
             findViewById(R.id.btnalpha).setOnClickListener(
                     new View.OnClickListener() {
                         public void onClick(View v) {
-                            check=true;
+                        //    check=true;
                             try {
                                 modifiedBitmap = null;
                                 modifiedBitmap = ImagesFilter.convertToAlpha(flippedImaged);
@@ -372,7 +372,7 @@ public class CropImage extends MonitoredActivity
             findViewById(R.id.btnpink).setOnClickListener(
                     new View.OnClickListener() {
                         public void onClick(View v) {
-                            check=true;
+                        //    check=true;
                             try {
                                 modifiedBitmap = null;
                                 modifiedBitmap = ImagesFilter.convertToPink(flippedImaged);
@@ -387,7 +387,7 @@ public class CropImage extends MonitoredActivity
             findViewById(R.id.btnpolaroid).setOnClickListener(
                     new View.OnClickListener() {
                         public void onClick(View v) {
-                            check=true;
+                        //    check=true;
                             try {
                                 modifiedBitmap = null;
                                 modifiedBitmap = ImagesFilter.convertToPolaroid(flippedImaged);
@@ -402,7 +402,7 @@ public class CropImage extends MonitoredActivity
             findViewById(R.id.btnblur).setOnClickListener(
                     new View.OnClickListener() {
                         public void onClick(View v) {
-                            check=true;
+                        //    check=true;
                             try {
                                 modifiedBitmap = null;
                                 modifiedBitmap = ImagesFilter.converttoBlur(flippedImaged,9,getApplicationContext());
@@ -417,7 +417,7 @@ public class CropImage extends MonitoredActivity
             findViewById(R.id.btnsharp).setOnClickListener(
                     new View.OnClickListener() {
                         public void onClick(View v) {
-                            check=true;
+                        //    check=true;
                             try {
                                 modifiedBitmap = null;
                                 modifiedBitmap = ImagesFilter.convertToSharp(flippedImaged,getApplicationContext());
@@ -432,7 +432,7 @@ public class CropImage extends MonitoredActivity
             findViewById(R.id.btnedge).setOnClickListener(
                     new View.OnClickListener() {
                         public void onClick(View v) {
-                            check=true;
+                        //    check=true;
                             try {
                                 modifiedBitmap = null;
                                 modifiedBitmap = ImagesFilter.convertToEdge(flippedImaged,getApplicationContext());
@@ -447,7 +447,7 @@ public class CropImage extends MonitoredActivity
             findViewById(R.id.btnfuzz).setOnClickListener(
                     new View.OnClickListener() {
                         public void onClick(View v) {
-                            check=true;
+                        //    check=true;
                             try {
                                 modifiedBitmap = null;
                                 modifiedBitmap = ImagesFilter.convertToFuzz(flippedImaged,getApplicationContext());
@@ -466,7 +466,7 @@ public class CropImage extends MonitoredActivity
 					new View.OnClickListener() {
 					    public void onClick(View v) 
 					    {
-					    	check=true;
+					    //	check=true;
 					    	try{
 					    		
 					    		modifiedBitmap = null;
@@ -492,20 +492,20 @@ public class CropImage extends MonitoredActivity
 					new View.OnClickListener() {
 					    public void onClick(View v)
 					    {
-					    	if(check==true){
+					    	//if(check==true){
 					    		onSaveClicked();
 					    		//finish();
 						    	Intent intent=new Intent(ctx, PhimpMe.class);
 						    	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						    	startActivity(intent);
-					    	}else{
-					    		
+					    	/*}else{
+
 					    		//finish();
 					    		Intent intent=new Intent(ctx, PhimpMe.class);
 						    	intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 						    	startActivity(intent);
-					    	}
-					    	
+					    	}*/
+
 					    }
 				});			
 			startFaceDetection();
@@ -774,7 +774,7 @@ public class CropImage extends MonitoredActivity
     	}
     	catch (OutOfMemoryError o) 
     	{
-    		mBitmapSave.recycle();
+    		if (mBitmapSave != null)mBitmapSave.recycle();
     		croppedImage.recycle();
     		setResult(RESULT_CANCELED,new Intent());
     		finish();
