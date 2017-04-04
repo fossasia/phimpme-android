@@ -329,8 +329,6 @@ public class ImagePickerActivity extends ImagePickerBase {
             showProgressDialog("Loading..");
         }
 
-
-
         @Override
         protected ArrayList<Image> doInBackground(@NonNull Void... voids) {
             ArrayList<Image> images = new ArrayList<>();
