@@ -3603,7 +3603,7 @@ public class newGallery extends Fragment {
 			notifyDataSetChanged();
 		}
 
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(final int position, View convertView, ViewGroup parent) {
 
 			final ViewHolder holder;
 			final ImageItem item = localImageList.get(position);
@@ -3643,32 +3643,24 @@ public class newGallery extends Fragment {
                     } else {
                         if (deletableList.isEmpty()) {
                             try {
-                                ImageItem item = localImageList.get(view.getId());
                                 Intent intent = new Intent();
                                 intent.setAction(Intent.ACTION_VIEW);
-                                final String[] columns = {MediaStore.Images.Media.DATA};
-                                Cursor imagecursor = getActivity().getContentResolver().query(
-                                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
-                                        MediaStore.Images.Media._ID + " = " + item.id,
-                                        null, MediaStore.Images.Media._ID);
-                                if (imagecursor != null && imagecursor.getCount() > 0) {
-                                    imagecursor.moveToPosition(0);
-                                    String path = imagecursor.getString(
-                                            imagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
-                                    imagecursor.close();
-                                    ArrayList<String> file = new ArrayList<>();
-                                    file.add(path);
-                                    Intent showImageIntent = new Intent();
-                                    showImageIntent.setClass(getActivity(), vn.mbm.phimp.me.gallery.PhimpMeGallery.class);
-                                    vn.mbm.phimp.me.gallery.PhimpMeGallery.setFileList(file);
-                                    showImageIntent.putExtra("aspectX", 0);
-                                    showImageIntent.putExtra("aspectY", 0);
-                                    ActivityOptionsCompat options = ActivityOptionsCompat.
+                                ArrayList<String> file = new ArrayList<>();
+                                for (int i = 0; i < localImageList.size(); i++) {
+                                    file.add(i, localImageList.get(i).path);
+                                }
+                                Intent showImageIntent = new Intent();
+                                showImageIntent.setClass(getActivity(), vn.mbm.phimp.me.gallery.PhimpMeGallery.class);
+                                vn.mbm.phimp.me.gallery.PhimpMeGallery.setFileList(file);
+                                showImageIntent.putExtra("aspectX", 0);
+                                showImageIntent.putExtra("aspectY", 0);
+                                showImageIntent.putExtra("index", position);
+                                ActivityOptionsCompat options = ActivityOptionsCompat.
                                             makeSceneTransitionAnimation(getActivity(), (View)holder.imageview, "gridanim");
                                     showImageIntent.putExtra("scale", true);
                                     showImageIntent.putExtra("activityName", "LocalPhotos");
                                     startActivity(showImageIntent,options.toBundle());
-                                }
+
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
