@@ -2,6 +2,9 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Phimpme.Base">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="Phimpme.Base" parent="Theme.AppCompat.Light.NoActionBar">
@@ -20,5 +23,6 @@
         <item name="android:windowEnterAnimation">@anim/slide_in_left</item>
         <item name="android:windowExitAnimation">@anim/slide_out_right</item>
     </style>
+
 
 </resources>
