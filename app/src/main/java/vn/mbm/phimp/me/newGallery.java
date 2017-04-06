@@ -515,6 +515,8 @@ public class newGallery extends Fragment {
                         });
                 // Create the AlertDialog object and show it
                 deleteAlert.create().show();
+                return true;
+
             case R.id.menu_gallery_select_all:
                 photosAdapter.selectAllImages();
                 int imgCount = localImageList.size();
@@ -532,9 +534,11 @@ public class newGallery extends Fragment {
                 return super.onOptionsItemSelected(item);
         }
     }
- public boolean checkdeletablelist(){
-     return deletableList.isEmpty();
- }
+
+    public boolean checkdeletablelist() {
+        return deletableList.isEmpty();
+    }
+
     private void deleteCheckedImages() {
         for (String path : deletableList) {
             try {
