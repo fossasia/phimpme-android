@@ -32,6 +32,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.Gallery;
@@ -114,6 +115,12 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
         //ExpandableListAdapter menuadapter = new MyExpandableListAdapter();
         //menu.setAdapter(menuadapter);
         gallery.setSelection(index);
+        gallery.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                animateFAB();
+            }
+        });
         /*
         btnDelete  = (ImageButton)findViewById(R.id.btnDelete);
         if (from != null && from.equals("local")){
@@ -530,5 +537,8 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
 
     public void onBackPressed(){
         super.onBackPressed();
+        if(isFabOpen){
+            animateFAB();
+        }
     }
 }
