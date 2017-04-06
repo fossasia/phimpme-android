@@ -306,11 +306,6 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                 builder.show();
                 break;
             case R.id.fabshare:
-                /*Intent shareIntent=new Intent();
-                shareIntent.setClass(PhimpMeGallery.this, SendFileActivity.class);
-
-                startActivityForResult(shareIntent, 1);
-                Log.d("Pawan", "Share");*/
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
                 sendIntent.setType("image/*");
