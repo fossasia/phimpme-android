@@ -15,13 +15,20 @@
         android:icon="@drawable/ic_delete_white_24dp"
         android:orderInCategory="2"
         android:title="@string/menu_title_delete"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/menu_gallery_deselect_selected"
         android:icon="@drawable/ic_deselect_white_24dp"
         android:orderInCategory="3"
         android:title="@string/menu_title_deselect"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/menu_gallery_select_all"
+        android:icon="@drawable/ic_select_all_white_24dp"
+        android:orderInCategory="3"
+        android:title="@string/menu_title_select"
         app:showAsAction="ifRoom"/>
 
 </menu>
