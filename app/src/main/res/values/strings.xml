@@ -658,4 +658,11 @@
     <string name="dialog_message">Do you want to exit and discard changes?</string>
     <string name="dialog_title">Confirm</string>
 
+    <!-- Whitelisting Folder View -->
+    <string name="add_more_folders">Add More Folders</string>
+    <string name="skipped_folders">Skipped Folders</string>
+    <string name="folder_settings">Folder Settings</string>
+    <string name="whitelist_folders">WhiteList Folders</string>
+    <string name="whitelist_folders_message">Click to WhiteList Folders</string>
+
 </resources>

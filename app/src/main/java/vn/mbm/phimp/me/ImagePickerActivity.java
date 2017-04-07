@@ -154,6 +154,15 @@ public class ImagePickerActivity extends ImagePickerBase {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(alertDialog != null){
+            alertDialog.dismiss();
+            alertDialog = null;
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             handleBackPress();

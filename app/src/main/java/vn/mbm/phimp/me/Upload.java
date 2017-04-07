@@ -23,6 +23,7 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
@@ -65,6 +66,7 @@ import org.wordpress.android.NewAccount;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -92,6 +94,7 @@ import vn.mbm.phimp.me.services.TwitterServices;
 import vn.mbm.phimp.me.services.VKServices;
 import vn.mbm.phimp.me.services.Wordpress;
 import vn.mbm.phimp.me.utils.Commons;
+import vn.mbm.phimp.me.utils.FileUtils;
 import vn.mbm.phimp.me.utils.Image;
 import vn.mbm.phimp.me.utils.Params;
 import vn.mbm.phimp.me.utils.PrefManager;
@@ -215,6 +218,7 @@ public class Upload extends android.support.v4.app.Fragment {
     // Upload image list and temporary list to store removable items
     public static ArrayList<String> uploadGridList = new ArrayList<>();
     private ArrayList<String> removableList;
+    private ArrayList<String> uploadedImageHashList;
 
     private static String longtitude = "", latitude = "", title = "";
 
@@ -237,6 +241,8 @@ public class Upload extends android.support.v4.app.Fragment {
 
     ProgressDialog gpsloading;
 
+    private Toolbar uploadToolBar;
+
     long totalSize;
 
     @Nullable
@@ -247,6 +253,8 @@ public class Upload extends android.support.v4.app.Fragment {
         int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
         decorView.setSystemUiVisibility(uiOptions);
 
+
+
         return inflater.inflate(R.layout.upload, container, false);
     }
 
@@ -256,6 +264,10 @@ public class Upload extends android.support.v4.app.Fragment {
         color = getActivity().getResources().getColor(R.color.icongrey);
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
+
+
+        uploadToolBar = (Toolbar) getView().findViewById(R.id.toolbar_upload);
+        uploadToolBar.setTitle("Upload Photos");
 
         final ShareDialog shareDialog = new ShareDialog(getActivity());
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -275,6 +287,8 @@ public class Upload extends android.support.v4.app.Fragment {
         panelLable.setText(R.string.upload);
         // Initiate removable upload item list
         removableList = new ArrayList<>();
+        // Initiate upload image hash list
+        uploadedImageHashList = new ArrayList<>();
         // Initiate clear panel buttons
         selectAllBtn = (ImageView) view.findViewById(R.id.btnSelectAll);
         selectAllBtn.setOnClickListener(new OnClickListener() {
@@ -319,6 +333,14 @@ public class Upload extends android.support.v4.app.Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 if (!removableList.isEmpty()) {
                                     uploadGridList.removeAll(removableList);
+                                    for(String imagePath : removableList) {
+                                        File imageFile = new File(imagePath);
+                                        try {
+                                            uploadedImageHashList.remove(FileUtils.getHash(imageFile));
+                                        } catch (NoSuchAlgorithmException | IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
                                     removableList.clear();
                                     ((ImageAdapter) listPhotoUpload.getAdapter()).notifyDataSetChanged();
                                     panelLable.setText(getResources().getString(R.string.upload));
@@ -1396,11 +1418,19 @@ public class Upload extends android.support.v4.app.Fragment {
             case TYPE_MULTI_PICKER: {
                 if (resultCode == Activity.RESULT_OK) {
                     ArrayList<Image> imagesList = data.getParcelableArrayListExtra(vn.mbm.phimp.me.utils.Constants.KEY_BUNDLE_LIST);
-                    if (imagesList.size() > 0) {
+                    try {
+                        if (imagesList.size() > 0) {
                         for (int i = 0; i < imagesList.size(); i++) {
-                            uploadGridList.add(imagesList.get(i).imagePath);
+                            if (!uploadedImageHashList.contains(imagesList.get(i).getImageHash())) {
+                                uploadGridList.add(imagesList.get(i).imagePath);
+                                uploadedImageHashList.add(imagesList.get(i).getImageHash());
+                            }
                         }
                         listPhotoUpload.setAdapter(new ImageAdapter(getContext()));
+                        }
+                    }
+                     catch (IOException | NoSuchAlgorithmException e) {
+                        e.printStackTrace();
                     }
                 }
                 break;

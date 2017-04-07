@@ -11,6 +11,7 @@ import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.gesture.GestureOverlayView;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -44,10 +45,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
 import vn.mbm.phimp.me.database.AccountDBAdapter;
 import vn.mbm.phimp.me.database.TumblrDBAdapter;
+import vn.mbm.phimp.me.folderchooser.PhoneMedia;
 import vn.mbm.phimp.me.gallery.PhimpMeGallery;
 import vn.mbm.phimp.me.utils.Commons;
+import vn.mbm.phimp.me.utils.FolderChooserPrefSettings;
 import vn.mbm.phimp.me.utils.RSSPhotoItem;
 import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
 
@@ -501,7 +506,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
          */
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         MAX_DISPLAY_PHOTOS = settings.getInt("gallery_max_display_photos", getResources().getInteger(R.integer.gallery_max_display_photos));
-        MAX_FILESIZE_DOWNLOAD = settings.getInt("max_filesize_download", getResources().getInteger(R.integer.max_filesize_download));
+        MAX_FILESIZE_DOWNLOAD = FolderChooserPrefSettings.getInstance().getMaxFileSize();
         FEEDS_LOCAL_GALLERY = settings.getBoolean(FEEDS_LOCAL_GALLERY_TAG, true);
         /*FEEDS_LIST_FLICKR_PUBLIC = settings.getBoolean(FEEDS_LIST_FLICKR_PUBLIC_TAG, false);
         FEEDS_LIST_FLICKR_RECENT = settings.getBoolean(FEEDS_LIST_FLICKR_RECENT_TAG, false);       
@@ -734,7 +739,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt("gallery_max_display_photos", MAX_DISPLAY_PHOTOS);
-        editor.putInt("max_filesize_download", MAX_FILESIZE_DOWNLOAD);
+        FolderChooserPrefSettings.getInstance().setMaxFileSize(MAX_FILESIZE_DOWNLOAD);
         editor.putBoolean(FEEDS_LIST_YAHOO_NEWS_TAG, FEEDS_LIST_YAHOO_NEWS);
         editor.putBoolean(FEEDS_LIST_FLICKR_PUBLIC_TAG, FEEDS_LIST_FLICKR_PUBLIC);
         editor.putBoolean(FEEDS_LIST_FLICKR_RECENT_TAG, FEEDS_LIST_FLICKR_RECENT);
@@ -912,7 +917,11 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
 
             }
             newGallery.update_number++;
+
         }
+
+       PhoneMedia.getUnanalysedFiles();
+
     }
 
     public static void stopThread() {

@@ -1,5 +1,6 @@
 package vn.mbm.phimp.me.utils;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -8,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
@@ -48,6 +50,11 @@ public class Utils {
         snackbar.show();
     }
 
+    public static boolean hasSDCardPermissions(Context context) {
+        return ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED;
+    }
+
     public static void initToolBar(AppCompatActivity activity, Toolbar toolbar, boolean homeUpIndicator){
         activity.setSupportActionBar(toolbar);
         final ActionBar ab = activity.getSupportActionBar();
@@ -64,6 +71,10 @@ public class Utils {
         } else {
             return false;
         }
+    }
+
+    public static int compare(long lhs, long rhs) {
+        return lhs < rhs ? -1 : (lhs == rhs ? 0 : 1);
     }
 
     public static boolean hasCameraFlashHardware(Context context) {
