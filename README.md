@@ -10,7 +10,7 @@ Phimp.me is a Photo App for Android that aims to replace proprietary photo appli
 Please join our chat channel on Slack: http://fossasia.slack.com/messages/phimpme/. You need to invite yourself first here: http://fossasia-slack.herokuapp.com/
 
 ## How to Contribute
-This is an Open Source project and we would be happy to see contributors who report bugs and file feature requests submitting pull requests as well.This project adheres to the Contributor Covenant [code of conduct]((https://github.com/jsroyal/phimpme-android/blob/development/CONTRIBUTING.md)).By participating, you are expected to uphold this code style. Please report issues here https://github.com/fossasia/phimpme-android/issues
+This is an Open Source project and we would be happy to see contributors who report bugs and file feature requests submitting pull requests as well.This project adheres to the Contributor Covenant [code of conduct](https://github.com/fossasia/phimpme-android/blob/development/CONTRIBUTING.md). By participating, you are expected to uphold this code style. Please report issues here https://github.com/fossasia/phimpme-android/issues
 
 ### Branch Policy
 We have the following branches
