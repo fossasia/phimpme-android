@@ -34,6 +34,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -83,11 +84,14 @@ import vn.mbm.phimp.me.utils.PrefManager;
 import vn.mbm.phimp.me.utils.RSSUtil;
 
 import static android.os.Environment.getExternalStorageDirectory;
+import static com.facebook.FacebookSdk.getApplicationContext;
 import static vn.mbm.phimp.me.PhimpMe.PREFS_NAME;
 
 
 public class Settings extends Fragment
 {
+    public  RadioButton radiotDarkBtn ;
+    public static RadioButton radiotLightBtn ;
 	private final int CONTEXT_MENU_ID = 1;
 	private final int DIALOG_FILE_SIZE_SETTINGS = 2;
 	private final int DIALOG_ADD_ACCOUNT_DRUPAL = 3;
@@ -189,6 +193,8 @@ public class Settings extends Fragment
 		Resources res = getResources();
 
 		ctx = getContext();
+		//change theme
+		changeTheme();
 
 		PayPal pp = PayPal.getInstance();
 
@@ -223,7 +229,7 @@ public class Settings extends Fragment
 			}
 			btnDelete = (ImageView)getView().findViewById(R.id.deletebtn);
 
-            btnDelete.setColorFilter(color);
+
 			btnDelete.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -301,7 +307,6 @@ public class Settings extends Fragment
 		txtMaxPhotoSize = (TextView) getView().findViewById(R.id.txtMaxFilesizeDownload);
 		txtMaxPhotoSize.setText(PhimpMe.MAX_FILESIZE_DOWNLOAD + "");
 		btnSettingsMaxFilesize = (ImageView) getView().findViewById(R.id.imgbtnSettingsMaxFilesize);
-		btnSettingsMaxFilesize.setColorFilter(color);
         btnSettingsMaxFilesize.setOnClickListener(new OnClickListener()
 		{
 			@Override
@@ -328,7 +333,6 @@ public class Settings extends Fragment
 		} );
 
         btnSettingsWhiteListFolders = (ImageView) getView().findViewById(R.id.imgbtnSettingsWhitelistFolders);
-        btnSettingsWhiteListFolders.setColorFilter(color);
         btnSettingsWhiteListFolders.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -451,8 +455,39 @@ public class Settings extends Fragment
 
 	}
 
+    private void changeTheme() {
+        radiotDarkBtn = (RadioButton) getView().findViewById(R.id.radiotDarkBtn);
+        radiotLightBtn = (RadioButton)getView().findViewById(R.id.radiotLightBtn);
 
-	private class btnDeleteListener implements OnClickListener
+        if(Utility.getTheme(getApplicationContext()) == PhimpMe.ThemeDark) {
+            radiotLightBtn.setChecked(false);
+            radiotDarkBtn.setChecked(true);
+
+        }    else  {
+
+            radiotDarkBtn.setChecked(false);
+            radiotLightBtn.setChecked(true);
+        }
+
+        radiotDarkBtn.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+
+                Utility.setTheme(getApplicationContext(), 2);
+                recreateActivity();
+            }
+        });
+
+        radiotLightBtn.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+
+                Utility.setTheme(getApplicationContext(), 1);
+                recreateActivity();
+            }
+        });
+    }
+
+
+    private class btnDeleteListener implements OnClickListener
 	{
 		private String id;
 		private String name;
@@ -802,6 +837,12 @@ public class Settings extends Fragment
 		}
 		return true;
 	}
+    private void recreateActivity() {
+        Intent i = getApplicationContext().getPackageManager()
+                .getLaunchIntentForPackage(getApplicationContext().getPackageName() );
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK );
+        startActivity(i);
+    }
 	/*@Override
 	public boolean onKeyDown(int keycode, KeyEvent event)
     {
