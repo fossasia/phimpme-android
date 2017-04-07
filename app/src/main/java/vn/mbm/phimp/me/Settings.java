@@ -838,8 +838,7 @@ public class Settings extends Fragment
 		return true;
 	}
     private void recreateActivity() {
-        Intent i = getApplicationContext().getPackageManager()
-                .getLaunchIntentForPackage(getApplicationContext().getPackageName() );
+        Intent i = new Intent(getApplicationContext(),PhimpMe.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK );
         startActivity(i);
     }
