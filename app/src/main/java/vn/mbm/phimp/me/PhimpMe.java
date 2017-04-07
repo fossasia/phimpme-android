@@ -144,6 +144,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     public static final String FEDDS_LIST_MYSERVICES_TAG5 = "feeds_list_myservices";
     public static String MY_FEED_URL = "";
 
+
     public static boolean FEEDS_LIST_500PX_PRIVATE;
     public static final String FEEDS_LIST_500PX_PRIVATE_TAG = "feeds_list_500px_private";
     public static boolean FEEDS_LIST_500PX_PUBLIC;
@@ -191,7 +192,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     //private GestureDetector gestureScanner;
     //View.OnTouchListener gestureListener;
     public static int width, height;
-
+    public final static int ThemeDark = 2;
     HomeScreenState currentScreen = HomeScreenState.GALLERY;
 
     @SuppressWarnings("unused")
@@ -200,6 +201,11 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
 
         super.onCreate(savedInstanceState);
         ctx = this;
+
+        //set dark theme
+        if (Utility.getTheme(getApplicationContext()) == ThemeDark) {
+        setTheme(R.style.AppTheme_Dark);}
+
         Log.d("thong", "PhimpMe - onCreate()");
         // The following line triggers the initialization of ACRA
         //ACRA.init((Application) ctx.getApplicationContext());
