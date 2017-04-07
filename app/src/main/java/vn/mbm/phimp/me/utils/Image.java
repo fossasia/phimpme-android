@@ -4,6 +4,10 @@ import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.File;
+import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+
 /**
  * Created by dynamitechetan on 14/03/2017.
  */
@@ -39,6 +43,11 @@ public class Image implements Parcelable{
         this.uri = in.readParcelable(Uri.class.getClassLoader());
         this.imagePath = in.readString();
         this.isPortraitImage = in.readByte() != 0;
+    }
+
+    public String getImageHash() throws IOException, NoSuchAlgorithmException {
+        File imageFile = new File(imagePath);
+        return FileUtils.getHash(imageFile);
     }
 
     public static final Creator<Image> CREATOR = new Creator<Image>() {
