@@ -105,8 +105,7 @@ public class CropImage extends MonitoredActivity
 
     private final int GET_POSITION_ON_MAP = 5;
     private String mImagePath;
-    static int position ;
-   // private String activityName;
+    static int position;
     ProgressDialog gpsloading;
     ImageButton btnUseMap;
     EditText txtPhotoTitle;	
@@ -119,239 +118,227 @@ public class CropImage extends MonitoredActivity
 
 
     @Override
-    public void onCreate(Bundle icicle) 
-    {
-    	try
-    	{
-    		super.onCreate(icicle);
-    		mContentResolver = getContentResolver();
-    		ctx = this;    		
-    		Log.d("crop image","start");
-    		requestWindowFeature(Window.FEATURE_NO_TITLE);
-    		setContentView(R.layout.cropimage);
-    		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);		
-    		btnSave=(Button)findViewById(R.id.save);
-    		
-    		txtPhotoTitle = (EditText) findViewById(R.id.txtUploadPhotoTitle);
-    		
-    		txtLongtitude = (EditText) findViewById(R.id.txtUploadPhotoLongtitude);
-    		
-    		txtLatitude = (EditText) findViewById(R.id.txtUploadPhotoLatitude);
-    		
-    		txtTags = (EditText) findViewById(R.id.txtUploadPhotoTags);
-    		btnUseMap = (ImageButton) findViewById(R.id.btnUploadPhotoPutPos);
-    		/*btnUseMap.setOnClickListener(new OnClickListener() {
-    			
-    			@Override
-    			public void onClick(View v) 
-    			{
-    				Intent _itent = new Intent(ctx, UploadMap.class);
-    				
-    				_itent.putExtra("latitude", txtLatitude.getText().toString());
-    				_itent.putExtra("longitude", txtLongtitude.getText().toString());
-    				startActivityForResult(_itent, GET_POSITION_ON_MAP);
-    			}
-    		});*/
-    		mImageView = (CropImageView) findViewById(R.id.image);
-    		gpsloading = new ProgressDialog(ctx);
-    		gpsloading.setCancelable(true);
-    		gpsloading.setCanceledOnTouchOutside(false);
-    		gpsloading.setTitle(getString(R.string.loading));
-    		gpsloading.setMessage(getString(R.string.infor_upload_loading_current_position));
-    		gpsloading.setIndeterminate(true);
-    		Log.d("cropimage","cropimage running..");
-    		//showStorageToast(this);
+	public void onCreate(Bundle icicle) {
+		try {
+			super.onCreate(icicle);
+			mContentResolver = getContentResolver();
+			ctx = this;
+			Log.d("crop image", "start");
+			requestWindowFeature(Window.FEATURE_NO_TITLE);
+			setContentView(R.layout.cropimage);
+			setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+			btnSave = (Button) findViewById(R.id.save);
+
+			txtPhotoTitle = (EditText) findViewById(R.id.txtUploadPhotoTitle);
+
+			txtLongtitude = (EditText) findViewById(R.id.txtUploadPhotoLongtitude);
+
+			txtLatitude = (EditText) findViewById(R.id.txtUploadPhotoLatitude);
+
+			txtTags = (EditText) findViewById(R.id.txtUploadPhotoTags);
+			btnUseMap = (ImageButton) findViewById(R.id.btnUploadPhotoPutPos);
+            /*btnUseMap.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v)
+                {
+                    Intent _itent = new Intent(ctx, UploadMap.class);
+
+                    _itent.putExtra("latitude", txtLatitude.getText().toString());
+                    _itent.putExtra("longitude", txtLongtitude.getText().toString());
+                    startActivityForResult(_itent, GET_POSITION_ON_MAP);
+                }
+            });*/
+			mImageView = (CropImageView) findViewById(R.id.image);
+			gpsloading = new ProgressDialog(ctx);
+			gpsloading.setCancelable(true);
+			gpsloading.setCanceledOnTouchOutside(false);
+			gpsloading.setTitle(getString(R.string.loading));
+			gpsloading.setMessage(getString(R.string.infor_upload_loading_current_position));
+			gpsloading.setIndeterminate(true);
+			Log.d("cropimage", "cropimage running..");
+			//showStorageToast(this);
 			Intent intent = getIntent();
 			Bundle extras = intent.getExtras();
-			if (extras != null) 
-			{
-				if (extras.getString("circleCrop") != null) 
-				{
+			if (extras != null) {
+				if (extras.getString("circleCrop") != null) {
 					mCircleCrop = true;
 					mAspectX = 1;
 					mAspectY = 1;
 				}
-				
+
 				mImagePath = extras.getString("image-path");
 				p = mImagePath.split(";");
-				
-				if (p.length == 2){
+
+				if (p.length == 2) {
 					JSONObject js = new JSONObject(p[1]);
 					txtLatitude.setText(js.getString("lati"));
 					txtLongtitude.setText(js.getString("logi"));
 					txtPhotoTitle.setText(js.getString("name"));
 					txtTags.setText(js.getString("tags"));
 				}
-				Log.d("path",mImagePath);
+				Log.d("path", mImagePath);
 				//mSaveUri = getImageUri(mImagePath);
 				Date date = new Date();
-				Long longTime = new Long(date.getTime()/1000);
-				newpath = PhimpMe.DataDirectory+"/PhimpMe_Photo_Effect"+"/tmp_"+longTime+".jpg";
+				Long longTime = new Long(date.getTime() / 1000);
+				newpath = PhimpMe.DataDirectory + "/PhimpMe_Photo_Effect" + "/tmp_" + longTime + ".jpg";
 				mSaveUri = getImageUri(newpath);
-				Log.d("mSaveUri",mSaveUri.toString());
-				Log.d("p[0]",p[0]);	
-				
+				Log.d("mSaveUri", mSaveUri.toString());
+				Log.d("p[0]", p[0]);
+
 				BitmapFactory.Options options = new BitmapFactory.Options();
-		        options.inSampleSize = 4;		    	
-		        mBitmap = BitmapFactory.decodeFile( p[0], options );
-		        if(mBitmap.getWidth() %2 != 0||mBitmap.getHeight() %2 != 0){
-		        	//bitmap width , height must even
-		        	Log.i("CropImage","mBitmap width or height not even");			        	
-		        	mBitmap=Bitmap.createScaledBitmap(mBitmap, mBitmap.getWidth()*4, mBitmap.getHeight()*4, false);
-	        				        	
-		        }
-				modifiedBitmap = flippedImaged = mBitmapSave = mBitmap;
-				
-				Log.i("CropImage", "mBitmap Width :"+mBitmap.getWidth()+" mBitmap Height : "+mBitmap.getHeight());
+				options.inSampleSize = 4;
+				mBitmap = BitmapFactory.decodeFile(p[0], options);
+				if (mBitmap.getWidth() % 2 != 0 || mBitmap.getHeight() % 2 != 0) {
+					//bitmap width , height must even
+					Log.i("CropImage", "mBitmap width or height not even");
+					mBitmap = Bitmap.createScaledBitmap(mBitmap, mBitmap.getWidth() * 4, mBitmap.getHeight() * 4, false);
+
+				}
+				modifiedBitmap = flippedImaged = mBitmap;
+
+				Log.i("CropImage", "mBitmap Width :" + mBitmap.getWidth() + " mBitmap Height : " + mBitmap.getHeight());
 				mAspectX = extras.getInt("aspectX");
-			    mAspectY = extras.getInt("aspectY");
-			    mOutputX = extras.getInt("outputX");
-			    mOutputY = extras.getInt("outputY");
-			    mScale = extras.getBoolean("scale", true);
-			    mScaleUp = extras.getBoolean("scaleUpIfNeeded", true);	
-			    position = extras.getInt("position");
+				mAspectY = extras.getInt("aspectY");
+				mOutputX = extras.getInt("outputX");
+				mOutputY = extras.getInt("outputY");
+				mScale = extras.getBoolean("scale", true);
+				mScaleUp = extras.getBoolean("scaleUpIfNeeded", true);
+				position = extras.getInt("position");
 			}
-			if (mBitmap == null) 
-			{
-			    Log.d("null", "finish!!!");
+			if (mBitmap == null) {
+				Log.d("null", "finish!!!");
 				setResult(RESULT_CANCELED);
-			    finish();
-			    return;
+				finish();
+				return;
 			}
-		
+
 			// Make UI fullscreen.
 			getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 			findViewById(R.id.discard).setOnClickListener(
-				new View.OnClickListener() 
-				{
-				    public void onClick(View v) 
-				    {
-				    	if (btnSave.getVisibility() != View.VISIBLE)
-				    		{
-				    		//mBitmapSave.recycle();
-				    		//mBitmap.recycle();
-				    		//mBitmapResize.recycle();
-				    		//modifiedBitmap.recycle();
-				    		//flippedImaged.recycle();
-				    		}
-				    		setResult(RESULT_CANCELED);
-				    		//System.exit(0);
-							finish();				    					    								
-				    }
-				});
-		
-			/*
-			 * Thong - Add event for button rotate image
-			 */
+					new View.OnClickListener() {
+						public void onClick(View v) {
+							if (btnSave.getVisibility() != View.VISIBLE) {
+								//mBitmapSave.recycle();
+								//mBitmap.recycle();
+								//mBitmapResize.recycle();
+								//modifiedBitmap.recycle();
+								//flippedImaged.recycle();
+							}
+							setResult(RESULT_CANCELED);
+							//System.exit(0);
+							finish();
+						}
+					});
+
+            /*
+             * Thong - Add event for button rotate image
+             */
 			findViewById(R.id.btnRotateLeftRight).setOnClickListener(
 					new View.OnClickListener() {
-					    public void onClick(View v) 
-					    {
-					    	try{
-					    		doRotate(mImageView, fromDegree, toDegree);
+						public void onClick(View v) {
+							try {
+								doRotate(mImageView, fromDegree, toDegree);
 								fromDegree = (toDegree == 360) ? 0 : toDegree;
 								toDegree += 90;
 								if (toDegree > 360) {
 									toDegree = 90;
 								}
-								
-					    	}catch(OutOfMemoryError o){
-					    		o.printStackTrace();
-					    	}
-					    	
-					    }
+
+							} catch (OutOfMemoryError o) {
+								o.printStackTrace();
+							}
+
+						}
 					});
-			/*
-			 * Thong - Add event for button rotate image - End
-			 */
-						
-			/*
-			 * Danh - Add event for button rotate top-down image
-			 */
+            /*
+             * Thong - Add event for button rotate image - End
+             */
+
+            /*
+             * Danh - Add event for button rotate top-down image
+             */
 			findViewById(R.id.btnRotateTopDown).setOnClickListener(
 					new View.OnClickListener() {
-					    public void onClick(View v) 
-					    {
-					    	try{
-					    		modifiedBitmap = doVerticalFlip(modifiedBitmap);
+						public void onClick(View v) {
+							try {
+								modifiedBitmap = doVerticalFlip(modifiedBitmap);
 								flippedImaged = doVerticalFlip(flippedImaged);
 								mImageView.setImageBitmap(changeBrightness(
 										modifiedBitmap, brightnessValue));
 								mBitmapSave = modifiedBitmap;
-								
-					    	}catch(OutOfMemoryError o){
-					    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-					    		//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
-					    		modifiedBitmap=flippedImaged=mBitmapResize;
-					    	}
-					    	
-					    }
+
+							} catch (OutOfMemoryError o) {
+								mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight() / 4), (mBitmap.getWidth() / 4));
+								//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
+								modifiedBitmap = flippedImaged = mBitmapResize;
+							}
+
+						}
 					});
-			/*
-			 * Danh - Add event for button rotate top-down image - End
-			 */
-			/*
-			 * Danh - Add event for button black white image effect
-			 */
+            /*
+             * Danh - Add event for button rotate top-down image - End
+             */
+            /*
+             * Danh - Add event for button black white image effect
+             */
 			findViewById(R.id.btnBlackAndWhite).setOnClickListener(
 					new View.OnClickListener() {
-					    public void onClick(View v) 
-					    {
-					    	try{
+						public void onClick(View v) {
+							try {
 
-					    		modifiedBitmap = null;
+								modifiedBitmap = null;
 								modifiedBitmap = ImagesFilter.convertToBW(flippedImaged);
 								mImageView.setImageBitmap(changeBrightness(
 										modifiedBitmap, brightnessValue));
 								mBitmapSave = modifiedBitmap;
-								
-					    	}catch(OutOfMemoryError o){								
 
-					    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-					    		//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
-					    		modifiedBitmap=flippedImaged=mBitmapResize;
-				    		
+							} catch (OutOfMemoryError o) {
 
-					    	}
-					    	
-					    }
+								mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight() / 4), (mBitmap.getWidth() / 4));
+								//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
+								modifiedBitmap = flippedImaged = mBitmapResize;
+
+
+							}
+
+						}
 					});
-			/*
-			 * Danh - Add event for button black white image effect - End
-			 */
-			/*
-			 * Danh - Add event for button Sepia image effect
-			 */
+            /*
+             * Danh - Add event for button black white image effect - End
+             */
+            /*
+             * Danh - Add event for button Sepia image effect
+             */
 			findViewById(R.id.btnSaphia).setOnClickListener(
 					new View.OnClickListener() {
-					    public void onClick(View v) 
-					    {
-					    	try{
+						public void onClick(View v) {
+							try {
 
-					    		modifiedBitmap = null;
+								modifiedBitmap = null;
 								modifiedBitmap = ImagesFilter.convertToSepia(flippedImaged);
 								mImageView.setImageBitmap(changeBrightness(
 										modifiedBitmap, brightnessValue));
 								mBitmapSave = modifiedBitmap;
-								
-					    	}catch(OutOfMemoryError o){
-					    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-					    		//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
-								modifiedBitmap=flippedImaged=mBitmapResize;
 
-					    	}
-					    
-					    }
+							} catch (OutOfMemoryError o) {
+								mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight() / 4), (mBitmap.getWidth() / 4));
+								//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
+								modifiedBitmap = flippedImaged = mBitmapResize;
+
+							}
+
+						}
 					});
 
-			/*
-			 * Danh - Add event for button Sepia image effect - End
-			 */
+            /*
+             * Danh - Add event for button Sepia image effect - End
+             */
 
             findViewById(R.id.btnalpha).setOnClickListener(
                     new View.OnClickListener() {
                         public void onClick(View v) {
+
                             try {
                                 modifiedBitmap = null;
                                 modifiedBitmap = ImagesFilter.convertToAlpha(flippedImaged);
@@ -380,6 +367,7 @@ public class CropImage extends MonitoredActivity
             findViewById(R.id.btnpolaroid).setOnClickListener(
                     new View.OnClickListener() {
                         public void onClick(View v) {
+
                             try {
                                 modifiedBitmap = null;
                                 modifiedBitmap = ImagesFilter.convertToPolaroid(flippedImaged);
@@ -394,6 +382,7 @@ public class CropImage extends MonitoredActivity
             findViewById(R.id.btnblur).setOnClickListener(
                     new View.OnClickListener() {
                         public void onClick(View v) {
+
                             try {
                                 modifiedBitmap = null;
                                 modifiedBitmap = ImagesFilter.converttoBlur(flippedImaged,9,getApplicationContext());
@@ -408,6 +397,7 @@ public class CropImage extends MonitoredActivity
             findViewById(R.id.btnsharp).setOnClickListener(
                     new View.OnClickListener() {
                         public void onClick(View v) {
+
                             try {
                                 modifiedBitmap = null;
                                 modifiedBitmap = ImagesFilter.convertToSharp(flippedImaged,getApplicationContext());
@@ -422,6 +412,7 @@ public class CropImage extends MonitoredActivity
             findViewById(R.id.btnedge).setOnClickListener(
                     new View.OnClickListener() {
                         public void onClick(View v) {
+
                             try {
                                 modifiedBitmap = null;
                                 modifiedBitmap = ImagesFilter.convertToEdge(flippedImaged,getApplicationContext());
@@ -436,6 +427,7 @@ public class CropImage extends MonitoredActivity
             findViewById(R.id.btnfuzz).setOnClickListener(
                     new View.OnClickListener() {
                         public void onClick(View v) {
+
                             try {
                                 modifiedBitmap = null;
                                 modifiedBitmap = ImagesFilter.convertToFuzz(flippedImaged,getApplicationContext());
@@ -448,49 +440,48 @@ public class CropImage extends MonitoredActivity
                         }
                     });
 			/*
-			 * Danh - Add event for button Negative image effect
-			 */
-			findViewById(R.id.btnNegative).setOnClickListener(
-					new View.OnClickListener() {
-					    public void onClick(View v) 
-					    {
-					    	try{
-					    		
-					    		modifiedBitmap = null;
-								modifiedBitmap = ImagesFilter.convertToNegative(flippedImaged);
-								mImageView.setImageBitmap(changeBrightness(
-										modifiedBitmap, brightnessValue));
-								mBitmapSave = modifiedBitmap;
-								
-					    	}catch(OutOfMemoryError o){
+             * Danh - Add event for button Negative image effect
+             */
+            findViewById(R.id.btnNegative).setOnClickListener(
+                    new View.OnClickListener() {
+                        public void onClick(View v) {
 
-					    		mBitmapResize=getResizedBitmap(mBitmap, (mBitmap.getHeight()/4), (mBitmap.getWidth()/4));
-					    		//mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
-					    		modifiedBitmap=flippedImaged=mBitmapResize;
+                            try {
 
-					    	}
-					    	
-					    }
-					});
-			/*
-			 * Danh - Add event for button Negative image effect - End
-			 */
-			btnSave.setOnClickListener(
-					new View.OnClickListener() {
-					    public void onClick(View v)
-					    {
-                            onSaveClicked();
-                            //finish();
-                            Intent intent=new Intent(ctx, PhimpMe.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
-					    }
-				});			
-			startFaceDetection();
-	    }
-    	catch (Exception e)
-    	{
-    	}
+                                modifiedBitmap = null;
+                                modifiedBitmap = ImagesFilter.convertToNegative(flippedImaged);
+                                mImageView.setImageBitmap(changeBrightness(
+                                        modifiedBitmap, brightnessValue));
+                                mBitmapSave = modifiedBitmap;
+
+                            } catch (OutOfMemoryError o) {
+
+                                mBitmapResize = getResizedBitmap(mBitmap, (mBitmap.getHeight() / 4), (mBitmap.getWidth() / 4));
+                                //mBitmapResize=getResizedBitmap(p[0], (mBitmap.getHeight()/2), (mBitmap.getWidth()/2));
+                                modifiedBitmap = flippedImaged = mBitmapResize;
+
+                            }
+
+                        }
+                    });
+            /*
+             * Danh - Add event for button Negative image effect - End
+             */
+            btnSave.setOnClickListener(
+                    new View.OnClickListener() {
+                        public void onClick(View v) {
+
+                                onSaveClicked();
+                                //finish();
+                                Intent intent = new Intent(ctx, PhimpMe.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+
+                        }
+                    });
+            startFaceDetection();
+        } catch (Exception e) {
+        }
     }
 
     @Override
