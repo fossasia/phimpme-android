@@ -173,6 +173,9 @@
             android:name="org.wordpress.android.NewAccount"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".folderchooser.FolderChooserActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="org.wordpress.android.Signup"
             android:screenOrientation="portrait" />
         <activity
@@ -196,6 +199,15 @@
             android:name="com.facebook.FacebookContentProvider"
             android:authorities="com.facebook.app.FacebookContentProvider1781584438783986"
             android:exported="true" />
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

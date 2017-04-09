@@ -13,4 +13,6 @@ public class Constants {
     public static final String KEY_BUNDLE_LIST = "BUNDLE_LIST";
     public static final String KEY_PARAMS = "PARAMS";
 
+    public static final int MIN_FILE_SIZE_ALLOWED = 1000;  //1 KB
+
 }

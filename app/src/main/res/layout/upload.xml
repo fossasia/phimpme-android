@@ -4,7 +4,7 @@
     android:id="@+id/tabUpload"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="?attr/windowBackgroundTheme"
     android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
@@ -14,27 +14,12 @@
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/toolbar_newgallery"
+            android:id="@+id/toolbar_upload"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
+            android:background="?attr/colorPrimaryTheme"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
 
-            <RelativeLayout
-                android:id="@+id/toolbar_content_carrier"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="Upload Photos"
-                    android:textColor="#ffffff"
-                    android:textSize="20sp" />
-
-            </RelativeLayout>
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
@@ -43,7 +28,7 @@
         android:id="@+id/relativeLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="?attr/windowBackgroundTheme"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
@@ -69,6 +54,7 @@
             android:contentDescription="@string/empty"
             android:focusable="true"
             android:padding="8dp"
+            android:tint="?IconsColor"
             app:srcCompat="@drawable/ic_add_box_black_24dp" />
 
     </RelativeLayout>
@@ -95,14 +81,14 @@
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_margin="10dp"
-            android:background="@color/white" />
+            android:background="?attr/themeCardColor" />
     </android.support.v7.widget.CardView>
 
     <RelativeLayout
         android:id="@+id/relativeLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="?attr/windowBackgroundTheme"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
@@ -132,6 +118,7 @@
                 android:contentDescription="@string/empty"
                 android:focusable="true"
                 android:padding="8dp"
+                android:tint="?IconsColor"
                 app:srcCompat="@drawable/ic_add_box_black_24dp" />
 
             <ImageView
@@ -145,6 +132,7 @@
                 android:contentDescription="@string/empty"
                 android:focusable="true"
                 android:padding="8dp"
+                android:tint="?IconsColor"
                 app:srcCompat="@drawable/ic_share_black_24dp" />
 
             <ImageView
@@ -157,6 +145,7 @@
                 android:clickable="true"
                 android:enabled="true"
                 android:focusable="true"
+                android:tint="?IconsColor"
                 android:padding="8dp"
                 app:srcCompat="@drawable/ic_cloud_upload_black_24dp"
                 android:text="@string/upload" />
@@ -180,6 +169,7 @@
                 android:contentDescription="@string/empty"
                 android:focusable="true"
                 android:padding="8dp"
+                android:tint="?IconsColor"
                 app:srcCompat="@drawable/ic_select_all_black_24dp" />
 
             <ImageView
@@ -193,6 +183,7 @@
                 android:contentDescription="@string/empty"
                 android:focusable="true"
                 android:padding="8dp"
+                android:tint="?IconsColor"
                 app:srcCompat="@drawable/ic_clear_selected_black_24dp" />
 
             <ImageView
@@ -206,6 +197,7 @@
                 android:enabled="true"
                 android:focusable="true"
                 android:padding="8dp"
+                android:tint="?IconsColor"
                 app:srcCompat="@drawable/ic_deselect_black_24dp"
                 android:text="@string/upload" />
         </LinearLayout>
@@ -292,6 +284,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
                         android:contentDescription="@string/empty"
+                        android:tint="?IconsColor"
                         app:srcCompat="@drawable/maps" />
                 </RelativeLayout>
 
