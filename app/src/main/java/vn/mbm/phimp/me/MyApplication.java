@@ -14,6 +14,10 @@ import com.facebook.appevents.AppEventsLogger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import vn.mbm.phimp.me.folderchooser.AppState;
+import vn.mbm.phimp.me.utils.FolderChooserPrefSettings;
+import vn.mbm.phimp.me.utils.StorageUtils;
+
 /**
  * User: pa1pal
  * Date: 8/26/16
@@ -30,8 +34,11 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        FolderChooserPrefSettings.init(this);
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
+
+        AppState.setStorageInfos(StorageUtils.getStorageList(this));
 
         try {
             PackageInfo info = getPackageManager().getPackageInfo(

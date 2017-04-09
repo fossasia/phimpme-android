@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -33,6 +34,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
@@ -60,6 +62,7 @@ import vn.mbm.phimp.me.database.TumblrItem;
 import vn.mbm.phimp.me.database.TwitterItem;
 import vn.mbm.phimp.me.database.VkItem;
 import vn.mbm.phimp.me.database.WordpressItem;
+import vn.mbm.phimp.me.folderchooser.FolderChooserActivity;
 import vn.mbm.phimp.me.gallery3d.media.StringTexture;
 import vn.mbm.phimp.me.services.DeviantArtService;
 import vn.mbm.phimp.me.services.DrupalServices;
@@ -76,15 +79,19 @@ import vn.mbm.phimp.me.services.TumblrServices;
 import vn.mbm.phimp.me.services.TwitterServices;
 import vn.mbm.phimp.me.services.VKServices;
 import vn.mbm.phimp.me.utils.Commons;
+import vn.mbm.phimp.me.utils.FolderChooserPrefSettings;
 import vn.mbm.phimp.me.utils.PrefManager;
 import vn.mbm.phimp.me.utils.RSSUtil;
 
 import static android.os.Environment.getExternalStorageDirectory;
+import static com.facebook.FacebookSdk.getApplicationContext;
 import static vn.mbm.phimp.me.PhimpMe.PREFS_NAME;
 
 
 public class Settings extends Fragment
 {
+    public  RadioButton radiotDarkBtn ;
+    public static RadioButton radiotLightBtn ;
 	private final int CONTEXT_MENU_ID = 1;
 	private final int DIALOG_FILE_SIZE_SETTINGS = 2;
 	private final int DIALOG_ADD_ACCOUNT_DRUPAL = 3;
@@ -127,6 +134,7 @@ public class Settings extends Fragment
 	private ImageButton btnLangDE;
 	private ImageButton btnLangVI;
 	private ImageView btnSettingsMaxFilesize;
+    private ImageView btnSettingsWhiteListFolders;
 	private ImageButton btnSettingsMaxDisplayPhotos;
 	private Button donatePaypal;
 	private EditText donateAmount;
@@ -159,7 +167,8 @@ public class Settings extends Fragment
 	private File tmp_folder;
 	private int error_count = 0;
 	private ProgressDialog pro_gress;
-    	private AlertDialog maxSizeDialog = null;
+	private AlertDialog maxSizeDialog = null;
+	private Toolbar settingsToolBar;
 
 
     @Nullable
@@ -169,6 +178,8 @@ public class Settings extends Fragment
 		View decorView = getActivity().getWindow().getDecorView();
 		int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
 		decorView.setSystemUiVisibility(uiOptions);
+
+
 
 		return inflater.inflate(R.layout.settings, container, false);
 	}
@@ -182,6 +193,8 @@ public class Settings extends Fragment
 		Resources res = getResources();
 
 		ctx = getContext();
+		//change theme
+		changeTheme();
 
 		PayPal pp = PayPal.getInstance();
 
@@ -194,6 +207,9 @@ public class Settings extends Fragment
 		//initial amount field
 		//donateAmount = (EditText) getView().findViewById(R.id.donateAmount);
 
+
+		settingsToolBar = (Toolbar) getView().findViewById(R.id.toolbar_settings);
+		settingsToolBar.setTitle("Settings");
 
 		lytAccounts = (LinearLayout) getView().findViewById(R.id.linearSettingsAccounts);
 		noaccounttv = (TextView) getView().findViewById(R.id.noaccounttv);
@@ -213,7 +229,7 @@ public class Settings extends Fragment
 			}
 			btnDelete = (ImageView)getView().findViewById(R.id.deletebtn);
 
-            btnDelete.setColorFilter(color);
+
 			btnDelete.setOnClickListener(new OnClickListener() {
 
 				@Override
@@ -291,25 +307,21 @@ public class Settings extends Fragment
 		txtMaxPhotoSize = (TextView) getView().findViewById(R.id.txtMaxFilesizeDownload);
 		txtMaxPhotoSize.setText(PhimpMe.MAX_FILESIZE_DOWNLOAD + "");
 		btnSettingsMaxFilesize = (ImageView) getView().findViewById(R.id.imgbtnSettingsMaxFilesize);
-		btnSettingsMaxFilesize.setColorFilter(color);
         btnSettingsMaxFilesize.setOnClickListener(new OnClickListener()
 		{
 			@Override
 			public void onClick(View v) {
                 final CharSequence[] sizes = {"2 MB", "3 MB" , "5 MB", "10 MB"};
 				// Creating and Building the Dialog
-                final SharedPreferences settings = ctx.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-                int selectedSize = settings.getInt("radio_button_selected", 2);
-                Log.d("selected size", String.valueOf(selectedSize));
+				int selectedSize = FolderChooserPrefSettings.getInstance().getMaxFileRadioButton();
+				Log.d("selected size", String.valueOf(selectedSize));
                 AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
                 builder.setTitle(getString(R.string.select_max_file_size));
 				builder.setSingleChoiceItems(sizes, selectedSize, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int item) {
-                        SharedPreferences.Editor editor = settings.edit();
                         PhimpMe.MAX_FILESIZE_DOWNLOAD = Integer.parseInt(sizes[item].subSequence(0, sizes[item].toString().indexOf(" ")).toString());
-                        editor.putInt("max_filesize_download", PhimpMe.MAX_FILESIZE_DOWNLOAD);
-                        editor.putInt("radio_button_selected", item);
-                        editor.apply();
+						FolderChooserPrefSettings.getInstance().setMaxFileSize(PhimpMe.MAX_FILESIZE_DOWNLOAD);
+						FolderChooserPrefSettings.getInstance().setMaxFileRadioButton(item);
                         Log.d("item selected", String.valueOf(item));
                         txtMaxPhotoSize.setText(PhimpMe.MAX_FILESIZE_DOWNLOAD + "");
                         maxSizeDialog.dismiss();
@@ -319,6 +331,15 @@ public class Settings extends Fragment
 				maxSizeDialog.show();
 			}
 		} );
+
+        btnSettingsWhiteListFolders = (ImageView) getView().findViewById(R.id.imgbtnSettingsWhitelistFolders);
+        btnSettingsWhiteListFolders.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ctx, FolderChooserActivity.class);
+                startActivity(intent);
+            }
+        });
 		/*
 		 * Danh - Add Active google admod
 		 */
@@ -434,8 +455,39 @@ public class Settings extends Fragment
 
 	}
 
+    private void changeTheme() {
+        radiotDarkBtn = (RadioButton) getView().findViewById(R.id.radiotDarkBtn);
+        radiotLightBtn = (RadioButton)getView().findViewById(R.id.radiotLightBtn);
 
-	private class btnDeleteListener implements OnClickListener
+        if(Utility.getTheme(getApplicationContext()) == PhimpMe.ThemeDark) {
+            radiotLightBtn.setChecked(false);
+            radiotDarkBtn.setChecked(true);
+
+        }    else  {
+
+            radiotDarkBtn.setChecked(false);
+            radiotLightBtn.setChecked(true);
+        }
+
+        radiotDarkBtn.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+
+                Utility.setTheme(getApplicationContext(), 2);
+                recreateActivity();
+            }
+        });
+
+        radiotLightBtn.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+
+                Utility.setTheme(getApplicationContext(), 1);
+                recreateActivity();
+            }
+        });
+    }
+
+
+    private class btnDeleteListener implements OnClickListener
 	{
 		private String id;
 		private String name;
@@ -785,6 +837,11 @@ public class Settings extends Fragment
 		}
 		return true;
 	}
+    private void recreateActivity() {
+        Intent i = new Intent(getApplicationContext(),PhimpMe.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK );
+        startActivity(i);
+    }
 	/*@Override
 	public boolean onKeyDown(int keycode, KeyEvent event)
     {
