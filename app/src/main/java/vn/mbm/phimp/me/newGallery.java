@@ -476,10 +476,13 @@ public class newGallery extends Fragment {
         MenuItem deselectMenuItem = menu.findItem(R.id.menu_gallery_deselect_selected);
         MenuItem loadMoreMenuItem = menu.findItem(R.id.menu_gallery_load_more);
         MenuItem selectAllMenuItem = menu.findItem(R.id.menu_gallery_select_all);
+        MenuItem uploadMenuItem = menu.findItem(R.id.menu_gallery_upload);
         deselectMenuItem.setVisible(!deletableList.isEmpty());
         deleteMenuItem.setVisible(!deletableList.isEmpty());
         loadMoreMenuItem.setVisible(turnsNeeded > 1);
         selectAllMenuItem.setVisible(!deletableList.isEmpty());
+        uploadMenuItem.setVisible(!deletableList.isEmpty());
+
     }
 
     @Override
@@ -530,6 +533,20 @@ public class newGallery extends Fragment {
                 }
                 getActivity().setTitle(newTitle);
                 getActivity().invalidateOptionsMenu();
+                return true;
+            case R.id.menu_gallery_upload:
+                for(int i=0;i<deletableList.size();i++){
+                    if (!Upload.uploadGridList.contains(deletableList.get(i))){
+                        Upload.uploadGridList.add(deletableList.get(i));
+                    }
+                }
+                if(deletableList.size()>1)
+                    Toast.makeText(ctx, deletableList.size()+" Images added to upload list.", Toast.LENGTH_SHORT).show();
+                    else
+                    Toast.makeText(ctx, deletableList.size()+" Image added to upload list.", Toast.LENGTH_SHORT).show();
+
+
+
                 return true;
 
             default:
