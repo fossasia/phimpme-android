@@ -536,9 +536,17 @@ public class newGallery extends Fragment {
                 return true;
             case R.id.menu_gallery_upload:
                 for(int i=0;i<deletableList.size();i++){
-                    Upload.uploadGridList.add(deletableList.get(i));
+                    if (!Upload.uploadGridList.contains(deletableList.get(i))){
+                        Upload.uploadGridList.add(deletableList.get(i));
+                    }
                 }
-                Toast.makeText(ctx, deletableList.size()+ " Images added to upload list.", Toast.LENGTH_SHORT).show();
+                if(deletableList.size()>1)
+                    Toast.makeText(ctx, deletableList.size()+" Images added to upload list.", Toast.LENGTH_SHORT).show();
+                    else
+                    Toast.makeText(ctx, deletableList.size()+" Image added to upload list.", Toast.LENGTH_SHORT).show();
+
+
+
                 return true;
 
             default:
