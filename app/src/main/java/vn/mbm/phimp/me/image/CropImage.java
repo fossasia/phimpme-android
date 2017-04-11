@@ -181,15 +181,8 @@ public class CropImage extends MonitoredActivity {
                 Log.d("mSaveUri", mSaveUri.toString());
                 Log.d("p[0]", p[0]);
 
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inSampleSize = 4;
-                mBitmap = BitmapFactory.decodeFile(p[0], options);
-                if (mBitmap.getWidth() % 2 != 0 || mBitmap.getHeight() % 2 != 0) {
-                    //bitmap width , height must even
-                    Log.i("CropImage", "mBitmap width or height not even");
-                    mBitmap = Bitmap.createScaledBitmap(mBitmap, mBitmap.getWidth() * 4, mBitmap.getHeight() * 4, false);
+                mBitmap = BitmapFactory.decodeFile(p[0]);
 
-                }
                 modifiedBitmap = flippedImaged = mBitmapSave = mBitmap;
 
                 Log.i("CropImage", "mBitmap Width :" + mBitmap.getWidth() + " mBitmap Height : " + mBitmap.getHeight());
