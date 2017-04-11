@@ -564,7 +564,6 @@ public class CropImage extends MonitoredActivity {
                             doRotate90(mImageView);
                             mImageView.mHighlightViews.clear();
                             if (mBitmap != null && !mBitmap.isRecycled()) {
-                                mBitmap.recycle();
                                 mBitmap = null;
                             }
                             mBitmap = modifiedBitmap;
@@ -1004,6 +1003,7 @@ public class CropImage extends MonitoredActivity {
         mx.setRotate(90);
         //modifiedBitmap.recycle();
         modifiedBitmap = Bitmap.createBitmap(bm,0,0,bm.getWidth(),bm.getHeight(),mx,true);
+        flippedImaged=modifiedBitmap;
         image.setImageBitmap(modifiedBitmap);
     }
     public static Bitmap doHorizontalFlip(Bitmap sampleBitmap) {
