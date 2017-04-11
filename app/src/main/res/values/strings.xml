@@ -653,6 +653,11 @@
     <!-- Settings View -->
     <string name="select_max_file_size">Select the Max File Size -</string>
 
+    <!--Share App strings-->
+    <string name="promo_msg_template">Hey, check out this awesome App! - %s</string>
+    <string name="error_msg_retry">Please Retry Again</string>
+    <string name="app_share_url">https://play.google.com/store/apps/details?id=%s</string>
+  
     <!-- edit Image Dialog -->
     <string name="go_back">Go Back</string>
     <string name="dialog_message">Do you want to exit and discard changes?</string>
