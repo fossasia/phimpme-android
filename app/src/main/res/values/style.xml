@@ -5,4 +5,5 @@
         <item name="android:textColorPrimary">#000000</item>
         <item name="android:background">#FFFFFF</item>
     </style>
+
 </resources>

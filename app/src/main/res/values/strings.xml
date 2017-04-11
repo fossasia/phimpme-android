@@ -7,6 +7,7 @@
     <string name="admob_id">a14ff82a6fc607c</string>
     <string name="currency">$</string>
     <string name="upload">Upload</string>
+    <string name="theme">Theme Settings</string>
     <string name="settings">Settings</string>
     <string name="gallery">Gallery</string>
     <string name="infor_internet_connection_false">Could not connect to internet. Please check your internet connection.</string>
@@ -631,6 +632,12 @@
     <string name="dialog_upload">This photo has been added to list upload photo!</string>
     <string name="nopicture_selected">No Picture Selected :(</string>
     <string name="title_activity_maps">Map</string>
+    <string name="darktheme">Dark Theme</string>
+    <string name="lighttheme">Light Theme</string>
+    <string name="theappwillberestarted">The app will be restarted</string>
+    <string name="prefs_theme_key">theme</string>
+
+
 
 
     <item name="image_id" type="id"/>
@@ -646,9 +653,21 @@
     <!-- Settings View -->
     <string name="select_max_file_size">Select the Max File Size -</string>
 
+    <!--Share App strings-->
+    <string name="promo_msg_template">Hey, check out this awesome App! - %s</string>
+    <string name="error_msg_retry">Please Retry Again</string>
+    <string name="app_share_url">https://play.google.com/store/apps/details?id=%s</string>
+  
     <!-- edit Image Dialog -->
     <string name="go_back">Go Back</string>
     <string name="dialog_message">Do you want to exit and discard changes?</string>
     <string name="dialog_title">Confirm</string>
+
+    <!-- Whitelisting Folder View -->
+    <string name="add_more_folders">Add More Folders</string>
+    <string name="skipped_folders">Skipped Folders</string>
+    <string name="folder_settings">Folder Settings</string>
+    <string name="whitelist_folders">WhiteList Folders</string>
+    <string name="whitelist_folders_message">Click to WhiteList Folders</string>
 
 </resources>

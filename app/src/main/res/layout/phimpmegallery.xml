@@ -32,7 +32,7 @@
             android:layout_width="@dimen/padding_medium"
             android:layout_height="match_parent"
             android:layout_gravity="left"
-            android:background="@drawable/overscroll_left"
+            android:background="@drawable/blackwhite"
             android:visibility="gone" />
 
         <View
@@ -118,7 +118,7 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_add"
-        app:backgroundTint="@color/colorAccent"
+        app:backgroundTint="?attr/colorAccentTheme"
         app:elevation="6dp"
         app:pressedTranslationZ="12dp" />
 
