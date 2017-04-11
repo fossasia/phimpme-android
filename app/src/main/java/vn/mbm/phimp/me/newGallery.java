@@ -34,6 +34,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -447,6 +448,7 @@ public class newGallery extends Fragment {
     static ArrayList<String> array_ID = new ArrayList<String>();
 
     Toolbar toolbar;
+    private boolean FLAG_IS_LOADING = false;
 
     @Nullable
     @Override
@@ -474,10 +476,13 @@ public class newGallery extends Fragment {
         MenuItem deselectMenuItem = menu.findItem(R.id.menu_gallery_deselect_selected);
         MenuItem loadMoreMenuItem = menu.findItem(R.id.menu_gallery_load_more);
         MenuItem selectAllMenuItem = menu.findItem(R.id.menu_gallery_select_all);
+        MenuItem uploadMenuItem = menu.findItem(R.id.menu_gallery_upload);
         deselectMenuItem.setVisible(!deletableList.isEmpty());
         deleteMenuItem.setVisible(!deletableList.isEmpty());
         loadMoreMenuItem.setVisible(turnsNeeded > 1);
         selectAllMenuItem.setVisible(!deletableList.isEmpty());
+        uploadMenuItem.setVisible(!deletableList.isEmpty());
+
     }
 
     @Override
@@ -528,6 +533,20 @@ public class newGallery extends Fragment {
                 }
                 getActivity().setTitle(newTitle);
                 getActivity().invalidateOptionsMenu();
+                return true;
+            case R.id.menu_gallery_upload:
+                for(int i=0;i<deletableList.size();i++){
+                    if (!Upload.uploadGridList.contains(deletableList.get(i))){
+                        Upload.uploadGridList.add(deletableList.get(i));
+                    }
+                }
+                if(deletableList.size()>1)
+                    Toast.makeText(ctx, deletableList.size()+" Images added to upload list.", Toast.LENGTH_SHORT).show();
+                    else
+                    Toast.makeText(ctx, deletableList.size()+" Image added to upload list.", Toast.LENGTH_SHORT).show();
+
+
+
                 return true;
 
             default:
@@ -3471,7 +3490,36 @@ public class newGallery extends Fragment {
               }catch(Exception e){
 
               }
-            
+
+              localPhotosGrid.setOnScrollListener(new AbsListView.OnScrollListener() {
+                  @Override
+                  public void onScrollStateChanged(AbsListView view, int scrollState) {
+                      return;
+                  }
+
+                  @Override
+                  public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                      if ((visibleItemCount!=0) && (totalItemCount!=0) ) {
+                          if ((firstVisibleItem + visibleItemCount == totalItemCount) && (!FLAG_IS_LOADING)) {
+                              FLAG_IS_LOADING = true;
+                              if (turnsNeeded > 1) {
+                                  turnsNeeded -= 1;
+                                  turnsDone += 1;
+                                  localImagesPerTurn += PER_TURN;
+                                  resumeLocalPhoto();
+                                  FLAG_IS_LOADING = false;
+                              } else {
+                                  localImagesPerTurn += loadLeft;
+                                  turnsNeeded -= 1;
+                                  turnsDone += 1;
+                                  resumeLocalPhoto();
+                                  FLAG_IS_LOADING = false;
+                                  galleryMenu.findItem(R.id.menu_gallery_load_more).setVisible(false);
+                              }
+                          }
+                      }
+                  }
+              });
         }
     }
 
@@ -3607,7 +3655,7 @@ public class newGallery extends Fragment {
 			notifyDataSetChanged();
 		}
 
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(final int position, View convertView, ViewGroup parent) {
 
 			final ViewHolder holder;
 			final ImageItem item = localImageList.get(position);
@@ -3647,32 +3695,24 @@ public class newGallery extends Fragment {
                     } else {
                         if (deletableList.isEmpty()) {
                             try {
-                                ImageItem item = localImageList.get(view.getId());
                                 Intent intent = new Intent();
                                 intent.setAction(Intent.ACTION_VIEW);
-                                final String[] columns = {MediaStore.Images.Media.DATA};
-                                Cursor imagecursor = getActivity().getContentResolver().query(
-                                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
-                                        MediaStore.Images.Media._ID + " = " + item.id,
-                                        null, MediaStore.Images.Media._ID);
-                                if (imagecursor != null && imagecursor.getCount() > 0) {
-                                    imagecursor.moveToPosition(0);
-                                    String path = imagecursor.getString(
-                                            imagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
-                                    imagecursor.close();
-                                    ArrayList<String> file = new ArrayList<>();
-                                    file.add(path);
-                                    Intent showImageIntent = new Intent();
-                                    showImageIntent.setClass(getActivity(), vn.mbm.phimp.me.gallery.PhimpMeGallery.class);
-                                    vn.mbm.phimp.me.gallery.PhimpMeGallery.setFileList(file);
-                                    showImageIntent.putExtra("aspectX", 0);
-                                    showImageIntent.putExtra("aspectY", 0);
-                                    ActivityOptionsCompat options = ActivityOptionsCompat.
+                                ArrayList<String> file = new ArrayList<>();
+                                for (int i = 0; i < localImageList.size(); i++) {
+                                    file.add(i, localImageList.get(i).path);
+                                }
+                                Intent showImageIntent = new Intent();
+                                showImageIntent.setClass(getActivity(), vn.mbm.phimp.me.gallery.PhimpMeGallery.class);
+                                vn.mbm.phimp.me.gallery.PhimpMeGallery.setFileList(file);
+                                showImageIntent.putExtra("aspectX", 0);
+                                showImageIntent.putExtra("aspectY", 0);
+                                showImageIntent.putExtra("index", position);
+                                ActivityOptionsCompat options = ActivityOptionsCompat.
                                             makeSceneTransitionAnimation(getActivity(), (View)holder.imageview, "gridanim");
                                     showImageIntent.putExtra("scale", true);
                                     showImageIntent.putExtra("activityName", "LocalPhotos");
                                     startActivity(showImageIntent,options.toBundle());
-                                }
+
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
