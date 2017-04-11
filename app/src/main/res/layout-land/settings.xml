@@ -3,6 +3,7 @@
     android:id="@+id/tabSettings"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/windowBackgroundTheme"
     android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
@@ -15,7 +16,7 @@
             android:id="@+id/toolbar_newgallery"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
+            android:background="?attr/colorPrimaryTheme"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
 
             <RelativeLayout
@@ -143,6 +144,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_toRightOf="@+id/txtMaxFilesizeDownload"
                     android:text="MB"
+                    android:tint="?attr/IconsColor"
                     android:textColor="@color/white" />
             </RelativeLayout>
 
@@ -159,6 +161,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
                     android:contentDescription="@string/empty"
+                    android:tint="?attr/IconsColor"
                     android:src="@drawable/edit" />
             </RelativeLayout>
 
@@ -183,6 +186,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
                     android:contentDescription="@string/empty"
+                    android:tint="?attr/IconsColor"
                     android:src="@drawable/delete" />
             </RelativeLayout>
 
@@ -218,7 +222,87 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@color/blue_dark" />
+            <!-- Theme Settings -->
+            <TextView
+                android:id="@+id/themeSettingsHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:fontFamily="sans-serif-light"
+                android:text="@string/theme"
+                android:textSize="16sp" />
 
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="10dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <RadioGroup
+                            android:id="@+id/themeSelector"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/margin_3"
+                            android:layout_marginRight="@dimen/margin_3">>
+
+                            <RadioButton
+                                android:id="@+id/themeDarkSelector"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:textSize="@dimen/text_size_16"
+                                android:text="@string/darktheme"
+                                android:textColor="?attr/textThemes"
+                                android:padding="@dimen/margin_3"
+                                android:layout_marginTop="@dimen/margin_5"
+                                android:layout_marginBottom="@dimen/margin_5"/>
+
+                            <RadioButton
+                                android:id="@+id/themeLightSelector"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:textSize="@dimen/text_size_16"
+                                android:text="@string/lighttheme"
+                                android:textColor="?attr/textThemes"
+                                android:padding="@dimen/margin_3"
+                                android:layout_marginBottom="@dimen/margin_5"/>
+
+                        </RadioGroup>
+
+                        <TextView
+                            android:layout_below="@id/themeSelector"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-light"
+                            android:padding="@dimen/margin_3"
+                            android:layout_marginLeft="@dimen/margin_3"
+                            android:layout_marginRight="@dimen/margin_3"
+                            android:text="@string/theappwillberestarted" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <View
+                android:id="@+id/View01"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/blue_dark" />
             <LinearLayout
                 android:id="@+id/linearSettingsLocalGallery"
                 android:layout_width="match_parent"

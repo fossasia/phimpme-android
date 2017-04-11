@@ -2,9 +2,12 @@
 <resources>
     <string name="crash_report_text">"Oops! I crashed, but a report has been sent to my developer to help fix the issue!"</string>
 
+    <string name="local_gallery_check">No Local Photos Available, Check Settings</string>
+
     <string name="admob_id">a14ff82a6fc607c</string>
     <string name="currency">$</string>
     <string name="upload">Upload</string>
+    <string name="theme">Theme Settings</string>
     <string name="settings">Settings</string>
     <string name="gallery">Gallery</string>
     <string name="infor_internet_connection_false">Could not connect to internet. Please check your internet connection.</string>
@@ -62,6 +65,8 @@
     <string name="select">Select</string>
     <string name="newest">The Newest photo</string>
     <string name="owner">The Owner Photo</string>
+    <string name="images_selected">%d images selected</string>
+    <string name="single_image_selected">1 image selected</string>
 
     <string name="facebook_app_id">1781584438783986</string>
     <string name="imageshack_note">Please note, that imageshack does not provide a gallery page of uploaded pictures at this time. Phimp.me will keep a list of images uploaded to imageshack for you. The app will only show images uploaded with the phimp.me app due to imageshack\'s current limitations.</string>
@@ -414,6 +419,7 @@
     <string name="delete_images">Are you sure you want to delete these images?</string>
     <string name="menu_title_delete">Delete</string>
     <string name="menu_title_deselect">Deselect all</string>
+    <string name="menu_title_select">Select all</string>
     <string name="image_delete_success">Image deleted!</string>
     <string name="images_delete_success">Images deleted!</string>
     <string name="image_delete_fail">Image not found!</string>
@@ -510,6 +516,10 @@
     <string name="quickpress_window_title">Select blog for QuickPress shortcut</string>
     <string name="quickpress_add_error">Shortcut name can\'t be empty</string>
     <string name="quickpress_add_alert_title">Set shortcut name</string>
+
+    <!-- AlertDialog -->
+    <string name="AlertMessage">Are you sure ?</string>
+    <string name="AlertTitle">Delete Images</string>
 
     <!-- HTTP Authentication -->
     <string name="httpuser">HTTP Username (optional):</string>
@@ -608,6 +618,7 @@
     <string name="error_media_upload">An error occurred while uploading media.</string>
 
     <!-- wordpress -->
+    <string name="wordpress">Wordpress</string>
     <string name="url">Blog URL</string>
     <string name="default_wordpress_url">192.168.1.114/wordpress</string>
     <string name="joomla_note">If you want use this feature. Please install component joooid in your joomla host !</string>
@@ -621,6 +632,13 @@
     <string name="dialog_upload">This photo has been added to list upload photo!</string>
     <string name="nopicture_selected">No Picture Selected :(</string>
     <string name="title_activity_maps">Map</string>
+    <string name="darktheme">Dark Theme</string>
+    <string name="lighttheme">Light Theme</string>
+    <string name="theappwillberestarted">The app will be restarted</string>
+    <string name="prefs_theme_key">theme</string>
+
+
+
 
     <item name="image_id" type="id"/>
 
@@ -639,5 +657,17 @@
     <string name="promo_msg_template">Hey, check out this awesome App! - %s</string>
     <string name="error_msg_retry">Please Retry Again</string>
     <string name="app_share_url">https://play.google.com/store/apps/details?id=%s</string>
+  
+    <!-- edit Image Dialog -->
+    <string name="go_back">Go Back</string>
+    <string name="dialog_message">Do you want to exit and discard changes?</string>
+    <string name="dialog_title">Confirm</string>
+
+    <!-- Whitelisting Folder View -->
+    <string name="add_more_folders">Add More Folders</string>
+    <string name="skipped_folders">Skipped Folders</string>
+    <string name="folder_settings">Folder Settings</string>
+    <string name="whitelist_folders">WhiteList Folders</string>
+    <string name="whitelist_folders_message">Click to WhiteList Folders</string>
 
 </resources>

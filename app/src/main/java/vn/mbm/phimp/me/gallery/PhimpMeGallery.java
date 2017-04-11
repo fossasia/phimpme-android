@@ -18,10 +18,12 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.media.ExifInterface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -32,6 +34,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.Gallery;
@@ -114,6 +117,12 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
         //ExpandableListAdapter menuadapter = new MyExpandableListAdapter();
         //menu.setAdapter(menuadapter);
         gallery.setSelection(index);
+        gallery.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                animateFAB();
+            }
+        });
         /*
         btnDelete  = (ImageButton)findViewById(R.id.btnDelete);
         if (from != null && from.equals("local")){
@@ -297,17 +306,17 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                 builder.show();
                 break;
             case R.id.fabshare:
-
-                Intent shareIntent=new Intent();
-                shareIntent.setClass(PhimpMeGallery.this, SendFileActivity.class);
-                shareIntent.putExtra("image-path", filePath.get(position));
-                shareIntent.putExtra("aspectX", 0);
-                shareIntent.putExtra("aspectY", 0);
-                shareIntent.putExtra("scale", true);
-                shareIntent.putExtra("activityName", "PhimpMeGallery");
-                startActivityForResult(shareIntent, 1);
-
-                Log.d("Pawan", "Share");
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.setType("image/*");
+                sendIntent.putExtra("image-path", filePath.get(position));
+                sendIntent.putExtra("aspectX", 0);
+                sendIntent.putExtra("aspectY", 0);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, "PhimpMeTest");
+                sendIntent.putExtra("scale", true);
+                sendIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", new File(filePath.get(position))));
+                sendIntent.putExtra("activityName", "PhimpMeGallery");
+                this.startActivity(sendIntent);
                 break;
 
             case R.id.fabdelete:
@@ -530,5 +539,8 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
 
     public void onBackPressed(){
         super.onBackPressed();
+        if(isFabOpen){
+            animateFAB();
+        }
     }
 }

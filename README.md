@@ -10,7 +10,7 @@ Phimp.me is a Photo App for Android that aims to replace proprietary photo appli
 Please join our chat channel on Slack: http://fossasia.slack.com/messages/phimpme/. You need to invite yourself first here: http://fossasia-slack.herokuapp.com/
 
 ## How to Contribute
-This is an Open Source project and we would be happy to see contributors who report bugs and file feature requests submitting pull requests as well.This project adheres to the Contributor Covenant [code of conduct]((https://github.com/jsroyal/phimpme-android/blob/development/CONTRIBUTING.md)).By participating, you are expected to uphold this code style. Please report issues here https://github.com/fossasia/phimpme-android/issues
+This is an Open Source project and we would be happy to see contributors who report bugs and file feature requests submitting pull requests as well.This project adheres to the Contributor Covenant [code of conduct](https://github.com/fossasia/phimpme-android/blob/development/CONTRIBUTING.md). By participating, you are expected to uphold this code style. Please report issues here https://github.com/fossasia/phimpme-android/issues
 
 ### Branch Policy
 We have the following branches
@@ -18,6 +18,23 @@ We have the following branches
 	 All development goes on in this branch. If you're making a contribution,
 	 you are supposed to make a pull request to _development_.
 	 Make sure it pass a build check on Travis
+
+	 It is advisable to clone only the development branch using following command:
+	
+	`git clone -b <branch> <remote_repo>`
+
+	Example: 
+
+	`git clone -b my-branch git@github.com:user/myproject.git`
+
+	Alternative (no public key setup needed): 
+
+	`git clone -b my-branch https://git@github.com/username/myproject.git`
+
+	With Git 1.7.10 and later, add --single-branch to prevent fetching of all branches. Example, with development branch:
+	
+	`git clone -b development --single-branch https://github.com/username/phimpme-android.git`
+ 
  * **master**
    This contains the stable code. After significant features/bugfixes are accumulated on development, we move it to master.
  
@@ -31,15 +48,14 @@ We have the following branches
      <td><img src="https://cloud.githubusercontent.com/assets/14369357/24083573/876f72ec-0cff-11e7-99b0-32431df34b29.png"></td>
      <td><img src="https://cloud.githubusercontent.com/assets/14369357/24083579/b15bd550-0cff-11e7-96e8-3b628e25aba5.png"></td>
      <td><img src="https://cloud.githubusercontent.com/assets/14369357/24083571/7dfef5e8-0cff-11e7-8e6f-5ed041919388.png"></td>
+     <td><img src="https://cloud.githubusercontent.com/assets/22375731/24555932/721cc156-1650-11e7-93f1-2a774b860d1f.png"></td>
+     <td><img src="https://raw.githubusercontent.com/heysadboy/phimpme-android/development/docs/screenshots/camera1.png"></td>
+     <td><img src="https://raw.githubusercontent.com/heysadboy/phimpme-android/development/docs/screenshots/map.png">
+</td>
     </tr>
   </table>
   
-   <table>
-    <tr>
-     <td><img src="https://raw.githubusercontent.com/heysadboy/phimpme-android/development/docs/screenshots/camera1.png"></td>
-     <td><img src="https://raw.githubusercontent.com/heysadboy/phimpme-android/development/docs/screenshots/map.png"></td>
-    </tr>
-  </table>
+   
   
 ## Features
 **Feature**|**Description**|**Status**

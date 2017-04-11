@@ -1,5 +1,6 @@
 package vn.mbm.phimp.me.utils;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -8,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
@@ -15,6 +17,7 @@ import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -47,6 +50,11 @@ public class Utils {
         snackbar.show();
     }
 
+    public static boolean hasSDCardPermissions(Context context) {
+        return ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                == PackageManager.PERMISSION_GRANTED;
+    }
+
     public static void initToolBar(AppCompatActivity activity, Toolbar toolbar, boolean homeUpIndicator){
         activity.setSupportActionBar(toolbar);
         final ActionBar ab = activity.getSupportActionBar();
@@ -63,6 +71,10 @@ public class Utils {
         } else {
             return false;
         }
+    }
+
+    public static int compare(long lhs, long rhs) {
+        return lhs < rhs ? -1 : (lhs == rhs ? 0 : 1);
     }
 
     public static boolean hasCameraFlashHardware(Context context) {
@@ -150,11 +162,15 @@ public class Utils {
         int blue = Color.blue(color);
         return Color.rgb((int)(red * 0.8), (int)(green * 0.8), (int)(blue * 0.8));
     }
+    public static int getScreenWidth(Context context){
+        DisplayMetrics dm = new DisplayMetrics();
+        ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(dm);
+        return dm.widthPixels;
+    }
 
-    public static int getLightColor(int color){
-        int red = Color.red(color);
-        int green = Color.green(color);
-        int blue = Color.blue(color);
-        return Color.argb((int)(255*0.5), red, green, blue);
+    public static int getScreenHeight(Context context){
+        DisplayMetrics dm = new DisplayMetrics();
+        ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(dm);
+        return dm.heightPixels;
     }
 }

@@ -26,7 +26,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 
 import vn.mbm.phimp.me.ImagesFilter;
@@ -45,10 +44,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
@@ -56,11 +53,10 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.PorterDuff;
-import android.graphics.PorterDuff.Mode;
-import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region;
+import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.media.FaceDetector;
 import android.media.MediaScannerConnection;
@@ -69,11 +65,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.renderscript.Allocation;
-import android.renderscript.Element;
-import android.renderscript.RenderScript;
-import android.renderscript.ScriptIntrinsicBlur;
-import android.renderscript.ScriptIntrinsicConvolve3x3;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
@@ -288,17 +279,53 @@ public class CropImage extends MonitoredActivity {
 
         txtTags = (EditText) findViewById(R.id.txtUploadPhotoTags);
         btnUseMap = (ImageButton) findViewById(R.id.btnUploadPhotoPutPos);
-		/*btnUseMap.setOnClickListener(new OnClickListener() {
+		btnUseMap.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v)
 			{
-				Intent _itent = new Intent(ctx, UploadMap.class);
+
+                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                boolean enabled = locationManager
+                        .isProviderEnabled(LocationManager.GPS_PROVIDER);
+                //Checks if GPS is active or not.
+                if (!enabled) {
+                    //Added dialog box.
+                    //Added material design.
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                            CropImage.this, R.style.AppCompatAlertDialogStyle);
+                    alertDialogBuilder
+                            .setMessage("GPS is disabled in your device. Enable it?")
+                            .setCancelable(false)
+                            .setPositiveButton("Enable GPS",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog,
+                                                            int id) {
+                                            Intent callGPSSettingIntent = new Intent(
+                                                    android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                                            CropImage.this.startActivity(callGPSSettingIntent);
+                                        }
+                                    });
+                    alertDialogBuilder.setNegativeButton("Cancel",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+                    AlertDialog alert = alertDialogBuilder.create();
+                    alert.show();
+
+                }else{
+                    Toast.makeText(CropImage.this,"GPS is enabled",Toast.LENGTH_SHORT).show();
+                }
+            }
+
+				/*Intent _itent = new Intent(ctx, UploadMap.class);
 				_itent.putExtra("latitude", txtLatitude.getText().toString());
 				_itent.putExtra("longitude", txtLongtitude.getText().toString());
-				startActivityForResult(_itent, GET_POSITION_ON_MAP);
-			}
-		});*/
+				startActivityForResult(_itent, GET_POSITION_ON_MAP);*/
+
+		});
         // CR: remove TODO's.
         // TODO: we may need to show this indicator for the main gallery
         // application
@@ -712,7 +739,7 @@ public class CropImage extends MonitoredActivity {
                         }
                     }
                 });
-        findViewById(R.id.btnNagative).setOnClickListener(
+        findViewById(R.id.btnNegative).setOnClickListener(
                 new View.OnClickListener() {
                     public void onClick(View v) {
                         try {
