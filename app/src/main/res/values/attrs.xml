@@ -8,6 +8,7 @@
     </declare-styleable>
 
     <attr name="IconsColor" format="reference" />
+    <attr name="textThemes" format="reference" />
     <attr name="colorPrimaryTheme" format="reference|color" />
     <attr name="BottomNavigationIconsColor" format="reference|color" />
     <attr name="colorPrimaryDarkTheme" format="reference|color" />
