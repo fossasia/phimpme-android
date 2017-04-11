@@ -181,10 +181,7 @@ public class CropImage extends MonitoredActivity {
                 Log.d("mSaveUri", mSaveUri.toString());
                 Log.d("p[0]", p[0]);
 
-                /*BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inSampleSize = 4;*/
                 mBitmap = BitmapFactory.decodeFile(p[0]);
-                //mBitmap = Bitmap.createScaledBitmap(mBitmap, mBitmap.getWidth() * 4, mBitmap.getHeight() * 4, false);
 
                 modifiedBitmap = flippedImaged = mBitmapSave = mBitmap;
 
