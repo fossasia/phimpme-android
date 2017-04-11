@@ -159,6 +159,7 @@ public class Settings extends Fragment
 	private LinearLayout lyMore;
 
 	private RadioGroup rdgMaxPhotoSizeType;
+	private final int LIGHTTHEME = 1, DARKTHEME = 2;
 	private ImageButton btnMore;
 	private ImageView btnDelete;
 	//private ImageButton btnHelp;
@@ -194,7 +195,7 @@ public class Settings extends Fragment
 
 		ctx = getContext();
 		//change theme
-		changeTheme();
+		changeTheme(view);
 
 		PayPal pp = PayPal.getInstance();
 
@@ -451,40 +452,34 @@ public class Settings extends Fragment
 //		lLocalGallery.addView(tvLocalGallery);
 
 //		lytLocalGallery.addView(lLocalGallery);
-
-
 	}
 
-    private void changeTheme() {
-        radiotDarkBtn = (RadioButton) getView().findViewById(R.id.radiotDarkBtn);
-        radiotLightBtn = (RadioButton)getView().findViewById(R.id.radiotLightBtn);
+	private void changeTheme(View view) {
+		// Radio Group
+		RadioGroup themeSelectors = (RadioGroup) view.findViewById(R.id.themeSelector);
 
-        if(Utility.getTheme(getApplicationContext()) == PhimpMe.ThemeDark) {
-            radiotLightBtn.setChecked(false);
-            radiotDarkBtn.setChecked(true);
+		themeSelectors.check((Utility.getTheme(getApplicationContext()) == PhimpMe.ThemeDark)
+				? R.id.themeDarkSelector
+				: R.id.themeLightSelector);
 
-        }    else  {
-
-            radiotDarkBtn.setChecked(false);
-            radiotLightBtn.setChecked(true);
-        }
-
-        radiotDarkBtn.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-
-                Utility.setTheme(getApplicationContext(), 2);
-                recreateActivity();
-            }
-        });
-
-        radiotLightBtn.setOnClickListener(new OnClickListener() {
-            public void onClick(View v) {
-
-                Utility.setTheme(getApplicationContext(), 1);
-                recreateActivity();
-            }
-        });
-    }
+		themeSelectors.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(RadioGroup group, int checkedId) {
+				switch (checkedId) {
+					case R.id.themeDarkSelector:
+						Utility.setTheme(getApplicationContext(), DARKTHEME);
+						recreateActivity();
+						break;
+					case R.id.themeLightSelector:
+						Utility.setTheme(getApplicationContext(), LIGHTTHEME);
+						recreateActivity();
+						break;
+					default:
+						break;
+				}
+			}
+		});
+	}
 
 
     private class btnDeleteListener implements OnClickListener

@@ -10,6 +10,7 @@
         <item name="colorAccentTheme">@color/colorAccent</item>
         <item name="windowBackgroundTheme">@color/white</item>
         <item name="IconsColor">@color/icongrey</item>
+        <item name="textThemes">@color/icongrey</item>
         <item name="themeCardColor" >@color/white</item>
         <item name="BottomNavigationIconsColor" >@drawable/bottom_nav_icon_color_light</item>
         <item name="android:windowBackground">@color/colorWindowBackground</item>
@@ -22,6 +23,7 @@
         <item name="BottomNavigationIconsColor" >@drawable/bottom_nav_icon_color_dark</item>
         <item name="colorPrimaryTheme">@color/primary_material_dark_2</item>
         <item name="IconsColor">@color/white</item>
+        <item name="textThemes">@color/white70</item>
         <item name="windowBackgroundTheme">@color/ColorWindowBackgroundInverse</item>
         <item name="colorPrimaryDarkTheme">@color/colorPrimaryDarkInverse</item>
         <item name="colorAccentTheme">@color/blue_dark</item>
