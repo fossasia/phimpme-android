@@ -565,6 +565,8 @@ public class newGallery extends Fragment {
                 deleteImageFromMediaStore(path);
                 // Remove from the cache
                 PhimpMe.cache.deleteCachedFile(path);
+                // Remove from the upload image list if there is an entry to upload
+                Upload.uploadGridList.remove(path);
             } catch (Exception e) {
                 e.printStackTrace();
             }
