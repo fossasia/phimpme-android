@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/sign_in_scroll_view"
+    android:background="@drawable/nux_login_background"
+    android:animateLayoutChanges="true"
+    android:fillViewport="true"
+    android:gravity="center">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:animateLayoutChanges="true"
+        android:baselineAligned="false"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
+            android:baselineAligned="true"
+            android:gravity="right"
+            android:orientation="horizontal">
+
+        </LinearLayout>
+
+        <vn.mbm.phimp.me.wordpress.WPLinearLayoutSizeBound
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:animateLayoutChanges="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:maxWidth="600dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingBottom="24dp">
+
+                    <ImageView
+                        android:id="@+id/nux_wordpress_logotype"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_height="72dp"
+                        android:layout_width="wrap_content"
+                        android:scaleType="fitCenter"
+                        app:srcCompat="@drawable/img_wordpress_com_white_144dp" >
+                    </ImageView>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/nux_username_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:clickable="true">
+
+                <EditText
+                    android:id="@+id/nux_username"
+                    style="@style/NUXEditText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/username_email"
+                    android:inputType="textEmailAddress"
+                    android:imeOptions="actionNext"
+                    android:nextFocusDown="@+id/nux_password"
+                    android:maxLength="254" />
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="false"
+                    android:layout_alignParentStart="false"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="10dp"
+                    app:srcCompat="@drawable/ic_user_black_24dp"
+                    android:tint="@color/grey_darken_10"
+                    android:layout_alignParentRight="false"
+                    android:layout_alignParentLeft="false" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/nux_password_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:clickable="true">
+
+                <EditText
+                    android:id="@+id/nux_password"
+                    style="@style/NUXEditText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="38dp"
+                    android:hint="@string/password"
+                    android:maxLength="254"
+                    android:inputType="textPassword" />
+
+                <ImageView
+                    android:id="@+id/imageView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="false"
+                    android:layout_alignParentStart="false"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="10dp"
+                    app:srcCompat="@drawable/ic_lock_black_24dp"
+                    android:tint="@color/grey_darken_10"
+                    android:layout_alignParentRight="false"
+                    android:layout_alignParentLeft="false" />
+
+                <ImageView
+                    android:id="@+id/password_visibility"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="false"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentStart="false"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginRight="16dp"
+                    app:srcCompat="@drawable/ic_visible_off_black_24dp"
+                    android:tint="@color/grey_lighten_20"
+                    android:layout_alignParentLeft="false" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp">
+
+                <TextView
+                    android:id="@+id/nux_sign_in_button"
+                    style="@style/NUXPrimaryButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:clickable="true"
+                    android:enabled="false"
+                    android:gravity="center"
+                    android:text="@string/sign_in" />
+
+                <RelativeLayout
+                    android:id="@+id/nux_sign_in_progress_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:layout_centerVertical="true"
+                    android:background="@color/blue_medium"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
+                    android:visibility="gone">
+
+                    <ProgressBar
+                        android:id="@+id/progress_bar"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_centerHorizontal="true" />
+
+                    <TextView
+                        android:id="@+id/nux_sign_in_progress_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/progress_bar"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="8dp"
+                        android:textColor="@color/grey_lighten_20"
+                        android:visibility="gone" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+        </vn.mbm.phimp.me.wordpress.WPLinearLayoutSizeBound>
+
+        <vn.mbm.phimp.me.wordpress.WPLinearLayoutSizeBound
+            android:id="@+id/nux_bottom_buttons"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical"
+            app:maxWidth="600dp">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+        </vn.mbm.phimp.me.wordpress.WPLinearLayoutSizeBound>
+    </LinearLayout>
+</ScrollView>

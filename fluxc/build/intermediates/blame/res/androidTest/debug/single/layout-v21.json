@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/home/rohanagarwal94/Desktop/AndroidStudioProjects/phimpme-android/fluxc/build/intermediates/res/merged/androidTest/debug/layout-v21/notification_action.xml",
+        "source": "/home/rohanagarwal94/.android/build-cache/e2328c3c48e2920a655462f3ae9bf2c278f7dd2e/output/res/layout-v21/notification_action.xml"
+    },
+    {
+        "merged": "/home/rohanagarwal94/Desktop/AndroidStudioProjects/phimpme-android/fluxc/build/intermediates/res/merged/androidTest/debug/layout-v21/notification_action_tombstone.xml",
+        "source": "/home/rohanagarwal94/.android/build-cache/e2328c3c48e2920a655462f3ae9bf2c278f7dd2e/output/res/layout-v21/notification_action_tombstone.xml"
+    },
+    {
+        "merged": "/home/rohanagarwal94/Desktop/AndroidStudioProjects/phimpme-android/fluxc/build/intermediates/res/merged/androidTest/debug/layout-v21/notification_template_icon_group.xml",
+        "source": "/home/rohanagarwal94/.android/build-cache/e2328c3c48e2920a655462f3ae9bf2c278f7dd2e/output/res/layout-v21/notification_template_icon_group.xml"
+    },
+    {
+        "merged": "/home/rohanagarwal94/Desktop/AndroidStudioProjects/phimpme-android/fluxc/build/intermediates/res/merged/androidTest/debug/layout-v21/notification_template_custom_big.xml",
+        "source": "/home/rohanagarwal94/.android/build-cache/e2328c3c48e2920a655462f3ae9bf2c278f7dd2e/output/res/layout-v21/notification_template_custom_big.xml"
+    }
+]
