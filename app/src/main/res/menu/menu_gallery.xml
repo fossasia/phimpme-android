@@ -3,12 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_gallery_load_more"
-        android:icon="@drawable/ic_add_box_white"
-        android:orderInCategory="1"
-        android:title="@string/load_more"
-        app:showAsAction="always" />
-    <item
         android:id="@+id/menu_gallery_upload"
         android:icon="@drawable/ic_upload"
         android:orderInCategory="1"
