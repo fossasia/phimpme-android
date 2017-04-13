@@ -44,7 +44,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import java.io.File;
@@ -317,8 +316,6 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		setCameraDisplayOrientation(getActivity(), 0, mCamera);
 		preview.setCamera(mCamera);
 		ctx = getActivity();
-		//frame.setLayoutParams(layparam);
-		//preview.setLayoutParams(layparam);
 		frame.addView(preview);
 		buttonClick = (ImageButton) view.findViewById(R.id.takephoto);
 		buttonClick.bringToFront();
@@ -413,17 +410,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 				//Log.e("Flash",preview.camera.getParameters().getSupportedFlashModes().get(0));
 			}
 		});
-/*
-		if (preview.getcamPreviewSize()!=null)
-			frame.setLayoutParams(new FrameLayout.LayoutParams(preview.getcamPreviewSize().width,
-					preview.getcamPreviewSize().height));*/
-frame.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-		ViewGroup.LayoutParams.MATCH_PARENT));
-/*
-		RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(1080,(1080*4)/3);
-		lp.addRule(RelativeLayout.CENTER_IN_PARENT);
-		frame.setLayoutParams(lp);
-*/
+
 		grid_overlay_button = (ImageButton)view.findViewById(R.id.grid_overlay);
 		grid_overlay_button.bringToFront();
 		if (GRID_ENABLED){
@@ -859,10 +846,6 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 
 	}
 
-	public Size getcamPreviewSize(){
-		return mPreviewSize;
-	}
-
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		if (changed && this.mSurfaceView != null) {
@@ -883,9 +866,9 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 				final int scaledChildWidth = previewWidth * height / previewHeight;
 				Log.e("width",String.valueOf(previewWidth));
 				Log.e("Height",String.valueOf(previewHeight));
-				Log.e("scaled",String.valueOf(scaledChildWidth));/*
-				layout((width - scaledChildWidth) / 2, 0,
-						(width + scaledChildWidth) / 2, height);*/
+				Log.e("scaled",String.valueOf(scaledChildWidth));
+				child.layout((width - scaledChildWidth) / 2, 0,
+						(width + scaledChildWidth) / 2, height);
 				Log.e("Height",String.valueOf(height));
 			} else {
 				final int scaledChildHeight = previewHeight * width / previewWidth;
@@ -893,13 +876,13 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 				Log.e("Height",String.valueOf(previewHeight));
 				Log.e("scaled",String.valueOf(scaledChildHeight));
                /* child.layout(0, 0,
-                        width, height);*//*
-				layout(0, 0,
-						width, height);*/
-                layout(0, 0 ,previewWidth, previewHeight);
+                        width, height);*/
+				child.layout(0, 0,
+						width, height);
+                /*child.layout(0, 0 ,
+                        previewWidth, previewHeight);*/
 				Log.e("Height",String.valueOf(height));
 			}
-			//layout(0,0,1080,1440);
 		}
 	}
 
@@ -956,7 +939,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		}
 		return optimalSize;
 	}
-boolean c = true;
+
 	public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
 		// Now that the size is known, set up the camera parameters and begin
 		// the preview.
@@ -982,15 +965,9 @@ boolean c = true;
 			}
 			parameters.setSceneMode(Camera.Parameters.SCENE_MODE_AUTO);
 			parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
-
 		}catch(Exception e){}
 		requestLayout();
 		mCamera.setParameters(parameters);
 		mCamera.startPreview();
-		if (c) {
-			c = false;
-			layout(0, 0, 1080, (mPreviewSize.height * 1080) / mPreviewSize.width);
-		}
-
 	}
 }
