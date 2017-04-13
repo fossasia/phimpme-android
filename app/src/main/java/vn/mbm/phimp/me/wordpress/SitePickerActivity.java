@@ -140,18 +140,6 @@ public class SitePickerActivity extends AppCompatActivity
 
         SiteModel site = mSiteStore.getSiteByLocalId(getSelectedSite().getId());
     }
-//
-//    @SuppressWarnings("unused")
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void onSiteChanged(OnSiteChanged event) {
-//        mDebouncer.debounce(Void.class, new Runnable() {
-//            @Override public void run() {
-//                if (!isFinishing()) {
-//                    getAdapter().loadSites();
-//                }
-//            }
-//        }, 200, TimeUnit.MILLISECONDS);
-//    }
 
     private void setupRecycleView() {
         mRecycleView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -179,7 +167,7 @@ public class SitePickerActivity extends AppCompatActivity
     private void setupActionBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setHomeAsUpIndicator(R.drawable.ic_cross_white_24dp);
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_arrow_left_white_24dp);
             actionBar.setHomeButtonEnabled(true);
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle(R.string.site_picker_title);
@@ -231,6 +219,19 @@ public class SitePickerActivity extends AppCompatActivity
         return true;
     }
 
+    private void logout()
+    {
+        if (mAccountStore.hasAccessToken()) {
+            Logout logout = new Logout(this ,mAccountStore);
+            logout.signOutWordPressComWithConfirmation();
+        } else {
+            Intent intent = new Intent(this, SignInActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         int itemId = item.getItemId();
@@ -240,6 +241,10 @@ public class SitePickerActivity extends AppCompatActivity
         } else if (itemId == R.id.menu_search) {
             mSearchView.requestFocus();
             showSoftKeyboard();
+            return true;
+        }
+        else if (itemId == R.id.menu_more) {
+            logout();
             return true;
         }
         return super.onOptionsItemSelected(item);

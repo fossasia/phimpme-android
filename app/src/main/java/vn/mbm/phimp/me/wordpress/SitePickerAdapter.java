@@ -115,10 +115,10 @@ public class SitePickerAdapter extends RecyclerView.Adapter<SitePickerAdapter.Si
         mDataLoadedListener = dataLoadedListener;
 
         mBlavatarSz = 40;
-        mTextColorNormal = context.getResources().getColor(R.color.grey_lighten_10);
+        mTextColorNormal = context.getResources().getColor(R.color.grey_dark);
         mTextColorHidden = context.getResources().getColor(R.color.grey);
 
-        mSelectedItemBackground = new ColorDrawable(context.getResources().getColor(R.color.grey_lighten_20));
+        mSelectedItemBackground = new ColorDrawable(context.getResources().getColor(R.color.grey_lighten_20_translucent_50));
 
         loadSites();
     }

@@ -8,7 +8,6 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +35,6 @@ import org.wordpress.android.fluxc.store.SiteStore.OnSiteChanged;
 import org.wordpress.android.util.EditTextUtils;
 import org.wordpress.android.util.ToastUtils;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.inject.Inject;
@@ -129,11 +127,6 @@ public class SignInFragment extends AbstractFragment implements TextWatcher {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         showPasswordFieldAndFocus();
@@ -214,35 +207,15 @@ public class SignInFragment extends AbstractFragment implements TextWatcher {
 
             // move on the the main activity
             Intent intent = new Intent(getActivity(), SitePickerActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             getActivity().startActivity(intent);
+            getActivity().finish();
 
     }
 
     protected void signIn() {
-//            if (isUsernameEmail()) {
-//                startProgress(getActivity().getString(R.string.checking_email));
-//                mDispatcher.dispatch(AccountActionBuilder.newIsAvailableEmailAction(mUsername));
-//            } else if (isWPComDomain(mUsername)) {
-//                // If a wpcom domain was entered, check if the subdomain matches an existing username.
-//                String maybeUsername = UrlUtils.extractSubDomain(mUsername);
-//                if (maybeUsername.length() > 0) {
-//                    // See if the username exists.
-//                    startProgress(getActivity().getString(R.string.checking_username));
-//                    mDispatcher.dispatch(AccountActionBuilder.newIsAvailableUsernameAction(maybeUsername));
-//
-//                } else {
-//                    // The text that was entered was .wordpress.com or the like.
-//                    // Its invalid so just show an error.
-//                    showUsernameError(R.string.username_invalid);
-//                }
-//            } else {
-//                showPasswordFieldAndFocus();
-//            }
         if (!isUserDataValid()) {
             return;
         }
-
         mUsername = EditTextUtils.getText(mUsernameEditText).trim().toLowerCase();
         mPassword = EditTextUtils.getText(mPasswordEditText).trim();
 
@@ -252,25 +225,6 @@ public class SignInFragment extends AbstractFragment implements TextWatcher {
             }
             signInAndFetchBlogListWPCom();
         }
-
-    /**
-     * Tests the specified string to see if it contains a wpcom subdomain.
-     *
-     * @param string The string to check
-     * @return True if the string contains a wpcom subdomain, else false.
-     */
-    private boolean isWPComDomain(String string) {
-        Matcher matcher = WPCOM_DOMAIN.matcher(string);
-        return matcher.find();
-    }
-
-    private boolean isUsernameEmail() {
-        mUsername = EditTextUtils.getText(mUsernameEditText).trim();
-        Pattern emailRegExPattern = Patterns.EMAIL_ADDRESS;
-        Matcher matcher = emailRegExPattern.matcher(mUsername);
-
-        return matcher.find() && mUsername.length() <= MAX_EMAIL_LENGTH;
-    }
 
     private final OnClickListener mSignInClickListener = new OnClickListener() {
         @Override

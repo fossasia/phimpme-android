@@ -238,6 +238,7 @@ public class Upload extends android.support.v4.app.Fragment {
     private static String longtitude = "", latitude = "", title = "";
 
     Bitmap bmp_scale = null;
+    AlertDialog alertDialog = null;
 
     static boolean upload_photo_process = false;
 
@@ -465,7 +466,7 @@ public class Upload extends android.support.v4.app.Fragment {
                 LoginButton facebookAcc = (LoginButton)dialogView.findViewById(R.id.facebook_account);
                 Button wordpressAcc = (Button)dialogView.findViewById(R.id.wordpress_account);
                 dialogBuilder.setView(dialogView);
-                final AlertDialog alertDialog = dialogBuilder.create();
+                alertDialog = dialogBuilder.create();
                 facebookAcc.setReadPermissions(Arrays.asList(
                         "public_profile", "email", "user_birthday", "user_friends"));
                 facebookAcc.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -518,7 +519,7 @@ public class Upload extends android.support.v4.app.Fragment {
                         //check=true;
                         PhimpMe.add_account_upload = true;
                         PhimpMe.add_account_setting = true;
-                        getActivity().finish();
+                        alertDialog.dismiss();
                     }
 
                     @Override
@@ -540,15 +541,14 @@ public class Upload extends android.support.v4.app.Fragment {
                             startActivity(intent);
                             PhimpMe.add_account_upload = true;
                             PhimpMe.add_account_setting = true;
-                            getActivity().finish();
                         }
                         else {
                             Intent intent = new Intent(getContext(), SignInActivity.class);
                             startActivity(intent);
                             PhimpMe.add_account_upload = true;
                             PhimpMe.add_account_setting = true;
-                            getActivity().finish();
                         }
+                        alertDialog.dismiss();
                     }
                 });
                 alertDialog.show();

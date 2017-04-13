@@ -41,6 +41,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.wordpress.android.fluxc.Dispatcher;
 import org.wordpress.android.fluxc.model.MediaModel;
 import org.wordpress.android.fluxc.model.SiteModel;
+import org.wordpress.android.fluxc.store.AccountStore;
 import org.wordpress.android.fluxc.store.MediaStore;
 import org.wordpress.android.fluxc.store.MediaStore.OnMediaChanged;
 import org.wordpress.android.fluxc.store.MediaStore.OnMediaListFetched;
@@ -75,6 +76,7 @@ public class MediaBrowserActivity extends AppCompatActivity implements MediaGrid
 
     @Inject Dispatcher mDispatcher;
     @Inject MediaStore mMediaStore;
+    @Inject AccountStore mAccountStore;
 
     private SiteModel mSite;
 
@@ -282,11 +284,27 @@ public class MediaBrowserActivity extends AppCompatActivity implements MediaGrid
         return super.onCreateOptionsMenu(menu);
     }
 
+    private void logout()
+    {
+        if (mAccountStore.hasAccessToken()) {
+            Logout logout = new Logout(this ,mAccountStore);
+            logout.signOutWordPressComWithConfirmation();
+        } else {
+            Intent intent = new Intent(this, SignInActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                return true;
+            case R.id.menu_more_media:
+                logout();
                 return true;
             case R.id.menu_search:
                 mSearchMenuItem = item;
@@ -331,34 +349,6 @@ public class MediaBrowserActivity extends AppCompatActivity implements MediaGrid
 
         return super.onOptionsItemSelected(item);
     }
-
-//    @Override
-//    public boolean onMenuItemActionExpand(MenuItem item) {
-//        if (mMediaGridFragment != null) {
-//            mMediaGridFragment.setFilterEnabled(false);
-//        }
-//
-//        // load last search query
-//        if (!TextUtils.isEmpty(mQuery)) {
-//            onQueryTextChange(mQuery);
-//        }
-//
-//        mMenu.findItem(R.id.menu_new_media).setVisible(false);
-//
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onMenuItemActionCollapse(MenuItem item) {
-//        if (mMediaGridFragment != null) {
-//            mMediaGridFragment.setFilterEnabled(true);
-//        }
-//
-//        mMenu.findItem(R.id.menu_new_media).setVisible(true);
-//        invalidateOptionsMenu();
-//
-//        return true;
-//    }
 
     @Override
     public boolean onQueryTextSubmit(String query) {

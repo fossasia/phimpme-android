@@ -8,5 +8,10 @@
         android:icon="@drawable/ic_search_white_24dp"
         app:showAsAction="ifRoom|collapseActionView"
         android:title="@string/search" />
+    <item
+        android:id="@+id/menu_more_media"
+        android:title="@string/logout"
+        android:icon="@drawable/ic_more_vert_white_24dp"
+        app:showAsAction="always" />
 
 </menu>

@@ -758,7 +758,11 @@
     <string name="media_details_copy_url_toast">URL copied to clipboard</string>
 
     <!-- WordPress signin -->
+    <string name="logout">Logout</string>
+    <string name="signing_out">Logging out…</string>
+    <string name="sign_out_wpcom_confirm">Logging out from your account will remove all of @%s’s WordPress.com data from this device, including local drafts and local changes.</string>
     <string name="validating_user_data">Validating user data</string>
+    <string name="signout">Log out</string>
     <string name="validating_site_data">Validating site data</string>
     <string name="creating_your_account">Creating your account</string>
     <string name="creating_your_site">Creating your site</string>

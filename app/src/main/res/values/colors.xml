@@ -10,6 +10,7 @@
     <color name="grey_darken_20">#4f748e</color>
     <color name="grey_darken_30">#3d596d</color>
     <color name="grey_dark">#ff2e4453</color>
+    <color name="grey_lighten_20_translucent_50">#80c8d7e1</color>
     <color name="nux_grey_button">@color/grey_lighten_20</color>
     <color name="legacy_pressed_wordpress">#cc78c8e6</color>
     <color name="grey_dark_translucent_50">#802e4453</color>
