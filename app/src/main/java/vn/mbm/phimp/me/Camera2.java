@@ -875,9 +875,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		try {
 			if (mCamera != null) {
 				mCamera.setPreviewDisplay(holder);
-			}/*
-				mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, holder.getSurfaceFrame().width(),
-						holder.getSurfaceFrame().height());*/
+			}
 		} catch (IOException exception) {
 			Log.e(TAG, "IOException caused by setPreviewDisplay()", exception);
 		}
