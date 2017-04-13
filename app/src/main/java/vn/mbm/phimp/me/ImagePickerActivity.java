@@ -4,11 +4,13 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
@@ -16,6 +18,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +37,8 @@ import vn.mbm.phimp.me.utils.Image;
 import vn.mbm.phimp.me.utils.Params;
 import vn.mbm.phimp.me.utils.Utils;
 
+import static vn.mbm.phimp.me.PhimpMe.ThemeDark;
+
 /**
  * Created by dynamitechetan on 14/03/2017.
  */
@@ -51,6 +56,10 @@ public class ImagePickerActivity extends ImagePickerBase {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //set dark theme
+        if (Utility.getTheme(getApplicationContext()) == ThemeDark) {
+            setTheme(R.style.AppTheme_Dark);
+        }
         setContentView(R.layout.activity_gallery);
         parentLayout = (RelativeLayout) findViewById(R.id.parentLayout);
         toolbar = (Toolbar) findViewById(R.id.toolbar);

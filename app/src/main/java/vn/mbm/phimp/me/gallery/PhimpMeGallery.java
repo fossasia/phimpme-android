@@ -9,6 +9,7 @@ import vn.mbm.phimp.me.PhimpMe;
 import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.SendFileActivity;
 import vn.mbm.phimp.me.Upload;
+import vn.mbm.phimp.me.Utility;
 import vn.mbm.phimp.me.image.CropImage;
 import vn.mbm.phimp.me.utils.geoDegrees;
 
@@ -43,6 +44,8 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import static vn.mbm.phimp.me.PhimpMe.ThemeDark;
+
 public class PhimpMeGallery extends AppCompatActivity implements View.OnClickListener{
     private Gallery gallery;
     private static ArrayList<String> filePath;
@@ -67,6 +70,10 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        //set dark theme
+        if (Utility.getTheme(getApplicationContext()) == ThemeDark) {
+            setTheme(R.style.AppTheme_Dark);
+        }
 		setContentView(R.layout.phimpmegallery);	
 		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 		ctx = this;	

@@ -699,7 +699,7 @@ public class Upload extends android.support.v4.app.Fragment {
 
     private int fetchAccentColor() {
         TypedValue typedValue = new TypedValue();
-        TypedArray a = getActivity().obtainStyledAttributes(typedValue.data, new int[]{R.attr.colorAccent});
+        TypedArray a = getActivity().obtainStyledAttributes(typedValue.data, new int[]{R.attr.colorPrimaryTheme});
         int color = a.getColor(0, 0);
         a.recycle();
         return color;
