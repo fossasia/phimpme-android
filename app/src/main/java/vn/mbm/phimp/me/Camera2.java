@@ -94,6 +94,12 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	private final int SE = 135;
 	private final int SW = 225;
 	private final int NW = 315;
+	// Camera Icon IDs
+	private final int FLASH_ON_ICON = R.drawable.ic_flash_on_white_24dp;
+	private final int FLASH_AUTO_ICON = R.drawable.ic_flash_auto_white_24dp;
+	private final int FLASH_OFF_ICON = R.drawable.ic_flash_off_white_24dp;
+	private final int GRID_ON_ICON = R.drawable.ic_grid_on;
+	private final int GRID_OFF_ICON = R.drawable.ic_grid_off;
 	// Flag for flasher
 	public static int state = 0;
 	int camOrientation = 0;
@@ -134,14 +140,14 @@ public class Camera2 extends android.support.v4.app.Fragment {
 
 	private void setFlashIcon() {
 		switch (state) {
-			case 1:
-				flash.setImageResource(R.drawable.flash_off);
+			case FLASH_OFF:
+				flash.setImageResource(FLASH_OFF_ICON);
 				break;
-			case 2:
-				flash.setImageResource(R.drawable.flash_auto);
+			case FLASH_AUTO:
+				flash.setImageResource(FLASH_AUTO_ICON);
 				break;
 			default:
-				flash.setImageResource(R.drawable.flash_on);
+				flash.setImageResource(FLASH_ON_ICON);
 				break;
 		}
 	}
@@ -310,9 +316,6 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		setCameraDisplayOrientation(getActivity(), 0, mCamera);
 		preview.setCamera(mCamera);
 		ctx = getActivity();
-		//LayoutParams layparam = new LayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT));
-		//frame.setLayoutParams(layparam);
-		//preview.setLayoutParams(layparam);
 		frame.addView(preview);
 		buttonClick = (ImageButton) view.findViewById(R.id.takephoto);
 		buttonClick.bringToFront();
@@ -326,10 +329,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 			}
 		});
 		camera_switch = (ImageButton)view.findViewById(R.id.switch_camera);
-		camera_switch.setImageResource(R.drawable.camera_switch);
-		LinearLayout.LayoutParams parmsswitch = new LinearLayout.LayoutParams(Utils.getScreenWidth(getContext())/15,Utils.getScreenHeight(getContext())/15);
-		camera_switch.setLayoutParams(parmsswitch);
-		parmsswitch.setMarginStart(20);
+		camera_switch.bringToFront();
 		buttonClick.setImageResource(R.drawable.takepic);
 		if (Camera.getNumberOfCameras() <=1 ) camera_switch.setVisibility(View.GONE);
 		camera_switch.setOnClickListener(new OnClickListener() {
@@ -376,13 +376,9 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		});
 		Camera.Parameters parameters = preview.mCamera.getParameters();
 		preview.mCamera.setParameters(parameters);
-		LinearLayout linear = (LinearLayout)view.findViewById(R.id.lnCam);
-		linear.bringToFront();
 		flash = (ImageButton)view.findViewById(R.id.flash);
-		flash.setImageResource(R.drawable.flash_on);
-		LinearLayout.LayoutParams parmFlash = new LinearLayout.LayoutParams(Utils.getScreenWidth(getContext())/15,Utils.getScreenHeight(getContext())/15);
-		camera_switch.setLayoutParams(parmFlash);
-		parmFlash.setMarginStart(10);
+		flash.bringToFront();
+		flash.setImageResource(FLASH_ON_ICON);
 		flash.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -416,22 +412,21 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		});
 
 		grid_overlay_button = (ImageButton)view.findViewById(R.id.grid_overlay);
-		grid_overlay_button.setLayoutParams(parmFlash);
+		grid_overlay_button.bringToFront();
 		if (GRID_ENABLED){
-            grid_overlay_button.setImageResource(R.drawable.ic_grid_off);
+            grid_overlay_button.setImageResource(GRID_OFF_ICON);
         }else {
-            grid_overlay_button.setImageResource(R.drawable.ic_grid_on);
+            grid_overlay_button.setImageResource(GRID_ON_ICON);
         }
-		grid_overlay_button.setColorFilter(Color.WHITE);
 		grid_overlay_button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!GRID_ENABLED){
-                    grid_overlay_button.setImageResource(R.drawable.ic_grid_off);
-					GRID_ENABLED = true;
+                    grid_overlay_button.setImageResource(GRID_OFF_ICON);
+                    GRID_ENABLED = true;
                     preview.invalidate();						///onDraw gets called when view refreshes
                 }else {
-                    grid_overlay_button.setImageResource(R.drawable.ic_grid_on);
+                    grid_overlay_button.setImageResource(GRID_ON_ICON);
                     GRID_ENABLED = false;
                     preview.invalidate();
                 }
