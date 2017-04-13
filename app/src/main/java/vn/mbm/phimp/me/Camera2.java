@@ -751,8 +751,9 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 	protected void onDraw(Canvas canvas)
 	{
 		if (GRID_ENABLED) {
-			int screenWidth = Utils.getScreenWidth(getContext());
-			int screenHeight = Utils.getScreenHeight(getContext());
+
+			int screenWidth = mPreviewSize.height;
+			int screenHeight = mPreviewSize.width;
 
 			canvas.drawLine(2 * (screenWidth / 3), 0, 2 * (screenWidth / 3), screenHeight, paint);
 			canvas.drawLine((screenWidth / 3), 0, (screenWidth / 3), screenHeight, paint);
@@ -849,40 +850,22 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		if (changed && this.mSurfaceView != null) {
-			final View child = this.mSurfaceView;
 
 			final int width = r - l;
 			final int height = b - t;
 			Log.e("Height",String.valueOf(height));
 			int previewWidth = width;
 			int previewHeight = height;
-			if (mPreviewSize != null) {
-				previewWidth = mPreviewSize.width;
-				previewHeight = mPreviewSize.height;
-			}
+			try{
+				mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, width, height);
+			}catch(Exception e){}
 
-			// Center the child SurfaceView within the parent.
-			if (width * previewHeight > height * previewWidth) {
-				final int scaledChildWidth = previewWidth * height / previewHeight;
-				Log.e("width",String.valueOf(previewWidth));
-				Log.e("Height",String.valueOf(previewHeight));
-				Log.e("scaled",String.valueOf(scaledChildWidth));
-				child.layout((width - scaledChildWidth) / 2, 0,
-						(width + scaledChildWidth) / 2, height);
-				Log.e("Height",String.valueOf(height));
-			} else {
-				final int scaledChildHeight = previewHeight * width / previewWidth;
-				Log.e("width",String.valueOf(previewWidth));
-				Log.e("Height",String.valueOf(previewHeight));
-				Log.e("scaled",String.valueOf(scaledChildHeight));
-               /* child.layout(0, 0,
-                        width, height);*/
-				child.layout(0, 0,
-						width, height);
-                /*child.layout(0, 0 ,
-                        previewWidth, previewHeight);*/
-				Log.e("Height",String.valueOf(height));
+			if (mPreviewSize != null) {
+				previewWidth = mPreviewSize.height;
+				previewHeight = mPreviewSize.width;
 			}
+			layout(0,0,previewWidth,previewHeight);
+
 		}
 	}
 
@@ -892,7 +875,9 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		try {
 			if (mCamera != null) {
 				mCamera.setPreviewDisplay(holder);
-			}
+			}/*
+				mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, holder.getSurfaceFrame().width(),
+						holder.getSurfaceFrame().height());*/
 		} catch (IOException exception) {
 			Log.e(TAG, "IOException caused by setPreviewDisplay()", exception);
 		}
@@ -908,7 +893,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 
 
 	private Size getOptimalPreviewSize(List<Size> sizes, int w, int h) {
-		final double ASPECT_TOLERANCE = 0.1;
+
 		double targetRatio = (double) w / h;
 		if (sizes == null) return null;
 
@@ -919,11 +904,12 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 
 		// Try to find an size match aspect ratio and size
 		for (Size size : sizes) {
-			double ratio = (double) size.width / size.height;
-			if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE) continue;
-			if (Math.abs(size.height - targetHeight) < minDiff) {
-				optimalSize = size;
-				minDiff = Math.abs(size.height - targetHeight);
+			double ratio = (double) size.height / size.width;
+			if (Double.compare(ratio,targetRatio) >= 0){
+				if (((w - size.height)>=0)){
+					optimalSize = size;
+					break;
+				}
 			}
 		}
 
@@ -937,6 +923,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 				}
 			}
 		}
+
 		return optimalSize;
 	}
 
@@ -958,13 +945,13 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		}
 
 		try{
-			mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, w, h);
+			if (mPreviewSize==null) mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, w, h);
 			if (mSupportFocus.contains(Camera.Parameters.FOCUS_MODE_AUTO))
 			{
 				parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
 			}
 			parameters.setSceneMode(Camera.Parameters.SCENE_MODE_AUTO);
-			parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
+			parameters.setPreviewSize(mPreviewSize.width,mPreviewSize.height);
 		}catch(Exception e){}
 		requestLayout();
 		mCamera.setParameters(parameters);
