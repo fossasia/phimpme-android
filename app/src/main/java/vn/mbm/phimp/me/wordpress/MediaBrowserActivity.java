@@ -88,6 +88,7 @@ public class MediaBrowserActivity extends AppCompatActivity implements MediaGrid
     private Toolbar mToolbar;
     private SearchView mSearchView;
     private MenuItem mSearchMenuItem;
+    private MenuItem mLogoutMenuItem;
     private Menu mMenu;
 
     // Services
@@ -161,6 +162,11 @@ public class MediaBrowserActivity extends AppCompatActivity implements MediaGrid
         if (mSearchMenuItem != null) {
             String tempQuery = mQuery;
             MenuItemCompat.collapseActionView(mSearchMenuItem);
+            mQuery = tempQuery;
+        }
+        if (mLogoutMenuItem != null) {
+            String tempQuery = mQuery;
+            MenuItemCompat.collapseActionView(mLogoutMenuItem);
             mQuery = tempQuery;
         }
     }
@@ -268,6 +274,7 @@ public class MediaBrowserActivity extends AppCompatActivity implements MediaGrid
         getMenuInflater().inflate(R.menu.media_browser, menu);
 
         mSearchMenuItem = menu.findItem(R.id.menu_search);
+        mLogoutMenuItem = menu.findItem(R.id.menu_more_media);
         MenuItemCompat.setOnActionExpandListener(mSearchMenuItem, this);
 
         mSearchView = (SearchView) mSearchMenuItem.getActionView();
@@ -304,6 +311,7 @@ public class MediaBrowserActivity extends AppCompatActivity implements MediaGrid
                 onBackPressed();
                 return true;
             case R.id.menu_more_media:
+                mLogoutMenuItem = item;
                 logout();
                 return true;
             case R.id.menu_search:
@@ -627,60 +635,6 @@ public class MediaBrowserActivity extends AppCompatActivity implements MediaGrid
             }
         }
     };
-
-//    /** Setup the popup that allows you to add new media from camera, video camera or local files **/
-//    private void setupAddMenuPopup() {
-//        String capturePhoto = getString(R.string.media_add_popup_capture_photo);
-//        String captureVideo = getString(R.string.media_add_popup_capture_video);
-//        String pickPhotoFromGallery = getString(R.string.select_photo);
-//        String pickVideoFromGallery = getString(R.string.select_video);
-//        String[] items = new String[] {
-//                capturePhoto, captureVideo, pickPhotoFromGallery, pickVideoFromGallery
-//        };
-//
-//        @SuppressLint("InflateParams")
-//        View menuView = getLayoutInflater().inflate(R.layout.actionbar_add_media, null, false);
-//        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.actionbar_add_media_cell, items);
-//        ListView listView = (ListView) menuView.findViewById(R.id.actionbar_add_media_listview);
-//        listView.setAdapter(adapter);
-//        listView.setOnItemClickListener(new OnItemClickListener() {
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                adapter.notifyDataSetChanged();
-////
-////                if (position == 0) {
-////                    MediaBrowserActivity enclosingActivity = MediaBrowserActivity.this;
-////                    WordPressMediaUtils.launchCamera(enclosingActivity, BuildConfig.APPLICATION_ID, enclosingActivity);
-////                } else if (position == 1) {
-////                    WordPressMediaUtils.launchVideoCamera(MediaBrowserActivity.this);
-////                } else if (position == 2) {
-////                    WordPressMediaUtils.launchPictureLibrary(MediaBrowserActivity.this);
-////                } else if (position == 3) {
-////                    WordPressMediaUtils.launchVideoLibrary(MediaBrowserActivity.this);
-////                }
-//
-//                mAddMediaPopup.dismiss();
-//            }
-//        });
-//
-//        int width = getResources().getDimensionPixelSize(R.dimen.action_bar_spinner_width);
-//        mAddMediaPopup = new PopupWindow(menuView, width, ViewGroup.LayoutParams.WRAP_CONTENT, true);
-//        mAddMediaPopup.setBackgroundDrawable(new ColorDrawable());
-//    }
-//
-//    private void showNewMediaMenu() {
-//        View view = findViewById(R.id.menu_new_media);
-//        if (view != null) {
-//            int y_offset = getResources().getDimensionPixelSize(R.dimen.action_bar_spinner_y_offset);
-//            int[] loc = new int[2];
-//            view.getLocationOnScreen(loc);
-//            mAddMediaPopup.showAtLocation(view, Gravity.TOP | Gravity.START, loc[0],
-//                    loc[1] + view.getHeight() + y_offset);
-//        } else {
-//            // In case menu button is not on screen (declared showAsAction="ifRoom"), center the popup in the view.
-//            View gridView = findViewById(R.id.recycler);
-//            mAddMediaPopup.showAtLocation(gridView, Gravity.CENTER, 0, 0);
-//        }
-//    }
 
     private void fetchMedia(Uri mediaUri, final String mimeType) {
         if (!MediaUtils.isInMediaStore(mediaUri)) {
