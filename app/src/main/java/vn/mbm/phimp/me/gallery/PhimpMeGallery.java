@@ -329,6 +329,7 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                                     deleteImageFromMediaStore(filePath.get(position));
                                     // Remove from the cache
                                     PhimpMe.cache.deleteCachedFile(filePath.get(position));
+                                    Upload.uploadGridList.remove(filePath.get(position));
                                     Toast.makeText(getBaseContext(), R.string.image_delete_success, Toast.LENGTH_SHORT).show();
                                 } catch (Exception e) {
                                     Toast.makeText(getBaseContext(), R.string.image_delete_fail, Toast.LENGTH_SHORT).show();
