@@ -699,6 +699,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 	List<Size> mSupportedPreviewSizes;
 	List<String> mSupportFocus;
 	Camera mCamera;
+	private float mDist = 0;
 	private static  final int FOCUS_AREA_SIZE= 300;
 	Paint paint;
 	public static boolean GRID_ENABLED = false;
@@ -712,17 +713,29 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
         //Set Touch Listener
 		this.setWillNotDraw(false);
 		mSurfaceView.setOnTouchListener(new OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                            focusOnTouch(event);
-                        }
-                        return true;
-                    }
-                 });
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				Camera.Parameters params = mCamera.getParameters();
+				int action = event.getAction();
 
 
-		//setting paint values for drawing grid
+				if (event.getPointerCount() > 1) {
+					// handle multi-touch events
+					if (action == MotionEvent.ACTION_POINTER_DOWN) {
+						mDist = getFingerSpacing(event);
+					} else if (action == MotionEvent.ACTION_MOVE && params.isZoomSupported()) {
+						mCamera.cancelAutoFocus();
+						handleZoom(event, params);
+					}
+				} else {
+					// handle single touch events
+					if (action == MotionEvent.ACTION_UP) {
+						focusOnTouch(event);
+					}
+				}
+				return true;
+			}
+		});
 		paint = new Paint();
 		paint.setAntiAlias(true);
 		paint.setStrokeWidth(3);
@@ -736,6 +749,30 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 	}
 
+
+	private void handleZoom(MotionEvent event, Camera.Parameters params) {
+		int maxZoom = params.getMaxZoom();
+		int zoom = params.getZoom();
+		float newDist = getFingerSpacing(event);
+		if (newDist > mDist && zoom < maxZoom) {
+		//zoom in
+			zoom+=6;
+		} else if (newDist < mDist && zoom > 0) {
+		//zoom out
+			zoom-=6;
+		}
+		mDist = newDist;
+		params.setZoom(zoom);
+		mCamera.setParameters(params);
+	}
+
+        // Determine the space between the first two fingers
+	private float getFingerSpacing(MotionEvent event) {
+		float x = event.getX(0) - event.getX(1);
+		float y = event.getY(0) - event.getY(1);
+		return (float)Math.sqrt(x * x + y * y);
+	}
+		//setting paint values for drawing grid
 	public void setCamera(Camera camera) {
 		mCamera = camera;
 		if (mCamera != null) {
@@ -905,7 +942,6 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 			mCamera.release();
 		}
 	}
-
 
 	private Size getOptimalPreviewSize(List<Size> sizes, int w, int h) {
 		final double ASPECT_TOLERANCE = 0.1;
