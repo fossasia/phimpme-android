@@ -1347,6 +1347,7 @@ public class CropImage extends MonitoredActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         mApp.onResume();
 
         //get Geolocation from Map
