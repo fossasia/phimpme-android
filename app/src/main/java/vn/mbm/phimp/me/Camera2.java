@@ -704,7 +704,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 	List<Size> mSupportedPreviewSizes;
 	List<String> mSupportFocus;
 	Camera mCamera;
-	float mDist = 0;
+	private float mDist = 0;
 	private static  final int FOCUS_AREA_SIZE= 300;
 	Paint paint;
 	public static boolean GRID_ENABLED = false;
@@ -759,13 +759,11 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		int maxZoom = params.getMaxZoom();
 		int zoom = params.getZoom();
 		float newDist = getFingerSpacing(event);
-		if (newDist > mDist) {
+		if (newDist > mDist && zoom < maxZoom) {
 		//zoom in
-		if (zoom < maxZoom)
 			zoom+=6;
-		} else if (newDist < mDist) {
+		} else if (newDist < mDist && zoom > 0) {
 		//zoom out
-		if (zoom > 0)
 			zoom-=6;
 		}
 		mDist = newDist;
