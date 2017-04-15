@@ -56,8 +56,13 @@ import java.util.List;
 
 import static android.hardware.Camera.Parameters.FLASH_MODE_AUTO;
 import static android.hardware.Camera.Parameters.FLASH_MODE_ON;
+import static android.hardware.Camera.Parameters.SCENE_MODE_AUTO;
+import static android.hardware.Camera.Parameters.SCENE_MODE_HDR;
 import static vn.mbm.phimp.me.Camera2.FLASH_OFF;
 import static vn.mbm.phimp.me.Camera2.FLASH_ON;
+import static vn.mbm.phimp.me.Camera2.HDR_OFF;
+import static vn.mbm.phimp.me.Camera2.HDR_ON;
+import static vn.mbm.phimp.me.Camera2.HDR_STATE;
 import static vn.mbm.phimp.me.Camera2.state;
 
 import vn.mbm.phimp.me.gallery3d.media.CropImage;
@@ -76,6 +81,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	public static ImageButton buttonClick;
 	ImageButton flash,grid_overlay_button;
 	ImageButton camera_switch;
+	private ImageButton camera_hdr;
 	FrameLayout frame;
 	public int degrees;
 	private String make;
@@ -107,6 +113,11 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	public static final int FLASH_ON = 0;
 	public static final int FLASH_OFF = 1;
 	public static final int FLASH_AUTO = 2;
+    	//Flag for HDR
+    	public static int HDR_STATE = 0;
+    	//State for HDR
+    	public static final int HDR_OFF = 0;
+    	public static final int HDR_ON = 1;
 
 	private boolean FLAG_CAPTURE_IN_PROGRESS = false;
 
@@ -156,6 +167,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		flash.setRotation(degrees);
 		camera_switch.setRotation(degrees);
 		buttonClick.setRotation(degrees);
+        	camera_hdr.setRotation(degrees);
 	}
 
 	private void adjustIconPositions() {
@@ -328,6 +340,31 @@ public class Camera2 extends android.support.v4.app.Fragment {
 				}
 			}
 		});
+
+		camera_hdr = (ImageButton)view.findViewById(R.id.hdr);
+		camera_hdr.bringToFront();
+		camera_hdr.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+                		Camera.Parameters parameters = preview.mCamera.getParameters();
+                		switch (HDR_STATE){
+                    			case HDR_OFF:
+                        			HDR_STATE = HDR_ON;
+                        			camera_hdr.setImageResource(R.drawable.ic_hdr_on_white_24dp);
+                        			parameters.setSceneMode(SCENE_MODE_HDR);
+                        			break;
+                    			case HDR_ON:
+                        			HDR_STATE = HDR_OFF;
+                        			camera_hdr.setImageResource(R.drawable.ic_hdr_off_white_24dp);
+                        			parameters.setSceneMode(SCENE_MODE_AUTO);
+                        			break;
+                                	default:
+                                    		parameters.setSceneMode(SCENE_MODE_AUTO);
+						break;
+                			}
+                		preview.mCamera.setParameters(parameters);
+            			}
+			});
 		camera_switch = (ImageButton)view.findViewById(R.id.switch_camera);
 		camera_switch.bringToFront();
 		buttonClick.setImageResource(R.drawable.takepic);
@@ -981,6 +1018,15 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		// the preview.
 		Log.e("Surface","Change");
 		Camera.Parameters parameters = mCamera.getParameters();
+        	switch (HDR_STATE){
+                case HDR_ON:
+                    parameters.setSceneMode(SCENE_MODE_HDR);
+                    break;
+                default:
+                    parameters.setSceneMode(SCENE_MODE_AUTO);
+		     break;
+        	}
+
 		switch (state) {
 			case FLASH_ON:
 				parameters.setFlashMode(FLASH_MODE_ON);
@@ -999,7 +1045,6 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 			{
 				parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
 			}
-			parameters.setSceneMode(Camera.Parameters.SCENE_MODE_AUTO);
 			parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
 		}catch(Exception e){}
 		requestLayout();
