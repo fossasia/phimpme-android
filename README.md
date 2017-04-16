@@ -7,6 +7,8 @@ Phimp.me is a Photo App for Android that aims to replace proprietary photo appli
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ad1ba4cbecf04d3baa96a04c9a14d8cc)](https://www.codacy.com/app/mb/phimpme-android?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fossasia/phimpme-android&amp;utm_campaign=Badge_Grade)
 
 ## Communication
+Join Gitter channel: https://gitter.im/fossasia/phimpme
+
 Please join our chat channel on Slack: http://fossasia.slack.com/messages/phimpme/. You need to invite yourself first here: http://fossasia-slack.herokuapp.com/
 
 ## How to Contribute
