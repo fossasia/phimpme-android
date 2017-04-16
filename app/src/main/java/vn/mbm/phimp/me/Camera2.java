@@ -903,11 +903,9 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		// Try to find an size match aspect ratio and size
 		for (Size size : sizes) {
 			double ratio = (double) size.height / size.width;
-			if (Double.compare(ratio,targetRatio) >= 0){
-				if (((w - size.height)>=0)){
+			if ((Double.compare(ratio,targetRatio) >= 0) && ((w - size.height)>=0)){
 					optimalSize = size;
 					break;
-				}
 			}
 		}
 
