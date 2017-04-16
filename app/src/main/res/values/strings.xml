@@ -669,5 +669,6 @@
     <string name="folder_settings">Folder Settings</string>
     <string name="whitelist_folders">WhiteList Folders</string>
     <string name="whitelist_folders_message">Click to WhiteList Folders</string>
+    <string name="hdr_unsupported_error">HDR mode not supported</string>
 
 </resources>
