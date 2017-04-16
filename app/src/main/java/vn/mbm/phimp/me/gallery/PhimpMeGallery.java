@@ -357,7 +357,7 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
             long length = file.length()/1024;
             String img_width = exif_data.getAttribute(ExifInterface.TAG_IMAGE_WIDTH);
             String img_height = exif_data.getAttribute(ExifInterface.TAG_IMAGE_LENGTH);
-            if(img_width.isEmpty() || img_height.isEmpty() || img_width.equals("0") || img_height.equals("0") ) {
+            if("0".equals(img_width) || "0".equals(img_height)) {
                 try {
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inJustDecodeBounds = true;
