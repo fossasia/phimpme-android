@@ -1,5 +1,6 @@
 package vn.mbm.phimp.me;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -153,6 +154,12 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
                     }
 
                     class LoadMarkers extends AsyncTask<Void, Void, Void> {
+                        private Activity activity;
+
+                        public LoadMarkers(Activity activity) {
+                            this.activity = activity;
+                        }
+
                         @Override
                         protected void onPreExecute() {
                             super.onPreExecute();
@@ -179,7 +186,7 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
                             String[] projection = {MediaStore.MediaColumns.DATA,
                                     MediaStore.Images.Media.BUCKET_DISPLAY_NAME};
 
-                            cursor = getActivity().getContentResolver().query(uri, projection, null,
+                            cursor = activity.getContentResolver().query(uri, projection, null,
                                     null, null);
 
                             column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
@@ -190,7 +197,7 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
                                 listOfAllImages.add(PathOfImage);
                             }
                             images = listOfAllImages;
-                            getActivity().runOnUiThread(new Runnable() {
+                            activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     int i;
@@ -215,7 +222,8 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
                             return null;
                         }
                     }
-                    new LoadMarkers().execute();
+                    LoadMarkers loadMarkers=new LoadMarkers(getActivity());
+                    loadMarkers.execute();
                     googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
 
                         @Override
