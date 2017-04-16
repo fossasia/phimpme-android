@@ -34,6 +34,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -447,6 +448,7 @@ public class newGallery extends Fragment {
     static ArrayList<String> array_ID = new ArrayList<String>();
 
     Toolbar toolbar;
+    private boolean FLAG_IS_LOADING = false;
 
     @Nullable
     @Override
@@ -472,10 +474,13 @@ public class newGallery extends Fragment {
         super.onPrepareOptionsMenu(menu);
         MenuItem deleteMenuItem = menu.findItem(R.id.menu_gallery_delete_selected);
         MenuItem deselectMenuItem = menu.findItem(R.id.menu_gallery_deselect_selected);
-        MenuItem loadMoreMenuItem = menu.findItem(R.id.menu_gallery_load_more);
+        MenuItem selectAllMenuItem = menu.findItem(R.id.menu_gallery_select_all);
+        MenuItem uploadMenuItem = menu.findItem(R.id.menu_gallery_upload);
         deselectMenuItem.setVisible(!deletableList.isEmpty());
         deleteMenuItem.setVisible(!deletableList.isEmpty());
-        loadMoreMenuItem.setVisible(turnsNeeded > 1);
+        selectAllMenuItem.setVisible(!deletableList.isEmpty());
+        uploadMenuItem.setVisible(!deletableList.isEmpty());
+
     }
 
     @Override
@@ -483,20 +488,6 @@ public class newGallery extends Fragment {
         switch (item.getItemId()) {
             case R.id.menu_gallery_deselect_selected:
                 this.onResume();
-                return true;
-            case R.id.menu_gallery_load_more:
-                if (turnsNeeded > 1) {
-                    turnsNeeded -= 1;
-                    turnsDone += 1;
-                    localImagesPerTurn += PER_TURN;
-                    resumeLocalPhoto();
-                } else {
-                    localImagesPerTurn += loadLeft;
-                    turnsNeeded -= 1;
-                    turnsDone += 1;
-                    resumeLocalPhoto();
-                    galleryMenu.findItem(R.id.menu_gallery_load_more).setVisible(false);
-                }
                 return true;
             case R.id.menu_gallery_delete_selected:
                 AlertDialog.Builder deleteAlert = new AlertDialog.Builder(ctx);
@@ -513,9 +504,42 @@ public class newGallery extends Fragment {
                         });
                 // Create the AlertDialog object and show it
                 deleteAlert.create().show();
+                return true;
+
+            case R.id.menu_gallery_select_all:
+                photosAdapter.selectAllImages();
+                int imgCount = localImageList.size();
+                String newTitle;
+                if (imgCount > 0) {
+                    newTitle = imgCount == 1 ? getResources().getString(R.string.single_image_selected) : String.format(getString(R.string.images_selected), imgCount);
+                } else {
+                    newTitle = getResources().getString(R.string.application_title);
+                }
+                getActivity().setTitle(newTitle);
+                getActivity().invalidateOptionsMenu();
+                return true;
+            case R.id.menu_gallery_upload:
+                for(int i=0;i<deletableList.size();i++){
+                    if (!Upload.uploadGridList.contains(deletableList.get(i))){
+                        Upload.uploadGridList.add(deletableList.get(i));
+                    }
+                }
+                if(deletableList.size()>1)
+                    Toast.makeText(ctx, deletableList.size()+" Images added to upload list.", Toast.LENGTH_SHORT).show();
+                    else
+                    Toast.makeText(ctx, deletableList.size()+" Image added to upload list.", Toast.LENGTH_SHORT).show();
+
+
+
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public boolean checkdeletablelist() {
+        return deletableList.isEmpty();
     }
 
     private void deleteCheckedImages() {
@@ -525,6 +549,8 @@ public class newGallery extends Fragment {
                 deleteImageFromMediaStore(path);
                 // Remove from the cache
                 PhimpMe.cache.deleteCachedFile(path);
+                // Remove from the upload image list if there is an entry to upload
+                Upload.uploadGridList.remove(path);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -3450,7 +3476,35 @@ public class newGallery extends Fragment {
               }catch(Exception e){
 
               }
-            
+
+              localPhotosGrid.setOnScrollListener(new AbsListView.OnScrollListener() {
+                  @Override
+                  public void onScrollStateChanged(AbsListView view, int scrollState) {
+                      return;
+                  }
+
+                  @Override
+                  public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                      if ((visibleItemCount!=0) && (totalItemCount!=0) ) {
+                          if ((firstVisibleItem + visibleItemCount == totalItemCount) && (!FLAG_IS_LOADING)) {
+                              FLAG_IS_LOADING = true;
+                              if (turnsNeeded > 1) {
+                                  turnsNeeded -= 1;
+                                  turnsDone += 1;
+                                  localImagesPerTurn += PER_TURN;
+                                  resumeLocalPhoto();
+                                  FLAG_IS_LOADING = false;
+                              } else {
+                                  localImagesPerTurn += loadLeft;
+                                  turnsNeeded -= 1;
+                                  turnsDone += 1;
+                                  resumeLocalPhoto();
+                                  FLAG_IS_LOADING = false;
+                              }
+                          }
+                      }
+                  }
+              });
         }
     }
 
@@ -3551,22 +3605,31 @@ public class newGallery extends Fragment {
 	public class PhotosAdapter extends BaseAdapter {
 
 		private LayoutInflater mInflater;
-		public ArrayList<ImageItem> images = new ArrayList<>();
 
 		// Constructor
 		PhotosAdapter() {
 			mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			this.images = localImageList;
 			PhimpMe.cache = CacheStore.getInstance();
 		}
 
 		public int getCount() {
-			return images.size();
+			return localImageList.size();
 		}
 
 		public Object getItem(int position) {
 			return position;
 		}
+
+        public void selectAllImages()
+        {
+            for(ImageItem imageItem : localImageList) {
+                if(!deletableList.contains(imageItem.path)) {
+                    imageItem.isSelected = true;
+                    deletableList.add(imageItem.path);
+                }
+            }
+            notifyDataSetChanged();
+        }
 
 		public long getItemId(int position) {
 			return position;
@@ -3577,7 +3640,7 @@ public class newGallery extends Fragment {
 			notifyDataSetChanged();
 		}
 
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(final int position, View convertView, ViewGroup parent) {
 
 			final ViewHolder holder;
 			final ImageItem item = localImageList.get(position);
@@ -3617,32 +3680,24 @@ public class newGallery extends Fragment {
                     } else {
                         if (deletableList.isEmpty()) {
                             try {
-                                ImageItem item = localImageList.get(view.getId());
                                 Intent intent = new Intent();
                                 intent.setAction(Intent.ACTION_VIEW);
-                                final String[] columns = {MediaStore.Images.Media.DATA};
-                                Cursor imagecursor = getActivity().getContentResolver().query(
-                                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
-                                        MediaStore.Images.Media._ID + " = " + item.id,
-                                        null, MediaStore.Images.Media._ID);
-                                if (imagecursor != null && imagecursor.getCount() > 0) {
-                                    imagecursor.moveToPosition(0);
-                                    String path = imagecursor.getString(
-                                            imagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
-                                    imagecursor.close();
-                                    ArrayList<String> file = new ArrayList<>();
-                                    file.add(path);
-                                    Intent showImageIntent = new Intent();
-                                    showImageIntent.setClass(getActivity(), vn.mbm.phimp.me.gallery.PhimpMeGallery.class);
-                                    vn.mbm.phimp.me.gallery.PhimpMeGallery.setFileList(file);
-                                    showImageIntent.putExtra("aspectX", 0);
-                                    showImageIntent.putExtra("aspectY", 0);
-                                    ActivityOptionsCompat options = ActivityOptionsCompat.
+                                ArrayList<String> file = new ArrayList<>();
+                                for (int i = 0; i < localImageList.size(); i++) {
+                                    file.add(i, localImageList.get(i).path);
+                                }
+                                Intent showImageIntent = new Intent();
+                                showImageIntent.setClass(getActivity(), vn.mbm.phimp.me.gallery.PhimpMeGallery.class);
+                                vn.mbm.phimp.me.gallery.PhimpMeGallery.setFileList(file);
+                                showImageIntent.putExtra("aspectX", 0);
+                                showImageIntent.putExtra("aspectY", 0);
+                                showImageIntent.putExtra("index", position);
+                                ActivityOptionsCompat options = ActivityOptionsCompat.
                                             makeSceneTransitionAnimation(getActivity(), (View)holder.imageview, "gridanim");
                                     showImageIntent.putExtra("scale", true);
                                     showImageIntent.putExtra("activityName", "LocalPhotos");
                                     startActivity(showImageIntent,options.toBundle());
-                                }
+
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -3703,112 +3758,116 @@ public class newGallery extends Fragment {
 		ImageView imageSelector;
 	}
 
-	public static void resumeLocalPhoto(){
-		// check_local = 0 will flag that this is local images
-		if (check_local == 0) {
-			// Keep the localPhotos frame and hide the other
-			//localPhotosScroll.setVisibility(View.GONE);
-			localPhotosFrame.setVisibility(View.VISIBLE);
-			// Show a progress dialog until the loading is done
-			pro_gress = ProgressDialog.show(ctx, ctx.getString(R.string.loading), ctx.getString(R.string.wait),
-					true, false);
-			// Create a cursor to access External Storage
-			// MediaStore.Images.Media.DATA is the full Path of the file
-			final String[] data = { MediaStore.Images.Media.DATA };
-			// Each image has an ID associated with it
-			final String orderBy = MediaStore.Images.Media._ID + " DESC";
-			staticCursor = ctx.getContentResolver().query(
-				MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-				data, null, null, orderBy
-			);
+	public void resumeLocalPhoto(){
+        if(!PhimpMe.check_download_local_gallery) {
+            Toast.makeText(getContext(), R.string.local_gallery_check, Toast.LENGTH_SHORT).show();
+        }
+        else {
+            // check_local = 0 will flag that this is local images
+            if (check_local == 0) {
+                // Keep the localPhotos frame and hide the other
+                //localPhotosScroll.setVisibility(View.GONE);
+                localPhotosFrame.setVisibility(View.VISIBLE);
+                // Show a progress dialog until the loading is done
+                pro_gress = ProgressDialog.show(ctx, ctx.getString(R.string.loading), ctx.getString(R.string.wait),
+                        true, false);
+                // Create a cursor to access External Storage
+                // MediaStore.Images.Media.DATA is the full Path of the file
+                final String[] data = { MediaStore.Images.Media.DATA };
+                // Each image has an ID associated with it
+                final String orderBy = MediaStore.Images.Media._ID + " DESC";
+                staticCursor = ctx.getContentResolver().query(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        data, null, null, orderBy
+                );
 
-			// MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI - May contain no thumbnails
+                // MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI - May contain no thumbnails
 
-			// If there are content in the cursor, that means there are media in the phone
-			if (staticCursor != null) {
-				// Get the column index of the Images
-				int path_column_index = staticCursor.getColumnIndexOrThrow(
-						MediaStore.Images.Media.DATA);
-				// Count how many images it contains
-				localImageCount = staticCursor.getCount();
-				if (!statsCounted) {
-					turnsNeeded = localImageCount / PER_TURN;
-				loadLeft = localImageCount % PER_TURN;
-					statsCounted = true;
-				}
+                // If there are content in the cursor, that means there are media in the phone
+                if (staticCursor != null) {
+                    // Get the column index of the Images
+                    int path_column_index = staticCursor.getColumnIndexOrThrow(
+                            MediaStore.Images.Media.DATA);
+                    // Count how many images it contains
+                    localImageCount = staticCursor.getCount();
+                    if (!statsCounted) {
+                        turnsNeeded = localImageCount / PER_TURN;
+                        loadLeft = localImageCount % PER_TURN;
+                        statsCounted = true;
+                    }
 
-				if(localImageCount<localImagesPerTurn){
-					finalImageCount = localImageCount;
-				} else {
-					finalImageCount = localImagesPerTurn;
-				}
+                    if(localImageCount<localImagesPerTurn){
+                        finalImageCount = localImageCount;
+                    } else {
+                        finalImageCount = localImagesPerTurn;
+                    }
 
-		for (int i = (turnsDone * PER_TURN); i < finalImageCount; i++) {
-			// Run through the cursor from the beginning
-			staticCursor.moveToPosition(i);
-			// Create an ImageItem to store data related to an image
-			ImageItem imageItem = new ImageItem();
-			// Cursor contains path of each image
-			String path = staticCursor.getString(path_column_index);
-			// Set imagePath to the imageItem
-			imageItem.path = path;
-			// Check if the PhimpMe Cache has the image in the cache
-			// If it is there, fetch image from the cache
-			boolean cacheHaveThePic = PhimpMe.cache.check(path);
-			if (cacheHaveThePic) {
-				// Set Image id and Image itself to the imageItem
-				imageItem.id = PhimpMe.cache.getCacheId(path);
-				imageItem.img = PhimpMe.cache.getCachePath(path);
-				// Add the image to the gridView
-				// PhotosAdapter has a list of images and it'll notify dataset has changed!
-                        	photosAdapter.updateImageList(i, imageItem);
-				} else {
-					// Otherwise add it to the cache
-					// Access the image using a cursor
-					String[] columns = { MediaStore.Images.Thumbnails._ID };
-					Cursor imageCursor = ctx.getContentResolver().query(
-							MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-							columns,
-							MediaStore.Images.Media.DATA + " = " + "\"" + path + "\"",
-							null,
-							MediaStore.Images.Media._ID
-					);
-					// If the cursor is not empty;
-					if (imageCursor != null && imageCursor.getCount() > 0) {
-						// Move to the beginning of the cursor
-						imageCursor.moveToPosition(0);
-						// Get the ID of the image
-						int id = imageCursor.getInt(
-								imageCursor.getColumnIndexOrThrow(
-										MediaStore.Images.Media._ID));
-						// Set ID to the image item
-						imageItem.id = id;
-						// Set the thumbnail as the Image of the image item
-						imageItem.img = MediaStore.Images.Thumbnails.getThumbnail(
-								ctx.getContentResolver(),
-								id,	MediaStore.Images.Thumbnails.MICRO_KIND, null
-						);
-						// Save the thumbnail in PhimpMe cache
-						if (!PhimpMe.cache.check(imageItem.path)) {
-							PhimpMe.cache.saveCacheFile(
-									imageItem.path,
-									imageItem.img,
-									imageItem.id
-							);
-						}
-						// Close the cursor of the image
-						imageCursor.close();
-						} else {
-							// If there is no image, do not proceed then
-							imageItem.id = -1;
-						}
-						photosAdapter.updateImageList(i, imageItem);
-					}
-				}
-				staticCursor.close();
-			}
-			// Dismiss the dialog box
-			pro_gress.dismiss();
+                    for (int i = (turnsDone * PER_TURN); i < finalImageCount; i++) {
+                        // Run through the cursor from the beginning
+                        staticCursor.moveToPosition(i);
+                        // Create an ImageItem to store data related to an image
+                        ImageItem imageItem = new ImageItem();
+                        // Cursor contains path of each image
+                        String path = staticCursor.getString(path_column_index);
+                        // Set imagePath to the imageItem
+                        imageItem.path = path;
+                        // Check if the PhimpMe Cache has the image in the cache
+                        // If it is there, fetch image from the cache
+                        boolean cacheHaveThePic = PhimpMe.cache.check(path);
+                        if (cacheHaveThePic) {
+                            // Set Image id and Image itself to the imageItem
+                            imageItem.id = PhimpMe.cache.getCacheId(path);
+                            imageItem.img = PhimpMe.cache.getCachePath(path);
+                            // Add the image to the gridView
+                            // PhotosAdapter has a list of images and it'll notify dataset has changed!
+                            photosAdapter.updateImageList(i, imageItem);
+                        } else {
+                            // Otherwise add it to the cache
+                            // Access the image using a cursor
+                            String[] columns = { MediaStore.Images.Thumbnails._ID };
+                            Cursor imageCursor = ctx.getContentResolver().query(
+                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                    columns,
+                                    MediaStore.Images.Media.DATA + " = " + "\"" + path + "\"",
+                                    null,
+                                    MediaStore.Images.Media._ID
+                            );
+                            // If the cursor is not empty;
+                            if (imageCursor != null && imageCursor.getCount() > 0) {
+                                // Move to the beginning of the cursor
+                                imageCursor.moveToPosition(0);
+                                // Get the ID of the image
+                                int id = imageCursor.getInt(
+                                        imageCursor.getColumnIndexOrThrow(
+                                                MediaStore.Images.Media._ID));
+                                // Set ID to the image item
+                                imageItem.id = id;
+                                // Set the thumbnail as the Image of the image item
+                                imageItem.img = MediaStore.Images.Thumbnails.getThumbnail(
+                                        ctx.getContentResolver(),
+                                        id,	MediaStore.Images.Thumbnails.MICRO_KIND, null
+                                );
+                                // Save the thumbnail in PhimpMe cache
+                                if (!PhimpMe.cache.check(imageItem.path)) {
+                                    PhimpMe.cache.saveCacheFile(
+                                            imageItem.path,
+                                            imageItem.img,
+                                            imageItem.id
+                                    );
+                                }
+                                // Close the cursor of the image
+                                imageCursor.close();
+                            } else {
+                                // If there is no image, do not proceed then
+                                imageItem.id = -1;
+                            }
+                            photosAdapter.updateImageList(i, imageItem);
+                        }
+                    }
+                    staticCursor.close();
+                }
+                // Dismiss the dialog box
+                pro_gress.dismiss();
 
 			/* Original Content commented out by Padmal */
 			/*
@@ -3926,12 +3985,13 @@ public class newGallery extends Fragment {
 			Log.d("Danh", "check = " + check_local);
 			*/
 			/* Original Content ends here */
-		} else {
-			// Hide the localPhotos frame and show the other
-			//localPhotosScroll.setVisibility(View.VISIBLE);
-			localPhotosFrame.setVisibility(View.GONE);
-		}
-	}
+            } else {
+                // Hide the localPhotos frame and show the other
+                //localPhotosScroll.setVisibility(View.VISIBLE);
+                localPhotosFrame.setVisibility(View.GONE);
+            }
+        }
+    }
 
 	public static void timerDelayRemoveDialog(long time, final Dialog d){
 	    new Handler().postDelayed(new Runnable() {

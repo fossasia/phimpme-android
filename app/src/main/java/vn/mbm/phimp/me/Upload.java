@@ -23,6 +23,7 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
@@ -43,24 +44,36 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.facebook.share.widget.ShareDialog;
 import com.joooid.android.model.User;
 import com.joooid.android.xmlrpc.Constants;
 import com.joooid.android.xmlrpc.JoooidRpc;
 import com.tani.app.ui.IconContextMenu;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.wordpress.android.NewAccount;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 import vn.mbm.phimp.me.database.AccountItem;
 import vn.mbm.phimp.me.database.DrupalItem;
+import vn.mbm.phimp.me.database.FacebookItem;
 import vn.mbm.phimp.me.database.ImageshackItem;
 import vn.mbm.phimp.me.database.JoomlaItem;
 import vn.mbm.phimp.me.feedservice.FacebookActivity;
@@ -81,6 +94,7 @@ import vn.mbm.phimp.me.services.TwitterServices;
 import vn.mbm.phimp.me.services.VKServices;
 import vn.mbm.phimp.me.services.Wordpress;
 import vn.mbm.phimp.me.utils.Commons;
+import vn.mbm.phimp.me.utils.FileUtils;
 import vn.mbm.phimp.me.utils.Image;
 import vn.mbm.phimp.me.utils.Params;
 import vn.mbm.phimp.me.utils.PrefManager;
@@ -204,6 +218,7 @@ public class Upload extends android.support.v4.app.Fragment {
     // Upload image list and temporary list to store removable items
     public static ArrayList<String> uploadGridList = new ArrayList<>();
     private ArrayList<String> removableList;
+    private ArrayList<String> uploadedImageHashList;
 
     private static String longtitude = "", latitude = "", title = "";
 
@@ -226,6 +241,8 @@ public class Upload extends android.support.v4.app.Fragment {
 
     ProgressDialog gpsloading;
 
+    private Toolbar uploadToolBar;
+
     long totalSize;
 
     @Nullable
@@ -236,6 +253,8 @@ public class Upload extends android.support.v4.app.Fragment {
         int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
         decorView.setSystemUiVisibility(uiOptions);
 
+
+
         return inflater.inflate(R.layout.upload, container, false);
     }
 
@@ -245,6 +264,10 @@ public class Upload extends android.support.v4.app.Fragment {
         color = getActivity().getResources().getColor(R.color.icongrey);
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
+
+
+        uploadToolBar = (Toolbar) getView().findViewById(R.id.toolbar_upload);
+        uploadToolBar.setTitle("Upload Photos");
 
         final ShareDialog shareDialog = new ShareDialog(getActivity());
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -264,9 +287,10 @@ public class Upload extends android.support.v4.app.Fragment {
         panelLable.setText(R.string.upload);
         // Initiate removable upload item list
         removableList = new ArrayList<>();
+        // Initiate upload image hash list
+        uploadedImageHashList = new ArrayList<>();
         // Initiate clear panel buttons
         selectAllBtn = (ImageView) view.findViewById(R.id.btnSelectAll);
-        selectAllBtn.setColorFilter(color);
         selectAllBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -289,7 +313,6 @@ public class Upload extends android.support.v4.app.Fragment {
         });
 
         clearSelectionBtn = (ImageView) view.findViewById(R.id.btnDeselectAll);
-        clearSelectionBtn.setColorFilter(color);
         clearSelectionBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -301,7 +324,6 @@ public class Upload extends android.support.v4.app.Fragment {
         });
 
         removeSelectedBtn = (ImageView) view.findViewById(R.id.btnClearSelected);
-        removeSelectedBtn.setColorFilter(color);
         removeSelectedBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -311,6 +333,14 @@ public class Upload extends android.support.v4.app.Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 if (!removableList.isEmpty()) {
                                     uploadGridList.removeAll(removableList);
+                                    for(String imagePath : removableList) {
+                                        File imageFile = new File(imagePath);
+                                        try {
+                                            uploadedImageHashList.remove(FileUtils.getHash(imageFile));
+                                        } catch (NoSuchAlgorithmException | IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
                                     removableList.clear();
                                     ((ImageAdapter) listPhotoUpload.getAdapter()).notifyDataSetChanged();
                                     panelLable.setText(getResources().getString(R.string.upload));
@@ -348,7 +378,6 @@ public class Upload extends android.support.v4.app.Fragment {
          * bluetooth share
 		 */
         btnBluetoothShare = (ImageView) getView().findViewById(R.id.upload_sendDirectly);
-        btnBluetoothShare.setColorFilter(color);
         btnBluetoothShare.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -368,7 +397,6 @@ public class Upload extends android.support.v4.app.Fragment {
         });
 
         btnUpload = (ImageView) getView().findViewById(R.id.btnUploadPhoto);
-        btnUpload.setColorFilter(color);
         if (savedInstanceState != null) {
         }
 
@@ -407,17 +435,92 @@ public class Upload extends android.support.v4.app.Fragment {
         });
 
         btnAdd = (ImageView) getView().findViewById(R.id.btnUploadAccountAdd);
-        btnAdd.setColorFilter(color);
         btnAdd.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment newFragment = new AddAccountDialogFragment();
-                newFragment.show(getFragmentManager(), "dialog");
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ctx);
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.dialog_add_account, null);
+                LoginButton facebookAcc = (LoginButton)dialogView.findViewById(R.id.facebook_account);
+                Button wordpressAcc = (Button)dialogView.findViewById(R.id.wordpress_account);
+                dialogBuilder.setView(dialogView);
+                final AlertDialog alertDialog = dialogBuilder.create();
+                facebookAcc.setReadPermissions(Arrays.asList(
+                        "public_profile", "email", "user_birthday", "user_friends"));
+                facebookAcc.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+
+                        final AccessToken accessToken = loginResult.getAccessToken();
+                        final String at = loginResult.getAccessToken().getToken();
+                        final Profile profile = Profile.getCurrentProfile();
+                        GraphRequest request = GraphRequest.newMeRequest(
+                                AccessToken.getCurrentAccessToken(),
+                                new GraphRequest.GraphJSONObjectCallback() {
+                                    @Override
+                                    public void onCompleted(JSONObject object, GraphResponse response) {
+                                        Log.v("LoginActivity", response.toString());
+
+                                        try {
+                                            String email = object.getString("email");
+                                            //String profile_url = object.getString("picture");
+                                            String user_id = accessToken.getUserId();
+                                            String user_name = accessToken.getUserId(); //The username is no longer available in v2.
+                                            String user_fullname = profile.getName();
+                                            String profile_url = String.valueOf(profile.getLinkUri());
+                                            try {
+                                                long account_id = AccountItem.insertAccount(ctx, null, user_fullname, "facebook", "1");
+                                                Log.d("ID", String.valueOf(account_id));
+                                                if (account_id > 0) {
+                                                    if (FacebookItem.insertFacebookAccount(ctx, String.valueOf(account_id), at, user_id, user_name, user_fullname, email, profile_url)) {
+                                                        Toast.makeText(ctx, "Insert account '" + user_fullname + "' (Facebook) SUCCESS!", Toast.LENGTH_LONG).show();
+                                                    } else {
+                                                        Toast.makeText(ctx, "Insert account '" + user_fullname + "' (Facebook) FAIL!", Toast.LENGTH_LONG).show();
+                                                    }
+                                                }
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                                Log.e("webkit", "Facebook Service - " + e.toString());
+                                            }
+
+
+                                            PrefManager.putBoolean(PrefManager.LOGIN_STATUS, true);
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                        Bundle parameters = new Bundle();
+                        parameters.putString("fields", "id,first_name,last_name,picture,name,email,gender,birthday");
+                        request.setParameters(parameters);
+                        request.executeAsync();
+                        //check=true;
+                        PhimpMe.add_account_upload = true;
+                        PhimpMe.add_account_setting = true;
+                        getActivity().finish();
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+
+                    @Override
+                    public void onError(FacebookException error) {
+
+                    }
+                });
+                wordpressAcc.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getActivity().showDialog(5); // DIALOG_ADD_ACCOUNT_WORDPRESS = 5
+                    }
+                });
+                alertDialog.show();
             }
         });
 
         btnPhotoAdd = (ImageView) getView().findViewById(R.id.btnUploadPhotoAdd);
-        btnPhotoAdd.setColorFilter(color);
         btnPhotoAdd.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1289,6 +1392,7 @@ public class Upload extends android.support.v4.app.Fragment {
     // TODO: this might not be safe; was protected.
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
 
             case TAKE_PICTURE: {
@@ -1314,11 +1418,19 @@ public class Upload extends android.support.v4.app.Fragment {
             case TYPE_MULTI_PICKER: {
                 if (resultCode == Activity.RESULT_OK) {
                     ArrayList<Image> imagesList = data.getParcelableArrayListExtra(vn.mbm.phimp.me.utils.Constants.KEY_BUNDLE_LIST);
-                    if (imagesList.size() > 0) {
+                    try {
+                        if (imagesList.size() > 0) {
                         for (int i = 0; i < imagesList.size(); i++) {
-                            uploadGridList.add(imagesList.get(i).imagePath);
+                            if (!uploadedImageHashList.contains(imagesList.get(i).getImageHash())) {
+                                uploadGridList.add(imagesList.get(i).imagePath);
+                                uploadedImageHashList.add(imagesList.get(i).getImageHash());
+                            }
                         }
                         listPhotoUpload.setAdapter(new ImageAdapter(getContext()));
+                        }
+                    }
+                     catch (IOException | NoSuchAlgorithmException e) {
+                        e.printStackTrace();
                     }
                 }
                 break;

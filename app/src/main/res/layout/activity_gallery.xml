@@ -11,19 +11,21 @@
         android:id="@+id/parentLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <android.support.design.widget.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <include layout="@layout/toolbar"/>
+            <include layout="@layout/toolbar" />
 
         </android.support.design.widget.AppBarLayout>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
-            android:layout_below="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/appBarLayout"
             android:gravity="center"
             android:scrollbars="vertical" />
     </RelativeLayout>

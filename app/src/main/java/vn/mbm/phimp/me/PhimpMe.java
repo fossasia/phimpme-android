@@ -11,12 +11,16 @@ import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.gesture.GestureOverlayView;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
@@ -31,10 +35,8 @@ import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
 import android.widget.TabHost.TabSpec;
 import android.widget.Toast;
-
 import com.paypal.android.MEP.PayPal;
 import com.vistrav.ask.Ask;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,11 +45,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import vn.mbm.phimp.me.database.AccountDBAdapter;
 import vn.mbm.phimp.me.database.TumblrDBAdapter;
+import vn.mbm.phimp.me.folderchooser.PhoneMedia;
 import vn.mbm.phimp.me.gallery.PhimpMeGallery;
 import vn.mbm.phimp.me.utils.Commons;
+import vn.mbm.phimp.me.utils.FolderChooserPrefSettings;
 import vn.mbm.phimp.me.utils.RSSPhotoItem;
 import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
 
@@ -139,6 +144,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     public static final String FEDDS_LIST_MYSERVICES_TAG5 = "feeds_list_myservices";
     public static String MY_FEED_URL = "";
 
+
     public static boolean FEEDS_LIST_500PX_PRIVATE;
     public static final String FEEDS_LIST_500PX_PRIVATE_TAG = "feeds_list_500px_private";
     public static boolean FEEDS_LIST_500PX_PUBLIC;
@@ -177,8 +183,8 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     public static boolean check_cache;
     public static boolean check_export = true;
     public static BottomNavigationView mBottomNav;
-    public static boolean check_donwload = false;
-    public static boolean check_donwload_local_gallery = false;
+    public static boolean check_download = false;
+    public static boolean check_download_local_gallery = true;
     public static int flashStatus = 2;
 
     //Gallery
@@ -186,7 +192,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     //private GestureDetector gestureScanner;
     //View.OnTouchListener gestureListener;
     public static int width, height;
-
+    public final static int ThemeDark = 2;
     HomeScreenState currentScreen = HomeScreenState.GALLERY;
 
     @SuppressWarnings("unused")
@@ -195,6 +201,11 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
 
         super.onCreate(savedInstanceState);
         ctx = this;
+
+        //set dark theme
+        if (Utility.getTheme(getApplicationContext()) == ThemeDark) {
+        setTheme(R.style.AppTheme_Dark);}
+
         Log.d("thong", "PhimpMe - onCreate()");
         // The following line triggers the initialization of ACRA
         //ACRA.init((Application) ctx.getApplicationContext());
@@ -495,7 +506,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
          */
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         MAX_DISPLAY_PHOTOS = settings.getInt("gallery_max_display_photos", getResources().getInteger(R.integer.gallery_max_display_photos));
-        MAX_FILESIZE_DOWNLOAD = settings.getInt("max_filesize_download", getResources().getInteger(R.integer.max_filesize_download));
+        MAX_FILESIZE_DOWNLOAD = FolderChooserPrefSettings.getInstance().getMaxFileSize();
         FEEDS_LOCAL_GALLERY = settings.getBoolean(FEEDS_LOCAL_GALLERY_TAG, true);
         /*FEEDS_LIST_FLICKR_PUBLIC = settings.getBoolean(FEEDS_LIST_FLICKR_PUBLIC_TAG, false);
         FEEDS_LIST_FLICKR_RECENT = settings.getBoolean(FEEDS_LIST_FLICKR_RECENT_TAG, false);       
@@ -728,7 +739,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt("gallery_max_display_photos", MAX_DISPLAY_PHOTOS);
-        editor.putInt("max_filesize_download", MAX_FILESIZE_DOWNLOAD);
+        FolderChooserPrefSettings.getInstance().setMaxFileSize(MAX_FILESIZE_DOWNLOAD);
         editor.putBoolean(FEEDS_LIST_YAHOO_NEWS_TAG, FEEDS_LIST_YAHOO_NEWS);
         editor.putBoolean(FEEDS_LIST_FLICKR_PUBLIC_TAG, FEEDS_LIST_FLICKR_PUBLIC);
         editor.putBoolean(FEEDS_LIST_FLICKR_RECENT_TAG, FEEDS_LIST_FLICKR_RECENT);
@@ -783,25 +794,37 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     @Override
     public boolean onKeyDown(int keycode, KeyEvent event) {
         if (keycode == KeyEvent.KEYCODE_BACK) {
-            AlertDialog.Builder alertbox = new AlertDialog.Builder(ctx);
-            alertbox.setMessage(getString(R.string.exit_message));
-            alertbox.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    finish();
-                    System.exit(0);
+            if (currentScreen == HomeScreenState.GALLERY ) {
+                newGallery fragment = (newGallery) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                if(!fragment.checkdeletablelist()) {
+                    fragment.onResume();
+                } else{
+                    showDialog();
                 }
-            });
-            alertbox.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //Resume to current process
-                }
-            });
-            alertbox.create().show();
-            
+            } else {
+                showDialog();
+            }
         }
         return false;
+    }
+
+    public void showDialog(){
+        AlertDialog.Builder alertbox = new AlertDialog.Builder(ctx);
+        alertbox.setMessage(getString(R.string.exit_message));
+        alertbox.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+                System.exit(0);
+            }
+        });
+        alertbox.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Resume to current process
+            }
+        });
+        alertbox.create().show();
     }
 
     /*public boolean onTouchEvent(MotionEvent me) {
@@ -900,7 +923,11 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
 
             }
             newGallery.update_number++;
+
         }
+
+       PhoneMedia.getUnanalysedFiles();
+
     }
 
     public static void stopThread() {
@@ -977,6 +1004,34 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
         } catch (IllegalStateException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }
+    }
+
+    private class FragmentAdapter extends FragmentStatePagerAdapter{
+
+        public FragmentAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position){
+                case 0:
+                    return new newGallery();
+                case 3:
+                    return new MapFragment();
+                case 2:
+                    return new Camera2();
+                case 1:
+                    return new Upload();
+                default:
+                    return new Settings();
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 5;
         }
     }
 }
