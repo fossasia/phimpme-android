@@ -34,6 +34,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -89,6 +90,7 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
     @SuppressWarnings("deprecation")
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+
         mSupportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapwhere);
         if (mSupportMapFragment == null) {
             FragmentManager fragmentManager = getFragmentManager();
@@ -103,6 +105,10 @@ public class MapFragment extends Fragment implements GoogleApiClient.ConnectionC
                 public void onMapReady(final GoogleMap googleMap) {
                     if (googleMap != null) {
                         mMap = googleMap;
+                        if(Utility.getTheme(getContext())==2){
+                            MapStyleOptions style = MapStyleOptions.loadRawResourceStyle(getActivity(), R.raw.map_dark);
+                            mMap.setMapStyle(style);
+                        }
                         mMap.getUiSettings().setAllGesturesEnabled(true);
                         mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                         mMap.setTrafficEnabled(true);

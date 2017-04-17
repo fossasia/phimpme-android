@@ -78,8 +78,8 @@ dependencies {
     }
     compile 'com.vistrav:ask:2.4'
     compile 'com.android.support:support-v4:25.0.1'
-    compile 'com.google.android.gms:play-services-maps:9.0.2'
-    compile 'com.google.android.gms:play-services-location:9.0.2'
+    compile 'com.google.android.gms:play-services-maps:10.2.1'
+    compile 'com.google.android.gms:play-services-location:10.2.1'
     compile 'com.facebook.android:facebook-android-sdk:4.+'
     compile 'com.android.support:design:25.0.1'
     compile 'com.android.support:appcompat-v7:25.0.1'
