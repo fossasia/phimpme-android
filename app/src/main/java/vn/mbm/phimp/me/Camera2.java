@@ -756,7 +756,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 				int action = event.getAction();
 
 
-				if (event.getPointerCount() > 1) {
+				if (event.getPointerCount() == 2) {
 					// handle multi-touch events
 					if (action == MotionEvent.ACTION_POINTER_DOWN) {
 						mDist = getFingerSpacing(event);
@@ -764,7 +764,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 						mCamera.cancelAutoFocus();
 						handleZoom(event, params);
 					}
-				} else {
+				} else if (event.getPointerCount() == 1){
 					// handle single touch events
 					if (action == MotionEvent.ACTION_UP) {
 						focusOnTouch(event);
@@ -791,10 +791,10 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		int maxZoom = params.getMaxZoom();
 		int zoom = params.getZoom();
 		float newDist = getFingerSpacing(event);
-		if (newDist > mDist && zoom < maxZoom) {
+		if (newDist > mDist && zoom + 3 < maxZoom) {
 		//zoom in
 			zoom+=3;
-		} else if (newDist < mDist && zoom > 0) {
+		} else if (newDist < mDist && zoom - 3 > 0) {
 		//zoom out
 			zoom-=3;
 		}
