@@ -349,7 +349,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
                 		Camera.Parameters parameters = preview.mCamera.getParameters();
                 		switch (HDR_STATE){
                     			case HDR_OFF:
-                        			if (preview.mSupportSceneModes.contains(SCENE_MODE_HDR)) {
+                        			if (preview.getSupportSceneModes().contains(SCENE_MODE_HDR)) {
                                         HDR_STATE = HDR_ON;
                                         camera_hdr.setImageResource(R.drawable.ic_hdr_on_white_24dp);
                                         parameters.setSceneMode(SCENE_MODE_HDR);
@@ -738,7 +738,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 	SurfaceHolder mHolder;
 	Size mPreviewSize;
 	List<Size> mSupportedPreviewSizes;
-	List<String> mSupportFocus,mSupportSceneModes;
+	private List<String> mSupportFocus,mSupportSceneModes;
 	Camera mCamera;
 	private float mDist = 0;
 	private static  final int FOCUS_AREA_SIZE= 300;
@@ -1057,5 +1057,9 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		requestLayout();
 		mCamera.setParameters(parameters);
 		mCamera.startPreview();
+	}
+
+	public List<String> getSupportSceneModes() {
+		return mSupportSceneModes;
 	}
 }
