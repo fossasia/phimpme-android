@@ -793,10 +793,10 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		float newDist = getFingerSpacing(event);
 		if (newDist > mDist && zoom < maxZoom) {
 		//zoom in
-			zoom+=6;
+			zoom+=3;
 		} else if (newDist < mDist && zoom > 0) {
 		//zoom out
-			zoom-=6;
+			zoom-=3;
 		}
 		mDist = newDist;
 		params.setZoom(zoom);
