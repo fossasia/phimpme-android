@@ -56,8 +56,13 @@ import java.util.List;
 
 import static android.hardware.Camera.Parameters.FLASH_MODE_AUTO;
 import static android.hardware.Camera.Parameters.FLASH_MODE_ON;
+import static android.hardware.Camera.Parameters.SCENE_MODE_AUTO;
+import static android.hardware.Camera.Parameters.SCENE_MODE_HDR;
 import static vn.mbm.phimp.me.Camera2.FLASH_OFF;
 import static vn.mbm.phimp.me.Camera2.FLASH_ON;
+import static vn.mbm.phimp.me.Camera2.HDR_OFF;
+import static vn.mbm.phimp.me.Camera2.HDR_ON;
+import static vn.mbm.phimp.me.Camera2.HDR_STATE;
 import static vn.mbm.phimp.me.Camera2.state;
 
 import vn.mbm.phimp.me.gallery3d.media.CropImage;
@@ -76,6 +81,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	public static ImageButton buttonClick;
 	ImageButton flash,grid_overlay_button;
 	ImageButton camera_switch;
+	private ImageButton camera_hdr;
 	FrameLayout frame;
 	public int degrees;
 	private String make;
@@ -94,6 +100,12 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	private final int SE = 135;
 	private final int SW = 225;
 	private final int NW = 315;
+	// Camera Icon IDs
+	private final int FLASH_ON_ICON = R.drawable.ic_flash_on_white_24dp;
+	private final int FLASH_AUTO_ICON = R.drawable.ic_flash_auto_white_24dp;
+	private final int FLASH_OFF_ICON = R.drawable.ic_flash_off_white_24dp;
+	private final int GRID_ON_ICON = R.drawable.ic_grid_on;
+	private final int GRID_OFF_ICON = R.drawable.ic_grid_off;
 	// Flag for flasher
 	public static int state = 0;
 	int camOrientation = 0;
@@ -101,6 +113,11 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	public static final int FLASH_ON = 0;
 	public static final int FLASH_OFF = 1;
 	public static final int FLASH_AUTO = 2;
+    	//Flag for HDR
+    	public static int HDR_STATE = 0;
+    	//State for HDR
+    	public static final int HDR_OFF = 0;
+    	public static final int HDR_ON = 1;
 
 	private boolean FLAG_CAPTURE_IN_PROGRESS = false;
 
@@ -134,14 +151,14 @@ public class Camera2 extends android.support.v4.app.Fragment {
 
 	private void setFlashIcon() {
 		switch (state) {
-			case 1:
-				flash.setImageResource(R.drawable.flash_off);
+			case FLASH_OFF:
+				flash.setImageResource(FLASH_OFF_ICON);
 				break;
-			case 2:
-				flash.setImageResource(R.drawable.flash_auto);
+			case FLASH_AUTO:
+				flash.setImageResource(FLASH_AUTO_ICON);
 				break;
 			default:
-				flash.setImageResource(R.drawable.flash_on);
+				flash.setImageResource(FLASH_ON_ICON);
 				break;
 		}
 	}
@@ -150,6 +167,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		flash.setRotation(degrees);
 		camera_switch.setRotation(degrees);
 		buttonClick.setRotation(degrees);
+        	camera_hdr.setRotation(degrees);
 	}
 
 	private void adjustIconPositions() {
@@ -310,9 +328,6 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		setCameraDisplayOrientation(getActivity(), 0, mCamera);
 		preview.setCamera(mCamera);
 		ctx = getActivity();
-		//LayoutParams layparam = new LayoutParams(new LayoutParams(LayoutParams.FILL_PARENT,LayoutParams.FILL_PARENT));
-		//frame.setLayoutParams(layparam);
-		//preview.setLayoutParams(layparam);
 		frame.addView(preview);
 		buttonClick = (ImageButton) view.findViewById(R.id.takephoto);
 		buttonClick.bringToFront();
@@ -325,11 +340,33 @@ public class Camera2 extends android.support.v4.app.Fragment {
 				}
 			}
 		});
+
+		camera_hdr = (ImageButton)view.findViewById(R.id.hdr);
+		camera_hdr.bringToFront();
+		camera_hdr.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+                		Camera.Parameters parameters = preview.mCamera.getParameters();
+                		switch (HDR_STATE){
+                    			case HDR_OFF:
+                        			HDR_STATE = HDR_ON;
+                        			camera_hdr.setImageResource(R.drawable.ic_hdr_on_white_24dp);
+                        			parameters.setSceneMode(SCENE_MODE_HDR);
+                        			break;
+                    			case HDR_ON:
+                        			HDR_STATE = HDR_OFF;
+                        			camera_hdr.setImageResource(R.drawable.ic_hdr_off_white_24dp);
+                        			parameters.setSceneMode(SCENE_MODE_AUTO);
+                        			break;
+                                	default:
+                                    		parameters.setSceneMode(SCENE_MODE_AUTO);
+						break;
+                			}
+                		preview.mCamera.setParameters(parameters);
+            			}
+			});
 		camera_switch = (ImageButton)view.findViewById(R.id.switch_camera);
-		camera_switch.setImageResource(R.drawable.camera_switch);
-		LinearLayout.LayoutParams parmsswitch = new LinearLayout.LayoutParams(Utils.getScreenWidth(getContext())/15,Utils.getScreenHeight(getContext())/15);
-		camera_switch.setLayoutParams(parmsswitch);
-		parmsswitch.setMarginStart(20);
+		camera_switch.bringToFront();
 		buttonClick.setImageResource(R.drawable.takepic);
 		if (Camera.getNumberOfCameras() <=1 ) camera_switch.setVisibility(View.GONE);
 		camera_switch.setOnClickListener(new OnClickListener() {
@@ -376,13 +413,9 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		});
 		Camera.Parameters parameters = preview.mCamera.getParameters();
 		preview.mCamera.setParameters(parameters);
-		LinearLayout linear = (LinearLayout)view.findViewById(R.id.lnCam);
-		linear.bringToFront();
 		flash = (ImageButton)view.findViewById(R.id.flash);
-		flash.setImageResource(R.drawable.flash_on);
-		LinearLayout.LayoutParams parmFlash = new LinearLayout.LayoutParams(Utils.getScreenWidth(getContext())/15,Utils.getScreenHeight(getContext())/15);
-		camera_switch.setLayoutParams(parmFlash);
-		parmFlash.setMarginStart(10);
+		flash.bringToFront();
+		flash.setImageResource(FLASH_ON_ICON);
 		flash.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -416,22 +449,21 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		});
 
 		grid_overlay_button = (ImageButton)view.findViewById(R.id.grid_overlay);
-		grid_overlay_button.setLayoutParams(parmFlash);
+		grid_overlay_button.bringToFront();
 		if (GRID_ENABLED){
-            grid_overlay_button.setImageResource(R.drawable.ic_grid_off);
+            grid_overlay_button.setImageResource(GRID_OFF_ICON);
         }else {
-            grid_overlay_button.setImageResource(R.drawable.ic_grid_on);
+            grid_overlay_button.setImageResource(GRID_ON_ICON);
         }
-		grid_overlay_button.setColorFilter(Color.WHITE);
 		grid_overlay_button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!GRID_ENABLED){
-                    grid_overlay_button.setImageResource(R.drawable.ic_grid_off);
-					GRID_ENABLED = true;
+                    grid_overlay_button.setImageResource(GRID_OFF_ICON);
+                    GRID_ENABLED = true;
                     preview.invalidate();						///onDraw gets called when view refreshes
                 }else {
-                    grid_overlay_button.setImageResource(R.drawable.ic_grid_on);
+                    grid_overlay_button.setImageResource(GRID_ON_ICON);
                     GRID_ENABLED = false;
                     preview.invalidate();
                 }
@@ -704,6 +736,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 	List<Size> mSupportedPreviewSizes;
 	List<String> mSupportFocus;
 	Camera mCamera;
+	private float mDist = 0;
 	private static  final int FOCUS_AREA_SIZE= 300;
 	Paint paint;
 	public static boolean GRID_ENABLED = false;
@@ -717,17 +750,29 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
         //Set Touch Listener
 		this.setWillNotDraw(false);
 		mSurfaceView.setOnTouchListener(new OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                            focusOnTouch(event);
-                        }
-                        return true;
-                    }
-                 });
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				Camera.Parameters params = mCamera.getParameters();
+				int action = event.getAction();
 
 
-		//setting paint values for drawing grid
+				if (event.getPointerCount() == 2) {
+					// handle multi-touch events
+					if (action == MotionEvent.ACTION_POINTER_DOWN) {
+						mDist = getFingerSpacing(event);
+					} else if (action == MotionEvent.ACTION_MOVE && params.isZoomSupported()) {
+						mCamera.cancelAutoFocus();
+						handleZoom(event, params);
+					}
+				} else if (event.getPointerCount() == 1){
+					// handle single touch events
+					if (action == MotionEvent.ACTION_UP) {
+						focusOnTouch(event);
+					}
+				}
+				return true;
+			}
+		});
 		paint = new Paint();
 		paint.setAntiAlias(true);
 		paint.setStrokeWidth(3);
@@ -741,6 +786,30 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 	}
 
+
+	private void handleZoom(MotionEvent event, Camera.Parameters params) {
+		int maxZoom = params.getMaxZoom();
+		int zoom = params.getZoom();
+		float newDist = getFingerSpacing(event);
+		if (newDist > mDist && zoom + 3 < maxZoom) {
+		//zoom in
+			zoom+=3;
+		} else if (newDist < mDist && zoom - 3 > 0) {
+		//zoom out
+			zoom-=3;
+		}
+		mDist = newDist;
+		params.setZoom(zoom);
+		mCamera.setParameters(params);
+	}
+
+        // Determine the space between the first two fingers
+	private float getFingerSpacing(MotionEvent event) {
+		float x = event.getX(0) - event.getX(1);
+		float y = event.getY(0) - event.getY(1);
+		return (float)Math.sqrt(x * x + y * y);
+	}
+		//setting paint values for drawing grid
 	public void setCamera(Camera camera) {
 		mCamera = camera;
 		if (mCamera != null) {
@@ -911,7 +980,6 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
-
 	private Size getOptimalPreviewSize(List<Size> sizes, int w, int h) {
 		final double ASPECT_TOLERANCE = 0.1;
 		double targetRatio = (double) w / h;
@@ -950,6 +1018,15 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		// the preview.
 		Log.e("Surface","Change");
 		Camera.Parameters parameters = mCamera.getParameters();
+        	switch (HDR_STATE){
+                case HDR_ON:
+                    parameters.setSceneMode(SCENE_MODE_HDR);
+                    break;
+                default:
+                    parameters.setSceneMode(SCENE_MODE_AUTO);
+		     break;
+        	}
+
 		switch (state) {
 			case FLASH_ON:
 				parameters.setFlashMode(FLASH_MODE_ON);
@@ -968,7 +1045,6 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 			{
 				parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
 			}
-			parameters.setSceneMode(Camera.Parameters.SCENE_MODE_AUTO);
 			parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
 		}catch(Exception e){}
 		requestLayout();
