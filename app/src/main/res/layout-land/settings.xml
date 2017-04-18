@@ -222,8 +222,9 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@color/blue_dark" />
+            <!-- Theme Settings -->
             <TextView
-                android:id="@+id/TextView02"
+                android:id="@+id/themeSettingsHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
@@ -234,46 +235,65 @@
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="10dp">
 
-                    <LinearLayout
-                        android:id="@+id/linearSettingsLocalGallery"
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:orientation="vertical"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp">
+                        android:orientation="horizontal">
+
+                        <RadioGroup
+                            android:id="@+id/themeSelector"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/margin_3"
+                            android:layout_marginRight="@dimen/margin_3">>
+
+                            <RadioButton
+                                android:id="@+id/themeDarkSelector"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:textSize="@dimen/text_size_16"
+                                android:text="@string/darktheme"
+                                android:textColor="?attr/textThemes"
+                                android:padding="@dimen/margin_3"
+                                android:layout_marginTop="@dimen/margin_5"
+                                android:layout_marginBottom="@dimen/margin_5"/>
+
+                            <RadioButton
+                                android:id="@+id/themeLightSelector"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:textStyle="bold"
+                                android:textSize="@dimen/text_size_16"
+                                android:text="@string/lighttheme"
+                                android:textColor="?attr/textThemes"
+                                android:padding="@dimen/margin_3"
+                                android:layout_marginBottom="@dimen/margin_5"/>
+
+                        </RadioGroup>
 
                         <TextView
-                            android:id="@+id/TextView04"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/darktheme"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-                        <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_below="@id/themeSelector"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-light"
-                            android:text="@string/theappwillberestated" />
+                            android:padding="@dimen/margin_3"
+                            android:layout_marginLeft="@dimen/margin_3"
+                            android:layout_marginRight="@dimen/margin_3"
+                            android:text="@string/theappwillberestarted" />
 
-                    </LinearLayout>
-
-                    <CheckBox
-                        android:id="@+id/checkbox_theme"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="4dp" />
-                </RelativeLayout>
+                    </RelativeLayout>
+                </LinearLayout>
             </android.support.v7.widget.CardView>
 
             <View

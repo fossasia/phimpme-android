@@ -474,12 +474,13 @@ public class newGallery extends Fragment {
         super.onPrepareOptionsMenu(menu);
         MenuItem deleteMenuItem = menu.findItem(R.id.menu_gallery_delete_selected);
         MenuItem deselectMenuItem = menu.findItem(R.id.menu_gallery_deselect_selected);
-        MenuItem loadMoreMenuItem = menu.findItem(R.id.menu_gallery_load_more);
         MenuItem selectAllMenuItem = menu.findItem(R.id.menu_gallery_select_all);
+        MenuItem uploadMenuItem = menu.findItem(R.id.menu_gallery_upload);
         deselectMenuItem.setVisible(!deletableList.isEmpty());
         deleteMenuItem.setVisible(!deletableList.isEmpty());
-        loadMoreMenuItem.setVisible(turnsNeeded > 1);
         selectAllMenuItem.setVisible(!deletableList.isEmpty());
+        uploadMenuItem.setVisible(!deletableList.isEmpty());
+
     }
 
     @Override
@@ -487,20 +488,6 @@ public class newGallery extends Fragment {
         switch (item.getItemId()) {
             case R.id.menu_gallery_deselect_selected:
                 this.onResume();
-                return true;
-            case R.id.menu_gallery_load_more:
-                if (turnsNeeded > 1) {
-                    turnsNeeded -= 1;
-                    turnsDone += 1;
-                    localImagesPerTurn += PER_TURN;
-                    resumeLocalPhoto();
-                } else {
-                    localImagesPerTurn += loadLeft;
-                    turnsNeeded -= 1;
-                    turnsDone += 1;
-                    resumeLocalPhoto();
-                    galleryMenu.findItem(R.id.menu_gallery_load_more).setVisible(false);
-                }
                 return true;
             case R.id.menu_gallery_delete_selected:
                 AlertDialog.Builder deleteAlert = new AlertDialog.Builder(ctx);
@@ -531,6 +518,20 @@ public class newGallery extends Fragment {
                 getActivity().setTitle(newTitle);
                 getActivity().invalidateOptionsMenu();
                 return true;
+            case R.id.menu_gallery_upload:
+                for(int i=0;i<deletableList.size();i++){
+                    if (!Upload.uploadGridList.contains(deletableList.get(i))){
+                        Upload.uploadGridList.add(deletableList.get(i));
+                    }
+                }
+                if(deletableList.size()>1)
+                    Toast.makeText(ctx, deletableList.size()+" Images added to upload list.", Toast.LENGTH_SHORT).show();
+                    else
+                    Toast.makeText(ctx, deletableList.size()+" Image added to upload list.", Toast.LENGTH_SHORT).show();
+
+
+
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -548,6 +549,8 @@ public class newGallery extends Fragment {
                 deleteImageFromMediaStore(path);
                 // Remove from the cache
                 PhimpMe.cache.deleteCachedFile(path);
+                // Remove from the upload image list if there is an entry to upload
+                Upload.uploadGridList.remove(path);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -3497,7 +3500,6 @@ public class newGallery extends Fragment {
                                   turnsDone += 1;
                                   resumeLocalPhoto();
                                   FLAG_IS_LOADING = false;
-                                  galleryMenu.findItem(R.id.menu_gallery_load_more).setVisible(false);
                               }
                           }
                       }
