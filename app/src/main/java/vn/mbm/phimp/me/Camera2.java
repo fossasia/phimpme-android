@@ -346,25 +346,30 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		camera_hdr.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-                		Camera.Parameters parameters = preview.mCamera.getParameters();
-                		switch (HDR_STATE){
-                    			case HDR_OFF:
-                        			HDR_STATE = HDR_ON;
-                        			camera_hdr.setImageResource(R.drawable.ic_hdr_on_white_24dp);
-                        			parameters.setSceneMode(SCENE_MODE_HDR);
-                        			break;
-                    			case HDR_ON:
-                        			HDR_STATE = HDR_OFF;
-                        			camera_hdr.setImageResource(R.drawable.ic_hdr_off_white_24dp);
-                        			parameters.setSceneMode(SCENE_MODE_AUTO);
-                        			break;
-                                	default:
-                                    		parameters.setSceneMode(SCENE_MODE_AUTO);
+				Camera.Parameters parameters = preview.mCamera.getParameters();
+				switch (HDR_STATE) {
+					case HDR_OFF:
+						if (preview.getSupportSceneModes().contains(SCENE_MODE_HDR)) {
+							HDR_STATE = HDR_ON;
+							camera_hdr.setImageResource(R.drawable.ic_hdr_on_white_24dp);
+							parameters.setSceneMode(SCENE_MODE_HDR);
+						} else {
+							Toast.makeText(ctx, R.string.hdr_unsupported_error, Toast.LENGTH_SHORT).show();
+						}
 						break;
-                			}
-                		preview.mCamera.setParameters(parameters);
-            			}
-			});
+					case HDR_ON:
+						HDR_STATE = HDR_OFF;
+						camera_hdr.setImageResource(R.drawable.ic_hdr_off_white_24dp);
+						parameters.setSceneMode(SCENE_MODE_AUTO);
+						break;
+					default:
+						parameters.setSceneMode(SCENE_MODE_AUTO);
+						break;
+				}
+				preview.mCamera.setParameters(parameters);
+			}
+		});
+
 		camera_switch = (ImageButton)view.findViewById(R.id.switch_camera);
 		camera_switch.bringToFront();
 		buttonClick.setImageResource(R.drawable.takepic);
@@ -734,7 +739,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 	SurfaceHolder mHolder;
 	Size mPreviewSize;
 	List<Size> mSupportedPreviewSizes;
-	List<String> mSupportFocus;
+	private List<String> mSupportFocus,mSupportSceneModes;
 	Camera mCamera;
 	private float mDist = 0;
 	private static  final int FOCUS_AREA_SIZE= 300;
@@ -815,7 +820,8 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		if (mCamera != null) {
 			mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
 			mSupportFocus = mCamera.getParameters().getSupportedFocusModes();
-			// mCamera.setDisplayOrientation(90);
+			mSupportSceneModes = mCamera.getParameters().getSupportedSceneModes();
+            // mCamera.setDisplayOrientation(90);
 			requestLayout();
 		}
 	}
@@ -1020,7 +1026,9 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		Camera.Parameters parameters = mCamera.getParameters();
         	switch (HDR_STATE){
                 case HDR_ON:
-                    parameters.setSceneMode(SCENE_MODE_HDR);
+                    if (mSupportSceneModes.contains(SCENE_MODE_HDR)) {
+                        parameters.setSceneMode(SCENE_MODE_HDR);
+                    }
                     break;
                 default:
                     parameters.setSceneMode(SCENE_MODE_AUTO);
@@ -1050,5 +1058,9 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		requestLayout();
 		mCamera.setParameters(parameters);
 		mCamera.startPreview();
+	}
+
+	public List<String> getSupportSceneModes() {
+		return mSupportSceneModes;
 	}
 }
