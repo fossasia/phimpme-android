@@ -9,7 +9,7 @@ import vn.mbm.phimp.me.PhimpMe;
 import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.SendFileActivity;
 import vn.mbm.phimp.me.Upload;
-import vn.mbm.phimp.me.image.CropImage;
+import vn.mbm.phimp.me.gallery3d.media.CropImage;
 import vn.mbm.phimp.me.utils.geoDegrees;
 
 import android.content.Context;
@@ -283,7 +283,7 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                 title=f.getName();
 
                 Intent intent = new Intent();
-                intent.setClass(PhimpMeGallery.this, CropImage.class);
+                intent.setClass(PhimpMeGallery.this,CropImage.class);
                 intent.putExtra("image-path", filePath.get(position));
                 intent.putExtra("longtitude", longtitude);
                 intent.putExtra("latitude", latitude);
