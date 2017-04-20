@@ -94,7 +94,9 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	double lat;
 	double lon;
 	int statusScreen = 0;
+	int uiOptions;
 	View view;
+	View decorView;
 
 	// Directions for Camera Button Orientations
 	private final int NE = 45;
@@ -131,8 +133,8 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		View decorView = getActivity().getWindow().getDecorView();
-		int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+		decorView = getActivity().getWindow().getDecorView();
+		uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
 		decorView.setSystemUiVisibility(uiOptions);
 
 		view=  inflater.inflate(R.layout.camera, container, false);
@@ -329,7 +331,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 			lon = -1;
 		}
 		try{
-			mCamera = Camera.open();}catch(Exception e){
+			mCamera = Camera.open(PhimpMe.camera_use);}catch(Exception e){
 		}
 		//mCamera.setDisplayOrientation(90);
 		setCameraDisplayOrientation(getActivity(), 0, mCamera);
@@ -725,6 +727,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		//PhimpMe.hideTabs();
 		//PhimpMe.hideAd();
 		mOrientation.enable();
+		decorView.setSystemUiVisibility(uiOptions);
 		try{
 			mCamera = Camera.open(PhimpMe.camera_use);
 		}catch(Exception e){}
