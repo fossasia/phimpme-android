@@ -9,6 +9,7 @@
     <color name="grey_darken_10">#668eaa</color>
     <color name="grey_darken_20">#4f748e</color>
     <color name="grey_darken_30">#3d596d</color>
+    <color name="grey_lighten_30">#ffe9eff3</color>
     <color name="grey_dark">#ff2e4453</color>
     <color name="grey_lighten_20_translucent_50">#80c8d7e1</color>
     <color name="nux_grey_button">@color/grey_lighten_20</color>

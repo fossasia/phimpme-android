@@ -31,15 +31,28 @@
     </style>
     <style name="WordPress" parent="Theme.AppCompat.Light.DarkActionBar">
     <!-- Material theme -->
-    <item name="colorPrimary">@color/blue_wordpress</item>
-    <item name="colorPrimaryDark">@color/status_bar_tint</item>
-    <item name="colorAccent">@color/orange_jazzy</item>
-    <item name="colorControlActivated">@color/blue_light</item>
-    <item name="colorControlHighlight">@color/grey_lighten_20</item>
+        <item name="colorPrimary">@color/blue_wordpress</item>
+        <item name="colorPrimaryDark">@color/status_bar_tint</item>
+        <item name="colorAccent">@color/orange_jazzy</item>
+        <item name="colorControlActivated">@color/blue_light</item>
+        <item name="colorControlHighlight">@color/grey_lighten_20</item>
+
+        <item name="android:windowBackground">@color/grey_lighten_30</item>
+        <item name="android:actionBarItemBackground">@drawable/selectable_background_wordpress</item>
+        <item name="android:actionDropDownStyle">@style/DropDownNav.WordPress</item>
+        <item name="android:actionModeBackground">@color/status_bar_tint</item>
+        <item name="android:statusBarColor">@color/status_bar_tint</item>a``
+
+        <item name="windowActionModeOverlay">true</item>
+        <item name="swipeToRefreshStyle">@style/WordPress.SwipeToRefresh</item>
     </style>
     <style name="Calypso.NoActionBar" parent="CalypsoTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="WordPress.SwipeToRefresh">
+        <item name="refreshIndicatorColor">@color/blue_medium</item>
     </style>
 
     <!-- Dark base activity theme -->
@@ -63,6 +76,9 @@
 
     </style>
 
+    <style name="PopupMenu.WordPress" parent="android:Widget.Holo.ListPopupWindow">
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_wordpress</item>
+    </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
