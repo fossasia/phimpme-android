@@ -58,6 +58,17 @@
             android:scaleType="fitCenter"/>
 
         <ImageButton
+            android:id="@+id/sound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/ic_volume_up_white_24dp"
+            android:scaleType="fitCenter"/>
+
+        <ImageButton
             android:id="@+id/takephoto"
             android:layout_width="80dp"
             android:layout_height="80dp"

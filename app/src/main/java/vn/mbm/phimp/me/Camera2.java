@@ -82,6 +82,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	ImageButton flash,grid_overlay_button;
 	ImageButton camera_switch;
 	private ImageButton camera_hdr;
+	private ImageButton shutter_sound;
 	FrameLayout frame;
 	public int degrees;
 	private String make;
@@ -118,6 +119,11 @@ public class Camera2 extends android.support.v4.app.Fragment {
     	//State for HDR
     	public static final int HDR_OFF = 0;
     	public static final int HDR_ON = 1;
+	//Flag for Sound
+	public static int SOUND_STATE = 1;
+	//State for Sound
+	public static final int SOUND_OFF = 0;
+	public static final int SOUND_ON = 1;
 
 	private boolean FLAG_CAPTURE_IN_PROGRESS = false;
 
@@ -168,6 +174,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		camera_switch.setRotation(degrees);
 		buttonClick.setRotation(degrees);
         	camera_hdr.setRotation(degrees);
+		shutter_sound.setRotation(degrees);
 	}
 
 	private void adjustIconPositions() {
@@ -336,7 +343,29 @@ public class Camera2 extends android.support.v4.app.Fragment {
 				//progress = ProgressDialog.show(ctx, "", "");
 				if (!FLAG_CAPTURE_IN_PROGRESS) {
 					FLAG_CAPTURE_IN_PROGRESS = true;
-					preview.mCamera.takePicture(shutterCallback, null, jpegCallback);
+					if (SOUND_STATE == SOUND_ON) {
+						preview.mCamera.takePicture(shutterCallback, null, jpegCallback);
+					} else {
+						preview.mCamera.takePicture(null, null, jpegCallback);
+					}
+				}
+			}
+		});
+
+		shutter_sound = (ImageButton) view.findViewById(R.id.sound);
+		shutter_sound.bringToFront();
+		shutter_sound.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				switch (SOUND_STATE) {
+					case SOUND_OFF:
+						SOUND_STATE = SOUND_ON;
+						shutter_sound.setImageResource(R.drawable.ic_volume_up_white_24dp);
+						break;
+					default:
+						SOUND_STATE = SOUND_OFF;
+						shutter_sound.setImageResource(R.drawable.ic_volume_off_white_24dp);
+						break;
 				}
 			}
 		});
