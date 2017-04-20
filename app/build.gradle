@@ -86,9 +86,6 @@ dependencies {
     compile files('libs/tagsoup-1.2.1.jar')
     compile files('libs/uk.co.jasonfry.android.tools.jar')
     compile project(':viewflow')
-    compile project(':fluxc')
-    compile project(':fluxc-annotations')
-    compile project(':fluxc-processor')
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
@@ -101,6 +98,7 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.0.1'
     compile 'com.android.volley:volley:1.0.0'
     compile 'com.sothree.slidinguppanel:library:3.3.1'
+    compile 'com.github.wordpress-mobile.WordPress-FluxC-Android:fluxc:wpandroid-7.0'
 
     // Dagger
     compile 'com.google.dagger:dagger:2.0.2'
