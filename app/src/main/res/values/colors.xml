@@ -46,7 +46,7 @@
     <color name="primary_material_dark_2">#212121</color>
     <color name="secondary_text_material_dark">#8a000000</color>
     <color name="white70">#d0d0d0</color>
-    <color name="white50">#de000000</color>
+    <color name="white50">#777777</color>
     <color name="grey_lighten_10">#ffa8bece</color>
     <color name="grey_lighten_20">#ffc8d7e1</color>
     <color name="blue_wordpress">#ff0087be</color>
