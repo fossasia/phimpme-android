@@ -62,6 +62,7 @@ import javax.inject.Inject;
 
 import vn.mbm.phimp.me.MyApplication;
 import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.Upload;
 
 /**
  * The main activity in which the user can browse their media.
@@ -142,7 +143,13 @@ public class MediaBrowserActivity extends AppCompatActivity implements MediaGrid
         }
         ft.commitAllowingStateLoss();
 
-//        setupAddMenuPopup();
+        //TODO: upload media by using the upload button instead of choosing wordpress button
+        if(!Upload.uploadGridList.isEmpty()) {
+            for (String imagePath : Upload.uploadGridList) {
+                queueFileForUpload(Uri.parse(imagePath), null);
+            }
+            Upload.uploadGridList.clear();
+        }
 
         // if media was shared add it to the library
         handleSharedMedia();
@@ -297,8 +304,7 @@ public class MediaBrowserActivity extends AppCompatActivity implements MediaGrid
             Logout logout = new Logout(this ,mAccountStore);
             logout.signOutWordPressComWithConfirmation();
         } else {
-            Intent intent = new Intent(this, SignInActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            Intent intent = new Intent(this, Upload.class);
             startActivity(intent);
             finish();
         }

@@ -34,6 +34,7 @@ import javax.inject.Inject;
 
 import vn.mbm.phimp.me.MyApplication;
 import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.Upload;
 
 /**
  * Created by rohanagarwal94 on 6/4/17.
@@ -225,8 +226,7 @@ public class SitePickerActivity extends AppCompatActivity
             Logout logout = new Logout(this ,mAccountStore);
             logout.signOutWordPressComWithConfirmation();
         } else {
-            Intent intent = new Intent(this, SignInActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            Intent intent = new Intent(this, Upload.class);
             startActivity(intent);
             finish();
         }

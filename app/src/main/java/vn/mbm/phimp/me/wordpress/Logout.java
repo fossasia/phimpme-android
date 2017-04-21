@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 
 import org.wordpress.android.fluxc.store.AccountStore;
@@ -12,6 +13,7 @@ import org.wordpress.android.fluxc.store.AccountStore;
 import java.lang.ref.WeakReference;
 
 import vn.mbm.phimp.me.MyApplication;
+import vn.mbm.phimp.me.PhimpMe;
 import vn.mbm.phimp.me.R;
 
 /**
@@ -88,6 +90,9 @@ public class Logout {
                 mDisconnectProgressDialog.dismiss();
             }
             mDisconnectProgressDialog = null;
+            Intent intent = new Intent(activity, PhimpMe.class);
+            activity.startActivity(intent);
+            activity.finish();
         }
     }
 }
