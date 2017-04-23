@@ -7,7 +7,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -20,10 +19,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
@@ -64,7 +61,6 @@ import vn.mbm.phimp.me.database.TwitterItem;
 import vn.mbm.phimp.me.database.VkItem;
 import vn.mbm.phimp.me.database.WordpressItem;
 import vn.mbm.phimp.me.folderchooser.FolderChooserActivity;
-import vn.mbm.phimp.me.gallery3d.media.StringTexture;
 import vn.mbm.phimp.me.services.DeviantArtService;
 import vn.mbm.phimp.me.services.DrupalServices;
 import vn.mbm.phimp.me.services.FacebookServices;
@@ -81,12 +77,10 @@ import vn.mbm.phimp.me.services.TwitterServices;
 import vn.mbm.phimp.me.services.VKServices;
 import vn.mbm.phimp.me.utils.Commons;
 import vn.mbm.phimp.me.utils.FolderChooserPrefSettings;
-import vn.mbm.phimp.me.utils.PrefManager;
 import vn.mbm.phimp.me.utils.RSSUtil;
 
 import static android.os.Environment.getExternalStorageDirectory;
 import static com.facebook.FacebookSdk.getApplicationContext;
-import static vn.mbm.phimp.me.PhimpMe.PREFS_NAME;
 
 
 public class Settings extends Fragment
@@ -456,6 +450,22 @@ public class Settings extends Fragment
 				}
 				else
 				    PhimpMe.check_download_local_gallery=false;
+			}
+		});
+
+		CheckBox checkVolumeBtn = (CheckBox)getView().findViewById(R.id.checkbox_volume_btn);
+		PhimpMe.check_volume_btn_to_capture = checkVolumeBtn.isChecked();
+		checkVolumeBtn.setOnCheckedChangeListener(new OnCheckedChangeListener()
+		{
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
+			{
+				if(isChecked==true){
+					PhimpMe.check_volume_btn_to_capture=true;
+				}
+				else {
+					PhimpMe.check_volume_btn_to_capture = false;
+				}
 			}
 		});
 

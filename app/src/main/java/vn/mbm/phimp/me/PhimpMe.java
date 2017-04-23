@@ -199,6 +199,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     public static BottomNavigationView mBottomNav;
     public static boolean check_download = false;
     public static boolean check_download_local_gallery = true;
+    public static boolean check_volume_btn_to_capture = true;
     public static int flashStatus = 2;
 
     //Gallery
@@ -959,7 +960,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                 showDialog();
             }
         }
-        if(keycode==KeyEvent.KEYCODE_VOLUME_DOWN || keycode==KeyEvent.KEYCODE_VOLUME_UP || keycode==KeyEvent.KEYCODE_FOCUS){
+        if((keycode==KeyEvent.KEYCODE_VOLUME_DOWN || keycode==KeyEvent.KEYCODE_VOLUME_UP || keycode==KeyEvent.KEYCODE_FOCUS)&&(check_volume_btn_to_capture)){
             if(currentScreen==HomeScreenState.CAMERA){
                 AudioManager man = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
                 switch (event.getKeyCode()) {
@@ -975,9 +976,12 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                                 AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
                         preview.mCamera.takePicture(null, null, jpegCallback);
                         return true;
+                    case KeyEvent.KEYCODE_FOCUS:
+                        preview.mCamera.takePicture(null, null, jpegCallback);
+                        return true;
 
                 }
-//                Toast.makeText(ctx, "PRESSED", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ctx, "button pressed", Toast.LENGTH_SHORT).show();
             }
         }
         return false;
