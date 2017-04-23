@@ -44,7 +44,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -56,22 +55,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import vn.mbm.phimp.me.gallery3d.media.CropImage;
+import vn.mbm.phimp.me.utils.Utils;
+
 import static android.hardware.Camera.Parameters.FLASH_MODE_AUTO;
 import static android.hardware.Camera.Parameters.FLASH_MODE_ON;
 import static android.hardware.Camera.Parameters.SCENE_MODE_AUTO;
 import static android.hardware.Camera.Parameters.SCENE_MODE_HDR;
-import static android.icu.lang.UCharacter.GraphemeClusterBreak.L;
 import static vn.mbm.phimp.me.Camera2.FLASH_OFF;
 import static vn.mbm.phimp.me.Camera2.FLASH_ON;
-import static vn.mbm.phimp.me.Camera2.HDR_OFF;
 import static vn.mbm.phimp.me.Camera2.HDR_ON;
 import static vn.mbm.phimp.me.Camera2.HDR_STATE;
 import static vn.mbm.phimp.me.Camera2.seekbar;
 import static vn.mbm.phimp.me.Camera2.state;
-
-import vn.mbm.phimp.me.gallery3d.media.CropImage;
-import vn.mbm.phimp.me.utils.Utils;
-
 import static vn.mbm.phimp.me.Preview.GRID_ENABLED;
 
 public class Camera2 extends android.support.v4.app.Fragment {
@@ -90,15 +86,15 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	private ImageButton exposure;
 	public static SeekBar seekbar;
 	FrameLayout frame;
-	public int degrees;
+	public static int degrees;
 	private String make;
 	private String model;
 	private String imei;
 	LocationManager locationManager;
 	private LocationListener locationListener;
 	boolean portrait = true;
-	double lat;
-	double lon;
+	static double lat;
+	static double lon;
 	int statusScreen = 0;
 	int uiOptions;
 	View view;
@@ -133,7 +129,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	public static final int SOUND_OFF = 0;
 	public static final int SOUND_ON = 1;
 
-	private boolean FLAG_CAPTURE_IN_PROGRESS = false;
+	public static boolean FLAG_CAPTURE_IN_PROGRESS = false;
 
 	@Nullable
 	@Override
