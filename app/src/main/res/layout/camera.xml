@@ -35,6 +35,27 @@
             app:srcCompat="@drawable/ic_flash_on_white_24dp" />
 
         <ImageButton
+            android:id="@+id/exposure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_exposure_white_24dp" />
+
+        <SeekBar
+            android:id="@+id/exposureSeekBar"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="39dp"
+            android:visibility="gone" />
+
+        <ImageButton
             android:id="@+id/grid_overlay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
