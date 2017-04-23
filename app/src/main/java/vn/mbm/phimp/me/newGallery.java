@@ -3485,7 +3485,7 @@ public class newGallery extends Fragment {
 
                   @Override
                   public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                      if ((visibleItemCount!=0) && (totalItemCount!=0) ) {
+                      if ((visibleItemCount!=0) && (totalItemCount!=0) && (totalItemCount != localImageCount)) {
                           if ((firstVisibleItem + visibleItemCount == totalItemCount) && (!FLAG_IS_LOADING)) {
                               FLAG_IS_LOADING = true;
                               if (turnsNeeded > 1) {
