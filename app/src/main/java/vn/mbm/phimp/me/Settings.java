@@ -444,7 +444,7 @@ public class Settings extends Fragment
 //		lLocalGallery.setOrientation(LinearLayout.HORIZONTAL);
 
 		CheckBox chkLocalGallery = (CheckBox)getView().findViewById(R.id.checkbox_gallery);
-		chkLocalGallery.setChecked(PhimpMe.FEEDS_LOCAL_GALLERY);
+		chkLocalGallery.setChecked(PhimpMe.check_download_local_gallery);
 		chkLocalGallery.setOnCheckedChangeListener(new OnCheckedChangeListener()
 		{
 			@Override
