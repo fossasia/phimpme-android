@@ -67,4 +67,4 @@ after_success:
  - 'if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./upload-apk.sh; fi'
  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then ./upload_apk_forks.sh; fi'
 notifications:
-  slack: fossasia:JgzycrBUs0nKnmJhsAxCB4bL
+  slack: $SLACK_ID
