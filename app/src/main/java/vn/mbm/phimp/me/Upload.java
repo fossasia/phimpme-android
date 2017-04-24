@@ -316,10 +316,7 @@ public class Upload extends android.support.v4.app.Fragment {
         clearSelectionBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                removableList.clear();
-                ((ImageAdapter) listPhotoUpload.getAdapter()).notifyDataSetChanged();
-                panelLable.setText(getResources().getString(R.string.upload));
-                toggleButtonPanel(false);
+                unselectAll();
             }
         });
 
@@ -691,6 +688,17 @@ public class Upload extends android.support.v4.app.Fragment {
 
             }
         });
+    }
+
+    public boolean checkRemovableList(){
+        return removableList.isEmpty();
+    }
+
+    public void unselectAll(){
+        removableList.clear();
+        ((ImageAdapter) listPhotoUpload.getAdapter()).notifyDataSetChanged();
+        panelLable.setText(getResources().getString(R.string.upload));
+        toggleButtonPanel(false);
     }
 
     private int fetchAccentColor() {
