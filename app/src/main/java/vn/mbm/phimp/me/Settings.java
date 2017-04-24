@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -79,6 +80,7 @@ import vn.mbm.phimp.me.utils.Commons;
 import vn.mbm.phimp.me.utils.FolderChooserPrefSettings;
 import vn.mbm.phimp.me.utils.RSSUtil;
 
+import static android.content.Context.MODE_PRIVATE;
 import static android.os.Environment.getExternalStorageDirectory;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
@@ -165,9 +167,10 @@ public class Settings extends Fragment
 	private ProgressDialog pro_gress;
 	private AlertDialog maxSizeDialog = null;
 	private Toolbar settingsToolBar;
+	private CheckBox checkVolumeBtn;
 
 
-    @Nullable
+	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
@@ -453,13 +456,16 @@ public class Settings extends Fragment
 			}
 		});
 
-		CheckBox checkVolumeBtn = (CheckBox)getView().findViewById(R.id.checkbox_volume_btn);
+		SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+		boolean volumeBtnPrefs =  sharedPref.getBoolean(getResources().getString(R.string.volumeBtnPrefs),true);
+
+		checkVolumeBtn = (CheckBox)getView().findViewById(R.id.checkbox_volume_btn);
+		checkVolumeBtn.setChecked(volumeBtnPrefs);
+
 		PhimpMe.check_volume_btn_to_capture = checkVolumeBtn.isChecked();
-		checkVolumeBtn.setOnCheckedChangeListener(new OnCheckedChangeListener()
-		{
+		checkVolumeBtn.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked)
-			{
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
 				if(isChecked==true){
 					PhimpMe.check_volume_btn_to_capture=true;
 				}
@@ -800,6 +806,19 @@ public class Settings extends Fragment
 			}
 		}, time);
 	}
+
+	@Override
+	public void onStop() {
+
+		boolean volumeBtnCheckVal = checkVolumeBtn.isChecked();
+		SharedPreferences sPrefs = getActivity().getPreferences(MODE_PRIVATE);
+		SharedPreferences.Editor editor = sPrefs.edit();
+		editor.putBoolean(getResources().getString(R.string.volumeBtnPrefs),volumeBtnCheckVal);
+		editor.commit();
+
+		super.onStop();
+	}
+
 	@SuppressWarnings("static-access")
 	private boolean deletePhotoInDatabase(){
 		Log.d("Danh","Start Delete !");
