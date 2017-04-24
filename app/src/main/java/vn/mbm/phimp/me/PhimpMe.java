@@ -801,6 +801,13 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                 } else{
                     showDialog();
                 }
+            } else if(currentScreen == HomeScreenState.UPLOAD){
+                Upload uploadfragment = (Upload) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                if(!uploadfragment.checkRemovableList()){
+                    uploadfragment.unselectAll();
+                } else{
+                    showDialog();
+                }
             } else {
                 showDialog();
             }
