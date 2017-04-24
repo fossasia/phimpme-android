@@ -811,7 +811,7 @@ public class Settings extends Fragment
 		boolean volumeBtnCheckVal = checkVolumeBtn.isChecked();
 		SharedPreferences sPrefs = getActivity().getPreferences(MODE_PRIVATE);
 		SharedPreferences.Editor editor = sPrefs.edit();
-		editor.putBoolean(getResources().getString(R.string.volumeBtnPrefs),volumeBtnCheckVal);
+		editor.putBoolean(getResources().getString(R.string.volume_btn_prefs),volumeBtnCheckVal);
 		editor.commit();
 		super.onStop();
 	}
