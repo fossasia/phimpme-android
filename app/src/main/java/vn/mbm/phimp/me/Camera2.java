@@ -93,8 +93,8 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	LocationManager locationManager;
 	private LocationListener locationListener;
 	boolean portrait = true;
-	static double lat;
-	static double lon;
+	public static double lat;
+	public static double lon;
 	int statusScreen = 0;
 	int uiOptions;
 	View view;

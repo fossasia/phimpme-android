@@ -13,6 +13,7 @@ import android.gesture.GestureOverlayView;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.hardware.Camera.PictureCallback;
 import android.media.AudioManager;
 import android.media.ExifInterface;
 import android.net.Uri;
@@ -806,7 +807,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
 
     }
 
-    android.hardware.Camera.PictureCallback jpegCallback = new android.hardware.Camera.PictureCallback() {
+    PictureCallback jpegCallback = new PictureCallback() {
 
         public void onPictureTaken(byte[] data, android.hardware.Camera camera) {
 
@@ -862,7 +863,6 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
-            } finally {
             }
             Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
             File f = new File(picture);
@@ -901,30 +901,30 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
         }
     };
 
-    private static String formatLatLongString(double d) {
+    private static String formatLatLongString(double val) {
         StringBuilder b = new StringBuilder();
-        b.append((int) d);
+        b.append((int) val);
         b.append("/1,");
-        d = (d - (int) d) * 60;
-        b.append((int) d);
+        val = (val - (int) val) * 60;
+        b.append((int) val);
         b.append("/1,");
-        d = (d - (int) d) * 60000;
-        b.append((int) d);
+        val = (val - (int) val) * 60000;
+        b.append((int) val);
         b.append("/1000");
         return b.toString();
     }
 
-    public void createExifData(ExifInterface exif, double lattude, double longitude){
+    public void createExifData(ExifInterface exif, double latitude, double longitude){
 
-        if (lattude < 0) {
+        if (latitude < 0) {
             exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, "S");
-            lattude = -lattude;
+            latitude = -latitude;
         } else {
             exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, "N");
         }
 
         exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE,
-                formatLatLongString(lattude));
+                formatLatLongString(latitude));
 
         if (longitude < 0) {
             exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, "W");
@@ -960,8 +960,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                 showDialog();
             }
         }
-        if((keycode==KeyEvent.KEYCODE_VOLUME_DOWN || keycode==KeyEvent.KEYCODE_VOLUME_UP || keycode==KeyEvent.KEYCODE_FOCUS)&&(check_volume_btn_to_capture)){
-            if(currentScreen==HomeScreenState.CAMERA){
+        if((keycode==KeyEvent.KEYCODE_VOLUME_DOWN || keycode==KeyEvent.KEYCODE_VOLUME_UP || keycode==KeyEvent.KEYCODE_FOCUS)&&(check_volume_btn_to_capture)&&(currentScreen==HomeScreenState.CAMERA)){
                 AudioManager man = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
                 switch (event.getKeyCode()) {
                     case KeyEvent.KEYCODE_VOLUME_UP:
@@ -979,8 +978,8 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                     case KeyEvent.KEYCODE_FOCUS:
                         preview.mCamera.takePicture(null, null, jpegCallback);
                         return true;
-
-                }
+                    default:
+                        return false;
 //                Toast.makeText(ctx, "button pressed", Toast.LENGTH_SHORT).show();
             }
         }
