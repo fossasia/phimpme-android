@@ -980,7 +980,6 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                         return true;
                     default:
                         return false;
-//                Toast.makeText(ctx, "button pressed", Toast.LENGTH_SHORT).show();
             }
         }
         return false;

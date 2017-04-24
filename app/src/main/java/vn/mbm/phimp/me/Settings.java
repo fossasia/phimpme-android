@@ -456,7 +456,7 @@ public class Settings extends Fragment
 		});
 
 		SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-		boolean volumeBtnPrefs =  sharedPref.getBoolean(getResources().getString(R.string.volumeBtnPrefs),true);
+		boolean volumeBtnPrefs =  sharedPref.getBoolean(getResources().getString(R.string.volume_btn_prefs),true);
 
 		checkVolumeBtn = (CheckBox)getView().findViewById(R.id.checkbox_volume_btn);
 		checkVolumeBtn.setChecked(volumeBtnPrefs);
@@ -808,13 +808,11 @@ public class Settings extends Fragment
 
 	@Override
 	public void onStop() {
-
 		boolean volumeBtnCheckVal = checkVolumeBtn.isChecked();
 		SharedPreferences sPrefs = getActivity().getPreferences(MODE_PRIVATE);
 		SharedPreferences.Editor editor = sPrefs.edit();
 		editor.putBoolean(getResources().getString(R.string.volumeBtnPrefs),volumeBtnCheckVal);
 		editor.commit();
-
 		super.onStop();
 	}
 

@@ -639,7 +639,7 @@
     <string name="camera_settings">Camera Settings</string>
     <string name="volume_to_capture">Volume Button to Capture</string>
     <string name="volume_to_capture_detail">Enable/Disable Volume button to capture</string>
-    <string name="volumeBtnPrefs">volumeBtnPrefs</string>
+    <string name="volume_btn_prefs">volumeBtnPrefs</string>
 
 
 
