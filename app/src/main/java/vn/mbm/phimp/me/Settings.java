@@ -169,7 +169,6 @@ public class Settings extends Fragment
 	private Toolbar settingsToolBar;
 	private CheckBox checkVolumeBtn;
 
-
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
