@@ -27,6 +27,7 @@ import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -46,6 +47,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -89,6 +91,8 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	private ImageButton shutter_sound;
 	private ImageButton exposure;
 	public static SeekBar seekbar;
+	private ImageButton timer;
+	private TextView textTimeLeft;
 	FrameLayout frame;
 	public int degrees;
 	private String make;
@@ -132,6 +136,11 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	//State for Sound
 	public static final int SOUND_OFF = 0;
 	public static final int SOUND_ON = 1;
+	//Flag for Timer
+	public static int TIMER_STATE = 0;
+	//State for Timer
+	public static final int TIMER_OFF = 0;
+	public static final int TIMER_ON = 1;
 
 	private boolean FLAG_CAPTURE_IN_PROGRESS = false;
 
@@ -353,8 +362,12 @@ public class Camera2 extends android.support.v4.app.Fragment {
 				//progress = ProgressDialog.show(ctx, "", "");
 				if (!FLAG_CAPTURE_IN_PROGRESS) {
 					FLAG_CAPTURE_IN_PROGRESS = true;
-					if (SOUND_STATE == SOUND_ON) {
+					if (SOUND_STATE == SOUND_ON && TIMER_STATE == TIMER_ON) {
+						startTimer();
+					} else if(SOUND_STATE == SOUND_ON ) {
 						preview.mCamera.takePicture(shutterCallback, null, jpegCallback);
+					}else if(SOUND_STATE == SOUND_OFF && TIMER_STATE == TIMER_ON){
+						startTimer();
 					} else {
 						preview.mCamera.takePicture(null, null, jpegCallback);
 					}
@@ -417,6 +430,25 @@ public class Camera2 extends android.support.v4.app.Fragment {
 			}
 		});
 
+		timer = (ImageButton) view.findViewById(R.id.timer);
+		textTimeLeft = (TextView) view.findViewById(R.id.textTimeLeft);
+		textTimeLeft.bringToFront();
+
+		timer.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				switch (TIMER_STATE) {
+					case TIMER_ON:
+                        TIMER_STATE = TIMER_OFF;
+                        timer.setImageResource(R.drawable.timer_disabled);
+                        break;
+					default:
+                        TIMER_STATE = TIMER_ON;
+                        timer.setImageResource(R.drawable.timer);
+                        break;
+				}
+			}
+		});
 		camera_hdr = (ImageButton)view.findViewById(R.id.hdr);
 		camera_hdr.bringToFront();
 		camera_hdr.setOnClickListener(new OnClickListener() {
@@ -746,6 +778,31 @@ public class Camera2 extends android.support.v4.app.Fragment {
 			}
 		}, time);
 	}
+
+	public void startTimer(){
+
+		// 3000ms=3s at intervals of 1000ms=1s so that means it lasts 3 seconds
+		new CountDownTimer(3000,1000){
+			@Override
+			public void onFinish() {
+				if(SOUND_STATE == SOUND_ON){
+					preview.mCamera.takePicture(shutterCallback, null, jpegCallback);
+				}else{
+					preview.mCamera.takePicture(null, null, jpegCallback);
+				}
+			textTimeLeft.setText("");
+
+			}
+
+			@Override
+			public void onTick(long millisUntilFinished) {
+				// every time 1 second passes
+				textTimeLeft.setText(Long.toString(millisUntilFinished/1000));
+			}
+
+		}.start();
+	}
+
 	public static int getRotation(int rotation){
 		int result = 0;
 		switch (rotation) {
