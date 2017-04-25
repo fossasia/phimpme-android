@@ -375,8 +375,9 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-				parameters.setExposureCompensation(progress - max);
-				preview.mCamera.setParameters(parameters);
+				Camera.Parameters mparameters = preview.mCamera.getParameters();
+				mparameters.setExposureCompensation(progress - max);
+				preview.mCamera.setParameters(mparameters);
 			}
 
 			@Override
