@@ -42,9 +42,12 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.File;
@@ -62,6 +65,7 @@ import static android.hardware.Camera.Parameters.FLASH_MODE_AUTO;
 import static android.hardware.Camera.Parameters.FLASH_MODE_ON;
 import static android.hardware.Camera.Parameters.SCENE_MODE_AUTO;
 import static android.hardware.Camera.Parameters.SCENE_MODE_HDR;
+import static android.view.View.GONE;
 import static vn.mbm.phimp.me.Camera2.FLASH_OFF;
 import static vn.mbm.phimp.me.Camera2.FLASH_ON;
 import static vn.mbm.phimp.me.Camera2.HDR_ON;
@@ -69,6 +73,7 @@ import static vn.mbm.phimp.me.Camera2.HDR_STATE;
 import static vn.mbm.phimp.me.Camera2.seekbar;
 import static vn.mbm.phimp.me.Camera2.state;
 import static vn.mbm.phimp.me.Preview.GRID_ENABLED;
+import static vn.mbm.phimp.me.R.drawable.iso_camera;
 
 public class Camera2 extends android.support.v4.app.Fragment {
 	private static final String TAG = "Camera";
@@ -85,6 +90,8 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	private ImageButton shutter_sound;
 	private ImageButton exposure;
 	public static SeekBar seekbar;
+	private ImageButton iso_camera;
+	private Spinner spinner;
 	FrameLayout frame;
 	public static int degrees;
 	private String make;
@@ -128,8 +135,14 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	//State for Sound
 	public static final int SOUND_OFF = 0;
 	public static final int SOUND_ON = 1;
+	//State for ISO
+	public static int ISO_AUTO = 1;
 
 	public static boolean FLAG_CAPTURE_IN_PROGRESS = false;
+
+	String[] isoValues = null;
+	String values_keyword = null;
+	String iso_keyword = null;
 
 	@Nullable
 	@Override
@@ -181,6 +194,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		shutter_sound.setRotation(degrees);
 		exposure.setRotation(degrees);
 		seekbar.setRotation(degrees);
+		iso_camera.setRotation(degrees);
 	}
 
 	private void adjustIconPositions() {
@@ -396,6 +410,68 @@ public class Camera2 extends android.support.v4.app.Fragment {
 			}
 		});
 
+		iso_camera = (ImageButton) view.findViewById(R.id.isocamera);
+		iso_camera.bringToFront();
+		iso_camera.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				ISO_AUTO = 0;
+				spinner.performClick();
+			}
+		});
+
+		spinner = (Spinner) view.findViewById(R.id.iso);
+
+		String flat = parameters.flatten();
+		if (flat.contains("iso-values")) {
+			values_keyword = "iso-values";
+			iso_keyword = "iso";
+		} else if (flat.contains("iso-mode-values")) {
+			values_keyword = "iso-mode-values";
+			iso_keyword = "iso";
+		} else if (flat.contains("iso-speed-values")) {
+			values_keyword = "iso-speed-values";
+			iso_keyword = "iso-speed";
+		} else if (flat.contains("nv-picture-iso-values")) {
+			values_keyword = "nv-picture-iso-values";
+			iso_keyword = "nv-picture-iso";
+		}
+
+		String isoVal = parameters.get(values_keyword);
+		String[] arrayList = isoVal.split(",");
+		spinner.setVisibility(GONE);
+		iso_camera.setVisibility(GONE);
+
+		// Creating adapter for spinner
+		ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, arrayList);
+
+		// Drop down layout style - list view
+		spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+		spinner.setAdapter(spinnerArrayAdapter);
+
+		// Spinner click listener
+		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				String item = parent.getItemAtPosition(position).toString();
+				if(ISO_AUTO == 1) {
+					Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+				}
+				else {
+					parameters.set(iso_keyword, item);
+					Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+
+			}
+		});
+
+
 		shutter_sound = (ImageButton) view.findViewById(R.id.sound);
 		shutter_sound.bringToFront();
 		shutter_sound.setOnClickListener(new OnClickListener() {
@@ -446,7 +522,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		camera_switch = (ImageButton)view.findViewById(R.id.switch_camera);
 		camera_switch.bringToFront();
 		buttonClick.setImageResource(R.drawable.takepic);
-		if (Camera.getNumberOfCameras() <=1 ) camera_switch.setVisibility(View.GONE);
+		if (Camera.getNumberOfCameras() <=1 ) camera_switch.setVisibility(GONE);
 		camera_switch.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -479,7 +555,6 @@ public class Camera2 extends android.support.v4.app.Fragment {
 							mCamera = null;
 						}
 						mCamera = Camera.open(0);
-
 						//mCamera.setDisplayOrientation(90);
 						setCameraDisplayOrientation((Activity) ctx, 0, mCamera);
 						preview.switchCamera(mCamera);

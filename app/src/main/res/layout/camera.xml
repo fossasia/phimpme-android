@@ -55,6 +55,25 @@
             android:layout_marginTop="39dp"
             android:visibility="gone" />
 
+
+        <Spinner
+            android:id="@+id/iso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:visibility="invisible" />
+
+        <ImageButton
+            android:id="@+id/isocamera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/iso_camera" />
+
         <ImageButton
             android:id="@+id/grid_overlay"
             android:layout_width="wrap_content"
