@@ -414,6 +414,14 @@ public class Camera2 extends android.support.v4.app.Fragment {
 
 		shutter_sound = (ImageButton) view.findViewById(R.id.sound);
 		shutter_sound.bringToFront();
+		switch (SOUND_STATE){
+			case SOUND_OFF:
+				shutter_sound.setImageResource(R.drawable.ic_volume_off_white_24dp);
+				break;
+			case SOUND_ON:
+				shutter_sound.setImageResource(R.drawable.ic_volume_up_white_24dp);
+				break;
+		}
 		shutter_sound.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -433,7 +441,14 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		timer = (ImageButton) view.findViewById(R.id.timer);
 		textTimeLeft = (TextView) view.findViewById(R.id.textTimeLeft);
 		textTimeLeft.bringToFront();
-
+		switch(TIMER_STATE){
+			case TIMER_OFF:
+				timer.setImageResource(R.drawable.ic_timer_disabled);
+				break;
+			case TIMER_ON:
+				timer.setImageResource(R.drawable.ic_timer);
+				break;
+		}
 		timer.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
