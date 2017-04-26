@@ -442,7 +442,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
                         TIMER_STATE = TIMER_OFF;
                         timer.setImageResource(R.drawable.ic_timer_disabled);
                         break;
-					default:
+					case TIMER_OFF:
                         TIMER_STATE = TIMER_ON;
                         timer.setImageResource(R.drawable.ic_timer);
                         break;
