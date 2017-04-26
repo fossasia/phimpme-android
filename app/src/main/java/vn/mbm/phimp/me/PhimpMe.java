@@ -12,9 +12,14 @@ import android.database.Cursor;
 import android.gesture.GestureOverlayView;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.hardware.Camera.PictureCallback;
+import android.media.AudioManager;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -35,26 +40,36 @@ import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
 import android.widget.TabHost.TabSpec;
 import android.widget.Toast;
+
 import com.paypal.android.MEP.PayPal;
 import com.vistrav.ask.Ask;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 import vn.mbm.phimp.me.database.AccountDBAdapter;
 import vn.mbm.phimp.me.database.TumblrDBAdapter;
 import vn.mbm.phimp.me.folderchooser.PhoneMedia;
 import vn.mbm.phimp.me.gallery.PhimpMeGallery;
+import vn.mbm.phimp.me.gallery3d.media.CropImage;
 import vn.mbm.phimp.me.utils.Commons;
 import vn.mbm.phimp.me.utils.FolderChooserPrefSettings;
 import vn.mbm.phimp.me.utils.RSSPhotoItem;
 import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
+
+import static vn.mbm.phimp.me.Camera2.FLAG_CAPTURE_IN_PROGRESS;
+import static vn.mbm.phimp.me.Camera2.degrees;
+import static vn.mbm.phimp.me.Camera2.lat;
+import static vn.mbm.phimp.me.Camera2.lon;
+import static vn.mbm.phimp.me.Camera2.preview;
 
 //import android.widget.ImageView;
 //import android.widget.TabHost;
@@ -185,6 +200,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     public static BottomNavigationView mBottomNav;
     public static boolean check_download = false;
     public static boolean check_download_local_gallery = true;
+    public static boolean check_volume_btn_to_capture = true;
     public static int flashStatus = 2;
 
     //Gallery
@@ -791,6 +807,145 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
 
     }
 
+    PictureCallback jpegCallback = new PictureCallback() {
+
+        public void onPictureTaken(byte[] data, android.hardware.Camera camera) {
+
+            FileOutputStream outStream = null;
+            Bitmap rotatedBMP = null;
+            String picture = "";
+            Bitmap bmp =null;
+            //camera.startPreview();
+            Log.e("Size",String.valueOf(data.length)) ;
+            try {
+                picture = Environment.getExternalStorageDirectory()+ String.format("/phimp.me/take_photo/%d.jpg", System.currentTimeMillis());
+                outStream = new FileOutputStream(picture);
+                bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                int w = bmp.getWidth();
+                int h = bmp.getHeight();
+                Matrix mtx = new Matrix();
+                if (PhimpMe.camera_use == 0)
+                {
+                    Log.e("Degrees",String.valueOf(degrees));
+                    if (degrees >= 0 && degrees <=90)
+                    {
+                        Log.e("Degree",String.valueOf(degrees));
+                        mtx.postRotate(90);//else mtx.postRotate(-degrees);
+                    }
+                    else if (degrees > 90 && degrees <=180 ){
+                        mtx.postRotate(180);
+                    }
+                }
+                else {
+                    if (degrees <= 0 && degrees >= -90)
+                    {
+                        Log.e("Degree",String.valueOf(degrees));
+                        mtx.postRotate(-90);//else mtx.postRotate(-degrees);
+                    }
+                    else if (degrees < -90 && degrees >= -180 ){
+                        mtx.postRotate(-180);
+                    }
+                }
+                // Rotating Bitmap
+                rotatedBMP = Bitmap.createBitmap(bmp, 0, 0, w, h, mtx, true);
+                rotatedBMP.compress(Bitmap.CompressFormat.JPEG, 90, outStream);
+                rotatedBMP.recycle();
+                // Log.e("Width + Height","Width => "+ w+ "Height =>"+ h);
+                bmp.recycle();
+                //outStream.write(data);
+                outStream.flush();
+                outStream.close();
+                outStream = null;
+                System.gc();
+                //int orientation = getOrientation(degress);
+                //Log.d(TAG, "Orientation: " + String.valueOf(orientation));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            File f = new File(picture);
+            Uri contentUri = Uri.fromFile(f);
+            mediaScanIntent.setData(contentUri);
+            Camera2.ctx.sendBroadcast(mediaScanIntent);
+            ExifInterface exif;
+            try {
+                Log.e("Exif data","Run");
+                exif = new ExifInterface(picture);
+                createExifData(exif,lat , lon);
+                exif.saveAttributes();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            //sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"
+            //      + Environment.getExternalStorageDirectory())));
+            Log.e("Camera2", "picture : "+picture);
+            Intent _intent = new Intent();
+            _intent.setClass(ctx, CropImage.class);
+            _intent.putExtra("image-path", picture);
+            _intent.putExtra("aspectX", 0);
+            _intent.putExtra("aspectY", 0);
+			/*_intent.putExtra("latitude",lat);
+			_intent.putExtra("longtitude",lon);*/
+            _intent.putExtra("scale", true);
+            _intent.putExtra("activityName", "Camera2");
+
+            //resetting capture progress flag
+            FLAG_CAPTURE_IN_PROGRESS = false;
+
+            startActivityForResult(_intent, 1);
+            //progress.dismiss();
+
+        }
+    };
+
+    private static String formatLatLongString(double val) {
+        StringBuilder b = new StringBuilder();
+        b.append((int) val);
+        b.append("/1,");
+        val = (val - (int) val) * 60;
+        b.append((int) val);
+        b.append("/1,");
+        val = (val - (int) val) * 60000;
+        b.append((int) val);
+        b.append("/1000");
+        return b.toString();
+    }
+
+    public void createExifData(ExifInterface exif, double latitude, double longitude){
+
+        if (latitude < 0) {
+            exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, "S");
+            latitude = -latitude;
+        } else {
+            exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, "N");
+        }
+
+        exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE,
+                formatLatLongString(latitude));
+
+        if (longitude < 0) {
+            exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, "W");
+            longitude = -longitude;
+        } else {
+            exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, "E");
+        }
+        exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE,
+                formatLatLongString(longitude));
+
+        try {
+            exif.saveAttributes();
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
+
+        exif.setAttribute(ExifInterface.TAG_DATETIME, (new Date(System.currentTimeMillis())).toString()); // set the date & time
+    }
+
+
     @Override
     public boolean onKeyDown(int keycode, KeyEvent event) {
         if (keycode == KeyEvent.KEYCODE_BACK) {
@@ -810,6 +965,28 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                 }
             } else {
                 showDialog();
+            }
+        }
+        if((keycode==KeyEvent.KEYCODE_VOLUME_DOWN || keycode==KeyEvent.KEYCODE_VOLUME_UP || keycode==KeyEvent.KEYCODE_FOCUS)&&(check_volume_btn_to_capture)&&(currentScreen==HomeScreenState.CAMERA)){
+                AudioManager man = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+                switch (event.getKeyCode()) {
+                    case KeyEvent.KEYCODE_VOLUME_UP:
+                        man.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                                AudioManager.ADJUST_RAISE,
+                                AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
+                        preview.mCamera.takePicture(null, null, jpegCallback);
+                        return true;
+                    case KeyEvent.KEYCODE_VOLUME_DOWN:
+                        man.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                                AudioManager.ADJUST_LOWER,
+                                AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
+                        preview.mCamera.takePicture(null, null, jpegCallback);
+                        return true;
+                    case KeyEvent.KEYCODE_FOCUS:
+                        preview.mCamera.takePicture(null, null, jpegCallback);
+                        return true;
+                    default:
+                        return false;
             }
         }
         return false;
