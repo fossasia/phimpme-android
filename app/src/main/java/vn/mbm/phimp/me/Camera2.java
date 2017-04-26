@@ -440,11 +440,11 @@ public class Camera2 extends android.support.v4.app.Fragment {
 				switch (TIMER_STATE) {
 					case TIMER_ON:
                         TIMER_STATE = TIMER_OFF;
-                        timer.setImageResource(R.drawable.timer_disabled);
+                        timer.setImageResource(R.drawable.ic_timer_disabled);
                         break;
 					default:
                         TIMER_STATE = TIMER_ON;
-                        timer.setImageResource(R.drawable.timer);
+                        timer.setImageResource(R.drawable.ic_timer);
                         break;
 				}
 			}

@@ -76,7 +76,7 @@
                 android:background="@android:color/transparent"
                 android:padding="16dp"
                 android:layout_marginLeft="50dp"
-                app:srcCompat="@drawable/timer_disabled" />
+                app:srcCompat="@drawable/ic_timer_disabled" />
 
             <ImageButton
                 android:id="@+id/hdr"
