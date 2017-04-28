@@ -440,6 +440,64 @@
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
 
+            <!--Camera Settings-->
+
+            <TextView
+                android:id="@+id/TextView03"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:fontFamily="sans-serif-light"
+                android:text="@string/camera_settings"
+                android:textSize="16sp" />
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/camSettingsVolumeBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:orientation="vertical"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
+
+                        <TextView
+                            android:id="@+id/TextView04"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/volume_to_capture"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-light"
+                            android:text="@string/volume_to_capture_detail" />
+                    </LinearLayout>
+
+                    <CheckBox
+                        android:id="@+id/checkbox_volume_btn"
+                        android:layout_width="wrap_content"
+                        android:checked="true"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:buttonTint="?attr/IconsColor"
+                        android:layout_marginRight="4dp" />
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
             <!-- Theme Settings -->
             <TextView
                 android:id="@+id/themeSettingsHeader"

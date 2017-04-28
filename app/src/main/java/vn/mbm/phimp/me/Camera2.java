@@ -14,6 +14,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
@@ -26,6 +27,7 @@ import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -43,7 +45,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -54,20 +57,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import vn.mbm.phimp.me.gallery3d.media.CropImage;
+import vn.mbm.phimp.me.utils.Utils;
+
 import static android.hardware.Camera.Parameters.FLASH_MODE_AUTO;
 import static android.hardware.Camera.Parameters.FLASH_MODE_ON;
 import static android.hardware.Camera.Parameters.SCENE_MODE_AUTO;
 import static android.hardware.Camera.Parameters.SCENE_MODE_HDR;
 import static vn.mbm.phimp.me.Camera2.FLASH_OFF;
 import static vn.mbm.phimp.me.Camera2.FLASH_ON;
-import static vn.mbm.phimp.me.Camera2.HDR_OFF;
 import static vn.mbm.phimp.me.Camera2.HDR_ON;
 import static vn.mbm.phimp.me.Camera2.HDR_STATE;
+import static vn.mbm.phimp.me.Camera2.seekbar;
 import static vn.mbm.phimp.me.Camera2.state;
-
-import vn.mbm.phimp.me.gallery3d.media.CropImage;
-import vn.mbm.phimp.me.utils.Utils;
-
 import static vn.mbm.phimp.me.Preview.GRID_ENABLED;
 
 public class Camera2 extends android.support.v4.app.Fragment {
@@ -83,16 +85,20 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	ImageButton camera_switch;
 	private ImageButton camera_hdr;
 	private ImageButton shutter_sound;
+	private ImageButton exposure;
+	public static SeekBar seekbar;
+	private ImageButton timer;
+	private TextView textTimeLeft;
 	FrameLayout frame;
-	public int degrees;
+	public static int degrees;
 	private String make;
 	private String model;
 	private String imei;
 	LocationManager locationManager;
 	private LocationListener locationListener;
 	boolean portrait = true;
-	double lat;
-	double lon;
+	public static double lat;
+	public static double lon;
 	int statusScreen = 0;
 	int uiOptions;
 	View view;
@@ -126,8 +132,13 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	//State for Sound
 	public static final int SOUND_OFF = 0;
 	public static final int SOUND_ON = 1;
+	//Flag for Timer
+	public static int TIMER_STATE = 0;
+	//State for Timer
+	public static final int TIMER_OFF = 0;
+	public static final int TIMER_ON = 1;
 
-	private boolean FLAG_CAPTURE_IN_PROGRESS = false;
+	public static boolean FLAG_CAPTURE_IN_PROGRESS = false;
 
 	@Nullable
 	@Override
@@ -177,6 +188,8 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		buttonClick.setRotation(degrees);
         	camera_hdr.setRotation(degrees);
 		shutter_sound.setRotation(degrees);
+		exposure.setRotation(degrees);
+		seekbar.setRotation(degrees);
 	}
 
 	private void adjustIconPositions() {
@@ -345,17 +358,67 @@ public class Camera2 extends android.support.v4.app.Fragment {
 				//progress = ProgressDialog.show(ctx, "", "");
 				if (!FLAG_CAPTURE_IN_PROGRESS) {
 					FLAG_CAPTURE_IN_PROGRESS = true;
-					if (SOUND_STATE == SOUND_ON) {
+					if (SOUND_STATE == SOUND_ON && TIMER_STATE == TIMER_ON) {
+						startTimer();
+					} else if(SOUND_STATE == SOUND_ON ) {
 						preview.mCamera.takePicture(shutterCallback, null, jpegCallback);
+					}else if(SOUND_STATE == SOUND_OFF && TIMER_STATE == TIMER_ON){
+						startTimer();
 					} else {
 						preview.mCamera.takePicture(null, null, jpegCallback);
 					}
 				}
 			}
 		});
+		final Camera.Parameters parameters = preview.mCamera.getParameters();
+		final int min = parameters.getMinExposureCompensation();
+		final int max = parameters.getMaxExposureCompensation();
+		int step = 1;
+
+		seekbar = (SeekBar) view.findViewById(R.id.exposureSeekBar);
+		seekbar.bringToFront();
+		seekbar.getProgressDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+		seekbar.setMax(max);
+		seekbar.setMax((max - min) / step);
+		seekbar.setProgress((max - min) / 2);
+		seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				Camera.Parameters mparameters = preview.mCamera.getParameters();
+				mparameters.setExposureCompensation(progress - max);
+				preview.mCamera.setParameters(mparameters);
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+				Log.i("Seekbar", seekBar.toString());
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				Log.i("Seekbar", seekBar.toString());
+			}
+		});
+
+		exposure = (ImageButton) view.findViewById(R.id.exposure);
+		exposure.bringToFront();
+		exposure.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				seekbar.setVisibility(View.VISIBLE);
+			}
+		});
 
 		shutter_sound = (ImageButton) view.findViewById(R.id.sound);
 		shutter_sound.bringToFront();
+		switch (SOUND_STATE){
+			case SOUND_OFF:
+				shutter_sound.setImageResource(R.drawable.ic_volume_off_white_24dp);
+				break;
+			case SOUND_ON:
+				shutter_sound.setImageResource(R.drawable.ic_volume_up_white_24dp);
+				break;
+		}
 		shutter_sound.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -372,6 +435,32 @@ public class Camera2 extends android.support.v4.app.Fragment {
 			}
 		});
 
+		timer = (ImageButton) view.findViewById(R.id.timer);
+		textTimeLeft = (TextView) view.findViewById(R.id.textTimeLeft);
+		textTimeLeft.bringToFront();
+		switch(TIMER_STATE){
+			case TIMER_OFF:
+				timer.setImageResource(R.drawable.ic_timer_disabled);
+				break;
+			case TIMER_ON:
+				timer.setImageResource(R.drawable.ic_timer);
+				break;
+		}
+		timer.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				switch (TIMER_STATE) {
+					case TIMER_ON:
+                        TIMER_STATE = TIMER_OFF;
+                        timer.setImageResource(R.drawable.ic_timer_disabled);
+                        break;
+					case TIMER_OFF:
+                        TIMER_STATE = TIMER_ON;
+                        timer.setImageResource(R.drawable.ic_timer);
+                        break;
+				}
+			}
+		});
 		camera_hdr = (ImageButton)view.findViewById(R.id.hdr);
 		camera_hdr.bringToFront();
 		camera_hdr.setOnClickListener(new OnClickListener() {
@@ -447,7 +536,6 @@ public class Camera2 extends android.support.v4.app.Fragment {
 
 			}
 		});
-		Camera.Parameters parameters = preview.mCamera.getParameters();
 		preview.mCamera.setParameters(parameters);
 		flash = (ImageButton)view.findViewById(R.id.flash);
 		flash.bringToFront();
@@ -702,6 +790,31 @@ public class Camera2 extends android.support.v4.app.Fragment {
 			}
 		}, time);
 	}
+
+	public void startTimer(){
+
+		// 3000ms=3s at intervals of 1000ms=1s so that means it lasts 3 seconds
+		new CountDownTimer(3000,1000){
+			@Override
+			public void onFinish() {
+				if(SOUND_STATE == SOUND_ON){
+					preview.mCamera.takePicture(shutterCallback, null, jpegCallback);
+				}else{
+					preview.mCamera.takePicture(null, null, jpegCallback);
+				}
+			textTimeLeft.setText("");
+
+			}
+
+			@Override
+			public void onTick(long millisUntilFinished) {
+				// every time 1 second passes
+				textTimeLeft.setText(Long.toString(millisUntilFinished/1000));
+			}
+
+		}.start();
+	}
+
 	public static int getRotation(int rotation){
 		int result = 0;
 		switch (rotation) {
@@ -789,6 +902,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		mSurfaceView.setOnTouchListener(new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
+				seekbar.setVisibility(GONE);
 				Camera.Parameters params = mCamera.getParameters();
 				int action = event.getAction();
 
@@ -897,8 +1011,8 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 
         //Calculate the Focus Area
         private Rect calculateFocusArea(float x, float y) {
-            int left = clamp(Float.valueOf((x / mSurfaceView.getWidth()) * 2000 - 1000).intValue(), FOCUS_AREA_SIZE);
-            int top = clamp(Float.valueOf((y / mSurfaceView.getHeight()) * 2000 - 1000).intValue(), FOCUS_AREA_SIZE);
+            int left = clamp(Float.valueOf((x / mSurfaceView.getWidth()) * 2000 - 1000).intValue(), mPreviewSize.width-FOCUS_AREA_SIZE);
+            int top = clamp(Float.valueOf((y / mSurfaceView.getHeight()) * 2000 - 1000).intValue(), mPreviewSize.height-FOCUS_AREA_SIZE);
 
             return new Rect(left, top, left + FOCUS_AREA_SIZE, top + FOCUS_AREA_SIZE);
         }
