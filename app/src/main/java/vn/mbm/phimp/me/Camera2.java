@@ -77,6 +77,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	static Context ctx;
 	public static Camera mCamera;
 	public static Preview preview;
+	public PhimpMe phimpMe;
 	//ProgressBar progress;
 	OrientationEventListener mOrientation;
 	//public static Preview preview1;
@@ -156,6 +157,10 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	public Camera2() {
 		super();
 
+	}
+
+	public void initPhimpMe(PhimpMe phimpMe) {
+		this.phimpMe = phimpMe;
 	}
 
 	private boolean inRange(int SubjectValue, int High, int Low) {
@@ -355,19 +360,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		buttonClick.bringToFront();
 		buttonClick.setOnClickListener( new OnClickListener() {
 			public void onClick(View v) {
-				//progress = ProgressDialog.show(ctx, "", "");
-				if (!FLAG_CAPTURE_IN_PROGRESS) {
-					FLAG_CAPTURE_IN_PROGRESS = true;
-					if (SOUND_STATE == SOUND_ON && TIMER_STATE == TIMER_ON) {
-						startTimer();
-					} else if(SOUND_STATE == SOUND_ON ) {
-						preview.mCamera.takePicture(shutterCallback, null, jpegCallback);
-					}else if(SOUND_STATE == SOUND_OFF && TIMER_STATE == TIMER_ON){
-						startTimer();
-					} else {
-						preview.mCamera.takePicture(null, null, jpegCallback);
-					}
-				}
+				takePic();
 			}
 		});
 		final Camera.Parameters parameters = preview.mCamera.getParameters();
@@ -595,6 +588,21 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	    });
 	}
 
+	public void takePic() {
+		if (!FLAG_CAPTURE_IN_PROGRESS) {
+			FLAG_CAPTURE_IN_PROGRESS = true;
+			if (SOUND_STATE == SOUND_ON && TIMER_STATE == TIMER_ON) {
+				startTimer();
+			} else if(SOUND_STATE == SOUND_ON ) {
+				preview.mCamera.takePicture(shutterCallback, null, jpegCallback);
+			}else if(SOUND_STATE == SOUND_OFF && TIMER_STATE == TIMER_ON){
+				startTimer();
+			} else {
+				preview.mCamera.takePicture(null, null, jpegCallback);
+			}
+		}
+	}
+
 	ShutterCallback shutterCallback = new ShutterCallback() {
 		public void onShutter() {
 			//Dialog(1000, progress);
@@ -737,7 +745,12 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		model = android.os.Build.MODEL; // get the model of the divice
 
 		exif.setAttribute(ExifInterface.TAG_MAKE, make);
-		TelephonyManager telephonyManager = (TelephonyManager)getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+		TelephonyManager telephonyManager;
+		if(phimpMe!=null) {
+			telephonyManager = (TelephonyManager) phimpMe.getSystemService(Context.TELEPHONY_SERVICE);
+		} else {
+			telephonyManager = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+		}
 		imei = telephonyManager.getDeviceId();
 		exif.setAttribute(ExifInterface.TAG_MODEL, model+" - "+imei);
 
