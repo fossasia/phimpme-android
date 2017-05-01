@@ -806,101 +806,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
         }
 
     }
-
-    PictureCallback jpegCallback = new PictureCallback() {
-
-        public void onPictureTaken(byte[] data, android.hardware.Camera camera) {
-
-            FileOutputStream outStream = null;
-            Bitmap rotatedBMP = null;
-            String picture = "";
-            Bitmap bmp =null;
-            //camera.startPreview();
-            Log.e("Size",String.valueOf(data.length)) ;
-            try {
-                picture = Environment.getExternalStorageDirectory()+ String.format("/phimp.me/take_photo/%d.jpg", System.currentTimeMillis());
-                outStream = new FileOutputStream(picture);
-                bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-                int w = bmp.getWidth();
-                int h = bmp.getHeight();
-                Matrix mtx = new Matrix();
-                if (PhimpMe.camera_use == 0)
-                {
-                    Log.e("Degrees",String.valueOf(degrees));
-                    if (degrees >= 0 && degrees <=90)
-                    {
-                        Log.e("Degree",String.valueOf(degrees));
-                        mtx.postRotate(90);//else mtx.postRotate(-degrees);
-                    }
-                    else if (degrees > 90 && degrees <=180 ){
-                        mtx.postRotate(180);
-                    }
-                }
-                else {
-                    if (degrees <= 0 && degrees >= -90)
-                    {
-                        Log.e("Degree",String.valueOf(degrees));
-                        mtx.postRotate(-90);//else mtx.postRotate(-degrees);
-                    }
-                    else if (degrees < -90 && degrees >= -180 ){
-                        mtx.postRotate(-180);
-                    }
-                }
-                // Rotating Bitmap
-                rotatedBMP = Bitmap.createBitmap(bmp, 0, 0, w, h, mtx, true);
-                rotatedBMP.compress(Bitmap.CompressFormat.JPEG, 90, outStream);
-                rotatedBMP.recycle();
-                // Log.e("Width + Height","Width => "+ w+ "Height =>"+ h);
-                bmp.recycle();
-                //outStream.write(data);
-                outStream.flush();
-                outStream.close();
-                outStream = null;
-                System.gc();
-                //int orientation = getOrientation(degress);
-                //Log.d(TAG, "Orientation: " + String.valueOf(orientation));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-            File f = new File(picture);
-            Uri contentUri = Uri.fromFile(f);
-            mediaScanIntent.setData(contentUri);
-            Camera2.ctx.sendBroadcast(mediaScanIntent);
-            ExifInterface exif;
-            try {
-                Log.e("Exif data","Run");
-                exif = new ExifInterface(picture);
-                createExifData(exif,lat , lon);
-                exif.saveAttributes();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            //sendBroadcast(new Intent(Intent.ACTION_MEDIA_MOUNTED, Uri.parse("file://"
-            //      + Environment.getExternalStorageDirectory())));
-            Log.e("Camera2", "picture : "+picture);
-            Intent _intent = new Intent();
-            _intent.setClass(ctx, CropImage.class);
-            _intent.putExtra("image-path", picture);
-            _intent.putExtra("aspectX", 0);
-            _intent.putExtra("aspectY", 0);
-			/*_intent.putExtra("latitude",lat);
-			_intent.putExtra("longtitude",lon);*/
-            _intent.putExtra("scale", true);
-            _intent.putExtra("activityName", "Camera2");
-
-            //resetting capture progress flag
-            FLAG_CAPTURE_IN_PROGRESS = false;
-
-            startActivityForResult(_intent, 1);
-            //progress.dismiss();
-
-        }
-    };
-
+    
     private static String formatLatLongString(double val) {
         StringBuilder b = new StringBuilder();
         b.append((int) val);
@@ -968,25 +874,27 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
             }
         }
         if((keycode==KeyEvent.KEYCODE_VOLUME_DOWN || keycode==KeyEvent.KEYCODE_VOLUME_UP || keycode==KeyEvent.KEYCODE_FOCUS)&&(check_volume_btn_to_capture)&&(currentScreen==HomeScreenState.CAMERA)){
-                AudioManager man = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
-                switch (event.getKeyCode()) {
-                    case KeyEvent.KEYCODE_VOLUME_UP:
-                        man.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-                                AudioManager.ADJUST_RAISE,
-                                AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
-                        preview.mCamera.takePicture(null, null, jpegCallback);
-                        return true;
-                    case KeyEvent.KEYCODE_VOLUME_DOWN:
-                        man.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-                                AudioManager.ADJUST_LOWER,
-                                AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
-                        preview.mCamera.takePicture(null, null, jpegCallback);
-                        return true;
-                    case KeyEvent.KEYCODE_FOCUS:
-                        preview.mCamera.takePicture(null, null, jpegCallback);
-                        return true;
-                    default:
-                        return false;
+            Camera2 camera2fragment = (Camera2) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+            camera2fragment.initPhimpMe(this);
+            AudioManager man = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+            switch (event.getKeyCode()) {
+                case KeyEvent.KEYCODE_VOLUME_UP:
+                    man.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                            AudioManager.ADJUST_RAISE,
+                            AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
+                    camera2fragment.takePic();
+                    return true;
+                case KeyEvent.KEYCODE_VOLUME_DOWN:
+                    man.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                            AudioManager.ADJUST_LOWER,
+                            AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
+                    camera2fragment.takePic();
+                    return true;
+                case KeyEvent.KEYCODE_FOCUS:
+                    camera2fragment.takePic();
+                    return true;
+                default:
+                    return false;
             }
         }
         return false;
