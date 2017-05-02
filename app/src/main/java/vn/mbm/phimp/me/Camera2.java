@@ -507,7 +507,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 						// mCamera.setDisplayOrientation(90);
 						setCameraDisplayOrientation((Activity) ctx, 1, mCamera);
 						preview.switchCamera(mCamera);
-						mCamera.startPreview();
+						//mCamera.startPreview();
 					}else
 					{
 						Log.e("Camera", "0");
@@ -523,7 +523,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 						//mCamera.setDisplayOrientation(90);
 						setCameraDisplayOrientation((Activity) ctx, 0, mCamera);
 						preview.switchCamera(mCamera);
-						mCamera.startPreview();
+					//	mCamera.startPreview();
 					}
 				}
 
@@ -897,7 +897,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 	SurfaceHolder mHolder;
 	Size mPreviewSize;
 	List<Size> mSupportedPreviewSizes;
-	private List<String> mSupportFocus,mSupportSceneModes;
+	private List<String> mSupportFocus,mSupportSceneModes,mSupportFlashModes;
 	Camera mCamera;
 	private float mDist = 0;
 	private static  final int FOCUS_AREA_SIZE= 300;
@@ -980,6 +980,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 			mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
 			mSupportFocus = mCamera.getParameters().getSupportedFocusModes();
 			mSupportSceneModes = mCamera.getParameters().getSupportedSceneModes();
+			mSupportFlashModes = mCamera.getParameters().getSupportedFlashModes();
             // mCamera.setDisplayOrientation(90);
 			requestLayout();
 		}
@@ -1064,7 +1065,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 			camera.setPreviewDisplay(mHolder);
 		} catch (IOException exception) {
 			Log.e(TAG, "IOException caused by setPreviewDisplay()", exception);
-		}
+		}/*
 		Camera.Parameters parameters = camera.getParameters();
 		//parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
 		List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
@@ -1072,7 +1073,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		parameters.setPreviewSize(cs.width, cs.height);
 		requestLayout();
 
-		camera.setParameters(parameters);
+		camera.setParameters(parameters);*/
 	}
 
 	@Override
@@ -1166,28 +1167,33 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		// the preview.
 		Log.e("Surface","Change");
 		Camera.Parameters parameters = mCamera.getParameters();
-        	switch (HDR_STATE){
-                case HDR_ON:
-                    if (mSupportSceneModes.contains(SCENE_MODE_HDR)) {
-                        parameters.setSceneMode(SCENE_MODE_HDR);
-                    }
-                    break;
-                default:
-                    parameters.setSceneMode(SCENE_MODE_AUTO);
-		     break;
-        	}
-
-		switch (state) {
-			case FLASH_ON:
-				parameters.setFlashMode(FLASH_MODE_ON);
-				break;
-			case FLASH_OFF:
-				parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-				break;
-			default:
-				parameters.setFlashMode(FLASH_MODE_AUTO);
-				break;
+		if (mSupportSceneModes != null) {
+			switch (HDR_STATE) {
+				case HDR_ON:
+					if (mSupportSceneModes.contains(SCENE_MODE_HDR)) {
+						parameters.setSceneMode(SCENE_MODE_HDR);
+					}
+					break;
+				default:
+					parameters.setSceneMode(SCENE_MODE_AUTO);
+					break;
+			}
 		}
+
+		if (mSupportFlashModes != null) {
+			switch (state) {
+				case FLASH_ON:
+					parameters.setFlashMode(FLASH_MODE_ON);
+					break;
+				case FLASH_OFF:
+					parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+					break;
+				default:
+					parameters.setFlashMode(FLASH_MODE_AUTO);
+					break;
+			}
+		}
+
 
 		try{
 			if (mPreviewSize==null) mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, w, h);
