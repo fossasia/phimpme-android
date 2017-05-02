@@ -32,6 +32,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.widget.CardView;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,9 +44,13 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +69,7 @@ import static android.hardware.Camera.Parameters.FLASH_MODE_AUTO;
 import static android.hardware.Camera.Parameters.FLASH_MODE_ON;
 import static android.hardware.Camera.Parameters.SCENE_MODE_AUTO;
 import static android.hardware.Camera.Parameters.SCENE_MODE_HDR;
+import static com.facebook.FacebookSdk.getApplicationContext;
 import static vn.mbm.phimp.me.Camera2.FLASH_OFF;
 import static vn.mbm.phimp.me.Camera2.FLASH_ON;
 import static vn.mbm.phimp.me.Camera2.HDR_ON;
@@ -71,6 +77,8 @@ import static vn.mbm.phimp.me.Camera2.HDR_STATE;
 import static vn.mbm.phimp.me.Camera2.seekbar;
 import static vn.mbm.phimp.me.Camera2.state;
 import static vn.mbm.phimp.me.Preview.GRID_ENABLED;
+import static vn.mbm.phimp.me.R.id.myCardView;
+import static vn.mbm.phimp.me.R.string.item;
 
 public class Camera2 extends android.support.v4.app.Fragment {
 	private static final String TAG = "Camera";
@@ -88,6 +96,8 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	private ImageButton shutter_sound;
 	private ImageButton exposure;
 	public static SeekBar seekbar;
+	private ImageButton iso;
+	private Spinner spinner;
 	private ImageButton timer;
 	private TextView textTimeLeft;
 	FrameLayout frame;
@@ -138,6 +148,9 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	//State for Timer
 	public static final int TIMER_OFF = 0;
 	public static final int TIMER_ON = 1;
+
+	public static String values_keyword = null;
+	public static String iso_keyword = null;
 
 	public static boolean FLAG_CAPTURE_IN_PROGRESS = false;
 
@@ -195,6 +208,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		shutter_sound.setRotation(degrees);
 		exposure.setRotation(degrees);
 		seekbar.setRotation(degrees);
+		iso.setRotation(degrees);
 	}
 
 	private void adjustIconPositions() {
@@ -393,6 +407,77 @@ public class Camera2 extends android.support.v4.app.Fragment {
 			}
 		});
 
+		iso = (ImageButton) view.findViewById(R.id.iso);
+		iso.bringToFront();
+		iso.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				spinner.performClick();
+			}
+		});
+
+		String flat = parameters.flatten();
+		spinner = (Spinner) view.findViewById(R.id.iso_spinner);
+		if (flat.contains("iso-values")) {
+			values_keyword = "iso-values";
+			iso_keyword = "iso";
+		} else if (flat.contains("iso-mode-values")) {
+			values_keyword = "iso-mode-values";
+			iso_keyword = "iso";
+		} else if (flat.contains("iso-speed-values")) {
+			values_keyword = "iso-speed-values";
+			iso_keyword = "iso-speed";
+		} else if (flat.contains("nv-picture-iso-values")) {
+			values_keyword = "nv-picture-iso-values";
+			iso_keyword = "nv-picture-iso";
+		}
+
+		if (values_keyword != null && iso_keyword != null) {
+			spinner.setVisibility(View.INVISIBLE);
+			String isoVal = parameters.get(values_keyword);
+			String[] arrayList = isoVal.split(",");
+			// Creating adapter for spinner
+			ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, arrayList);
+
+			// Drop down layout style - list view with radio button
+			spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+			spinner.setAdapter(spinnerArrayAdapter);
+
+			spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+				@Override
+				public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+					spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+						@Override
+						public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+							String item = parent.getItemAtPosition(position).toString();
+							parameters.set(iso_keyword, item);
+							preview.mCamera.setParameters(parameters);
+							Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+						}
+
+						@Override
+						public void onNothingSelected(AdapterView<?> parent) {
+
+						}
+					});
+				}
+
+				@Override
+				public void onNothingSelected(AdapterView<?> parent) {
+
+				}
+			});
+		} else {
+			spinner.setVisibility(View.GONE);
+			iso.setVisibility(View.GONE);
+		}
+
+		if (PhimpMe.camera_use == 1) {
+			spinner.setVisibility(View.GONE);
+			iso.setVisibility(View.GONE);
+		}
+
 		exposure = (ImageButton) view.findViewById(R.id.exposure);
 		exposure.bringToFront();
 		exposure.setOnClickListener(new OnClickListener() {
@@ -505,6 +590,8 @@ public class Camera2 extends android.support.v4.app.Fragment {
 						}
 						mCamera = Camera.open(1);
 						// mCamera.setDisplayOrientation(90);
+						spinner.setVisibility(View.GONE);
+						iso.setVisibility(View.GONE);
 						setCameraDisplayOrientation((Activity) ctx, 1, mCamera);
 						preview.switchCamera(mCamera);
 						//mCamera.startPreview();
@@ -519,7 +606,10 @@ public class Camera2 extends android.support.v4.app.Fragment {
 							mCamera = null;
 						}
 						mCamera = Camera.open(0);
-
+						if (values_keyword != null) {
+							spinner.setVisibility(View.INVISIBLE);
+							iso.setVisibility(View.VISIBLE);
+						}
 						//mCamera.setDisplayOrientation(90);
 						setCameraDisplayOrientation((Activity) ctx, 0, mCamera);
 						preview.switchCamera(mCamera);
