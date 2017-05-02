@@ -9,6 +9,7 @@ import vn.mbm.phimp.me.PhimpMe;
 import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.SendFileActivity;
 import vn.mbm.phimp.me.Upload;
+import vn.mbm.phimp.me.Utility;
 import vn.mbm.phimp.me.image.CropImage;
 import vn.mbm.phimp.me.utils.geoDegrees;
 
@@ -17,9 +18,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
+import android.graphics.BitmapFactory;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -42,6 +45,8 @@ import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import static vn.mbm.phimp.me.PhimpMe.ThemeDark;
 
 public class PhimpMeGallery extends AppCompatActivity implements View.OnClickListener{
     private Gallery gallery;
@@ -67,6 +72,10 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        //set dark theme
+        if (Utility.getTheme(getApplicationContext()) == ThemeDark) {
+            setTheme(R.style.AppTheme_Dark);
+        }
 		setContentView(R.layout.phimpmegallery);	
 		//requestWindowFeature(Window.FEATURE_NO_TITLE);
 		ctx = this;	
@@ -329,6 +338,7 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                                     deleteImageFromMediaStore(filePath.get(position));
                                     // Remove from the cache
                                     PhimpMe.cache.deleteCachedFile(filePath.get(position));
+                                    Upload.uploadGridList.remove(filePath.get(position));
                                     Toast.makeText(getBaseContext(), R.string.image_delete_success, Toast.LENGTH_SHORT).show();
                                 } catch (Exception e) {
                                     Toast.makeText(getBaseContext(), R.string.image_delete_fail, Toast.LENGTH_SHORT).show();
@@ -353,10 +363,27 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
             ExifInterface exif_data = new ExifInterface(file.getAbsolutePath());
             Date lastModDate = new Date(file.lastModified());
             long length = file.length()/1024;
+            String img_width = exif_data.getAttribute(ExifInterface.TAG_IMAGE_WIDTH);
+            String img_height = exif_data.getAttribute(ExifInterface.TAG_IMAGE_LENGTH);
+            if("0".equals(img_width) || "0".equals(img_height)) {
+                try {
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inJustDecodeBounds = true;
+                    ParcelFileDescriptor fd = getContentResolver().openFileDescriptor(Uri.fromFile(file), "r");
+                    if (fd != null) {
+                        BitmapFactory.decodeFileDescriptor(fd.getFileDescriptor(), null, options);
+                        img_width = options.outWidth + "";
+                        img_height = options.outHeight + "";
+                        fd.close();
+                        options = null;
+                    }
+                } catch (Exception e) {
+                }
+            }
             ((TextView)pwindo.getContentView().findViewById(R.id.path)).setText(file.getAbsolutePath());
             ((TextView)pwindo.getContentView().findViewById(R.id.time)).setText(lastModDate.toString());
-            ((TextView)pwindo.getContentView().findViewById(R.id.image_width)).setText(exif_data.getAttribute(ExifInterface.TAG_IMAGE_WIDTH));
-            ((TextView)pwindo.getContentView().findViewById(R.id.height)).setText(exif_data.getAttribute(ExifInterface.TAG_IMAGE_LENGTH));
+            ((TextView)pwindo.getContentView().findViewById(R.id.image_width)).setText(img_width);
+            ((TextView)pwindo.getContentView().findViewById(R.id.height)).setText(img_height);
             ((TextView)pwindo.getContentView().findViewById(R.id.size)).setText(Long.toString(length)+ "KB");
 
         } catch (IOException e) {

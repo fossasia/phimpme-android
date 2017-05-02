@@ -58,6 +58,9 @@ import java.util.concurrent.CountDownLatch;
 import vn.mbm.phimp.me.ImagesFilter;
 import vn.mbm.phimp.me.PhimpMe;
 import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.Utility;
+
+import static vn.mbm.phimp.me.PhimpMe.ThemeDark;
 
 /**
  * The activity can crop specific region of interest from an image.
@@ -117,6 +120,10 @@ public class CropImage extends MonitoredActivity {
     public void onCreate(Bundle icicle) {
         try {
             super.onCreate(icicle);
+            //set dark theme
+            if (Utility.getTheme(getApplicationContext()) == ThemeDark) {
+                setTheme(R.style.AppTheme_Dark);
+            }
             mContentResolver = getContentResolver();
             ctx = this;
             Log.d("crop image", "start");

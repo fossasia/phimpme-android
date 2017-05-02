@@ -30,6 +30,8 @@ import java.util.UUID;
 
 import it.kynetics.bluetooth.sendfile.opp.BluetoothShare;
 
+import static vn.mbm.phimp.me.PhimpMe.ThemeDark;
+
 public class BluetoothShareMultipleFile extends Activity {
 
 	private static final String TAG = "BTSendFile";
@@ -57,6 +59,10 @@ public class BluetoothShareMultipleFile extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//set dark theme
+		if (Utility.getTheme(getApplicationContext()) == ThemeDark) {
+			setTheme(R.style.AppTheme_Dark);
+		}
 		setContentView(R.layout.bluetooth_share_multiple);
 		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);	
 		//copy

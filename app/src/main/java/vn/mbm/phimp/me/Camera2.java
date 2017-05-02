@@ -14,6 +14,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
@@ -26,6 +27,7 @@ import android.location.LocationManager;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -43,7 +45,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -54,15 +57,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static android.hardware.Camera.Parameters.FLASH_MODE_AUTO;
-import static android.hardware.Camera.Parameters.FLASH_MODE_ON;
-import static vn.mbm.phimp.me.Camera2.FLASH_OFF;
-import static vn.mbm.phimp.me.Camera2.FLASH_ON;
-import static vn.mbm.phimp.me.Camera2.state;
-
 import vn.mbm.phimp.me.gallery3d.media.CropImage;
 import vn.mbm.phimp.me.utils.Utils;
 
+import static android.hardware.Camera.Parameters.FLASH_MODE_AUTO;
+import static android.hardware.Camera.Parameters.FLASH_MODE_ON;
+import static android.hardware.Camera.Parameters.SCENE_MODE_AUTO;
+import static android.hardware.Camera.Parameters.SCENE_MODE_HDR;
+import static vn.mbm.phimp.me.Camera2.FLASH_OFF;
+import static vn.mbm.phimp.me.Camera2.FLASH_ON;
+import static vn.mbm.phimp.me.Camera2.HDR_ON;
+import static vn.mbm.phimp.me.Camera2.HDR_STATE;
+import static vn.mbm.phimp.me.Camera2.seekbar;
+import static vn.mbm.phimp.me.Camera2.state;
 import static vn.mbm.phimp.me.Preview.GRID_ENABLED;
 
 public class Camera2 extends android.support.v4.app.Fragment {
@@ -70,24 +77,33 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	static Context ctx;
 	public static Camera mCamera;
 	public static Preview preview;
+	public PhimpMe phimpMe;
 	//ProgressBar progress;
 	OrientationEventListener mOrientation;
 	//public static Preview preview1;
 	public static ImageButton buttonClick;
 	ImageButton flash,grid_overlay_button;
 	ImageButton camera_switch;
+	private ImageButton camera_hdr;
+	private ImageButton shutter_sound;
+	private ImageButton exposure;
+	public static SeekBar seekbar;
+	private ImageButton timer;
+	private TextView textTimeLeft;
 	FrameLayout frame;
-	public int degrees;
+	public static int degrees;
 	private String make;
 	private String model;
 	private String imei;
 	LocationManager locationManager;
 	private LocationListener locationListener;
 	boolean portrait = true;
-	double lat;
-	double lon;
+	public static double lat;
+	public static double lon;
 	int statusScreen = 0;
+	int uiOptions;
 	View view;
+	View decorView;
 
 	// Directions for Camera Button Orientations
 	private final int NE = 45;
@@ -107,15 +123,30 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	public static final int FLASH_ON = 0;
 	public static final int FLASH_OFF = 1;
 	public static final int FLASH_AUTO = 2;
+    	//Flag for HDR
+    	public static int HDR_STATE = 0;
+    	//State for HDR
+    	public static final int HDR_OFF = 0;
+    	public static final int HDR_ON = 1;
+	//Flag for Sound
+	public static int SOUND_STATE = 1;
+	//State for Sound
+	public static final int SOUND_OFF = 0;
+	public static final int SOUND_ON = 1;
+	//Flag for Timer
+	public static int TIMER_STATE = 0;
+	//State for Timer
+	public static final int TIMER_OFF = 0;
+	public static final int TIMER_ON = 1;
 
-	private boolean FLAG_CAPTURE_IN_PROGRESS = false;
+	public static boolean FLAG_CAPTURE_IN_PROGRESS = false;
 
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-		View decorView = getActivity().getWindow().getDecorView();
-		int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+		decorView = getActivity().getWindow().getDecorView();
+		uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
 		decorView.setSystemUiVisibility(uiOptions);
 
 		view=  inflater.inflate(R.layout.camera, container, false);
@@ -126,6 +157,10 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	public Camera2() {
 		super();
 
+	}
+
+	public void initPhimpMe(PhimpMe phimpMe) {
+		this.phimpMe = phimpMe;
 	}
 
 	private boolean inRange(int SubjectValue, int High, int Low) {
@@ -156,6 +191,10 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		flash.setRotation(degrees);
 		camera_switch.setRotation(degrees);
 		buttonClick.setRotation(degrees);
+        	camera_hdr.setRotation(degrees);
+		shutter_sound.setRotation(degrees);
+		exposure.setRotation(degrees);
+		seekbar.setRotation(degrees);
 	}
 
 	private void adjustIconPositions() {
@@ -310,7 +349,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 			lon = -1;
 		}
 		try{
-			mCamera = Camera.open();}catch(Exception e){
+			mCamera = Camera.open(PhimpMe.camera_use);}catch(Exception e){
 		}
 		//mCamera.setDisplayOrientation(90);
 		setCameraDisplayOrientation(getActivity(), 0, mCamera);
@@ -321,13 +360,129 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		buttonClick.bringToFront();
 		buttonClick.setOnClickListener( new OnClickListener() {
 			public void onClick(View v) {
-				//progress = ProgressDialog.show(ctx, "", "");
-				if (!FLAG_CAPTURE_IN_PROGRESS) {
-					FLAG_CAPTURE_IN_PROGRESS = true;
-					preview.mCamera.takePicture(shutterCallback, null, jpegCallback);
+				takePic();
+			}
+		});
+		final Camera.Parameters parameters = preview.mCamera.getParameters();
+		final int min = parameters.getMinExposureCompensation();
+		final int max = parameters.getMaxExposureCompensation();
+		int step = 1;
+
+		seekbar = (SeekBar) view.findViewById(R.id.exposureSeekBar);
+		seekbar.bringToFront();
+		seekbar.getProgressDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN);
+		seekbar.setMax(max);
+		seekbar.setMax((max - min) / step);
+		seekbar.setProgress((max - min) / 2);
+		seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				Camera.Parameters mparameters = preview.mCamera.getParameters();
+				mparameters.setExposureCompensation(progress - max);
+				preview.mCamera.setParameters(mparameters);
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+				Log.i("Seekbar", seekBar.toString());
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				Log.i("Seekbar", seekBar.toString());
+			}
+		});
+
+		exposure = (ImageButton) view.findViewById(R.id.exposure);
+		exposure.bringToFront();
+		exposure.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				seekbar.setVisibility(View.VISIBLE);
+			}
+		});
+
+		shutter_sound = (ImageButton) view.findViewById(R.id.sound);
+		shutter_sound.bringToFront();
+		switch (SOUND_STATE){
+			case SOUND_OFF:
+				shutter_sound.setImageResource(R.drawable.ic_volume_off_white_24dp);
+				break;
+			case SOUND_ON:
+				shutter_sound.setImageResource(R.drawable.ic_volume_up_white_24dp);
+				break;
+		}
+		shutter_sound.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				switch (SOUND_STATE) {
+					case SOUND_OFF:
+						SOUND_STATE = SOUND_ON;
+						shutter_sound.setImageResource(R.drawable.ic_volume_up_white_24dp);
+						break;
+					default:
+						SOUND_STATE = SOUND_OFF;
+						shutter_sound.setImageResource(R.drawable.ic_volume_off_white_24dp);
+						break;
 				}
 			}
 		});
+
+		timer = (ImageButton) view.findViewById(R.id.timer);
+		textTimeLeft = (TextView) view.findViewById(R.id.textTimeLeft);
+		textTimeLeft.bringToFront();
+		switch(TIMER_STATE){
+			case TIMER_OFF:
+				timer.setImageResource(R.drawable.ic_timer_disabled);
+				break;
+			case TIMER_ON:
+				timer.setImageResource(R.drawable.ic_timer);
+				break;
+		}
+		timer.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				switch (TIMER_STATE) {
+					case TIMER_ON:
+                        TIMER_STATE = TIMER_OFF;
+                        timer.setImageResource(R.drawable.ic_timer_disabled);
+                        break;
+					case TIMER_OFF:
+                        TIMER_STATE = TIMER_ON;
+                        timer.setImageResource(R.drawable.ic_timer);
+                        break;
+				}
+			}
+		});
+		camera_hdr = (ImageButton)view.findViewById(R.id.hdr);
+		camera_hdr.bringToFront();
+		camera_hdr.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Camera.Parameters parameters = preview.mCamera.getParameters();
+				switch (HDR_STATE) {
+					case HDR_OFF:
+						if (preview.getSupportSceneModes().contains(SCENE_MODE_HDR)) {
+							HDR_STATE = HDR_ON;
+							camera_hdr.setImageResource(R.drawable.ic_hdr_on_white_24dp);
+							parameters.setSceneMode(SCENE_MODE_HDR);
+						} else {
+							Toast.makeText(ctx, R.string.hdr_unsupported_error, Toast.LENGTH_SHORT).show();
+						}
+						break;
+					case HDR_ON:
+						HDR_STATE = HDR_OFF;
+						camera_hdr.setImageResource(R.drawable.ic_hdr_off_white_24dp);
+						parameters.setSceneMode(SCENE_MODE_AUTO);
+						break;
+					default:
+						parameters.setSceneMode(SCENE_MODE_AUTO);
+						break;
+				}
+				preview.mCamera.setParameters(parameters);
+			}
+		});
+
 		camera_switch = (ImageButton)view.findViewById(R.id.switch_camera);
 		camera_switch.bringToFront();
 		buttonClick.setImageResource(R.drawable.takepic);
@@ -374,7 +529,6 @@ public class Camera2 extends android.support.v4.app.Fragment {
 
 			}
 		});
-		Camera.Parameters parameters = preview.mCamera.getParameters();
 		preview.mCamera.setParameters(parameters);
 		flash = (ImageButton)view.findViewById(R.id.flash);
 		flash.bringToFront();
@@ -432,6 +586,21 @@ public class Camera2 extends android.support.v4.app.Fragment {
                 }
             }
 	    });
+	}
+
+	public void takePic() {
+		if (!FLAG_CAPTURE_IN_PROGRESS) {
+			FLAG_CAPTURE_IN_PROGRESS = true;
+			if (SOUND_STATE == SOUND_ON && TIMER_STATE == TIMER_ON) {
+				startTimer();
+			} else if(SOUND_STATE == SOUND_ON ) {
+				preview.mCamera.takePicture(shutterCallback, null, jpegCallback);
+			}else if(SOUND_STATE == SOUND_OFF && TIMER_STATE == TIMER_ON){
+				startTimer();
+			} else {
+				preview.mCamera.takePicture(null, null, jpegCallback);
+			}
+		}
 	}
 
 	ShutterCallback shutterCallback = new ShutterCallback() {
@@ -576,7 +745,12 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		model = android.os.Build.MODEL; // get the model of the divice
 
 		exif.setAttribute(ExifInterface.TAG_MAKE, make);
-		TelephonyManager telephonyManager = (TelephonyManager)getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+		TelephonyManager telephonyManager;
+		if(phimpMe!=null) {
+			telephonyManager = (TelephonyManager) phimpMe.getSystemService(Context.TELEPHONY_SERVICE);
+		} else {
+			telephonyManager = (TelephonyManager) getActivity().getSystemService(Context.TELEPHONY_SERVICE);
+		}
 		imei = telephonyManager.getDeviceId();
 		exif.setAttribute(ExifInterface.TAG_MODEL, model+" - "+imei);
 
@@ -629,6 +803,31 @@ public class Camera2 extends android.support.v4.app.Fragment {
 			}
 		}, time);
 	}
+
+	public void startTimer(){
+
+		// 3000ms=3s at intervals of 1000ms=1s so that means it lasts 3 seconds
+		new CountDownTimer(3000,1000){
+			@Override
+			public void onFinish() {
+				if(SOUND_STATE == SOUND_ON){
+					preview.mCamera.takePicture(shutterCallback, null, jpegCallback);
+				}else{
+					preview.mCamera.takePicture(null, null, jpegCallback);
+				}
+			textTimeLeft.setText("");
+
+			}
+
+			@Override
+			public void onTick(long millisUntilFinished) {
+				// every time 1 second passes
+				textTimeLeft.setText(Long.toString(millisUntilFinished/1000));
+			}
+
+		}.start();
+	}
+
 	public static int getRotation(int rotation){
 		int result = 0;
 		switch (rotation) {
@@ -654,6 +853,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		//PhimpMe.hideTabs();
 		//PhimpMe.hideAd();
 		mOrientation.enable();
+		decorView.setSystemUiVisibility(uiOptions);
 		try{
 			mCamera = Camera.open(PhimpMe.camera_use);
 		}catch(Exception e){}
@@ -697,8 +897,9 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 	SurfaceHolder mHolder;
 	Size mPreviewSize;
 	List<Size> mSupportedPreviewSizes;
-	List<String> mSupportFocus;
+	private List<String> mSupportFocus,mSupportSceneModes;
 	Camera mCamera;
+	private float mDist = 0;
 	private static  final int FOCUS_AREA_SIZE= 300;
 	Paint paint;
 	public static boolean GRID_ENABLED = false;
@@ -712,17 +913,30 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
         //Set Touch Listener
 		this.setWillNotDraw(false);
 		mSurfaceView.setOnTouchListener(new OnTouchListener() {
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                            focusOnTouch(event);
-                        }
-                        return true;
-                    }
-                 });
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				seekbar.setVisibility(GONE);
+				Camera.Parameters params = mCamera.getParameters();
+				int action = event.getAction();
 
 
-		//setting paint values for drawing grid
+				if (event.getPointerCount() == 2) {
+					// handle multi-touch events
+					if (action == MotionEvent.ACTION_POINTER_DOWN) {
+						mDist = getFingerSpacing(event);
+					} else if (action == MotionEvent.ACTION_MOVE && params.isZoomSupported()) {
+						mCamera.cancelAutoFocus();
+						handleZoom(event, params);
+					}
+				} else if (event.getPointerCount() == 1){
+					// handle single touch events
+					if (action == MotionEvent.ACTION_UP) {
+						focusOnTouch(event);
+					}
+				}
+				return true;
+			}
+		});
 		paint = new Paint();
 		paint.setAntiAlias(true);
 		paint.setStrokeWidth(3);
@@ -736,12 +950,37 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 	}
 
+
+	private void handleZoom(MotionEvent event, Camera.Parameters params) {
+		int maxZoom = params.getMaxZoom();
+		int zoom = params.getZoom();
+		float newDist = getFingerSpacing(event);
+		if (newDist > mDist && zoom + 3 < maxZoom) {
+		//zoom in
+			zoom+=3;
+		} else if (newDist < mDist && zoom - 3 > 0) {
+		//zoom out
+			zoom-=3;
+		}
+		mDist = newDist;
+		params.setZoom(zoom);
+		mCamera.setParameters(params);
+	}
+
+        // Determine the space between the first two fingers
+	private float getFingerSpacing(MotionEvent event) {
+		float x = event.getX(0) - event.getX(1);
+		float y = event.getY(0) - event.getY(1);
+		return (float)Math.sqrt(x * x + y * y);
+	}
+		//setting paint values for drawing grid
 	public void setCamera(Camera camera) {
 		mCamera = camera;
 		if (mCamera != null) {
 			mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
 			mSupportFocus = mCamera.getParameters().getSupportedFocusModes();
-			// mCamera.setDisplayOrientation(90);
+			mSupportSceneModes = mCamera.getParameters().getSupportedSceneModes();
+            // mCamera.setDisplayOrientation(90);
 			requestLayout();
 		}
 	}
@@ -786,8 +1025,8 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 
         //Calculate the Focus Area
         private Rect calculateFocusArea(float x, float y) {
-            int left = clamp(Float.valueOf((x / mSurfaceView.getWidth()) * 2000 - 1000).intValue(), FOCUS_AREA_SIZE);
-            int top = clamp(Float.valueOf((y / mSurfaceView.getHeight()) * 2000 - 1000).intValue(), FOCUS_AREA_SIZE);
+            int left = clamp(Float.valueOf((x / mSurfaceView.getWidth()) * 2000 - 1000).intValue(), mPreviewSize.width-FOCUS_AREA_SIZE);
+            int top = clamp(Float.valueOf((y / mSurfaceView.getHeight()) * 2000 - 1000).intValue(), mPreviewSize.height-FOCUS_AREA_SIZE);
 
             return new Rect(left, top, left + FOCUS_AREA_SIZE, top + FOCUS_AREA_SIZE);
         }
@@ -889,7 +1128,6 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
-
 	private Size getOptimalPreviewSize(List<Size> sizes, int w, int h) {
 
 		double targetRatio = (double) w / h;
@@ -928,6 +1166,17 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		// the preview.
 		Log.e("Surface","Change");
 		Camera.Parameters parameters = mCamera.getParameters();
+        	switch (HDR_STATE){
+                case HDR_ON:
+                    if (mSupportSceneModes.contains(SCENE_MODE_HDR)) {
+                        parameters.setSceneMode(SCENE_MODE_HDR);
+                    }
+                    break;
+                default:
+                    parameters.setSceneMode(SCENE_MODE_AUTO);
+		     break;
+        	}
+
 		switch (state) {
 			case FLASH_ON:
 				parameters.setFlashMode(FLASH_MODE_ON);
@@ -951,5 +1200,9 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		requestLayout();
 		mCamera.setParameters(parameters);
 		mCamera.startPreview();
+	}
+
+	public List<String> getSupportSceneModes() {
+		return mSupportSceneModes;
 	}
 }

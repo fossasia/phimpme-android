@@ -636,6 +636,10 @@
     <string name="lighttheme">Light Theme</string>
     <string name="theappwillberestarted">The app will be restarted</string>
     <string name="prefs_theme_key">theme</string>
+    <string name="camera_settings">Camera Settings</string>
+    <string name="volume_to_capture">Volume Button to Capture</string>
+    <string name="volume_to_capture_detail">Enable/Disable Volume button to capture</string>
+    <string name="volume_btn_prefs">volumeBtnPrefs</string>
 
 
 
@@ -669,5 +673,6 @@
     <string name="folder_settings">Folder Settings</string>
     <string name="whitelist_folders">WhiteList Folders</string>
     <string name="whitelist_folders_message">Click to WhiteList Folders</string>
+    <string name="hdr_unsupported_error">HDR mode not supported</string>
 
 </resources>

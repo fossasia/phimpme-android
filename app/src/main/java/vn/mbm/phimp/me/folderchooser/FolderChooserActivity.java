@@ -14,7 +14,10 @@ import java.io.File;
 import java.util.Set;
 
 import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.Utility;
 import vn.mbm.phimp.me.utils.FolderChooserPrefSettings;
+
+import static vn.mbm.phimp.me.PhimpMe.ThemeDark;
 
 /**
  * Created by rohanagarwal94 on 31/3/17.
@@ -30,6 +33,10 @@ public class FolderChooserActivity extends AppCompatActivity implements IFolderC
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //set dark theme
+        if (Utility.getTheme(getApplicationContext()) == ThemeDark) {
+            setTheme(R.style.AppTheme_Dark);
+        }
         setContentView(R.layout.activity_folder_chooser);
         viewPager = (ViewPager)findViewById(R.id.view_pager);
         backButton = (ImageView)findViewById(R.id.back_button);

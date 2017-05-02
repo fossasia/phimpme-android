@@ -32,6 +32,7 @@ import vn.mbm.phimp.me.ImagesFilter;
 import vn.mbm.phimp.me.PhimpMe;
 import vn.mbm.phimp.me.R;
 //import vn.mbm.phimp.me.UploadMap;
+import vn.mbm.phimp.me.Utility;
 import vn.mbm.phimp.me.gallery3d.app.App;
 import vn.mbm.phimp.me.gallery3d.app.Res;
 import vn.mbm.phimp.me.utils.geoDegrees;
@@ -78,6 +79,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import static vn.mbm.phimp.me.PhimpMe.ThemeDark;
 
 /**
  * The activity can crop specific region of interest from an image.
@@ -264,6 +267,10 @@ public class CropImage extends MonitoredActivity {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+        //set dark theme
+        if (Utility.getTheme(getApplicationContext()) == ThemeDark) {
+            setTheme(R.style.AppTheme_Dark);
+        }
         mApp = new App(CropImage.this);
         mContentResolver = getContentResolver();
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -564,7 +571,6 @@ public class CropImage extends MonitoredActivity {
                             doRotate90(mImageView);
                             mImageView.mHighlightViews.clear();
                             if (mBitmap != null && !mBitmap.isRecycled()) {
-                                mBitmap.recycle();
                                 mBitmap = null;
                             }
                             mBitmap = modifiedBitmap;
@@ -1004,6 +1010,7 @@ public class CropImage extends MonitoredActivity {
         mx.setRotate(90);
         //modifiedBitmap.recycle();
         modifiedBitmap = Bitmap.createBitmap(bm,0,0,bm.getWidth(),bm.getHeight(),mx,true);
+        flippedImaged=modifiedBitmap;
         image.setImageBitmap(modifiedBitmap);
     }
     public static Bitmap doHorizontalFlip(Bitmap sampleBitmap) {
@@ -1347,6 +1354,7 @@ public class CropImage extends MonitoredActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         mApp.onResume();
 
         //get Geolocation from Map

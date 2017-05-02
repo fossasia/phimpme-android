@@ -20,10 +20,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
@@ -64,7 +62,6 @@ import vn.mbm.phimp.me.database.TwitterItem;
 import vn.mbm.phimp.me.database.VkItem;
 import vn.mbm.phimp.me.database.WordpressItem;
 import vn.mbm.phimp.me.folderchooser.FolderChooserActivity;
-import vn.mbm.phimp.me.gallery3d.media.StringTexture;
 import vn.mbm.phimp.me.services.DeviantArtService;
 import vn.mbm.phimp.me.services.DrupalServices;
 import vn.mbm.phimp.me.services.FacebookServices;
@@ -81,12 +78,11 @@ import vn.mbm.phimp.me.services.TwitterServices;
 import vn.mbm.phimp.me.services.VKServices;
 import vn.mbm.phimp.me.utils.Commons;
 import vn.mbm.phimp.me.utils.FolderChooserPrefSettings;
-import vn.mbm.phimp.me.utils.PrefManager;
 import vn.mbm.phimp.me.utils.RSSUtil;
 
+import static android.content.Context.MODE_PRIVATE;
 import static android.os.Environment.getExternalStorageDirectory;
 import static com.facebook.FacebookSdk.getApplicationContext;
-import static vn.mbm.phimp.me.PhimpMe.PREFS_NAME;
 
 
 public class Settings extends Fragment
@@ -171,9 +167,9 @@ public class Settings extends Fragment
 	private ProgressDialog pro_gress;
 	private AlertDialog maxSizeDialog = null;
 	private Toolbar settingsToolBar;
+	private CheckBox checkVolumeBtn;
 
-
-    @Nullable
+	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
@@ -444,7 +440,7 @@ public class Settings extends Fragment
 //		lLocalGallery.setOrientation(LinearLayout.HORIZONTAL);
 
 		CheckBox chkLocalGallery = (CheckBox)getView().findViewById(R.id.checkbox_gallery);
-		chkLocalGallery.setChecked(PhimpMe.FEEDS_LOCAL_GALLERY);
+		chkLocalGallery.setChecked(PhimpMe.check_download_local_gallery);
 		chkLocalGallery.setOnCheckedChangeListener(new OnCheckedChangeListener()
 		{
 			@Override
@@ -456,6 +452,25 @@ public class Settings extends Fragment
 				}
 				else
 				    PhimpMe.check_download_local_gallery=false;
+			}
+		});
+
+		SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+		boolean volumeBtnPrefs =  sharedPref.getBoolean(getResources().getString(R.string.volume_btn_prefs),true);
+
+		checkVolumeBtn = (CheckBox)getView().findViewById(R.id.checkbox_volume_btn);
+		checkVolumeBtn.setChecked(volumeBtnPrefs);
+
+		PhimpMe.check_volume_btn_to_capture = checkVolumeBtn.isChecked();
+		checkVolumeBtn.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked){
+				if(isChecked==true){
+					PhimpMe.check_volume_btn_to_capture=true;
+				}
+				else {
+					PhimpMe.check_volume_btn_to_capture = false;
+				}
 			}
 		});
 
@@ -790,6 +805,17 @@ public class Settings extends Fragment
 			}
 		}, time);
 	}
+
+	@Override
+	public void onStop() {
+		boolean volumeBtnCheckVal = checkVolumeBtn.isChecked();
+		SharedPreferences sPrefs = getActivity().getPreferences(MODE_PRIVATE);
+		SharedPreferences.Editor editor = sPrefs.edit();
+		editor.putBoolean(getResources().getString(R.string.volume_btn_prefs),volumeBtnCheckVal);
+		editor.commit();
+		super.onStop();
+	}
+
 	@SuppressWarnings("static-access")
 	private boolean deletePhotoInDatabase(){
 		Log.d("Danh","Start Delete !");

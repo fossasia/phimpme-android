@@ -34,6 +34,8 @@ import vn.mbm.phimp.me.utils.Image;
 import vn.mbm.phimp.me.utils.Params;
 import vn.mbm.phimp.me.utils.Utils;
 
+import static vn.mbm.phimp.me.PhimpMe.ThemeDark;
+
 /**
  * Created by dynamitechetan on 14/03/2017.
  */
@@ -51,6 +53,10 @@ public class ImagePickerActivity extends ImagePickerBase {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //set dark theme
+        if (Utility.getTheme(getApplicationContext()) == ThemeDark) {
+            setTheme(R.style.AppTheme_Dark);
+        }
         setContentView(R.layout.activity_gallery);
         parentLayout = (RelativeLayout) findViewById(R.id.parentLayout);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
