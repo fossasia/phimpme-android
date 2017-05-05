@@ -796,9 +796,6 @@ public class Camera2 extends android.support.v4.app.Fragment {
 			_intent.putExtra("scale", true);
 			_intent.putExtra("activityName", "Camera2");
 
-			//resetting capture progress flag
-			FLAG_CAPTURE_IN_PROGRESS = false;
-
 			startActivityForResult(_intent, 1);
 			//progress.dismiss();
 
