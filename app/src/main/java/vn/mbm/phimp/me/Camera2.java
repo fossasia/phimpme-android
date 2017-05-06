@@ -1224,7 +1224,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		double targetRatio = (double) w / h;
 		if (sizes == null) return null;
 
-		Size optimalSize = null;
+		Size optimalSize = null,newOptSize = null;
 		double minDiff = Double.MAX_VALUE;
 
 		int targetHeight = h;
@@ -1247,6 +1247,32 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 					minDiff = Math.abs(size.height - targetHeight);
 				}
 			}
+		}
+
+		//scaling the size to fit the preview area
+		int deltaW,deltaH;
+		double w_r,h_r;
+		if (optimalSize != null ) {
+			newOptSize = optimalSize;
+			w_r = (double) w / optimalSize.height;
+			h_r = (double) h / optimalSize.width;
+			if ((w != optimalSize.height) && (h != optimalSize.width)) {
+				deltaH = h - (int) (w_r * optimalSize.width);
+				deltaW = w - (int) (h_r * optimalSize.height);
+
+				if ((deltaH >= 0 && deltaW >= 0 && deltaH <= deltaW ) || (deltaH >= 0)) {
+					newOptSize.height = w;
+					newOptSize.width = (int) (optimalSize.width * w_r);
+				} else if ((deltaH >= 0 && deltaW >= 0 && deltaW <= deltaH ) || deltaW >= 0) {
+					newOptSize.width = h;
+					newOptSize.height = (int) (optimalSize.height * h_r);
+				}
+				else {
+					newOptSize.width = h;
+					newOptSize.height = w;
+				}
+			}
+			optimalSize = newOptSize;
 		}
 
 		return optimalSize;
