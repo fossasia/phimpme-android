@@ -14,18 +14,12 @@
         android:layout_alignParentRight="true"
         android:orientation="horizontal">
 
-        <vn.mbm.phimp.me.gallery.GalleryView
-            android:id="@+id/gallery"
+        <android.support.v4.view.ViewPager
+            android:id="@+id/gallery_pager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:animationCache="true"
-            android:clipChildren="true"
-            android:spacing="10dp"
-            android:transitionName="gridanim" />
+            android:layout_height="match_parent">
+
+        </android.support.v4.view.ViewPager>
 
         <View
             android:id="@+id/overscroll_left"
