@@ -38,7 +38,7 @@
             xmlns:card_view="http://schemas.android.com/apk/res-auto"
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/myCardView"
-            android:layout_width="300dp"
+            android:layout_width="350dp"
             android:layout_height="50dp"
             android:layout_centerHorizontal="true"
             card_view:cardBackgroundColor= "#40000000"
@@ -102,6 +102,18 @@
                 app:srcCompat="@drawable/iso_camera" />
 
             <ImageButton
+                android:id="@+id/resolution"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="300dp"
+                android:background="@android:color/transparent"
+                android:padding="16dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/lcd_resolution" />
+
+            <ImageButton
                 android:id="@+id/sound"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -128,6 +140,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"></Spinner>
+
+        <Spinner
+            android:id="@+id/resolution_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+        </Spinner>
 
         <ImageButton
             android:id="@+id/takephoto"
