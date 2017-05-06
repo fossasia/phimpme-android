@@ -8,6 +8,7 @@ import java.util.List;
 
 import vn.mbm.phimp.me.R;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,21 +16,25 @@ import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.util.Log;
 import android.view.Display;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 public class GalleryImageAdapter extends BaseAdapter {
 
+	public static  int screen_h;
 	private Activity context;
 
 	private static ImageView imageView;
 
 	
-	private int screen_w;	
+	public static int screen_w;
 	//private int screen_h;
 	private List<String> mFilePath;
 
@@ -43,7 +48,8 @@ public class GalleryImageAdapter extends BaseAdapter {
 		WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
 		Display display = wm.getDefaultDisplay();
 		screen_w = display.getWidth();		
-		mFilePath = filepath;		
+		screen_h = display.getHeight();
+		mFilePath = filepath;
 
 	}
 
@@ -68,7 +74,13 @@ public class GalleryImageAdapter extends BaseAdapter {
 
 	public View getView(int position, View convertView, ViewGroup parent) {
 		PhimpMeGallery.position = position;
-		if (convertView == null) {
+
+
+		GalleryImageView galleryImageView = new GalleryImageView(context);
+		galleryImageView.setImage(mFilePath.get(PhimpMeGallery.position));
+
+
+	/*	if (convertView == null) {
 
 			holder = new ViewHolder();
 
@@ -99,9 +111,85 @@ public class GalleryImageAdapter extends BaseAdapter {
 		holder.imageView.setLayoutParams(new Gallery.LayoutParams(Gallery.LayoutParams.MATCH_PARENT, Gallery.LayoutParams.MATCH_PARENT));
 		
 		holder.imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
+		final GestureDetector mGestureDetector;
+
+		CustomGestureDetector customGestureDetector = new CustomGestureDetector();
+		// Create a GestureDetector
+		mGestureDetector = new GestureDetector(context, customGestureDetector);
+		// Attach listeners that'll be called for double-tap and related gestures
+		mGestureDetector.setOnDoubleTapListener(customGestureDetector);
+
+		holder.imageView.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				mGestureDetector.onTouchEvent(event);
+
+
+				return false;
+			}
+		});
+		*/
+		return galleryImageView;
 		
-		return imageView;
-		
+	}
+
+	public static class CustomGestureDetector implements GestureDetector.OnGestureListener,
+			GestureDetector.OnDoubleTapListener {
+		private TextView mGestureText;
+		private GestureDetector mGestureDetector;
+		@Override
+		public boolean onSingleTapConfirmed(MotionEvent e) {
+			mGestureText.setText("onSingleTapConfirmed");
+			return true;
+		}
+
+		@Override
+		public boolean onDoubleTap(MotionEvent e) {
+			mGestureText.setText("onDoubleTap");
+			return true;
+		}
+
+
+		@Override
+		public boolean onDoubleTapEvent(MotionEvent e) {
+			mGestureText.setText("onDoubleTapEvent");
+			return true;
+		}
+
+		@Override
+		public boolean onDown(MotionEvent e) {
+			mGestureText.setText("onDown");
+			return true;
+		}
+
+		@Override
+		public void onShowPress(MotionEvent e) {
+			mGestureText.setText("onShowPress");
+		}
+
+		@Override
+		public boolean onSingleTapUp(MotionEvent e) {
+			mGestureText.setText("onSingleTapUp");
+			return true;
+		}
+
+		@Override
+		public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+			mGestureText.setText("onScroll");
+			return true;
+		}
+
+		@Override
+		public void onLongPress(MotionEvent e) {
+			mGestureText.setText("onLongPress");
+		}
+
+		@Override
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+			mGestureText.setText("onFling");
+			return true;
+		}
 	}
 	public static int calculateInSampleSize(
 			

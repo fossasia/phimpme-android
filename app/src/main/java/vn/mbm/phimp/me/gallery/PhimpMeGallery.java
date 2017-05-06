@@ -30,8 +30,10 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -113,6 +115,17 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
     private void setupUI() {
         gallery = (Gallery) findViewById(R.id.gallery);
         galImageAdapter = new GalleryImageAdapter(this, filePath);
+
+        gallery.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+
+
+
+
         overscrollleft = (View)findViewById(R.id.overscroll_left);
         overscrollright = (View)findViewById(R.id.overscroll_right);
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
@@ -126,12 +139,12 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
         //ExpandableListAdapter menuadapter = new MyExpandableListAdapter();
         //menu.setAdapter(menuadapter);
         gallery.setSelection(index);
-        gallery.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                animateFAB();
-            }
-        });
+//        gallery.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                animateFAB();
+//            }
+//        });
         /*
         btnDelete  = (ImageButton)findViewById(R.id.btnDelete);
         if (from != null && from.equals("local")){
@@ -570,4 +583,6 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
             animateFAB();
         }
     }
+
+
 }
