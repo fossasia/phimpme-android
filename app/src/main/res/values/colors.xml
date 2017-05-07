@@ -6,6 +6,16 @@
     <color name="blue">#0099FF</color>
     <color name="grey">#AAAAAA</color>
     <color name="icongrey">#757575</color>
+    <color name="grey_darken_10">#668eaa</color>
+    <color name="grey_darken_20">#4f748e</color>
+    <color name="grey_darken_30">#3d596d</color>
+    <color name="grey_lighten_30">#ffe9eff3</color>
+    <color name="grey_dark">#ff2e4453</color>
+    <color name="grey_lighten_20_translucent_50">#80c8d7e1</color>
+    <color name="nux_grey_button">@color/grey_lighten_20</color>
+    <color name="legacy_pressed_wordpress">#cc78c8e6</color>
+    <color name="grey_dark_translucent_50">#802e4453</color>
+    <color name="blue_medium">#ff00aadc</color>
     <color name="white">#FFFFFFFF</color>
     <color name="black">#000000</color>
     <color name="green">#00FF00</color>
@@ -37,4 +47,10 @@
     <color name="secondary_text_material_dark">#8a000000</color>
     <color name="white70">#d0d0d0</color>
     <color name="white50">#777777</color>
+    <color name="grey_lighten_10">#ffa8bece</color>
+    <color name="grey_lighten_20">#ffc8d7e1</color>
+    <color name="blue_wordpress">#ff0087be</color>
+    <color name="white_dotorg_back">#F1F1F1</color>
+    <color name="orange_jazzy">#f0821e</color>
+    <color name="status_bar_tint">#006b98</color>
 </resources>

@@ -224,6 +224,28 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
+        <!-- Account activities -->
+        <activity
+            android:name=".wordpress.SignInActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="adjustResize"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".wordpress.MediaBrowserActivity"
+            android:theme="@style/Calypso.NoActionBar"
+          />
+        <activity
+            android:name=".wordpress.SitePickerActivity"
+            android:label="@string/site_picker_title"
+            android:theme="@style/CalypsoTheme"
+             />
+
+        <service
+            android:name=".wordpress.MediaUploadService"
+            android:label="Media Upload Service" />
+        <service
+            android:name=".wordpress.MediaDeleteService"
+            android:label="Media Delete Service" />
     </application>
 
 </manifest>

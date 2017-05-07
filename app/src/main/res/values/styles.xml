@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Phimpme.Base">
@@ -15,6 +15,44 @@
         <item name="BottomNavigationIconsColor" >@drawable/bottom_nav_icon_color_light</item>
         <item name="android:windowBackground">@color/colorWindowBackground</item>
         <item name="android:windowContentTransitions">true</item>
+    </style>
+    <style name="CalypsoTheme" parent="@style/WordPress">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:popupMenuStyle">@style/Calypso.PopupMenu</item>
+        <item name="android:textAppearanceSmallPopupMenu">@style/Calypso.TextAppearance</item>
+        <item name="android:textAppearanceLargePopupMenu">@style/Calypso.TextAppearance</item>
+    </style>
+    <style name="Calypso.PopupMenu" parent="@android:style/Widget.Holo.Light.PopupMenu">
+        <item name="android:textAppearance">@style/Calypso.TextAppearance</item>
+    </style>
+
+    <style name="Calypso.TextAppearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/grey_dark</item>
+    </style>
+    <style name="WordPress" parent="Theme.AppCompat.Light.DarkActionBar">
+    <!-- Material theme -->
+        <item name="colorPrimary">@color/blue_wordpress</item>
+        <item name="colorPrimaryDark">@color/status_bar_tint</item>
+        <item name="colorAccent">@color/orange_jazzy</item>
+        <item name="colorControlActivated">@color/blue_light</item>
+        <item name="colorControlHighlight">@color/grey_lighten_20</item>
+
+        <item name="android:windowBackground">@color/grey_lighten_30</item>
+        <item name="android:actionBarItemBackground">@drawable/selectable_background_wordpress</item>
+        <item name="android:actionDropDownStyle">@style/DropDownNav.WordPress</item>
+        <item name="android:actionModeBackground">@color/status_bar_tint</item>
+        <item name="android:statusBarColor">@color/status_bar_tint</item>a``
+
+        <item name="windowActionModeOverlay">true</item>
+        <item name="swipeToRefreshStyle">@style/WordPress.SwipeToRefresh</item>
+    </style>
+    <style name="Calypso.NoActionBar" parent="CalypsoTheme">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="WordPress.SwipeToRefresh">
+        <item name="refreshIndicatorColor">@color/blue_medium</item>
     </style>
 
     <!-- Dark base activity theme -->
@@ -38,10 +76,50 @@
 
     </style>
 
+    <style name="PopupMenu.WordPress" parent="android:Widget.Holo.ListPopupWindow">
+        <item name="android:popupBackground">@drawable/menu_dropdown_panel_wordpress</item>
+    </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+    <style name="DropDownNav.WordPress" parent="android:Widget.Holo.Light.Spinner">
+        <item name="android:background">@drawable/spinner_background_ab_wordpress</item>
+        <item name="android:dropDownSelector">@drawable/selectable_background_wordpress</item>
+    </style>
+    <style name="NUXFlatButtonNoBg">
+        <item name="android:textColor">@color/grey_lighten_10</item>
+        <item name="android:background">?android:attr/selectableItemBackground</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:clickable">true</item>
+    </style>
+    <style name="NUXEditText">
+        <item name="android:background">@color/white</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textColor">#444444</item>
+        <item name="android:textColorHint">#AAAAAA</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:layout_marginLeft">40dp</item>
+    </style>
+    <style name="EmptyList">
+        <item name="android:textColor">@color/grey_darken_30</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+    </style>
+    <style name="NUXPrimaryButton">
+        <item name="android:textColor">@drawable/nux_primary_button</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_marginLeft">4dp</item>
+        <item name="android:layout_marginRight">4dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:background">@drawable/nux_primary_button_selector</item>
+    </style>
+    <style name="WordPress.EmptyList.Title" parent="EmptyList">
+        <item name="android:textSize">24sp</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">sans-serif-light</item>
     </style>
     <style name="Animation">
         <item name="android:windowEnterAnimation">@anim/slide_in_left</item>

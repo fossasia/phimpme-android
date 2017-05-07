@@ -16,5 +16,20 @@
     <attr name="windowBackgroundTheme" format="reference|color" />
     <attr name="themeCardColor" format="reference|color" />
 
-      
+
+    <!--
+    WPTextView attributes
+-->
+    <declare-styleable name="WPTextView">
+        <attr name="fixWidowWords" format="boolean"/>
+    </declare-styleable>
+
+    <!--
+        WPLinearLayoutSizeBound attributes
+    -->
+    <declare-styleable name="WPLinearLayoutSizeBound">
+        <attr name="maxWidth" format="dimension" />
+        <attr name="maxHeight" format="dimension" />
+    </declare-styleable>
+
 </resources>

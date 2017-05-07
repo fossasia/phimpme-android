@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'jacoco-android'
+apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion 25
@@ -53,6 +54,18 @@ android {
 android {
     useLibrary 'org.apache.http.legacy'
 }
+
+android.buildTypes.all { buildType ->
+    // Add properties named "wp.xxx" to our BuildConfig
+    project.properties.any { property ->
+        if (property.key.toLowerCase().startsWith("wp.")) {
+            buildType.buildConfigField "String", property.key.replace("wp.", "").replace(".", "_").toUpperCase(),
+                    "\"${property.value}\""
+        }
+    }
+
+}
+
 dependencies {
     compile files('libs/CWAC-AdapterWrapper.jar')
     compile files('libs/CWAC-Bus.jar')
@@ -83,10 +96,15 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.+'
     compile 'com.android.support:design:25.0.1'
     compile 'com.android.support:appcompat-v7:25.0.1'
+    compile 'com.android.volley:volley:1.0.0'
+    compile 'com.sothree.slidinguppanel:library:3.3.1'
+    compile 'com.github.wordpress-mobile.WordPress-FluxC-Android:fluxc:wpandroid-7.0'
+
+    // Dagger
+    compile 'com.google.dagger:dagger:2.0.2'
+    apt 'com.google.dagger:dagger-compiler:2.0.2'
+    provided 'org.glassfish:javax.annotation:10.0-b28'
 
     compile 'com.squareup.picasso:picasso:2.5.2'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    }
 
 }

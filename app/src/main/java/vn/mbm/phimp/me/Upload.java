@@ -63,6 +63,8 @@ import com.tani.app.ui.IconContextMenu;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.wordpress.android.NewAccount;
+import org.wordpress.android.fluxc.Dispatcher;
+import org.wordpress.android.fluxc.store.AccountStore;
 
 import java.io.File;
 import java.io.IOException;
@@ -70,6 +72,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+
+import javax.inject.Inject;
 
 import vn.mbm.phimp.me.database.AccountItem;
 import vn.mbm.phimp.me.database.DrupalItem;
@@ -99,12 +103,23 @@ import vn.mbm.phimp.me.utils.Image;
 import vn.mbm.phimp.me.utils.Params;
 import vn.mbm.phimp.me.utils.PrefManager;
 import vn.mbm.phimp.me.utils.geoDegrees;
+import vn.mbm.phimp.me.wordpress.SignInActivity;
+import vn.mbm.phimp.me.wordpress.SitePickerActivity;
 
 import static vn.mbm.phimp.me.utils.Constants.TYPE_MULTI_PICKER;
 
 //import com.google.android.maps.GeoPoint;
 
 public class Upload extends android.support.v4.app.Fragment {
+
+    @Inject
+    Dispatcher mDispatcher;
+    @Inject
+    org.wordpress.android.fluxc.store.MediaStore mMediaStore;
+    @Inject
+    AccountStore mAccountStore;
+
+
     private final int CONTEXT_MENU_ID = 1;
 
     private final int DIALOG_ADD_PHOTO = 2;
@@ -223,6 +238,7 @@ public class Upload extends android.support.v4.app.Fragment {
     private static String longtitude = "", latitude = "", title = "";
 
     Bitmap bmp_scale = null;
+    AlertDialog alertDialog = null;
 
     static boolean upload_photo_process = false;
 
@@ -256,6 +272,12 @@ public class Upload extends android.support.v4.app.Fragment {
 
 
         return inflater.inflate(R.layout.upload, container, false);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((MyApplication) getActivity().getApplication()).component().inject(this);
     }
 
     @Override
@@ -437,7 +459,7 @@ public class Upload extends android.support.v4.app.Fragment {
                 LoginButton facebookAcc = (LoginButton)dialogView.findViewById(R.id.facebook_account);
                 Button wordpressAcc = (Button)dialogView.findViewById(R.id.wordpress_account);
                 dialogBuilder.setView(dialogView);
-                final AlertDialog alertDialog = dialogBuilder.create();
+                alertDialog = dialogBuilder.create();
                 facebookAcc.setReadPermissions(Arrays.asList(
                         "public_profile", "email", "user_birthday", "user_friends"));
                 facebookAcc.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -490,7 +512,7 @@ public class Upload extends android.support.v4.app.Fragment {
                         //check=true;
                         PhimpMe.add_account_upload = true;
                         PhimpMe.add_account_setting = true;
-                        getActivity().finish();
+                        alertDialog.dismiss();
                     }
 
                     @Override
@@ -506,7 +528,20 @@ public class Upload extends android.support.v4.app.Fragment {
                 wordpressAcc.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        getActivity().showDialog(5); // DIALOG_ADD_ACCOUNT_WORDPRESS = 5
+                        if(mAccountStore.hasAccessToken())
+                        {
+                            Intent intent = new Intent(getContext(), SitePickerActivity.class);
+                            startActivity(intent);
+                            PhimpMe.add_account_upload = true;
+                            PhimpMe.add_account_setting = true;
+                        }
+                        else {
+                            Intent intent = new Intent(getContext(), SignInActivity.class);
+                            startActivity(intent);
+                            PhimpMe.add_account_upload = true;
+                            PhimpMe.add_account_setting = true;
+                        }
+                        alertDialog.dismiss();
                     }
                 });
                 alertDialog.show();
