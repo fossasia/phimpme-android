@@ -10,7 +10,7 @@ import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.SendFileActivity;
 import vn.mbm.phimp.me.Upload;
 import vn.mbm.phimp.me.Utility;
-import vn.mbm.phimp.me.image.CropImage;
+import vn.mbm.phimp.me.gallery3d.media.CropImage;
 import vn.mbm.phimp.me.utils.geoDegrees;
 
 import android.content.Context;
