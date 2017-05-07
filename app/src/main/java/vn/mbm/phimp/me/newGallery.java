@@ -3508,7 +3508,7 @@ public class newGallery extends Fragment {
         }
     }
 
-	public static void update(int num){
+	public static void update(){
 		Log.e("Gallery","Update");
 		linear_main.removeView(ln_local_gallery);    			
 		check_local = 0;
