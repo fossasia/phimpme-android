@@ -594,7 +594,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 						iso.setVisibility(View.GONE);
 						setCameraDisplayOrientation((Activity) ctx, 1, mCamera);
 						preview.switchCamera(mCamera);
-						mCamera.startPreview();
+						//mCamera.startPreview();
 					}else
 					{
 						Log.e("Camera", "0");
@@ -613,7 +613,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 						//mCamera.setDisplayOrientation(90);
 						setCameraDisplayOrientation((Activity) ctx, 0, mCamera);
 						preview.switchCamera(mCamera);
-						mCamera.startPreview();
+					//	mCamera.startPreview();
 					}
 				}
 
@@ -984,7 +984,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 	SurfaceHolder mHolder;
 	Size mPreviewSize;
 	List<Size> mSupportedPreviewSizes;
-	private List<String> mSupportFocus,mSupportSceneModes;
+	private List<String> mSupportFocus,mSupportSceneModes,mSupportFlashModes;
 	Camera mCamera;
 	private float mDist = 0;
 	private static  final int FOCUS_AREA_SIZE= 300;
@@ -1067,6 +1067,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 			mSupportedPreviewSizes = mCamera.getParameters().getSupportedPreviewSizes();
 			mSupportFocus = mCamera.getParameters().getSupportedFocusModes();
 			mSupportSceneModes = mCamera.getParameters().getSupportedSceneModes();
+			mSupportFlashModes = mCamera.getParameters().getSupportedFlashModes();
             // mCamera.setDisplayOrientation(90);
 			requestLayout();
 		}
@@ -1077,8 +1078,9 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 	protected void onDraw(Canvas canvas)
 	{
 		if (GRID_ENABLED) {
-			int screenWidth = Utils.getScreenWidth(getContext());
-			int screenHeight = Utils.getScreenHeight(getContext());
+
+			int screenWidth = mPreviewSize.height;
+			int screenHeight = mPreviewSize.width;
 
 			canvas.drawLine(2 * (screenWidth / 3), 0, 2 * (screenWidth / 3), screenHeight, paint);
 			canvas.drawLine((screenWidth / 3), 0, (screenWidth / 3), screenHeight, paint);
@@ -1150,7 +1152,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 			camera.setPreviewDisplay(mHolder);
 		} catch (IOException exception) {
 			Log.e(TAG, "IOException caused by setPreviewDisplay()", exception);
-		}
+		}/*
 		Camera.Parameters parameters = camera.getParameters();
 		//parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
 		List<Camera.Size> sizes = parameters.getSupportedPreviewSizes();
@@ -1158,7 +1160,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		parameters.setPreviewSize(cs.width, cs.height);
 		requestLayout();
 
-		camera.setParameters(parameters);
+		camera.setParameters(parameters);*/
 	}
 
 	@Override
@@ -1175,40 +1177,22 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		if (changed && this.mSurfaceView != null) {
-			final View child = this.mSurfaceView;
 
 			final int width = r - l;
 			final int height = b - t;
 			Log.e("Height",String.valueOf(height));
 			int previewWidth = width;
 			int previewHeight = height;
-			if (mPreviewSize != null) {
-				previewWidth = mPreviewSize.width;
-				previewHeight = mPreviewSize.height;
-			}
+			try{
+				mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, width, height);
+			}catch(Exception e){}
 
-			// Center the child SurfaceView within the parent.
-			if (width * previewHeight > height * previewWidth) {
-				final int scaledChildWidth = previewWidth * height / previewHeight;
-				Log.e("width",String.valueOf(previewWidth));
-				Log.e("Height",String.valueOf(previewHeight));
-				Log.e("scaled",String.valueOf(scaledChildWidth));
-				child.layout((width - scaledChildWidth) / 2, 0,
-						(width + scaledChildWidth) / 2, height);
-				Log.e("Height",String.valueOf(height));
-			} else {
-				final int scaledChildHeight = previewHeight * width / previewWidth;
-				Log.e("width",String.valueOf(previewWidth));
-				Log.e("Height",String.valueOf(previewHeight));
-				Log.e("scaled",String.valueOf(scaledChildHeight));
-               /* child.layout(0, 0,
-                        width, height);*/
-				child.layout(0, 0,
-						width, height);
-                /*child.layout(0, 0 ,
-                        previewWidth, previewHeight);*/
-				Log.e("Height",String.valueOf(height));
+			if (mPreviewSize != null) {
+				previewWidth = mPreviewSize.height;
+				previewHeight = mPreviewSize.width;
 			}
+			layout(0,0,previewWidth,previewHeight);
+
 		}
 	}
 
@@ -1233,22 +1217,21 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	private Size getOptimalPreviewSize(List<Size> sizes, int w, int h) {
-		final double ASPECT_TOLERANCE = 0.1;
+
 		double targetRatio = (double) w / h;
 		if (sizes == null) return null;
 
-		Size optimalSize = null;
+		Size optimalSize = null,newOptSize = null;
 		double minDiff = Double.MAX_VALUE;
 
 		int targetHeight = h;
 
 		// Try to find an size match aspect ratio and size
 		for (Size size : sizes) {
-			double ratio = (double) size.width / size.height;
-			if (Math.abs(ratio - targetRatio) > ASPECT_TOLERANCE) continue;
-			if (Math.abs(size.height - targetHeight) < minDiff) {
+			double ratio = (double) size.height / size.width;
+			if ((Double.compare(ratio,targetRatio) >= 0) && ((w - size.height)>=0) && ((w - size.height)<=minDiff)){
 				optimalSize = size;
-				minDiff = Math.abs(size.height - targetHeight);
+				minDiff = Math.abs(size.height - w);
 			}
 		}
 
@@ -1262,6 +1245,33 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 				}
 			}
 		}
+
+		//scaling the size to fit the preview area
+		int deltaW,deltaH;
+		double w_r,h_r;
+		if (optimalSize != null ) {
+			newOptSize = optimalSize;
+			w_r = (double) w / optimalSize.height;
+			h_r = (double) h / optimalSize.width;
+			if ((w != optimalSize.height) && (h != optimalSize.width)) {
+				deltaH = h - (int) (w_r * optimalSize.width);
+				deltaW = w - (int) (h_r * optimalSize.height);
+
+				if ((deltaH >= 0 && deltaW >= 0 && deltaH <= deltaW ) || (deltaH >= 0)) {
+					newOptSize.height = w;
+					newOptSize.width = (int) (optimalSize.width * w_r);
+				} else if ((deltaH >= 0 && deltaW >= 0 && deltaW <= deltaH ) || deltaW >= 0) {
+					newOptSize.width = h;
+					newOptSize.height = (int) (optimalSize.height * h_r);
+				}
+				else {
+					newOptSize.width = h;
+					newOptSize.height = w;
+				}
+			}
+			optimalSize = newOptSize;
+		}
+
 		return optimalSize;
 	}
 
@@ -1270,31 +1280,36 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 		// the preview.
 		Log.e("Surface","Change");
 		Camera.Parameters parameters = mCamera.getParameters();
-        	switch (HDR_STATE){
-                case HDR_ON:
-                    if (mSupportSceneModes.contains(SCENE_MODE_HDR)) {
-                        parameters.setSceneMode(SCENE_MODE_HDR);
-                    }
-                    break;
-                default:
-                    parameters.setSceneMode(SCENE_MODE_AUTO);
-		     break;
-        	}
-
-		switch (state) {
-			case FLASH_ON:
-				parameters.setFlashMode(FLASH_MODE_ON);
-				break;
-			case FLASH_OFF:
-				parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-				break;
-			default:
-				parameters.setFlashMode(FLASH_MODE_AUTO);
-				break;
+		if (mSupportSceneModes != null) {
+			switch (HDR_STATE) {
+				case HDR_ON:
+					if (mSupportSceneModes.contains(SCENE_MODE_HDR)) {
+						parameters.setSceneMode(SCENE_MODE_HDR);
+					}
+					break;
+				default:
+					parameters.setSceneMode(SCENE_MODE_AUTO);
+					break;
+			}
 		}
 
+		if (mSupportFlashModes != null) {
+			switch (state) {
+				case FLASH_ON:
+					parameters.setFlashMode(FLASH_MODE_ON);
+					break;
+				case FLASH_OFF:
+					parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+					break;
+				default:
+					parameters.setFlashMode(FLASH_MODE_AUTO);
+					break;
+			}
+		}
+
+
 		try{
-			mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, w, h);
+			if (mPreviewSize==null) mPreviewSize = getOptimalPreviewSize(mSupportedPreviewSizes, w, h);
 			if (mSupportFocus.contains(Camera.Parameters.FOCUS_MODE_AUTO))
 			{
 				parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
