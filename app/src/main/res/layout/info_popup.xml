@@ -1,18 +1,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/popup_element"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
-    android:orientation="vertical"
-    android:id="@+id/popup_element"
-    android:background="@android:color/white">
+    android:orientation="vertical">
 
     <android.support.v7.widget.CardView
+        android:id="@+id/photo_details_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="2dp"
-        android:id="@+id/photo_details_card">
-        <LinearLayout android:layout_width="match_parent"
+        app:cardCornerRadius="2dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
@@ -20,15 +21,14 @@
                 android:id="@+id/details_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/details"
-                android:padding="24dp"
-                android:textColor="@color/md_dark_primary_text"
                 android:background="@color/blue_light"
-                android:textSize="18sp"
-                android:textStyle="bold"
                 android:gravity="center"
-                />
-            </LinearLayout>
+                android:padding="24dp"
+                android:text="@string/details"
+                android:textColor="@color/md_dark_primary_text"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </LinearLayout>
     </android.support.v7.widget.CardView>
 
 
@@ -42,21 +42,24 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:paddingLeft="20px"
+            android:paddingTop="20px"
             android:text="@string/path"
-            android:paddingTop="20px"
-            android:paddingLeft="20px"
-            android:layout_weight="1.5"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
-            android:layout_width="match_parent"
             android:id="@+id/path"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="40px"
             android:layout_weight="1"
-            android:paddingTop="20px"
-            android:gravity="left"/>
+            android:gravity="left"
+
+            android:paddingTop="20px"></TextView>
+            <!--android:textColor="@color/secondary_text_material_dark" />-->
 
     </LinearLayout>
 
@@ -70,21 +73,23 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:paddingLeft="20px"
+            android:paddingTop="20px"
             android:text="@string/time"
-            android:paddingTop="20px"
-            android:paddingLeft="20px"
-            android:layout_weight="1.5"
-            android:textStyle="bold"/>
+
+
+            android:textStyle="bold" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="40px"
             android:layout_weight="1"
-            android:paddingTop="20px"
-            android:gravity="left"/>
+            android:gravity="left"
+            android:paddingTop="20px"/>
 
     </LinearLayout>
 
@@ -98,21 +103,21 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:paddingLeft="20px"
+            android:paddingTop="20px"
             android:text="@string/image_width"
-            android:paddingTop="20px"
-            android:paddingLeft="20px"
-            android:layout_weight="1.5"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:id="@+id/image_width"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="40px"
             android:layout_weight="1"
-            android:paddingTop="20px"
-            android:gravity="left"/>
+            android:gravity="left"
+            android:paddingTop="20px"/>
 
     </LinearLayout>
 
@@ -126,21 +131,21 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:paddingLeft="20px"
+            android:paddingTop="20px"
             android:text="@string/Height"
-            android:paddingTop="20px"
-            android:paddingLeft="20px"
-            android:layout_weight="1.5"
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/height"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/height"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="40px"
             android:layout_weight="1"
-            android:paddingTop="20px"
-            android:gravity="left"/>
+            android:gravity="left"
+            android:paddingTop="20px"/>
 
     </LinearLayout>
 
@@ -148,37 +153,40 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="20px"
         android:paddingBottom="20px"
+
+        android:paddingTop="20px"
         android:weightSum="2">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/file_size"
-            android:paddingTop="20px"
-            android:paddingLeft="20px"
             android:layout_weight="1.5"
-            android:textStyle="bold"/>
+            android:paddingLeft="20px"
+            android:paddingTop="20px"
+            android:text="@string/file_size"
+            android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/size"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/size"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="40px"
             android:layout_weight="1"
-            android:paddingTop="20px"
-            android:gravity="left"/>
+            android:gravity="left"
+            android:paddingTop="20px"/>
 
     </LinearLayout>
 
     <android.support.v7.widget.CardView
+        android:id="@+id/photo_ok_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="2dp"
-        android:id="@+id/photo_ok_card">
-        <LinearLayout android:layout_width="match_parent"
+        app:cardCornerRadius="2dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
@@ -186,13 +194,11 @@
                 android:id="@+id/button_done"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/Done"
-                android:textColor="@color/md_dark_primary_text"
                 android:background="@color/blue_light"
-                android:textSize="18sp"
-                android:textStyle="bold"
                 android:gravity="center"
-                />
+                android:text="@string/Done"
+                android:textSize="18sp"
+                android:textStyle="bold" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 

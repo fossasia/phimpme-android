@@ -46,58 +46,60 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import static vn.mbm.phimp.me.PhimpMe.ThemeDark;
 
-public class PhimpMeGallery extends AppCompatActivity implements View.OnClickListener{
+public class PhimpMeGallery extends AppCompatActivity implements View.OnClickListener {
     private Gallery gallery;
     private static ArrayList<String> filePath;
     private Boolean isFabOpen = false;
     private FloatingActionButton fab, fabEdit, fabUpload, fabShare, fabInfo, fabDelete;
-    private Animation fab_open,fab_close,rotate_forward,rotate_backward;
-	private GalleryImageAdapter galImageAdapter;
+    private Animation fab_open, fab_close, rotate_forward, rotate_backward;
+    private GalleryImageAdapter galImageAdapter;
     private PopupWindow pwindo;
     private Button btnClosePopup;
+    private final int LIGHTTHEME = 1, DARKTHEME = 2;
 
-	private ImageButton btnShare,btnEdit,btnZoom,btnUpload,btnShowInMap,btnDelete;
 
-	public static int position;
-	public static View overscrollleft;
-	public static View overscrollright;
-	public int index = 0;
-	public String from = "";
-	
-	public static int num;
-	private static String longtitude="",latitude="",title="";
-	private Context ctx;
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    private ImageButton btnShare, btnEdit, btnZoom, btnUpload, btnShowInMap, btnDelete;
+
+    public static int position;
+    public static View overscrollleft;
+    public static View overscrollright;
+    public int index = 0;
+    public String from = "";
+
+    public static int num;
+    private static String longtitude = "", latitude = "", title = "";
+    private Context ctx;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         //set dark theme
-        if (Utility.getTheme(getApplicationContext()) == ThemeDark) {
+        if (Utility.getTheme(getApplicationContext()) == DARKTHEME) {
             setTheme(R.style.AppTheme_Dark);
         }
-		setContentView(R.layout.phimpmegallery);	
-		//requestWindowFeature(Window.FEATURE_NO_TITLE);
-		ctx = this;	
-		
-		PhimpMe.gallery_delete = false;
-		//num = filePath.size();
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		Intent intent = getIntent();
-		Bundle extract = intent.getExtras();		
-		try{
-		index = extract.getInt("index");
-		from = extract.getString("from");
-		
-		}catch(Exception e){
-			from = "";
-		}
+        setContentView(R.layout.phimpmegallery);
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);
+        ctx = this;
 
-        fab = (FloatingActionButton)findViewById(R.id.fab);
-        fabEdit = (FloatingActionButton)findViewById(R.id.fabedit);
-        fabUpload = (FloatingActionButton)findViewById(R.id.fabupload);
-        fabShare = (FloatingActionButton)findViewById(R.id.fabshare);
-        fabInfo = (FloatingActionButton)findViewById(R.id.fabinfo);
+        PhimpMe.gallery_delete = false;
+        //num = filePath.size();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        Intent intent = getIntent();
+        Bundle extract = intent.getExtras();
+        try {
+            index = extract.getInt("index");
+            from = extract.getString("from");
+
+        } catch (Exception e) {
+            from = "";
+        }
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fabEdit = (FloatingActionButton) findViewById(R.id.fabedit);
+        fabUpload = (FloatingActionButton) findViewById(R.id.fabupload);
+        fabShare = (FloatingActionButton) findViewById(R.id.fabshare);
+        fabInfo = (FloatingActionButton) findViewById(R.id.fabinfo);
         fabDelete = (FloatingActionButton) findViewById(R.id.fabdelete);
 
         fab.setOnClickListener(this);
@@ -113,12 +115,12 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
     private void setupUI() {
         gallery = (Gallery) findViewById(R.id.gallery);
         galImageAdapter = new GalleryImageAdapter(this, filePath);
-        overscrollleft = (View)findViewById(R.id.overscroll_left);
-        overscrollright = (View)findViewById(R.id.overscroll_right);
+        overscrollleft = (View) findViewById(R.id.overscroll_left);
+        overscrollright = (View) findViewById(R.id.overscroll_right);
         fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
-        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
-        rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_backward);
+        fab_close = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_close);
+        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_forward);
+        rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate_backward);
         //RelativeLayout layout = (RelativeLayout)findViewById(R.id.btn);
         //layout.bringToFront();
         gallery.setAdapter(galImageAdapter);
@@ -236,19 +238,22 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        switch (id){
+        switch (id) {
             case R.id.fabinfo:
 
-                File file =  new File(filePath.get(position));
+                File file = new File(filePath.get(position));
                 LayoutInflater inflater = (LayoutInflater) PhimpMeGallery.this
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View layout = inflater.inflate(R.layout.info_popup,
-                        (ViewGroup) findViewById(R.id.popup_element));
+                View layout = inflater.inflate(R.layout.info_popup, (ViewGroup) findViewById(R.id.popup_element));
                 pwindo = new PopupWindow(layout, AppBarLayout.LayoutParams.WRAP_CONTENT, AppBarLayout.LayoutParams.WRAP_CONTENT, true);
+                if (Utility.getTheme(getApplicationContext()) == DARKTHEME)
+                    layout.setBackgroundColor(getResources().getColor(R.color.black));
+                else
+                    layout.setBackgroundColor(getResources().getColor(R.color.white));
                 getPopUpData(file);
                 pwindo.setAnimationStyle(R.style.Animation);
                 pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
-                btnClosePopup = (Button)layout.findViewById(R.id.button_done);
+                btnClosePopup = (Button) layout.findViewById(R.id.button_done);
                 btnClosePopup.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -261,33 +266,27 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.fabedit:
 
-                File f =  new File(filePath.get(position));
+                File f = new File(filePath.get(position));
                 ExifInterface exif_data = null;
                 geoDegrees _g = null;
                 String la = "";
                 String lo = "";
-                try
-                {
+                try {
                     exif_data = new ExifInterface(f.getAbsolutePath());
                     _g = new geoDegrees(exif_data);
-                    if (_g.isValid())
-                    {
+                    if (_g.isValid()) {
                         la = _g.getLatitude() + "";
                         lo = _g.getLongitude() + "";
                     }
-                }
-                catch (IOException e)
-                {
+                } catch (IOException e) {
                     e.printStackTrace();
-                }
-                finally
-                {
+                } finally {
                     exif_data = null;
                     _g = null;
                 }
-                longtitude=lo;
-                latitude=la;
-                title=f.getName();
+                longtitude = lo;
+                latitude = la;
+                title = f.getName();
 
                 Intent intent = new Intent();
                 intent.setClass(PhimpMeGallery.this, CropImage.class);
@@ -304,7 +303,7 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                 Log.d("", "Fab 1");
                 break;
             case R.id.fabupload:
-                AlertDialog.Builder builder=new AlertDialog.Builder(PhimpMeGallery.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(PhimpMeGallery.this);
                 builder.setMessage(R.string.dialog_upload);
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
@@ -358,14 +357,14 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    public void getPopUpData(File file){
+    public void getPopUpData(File file) {
         try {
             ExifInterface exif_data = new ExifInterface(file.getAbsolutePath());
             Date lastModDate = new Date(file.lastModified());
-            long length = file.length()/1024;
+            long length = file.length() / 1024;
             String img_width = exif_data.getAttribute(ExifInterface.TAG_IMAGE_WIDTH);
             String img_height = exif_data.getAttribute(ExifInterface.TAG_IMAGE_LENGTH);
-            if("0".equals(img_width) || "0".equals(img_height)) {
+            if ("0".equals(img_width) || "0".equals(img_height)) {
                 try {
                     BitmapFactory.Options options = new BitmapFactory.Options();
                     options.inJustDecodeBounds = true;
@@ -380,11 +379,11 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                 } catch (Exception e) {
                 }
             }
-            ((TextView)pwindo.getContentView().findViewById(R.id.path)).setText(file.getAbsolutePath());
-            ((TextView)pwindo.getContentView().findViewById(R.id.time)).setText(lastModDate.toString());
-            ((TextView)pwindo.getContentView().findViewById(R.id.image_width)).setText(img_width);
-            ((TextView)pwindo.getContentView().findViewById(R.id.height)).setText(img_height);
-            ((TextView)pwindo.getContentView().findViewById(R.id.size)).setText(Long.toString(length)+ "KB");
+            ((TextView) pwindo.getContentView().findViewById(R.id.path)).setText(file.getAbsolutePath());
+            ((TextView) pwindo.getContentView().findViewById(R.id.time)).setText(lastModDate.toString());
+            ((TextView) pwindo.getContentView().findViewById(R.id.image_width)).setText(img_width);
+            ((TextView) pwindo.getContentView().findViewById(R.id.height)).setText(img_height);
+            ((TextView) pwindo.getContentView().findViewById(R.id.size)).setText(Long.toString(length) + "KB");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -393,11 +392,11 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
 
     public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         // Sample data set.  children[i] contains the children (String[]) for groups[i].
-        private String[] groups = { getString(R.string.menu) };
+        private String[] groups = {getString(R.string.menu)};
         private String[][] children = {
-                { getString(R.string.edit),getString(R.string.upload),getString(R.string.share) },
+                {getString(R.string.edit), getString(R.string.upload), getString(R.string.share)},
         };
-        
+
         public Object getChild(int groupPosition, int childPosition) {
             return children[groupPosition][childPosition];
         }
@@ -422,6 +421,7 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
             textView.setPadding(55, 0, 0, 0);
             return textView;
         }
+
         public TextView getGenericChildView() {
             // Layout parameters for the ExpandableListView
             AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
@@ -434,9 +434,9 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
             textView.setPadding(70, 0, 0, 0);
             return textView;
         }
-        
+
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
-                View convertView, ViewGroup parent) {
+                                 View convertView, ViewGroup parent) {
             TextView textView = getGenericChildView();
             textView.setText(getChild(groupPosition, childPosition).toString());
             return textView;
@@ -455,7 +455,7 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
         }
 
         public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
-                ViewGroup parent) {
+                                 ViewGroup parent) {
             TextView textView = getGenericView();
             textView.setText(getGroup(groupPosition).toString());
             return textView;
@@ -471,9 +471,9 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    public void animateFAB(){
+    public void animateFAB() {
 
-        if(isFabOpen){
+        if (isFabOpen) {
 
             fab.startAnimation(rotate_backward);
             fabEdit.startAnimation(fab_close);
@@ -560,13 +560,13 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    public static void setFileList(ArrayList<String> file){
+    public static void setFileList(ArrayList<String> file) {
         filePath = file;
     }
 
-    public void onBackPressed(){
+    public void onBackPressed() {
         super.onBackPressed();
-        if(isFabOpen){
+        if (isFabOpen) {
             animateFAB();
         }
     }
