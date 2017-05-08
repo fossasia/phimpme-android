@@ -10,6 +10,8 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.ImageView;
 
+import vn.mbm.phimp.me.utils.BasicCallBack;
+
 /**
  * @author Artyom Kiriliyk
  * -------------------
@@ -40,6 +42,8 @@ public class TouchImageView extends ImageView
 	float right, bottom, origWidth, origHeight, bmWidth, bmHeight;
 
 	ScaleGestureDetector mScaleDetector;
+
+	BasicCallBack basicCallBack;
 
 	Context context;
 
@@ -184,6 +188,7 @@ public class TouchImageView extends ImageView
 			{
 				saveScale = minScale;
 				mScaleFactor = minScale / origScale;
+				basicCallBack.callBack(0,"");
 			}
 			right = width * saveScale - width - (2 * redundantXSpace * saveScale);
 			bottom = height * saveScale - height
@@ -266,5 +271,10 @@ public class TouchImageView extends ImageView
 		right = width * saveScale - width - (2 * redundantXSpace * saveScale);
 		bottom = height * saveScale - height - (2 * redundantYSpace * saveScale);
 		setImageMatrix(matrix);
+	}
+
+	public void setBasicCallBack(BasicCallBack basicCallBack){
+		this.basicCallBack = basicCallBack;
+
 	}
 }
