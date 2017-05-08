@@ -9,7 +9,7 @@ import vn.mbm.phimp.me.PhimpMe;
 import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.Upload;
 import vn.mbm.phimp.me.Utility;
-import vn.mbm.phimp.me.image.CropImage;
+import vn.mbm.phimp.me.gallery3d.media.CropImage;
 import vn.mbm.phimp.me.utils.BasicCallBack;
 import vn.mbm.phimp.me.utils.ImageUtil;
 import vn.mbm.phimp.me.utils.OnSwipeTouchListener;
@@ -57,7 +57,9 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
     // UI elements
     private FloatingActionButton fab, fabEdit, fabUpload, fabShare, fabInfo, fabDelete;
     private Animation fabOpen, fabClose, rotateForward, rotateBackward;
+
     private GalleryImageAdapter galImageAdapter;
+
     private PopupWindow pwindo;
     private Button btnClosePopup;
     private final int LIGHTTHEME = 1, DARKTHEME = 2;
@@ -75,6 +77,7 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         if (Utility.getTheme(getApplicationContext()) == ThemeDark) {
             setTheme(R.style.AppTheme_Dark);
@@ -161,15 +164,18 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                 View layout = inflater.inflate(R.layout.info_popup,
                         (ViewGroup) findViewById(R.id.popup_element));
                 pwindo = new PopupWindow(layout, AppBarLayout.LayoutParams.WRAP_CONTENT, AppBarLayout.LayoutParams.WRAP_CONTENT, true);
+
                 if (Utility.getTheme(getApplicationContext())==DARKTHEME){
                     layout.setBackgroundColor(getResources().getColor(R.color.black));
                     getPopUpData(file,DARKTHEME);
                 }
                 else{
                     layout.setBackgroundColor(getResources().getColor(R.color.white));
+
                     getPopUpData(file,LIGHTTHEME);
 
                 }
+
 
                 pwindo.setAnimationStyle(R.style.Animation);
                 pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
@@ -295,6 +301,7 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
     }
 
     public void getPopUpData(File file, int theme){
+
         try {
             ExifInterface exif_data = new ExifInterface(file.getAbsolutePath());
             Date lastModDate = new Date(file.lastModified());
@@ -316,10 +323,12 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                 } catch (Exception e) {
                 }
             }
+
             if (theme==DARKTHEME){
                 ((TextView)pwindo.getContentView().findViewById(R.id.details_title)).setBackgroundColor(getResources().getColor(R.color.primary_material_dark_2));
                 ((Button)pwindo.getContentView().findViewById(R.id.button_done)).setBackgroundColor(getResources().getColor(R.color.primary_material_dark_2));
             }
+
             ((TextView)pwindo.getContentView().findViewById(R.id.path)).setText(file.getAbsolutePath());
             ((TextView)pwindo.getContentView().findViewById(R.id.time)).setText(lastModDate.toString());
             ((TextView)pwindo.getContentView().findViewById(R.id.image_width)).setText(img_width);

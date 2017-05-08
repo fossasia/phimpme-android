@@ -4,9 +4,10 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:layout_gravity="center"
-
     android:orientation="vertical">
 
+
+    android:orientation="vertical">
     <android.support.v7.widget.CardView
         android:id="@+id/photo_details_card"
         android:layout_width="match_parent"
