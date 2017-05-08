@@ -60,7 +60,11 @@ script:
  - ./gradlew build
  - bundle install
  - bundle exec danger
+ - chmod +x ./gradlew
  - chmod +x upload_apk_forks.sh
+
+ before_install:
+ - chmod +x gradlew
 
 after_success:
  - bash <(curl -s https://codecov.io/bash)

@@ -9,7 +9,8 @@ import vn.mbm.phimp.me.PhimpMe;
 import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.Upload;
 import vn.mbm.phimp.me.Utility;
-import vn.mbm.phimp.me.image.CropImage;
+
+import vn.mbm.phimp.me.gallery3d.media.CropImage;
 import vn.mbm.phimp.me.utils.BasicCallBack;
 import vn.mbm.phimp.me.utils.ImageUtil;
 import vn.mbm.phimp.me.utils.OnSwipeTouchListener;
