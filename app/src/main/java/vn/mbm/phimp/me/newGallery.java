@@ -24,6 +24,8 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Display;
@@ -34,11 +36,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -49,6 +47,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.vistrav.ask.Ask;
 
 import java.io.File;
@@ -77,6 +77,7 @@ import vn.mbm.phimp.me.utils.ImageUtil;
 import vn.mbm.phimp.me.utils.RSSPhotoItem;
 import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
 import vn.mbm.phimp.me.utils.RSSUtil;
+import vn.mbm.phimp.me.utils.Utils;
 import vn.mbm.phimp.me.utils.geoDegrees;
 
 public class newGallery extends Fragment {
@@ -158,10 +159,6 @@ public class newGallery extends Fragment {
 
     private static GridPersonalSohuAdapter personal_sohuadapter;
     private static LocalPhotosAdapter local_adapter;
-    static int current_process;
-    static int current_page;
-    private static Cursor cursor;
-    private static int columnIndex;
     static int check_local = 0;
     public static ProgressDialog pro_gress;
     //ImageButton btnMap,btnBluetoothShare;
@@ -171,25 +168,20 @@ public class newGallery extends Fragment {
     File rss_folder;
     static int text_size = 20;
     static int color_line;
+    int THUMBNAIL_SIZE = 80;
 
     // Local gallery
     static LinearLayout ln_local_gallery;
     static LinearLayout localPhotosFrame;
-    static GridView localPhotosGrid;
+    static RecyclerView localPhotosGrid;
     static PhotosAdapter photosAdapter;
+    RecyclerView.LayoutManager localGridLayoutManager;
     static Activity localActivity;
-    static Cursor pathcursor;
-    static TextView txtlocal_gallery;
     static GridView gv_local_gallery;
     static ImageButton btn_local_more;
     static int local_rows_display = 0;
     // Position of the last image fetched from gallery
     static int localImageCount = 0;
-    static int localImagesPerTurn = 21;
-    static int turnsNeeded = 0;
-    static int turnsDone = 0;
-    static int loadLeft = 0;
-    static int finalImageCount;
     static final int PER_TURN = 21;
     static boolean statsCounted = false;
     static Cursor staticCursor;
@@ -548,7 +540,7 @@ public class newGallery extends Fragment {
                 // Delete image from physical storage
                 deleteImageFromMediaStore(path);
                 // Remove from the cache
-                PhimpMe.cache.deleteCachedFile(path);
+              //  PhimpMe.cache.deleteCachedFile(path);
                 // Remove from the upload image list if there is an entry to upload
                 Upload.uploadGridList.remove(path);
             } catch (Exception e) {
@@ -620,21 +612,25 @@ public class newGallery extends Fragment {
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
         Log.i("newGallery","onCreate");
         getActivity().setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        localActivity = getActivity();
+        ctx = getContext();
+
         // Views related to local photos
         localPhotosFrame = (LinearLayout) view.findViewById(R.id.tabUpload);
         localPhotosFrame.setVisibility(View.GONE);
         // Initiate Grid View
-        localPhotosGrid = (GridView) view.findViewById(R.id.gridLocalPhotos);
+        localPhotosGrid = (RecyclerView) view.findViewById(R.id.gridLocalPhotos);
         // Initiate and set Adapter
         localImageList = new ArrayList<>();
         deletableList = new ArrayList<>();
         getActivity().setTitle(getResources().getString(R.string.application_title));
         photosAdapter = new PhotosAdapter();
+        localGridLayoutManager = new GridLayoutManager(ctx,3);
+        localPhotosGrid.setLayoutManager(localGridLayoutManager);
         localPhotosGrid.setAdapter(photosAdapter);
+        if (localImageList.isEmpty())createLocalImagesList();
 
-        localActivity = getActivity();
-        ctx = getContext();
-        cache=CacheStore.getInstance();
         color_line = R.color.blue_dark;
         // listService.clear();
         list_thumb.clear();
@@ -669,9 +665,7 @@ public class newGallery extends Fragment {
         bitmap_personal_kaixin.clear();
         bitmap_personal_sohu.clear();
 
-        Display display = ((Activity) ctx).getWindowManager()
-                .getDefaultDisplay();
-        int w = display.getWidth();
+        int w = Utils.getScreenWidth(ctx);
 
         DEFAULT_THUMBNAIL_SIZE = (int) w / cols;
         HIGHT_DISPLAY_PHOTOS = DEFAULT_THUMBNAIL_SIZE * rows + 40;
@@ -3453,19 +3447,17 @@ public class newGallery extends Fragment {
             //CacheTask cachetask = new CacheTask();
             //String[] str = null;
                 //cachetask.execute(str);
-                if(PhimpMe.FEEDS_LOCAL_GALLERY){
+               if(PhimpMe.FEEDS_LOCAL_GALLERY){
                   Log.d("newGallery","resume load local gallery, number photo : "+number_resume_download);
                 linear_main.removeView(ln_local_gallery);    			
                 check_local = 0;
                 PhimpMe.filepath.clear();
                 array_ID.clear();
-                localImageList.clear();
+                //localImageList.clear();
                 deletableList.clear();
                 statsCounted = false;
-                localImagesPerTurn = PER_TURN;
-                turnsDone = 0;
-                resumeLocalPhoto();
-              }  
+
+              }
                 //download photo
                 try{
                 //previous tab is setting
@@ -3476,36 +3468,7 @@ public class newGallery extends Fragment {
               }catch(Exception e){
 
               }
-
-              localPhotosGrid.setOnScrollListener(new AbsListView.OnScrollListener() {
-                  @Override
-                  public void onScrollStateChanged(AbsListView view, int scrollState) {
-                      return;
-                  }
-
-                  @Override
-                  public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                      if ((visibleItemCount!=0) && (totalItemCount!=0) && (totalItemCount != localImageCount)) {
-                          if ((firstVisibleItem + visibleItemCount == totalItemCount) && (!FLAG_IS_LOADING)) {
-                              FLAG_IS_LOADING = true;
-                              if (turnsNeeded > 1) {
-                                  turnsNeeded -= 1;
-                                  turnsDone += 1;
-                                  localImagesPerTurn += PER_TURN;
-                                  resumeLocalPhoto();
-                                  FLAG_IS_LOADING = false;
-                              } else {
-                                  localImagesPerTurn += loadLeft;
-                                  turnsNeeded -= 1;
-                                  turnsDone += 1;
-                                  resumeLocalPhoto();
-                                  FLAG_IS_LOADING = false;
-                              }
-                          }
-                      }
-                  }
-              });
-        }
+  }
     }
 
 	public static void update(){
@@ -3515,153 +3478,53 @@ public class newGallery extends Fragment {
 		PhimpMe.filepath.clear();
 		array_ID.clear();
 	}
-	public class CacheTask extends AsyncTask<String, Void, String> {
-	    @Override
-	    protected String doInBackground(String... urls) {
-	    	try{
-	    		Log.d("newGallery", "Run Cache Task");
-	    		//updatePhoto();
-	    		
-	    	}catch(RuntimeException runex){
-	    		//this.onCancelled();
-				cancel(false);
-	    	}
-	    	
-	        return "";
-	    }
-
-	    @Override
-	    protected void onPostExecute(String result) {
-
-	    }
-	    @Override
-	    protected void onCancelled() {
-	    	// TODO Auto-generated method stub
-	    	super.onCancelled();
-	    	
-	    }
-	}
-
-	public void updatePhoto(){
-			Log.e("newGallery","load update photo");
-			int id;
-			final String[] columns = { MediaStore.Images.Thumbnails._ID};
-			final String[] data = { MediaStore.Images.Media.DATA };
-			final String orderBy = MediaStore.Images.Media._ID;
-			Cursor pathcursor = getActivity().getContentResolver().query(
-					MediaStore.Images.Media.EXTERNAL_CONTENT_URI, data,
-					null, null, orderBy);
-			if(pathcursor != null){
-				int path_column_index = pathcursor
-						.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-				int count = pathcursor.getCount();
-				int c = 0;
-				for (int i = 0; i< count; i++) {
-					
-						try{
-							pathcursor.moveToPosition(i);
-							String path = pathcursor.getString(path_column_index);
-							
-							boolean check = cache.check(path);
-							if(check){
-								@SuppressWarnings("unused")
-								int index = Integer.valueOf(cache.getCacheId(path));
-								@SuppressWarnings("unused")
-								Bitmap bmp = cache.getCachePath(path);
-								
-							}
-							else if(c<=20){				
-								Cursor cursor = getActivity().getContentResolver().query(
-										MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
-										MediaStore.Images.Media.DATA+ " = " + "\""+path+"\"", null, MediaStore.Images.Media._ID);
-								if (cursor != null && cursor.getCount() > 0){
-									cursor.moveToPosition(0);
-									id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID));	
-									Bitmap bmp = MediaStore.Images.Thumbnails.getThumbnail(
-											getActivity().getApplicationContext().getContentResolver(), id,
-											MediaStore.Images.Thumbnails.MICRO_KIND, null);		
-									cache.saveCacheFile(path, bmp, id);
-									cursor.close();
-								}else id = -1;
-								
-								c++;
-								
-							}
-						}catch(NullPointerException e){}
-						
-						
-				}	
-				pathcursor.close();
-				
-				
-			}
-			
-			
-	}
-
+    
 	/**
 	 * Adapter for Local Photos
 	 */
-	public class PhotosAdapter extends BaseAdapter {
+	public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.mViewHolder> {
 
 		private LayoutInflater mInflater;
 
 		// Constructor
 		PhotosAdapter() {
 			mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			PhimpMe.cache = CacheStore.getInstance();
+			//PhimpMe.cache = CacheStore.getInstance();
 		}
-
-		public int getCount() {
-			return localImageList.size();
-		}
-
-		public Object getItem(int position) {
-			return position;
-		}
-
-        public void selectAllImages()
-        {
-            for(ImageItem imageItem : localImageList) {
-                if(!deletableList.contains(imageItem.path)) {
-                    imageItem.isSelected = true;
-                    deletableList.add(imageItem.path);
-                }
+        public class mViewHolder extends RecyclerView.ViewHolder {
+            ImageView imageview;
+            ImageView imageSelector;
+            
+            public mViewHolder(View view) {
+                super(view);
+                imageview = (ImageView) view.findViewById(R.id.localPhoto);
+                imageSelector = (ImageView) view.findViewById(R.id.localPhotoSelector);
             }
-            notifyDataSetChanged();
         }
+        
+        @Override
+        public mViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View itemView = mInflater.inflate(R.layout.photoitem_local, parent, false);
+    
+            return new mViewHolder(itemView);
+        }
+        
+        @Override
+        public void onBindViewHolder(final PhotosAdapter.mViewHolder holder, final int position) {
+            final ImageItem item = localImageList.get(position);
+            
+            holder.imageview.setId(position);
+            holder.imageview.setAlpha(item.isSelected ? 0.5f : 1.0f);
+            holder.imageSelector.setVisibility(item.isSelected ? View.VISIBLE : View.GONE);
 
-		public long getItemId(int position) {
-			return position;
-		}
-
-		public void updateImageList(int position, ImageItem imageItem) {
-			localImageList.add(position, imageItem);
-			notifyDataSetChanged();
-		}
-
-		public View getView(final int position, View convertView, ViewGroup parent) {
-
-			final ViewHolder holder;
-			final ImageItem item = localImageList.get(position);
-
-			if (convertView == null) {
-				holder = new ViewHolder();
-				convertView = mInflater.inflate(R.layout.photoitem_local, null);
-				holder.imageview = (ImageView) convertView.findViewById(R.id.localPhoto);
-				holder.imageSelector = (ImageView) convertView.findViewById(R.id.localPhotoSelector);
-				convertView.setTag(holder);
-			} else {
-				holder = (ViewHolder) convertView.getTag();
-			}
-
-			holder.imageview.setId(position);
-			holder.imageview.setAlpha(item.isSelected ? 0.5f : 1.0f);
-			holder.imageSelector.setVisibility(item.isSelected ? View.VISIBLE : View.GONE);
-			holder.imageview.setImageBitmap(item.img);
-
-			holder.imageview.setOnClickListener(new View.OnClickListener() {
-				public void onClick(View view) {
+            Glide.with(getContext())
+                    .load(new File(item.path))
+                    .override(THUMBNAIL_SIZE,THUMBNAIL_SIZE)
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                    .into(holder.imageview);
+    
+            holder.imageview.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
                     // If the image is selected for deletion, deselect it. Otherwise open it
                     if (item.isSelected) {
                         holder.imageSelector.setVisibility(View.GONE);
@@ -3693,11 +3556,11 @@ public class newGallery extends Fragment {
                                 showImageIntent.putExtra("aspectY", 0);
                                 showImageIntent.putExtra("index", position);
                                 ActivityOptionsCompat options = ActivityOptionsCompat.
-                                            makeSceneTransitionAnimation(getActivity(), (View)holder.imageview, "gridanim");
-                                    showImageIntent.putExtra("scale", true);
-                                    showImageIntent.putExtra("activityName", "LocalPhotos");
-                                    startActivity(showImageIntent,options.toBundle());
-
+                                        makeSceneTransitionAnimation(getActivity(), (View)holder.imageview, "gridanim");
+                                showImageIntent.putExtra("scale", true);
+                                showImageIntent.putExtra("activityName", "LocalPhotos");
+                                startActivity(showImageIntent,options.toBundle());
+                        
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -3717,9 +3580,9 @@ public class newGallery extends Fragment {
                             getActivity().invalidateOptionsMenu();
                         }
                     }
-				}
-			});
-
+                }
+            });
+    
             holder.imageview.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -3746,19 +3609,33 @@ public class newGallery extends Fragment {
                     return true;
                 }
             });
-            return convertView;
+    
+        }
+        
+        public void selectAllImages()
+        {
+            for(ImageItem imageItem : localImageList) {
+                if(!deletableList.contains(imageItem.path)) {
+                    imageItem.isSelected = true;
+                    deletableList.add(imageItem.path);
+                }
+            }
+            notifyDataSetChanged();
+        }
+
+        @Override
+        public int getItemCount() {
+            return localImageList.size();
+        }
+        
+        public void updateImageList(int position, ImageItem imageItem) {
+			localImageList.add(position, imageItem);
+			notifyDataSetChanged();
 		}
 	}
 
-	/**
-	 * Holder to nest an Image
-	 */
-	private class ViewHolder {
-		ImageView imageview;
-		ImageView imageSelector;
-	}
 
-	public void resumeLocalPhoto(){
+	public void createLocalImagesList(){
         if(!PhimpMe.check_download_local_gallery) {
             Toast.makeText(getContext(), R.string.local_gallery_check, Toast.LENGTH_SHORT).show();
         }
@@ -3768,9 +3645,7 @@ public class newGallery extends Fragment {
                 // Keep the localPhotos frame and hide the other
                 //localPhotosScroll.setVisibility(View.GONE);
                 localPhotosFrame.setVisibility(View.VISIBLE);
-                // Show a progress dialog until the loading is done
-                pro_gress = ProgressDialog.show(ctx, ctx.getString(R.string.loading), ctx.getString(R.string.wait),
-                        true, false);
+
                 // Create a cursor to access External Storage
                 // MediaStore.Images.Media.DATA is the full Path of the file
                 final String[] data = { MediaStore.Images.Media.DATA };
@@ -3781,210 +3656,25 @@ public class newGallery extends Fragment {
                         data, null, null, orderBy
                 );
 
-                // MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI - May contain no thumbnails
-
-                // If there are content in the cursor, that means there are media in the phone
                 if (staticCursor != null) {
-                    // Get the column index of the Images
                     int path_column_index = staticCursor.getColumnIndexOrThrow(
                             MediaStore.Images.Media.DATA);
-                    // Count how many images it contains
                     localImageCount = staticCursor.getCount();
-                    if (!statsCounted) {
-                        turnsNeeded = localImageCount / PER_TURN;
-                        loadLeft = localImageCount % PER_TURN;
-                        statsCounted = true;
-                    }
 
-                    if(localImageCount<localImagesPerTurn){
-                        finalImageCount = localImageCount;
-                    } else {
-                        finalImageCount = localImagesPerTurn;
-                    }
-
-                    for (int i = (turnsDone * PER_TURN); i < finalImageCount; i++) {
+                    for (int i = 0; i < localImageCount; i++) {
                         // Run through the cursor from the beginning
                         staticCursor.moveToPosition(i);
-                        // Create an ImageItem to store data related to an image
+                        // Create an ImageItem to store data related   to an image
                         ImageItem imageItem = new ImageItem();
                         // Cursor contains path of each image
                         String path = staticCursor.getString(path_column_index);
                         // Set imagePath to the imageItem
                         imageItem.path = path;
-                        // Check if the PhimpMe Cache has the image in the cache
-                        // If it is there, fetch image from the cache
-                        boolean cacheHaveThePic = PhimpMe.cache.check(path);
-                        if (cacheHaveThePic) {
-                            // Set Image id and Image itself to the imageItem
-                            imageItem.id = PhimpMe.cache.getCacheId(path);
-                            imageItem.img = PhimpMe.cache.getCachePath(path);
-                            // Add the image to the gridView
-                            // PhotosAdapter has a list of images and it'll notify dataset has changed!
-                            photosAdapter.updateImageList(i, imageItem);
-                        } else {
-                            // Otherwise add it to the cache
-                            // Access the image using a cursor
-                            String[] columns = { MediaStore.Images.Thumbnails._ID };
-                            Cursor imageCursor = ctx.getContentResolver().query(
-                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                                    columns,
-                                    MediaStore.Images.Media.DATA + " = " + "\"" + path + "\"",
-                                    null,
-                                    MediaStore.Images.Media._ID
-                            );
-                            // If the cursor is not empty;
-                            if (imageCursor != null && imageCursor.getCount() > 0) {
-                                // Move to the beginning of the cursor
-                                imageCursor.moveToPosition(0);
-                                // Get the ID of the image
-                                int id = imageCursor.getInt(
-                                        imageCursor.getColumnIndexOrThrow(
-                                                MediaStore.Images.Media._ID));
-                                // Set ID to the image item
-                                imageItem.id = id;
-                                // Set the thumbnail as the Image of the image item
-                                imageItem.img = MediaStore.Images.Thumbnails.getThumbnail(
-                                        ctx.getContentResolver(),
-                                        id,	MediaStore.Images.Thumbnails.MICRO_KIND, null
-                                );
-                                // Save the thumbnail in PhimpMe cache
-                                if (!PhimpMe.cache.check(imageItem.path)) {
-                                    PhimpMe.cache.saveCacheFile(
-                                            imageItem.path,
-                                            imageItem.img,
-                                            imageItem.id
-                                    );
-                                }
-                                // Close the cursor of the image
-                                imageCursor.close();
-                            } else {
-                                // If there is no image, do not proceed then
-                                imageItem.id = -1;
-                            }
-                            photosAdapter.updateImageList(i, imageItem);
-                        }
+                        photosAdapter.updateImageList(i, imageItem);
                     }
                     staticCursor.close();
                 }
-                // Dismiss the dialog box
-                pro_gress.dismiss();
 
-			/* Original Content commented out by Padmal */
-			/*
-			Log.d("Danh", "check value 1 =" + check_local);
-			Button btn_line = new Button(ctx);
-			btn_line.setHeight(2);
-			btn_line.setWidth(LayoutParams.MATCH_PARENT);
-			btn_line.setBackgroundResource(color_line);
-
-			Button btn_line_black = new Button(ctx);
-			btn_line_black.setHeight(10);
-			btn_line_black.setWidth(LayoutParams.MATCH_PARENT);
-			btn_line_black.setBackgroundResource(R.color.black);
-
-			txtlocal_gallery = new TextView(ctx);
-			txtlocal_gallery.setText(ctx.getString(R.string.localphotos));
-			txtlocal_gallery.setTextSize(text_size);
-
-			gv_local_gallery = new GridView(ctx);
-			gv_local_gallery.setBackgroundResource(R.color.white);
-
-			ln_local_gallery = new LinearLayout(ctx);
-			ln_local_gallery.setOrientation(LinearLayout.VERTICAL);
-
-			btn_local_more = new ImageButton(ctx);
-			btn_local_more.setImageResource(R.drawable.more_disable);
-			btn_local_more.setEnabled(false);
-
-			RelativeLayout more_li = new RelativeLayout(ctx);
-			btn_local_more.setLayoutParams(lp_more);
-			more_li.addView(btn_local_more);
-			more_li.addView(txtlocal_gallery);
-			ln_local_gallery.addView(more_li);
-			ln_local_gallery.addView(btn_line);
-			ln_local_gallery.addView(btn_line_black);
-			ln_local_gallery.addView(gv_local_gallery);
-
-			PhimpMe.local_count = 1;
-
-			linear_main.addView(ln_local_gallery,0);
-
-			// get photo
-			String[] projection={MediaStore.Images.Thumbnails._ID, MediaStore.Images.Thumbnails.IMAGE_ID};
-			cursor = ((Activity) ctx).getContentResolver().query(
-					MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI,
-					projection,
-					null,
-					null,
-					MediaStore.Images.Thumbnails.IMAGE_ID+ " DESC"
-			);
-
-			columnIndex=cursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails._ID);
-
-			for (int i = 0; i < cursor.getCount(); i++) {
-				if (cursor.moveToNext()){
-					PhimpMe.filepath.add(cursor
-							.getString(columnIndex));
-					array_ID.add(cursor.getString(1));
-				}
-
-			}
-			Log.d("newGallery","number image :" + PhimpMe.filepath.size());
-			if (PhimpMe.filepath.size() <= 3) {
-				ln_local_gallery.setLayoutParams(p_one_row);
-
-			} else {
-				ln_local_gallery.setLayoutParams(p_two_row);
-			}
-
-			if (PhimpMe.filepath.size() > 0) {
-				final ArrayList<String> array_file;
-				final ArrayList<String> ID;
-				if (PhimpMe.filepath.size() <= resum_number) {
-					array_file = new ArrayList<String>(PhimpMe.filepath.size());
-					ID = new ArrayList<String>(array_ID.size());
-					for (int i = 0; i < PhimpMe.filepath.size(); i++) {
-						array_file.add(PhimpMe.filepath.get(i))	;
-						ID.add(array_ID.get(i));
-					}
-
-				} else {
-					array_file = new ArrayList<String>(resum_number);
-					ID = new ArrayList<String>(resum_number);
-					for (int i = 0; i < resum_number; i++) {
-						array_file.add(PhimpMe.filepath.get(i));
-						ID.add(array_ID.get(i));
-					}
-
-					btn_local_more
-							.setImageResource(R.drawable.more);
-					btn_local_more.setEnabled(true);
-				}
-
-				gv_local_gallery.setNumColumns(cols);
-				local_adapter = new LocalPhotosAdapter(ctx,
-						array_file,ID);
-				gv_local_gallery.setAdapter(local_adapter);
-				gv_local_gallery.setDrawingCacheEnabled(true);
-
-				check_local = 1;
-				btn_local_more
-						.setOnClickListener(new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-
-								pro_gress=ProgressDialog.show(ctx, "",ctx.getString(R.string.wait), true, false);
-								timerDelayRemoveDialog(1000,pro_gress);
-							}
-						});
-			} else {
-				ln_local_gallery.setLayoutParams(p_zero);
-				linear_main.removeView(more_li);
-				check_local = 1;
-			}
-			Log.d("Danh", "check = " + check_local);
-			*/
-			/* Original Content ends here */
             } else {
                 // Hide the localPhotos frame and show the other
                 //localPhotosScroll.setVisibility(View.VISIBLE);
@@ -3995,9 +3685,9 @@ public class newGallery extends Fragment {
 
 	public static void timerDelayRemoveDialog(long time, final Dialog d){
 	    new Handler().postDelayed(new Runnable() {
-	        public void run() { 
-	        	
-	        	number_resume_download=count_photo* NUMBER_PHOTO_NEED_DOWNLOAD+ NUMBER_PHOTO_NEED_DOWNLOAD;			
+	        public void run() {
+
+	        	number_resume_download=count_photo* NUMBER_PHOTO_NEED_DOWNLOAD+ NUMBER_PHOTO_NEED_DOWNLOAD;
 	        	if (PhimpMe.filepath.size()
 						- count_photo
 						* NUMBER_PHOTO_NEED_DOWNLOAD > 3) {
@@ -7182,6 +6872,7 @@ public class newGallery extends Fragment {
 
         }
     }
+
     public void setOffline(LinearLayout linear, GridView grid, ImageButton btn, TextView txt, RelativeLayout.LayoutParams lp_more, String text){
         LinearLayout.LayoutParams p_two_row = new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
