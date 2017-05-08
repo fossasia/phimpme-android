@@ -802,7 +802,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
             e.printStackTrace();
         }
         if (gallery_delete) {
-            newGallery.update(PhimpMeGallery.num);
+            newGallery.update();
         }
 
     }
