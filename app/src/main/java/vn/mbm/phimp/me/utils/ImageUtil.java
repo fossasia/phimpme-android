@@ -2,6 +2,8 @@ package vn.mbm.phimp.me.utils;
 
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,7 +16,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.RectF;
+import android.media.ExifInterface;
 import android.util.Log;
+
+import vn.mbm.phimp.me.R;
 
 public class ImageUtil 
 {
@@ -155,4 +160,134 @@ public class ImageUtil
 
 	    return dest;
 	}
+
+
+    public static float getOrientation(String f)
+    {
+        float degress = 0;
+        try {
+
+            ExifInterface exif = new ExifInterface(f);
+            int orientation=exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 1);
+            if(orientation == 3){
+                degress = 180;
+            }
+            if(orientation == 6){
+                degress = 90;
+            }
+            if(orientation == 8){
+                degress = 270;
+            }
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return degress;
+    }
+
+    public static int calculateInSampleSize(
+
+            String mfile, int reqWidth) {
+        // Raw height and width of image
+        //Bitmap bm = null;
+        BitmapFactory.Options bounds = new BitmapFactory.Options();
+        bounds.inTempStorage = new byte[32 * 1024];
+        bounds.inDither=false;
+        bounds.inPurgeable=true;
+        bounds.inInputShareable=true;
+        bounds.inJustDecodeBounds = true;
+        File file=new File(mfile);
+        float rotate = getOrientation(mfile);
+        FileInputStream fs=null;
+        try {
+            fs = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            //TODO do something intelligent
+            e.printStackTrace();
+        }
+
+        try {
+            if(fs!=null) BitmapFactory.decodeFileDescriptor(fs.getFD(), null, bounds);
+        } catch (IOException e) {
+            //TODO do something intelligent
+            e.printStackTrace();
+        } finally{
+            if(fs!=null) {
+                try {
+                    fs.close();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+        //final int height = bounds.outHeight;
+        final int width;
+        if (rotate == 0)
+            width = bounds.outWidth; else
+            width = bounds.outHeight;
+
+        Log.e("Width",String.valueOf(width));
+        System.gc();
+        int inSampleSize = 1;
+
+        if (width > reqWidth) {
+            inSampleSize = Math.round((float)width / (float)reqWidth);
+        }
+        return inSampleSize;
+    }
+    public static Bitmap decodeSampledBitmapFromFile(Context ctx, String mfile,
+                                                     int reqWidth) {
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        Bitmap bm = null;
+        System.gc();
+        // BitmapFactory.decodeResource(res, resId, options);
+        options.inTempStorage = new byte[32* 1024];
+        options.inDither = false;
+        options.inPurgeable = true;
+        options.inInputShareable = true;
+        // Calculate inSampleSize
+        int inSampleSize = calculateInSampleSize(mfile, reqWidth);
+        options.inSampleSize = inSampleSize;
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        File file=new File(mfile);
+        FileInputStream fs=null;
+        try {
+            fs = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            //TODO do something intelligent
+            e.printStackTrace();
+        }
+        Matrix matrix = new Matrix();
+        float rotate = getOrientation(mfile);
+        try {
+            if(fs!=null) {
+                Log.e("dsfsdfds","sdffsdfds");
+                if (rotate == 0) return BitmapFactory.decodeFileDescriptor(fs.getFD(), null, options);
+                else {
+                    matrix.postRotate(rotate);
+
+                    bm = BitmapFactory.decodeFileDescriptor(fs.getFD(), null, options);
+
+                    return Bitmap.createBitmap(bm,0,0,bm.getWidth(),bm.getHeight(),matrix,true);
+                }
+            }
+            else return BitmapFactory.decodeResource(ctx.getResources(), R.drawable.image_not_found, options);
+        } catch (IOException e) {
+            //TODO do something intelligent
+            e.printStackTrace();
+        } finally{
+            if(fs!=null) {
+                try {
+                    fs.close();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
 }

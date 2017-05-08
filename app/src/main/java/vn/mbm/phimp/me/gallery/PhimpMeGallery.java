@@ -7,10 +7,12 @@ import java.util.Date;
 
 import vn.mbm.phimp.me.PhimpMe;
 import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.SendFileActivity;
 import vn.mbm.phimp.me.Upload;
 import vn.mbm.phimp.me.Utility;
 import vn.mbm.phimp.me.image.CropImage;
+import vn.mbm.phimp.me.utils.BasicCallBack;
+import vn.mbm.phimp.me.utils.ImageUtil;
+import vn.mbm.phimp.me.utils.OnSwipeTouchListener;
 import vn.mbm.phimp.me.utils.geoDegrees;
 
 import android.content.Context;
@@ -27,21 +29,21 @@ import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.FileProvider;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Display;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
-import android.widget.Gallery;
-import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,56 +51,61 @@ import android.widget.Toast;
 import static vn.mbm.phimp.me.PhimpMe.ThemeDark;
 
 public class PhimpMeGallery extends AppCompatActivity implements View.OnClickListener{
-    private Gallery gallery;
     private static ArrayList<String> filePath;
-    private Boolean isFabOpen = false;
+    public static int position; //// TODO: 6/5/17 these two variable are made static, remove them from static
+
+    // UI elements
     private FloatingActionButton fab, fabEdit, fabUpload, fabShare, fabInfo, fabDelete;
-    private Animation fab_open,fab_close,rotate_forward,rotate_backward;
+    private Animation fabOpen, fabClose, rotateForward, rotateBackward;
 	private GalleryImageAdapter galImageAdapter;
     private PopupWindow pwindo;
     private Button btnClosePopup;
 
-	private ImageButton btnShare,btnEdit,btnZoom,btnUpload,btnShowInMap,btnDelete;
+    //data variable
+    private Boolean isFabOpen = false;
+    public int index = 0;
+	private  String longtitude= "",latitude="",title="";
+    ZoomDialog dialog;
+    GestureDetector gestureDetector;
+    BasicCallBack basicCallBack;
+    private ViewPager pager;
+    private OnSwipeTouchListener onSwipeTouchListener;
 
-	public static int position;
-	public static View overscrollleft;
-	public static View overscrollright;
-	public int index = 0;
-	public String from = "";
-	
-	public static int num;
-	private static String longtitude="",latitude="",title="";
-	private Context ctx;
-	@Override
+
+    @Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-        //set dark theme
+        super.onCreate(savedInstanceState);
         if (Utility.getTheme(getApplicationContext()) == ThemeDark) {
             setTheme(R.style.AppTheme_Dark);
         }
-		setContentView(R.layout.phimpmegallery);	
-		//requestWindowFeature(Window.FEATURE_NO_TITLE);
-		ctx = this;	
-		
-		PhimpMe.gallery_delete = false;
-		//num = filePath.size();
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-		Intent intent = getIntent();
-		Bundle extract = intent.getExtras();		
-		try{
-		index = extract.getInt("index");
-		from = extract.getString("from");
-		
-		}catch(Exception e){
-			from = "";
-		}
+        setContentView(R.layout.phimpmegallery);
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);
+        PhimpMe.gallery_delete = false;
+        //num = filePath.size();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        Intent intent = getIntent();
+        Bundle extract = intent.getExtras();
+        try {
+            index = extract.getInt("index");
+            PhimpMeGallery.position = index;
+        } catch (Exception e) {
 
-        fab = (FloatingActionButton)findViewById(R.id.fab);
-        fabEdit = (FloatingActionButton)findViewById(R.id.fabedit);
-        fabUpload = (FloatingActionButton)findViewById(R.id.fabupload);
-        fabShare = (FloatingActionButton)findViewById(R.id.fabshare);
-        fabInfo = (FloatingActionButton)findViewById(R.id.fabinfo);
+        }
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fabEdit = (FloatingActionButton) findViewById(R.id.fabedit);
+        fabUpload = (FloatingActionButton) findViewById(R.id.fabupload);
+        fabShare = (FloatingActionButton) findViewById(R.id.fabshare);
+        fabInfo = (FloatingActionButton) findViewById(R.id.fabinfo);
         fabDelete = (FloatingActionButton) findViewById(R.id.fabdelete);
+        pager = (ViewPager) findViewById(R.id.gallery_pager);
+        galImageAdapter = new GalleryImageAdapter(this, filePath);
+        pager.setAdapter(galImageAdapter);
+        pager.setCurrentItem(index);
+
+        setListeners();
+
+    }
+    private void setListeners() {
 
         fab.setOnClickListener(this);
         fabEdit.setOnClickListener(this);
@@ -106,131 +113,39 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
         fabShare.setOnClickListener(this);
         fabInfo.setOnClickListener(this);
         fabDelete.setOnClickListener(this);
-        setupUI();
+        pager.setOnTouchListener(onSwipeTouchListener);
+        fabOpen = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
+        fabClose = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
+        rotateForward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
+        rotateBackward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_backward);
 
-    }
 
-    private void setupUI() {
-        gallery = (Gallery) findViewById(R.id.gallery);
-        galImageAdapter = new GalleryImageAdapter(this, filePath);
-        overscrollleft = (View)findViewById(R.id.overscroll_left);
-        overscrollright = (View)findViewById(R.id.overscroll_right);
-        fab_open = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fab_open);
-        fab_close = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.fab_close);
-        rotate_forward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_forward);
-        rotate_backward = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.rotate_backward);
-        //RelativeLayout layout = (RelativeLayout)findViewById(R.id.btn);
-        //layout.bringToFront();
-        gallery.setAdapter(galImageAdapter);
-        //ExpandableListView menu = (ExpandableListView)findViewById(R.id.menu);
-        //ExpandableListAdapter menuadapter = new MyExpandableListAdapter();
-        //menu.setAdapter(menuadapter);
-        gallery.setSelection(index);
-        gallery.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        onSwipeTouchListener = new OnSwipeTouchListener(this, false){
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                animateFAB();
+            public void onDoubleTapView() {
+                super.onDoubleTapView();
+                openDailog();
+            }
+        };
+
+        pager.setOnTouchListener(onSwipeTouchListener);
+
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                PhimpMeGallery.position = position;
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
             }
         });
-        /*
-        btnDelete  = (ImageButton)findViewById(R.id.btnDelete);
-        if (from != null && from.equals("local")){
-            num = filePath.size();
-        btnDelete.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                new AlertDialog.Builder(ctx)
-                .setTitle("")
-                .setMessage(getString(R.string.ask_delete))
-                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-                        File f = new File(filePath.get(position));
-                        if (f.exists()){
-                            try{
-                                //f.delete();
-                                Log.e("file path",f.getAbsolutePath());
-                                //Log.e("Delete",String.valueOf(deleteImageFromMediaStore(f.getAbsolutePath())));
-                                deleteImageFromMediaStore(f.getAbsolutePath());
-                                PhimpMe.gallery_delete = true;
-                                if (f.exists())f.delete();
-                            }catch(Exception e){
-                                e.printStackTrace();
-                            }
-                        }
-                        //remove deleted photo in upload list
-                        //Upload.imagelist=Upload.imagelist.replace(f.getAbsolutePath()+"#", "");
-                        Upload.imagelist=Upload.imagelist.replace(filePath.get(position)+"#", "");
-                        filePath.remove(position);
-                        galImageAdapter.notifyDataSetChanged();
-                    }
-                })
-                .setNegativeButton("No", new DialogInterface.OnClickListener()
-                {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
-
-                    }
-                })
-                .show();
-            }
-        });}else btnDelete.setVisibility(View.GONE);
-        btnZoom=(ImageButton)findViewById(R.id.btnZoom);
-        btnZoom.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                TouchImageView imageViewGallery = new TouchImageView(PhimpMeGallery.this);
-
-                    BitmapFactory.Options o2 = new BitmapFactory.Options();
-                    o2.inPurgeable = true;
-
-                    try
-                    {
-                        WindowManager wm = (WindowManager) PhimpMeGallery.this.getSystemService(Context.WINDOW_SERVICE);
-                        Display display = wm.getDefaultDisplay();
-                        @SuppressWarnings("deprecation")
-                        int screen_w = display.getWidth();
-                        imageViewGallery.setImageBitmap(GalleryImageAdapter.decodeSampledBitmapFromFile(PhimpMeGallery.this, filePath.get(position),  screen_w));
-                        imageViewGallery.setMaxZoom(4f);
-
-                        //dialog show zoom photo
-                        Dialog d=new Dialog(PhimpMeGallery.this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-                        d.setContentView(imageViewGallery);
-                        d.setCanceledOnTouchOutside(true);
-                        d.show();
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.e("Exception", ex.getLocalizedMessage());
-                    }
-            }
-        });
-        btnShowInMap=(ImageButton)findViewById(R.id.btnShowInMap);
-        btnShowInMap.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-                // TODO Auto-generated method stub
-                Intent i=new Intent();
-                i.setClass(PhimpMeGallery.this, OpenStreetMap.class);
-                i.putExtra("image-path", filePath.get(position));
-                startActivity(i);
-            }
-        });
-        if (from != null && from.equals("Map")){
-            btnShare.setVisibility(View.GONE);
-            btnEdit.setVisibility(View.GONE);
-            btnShowInMap.setVisibility(View.GONE);
-            btnUpload.setVisibility(View.GONE);
-            btnZoom.setVisibility(View.GONE);
-        }*/
-
     }
 
     @Override
@@ -256,6 +171,9 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                         return;
                     }
                 });
+                animateFAB();
+                break;
+
             case R.id.fab:
                 animateFAB();
                 break;
@@ -302,6 +220,8 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                 startActivity(intent);
 
                 Log.d("", "Fab 1");
+                animateFAB();
+
                 break;
             case R.id.fabupload:
                 AlertDialog.Builder builder=new AlertDialog.Builder(PhimpMeGallery.this);
@@ -326,10 +246,12 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                 sendIntent.putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", new File(filePath.get(position))));
                 sendIntent.putExtra("activityName", "PhimpMeGallery");
                 this.startActivity(sendIntent);
+                animateFAB();
+
                 break;
 
             case R.id.fabdelete:
-                AlertDialog.Builder deleteAlert = new AlertDialog.Builder(ctx);
+                AlertDialog.Builder deleteAlert = new AlertDialog.Builder(this);
                 deleteAlert.setMessage(R.string.delete_image)
                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -355,7 +277,11 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                         });
                 // Create the AlertDialog object and show it
                 deleteAlert.create().show();
+                animateFAB();
+
+
         }
+
     }
 
     public void getPopUpData(File file){
@@ -391,96 +317,18 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    public class MyExpandableListAdapter extends BaseExpandableListAdapter {
-        // Sample data set.  children[i] contains the children (String[]) for groups[i].
-        private String[] groups = { getString(R.string.menu) };
-        private String[][] children = {
-                { getString(R.string.edit),getString(R.string.upload),getString(R.string.share) },
-        };
-        
-        public Object getChild(int groupPosition, int childPosition) {
-            return children[groupPosition][childPosition];
-        }
 
-        public long getChildId(int groupPosition, int childPosition) {
-            return childPosition;
-        }
-
-        public int getChildrenCount(int groupPosition) {
-            return children[groupPosition].length;
-        }
-
-        public TextView getGenericView() {
-            // Layout parameters for the ExpandableListView
-            AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, 64);
-            TextView textView = new TextView(ctx);
-            textView.setLayoutParams(lp);
-            // Center the text vertically
-            textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
-            // Set the text starting position
-            textView.setPadding(55, 0, 0, 0);
-            return textView;
-        }
-        public TextView getGenericChildView() {
-            // Layout parameters for the ExpandableListView
-            AbsListView.LayoutParams lp = new AbsListView.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, 64);
-            TextView textView = new TextView(ctx);
-            textView.setLayoutParams(lp);
-            // Center the text vertically
-            textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
-            // Set the text starting position
-            textView.setPadding(70, 0, 0, 0);
-            return textView;
-        }
-        
-        public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
-                View convertView, ViewGroup parent) {
-            TextView textView = getGenericChildView();
-            textView.setText(getChild(groupPosition, childPosition).toString());
-            return textView;
-        }
-
-        public Object getGroup(int groupPosition) {
-            return groups[groupPosition];
-        }
-
-        public int getGroupCount() {
-            return groups.length;
-        }
-
-        public long getGroupId(int groupPosition) {
-            return groupPosition;
-        }
-
-        public View getGroupView(int groupPosition, boolean isExpanded, View convertView,
-                ViewGroup parent) {
-            TextView textView = getGenericView();
-            textView.setText(getGroup(groupPosition).toString());
-            return textView;
-        }
-
-        public boolean isChildSelectable(int groupPosition, int childPosition) {
-            return true;
-        }
-
-        public boolean hasStableIds() {
-            return true;
-        }
-
-    }
 
     public void animateFAB(){
 
         if(isFabOpen){
 
-            fab.startAnimation(rotate_backward);
-            fabEdit.startAnimation(fab_close);
-            fabUpload.startAnimation(fab_close);
-            fabShare.startAnimation(fab_close);
-            fabInfo.startAnimation(fab_close);
-            fabDelete.startAnimation(fab_close);
+            fab.startAnimation(rotateBackward);
+            fabEdit.startAnimation(fabClose);
+            fabUpload.startAnimation(fabClose);
+            fabShare.startAnimation(fabClose);
+            fabInfo.startAnimation(fabClose);
+            fabDelete.startAnimation(fabClose);
 
             fabEdit.setClickable(false);
             fabUpload.setClickable(false);
@@ -491,12 +339,12 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
 
         } else {
 
-            fab.startAnimation(rotate_forward);
-            fabEdit.startAnimation(fab_open);
-            fabUpload.startAnimation(fab_open);
-            fabShare.startAnimation(fab_open);
-            fabInfo.startAnimation(fab_open);
-            fabDelete.startAnimation(fab_open);
+            fab.startAnimation(rotateForward);
+            fabEdit.startAnimation(fabOpen);
+            fabUpload.startAnimation(fabOpen);
+            fabShare.startAnimation(fabOpen);
+            fabInfo.startAnimation(fabOpen);
+            fabDelete.startAnimation(fabOpen);
             fabDelete.setClickable(true);
             fabEdit.setClickable(true);
             fabUpload.setClickable(true);
@@ -513,7 +361,7 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
         // Query for similar items
         String selection = "_data like ?";
         // Create a cursor to access the image
-        Cursor cursor = ctx.getContentResolver().query(
+        Cursor cursor = getContentResolver().query(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                 projection,
                 selection,
@@ -524,7 +372,7 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
         if (cursor != null) {
             cursor.moveToFirst();
             String id = cursor.getString(0);
-            ctx.getContentResolver().delete(
+            getContentResolver().delete(
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
                     selection,
                     new String[]{path}
@@ -536,7 +384,7 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                     MediaStore.Images.Thumbnails.DATA
             };
             // Point cursor to thumbnails
-            cursor = ctx.getContentResolver().query(
+            cursor = getContentResolver().query(
                     MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI,
                     proj,
                     "image_id = ?",
@@ -549,7 +397,7 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                     String thumb = cursor.getString(2);
                     File f_thumb = new File(thumb);
                     if (f_thumb.exists()) f_thumb.delete();
-                    ctx.getContentResolver().delete(
+                    getContentResolver().delete(
                             MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI,
                             "image_id = ?",
                             new String[]{id}
@@ -570,4 +418,56 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
             animateFAB();
         }
     }
+
+    private void openDailog(){
+            dialog = new ZoomDialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+            TouchImageView imageViewGallery = new TouchImageView(this);
+            BitmapFactory.Options o2 = new BitmapFactory.Options();
+            o2.inPurgeable = true;
+            try {
+                WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+                Display display = wm.getDefaultDisplay();
+                int screen_w = display.getWidth();
+
+                imageViewGallery.setImageBitmap(ImageUtil
+                        .decodeSampledBitmapFromFile(PhimpMeGallery.this,
+                                filePath.get(pager.getCurrentItem()),  screen_w));
+                imageViewGallery.setMaxZoom(4f);
+                //dialog show zoom photo
+                dialog.setContentView(imageViewGallery);
+                dialog.setCanceledOnTouchOutside(true);
+                basicCallBack = new BasicCallBack() {
+                    @Override
+                    public void callBack(int status, Object data) {
+                        if (status == 0) {
+                            if (dialog.isShowing())
+                                dialog.dismiss();
+                        }
+                    }
+                };
+                imageViewGallery.setBasicCallBack(basicCallBack);
+
+
+            } catch (Exception ex) {
+                Log.e("Exception", ex.getLocalizedMessage());
+            }
+
+        if (!dialog.isShowing()) {
+            dialog.show();
+        }
+        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                basicCallBack.callBack(0, "");
+            }
+        });
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        gestureDetector.onTouchEvent(ev);
+        return true;
+
+    }
+
 }
