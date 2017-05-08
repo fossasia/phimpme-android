@@ -342,23 +342,27 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		locationCritera.setPowerRequirement(Criteria.NO_REQUIREMENT);
 		String providerName = locationManager.getBestProvider(locationCritera, true);
 
-		if (providerName != null && locationManager.isProviderEnabled(providerName)) {
-			locationManager.requestLocationUpdates(providerName, 20000, 100,Camera2.this.locationListener);
-		} else {
-			// Provider not enabled, prompt user to enable it
-		}
-		if(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)!=null){
+		if (PhimpMe.location_enabled) {
+			if (providerName != null && locationManager.isProviderEnabled(providerName)) {
+				locationManager.requestLocationUpdates(providerName, 20000, 100, Camera2.this.locationListener);
+			} else {
+				// Provider not enabled, prompt user to enable it
+			}
+			if (locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER) != null) {
 
-			lat = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude();
-			lon = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude();
-		}
-		else if (locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)!=null){
-			Log.d("TAG", "Inside NETWORK");
-			lat = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLatitude();
-			lon = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLongitude();
-		}
-		else{
-			Log.d("TAG", "else +++++++ ");
+				lat = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude();
+				lon = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude();
+			} else if (locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) != null) {
+				Log.d("TAG", "Inside NETWORK");
+				lat = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLatitude();
+				lon = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLongitude();
+			} else {
+				Log.d("TAG", "else +++++++ ");
+				lat = -1;
+				lon = -1;
+			}
+		} else {
+			Log.d("Location", "Disabled");
 			lat = -1;
 			lon = -1;
 		}
