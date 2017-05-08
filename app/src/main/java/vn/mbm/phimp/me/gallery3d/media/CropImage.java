@@ -28,6 +28,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
 
+import vn.mbm.phimp.me.Camera2;
 import vn.mbm.phimp.me.ImagesFilter;
 import vn.mbm.phimp.me.PhimpMe;
 import vn.mbm.phimp.me.R;
@@ -267,6 +268,10 @@ public class CropImage extends MonitoredActivity {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+
+        //reset capture progress flag in camera
+        Camera2.FLAG_CAPTURE_IN_PROGRESS = false;
+
         //set dark theme
         if (Utility.getTheme(getApplicationContext()) == ThemeDark) {
             setTheme(R.style.AppTheme_Dark);
