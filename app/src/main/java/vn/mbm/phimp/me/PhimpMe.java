@@ -11,15 +11,11 @@ import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.gesture.GestureOverlayView;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.hardware.Camera.PictureCallback;
 import android.media.AudioManager;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -48,7 +44,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -58,18 +53,10 @@ import java.util.HashMap;
 import vn.mbm.phimp.me.database.AccountDBAdapter;
 import vn.mbm.phimp.me.database.TumblrDBAdapter;
 import vn.mbm.phimp.me.folderchooser.PhoneMedia;
-import vn.mbm.phimp.me.gallery.PhimpMeGallery;
-import vn.mbm.phimp.me.gallery3d.media.CropImage;
 import vn.mbm.phimp.me.utils.Commons;
 import vn.mbm.phimp.me.utils.FolderChooserPrefSettings;
 import vn.mbm.phimp.me.utils.RSSPhotoItem;
 import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
-
-import static vn.mbm.phimp.me.Camera2.FLAG_CAPTURE_IN_PROGRESS;
-import static vn.mbm.phimp.me.Camera2.degrees;
-import static vn.mbm.phimp.me.Camera2.lat;
-import static vn.mbm.phimp.me.Camera2.lon;
-import static vn.mbm.phimp.me.Camera2.preview;
 
 //import android.widget.ImageView;
 //import android.widget.TabHost;
@@ -610,7 +597,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
 
         // Initialising fragment container
         if (findViewById(R.id.fragment_container) != null) {
-            newGallery frag = new newGallery();
+            NewGallery frag = new NewGallery();
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fragment_container, frag)
                     .commit();
@@ -623,7 +610,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
         switch (item.getItemId()) {
             case R.id.tab_gallery:
                 if (currentScreen != HomeScreenState.GALLERY) {
-                    newGallery frag = new newGallery();
+                    NewGallery frag = new NewGallery();
                     getSupportFragmentManager().beginTransaction()
                             .setCustomAnimations(R.anim.fragment_anim_fadein,R.anim.fragment_anim_fadeout)
                             .replace(R.id.fragment_container, frag)
@@ -691,7 +678,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
 
     // navigation bar tabs
 //    private void setTabs() {
-//        addTab("", R.drawable.tab_icon_gallery_selector, newGallery.class);
+//        addTab("", R.drawable.tab_icon_gallery_selector, NewGallery.class);
 //        addTab("", R.drawable.tab_icon_map_selector, OpenStreetMap.class);
 //        addTab("", R.drawable.tab_icon_map_selector, GalleryMap.class);
 //        addTab("", R.drawable.tab_icon_camera_selector, Blank.class);
@@ -803,7 +790,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
             e.printStackTrace();
         }
         if (gallery_delete) {
-            newGallery.update();
+            NewGallery.update();
         }
 
     }
@@ -857,7 +844,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     public boolean onKeyDown(int keycode, KeyEvent event) {
         if (keycode == KeyEvent.KEYCODE_BACK) {
             if (currentScreen == HomeScreenState.GALLERY ) {
-                newGallery fragment = (newGallery) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                NewGallery fragment = (NewGallery) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
                 if(!fragment.checkdeletablelist()) {
                     fragment.onResume();
                 } else{
@@ -1015,7 +1002,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                 }
 
             }
-            newGallery.update_number++;
+            NewGallery.update_number++;
 
         }
 
@@ -1110,7 +1097,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
         public Fragment getItem(int position) {
             switch (position){
                 case 0:
-                    return new newGallery();
+                    return new NewGallery();
                 case 3:
                     return new MapFragment();
                 case 2:

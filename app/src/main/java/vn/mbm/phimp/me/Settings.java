@@ -284,7 +284,7 @@ public class Settings extends Fragment
 								timerDelayRemoveDialog(2000,pro_gress);
 										/*boolean del = deletePhotoInDatabase();
 										if(del==true){
-											newGallery.clearAllPhoto();
+											NewGallery.clearAllPhoto();
 
 											Commons.AlertLog(ctx, "Successfully", "OK").show();
 										}else{
@@ -798,7 +798,7 @@ public class Settings extends Fragment
 			public void run() {
 				boolean del = deletePhotoInDatabase();
 				if(del==true){
-					newGallery.clearAllPhoto();
+					NewGallery.clearAllPhoto();
 					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 						Intent mediaScanIntent = new Intent(
 								Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);

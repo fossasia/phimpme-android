@@ -28,7 +28,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -74,13 +73,14 @@ import vn.mbm.phimp.me.feedservice.s500px;
 import vn.mbm.phimp.me.gridview.adapter.LocalPhotosAdapter;
 import vn.mbm.phimp.me.utils.Commons;
 import vn.mbm.phimp.me.utils.ImageUtil;
+import vn.mbm.phimp.me.utils.ItemOffsetDecoration;
 import vn.mbm.phimp.me.utils.RSSPhotoItem;
 import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
 import vn.mbm.phimp.me.utils.RSSUtil;
 import vn.mbm.phimp.me.utils.Utils;
 import vn.mbm.phimp.me.utils.geoDegrees;
 
-public class newGallery extends Fragment {
+public class NewGallery extends Fragment {
     private static Context ctx;
     static ArrayList<RSSPhotoItem> list_photos = new ArrayList<RSSPhotoItem>();
     static ArrayList<ArrayList<RSSPhotoItem>> array_list = new ArrayList<ArrayList<RSSPhotoItem>>();
@@ -610,7 +610,7 @@ public class newGallery extends Fragment {
         super.onCreate(savedInstanceState);
         toolbar = (Toolbar) view.findViewById(R.id.toolbar_newgallery);
         ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        Log.i("newGallery","onCreate");
+        Log.i("NewGallery","onCreate");
         getActivity().setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         localActivity = getActivity();
@@ -628,6 +628,8 @@ public class newGallery extends Fragment {
         photosAdapter = new PhotosAdapter();
         localGridLayoutManager = new GridLayoutManager(ctx,3);
         localPhotosGrid.setLayoutManager(localGridLayoutManager);
+        ItemOffsetDecoration itemDecoration = new ItemOffsetDecoration(ctx, R.dimen.item_offset);
+        localPhotosGrid.addItemDecoration(itemDecoration);
         localPhotosGrid.setAdapter(photosAdapter);
         if (localImageList.isEmpty())createLocalImagesList();
 
@@ -741,8 +743,8 @@ public class newGallery extends Fragment {
                                 Bitmap bmp = BitmapFactory.decodeStream(is,
                                         null, bfOpt);
                                 bmp = ImageUtil.scaleCenterCrop(bmp,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE);
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE,
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE);
                                 bitmap_p_flickr.add(0,bmp);
                                 count++;
                             } catch (Exception e) {
@@ -853,8 +855,8 @@ public class newGallery extends Fragment {
                                 Bitmap bmp = BitmapFactory.decodeStream(is,
                                         null, bfOpt);
                                 bmp = ImageUtil.scaleCenterCrop(bmp,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE);
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE,
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE);
                                 bitmap_recent_flickr.add(0,bmp);
                                 count++;
                             } catch (Exception e) {
@@ -966,8 +968,8 @@ public class newGallery extends Fragment {
                                 Bitmap bmp = BitmapFactory.decodeStream(is,
                                         null, bfOpt);
                                 bmp = ImageUtil.scaleCenterCrop(bmp,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE);
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE,
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE);
                                 bitmap_p_yahoo.add(0,bmp);
                                 count++;
                             } catch (Exception e) {
@@ -1076,8 +1078,8 @@ public class newGallery extends Fragment {
                                 Bitmap bmp = BitmapFactory.decodeStream(is,
                                         null, bfOpt);
                                 bmp = ImageUtil.scaleCenterCrop(bmp,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE);
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE,
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE);
                                 bitmap_public_picasa.add(0,bmp);
                                 count++;
                             } catch (Exception e) {
@@ -1189,8 +1191,8 @@ public class newGallery extends Fragment {
                                 Bitmap bmp = BitmapFactory.decodeStream(is,
                                         null, bfOpt);
                                 bmp = ImageUtil.scaleCenterCrop(bmp,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE);
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE,
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE);
                                 bitmap_google_news.add(0,bmp);
                                 count++;
                             } catch (Exception e) {
@@ -1300,8 +1302,8 @@ public class newGallery extends Fragment {
                                 Bitmap bmp = BitmapFactory.decodeStream(is,
                                         null, bfOpt);
                                 bmp = ImageUtil.scaleCenterCrop(bmp,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE);
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE,
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE);
                                 bitmap_p_deviant.add(0,bmp);
                                 count++;
                             } catch (Exception e) {
@@ -1414,8 +1416,8 @@ public class newGallery extends Fragment {
                                 Bitmap bmp = BitmapFactory.decodeStream(is,
                                         null, bfOpt);
                                 bmp = ImageUtil.scaleCenterCrop(bmp,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE);
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE,
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE);
                                 bitmap_public_imgur.add(0,bmp);
                                 count++;
                             } catch (Exception e) {
@@ -1519,8 +1521,8 @@ public class newGallery extends Fragment {
                                 Bitmap bmp = BitmapFactory.decodeStream(is,
                                         null, bfOpt);
                                 bmp = ImageUtil.scaleCenterCrop(bmp,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE);
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE,
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE);
                                 bitmap_public_500px.add(0,bmp);
                                 count++;
                             } catch (Exception e) {
@@ -1632,8 +1634,8 @@ public class newGallery extends Fragment {
                                 Bitmap bmp = BitmapFactory.decodeStream(is,
                                         null, bfOpt);
                                 bmp = ImageUtil.scaleCenterCrop(bmp,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE);
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE,
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE);
                                 bitmap_my_feed_services.add(0,bmp);
                                 count++;
 
@@ -1748,8 +1750,8 @@ public class newGallery extends Fragment {
                                 Bitmap bmp = BitmapFactory.decodeStream(is,
                                         null, bfOpt);
                                 bmp = ImageUtil.scaleCenterCrop(bmp,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE);
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE,
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE);
                                 bitmap_my_feed_services1.add(0,bmp);
                                 count++;
                             } catch (Exception e) {
@@ -1864,8 +1866,8 @@ public class newGallery extends Fragment {
                                 Bitmap bmp = BitmapFactory.decodeStream(is,
                                         null, bfOpt);
                                 bmp = ImageUtil.scaleCenterCrop(bmp,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE);
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE,
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE);
                                 bitmap_my_feed_services2.add(0,bmp);
                                 count++;
                             } catch (Exception e) {
@@ -1980,8 +1982,8 @@ public class newGallery extends Fragment {
                                 Bitmap bmp = BitmapFactory.decodeStream(is,
                                         null, bfOpt);
                                 bmp = ImageUtil.scaleCenterCrop(bmp,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE);
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE,
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE);
                                 bitmap_my_feed_services3.add(0,bmp);
                                 count++;
                             } catch (Exception e) {
@@ -2097,8 +2099,8 @@ public class newGallery extends Fragment {
                                 Bitmap bmp = BitmapFactory.decodeStream(is,
                                         null, bfOpt);
                                 bmp = ImageUtil.scaleCenterCrop(bmp,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE);
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE,
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE);
                                 bitmap_my_feed_services4.add(0,bmp);
                                 count++;
                             } catch (Exception e) {
@@ -2213,8 +2215,8 @@ public class newGallery extends Fragment {
                                 Bitmap bmp = BitmapFactory.decodeStream(is,
                                         null, bfOpt);
                                 bmp = ImageUtil.scaleCenterCrop(bmp,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE);
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE,
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE);
                                 bitmap_my_feed_services5.add(0,bmp);
                                 count++;
                             } catch (Exception e) {
@@ -2336,8 +2338,8 @@ public class newGallery extends Fragment {
                                 Bitmap bmp = BitmapFactory.decodeStream(is,
                                         null, bfOpt);
                                 bmp = ImageUtil.scaleCenterCrop(bmp,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE);
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE,
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE);
                                 bitmap_personal_facebook.add(0,bmp);
                                 count++;
                             } catch (Exception e) {
@@ -2446,8 +2448,8 @@ public class newGallery extends Fragment {
                                 Bitmap bmp = BitmapFactory.decodeStream(is,
                                         null, bfOpt);
                                 bmp = ImageUtil.scaleCenterCrop(bmp,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE);
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE,
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE);
                                 bitmap_personal_tumblr.add(0,bmp);
                                 count++;
                             } catch (Exception e) {
@@ -2557,8 +2559,8 @@ public class newGallery extends Fragment {
                                 Bitmap bmp = BitmapFactory.decodeStream(is,
                                         null, bfOpt);
                                 bmp = ImageUtil.scaleCenterCrop(bmp,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE);
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE,
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE);
                                 bitmap_personal_vkontakte.add(0,bmp);
                                 count++;
                             } catch (Exception e) {
@@ -2669,8 +2671,8 @@ public class newGallery extends Fragment {
                                 Bitmap bmp = BitmapFactory.decodeStream(is,
                                         null, bfOpt);
                                 bmp = ImageUtil.scaleCenterCrop(bmp,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE);
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE,
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE);
                                 bitmap_personal_flickr.add(0,bmp);
                                 count++;
                             } catch (Exception e) {
@@ -2782,8 +2784,8 @@ public class newGallery extends Fragment {
                                 Bitmap bmp = BitmapFactory.decodeStream(is,
                                         null, bfOpt);
                                 bmp = ImageUtil.scaleCenterCrop(bmp,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE);
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE,
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE);
                                 bitmap_personal_picasa.add(0,bmp);
                                 count++;
                             } catch (Exception e) {
@@ -2896,8 +2898,8 @@ public class newGallery extends Fragment {
                                 Bitmap bmp = BitmapFactory.decodeStream(is,
                                         null, bfOpt);
                                 bmp = ImageUtil.scaleCenterCrop(bmp,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE);
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE,
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE);
                                 bitmap_personal_deviantart.add(0,bmp);
                                 count++;
                             } catch (Exception e) {
@@ -3012,8 +3014,8 @@ public class newGallery extends Fragment {
                                 Bitmap bmp = BitmapFactory.decodeStream(is,
                                         null, bfOpt);
                                 bmp = ImageUtil.scaleCenterCrop(bmp,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE);
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE,
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE);
                                 bitmap_personal_imgur.add(0,bmp);
                                 count++;
                             } catch (Exception e) {
@@ -3126,8 +3128,8 @@ public class newGallery extends Fragment {
                                 Bitmap bmp = BitmapFactory.decodeStream(is,
                                         null, bfOpt);
                                 bmp = ImageUtil.scaleCenterCrop(bmp,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE);
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE,
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE);
                                 bitmap_personal_kaixin.add(0,bmp);
                                 count++;
                             } catch (Exception e) {
@@ -3232,8 +3234,8 @@ public class newGallery extends Fragment {
                             try {
                                 Bitmap bmp = BitmapFactory.decodeFile(filepath);
                                 bmp = ImageUtil.scaleCenterCrop(bmp,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE,
-                                        newGallery.DEFAULT_THUMBNAIL_SIZE);
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE,
+                                        NewGallery.DEFAULT_THUMBNAIL_SIZE);
                                 bitmap_personal_500px.add(0,bmp);
                                 count++;
                             } catch (Exception e) {
@@ -3350,8 +3352,8 @@ public class newGallery extends Fragment {
 										Bitmap bmp = BitmapFactory.decodeStream(is,
 												null, bfOpt);
 										bmp = ImageUtil.scaleCenterCrop(bmp,
-												newGallery.DEFAULT_THUMBNAIL_SIZE,
-												newGallery.DEFAULT_THUMBNAIL_SIZE);
+												NewGallery.DEFAULT_THUMBNAIL_SIZE,
+												NewGallery.DEFAULT_THUMBNAIL_SIZE);
 										bitmap_personal_500px.add(0,bmp);
 										count++;
 									} catch (Exception e) {
@@ -3429,7 +3431,7 @@ public class newGallery extends Fragment {
         getActivity().setTitle(getResources().getString(R.string.application_title));
         getActivity().invalidateOptionsMenu();
 
-        Log.e("newGallery","onResume");
+        Log.e("NewGallery","onResume");
         if(!checkWriteExternalPermission()) {
             Ask.on(getActivity())
                     .forPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -3448,7 +3450,7 @@ public class newGallery extends Fragment {
             //String[] str = null;
                 //cachetask.execute(str);
                if(PhimpMe.FEEDS_LOCAL_GALLERY){
-                  Log.d("newGallery","resume load local gallery, number photo : "+number_resume_download);
+                  Log.d("NewGallery","resume load local gallery, number photo : "+number_resume_download);
                 linear_main.removeView(ln_local_gallery);    			
                 check_local = 0;
                 PhimpMe.filepath.clear();
@@ -3726,7 +3728,7 @@ public class newGallery extends Fragment {
 						ID.add(array_ID.get(i));
 						
 					}
-					Log.d("newGallery","count_photo : "+count_photo);
+					Log.d("NewGallery","count_photo : "+count_photo);
 				}
 				
 				local_adapter = new LocalPhotosAdapter(
@@ -6804,7 +6806,7 @@ public class newGallery extends Fragment {
                 }
             }
         } else {
-            Log.e("newGallery", "Don't connect internet");
+            Log.e("NewGallery", "Don't connect internet");
             RelativeLayout.LayoutParams lp_more = new RelativeLayout.LayoutParams(
                     40, 40);
 
@@ -6997,7 +6999,7 @@ public class newGallery extends Fragment {
                                 if (service.equals("public_flickr")) {
                                     bitmap_p_flickr.add(0, BitmapFactory.decodeFile(thumb_path));
                                     flickradapter.addItem(newitem);
-                                    //Log.e("newGallery","complete_file public flick : "+complete_file);
+                                    //Log.e("NewGallery","complete_file public flick : "+complete_file);
                                     if(complete_file % 6 ==0){
                                         btn_flickr_more.setImageResource(R.drawable.more);
                                         btn_flickr_more.setEnabled(true);
@@ -7006,7 +7008,7 @@ public class newGallery extends Fragment {
                                 if (service.equals("recent_flickr")) {
                                     bitmap_recent_flickr.add(0, BitmapFactory.decodeFile(thumb_path));
                                     recentflickradapter.addItem(newitem);
-                                    //Log.e("newGallery","complete_file recent flick : "+complete_file);
+                                    //Log.e("NewGallery","complete_file recent flick : "+complete_file);
                                     if(complete_file % 6 ==0){
                                         btn_recent_flickr_more.setImageResource(R.drawable.more);
                                         btn_recent_flickr_more.setEnabled(true);

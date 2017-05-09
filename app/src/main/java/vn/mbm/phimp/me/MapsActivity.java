@@ -10,7 +10,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -162,7 +161,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         switch (item.getItemId()) {
             case R.id.tab_gallery:
                 if (currentScreen != PhimpMe.HomeScreenState.GALLERY) {
-                    newGallery frag = new newGallery();
+                    NewGallery frag = new NewGallery();
                     getSupportFragmentManager().beginTransaction()
                             .setCustomAnimations(R.anim.fragment_anim_fadein, R.anim.fragment_anim_fadeout)
                             .replace(R.id.map, frag)
