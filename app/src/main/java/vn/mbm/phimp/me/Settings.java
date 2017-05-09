@@ -168,6 +168,7 @@ public class Settings extends Fragment
 	private AlertDialog maxSizeDialog = null;
 	private Toolbar settingsToolBar;
 	private CheckBox checkVolumeBtn;
+	private CheckBox checkLocationBtn;
 
 	@Nullable
 	@Override
@@ -470,6 +471,23 @@ public class Settings extends Fragment
 				}
 				else {
 					PhimpMe.check_volume_btn_to_capture = false;
+				}
+			}
+		});
+
+		boolean locationBtnPrefs = sharedPref.getBoolean(getResources().getString(R.string.location_btn_prefs), true);
+
+		checkLocationBtn = (CheckBox) view.findViewById(R.id.checkbox_location);
+		checkLocationBtn.setChecked(locationBtnPrefs);
+
+		PhimpMe.location_enabled = checkLocationBtn.isChecked();
+		checkLocationBtn.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if (isChecked == true) {
+					PhimpMe.location_enabled = true;
+				} else {
+					PhimpMe.location_enabled = false;
 				}
 			}
 		});
@@ -809,9 +827,11 @@ public class Settings extends Fragment
 	@Override
 	public void onStop() {
 		boolean volumeBtnCheckVal = checkVolumeBtn.isChecked();
+		boolean locationBtnCheckVal = checkLocationBtn.isChecked();
 		SharedPreferences sPrefs = getActivity().getPreferences(MODE_PRIVATE);
 		SharedPreferences.Editor editor = sPrefs.edit();
 		editor.putBoolean(getResources().getString(R.string.volume_btn_prefs),volumeBtnCheckVal);
+		editor.putBoolean(getResources().getString(R.string.location_btn_prefs), locationBtnCheckVal);
 		editor.commit();
 		super.onStop();
 	}
