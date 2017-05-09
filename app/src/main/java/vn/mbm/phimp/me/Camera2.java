@@ -98,6 +98,8 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	public static SeekBar seekbar;
 	private ImageButton iso;
 	private Spinner spinner;
+	private ImageButton resolution;
+	public static Spinner resSpinner;
 	private ImageButton timer;
 	private TextView textTimeLeft;
 	FrameLayout frame;
@@ -114,6 +116,8 @@ public class Camera2 extends android.support.v4.app.Fragment {
 	int uiOptions;
 	View view;
 	View decorView;
+	private Size mSize;
+	private List<Size> sizes;
 
 	// Directions for Camera Button Orientations
 	private final int NE = 45;
@@ -209,6 +213,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 		exposure.setRotation(degrees);
 		seekbar.setRotation(degrees);
 		iso.setRotation(degrees);
+		resolution.setRotation(degrees);
 	}
 
 	private void adjustIconPositions() {
@@ -482,6 +487,35 @@ public class Camera2 extends android.support.v4.app.Fragment {
 			iso.setVisibility(View.GONE);
 		}
 
+		sizes = parameters.getSupportedPictureSizes();
+
+		resSpinner = (Spinner) view.findViewById(R.id.resolution_spinner);
+
+		resSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				mSize = sizes.get(position);
+				parameters.setPictureSize(mSize.width, mSize.height);
+				mCamera.setParameters(parameters);
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {
+
+			}
+		});
+
+		setResolution(mCamera.getParameters().getSupportedPictureSizes());
+
+		resolution = (ImageButton) view.findViewById(R.id.resolution);
+		resolution.bringToFront();
+		resolution.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				resSpinner.performClick();
+			}
+		});
+
 		exposure = (ImageButton) view.findViewById(R.id.exposure);
 		exposure.bringToFront();
 		exposure.setOnClickListener(new OnClickListener() {
@@ -594,6 +628,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 						}
 						mCamera = Camera.open(1);
 						// mCamera.setDisplayOrientation(90);
+						setResolution(mCamera.getParameters().getSupportedPictureSizes());
 						spinner.setVisibility(View.GONE);
 						iso.setVisibility(View.GONE);
 						setCameraDisplayOrientation((Activity) ctx, 1, mCamera);
@@ -610,6 +645,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 							mCamera = null;
 						}
 						mCamera = Camera.open(0);
+						setResolution(mCamera.getParameters().getSupportedPictureSizes());
 						if (values_keyword != null) {
 							spinner.setVisibility(View.INVISIBLE);
 							iso.setVisibility(View.VISIBLE);
@@ -680,6 +716,20 @@ public class Camera2 extends android.support.v4.app.Fragment {
                 }
             }
 	    });
+	}
+
+	private void setResolution(List<Camera.Size> sizes) {
+		//Adding resolutions for image capture
+		List<CharSequence> res = new ArrayList<>();
+		for (int i = 0; i < sizes.size(); i++) {
+			res.add(i, sizes.get(i).width + "x" + sizes.get(i).height);
+		}
+		if (res != null && res.size() > 1) {
+			//Setting up image resolution spinner
+			ArrayAdapter<CharSequence> imgResAdapter = new ArrayAdapter<CharSequence>(ctx, R.layout.support_simple_spinner_dropdown_item, res);
+			resSpinner.setAdapter(imgResAdapter);
+			resSpinner.setVisibility(View.INVISIBLE);
+		}
 	}
 
 	public void takePic() {
@@ -994,6 +1044,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 	private static  final int FOCUS_AREA_SIZE= 300;
 	Paint paint;
 	public static boolean GRID_ENABLED = false;
+	private Size mSize;
 
 	@SuppressWarnings("deprecation")
 	Preview(Context context) {
@@ -1321,6 +1372,11 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 			parameters.setPreviewSize(mPreviewSize.width, mPreviewSize.height);
 		}catch(Exception e){}
 		requestLayout();
+		List<Size> sizes = parameters.getSupportedPictureSizes();
+		Log.i(TAG, "Available resolution: " + sizes.get(0).width + " " + sizes.get(0).height);
+		mSize = sizes.get(0);
+		Log.i(TAG, "Chosen resolution: " + mSize.width + " " + mSize.height);
+		parameters.setPictureSize(mSize.width, mSize.height);
 		mCamera.setParameters(parameters);
 		mCamera.startPreview();
 	}
