@@ -487,16 +487,17 @@ public class Camera2 extends android.support.v4.app.Fragment {
 			iso.setVisibility(View.GONE);
 		}
 
-		sizes = parameters.getSupportedPictureSizes();
+		sizes = preview.mCamera.getParameters().getSupportedPictureSizes();
 
 		resSpinner = (Spinner) view.findViewById(R.id.resolution_spinner);
 
 		resSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				Camera.Parameters parameters = preview.mCamera.getParameters();
 				mSize = sizes.get(position);
 				parameters.setPictureSize(mSize.width, mSize.height);
-				mCamera.setParameters(parameters);
+				preview.mCamera.setParameters(parameters);
 			}
 
 			@Override
@@ -505,7 +506,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 			}
 		});
 
-		setResolution(mCamera.getParameters().getSupportedPictureSizes());
+		setResolution(preview.mCamera.getParameters().getSupportedPictureSizes());
 
 		resolution = (ImageButton) view.findViewById(R.id.resolution);
 		resolution.bringToFront();
