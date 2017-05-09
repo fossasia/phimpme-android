@@ -57,14 +57,17 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
     // UI elements
     private FloatingActionButton fab, fabEdit, fabUpload, fabShare, fabInfo, fabDelete;
     private Animation fabOpen, fabClose, rotateForward, rotateBackward;
-	private GalleryImageAdapter galImageAdapter;
+
+    private GalleryImageAdapter galImageAdapter;
+
     private PopupWindow pwindo;
     private Button btnClosePopup;
+    private final int LIGHTTHEME = 1, DARKTHEME = 2;
 
     //data variable
     private Boolean isFabOpen = false;
     public int index = 0;
-	private  String longtitude= "",latitude="",title="";
+    private  String longtitude= "",latitude="",title="";
     ZoomDialog dialog;
     GestureDetector gestureDetector;
     BasicCallBack basicCallBack;
@@ -73,7 +76,8 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
 
 
     @Override
-	public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         if (Utility.getTheme(getApplicationContext()) == ThemeDark) {
             setTheme(R.style.AppTheme_Dark);
@@ -160,7 +164,19 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                 View layout = inflater.inflate(R.layout.info_popup,
                         (ViewGroup) findViewById(R.id.popup_element));
                 pwindo = new PopupWindow(layout, AppBarLayout.LayoutParams.WRAP_CONTENT, AppBarLayout.LayoutParams.WRAP_CONTENT, true);
-                getPopUpData(file);
+
+                if (Utility.getTheme(getApplicationContext())==DARKTHEME){
+                    layout.setBackgroundColor(getResources().getColor(R.color.ColorWindowBackgroundInverse));
+                    getPopUpData(file,DARKTHEME);
+                }
+                else{
+                    layout.setBackgroundColor(getResources().getColor(R.color.white));
+
+                    getPopUpData(file,LIGHTTHEME);
+
+                }
+
+
                 pwindo.setAnimationStyle(R.style.Animation);
                 pwindo.showAtLocation(layout, Gravity.CENTER, 0, 0);
                 btnClosePopup = (Button)layout.findViewById(R.id.button_done);
@@ -284,7 +300,8 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
 
     }
 
-    public void getPopUpData(File file){
+    public void getPopUpData(File file, int theme){
+
         try {
             ExifInterface exif_data = new ExifInterface(file.getAbsolutePath());
             Date lastModDate = new Date(file.lastModified());
@@ -306,6 +323,12 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                 } catch (Exception e) {
                 }
             }
+
+            if (theme==DARKTHEME){
+                ((TextView)pwindo.getContentView().findViewById(R.id.details_title)).setBackgroundColor(getResources().getColor(R.color.primary_material_dark_2));
+                ((Button)pwindo.getContentView().findViewById(R.id.button_done)).setBackgroundColor(getResources().getColor(R.color.primary_material_dark_2));
+            }
+
             ((TextView)pwindo.getContentView().findViewById(R.id.path)).setText(file.getAbsolutePath());
             ((TextView)pwindo.getContentView().findViewById(R.id.time)).setText(lastModDate.toString());
             ((TextView)pwindo.getContentView().findViewById(R.id.image_width)).setText(img_width);
@@ -420,37 +443,37 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
     }
 
     private void openDailog(){
-            dialog = new ZoomDialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-            TouchImageView imageViewGallery = new TouchImageView(this);
-            BitmapFactory.Options o2 = new BitmapFactory.Options();
-            o2.inPurgeable = true;
-            try {
-                WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
-                Display display = wm.getDefaultDisplay();
-                int screen_w = display.getWidth();
+        dialog = new ZoomDialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        TouchImageView imageViewGallery = new TouchImageView(this);
+        BitmapFactory.Options o2 = new BitmapFactory.Options();
+        o2.inPurgeable = true;
+        try {
+            WindowManager wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+            Display display = wm.getDefaultDisplay();
+            int screen_w = display.getWidth();
 
-                imageViewGallery.setImageBitmap(ImageUtil
-                        .decodeSampledBitmapFromFile(PhimpMeGallery.this,
-                                filePath.get(pager.getCurrentItem()),  screen_w));
-                imageViewGallery.setMaxZoom(4f);
-                //dialog show zoom photo
-                dialog.setContentView(imageViewGallery);
-                dialog.setCanceledOnTouchOutside(true);
-                basicCallBack = new BasicCallBack() {
-                    @Override
-                    public void callBack(int status, Object data) {
-                        if (status == 0) {
-                            if (dialog.isShowing())
-                                dialog.dismiss();
-                        }
+            imageViewGallery.setImageBitmap(ImageUtil
+                    .decodeSampledBitmapFromFile(PhimpMeGallery.this,
+                            filePath.get(pager.getCurrentItem()),  screen_w));
+            imageViewGallery.setMaxZoom(4f);
+            //dialog show zoom photo
+            dialog.setContentView(imageViewGallery);
+            dialog.setCanceledOnTouchOutside(true);
+            basicCallBack = new BasicCallBack() {
+                @Override
+                public void callBack(int status, Object data) {
+                    if (status == 0) {
+                        if (dialog.isShowing())
+                            dialog.dismiss();
                     }
-                };
-                imageViewGallery.setBasicCallBack(basicCallBack);
+                }
+            };
+            imageViewGallery.setBasicCallBack(basicCallBack);
 
 
-            } catch (Exception ex) {
-                Log.e("Exception", ex.getLocalizedMessage());
-            }
+        } catch (Exception ex) {
+            Log.e("Exception", ex.getLocalizedMessage());
+        }
 
         if (!dialog.isShowing()) {
             dialog.show();
