@@ -166,7 +166,7 @@ public class PhimpMeGallery extends AppCompatActivity implements View.OnClickLis
                 pwindo = new PopupWindow(layout, AppBarLayout.LayoutParams.WRAP_CONTENT, AppBarLayout.LayoutParams.WRAP_CONTENT, true);
 
                 if (Utility.getTheme(getApplicationContext())==DARKTHEME){
-                    layout.setBackgroundColor(getResources().getColor(R.color.black));
+                    layout.setBackgroundColor(getResources().getColor(R.color.ColorWindowBackgroundInverse));
                     getPopUpData(file,DARKTHEME);
                 }
                 else{
