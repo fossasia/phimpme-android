@@ -113,6 +113,9 @@
     <string name="wait">Please wait...</string>
     <string name="carefully">CareFully!</string>
     <string name="no_photo_delete">"There is no photo to delete!"</string>
+    <string name="location_camera">Location</string>
+    <string name="enable_location">Enable Location</string>
+    <string name="en_dis_loc">Enable/Disable Location</string>
 
     <!--  wordpress -->
 
@@ -640,6 +643,7 @@
     <string name="volume_to_capture">Volume Button to Capture</string>
     <string name="volume_to_capture_detail">Enable/Disable Volume button to capture</string>
     <string name="volume_btn_prefs">volumeBtnPrefs</string>
+    <string name="location_btn_prefs">LocationBtnPrefs</string>
 
 
 
