@@ -201,6 +201,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     public static boolean check_download = false;
     public static boolean check_download_local_gallery = true;
     public static boolean check_volume_btn_to_capture = true;
+    public static boolean location_enabled = true;
     public static int flashStatus = 2;
 
     //Gallery
