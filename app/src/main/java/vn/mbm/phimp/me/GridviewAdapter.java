@@ -107,9 +107,9 @@ class GridFlickrAdaper extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				//newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-				//newGallery n=new newGallery();
-				//n.Dialog(4000, newGallery.pro_gress);
+				//NewGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
+				//NewGallery n=new NewGallery();
+				//n.Dialog(4000, NewGallery.pro_gress);
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				PhimpMeGallery.setFileList(file_path);	
@@ -208,9 +208,9 @@ class GridRecentFlickrAdaper extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-				newGallery n=new newGallery();
-				n.Dialog(4000, newGallery.pro_gress);*/
+				/*NewGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
+				NewGallery n=new NewGallery();
+				n.Dialog(4000, NewGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				PhimpMeGallery.setFileList(file_path);	
@@ -310,9 +310,9 @@ class GridPublicPicasaAdaper extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-				newGallery n=new newGallery();
-				n.Dialog(4000, newGallery.pro_gress);*/
+				/*NewGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
+				NewGallery n=new NewGallery();
+				n.Dialog(4000, NewGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
@@ -412,9 +412,9 @@ class GridGoogleNewsAdaper extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-				newGallery n=new newGallery();
-				n.Dialog(4000, newGallery.pro_gress);*/
+				/*NewGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
+				NewGallery n=new NewGallery();
+				n.Dialog(4000, NewGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
@@ -513,9 +513,9 @@ class GridYahooAdapter extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-				newGallery n=new newGallery();
-				n.Dialog(4000, newGallery.pro_gress);*/
+				/*NewGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
+				NewGallery n=new NewGallery();
+				n.Dialog(4000, NewGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				//_intent.putExtra("image-path", tmp_url);
@@ -614,9 +614,9 @@ class GridDeviantAdapter extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-				newGallery n=new newGallery();
-				n.Dialog(4000, newGallery.pro_gress);*/
+				/*NewGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
+				NewGallery n=new NewGallery();
+				n.Dialog(4000, NewGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				//_intent.putExtra("image-path", tmp_url);
@@ -716,9 +716,9 @@ class GridFacebookAdapter extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-				newGallery n=new newGallery();
-				n.Dialog(4000, newGallery.pro_gress);*/
+				/*NewGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
+				NewGallery n=new NewGallery();
+				n.Dialog(4000, NewGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				//_intent.putExtra("image-path", tmp_url);
@@ -818,9 +818,9 @@ class GridTumblrAdapter extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-				newGallery n=new newGallery();
-				n.Dialog(4000, newGallery.pro_gress);*/
+				/*NewGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
+				NewGallery n=new NewGallery();
+				n.Dialog(4000, NewGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				//_intent.putExtra("image-path", tmp_url);
@@ -922,9 +922,9 @@ class GridVKontakteAdapter extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-				newGallery n=new newGallery();
-				n.Dialog(4000, newGallery.pro_gress);*/
+				/*NewGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
+				NewGallery n=new NewGallery();
+				n.Dialog(4000, NewGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
@@ -1024,9 +1024,9 @@ class GridPersonalFlickrAdapter extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-				newGallery n=new newGallery();
-				n.Dialog(4000, newGallery.pro_gress);*/
+				/*NewGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
+				NewGallery n=new NewGallery();
+				n.Dialog(4000, NewGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
@@ -1125,9 +1125,9 @@ class GridPersonalPicasaAdapter extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-				newGallery n=new newGallery();
-				n.Dialog(4000, newGallery.pro_gress);*/
+				/*NewGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
+				NewGallery n=new NewGallery();
+				n.Dialog(4000, NewGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
@@ -1227,9 +1227,9 @@ class GridPersonalDeviantArtAdapter extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-				newGallery n=new newGallery();
-				n.Dialog(4000, newGallery.pro_gress);*/
+				/*NewGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
+				NewGallery n=new NewGallery();
+				n.Dialog(4000, NewGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
@@ -1323,9 +1323,9 @@ class GridPersonalImageShackAdapter extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-				newGallery n=new newGallery();
-				n.Dialog(4000, newGallery.pro_gress);*/
+				/*NewGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
+				NewGallery n=new NewGallery();
+				n.Dialog(4000, NewGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
@@ -1426,9 +1426,9 @@ class GridPersonalImgurAdapter extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-				newGallery n=new newGallery();
-				n.Dialog(4000, newGallery.pro_gress);*/
+				/*NewGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
+				NewGallery n=new NewGallery();
+				n.Dialog(4000, NewGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
@@ -1527,9 +1527,9 @@ class GridMyFeedServicesAdaper extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-				newGallery n=new newGallery();
-				n.Dialog(4000, newGallery.pro_gress);*/
+				/*NewGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
+				NewGallery n=new NewGallery();
+				n.Dialog(4000, NewGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				//_intent.putExtra("image-path", tmp_url);		
@@ -1628,9 +1628,9 @@ class GridMyFeedServicesAdaper1 extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-				newGallery n=new newGallery();
-				n.Dialog(4000, newGallery.pro_gress);*/
+				/*NewGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
+				NewGallery n=new NewGallery();
+				n.Dialog(4000, NewGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
@@ -1729,9 +1729,9 @@ class GridMyFeedServicesAdaper2 extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-				newGallery n=new newGallery();
-				n.Dialog(4000, newGallery.pro_gress);*/
+				/*NewGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
+				NewGallery n=new NewGallery();
+				n.Dialog(4000, NewGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				//_intent.putExtra("image-path", tmp_url);
@@ -1830,9 +1830,9 @@ class GridMyFeedServicesAdaper3 extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-				newGallery n=new newGallery();
-				n.Dialog(4000, newGallery.pro_gress);*/
+				/*NewGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
+				NewGallery n=new NewGallery();
+				n.Dialog(4000, NewGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				//_intent.putExtra("image-path", tmp_url);
@@ -1931,9 +1931,9 @@ class GridMyFeedServicesAdaper4 extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-				newGallery n=new newGallery();
-				n.Dialog(4000, newGallery.pro_gress);*/
+				/*NewGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
+				NewGallery n=new NewGallery();
+				n.Dialog(4000, NewGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				//_intent.putExtra("image-path", tmp_url);
@@ -2032,9 +2032,9 @@ class GridMyFeedServicesAdaper5 extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-				newGallery n=new newGallery();
-				n.Dialog(4000, newGallery.pro_gress);*/
+				/*NewGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
+				NewGallery n=new NewGallery();
+				n.Dialog(4000, NewGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				PhimpMeGallery.setFileList(file_path);_intent.putExtra("index", pos);
@@ -2133,9 +2133,9 @@ class GridPersonalKaixinAdapter extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-				newGallery n=new newGallery();
-				n.Dialog(4000, newGallery.pro_gress);*/
+				/*NewGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
+				NewGallery n=new NewGallery();
+				n.Dialog(4000, NewGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				//_intent.putExtra("image-path", tmp_url);
@@ -2234,9 +2234,9 @@ class GridImgurPublicAdaper extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-				newGallery n=new newGallery();
-				n.Dialog(4000, newGallery.pro_gress);*/
+				/*NewGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
+				NewGallery n=new NewGallery();
+				n.Dialog(4000, NewGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				//_intent.putExtra("image-path", tmp_url);
@@ -2336,9 +2336,9 @@ class GridPublic500pxAdaper extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-				newGallery n=new newGallery();
-				n.Dialog(4000, newGallery.pro_gress);*/
+				/*NewGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
+				NewGallery n=new NewGallery();
+				n.Dialog(4000, NewGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				//_intent.putExtra("image-path", tmp_url);
@@ -2439,9 +2439,9 @@ class GridPersonal500pxAdapter extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-				newGallery n=new newGallery();
-				n.Dialog(4000, newGallery.pro_gress);*/
+				/*NewGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
+				NewGallery n=new NewGallery();
+				n.Dialog(4000, NewGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				//_intent.putExtra("image-path", tmp_url);
@@ -2540,9 +2540,9 @@ class GridPersonalSohuAdapter extends BaseAdapter {
 		iv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				/*newGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
-				newGallery n=new newGallery();
-				n.Dialog(4000, newGallery.pro_gress);*/
+				/*NewGallery.pro_gress=ProgressDialog.show(ctx, "", "Please wait...", true, false);
+				NewGallery n=new NewGallery();
+				n.Dialog(4000, NewGallery.pro_gress);*/
 				Intent _intent = new Intent();
 				_intent.setClass(ctx, PhimpMeGallery.class);
 				PhimpMeGallery.setFileList(file_path);

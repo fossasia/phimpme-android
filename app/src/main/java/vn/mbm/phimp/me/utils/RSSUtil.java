@@ -13,7 +13,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import vn.mbm.phimp.me.PhimpMe;
-import vn.mbm.phimp.me.newGallery;
+import vn.mbm.phimp.me.NewGallery;
 import vn.mbm.phimp.me.database.DownloadedPersonalPhotoDBItem;
 import vn.mbm.phimp.me.database.DownloadedPhotoDBItem;
 import android.content.Context;
@@ -124,7 +124,7 @@ public class RSSUtil
 	            try{
 					Bitmap bmp = BitmapFactory.decodeStream(is, null, bfOpt);
 					
-					bmp = ImageUtil.scaleCenterCrop(bmp, newGallery.DEFAULT_THUMBNAIL_SIZE, newGallery.DEFAULT_THUMBNAIL_SIZE);
+					bmp = ImageUtil.scaleCenterCrop(bmp, NewGallery.DEFAULT_THUMBNAIL_SIZE, NewGallery.DEFAULT_THUMBNAIL_SIZE);
 		           
 					if (ImageUtil.SaveBitmap(ctx, bmp, thumb_file.getAbsolutePath()))
 					{
