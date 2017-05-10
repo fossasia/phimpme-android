@@ -1,15 +1,14 @@
 package vn.mbm.phimp.me;
 
-import vn.mbm.phimp.me.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MotionEvent;
 
 public class SplashScreen extends Activity {
-	
-	protected int _splashTime = 2000; 
-	
+
+	protected int _splashTime = 2000;
+
 	private Thread splashTread;
 
 
@@ -59,5 +58,5 @@ public class SplashScreen extends Activity {
 	    }
 	    return true;
 	}
-	
+
 }
