@@ -66,6 +66,7 @@ import vn.mbm.phimp.me.gallery3d.media.CropImage;
 import vn.mbm.phimp.me.utils.Utils;
 
 import static android.hardware.Camera.Parameters.FLASH_MODE_AUTO;
+import static android.hardware.Camera.Parameters.FLASH_MODE_OFF;
 import static android.hardware.Camera.Parameters.FLASH_MODE_ON;
 import static android.hardware.Camera.Parameters.SCENE_MODE_AUTO;
 import static android.hardware.Camera.Parameters.SCENE_MODE_HDR;
@@ -627,6 +628,10 @@ public class Camera2 extends android.support.v4.app.Fragment {
 							mCamera = null;
 						}
 						mCamera = Camera.open(1);
+						if (!hasCameraFlash(mCamera)) {
+							parameters.setFlashMode(FLASH_MODE_OFF);
+							flash.setVisibility(View.GONE);
+						}
 						// mCamera.setDisplayOrientation(90);
 						setResolution(mCamera.getParameters().getSupportedPictureSizes());
 						spinner.setVisibility(View.GONE);
@@ -645,6 +650,10 @@ public class Camera2 extends android.support.v4.app.Fragment {
 							mCamera = null;
 						}
 						mCamera = Camera.open(0);
+						if (hasCameraFlash(mCamera)) {
+							flash.setVisibility(View.VISIBLE);
+							parameters.setFlashMode(FLASH_MODE_ON);
+						}
 						setResolution(mCamera.getParameters().getSupportedPictureSizes());
 						if (values_keyword != null) {
 							spinner.setVisibility(View.INVISIBLE);
@@ -676,7 +685,7 @@ public class Camera2 extends android.support.v4.app.Fragment {
 					switch (state) {
 						case FLASH_ON:
 							state = FLASH_OFF;
-							parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+							parameters.setFlashMode(FLASH_MODE_OFF);
 							break;
 						case FLASH_OFF:
 							state = FLASH_AUTO;
@@ -694,6 +703,14 @@ public class Camera2 extends android.support.v4.app.Fragment {
 				//Log.e("Flash",preview.camera.getParameters().getSupportedFlashModes().get(0));
 			}
 		});
+
+		if (PhimpMe.camera_use == 1 && !hasCameraFlash(mCamera)) {
+			parameters.setFlashMode(FLASH_MODE_OFF);
+			flash.setVisibility(View.GONE);
+		} else if (PhimpMe.camera_use == 0 && hasCameraFlash(mCamera)) {
+			flash.setVisibility(View.VISIBLE);
+			parameters.setFlashMode(FLASH_MODE_ON);
+		}
 
 		grid_overlay_button = (ImageButton)view.findViewById(R.id.grid_overlay);
 		grid_overlay_button.bringToFront();
@@ -717,6 +734,12 @@ public class Camera2 extends android.support.v4.app.Fragment {
             }
 	    });
 	}
+
+	public static boolean hasCameraFlash(Camera camera) {
+		Camera.Parameters params = camera.getParameters();
+		return params.getFlashMode() == null ? false : true;
+	}
+
 
 	private void setResolution(List<Camera.Size> sizes) {
 		//Adding resolutions for image capture
@@ -1354,7 +1377,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 					parameters.setFlashMode(FLASH_MODE_ON);
 					break;
 				case FLASH_OFF:
-					parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+					parameters.setFlashMode(FLASH_MODE_OFF);
 					break;
 				default:
 					parameters.setFlashMode(FLASH_MODE_AUTO);
