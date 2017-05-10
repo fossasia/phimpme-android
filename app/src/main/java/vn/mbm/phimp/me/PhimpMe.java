@@ -859,6 +859,8 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
             if (currentScreen == HomeScreenState.GALLERY ) {
                 newGallery fragment = (newGallery) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
                 if(!fragment.checkdeletablelist()) {
+                    fragment.containsSelection = false;
+
                     fragment.onResume();
                 } else{
                     showDialog();
