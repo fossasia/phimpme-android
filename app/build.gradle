@@ -3,7 +3,7 @@ apply plugin: 'jacoco-android'
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
 
     defaultConfig {
         applicationId "vn.mbm.phimp.me"
@@ -50,45 +50,16 @@ android {
     }
 
 }
-android {
-    useLibrary 'org.apache.http.legacy'
-}
+
 dependencies {
-    compile files('libs/CWAC-AdapterWrapper.jar')
-    compile files('libs/CWAC-Bus.jar')
-    compile files('libs/CWAC-Task.jar')
-    //compile 'com.paypal.sdk:paypal-android-sdk:2.14.4'
-    compile files('libs/PayPal_MPL.jar')
-    compile files('libs/android-rss-1.0.0.jar')
-    compile files('libs/crittercism_v2_1_3_rev1.jar')
-    compile files('libs/httpmime-4.1.1.jar')
-    compile files('libs/jdom-1.1.1-android-fork.jar')
-    compile files('libs/joooidapi.jar')
-    compile files('libs/jtwitter.jar')
-    compile files('libs/osmdroid-android-3.0.8.jar')
-    compile files('libs/scribe-1.2.3.jar')
-    compile files('libs/signpost-commonshttp4-1.2.1.2.jar')
-    compile files('libs/signpost-core-1.2.1.2.jar')
-    compile files('libs/slf4j-android-1.5.8.jar')
-    compile files('libs/tagsoup-1.2.1.jar')
-    compile files('libs/uk.co.jasonfry.android.tools.jar')
-    compile project(':viewflow')
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2', {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
-    }
-    compile 'com.vistrav:ask:2.4'
-    compile 'com.android.support:support-v4:25.0.1'
-    compile 'com.google.android.gms:play-services-maps:10.2.1'
-    compile 'com.google.android.gms:play-services-location:10.2.1'
-    compile 'com.facebook.android:facebook-android-sdk:4.+'
-    compile 'com.android.support:design:25.0.1'
-    compile 'com.android.support:appcompat-v7:25.0.1'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-
-
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    }
-
+    })
+    compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    compile "com.android.support:design:$rootProject.supportLibraryVersion"
+    compile "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
+    testCompile "junit:junit:$rootProject.junitVersion"
+    compile "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
 }
