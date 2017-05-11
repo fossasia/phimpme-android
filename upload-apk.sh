@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 #create a new directory that will contain out generated apk
 mkdir $HOME/buildApk/ 
-#copy generated apk from build folder to the folder just created
+#copy generated apk from build folder and README.md to the folder just created
 cp -R app/build/outputs/apk/app-debug.apk $HOME/buildApk/
+cp -R README.md $HOME/buildApk/
+
 #setup git
 cd $HOME
 git config --global user.email "noreply@travis.com"

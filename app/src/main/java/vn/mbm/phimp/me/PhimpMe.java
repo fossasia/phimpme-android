@@ -1,24 +1,8 @@
 package vn.mbm.phimp.me;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import vn.mbm.phimp.me.database.AccountDBAdapter;
-import vn.mbm.phimp.me.database.TumblrDBAdapter;
-import vn.mbm.phimp.me.gallery.PhimpMeGallery;
-import vn.mbm.phimp.me.utils.Commons;
-import vn.mbm.phimp.me.utils.RSSPhotoItem;
-import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
-
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.app.TabActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,17 +11,25 @@ import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.gesture.GestureOverlayView;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.hardware.Camera.PictureCallback;
+import android.media.AudioManager;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -45,20 +37,46 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TabHost;
-import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import android.support.design.widget.BottomNavigationView;
-
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.maps.GeoPoint;
 import com.paypal.android.MEP.PayPal;
+import com.vistrav.ask.Ask;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+
+import vn.mbm.phimp.me.database.AccountDBAdapter;
+import vn.mbm.phimp.me.database.TumblrDBAdapter;
+import vn.mbm.phimp.me.folderchooser.PhoneMedia;
+import vn.mbm.phimp.me.gallery.PhimpMeGallery;
+import vn.mbm.phimp.me.gallery3d.media.CropImage;
+import vn.mbm.phimp.me.utils.Commons;
+import vn.mbm.phimp.me.utils.FolderChooserPrefSettings;
+import vn.mbm.phimp.me.utils.RSSPhotoItem;
+import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
+
+import static vn.mbm.phimp.me.Camera2.FLAG_CAPTURE_IN_PROGRESS;
+import static vn.mbm.phimp.me.Camera2.degrees;
+import static vn.mbm.phimp.me.Camera2.lat;
+import static vn.mbm.phimp.me.Camera2.lon;
+import static vn.mbm.phimp.me.Camera2.preview;
+
+//import android.widget.ImageView;
+//import android.widget.TabHost;
+//import android.widget.TabHost.OnTabChangeListener;
+//import android.widget.TextView;
+//import com.google.android.gms.ads.AdRequest;
+//import com.google.android.maps.GeoPoint;
 //
 //@ReportsCrashes(formKey = "dFRsUzBJSWFKUFc3WmFjaXZab2V0dHc6MQ",
 //        mode = ReportingInteractionMode.TOAST,
@@ -141,6 +159,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     public static final String FEDDS_LIST_MYSERVICES_TAG5 = "feeds_list_myservices";
     public static String MY_FEED_URL = "";
 
+
     public static boolean FEEDS_LIST_500PX_PRIVATE;
     public static final String FEEDS_LIST_500PX_PRIVATE_TAG = "feeds_list_500px_private";
     public static boolean FEEDS_LIST_500PX_PUBLIC;
@@ -155,7 +174,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
 
     public static boolean addCurrentPin = false;
 
-    public static GeoPoint currentGeoPoint;
+    //public static GeoPoint currentGeoPoint;
 
     public static Double curLatitude, curLongtitude;
 
@@ -179,9 +198,10 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     public static boolean check_cache;
     public static boolean check_export = true;
     public static BottomNavigationView mBottomNav;
-    public static boolean check_donwload = false;
-    public static boolean check_donwload_local_gallery = false;
-    public static AdView ad;
+    public static boolean check_download = false;
+    public static boolean check_download_local_gallery = true;
+    public static boolean check_volume_btn_to_capture = true;
+    public static boolean location_enabled = true;
     public static int flashStatus = 2;
 
     //Gallery
@@ -189,7 +209,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
     //private GestureDetector gestureScanner;
     //View.OnTouchListener gestureListener;
     public static int width, height;
-
+    public final static int ThemeDark = 2;
     HomeScreenState currentScreen = HomeScreenState.GALLERY;
 
     @SuppressWarnings("unused")
@@ -198,6 +218,11 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
 
         super.onCreate(savedInstanceState);
         ctx = this;
+
+        //set dark theme
+        if (Utility.getTheme(getApplicationContext()) == ThemeDark) {
+        setTheme(R.style.AppTheme_Dark);}
+
         Log.d("thong", "PhimpMe - onCreate()");
         // The following line triggers the initialization of ACRA
         //ACRA.init((Application) ctx.getApplicationContext());
@@ -212,7 +237,13 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
 
         camera_use = 0;
         if (IdList == null) IdList = new ArrayList<Integer>();
+        Ask.on(this)
+                .forPermissions(Manifest.permission.ACCESS_FINE_LOCATION
+                        , Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        , Manifest.permission.CAMERA,
+                        Manifest.permission.READ_PHONE_STATE)
 
+                .go();
         setContentView(R.layout.main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         //gestureScanner = new GestureDetector(this);
@@ -232,42 +263,6 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
         Display display = getWindowManager().getDefaultDisplay();
         width = display.getWidth() / 3;
         height = width;
-        /*
-         * Google admod
-         */
-        //ad = (AdView) findViewById(R.id.adView);
-        SharedPreferences setting = getSharedPreferences(PREFS_NAME, 0);
-        FEEDS_GOOGLE_ADMOB = setting.getBoolean("Google Admob", true);
-        File file = getBaseContext().getFileStreamPath("google_admob.txt");
-        if (file.exists()) {
-            try {
-                FileInputStream Rfile = openFileInput("google_admob.txt");
-
-                InputStreamReader einputreader = new InputStreamReader(Rfile);
-                BufferedReader ebuffreader = new BufferedReader(einputreader);
-                Boolean tmp = Boolean.valueOf(ebuffreader.readLine());
-                PhimpMe.FEEDS_GOOGLE_ADMOB = tmp;
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        Log.i("PhimpMe", "feed_google_admob : " + FEEDS_GOOGLE_ADMOB);
-//        AdView adView = (AdView) this.findViewById(R.id.adView);
-//
-//        AdRequest request = new AdRequest.Builder()       // All emulators
-//                .addTestDevice("AC98C820A50B4AD8A2106EDE96FB87D4")  // An example device ID
-//                .build();
-//        adView.loadAd(request);
-//        if (FEEDS_GOOGLE_ADMOB == false) {
-//            adView.setVisibility(ViewGroup.GONE);
-//            //adView.destroy();
-//        }
-    	        
-    	        /*
-    	         * user config
-    	         */
 
         File file0 = getBaseContext().getFileStreamPath("local_gallery.txt");
         if (file0.exists()) {
@@ -528,7 +523,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
          */
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         MAX_DISPLAY_PHOTOS = settings.getInt("gallery_max_display_photos", getResources().getInteger(R.integer.gallery_max_display_photos));
-        MAX_FILESIZE_DOWNLOAD = settings.getInt("max_filesize_download", getResources().getInteger(R.integer.max_filesize_download));
+        MAX_FILESIZE_DOWNLOAD = FolderChooserPrefSettings.getInstance().getMaxFileSize();
         FEEDS_LOCAL_GALLERY = settings.getBoolean(FEEDS_LOCAL_GALLERY_TAG, true);
         /*FEEDS_LIST_FLICKR_PUBLIC = settings.getBoolean(FEEDS_LIST_FLICKR_PUBLIC_TAG, false);
         FEEDS_LIST_FLICKR_RECENT = settings.getBoolean(FEEDS_LIST_FLICKR_RECENT_TAG, false);       
@@ -630,19 +625,38 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                 if (currentScreen != HomeScreenState.GALLERY) {
                     newGallery frag = new newGallery();
                     getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.fragment_anim_fadein,R.anim.fragment_anim_fadeout)
                             .replace(R.id.fragment_container, frag)
                             .commit();
                     currentScreen = HomeScreenState.GALLERY;
                 }
                 break;
+            case R.id.tab_map:
+                if (currentScreen != HomeScreenState.MAP) {
+                    MapFragment map = new MapFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.fragment_anim_fadein, R.anim.fragment_anim_fadeout)
+                            .replace(R.id.fragment_container, map)
+                            .commit();
+                    currentScreen = HomeScreenState.MAP;
+                }
+                break;
             case R.id.tab_camera:
-                Intent intent = new Intent(this, Camera2.class);
-                startActivity(intent);
+                if (currentScreen != HomeScreenState.CAMERA) {
+
+                    Camera2 camFrag = new Camera2();
+                    getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.fragment_anim_fadein,R.anim.fragment_anim_fadeout)
+                            .replace(R.id.fragment_container, camFrag)
+                            .commit();
+                    currentScreen = HomeScreenState.CAMERA;
+                }
                 break;
             case R.id.tab_upload:
                 if (currentScreen != HomeScreenState.UPLOAD) {
                     Upload frag = new Upload();
                     getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.fragment_anim_fadein,R.anim.fragment_anim_fadeout)
                             .replace(R.id.fragment_container, frag)
                             .commit();
                     currentScreen = HomeScreenState.UPLOAD;
@@ -652,6 +666,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                 if (currentScreen != HomeScreenState.SETTINGS) {
                     Settings frag = new Settings();
                     getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.fragment_anim_fadein,R.anim.fragment_anim_fadeout)
                             .replace(R.id.fragment_container, frag)
                             .commit();
                     currentScreen = HomeScreenState.SETTINGS;
@@ -704,7 +719,9 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
         // todo: add as needed
         GALLERY,
         UPLOAD,
-        SETTINGS
+        SETTINGS,
+        CAMERA,
+        MAP
     }
 
     public Animation outToLeftAnimation() {
@@ -728,13 +745,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
 //        mBottomNav.setVisibility(ViewGroup.GONE);
     }
 
-//    public static void ShowAd() {
-//        ad.setVisibility(ViewGroup.VISIBLE);
-//    }
 
-    public static void hideAd() {
-        ad.setVisibility(ViewGroup.GONE);
-    }
 
     @Override
     protected void onPause() {
@@ -745,7 +756,7 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
         editor.putInt("gallery_max_display_photos", MAX_DISPLAY_PHOTOS);
-        editor.putInt("max_filesize_download", MAX_FILESIZE_DOWNLOAD);
+        FolderChooserPrefSettings.getInstance().setMaxFileSize(MAX_FILESIZE_DOWNLOAD);
         editor.putBoolean(FEEDS_LIST_YAHOO_NEWS_TAG, FEEDS_LIST_YAHOO_NEWS);
         editor.putBoolean(FEEDS_LIST_FLICKR_PUBLIC_TAG, FEEDS_LIST_FLICKR_PUBLIC);
         editor.putBoolean(FEEDS_LIST_FLICKR_RECENT_TAG, FEEDS_LIST_FLICKR_RECENT);
@@ -792,43 +803,121 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
             e.printStackTrace();
         }
         if (gallery_delete) {
-            newGallery.update(PhimpMeGallery.num);
+            newGallery.update();
         }
 
     }
+    
+    private static String formatLatLongString(double val) {
+        StringBuilder b = new StringBuilder();
+        b.append((int) val);
+        b.append("/1,");
+        val = (val - (int) val) * 60;
+        b.append((int) val);
+        b.append("/1,");
+        val = (val - (int) val) * 60000;
+        b.append((int) val);
+        b.append("/1000");
+        return b.toString();
+    }
+
+    public void createExifData(ExifInterface exif, double latitude, double longitude){
+
+        if (latitude < 0) {
+            exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, "S");
+            latitude = -latitude;
+        } else {
+            exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE_REF, "N");
+        }
+
+        exif.setAttribute(ExifInterface.TAG_GPS_LATITUDE,
+                formatLatLongString(latitude));
+
+        if (longitude < 0) {
+            exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, "W");
+            longitude = -longitude;
+        } else {
+            exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF, "E");
+        }
+        exif.setAttribute(ExifInterface.TAG_GPS_LONGITUDE,
+                formatLatLongString(longitude));
+
+        try {
+            exif.saveAttributes();
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
+
+        exif.setAttribute(ExifInterface.TAG_DATETIME, (new Date(System.currentTimeMillis())).toString()); // set the date & time
+    }
+
 
     @Override
     public boolean onKeyDown(int keycode, KeyEvent event) {
         if (keycode == KeyEvent.KEYCODE_BACK) {
-            if (currentScreen != HomeScreenState.GALLERY) {
-                newGallery frag = new newGallery();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, frag)
-                        .commit();
-                currentScreen = HomeScreenState.GALLERY;
+            if (currentScreen == HomeScreenState.GALLERY ) {
+                newGallery fragment = (newGallery) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                if(!fragment.checkdeletablelist()) {
+                    fragment.onResume();
+                } else{
+                    showDialog();
+                }
+            } else if(currentScreen == HomeScreenState.UPLOAD){
+                Upload uploadfragment = (Upload) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                if(!uploadfragment.checkRemovableList()){
+                    uploadfragment.unselectAll();
+                } else{
+                    showDialog();
+                }
+            } else {
+                showDialog();
             }
-            else {
-                AlertDialog.Builder alertbox = new AlertDialog.Builder(ctx);
-                alertbox.setMessage(getString(R.string.exit_message));
-                alertbox.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                        System.exit(0);
-                    }
-                });
-                alertbox.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //Resume to current process
-                    }
-                });
-                alertbox.create().show();
-
-            }
-
         }
-        return super.onKeyDown(keycode, event);
+        if((keycode==KeyEvent.KEYCODE_VOLUME_DOWN || keycode==KeyEvent.KEYCODE_VOLUME_UP || keycode==KeyEvent.KEYCODE_FOCUS)&&(check_volume_btn_to_capture)&&(currentScreen==HomeScreenState.CAMERA)){
+            Camera2 camera2fragment = (Camera2) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+            camera2fragment.initPhimpMe(this);
+            AudioManager man = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+            switch (event.getKeyCode()) {
+                case KeyEvent.KEYCODE_VOLUME_UP:
+                    man.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                            AudioManager.ADJUST_RAISE,
+                            AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
+                    camera2fragment.takePic();
+                    return true;
+                case KeyEvent.KEYCODE_VOLUME_DOWN:
+                    man.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                            AudioManager.ADJUST_LOWER,
+                            AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE);
+                    camera2fragment.takePic();
+                    return true;
+                case KeyEvent.KEYCODE_FOCUS:
+                    camera2fragment.takePic();
+                    return true;
+                default:
+                    return false;
+            }
+        }
+        return false;
+    }
+
+    public void showDialog(){
+        AlertDialog.Builder alertbox = new AlertDialog.Builder(ctx);
+        alertbox.setMessage(getString(R.string.exit_message));
+        alertbox.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+                System.exit(0);
+            }
+        });
+        alertbox.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //Resume to current process
+            }
+        });
+        alertbox.create().show();
     }
 
     /*public boolean onTouchEvent(MotionEvent me) {
@@ -882,9 +971,13 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
         final String[] columns = {MediaStore.Images.Thumbnails._ID};
         final String[] data = {MediaStore.Images.Media.DATA};
         final String orderBy = MediaStore.Images.Media._ID;
-        Cursor pathcursor = this.managedQuery(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, data,
-                null, null, orderBy);
+        Cursor pathcursor = this.getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                data,
+                null,
+                null,
+                orderBy
+        );
         if (pathcursor != null) {
             int path_column_index = pathcursor
                     .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -902,9 +995,13 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                     Bitmap bmp = PhimpMe.cache.getCachePath(path);
 
                 } else if (c <= 20) {
-                    Cursor cursor = this.managedQuery(
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns,
-                            MediaStore.Images.Media.DATA + " = " + "\"" + path + "\"", null, MediaStore.Images.Media._ID);
+                    Cursor cursor = this.getContentResolver().query(
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                            columns,
+                            MediaStore.Images.Media.DATA + " = " + "\"" + path + "\"",
+                            null,
+                            MediaStore.Images.Media._ID
+                    );
                     if (cursor != null && cursor.getCount() > 0) {
                         cursor.moveToPosition(0);
                         id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
@@ -915,13 +1012,15 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
                     } else id = -1;
 
                     c++;
-
                 }
 
             }
             newGallery.update_number++;
+
         }
-        //pathcursor.close();
+
+       PhoneMedia.getUnanalysedFiles();
+
     }
 
     public static void stopThread() {
@@ -998,6 +1097,34 @@ public class PhimpMe extends AppCompatActivity implements BottomNavigationView.O
         } catch (IllegalStateException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        }
+    }
+
+    private class FragmentAdapter extends FragmentStatePagerAdapter{
+
+        public FragmentAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position){
+                case 0:
+                    return new newGallery();
+                case 3:
+                    return new MapFragment();
+                case 2:
+                    return new Camera2();
+                case 1:
+                    return new Upload();
+                default:
+                    return new Settings();
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 5;
         }
     }
 }

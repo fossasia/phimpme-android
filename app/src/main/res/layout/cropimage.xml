@@ -55,8 +55,7 @@
             android:id="@+id/image"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            class="vn.mbm.phimp.me.image.CropImageView"
-            android:background="#55000000" />
+            class="vn.mbm.phimp.me.image.CropImageView" />
 
         <ScrollView
             android:id="@+id/scrollView1"
@@ -76,7 +75,6 @@
                     android:id="@+id/horizontalScrollView1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#55000000"
                     android:padding="10dp" >
 
                     <LinearLayout
@@ -86,71 +84,113 @@
 
                         <ImageButton
                             android:id="@+id/btnRotateLeftRight"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:minWidth="60dp"
-                            android:layout_alignParentLeft="true"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:scaleType="centerCrop"
                             android:layout_alignParentTop="true"
                             android:background="@drawable/transparent"
                             android:src="@drawable/rotate"
-                            android:text="Rotate" />
-
+                            android:text="Rotate"
+                            android:layout_alignParentLeft="true"/>
                         <ImageButton
                             android:id="@+id/btnBlackAndWhite"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:minWidth="60dp"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:scaleType="centerCrop"
                             android:layout_alignParentTop="true"
-                            android:layout_toRightOf="@+id/btnRotateLeftRight"
                             android:background="@drawable/transparent"
                             android:text="B &amp; W"
                             android:src="@drawable/blackwhite" />
-
                         <ImageButton
                             android:id="@+id/btnSaphia"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:minWidth="60dp"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:scaleType="centerCrop"
                             android:layout_alignParentTop="true"
-                            android:layout_toRightOf="@+id/btnBlackAndWhite"
                             android:background="@drawable/transparent"
                             android:text="Sepia"
                             android:src="@drawable/sepia" />
-
                         <ImageButton
-                            android:id="@+id/btnNagative"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:minWidth="60dp"
+                            android:id="@+id/btnNegative"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:scaleType="centerCrop"
                             android:layout_alignParentTop="true"
-                            android:layout_toRightOf="@+id/btnSaphia"
                             android:background="@drawable/transparent"
                             android:text="Negative"
                             android:src="@drawable/negative" />
-
-                        <ImageButton
-                            android:id="@+id/btnOriginal"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:minWidth="60dp"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_toRightOf="@+id/btnNagative"
-                            android:background="@drawable/transparent"
-                            android:src="@drawable/original"
-                            android:text="Original" />
-
                         <ImageButton
                             android:id="@+id/btnRotateTopDown"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:minWidth="60dp"
-                            android:layout_alignParentRight="true"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
                             android:layout_alignParentTop="true"
-                            android:layout_toRightOf="@+id/btnOriginal"
                             android:background="@drawable/transparent"
                             android:src="@drawable/flip"
                             android:text="Flip" />
+                        <ImageButton
+                            android:id="@+id/btnalpha"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:scaleType="centerCrop"
+                            android:layout_alignParentTop="true"
+                            android:background="@drawable/transparent"
+                            android:src="@drawable/blue_alpha_filter1"
+                            android:text="Blue" />
+                        <ImageButton
+                            android:id="@+id/btnpink"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:scaleType="centerCrop"
+                            android:layout_alignParentTop="true"
+                            android:background="@drawable/transparent"
+                            android:src="@drawable/pink_alpha_filter1"
+                            android:text="Pink" />
+                        <ImageButton
+                            android:id="@+id/btnpolaroid"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:scaleType="centerCrop"
+                            android:layout_alignParentTop="true"
+                            android:background="@drawable/transparent"
+                            android:src="@drawable/polaroid_filter1"
+                            android:text="Polaroid" />
+                        <ImageButton
+                            android:id="@+id/btnblur"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:scaleType="centerCrop"
+                            android:layout_alignParentTop="true"
+                            android:background="@drawable/transparent"
+                            android:src="@drawable/blur_filter1"
+                            android:text="Blur" />
+                        <ImageButton
+                            android:id="@+id/btnsharp"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:scaleType="centerCrop"
+                            android:layout_alignParentTop="true"
+                            android:background="@drawable/transparent"
+                            android:src="@drawable/sharp_filter1"
+                            android:text="Sharp" />
+                        <ImageButton
+                            android:id="@+id/btnedge"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:scaleType="centerCrop"
+                            android:layout_alignParentTop="true"
+                            android:background="@drawable/transparent"
+                            android:src="@drawable/edge_filter1"
+                            android:text="Edge" />
+                        <ImageButton
+                            android:id="@+id/btnfuzz"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:scaleType="centerCrop"
+                            android:layout_alignParentTop="true"
+                            android:background="@drawable/transparent"
+                            android:src="@drawable/fuzz_filter1"
+                            android:text="Fuzz" />
+
                     </LinearLayout>
                 </HorizontalScrollView>
 
@@ -264,5 +304,4 @@
         </ScrollView>
 
     </LinearLayout>
-
 </FrameLayout>

@@ -14,256 +14,336 @@
      limitations under the License.
 -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
 
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="horizontal" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal">
 
+    <HorizontalScrollView
+        android:id="@+id/linear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
         <LinearLayout
-            android:id="@+id/linear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center" >
 
             <ImageButton
                 android:id="@+id/btnOriginal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"              
-                android:contentDescription="@string/empty"
-                android:src="@drawable/camera_edit_filter_normal_default" />
+                android:layout_width="100dp"
+                android:scaleType="centerCrop"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:src="@drawable/original_filter" />
 
             <ImageButton
                 android:id="@+id/btnBlackAndWhite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/empty"
-                android:src="@drawable/camera_edit_filter_inkwell_default" />
+                android:layout_width="100dp"
+                android:scaleType="centerCrop"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:src="@drawable/inkwell_filter"/>
 
             <ImageButton
-                android:id="@+id/btnNagative"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/empty"
-                android:src="@drawable/nagative" />
+                android:id="@+id/btnNegative"
+                android:layout_width="100dp"
+                android:scaleType="centerCrop"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:src="@drawable/negative_filter" />
 
             <ImageButton
                 android:id="@+id/btnSaphia"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/empty"
-                android:src="@drawable/saphia" />
+                android:layout_width="100dp"
+                android:scaleType="centerCrop"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:src="@drawable/sepia_filter" />
 
+            <ImageButton
+                android:id="@+id/btnalpha"
+                android:layout_width="100dp"
+                android:scaleType="centerCrop"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:src="@drawable/blue_alpha_filter" />
+
+            <ImageButton
+                android:id="@+id/btnpink"
+                android:layout_width="100dp"
+                android:scaleType="centerCrop"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:src="@drawable/pink_alpha_filter" />
+
+            <ImageButton
+                android:id="@+id/btnpolaroid"
+                android:layout_width="100dp"
+                android:scaleType="centerCrop"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:src="@drawable/polaroid_filter" />
+
+            <ImageButton
+                android:id="@+id/btnblur"
+                android:layout_width="100dp"
+                android:scaleType="centerCrop"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:src="@drawable/blur_filter"/>
+
+            <ImageButton
+                android:id="@+id/btnsharp"
+                android:layout_width="100dp"
+                android:scaleType="centerCrop"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:src="@drawable/sharp_filter"/>
+
+            <ImageButton
+                android:id="@+id/btnedge"
+                android:layout_width="100dp"
+                android:scaleType="centerCrop"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:src="@drawable/edge_filter" />
+
+            <ImageButton
+                android:id="@+id/btnfuzz"
+                android:layout_width="100dp"
+                android:scaleType="centerCrop"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:src="@drawable/fuzz_filter"/>
+            <ImageButton
+                android:id="@+id/btnSnow"
+                android:layout_width="100dp"
+                android:scaleType="centerCrop"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/btnSnow"
+                android:contentDescription="@string/empty"
+                android:src="@drawable/snow_filter" />
+
+            <ImageButton
+                android:id="@+id/btnRoundCorner"
+                android:layout_width="100dp"
+                android:scaleType="centerCrop"
+                android:layout_height="100dp"
+                android:background="@null"
+                android:src="@drawable/round_filter"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/btnRoundCorner"
+                android:contentDescription="@string/empty" />
         </LinearLayout>
 
-        <view
-            android:id="@+id/image"
+
+    </HorizontalScrollView>
+
+    <view
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/scrollView1"
+        android:layout_below="@+id/flip"
+        class="vn.mbm.phimp.me.gallery3d.media.CropImageView" />
+
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:id="@+id/scrollView1"
+        android:layout_above="@+id/relativeLayout1"
+        android:padding="8dp"
+        android:layout_alignParentLeft="true" >
+
+        <LinearLayout
+            android:id="@+id/LinearLayout01"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_above="@+id/scrollView1"
-            android:layout_below="@+id/linear"
-            class="vn.mbm.phimp.me.gallery3d.media.CropImageView"
-            android:background="#55000000" />
+            android:layout_height="192dp"
 
-        <RelativeLayout
-            android:id="@+id/relativeLayout1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:orientation="horizontal"
-            android:paddingLeft="10dip"
-            android:paddingRight="10dip" >
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical" >
 
-            <Button
-                android:id="@+id/save"
-                android:layout_width="100dip"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:text="@string/crop_save_text" />
-
-            <Button
-                android:id="@+id/discard"
-                android:layout_width="100dip"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:text="@string/crop_discard_text" />
-        </RelativeLayout>
-
-        <ScrollView
-            android:id="@+id/scrollView1"
-            android:layout_width="fill_parent"
-            android:layout_height="200dp"
-            android:layout_above="@+id/relativeLayout1"
-            android:layout_alignParentLeft="true" >
-
-            <LinearLayout
-                android:id="@+id/LinearLayout01"
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_password"
                 android:layout_width="match_parent"
-                android:layout_height="192dp"
-                
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:orientation="vertical" >
+                android:layout_height="wrap_content">
 
-                <!-- <HorizontalScrollView
-                    android:id="@+id/horizontalScrollView1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" > -->
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:orientation="horizontal" >
-
-                        <ImageButton
-                            android:id="@+id/btnRotateLeftRight"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentTop="true"
-                            android:contentDescription="@string/empty"
-                            android:src="@drawable/left_right_rotate" />
-
-                        <ImageButton
-                            android:id="@+id/btnSnow"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_toRightOf="@+id/btnSnow"
-                            android:contentDescription="@string/empty"
-                            android:src="@drawable/snow" />
-
-                        <ImageButton
-                            android:id="@+id/btnRoundCorner"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentTop="true"
-                            android:layout_toRightOf="@+id/btnRoundCorner"
-                            android:contentDescription="@string/empty"
-                            android:src="@drawable/round_cornor" />
-
-                        <ImageButton
-                            android:id="@+id/btnRotateTopDown"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_toRightOf="@+id/btnOriginal"
-                            android:contentDescription="@string/empty"
-                            android:src="@drawable/top_down_rotate" />
-                    </LinearLayout>
-               <!--  </HorizontalScrollView> -->
-
-                <TextView
-                    android:id="@+id/TextView02"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:text="@string/title" />
-
-                <EditText
+                <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/txtUploadPhotoTitle"
                     android:layout_width="match_parent"
+                    android:hint="@string/title"
+                    android:padding="4dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:inputType="textNoSuggestions" >
-                </EditText>
+                </android.support.v7.widget.AppCompatEditText>
+            </android.support.design.widget.TextInputLayout>
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="vertical" >
 
-                <LinearLayout
-                    android:id="@+id/linearLayout2"
+                <RelativeLayout
+                    android:id="@+id/relativeLayout4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:orientation="vertical" >
+                    android:layout_marginBottom="10dp" >
 
-                    <RelativeLayout
-                        android:id="@+id/relativeLayout4"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/TextView03"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp" >
+                        android:layout_centerVertical="true"
+                        android:text="@string/geolocation" />
 
-                        <TextView
-                            android:id="@+id/TextView03"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:text="@string/geolocation" />
-
-                        <ImageButton
-                            android:id="@+id/btnUploadPhotoPutPos"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_alignParentTop="true"
-                            android:contentDescription="@string/empty"
-                            android:src="@drawable/maps" />
-                    </RelativeLayout>
-
-                    <LinearLayout
-                        android:id="@+id/linearLayout3"
-                        android:layout_width="match_parent"
+                    <android.support.v7.widget.AppCompatImageButton
+                        android:id="@+id/btnUploadPhotoPutPos"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp" >
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:contentDescription="@string/empty"
+                        app:srcCompat="@drawable/ic_my_location_black_24dp"
+                        tools:ignore="MissingPrefix"/>
+                </RelativeLayout>
 
-                        <TextView
-                            android:id="@+id/textView6"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="40dp"
-                            android:text="@string/longitude" />
+                <LinearLayout
+                    android:id="@+id/linearLayout3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp" >
 
-                        <EditText
-                            android:id="@+id/txtUploadPhotoLongtitude"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:inputType="numberDecimal|numberSigned" />
+                    <TextView
+                        android:id="@+id/textView6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="40dp"
+                        android:text="@string/longitude" />
 
-                    </LinearLayout>
+                    <EditText
+                        android:id="@+id/txtUploadPhotoLongtitude"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="4dp"
+                        android:inputType="numberDecimal|numberSigned" />
 
-                    <LinearLayout
-                        android:id="@+id/linearLayout4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" >
-
-                        <TextView
-                            android:id="@+id/textView7"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="50dp"
-                            android:text="@string/latitude" />
-
-                        <EditText
-                            android:id="@+id/txtUploadPhotoLatitude"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:inputType="numberDecimal|numberSigned" />
-                    </LinearLayout>
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/TextView04"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:text="@string/tags" />
+                <LinearLayout
+                    android:id="@+id/linearLayout4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
 
-                <EditText
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="50dp"
+                        android:text="@string/latitude" />
+
+                    <EditText
+                        android:id="@+id/txtUploadPhotoLatitude"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="4dp"
+                        android:inputType="numberDecimal|numberSigned" />
+                </LinearLayout>
+            </LinearLayout>
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/txtUploadPhotoTags"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:hint="@string/tags_hint"
+                    android:padding="4dp"
                     android:inputType="textNoSuggestions"
                     android:lines="3" />
-            </LinearLayout>
-        </ScrollView>
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+
+            android:background="@color/black_trans"
+            />
+        <Button
+            android:id="@+id/save"
+            android:layout_width="100dip"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:layout_alignParentLeft="true"
+            android:text="@string/crop_save_text" />
+
+        <Button
+            android:id="@+id/discard"
+            android:layout_width="100dip"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dip"
+            android:paddingRight="10dip"
+            android:layout_alignParentRight="true"
+            android:text="@string/crop_discard_text" />
     </RelativeLayout>
 
-</FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:id="@+id/flip"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_below="@+id/linear"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/btnRotateLeftRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:contentDescription="@string/empty"
+            app:srcCompat="@drawable/ic_rotate_left_black_24dp"
+            tools:ignore="MissingPrefix"/>
+
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/btnRotateTopDown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            app:srcCompat="@drawable/ic_flip_black_24dp"
+            tools:ignore="MissingPrefix"/>
+    </LinearLayout>
+</RelativeLayout>
+

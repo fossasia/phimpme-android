@@ -5,11 +5,11 @@ jdk:
 
 env:
   global:
-    - ANDROID_API_LEVEL=23
-    - ANDROID_BUILD_TOOLS_VERSION=24.0.0
+    - ANDROID_API_LEVEL=25
+    - ANDROID_BUILD_TOOLS_VERSION=25.0.2
     - ANDROID_ABI=armeabi-v7a
     - ANDROID_TAG=google_apis
-    - ANDROID_TARGET=android-23
+    - ANDROID_TARGET=android-25
     - ADB_INSTALL_TIMEOUT=20 # minutes (2 minutes by default)
 
 android:
@@ -30,13 +30,41 @@ android:
 
     # Specify at least one system image
     - sys-img-armeabi-v7a-google_apis-$ANDROID_API_LEVEL
+    
+# prevents reuploading of Cache
+before_cache:
+  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 
-script: 
+# list of directories to Cache
+cache:
+  directories:
+    - "${TRAVIS_BUILD_DIR}/android/gradle/caches/"
+    - "${TRAVIS_BUILD_DIR}/android/gradle/wrapper/dists/"
+    - "$HOME/android/.gradle/caches/"
+    - "$HOME/android/.gradle/wrapper/"
+    - "$HOME/.android/build-cache"
+
+licenses:
+    - 'android-sdk-preview-license-.+'
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
+
+before_script:
+  - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
+  - emulator -avd test -no-audio -no-window &
+  - sleep 300
+  - adb shell input keyevent 82 &
+
+script:
+ - ./gradlew connectedAndroidTest
  - ./gradlew build
+ - bundle install
+ - bundle exec danger
+ - chmod +x upload_apk_forks.sh
 
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
-  - ./upload-apk.sh
-
+ - bash <(curl -s https://codecov.io/bash)
+ - 'if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./upload-apk.sh; fi'
+ - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then ./upload_apk_forks.sh; fi'
 notifications:
   slack: fossasia:JgzycrBUs0nKnmJhsAxCB4bL

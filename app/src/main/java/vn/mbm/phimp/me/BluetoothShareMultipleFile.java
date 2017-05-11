@@ -1,11 +1,5 @@
 package vn.mbm.phimp.me;
 
-import it.kynetics.bluetooth.sendfile.opp.BluetoothShare;
-
-import java.io.File;
-import java.util.Set;
-import java.util.UUID;
-
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -29,6 +23,14 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
+import java.util.Set;
+import java.util.UUID;
+
+import it.kynetics.bluetooth.sendfile.opp.BluetoothShare;
+
+import static vn.mbm.phimp.me.PhimpMe.ThemeDark;
 
 public class BluetoothShareMultipleFile extends Activity {
 
@@ -57,6 +59,10 @@ public class BluetoothShareMultipleFile extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		//set dark theme
+		if (Utility.getTheme(getApplicationContext()) == ThemeDark) {
+			setTheme(R.style.AppTheme_Dark);
+		}
 		setContentView(R.layout.bluetooth_share_multiple);
 		setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);	
 		//copy
@@ -149,11 +155,11 @@ public class BluetoothShareMultipleFile extends Activity {
 	public void checkBTState(){
     	adap = BluetoothAdapter.getDefaultAdapter();
     	if ( adap == null ) {
-    		Toast.makeText(getApplicationContext(),"Bluetooth NOT support",200).show();
+    		Toast.makeText(getApplicationContext(),"Bluetooth NOT support",Toast.LENGTH_LONG).show();
     	}else{
     		if(adap.isEnabled()){
     			if(adap.isDiscovering()){
-    				Toast.makeText(BluetoothShareMultipleFile.this,"Bluetooth is currently in device discovery process.",0);
+    				Toast.makeText(BluetoothShareMultipleFile.this,"Bluetooth is currently in device discovery process.",Toast.LENGTH_SHORT);
     			}else{
     				adap.startDiscovery();
     				txt_scanning.setVisibility(View.VISIBLE);

@@ -3,16 +3,19 @@ package vn.mbm.phimp.me;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.Fragment;
 import android.app.ProgressDialog;
-import android.content.*;
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Location;
-import android.location.LocationListener;
+import android.graphics.Color;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,46 +23,86 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
-import android.widget.*;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import com.facebook.*;
-import com.facebook.share.model.SharePhoto;
-import com.facebook.share.model.SharePhotoContent;
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.facebook.share.widget.ShareDialog;
-import com.google.android.maps.GeoPoint;
 import com.joooid.android.model.User;
 import com.joooid.android.xmlrpc.Constants;
 import com.joooid.android.xmlrpc.JoooidRpc;
 import com.tani.app.ui.IconContextMenu;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.wordpress.android.NewAccount;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
-import java.util.logging.Handler;
 
 import vn.mbm.phimp.me.database.AccountItem;
 import vn.mbm.phimp.me.database.DrupalItem;
+import vn.mbm.phimp.me.database.FacebookItem;
 import vn.mbm.phimp.me.database.ImageshackItem;
 import vn.mbm.phimp.me.database.JoomlaItem;
 import vn.mbm.phimp.me.feedservice.FacebookActivity;
 import vn.mbm.phimp.me.gallery3d.media.CropImage;
-import vn.mbm.phimp.me.services.*;
+import vn.mbm.phimp.me.services.DeviantArtService;
+import vn.mbm.phimp.me.services.DrupalServices;
+import vn.mbm.phimp.me.services.FacebookServices;
+import vn.mbm.phimp.me.services.FlickrServices;
+import vn.mbm.phimp.me.services.ImageshackServices;
+import vn.mbm.phimp.me.services.ImgurServices;
+import vn.mbm.phimp.me.services.KaixinServices;
+import vn.mbm.phimp.me.services.PicasaServices;
+import vn.mbm.phimp.me.services.QQServices;
+import vn.mbm.phimp.me.services.S500pxService;
+import vn.mbm.phimp.me.services.SohuServices;
+import vn.mbm.phimp.me.services.TumblrServices;
+import vn.mbm.phimp.me.services.TwitterServices;
+import vn.mbm.phimp.me.services.VKServices;
+import vn.mbm.phimp.me.services.Wordpress;
 import vn.mbm.phimp.me.utils.Commons;
+import vn.mbm.phimp.me.utils.FileUtils;
+import vn.mbm.phimp.me.utils.Image;
+import vn.mbm.phimp.me.utils.Params;
+import vn.mbm.phimp.me.utils.PrefManager;
 import vn.mbm.phimp.me.utils.geoDegrees;
+
+import static vn.mbm.phimp.me.utils.Constants.TYPE_MULTI_PICKER;
+
+//import com.google.android.maps.GeoPoint;
 
 public class Upload extends android.support.v4.app.Fragment {
     private final int CONTEXT_MENU_ID = 1;
@@ -128,13 +171,14 @@ public class Upload extends android.support.v4.app.Fragment {
     ListView listAccounts;
 
     GridView listPhotoUpload;
+    TextView noPhotos;
 
-    ImageButton btnAdd;
+    ImageView btnAdd;
 
-    ImageButton btnPhotoAdd;
+    ImageView btnPhotoAdd;
 
     //bluetooth share
-    public static ImageButton btnBluetoothShare;
+    public static ImageView btnBluetoothShare;
 
     static String[] path;
 
@@ -145,7 +189,7 @@ public class Upload extends android.support.v4.app.Fragment {
 
     ImageView imgPreview;
 
-    Button btnUpload;
+    ImageView btnUpload;
 
     EditText txtPhotoTitle;
 
@@ -163,7 +207,18 @@ public class Upload extends android.support.v4.app.Fragment {
 
     String[] service;
 
-    public static String imagelist = "";
+    int color;
+
+    // Views to toggle
+    LinearLayout clearPanel, uploadPanel;
+    // Upload panel lable
+    TextView panelLable;
+    // Image buttons to clear panel
+    ImageView removeSelectedBtn, selectAllBtn, clearSelectionBtn;
+    // Upload image list and temporary list to store removable items
+    public static ArrayList<String> uploadGridList = new ArrayList<>();
+    private ArrayList<String> removableList;
+    private ArrayList<String> uploadedImageHashList;
 
     private static String longtitude = "", latitude = "", title = "";
 
@@ -186,20 +241,33 @@ public class Upload extends android.support.v4.app.Fragment {
 
     ProgressDialog gpsloading;
 
+    private Toolbar uploadToolBar;
+
     long totalSize;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View decorView = getActivity().getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_VISIBLE;
+        decorView.setSystemUiVisibility(uiOptions);
+
+
+
         return inflater.inflate(R.layout.upload, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        color = getActivity().getResources().getColor(R.color.icongrey);
         FacebookSdk.sdkInitialize(getActivity().getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
+
+
+        uploadToolBar = (Toolbar) getView().findViewById(R.id.toolbar_upload);
+        uploadToolBar.setTitle("Upload Photos");
 
         final ShareDialog shareDialog = new ShareDialog(getActivity());
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -208,42 +276,108 @@ public class Upload extends android.support.v4.app.Fragment {
         StrictMode.setThreadPolicy(policy);
         ctx = getContext();
         Log.d("Upload", "Upload Start");
-
-        listAccounts = (ListView) getView().findViewById(R.id.listUploadAccounts);
-
-        listPhotoUpload = (GridView) getView().findViewById(R.id.photolistview);
-        if (!imagelist.equals(""))
-            listPhotoUpload.setAdapter(new ImageAdapter(ctx));
-        listPhotoUpload.setOnItemClickListener(new OnItemClickListener() {
-
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                String path[] = imagelist.split("#");
-                Intent _intent = new Intent();
-                _intent.setClass(ctx, CropImage.class);
-                _intent.putExtra("image-path", path[position]);
-                _intent.putExtra("longtitude", longtitude);
-                _intent.putExtra("latitude", latitude);
-                _intent.putExtra("title", title);
-                _intent.putExtra("position", position);
-                _intent.putExtra("aspectX", 0);
-                _intent.putExtra("aspectY", 0);
-                _intent.putExtra("scale", true);
-                _intent.putExtra("activityName", "Upload");
-                startActivityForResult(_intent, CROP_IMAGE);
+        noPhotos = (TextView) view.findViewById(R.id.nophotos);
+        // Initiate toggle panels
+        clearPanel = (LinearLayout) view.findViewById(R.id.clearButtonPanel);
+        uploadPanel = (LinearLayout) view.findViewById(R.id.uploadButtonPanel);
+        clearPanel.setVisibility(View.GONE);
+        uploadPanel.setVisibility(View.VISIBLE);
+        // Set panel title as "Upload"
+        panelLable = (TextView) view.findViewById(R.id.uploadPanelLable);
+        panelLable.setText(R.string.upload);
+        // Initiate removable upload item list
+        removableList = new ArrayList<>();
+        // Initiate upload image hash list
+        uploadedImageHashList = new ArrayList<>();
+        // Initiate clear panel buttons
+        selectAllBtn = (ImageView) view.findViewById(R.id.btnSelectAll);
+        selectAllBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removableList.clear();
+                for (String path : uploadGridList) {
+                    removableList.add(path);
+                }
+                ((ImageAdapter) listPhotoUpload.getAdapter()).notifyDataSetChanged();
+                int delCount = removableList.size();
+                String newTitle;
+                if (delCount > 0) {
+                    newTitle = delCount + (delCount == 1 ? " image" : " images") + " selected";
+                    toggleButtonPanel(true);
+                } else {
+                    newTitle =  getResources().getString(R.string.upload);
+                    toggleButtonPanel(false);
+                }
+                panelLable.setText(newTitle);
             }
         });
+
+        clearSelectionBtn = (ImageView) view.findViewById(R.id.btnDeselectAll);
+        clearSelectionBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                unselectAll();
+            }
+        });
+
+        removeSelectedBtn = (ImageView) view.findViewById(R.id.btnClearSelected);
+        removeSelectedBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder d = new AlertDialog.Builder(getContext());
+                d.setMessage(R.string.AlertMessage).setCancelable(false).setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (!removableList.isEmpty()) {
+                                    uploadGridList.removeAll(removableList);
+                                    for(String imagePath : removableList) {
+                                        File imageFile = new File(imagePath);
+                                        try {
+                                            uploadedImageHashList.remove(FileUtils.getHash(imageFile));
+                                        } catch (NoSuchAlgorithmException | IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                    removableList.clear();
+                                    ((ImageAdapter) listPhotoUpload.getAdapter()).notifyDataSetChanged();
+                                    panelLable.setText(getResources().getString(R.string.upload));
+                                    toggleButtonPanel(false);
+                                    if (uploadGridList.isEmpty()) {
+                                        noPhotos.setVisibility(View.VISIBLE);
+                                    }
+                                }
+                            }
+                        }).
+                        setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert = d.create();
+                alert.setTitle(R.string.AlertTitle);
+                alert.show();
+            }
+        });
+
+        listAccounts = (ListView) getView().findViewById(R.id.listUploadAccounts);
+        listPhotoUpload = (GridView) getView().findViewById(R.id.photolistview);
+        if (!uploadGridList.isEmpty()) {
+            listPhotoUpload.setAdapter(new ImageAdapter(ctx));
+        }
 
 		/*
          * bluetooth share
 		 */
-        btnBluetoothShare = (ImageButton) getView().findViewById(R.id.upload_sendDirectly);
+        btnBluetoothShare = (ImageView) getView().findViewById(R.id.upload_sendDirectly);
         btnBluetoothShare.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (imagelist != "") {
+                if (!uploadGridList.isEmpty()) {
                     Intent intent = new Intent();
                     intent.setClass(getContext(), BluetoothShareMultipleFile.class);
-                    intent.putExtra("imagelist", imagelist);
+                    intent.putExtra("imagelist", TextUtils.join("#", uploadGridList));
                     intent.putExtra("activityName", "Upload");
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
@@ -255,7 +389,7 @@ public class Upload extends android.support.v4.app.Fragment {
             }
         });
 
-        btnUpload = (Button) getView().findViewById(R.id.btnUploadPhoto);
+        btnUpload = (ImageView) getView().findViewById(R.id.btnUploadPhoto);
         if (savedInstanceState != null) {
         }
 
@@ -266,16 +400,16 @@ public class Upload extends android.support.v4.app.Fragment {
                     if (PhimpMe.checked_accounts.size() > 0) {
                         Log.d("Hon", String.valueOf(PhimpMe.checked_accounts.size()));
                         if (checkListAccount()) {
-                            if (imagelist != "") {
+                            if (!uploadGridList.isEmpty()) {
                                 Log.d("Upload", "start");
                                 Bundle data = new Bundle();
                                 data.putStringArray("id", id);
                                 data.putStringArray("service", service);
                                 data.putStringArray("name", name);
-                                data.putString("imagelist", imagelist);
+                                data.putString("imagelist", TextUtils.join("#", uploadGridList));
                                 Intent uitent = new Intent(ctx, UploadProgress.class);
                                 uitent.putExtras(data);
-                                Log.d("UploadProgress","start : "+name);
+                                Log.d("UploadProgress", "start : " + name);
                                 startActivity(uitent);
                             } else {
                                 Commons.AlertLog(ctx, getString(R.string.error_upload_no_photo), getString(R.string.accept)).show();
@@ -293,27 +427,109 @@ public class Upload extends android.support.v4.app.Fragment {
             }
         });
 
-        btnAdd = (ImageButton) getView().findViewById(R.id.btnUploadAccountAdd);
-        btnAdd.setOnTouchListener(new OnTouchListener() {
-            @SuppressWarnings("deprecation")
+        btnAdd = (ImageView) getView().findViewById(R.id.btnUploadAccountAdd);
+        btnAdd.setOnClickListener(new OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                DialogFragment newFragment = new AddAccountDialogFragment();
-                newFragment.show(getFragmentManager(), "dialog");
-                return false;
+            public void onClick(View v) {
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(ctx);
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.dialog_add_account, null);
+                LoginButton facebookAcc = (LoginButton)dialogView.findViewById(R.id.facebook_account);
+                Button wordpressAcc = (Button)dialogView.findViewById(R.id.wordpress_account);
+                dialogBuilder.setView(dialogView);
+                final AlertDialog alertDialog = dialogBuilder.create();
+                facebookAcc.setReadPermissions(Arrays.asList(
+                        "public_profile", "email", "user_birthday", "user_friends"));
+                facebookAcc.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+
+                        final AccessToken accessToken = loginResult.getAccessToken();
+                        final String at = loginResult.getAccessToken().getToken();
+                        final Profile profile = Profile.getCurrentProfile();
+                        GraphRequest request = GraphRequest.newMeRequest(
+                                AccessToken.getCurrentAccessToken(),
+                                new GraphRequest.GraphJSONObjectCallback() {
+                                    @Override
+                                    public void onCompleted(JSONObject object, GraphResponse response) {
+                                        Log.v("LoginActivity", response.toString());
+
+                                        try {
+                                            String email = object.getString("email");
+                                            //String profile_url = object.getString("picture");
+                                            String user_id = accessToken.getUserId();
+                                            String user_name = accessToken.getUserId(); //The username is no longer available in v2.
+                                            String user_fullname = profile.getName();
+                                            String profile_url = String.valueOf(profile.getLinkUri());
+                                            try {
+                                                long account_id = AccountItem.insertAccount(ctx, null, user_fullname, "facebook", "1");
+                                                Log.d("ID", String.valueOf(account_id));
+                                                if (account_id > 0) {
+                                                    if (FacebookItem.insertFacebookAccount(ctx, String.valueOf(account_id), at, user_id, user_name, user_fullname, email, profile_url)) {
+                                                        Toast.makeText(ctx, "Insert account '" + user_fullname + "' (Facebook) SUCCESS!", Toast.LENGTH_LONG).show();
+                                                    } else {
+                                                        Toast.makeText(ctx, "Insert account '" + user_fullname + "' (Facebook) FAIL!", Toast.LENGTH_LONG).show();
+                                                    }
+                                                }
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                                Log.e("webkit", "Facebook Service - " + e.toString());
+                                            }
+
+
+                                            PrefManager.putBoolean(PrefManager.LOGIN_STATUS, true);
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
+                        Bundle parameters = new Bundle();
+                        parameters.putString("fields", "id,first_name,last_name,picture,name,email,gender,birthday");
+                        request.setParameters(parameters);
+                        request.executeAsync();
+                        //check=true;
+                        PhimpMe.add_account_upload = true;
+                        PhimpMe.add_account_setting = true;
+                        getActivity().finish();
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+
+                    @Override
+                    public void onError(FacebookException error) {
+
+                    }
+                });
+                wordpressAcc.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getActivity().showDialog(5); // DIALOG_ADD_ACCOUNT_WORDPRESS = 5
+                    }
+                });
+                alertDialog.show();
             }
         });
 
-        btnPhotoAdd = (ImageButton) getView().findViewById(R.id.btnUploadPhotoAdd);
+        btnPhotoAdd = (ImageView) getView().findViewById(R.id.btnUploadPhotoAdd);
         btnPhotoAdd.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ctx, PhotoSelect.class);
-                startActivityForResult(intent, SELECT_IMAGE_FROM_GALLERY);
+                Intent intent = new Intent(ctx, ImagePickerActivity.class);
+                Params params = new Params();
+                params.setPickerLimit(20);
+                params.setActionButtonColor(fetchAccentColor());
+                params.setToolbarColor(fetchAccentColor());
+                params.setColumnCount(3);
+                params.setButtonTextColor(fetchAccentColor());
+                intent.putExtra(vn.mbm.phimp.me.utils.Constants.KEY_PARAMS, params);
+                startActivityForResult(intent, TYPE_MULTI_PICKER);
             }
         });
-		/*btnPhotoAdd.setOnTouchListener(new OnTouchListener()
-		{
+        /*btnPhotoAdd.setOnTouchListener(new OnTouchListener()
+        {
 			@SuppressWarnings("deprecation")
 			@Override
 			public boolean onTouch(View v, MotionEvent event)
@@ -322,7 +538,7 @@ public class Upload extends android.support.v4.app.Fragment {
 				return false;
 			}
 		});*/
-		/*
+        /*
 		 * Thong - Init services
 		 */
         TumblrServices.init();
@@ -474,21 +690,44 @@ public class Upload extends android.support.v4.app.Fragment {
         });
     }
 
-    class ImageAdapter extends BaseAdapter {
-        private String[] path;
+    public boolean checkRemovableList(){
+        return removableList.isEmpty();
+    }
 
+    public void unselectAll(){
+        removableList.clear();
+        ((ImageAdapter) listPhotoUpload.getAdapter()).notifyDataSetChanged();
+        panelLable.setText(getResources().getString(R.string.upload));
+        toggleButtonPanel(false);
+    }
+
+    private int fetchAccentColor() {
+        TypedValue typedValue = new TypedValue();
+        TypedArray a = getActivity().obtainStyledAttributes(typedValue.data, new int[]{R.attr.colorPrimaryTheme});
+        int color = a.getColor(0, 0);
+        a.recycle();
+        return color;
+    }
+
+    class ImageAdapter extends BaseAdapter {
+
+        private ArrayList<String> uploadImageList = new ArrayList<>();
         private LayoutInflater mInflater;
 
         public ImageAdapter(Context c) {
-            mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            path = imagelist.split("#");
 
+            mInflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            uploadImageList = uploadGridList;
+            if (!uploadGridList.isEmpty()) {
+                noPhotos.setVisibility(View.GONE);
+            }
         }
 
         public int getCount() {
-            return path.length;
+            return uploadImageList.size();
         }
 
+        @Override
         public Object getItem(int position) {
             return null;
         }
@@ -497,119 +736,214 @@ public class Upload extends android.support.v4.app.Fragment {
             return 0;
         }
 
-        @SuppressWarnings("deprecation")
-        public View getView(int position, View convertView, ViewGroup parent) {
-            GridItem holder;
+        public View getView(final int position, View convertView, final ViewGroup parent) {
+            // Holder for the view
+            final GridItem holder;
+            // Initiate holder
             if (convertView == null) {
                 holder = new GridItem();
                 convertView = mInflater.inflate(R.layout.gridviewitem, null);
-                holder.imageview = (ImageView) convertView
-                        .findViewById(R.id.ImageGrid);
-                holder.imageview.setMaxWidth(100);
-                holder.imageview.setMaxHeight(100);
+                holder.imageview = (ImageView) convertView.findViewById(R.id.ImageGrid);
                 holder.imageview.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                holder.imageview.setPadding(8, 8, 8, 8);
-                holder.title = (TextView) convertView
-                        .findViewById(R.id.ImTitle);
-                holder.tags = (TextView) convertView
-                        .findViewById(R.id.ImTags);
-                holder.lati = (TextView) convertView
-                        .findViewById(R.id.ImLati);
-                holder.longi = (TextView) convertView
-                        .findViewById(R.id.ImLongi);
+                holder.checkView = (ImageView) convertView.findViewById(R.id.ImCheck);
+                holder.title = (TextView) convertView.findViewById(R.id.ImTitle);
+                holder.tags = (TextView) convertView.findViewById(R.id.ImTags);
+                holder.lati = (TextView) convertView.findViewById(R.id.ImLati);
+                holder.longi = (TextView) convertView.findViewById(R.id.ImLongi);
                 convertView.setTag(holder);
             } else {
                 holder = (GridItem) convertView.getTag();
             }
-            String tmp[] = path[position].split(";");
+            final String tmp[] = String.valueOf(uploadImageList.get(position)).split(";");
             Uri imageUri = Uri.parse(tmp[0]);
-            Log.d("imageUri", imageUri.toString() + ",length path : " + path.length);
             ContentResolver cr = getActivity().getContentResolver();
             String[] proj = {MediaStore.Images.Media._ID};
-            Cursor cursor = getActivity().managedQuery(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, proj,
-                    MediaStore.Images.Media.DATA + " = '" + imageUri + "'", null, MediaStore.Images.Media._ID);
-            if (cursor.getCount() == 0) {
-                // display download photo in list upload photo
-
-                String thumb_path = tmp[0].replace(".rss_items", ".rss_thumbs");
-                Log.e("Upload", "thumb_path : " + thumb_path);
-                holder.imageview.setImageBitmap(BitmapFactory.decodeFile(thumb_path));
-
-            } else {
-                cursor.moveToFirst();
-                holder.imageview.setScaleType(ImageView.ScaleType.FIT_XY);
-                try {
-                    holder.imageview.setImageBitmap(MediaStore.Images.Thumbnails.getThumbnail(cr, Integer.valueOf(cursor.getString(0)), MediaStore.Images.Thumbnails.MICRO_KIND, null));
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            if (tmp.length < 2) {
-
-                File f = new File(path[position].split(";")[0]);
-                holder.title.setText(f.getName());
-                ExifInterface exif_data = null;
-                geoDegrees _g = null;
-                String la = "";
-                String lo = "";
-                try {
-                    exif_data = new ExifInterface(f.getAbsolutePath());
-                    _g = new geoDegrees(exif_data);
-                    if (_g.isValid()) {
-                        la = _g.getLatitude() + "";
-                        lo = _g.getLongitude() + "";
+            Cursor cursor = getActivity().getContentResolver().query(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    proj,
+                    MediaStore.Images.Media.DATA + " = '" + imageUri + "'",
+                    null,
+                    MediaStore.Images.Media._ID
+            );
+            if (cursor != null) {
+                if (cursor.getCount() == 0) {
+                    // display download photo in list upload photo
+                    String thumb_path = tmp[0].replace(".rss_items", ".rss_thumbs");
+                    Log.e("Upload", "thumb_path : " + thumb_path);
+                    holder.imageview.setImageBitmap(BitmapFactory.decodeFile(thumb_path));
+                } else {
+                    cursor.moveToFirst();
+                    holder.imageview.setScaleType(ImageView.ScaleType.FIT_XY);
+                    try {
+                        holder.imageview.setImageBitmap(
+                                MediaStore.Images.Thumbnails.getThumbnail(
+                                        cr,
+                                        Integer.valueOf(cursor.getString(0)),
+                                        MediaStore.Images.Thumbnails.MICRO_KIND, null));
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    exif_data = null;
-                    _g = null;
                 }
-                longtitude = lo;
-                latitude = la;
-                title = f.getName();
-                holder.lati.setText("Latiude: " + la);
-                holder.longi.setText("Longitude: " + lo);
-                holder.tags.setText("Tags: ");
-
-            } else {
-                try {
-                    JSONObject js = new JSONObject(tmp[1]);
-                    if (js.getString("name").equals("")) {
-                        File f = new File(path[position].split(";")[0]);
-                        holder.title.setText(f.getName());
-                    } else
-                        holder.title.setText(js.getString("name"));
-                    holder.lati.setText("Latiude: " + js.getString("lati"));
-                    holder.longi.setText("Longitude: " + js.getString("logi"));
-                    holder.tags.setText("Tags: " + js.getString("tags"));
-                } catch (Exception e) {
-                    e.printStackTrace();
+                if (tmp.length < 2) {
+                    File f = new File(String.valueOf(uploadImageList.get(position)).split(";")[0]);
+                    holder.title.setText(f.getName());
+                    ExifInterface exif_data = null;
+                    geoDegrees _g = null;
+                    String la = "";
+                    String lo = "";
+                    try {
+                        exif_data = new ExifInterface(f.getAbsolutePath());
+                        _g = new geoDegrees(exif_data);
+                        if (_g.isValid()) {
+                            la = _g.getLatitude() + "";
+                            lo = _g.getLongitude() + "";
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        exif_data = null;
+                        _g = null;
+                    }
+                    longtitude = lo;
+                    latitude = la;
+                    title = f.getName();
+                    String latTxt = "Latitude: " + la;
+                    holder.lati.setText(latTxt);
+                    String lonTxt = "Longitude: " + lo;
+                    holder.longi.setText(lonTxt);
+                    String tagTxt = "Tags: ";
+                    holder.tags.setText(tagTxt);
+                } else {
+                    try {
+                        JSONObject js = new JSONObject(tmp[1]);
+                        if (js.getString("name").equals("")) {
+                            File f = new File(String.valueOf(uploadImageList.get(position)).split(";")[0]);
+                            holder.title.setText(f.getName());
+                        } else {
+                            holder.title.setText(js.getString("name"));
+                        }
+                        String latTxt = "Latitude: " + js.getString("lati");
+                        holder.lati.setText(latTxt);
+                        String lonTxt = "Longitude: " + js.getString("logi");
+                        holder.longi.setText(lonTxt);
+                        String tagTxt = "Tags: " + js.getString("tags");
+                        holder.tags.setText(tagTxt);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
+                cursor.close();
             }
-            cursor.close();
+
+            convertView.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // If holder is not selected and no other holders are selected, display Image
+                    // If the holder is selected, deselect it
+                    // If any other holder is selected, select this holder as well
+                    if (holder.isSelected) {
+                        holder.isSelected = false;
+                        holder.imageview.setAlpha(1.0f);
+                        holder.checkView.setVisibility(View.GONE);
+                        removableList.remove(holder.imagePath);
+                        int delCount = removableList.size();
+                        String newTitle;
+                        if (delCount > 0) {
+                            newTitle = delCount + (delCount == 1 ? " image" : " images") + " selected";
+                            toggleButtonPanel(true);
+                        } else {
+                            newTitle =  getResources().getString(R.string.upload);
+                            toggleButtonPanel(false);
+                        }
+                        panelLable.setText(newTitle);
+                    } else {
+                        if (removableList.isEmpty()) {
+                            Intent viewImageIntent = new Intent();
+                            viewImageIntent.setClass(ctx, CropImage.class);
+                            viewImageIntent.putExtra("image-path", holder.imagePath);
+                            viewImageIntent.putExtra("longtitude", longtitude);
+                            viewImageIntent.putExtra("latitude", latitude);
+                            viewImageIntent.putExtra("title", title);
+                            viewImageIntent.putExtra("position", position);
+                            viewImageIntent.putExtra("aspectX", 0);
+                            viewImageIntent.putExtra("aspectY", 0);
+                            viewImageIntent.putExtra("scale", true);
+                            viewImageIntent.putExtra("activityName", "Upload");
+                            startActivityForResult(viewImageIntent, CROP_IMAGE);
+                        } else {
+                            holder.isSelected = true;
+                            holder.imageview.setAlpha(0.5f);
+                            holder.checkView.setVisibility(View.VISIBLE);
+                            removableList.add(holder.imagePath);
+                            int delCount = removableList.size();
+                            String newTitle;
+                            if (delCount > 0) {
+                                newTitle = delCount + (delCount == 1 ? " image" : " images") + " selected";
+                                toggleButtonPanel(true);
+                            } else {
+                                newTitle =  getResources().getString(R.string.upload);
+                                toggleButtonPanel(false);
+                            }
+                            panelLable.setText(newTitle);
+                        }
+                    }
+                }
+            });
+
+            convertView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (holder.isSelected) {
+                        holder.imageview.setAlpha(1.0f);
+                        holder.checkView.setVisibility(View.GONE);
+                        holder.isSelected = false;
+                        removableList.remove(holder.imagePath);
+                    } else {
+                        holder.imageview.setAlpha(0.5f);
+                        holder.checkView.setVisibility(View.VISIBLE);
+                        holder.isSelected = true;
+                        removableList.add(holder.imagePath);
+                    }
+                    int delCount = removableList.size();
+                    String newTitle;
+                    if (delCount > 0) {
+                        newTitle = delCount + (delCount == 1 ? " image" : " images") + " selected";
+                        toggleButtonPanel(true);
+                    } else {
+                        newTitle =  getResources().getString(R.string.upload);
+                        toggleButtonPanel(false);
+                    }
+                    panelLable.setText(newTitle);
+                    return true;
+                }
+            });
+
+            holder.isSelected = removableList.contains(uploadImageList.get(position));
+            holder.imagePath = uploadImageList.get(position);
+            holder.imageview.setAlpha(holder.isSelected ? 0.5f : 1.0f);
+            holder.checkView.setVisibility(holder.isSelected? View.VISIBLE : View.GONE);
+
             return convertView;
         }
     }
 
-    class ViewHolder {
-        ImageView imageview;
-
-        CheckBox checkbox;
-    }
-
+    /**
+     * Upload item
+     */
     class GridItem {
         ImageView imageview;
-
+        ImageView checkView;
         TextView title;
-
         TextView lati;
-
         TextView longi;
-
         TextView tags;
+        boolean isSelected;
+        String imagePath;
+    }
+
+    private void toggleButtonPanel(boolean visibility) {
+        uploadPanel.setVisibility(!visibility ? View.VISIBLE : View.GONE);
+        clearPanel.setVisibility(visibility ? View.VISIBLE : View.GONE);
     }
 
     private class AccountsAdapter extends ArrayAdapter<String> {
@@ -739,15 +1073,12 @@ public class Upload extends android.support.v4.app.Fragment {
         super.onResume();
         PhimpMe.showTabs();
 
-        if (PhimpMe.FEEDS_GOOGLE_ADMOB == true) {
-            //PhimpMe.ShowAd();
-        }
+
         if (PhimpMe.add_account_upload) {
             reloadAccountsList();
             PhimpMe.add_account_upload = false;
         }
-        Log.d("imagelist", imagelist);
-        if (!imagelist.equals("")) {
+        if (!uploadGridList.isEmpty()) {
             listPhotoUpload.setAdapter(new ImageAdapter(ctx));
         }
         if (PhimpMe.IdList.size() == 5) {
@@ -771,6 +1102,10 @@ public class Upload extends android.support.v4.app.Fragment {
         accounts = null;
 
         listAccounts.setAdapter(new AccountsAdapter(getActivity(), id, name, service));
+        if (listAccounts.getAdapter().isEmpty()) {
+            listAccounts.setVisibility(View.GONE);
+            getView().findViewById(R.id.noaccounts).setVisibility(View.VISIBLE);
+        }
 
     }
 
@@ -1061,28 +1396,46 @@ public class Upload extends android.support.v4.app.Fragment {
     // TODO: this might not be safe; was protected.
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
 
             case TAKE_PICTURE: {
                 if (resultCode == Activity.RESULT_OK) {
                     String[] projection = {MediaStore.Images.Media.DATA};
-                    @SuppressWarnings("deprecation")
-                    Cursor cursor = getActivity().managedQuery(camera_img_uri, projection, null, null, null);
-                    int column_index_data = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                    cursor.moveToFirst();
-                    if (imagelist == "")
-                        imagelist = cursor.getString(column_index_data);
-                    else imagelist += "," + cursor.getString(column_index_data);
-                    listPhotoUpload.setAdapter(new ImageAdapter(getContext()));
+                    Cursor cursor = getActivity().getContentResolver().query(
+                            camera_img_uri,
+                            projection,
+                            null,
+                            null,
+                            null
+                    );
+                    if (cursor != null) {
+                        int column_index_data = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                        cursor.moveToFirst();
+                        uploadGridList.add(cursor.getString(column_index_data));
+                        listPhotoUpload.setAdapter(new ImageAdapter(getContext()));
+                        cursor.close();
+                    }
                 }
                 break;
             }
-            case SELECT_IMAGE_FROM_GALLERY: {
+            case TYPE_MULTI_PICKER: {
                 if (resultCode == Activity.RESULT_OK) {
-                    imagelist = data.getStringExtra("Ids");
-                    listPhotoUpload.setAdapter(new ImageAdapter(getContext()));
-                } else {
-
+                    ArrayList<Image> imagesList = data.getParcelableArrayListExtra(vn.mbm.phimp.me.utils.Constants.KEY_BUNDLE_LIST);
+                    try {
+                        if (imagesList.size() > 0) {
+                        for (int i = 0; i < imagesList.size(); i++) {
+                            if (!uploadedImageHashList.contains(imagesList.get(i).getImageHash())) {
+                                uploadGridList.add(imagesList.get(i).imagePath);
+                                uploadedImageHashList.add(imagesList.get(i).getImageHash());
+                            }
+                        }
+                        listPhotoUpload.setAdapter(new ImageAdapter(getContext()));
+                        }
+                    }
+                     catch (IOException | NoSuchAlgorithmException e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
             }
@@ -1095,8 +1448,8 @@ public class Upload extends android.support.v4.app.Fragment {
                     String name = data.getStringExtra("name");
                     String tag = data.getStringExtra("tags");
                     String json = "{\"name\":\"" + name + "\"," + "\"tags\":\"" + tag + "\"," + "\"lati\":\"" + lati + "\"," + "\"logi\":\"" + logi + "\"}";
-                    imagelist = imagelist.replace(imagepath, saveUri + ";" + json);
-                    Log.d("image", imagelist);
+                    uploadGridList.remove(imagepath);
+                    uploadGridList.add(saveUri + ";" + json);
                     listPhotoUpload.setAdapter(new ImageAdapter(getContext()));
                 }
                 break;
@@ -1104,7 +1457,6 @@ public class Upload extends android.support.v4.app.Fragment {
             case GET_POSITION_ON_MAP: {
                 if (resultCode == Activity.RESULT_OK) {
                     txtLatitude.setText(PhimpMe.UploadLatitude + "");
-
                     txtLongtitude.setText(PhimpMe.UploadLongitude + "");
                 }
                 break;
@@ -1113,7 +1465,7 @@ public class Upload extends android.support.v4.app.Fragment {
     }
 
 
-    public class MyLocationListener implements LocationListener {
+    /*public class MyLocationListener implements LocationListener {
 
         @Override
         public void onLocationChanged(Location loc) {
@@ -1130,10 +1482,10 @@ public class Upload extends android.support.v4.app.Fragment {
                 txtLongtitude.setText(PhimpMe.curLongtitude + "");
             } else {
             }
-        }
+        }*/
 
 
-        @Override
+       /* @Override
         public void onProviderDisabled(String provider) {
         }
 
@@ -1145,7 +1497,7 @@ public class Upload extends android.support.v4.app.Fragment {
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
         }
-    }
+    }*/
 
     /*@Override
     public boolean onKeyDown(int keycode, KeyEvent event)

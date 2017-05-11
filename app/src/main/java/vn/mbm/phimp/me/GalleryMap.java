@@ -1,16 +1,16 @@
 package vn.mbm.phimp.me;
 
-import java.io.File;
+/*import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import vn.mbm.phimp.me.utils.RSSPhotoItem;
 import vn.mbm.phimp.me.utils.RSSPhotoItem_Personal;
-import vn.mbm.phimp.me.utils.geoDegrees;
-import vn.mbm.phimp.me.utils.map.CustomItemizedOverlay;
-import vn.mbm.phimp.me.utils.map.CustomOverlayItem;
-import vn.mbm.phimp.me.utils.map.Road;
+import vn.mbm.phimp.me.utils.geoDegrees;*/
+/*import vn.mbm.phimp.me.utils.map.CustomItemizedOverlay;
+import vn.mbm.phimp.me.utils.map.CustomOverlayItem;*/
+/*import vn.mbm.phimp.me.utils.map.Road;
 import vn.mbm.phimp.me.R;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -40,14 +40,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.Toast;
-
-import com.google.android.maps.GeoPoint;
+*/
+/*import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
-import com.google.android.maps.Overlay;
+import com.google.android.maps.Overlay;*/
 
-public class GalleryMap extends MapActivity implements LocationListener 
+/*public class GalleryMap extends MapActivity implements LocationListener
 {
 	LocationManager lm;
 	LocationListener ll;
@@ -214,15 +214,16 @@ public class GalleryMap extends MapActivity implements LocationListener
                 //show all photo in gallery
                 else {              
         		String[] projection = {MediaStore.Images.Media.DATA};
-        		Cursor cursor = managedQuery( MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                        projection,
-                        null,null,
-                        null);
-        		int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        		for(int i=0; i<cursor.getCount(); i++){
-        			if(cursor.moveToNext())
-        			filepath.add(cursor.getString(columnIndex));
-        		}	
+        		Cursor cursor = getContentResolver().query(
+						MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null, null, null);
+				if (cursor != null) {
+					int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+					for (int i = 0; i < cursor.getCount(); i++) {
+						if (cursor.moveToNext())
+							filepath.add(cursor.getString(columnIndex));
+					}
+					cursor.close();
+				}
         		
         		int count=filepath.size();
         		Log.d("Danh", "number local image :"+count);
@@ -230,7 +231,7 @@ public class GalleryMap extends MapActivity implements LocationListener
 				if(count>0){
 					/*marker = ctx.getResources().getDrawable(R.drawable.pin_photo);	        	        
         	        photosOverlay = new CustomItemizedOverlay<CustomOverlayItem>(marker, map);      */  	        
-        	        int i;
+        	     /*   int i;
         	        
         	        for(i=0; i<filepath.size(); i++){
         	        String imagePath=filepath.get(i);
@@ -298,14 +299,14 @@ public class GalleryMap extends MapActivity implements LocationListener
     					mc1.animateTo(_gp);
     					mc1.setZoom(16);*/
         	        	
-        	        }                   	        				
+        	      /*  }
 				}
 				
           }
         }
      }.start();   
-}
-	
+}*/
+	/*
 	private Handler handler = new Handler()
 	{
 		@Override
@@ -340,7 +341,7 @@ public class GalleryMap extends MapActivity implements LocationListener
 	        {
 			}
 		}
-	}
+	}*/
 	
 	/*@Override
 	protected void onPause()
@@ -351,7 +352,7 @@ public class GalleryMap extends MapActivity implements LocationListener
 	}*/
 	
 	
-
+/*
 	@Override
 	public void onLocationChanged(Location location) {
 		
@@ -544,3 +545,4 @@ public class GalleryMap extends MapActivity implements LocationListener
 	}
 	
 }
+*/

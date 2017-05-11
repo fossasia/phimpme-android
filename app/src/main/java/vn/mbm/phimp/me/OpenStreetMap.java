@@ -15,7 +15,7 @@ import org.osmdroid.views.overlay.ScaleBarOverlay;
 import vn.mbm.phimp.me.ultils.osmap.ExtendedOverlayItem;
 import vn.mbm.phimp.me.ultils.osmap.ItemizedOverlayWithBubble;
 import vn.mbm.phimp.me.utils.geoDegrees;
-import vn.mbm.phimp.me.R;
+//import vn.mbm.phimp.me.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -24,7 +24,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.location.Criteria;
+// android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -36,7 +36,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
+//import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -80,7 +80,7 @@ public class OpenStreetMap extends Fragment{
         acti = getActivity();
 //        setContentView(R.layout.open_street_map);
         /* location manager */
-        currentLocation = null;        		
+       /* currentLocation = null;
         try{
         	//Log.e("find location","dsfdsfdsf");
         	lm = (LocationManager) ctx.getSystemService(getActivity().LOCATION_SERVICE);
@@ -88,7 +88,7 @@ public class OpenStreetMap extends Fragment{
 			String provider = lm.getBestProvider(criteria, true);
 			ll = new MyLocationListener();
 			lm.requestLocationUpdates(provider, 0, 0, ll);
-        }catch(Exception e){}
+        }catch(Exception e){}*/
         if (!android.provider.Settings.Secure.getString(getActivity().getContentResolver(), android.provider.Settings.Secure.LOCATION_PROVIDERS_ALLOWED).contains("gps")){
         	getActivity().showDialog(TURN_ON_GPS);
         }
@@ -109,7 +109,7 @@ public class OpenStreetMap extends Fragment{
         //if (currentLocation != null) myMapController.animateTo(currentLocation);
         btnS = (ImageButton)getView().findViewById(R.id.btnsw);
         btnS.bringToFront();
-        btnS.setOnClickListener(new OnClickListener() {			
+      /*  btnS.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Log.e("OpenStreetMap","check : "+check);
@@ -124,10 +124,10 @@ public class OpenStreetMap extends Fragment{
 //					PhimpMe.mTabHost.getTabWidget().getChildAt(1).setVisibility(View.GONE);
 //					PhimpMe.mTabHost.getTabWidget().getChildAt(2).setVisibility(View.VISIBLE);
 //					PhimpMe.mTabHost.setCurrentTab(2);
-				}
+				}*/
 				
-			}
-		});
+			//}
+		//});
      
 
             /*
@@ -203,15 +203,16 @@ public class OpenStreetMap extends Fragment{
         		else{
         			Log.e("Show all","Openstreetmap" );
         			String[] projection = {MediaStore.Images.Media.DATA};
-            		Cursor cursor = getActivity().managedQuery( MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                            projection,
-                            null,null,
-                            null);
-            		int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            		for(int i=0; i<cursor.getCount(); i++){
-            			if(cursor.moveToNext())
-            				PhimpMe.filepath.add(cursor.getString(columnIndex));
-            		}						
+            		Cursor cursor = getActivity().getContentResolver().query(
+							MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null, null, null);
+					if (cursor != null) {
+						int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+						for (int i = 0; i < cursor.getCount(); i++) {
+							if (cursor.moveToNext())
+								PhimpMe.filepath.add(cursor.getString(columnIndex));
+						}
+						cursor.close();
+					}
             		
             		int count=PhimpMe.filepath.size();
             		Log.d("OpenStreetMap", "number local image :"+count);

@@ -1,123 +1,222 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/tabUpload"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical" 
-    >
-	<RelativeLayout
+    android:layout_height="match_parent"
+    android:background="?attr/windowBackgroundTheme"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/toolbar_upload"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimaryTheme"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
         android:id="@+id/relativeLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        android:background="?attr/windowBackgroundTheme"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:fontFamily="sans-serif-light"
             android:text="@string/accounts"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/blue_light"
-            android:textStyle="bold" />
+            android:textSize="@dimen/headingText" />
 
-        <ImageButton
+
+        <ImageView
             android:id="@+id/btnUploadAccountAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_marginRight="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
             android:contentDescription="@string/empty"
-            android:src="@drawable/add" />
+            android:focusable="true"
+            android:padding="8dp"
+            android:tint="?IconsColor"
+            app:srcCompat="@drawable/ic_add_box_black_24dp" />
 
     </RelativeLayout>
 
-    <View
-        android:id="@+id/view1"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@color/blue_dark" />
+        android:layout_marginRight="10dp">
 
-    <ListView
-        android:id="@+id/listUploadAccounts"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_margin="10dp" >
-    </ListView>
-    
+        <TextView
+            android:id="@+id/noaccounts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:padding="20dp"
+            android:text="@string/no_accounts_connected"
+            android:visibility="gone" />
+
+        <ListView
+            android:id="@+id/listUploadAccounts"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_margin="10dp"
+            android:background="?attr/themeCardColor" />
+    </android.support.v7.widget.CardView>
+
     <RelativeLayout
         android:id="@+id/relativeLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp" >
+        android:background="?attr/windowBackgroundTheme"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/uploadPanelLable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:fontFamily="sans-serif-light"
             android:text="@string/photos"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/blue_light"
-            android:textStyle="bold" />
+            android:textSize="@dimen/headingText" />
 
-        <ImageButton
-            android:id="@+id/btnUploadPhotoAdd"
+        <LinearLayout
+            android:id="@+id/uploadButtonPanel"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:contentDescription="@string/empty"
-            android:src="@drawable/add" />
-
-        <ImageButton
-            android:id="@+id/upload_sendDirectly"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/btnUploadPhotoAdd"
-            android:layout_marginRight="19dp"
-            android:layout_toLeftOf="@+id/btnUploadPhotoAdd"
-            android:contentDescription="@string/empty"
-            android:src="@drawable/bluetooth" />
+            android:layout_alignParentEnd="true">
 
-        <Button
-            android:id="@+id/btnUploadPhoto"
+            <ImageView
+                android:id="@+id/btnUploadPhotoAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/empty"
+                android:focusable="true"
+                android:padding="8dp"
+                android:tint="?IconsColor"
+                app:srcCompat="@drawable/ic_add_box_black_24dp" />
+
+            <ImageView
+                android:id="@+id/upload_sendDirectly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/btnUploadPhotoAdd"
+                android:layout_toLeftOf="@+id/btnUploadPhotoAdd"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/empty"
+                android:focusable="true"
+                android:padding="8dp"
+                android:tint="?IconsColor"
+                app:srcCompat="@drawable/ic_share_black_24dp" />
+
+            <ImageView
+                android:id="@+id/btnUploadPhoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/upload_sendDirectly"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:enabled="true"
+                android:focusable="true"
+                android:tint="?IconsColor"
+                android:padding="8dp"
+                app:srcCompat="@drawable/ic_cloud_upload_black_24dp"
+                android:text="@string/upload" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/clearButtonPanel"
+            android:visibility="gone"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="14dp"
-            android:layout_toLeftOf="@+id/upload_sendDirectly"
-            android:enabled="true"
-            android:text="@string/upload" />
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/btnSelectAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/empty"
+                android:focusable="true"
+                android:padding="8dp"
+                android:tint="?IconsColor"
+                app:srcCompat="@drawable/ic_select_all_black_24dp" />
+
+            <ImageView
+                android:id="@+id/btnClearSelected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/btnUploadPhotoAdd"
+                android:layout_toLeftOf="@+id/btnUploadPhotoAdd"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="@string/empty"
+                android:focusable="true"
+                android:padding="8dp"
+                android:tint="?IconsColor"
+                app:srcCompat="@drawable/ic_clear_selected_black_24dp" />
+
+            <ImageView
+                android:id="@+id/btnDeselectAll"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/upload_sendDirectly"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:enabled="true"
+                android:focusable="true"
+                android:padding="8dp"
+                android:tint="?IconsColor"
+                app:srcCompat="@drawable/ic_deselect_black_24dp"
+                android:text="@string/upload" />
+        </LinearLayout>
 
     </RelativeLayout>
-    
-    <View
-        android:id="@+id/view2"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@color/blue_dark" />
 
-     <ScrollView
+    <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="fill_parent"
         android:layout_height="0px"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp" >
+        android:layout_marginRight="10dp">
 
         <LinearLayout
             android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
             android:layout_height="319dp"
             android:layout_margin="10dp"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/imgUploadPreviewPhotos"
@@ -127,7 +226,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
                 android:contentDescription="@string/empty"
-                android:src="@drawable/icon_gallery" />
+                app:srcCompat="@drawable/icon_gallery" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -163,13 +262,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <RelativeLayout
                     android:id="@+id/relativeLayout4"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp" >
+                    android:layout_marginBottom="10dp">
 
                     <TextView
                         android:id="@+id/textView5"
@@ -177,6 +276,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="@string/geolocation" />
+
                     <ImageButton
                         android:id="@+id/btnUploadPhotoPutPos"
                         android:layout_width="wrap_content"
@@ -184,14 +284,15 @@
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
                         android:contentDescription="@string/empty"
-                        android:src="@drawable/maps" />
+                        android:tint="?IconsColor"
+                        app:srcCompat="@drawable/maps" />
                 </RelativeLayout>
 
                 <LinearLayout
                     android:id="@+id/linearLayout3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp" >
+                    android:layout_marginBottom="10dp">
 
                     <TextView
                         android:id="@+id/textView6"
@@ -211,7 +312,7 @@
                 <LinearLayout
                     android:id="@+id/linearLayout4"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content">
 
                     <TextView
                         android:id="@+id/textView7"
@@ -249,11 +350,29 @@
 
     </ScrollView>
 
-     <GridView
-         android:id="@+id/photolistview"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:numColumns="3" >
-     </GridView>
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+
+        <TextView
+            android:id="@+id/nophotos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:padding="20dp"
+            android:text="@string/nopicture_selected" />
+
+        <GridView
+            android:id="@+id/photolistview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:numColumns="3" />
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>

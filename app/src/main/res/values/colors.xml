@@ -5,6 +5,7 @@
     <color name="black_trans">#77000000</color>
     <color name="blue">#0099FF</color>
     <color name="grey">#AAAAAA</color>
+    <color name="icongrey">#757575</color>
     <color name="white">#FFFFFFFF</color>
     <color name="black">#000000</color>
     <color name="green">#00FF00</color>
@@ -15,7 +16,25 @@
     <color name="colorFAB1">#2196F3</color>
     <color name="colorFAB2">#2196F3</color>
     <color name="colorFAB3">#2196F3</color>
-    <color name="colorAccent">#F44336</color>
-    <color name="colorSecondary">#009688</color>
-    <color name="colorPrimary">#455A64</color>
+    <color name="colorAccent">#00B0FF</color>
+    <color name="colorSecondary">#ECEFF1</color>
+    <color name="colorPrimaryDark">#01579B</color>
+    <color name="colorPrimary">#03A9F4</color>
+    <color name="colorWindowBackground">#efefef</color>
+    <color name="custom_progress_bg_color">#EEEEEE</color>
+    <color name="custom_progress_message_color">#6D6D6D</color>
+    <color name="image_selected">#96dde238</color>
+    <color name="wordpress_add_account">#21759b</color>
+    <color name="md_dark_primary_text">#FFFFFFFF</color>
+    <color name="colorCardInverse">#424242</color>
+    <color name="colorPrimaryDarkInverse">#000000</color>
+    <color name="colorAccentDarkInverse">#00B0FF</color>
+    <color name="ColorWindowBackgroundInverse">#303030</color>
+    <color name="colorSecondaryDarkInverse">#ECEFF1</color>
+    <color name="primary_material_dark_1">#3f51b5</color>
+    <color name="accent_material_light">#4070ff</color>
+    <color name="primary_material_dark_2">#212121</color>
+    <color name="secondary_text_material_dark">#8a000000</color>
+    <color name="white70">#d0d0d0</color>
+    <color name="white50">#777777</color>
 </resources>
