@@ -8,6 +8,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:2.3.1'
         classpath 'com.google.gms:google-services:3.0.0'
         classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
+
     }
 }
 
@@ -15,6 +16,8 @@ allprojects {
     repositories {
         jcenter()
         mavenCentral()
+        maven  { url "http://repo1.maven.org/maven2" }
+        maven { url  "http://dl.bintray.com/dasar/maven" }
     }
 }
 
