@@ -1,5 +1,6 @@
 package vn.mbm.phimp.me;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import vn.mbm.phimp.me.opencamera.CameraActivity;
 
 /**
  * Created by pa1pal on 11/5/17.
@@ -37,7 +39,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 tabs.setText(R.string.title_home);
                 return true;
             case R.id.navigation_camera:
-                tabs.setText(R.string.title_camera);
+                Intent i = new Intent(MainActivity.this, CameraActivity.class);
+                startActivity(i);
                 return true;
             case R.id.navigation_accounts:
                 tabs.setText(R.string.title_account);
