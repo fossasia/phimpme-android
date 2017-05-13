@@ -21,6 +21,8 @@ allprojects {
 ext {
     supportLibraryVersion = '25.3.1'
     butterknifeVersion = '8.5.1'
-    junitVersion = "4.12"
+    junitVersion = '4.12'
+    askVersion = '2.4'
+    glideVersion = '3.7.0'
 }
 

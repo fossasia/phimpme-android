@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package vn.mbm.phimp.me.base;
+package vn.mbm.phimp.me.Base;
 
 /**
  * Every presenter in the app must either implement this interface or extend BasePresenter

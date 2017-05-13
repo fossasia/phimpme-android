@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package vn.mbm.phimp.me.base;
+package vn.mbm.phimp.me.Base;
 
 /**
  * Base class that implements the Presenter interface and provides a base implementation for
