@@ -55,7 +55,6 @@ public class ImageSaver extends Thread {
 	private final Paint p = new Paint();
 
 	private final CameraActivity main_activity;
-	private final HDRProcessor hdrProcessor;
 
 	/* We use a separate count n_images_to_save, rather than just relying on the queue size, so we can take() an image from queue,
 	 * but only decrement the count when we've finished saving the image.
@@ -64,7 +63,7 @@ public class ImageSaver extends Thread {
 	 */
 	private int n_images_to_save = 0;
 	private final BlockingQueue<Request> queue = new ArrayBlockingQueue<>(1); // since we remove from the queue and then process in the saver thread, in practice the number of background photos - including the one being processed - is one more than the length of this queue
-	
+
 	private static class Request {
 		enum Type {
 			JPEG,
@@ -104,7 +103,7 @@ public class ImageSaver extends Thread {
 		final boolean store_geo_direction;
 		final double geo_direction;
 		int sample_factor = 1; // sampling factor for thumbnail, higher means lower quality
-		
+
 		Request(Type type,
                 boolean is_hdr,
                 boolean save_expo,
@@ -154,17 +153,13 @@ public class ImageSaver extends Thread {
 		if( MyDebug.LOG )
 			Log.d(TAG, "ImageSaver");
 		this.main_activity = main_activity;
-		this.hdrProcessor = new HDRProcessor(main_activity);
 
 		p.setAntiAlias(true);
 	}
-	
+
 	void onDestroy() {
 		if( MyDebug.LOG )
 			Log.d(TAG, "onDestroy");
-		if( hdrProcessor != null ) {
-			hdrProcessor.onDestroy();
-		}
 	}
 	@Override
 
@@ -225,7 +220,7 @@ public class ImageSaver extends Thread {
 			}
 		}
 	}
-	
+
 	/** Saves a photo.
 	 *  If do_in_background is true, the photo will be saved in a background thread. If the queue is full, the function will wait
 	 *  until it isn't full. Otherwise it will return immediately. The function always returns true for background saving.
@@ -319,9 +314,9 @@ public class ImageSaver extends Thread {
 			Log.d(TAG, "do_in_background? " + do_in_background);
 		}
 		boolean success;
-		
+
 		//do_in_background = false;
-		
+
 		Request request = new Request(is_raw ? Request.Type.RAW : Request.Type.JPEG,
 				is_hdr,
 				save_expo,
@@ -381,7 +376,7 @@ public class ImageSaver extends Thread {
 			Log.d(TAG, "success: " + success);
 		return success;
 	}
-	
+
 	/** Adds a request to the background queue, blocking if the queue is already full
 	 */
 	private void addRequest(Request request) {
@@ -548,7 +543,7 @@ public class ImageSaver extends Thread {
 			}
 			bitmaps.add(bitmap);
 		}
-		
+
 		if( !ok ) {
 			if( MyDebug.LOG )
 				Log.d(TAG, "cleanup from failure");
@@ -565,7 +560,7 @@ public class ImageSaver extends Thread {
 
 		return bitmaps;
 	}
-	
+
 	/** May be run in saver thread or picture callback thread (depending on whether running in background).
 	 */
 	private boolean saveImageNow(final Request request) {
@@ -639,32 +634,7 @@ public class ImageSaver extends Thread {
     		}
 			if( MyDebug.LOG )
 				Log.d(TAG, "before HDR first bitmap: " + bitmaps.get(0) + " is mutable? " + bitmaps.get(0).isMutable());
-			try {
-				if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ) {
-					hdrProcessor.processHDR(bitmaps, true, null, true, null, 0.5f, HDRProcessor.TonemappingAlgorithm.TONEMAPALGORITHM_REINHARD); // this will recycle all the bitmaps except bitmaps.get(0), which will contain the hdr image
-				}
-				else {
-					Log.e(TAG, "shouldn't have offered HDR as an option if not on Android 5");
-					throw new RuntimeException();
-				}
-			}
-			catch(HDRProcessorException e) {
-				Log.e(TAG, "HDRProcessorException from processHDR: " + e.getCode());
-				e.printStackTrace();
-				if( e.getCode() == HDRProcessorException.UNEQUAL_SIZES ) {
-					// this can happen on OnePlus 3T with old camera API with front camera, seems to be a bug that resolution changes when exposure compensation is set!
-					main_activity.getPreview().showToast(null, R.string.failed_to_process_hdr);
-					Log.e(TAG, "UNEQUAL_SIZES");
-					bitmaps.clear();
-					System.gc();
-					main_activity.savingImage(false);
-			        return false;
-				}
-				else {
-					// throw RuntimeException, as we shouldn't ever get the error INVALID_N_IMAGES, if we do it's a programming error
-					throw new RuntimeException();
-				}
-			}
+
 			if( MyDebug.LOG ) {
     			Log.d(TAG, "HDR performance: time after creating HDR image: " + (System.currentTimeMillis() - time_s));
     		}
@@ -2125,8 +2095,4 @@ public class ImageSaver extends Thread {
 	}
 	
 	// for testing:
-	
-	HDRProcessor getHDRProcessor() {
-		return hdrProcessor;
-	}
 }

@@ -2049,10 +2049,6 @@ public class MyApplicationInterface implements ApplicationInterface {
 		return this.drawPreview.hasThumbnailAnimation();
 	}
 	
-	public HDRProcessor getHDRProcessor() {
-		return imageSaver.getHDRProcessor();
-	}
-	
 	public boolean test_set_available_memory = false;
 	public long test_available_memory = 0;
 }
