@@ -1,5 +1,8 @@
 package vn.mbm.phimp.me.opencamera;
 
+import vn.mbm.phimp.me.MainActivity;
+import vn.mbm.phimp.me.Utilities.BasicCallBack;
+import vn.mbm.phimp.me.Utilities.Constants;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraControllerManager2;
 import vn.mbm.phimp.me.opencamera.Preview.Preview;
@@ -135,8 +138,14 @@ public class CameraActivity extends Activity implements AudioListener.AudioListe
 	public volatile boolean test_have_angle;
 	public volatile float test_angle;
 	public volatile String test_last_saved_image;
+    static BasicCallBack basicCallback;
 
-	@Override
+    public static void setBasicCallBack(BasicCallBack basicCallBack) {
+        basicCallback = basicCallBack;
+    }
+
+
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		long debug_time = 0;
 		if( MyDebug.LOG ) {
@@ -1269,6 +1278,8 @@ public class CameraActivity extends Activity implements AudioListener.AudioListe
 			}
 		}
 		super.onBackPressed();
+        basicCallback.callBack(Constants.CAMERA_BACK_PRESSED,null);
+
 	}
 
 	public boolean usingKitKatImmersiveMode() {
@@ -3252,4 +3263,6 @@ public class CameraActivity extends Activity implements AudioListener.AudioListe
 	public boolean hasThumbnailAnimation() {
 		return this.applicationInterface.hasThumbnailAnimation();
 	}
+
+
 }
