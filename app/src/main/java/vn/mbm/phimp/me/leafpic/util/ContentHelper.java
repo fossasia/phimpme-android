@@ -19,7 +19,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v4.provider.DocumentFile;
 import android.util.Log;
 
-import org.horaapps.leafpic.R;
+import vn.mbm.phimp.me.R;
 
 import java.io.File;
 import java.io.FileInputStream;

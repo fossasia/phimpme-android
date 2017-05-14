@@ -3,9 +3,9 @@ package vn.mbm.phimp.me.leafpic.data;
 import android.content.Context;
 import android.support.annotation.Nullable;
 
-import org.horaapps.leafpic.data.base.FilterMode;
-import org.horaapps.leafpic.data.base.SortingMode;
-import org.horaapps.leafpic.data.base.SortingOrder;
+import vn.mbm.phimp.me.leafpic.data.base.FilterMode;
+import vn.mbm.phimp.me.leafpic.data.base.SortingMode;
+import vn.mbm.phimp.me.leafpic.data.base.SortingOrder;
 
 import java.io.Serializable;
 

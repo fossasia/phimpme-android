@@ -17,9 +17,10 @@ import com.koushikdutta.ion.Ion;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 
-import org.horaapps.leafpic.data.Media;
-import org.horaapps.leafpic.util.ColorPalette;
-import org.horaapps.leafpic.util.ThemeHelper;
+import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.leafpic.data.Media;
+import vn.mbm.phimp.me.leafpic.util.ColorPalette;
+import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
 
 import java.util.ArrayList;
 
@@ -47,7 +48,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(org.horaapps.leafpic.R.layout.card_photo, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_photo, parent, false);
         v.setOnClickListener(mOnClickListener);
         v.setOnLongClickListener(mOnLongClickListener);
         return new ViewHolder(v);
@@ -77,7 +78,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
                     .diskCacheStrategy(DiskCacheStrategy.RESULT)
                     .thumbnail(0.5f)
                     .placeholder(drawable)
-                    .animate(org.horaapps.leafpic.R.anim.fade_in)
+                    .animate(R.anim.fade_in)
                     .into(holder.imageView);
             holder.gifIcon.setVisibility(View.GONE);
         }
@@ -86,10 +87,10 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
             holder.icon.setVisibility(View.VISIBLE);
             holder.path.setVisibility(View.VISIBLE);
             holder.path.setText(f.getName());
-            holder.path.setTextColor(ContextCompat.getColor(holder.path.getContext(), org.horaapps.leafpic.R.color.md_dark_primary_text));
+            holder.path.setTextColor(ContextCompat.getColor(holder.path.getContext(), R.color.md_dark_primary_text));
             holder.path.setBackgroundColor(
                     ColorPalette.getTransparentColor(
-                            ContextCompat.getColor(holder.path.getContext(), org.horaapps.leafpic.R.color.md_black_1000), 100));
+                            ContextCompat.getColor(holder.path.getContext(), R.color.md_black_1000), 100));
             holder.icon.setIcon(CommunityMaterial.Icon.cmd_play_circle);
         } else {
             holder.icon.setVisibility(View.GONE);
@@ -131,11 +132,11 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
 
         ViewHolder(View itemView) {
             super(itemView);
-            layout = itemView.findViewById(org.horaapps.leafpic.R.id.media_card_layout);
-            imageView = (ImageView) itemView.findViewById(org.horaapps.leafpic.R.id.photo_preview);
-            gifIcon = itemView.findViewById(org.horaapps.leafpic.R.id.gif_icon);
-            icon = (IconicsImageView) itemView.findViewById(org.horaapps.leafpic.R.id.icon);
-            path = (TextView) itemView.findViewById(org.horaapps.leafpic.R.id.photo_path);
+            layout = itemView.findViewById(R.id.media_card_layout);
+            imageView = (ImageView) itemView.findViewById(R.id.photo_preview);
+            gifIcon = itemView.findViewById(R.id.gif_icon);
+            icon = (IconicsImageView) itemView.findViewById(R.id.icon);
+            path = (TextView) itemView.findViewById(R.id.photo_path);
         }
     }
 }

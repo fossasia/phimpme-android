@@ -1,7 +1,7 @@
 package vn.mbm.phimp.me.leafpic.data.base;
 
-import org.horaapps.leafpic.data.Media;
-import org.horaapps.leafpic.util.NumericComparator;
+import vn.mbm.phimp.me.leafpic.data.Media;
+import vn.mbm.phimp.me.leafpic.util.NumericComparator;
 
 import java.util.Comparator;
 

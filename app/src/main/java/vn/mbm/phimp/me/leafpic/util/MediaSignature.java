@@ -2,7 +2,7 @@ package vn.mbm.phimp.me.leafpic.util;
 
 import com.bumptech.glide.signature.StringSignature;
 
-import org.horaapps.leafpic.data.Media;
+import vn.mbm.phimp.me.leafpic.data.Media;
 
 /**
  * Created by dnld on 21/08/16.

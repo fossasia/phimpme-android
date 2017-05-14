@@ -12,11 +12,11 @@ import com.bumptech.glide.signature.StringSignature;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 
-import org.horaapps.leafpic.R;
-import org.horaapps.leafpic.activities.SingleMediaActivity;
-import org.horaapps.leafpic.data.Media;
-import org.horaapps.leafpic.util.PreferenceUtil;
-import org.horaapps.leafpic.views.RotateTransformation;
+import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
+import vn.mbm.phimp.me.leafpic.data.Media;
+import vn.mbm.phimp.me.leafpic.util.PreferenceUtil;
+import vn.mbm.phimp.me.leafpic.views.RotateTransformation;
 
 import java.util.Date;
 

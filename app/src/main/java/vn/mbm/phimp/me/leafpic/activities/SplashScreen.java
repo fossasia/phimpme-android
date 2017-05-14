@@ -14,13 +14,13 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import org.horaapps.leafpic.R;
-import org.horaapps.leafpic.activities.base.SharedMediaActivity;
-import org.horaapps.leafpic.data.Album;
-import org.horaapps.leafpic.util.ColorPalette;
-import org.horaapps.leafpic.util.PermissionUtils;
-import org.horaapps.leafpic.util.PreferenceUtil;
-import org.horaapps.leafpic.util.StringUtils;
+import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.base.SharedMediaActivity;
+import vn.mbm.phimp.me.leafpic.data.Album;
+import vn.mbm.phimp.me.leafpic.util.ColorPalette;
+import vn.mbm.phimp.me.leafpic.util.PermissionUtils;
+import vn.mbm.phimp.me.leafpic.util.PreferenceUtil;
+import vn.mbm.phimp.me.leafpic.util.StringUtils;
 
 import java.io.File;
 
@@ -49,12 +49,12 @@ public class SplashScreen extends SharedMediaActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(org.horaapps.leafpic.R.layout.activity_splash);
+        setContentView(R.layout.activity_splash);
         SP = PreferenceUtil.getInstance(getApplicationContext());
 
         ((ProgressBar) findViewById(R.id.progress_splash)).getIndeterminateDrawable().setColorFilter(getPrimaryColor(), PorterDuff.Mode.SRC_ATOP);
 
-        RelativeLayout RelLay = (RelativeLayout) findViewById(org.horaapps.leafpic.R.id.Splah_Bg);
+        RelativeLayout RelLay = (RelativeLayout) findViewById(R.id.Splah_Bg);
         RelLay.setBackgroundColor(getBackgroundColor());
 
         getWindow().getDecorView().setSystemUiVisibility(
@@ -103,7 +103,7 @@ public class SplashScreen extends SharedMediaActivity {
     public void setNavBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setStatusBarColor(ColorPalette.getTransparentColor(
-                    ContextCompat.getColor(getApplicationContext(), org.horaapps.leafpic.R.color.md_black_1000), 70));
+                    ContextCompat.getColor(getApplicationContext(), R.color.md_black_1000), 70));
         }
     }
 
@@ -111,7 +111,7 @@ public class SplashScreen extends SharedMediaActivity {
     protected void setStatusBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setNavigationBarColor(ColorPalette.getTransparentColor(
-                    ContextCompat.getColor(getApplicationContext(), org.horaapps.leafpic.R.color.md_black_1000), 70));
+                    ContextCompat.getColor(getApplicationContext(), R.color.md_black_1000), 70));
         }
     }
 
@@ -121,9 +121,9 @@ public class SplashScreen extends SharedMediaActivity {
             case READ_EXTERNAL_STORAGE_ID:
                 boolean granted = grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
                 if (granted)
-                    new PrefetchAlbumsData().execute(SP.getBoolean(getString(org.horaapps.leafpic.R.string.preference_auto_update_media), false));
+                    new PrefetchAlbumsData().execute(SP.getBoolean(getString(R.string.preference_auto_update_media), false));
                 else
-                    Toast.makeText(SplashScreen.this, getString(org.horaapps.leafpic.R.string.storage_permission_denied), Toast.LENGTH_LONG).show();
+                    Toast.makeText(SplashScreen.this, getString(R.string.storage_permission_denied), Toast.LENGTH_LONG).show();
                 break;
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -142,6 +142,7 @@ public class SplashScreen extends SharedMediaActivity {
             return false;
         }
 
+        
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);

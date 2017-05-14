@@ -20,17 +20,12 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.context.IconicsContextWrapper;
 import com.mikepenz.iconics.typeface.IIcon;
 
-import org.horaapps.leafpic.R;
-import org.horaapps.leafpic.util.ColorPalette;
-import org.horaapps.leafpic.util.PreferenceUtil;
-import org.horaapps.leafpic.util.ThemeHelper;
-
-import java.util.ArrayList;
-
 import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.leafpic.util.ColorPalette;
 import vn.mbm.phimp.me.leafpic.util.PreferenceUtil;
 import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
+
+import java.util.ArrayList;
 
 /**
  * Created by dnld on 23/02/16.

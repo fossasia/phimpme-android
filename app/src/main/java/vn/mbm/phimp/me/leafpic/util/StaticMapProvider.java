@@ -2,7 +2,7 @@ package vn.mbm.phimp.me.leafpic.util;
 
 import com.drew.lang.GeoLocation;
 
-import org.horaapps.leafpic.SecretConstants;
+import vn.mbm.phimp.me.leafpic.SecretConstants;
 
 import java.util.Locale;
 

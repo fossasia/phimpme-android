@@ -8,7 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.horaapps.leafpic.activities.base.ThemedActivity;
+import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.base.ThemedActivity;
 
 /**
  * Created by Jibo on 06/05/2016.
@@ -35,18 +36,18 @@ public class SecurityHelper {
 
     public void updateSecuritySetting(){
         PreferenceUtil SP = PreferenceUtil.getInstance(context);
-        this.activeSecurity = SP.getBoolean(context.getString(org.horaapps.leafpic.R.string.preference_use_password), false);
-        this.passwordOnDelete = SP.getBoolean(context.getString(org.horaapps.leafpic.R.string.preference_use_password_on_delete), false);
-        this.passwordOnHidden = SP.getBoolean(context.getString(org.horaapps.leafpic.R.string.preference_use_password_on_hidden), true);
-        this.passwordValue = SP.getString(context.getString(org.horaapps.leafpic.R.string.preference_password_value), "");
+        this.activeSecurity = SP.getBoolean(context.getString(R.string.preference_use_password), false);
+        this.passwordOnDelete = SP.getBoolean(context.getString(R.string.preference_use_password_on_delete), false);
+        this.passwordOnHidden = SP.getBoolean(context.getString(R.string.preference_use_password_on_hidden), true);
+        this.passwordValue = SP.getString(context.getString(R.string.preference_password_value), "");
     }
 
     public EditText getInsertPasswordDialog(final ThemedActivity activity, AlertDialog.Builder passwordDialog){
 
-        final View PasswordDialogLayout = activity.getLayoutInflater().inflate(org.horaapps.leafpic.R.layout.dialog_password, null);
-        final TextView passwordDialogTitle = (TextView) PasswordDialogLayout.findViewById(org.horaapps.leafpic.R.id.password_dialog_title);
-        final CardView passwordDialogCard = (CardView) PasswordDialogLayout.findViewById(org.horaapps.leafpic.R.id.password_dialog_card);
-        final EditText editxtPassword = (EditText) PasswordDialogLayout.findViewById(org.horaapps.leafpic.R.id.password_edittxt);
+        final View PasswordDialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_password, null);
+        final TextView passwordDialogTitle = (TextView) PasswordDialogLayout.findViewById(R.id.password_dialog_title);
+        final CardView passwordDialogCard = (CardView) PasswordDialogLayout.findViewById(R.id.password_dialog_card);
+        final EditText editxtPassword = (EditText) PasswordDialogLayout.findViewById(R.id.password_edittxt);
 
         passwordDialogTitle.setBackgroundColor(activity.getPrimaryColor());
         passwordDialogCard.setBackgroundColor(activity.getCardBackgroundColor());

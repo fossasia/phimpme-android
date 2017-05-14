@@ -5,7 +5,7 @@ import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
 
-import org.horaapps.leafpic.R;
+import vn.mbm.phimp.me.R;
 
 /**
  * Created by dnld on 24/02/16.

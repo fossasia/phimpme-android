@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
 
-import org.horaapps.leafpic.data.base.SortingMode;
-import org.horaapps.leafpic.data.base.SortingOrder;
+import vn.mbm.phimp.me.leafpic.data.base.SortingMode;
+import vn.mbm.phimp.me.leafpic.data.base.SortingOrder;
 
 import java.io.File;
 import java.util.ArrayList;

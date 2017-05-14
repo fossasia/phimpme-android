@@ -59,15 +59,15 @@ import com.google.android.exoplayer.util.PlayerControl;
 import com.google.android.exoplayer.util.Util;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 
-import org.horaapps.leafpic.R;
-import org.horaapps.leafpic.activities.base.ThemedActivity;
-import org.horaapps.leafpic.data.Media;
-import org.horaapps.leafpic.util.ContentHelper;
-import org.horaapps.leafpic.util.Measure;
-import org.horaapps.leafpic.util.player.DemoPlayer;
-import org.horaapps.leafpic.util.player.ExtractorRendererBuilder;
-import org.horaapps.leafpic.util.player.HlsRendererBuilder;
-import org.horaapps.leafpic.views.VideoControllerView;
+import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.base.ThemedActivity;
+import vn.mbm.phimp.me.leafpic.data.Media;
+import vn.mbm.phimp.me.leafpic.util.ContentHelper;
+import vn.mbm.phimp.me.leafpic.util.Measure;
+import vn.mbm.phimp.me.leafpic.util.player.DemoPlayer;
+import vn.mbm.phimp.me.leafpic.util.player.ExtractorRendererBuilder;
+import vn.mbm.phimp.me.leafpic.util.player.HlsRendererBuilder;
+import vn.mbm.phimp.me.leafpic.views.VideoControllerView;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
@@ -139,7 +139,7 @@ public class PlayerActivity extends ThemedActivity implements SurfaceHolder.Call
 
     setStatusBarColor();
     setNavBarColor();
-    setRecentApp(getString(org.horaapps.leafpic.R.string.app_name));
+    setRecentApp(getString(R.string.app_name));
   }
 
   @Override
@@ -165,10 +165,10 @@ public class PlayerActivity extends ThemedActivity implements SurfaceHolder.Call
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     // Inflate the menu; this adds items to the action bar if it is present.
-    getMenuInflater().inflate(org.horaapps.leafpic.R.menu.menu_video_player, menu);
+    getMenuInflater().inflate(R.menu.menu_video_player, menu);
 
-    menu.findItem(org.horaapps.leafpic.R.id.action_share).setIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_share));
-    menu.findItem(org.horaapps.leafpic.R.id.rotate_layout).setIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_screen_rotation));
+    menu.findItem(R.id.action_share).setIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_share));
+    menu.findItem(R.id.rotate_layout).setIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_screen_rotation));
     return true;
   }
 
@@ -181,19 +181,19 @@ public class PlayerActivity extends ThemedActivity implements SurfaceHolder.Call
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
 
-      case org.horaapps.leafpic.R.id.action_share:
+      case R.id.action_share:
         Intent share = new Intent(Intent.ACTION_SEND);
         Media m = new Media(ContentHelper.getMediaPath(getApplicationContext() ,getIntent().getData()));
         share.setType(m.getMimeType());
         share.putExtra(Intent.EXTRA_STREAM, getIntent().getData());
-        startActivity(Intent.createChooser(share, getString(org.horaapps.leafpic.R.string.send_to)));
+        startActivity(Intent.createChooser(share, getString(R.string.send_to)));
         return true;
 
-      case org.horaapps.leafpic.R.id.action_settings:
+      case R.id.action_settings:
         startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
         return true;
 
-      case org.horaapps.leafpic.R.id.rotate_layout:
+      case R.id.rotate_layout:
         int rotation = (((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay()).getRotation();
         if (rotation == Surface.ROTATION_90 || rotation == Surface.ROTATION_270)
           setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -209,9 +209,9 @@ public class PlayerActivity extends ThemedActivity implements SurfaceHolder.Call
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(org.horaapps.leafpic.R.layout.activity_player);
+    setContentView(R.layout.activity_player);
 
-    FrameLayout root = (FrameLayout) findViewById(org.horaapps.leafpic.R.id.root);
+    FrameLayout root = (FrameLayout) findViewById(R.id.root);
     findViewById(R.id.video_frame).setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View view) {
@@ -228,18 +228,18 @@ public class PlayerActivity extends ThemedActivity implements SurfaceHolder.Call
 
     root.setBackgroundColor(ContextCompat.getColor(getApplicationContext(),R.color.md_black_1000));
 
-    shutterView = findViewById(org.horaapps.leafpic.R.id.shutter);
+    shutterView = findViewById(R.id.shutter);
 
-    videoFrame = (AspectRatioFrameLayout) findViewById(org.horaapps.leafpic.R.id.video_frame);
-    surfaceView = (SurfaceView) findViewById(org.horaapps.leafpic.R.id.surface_view);
+    videoFrame = (AspectRatioFrameLayout) findViewById(R.id.video_frame);
+    surfaceView = (SurfaceView) findViewById(R.id.surface_view);
     surfaceView.getHolder().addCallback(this);
 
     mediaController = new CustomMediaController(this, this);
 
-    mediController_anchor =  findViewById(org.horaapps.leafpic.R.id.media_player_anchor);
+    mediController_anchor =  findViewById(R.id.media_player_anchor);
     mediaController.setAnchorView(root);
     //mediaController.setPaddingRelative(0,0,0,Measure.getNavBarHeight(PlayerActivity.this));
-    toolbar = (Toolbar) findViewById(org.horaapps.leafpic.R.id.toolbar);
+    toolbar = (Toolbar) findViewById(R.id.toolbar);
     initUI();
 
     CookieHandler currentHandler = CookieHandler.getDefault();
@@ -308,7 +308,7 @@ public class PlayerActivity extends ThemedActivity implements SurfaceHolder.Call
     if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
       preparePlayer(true);
     } else {
-      Toast.makeText(getApplicationContext(), org.horaapps.leafpic.R.string.storage_permission_denied,
+      Toast.makeText(getApplicationContext(), R.string.storage_permission_denied,
           Toast.LENGTH_LONG).show();
       finish();
     }
@@ -426,9 +426,9 @@ public class PlayerActivity extends ThemedActivity implements SurfaceHolder.Call
     if (e instanceof UnsupportedDrmException) {
       // Special case DRM failures.
       UnsupportedDrmException unsupportedDrmException = (UnsupportedDrmException) e;
-      errorString = getString(Util.SDK_INT < 18 ? org.horaapps.leafpic.R.string.error_drm_not_supported
+      errorString = getString(Util.SDK_INT < 18 ? R.string.error_drm_not_supported
           : unsupportedDrmException.reason == UnsupportedDrmException.REASON_UNSUPPORTED_SCHEME
-          ? org.horaapps.leafpic.R.string.error_drm_unsupported_scheme : org.horaapps.leafpic.R.string.error_drm_unknown);
+          ? R.string.error_drm_unsupported_scheme : R.string.error_drm_unknown);
     } else if (e instanceof ExoPlaybackException
         && e.getCause() instanceof DecoderInitializationException) {
       // Special case for decoder initialization failures.
@@ -436,16 +436,16 @@ public class PlayerActivity extends ThemedActivity implements SurfaceHolder.Call
           (DecoderInitializationException) e.getCause();
       if (decoderInitializationException.decoderName == null) {
         if (decoderInitializationException.getCause() instanceof DecoderQueryException) {
-          errorString = getString(org.horaapps.leafpic.R.string.error_querying_decoders);
+          errorString = getString(R.string.error_querying_decoders);
         } else if (decoderInitializationException.secureDecoderRequired) {
-          errorString = getString(org.horaapps.leafpic.R.string.error_no_secure_decoder,
+          errorString = getString(R.string.error_no_secure_decoder,
               decoderInitializationException.mimeType);
         } else {
-          errorString = getString(org.horaapps.leafpic.R.string.error_no_decoder,
+          errorString = getString(R.string.error_no_decoder,
               decoderInitializationException.mimeType);
         }
       } else {
-        errorString = getString(org.horaapps.leafpic.R.string.error_instantiating_decoder,
+        errorString = getString(R.string.error_instantiating_decoder,
             decoderInitializationException.decoderName);
       }
     }

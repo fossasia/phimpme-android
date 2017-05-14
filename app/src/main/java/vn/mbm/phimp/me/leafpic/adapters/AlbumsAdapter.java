@@ -17,10 +17,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import org.horaapps.leafpic.R;
-import org.horaapps.leafpic.data.Album;
-import org.horaapps.leafpic.data.Media;
-import org.horaapps.leafpic.util.ThemeHelper;
+import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.leafpic.data.Album;
+import vn.mbm.phimp.me.leafpic.data.Media;
+import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
 
 import java.util.ArrayList;
 
@@ -50,7 +50,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(org.horaapps.leafpic.R.layout.card_album, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_album, parent, false);
         v.setOnClickListener(mOnClickListener);
         v.setOnLongClickListener(mOnLongClickListener);
         return new ViewHolder(v);
@@ -68,9 +68,9 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
                 .priority(Priority.HIGH)
                 .signature(f.getSignature())
                 .centerCrop()
-                .error(org.horaapps.leafpic.R.drawable.ic_error)
+                .error(R.drawable.ic_error)
                 .placeholder(placeholder)
-                .animate(org.horaapps.leafpic.R.anim.fade_in)
+                .animate(R.anim.fade_in)
                 .into(holder.picture);
 
         holder.name.setTag(a);
@@ -142,11 +142,11 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
 
         ViewHolder(View itemView) {
             super(itemView);
-            picture = (ImageView) itemView.findViewById(org.horaapps.leafpic.R.id.album_preview);
-            selectedIcon = itemView.findViewById(org.horaapps.leafpic.R.id.selected_icon);
-            layout = itemView.findViewById(org.horaapps.leafpic.R.id.linear_card_text);
-            name = (TextView) itemView.findViewById(org.horaapps.leafpic.R.id.album_name);
-            nPhotos = (TextView) itemView.findViewById(org.horaapps.leafpic.R.id.album_photos_count);
+            picture = (ImageView) itemView.findViewById(R.id.album_preview);
+            selectedIcon = itemView.findViewById(R.id.selected_icon);
+            layout = itemView.findViewById(R.id.linear_card_text);
+            name = (TextView) itemView.findViewById(R.id.album_name);
+            nPhotos = (TextView) itemView.findViewById(R.id.album_photos_count);
         }
     }
 }

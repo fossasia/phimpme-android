@@ -25,21 +25,21 @@ import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.view.IconicsImageView;
 
-import org.horaapps.leafpic.MyApplication;
-import org.horaapps.leafpic.R;
-import org.horaapps.leafpic.activities.base.ThemedActivity;
-import org.horaapps.leafpic.util.ColorPalette;
-import org.horaapps.leafpic.util.PreferenceUtil;
-import org.horaapps.leafpic.util.SecurityHelper;
-import org.horaapps.leafpic.util.StaticMapProvider;
-import org.horaapps.leafpic.util.ThemeHelper;
+import vn.mbm.phimp.me.MyApplication;
+import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.base.ThemedActivity;
+import vn.mbm.phimp.me.leafpic.util.ColorPalette;
+import vn.mbm.phimp.me.leafpic.util.PreferenceUtil;
+import vn.mbm.phimp.me.leafpic.util.SecurityHelper;
+import vn.mbm.phimp.me.leafpic.util.StaticMapProvider;
+import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
 
 import uz.shift.colorpicker.LineColorPicker;
 import uz.shift.colorpicker.OnColorChangedListener;
 
-import static org.horaapps.leafpic.util.ThemeHelper.AMOLED_THEME;
-import static org.horaapps.leafpic.util.ThemeHelper.DARK_THEME;
-import static org.horaapps.leafpic.util.ThemeHelper.LIGHT_THEME;
+import static vn.mbm.phimp.me.leafpic.util.ThemeHelper.AMOLED_THEME;
+import static vn.mbm.phimp.me.leafpic.util.ThemeHelper.DARK_THEME;
+import static vn.mbm.phimp.me.leafpic.util.ThemeHelper.LIGHT_THEME;
 
 /**
  * Created by Jibo on 02/03/2016.
@@ -527,7 +527,7 @@ public class SettingsActivity extends ThemedActivity {
         dialogBuilder.setView(dialogLayout);
         dialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                SP.putInt(getString(org.horaapps.leafpic.R.string.preference_base_theme), getBaseTheme());
+                SP.putInt(getString(R.string.preference_base_theme), getBaseTheme());
                 setTheme();
             }
         });
@@ -767,14 +767,14 @@ public class SettingsActivity extends ThemedActivity {
     private void setTheme(){
 
         /** BackGround **/
-        findViewById(org.horaapps.leafpic.R.id.setting_background).setBackgroundColor(getBackgroundColor());
+        findViewById(R.id.setting_background).setBackgroundColor(getBackgroundColor());
 
         /** Cards **/
         int color = getCardBackgroundColor();
-        ((CardView) findViewById(org.horaapps.leafpic.R.id.general_setting_card)).setCardBackgroundColor(color);
-        ((CardView) findViewById(org.horaapps.leafpic.R.id.theme_setting_card)).setCardBackgroundColor(color);
-        ((CardView) findViewById(org.horaapps.leafpic.R.id.preview_picture_setting_card)).setCardBackgroundColor(color);
-        ((CardView) findViewById(org.horaapps.leafpic.R.id.video_setting_card)).setCardBackgroundColor(color);
+        ((CardView) findViewById(R.id.general_setting_card)).setCardBackgroundColor(color);
+        ((CardView) findViewById(R.id.theme_setting_card)).setCardBackgroundColor(color);
+        ((CardView) findViewById(R.id.preview_picture_setting_card)).setCardBackgroundColor(color);
+        ((CardView) findViewById(R.id.video_setting_card)).setCardBackgroundColor(color);
         ((CardView) findViewById(R.id.advanced_setting_card)).setCardBackgroundColor(color);
 
         toolbar.setBackgroundColor(getPrimaryColor());
@@ -793,7 +793,7 @@ public class SettingsActivity extends ThemedActivity {
 
         setStatusBarColor();
         setNavBarColor();
-        setRecentApp(getString(org.horaapps.leafpic.R.string.settings));
+        setRecentApp(getString(R.string.settings));
         setScrollViewColor(scr);
         updateViewswithAccentColor(getAccentColor());
 

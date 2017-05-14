@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.base.ThemedActivity;
-import vn.mbm.phimp.me.leafpic.MyApplication;
+import vn.mbm.phimp.me.MyApplication;
 import vn.mbm.phimp.me.leafpic.data.CustomAlbumsHelper;
 
 /**

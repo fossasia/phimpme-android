@@ -10,16 +10,16 @@ import android.media.MediaScannerConnection;
 import android.media.ThumbnailUtils;
 import android.provider.MediaStore;
 
-import org.horaapps.leafpic.R;
-import org.horaapps.leafpic.activities.SplashScreen;
-import org.horaapps.leafpic.data.base.AlbumsComparators;
-import org.horaapps.leafpic.data.base.SortingMode;
-import org.horaapps.leafpic.data.base.SortingOrder;
-import org.horaapps.leafpic.data.providers.MediaStoreProvider;
-import org.horaapps.leafpic.data.providers.StorageProvider;
-import org.horaapps.leafpic.util.ContentHelper;
-import org.horaapps.leafpic.util.PreferenceUtil;
-import org.horaapps.leafpic.util.StringUtils;
+import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.leafpic.activities.SplashScreen;
+import vn.mbm.phimp.me.leafpic.data.base.AlbumsComparators;
+import vn.mbm.phimp.me.leafpic.data.base.SortingMode;
+import vn.mbm.phimp.me.leafpic.data.base.SortingOrder;
+import vn.mbm.phimp.me.leafpic.data.providers.MediaStoreProvider;
+import vn.mbm.phimp.me.leafpic.data.providers.StorageProvider;
+import vn.mbm.phimp.me.leafpic.util.ContentHelper;
+import vn.mbm.phimp.me.leafpic.util.PreferenceUtil;
+import vn.mbm.phimp.me.leafpic.util.StringUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -60,7 +60,7 @@ public class HandlingAlbums {
     this.hidden = hidden;
 
     ArrayList<Album> list = new ArrayList<Album>();
-    if (SP.getBoolean(context.getString(org.horaapps.leafpic.R.string.preference_use_alternative_provider), false)) {
+    if (SP.getBoolean(context.getString(R.string.preference_use_alternative_provider), false)) {
       StorageProvider p = new StorageProvider(context);
       list = p.getAlbums(context, hidden);
     } else {

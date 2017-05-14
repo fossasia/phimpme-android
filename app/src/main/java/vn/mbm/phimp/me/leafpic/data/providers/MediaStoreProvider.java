@@ -6,13 +6,13 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 
-import org.horaapps.leafpic.data.Album;
-import org.horaapps.leafpic.data.CustomAlbumsHelper;
-import org.horaapps.leafpic.data.Media;
-import org.horaapps.leafpic.data.base.ImageFileFilter;
-import org.horaapps.leafpic.util.ContentHelper;
-import org.horaapps.leafpic.util.PreferenceUtil;
-import org.horaapps.leafpic.util.StringUtils;
+import vn.mbm.phimp.me.leafpic.data.Album;
+import vn.mbm.phimp.me.leafpic.data.CustomAlbumsHelper;
+import vn.mbm.phimp.me.leafpic.data.Media;
+import vn.mbm.phimp.me.leafpic.data.base.ImageFileFilter;
+import vn.mbm.phimp.me.leafpic.util.ContentHelper;
+import vn.mbm.phimp.me.leafpic.util.PreferenceUtil;
+import vn.mbm.phimp.me.leafpic.util.StringUtils;
 import org.jetbrains.annotations.TestOnly;
 
 import java.io.File;
