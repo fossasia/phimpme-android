@@ -39,7 +39,7 @@ public class SplashScreen extends SharedMediaActivity {
     final static int PHOTOS_PREFETCHED = 2;
     final static int ALBUMS_BACKUP = 60;
     private boolean PICK_INTENT = false;
-    public final static String ACTION_OPEN_ALBUM = "com.horaapps.leafpic.OPEN_ALBUM";
+    public final static String ACTION_OPEN_ALBUM = "vn.mbm.phimp.me.leafpic.OPEN_ALBUM";
 
     //private HandlingAlbums albums;
     private Album album;
@@ -65,24 +65,24 @@ public class SplashScreen extends SharedMediaActivity {
         setStatusBarColor();
 
         if (PermissionUtils.isDeviceInfoGranted(this)) {
-            if (getIntent().getAction().equals(ACTION_OPEN_ALBUM)) {
-                Bundle data = getIntent().getExtras();
-                if (data != null) {
-                    String ab = data.getString("albumPath");
+            if (null != getIntent().getAction()) {
+                if (getIntent().getAction().equals(ACTION_OPEN_ALBUM)) {
+                    Bundle data = getIntent().getExtras();
+                    if (data != null) {
+                        String ab = data.getString("albumPath");
 
-                    if (ab != null) {
-                        File dir = new File(ab);
-                        // TODO: 19/08/16 look for id
-                        album = new Album(getApplicationContext(), dir.getAbsolutePath(), data.getInt("albumId", -1), dir.getName(), -1);
-                        new PrefetchPhotosData().execute();
-                    }
-                } else StringUtils.showToast(getApplicationContext(), "Album not found");
-            } else
-                new PrefetchAlbumsData().execute();
-
-            if (getIntent().getAction().equals(Intent.ACTION_GET_CONTENT) || getIntent().getAction().equals(Intent.ACTION_PICK))
-                PICK_INTENT = true;
-
+                        if (ab != null) {
+                            File dir = new File(ab);
+                            // TODO: 19/08/16 look for id
+                            album = new Album(getApplicationContext(), dir.getAbsolutePath(), data.getInt("albumId", -1), dir.getName(), -1);
+                            new PrefetchPhotosData().execute();
+                        }
+                    } else StringUtils.showToast(getApplicationContext(), "Album not found");
+                } else
+                    new PrefetchAlbumsData().execute();
+                if (getIntent().getAction().equals(Intent.ACTION_GET_CONTENT) || getIntent().getAction().equals(Intent.ACTION_PICK))
+                    PICK_INTENT = true;
+            }
         } else {
             String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
             PermissionUtils.requestPermissions(this, READ_EXTERNAL_STORAGE_ID, permissions);
