@@ -62,4 +62,5 @@ dependencies {
     testCompile "junit:junit:$rootProject.junitVersion"
     compile "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
+    compile project(path: ':imageeditlibrary')
 }
