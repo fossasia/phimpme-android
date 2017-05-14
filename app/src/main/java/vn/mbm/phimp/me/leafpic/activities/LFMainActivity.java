@@ -46,9 +46,12 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.view.IconicsImageView;
 
+import java.util.ArrayList;
+import java.util.Locale;
+
 import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.leafpic.SelectAlbumBottomSheet;
 import vn.mbm.phimp.me.base.SharedMediaActivity;
+import vn.mbm.phimp.me.leafpic.SelectAlbumBottomSheet;
 import vn.mbm.phimp.me.leafpic.adapters.AlbumsAdapter;
 import vn.mbm.phimp.me.leafpic.adapters.MediaAdapter;
 import vn.mbm.phimp.me.leafpic.data.Album;
@@ -65,9 +68,6 @@ import vn.mbm.phimp.me.leafpic.util.PreferenceUtil;
 import vn.mbm.phimp.me.leafpic.util.SecurityHelper;
 import vn.mbm.phimp.me.leafpic.util.StringUtils;
 import vn.mbm.phimp.me.leafpic.views.GridSpacingItemDecoration;
-
-import java.util.ArrayList;
-import java.util.Locale;
 
 import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.DATE;
 import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.NAME;
@@ -170,7 +170,7 @@ public class LFMainActivity extends SharedMediaActivity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+    setContentView(R.layout.activity_leafpic);
 
     SP = PreferenceUtil.getInstance(getApplicationContext());
     albumsMode = true;
