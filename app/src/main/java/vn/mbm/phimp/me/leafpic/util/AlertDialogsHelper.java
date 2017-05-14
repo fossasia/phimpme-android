@@ -21,10 +21,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.drew.lang.GeoLocation;
 
-import org.horaapps.leafpic.R;
-import org.horaapps.leafpic.activities.base.ThemedActivity;
-import org.horaapps.leafpic.data.Media;
-import org.horaapps.leafpic.data.base.MediaDetailsMap;
+import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.base.ThemedActivity;
+import vn.mbm.phimp.me.leafpic.data.Media;
+import vn.mbm.phimp.me.leafpic.data.base.MediaDetailsMap;
 
 import java.lang.reflect.Field;
 import java.util.Locale;
@@ -36,10 +36,10 @@ public class AlertDialogsHelper {
 
     public static AlertDialog getInsertTextDialog(final ThemedActivity activity, AlertDialog.Builder dialogBuilder , EditText editText, @StringRes int title) {
 
-        View dialogLayout = activity.getLayoutInflater().inflate(org.horaapps.leafpic.R.layout.dialog_insert_text, null);
-        TextView textViewTitle = (TextView) dialogLayout.findViewById(org.horaapps.leafpic.R.id.rename_title);
+        View dialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_insert_text, null);
+        TextView textViewTitle = (TextView) dialogLayout.findViewById(R.id.rename_title);
 
-        ((CardView) dialogLayout.findViewById(org.horaapps.leafpic.R.id.dialog_chose_provider_title)).setCardBackgroundColor(activity.getCardBackgroundColor());
+        ((CardView) dialogLayout.findViewById(R.id.dialog_chose_provider_title)).setCardBackgroundColor(activity.getCardBackgroundColor());
         textViewTitle.setBackgroundColor(activity.getPrimaryColor());
         textViewTitle.setText(title);
         ThemeHelper.setCursorDrawableColor(editText, activity.getTextColor());
@@ -56,19 +56,19 @@ public class AlertDialogsHelper {
             f.set(editText, null);
         } catch (Exception ignored) { }
 
-        ((RelativeLayout) dialogLayout.findViewById(org.horaapps.leafpic.R.id.container_edit_text)).addView(editText);
+        ((RelativeLayout) dialogLayout.findViewById(R.id.container_edit_text)).addView(editText);
 
         dialogBuilder.setView(dialogLayout);
         return dialogBuilder.create();
     }
 
     public static AlertDialog getTextDialog(final ThemedActivity activity, AlertDialog.Builder textDialogBuilder, @StringRes int title, @StringRes int Message){
-        View dialogLayout = activity.getLayoutInflater().inflate(org.horaapps.leafpic.R.layout.dialog_text, null);
+        View dialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_text, null);
 
-        TextView dialogTitle = (TextView) dialogLayout.findViewById(org.horaapps.leafpic.R.id.text_dialog_title);
-        TextView dialogMessage = (TextView) dialogLayout.findViewById(org.horaapps.leafpic.R.id.text_dialog_message);
+        TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.text_dialog_title);
+        TextView dialogMessage = (TextView) dialogLayout.findViewById(R.id.text_dialog_message);
 
-        ((CardView) dialogLayout.findViewById(org.horaapps.leafpic.R.id.message_card)).setCardBackgroundColor(activity.getCardBackgroundColor());
+        ((CardView) dialogLayout.findViewById(R.id.message_card)).setCardBackgroundColor(activity.getCardBackgroundColor());
         dialogTitle.setBackgroundColor(activity.getPrimaryColor());
         dialogTitle.setText(title);
         dialogMessage.setText(Message);
@@ -78,13 +78,13 @@ public class AlertDialogsHelper {
     }
 
     public static AlertDialog getProgressDialog(final ThemedActivity activity, AlertDialog.Builder progressDialog, String title, String message){
-        View dialogLayout = activity.getLayoutInflater().inflate(org.horaapps.leafpic.R.layout.dialog_progress, null);
-        TextView dialogTitle = (TextView) dialogLayout.findViewById(org.horaapps.leafpic.R.id.progress_dialog_title);
-        TextView dialogMessage = (TextView) dialogLayout.findViewById(org.horaapps.leafpic.R.id.progress_dialog_text);
+        View dialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_progress, null);
+        TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.progress_dialog_title);
+        TextView dialogMessage = (TextView) dialogLayout.findViewById(R.id.progress_dialog_text);
 
         dialogTitle.setBackgroundColor(activity.getPrimaryColor());
-        ((CardView) dialogLayout.findViewById(org.horaapps.leafpic.R.id.progress_dialog_card)).setCardBackgroundColor(activity.getCardBackgroundColor());
-        ((ProgressBar) dialogLayout.findViewById(org.horaapps.leafpic.R.id.progress_dialog_loading)).getIndeterminateDrawable().setColorFilter(activity.getPrimaryColor(),
+        ((CardView) dialogLayout.findViewById(R.id.progress_dialog_card)).setCardBackgroundColor(activity.getCardBackgroundColor());
+        ((ProgressBar) dialogLayout.findViewById(R.id.progress_dialog_loading)).getIndeterminateDrawable().setColorFilter(activity.getPrimaryColor(),
                 PorterDuff.Mode.SRC_ATOP);
 
         dialogTitle.setText(title);
@@ -98,10 +98,10 @@ public class AlertDialogsHelper {
 
     public static AlertDialog getDetailsDialog(final ThemedActivity activity, AlertDialog.Builder detailsDialogBuilder, final Media f) {
         MediaDetailsMap<String, String> mainDetails = f.getMainDetails(activity.getApplicationContext());
-        final View dialogLayout = activity.getLayoutInflater().inflate(org.horaapps.leafpic.R.layout.dialog_media_detail, null);
-        ImageView imgMap = (ImageView) dialogLayout.findViewById(org.horaapps.leafpic.R.id.photo_map);
-        dialogLayout.findViewById(org.horaapps.leafpic.R.id.details_title).setBackgroundColor(activity.getPrimaryColor());
-        ((CardView) dialogLayout.findViewById(org.horaapps.leafpic.R.id.photo_details_card)).setCardBackgroundColor(activity.getCardBackgroundColor());
+        final View dialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_media_detail, null);
+        ImageView imgMap = (ImageView) dialogLayout.findViewById(R.id.photo_map);
+        dialogLayout.findViewById(R.id.details_title).setBackgroundColor(activity.getPrimaryColor());
+        ((CardView) dialogLayout.findViewById(R.id.photo_details_card)).setCardBackgroundColor(activity.getCardBackgroundColor());
 
         final GeoLocation location;
         if ((location = f.getGeoLocation()) != null) {
@@ -114,7 +114,7 @@ public class AlertDialogsHelper {
                     .load(staticMapProvider.getUrl(location))
                     .asBitmap()
                     .centerCrop()
-                    .animate(org.horaapps.leafpic.R.anim.fade_in)
+                    .animate(R.anim.fade_in)
                     .into(imgMap);
 
             imgMap.setOnClickListener(new View.OnClickListener() {
@@ -125,7 +125,7 @@ public class AlertDialogsHelper {
             });
 
             imgMap.setVisibility(View.VISIBLE);
-            dialogLayout.findViewById(org.horaapps.leafpic.R.id.details_title).setVisibility(View.GONE);
+            dialogLayout.findViewById(R.id.details_title).setVisibility(View.GONE);
 
         }
 

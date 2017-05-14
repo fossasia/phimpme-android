@@ -22,8 +22,8 @@ import com.google.android.exoplayer.util.PlayerControl;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 
-import org.horaapps.leafpic.R;
-import org.horaapps.leafpic.util.ThemeHelper;
+import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
 
 import java.lang.ref.WeakReference;
 

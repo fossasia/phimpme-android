@@ -46,41 +46,34 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.view.IconicsImageView;
 
-import org.horaapps.leafpic.R;
-import org.horaapps.leafpic.SelectAlbumBottomSheet;
-import org.horaapps.leafpic.activities.base.SharedMediaActivity;
-import org.horaapps.leafpic.adapters.AlbumsAdapter;
-import org.horaapps.leafpic.adapters.MediaAdapter;
-import org.horaapps.leafpic.data.Album;
-import org.horaapps.leafpic.data.CustomAlbumsHelper;
-import org.horaapps.leafpic.data.HandlingAlbums;
-import org.horaapps.leafpic.data.Media;
-import org.horaapps.leafpic.data.base.FilterMode;
-import org.horaapps.leafpic.data.base.SortingMode;
-import org.horaapps.leafpic.data.base.SortingOrder;
-import org.horaapps.leafpic.util.Affix;
-import org.horaapps.leafpic.util.AlertDialogsHelper;
-import org.horaapps.leafpic.util.ContentHelper;
-import org.horaapps.leafpic.util.Measure;
-import org.horaapps.leafpic.util.PreferenceUtil;
-import org.horaapps.leafpic.util.SecurityHelper;
-import org.horaapps.leafpic.util.StringUtils;
-import org.horaapps.leafpic.views.GridSpacingItemDecoration;
+import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.leafpic.SelectAlbumBottomSheet;
+import vn.mbm.phimp.me.base.SharedMediaActivity;
+import vn.mbm.phimp.me.leafpic.adapters.AlbumsAdapter;
+import vn.mbm.phimp.me.leafpic.adapters.MediaAdapter;
+import vn.mbm.phimp.me.leafpic.data.Album;
+import vn.mbm.phimp.me.leafpic.data.CustomAlbumsHelper;
+import vn.mbm.phimp.me.leafpic.data.HandlingAlbums;
+import vn.mbm.phimp.me.leafpic.data.Media;
+import vn.mbm.phimp.me.leafpic.data.base.FilterMode;
+import vn.mbm.phimp.me.leafpic.data.base.SortingOrder;
+import vn.mbm.phimp.me.leafpic.util.Affix;
+import vn.mbm.phimp.me.leafpic.util.AlertDialogsHelper;
+import vn.mbm.phimp.me.leafpic.util.ContentHelper;
+import vn.mbm.phimp.me.leafpic.util.Measure;
+import vn.mbm.phimp.me.leafpic.util.PreferenceUtil;
+import vn.mbm.phimp.me.leafpic.util.SecurityHelper;
+import vn.mbm.phimp.me.leafpic.util.StringUtils;
+import vn.mbm.phimp.me.leafpic.views.GridSpacingItemDecoration;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
-import vn.mbm.phimp.me.base.SharedMediaActivity;
-import vn.mbm.phimp.me.leafpic.SelectAlbumBottomSheet;
-import vn.mbm.phimp.me.leafpic.adapters.AlbumsAdapter;
-import vn.mbm.phimp.me.leafpic.adapters.MediaAdapter;
-import vn.mbm.phimp.me.leafpic.data.CustomAlbumsHelper;
-import vn.mbm.phimp.me.leafpic.data.Media;
-import vn.mbm.phimp.me.leafpic.util.PreferenceUtil;
-import vn.mbm.phimp.me.leafpic.util.SecurityHelper;
-import vn.mbm.phimp.me.leafpic.views.GridSpacingItemDecoration;
-
-import static android.R.attr.id;
+import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.DATE;
+import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.NAME;
+import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.NUMERIC;
+import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.SIZE;
+import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.TYPE;
 
 
 public class LFMainActivity extends SharedMediaActivity {
@@ -500,14 +493,14 @@ public class LFMainActivity extends SharedMediaActivity {
     ((IconicsImageView) findViewById(R.id.Drawer_About_Icon)).setColor(color);
     ((IconicsImageView) findViewById(R.id.Drawer_hidden_Icon)).setColor(color);
 
-    /** CLICK LISTENERS **/
+    /** CLICK LISTENERS **//*
     findViewById(R.id.ll_drawer_Donate).setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
         Intent intent = new Intent(LFMainActivity.this, DonateActivity.class);
         startActivity(intent);
       }
-    });
+    });*/
     findViewById(R.id.ll_drawer_Setting).setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
@@ -987,11 +980,11 @@ public class LFMainActivity extends SharedMediaActivity {
 
       case R.id.name_sort_action:
         if (albumsMode) {
-          getAlbums().setDefaultSortingMode(SortingMode.NAME);
+          getAlbums().setDefaultSortingMode(NAME);
           getAlbums().sortAlbums(getApplicationContext());
           albumsAdapter.swapDataSet(getAlbums().dispAlbums);
         } else {
-          getAlbum().setDefaultSortingMode(getApplicationContext(), SortingMode.NAME);
+          getAlbum().setDefaultSortingMode(getApplicationContext(), NAME);
           getAlbum().sortPhotos();
           mediaAdapter.swapDataSet(getAlbum().getMedia());
         }
@@ -1000,11 +993,11 @@ public class LFMainActivity extends SharedMediaActivity {
 
       case R.id.date_taken_sort_action:
         if (albumsMode) {
-          getAlbums().setDefaultSortingMode(SortingMode.DATE);
+          getAlbums().setDefaultSortingMode(DATE);
           getAlbums().sortAlbums(getApplicationContext());
           albumsAdapter.swapDataSet(getAlbums().dispAlbums);
         } else {
-          getAlbum().setDefaultSortingMode(getApplicationContext(), SortingMode.DATE);
+          getAlbum().setDefaultSortingMode(getApplicationContext(), DATE);
           getAlbum().sortPhotos();
           mediaAdapter.swapDataSet(getAlbum().getMedia());
         }
@@ -1013,11 +1006,11 @@ public class LFMainActivity extends SharedMediaActivity {
 
       case R.id.size_sort_action:
         if (albumsMode) {
-          getAlbums().setDefaultSortingMode(SortingMode.SIZE);
+          getAlbums().setDefaultSortingMode(SIZE);
           getAlbums().sortAlbums(getApplicationContext());
           albumsAdapter.swapDataSet(getAlbums().dispAlbums);
         } else {
-          getAlbum().setDefaultSortingMode(getApplicationContext(), SortingMode.SIZE);
+          getAlbum().setDefaultSortingMode(getApplicationContext(), SIZE);
           getAlbum().sortPhotos();
           mediaAdapter.swapDataSet(getAlbum().getMedia());
         }
@@ -1026,7 +1019,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
       case R.id.type_sort_action:
         if (!albumsMode) {
-          getAlbum().setDefaultSortingMode(getApplicationContext(), SortingMode.TYPE);
+          getAlbum().setDefaultSortingMode(getApplicationContext(), TYPE);
           getAlbum().sortPhotos();
           mediaAdapter.swapDataSet(getAlbum().getMedia());
           item.setChecked(true);
@@ -1036,11 +1029,11 @@ public class LFMainActivity extends SharedMediaActivity {
 
       case R.id.numeric_sort_action:
         if (albumsMode) {
-          getAlbums().setDefaultSortingMode(SortingMode.NUMERIC);
+          getAlbums().setDefaultSortingMode(NUMERIC);
           getAlbums().sortAlbums(getApplicationContext());
           albumsAdapter.swapDataSet(getAlbums().dispAlbums);
         } else {
-          getAlbum().setDefaultSortingMode(getApplicationContext(), SortingMode.NUMERIC);
+          getAlbum().setDefaultSortingMode(getApplicationContext(), NUMERIC);
           getAlbum().sortPhotos();
           mediaAdapter.swapDataSet(getAlbum().getMedia());
         }

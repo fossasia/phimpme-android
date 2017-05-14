@@ -12,11 +12,12 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mikepenz.iconics.view.IconicsImageView;
 
-import org.horaapps.leafpic.activities.PlayerActivity;
-import org.horaapps.leafpic.activities.SingleMediaActivity;
-import org.horaapps.leafpic.data.Media;
-import org.horaapps.leafpic.util.ContentHelper;
-import org.horaapps.leafpic.util.PreferenceUtil;
+import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.leafpic.activities.PlayerActivity;
+import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
+import vn.mbm.phimp.me.leafpic.data.Media;
+import vn.mbm.phimp.me.leafpic.util.ContentHelper;
+import vn.mbm.phimp.me.leafpic.util.PreferenceUtil;
 
 /**
  * Created by dnld on 18/02/16.
@@ -53,10 +54,10 @@ public class VideoFragment extends Fragment {
                              Bundle savedInstanceState) {
 
 
-        View view = inflater.inflate(org.horaapps.leafpic.R.layout.fragment_video, container, false);
+        View view = inflater.inflate(R.layout.fragment_video, container, false);
 
-        ImageView picture = (ImageView) view.findViewById(org.horaapps.leafpic.R.id.media_view);
-        IconicsImageView videoInd = (IconicsImageView) view.findViewById(org.horaapps.leafpic.R.id.icon);
+        ImageView picture = (ImageView) view.findViewById(R.id.media_view);
+        IconicsImageView videoInd = (IconicsImageView) view.findViewById(R.id.icon);
         videoInd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,7 +78,7 @@ public class VideoFragment extends Fragment {
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .thumbnail(0.5f)
-                .animate(org.horaapps.leafpic.R.anim.fade_in)
+                .animate(R.anim.fade_in)
                 .into(picture);
 
         picture.setOnClickListener(new View.OnClickListener() {

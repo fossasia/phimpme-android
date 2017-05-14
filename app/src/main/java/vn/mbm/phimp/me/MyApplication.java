@@ -1,9 +1,9 @@
-package vn.mbm.phimp.me.leafpic;
+package vn.mbm.phimp.me;
 
 import android.app.Application;
 
-import org.horaapps.leafpic.data.Album;
-import org.horaapps.leafpic.data.HandlingAlbums;
+import vn.mbm.phimp.me.leafpic.data.Album;
+import vn.mbm.phimp.me.leafpic.data.HandlingAlbums;
 
 /**
  * Created by dnld on 28/04/16.

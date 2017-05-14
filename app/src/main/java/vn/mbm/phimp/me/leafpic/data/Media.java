@@ -17,10 +17,10 @@ import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
 
-import org.horaapps.leafpic.R;
-import org.horaapps.leafpic.data.base.MediaDetailsMap;
-import org.horaapps.leafpic.util.MediaSignature;
-import org.horaapps.leafpic.util.StringUtils;
+import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.leafpic.data.base.MediaDetailsMap;
+import vn.mbm.phimp.me.leafpic.util.MediaSignature;
+import vn.mbm.phimp.me.leafpic.util.StringUtils;
 import org.jetbrains.annotations.TestOnly;
 
 import java.io.File;

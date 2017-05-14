@@ -26,11 +26,13 @@ import android.widget.TextView;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 
-import org.horaapps.leafpic.activities.base.ThemedActivity;
-import org.horaapps.leafpic.data.Album;
-import org.horaapps.leafpic.data.base.FoldersFileFilter;
-import org.horaapps.leafpic.util.AlertDialogsHelper;
-import org.horaapps.leafpic.util.ThemeHelper;
+import vn.mbm.phimp.me.MyApplication;
+import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.base.ThemedActivity;
+import vn.mbm.phimp.me.leafpic.data.Album;
+import vn.mbm.phimp.me.leafpic.data.base.FoldersFileFilter;
+import vn.mbm.phimp.me.leafpic.util.AlertDialogsHelper;
+import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
 
 import java.io.File;
 import java.util.ArrayList;

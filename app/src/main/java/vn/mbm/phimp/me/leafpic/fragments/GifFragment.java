@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 
 import com.koushikdutta.ion.Ion;
 
-import org.horaapps.leafpic.activities.SingleMediaActivity;
-import org.horaapps.leafpic.data.Media;
+import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
+import vn.mbm.phimp.me.leafpic.data.Media;
 
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
