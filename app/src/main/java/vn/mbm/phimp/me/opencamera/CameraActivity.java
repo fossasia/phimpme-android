@@ -2133,7 +2133,7 @@ public class CameraActivity extends Activity implements AudioListener.AudioListe
 						}
 					});
 					if( !mainUI.inImmersiveMode() ) {
-						zoomControls.setVisibility(View.VISIBLE);
+						zoomControls.setVisibility(View.INVISIBLE);
 					}
 				}
 				else {
@@ -2162,7 +2162,7 @@ public class CameraActivity extends Activity implements AudioListener.AudioListe
 
 				if( sharedPreferences.getBoolean(PreferenceKeys.getShowZoomSliderControlsPreferenceKey(), true) ) {
 					if( !mainUI.inImmersiveMode() ) {
-						zoomSeekBar.setVisibility(View.VISIBLE);
+						zoomSeekBar.setVisibility(View.INVISIBLE);
 					}
 				}
 				else {

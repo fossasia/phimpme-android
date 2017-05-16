@@ -548,8 +548,8 @@ public class DrawPreview {
 	        // also possibly related https://code.google.com/p/android/issues/detail?id=181201
 	        String current_time = dateFormatTimeInstance.format(calendar.getTime());
 	        //String current_time = DateUtils.formatDateTime(getContext(), c.getTimeInMillis(), DateUtils.FORMAT_SHOW_TIME);
-	        applicationInterface.drawTextWithBackground(canvas, p, current_time, Color.WHITE, Color.BLACK, location_x, location_y, MyApplicationInterface.Alignment.ALIGNMENT_TOP);
-
+//	        applicationInterface.drawTextWithBackground(canvas, p, current_time, Color.WHITE, Color.BLACK, location_x, location_y, MyApplicationInterface.Alignment.ALIGNMENT_TOP);
+			//Todo: If you want to show time just uncomment the upper part
 			if( ui_rotation == 90 ) {
 				location_y -= diff_y;
 			}
@@ -568,7 +568,7 @@ public class DrawPreview {
 				last_free_memory_time = time_now; // always set this, so that in case of free memory not being available, we aren't calling freeMemory() every frame
 			}
 			if( free_memory_gb >= 0.0f ) {
-				applicationInterface.drawTextWithBackground(canvas, p, getContext().getResources().getString(R.string.free_memory) + ": " + decimalFormat.format(free_memory_gb) + getContext().getResources().getString(R.string.gb_abbreviation), Color.WHITE, Color.BLACK, location_x, location_y, MyApplicationInterface.Alignment.ALIGNMENT_TOP);
+//				applicationInterface.drawTextWithBackground(canvas, p, getContext().getResources().getString(R.string.free_memory) + ": " + decimalFormat.format(free_memory_gb) + getContext().getResources().getString(R.string.gb_abbreviation), Color.WHITE, Color.BLACK, location_x, location_y, MyApplicationInterface.Alignment.ALIGNMENT_TOP);
 			}
 
 			if( ui_rotation == 90 ) {
@@ -843,9 +843,9 @@ public class DrawPreview {
 					color = getAngleHighlightColor();
 					p.setUnderlineText(true);
 				}
-				String number_string = formatLevelAngle(level_angle);
+				/*String number_string = formatLevelAngle(level_angle);
 				String string = getContext().getResources().getString(R.string.angle) + ": " + number_string + (char)0x00B0;
-				applicationInterface.drawTextWithBackground(canvas, p, string, color, Color.BLACK, canvas.getWidth() / 2 + pixels_offset_x, text_base_y, MyApplicationInterface.Alignment.ALIGNMENT_BOTTOM, ybounds_text, true);
+				applicationInterface.drawTextWithBackground(canvas, p, string, color, Color.BLACK, canvas.getWidth() / 2 + pixels_offset_x, text_base_y, MyApplicationInterface.Alignment.ALIGNMENT_BOTTOM, ybounds_text, true);*/
 				p.setUnderlineText(false);
 			}
 			if( draw_geo_direction ) {
@@ -949,50 +949,6 @@ public class DrawPreview {
 				p.setTextSize(14 * scale + 0.5f); // convert dps to pixels
 				p.setTextAlign(Paint.Align.CENTER);
 				applicationInterface.drawTextWithBackground(canvas, p, getContext().getResources().getString(R.string.zoom) + ": " + zoom_ratio +"x", Color.WHITE, Color.BLACK, canvas.getWidth() / 2, text_base_y - text_y, MyApplicationInterface.Alignment.ALIGNMENT_BOTTOM, ybounds_text, true);
-			}
-		}
-
-		int battery_x = (int) (5 * scale + 0.5f); // convert dps to pixels
-		int battery_y = top_y;
-		int battery_width = (int) (5 * scale + 0.5f); // convert dps to pixels
-		int battery_height = 4*battery_width;
-		if( ui_rotation == 90 || ui_rotation == 270 ) {
-			int diff = canvas.getWidth() - canvas.getHeight();
-			battery_x += diff/2;
-			battery_y -= diff/2;
-		}
-		if( ui_rotation == 90 ) {
-			battery_y = canvas.getHeight() - battery_y - battery_height;
-		}
-		if( ui_rotation == 180 ) {
-			battery_x = canvas.getWidth() - battery_x - battery_width;
-		}
-		if( sharedPreferences.getBoolean(PreferenceKeys.getShowBatteryPreferenceKey(), true) ) {
-			if( !this.has_battery_frac || System.currentTimeMillis() > this.last_battery_time + 60000 ) {
-				// only check periodically - unclear if checking is costly in any way
-				// note that it's fine to call registerReceiver repeatedly - we pass a null receiver, so this is fine as a "one shot" use
-				Intent batteryStatus = main_activity.registerReceiver(null, battery_ifilter);
-				int battery_level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-				int battery_scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-				has_battery_frac = true;
-				battery_frac = battery_level/(float)battery_scale;
-				last_battery_time = System.currentTimeMillis();
-				if( MyDebug.LOG )
-					Log.d(TAG, "Battery status is " + battery_level + " / " + battery_scale + " : " + battery_frac);
-			}
-			//battery_frac = 0.2999f; // test
-			boolean draw_battery = true;
-			if( battery_frac <= 0.05f ) {
-				// flash icon at this low level
-				draw_battery = ((( System.currentTimeMillis() / 1000 )) % 2) == 0;
-			}
-			if( draw_battery ) {
-				p.setColor(Color.WHITE);
-				p.setStyle(Paint.Style.STROKE);
-				canvas.drawRect(battery_x, battery_y, battery_x+battery_width, battery_y+battery_height, p);
-				p.setColor(battery_frac > 0.15f ? Color.rgb(37, 155, 36) : Color.rgb(244, 67, 54)); // Green 500 or Red 500
-				p.setStyle(Paint.Style.FILL);
-				canvas.drawRect(battery_x+1, battery_y+1+(1.0f-battery_frac)*(battery_height-2), battery_x+battery_width-1, battery_y+battery_height-1, p);
 			}
 		}
 
