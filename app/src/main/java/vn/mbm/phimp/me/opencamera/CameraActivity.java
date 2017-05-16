@@ -1357,22 +1357,6 @@ public class CameraActivity extends Activity implements AudioListener.AudioListe
 	/** Sets the brightness level for normal operation (when camera preview is visible).
 	 *  If force_max is true, this always forces maximum brightness; otherwise this depends on user preference.
 	 */
-	void setBrightnessForCamera(boolean force_max) {
-		if( MyDebug.LOG )
-			Log.d(TAG, "setBrightnessForCamera");
-		// set screen to max brightness - see http://stackoverflow.com/questions/11978042/android-screen-brightness-max-value
-		// done here rather than onCreate, so that changing it in preferences takes effect without restarting app
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-		WindowManager.LayoutParams layout = getWindow().getAttributes();
-		if( force_max || sharedPreferences.getBoolean(PreferenceKeys.getMaxBrightnessPreferenceKey(), true) ) {
-			layout.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_FULL;
-		}
-		else {
-			layout.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
-		}
-		getWindow().setAttributes(layout);
-	}
-
 	/** Sets the window flags for normal operation (when camera preview is visible).
 	 */
 	public void setWindowFlagsForCamera() {
@@ -1414,8 +1398,6 @@ public class CameraActivity extends Activity implements AudioListener.AudioListe
 				Log.d(TAG, "don't show when locked");
 			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
 		}
-
-		setBrightnessForCamera(false);
 
 		initImmersiveMode();
 		camera_in_background = false;
