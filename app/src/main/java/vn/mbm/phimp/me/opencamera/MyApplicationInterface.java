@@ -1485,7 +1485,7 @@ public class MyApplicationInterface implements ApplicationInterface {
 	
 	@Override
 	public void multitouchZoom(int new_zoom) {
-		main_activity.getMainUI().setSeekbarZoom();
+//		main_activity.getMainUI().setSeekbarZoom();
 	}
 
 	@Override
