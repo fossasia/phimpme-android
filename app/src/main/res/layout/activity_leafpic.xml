@@ -74,17 +74,6 @@
             </android.support.v4.widget.SwipeRefreshLayout>
 
         </LinearLayout>
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_camera"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/medium_spacing"
-            android:theme="@style/ThemeOverlay.AppCompat.Light"
-            app:borderWidth="0dp"
-            app:elevation="@dimen/card_elevation"
-            style="@style/fab_camera"
-            />
     </android.support.design.widget.CoordinatorLayout>
     <include
         android:id="@+id/drawer_items"

@@ -11,7 +11,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import vn.mbm.phimp.me.Utilities.BasicCallBack;
-import vn.mbm.phimp.me.leafpic.activities.SplashScreen;
+import vn.mbm.phimp.me.leafpic.activities.LFMainActivity;
 import vn.mbm.phimp.me.opencamera.CameraActivity;
 
 import static vn.mbm.phimp.me.Utilities.Constants.CAMERA_BACK_PRESSED;
@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         switch (item.getItemId()) {
             case R.id.navigation_home:
                 tabs.setText(R.string.title_home);
-                startActivity(new Intent(MainActivity.this, SplashScreen.class));
+                startActivity(new Intent(MainActivity.this, LFMainActivity.class));
                 return true;
             case R.id.navigation_camera:
                 Intent i = new Intent(MainActivity.this, CameraActivity.class);
