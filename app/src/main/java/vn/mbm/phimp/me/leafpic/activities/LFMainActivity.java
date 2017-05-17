@@ -196,7 +196,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
     private void displayCurrentAlbumMedia(boolean reload) {
         toolbar.setTitle(getAlbum().getName());
-        toolbar.setNavigationIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_arrow_back));
+        //toolbar.setNavigationIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_arrow_back));
         mediaAdapter.swapDataSet(getAlbum().getMedia());
         if (reload) new PreparePhotosTask().execute();
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -218,12 +218,6 @@ public class LFMainActivity extends SharedMediaActivity {
         toolbar.setTitle(getString(R.string.app_name));
         albumsAdapter.swapDataSet(getAlbums().dispAlbums);
         if (reload) new PrepareAlbumTask().execute();
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDrawerLayout.openDrawer(GravityCompat.START);
-            }
-        });
 
         albumsMode = true;
         editMode = false;
@@ -413,7 +407,6 @@ public class LFMainActivity extends SharedMediaActivity {
         mediaAdapter.updatePlaceholder(getApplicationContext());
         albumsAdapter.updateTheme();
         /**** DRAWER ****/
-        setScrollViewColor((ScrollView) findViewById(R.id.drawer_scrollbar));
 
         /**** recyclers drawable *****/
         Drawable drawableScrollBar = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_scrollbar);
@@ -424,16 +417,6 @@ public class LFMainActivity extends SharedMediaActivity {
         if (albumsMode) {
             if (editMode)
                 toolbar.setTitle(getAlbums().getSelectedCount() + "/" + getAlbums().dispAlbums.size());
-            else {
-                toolbar.setTitle(getString(R.string.app_name));
-                toolbar.setNavigationIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_menu));
-                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mDrawerLayout.openDrawer(GravityCompat.START);
-                    }
-                });
-            }
         } else {
             if (editMode)
                 toolbar.setTitle(getAlbum().getSelectedCount() + "/" + getAlbum().getMedia().size());
