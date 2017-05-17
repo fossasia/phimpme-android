@@ -1,8 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/black"
     android:layout_height="match_parent"
-    tools:context=".CameraActivity" >
+    tools:context=".opencamera.CameraActivity" >
 
     <FrameLayout
         android:id="@+id/preview"
@@ -20,7 +21,8 @@
         android:contentDescription="@string/take_photo"
         android:src="@drawable/take_photo_selector"
         android:onClick="clickedTakePhoto"
-        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
 		android:background="@null"
         />
 
@@ -50,10 +52,9 @@
         android:contentDescription="@string/zoom"
         android:layout_width="150dp"
         android:layout_height="50dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="0dp"
-        android:layout_marginBottom="0dp"
+        android:rotation="270"
+        android:visibility="gone"
+        android:layout_centerVertical="true"
         />
 
     <SeekBar
@@ -63,6 +64,7 @@
         android:layout_height="50dp"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="10dp"
+        android:rotation="90"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="0dp"
         android:visibility="invisible"
