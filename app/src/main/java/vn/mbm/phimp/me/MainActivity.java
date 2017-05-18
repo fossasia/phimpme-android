@@ -51,7 +51,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         switch (item.getItemId()) {
             case R.id.navigation_home:
                 tabs.setText(R.string.title_home);
-                startActivity(new Intent(MainActivity.this, LFMainActivity.class));
+                android.app.Fragment galleryFragment = new LFMainActivity();
+                getFragmentManager().beginTransaction().replace(R.id.container, galleryFragment).commit();
+                //startActivity(new Intent(MainActivity.this, LFMainActivity.class));
                 return true;
             case R.id.navigation_camera:
                 Intent i = new Intent(MainActivity.this, CameraActivity.class);

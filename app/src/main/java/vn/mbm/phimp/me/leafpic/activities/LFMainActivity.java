@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
@@ -12,39 +11,36 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CompoundButton;
+import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.ScrollView;
-import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.view.IconicsImageView;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
+import vn.mbm.phimp.me.MyApplication;
 import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.base.SharedMediaActivity;
+import vn.mbm.phimp.me.base.ThemedActivity;
 import vn.mbm.phimp.me.leafpic.SelectAlbumBottomSheet;
 import vn.mbm.phimp.me.leafpic.adapters.AlbumsAdapter;
 import vn.mbm.phimp.me.leafpic.adapters.MediaAdapter;
@@ -54,7 +50,6 @@ import vn.mbm.phimp.me.leafpic.data.HandlingAlbums;
 import vn.mbm.phimp.me.leafpic.data.Media;
 import vn.mbm.phimp.me.leafpic.data.base.FilterMode;
 import vn.mbm.phimp.me.leafpic.data.base.SortingOrder;
-import vn.mbm.phimp.me.leafpic.util.Affix;
 import vn.mbm.phimp.me.leafpic.util.AlertDialogsHelper;
 import vn.mbm.phimp.me.leafpic.util.ContentHelper;
 import vn.mbm.phimp.me.leafpic.util.Measure;
@@ -63,6 +58,7 @@ import vn.mbm.phimp.me.leafpic.util.SecurityHelper;
 import vn.mbm.phimp.me.leafpic.util.StringUtils;
 import vn.mbm.phimp.me.leafpic.views.GridSpacingItemDecoration;
 
+import static android.app.Activity.RESULT_OK;
 import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.DATE;
 import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.NAME;
 import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.NUMERIC;
@@ -70,12 +66,12 @@ import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.SIZE;
 import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.TYPE;
 
 
-public class LFMainActivity extends SharedMediaActivity {
+public class LFMainActivity extends ThemedActivity {
 
     private static String TAG = "AlbumsAct";
     private int REQUEST_CODE_SD_CARD_PERMISSIONS = 42;
 
-    private CustomAlbumsHelper customAlbumsHelper = CustomAlbumsHelper.getInstance(LFMainActivity.this);
+    private CustomAlbumsHelper customAlbumsHelper = CustomAlbumsHelper.getInstance(getContext());
     private PreferenceUtil SP;
     private SecurityHelper securityObj;
 
@@ -92,6 +88,7 @@ public class LFMainActivity extends SharedMediaActivity {
     private SelectAlbumBottomSheet bottomSheetDialogFragment;
     private SwipeRefreshLayout swipeRefreshLayout;
 
+    public View view;
 
     private boolean hidden = false, pickMode = false, editMode = false, albumsMode = true, firstLaunch = true;
 
@@ -106,7 +103,7 @@ public class LFMainActivity extends SharedMediaActivity {
             } else
                 getAlbum().selectAllPhotosUpTo(getAlbum().getIndex(m), mediaAdapter);
 
-            invalidateOptionsMenu();
+            //invalidateOptionsMenu();
             return true;
         }
     };
@@ -118,16 +115,16 @@ public class LFMainActivity extends SharedMediaActivity {
             if (!pickMode) {
                 if (editMode) {
                     mediaAdapter.notifyItemChanged(getAlbum().toggleSelectPhoto(m));
-                    invalidateOptionsMenu();
+                    //invalidateOptionsMenu();
                 } else {
                     getAlbum().setCurrentPhotoIndex(m);
-                    Intent intent = new Intent(LFMainActivity.this, SingleMediaActivity.class);
+                    Intent intent = new Intent(getContext(), SingleMediaActivity.class);
                     intent.setAction(SingleMediaActivity.ACTION_OPEN_ALBUM);
                     startActivity(intent);
                 }
             } else {
-                setResult(RESULT_OK, new Intent().setData(m.getUri()));
-                finish();
+                getActivity().setResult(RESULT_OK, new Intent().setData(m.getUri()));
+                getActivity().finish();
             }
 
         }
@@ -139,7 +136,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
             albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(((Album) v.findViewById(R.id.album_name).getTag())));
             editMode = true;
-            invalidateOptionsMenu();
+            //invalidateOptionsMenu();
             return true;
         }
     };
@@ -151,7 +148,7 @@ public class LFMainActivity extends SharedMediaActivity {
             //int index = Integer.parseInt(v.findViewById(R.id.album_name).getTag().toString());
             if (editMode) {
                 albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(album));
-                invalidateOptionsMenu();
+                //invalidateOptionsMenu();
             } else {
                 getAlbums().setCurrentAlbum(album);
                 displayCurrentAlbumMedia(true);
@@ -160,19 +157,23 @@ public class LFMainActivity extends SharedMediaActivity {
         }
     };
 
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_leafpic);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.activity_leafpic, container, false);
+        initUI(view);
+        return view;
+    }
 
-        SP = PreferenceUtil.getInstance(getApplicationContext());
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        SP = PreferenceUtil.getInstance(getActivity());
         albumsMode = true;
         editMode = false;
-        securityObj = new SecurityHelper(LFMainActivity.this);
+        securityObj = new SecurityHelper(getContext());
 
-        initUI();
-
-        displayData(getIntent().getExtras());
+        displayData(getActivity().getIntent().getExtras());
     }
 
     @Override
@@ -190,7 +191,7 @@ public class LFMainActivity extends SharedMediaActivity {
             albumsAdapter.notifyDataSetChanged();
             mediaAdapter.notifyDataSetChanged();
         }
-        invalidateOptionsMenu();
+        //invalidateOptionsMenu();
         firstLaunch = false;
     }
 
@@ -206,7 +207,7 @@ public class LFMainActivity extends SharedMediaActivity {
             }
         });
         albumsMode = editMode = false;
-        invalidateOptionsMenu();
+        //invalidateOptionsMenu();
     }
 
     private void displayAlbums() {
@@ -221,7 +222,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
         albumsMode = true;
         editMode = false;
-        invalidateOptionsMenu();
+        //invalidateOptionsMenu();
         mediaAdapter.swapDataSet(new ArrayList<Media>());
         rvMedia.scrollToPosition(0);
     }
@@ -252,7 +253,7 @@ public class LFMainActivity extends SharedMediaActivity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            getAlbums().loadAlbums(getApplicationContext(), getAlbum().isHidden());
+                            getAlbums().loadAlbums(getActivity(), getAlbum().isHidden());
                         }
                     }).start();
                     displayCurrentAlbumMedia(false);
@@ -265,46 +266,46 @@ public class LFMainActivity extends SharedMediaActivity {
         return false;
     }
 
-    private void initUI() {
+    private void initUI(View view) {
 
         /**** TOOLBAR ****/
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        ((ActionBarActivity) getActivity()).setSupportActionBar(toolbar);
 
         /**** RECYCLER VIEW ****/
-        rvAlbums = (RecyclerView) findViewById(R.id.grid_albums);
-        rvMedia = ((RecyclerView) findViewById(R.id.grid_photos));
+        rvAlbums = (RecyclerView) view.findViewById(R.id.grid_albums);
+        rvMedia = ((RecyclerView) view.findViewById(R.id.grid_photos));
         rvAlbums.setHasFixedSize(true);
         rvAlbums.setItemAnimator(new DefaultItemAnimator());
         rvMedia.setHasFixedSize(true);
         rvMedia.setItemAnimator(new DefaultItemAnimator());
 
 
-        albumsAdapter = new AlbumsAdapter(getAlbums().dispAlbums, LFMainActivity.this);
+        albumsAdapter = new AlbumsAdapter(getAlbums().dispAlbums, getContext());
 
         albumsAdapter.setOnClickListener(albumOnClickListener);
         albumsAdapter.setOnLongClickListener(albumOnLongCLickListener);
         rvAlbums.setAdapter(albumsAdapter);
 
-        mediaAdapter = new MediaAdapter(getAlbum().getMedia(), LFMainActivity.this);
+        mediaAdapter = new MediaAdapter(getAlbum().getMedia(), getContext());
 
         mediaAdapter.setOnClickListener(photosOnClickListener);
         mediaAdapter.setOnLongClickListener(photosOnLongClickListener);
         rvMedia.setAdapter(mediaAdapter);
 
         int spanCount = SP.getInt("n_columns_folders", 2);
-        rvAlbumsDecoration = new GridSpacingItemDecoration(spanCount, Measure.pxToDp(3, getApplicationContext()), true);
+        rvAlbumsDecoration = new GridSpacingItemDecoration(spanCount, Measure.pxToDp(3, getActivity()), true);
         rvAlbums.addItemDecoration(rvAlbumsDecoration);
-        rvAlbums.setLayoutManager(new GridLayoutManager(this, spanCount));
+        rvAlbums.setLayoutManager(new GridLayoutManager(getContext(), spanCount));
 
         spanCount = SP.getInt("n_columns_media", 3);
-        rvMediaDecoration = new GridSpacingItemDecoration(spanCount, Measure.pxToDp(3, getApplicationContext()), true);
-        rvMedia.setLayoutManager(new GridLayoutManager(getApplicationContext(), spanCount));
+        rvMediaDecoration = new GridSpacingItemDecoration(spanCount, Measure.pxToDp(3, getActivity()), true);
+        rvMedia.setLayoutManager(new GridLayoutManager(getActivity(), spanCount));
         rvMedia.addItemDecoration(rvMediaDecoration);
 
 
         /**** SWIPE TO REFRESH ****/
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setColorSchemeColors(getAccentColor());
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getBackgroundColor());
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -321,7 +322,7 @@ public class LFMainActivity extends SharedMediaActivity {
         });
 
         /**** DRAWER ****/
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerLayout = (DrawerLayout) view.findViewById(R.id.drawer_layout);
         //endregion
 
         setRecentApp(getString(R.string.app_name));
@@ -337,9 +338,9 @@ public class LFMainActivity extends SharedMediaActivity {
         int spanCount = SP.getInt("n_columns_folders", 2);
         if (spanCount != ((GridLayoutManager) rvAlbums.getLayoutManager()).getSpanCount()) {
             rvAlbums.removeItemDecoration(rvAlbumsDecoration);
-            rvAlbumsDecoration = new GridSpacingItemDecoration(spanCount, Measure.pxToDp(3, getApplicationContext()), true);
+            rvAlbumsDecoration = new GridSpacingItemDecoration(spanCount, Measure.pxToDp(3, getActivity()), true);
             rvAlbums.addItemDecoration(rvAlbumsDecoration);
-            rvAlbums.setLayoutManager(new GridLayoutManager(this, spanCount));
+            rvAlbums.setLayoutManager(new GridLayoutManager(getContext(), spanCount));
         }
     }
 
@@ -348,8 +349,8 @@ public class LFMainActivity extends SharedMediaActivity {
         if (spanCount != ((GridLayoutManager) rvMedia.getLayoutManager()).getSpanCount()) {
             ((GridLayoutManager) rvMedia.getLayoutManager()).getSpanCount();
             rvMedia.removeItemDecoration(rvMediaDecoration);
-            rvMediaDecoration = new GridSpacingItemDecoration(spanCount, Measure.pxToDp(3, getApplicationContext()), true);
-            rvMedia.setLayoutManager(new GridLayoutManager(getApplicationContext(), spanCount));
+            rvMediaDecoration = new GridSpacingItemDecoration(spanCount, Measure.pxToDp(3, getActivity()), true);
+            rvMedia.setLayoutManager(new GridLayoutManager(getActivity(), spanCount));
             rvMedia.addItemDecoration(rvMediaDecoration);
         }
     }
@@ -363,18 +364,18 @@ public class LFMainActivity extends SharedMediaActivity {
             if (requestCode == REQUEST_CODE_SD_CARD_PERMISSIONS) {
                 Uri treeUri = resultData.getData();
                 // Persist URI in shared preference so that you can use it later.
-                ContentHelper.saveSdCardInfo(getApplicationContext(), treeUri);
-                getContentResolver().takePersistableUriPermission(treeUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                Toast.makeText(this, R.string.got_permission_wr_sdcard, Toast.LENGTH_SHORT).show();
+                ContentHelper.saveSdCardInfo(getActivity(), treeUri);
+                getActivity().getContentResolver().takePersistableUriPermission(treeUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                Toast.makeText(getContext(), R.string.got_permission_wr_sdcard, Toast.LENGTH_SHORT).show();
             }
         }
     }
     //endregion
 
     private void requestSdCardPermissions() {
-        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext(), getDialogStyle());
 
-        AlertDialogsHelper.getTextDialog(LFMainActivity.this, dialogBuilder,
+        AlertDialogsHelper.getTextDialog(this, dialogBuilder,
                 R.string.sd_card_write_permission_title, R.string.sd_card_permissions_message);
 
         dialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
@@ -404,12 +405,12 @@ public class LFMainActivity extends SharedMediaActivity {
 
         rvAlbums.setBackgroundColor(getBackgroundColor());
         rvMedia.setBackgroundColor(getBackgroundColor());
-        mediaAdapter.updatePlaceholder(getApplicationContext());
+        mediaAdapter.updatePlaceholder(getActivity());
         albumsAdapter.updateTheme();
         /**** DRAWER ****/
 
         /**** recyclers drawable *****/
-        Drawable drawableScrollBar = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_scrollbar);
+        Drawable drawableScrollBar = ContextCompat.getDrawable(getActivity(), R.drawable.ic_scrollbar);
         drawableScrollBar.setColorFilter(new PorterDuffColorFilter(getPrimaryColor(), PorterDuff.Mode.SRC_ATOP));
     }
 
@@ -452,21 +453,21 @@ public class LFMainActivity extends SharedMediaActivity {
             getAlbum().clearSelectedPhotos();
             mediaAdapter.notifyDataSetChanged();
         }
-        invalidateOptionsMenu();
+        //invalidateOptionsMenu();
     }
 
     private void checkNothing() {
-        TextView a = (TextView) findViewById(R.id.nothing_to_show);
+        TextView a = (TextView) view.findViewById(R.id.nothing_to_show);
         a.setTextColor(getTextColor());
         a.setVisibility((albumsMode && getAlbums().dispAlbums.size() == 0) || (!albumsMode && getAlbum().getMedia().size() == 0) ? View.VISIBLE : View.GONE);
     }
 
     //region MENU
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_albums, menu);
+        getActivity().getMenuInflater().inflate(R.menu.menu_albums, menu);
 
         if (albumsMode) {
             menu.findItem(R.id.select_all).setTitle(
@@ -523,11 +524,11 @@ public class LFMainActivity extends SharedMediaActivity {
         menu.findItem(R.id.filter_menu).setIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_filter_list));
         menu.findItem(R.id.sharePhotos).setIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_share));
 
-        return true;
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(final Menu menu) {
+    public void onPrepareOptionsMenu(Menu menu) {
         if (albumsMode) {
             editMode = getAlbums().getSelectedCount() != 0;
             menu.setGroupVisible(R.id.album_options_menu, editMode);
@@ -554,7 +555,7 @@ public class LFMainActivity extends SharedMediaActivity {
         menu.findItem(R.id.set_pin_album).setVisible(albumsMode && getAlbums().getSelectedCount() == 1);
         menu.findItem(R.id.setAsAlbumPreview).setVisible(!albumsMode);
         menu.findItem(R.id.affixPhoto).setVisible(!albumsMode && getAlbum().getSelectedCount() > 1);
-        return super.onPrepareOptionsMenu(menu);
+        super.onPrepareOptionsMenu(menu);
     }
 
     private void togglePrimaryToolbarOptions(final Menu menu) {
@@ -586,45 +587,45 @@ public class LFMainActivity extends SharedMediaActivity {
                     } else getAlbum().selectAllPhotos();
                     mediaAdapter.notifyDataSetChanged();
                 }
-                invalidateOptionsMenu();
+                //invalidateOptionsMenu();
                 return true;
 
             case R.id.set_pin_album:
-                getAlbums().getSelectedAlbum(0).settings.togglePin(getApplicationContext());
-                getAlbums().sortAlbums(getApplicationContext());
+                getAlbums().getSelectedAlbum(0).settings.togglePin(getActivity());
+                getAlbums().sortAlbums(getActivity());
                 getAlbums().clearSelectedAlbums();
                 albumsAdapter.swapDataSet(getAlbums().dispAlbums);
-                invalidateOptionsMenu();
+                //invalidateOptionsMenu();
                 return true;
 
             case R.id.settings:
-                startActivity(new Intent(LFMainActivity.this, SettingsActivity.class));
+                startActivity(new Intent(getContext(), SettingsActivity.class));
                 return true;
 
             case R.id.installShortcut:
-                getAlbums().installShortcutForSelectedAlbums(this.getApplicationContext());
+                getAlbums().installShortcutForSelectedAlbums(this.getActivity());
                 finishEditMode();
                 return true;
 
             case R.id.hideAlbumButton:
-                final AlertDialog.Builder hideDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
+                final AlertDialog.Builder hideDialogBuilder = new AlertDialog.Builder(getContext(), getDialogStyle());
 
-                AlertDialogsHelper.getTextDialog(LFMainActivity.this, hideDialogBuilder,
+                AlertDialogsHelper.getTextDialog(this, hideDialogBuilder,
                         hidden ? R.string.unhide : R.string.hide,
                         hidden ? R.string.unhide_album_message : R.string.hide_album_message);
 
                 hideDialogBuilder.setPositiveButton(getString(hidden ? R.string.unhide : R.string.hide).toUpperCase(), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (albumsMode) {
-                            if (hidden) getAlbums().unHideSelectedAlbums(getApplicationContext());
-                            else getAlbums().hideSelectedAlbums(getApplicationContext());
+                            if (hidden) getAlbums().unHideSelectedAlbums(getActivity());
+                            else getAlbums().hideSelectedAlbums(getActivity());
                             albumsAdapter.notifyDataSetChanged();
-                            invalidateOptionsMenu();
+                            //invalidateOptionsMenu();
                         } else {
                             if (hidden)
-                                getAlbums().unHideAlbum(getAlbum().getPath(), getApplicationContext());
+                                getAlbums().unHideAlbum(getAlbum().getPath(), getActivity());
                             else
-                                getAlbums().hideAlbum(getAlbum().getPath(), getApplicationContext());
+                                getAlbums().hideAlbum(getAlbum().getPath(), getActivity());
                             displayAlbums(true);
                         }
                     }
@@ -634,9 +635,9 @@ public class LFMainActivity extends SharedMediaActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             if (albumsMode) {
-                                getAlbums().excludeSelectedAlbums(getApplicationContext());
+                                getAlbums().excludeSelectedAlbums(getActivity());
                                 albumsAdapter.notifyDataSetChanged();
-                                invalidateOptionsMenu();
+                                //invalidateOptionsMenu();
                             } else {
                                 customAlbumsHelper.excludeAlbum(getAlbum().getPath());
                                 displayAlbums(true);
@@ -659,12 +660,12 @@ public class LFMainActivity extends SharedMediaActivity {
                     @Override
                     protected Boolean doInBackground(String... arg0) {
                         if (albumsMode)
-                            return getAlbums().deleteSelectedAlbums(LFMainActivity.this);
+                            return getAlbums().deleteSelectedAlbums(getContext());
                         else {
                             if (editMode)
-                                return getAlbum().deleteSelectedMedia(getApplicationContext());
+                                return getAlbum().deleteSelectedMedia(getActivity());
                             else {
-                                boolean succ = getAlbums().deleteAlbum(getAlbum(), getApplicationContext());
+                                boolean succ = getAlbums().deleteAlbum(getAlbum(), getActivity());
                                 getAlbum().getMedia().clear();
                                 return succ;
                             }
@@ -687,57 +688,28 @@ public class LFMainActivity extends SharedMediaActivity {
                             }
                         } else requestSdCardPermissions();
 
-                        invalidateOptionsMenu();
+                        //invalidateOptionsMenu();
                         checkNothing();
                         swipeRefreshLayout.setRefreshing(false);
                     }
                 }
 
-                AlertDialog.Builder deleteDialog = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
+                AlertDialog.Builder deleteDialog = new AlertDialog.Builder(getContext(), getDialogStyle());
                 AlertDialogsHelper.getTextDialog(this, deleteDialog, R.string.delete, albumsMode || !editMode ? R.string.delete_album_message : R.string.delete_photos_message);
 
                 deleteDialog.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
                 deleteDialog.setPositiveButton(this.getString(R.string.delete).toUpperCase(), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if (securityObj.isActiveSecurity() && securityObj.isPasswordOnDelete()) {
-                            AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
-                            final EditText editTextPassword = securityObj.getInsertPasswordDialog(LFMainActivity.this, passwordDialogBuilder);
-                            passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-
-                            passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    //This should br empty it will be overwrite later
-                                    //to avoid dismiss of the dialog on wrong password
-                                }
-                            });
-
-                            final AlertDialog passwordDialog = passwordDialogBuilder.create();
-                            passwordDialog.show();
-
-                            passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if (securityObj.checkPassword(editTextPassword.getText().toString())) {
-                                        passwordDialog.dismiss();
-                                        new DeletePhotos().execute();
-                                    } else {
-                                        Toast.makeText(getApplicationContext(), R.string.wrong_password, Toast.LENGTH_SHORT).show();
-                                        editTextPassword.getText().clear();
-                                        editTextPassword.requestFocus();
-                                    }
-                                }
-                            });
-                        } else new DeletePhotos().execute();
+                            new DeletePhotos().execute();
                     }
                 });
                 deleteDialog.show();
 
                 return true;
             case R.id.excludeAlbumButton:
-                final AlertDialog.Builder excludeDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
+                final AlertDialog.Builder excludeDialogBuilder = new AlertDialog.Builder(getContext(), getDialogStyle());
 
-                final View excludeDialogLayout = getLayoutInflater().inflate(R.layout.dialog_exclude, null);
+                final View excludeDialogLayout = getActivity().getLayoutInflater().inflate(R.layout.dialog_exclude, null);
                 TextView textViewExcludeTitle = (TextView) excludeDialogLayout.findViewById(R.id.text_dialog_title);
                 TextView textViewExcludeMessage = (TextView) excludeDialogLayout.findViewById(R.id.text_dialog_message);
                 final Spinner spinnerParents = (Spinner) excludeDialogLayout.findViewById(R.id.parents_folder);
@@ -763,9 +735,9 @@ public class LFMainActivity extends SharedMediaActivity {
                     public void onClick(DialogInterface dialog, int id) {
 
                         if ((albumsMode && getAlbums().getSelectedCount() > 1)) {
-                            getAlbums().excludeSelectedAlbums(getApplicationContext());
+                            getAlbums().excludeSelectedAlbums(getActivity());
                             albumsAdapter.notifyDataSetChanged();
-                            invalidateOptionsMenu();
+                            //invalidateOptionsMenu();
                         } else {
                             customAlbumsHelper.excludeAlbum(spinnerParents.getSelectedItem().toString());
                             finishEditMode();
@@ -794,7 +766,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
             case R.id.all_media_filter:
                 if (!albumsMode) {
-                    getAlbum().filterMedias(getApplicationContext(), FilterMode.ALL);
+                    getAlbum().filterMedias(getActivity(), FilterMode.ALL);
                     mediaAdapter.swapDataSet(getAlbum().getMedia());
                     item.setChecked(true);
                     checkNothing();
@@ -803,7 +775,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
             case R.id.video_media_filter:
                 if (!albumsMode) {
-                    getAlbum().filterMedias(getApplicationContext(), FilterMode.VIDEO);
+                    getAlbum().filterMedias(getActivity(), FilterMode.VIDEO);
                     mediaAdapter.swapDataSet(getAlbum().getMedia());
                     item.setChecked(true);
                     checkNothing();
@@ -812,7 +784,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
             case R.id.image_media_filter:
                 if (!albumsMode) {
-                    getAlbum().filterMedias(getApplicationContext(), FilterMode.IMAGES);
+                    getAlbum().filterMedias(getActivity(), FilterMode.IMAGES);
                     mediaAdapter.swapDataSet(getAlbum().getMedia());
                     item.setChecked(true);
                     checkNothing();
@@ -821,7 +793,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
             case R.id.gifs_media_filter:
                 if (!albumsMode) {
-                    getAlbum().filterMedias(getApplicationContext(), FilterMode.GIF);
+                    getAlbum().filterMedias(getActivity(), FilterMode.GIF);
                     mediaAdapter.swapDataSet(getAlbum().getMedia());
                     item.setChecked(true);
                     checkNothing();
@@ -831,10 +803,10 @@ public class LFMainActivity extends SharedMediaActivity {
             case R.id.name_sort_action:
                 if (albumsMode) {
                     getAlbums().setDefaultSortingMode(NAME);
-                    getAlbums().sortAlbums(getApplicationContext());
+                    getAlbums().sortAlbums(getActivity());
                     albumsAdapter.swapDataSet(getAlbums().dispAlbums);
                 } else {
-                    getAlbum().setDefaultSortingMode(getApplicationContext(), NAME);
+                    getAlbum().setDefaultSortingMode(getActivity(), NAME);
                     getAlbum().sortPhotos();
                     mediaAdapter.swapDataSet(getAlbum().getMedia());
                 }
@@ -844,10 +816,10 @@ public class LFMainActivity extends SharedMediaActivity {
             case R.id.date_taken_sort_action:
                 if (albumsMode) {
                     getAlbums().setDefaultSortingMode(DATE);
-                    getAlbums().sortAlbums(getApplicationContext());
+                    getAlbums().sortAlbums(getActivity());
                     albumsAdapter.swapDataSet(getAlbums().dispAlbums);
                 } else {
-                    getAlbum().setDefaultSortingMode(getApplicationContext(), DATE);
+                    getAlbum().setDefaultSortingMode(getActivity(), DATE);
                     getAlbum().sortPhotos();
                     mediaAdapter.swapDataSet(getAlbum().getMedia());
                 }
@@ -857,10 +829,10 @@ public class LFMainActivity extends SharedMediaActivity {
             case R.id.size_sort_action:
                 if (albumsMode) {
                     getAlbums().setDefaultSortingMode(SIZE);
-                    getAlbums().sortAlbums(getApplicationContext());
+                    getAlbums().sortAlbums(getActivity());
                     albumsAdapter.swapDataSet(getAlbums().dispAlbums);
                 } else {
-                    getAlbum().setDefaultSortingMode(getApplicationContext(), SIZE);
+                    getAlbum().setDefaultSortingMode(getActivity(), SIZE);
                     getAlbum().sortPhotos();
                     mediaAdapter.swapDataSet(getAlbum().getMedia());
                 }
@@ -869,7 +841,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
             case R.id.type_sort_action:
                 if (!albumsMode) {
-                    getAlbum().setDefaultSortingMode(getApplicationContext(), TYPE);
+                    getAlbum().setDefaultSortingMode(getActivity(), TYPE);
                     getAlbum().sortPhotos();
                     mediaAdapter.swapDataSet(getAlbum().getMedia());
                     item.setChecked(true);
@@ -880,10 +852,10 @@ public class LFMainActivity extends SharedMediaActivity {
             case R.id.numeric_sort_action:
                 if (albumsMode) {
                     getAlbums().setDefaultSortingMode(NUMERIC);
-                    getAlbums().sortAlbums(getApplicationContext());
+                    getAlbums().sortAlbums(getActivity());
                     albumsAdapter.swapDataSet(getAlbums().dispAlbums);
                 } else {
-                    getAlbum().setDefaultSortingMode(getApplicationContext(), NUMERIC);
+                    getAlbum().setDefaultSortingMode(getActivity(), NUMERIC);
                     getAlbum().sortPhotos();
                     mediaAdapter.swapDataSet(getAlbum().getMedia());
                 }
@@ -893,10 +865,10 @@ public class LFMainActivity extends SharedMediaActivity {
             case R.id.ascending_sort_action:
                 if (albumsMode) {
                     getAlbums().setDefaultSortingAscending(item.isChecked() ? SortingOrder.DESCENDING : SortingOrder.ASCENDING);
-                    getAlbums().sortAlbums(getApplicationContext());
+                    getAlbums().sortAlbums(getActivity());
                     albumsAdapter.swapDataSet(getAlbums().dispAlbums);
                 } else {
-                    getAlbum().setDefaultSortingAscending(getApplicationContext(), item.isChecked() ? SortingOrder.DESCENDING : SortingOrder.ASCENDING);
+                    getAlbum().setDefaultSortingAscending(getActivity(), item.isChecked() ? SortingOrder.DESCENDING : SortingOrder.ASCENDING);
                     getAlbum().sortPhotos();
                     mediaAdapter.swapDataSet(getAlbum().getMedia());
                 }
@@ -904,164 +876,122 @@ public class LFMainActivity extends SharedMediaActivity {
                 return true;
 
             //region Affix
-            case R.id.affixPhoto:
-
-                //region Async MediaAffix
-                class affixMedia extends AsyncTask<Affix.Options, Integer, Void> {
-                    private AlertDialog dialog;
-
-                    @Override
-                    protected void onPreExecute() {
-                        AlertDialog.Builder progressDialog = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
-
-                        dialog = AlertDialogsHelper.getProgressDialog(LFMainActivity.this, progressDialog,
-                                getString(R.string.affix), getString(R.string.affix_text));
-                        dialog.show();
-                        super.onPreExecute();
-                    }
-
-                    @Override
-                    protected Void doInBackground(Affix.Options... arg0) {
-                        ArrayList<Bitmap> bitmapArray = new ArrayList<Bitmap>();
-                        for (int i = 0; i < getAlbum().getSelectedCount(); i++) {
-                            if (!getAlbum().getSelectedMedia(i).isVideo())
-                                bitmapArray.add(getAlbum().getSelectedMedia(i).getBitmap());
-                        }
-
-                        if (bitmapArray.size() > 1)
-                            Affix.AffixBitmapList(getApplicationContext(), bitmapArray, arg0[0]);
-                        else runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(getApplicationContext(), R.string.affix_error, Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        return null;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Void result) {
-                        editMode = false;
-                        getAlbum().clearSelectedPhotos();
-                        dialog.dismiss();
-                        invalidateOptionsMenu();
-                        mediaAdapter.notifyDataSetChanged();
-                        new PreparePhotosTask().execute();
-                    }
-                }
-                //endregion
-
-                final AlertDialog.Builder builder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
-                final View dialogLayout = getLayoutInflater().inflate(R.layout.dialog_affix, null);
-
-                dialogLayout.findViewById(R.id.affix_title).setBackgroundColor(getPrimaryColor());
-                ((CardView) dialogLayout.findViewById(R.id.affix_card)).setCardBackgroundColor(getCardBackgroundColor());
-
-                //ITEMS
-                final SwitchCompat swVertical = (SwitchCompat) dialogLayout.findViewById(R.id.affix_vertical_switch);
-                final SwitchCompat swSaveHere = (SwitchCompat) dialogLayout.findViewById(R.id.save_here_switch);
-
-                final RadioGroup radioFormatGroup = (RadioGroup) dialogLayout.findViewById(R.id.radio_format);
-
-                final TextView txtQuality = (TextView) dialogLayout.findViewById(R.id.affix_quality_title);
-                final SeekBar seekQuality = (SeekBar) dialogLayout.findViewById(R.id.seek_bar_quality);
-
-                //region THEME STUFF
-                setScrollViewColor((ScrollView) dialogLayout.findViewById(R.id.affix_scrollView));
-
-                /** TextViews **/
-                int color = getTextColor();
-                ((TextView) dialogLayout.findViewById(R.id.affix_vertical_title)).setTextColor(color);
-                ((TextView) dialogLayout.findViewById(R.id.compression_settings_title)).setTextColor(color);
-                ((TextView) dialogLayout.findViewById(R.id.save_here_title)).setTextColor(color);
-
-                /** Sub TextViews **/
-                color = getTextColor();
-                ((TextView) dialogLayout.findViewById(R.id.save_here_sub)).setTextColor(color);
-                ((TextView) dialogLayout.findViewById(R.id.affix_vertical_sub)).setTextColor(color);
-                ((TextView) dialogLayout.findViewById(R.id.affix_format_sub)).setTextColor(color);
-                txtQuality.setTextColor(color);
-
-                /** Icons **/
-                color = getIconColor();
-                ((IconicsImageView) dialogLayout.findViewById(R.id.affix_quality_icon)).setColor(color);
-                ((IconicsImageView) dialogLayout.findViewById(R.id.affix_format_icon)).setColor(color);
-                ((IconicsImageView) dialogLayout.findViewById(R.id.affix_vertical_icon)).setColor(color);
-                ((IconicsImageView) dialogLayout.findViewById(R.id.save_here_icon)).setColor(color);
-
-                seekQuality.getProgressDrawable().setColorFilter(new PorterDuffColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN));
-                seekQuality.getThumb().setColorFilter(new PorterDuffColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN));
-
-                updateRadioButtonColor((RadioButton) dialogLayout.findViewById(R.id.radio_jpeg));
-                updateRadioButtonColor((RadioButton) dialogLayout.findViewById(R.id.radio_png));
-                updateRadioButtonColor((RadioButton) dialogLayout.findViewById(R.id.radio_webp));
-
-                updateSwitchColor(swVertical, getAccentColor());
-                updateSwitchColor(swSaveHere, getAccentColor());
-                //endregion
-
-                seekQuality.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                    @Override
-                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                        txtQuality.setText(Html.fromHtml(
-                                String.format(Locale.getDefault(), "%s <b>%d</b>", getString(R.string.quality), progress)));
-                    }
-
-                    @Override
-                    public void onStartTrackingTouch(SeekBar seekBar) {
-
-                    }
-
-                    @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {
-
-                    }
-                });
-                seekQuality.setProgress(90); //DEFAULT
-
-                swVertical.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        updateSwitchColor(swVertical, getAccentColor());
-                    }
-                });
-
-                swSaveHere.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        updateSwitchColor(swSaveHere, getAccentColor());
-                    }
-                });
-                builder.setView(dialogLayout);
-                builder.setPositiveButton(this.getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        Bitmap.CompressFormat compressFormat;
-                        switch (radioFormatGroup.getCheckedRadioButtonId()) {
-                            case R.id.radio_jpeg:
-                            default:
-                                compressFormat = Bitmap.CompressFormat.JPEG;
-                                break;
-                            case R.id.radio_png:
-                                compressFormat = Bitmap.CompressFormat.PNG;
-                                break;
-                            case R.id.radio_webp:
-                                compressFormat = Bitmap.CompressFormat.WEBP;
-                                break;
-                        }
-
-                        Affix.Options options = new Affix.Options(
-                                swSaveHere.isChecked() ? getAlbum().getPath() : Affix.getDefaultDirectoryPath(),
-                                compressFormat,
-                                seekQuality.getProgress(),
-                                swVertical.isChecked());
-                        new affixMedia().execute(options);
-                    }
-                });
-                builder.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
-                builder.show();
-
-
-                return true;
+//            case R.id.affixPhoto:
+//
+//                //region Async MediaAffix
+//                //endregion
+//
+//                final AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), getDialogStyle());
+//                final View dialogLayout = getActivity().getLayoutInflater().inflate(R.layout.dialog_affix, null);
+//
+//                dialogLayout.findViewById(R.id.affix_title).setBackgroundColor(getPrimaryColor());
+//                ((CardView) dialogLayout.findViewById(R.id.affix_card)).setCardBackgroundColor(getCardBackgroundColor());
+//
+//                //ITEMS
+//                final SwitchCompat swVertical = (SwitchCompat) dialogLayout.findViewById(R.id.affix_vertical_switch);
+//                final SwitchCompat swSaveHere = (SwitchCompat) dialogLayout.findViewById(R.id.save_here_switch);
+//
+//                final RadioGroup radioFormatGroup = (RadioGroup) dialogLayout.findViewById(R.id.radio_format);
+//
+//                final TextView txtQuality = (TextView) dialogLayout.findViewById(R.id.affix_quality_title);
+//                final SeekBar seekQuality = (SeekBar) dialogLayout.findViewById(R.id.seek_bar_quality);
+//
+//                //region THEME STUFF
+//                setScrollViewColor((ScrollView) dialogLayout.findViewById(R.id.affix_scrollView));
+//
+//                /** TextViews **/
+//                int color = getTextColor();
+//                ((TextView) dialogLayout.findViewById(R.id.affix_vertical_title)).setTextColor(color);
+//                ((TextView) dialogLayout.findViewById(R.id.compression_settings_title)).setTextColor(color);
+//                ((TextView) dialogLayout.findViewById(R.id.save_here_title)).setTextColor(color);
+//
+//                /** Sub TextViews **/
+//                color = getTextColor();
+//                ((TextView) dialogLayout.findViewById(R.id.save_here_sub)).setTextColor(color);
+//                ((TextView) dialogLayout.findViewById(R.id.affix_vertical_sub)).setTextColor(color);
+//                ((TextView) dialogLayout.findViewById(R.id.affix_format_sub)).setTextColor(color);
+//                txtQuality.setTextColor(color);
+//
+//                /** Icons **/
+//                color = getIconColor();
+//                ((IconicsImageView) dialogLayout.findViewById(R.id.affix_quality_icon)).setColor(color);
+//                ((IconicsImageView) dialogLayout.findViewById(R.id.affix_format_icon)).setColor(color);
+//                ((IconicsImageView) dialogLayout.findViewById(R.id.affix_vertical_icon)).setColor(color);
+//                ((IconicsImageView) dialogLayout.findViewById(R.id.save_here_icon)).setColor(color);
+//
+//                seekQuality.getProgressDrawable().setColorFilter(new PorterDuffColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN));
+//                seekQuality.getThumb().setColorFilter(new PorterDuffColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN));
+//
+//                updateRadioButtonColor((RadioButton) dialogLayout.findViewById(R.id.radio_jpeg));
+//                updateRadioButtonColor((RadioButton) dialogLayout.findViewById(R.id.radio_png));
+//                updateRadioButtonColor((RadioButton) dialogLayout.findViewById(R.id.radio_webp));
+//
+//                updateSwitchColor(swVertical, getAccentColor());
+//                updateSwitchColor(swSaveHere, getAccentColor());
+//                //endregion
+//
+//                seekQuality.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//                    @Override
+//                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+//                        txtQuality.setText(Html.fromHtml(
+//                                String.format(Locale.getDefault(), "%s <b>%d</b>", getString(R.string.quality), progress)));
+//                    }
+//
+//                    @Override
+//                    public void onStartTrackingTouch(SeekBar seekBar) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onStopTrackingTouch(SeekBar seekBar) {
+//
+//                    }
+//                });
+//                seekQuality.setProgress(90); //DEFAULT
+//
+//                swVertical.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                    @Override
+//                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                        updateSwitchColor(swVertical, getAccentColor());
+//                    }
+//                });
+//
+//                swSaveHere.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                    @Override
+//                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                        updateSwitchColor(swSaveHere, getAccentColor());
+//                    }
+//                });
+//                builder.setView(dialogLayout);
+//                builder.setPositiveButton(this.getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        Bitmap.CompressFormat compressFormat;
+//                        switch (radioFormatGroup.getCheckedRadioButtonId()) {
+//                            case R.id.radio_jpeg:
+//                            default:
+//                                compressFormat = Bitmap.CompressFormat.JPEG;
+//                                break;
+//                            case R.id.radio_png:
+//                                compressFormat = Bitmap.CompressFormat.PNG;
+//                                break;
+//                            case R.id.radio_webp:
+//                                compressFormat = Bitmap.CompressFormat.WEBP;
+//                                break;
+//                        }
+//
+//                        Affix.Options options = new Affix.Options(
+//                                swSaveHere.isChecked() ? getAlbum().getPath() : Affix.getDefaultDirectoryPath(),
+//                                compressFormat,
+//                                seekQuality.getProgress(),
+//                                swVertical.isChecked());
+//                        new affixMedia().execute(options);
+//                    }
+//                });
+//                builder.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
+//                builder.show();
+//
+//
+//                return true;
             //endregion
 
             case R.id.action_move:
@@ -1072,7 +1002,7 @@ public class LFMainActivity extends SharedMediaActivity {
                     @Override
                     public void folderSelected(String path) {
                         swipeRefreshLayout.setRefreshing(true);
-                        if (getAlbum().moveSelectedMedia(getApplicationContext(), path) > 0) {
+                        if (getAlbum().moveSelectedMedia(getActivity(), path) > 0) {
                             if (getAlbum().getMedia().size() == 0) {
                                 getAlbums().removeCurrentAlbum();
                                 albumsAdapter.notifyDataSetChanged();
@@ -1080,14 +1010,14 @@ public class LFMainActivity extends SharedMediaActivity {
                             }
                             mediaAdapter.swapDataSet(getAlbum().getMedia());
                             finishEditMode();
-                            invalidateOptionsMenu();
+                            //invalidateOptionsMenu();
                         } else requestSdCardPermissions();
 
                         swipeRefreshLayout.setRefreshing(false);
                         bottomSheetDialogFragment.dismiss();
                     }
                 });
-                bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
+                bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
                 return true;
 
             case R.id.action_copy:
@@ -1096,22 +1026,22 @@ public class LFMainActivity extends SharedMediaActivity {
                 bottomSheetDialogFragment.setSelectAlbumInterface(new SelectAlbumBottomSheet.SelectAlbumInterface() {
                     @Override
                     public void folderSelected(String path) {
-                        boolean success = getAlbum().copySelectedPhotos(getApplicationContext(), path);
+                        boolean success = getAlbum().copySelectedPhotos(getActivity(), path);
                         finishEditMode();
                         bottomSheetDialogFragment.dismiss();
                         if (!success)
                             requestSdCardPermissions();
                     }
                 });
-                bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
+                bottomSheetDialogFragment.show(getFragmentManager(), bottomSheetDialogFragment.getTag());
                 return true;
 
             case R.id.renameAlbum:
-                AlertDialog.Builder renameDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
-                final EditText editTextNewName = new EditText(getApplicationContext());
+                AlertDialog.Builder renameDialogBuilder = new AlertDialog.Builder(getContext(), getDialogStyle());
+                final EditText editTextNewName = new EditText(getActivity());
                 editTextNewName.setText(albumsMode ? getAlbums().getSelectedAlbum(0).getName() : getAlbum().getName());
 
-                AlertDialogsHelper.getInsertTextDialog(LFMainActivity.this, renameDialogBuilder,
+                AlertDialogsHelper.getInsertTextDialog(this, renameDialogBuilder,
                         editTextNewName, R.string.rename_album);
 
                 renameDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
@@ -1135,12 +1065,12 @@ public class LFMainActivity extends SharedMediaActivity {
                             if (albumsMode) {
 
                                 int index = getAlbums().dispAlbums.indexOf(getAlbums().getSelectedAlbum(0));
-                                getAlbums().getAlbum(index).updatePhotos(getApplicationContext());
-                                success = getAlbums().getAlbum(index).renameAlbum(getApplicationContext(),
+                                getAlbums().getAlbum(index).updatePhotos(getActivity());
+                                success = getAlbums().getAlbum(index).renameAlbum(getActivity(),
                                         editTextNewName.getText().toString());
                                 albumsAdapter.notifyItemChanged(index);
                             } else {
-                                success = getAlbum().renameAlbum(getApplicationContext(), editTextNewName.getText().toString());
+                                success = getAlbum().renameAlbum(getActivity(), editTextNewName.getText().toString());
                                 toolbar.setTitle(getAlbum().getName());
                                 mediaAdapter.notifyDataSetChanged();
                             }
@@ -1148,7 +1078,7 @@ public class LFMainActivity extends SharedMediaActivity {
                             if (!success) requestSdCardPermissions();
                             swipeRefreshLayout.setRefreshing(false);
                         } else {
-                            StringUtils.showToast(getApplicationContext(), getString(R.string.insert_something));
+                            StringUtils.showToast(getActivity(), getString(R.string.insert_something));
                             editTextNewName.requestFocus();
                         }
                     }
@@ -1157,13 +1087,13 @@ public class LFMainActivity extends SharedMediaActivity {
 
             case R.id.clear_album_preview:
                 if (!albumsMode) {
-                    getAlbum().removeCoverAlbum(getApplicationContext());
+                    getAlbum().removeCoverAlbum(getActivity());
                 }
                 return true;
 
             case R.id.setAsAlbumPreview:
                 if (!albumsMode) {
-                    getAlbum().setSelectedPhotoAsPreview(getApplicationContext());
+                    getAlbum().setSelectedPhotoAsPreview(getActivity());
                     finishEditMode();
                 }
                 return true;
@@ -1182,14 +1112,22 @@ public class LFMainActivity extends SharedMediaActivity {
 
     }
 
-    @Override
-    public void onBackPressed() {
+    public HandlingAlbums getAlbums() {
+        return ((MyApplication) getContext()).getAlbums();
+    }
+
+    public Album getAlbum() {
+        return ((MyApplication) getContext()).getAlbum();
+    }
+
+
+    public void onBackPresse() {
         if (editMode) finishEditMode();
         else {
             if (albumsMode) {
                 if (mDrawerLayout.isDrawerOpen(GravityCompat.START))
                     mDrawerLayout.closeDrawer(GravityCompat.START);
-                else finish();
+                else getActivity().finish();
             } else {
                 displayAlbums();
                 setRecentApp(getString(R.string.app_name));
@@ -1208,7 +1146,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
         @Override
         protected Void doInBackground(Void... arg0) {
-            getAlbums().loadAlbums(getApplicationContext(), hidden);
+            getAlbums().loadAlbums(getActivity(), hidden);
             return null;
         }
 
@@ -1217,7 +1155,7 @@ public class LFMainActivity extends SharedMediaActivity {
             albumsAdapter.swapDataSet(getAlbums().dispAlbums);
             checkNothing();
             swipeRefreshLayout.setRefreshing(false);
-            getAlbums().saveBackup(getApplicationContext());
+            getAlbums().saveBackup(getActivity());
         }
     }
 
@@ -1232,7 +1170,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
         @Override
         protected Void doInBackground(Void... arg0) {
-            getAlbum().updatePhotos(getApplicationContext());
+            getAlbum().updatePhotos(getActivity());
             return null;
         }
 
@@ -1240,7 +1178,7 @@ public class LFMainActivity extends SharedMediaActivity {
         protected void onPostExecute(Void result) {
             mediaAdapter.swapDataSet(getAlbum().getMedia());
             if (!hidden)
-                HandlingAlbums.addAlbumToBackup(getApplicationContext(), getAlbum());
+                HandlingAlbums.addAlbumToBackup(getActivity(), getAlbum());
             checkNothing();
             swipeRefreshLayout.setRefreshing(false);
         }
@@ -1263,8 +1201,8 @@ public class LFMainActivity extends SharedMediaActivity {
 					File from = new File(getAlbum().selectedMedias.get(i).getPath());
 					File to = new File(StringUtils.getPhotoPathMoved(getAlbum().selectedMedias.get(i).getPath(), arg0[0]));
 
-					if (ContentHelper.moveFile(getApplicationContext(), from, to)) {
-						MediaScannerConnection.scanFile(getApplicationContext(),
+					if (ContentHelper.moveFile(getActivity(), from, to)) {
+						MediaScannerConnection.scanFile(getActivity(),
 										new String[]{ to.getAbsolutePath(), from.getAbsolutePath() }, null, null);
 						getAlbum().getMedia().remove(getAlbum().selectedMedias.get(i));
 					} else success = false;
@@ -1285,7 +1223,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
 			mediaAdapter.swapDataSet(getAlbum().getMedia());
 			finishEditMode();
-			invalidateOptionsMenu();
+			//invalidateOptionsMenu();
 			swipeRefreshLayout.setRefreshing(false);
 		}
 	}*/
