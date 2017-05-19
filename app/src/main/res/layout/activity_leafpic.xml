@@ -85,6 +85,15 @@
             app:elevation="@dimen/card_elevation"
             style="@style/fab_camera"
             />
+
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/bottombar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/white70"
+            app:menu="@menu/navigation" />
+
     </android.support.design.widget.CoordinatorLayout>
     <include
         android:id="@+id/drawer_items"
