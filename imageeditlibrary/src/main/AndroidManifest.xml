@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.xinlan.imageeditlibrary" >
+    <!--图片编辑Activity-->
+    <activity
+        android:name="com.xinlan.imageeditlibrary.editimage.EditImageActivity">
+    </activity>
+</manifest>

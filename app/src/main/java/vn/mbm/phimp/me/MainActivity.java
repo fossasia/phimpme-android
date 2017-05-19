@@ -14,6 +14,12 @@ import butterknife.ButterKnife;
 import vn.mbm.phimp.me.Utilities.BasicCallBack;
 import vn.mbm.phimp.me.opencamera.CameraActivity;
 
+
+import com.xinlan.imageeditlibrary.editimage.EditImageActivity;
+import com.xinlan.imageeditlibrary.editimage.utils.BitmapUtils;
+import com.xinlan.imageeditlibrary.picchooser.SelectPictureActivity;
+
+
 import static vn.mbm.phimp.me.Utilities.Constants.CAMERA_BACK_PRESSED;
 
 /**

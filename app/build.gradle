@@ -49,7 +49,24 @@ android {
         jumboMode = true
     }
 
+    buildscript {
+        repositories {
+            jcenter()
+            mavenCentral()
+        }
+
+    }
+
+    allprojects {
+        repositories {
+            jcenter()
+            mavenCentral()
+        }
+    }
+
 }
+
+
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -62,4 +79,5 @@ dependencies {
     testCompile "junit:junit:$rootProject.junitVersion"
     compile "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
+    compile project(path: ':imageeditlibrary')
 }
