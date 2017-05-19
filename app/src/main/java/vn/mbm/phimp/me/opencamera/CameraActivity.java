@@ -1,6 +1,5 @@
 package vn.mbm.phimp.me.opencamera;
 
-import vn.mbm.phimp.me.MainActivity;
 import vn.mbm.phimp.me.Utilities.BasicCallBack;
 import vn.mbm.phimp.me.Utilities.Constants;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraController;

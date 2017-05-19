@@ -26,12 +26,7 @@
             android:name=".MainActivity"
             android:screenOrientation="portrait"
             android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-            </activity>
+        </activity>
         <activity android:name=".opencamera.CameraActivity"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -153,6 +148,11 @@
             android:name="vn.mbm.phimp.me.leafpic.activities.SplashScreen"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
             <intent-filter>
                 <category android:name="android.intent.category.APP_GALLERY" />
             </intent-filter>
