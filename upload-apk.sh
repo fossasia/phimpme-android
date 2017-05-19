@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+    #!/usr/bin/env bash
 #create a new directory that will contain out generated apk
 mkdir $HOME/buildApk/ 
 #copy generated apk from build folder and README.md to the folder just created
