@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/vn.mbm.phimp.me"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="2dp"
+    android:id="@+id/dialog_chose_provider_title">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:textColor="@color/md_dark_primary_text"
+            android:layout_height="wrap_content"
+            android:background="@color/md_dark_appbar"
+            android:padding="@dimen/big_spacing"
+            android:text="@string/chose_the_map_provider"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+        <ScrollView android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+            <RadioGroup
+                android:padding="@dimen/medium_spacing"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/radio_group_maps_provider"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/header_proprietary_maps"
+                    android:text="@string/use_google_static_maps_faster"
+                />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sub_medium_text"
+                    android:id="@+id/radio_google_maps"
+                    android:text="maps.google.com"
+                />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/header_free_maps"
+                    android:text="@string/use_openstreetmap_slower"
+                />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sub_medium_text"
+                    android:id="@+id/radio_mapb_streets"
+                    android:text="mapbox.com (streets)"
+                />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sub_medium_text"
+                    android:id="@+id/radio_mapb_dark"
+                    android:text="mapbox.com (dark)"
+                />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/sub_medium_text"
+                    android:id="@+id/radio_mapb_light"
+                    android:text="mapbox.com (light)"
+                />
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/radio_osm_tyler"
+                    android:textSize="@dimen/sub_medium_text"
+                    android:text="herokuapp.com (watercolor)"
+                />
+            </RadioGroup>
+        </ScrollView>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

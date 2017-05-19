@@ -180,8 +180,8 @@
     <string name="preference_take_photo_border_summary">Display a border on the display to indicate taking a photo</string>
     <string name="preference_keep_display_on">Keep display on</string>
     <string name="preference_keep_display_on_summary">If enabled, the screen won\'t switch off while the main Open Camera UI is active</string>
-    <string name="preference_max_brightness">Force maximum brightness</string>
-    <string name="preference_max_brightness_summary">Force screen display to be at maximum brightness, rather than device default</string>
+    <!--<string name="preference_max_brightness">Force maximum brightness</string>
+    --><string name="preference_max_brightness_summary">Force screen display to be at maximum brightness, rather than device default</string>
 
     <string name="preference_category_camera_quality">Photo and Video Settings</string>
     <string name="preference_screen_photo_settings">Photo settings…</string>
@@ -272,10 +272,8 @@
     <string name="switch_to_video">Switch to video mode</string>
     <string name="switch_to_photo">Switch to photo mode</string>
     <string name="trash">Delete Last Picture</string>
-    <string name="share">Share Photo</string>
 
     <string name="parent_folder">Parent Folder</string>
-    <string name="new_folder">New Folder</string>
     <string name="cant_write_folder">Can\'t write to this folder</string>
     <string name="cant_access_folder">Can\'t access this folder</string>
     <string name="enter_new_folder">Enter new folder name</string>
@@ -349,7 +347,6 @@
     <string name="preference_camera2_fast_burst">Enable fast HDR/expo burst</string>
     <string name="preference_camera2_fast_burst_summary">Allows faster capture of the HDR/expo shots. Disable this if your device has problems when taking photos with HDR or Expo photo modes.</string>
 
-    <string name="camera">Camera</string>
     <string name="record_video">Record video</string>
     <string name="selfie">Selfie</string>
 
@@ -410,4 +407,325 @@
 
     <string name="audio_listener_failed">Failed to initalise audio listening</string>
     <string name="failed_to_process_hdr">Failed to create HDR image</string>
+
+    <!--LEAF PIC STRING'S-->
+    <!--<string name="app_name">LeafPic</string>-->
+    <string name="app_light_description">A colorful material gallery.</string>
+    <string name="team_name">HoraApps</string>
+    <string name="welcome_slide_title">Welcome To LeafPic!</string>
+    <string name="welcome_slide_sub">A Colorful Material Designed Gallery!</string>
+    <string name="made_with_love_by">Made with love by</string>
+
+    <!--AUTHORS-->
+    <string name="donald_role">Project Manager</string>
+    <string name="gilbert_role">Major Designer</string>
+
+    <!-- ACTIONS -->
+    <string name="sort">Sort</string>
+    <string name="camera">Camera</string>
+    <string name="exclude">Exclude</string>
+    <string name="cancel">Cancel</string>
+    <string name="delete">Delete</string>
+    <string name="hide">Hide</string>
+    <string name="unhide">Unhide</string>
+    <string name="ok_action">OK</string>
+    <string name="rename_photo_action">Rename photo</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="refresh">Refresh</string>
+    <string name="sent_to_action">Send to</string>
+
+    <string name="filter_menu_title">Filter</string>
+    <string name="all">All</string>
+    <string name="videos">Video</string>
+    <string name="images">Images</string>
+    <string name="gifs">Gifs</string>
+
+    <string name="sort_menu_title">Sort</string>
+    <string name="name">Name</string>
+    <string name="date">Date</string>
+    <string name="date_taken">Date taken</string>
+
+    <string name="size">Size</string>
+    <string name="numeric">As number</string>
+    <string name="ascending">Ascending</string>
+
+    <string name="select_all">Select All</string>
+    <string name="clear_selected">Clear Selected</string>
+
+    <string name="share">Share</string>
+    <string name="rotate">Rotate</string>
+    <string name="rotate_right_90">Rotate right 90°</string>
+    <string name="rotate_left_90">Rotate left 90°</string>
+    <string name="rotate_180">Rotate 180°</string>
+    <string name="copy_to">Copy to</string>
+    <string name="move_to">Move to</string>
+    <string name="use_as">Use as</string>
+    <string name="edit">Edit</string>
+    <string name="fix_date">Fix date</string>
+    <string name="rename">Rename</string>
+    <string name="rename_album">Rename album</string>
+    <string name="details">Details</string>
+    <string name="more">More</string>
+    <string name="show_more">Show More</string>
+    <string name="edit_with">Edit with</string>
+    <string name="open_with">Open with</string>
+    <string name="upload">Upload</string>
+    <string name="set_preview">Set as preview</string>
+    <string name="clear_preview">Clear preview</string>
+    <string name="new_folder">New Folder</string>
+    <string name="create_new_folder">Create new folder</string>
+
+    <!--DIALOG MESSAGES-->
+    <string name="hide_album_message">
+        Hiding this album will create a .nomedia file in the folder
+        and this could make the media inaccessible from other apps. Use the exclude option to avoid this.
+    </string>
+    <string name="delete_album_message">Are you sure you want to delete this album?</string>
+    <string name="delete_albums_message">Are you sure you want to delete the selected albums?</string>
+    <string name="delete_photo_message">Are you sure you want to delete this media?</string>
+    <string name="delete_photos_message">Are you sure you want to delete the selected media?</string>
+    <string name="hide_albums_message">Are you sure you want to hide the selected albums?</string>
+    <string name="unhide_album_message">Un-hiding this album you will also make the media available for other apps.</string>
+    <string name="exclude_albums_message">Are you sure you want to exclude the selected
+        albums? \n If you want to exclude the parent of these albums, try excluding only
+    one album. A dropdown there will allow you to select the parent of the folder.</string>
+    <string name="exclude_album_message">
+        By excluding this folder you will also exclude all sub-folders. Below you can find a list
+        that allows you to choose a parent, if you have to exclude more folders which are on the same level.
+    </string>
+    <string name="new_folder_message">The new folder will be created in the current path, and
+        then the media will be copied or moved in the new folder.
+    </string>
+
+    <!-- ITEMS -->
+    <string name="singular_photo">Photo</string>
+    <string name="plural_photos">Photos</string>
+    <string name="video_player">Video Player</string>
+    <string name="media">Media</string>
+    <string name="send_to">Send to</string>
+    <string name="search_menu">search</string>
+    <string name="full_resolution">Full resolution</string>
+    <string name="of">of</string>
+
+    <!-- AFFIX -->
+    <string name="affix">Affix</string>
+    <string name="affix_vertical">Affix Vertical</string>
+    <string name="affix_vertical_sub">Set the orientation, horizontal by default.</string>
+    <string name="affix_save_here">Save in this album</string>
+    <string name="affix_save_here_sub">The result will be saved in this album</string>
+    <string name="affix_format">Image format</string>
+    <string name="affix_format_sub">Available formats</string>
+    <string name="affix_text">Affixing your media, please wait&#8230;</string>
+    <string name="affix_error">Can\'t affix video, you must select at least 2 images.</string>
+    <string name="quality">Quality</string>
+
+
+    <!-- RANDOM -->
+    <string name="done">Done!</string>
+    <string name="there_is_nothing_to_show">There\'s nothing to show!</string>
+    <string name="insert_a_name">Insert something</string>
+    <string name="nothing_changed">Nothing changed!</string>
+    <string name="install_shortcut">Install shortcut</string>
+
+    <!--SETTINGS PREFERENCES-->
+    <string name="general_setting">General Setting</string>
+    <string name="folder">Folder</string>
+    <string name="color_palette">Color Palette</string>
+    <string name="app_intro_skip">Introduction Skipped!</string>
+
+    <!-- SECURITY-->
+    <string name="security">Security</string>
+    <string name="active_security">Access by password</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="wrong_password">Wrong password</string>
+
+    <string name="type_password">Insert password</string>
+    <string name="security_sub">Set up a password to protect your media.</string>
+    <string name="remember_password_message">Note: password changed, if you forget it you will have to clear application data.</string>
+
+    <string name="apply_password_on">Use password for</string>
+
+    <string name="fingerprint">Fingerprint</string>
+    <string name="clear_password">Clear Password</string>
+    <string name="error_password_length">The minimum password length is 4 character</string>
+
+    <!-- SETTINGS -->
+    <string name="settings">Settings</string>
+
+    <string name="general">General</string>
+    <string name="auto_update_media">Auto update media</string>
+    <string name="auto_update_media_sub">You should disable if there are a large number of images.</string>
+    <string name="traslucent_statusbar">Translucent Status Bar</string>
+    <string name="traslucent_statusbar_sub">Apply a darker primary color to the notification bar.</string>
+    <string name="excluded_albums">Excluded Items</string>
+    <string name="excluded_albums_sub">Restore the excluded folders.</string>
+
+
+    <string name="media_viewer">Media Viewer</string>
+    <string name="media_viewer_theme">Media Viewer Theme</string>
+    <string name="custom_3thAct">Customize Viewer</string>
+    <string name="custom_3thAct_sub">Apply theme on pictures viewer.</string>
+
+    <string name="max_brightness">High Brightness</string>
+    <string name="max_brightness_sub">Maximum brightness when viewing a media.</string>
+    <string name="picture_orientation">Force use of accelerometer</string>
+    <string name="picture_orientation_sub">Rotate even when auto rotate is locked</string>
+    <string name="apply_theme">Apply Theme</string>
+    <string name="apply_theme_sub">Apply custom color on the picture viewer.</string>
+    <string name="transparency">Transparency</string>
+    <string name="transparency_sub">Set the grade of transparency</string>
+    <string name="delay_load_full_size_image">Delay loading of full-size images</string>
+    <string name="load_full_image_when_zoom_in">Load full image when zoomed in</string>
+    <string name="media_viewer_swipe_direction">Swipe Direction</string>
+    <string name="media_viewer_swipe_direction_sub">Change the swipe direction of the media viewer.(Default: Left to Right)</string>
+
+    <string name="theme">Theme</string>
+    <string name="primary_color">Primary Color</string>
+    <string name="primary_color_sub">The main color to be used in the UI.</string>
+    <string name="accent_color">Accent Color</string>
+    <string name="accent_color_sub">The secondary color which is used to tint widgets and UI details.</string>
+    <string name="basic_theme">Basic Theme</string>
+    <string name="basic_theme_sub">Select a basic theme.</string>
+    <string name="white_basic_theme">White</string>
+    <string name="dark_basic_theme">Dark</string>
+    <string name="dark_amoled_basic_theme">Dark AMOLED</string>
+    <string name="colored_navbar">Colored Navigation Bar</string>
+    <string name="colored_navbar_sub">Apply the primary color to the navigation bar.</string>
+    <string name="internal_player">Internal Video Player</string>
+    <string name="internal_player_sub">Use the embedded video player</string>
+
+    <!--DONATE STRINGS-->
+    <string name="donate_googleplay">Google Play Store</string>
+    <string name="donate_payppal">PayPal</string>
+    <string name="donate_bitcoin">Bitcoin</string>
+    <string name="donate_header_text">
+        Hi,\nWe are a small independent team which work with love on LeafPic ❤,
+        this is our first app, so we have a lot to learn by your feedback.
+        If you enjoy our work you can show us your appreciation by donating.
+        \nWith your help we can make this project even better or start new cool ones.
+    </string>
+    <string name="donate_sub_text">Consider donating us something to support development.</string>
+
+    <string name="thank_you">Thank you!</string>
+    <string name="address_copied">Address copied to clipboard</string>
+    <string name="coming_soon">Coming Soon!</string>
+    <string name="google_takes">Google takes 30% off every donation.</string>
+    <string name="paypal_text">PayPal.Me allows you to send us money in seconds without charges,
+        if you use a credit card PayPal takes 4% of donations and a standard fee of 0.35€ </string>
+
+    <!--ABOUT STRINGS-->
+    <string name="about">About</string>
+    <string name="about_version">Version</string>
+
+    <string name="about_license"> License</string>
+    <string name="about_license_sub">Check GPLv3 license terms used on LeafPic.</string>
+
+    <string name="about_library_license">Library Licenses</string>
+    <string name="about_library_license_sub">Check third-party libs used on LeafPic.</string>
+
+    <string name="about_authors">Authors</string>
+    <string name="about_author_donald_description">
+        I\'m 19 years old. I\'m a young software developer, I like CS in general, at most I love
+        learn doing stuff with Linux and Android. I also like TV Series.
+    </string>
+    <string name="about_author_gilbert_description">
+        I\'m 20 years old. I love music, video games and drawing.
+        I\'m also really into computer science, programming and design.
+    </string>
+    <string name="about_googleplus" translatable="false">Google+</string>
+    <string name="send_via">send via&#8230;</string>
+    <string name="send_email">SEND EMAIL</string>
+
+    <string name="send_mail_error">There are no email clients installed.</string>
+    <string name="about_special_thanks">Special thanks</string>
+    <string name="about_special_thanks_patryk_goworowski_sub">to <a
+        href="https://plus.google.com/109304801957014561872/about">Patryk Goworowski</a> for the
+        awesome icon.
+    </string>
+    <string name="about_special_thanks_members_sub">
+        to Crowdin community for all the translations
+    </string>
+    <string name="about_special_thanks_you_sub">
+        to you for using the app
+    </string>
+
+    <string name="about_support">Support Development</string>
+    <string name="about_support_translate">Translate</string>
+    <string name="about_support_translate_sub">Help us to translate LeafPic in more languages.</string>
+
+    <string name="about_support_report_bug">Report bug</string>
+    <string name="about_support_report_bug_sub">Report bug or request new features.</string>
+
+    <string name="about_support_rate">Rate</string>
+    <string name="about_support_rate_sub">Leave us a positive rating if you like LeafPic.</string>
+
+    <string name="about_support_github">GitHub</string>
+    <string name="about_support_github_sub">Fork the repo and push changes or submit new issues.</string>
+
+    <!--PHOTO DETAILS-->
+    <string name="path">Path</string>
+    <string name="type">Type</string>
+    <string name="resolution">Resolution</string>
+    <string name="exif">EXIF</string>
+    <string name="device">Device</string>
+    <string name="orientation">Orientation</string>
+    <string name="location">Location</string>
+
+    <!--DRAWER ITEMS -->
+    <string name="local_folder">Local Folders</string>
+    <string name="hidden_folder">Hidden Folders</string>
+    <string name="tags">Tags</string>
+    <string name="timeline">Timeline</string>
+    <string name="wallpapers">Wallpapers</string>
+    <string name="donate">Donate</string>
+    <string name="github" translatable="false">GitHub</string>
+
+    <!--VIDEO PLayer-->
+    <string name="enable_background_audio">Play in background</string>
+    <string name="audio">Audio</string>
+    <string name="text">Text</string>
+    <string name="retry">Retry</string>
+
+    <!-- ERRORS -->
+    <string name="error_drm_not_supported">Protected content is supported on Android 4.3 or later</string>
+    <string name="error_drm_unsupported_scheme">This device does not support the required DRM scheme</string>
+    <string name="error_drm_unknown">An unknown DRM error occurred</string>
+    <string name="storage_permission_denied">Permission to access storage was denied!\n I\'m not able to get your images!</string>
+    <string name="error_querying_decoders">Unable to query device decoders</string>
+    <string name="unable_to_fix_date">Unable to fix date</string>
+    <string name="compression_settings">Compression settings</string>
+    <string name="include_video">Include Video</string>
+    <string name="fab_options">Show FAB</string>
+    <string name="fab_options_sub">Display the floating button.</string>
+    <string name="map_provider">Map Provider</string>
+    <string name="map_provider_sub">Chose the source of maps</string>
+    <string name="insert_something">Insert something!</string>
+    <string name="password_dont_match">password doesn\'t match</string>
+    <string name="chose_the_map_provider">Choose the map provider</string>
+    <string name="use_google_static_maps_faster">Use Google static maps</string>
+    <string name="use_openstreetmap_slower">Use OpenStreetMap</string>
+    <string name="sd_card_write_permission_title">SD-Card write permission</string>
+    <string name="sd_card_permissions_message">In the next screen, please select the root of the SD
+        card in the left sidebar and confirm at the bottom, to grant the writing permission of
+        the SD card.
+    </string>
+    <string name="got_permission_wr_sdcard">Obtained permission to write on the SD-Card.</string>
+    <string name="use_mediastore_provider">Alternative media provider</string>
+    <string name="use_media_store_sub">If you miss some folders or if you have any issue
+        with the albums enable this option</string>
+    <string name="multi_column">Multi column</string>
+    <string name="multi_column_sub">Chose how many columns you want for your folders and media
+    </string>
+    <string name="columns">columns</string>
+    <string name="advanced">Advanced</string>
+    <string name="pin">Pin to top</string>
+    <string name="un_pin">Remove from top</string>
+    <string name="new_file_created">new file created</string>
+    <string name="sub_scaling_image_view">Sub-Scaling Image View</string>
+    <string name="sub_scaling_image_view_sub">
+        (TESTING) It allows you to have a better zoom management and a clear image but it isn\'t
+        really optimized right now
+    </string>
 </resources>
