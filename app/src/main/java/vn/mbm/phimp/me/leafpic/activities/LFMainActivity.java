@@ -15,6 +15,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -50,6 +52,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.Utilities.BasicCallBack;
 import vn.mbm.phimp.me.base.SharedMediaActivity;
 import vn.mbm.phimp.me.leafpic.SelectAlbumBottomSheet;
 import vn.mbm.phimp.me.leafpic.adapters.AlbumsAdapter;
@@ -68,7 +71,9 @@ import vn.mbm.phimp.me.leafpic.util.PreferenceUtil;
 import vn.mbm.phimp.me.leafpic.util.SecurityHelper;
 import vn.mbm.phimp.me.leafpic.util.StringUtils;
 import vn.mbm.phimp.me.leafpic.views.GridSpacingItemDecoration;
+import vn.mbm.phimp.me.opencamera.CameraActivity;
 
+import static vn.mbm.phimp.me.Utilities.Constants.CAMERA_BACK_PRESSED;
 import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.DATE;
 import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.NAME;
 import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.NUMERIC;
@@ -76,7 +81,7 @@ import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.SIZE;
 import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.TYPE;
 
 
-public class LFMainActivity extends SharedMediaActivity {
+public class LFMainActivity extends SharedMediaActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
   private static String TAG = "AlbumsAct";
   private int REQUEST_CODE_SD_CARD_PERMISSIONS = 42;
@@ -98,6 +103,9 @@ public class LFMainActivity extends SharedMediaActivity {
   private Toolbar toolbar;
   private SelectAlbumBottomSheet bottomSheetDialogFragment;
   private SwipeRefreshLayout swipeRefreshLayout;
+
+  BottomNavigationView bottomNavigationView;
+  BasicCallBack basicCallBack;
 
 
   private boolean hidden = false, pickMode = false, editMode = false, albumsMode = true, firstLaunch = true;
@@ -180,6 +188,17 @@ public class LFMainActivity extends SharedMediaActivity {
     initUI();
 
     displayData(getIntent().getExtras());
+
+    bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottombar);
+    bottomNavigationView.setOnNavigationItemSelectedListener(this);
+    bottomNavigationView.getMenu().getItem(1).setChecked(true);
+    basicCallBack = new BasicCallBack() {
+      @Override
+      public void callBack(int status, Object data) {
+        if (status == CAMERA_BACK_PRESSED)
+          bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+      }
+    };
   }
 
   @Override
@@ -1335,6 +1354,23 @@ public class LFMainActivity extends SharedMediaActivity {
         setRecentApp(getString(R.string.app_name));
       }
     }
+  }
+
+  @Override
+  public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.navigation_home:
+        return true;
+      case R.id.navigation_camera:
+        Intent i = new Intent(LFMainActivity.this, CameraActivity.class);
+        CameraActivity.setBasicCallBack(basicCallBack);
+        startActivity(i);
+        overridePendingTransition(0,0);
+        return true;
+      case R.id.navigation_accounts:
+        return true;
+    }
+    return false;
   }
 
   private class PrepareAlbumTask extends AsyncTask<Void, Integer, Void> {
