@@ -22,6 +22,8 @@ import com.mikepenz.iconics.view.IconicsImageView;
 import de.hdodenhof.circleimageview.CircleImageView;
 import de.psdev.licensesdialog.LicensesDialog;
 import de.psdev.licensesdialog.licenses.ApacheSoftwareLicense20;
+import de.psdev.licensesdialog.licenses.GnuGeneralPublicLicense20;
+import de.psdev.licensesdialog.licenses.GnuGeneralPublicLicense30;
 import de.psdev.licensesdialog.licenses.MITLicense;
 import de.psdev.licensesdialog.model.Notice;
 import de.psdev.licensesdialog.model.Notices;
@@ -94,8 +96,7 @@ public class AboutActivity extends ThemedActivity {
         ((TextView) findViewById(R.id.about_support_title)).setTextColor(color);
         ((TextView) findViewById(R.id.about_license_title)).setTextColor(color);
         ((TextView) findViewById(R.id.about_special_thanks_title)).setTextColor(color);
-        ((TextView) findViewById(R.id.about_author_donald_mail_item)).setTextColor(color);
-        ((TextView) findViewById(R.id.about_author_gilbert_mail_item)).setTextColor(color);
+
         /***** LeafPic Header *****/
         /*
         Glide.with(this)
@@ -106,51 +107,12 @@ public class AboutActivity extends ThemedActivity {
         */
         /***** Donald Card *****/
         /***** Images *****/
-        Glide.with(this)
+/*        Glide.with(this)
                 .load("https://lh3.googleusercontent.com/-4lGmk-K4r4U/Vw1Vj8yERrI/AAAAAAAANww/FIsb58PcO-U-9AfD8FXfruK1c75SZ184QCL0B/w958-h539-no/asd.png")
                 .placeholder(getPlaceHolder())
                 .priority(Priority.HIGH)
                 .animate(R.anim.fade_in)
-                .into((ImageView) findViewById(R.id.donald_header_img));
-        Glide.with(this)
-                .load("https://lh5.googleusercontent.com/-kp20brbsTS0/VLQv60zDLQI/AAAAAAAAD9s/Wu-g8p-OvdISYmyEC9aCQXNaxxUJYfD0QCL0B/w776-h779-no/IMG_20150112_164721.jpg")
-                .priority(Priority.HIGH)
-                .error(new IconicsDrawable(this, "gmd-person").sizeDp(90).color(getIconColor()).paddingDp(24))
-                .animate(R.anim.fade_in)
-                .into((CircleImageView) findViewById(R.id.donald_profile_img));
-        ((CircleImageView) findViewById(R.id.donald_profile_img)).setBorderColor(getInvertedBackgroundColor());
-        /***** Object *****/
-        ((CardView) findViewById(R.id.about_donald_card)).setCardBackgroundColor(getCardBackgroundColor());
-        ((TextView) findViewById(R.id.donald_shtjefni)).setTextColor(getTextColor());
-        ((TextView) findViewById(R.id.donald_description)).setTextColor(getSubTextColor());
-        color=getAccentColor();
-        ((TextView) findViewById(R.id.about_author_donald_mail_item)).setTextColor(color);
-        ((TextView) findViewById(R.id.about_author_donald_googleplus_item)).setTextColor(color);
-        ((TextView) findViewById(R.id.about_author_donald_github_item)).setTextColor(color);
-
-        /***** Gilbert Card *****/
-        /***** Images *****/
-        Glide.with(this)
-                .load("https://lh6.googleusercontent.com/-CQSWRHA3PMU/U1giCTxx3LI/AAAAAAAAAZU/YVnUYwwnNOEE7ob0LyHmRnbUtEtC5znIQCL0B/w958-h639-no/1397233014-game-over-samus.jpg")
-                .priority(Priority.HIGH)
-                .animate(R.anim.fade_in)
-                .into((ImageView) findViewById(R.id.gilbert_header_img));
-        Glide.with(this)
-                .load("https://lh6.googleusercontent.com/-gucGwwJrFMg/U4IErjai3SI/AAAAAAAAANI/YGGxrdWO88cIsIpYrYxaq2KjSDfinLTmACL0B/s779-no/PicsArt_1387801769612.jpg")
-                .priority(Priority.HIGH)
-                .error(new IconicsDrawable(this, "gmd-person").sizeDp(90).color(getIconColor()).paddingDp(24))
-                .animate(R.anim.fade_in)
-                .into((CircleImageView) findViewById(R.id.gilbert_profile_img));
-        ((CircleImageView) findViewById(R.id.gilbert_profile_img)).setBorderColor(getInvertedBackgroundColor());
-
-        /***** Object *****/
-        ((CardView) findViewById(R.id.about_gilbert_card)).setCardBackgroundColor(getCardBackgroundColor());
-        ((TextView) findViewById(R.id.gilbert_ndresaj)).setTextColor(getTextColor());
-        ((TextView) findViewById(R.id.gilbert_description)).setTextColor(getSubTextColor());
-        color=getAccentColor();
-        ((TextView) findViewById(R.id.about_author_gilbert_mail_item)).setTextColor(color);
-        ((TextView) findViewById(R.id.about_author_gilbert_googleplus_item)).setTextColor(color);
-        ((TextView) findViewById(R.id.about_author_gilbert_github_item)).setTextColor(color);
+                .into((ImageView) findViewById(R.id.donald_header_img));*/
 
         /***** ScrolView *****/
         setScrollViewColor(scr);
@@ -165,84 +127,22 @@ public class AboutActivity extends ThemedActivity {
         findViewById(R.id.ll_about_support_github).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cts.launchUrl("https://github.com/HoraApps/LeafPic");
+                cts.launchUrl("https://github.com/fossasia/phimpme-android");
             }
         });
         ///Report bug
         findViewById(R.id.ll_about_report_bug).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cts.launchUrl("https://github.com/HoraApps/LeafPic/issues");
-            }
-        });
-        //Crowdin
-        findViewById(R.id.ll_about_support_translate).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { cts.launchUrl("https://crowdin.com/project/leafpic");}
-        });
-
-        /*** Donald Shtjefni ***/
-        //G+
-        findViewById(R.id.about_author_donald_googleplus_item).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { cts.launchUrl("https://plus.google.com/103359244653769120543/about");}
-        });
-        //Github
-        findViewById(R.id.about_author_donald_github_item).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { cts.launchUrl("https://github.com/DNLDsht");}
-        });
-        //Send Mail
-        findViewById(R.id.about_author_donald_mail_item).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_SENDTO);
-                intent.setData(Uri.parse("mailto: dnld.sht@gmail.com"));
-                try {
-                    startActivity(intent);
-                } catch (Exception e){
-                    Toast.makeText(AboutActivity.this, getString(R.string.send_mail_error), Toast.LENGTH_SHORT).show();
-                }
+                cts.launchUrl("https://github.com/fossasia/phimpme-android/issues");
             }
         });
 
-        /*** Gilbert Ndresaj ***/
-        //Github
-        findViewById(R.id.about_author_gilbert_googleplus_item).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { cts.launchUrl("https://plus.google.com/118430643662868782426/about");}
-        });
-        //Github
-        findViewById(R.id.about_author_gilbert_github_item).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { cts.launchUrl("https://github.com/Mow3l");}
-        });
-        //Send Mail
-        findViewById(R.id.about_author_gilbert_mail_item).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_SENDTO);
-                intent.setData(Uri.parse("mailto: jibo95@gmail.com"));
-                try {
-                    startActivity(intent);
-                } catch (Exception e){
-                    Toast.makeText(AboutActivity.this, getString(R.string.send_mail_error), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-
-        /*** SPECIAL THANKS ***/
-        /*** Patryk Goworowski ***/
-        ((TextView) findViewById(R.id.about_patryk_goworowski_item_sub)).setMovementMethod(LinkMovementMethod.getInstance());
-        ((TextView) findViewById(R.id.about_patryk_goworowski_item_sub)).setLinkTextColor(getAccentColor());
 
         //License
         findViewById(R.id.ll_about_license).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { cts.launchUrl("https://github.com/HoraApps/LeafPic/blob/master/LICENSE");}
+            public void onClick(View v) { cts.launchUrl("https://github.com/fossasia/phimpme-android/blob/master/LICENSE.md");}
         });
 
         //Libs
@@ -250,6 +150,20 @@ public class AboutActivity extends ThemedActivity {
             @Override
             public void onClick(View v) {licenseDialog();}
         });
+
+        //rate
+        findViewById(R.id.ll_about_support_rate).setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                final String appPackageName = getPackageName();
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                }
+            }
+        });
+
 
     }
 
@@ -273,39 +187,31 @@ public class AboutActivity extends ThemedActivity {
         ((IconicsImageView) findViewById(R.id.about_license_icon)).setColor(color);
 
         //ABOUT SUPPORT
-        ((IconicsImageView) findViewById(R.id.about_support_translate_icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.about_support_rate_icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.about_support_github_icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.about_support_report_bug_icon)).setColor(color);
-        ((IconicsImageView) findViewById(R.id.about_support_donate_icon)).setColor(color);
 
         /** TextViews **/
         color = getTextColor();
         ((TextView) findViewById(R.id.about_libs_item)).setTextColor(color);
         ((TextView) findViewById(R.id.about_app_light_description)).setTextColor(color);
         ((TextView) findViewById(R.id.about_support_rate_item)).setTextColor(color);
-        ((TextView) findViewById(R.id.about_support_translate_item)).setTextColor(color);
         ((TextView) findViewById(R.id.about_support_github_item)).setTextColor(color);
         ((TextView) findViewById(R.id.about_license_item)).setTextColor(color);
         ((TextView) findViewById(R.id.about_support_report_bug_item)).setTextColor(color);
-        ((TextView) findViewById(R.id.about_support_donate_item)).setTextColor(color);
 
         /** Sub Text Views**/
         color = getSubTextColor();
         ((TextView) findViewById(R.id.about_version_item_sub)).setTextColor(color);
-        ((TextView) findViewById(R.id.about_version_item_sub)).setText(BuildConfig.VERSION_NAME);
+        ((TextView) findViewById(R.id.about_version_item_sub)).setText("Version: "+BuildConfig.VERSION_NAME);
         ((TextView) findViewById(R.id.about_libs_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.about_patryk_goworowski_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.about_community_members_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.about_community_you_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.about_support_rate_item_sub)).setTextColor(color);
-        ((TextView) findViewById(R.id.about_support_translate_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.about_support_github_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.about_license_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.about_support_report_bug_sub)).setTextColor(color);
-        ((TextView) findViewById(R.id.about_support_donate_item_sub)).setTextColor(color);
-        ((TextView) findViewById(R.id.donald_shtjefni_role)).setTextColor(color);
-        ((TextView) findViewById(R.id.gilbert_ndresaj_role)).setTextColor(color);
     }
 
     private void licenseDialog() {
