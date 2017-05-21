@@ -22,11 +22,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".MainActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/app_name">
-        </activity>
+
         <activity android:name=".opencamera.CameraActivity"
             android:screenOrientation="portrait">
             <intent-filter>
