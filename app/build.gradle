@@ -83,4 +83,5 @@ dependencies {
     compile project(':photoview')
     compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.5.0'
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
+    compile project(path: ':imageeditlibrary')
 }
