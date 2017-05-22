@@ -2,6 +2,7 @@ package vn.mbm.phimp.me.opencamera;
 
 import vn.mbm.phimp.me.Utilities.BasicCallBack;
 import vn.mbm.phimp.me.Utilities.Constants;
+import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraControllerManager2;
 import vn.mbm.phimp.me.opencamera.Preview.Preview;
@@ -1624,6 +1625,7 @@ public class CameraActivity extends Activity implements AudioListener.AudioListe
 			try {
 				// REVIEW_ACTION means we can view video files without autoplaying
 				Intent intent = new Intent(REVIEW_ACTION, uri);
+				intent.setClass(getApplicationContext(), SingleMediaActivity.class);
 				this.startActivity(intent);
 			}
 			catch(ActivityNotFoundException e) {
