@@ -1,6 +1,5 @@
 package vn.mbm.phimp.me.opencamera;
 
-import vn.mbm.phimp.me.MainActivity;
 import vn.mbm.phimp.me.Utilities.BasicCallBack;
 import vn.mbm.phimp.me.Utilities.Constants;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
@@ -2133,7 +2132,7 @@ public class CameraActivity extends Activity implements AudioListener.AudioListe
 						}
 					});
 					if( !mainUI.inImmersiveMode() ) {
-						zoomControls.setVisibility(View.VISIBLE);
+						zoomControls.setVisibility(View.INVISIBLE);
 					}
 				}
 				else {
@@ -2162,7 +2161,7 @@ public class CameraActivity extends Activity implements AudioListener.AudioListe
 
 				if( sharedPreferences.getBoolean(PreferenceKeys.getShowZoomSliderControlsPreferenceKey(), true) ) {
 					if( !mainUI.inImmersiveMode() ) {
-						zoomSeekBar.setVisibility(View.VISIBLE);
+						zoomSeekBar.setVisibility(View.INVISIBLE);
 					}
 				}
 				else {
