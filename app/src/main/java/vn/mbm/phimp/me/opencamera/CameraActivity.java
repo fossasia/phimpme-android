@@ -949,9 +949,6 @@ public class CameraActivity extends Activity implements AudioListener.AudioListe
 		switchVideoButton.setEnabled(true);
 
 		mainUI.setTakePhotoIcon();
-		if( !block_startup_toast ) {
-			this.showPhotoVideoToast(true);
-		}
 	}
 
 	public void clickedExposure(View view) {
@@ -2381,9 +2378,6 @@ public class CameraActivity extends Activity implements AudioListener.AudioListe
 		if( MyDebug.LOG )
 			Log.d(TAG, "cameraSetup: time after setting take photo icon: " + (System.currentTimeMillis() - debug_time));
 
-		if( !block_startup_toast ) {
-			this.showPhotoVideoToast(false);
-		}
 		if( MyDebug.LOG )
 			Log.d(TAG, "cameraSetup: total time for cameraSetup: " + (System.currentTimeMillis() - debug_time));
 	}
@@ -2508,173 +2502,6 @@ public class CameraActivity extends Activity implements AudioListener.AudioListe
 	 *  set). We want a balance between not pestering the user too much, whilst also reminding
 	 *  them if certain settings are on.
 	 */
-	private void showPhotoVideoToast(boolean always_show) {
-		if( MyDebug.LOG ) {
-			Log.d(TAG, "showPhotoVideoToast");
-			Log.d(TAG, "always_show? " + always_show);
-		}
-		CameraController camera_controller = preview.getCameraController();
-		if( camera_controller == null || this.camera_in_background ) {
-			if( MyDebug.LOG )
-				Log.d(TAG, "camera not open or in background");
-			return;
-		}
-		String toast_string;
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-		boolean simple = true;
-		if( preview.isVideo() ) {
-			CamcorderProfile profile = preview.getCamcorderProfile();
-			String bitrate_string;
-			if( profile.videoBitRate >= 10000000 )
-				bitrate_string = profile.videoBitRate/1000000 + "Mbps";
-			else if( profile.videoBitRate >= 10000 )
-				bitrate_string = profile.videoBitRate/1000 + "Kbps";
-			else
-				bitrate_string = profile.videoBitRate + "bps";
-
-			toast_string = getResources().getString(R.string.video) + ": " + profile.videoFrameWidth + "x" + profile.videoFrameHeight + ", " + profile.videoFrameRate + "fps, " + bitrate_string;
-			boolean record_audio = sharedPreferences.getBoolean(PreferenceKeys.getRecordAudioPreferenceKey(), true);
-			if( !record_audio ) {
-				toast_string += "\n" + getResources().getString(R.string.audio_disabled);
-				simple = false;
-			}
-			String max_duration_value = sharedPreferences.getString(PreferenceKeys.getVideoMaxDurationPreferenceKey(), "0");
-			if( max_duration_value.length() > 0 && !max_duration_value.equals("0") ) {
-				String [] entries_array = getResources().getStringArray(R.array.preference_video_max_duration_entries);
-				String [] values_array = getResources().getStringArray(R.array.preference_video_max_duration_values);
-				int index = Arrays.asList(values_array).indexOf(max_duration_value);
-				if( index != -1 ) { // just in case!
-					String entry = entries_array[index];
-					toast_string += "\n" + getResources().getString(R.string.max_duration) +": " + entry;
-					simple = false;
-				}
-			}
-			long max_filesize = applicationInterface.getVideoMaxFileSizeUserPref();
-			if( max_filesize != 0 ) {
-				long max_filesize_mb = max_filesize/(1024*1024);
-				toast_string += "\n" + getResources().getString(R.string.max_filesize) +": " + max_filesize_mb + getResources().getString(R.string.mb_abbreviation);
-				simple = false;
-			}
-			if( sharedPreferences.getBoolean(PreferenceKeys.getVideoFlashPreferenceKey(), false) && preview.supportsFlash() ) {
-				toast_string += "\n" + getResources().getString(R.string.preference_video_flash);
-				simple = false;
-			}
-		}
-		else {
-			toast_string = getResources().getString(R.string.photo);
-			CameraController.Size current_size = preview.getCurrentPictureSize();
-			toast_string += " " + current_size.width + "x" + current_size.height;
-			if( preview.supportsFocus() && preview.getSupportedFocusValues().size() > 1 ) {
-				String focus_value = preview.getCurrentFocusValue();
-				if( focus_value != null && !focus_value.equals("focus_mode_auto") && !focus_value.equals("focus_mode_continuous_picture") ) {
-					String focus_entry = preview.findFocusEntryForValue(focus_value);
-					if( focus_entry != null ) {
-						toast_string += "\n" + focus_entry;
-					}
-				}
-			}
-			if( sharedPreferences.getBoolean(PreferenceKeys.getAutoStabilisePreferenceKey(), false) ) {
-				// important as users are sometimes confused at the behaviour if they don't realise the option is on
-				toast_string += "\n" + getResources().getString(R.string.preference_auto_stabilise);
-				simple = false;
-			}
-			String photo_mode_string = null;
-			MyApplicationInterface.PhotoMode photo_mode = applicationInterface.getPhotoMode();
-			if( photo_mode == MyApplicationInterface.PhotoMode.DRO ) {
-				photo_mode_string = getResources().getString(R.string.photo_mode_dro);
-			}
-			else if( photo_mode == MyApplicationInterface.PhotoMode.HDR ) {
-				photo_mode_string = getResources().getString(R.string.photo_mode_hdr);
-			}
-			else if( photo_mode == MyApplicationInterface.PhotoMode.ExpoBracketing ) {
-				photo_mode_string = getResources().getString(R.string.photo_mode_expo_bracketing_full);
-			}
-			if( photo_mode_string != null ) {
-				toast_string += "\n" + getResources().getString(R.string.photo_mode) + ": " + photo_mode_string;
-				simple = false;
-			}
-		}
-		if( applicationInterface.getFaceDetectionPref() ) {
-			// important so that the user realises why touching for focus/metering areas won't work - easy to forget that face detection has been turned on!
-			toast_string += "\n" + getResources().getString(R.string.preference_face_detection);
-			simple = false;
-		}
-		String iso_value = sharedPreferences.getString(PreferenceKeys.getISOPreferenceKey(), camera_controller.getDefaultISO());
-		if( !iso_value.equals(camera_controller.getDefaultISO()) ) {
-			toast_string += "\nISO: " + iso_value;
-			if( preview.supportsExposureTime() ) {
-				long exposure_time_value = sharedPreferences.getLong(PreferenceKeys.getExposureTimePreferenceKey(), camera_controller.getDefaultExposureTime());
-				toast_string += " " + preview.getExposureTimeString(exposure_time_value);
-			}
-			simple = false;
-		}
-		int current_exposure = camera_controller.getExposureCompensation();
-		if( current_exposure != 0 ) {
-			toast_string += "\n" + preview.getExposureCompensationString(current_exposure);
-			simple = false;
-		}
-		String scene_mode = camera_controller.getSceneMode();
-		if( scene_mode != null && !scene_mode.equals(camera_controller.getDefaultSceneMode()) ) {
-			toast_string += "\n" + getResources().getString(R.string.scene_mode) + ": " + scene_mode;
-			simple = false;
-		}
-		String white_balance = camera_controller.getWhiteBalance();
-		if( white_balance != null && !white_balance.equals(camera_controller.getDefaultWhiteBalance()) ) {
-			toast_string += "\n" + getResources().getString(R.string.white_balance) + ": " + white_balance;
-			if( white_balance.equals("manual") && preview.supportsWhiteBalanceTemperature() ) {
-				toast_string += " " + camera_controller.getWhiteBalanceTemperature();
-			}
-			simple = false;
-		}
-		String color_effect = camera_controller.getColorEffect();
-		if( color_effect != null && !color_effect.equals(camera_controller.getDefaultColorEffect()) ) {
-			toast_string += "\n" + getResources().getString(R.string.color_effect) + ": " + color_effect;
-			simple = false;
-		}
-		String lock_orientation = sharedPreferences.getString(PreferenceKeys.getLockOrientationPreferenceKey(), "none");
-		if( !lock_orientation.equals("none") ) {
-			String [] entries_array = getResources().getStringArray(R.array.preference_lock_orientation_entries);
-			String [] values_array = getResources().getStringArray(R.array.preference_lock_orientation_values);
-			int index = Arrays.asList(values_array).indexOf(lock_orientation);
-			if( index != -1 ) { // just in case!
-				String entry = entries_array[index];
-				toast_string += "\n" + entry;
-				simple = false;
-			}
-		}
-		String timer = sharedPreferences.getString(PreferenceKeys.getTimerPreferenceKey(), "0");
-		if( !timer.equals("0") ) {
-			String [] entries_array = getResources().getStringArray(R.array.preference_timer_entries);
-			String [] values_array = getResources().getStringArray(R.array.preference_timer_values);
-			int index = Arrays.asList(values_array).indexOf(timer);
-			if( index != -1 ) { // just in case!
-				String entry = entries_array[index];
-				toast_string += "\n" + getResources().getString(R.string.preference_timer) + ": " + entry;
-				simple = false;
-			}
-		}
-		String repeat = applicationInterface.getRepeatPref();
-		if( !repeat.equals("1") ) {
-			String [] entries_array = getResources().getStringArray(R.array.preference_burst_mode_entries);
-			String [] values_array = getResources().getStringArray(R.array.preference_burst_mode_values);
-			int index = Arrays.asList(values_array).indexOf(repeat);
-			if( index != -1 ) { // just in case!
-				String entry = entries_array[index];
-				toast_string += "\n" + getResources().getString(R.string.preference_burst_mode) + ": " + entry;
-				simple = false;
-			}
-		}
-		/*if( audio_listener != null ) {
-			toast_string += "\n" + getResources().getString(R.string.preference_audio_noise_control);
-		}*/
-
-		if( MyDebug.LOG ) {
-			Log.d(TAG, "toast_string: " + toast_string);
-			Log.d(TAG, "simple?: " + simple);
-		}
-		if( !simple || always_show )
-			preview.showToast(switch_video_toast, toast_string);
-	}
 
 	private void freeAudioListener(boolean wait_until_done) {
 		if( MyDebug.LOG )
