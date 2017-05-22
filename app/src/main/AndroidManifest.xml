@@ -277,6 +277,9 @@
 
         <activity android:name=".accounts.AccountsActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
+
+        <activity android:name=".opencamera.Camera.PhotoActivity"></activity>
+
         <meta-data
             android:name="vn.mbm.phimp.me.leafpic.CustomGlideModule"
             android:value="GlideModule" />

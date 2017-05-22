@@ -1,8 +1,10 @@
 package vn.mbm.phimp.me.opencamera.Camera;
 
+import vn.mbm.phimp.me.editor.editimage.EditImageActivity;
 import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
 import vn.mbm.phimp.me.base.BaseActivity;
 import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
+import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraControllerManager2;
 import vn.mbm.phimp.me.opencamera.Preview.Preview;
@@ -19,6 +21,7 @@ import java.util.Map;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -37,6 +40,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.ParcelFileDescriptor;
 import android.os.StatFs;
 import android.preference.PreferenceManager;
@@ -83,6 +87,9 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.ZoomControls;
 
 import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.utilities.BasicCallBack;
+
+import static vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity.ACTION_REQUEST_EDITIMAGE;
 
 /** The main Activity for Open Camera.
  */
@@ -137,6 +144,8 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	public volatile boolean test_have_angle;
 	public volatile float test_angle;
 	public volatile String test_last_saved_image;
+
+	public ProgressDialog progressDialog;
 
 
     @Override
@@ -350,7 +359,22 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 		if( MyDebug.LOG )
 			Log.d(TAG, "onCreate: total time for Activity startup: " + (System.currentTimeMillis() - debug_time));
-//		getSettingDetail();
+		BasicCallBack basicCallBack = new BasicCallBack() {
+			@Override
+			public void callBack(String filepath) {
+				Handler h = new Handler(Looper.getMainLooper());
+				h.post(new Runnable() {
+					public void run() {
+						progressDialog = new ProgressDialog(CameraActivity.this);
+						progressDialog.setMessage("Generating image. Please wait...");
+						progressDialog.show();
+					}
+				});
+				PhotoActivity.start(CameraActivity.this, filepath, 10);
+
+			}
+		};
+		ImageSaver.setBasicCallBack(basicCallBack);
 	}
 
 
@@ -696,6 +720,9 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 	@Override
 	protected void onResume() {
+		if (progressDialog != null) {
+			progressDialog.dismiss();
+		}
 		setNavigationBarColor(ThemeHelper.getPrimaryColor(this));
 		long debug_time = 0;
 		if( MyDebug.LOG ) {
