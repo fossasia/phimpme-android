@@ -144,6 +144,7 @@ public class EditImageActivity extends BaseActivity {
         Bundle extras = getIntent().getExtras();
         Uri filePath =  Uri.parse(extras.getString("imageUri"));
         loadImage(String.valueOf(filePath));
+
     }
 
     private void initView() {
@@ -255,7 +256,9 @@ public class EditImageActivity extends BaseActivity {
     public void loadImage(String filepath) {
         if (mLoadImageTask != null) {
             mLoadImageTask.cancel(true);
+
         }
+        Toast.makeText(EditImageActivity.this,"Image loaded",Toast.LENGTH_SHORT).show();
         mLoadImageTask = new LoadImageTask();
         mLoadImageTask.execute(filepath);
     }
