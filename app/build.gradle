@@ -48,6 +48,13 @@ android {
     dexOptions {
         jumboMode = true
     }
+
+
+    repositories {
+        maven {
+            url  "http://dl.bintray.com/dasar/maven"
+        }
+    }
 }
 
 dependencies {
