@@ -81,7 +81,7 @@ import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.SIZE;
 import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.TYPE;
 
 
-public class LFMainActivity extends SharedMediaActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class LFMainActivity extends SharedMediaActivity{
 
     private static String TAG = "AlbumsAct";
     private int REQUEST_CODE_SD_CARD_PERMISSIONS = 42;
@@ -104,7 +104,6 @@ public class LFMainActivity extends SharedMediaActivity implements BottomNavigat
     private SelectAlbumBottomSheet bottomSheetDialogFragment;
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    BottomNavigationView bottomNavigationView;
     BasicCallBack basicCallBack;
 
 
@@ -178,7 +177,6 @@ public class LFMainActivity extends SharedMediaActivity implements BottomNavigat
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_leafpic);
 
         SP = PreferenceUtil.getInstance(getApplicationContext());
         albumsMode = true;
@@ -188,23 +186,11 @@ public class LFMainActivity extends SharedMediaActivity implements BottomNavigat
         initUI();
 
         displayData(getIntent().getExtras());
-
-        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottombar);
-        bottomNavigationView.setOnNavigationItemSelectedListener(this);
-        bottomNavigationView.getMenu().getItem(1).setChecked(true);
-        basicCallBack = new BasicCallBack() {
-            @Override
-            public void callBack(int status, Object data) {
-                if (status == CAMERA_BACK_PRESSED)
-                    bottomNavigationView.setSelectedItemId(R.id.navigation_home);
-            }
-        };
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        bottomNavigationView.setBackgroundColor(getPrimaryColor());
         securityObj.updateSecuritySetting();
         setupUI();
         getAlbums().clearSelectedAlbums();
@@ -1386,22 +1372,6 @@ public class LFMainActivity extends SharedMediaActivity implements BottomNavigat
         }
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.navigation_home:
-                return true;
-            case R.id.navigation_camera:
-                Intent i = new Intent(LFMainActivity.this, CameraActivity.class);
-                CameraActivity.setBasicCallBack(basicCallBack);
-                startActivity(i);
-                overridePendingTransition(0, 0);
-                return true;
-            case R.id.navigation_accounts:
-                return true;
-        }
-        return false;
-    }
 
     private class PrepareAlbumTask extends AsyncTask<Void, Integer, Void> {
 

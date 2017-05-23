@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -20,188 +19,199 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.context.IconicsContextWrapper;
 import com.mikepenz.iconics.typeface.IIcon;
 
+import java.util.ArrayList;
+
 import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.leafpic.util.ColorPalette;
 import vn.mbm.phimp.me.leafpic.util.PreferenceUtil;
 import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
 
-import java.util.ArrayList;
-
 /**
  * Created by dnld on 23/02/16.
  */
-public class ThemedActivity extends AppCompatActivity {
+public class ThemedActivity extends BaseActivity {
+
+    private ThemeHelper themeHelper;
+    private PreferenceUtil SP;
+    private boolean coloredNavBar;
+    private boolean obscuredStatusBar;
+    private boolean applyThemeImgAct;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        SP = PreferenceUtil.getInstance(getApplicationContext());
+        themeHelper = new ThemeHelper(getApplicationContext());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateTheme();
+    }
+
+    public void updateTheme() {
+        themeHelper.updateTheme();
+        coloredNavBar = SP.getBoolean(getString(R.string.preference_colored_nav_bar), false);
+        obscuredStatusBar = SP.getBoolean(getString(R.string.preference_translucent_status_bar), true);
+        applyThemeImgAct = SP.getBoolean(getString(R.string.preference_apply_theme_pager), true);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        // NOTE: icons stuff
+        super.attachBaseContext(IconicsContextWrapper.wrap(newBase));
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public void setNavBarColor() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (isNavigationBarColored()) getWindow().setNavigationBarColor(getPrimaryColor());
+            else
+                getWindow().setNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.md_black_1000));
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    protected void setStatusBarColor() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (isTranslucentStatusBar())
+                getWindow().setStatusBarColor(ColorPalette.getObscuredColor(getPrimaryColor()));
+            else
+                getWindow().setStatusBarColor(getPrimaryColor());
+        }
+    }
+
+    protected void setScrollViewColor(ScrollView scr) {
+        themeHelper.setScrollViewColor(scr);
+    }
+
+    public void setCursorDrawableColor(EditText editText, int color) {
+        // TODO: 02/08/16 remove this
+        ThemeHelper.setCursorDrawableColor(editText, color);
+    }
 
 
-  private ThemeHelper themeHelper;
-  private PreferenceUtil SP;
-  private boolean coloredNavBar;
-  private boolean obscuredStatusBar;
-  private boolean applyThemeImgAct;
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public void setRecentApp(String text) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            BitmapDrawable drawable = ((BitmapDrawable) getDrawable(R.mipmap.ic_launcher));
+            setTaskDescription(new ActivityManager.TaskDescription(text, drawable.getBitmap(), getPrimaryColor()));
+        }
+    }
 
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-	super.onCreate(savedInstanceState);
-	SP = PreferenceUtil.getInstance(getApplicationContext());
-	themeHelper = new ThemeHelper(getApplicationContext());
-  }
+    public boolean isNavigationBarColored() {
+        return coloredNavBar;
+    }
 
-  @Override
-  public void onResume(){
-	super.onResume();
-	updateTheme();
-  }
+    public boolean isTranslucentStatusBar() {
+        return obscuredStatusBar;
+    }
 
-  public void updateTheme(){
-	themeHelper.updateTheme();
-	coloredNavBar = SP.getBoolean(getString(R.string.preference_colored_nav_bar), false);
-	obscuredStatusBar = SP.getBoolean(getString(R.string.preference_translucent_status_bar),true);
-	applyThemeImgAct = SP.getBoolean(getString(R.string.preference_apply_theme_pager), true);
-  }
+    protected boolean isApplyThemeOnImgAct() {
+        return applyThemeImgAct;
+    }
 
-  @Override
-  protected void attachBaseContext(Context newBase) {
-    // NOTE: icons stuff
-    super.attachBaseContext(IconicsContextWrapper.wrap(newBase));
-  }
+    protected boolean isTransparencyZero() {
+        return 255 - SP.getInt(getString(R.string.preference_transparency), 0) == 255;
+    }
 
-  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-  public void setNavBarColor() {
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-	  if (isNavigationBarColored()) getWindow().setNavigationBarColor(getPrimaryColor());
-	  else
-		getWindow().setNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.md_black_1000));
-	}
-  }
+    public int getTransparency() {
+        return 255 - SP.getInt(getString(R.string.preference_transparency), 0);
+    }
 
-  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-  protected void setStatusBarColor() {
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-	  if (isTranslucentStatusBar())
-		getWindow().setStatusBarColor(ColorPalette.getObscuredColor(getPrimaryColor()));
-	  else
-		getWindow().setStatusBarColor(getPrimaryColor());
-	}
-  }
+    public void setBaseTheme(int baseTheme, boolean permanent) {
+        themeHelper.setBaseTheme(baseTheme, permanent);
+    }
 
-  protected void setScrollViewColor(ScrollView scr){
-	themeHelper.setScrollViewColor(scr);
-  }
+    public void themeSeekBar(SeekBar bar) {
+        themeHelper.themeSeekBar(bar);
+    }
 
-  public void setCursorDrawableColor(EditText editText, int color) {
-	// TODO: 02/08/16 remove this
-	ThemeHelper.setCursorDrawableColor(editText, color);
-  }
+    public int getPrimaryColor() {
+        return themeHelper.getPrimaryColor();
+    }
 
+    public int getAccentColor() {
+        return themeHelper.getAccentColor();
+    }
 
+    public int getBaseTheme() {
+        return themeHelper.getBaseTheme();
+    }
 
-  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-  public void setRecentApp(String text){
-	if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-	  BitmapDrawable drawable = ((BitmapDrawable) getDrawable(R.mipmap.ic_launcher));
-	  setTaskDescription(new ActivityManager.TaskDescription(text, drawable.getBitmap(), getPrimaryColor()));
-	}
-  }
+    protected int getBackgroundColor() {
+        return themeHelper.getBackgroundColor();
+    }
 
+    protected Drawable getPlaceHolder() {
+        return themeHelper.getPlaceHolder();
+    }
 
-  public boolean isNavigationBarColored() {
-	return coloredNavBar;
-  }
+    protected int getInvertedBackgroundColor() {
+        return themeHelper.getInvertedBackgroundColor();
+    }
 
-  public boolean isTranslucentStatusBar() {
-	return obscuredStatusBar;
-  }
+    public int getTextColor() {
+        return themeHelper.getTextColor();
+    }
 
-  protected boolean isApplyThemeOnImgAct() {
-	return applyThemeImgAct;
-  }
+    public int getSubTextColor() {
+        return themeHelper.getSubTextColor();
+    }
 
-  protected boolean isTransparencyZero() {
-	return 255 - SP.getInt(getString(R.string.preference_transparency), 0) == 255;
-  }
+    public int getCardBackgroundColor() {
+        return themeHelper.getCardBackgroundColor();
+    }
 
-  public int getTransparency() {
-	return 255 - SP.getInt(getString(R.string.preference_transparency), 0);
-  }
+    public int getIconColor() {
+        return themeHelper.getIconColor();
+    }
 
-  public void setBaseTheme(int baseTheme, boolean permanent) {
-	themeHelper.setBaseTheme(baseTheme, permanent);
-  }
+    protected int getDrawerBackground() {
+        return themeHelper.getDrawerBackground();
+    }
 
-  public void themeSeekBar(SeekBar bar) {
-  	themeHelper.themeSeekBar(bar);
-  }
-  public int getPrimaryColor() {
-	return themeHelper.getPrimaryColor();
-  }
+    public int getDialogStyle() {
+        return themeHelper.getDialogStyle();
+    }
 
-  public int getAccentColor() {
-	return themeHelper.getAccentColor();
-  }
+    protected int getPopupToolbarStyle() {
+        return themeHelper.getPopupToolbarStyle();
+    }
 
-  public int getBaseTheme(){ return  themeHelper.getBaseTheme(); }
+    protected ArrayAdapter<String> getSpinnerAdapter(ArrayList<String> items) {
+        return themeHelper.getSpinnerAdapter(items);
+    }
 
-  protected int getBackgroundColor(){
-	return themeHelper.getBackgroundColor();
-  }
+    protected int getDefaultThemeToolbarColor3th() {
+        return themeHelper.getDefaultThemeToolbarColor3th();
+    }
 
-  protected Drawable getPlaceHolder(){
-	return themeHelper.getPlaceHolder();
-  }
+    protected void updateRadioButtonColor(RadioButton radioButton) {
+        themeHelper.updateRadioButtonColor(radioButton);
+    }
 
-  protected int getInvertedBackgroundColor(){
-	return themeHelper.getInvertedBackgroundColor();
-  }
+    protected void setRadioTextButtonColor(RadioButton radioButton, int color) {
+        themeHelper.setRadioTextButtonColor(radioButton, color);
+    }
 
-  public int getTextColor(){
-	return themeHelper.getTextColor();
-  }
+    public void updateSwitchColor(SwitchCompat sw, int color) {
+        themeHelper.updateSwitchColor(sw, color);
+    }
 
-  public int getSubTextColor(){
-	return themeHelper.getSubTextColor();
-  }
+    public IconicsDrawable getToolbarIcon(IIcon icon) {
+        return themeHelper.getToolbarIcon(icon);
+    }
 
-  public int getCardBackgroundColor(){
-	return themeHelper.getCardBackgroundColor();
-  }
+    @Override
+    public int getContentViewId() {
+        return R.layout.activity_leafpic;
+    }
 
-  public int getIconColor(){
-	return themeHelper.getIconColor();
-  }
-
-  protected int getDrawerBackground(){
-	return themeHelper.getDrawerBackground();
-  }
-
-  public int getDialogStyle(){
-	return themeHelper.getDialogStyle();
-  }
-
-  protected int getPopupToolbarStyle(){
-	return themeHelper.getPopupToolbarStyle();
-  }
-
-  protected ArrayAdapter<String> getSpinnerAdapter(ArrayList<String> items) {
-	return themeHelper.getSpinnerAdapter(items);
-  }
-
-  protected int getDefaultThemeToolbarColor3th(){
-	return themeHelper.getDefaultThemeToolbarColor3th();
-  }
-
-  protected void updateRadioButtonColor(RadioButton radioButton) {
-	themeHelper.updateRadioButtonColor(radioButton);
-  }
-  protected void setRadioTextButtonColor(RadioButton radioButton, int color) {
-	themeHelper.setRadioTextButtonColor(radioButton, color);
-  }
-
-  public void updateSwitchColor(SwitchCompat sw, int color){
-	themeHelper.updateSwitchColor(sw, color);
-  }
-
-  public IconicsDrawable getToolbarIcon(IIcon icon){
-	return themeHelper.getToolbarIcon(icon);
-  }
+    @Override
+    public int getNavigationMenuItemId() {
+        return R.id.navigation_home;
+    }
 }
