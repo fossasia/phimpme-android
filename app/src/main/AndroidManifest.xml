@@ -5,13 +5,14 @@
     android:versionCode="1"
     android:versionName="1.5">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.microphone" />
+
 
     <application
         android:name=".MyApplication"
@@ -21,82 +22,75 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".opencamera.CameraActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+
+        <activity android:name=".opencamera.CameraActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.media.action.IMAGE_CAPTURE" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.media.action.IMAGE_CAPTURE_SECURE" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.media.action.STILL_IMAGE_CAMERA" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.media.action.STILL_IMAGE_CAMERA_SECURE" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.media.action.VIDEO_CAMERA" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.media.action.VIDEO_CAPTURE" />
-
-                <category android:name="android.intent.category.DEFAULT" />
+                <action android:name="android.media.action.VIDEO_CAPTURE"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+
         <activity
             android:name=".opencamera.TakePhoto"
-            android:configChanges="orientation|screenSize|keyboardHidden"
-            android:excludeFromRecents="true"
-            android:icon="@drawable/ic_launcher_take_photo"
             android:label="@string/take_photo"
+            android:icon="@drawable/ic_launcher_take_photo"
             android:screenOrientation="portrait"
-            android:taskAffinity=""></activity>
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:taskAffinity=""
+            android:excludeFromRecents="true"
+            >
+        </activity>
         <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
         <receiver
-            android:name=".opencamera.MyWidgetProvider"
             android:icon="@mipmap/ic_launcher"
-            android:label="@string/app_name">
-            <intent-filter>
+            android:label="@string/app_name"
+            android:name=".opencamera.MyWidgetProvider" >
+            <intent-filter >
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
-            <!--
-            <intent-filter>
+            <!-- <intent-filter>
             	<action android:name="vn.mbm.phimp.me.opencamera.LAUNCH_OPEN_CAMERA"/>
-            </intent-filter>
-            -->
+            </intent-filter>  -->
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info" />
         </receiver>
         <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
         <receiver
-            android:name=".opencamera.MyWidgetProviderTakePhoto"
             android:icon="@drawable/ic_launcher_take_photo"
-            android:label="@string/take_photo">
-            <intent-filter>
+            android:label="@string/take_photo"
+            android:name=".opencamera.MyWidgetProviderTakePhoto" >
+            <intent-filter >
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
-
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_info_take_photo" />
         </receiver>
         <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
         <service
-            android:name=".opencamera.MyTileService"
+            android:name="vn.mbm.phimp.me.opencamera.MyTileService"
             android:icon="@drawable/ic_photo_camera_white_48dp"
             android:label="@string/camera"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
@@ -106,7 +100,7 @@
         </service>
         <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
         <service
-            android:name=".opencamera.MyTileServiceVideo"
+            android:name="vn.mbm.phimp.me.opencamera.MyTileServiceVideo"
             android:icon="@drawable/ic_videocam_white_48dp"
             android:label="@string/record_video"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
@@ -116,7 +110,7 @@
         </service>
         <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
         <service
-            android:name=".opencamera.MyTileServiceFrontCamera"
+            android:name="vn.mbm.phimp.me.opencamera.MyTileServiceFrontCamera"
             android:icon="@drawable/ic_face_white_48dp"
             android:label="@string/selfie"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
@@ -125,15 +119,15 @@
             </intent-filter>
         </service>
 
+
         <activity
-            android:name=".leafpic.activities.PlayerActivity"
+            android:name="vn.mbm.phimp.me.leafpic.activities.PlayerActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/video_player"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:scheme="http" />
@@ -142,15 +136,19 @@
                 <data android:scheme="asset" />
                 <data android:scheme="file" />
                 <data android:mimeType="video/*" />
+
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".leafpic.activities.SplashScreen"
+            android:name="vn.mbm.phimp.me.leafpic.activities.SplashScreen"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <intent-filter>
                 <category android:name="android.intent.category.APP_GALLERY" />
             </intent-filter>
@@ -163,6 +161,7 @@
                 <data android:mimeType="image/*" />
                 <data android:mimeType="video/*" />
             </intent-filter>
+
             <intent-filter android:label="@string/app_name">
                 <action android:name="android.intent.action.PICK" />
 
@@ -175,23 +174,22 @@
                 <action android:name="vn.mbm.phimp.me.leafpic.OPEN_ALBUM" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".leafpic.activities.LFMainActivity"
+            android:name="vn.mbm.phimp.me.leafpic.activities.LFMainActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.albumsAct" />
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".leafpic.activities.SingleMediaActivity"
-            android:configChanges="orientation|screenSize|uiMode|touchscreen|screenLayout"
+            android:name="vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity"
             android:label="@string/app_name"
-            android:parentActivityName=".leafpic.activities.LFMainActivity"
+            android:configChanges="orientation|screenSize|uiMode|touchscreen|screenLayout"
+            android:parentActivityName="vn.mbm.phimp.me.leafpic.activities.LFMainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -199,78 +197,77 @@
 
             <intent-filter>
                 <action android:name="android.intent.action.albumPhoto" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data android:mimeType="image/*" />
             </intent-filter>
+
             <intent-filter>
                 <action android:name="com.android.camera.action.REVIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="image/*" />
-                <data android:mimeType="video/*" />
+                <data android:mimeType="image/*"/>
+                <data android:mimeType="video/*"/>
             </intent-filter>
+
         </activity>
+
         <activity
-            android:name=".leafpic.activities.SettingsActivity"
+            android:name="vn.mbm.phimp.me.leafpic.activities.SettingsActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/settings"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.SETTING" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".leafpic.activities.AboutActivity"
+            android:name="vn.mbm.phimp.me.leafpic.activities.AboutActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/about"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.ABOUT" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".leafpic.activities.SecurityActivity"
+            android:name="vn.mbm.phimp.me.leafpic.activities.SecurityActivity"
             android:configChanges="orientation|screenSize"
-            android:label="@string/security"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:label="@string/security">
             <intent-filter>
                 <action android:name="android.intent.action.SECURITY" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name=".leafpic.activities.ExcludedAlbumsActivity"
+            android:name="vn.mbm.phimp.me.leafpic.activities.ExcludedAlbumsActivity"
             android:label="@string/excluded_albums"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.ExcludedAlbums" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
+        <activity android:name=".accounts.AccountsActivity" />
         <meta-data
             android:name="vn.mbm.phimp.me.leafpic.CustomGlideModule"
             android:value="GlideModule" />
@@ -280,15 +277,13 @@
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
+
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths" />
+                android:resource="@xml/provider_paths"/>
         </provider>
 
-        <activity
-            android:name=".accounts.AccountsActivity"
-            android:label="@string/title_activity_accounts"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
+
 
 </manifest>
