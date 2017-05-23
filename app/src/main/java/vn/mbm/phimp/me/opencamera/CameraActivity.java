@@ -3,6 +3,7 @@ package vn.mbm.phimp.me.opencamera;
 import vn.mbm.phimp.me.Utilities.BasicCallBack;
 import vn.mbm.phimp.me.Utilities.Constants;
 import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
+import vn.mbm.phimp.me.base.BaseActivity;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraControllerManager2;
 import vn.mbm.phimp.me.opencamera.Preview.Preview;
@@ -87,7 +88,7 @@ import vn.mbm.phimp.me.R;
 
 /** The main Activity for Open Camera.
  */
-public class CameraActivity extends Activity implements AudioListener.AudioListenerCallback {
+public class CameraActivity extends BaseActivity implements AudioListener.AudioListenerCallback {
 	private static final String TAG = "CameraActivity";
 	private SensorManager mSensorManager;
 	private Sensor mSensorAccelerometer;
@@ -153,7 +154,6 @@ public class CameraActivity extends Activity implements AudioListener.AudioListe
 			debug_time = System.currentTimeMillis();
 		}
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_camera);
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false); // initialise any unset preferences to their default values
 		if( MyDebug.LOG )
 			Log.d(TAG, "onCreate: time after setting default preference values: " + (System.currentTimeMillis() - debug_time));
@@ -804,7 +804,7 @@ public class CameraActivity extends Activity implements AudioListener.AudioListe
 	}
 
 	@Override
-	protected void onPause() {
+	public void onPause() {
 		long debug_time = 0;
 		if( MyDebug.LOG ) {
 			Log.d(TAG, "onPause");
@@ -826,6 +826,16 @@ public class CameraActivity extends Activity implements AudioListener.AudioListe
 		if( MyDebug.LOG ) {
 			Log.d(TAG, "onPause: total time to pause: " + (System.currentTimeMillis() - debug_time));
 		}
+	}
+
+	@Override
+	public int getContentViewId() {
+		return R.layout.activity_camera;
+	}
+
+	@Override
+	public int getNavigationMenuItemId() {
+		return R.id.navigation_camera;
 	}
 
 	@Override
