@@ -49,11 +49,11 @@ android {
         jumboMode = true
     }
 
+}
 
-    repositories {
-        maven {
-            url  "http://dl.bintray.com/dasar/maven"
-        }
+repositories {
+    maven {
+        url  "http://dl.bintray.com/dasar/maven"
     }
 }
 
