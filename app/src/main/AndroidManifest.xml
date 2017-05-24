@@ -24,7 +24,8 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".opencamera.CameraActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.media.action.IMAGE_CAPTURE" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -267,6 +268,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
+        <activity android:name=".accounts.AccountsActivity" />
         <meta-data
             android:name="vn.mbm.phimp.me.leafpic.CustomGlideModule"
             android:value="GlideModule" />
@@ -281,8 +283,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths"/>
         </provider>
-
-
 
     </application>
 
