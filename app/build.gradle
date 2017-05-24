@@ -66,6 +66,7 @@ dependencies {
     compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:customtabs:$rootProject.supportLibraryVersion"
 
+    compile project(':photoview')
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.koushikdutta.ion:ion:2.1.7'
     compile 'com.mikepenz:iconics-core:2.8.4@aar'
@@ -80,7 +81,7 @@ dependencies {
     compile 'com.drewnoakes:metadata-extractor:2.9.1'
     compile 'org.jetbrains:annotations-java5:15.0'
     compile 'com.turingtechnologies.materialscrollbar:lib:10.0.3'
-    compile project(':photoview')
     compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.5.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
 }
