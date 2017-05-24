@@ -50,7 +50,6 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.Utilities.BasicCallBack;
 import vn.mbm.phimp.me.base.SharedMediaActivity;
 import vn.mbm.phimp.me.leafpic.SelectAlbumBottomSheet;
 import vn.mbm.phimp.me.leafpic.adapters.AlbumsAdapter;
@@ -99,10 +98,6 @@ public class LFMainActivity extends SharedMediaActivity{
     private Toolbar toolbar;
     private SelectAlbumBottomSheet bottomSheetDialogFragment;
     private SwipeRefreshLayout swipeRefreshLayout;
-
-    BasicCallBack basicCallBack;
-
-
     private boolean hidden = false, pickMode = false, editMode = false, albumsMode = true, firstLaunch = true;
 
     private View.OnLongClickListener photosOnLongClickListener = new View.OnLongClickListener() {
