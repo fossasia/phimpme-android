@@ -1,0 +1,48 @@
+<resources>
+    <string name="app_name">ImageEditLibrary</string>
+    <string name="no_images">no found the image</string>
+    <string name="images">%d images</string>
+    <string name="save">save</string>
+    <string name="apply">apply</string>
+
+    <string name="stickers">stickers</string>
+    <string name="fliter">fliter</string>
+    <string name="crop">crop</string>
+    <string name="rotate">rotate</string>
+    <string name="text">text</string>
+    <string name="edit">edit</string>
+
+
+
+    <string name="materialcolorpicker__app_name">Android Material Color Picker Dialog</string>
+    <string name="materialcolorpicker__descLib">Material Color Picker Dialog</string>
+    <string name="materialcolorpicker__errHex">Hex Code Format incorrect</string>
+    <string name="materialcolorpicker__inputColor">Color:</string>
+    <string name="materialcolorpicker__btnSelectColor">Select</string>
+    <string name="saving_image">save...</string>
+    <string name="input_hint">input text ...</string>
+
+    <string name="no_choose">please choose a image for edit</string>
+    <string name="auto_newline">AutoNewline</string>
+    <string name="save_error">Save error!</string>
+
+    <string-array name="fliters">
+        <item>origin</item>
+        <item>soft</item>
+        <item>black</item>
+        <item>classic</item>
+        <item>gorgeous</item>
+        <item>retro</item>
+        <item>grace</item>
+        <item>film</item>
+        <item>memory</item>
+        <item>yogurt</item>
+        <item>fleeting</item>
+        <item>shine</item>
+    </string-array>
+
+    <string name="more">more</string>
+    <string name="exit_without_save">The edited image is not saved. Do you want to exit? </string>
+    <string name="confirm">confirm</string>
+    <string name="cancel">cancel</string>
+</resources>
