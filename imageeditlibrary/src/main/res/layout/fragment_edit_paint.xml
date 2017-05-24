@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:orientation="horizontal">
+    <ImageView
+        android:id="@+id/back_to_main"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/image_edit_back"/>
+    <com.xinlan.imageeditlibrary.editimage.view.PaintModeView
+        android:id="@+id/paint_thumb"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/paint_color_list"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:overScrollMode="never"
+        android:scrollbars="none"/>
+    <ImageView
+        android:id="@+id/paint_eraser"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="5dp"
+        android:src="@drawable/eraser_normal"/>
+</LinearLayout>

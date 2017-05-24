@@ -314,6 +314,8 @@
     <color name="md_purple_A200">#E040FB</color>
     <color name="md_purple_A400">#D500F9</color>
     <color name="md_purple_A700">#AA00FF</color>
+    <color name="hint_foreground_material_light">#AA00FF</color>
+
 
     <color name="md_red_100">#FFCDD2</color>
     <color name="md_red_200">#EF9A9A</color>

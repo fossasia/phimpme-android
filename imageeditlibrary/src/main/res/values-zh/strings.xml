@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">编辑图片</string>
+    <string name="no_images">没有发现图片</string>
+    <string name="images">%d 张图片</string>
+    <string name="save">保存</string>
+    <string name="apply">应用</string>
+    <string name="stickers">贴图</string>
+    <string name="fliter">滤镜</string>
+    <string name="crop">裁剪</string>
+    <string name="rotate">旋转</string>
+    <string name="text">文字</string>
+    <string name="edit">编辑</string>
+    <string name="materialcolorpicker__app_name">颜色选择</string>
+    <string name="materialcolorpicker__descLib">颜色选择</string>
+    <string name="materialcolorpicker__errHex">颜色值不正确</string>
+    <string name="materialcolorpicker__inputColor">颜色:</string>
+    <string name="materialcolorpicker__btnSelectColor">选择</string>
+    <string name="saving_image">图片保存中...</string>
+    <string name="input_hint">输入文本 ...</string>
+    <string name="no_choose">请选择一张需要编辑的图片</string>
+    <string name="auto_newline">自动换行</string>
+    <string name="save_error">图片保存失败</string>
+
+    <string-array name="fliters">
+        <item>原始</item>
+        <item>软化</item>
+        <item>黑白</item>
+        <item>经典</item>
+        <item>华丽</item>
+        <item>复古</item>
+        <item>优雅</item>
+        <item>电影</item>
+        <item>回忆</item>
+        <item>优格</item>
+        <item>流年</item>
+        <item>发光</item>
+    </string-array>
+
+    <string name="more">更多</string>
+    <string name="exit_without_save">编辑的图片还未保存,确认退出吗？</string>
+    <string name="confirm">确认</string>
+    <string name="cancel">取消</string>
+</resources>
