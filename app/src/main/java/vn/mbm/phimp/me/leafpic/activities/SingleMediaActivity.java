@@ -52,6 +52,10 @@ import vn.mbm.phimp.me.leafpic.util.SecurityHelper;
 import vn.mbm.phimp.me.leafpic.util.StringUtils;
 import vn.mbm.phimp.me.leafpic.views.HackyViewPager;
 
+import com.xinlan.imageeditlibrary.editimage.EditImageActivity;
+import com.xinlan.imageeditlibrary.editimage.utils.BitmapUtils;
+import com.xinlan.imageeditlibrary.picchooser.SelectPictureActivity;
+
 import java.io.File;
 
 /**
@@ -418,11 +422,17 @@ public class SingleMediaActivity extends SharedMediaActivity {
                 return true;
 
             case R.id.action_edit:
-                Uri mDestinationUri = Uri.fromFile(new File(getCacheDir(), "croppedImage.png"));
+                /*Uri mDestinationUri = Uri.fromFile(new File(getCacheDir(), "croppedImage.png"));
                 Uri uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
                 UCrop uCrop = UCrop.of(uri, mDestinationUri);
                 uCrop.withOptions(getUcropOptions());
-                uCrop.start(SingleMediaActivity.this);
+                uCrop.start(SingleMediaActivity.this);*/
+
+                Uri uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
+                Intent intentforActivity= new Intent(SingleMediaActivity.this,EditImageActivity.class);
+                intentforActivity.putExtra("imageUri", uri.toString());
+                startActivity(intentforActivity);
+
                 break;
 
             case R.id.action_use_as:

@@ -187,6 +187,12 @@
         </activity>
 
         <activity
+            android:name="com.xinlan.imageeditlibrary.editimage.EditImageActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+
+        <activity
             android:name="vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity"
             android:label="@string/app_name"
             android:configChanges="orientation|screenSize|uiMode|touchscreen|screenLayout"
@@ -262,7 +268,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
