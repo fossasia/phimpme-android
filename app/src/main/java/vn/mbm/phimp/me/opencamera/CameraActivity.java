@@ -1,7 +1,5 @@
 package vn.mbm.phimp.me.opencamera;
 
-import vn.mbm.phimp.me.Utilities.BasicCallBack;
-import vn.mbm.phimp.me.Utilities.Constants;
 import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
 import vn.mbm.phimp.me.base.BaseActivity;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
@@ -13,7 +11,6 @@ import vn.mbm.phimp.me.opencamera.UI.MainUI;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
@@ -46,7 +43,6 @@ import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.KeyguardManager;
@@ -139,11 +135,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	public volatile boolean test_have_angle;
 	public volatile float test_angle;
 	public volatile String test_last_saved_image;
-    static BasicCallBack basicCallback;
-
-    public static void setBasicCallBack(BasicCallBack basicCallBack) {
-        basicCallback = basicCallBack;
-    }
 
 
     @Override
@@ -1285,7 +1276,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 			}
 		}
 		super.onBackPressed();
-        basicCallback.callBack(Constants.CAMERA_BACK_PRESSED,null);
 
 	}
 
@@ -1540,7 +1530,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 				applicationInterface.getStorageUtils().clearLastMediaScanned();
 				if( thumbnail != null ) {
 					if( MyDebug.LOG )
-						Log.d(TAG, "set gallery button to thumbnail");
+						Log.d(TAG, "set gallery btn to thumbnail");
 					updateGalleryIcon(thumbnail);
 				}
 				else {
