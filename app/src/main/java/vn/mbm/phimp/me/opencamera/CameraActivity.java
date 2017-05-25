@@ -2,6 +2,7 @@ package vn.mbm.phimp.me.opencamera;
 
 import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
 import vn.mbm.phimp.me.base.BaseActivity;
+import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraControllerManager2;
 import vn.mbm.phimp.me.opencamera.Preview.Preview;
@@ -749,6 +750,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 	@Override
 	protected void onResume() {
+		setNavigationBarColor(ThemeHelper.getPrimaryColor(this));
 		long debug_time = 0;
 		if( MyDebug.LOG ) {
 			Log.d(TAG, "onResume");

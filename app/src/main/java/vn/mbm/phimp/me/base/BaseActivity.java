@@ -77,4 +77,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
     public abstract int getNavigationMenuItemId();
 
+    public void setNavigationBarColor(int color) {
+        navigationView.setBackgroundColor(color);
+    }
+
 }

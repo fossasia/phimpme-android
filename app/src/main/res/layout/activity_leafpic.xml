@@ -26,7 +26,7 @@
                 android:id="@+id/swipeRefreshLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingBottom="60dp" >
+                android:paddingBottom="@dimen/height_bottombar" >
 
                 <RelativeLayout
                     android:id="@+id/rl_main_content"
