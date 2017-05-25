@@ -181,7 +181,8 @@
     <string name="preference_keep_display_on">Keep display on</string>
     <string name="preference_keep_display_on_summary">If enabled, the screen won\'t switch off while the main Open Camera UI is active</string>
     <!--<string name="preference_max_brightness">Force maximum brightness</string>
-    --><string name="preference_max_brightness_summary">Force screen display to be at maximum brightness, rather than device default</string>
+    -->
+    <string name="preference_max_brightness_summary">Force screen display to be at maximum brightness, rather than device default</string>
 
     <string name="preference_category_camera_quality">Photo and Video Settings</string>
     <string name="preference_screen_photo_settings">Photo settings…</string>
@@ -618,18 +619,15 @@
 
     <string name="send_mail_error">There are no email clients installed.</string>
     <string name="about_special_thanks">Special thanks</string>
-    <string name="about_special_thanks_open_camera">to <a
-        href="http://opencamera.sourceforge.net/">OpenCamera</a> for the
+    <string name="about_special_thanks_open_camera">to <a href="http://opencamera.sourceforge.net/">OpenCamera</a> for the
         awesome camera.
     </string>
-    <string name="about_special_thanks_leafpic">to <a
-        href="https://github.com/HoraApps/LeafPic">LeafPic</a> for the
+    <string name="about_special_thanks_leafpic">to <a href="https://github.com/HoraApps/LeafPic">LeafPic</a> for the
         gallery.
     </string>
     <string name="about_special_thanks_you_sub">
 
     </string>
-
 
 
     <string name="about_support_report_bug">Report bug</string>
@@ -706,5 +704,6 @@
         really optimized right now
     </string>
     <string name="about_support">Support Development</string>
-    <string name="about_fossasia">Developed by <a href="http://fossasia.org/" > FOSSASIA</a> <a href="https://github.com/fossasia/phimpme-android/graphs/contributors">contributers</a>.</string>
+    <string name="about_fossasia">Developed by <a href="http://fossasia.org/"> FOSSASIA</a> <a href="https://github.com/fossasia/phimpme-android/graphs/contributors">contributers</a>.</string>
+    <string name="title_activity_accounts">AccountsActivity</string>
 </resources>

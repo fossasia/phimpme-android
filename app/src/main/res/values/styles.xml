@@ -14,7 +14,9 @@
     </style>
 
     <style name="MyApp.PopupMenu.Light" parent="Widget.AppCompat.Light.ListPopupWindow">
-        <item name="android:backgroundTint" tools:targetApi="lollipop">@color/cardview_light_background</item>
+        <item name="android:backgroundTint" tools:targetApi="lollipop">
+            @color/cardview_light_background
+        </item>
     </style>
 
     <!--DARK MENU THEME-->
@@ -23,7 +25,9 @@
     </style>
 
     <style name="MyApp.PopupMenu.Dark" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:backgroundTint" tools:targetApi="lollipop">@color/cardview_dark_background</item>
+        <item name="android:backgroundTint" tools:targetApi="lollipop">
+            @color/cardview_dark_background
+        </item>
     </style>
 
     <!--AMOLED DARK MENU THEME-->
@@ -86,7 +90,9 @@
     <style name="AlertDialog_Dark" parent="Theme.AppCompat.Dialog.Alert">
         <item name="colorAccent">@color/md_dark_primary_icon</item><!--BOTTONI-->
         <item name="android:textColorPrimary">@color/md_dark_primary_text</item><!--TESTO-->
-        <item name="android:backgroundTint" tools:targetApi="lollipop">@color/cardview_dark_background</item>
+        <item name="android:backgroundTint" tools:targetApi="lollipop">
+            @color/cardview_dark_background
+        </item>
     </style>
 
     <style name="AlertDialog_Dark_Amoled" parent="Theme.AppCompat.Dialog.Alert">
@@ -100,7 +106,9 @@
     <!--LICENSE DIALOG-->
     <style name="LicenseDialog_Dark" parent="android:Theme.Dialog">
         <item name="android:textColor">@color/md_white_1000</item>
-        <item name="android:backgroundTint" tools:targetApi="lollipop">@color/cardview_dark_background</item>
+        <item name="android:backgroundTint" tools:targetApi="lollipop">
+            @color/cardview_dark_background
+        </item>
         <item name="colorAccent">@color/md_dark_primary_icon</item><!--BOTTONI-->
     </style>
 
@@ -108,14 +116,14 @@
     <style name="PreferencesThemeDark">
         <item name="android:background">#2b2b2b</item>
     </style>
+
     <style name="PreferencesThemeLight">
         <item name="android:background">#FAFAFA</item>
         <!--<item name="android:background">#424242</item>-->
     </style>
 
     <!--Player-->
-    <style name="RootTheme" parent="android:Theme.Holo">
-    </style>
+    <style name="RootTheme" parent="android:Theme.Holo"></style>
 
     <style name="PlayerTheme" parent="@style/RootTheme">
         <item name="android:windowNoTitle">true</item>
@@ -127,4 +135,13 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minWidth">40dp</item>
     </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
