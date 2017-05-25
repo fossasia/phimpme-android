@@ -3,10 +3,8 @@ package vn.mbm.phimp.me.leafpic.activities;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
@@ -14,8 +12,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -43,7 +39,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.view.IconicsImageView;
 
 import java.util.ArrayList;
@@ -94,7 +89,6 @@ public class LFMainActivity extends SharedMediaActivity{
     private MediaAdapter mediaAdapter;
     private GridSpacingItemDecoration rvMediaDecoration;
 
-    private FloatingActionButton fabCamera;
     private DrawerLayout mDrawerLayout;
     private Toolbar toolbar;
     private SelectAlbumBottomSheet bottomSheetDialogFragment;
@@ -247,12 +241,6 @@ public class LFMainActivity extends SharedMediaActivity{
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            fabCamera.setVisibility(View.GONE);
-        } else {
-            fabCamera.setVisibility(View.VISIBLE);
-            fabCamera.animate().translationY(fabCamera.getHeight() * 2).start();
-        }
     }
 
     private boolean displayData(Bundle data) {
@@ -358,29 +346,6 @@ public class LFMainActivity extends SharedMediaActivity{
             }
         });
 
-        /**** FAB ***/
-        fabCamera = (FloatingActionButton) findViewById(R.id.fab_camera);
-        fabCamera.setImageDrawable(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_camera_alt).color(Color.WHITE));
-        fabCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA));
-            }
-        });
-
-        //region TESTING
-        fabCamera.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-
-                // NOTE: this is used to acquire write permission on sd with api 21
-                // TODO call this one when unable to write on sd
-                requestSdCardPermissions();
-                return false;
-            }
-        });
-        //endregion
-
         setRecentApp(getString(R.string.app_name));
         setupUI();
     }
@@ -459,8 +424,6 @@ public class LFMainActivity extends SharedMediaActivity{
         setStatusBarColor();
         setNavBarColor();
 
-        fabCamera.setBackgroundTintList(ColorStateList.valueOf(getAccentColor()));
-        fabCamera.setVisibility(SP.getBoolean(getString(R.string.preference_show_fab), false) ? View.VISIBLE : View.GONE);
         setDrawerTheme();
         rvAlbums.setBackgroundColor(getBackgroundColor());
         rvMedia.setBackgroundColor(getBackgroundColor());
