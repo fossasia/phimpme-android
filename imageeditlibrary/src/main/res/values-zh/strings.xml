@@ -37,7 +37,7 @@
     </string-array>
 
     <string name="more">More</string>
-    <string name="exit_without_save">Exit Withou Saving？</string>
+    <string name="exit_without_save">Exit Without Saving？</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
 </resources>
