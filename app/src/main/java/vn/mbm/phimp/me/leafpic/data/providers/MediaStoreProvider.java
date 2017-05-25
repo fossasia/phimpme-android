@@ -19,6 +19,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import static android.R.id.list;
+
 /**
  * Created by dnld on 24/07/16.
  */
@@ -81,22 +83,8 @@ public class  MediaStoreProvider {
 
 		String selection, selectionArgs[];
 
-		PreferenceUtil SP = PreferenceUtil.getInstance(context);
-		boolean includeVideo = SP.getBoolean("set_include_video", true);
-
-		if (includeVideo) {
-			selection = MediaStore.Files.FileColumns.MEDIA_TYPE + "=? or " +
-										MediaStore.Files.FileColumns.MEDIA_TYPE + "=?"
-										+ " ) GROUP BY ( " + MediaStore.Files.FileColumns.PARENT + " ";
-
-			selectionArgs = new String[]{
-							String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE),
-							String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO),
-			};
-		} else {
 			selection = MediaStore.Files.FileColumns.MEDIA_TYPE + "=? ) GROUP BY ( " + MediaStore.Files.FileColumns.PARENT + " ";
 			selectionArgs = new String[] { String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE) };
-		}
 
 		Cursor cur = context.getContentResolver().query(
 						MediaStore.Files.getContentUri("external"), projection, selection, selectionArgs, null);
@@ -184,20 +172,8 @@ public class  MediaStoreProvider {
 		Uri images = MediaStore.Files.getContentUri("external");
 		String selection, selectionArgs[];
 
-
-		if(includeVideo) {
-			selection = "( "+MediaStore.Files.FileColumns.MEDIA_TYPE + "=? or "
-										+ MediaStore.Files.FileColumns.MEDIA_TYPE + "=? ) and " + MediaStore.Files.FileColumns.PARENT + "=?";
-
-			selectionArgs = new String[] {
-							String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE),
-							String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO),
-							String.valueOf(albumId)
-			};
-		} else {
 			selection = MediaStore.Files.FileColumns.MEDIA_TYPE + "=?  and " + MediaStore.Files.FileColumns.PARENT + "=?";
 			selectionArgs = new String[] { String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE), String.valueOf(albumId) };
-		}
 
 		Cursor cur = context.getContentResolver().query(
 						images, projection, selection, selectionArgs,
