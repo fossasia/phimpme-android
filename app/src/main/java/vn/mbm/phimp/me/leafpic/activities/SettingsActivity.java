@@ -69,7 +69,6 @@ public class SettingsActivity extends ThemedActivity {
     private SwitchCompat swUseMediaStore;
     private SwitchCompat swIncludeVideo;
     private SwitchCompat swSwipeDirection;
-    private SwitchCompat swShowFab;
     private SwitchCompat swSubScaling;
 
 
@@ -158,19 +157,8 @@ public class SettingsActivity extends ThemedActivity {
             }
         });
 
-        /*** SW Show Fab ***/
-        swShowFab = (SwitchCompat) findViewById(R.id.sw_show_fab);
-        swShowFab.setChecked(SP.getBoolean(getString(R.string.preference_show_fab), false));
-        swShowFab.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SP.putBoolean(getString(R.string.preference_show_fab), isChecked);
-                updateSwitchColor(swShowFab, getAccentColor());
-            }
-        });
 
-
-        /*** SW Show Fab ***/
+        /*** Sub-Scaling ImageView ***/
         swSubScaling = (SwitchCompat) findViewById(R.id.sw_sub_scaling);
         swSubScaling.setChecked(SP.getBoolean(getString(R.string.preference_sub_scaling), false));
         swSubScaling.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -753,7 +741,6 @@ public class SettingsActivity extends ThemedActivity {
         updateSwitchColor(swIncludeVideo, color);
         updateSwitchColor(swSwipeDirection, color);
         updateSwitchColor(swUseMediaStore, color);
-        updateSwitchColor(swShowFab, color);
         updateSwitchColor(swSubScaling, color);
     }
 
@@ -816,7 +803,6 @@ public class SettingsActivity extends ThemedActivity {
         ((IconicsImageView) findViewById(R.id.auto_update_media_Icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.use_media_mediastore_Icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.security_icon)).setColor(color);
-        ((IconicsImageView) findViewById(R.id.fab_options_icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.sub_scaling_Icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.map_provider_icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.media_viewer_swipe_direction_Icon)).setColor(color);
@@ -840,7 +826,6 @@ public class SettingsActivity extends ThemedActivity {
         ((TextView) findViewById(R.id.auto_update_media_Item)).setTextColor(color);
         ((TextView) findViewById(R.id.security_item_title)).setTextColor(color);
         ((TextView) findViewById(R.id.use_media_mediastore_Item)).setTextColor(color);
-        ((TextView) findViewById(R.id.fab_options_item_title)).setTextColor(color);
         ((TextView) findViewById(R.id.map_provider_item_title)).setTextColor(color);
         ((TextView) findViewById(R.id.media_viewer_swipe_direction_Item)).setTextColor(color);
 
@@ -863,7 +848,6 @@ public class SettingsActivity extends ThemedActivity {
         ((TextView) findViewById(R.id.include_video_Item_Sub)).setTextColor(color);
         ((TextView) findViewById(R.id.auto_update_media_Item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.security_item_sub)).setTextColor(color);
-        ((TextView) findViewById(R.id.fab_options_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.map_provider_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.media_viewer_swipe_direction_sub)).setTextColor(color);
     }
