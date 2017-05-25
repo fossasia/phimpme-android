@@ -1,8 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <FrameLayout
         android:id="@+id/banner"
@@ -18,7 +17,7 @@
             android:layout_gravity="left|center_vertical"
             android:layout_margin="10dp"
             android:layout_marginLeft="0dp"
-            android:src="@drawable/back_arrow"/>
+            android:src="@drawable/back_arrow" />
 
         <TextView
             android:id="@+id/title"
@@ -28,7 +27,7 @@
             android:gravity="center"
             android:text="@string/app_name"
             android:textColor="#ffffff"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
         <ViewFlipper
             android:id="@+id/banner_flipper"
@@ -46,7 +45,7 @@
                 android:gravity="center"
                 android:text="@string/save"
                 android:textColor="#ffffff"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/apply"
@@ -55,7 +54,7 @@
                 android:gravity="center"
                 android:text="@string/apply"
                 android:textColor="#ffffff"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
         </ViewFlipper>
     </FrameLayout>
 
@@ -64,7 +63,7 @@
         android:layout_width="fill_parent"
         android:layout_height="@dimen/bottom_banner_height"
         android:layout_alignParentBottom="true"
-        android:background="@color/main_backgroud"/>
+        android:background="@color/main_backgroud" />
 
     <FrameLayout
         android:id="@+id/work_space"
@@ -78,42 +77,42 @@
             android:id="@+id/main_image"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center" />
 
         <com.xinlan.imageeditlibrary.editimage.view.StickerView
             android:id="@+id/sticker_panel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <com.xinlan.imageeditlibrary.editimage.view.CropImageView
             android:id="@+id/crop_panel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <com.xinlan.imageeditlibrary.editimage.view.RotateImageView
             android:id="@+id/rotate_panel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <com.xinlan.imageeditlibrary.editimage.view.TextStickerView
             android:id="@+id/text_sticker_panel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <com.xinlan.imageeditlibrary.editimage.view.CustomPaintView
             android:id="@+id/custom_paint_view"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </FrameLayout>
 
 </RelativeLayout>
