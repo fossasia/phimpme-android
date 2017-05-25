@@ -44,6 +44,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         switch (item.getItemId()) {
             case R.id.navigation_home:
                 startActivity(new Intent(this, LFMainActivity.class));
+                finish();
                 break;
             case R.id.navigation_camera:
                 startActivity(new Intent(this, CameraActivity.class));
@@ -52,7 +53,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                 startActivity(new Intent(this, AccountsActivity.class));
                 break;
         }
-        finish();
+
         return true;
     }
 
