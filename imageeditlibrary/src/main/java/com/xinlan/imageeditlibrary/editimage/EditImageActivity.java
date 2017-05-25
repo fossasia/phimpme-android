@@ -138,12 +138,13 @@ public class EditImageActivity extends BaseActivity {
     }
 
     private void getData() {
-        /*filePath = getIntent().getStringExtra(FILE_PATH);
+        //filePath = getIntent().getStringExtra(FILE_PATH);
+        filePath = String.valueOf(R.drawable.test);
         saveFilePath = getIntent().getStringExtra(EXTRA_OUTPUT);// 保存图片路径
-        loadImage(filePath);*/
-        Bundle extras = getIntent().getExtras();
+        loadImage(filePath);
+        /*Bundle extras = getIntent().getExtras();
         Uri filePath =  Uri.parse(extras.getString("imageUri"));
-        loadImage(String.valueOf(filePath));
+        loadImage(String.valueOf(filePath));*/
 
     }
 
