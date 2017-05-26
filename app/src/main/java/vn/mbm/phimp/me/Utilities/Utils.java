@@ -5,5 +5,4 @@ package vn.mbm.phimp.me.Utilities;
  */
 
 public class Utils {
-
 }

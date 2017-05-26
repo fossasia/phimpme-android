@@ -42,6 +42,7 @@ public class ThemedActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         SP = PreferenceUtil.getInstance(getApplicationContext());
         themeHelper = new ThemeHelper(getApplicationContext());
+        setNavigationBarColor(getPrimaryColor());
     }
 
     @Override
@@ -55,6 +56,8 @@ public class ThemedActivity extends BaseActivity {
         coloredNavBar = SP.getBoolean(getString(R.string.preference_colored_nav_bar), false);
         obscuredStatusBar = SP.getBoolean(getString(R.string.preference_translucent_status_bar), true);
         applyThemeImgAct = SP.getBoolean(getString(R.string.preference_apply_theme_pager), true);
+        setNavigationBarColor(getPrimaryColor());
+
     }
 
     @Override

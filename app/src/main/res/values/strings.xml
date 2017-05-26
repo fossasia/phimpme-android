@@ -705,5 +705,4 @@
     </string>
     <string name="about_support">Support Development</string>
     <string name="about_fossasia">Developed by <a href="http://fossasia.org/"> FOSSASIA</a> <a href="https://github.com/fossasia/phimpme-android/graphs/contributors">contributers</a>.</string>
-    <string name="title_activity_accounts">AccountsActivity</string>
 </resources>
