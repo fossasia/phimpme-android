@@ -36,8 +36,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.xinlan.imageeditlibrary.editimage.EditImageActivity;
-import com.xinlan.imageeditlibrary.editimage.utils.BitmapUtils;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
@@ -45,6 +43,8 @@ import java.io.File;
 import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.base.SharedMediaActivity;
 import vn.mbm.phimp.me.edit.FileUtils;
+import vn.mbm.phimp.me.editor.editimage.EditImageActivity;
+import vn.mbm.phimp.me.editor.editimage.utils.BitmapUtils;
 import vn.mbm.phimp.me.leafpic.SelectAlbumBottomSheet;
 import vn.mbm.phimp.me.leafpic.adapters.MediaPagerAdapter;
 import vn.mbm.phimp.me.leafpic.animations.DepthPageTransformer;
@@ -479,15 +479,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
                 /*Uri uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
                 /*UCrop uCrop = UCrop.of(uri, mDestinationUri);
                 uCrop.withOptions(getUcropOptions());
-                uCrop.start(SingleMediaActivity.this);
-
-                File outputFile = FileUtils.genEditFile();
-                Uri uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
-<<<<<<< HEAD
-<<<<<<< 50245a18f655a1f761eb560a348c62cf34f7e9a3
-                Intent intentforActivity= new Intent(SingleMediaActivity.this,EditImageActivity.class);
-                intentforActivity.putExtra("imageUri", uri.toString());
-                startActivity(intentforActivity);*/
+                uCrop.start(SingleMediaActivity.this);*/
                 File outputFile = FileUtils.genEditFile();
                 Uri uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
                 EditImageActivity.start(this,uri.getPath(),outputFile.getAbsolutePath(),ACTION_REQUEST_EDITIMAGE);
