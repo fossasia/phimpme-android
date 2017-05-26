@@ -71,6 +71,7 @@ public class StickerTypeAdapter extends RecyclerView.Adapter<ViewHolder> {
         String name = stickerPathName[position];
         imageHoler.text.setText(name);
         // TODO
+
         //imageHoler.icon.setImageResource(typeIcon[position]);
         imageHoler.text.setTag(stickerPath[position]);
         imageHoler.text.setOnClickListener(mImageClick);
