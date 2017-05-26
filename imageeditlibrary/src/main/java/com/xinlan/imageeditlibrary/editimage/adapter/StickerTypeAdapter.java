@@ -23,7 +23,7 @@ public class StickerTypeAdapter extends RecyclerView.Adapter<ViewHolder> {
             R.drawable.stickers_type_motion, R.drawable.stickers_type_cos,
             R.drawable.stickers_type_mark, R.drawable.stickers_type_decoration};
     public static final String[] stickerPath = {"stickers/type1", "stickers/type2", "stickers/type3", "stickers/type4", "stickers/type5", "stickers/type6"};
-    public static final String[] stickerPathName = {"表情1", "表情2", "表情3", "表情4", "表情5", "表情6"};
+    public static final String[] stickerPathName = {"Facial", "Hearts", "Objects", "Comments", "Wishes", "Animals"};
     private StirckerFragment mStirckerFragment;
     private ImageClick mImageClick = new ImageClick();
 
