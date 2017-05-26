@@ -189,6 +189,7 @@
         <activity
             android:name="com.xinlan.imageeditlibrary.editimage.EditImageActivity"
             android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="adjustPan">
         </activity>
 
@@ -273,7 +274,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
-        <activity android:name=".accounts.AccountsActivity" />
+        <activity android:name=".accounts.AccountsActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <meta-data
             android:name="vn.mbm.phimp.me.leafpic.CustomGlideModule"
             android:value="GlideModule" />
