@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -47,9 +48,9 @@ public class StirckerFragment extends BaseEditFragment {
     private ViewFlipper flipper;
     private View backToMenu;// 返回主菜单
     private RecyclerView typeList;// 贴图分类列表
-    private RecyclerView stickerList;// 贴图素材列表
+    private RecyclerView stickerList;// Mapping material list
     private View backToType;// 返回类型选择
-    private StickerView mStickerView;// 贴图显示控件
+    private StickerView mStickerView;// Map display controls
     private StickerAdapter mStickerAdapter;// 贴图列表适配器
 
     private LoadStickersTask mLoadStickersTask;
@@ -86,7 +87,7 @@ public class StirckerFragment extends BaseEditFragment {
         flipper.setInAnimation(activity, R.anim.in_bottom_to_top);
         flipper.setOutAnimation(activity, R.anim.out_bottom_to_top);
 
-        //
+
         backToMenu = mainView.findViewById(R.id.back_to_main);
         typeList = (RecyclerView) mainView
                 .findViewById(R.id.stickers_type_list);
@@ -105,7 +106,8 @@ public class StirckerFragment extends BaseEditFragment {
         stickerList.setLayoutManager(stickerListLayoutManager);
         mStickerAdapter = new StickerAdapter(this);
         stickerList.setAdapter(mStickerAdapter);
-
+        String logcat = null;
+        Log.d(logcat,"Sticker adapter set");
         backToMenu.setOnClickListener(new BackToMenuClick());// 返回主菜单
         backToType.setOnClickListener(new OnClickListener() {
             @Override

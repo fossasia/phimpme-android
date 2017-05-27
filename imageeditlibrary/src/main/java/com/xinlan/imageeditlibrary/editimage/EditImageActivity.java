@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -135,6 +136,7 @@ public class EditImageActivity extends BaseActivity {
         setContentView(R.layout.activity_image_edit);
         initView();
         getData();
+
     }
 
     private void getData() {
@@ -258,7 +260,6 @@ public class EditImageActivity extends BaseActivity {
             mLoadImageTask.cancel(true);
 
         }
-        Toast.makeText(EditImageActivity.this,"Image loaded",Toast.LENGTH_SHORT).show();
         mLoadImageTask = new LoadImageTask();
         mLoadImageTask.execute(filepath);
     }
@@ -339,7 +340,7 @@ public class EditImageActivity extends BaseActivity {
         public void onClick(View v) {
             switch (mode) {
                 case MODE_STICKERS:
-                    mStirckerFragment.applyStickers();// 保存贴图
+                    mStirckerFragment.applyStickers();// Save Map
                     break;
                 case MODE_FILTER:// 滤镜编辑状态
                     mFliterListFragment.applyFilterImage();// 保存滤镜贴图
