@@ -327,22 +327,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 			setDeviceDefaults();
 		}
 		if( !has_done_first_time ) {
-			if( !is_test ) {
-				AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-				alertDialog.setTitle(R.string.app_name);
-				alertDialog.setMessage(R.string.intro_text);
-				alertDialog.setPositiveButton(android.R.string.ok, null);
-				alertDialog.setNegativeButton(R.string.preference_online_help, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						if( MyDebug.LOG )
-							Log.d(TAG, "online help");
-						launchOnlineHelp();
-					}
-				});
-				alertDialog.show();
-			}
-
 			setFirstTimeFlag();
 		}
 
