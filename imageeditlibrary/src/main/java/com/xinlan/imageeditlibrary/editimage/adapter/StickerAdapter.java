@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -72,6 +73,8 @@ public class StickerAdapter extends RecyclerView.Adapter<ViewHolder> {
         String path = pathList.get(position);
         ImageLoader.getInstance().displayImage("assets://" + path,
                 imageHoler.image, imageOption);
+        String log = null;
+        Log.d(log,"Image Loaded");
         imageHoler.image.setTag(path);
         imageHoler.image.setOnClickListener(mImageClick);
     }
