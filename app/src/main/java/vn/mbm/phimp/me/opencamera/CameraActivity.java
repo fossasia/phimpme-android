@@ -1,8 +1,8 @@
 package vn.mbm.phimp.me.opencamera;
 
-import vn.mbm.phimp.me.Utilities.BasicCallBack;
-import vn.mbm.phimp.me.Utilities.Constants;
 import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
+import vn.mbm.phimp.me.base.BaseActivity;
+import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraControllerManager2;
 import vn.mbm.phimp.me.opencamera.Preview.Preview;
@@ -12,7 +12,6 @@ import vn.mbm.phimp.me.opencamera.UI.MainUI;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
@@ -45,7 +44,6 @@ import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.KeyguardManager;
@@ -87,7 +85,7 @@ import vn.mbm.phimp.me.R;
 
 /** The main Activity for Open Camera.
  */
-public class CameraActivity extends Activity implements AudioListener.AudioListenerCallback {
+public class CameraActivity extends BaseActivity implements AudioListener.AudioListenerCallback {
 	private static final String TAG = "CameraActivity";
 	private SensorManager mSensorManager;
 	private Sensor mSensorAccelerometer;
@@ -138,11 +136,6 @@ public class CameraActivity extends Activity implements AudioListener.AudioListe
 	public volatile boolean test_have_angle;
 	public volatile float test_angle;
 	public volatile String test_last_saved_image;
-    static BasicCallBack basicCallback;
-
-    public static void setBasicCallBack(BasicCallBack basicCallBack) {
-        basicCallback = basicCallBack;
-    }
 
 
     @Override
@@ -153,7 +146,6 @@ public class CameraActivity extends Activity implements AudioListener.AudioListe
 			debug_time = System.currentTimeMillis();
 		}
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_camera);
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false); // initialise any unset preferences to their default values
 		if( MyDebug.LOG )
 			Log.d(TAG, "onCreate: time after setting default preference values: " + (System.currentTimeMillis() - debug_time));
@@ -758,6 +750,7 @@ public class CameraActivity extends Activity implements AudioListener.AudioListe
 
 	@Override
 	protected void onResume() {
+		setNavigationBarColor(ThemeHelper.getPrimaryColor(this));
 		long debug_time = 0;
 		if( MyDebug.LOG ) {
 			Log.d(TAG, "onResume");
@@ -804,7 +797,7 @@ public class CameraActivity extends Activity implements AudioListener.AudioListe
 	}
 
 	@Override
-	protected void onPause() {
+	public void onPause() {
 		long debug_time = 0;
 		if( MyDebug.LOG ) {
 			Log.d(TAG, "onPause");
@@ -826,6 +819,16 @@ public class CameraActivity extends Activity implements AudioListener.AudioListe
 		if( MyDebug.LOG ) {
 			Log.d(TAG, "onPause: total time to pause: " + (System.currentTimeMillis() - debug_time));
 		}
+	}
+
+	@Override
+	public int getContentViewId() {
+		return R.layout.activity_camera;
+	}
+
+	@Override
+	public int getNavigationMenuItemId() {
+		return R.id.navigation_camera;
 	}
 
 	@Override
@@ -1275,7 +1278,6 @@ public class CameraActivity extends Activity implements AudioListener.AudioListe
 			}
 		}
 		super.onBackPressed();
-        basicCallback.callBack(Constants.CAMERA_BACK_PRESSED,null);
 
 	}
 
@@ -1530,7 +1532,7 @@ public class CameraActivity extends Activity implements AudioListener.AudioListe
 				applicationInterface.getStorageUtils().clearLastMediaScanned();
 				if( thumbnail != null ) {
 					if( MyDebug.LOG )
-						Log.d(TAG, "set gallery button to thumbnail");
+						Log.d(TAG, "set gallery btn to thumbnail");
 					updateGalleryIcon(thumbnail);
 				}
 				else {

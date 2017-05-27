@@ -3,10 +3,8 @@ package vn.mbm.phimp.me.leafpic.activities;
 import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
@@ -14,10 +12,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -45,14 +39,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.view.IconicsImageView;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.Utilities.BasicCallBack;
 import vn.mbm.phimp.me.base.SharedMediaActivity;
 import vn.mbm.phimp.me.leafpic.SelectAlbumBottomSheet;
 import vn.mbm.phimp.me.leafpic.adapters.AlbumsAdapter;
@@ -71,9 +63,7 @@ import vn.mbm.phimp.me.leafpic.util.PreferenceUtil;
 import vn.mbm.phimp.me.leafpic.util.SecurityHelper;
 import vn.mbm.phimp.me.leafpic.util.StringUtils;
 import vn.mbm.phimp.me.leafpic.views.GridSpacingItemDecoration;
-import vn.mbm.phimp.me.opencamera.CameraActivity;
 
-import static vn.mbm.phimp.me.Utilities.Constants.CAMERA_BACK_PRESSED;
 import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.DATE;
 import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.NAME;
 import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.NUMERIC;
@@ -81,7 +71,7 @@ import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.SIZE;
 import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.TYPE;
 
 
-public class LFMainActivity extends SharedMediaActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class LFMainActivity extends SharedMediaActivity{
 
     private static String TAG = "AlbumsAct";
     private int REQUEST_CODE_SD_CARD_PERMISSIONS = 42;
@@ -98,16 +88,10 @@ public class LFMainActivity extends SharedMediaActivity implements BottomNavigat
     private MediaAdapter mediaAdapter;
     private GridSpacingItemDecoration rvMediaDecoration;
 
-    private FloatingActionButton fabCamera;
     private DrawerLayout mDrawerLayout;
     private Toolbar toolbar;
     private SelectAlbumBottomSheet bottomSheetDialogFragment;
     private SwipeRefreshLayout swipeRefreshLayout;
-
-    BottomNavigationView bottomNavigationView;
-    BasicCallBack basicCallBack;
-
-
     private boolean hidden = false, pickMode = false, editMode = false, albumsMode = true, firstLaunch = true;
 
     private View.OnLongClickListener photosOnLongClickListener = new View.OnLongClickListener() {
@@ -178,7 +162,6 @@ public class LFMainActivity extends SharedMediaActivity implements BottomNavigat
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_leafpic);
 
         SP = PreferenceUtil.getInstance(getApplicationContext());
         albumsMode = true;
@@ -188,23 +171,11 @@ public class LFMainActivity extends SharedMediaActivity implements BottomNavigat
         initUI();
 
         displayData(getIntent().getExtras());
-
-        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottombar);
-        bottomNavigationView.setOnNavigationItemSelectedListener(this);
-        bottomNavigationView.getMenu().getItem(1).setChecked(true);
-        basicCallBack = new BasicCallBack() {
-            @Override
-            public void callBack(int status, Object data) {
-                if (status == CAMERA_BACK_PRESSED)
-                    bottomNavigationView.setSelectedItemId(R.id.navigation_home);
-            }
-        };
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        bottomNavigationView.setBackgroundColor(getPrimaryColor());
         securityObj.updateSecuritySetting();
         setupUI();
         getAlbums().clearSelectedAlbums();
@@ -265,12 +236,6 @@ public class LFMainActivity extends SharedMediaActivity implements BottomNavigat
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            fabCamera.setVisibility(View.GONE);
-        } else {
-            fabCamera.setVisibility(View.VISIBLE);
-            fabCamera.animate().translationY(fabCamera.getHeight() * 2).start();
-        }
     }
 
     private boolean displayData(Bundle data) {
@@ -376,29 +341,6 @@ public class LFMainActivity extends SharedMediaActivity implements BottomNavigat
             }
         });
 
-        /**** FAB ***/
-        fabCamera = (FloatingActionButton) findViewById(R.id.fab_camera);
-        fabCamera.setImageDrawable(new IconicsDrawable(this).icon(GoogleMaterial.Icon.gmd_camera_alt).color(Color.WHITE));
-        fabCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA));
-            }
-        });
-
-        //region TESTING
-        fabCamera.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-
-                // NOTE: this is used to acquire write permission on sd with api 21
-                // TODO call this one when unable to write on sd
-                requestSdCardPermissions();
-                return false;
-            }
-        });
-        //endregion
-
         setRecentApp(getString(R.string.app_name));
         setupUI();
     }
@@ -477,8 +419,6 @@ public class LFMainActivity extends SharedMediaActivity implements BottomNavigat
         setStatusBarColor();
         setNavBarColor();
 
-        fabCamera.setBackgroundTintList(ColorStateList.valueOf(getAccentColor()));
-        fabCamera.setVisibility(SP.getBoolean(getString(R.string.preference_show_fab), false) ? View.VISIBLE : View.GONE);
         setDrawerTheme();
         rvAlbums.setBackgroundColor(getBackgroundColor());
         rvMedia.setBackgroundColor(getBackgroundColor());
@@ -1386,22 +1326,6 @@ public class LFMainActivity extends SharedMediaActivity implements BottomNavigat
         }
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.navigation_home:
-                return true;
-            case R.id.navigation_camera:
-                Intent i = new Intent(LFMainActivity.this, CameraActivity.class);
-                CameraActivity.setBasicCallBack(basicCallBack);
-                startActivity(i);
-                overridePendingTransition(0, 0);
-                return true;
-            case R.id.navigation_accounts:
-                return true;
-        }
-        return false;
-    }
 
     private class PrepareAlbumTask extends AsyncTask<Void, Integer, Void> {
 

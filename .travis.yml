@@ -27,7 +27,8 @@ android:
     # Latest artifacts in local repository
     - extra-google-m2repository
     - extra-android-m2repository
-
+    - android-sdk-license-.+
+    - '.+'
     # Specify at least one system image
     - sys-img-armeabi-v7a-google_apis-$ANDROID_API_LEVEL
     
@@ -36,6 +37,12 @@ before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
 
 # list of directories to Cache
+
+before_install:
+  - mkdir "$ANDROID_HOME/licenses" || true
+  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
+  - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
+
 cache:
   directories:
     - "${TRAVIS_BUILD_DIR}/android/gradle/caches/"

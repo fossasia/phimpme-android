@@ -2,12 +2,14 @@ package vn.mbm.phimp.me.leafpic.activities;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
+import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -16,6 +18,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
@@ -26,6 +29,7 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
@@ -52,6 +56,10 @@ import vn.mbm.phimp.me.leafpic.util.SecurityHelper;
 import vn.mbm.phimp.me.leafpic.util.StringUtils;
 import vn.mbm.phimp.me.leafpic.views.HackyViewPager;
 
+import com.xinlan.imageeditlibrary.editimage.EditImageActivity;
+import com.xinlan.imageeditlibrary.editimage.utils.BitmapUtils;
+import com.xinlan.imageeditlibrary.picchooser.SelectPictureActivity;
+
 import java.io.File;
 
 /**
@@ -72,11 +80,29 @@ public class SingleMediaActivity extends SharedMediaActivity {
     private SecurityHelper securityObj;
     private Toolbar toolbar;
     private boolean fullScreenMode, customUri = false;
+    public static final int REQUEST_PERMISSON_SORAGE = 1;
+    public static final int REQUEST_PERMISSON_CAMERA = 2;
+    public static final int SELECT_GALLERY_IMAGE_CODE = 7;
+    public static final int TAKE_PHOTO_CODE = 8;
+    public static final int ACTION_REQUEST_EDITIMAGE = 9;
+    public static final int ACTION_STICKERS_IMAGE = 10;
+    private ImageView imgView;
+    private View openAblum;
+    private View editImage;//
+    private Bitmap mainBitmap;
+    private int imageWidth, imageHeight;//
+    private String path;
+    private SingleMediaActivity context;
+
+
+    private View mTakenPhoto;//拍摄照片用于编辑
+    private Uri photoURI = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pager);
+        initView();
 
         SP = PreferenceUtil.getInstance(getApplicationContext());
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -109,6 +135,15 @@ public class SingleMediaActivity extends SharedMediaActivity {
             initUI();
             setupUI();
         } catch (Exception e) { e.printStackTrace(); }
+    }
+
+    private void initView() {
+        context = this;
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        imageWidth = metrics.widthPixels;
+        imageHeight = metrics.heightPixels;
+
+        imgView = (ImageView) findViewById(R.id.img);
     }
 
     private void initUI() {
@@ -289,6 +324,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
                         try {
                             //copyFileToDownloads(imageUri);
                             // TODO: 21/08/16 handle this better
+                            handleEditorImage(data);
                             if(ContentHelper.copyFile(getApplicationContext(), new File(imageUri.getPath()), new File(getAlbum().getPath()))) {
                                 //((ImageFragment) adapter.getRegisteredFragment(getAlbum().getCurrentMediaIndex())).displayMedia(true);
                                 Toast.makeText(this, R.string.new_file_created, Toast.LENGTH_SHORT).show();
@@ -304,6 +340,28 @@ public class SingleMediaActivity extends SharedMediaActivity {
                     break;
             }
         }
+    }
+
+    private void handleEditorImage(Intent data) {
+        String newFilePath = data.getStringExtra(EditImageActivity.EXTRA_OUTPUT);
+        boolean isImageEdit = data.getBooleanExtra(EditImageActivity.IMAGE_IS_EDIT, false);
+
+        if (isImageEdit){
+
+        }else{//未编辑  还是用原来的图片
+            newFilePath = data.getStringExtra(EditImageActivity.FILE_PATH);;
+        }
+        //System.out.println("newFilePath---->" + newFilePath);
+        //File file = new File(newFilePath);
+        //System.out.println("newFilePath size ---->" + (file.length() / 1024)+"KB");
+        Log.d("image is edit", isImageEdit + "");
+        LoadImageTask loadTask = new LoadImageTask();
+        loadTask.execute(newFilePath);
+    }
+
+    private void startLoadTask() {
+        LoadImageTask task = new LoadImageTask();
+        task.execute(path);
     }
 
 
@@ -419,10 +477,19 @@ public class SingleMediaActivity extends SharedMediaActivity {
 
             case R.id.action_edit:
                 Uri mDestinationUri = Uri.fromFile(new File(getCacheDir(), "croppedImage.png"));
-                Uri uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
-                UCrop uCrop = UCrop.of(uri, mDestinationUri);
+                /*Uri uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
+                /*UCrop uCrop = UCrop.of(uri, mDestinationUri);
                 uCrop.withOptions(getUcropOptions());
                 uCrop.start(SingleMediaActivity.this);
+
+                Uri uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
+                Intent intentforActivity= new Intent(SingleMediaActivity.this,EditImageActivity.class);
+                intentforActivity.putExtra("imageUri", uri.toString());
+                startActivity(intentforActivity);*/
+                Uri uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
+                File outputFile = FileUtils.genEditFile();
+                EditImageActivity.start(this,String.valueOf(uri),outputFile.getAbsolutePath(),ACTION_REQUEST_EDITIMAGE);
+
                 break;
 
             case R.id.action_use_as:
@@ -701,6 +768,40 @@ public class SingleMediaActivity extends SharedMediaActivity {
             }
         });
         colorAnimation.start();
+    }
+    private final class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
+        @Override
+        protected Bitmap doInBackground(String... params) {
+            return BitmapUtils.getSampledBitmap(params[0], imageWidth / 4, imageHeight / 4);
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+        }
+
+        @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+        @Override
+        protected void onCancelled(Bitmap result) {
+            super.onCancelled(result);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            super.onPostExecute(result);
+            if (mainBitmap != null) {
+                mainBitmap.recycle();
+                mainBitmap = null;
+                System.gc();
+            }
+            mainBitmap = result;
+            imgView.setImageBitmap(mainBitmap);
+        }
     }
 }
 
