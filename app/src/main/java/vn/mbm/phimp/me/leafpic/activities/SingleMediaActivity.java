@@ -486,9 +486,9 @@ public class SingleMediaActivity extends SharedMediaActivity {
                 Intent intentforActivity= new Intent(SingleMediaActivity.this,EditImageActivity.class);
                 intentforActivity.putExtra("imageUri", uri.toString());
                 startActivity(intentforActivity);*/
-                Uri uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
                 File outputFile = FileUtils.genEditFile();
-                EditImageActivity.start(this,String.valueOf(uri),outputFile.getAbsolutePath(),ACTION_REQUEST_EDITIMAGE);
+                Uri uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
+                EditImageActivity.start(this,uri.getPath(),outputFile.getAbsolutePath(),ACTION_REQUEST_EDITIMAGE);
 
                 break;
 
