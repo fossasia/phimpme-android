@@ -14,7 +14,6 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.decode.BaseImageDecoder;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
-import com.nostra13.universalimageloader.utils.StorageUtils;
 
 import java.io.File;
 
@@ -33,7 +32,7 @@ public class EditBaseActivity extends AppCompatActivity {
      * 初始化图片载入框架
      */
     private void initImageLoader() {
-        File cacheDir = StorageUtils.getCacheDirectory(this);
+        File cacheDir = com.nostra13.universalimageloader.utils.StorageUtils.getCacheDirectory(this);
         int MAXMEMONRY = (int) (Runtime.getRuntime().maxMemory());
         // System.out.println("dsa-->"+MAXMEMONRY+"   "+(MAXMEMONRY/5));//.memoryCache(new
         // LruMemoryCache(50 * 1024 * 1024))

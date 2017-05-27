@@ -91,6 +91,6 @@ dependencies {
     compile 'com.turingtechnologies.materialscrollbar:lib:10.0.3'
     compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.5.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
-    compile project(path: ':imageeditlibrary')
 }
