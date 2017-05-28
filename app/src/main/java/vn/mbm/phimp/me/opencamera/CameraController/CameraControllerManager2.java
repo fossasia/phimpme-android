@@ -9,7 +9,7 @@ import android.hardware.camera2.CameraMetadata;
 import android.os.Build;
 import android.util.Log;
 
-import vn.mbm.phimp.me.opencamera.MyDebug;
+import vn.mbm.phimp.me.opencamera.CamUtil.MyDebug;
 
 /** Provides support using Android 5's Camera 2 API
  *  android.hardware.camera2.*.

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/setting_background"
     android:layout_width="match_parent"
@@ -7,6 +7,13 @@
     android:orientation="vertical">
 
     <!--TOOLBAR-->
+    <FrameLayout
+        android:id="@+id/pref_container"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true" />
+
 
     <include
         android:id="@+id/toolbar"
@@ -53,6 +60,50 @@
                         android:textSize="@dimen/medium_text"
                         android:textStyle="bold" />
 
+                    <!-- CAMERA -->
+
+                    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:id="@+id/ll_camera"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ripple"
+                        android:clickable="true"
+                        android:orientation="horizontal">
+
+                        <com.mikepenz.iconics.view.IconicsImageView
+                            android:id="@+id/camera_icon"
+                            android:layout_width="@dimen/icon_width_height"
+                            android:layout_height="@dimen/icon_width_height"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="@dimen/big_spacing"
+                            android:layout_marginRight="@dimen/big_spacing"
+                            app:iiv_icon="faw-user-secret" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingBottom="@dimen/medium_spacing"
+                            android:paddingRight="@dimen/medium_spacing"
+                            android:paddingTop="@dimen/medium_spacing">
+
+                            <TextView
+                                android:id="@+id/camera_item_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/title_camera"
+                                android:textColor="@color/md_dark_background"
+                                android:textSize="@dimen/medium_text" />
+
+                            <TextView
+                                android:id="@+id/camera_item_sub"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/camera_sub"
+                                android:textColor="@color/md_grey_400"
+                                android:textSize="@dimen/sub_medium_text" />
+                        </LinearLayout>
+                    </LinearLayout>
                     <!-- SECURITY -->
 
                     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -1078,6 +1129,9 @@
                     </LinearLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
+
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+
+
+</RelativeLayout>

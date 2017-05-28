@@ -1,4 +1,4 @@
-package vn.mbm.phimp.me.opencamera;
+package vn.mbm.phimp.me.opencamera.CamUtil;
 
 import android.content.Intent;
 import android.os.Build;
@@ -9,9 +9,9 @@ import android.util.Log;
 /** Provides service for quick settings tile.
  */
 @RequiresApi(api = Build.VERSION_CODES.N)
-public class MyTileServiceFrontCamera extends TileService {
-    private static final String TAG = "MyTileServiceFrontCam";
-    public static final String TILE_ID = "vn.mbm.phimp.me.opencamera.TILE_FRONT_CAMERA";
+public class MyTileServiceVideo extends TileService {
+    private static final String TAG = "MyTileServiceVideo";
+    public static final String TILE_ID = "vn.mbm.phimp.me.opencamera.TILE_VIDEO";
 
     @Override
     public void onDestroy() {
