@@ -108,26 +108,8 @@
         app:showAsAction="never"
         />
     <item
-        android:title="@string/more"
-        app:showAsAction="never">
-        <menu>
-            <item
-                android:id="@+id/action_edit_with"
-                android:title="@string/edit_with"
-                app:showAsAction="never" />
-            <item
-                android:id="@+id/action_open_with"
-                android:title="@string/open_with"
-                app:showAsAction="never" />
-            <item
-                android:title="@string/upload"
-                android:visible="false"
-                app:showAsAction="never" />
-            <item
-                android:id="@+id/action_settings"
-                android:title="@string/settings"
-                app:showAsAction="never" />
-        </menu>
-    </item>
+        android:id="@+id/action_settings"
+        android:title="@string/settings"
+        app:showAsAction="never" />
     <!-- End Albums Stuff -->
 </menu>
