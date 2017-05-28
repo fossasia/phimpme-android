@@ -397,6 +397,7 @@ public class Album implements Serializable {
 	public void clearSelectedPhotos() {
 		for (Media m : media)
 			m.setSelected(false);
+		if (selectedMedias!=null)
 		selectedMedias.clear();
 	}
 

@@ -1,10 +1,9 @@
 package vn.mbm.phimp.me.opencamera.Preview;
 
 import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.opencamera.MyDebug;
-import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.opencamera.TakePhoto;
-import vn.mbm.phimp.me.opencamera.ToastBoxer;
+import vn.mbm.phimp.me.opencamera.CamUtil.MyDebug;
+import vn.mbm.phimp.me.opencamera.CamUtil.TakePhoto;
+import vn.mbm.phimp.me.opencamera.CamUtil.ToastBoxer;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraController1;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraController2;
@@ -74,10 +73,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.View.MeasureSpec;
 import android.widget.Toast;
-
-import vn.mbm.phimp.me.opencamera.Preview.ApplicationInterface;
-import vn.mbm.phimp.me.opencamera.Preview.CanvasView;
-import vn.mbm.phimp.me.opencamera.Preview.VideoQualityHandler;
 
 /** This class was originally named due to encapsulating the camera preview,
  *  but in practice it's grown to more than this, and includes most of the

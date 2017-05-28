@@ -22,11 +22,9 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.ZoomControls;
 
-import java.util.Map;
-
-import vn.mbm.phimp.me.opencamera.CameraActivity;
-import vn.mbm.phimp.me.opencamera.MyDebug;
-import vn.mbm.phimp.me.opencamera.PreferenceKeys;
+import vn.mbm.phimp.me.opencamera.CamUtil.CameraActivity;
+import vn.mbm.phimp.me.opencamera.CamUtil.MyDebug;
+import vn.mbm.phimp.me.opencamera.CamUtil.PreferenceKeys;
 import vn.mbm.phimp.me.R;
 
 /** This contains functionality related to the main UI.

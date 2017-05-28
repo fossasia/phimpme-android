@@ -1,4 +1,4 @@
-package vn.mbm.phimp.me.opencamera;
+package vn.mbm.phimp.me.opencamera.CamUtil;
 
 import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
 import vn.mbm.phimp.me.base.BaseActivity;
@@ -136,6 +136,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	public volatile boolean test_have_angle;
 	public volatile float test_angle;
 	public volatile String test_last_saved_image;
+	public static Bundle bundle;
 
 
     @Override
@@ -364,6 +365,8 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 		if( MyDebug.LOG )
 			Log.d(TAG, "onCreate: total time for Activity startup: " + (System.currentTimeMillis() - debug_time));
+		bundle = getSettingDetail();
+
 	}
 
 	/* This method sets the preference defaults which are set specific for a particular device.
@@ -553,12 +556,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		editor.apply();
 	}
 
-	void launchOnlineHelp() {
-		if( MyDebug.LOG )
-			Log.d(TAG, "launchOnlineHelp");
-		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://opencamera.sourceforge.net/"));
-		startActivity(browserIntent);
-	}
 
 	// for audio "noise" trigger option
 	private int last_level = -1;
@@ -1031,7 +1028,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		mainUI.togglePopupSettings();
 	}
 
-	public void openSettings() {
+	public Bundle getSettingDetail(){
 		if( MyDebug.LOG )
 			Log.d(TAG, "openSettings");
 		waitUntilImageQueueEmpty(); // in theory not needed as we could continue running in the background, but best to be safe
@@ -1142,11 +1139,13 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		putBundleExtra(bundle, "flash_values", this.preview.getSupportedFlashValues());
 		putBundleExtra(bundle, "focus_values", this.preview.getSupportedFocusValues());
 
+		return bundle;
+
+	}
+	public void openSettings() {
 		setWindowFlagsForSettings();
 		MyPreferenceFragment fragment = new MyPreferenceFragment();
-		fragment.setArguments(bundle);
-		// use commitAllowingStateLoss() instead of commit(), does to "java.lang.IllegalStateException: Can not perform this action after onSaveInstanceState" crash seen on Google Play
-		// see http://stackoverflow.com/questions/7575921/illegalstateexception-can-not-perform-this-action-after-onsaveinstancestate-wit
+		fragment.setArguments(getSettingDetail());
 		getFragmentManager().beginTransaction().add(R.id.prefs_container, fragment, "PREFERENCE_FRAGMENT").addToBackStack(null).commitAllowingStateLoss();
 	}
 

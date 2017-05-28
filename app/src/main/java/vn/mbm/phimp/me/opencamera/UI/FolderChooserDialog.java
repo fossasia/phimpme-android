@@ -21,10 +21,10 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import vn.mbm.phimp.me.opencamera.MyDebug;
-import vn.mbm.phimp.me.opencamera.PreferenceKeys;
+import vn.mbm.phimp.me.opencamera.CamUtil.MyDebug;
+import vn.mbm.phimp.me.opencamera.CamUtil.PreferenceKeys;
 import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.opencamera.StorageUtils;
+import vn.mbm.phimp.me.opencamera.CamUtil.StorageUtils;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -12,7 +12,6 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.os.BatteryManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Pair;
@@ -20,12 +19,12 @@ import android.view.Surface;
 import android.view.View;
 import android.widget.ImageButton;
 
-import vn.mbm.phimp.me.opencamera.CameraActivity;
+import vn.mbm.phimp.me.opencamera.CamUtil.CameraActivity;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
-import vn.mbm.phimp.me.opencamera.GyroSensor;
-import vn.mbm.phimp.me.opencamera.MyApplicationInterface;
-import vn.mbm.phimp.me.opencamera.MyDebug;
-import vn.mbm.phimp.me.opencamera.PreferenceKeys;
+import vn.mbm.phimp.me.opencamera.CamUtil.GyroSensor;
+import vn.mbm.phimp.me.opencamera.CamUtil.MyApplicationInterface;
+import vn.mbm.phimp.me.opencamera.CamUtil.MyDebug;
+import vn.mbm.phimp.me.opencamera.CamUtil.PreferenceKeys;
 import vn.mbm.phimp.me.opencamera.Preview.Preview;
 import vn.mbm.phimp.me.R;
 
@@ -33,13 +32,6 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.Locale;
-
-import vn.mbm.phimp.me.opencamera.CameraActivity;
-import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
-import vn.mbm.phimp.me.opencamera.MyApplicationInterface;
-import vn.mbm.phimp.me.opencamera.MyDebug;
-import vn.mbm.phimp.me.opencamera.PreferenceKeys;
-import vn.mbm.phimp.me.opencamera.Preview.Preview;
 
 public class DrawPreview {
 	private static final String TAG = "DrawPreview";

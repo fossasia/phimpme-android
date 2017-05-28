@@ -23,7 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".opencamera.CameraActivity"
+        <activity android:name=".opencamera.CamUtil.CameraActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
@@ -53,7 +53,7 @@
         </activity>
 
         <activity
-            android:name=".opencamera.TakePhoto"
+            android:name=".opencamera.CamUtil.TakePhoto"
             android:label="@string/take_photo"
             android:icon="@drawable/ic_launcher_take_photo"
             android:screenOrientation="portrait"
@@ -66,7 +66,7 @@
         <receiver
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
-            android:name=".opencamera.MyWidgetProvider" >
+            android:name=".opencamera.CamUtil.MyWidgetProvider" >
             <intent-filter >
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -81,7 +81,7 @@
         <receiver
             android:icon="@drawable/ic_launcher_take_photo"
             android:label="@string/take_photo"
-            android:name=".opencamera.MyWidgetProviderTakePhoto" >
+            android:name=".opencamera.CamUtil.MyWidgetProviderTakePhoto" >
             <intent-filter >
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -91,7 +91,7 @@
         </receiver>
         <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
         <service
-            android:name="vn.mbm.phimp.me.opencamera.MyTileService"
+            android:name="vn.mbm.phimp.me.opencamera.CamUtil.MyTileService"
             android:icon="@drawable/ic_photo_camera_white_48dp"
             android:label="@string/camera"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
@@ -101,7 +101,7 @@
         </service>
         <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
         <service
-            android:name="vn.mbm.phimp.me.opencamera.MyTileServiceVideo"
+            android:name="vn.mbm.phimp.me.opencamera.CamUtil.MyTileServiceVideo"
             android:icon="@drawable/ic_videocam_white_48dp"
             android:label="@string/record_video"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
@@ -111,7 +111,7 @@
         </service>
         <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
         <service
-            android:name="vn.mbm.phimp.me.opencamera.MyTileServiceFrontCamera"
+            android:name="vn.mbm.phimp.me.opencamera.CamUtil.MyTileServiceFrontCamera"
             android:icon="@drawable/ic_face_white_48dp"
             android:label="@string/selfie"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
