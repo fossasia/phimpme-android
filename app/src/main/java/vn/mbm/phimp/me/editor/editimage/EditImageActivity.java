@@ -13,13 +13,15 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.editor.EditBaseActivity;
 import vn.mbm.phimp.me.editor.editimage.fragment.AddTextFragment;
@@ -39,6 +41,7 @@ import vn.mbm.phimp.me.editor.editimage.view.StickerView;
 import vn.mbm.phimp.me.editor.editimage.view.TextStickerView;
 import vn.mbm.phimp.me.editor.editimage.view.imagezoom.ImageViewTouch;
 import vn.mbm.phimp.me.editor.editimage.view.imagezoom.ImageViewTouchBase;
+import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
 
 /**
  *  一个幽灵
@@ -97,6 +100,9 @@ public class EditImageActivity extends EditBaseActivity {
     public RotateImageView mRotatePanel;// 旋转操作控件
     public TextStickerView mTextStickerView;//文本贴图显示View
     public CustomPaintView mPaintView;//涂鸦模式画板
+    @BindView(R.id.banner) FrameLayout banner;
+    @BindView(R.id.work_space) FrameLayout workSpace;
+    public ThemeHelper themeHelper;
 
     public CustomViewPager bottomGallery;// 底部gallery
     private BottomGalleryAdapter mBottomGalleryAdapter;// 底部gallery
@@ -133,6 +139,7 @@ public class EditImageActivity extends EditBaseActivity {
         super.onCreate(savedInstanceState);
         checkInitImageLoader();
         setContentView(R.layout.activity_image_edit);
+        ButterKnife.bind(this);
         initView();
         getData();
 
@@ -157,6 +164,7 @@ public class EditImageActivity extends EditBaseActivity {
         applyBtn.setOnClickListener(new ApplyBtnClick());
         saveBtn = findViewById(R.id.save_btn);
         saveBtn.setOnClickListener(new SaveBtnClick());
+        themeHelper = new ThemeHelper(this);
 
         mainImage = (ImageViewTouch) findViewById(R.id.main_image);
         backBtn = findViewById(R.id.back_btn);// 退出按钮
@@ -185,7 +193,9 @@ public class EditImageActivity extends EditBaseActivity {
         mRotateFragment = RotateFragment.newInstance();
         mAddTextFragment = AddTextFragment.newInstance();
         mPaintFragment = PaintFragment.newInstance();
-
+        banner.setBackgroundColor(themeHelper.getPrimaryColor());
+        workSpace.setBackgroundColor(themeHelper.getPrimaryColor());
+        bottomGallery.setBackgroundColor(themeHelper.getPrimaryColor());
         bottomGallery.setAdapter(mBottomGalleryAdapter);
 
 

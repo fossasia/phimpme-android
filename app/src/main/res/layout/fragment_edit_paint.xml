@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:src="@drawable/image_edit_back"/>
-    <com.xinlan.imageeditlibrary.editimage.view.PaintModeView
+    <vn.mbm.phimp.me.editor.editimage.view.PaintModeView
         android:id="@+id/paint_thumb"
         android:layout_width="30dp"
         android:layout_height="30dp"
