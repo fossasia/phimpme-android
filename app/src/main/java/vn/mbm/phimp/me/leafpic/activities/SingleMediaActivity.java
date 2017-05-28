@@ -499,13 +499,6 @@ public class SingleMediaActivity extends SharedMediaActivity {
                 startActivity(Intent.createChooser(intent, getString(R.string.use_as)));
                 return true;
 
-            case R.id.action_open_with:
-                Intent intentopenWith = new Intent(Intent.ACTION_VIEW);
-                intentopenWith.setDataAndType(
-                        getAlbum().getCurrentMedia().getUri(), getAlbum().getCurrentMedia().getMimeType());
-                startActivity(Intent.createChooser(intentopenWith, getString(R.string.open_with)));
-                break;
-
             case R.id.action_delete:
                 final AlertDialog.Builder deleteDialog = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
 
@@ -600,13 +593,6 @@ public class SingleMediaActivity extends SharedMediaActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) { } });
                 renameDialog.show();
-                break;
-
-            case R.id.action_edit_with:
-                Intent editIntent = new Intent(Intent.ACTION_EDIT);
-                editIntent.setDataAndType(getAlbum().getCurrentMedia().getUri(), getAlbum().getCurrentMedia().getMimeType());
-                editIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                startActivity(Intent.createChooser(editIntent, "Edit with"));
                 break;
 
             case R.id.action_details:
