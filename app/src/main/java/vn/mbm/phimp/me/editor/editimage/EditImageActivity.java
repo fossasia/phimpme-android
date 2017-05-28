@@ -193,9 +193,6 @@ public class EditImageActivity extends EditBaseActivity {
         mRotateFragment = RotateFragment.newInstance();
         mAddTextFragment = AddTextFragment.newInstance();
         mPaintFragment = PaintFragment.newInstance();
-        banner.setBackgroundColor(themeHelper.getPrimaryColor());
-        workSpace.setBackgroundColor(themeHelper.getPrimaryColor());
-        bottomGallery.setBackgroundColor(themeHelper.getPrimaryColor());
         bottomGallery.setAdapter(mBottomGalleryAdapter);
 
 
@@ -448,6 +445,15 @@ public class EditImageActivity extends EditBaseActivity {
         FileUtil.ablumUpdate(this, saveFilePath);
         setResult(RESULT_OK, returnIntent);
         finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        banner.setBackgroundColor(themeHelper.getPrimaryColor());
+        workSpace.setBackgroundColor(themeHelper.getPrimaryColor());
+        bottomGallery.setBackgroundColor(themeHelper.getPrimaryColor());
     }
 
     /**
