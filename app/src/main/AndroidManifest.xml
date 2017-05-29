@@ -189,13 +189,8 @@
         <activity
             android:name="com.xinlan.imageeditlibrary.editimage.EditImageActivity"
             android:screenOrientation="portrait"
-<<<<<<< 50245a18f655a1f761eb560a348c62cf34f7e9a3
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:windowSoftInputMode="adjustPan">
-=======
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
->>>>>>> fix: image loading in edit activity and edit saving in different folder
         </activity>
 
         <activity
