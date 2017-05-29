@@ -70,6 +70,7 @@ public class StickerTypeAdapter extends RecyclerView.Adapter<ViewHolder> {
         // imageHoler.icon.setImageResource(R.drawable.ic_launcher);
         String name = stickerPathName[position];
         imageHoler.text.setText(name);
+        //TODO
         //imageHoler.icon.setImageResource(typeIcon[position]);
         imageHoler.text.setTag(stickerPath[position]);
         imageHoler.text.setOnClickListener(mImageClick);
