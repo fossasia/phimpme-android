@@ -142,9 +142,6 @@ public class EditImageActivity extends BaseActivity {
         filePath = getIntent().getStringExtra(FILE_PATH);
         saveFilePath = getIntent().getStringExtra(EXTRA_OUTPUT);// 保存图片路径
         loadImage(filePath);
-        /*Bundle extras = getIntent().getExtras();
-        Uri filePath =  Uri.parse(extras.getString("imageUri"));
-        loadImage(String.valueOf(filePath));*/
     }
 
     private void initView() {
@@ -431,8 +428,6 @@ public class EditImageActivity extends BaseActivity {
     public boolean canAutoExit() {
         return isBeenSaved || mOpTimes == 0;
     }
-
-
 
     protected void onSaveTaskDone() {
         Intent returnIntent = new Intent();

@@ -483,6 +483,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
 
                 File outputFile = FileUtils.genEditFile();
                 Uri uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
+<<<<<<< HEAD
 <<<<<<< 50245a18f655a1f761eb560a348c62cf34f7e9a3
                 Intent intentforActivity= new Intent(SingleMediaActivity.this,EditImageActivity.class);
                 intentforActivity.putExtra("imageUri", uri.toString());
