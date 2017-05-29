@@ -296,8 +296,6 @@
         <provider android:authorities="com.facebook.app.FacebookContentProvider1920575401558694"
                   android:name="com.facebook.FacebookContentProvider"
                   android:exported="true" />
-
-
     </application>
 
 
