@@ -4,7 +4,7 @@ import android.media.CamcorderProfile;
 import android.util.Log;
 
 import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
-import vn.mbm.phimp.me.opencamera.CamUtil.MyDebug;
+import vn.mbm.phimp.me.opencamera.Camera.MyDebug;
 
 import java.io.Serializable;
 import java.util.ArrayList;

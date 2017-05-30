@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.accounts.AccountsActivity;
 import vn.mbm.phimp.me.leafpic.activities.LFMainActivity;
-import vn.mbm.phimp.me.opencamera.CamUtil.CameraActivity;
+import vn.mbm.phimp.me.opencamera.Camera.CameraActivity;
 
 public abstract class BaseActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 

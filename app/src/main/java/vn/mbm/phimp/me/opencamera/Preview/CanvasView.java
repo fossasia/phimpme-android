@@ -6,7 +6,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
-import vn.mbm.phimp.me.opencamera.CamUtil.MyDebug;
+import vn.mbm.phimp.me.opencamera.Camera.MyDebug;
 
 /** Overlay for the Preview - this just redirects to Preview.onDraw to do the
  *  work. Only used if using a MyTextureView (if using MySurfaceView, then that
