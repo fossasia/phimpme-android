@@ -47,12 +47,10 @@ We have the following branches
 
   <table>
     <tr>
-     <td><img src="https://cloud.githubusercontent.com/assets/14369357/24083573/876f72ec-0cff-11e7-99b0-32431df34b29.png"></td>
-     <td><img src="https://cloud.githubusercontent.com/assets/14369357/24083579/b15bd550-0cff-11e7-96e8-3b628e25aba5.png"></td>
-     <td><img src="https://cloud.githubusercontent.com/assets/14369357/24083571/7dfef5e8-0cff-11e7-8e6f-5ed041919388.png"></td>
-     <td><img src="https://cloud.githubusercontent.com/assets/22375731/24555932/721cc156-1650-11e7-93f1-2a774b860d1f.png"></td>
-     <td><img src="https://raw.githubusercontent.com/heysadboy/phimpme-android/development/docs/screenshots/camera1.png"></td>
-     <td><img src="https://raw.githubusercontent.com/heysadboy/phimpme-android/development/docs/screenshots/map.png">
+     <td><img src="https://raw.githubusercontent.com/anantprsd5/phimpme-android/ss/docs/screenshots/gallery.png"></td>
+     <td><img src="https://raw.githubusercontent.com/anantprsd5/phimpme-android/ss/docs/screenshots/menu.png"></td>
+     <td><img src="https://raw.githubusercontent.com/anantprsd5/phimpme-android/ss/docs/screenshots/camera.png"></td>
+     <td><img src="https://raw.githubusercontent.com/anantprsd5/phimpme-android/ss/docs/screenshots/editImage.png"></td>
 </td>
     </tr>
   </table>
@@ -67,14 +65,12 @@ Home Screen|Show local captured images|Established
  |Edit, Upload, share option on image click|Working
 Map Activity|Show photos on the map|Working
 Camera|Capture Image, Toggle Camera|Working
- |Apply filters, Flash on/off|Working
-Upload|Select account on which you want to upload|Not working
- |Select images which you want to upload|Crashing
- |Share images with bluetooth|Working
- |Upload button which upload the image|Crashing
-Settings|Add Accounts|Not working
- |Photos settings|Working
- |Local photos : choose folder|Not working
+ |Apply filters, Camera features|Flash on/off, Exposure etc|Working
+Upload|Select account on which you want to upload|Not Implemented
+ |Select images which you want to upload|To upload photos|Not implemented
+ |Share images|With bluetooth|Not Implemented
+Settings|Add Accounts|Not Implemented
+ |Photos settings|Set password, choose folder etc|Working
 ## Development Setup
 
 Before you begin, you should already have the Android Studio SDK downloaded and set up correctly. You can find a guide on how to do this here: [Setting up Android Studio](http://developer.android.com/sdk/installing/index.html?pkg=studio)
