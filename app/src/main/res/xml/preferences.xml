@@ -2,6 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
+
         android:key="preference_category_camera_controls"
         android:title="@string/preference_category_camera_controls">
 

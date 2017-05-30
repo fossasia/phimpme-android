@@ -12,10 +12,13 @@ import vn.mbm.phimp.me.opencamera.UI.MainUI;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import android.Manifest;
 import android.graphics.Bitmap;
@@ -136,7 +139,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	public volatile boolean test_have_angle;
 	public volatile float test_angle;
 	public volatile String test_last_saved_image;
-	public static Bundle bundle;
 
 
     @Override
@@ -365,9 +367,9 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 		if( MyDebug.LOG )
 			Log.d(TAG, "onCreate: total time for Activity startup: " + (System.currentTimeMillis() - debug_time));
-		bundle = getSettingDetail();
-
+		getSettingDetail();
 	}
+
 
 	/* This method sets the preference defaults which are set specific for a particular device.
 	 * This method should be called when Open Camera is run for the very first time after installation,
@@ -1028,7 +1030,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		mainUI.togglePopupSettings();
 	}
 
-	public Bundle getSettingDetail(){
+	public void getSettingDetail(){
 		if( MyDebug.LOG )
 			Log.d(TAG, "openSettings");
 		waitUntilImageQueueEmpty(); // in theory not needed as we could continue running in the background, but best to be safe
@@ -1036,8 +1038,10 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		preview.cancelTimer(); // best to cancel any timer, in case we take a photo while settings window is open, or when changing settings
 		preview.stopVideo(false); // important to stop video, as we'll be changing camera parameters when the settings window closes
 		stopAudioListeners();
+		TinyDB bundle = new TinyDB(this);
 
-		Bundle bundle = new Bundle();
+
+//		Bundle bundle = new Bundle();
 		bundle.putInt("cameraId", this.preview.getCameraId());
 		bundle.putInt("nCameras", preview.getCameraControllerManager().getNumberOfCameras());
 		bundle.putString("camera_api", this.preview.getCameraAPI());
@@ -1056,11 +1060,11 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		bundle.putBoolean("supports_white_balance_temperature", this.preview.supportsWhiteBalanceTemperature());
 		bundle.putBoolean("supports_video_stabilization", this.preview.supportsVideoStabilization());
 		bundle.putBoolean("can_disable_shutter_sound", this.preview.canDisableShutterSound());
-
+/*
 		putBundleExtra(bundle, "color_effects", this.preview.getSupportedColorEffects());
 		putBundleExtra(bundle, "scene_modes", this.preview.getSupportedSceneModes());
 		putBundleExtra(bundle, "white_balances", this.preview.getSupportedWhiteBalances());
-		putBundleExtra(bundle, "isos", this.preview.getSupportedISOs());
+		putBundleExtra(bundle, "isos", this.preview.getSupportedISOs());*/
 		bundle.putString("iso_key", this.preview.getISOKey());
 		if( this.preview.getCameraController() != null ) {
 			bundle.putString("parameters_string", preview.getCameraController().getParametersString());
@@ -1068,32 +1072,33 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 		List<CameraController.Size> preview_sizes = this.preview.getSupportedPreviewSizes();
 		if( preview_sizes != null ) {
-			int [] widths = new int[preview_sizes.size()];
-			int [] heights = new int[preview_sizes.size()];
+			ArrayList<Integer> widths = new ArrayList<>();
+			ArrayList<Integer> heights = new ArrayList<>();
+
 			int i=0;
 			for(CameraController.Size size: preview_sizes) {
-				widths[i] = size.width;
-				heights[i] = size.height;
+				widths.add(i,size.width);
+				heights.add(i,size.height);
 				i++;
 			}
-			bundle.putIntArray("preview_widths", widths);
-			bundle.putIntArray("preview_heights", heights);
+			bundle.putListInt("preview_widths", widths);
+			bundle.putListInt("preview_heights", heights);
 		}
 		bundle.putInt("preview_width", preview.getCurrentPreviewSize().width);
 		bundle.putInt("preview_height", preview.getCurrentPreviewSize().height);
 
 		List<CameraController.Size> sizes = this.preview.getSupportedPictureSizes();
 		if( sizes != null ) {
-			int [] widths = new int[sizes.size()];
-			int [] heights = new int[sizes.size()];
+			ArrayList<Integer> widths = new ArrayList<>();
+			ArrayList<Integer> heights = new ArrayList<>();
 			int i=0;
 			for(CameraController.Size size: sizes) {
-				widths[i] = size.width;
-				heights[i] = size.height;
+				widths.add(i,size.width);
+				heights.add(i,size.height);
 				i++;
 			}
-			bundle.putIntArray("resolution_widths", widths);
-			bundle.putIntArray("resolution_heights", heights);
+			bundle.putListInt("resolution_widths", widths);
+			bundle.putListInt("resolution_heights", heights);
 		}
 		if( preview.getCurrentPictureSize() != null ) {
 			bundle.putInt("resolution_width", preview.getCurrentPictureSize().width);
@@ -1102,16 +1107,16 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 		List<String> video_quality = this.preview.getVideoQualityHander().getSupportedVideoQuality();
 		if( video_quality != null && this.preview.getCameraController() != null ) {
-			String [] video_quality_arr = new String[video_quality.size()];
-			String [] video_quality_string_arr = new String[video_quality.size()];
+			ArrayList<String> video_quality_arr = new ArrayList<String>();
+			ArrayList<String> video_quality_string_arr = new ArrayList<String>();
 			int i=0;
 			for(String value: video_quality) {
-				video_quality_arr[i] = value;
-				video_quality_string_arr[i] = this.preview.getCamcorderProfileDescription(value);
+				video_quality_arr.add(i,value);
+				video_quality_string_arr.add(i,this.preview.getCamcorderProfileDescription(value));
 				i++;
 			}
-			bundle.putStringArray("video_quality", video_quality_arr);
-			bundle.putStringArray("video_quality_string", video_quality_string_arr);
+			bundle.putListString("video_quality", video_quality_arr);
+			bundle.putListString("video_quality_string", video_quality_string_arr);
 		}
 		if( preview.getVideoQualityHander().getCurrentVideoQuality() != null ) {
 			bundle.putString("current_video_quality", preview.getVideoQualityHander().getCurrentVideoQuality());
@@ -1124,28 +1129,26 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 		List<CameraController.Size> video_sizes = this.preview.getVideoQualityHander().getSupportedVideoSizes();
 		if( video_sizes != null ) {
-			int [] widths = new int[video_sizes.size()];
-			int [] heights = new int[video_sizes.size()];
+			ArrayList<Integer> widths = new ArrayList<>();
+			ArrayList<Integer> heights = new ArrayList<>();
 			int i=0;
 			for(CameraController.Size size: video_sizes) {
-				widths[i] = size.width;
-				heights[i] = size.height;
+				widths.add(i,size.width);
+				heights.add(i,size.height);
 				i++;
 			}
-			bundle.putIntArray("video_widths", widths);
-			bundle.putIntArray("video_heights", heights);
+			bundle.putListInt("video_widths", widths);
+			bundle.putListInt("video_heights", heights);
 		}
 
-		putBundleExtra(bundle, "flash_values", this.preview.getSupportedFlashValues());
+	/*	putBundleExtra(bundle, "flash_values", this.preview.getSupportedFlashValues());
 		putBundleExtra(bundle, "focus_values", this.preview.getSupportedFocusValues());
-
-		return bundle;
+*/
 
 	}
 	public void openSettings() {
 		setWindowFlagsForSettings();
 		MyPreferenceFragment fragment = new MyPreferenceFragment();
-		fragment.setArguments(getSettingDetail());
 		getFragmentManager().beginTransaction().add(R.id.prefs_container, fragment, "PREFERENCE_FRAGMENT").addToBackStack(null).commitAllowingStateLoss();
 	}
 
@@ -1628,7 +1631,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 			}
 		}
 	}
-
 	/** Opens the Storage Access Framework dialog to select a folder.
 	 * @param from_preferences Whether called from the Preferences
 	 */

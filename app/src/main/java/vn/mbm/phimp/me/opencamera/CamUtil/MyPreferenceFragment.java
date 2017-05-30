@@ -1,21 +1,13 @@
 package vn.mbm.phimp.me.opencamera.CamUtil;
 
-import android.app.Activity;
-import android.app.ActivityManager;
 import android.app.AlertDialog;
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.Point;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -27,14 +19,13 @@ import android.preference.PreferenceGroup;
 import android.preference.PreferenceManager;
 import android.preference.TwoStatePreference;
 import android.util.Log;
-import android.view.Display;
 import android.widget.Toast;
 
 import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
 import vn.mbm.phimp.me.opencamera.Preview.Preview;
 import vn.mbm.phimp.me.opencamera.UI.FolderChooserDialog;
 
-import java.util.Locale;
+import java.util.ArrayList;
 
 import vn.mbm.phimp.me.R;
 
@@ -48,6 +39,7 @@ import vn.mbm.phimp.me.R;
 public class MyPreferenceFragment extends PreferenceFragment implements OnSharedPreferenceChangeListener {
 	private static final String TAG = "MyPreferenceFragment";
 	ThemeHelper themeHelper;
+	TinyDB bundle;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -57,7 +49,8 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
 		addPreferencesFromResource(R.xml.preferences);
 		themeHelper = new ThemeHelper(getActivity());
 
-		final Bundle bundle = getArguments();
+//		final Bundle bundle = getArguments();
+		bundle = new TinyDB(getActivity());
 		final int cameraId = bundle.getInt("cameraId");
 		if( MyDebug.LOG )
 			Log.d(TAG, "cameraId: " + cameraId);
@@ -96,14 +89,14 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
 		}
 
 
-		final int [] widths = bundle.getIntArray("resolution_widths");
-		final int [] heights = bundle.getIntArray("resolution_heights");
+		final ArrayList<Integer> widths = bundle.getListInt("resolution_widths");
+		final ArrayList<Integer> heights = bundle.getListInt("resolution_heights");
 		if( widths != null && heights != null ) {
-			CharSequence[] entries = new CharSequence[widths.length];
-			CharSequence[] values = new CharSequence[widths.length];
-			for(int i=0;i<widths.length;i++) {
-				entries[i] = widths[i] + " x " + heights[i] + " " + Preview.getAspectRatioMPString(widths[i], heights[i]);
-				values[i] = widths[i] + " " + heights[i];
+			CharSequence[] entries = new CharSequence[widths.size()];
+			CharSequence[] values = new CharSequence[widths.size()];
+			for(int i = 0; i< widths.size(); i++) {
+				entries[i] = widths.get(i) + " x " + heights.get(i) + " " + Preview.getAspectRatioMPString(widths.get(i), heights.get(i));
+				values[i] = widths.get(i) + " " + heights.get(i);
 			}
 			ListPreference lp = (ListPreference)findPreference("preference_resolution");
 			lp.setEntries(entries);
@@ -222,14 +215,14 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
         	pg.removePreference(pref);
 		}
 
-		final String[] video_quality = bundle.getStringArray("video_quality");
-		final String[] video_quality_string = bundle.getStringArray("video_quality_string");
+		final ArrayList<String> video_quality = bundle.getListString("video_quality");
+		final ArrayList<String> video_quality_string = bundle.getListString("video_quality_string");
 		if( video_quality != null && video_quality_string != null ) {
-			CharSequence[] entries = new CharSequence[video_quality.length];
-			CharSequence[] values = new CharSequence[video_quality.length];
-			for(int i=0;i<video_quality.length;i++) {
-				entries[i] = video_quality_string[i];
-				values[i] = video_quality[i];
+			CharSequence[] entries = new CharSequence[video_quality.size()];
+			CharSequence[] values = new CharSequence[video_quality.size()];
+			for(int i = 0; i< video_quality.size(); i++) {
+				entries[i] = video_quality_string.get(i);
+				values[i] = video_quality.get(i);
 			}
 			ListPreference lp = (ListPreference)findPreference("preference_video_quality");
 			lp.setEntries(entries);

@@ -54,7 +54,6 @@ public class MainUI {
 		this.setSeekbarColors();
 
 		this.setIcon(R.id.gallery);
-		this.setIcon(R.id.settings);
 		this.setIcon(R.id.popup);
 		this.setIcon(R.id.exposure_lock);
 		this.setIcon(R.id.exposure);
@@ -197,21 +196,13 @@ public class MainUI {
 			layoutParams.addRule(right_of, 0);
 			view.setLayoutParams(layoutParams);
 			setViewRotation(view, ui_rotation);
-	
-			view = main_activity.findViewById(R.id.settings);
-			layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-			layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
-			layoutParams.addRule(align_parent_bottom, 0);
-			layoutParams.addRule(left_of, R.id.gallery);
-			layoutParams.addRule(right_of, 0);
-			view.setLayoutParams(layoutParams);
-			setViewRotation(view, ui_rotation);
+
 	
 			view = main_activity.findViewById(R.id.popup);
 			layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
 			layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
 			layoutParams.addRule(align_parent_bottom, 0);
-			layoutParams.addRule(left_of, R.id.settings);
+			layoutParams.addRule(left_of, R.id.gallery);
 			layoutParams.addRule(right_of, 0);
 			view.setLayoutParams(layoutParams);
 			setViewRotation(view, ui_rotation);
@@ -557,7 +548,6 @@ public class MainUI {
 			    View audioControlButton = main_activity.findViewById(R.id.audio_control);
 			    View popupButton = main_activity.findViewById(R.id.popup);
 			    View galleryButton = main_activity.findViewById(R.id.gallery);
-			    View settingsButton = main_activity.findViewById(R.id.settings);
 			    View zoomControls = main_activity.findViewById(R.id.zoom);
 			    View zoomSeekBar = main_activity.findViewById(R.id.zoom_seekbar);
 			    if( main_activity.getPreview().getCameraControllerManager().getNumberOfCameras() > 1 )
@@ -571,7 +561,6 @@ public class MainUI {
 			    	audioControlButton.setVisibility(visibility);
 		    	popupButton.setVisibility(visibility);
 			    galleryButton.setVisibility(visibility);
-			    settingsButton.setVisibility(visibility);
 				if( MyDebug.LOG ) {
 					Log.d(TAG, "has_zoom: " + main_activity.getPreview().supportsZoom());
 				}
