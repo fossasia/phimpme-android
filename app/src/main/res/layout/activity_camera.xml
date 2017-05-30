@@ -90,16 +90,6 @@
         android:src="@drawable/gallery" />
 
     <ImageButton
-        android:id="@+id/settings"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:contentDescription="@string/action_settings"
-        android:onClick="clickedSettings"
-        android:padding="10dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/settings" />
-
-    <ImageButton
         android:id="@+id/popup"
         android:layout_width="50dp"
         android:layout_height="50dp"

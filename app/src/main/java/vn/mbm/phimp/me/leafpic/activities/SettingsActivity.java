@@ -113,9 +113,8 @@ public class SettingsActivity extends ThemedActivity {
         findViewById(R.id.ll_camera).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                setToolbarCamera(true);
                 MyPreferenceFragment fragment = new MyPreferenceFragment();
-                fragment.setArguments(CameraActivity.bundle);
                 getFragmentManager().beginTransaction().add(R.id.pref_container, fragment, "PREFERENCE_FRAGMENT").addToBackStack(null).commitAllowingStateLoss();
                 findViewById(R.id.settingAct_scrollView).setVisibility(View.GONE);
             }
@@ -781,6 +780,7 @@ public class SettingsActivity extends ThemedActivity {
         ((IconicsImageView) findViewById(R.id.auto_update_media_Icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.use_media_mediastore_Icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.security_icon)).setColor(color);
+        ((IconicsImageView) findViewById(R.id.camera_icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.sub_scaling_Icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.map_provider_icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.media_viewer_swipe_direction_Icon)).setColor(color);
@@ -824,6 +824,7 @@ public class SettingsActivity extends ThemedActivity {
         ((TextView) findViewById(R.id.security_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.map_provider_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.media_viewer_swipe_direction_sub)).setTextColor(color);
+        ((TextView) findViewById(R.id.camera_item_sub)).setTextColor(color);
     }
 
     private void setLayout(){
@@ -838,11 +839,20 @@ public class SettingsActivity extends ThemedActivity {
             if (fm.getBackStackEntryCount()==0)
                 findViewById(R.id.ll_camera).setVisibility(View.GONE);
                 findViewById(R.id.settingAct_scrollView).setVisibility(View.VISIBLE);
-
+                setToolbarCamera(false);
         }
         else {
             super.onBackPressed();
         }
+    }
+
+    private void setToolbarCamera(Boolean isCamera){
+        getSupportActionBar();
+        if (isCamera)
+            toolbar.setTitle("Camera Settings");
+        else
+            toolbar.setTitle("Settings");
+
     }
 
 }

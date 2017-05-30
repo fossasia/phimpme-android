@@ -12,6 +12,7 @@
         android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
         android:layout_centerInParent="true" />
 
 
@@ -24,6 +25,7 @@
     <ScrollView
         android:id="@+id/settingAct_scrollView"
         android:layout_width="match_parent"
+        android:layout_below="@+id/toolbar"
         android:layout_height="match_parent"
         android:scrollbarSize="4dip">
 
@@ -77,7 +79,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="@dimen/big_spacing"
                             android:layout_marginRight="@dimen/big_spacing"
-                            app:iiv_icon="faw-user-secret" />
+                            app:iiv_icon="faw-camera" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
