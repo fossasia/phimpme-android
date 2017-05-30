@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">ImageEditAndroid</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="choose_image">choose a image for edit</string>
+    <string name="edit_image">edit image</string>
+    <string name="save_path">save path : %s</string>
+    <string name="take_photo">take_photo</string>
+</resources>
