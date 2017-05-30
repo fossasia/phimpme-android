@@ -2,9 +2,12 @@ package com.xinlan.imageeditlibrary.editimage;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +20,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -39,6 +44,11 @@ import com.xinlan.imageeditlibrary.editimage.view.StickerView;
 import com.xinlan.imageeditlibrary.editimage.view.TextStickerView;
 import com.xinlan.imageeditlibrary.editimage.view.imagezoom.ImageViewTouch;
 import com.xinlan.imageeditlibrary.editimage.view.imagezoom.ImageViewTouchBase;
+import com.xinlan.imageeditlibrary.shareImage;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 
 /**
  *  一个幽灵
@@ -74,7 +84,7 @@ public class EditImageActivity extends BaseActivity {
     public static final int MODE_PAINT = 6;//绘制模式
 
     public String filePath;// 需要编辑图片路径
-    public String saveFilePath;// 生成的新图片路径
+    public String saveFilePath;// The new generation of image path
     private int imageWidth, imageHeight;// 展示图片控件 宽 高
     private LoadImageTask mLoadImageTask;
 
@@ -89,7 +99,7 @@ public class EditImageActivity extends BaseActivity {
     private View backBtn;
 
     public ViewFlipper bannerFlipper;
-    private View applyBtn;// 应用按钮
+    private View applyBtn;//Apply button
     private View saveBtn;// 保存按钮
 
     public StickerView mStickerView;// 贴图层View
@@ -97,6 +107,7 @@ public class EditImageActivity extends BaseActivity {
     public RotateImageView mRotatePanel;// 旋转操作控件
     public TextStickerView mTextStickerView;//文本贴图显示View
     public CustomPaintView mPaintView;//涂鸦模式画板
+    public TextView mshareButton;
 
     public CustomViewPager bottomGallery;// 底部gallery
     private BottomGalleryAdapter mBottomGalleryAdapter;// 底部gallery
@@ -172,6 +183,13 @@ public class EditImageActivity extends BaseActivity {
         mRotatePanel = (RotateImageView) findViewById(R.id.rotate_panel);
         mTextStickerView = (TextStickerView) findViewById(R.id.text_sticker_panel);
         mPaintView = (CustomPaintView) findViewById(R.id.custom_paint_view);
+        mshareButton = (TextView) findViewById(R.id.share_btn);
+        mshareButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareImage();
+            }
+        });
 
         // 底部gallery
         bottomGallery = (CustomViewPager) findViewById(R.id.bottom_gallery);
@@ -366,7 +384,7 @@ public class EditImageActivity extends BaseActivity {
     private final class SaveBtnClick implements OnClickListener {
         @Override
         public void onClick(View v) {
-            if (mOpTimes == 0) {//并未修改图片
+            if (mOpTimes == 0) {//Does not modify the image
                 onSaveTaskDone();
             } else {
                 doSaveImage();
@@ -385,7 +403,6 @@ public class EditImageActivity extends BaseActivity {
         mSaveImageTask = new SaveImageTask();
         mSaveImageTask.execute(mainBitmap);
     }
-
     /**
      * 切换底图Bitmap
      *
@@ -393,7 +410,7 @@ public class EditImageActivity extends BaseActivity {
      */
     public void changeMainBitmap(Bitmap newBit) {
         if (mainBitmap != null) {
-            if (!mainBitmap.isRecycled()) {// 回收
+            if (!mainBitmap.isRecycled()) {//Recover
                 mainBitmap.recycle();
             }
         }
@@ -487,5 +504,15 @@ public class EditImageActivity extends BaseActivity {
             }
         }
     }//end inner class
+
+    public void shareImage(){
+
+        Intent shareIntent = new Intent(EditImageActivity.this,shareImage.class);
+        shareIntent.putExtra(FILE_PATH, filePath);
+        shareIntent.putExtra(EXTRA_OUTPUT, saveFilePath);
+        shareIntent.putExtra(IMAGE_IS_EDIT, mOpTimes > 0);
+        startActivity(shareIntent);
+
+    }
 
 }// end class

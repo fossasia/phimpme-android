@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="vn.mbm.phimp.me.ShareImage">
+    tools:context="com.xinlan.imageeditlibrary.shareImage">
 
     <ImageView
         android:layout_width="200dp"
@@ -13,14 +13,13 @@
         android:layout_marginTop="40dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/ps"
         android:id="@+id/imageView"/>
 
     <ImageView
         android:layout_width="65dp"
         android:layout_height="65dp"
         android:id="@+id/facebookButton"
-        android:src="@drawable/facebookButton"
+        android:src="@drawable/facebookbutton"
         android:layout_marginTop="47dp"
         android:layout_below="@+id/imageView"
         android:layout_toLeftOf="@+id/imageView"
@@ -28,14 +27,14 @@
     <ImageView
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:src="@drawable/twitterButton"
+        android:src="@drawable/twitterbutton"
         android:id="@+id/imageView2"
         android:layout_alignTop="@+id/facebookButton"
         android:layout_centerHorizontal="true"/>
     <ImageView
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:src="@drawable/instagramButton"
+        android:src="@drawable/instagrambutton"
         android:layout_alignTop="@+id/imageView2"
         android:layout_toRightOf="@+id/imageView"
         android:layout_toEndOf="@+id/imageView"
@@ -43,7 +42,7 @@
     <ImageView
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:src="@drawable/wordpressButton"
+        android:src="@drawable/wordpressbutton"
         android:layout_marginTop="18dp"
         android:id="@+id/imageView3"
         android:layout_below="@+id/facebookButton"
@@ -52,7 +51,7 @@
     <ImageView
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:src="@drawable/drupalButton"
+        android:src="@drawable/drupalbutton"
         android:layout_alignTop="@+id/imageView3"
         android:layout_alignLeft="@+id/imageView2"
         android:layout_alignStart="@+id/imageView2"
@@ -61,7 +60,7 @@
     <ImageView
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:src="@drawable/joomlaButton"
+        android:src="@drawable/joomlabutton"
         android:layout_alignTop="@+id/imageView4"
         android:layout_alignLeft="@+id/imageView5"
         android:layout_alignStart="@+id/imageView5"/>
@@ -69,9 +68,11 @@
     <ImageView
         android:layout_width="65dp"
         android:layout_height="65dp"
-        android:src="@drawable/shareButton"
+        android:src="@drawable/sharebutton"
+        android:id="@+id/shareButton"
         android:layout_alignParentBottom="true"
         android:layout_alignLeft="@+id/imageView4"
         android:layout_alignStart="@+id/imageView4"/>
 
 </RelativeLayout>
+
