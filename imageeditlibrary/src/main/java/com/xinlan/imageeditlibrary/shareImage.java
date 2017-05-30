@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -14,15 +15,15 @@ import android.widget.ImageView;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import static com.xinlan.imageeditlibrary.editimage.EditImageActivity.EXTRA_OUTPUT;
-import static com.xinlan.imageeditlibrary.editimage.EditImageActivity.FILE_PATH;
-
 public class shareImage extends AppCompatActivity {
 
     ImageView mImageView;
     public String filePath;
     public String saveFilePath;
     ImageView mshareButton;
+    public static final String EXTRA_OUTPUT = "extra_output";
+    public static final String SAVE_FILE_PATH = "save_file_path";
+    public static final String FILE_PATH = "file_path";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,7 @@ public class shareImage extends AppCompatActivity {
         mImageView = (ImageView) findViewById(R.id.imageView);
         filePath = getIntent().getStringExtra(FILE_PATH);
         saveFilePath = getIntent().getStringExtra(EXTRA_OUTPUT);
-        Bitmap myBitmap = BitmapFactory.decodeFile(filePath);
+        Bitmap myBitmap = BitmapFactory.decodeFile(saveFilePath);
         mImageView.setImageBitmap(myBitmap);
     }
 

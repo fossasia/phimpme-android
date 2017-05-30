@@ -386,8 +386,10 @@ public class EditImageActivity extends BaseActivity {
         public void onClick(View v) {
             if (mOpTimes == 0) {//Does not modify the image
                 onSaveTaskDone();
+
             } else {
                 doSaveImage();
+                shareImage();
             }
         }
     }// end inner class
@@ -454,6 +456,7 @@ public class EditImageActivity extends BaseActivity {
 
         FileUtil.ablumUpdate(this, saveFilePath);
         setResult(RESULT_OK, returnIntent);
+        shareImage();
         finish();
     }
 
@@ -511,6 +514,9 @@ public class EditImageActivity extends BaseActivity {
         shareIntent.putExtra(FILE_PATH, filePath);
         shareIntent.putExtra(EXTRA_OUTPUT, saveFilePath);
         shareIntent.putExtra(IMAGE_IS_EDIT, mOpTimes > 0);
+
+        FileUtil.ablumUpdate(this, saveFilePath);
+        setResult(RESULT_OK, shareIntent);
         startActivity(shareIntent);
 
     }
