@@ -62,8 +62,6 @@ public class PhotoProcessing {
         return filteredBitmap;
     }
 
-
-
     public static native int nativeInitBitmap(int width, int height);
 
     public static native void nativeGetBitmapRow(int y, int[] pixels);

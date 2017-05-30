@@ -1,0 +1,69 @@
+{
+  "buildFiles": [
+    "/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/jni/Android.mk",
+    "/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/jni/Application.mk"
+  ],
+  "cleanCommands": [
+    "/home/pa1pal/Android/Sdk/ndk-bundle/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/jni/Android.mk NDK_APPLICATION_MK\u003d/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/jni/Application.mk APP_ABI\u003darmeabi NDK_ALL_ABIS\u003darmeabi NDK_DEBUG\u003d0 APP_PLATFORM\u003dandroid-15 NDK_OUT\u003d/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/build/intermediates/ndkBuild/release/obj NDK_LIBS_OUT\u003d/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/build/intermediates/ndkBuild/release/lib clean"
+  ],
+  "libraries": {
+    "photoprocessing-release-armeabi": {
+      "buildCommand": "/home/pa1pal/Android/Sdk/ndk-bundle/ndk-build NDK_PROJECT_PATH\u003dnull APP_BUILD_SCRIPT\u003d/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/jni/Android.mk NDK_APPLICATION_MK\u003d/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/jni/Application.mk APP_ABI\u003darmeabi NDK_ALL_ABIS\u003darmeabi NDK_DEBUG\u003d0 APP_PLATFORM\u003dandroid-15 NDK_OUT\u003d/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/build/intermediates/ndkBuild/release/obj NDK_LIBS_OUT\u003d/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/build/intermediates/ndkBuild/release/lib /home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/build/intermediates/ndkBuild/release/obj/local/armeabi/libphotoprocessing.so",
+      "toolchain": "toolchain-armeabi",
+      "abi": "armeabi",
+      "artifactName": "photoprocessing",
+      "files": [
+        {
+          "src": "/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/jni/bicubic_resize.c",
+          "flags": "\"-gcc-toolchain\" \"/home/pa1pal/Android/Sdk/ndk-bundle/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64\" \"-fpic\" \"-ffunction-sections\" \"-funwind-tables\" \"-fstack-protector-strong\" \"-Wno-invalid-command-line-argument\" \"-Wno-unused-command-line-argument\" \"-no-canonical-prefixes\" \"-fno-integrated-as\" \"-g\" \"-target\" \"armv5te-none-linux-androideabi15\" \"-march\u003darmv5te\" \"-mtune\u003dxscale\" \"-msoft-float\" \"-mthumb\" \"-Os\" \"-DNDEBUG\" \"-I/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/jni\" \"-DANDROID\" \"-DANDROID_NDK\" \"-DDISABLE_IMPORTGL\" \"-D__ANDROID_API__\u003d15\" \"-Wa,--noexecstack\" \"-Wformat\" \"-Werror\u003dformat-security\" \"--sysroot\" \"/home/pa1pal/Android/Sdk/ndk-bundle/sysroot\" \"-isystem\" \"/home/pa1pal/Android/Sdk/ndk-bundle/sysroot/usr/include/arm-linux-androideabi\""
+        },
+        {
+          "src": "/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/jni/bitmap.c",
+          "flags": "\"-gcc-toolchain\" \"/home/pa1pal/Android/Sdk/ndk-bundle/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64\" \"-fpic\" \"-ffunction-sections\" \"-funwind-tables\" \"-fstack-protector-strong\" \"-Wno-invalid-command-line-argument\" \"-Wno-unused-command-line-argument\" \"-no-canonical-prefixes\" \"-fno-integrated-as\" \"-g\" \"-target\" \"armv5te-none-linux-androideabi15\" \"-march\u003darmv5te\" \"-mtune\u003dxscale\" \"-msoft-float\" \"-mthumb\" \"-Os\" \"-DNDEBUG\" \"-I/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/jni\" \"-DANDROID\" \"-DANDROID_NDK\" \"-DDISABLE_IMPORTGL\" \"-D__ANDROID_API__\u003d15\" \"-Wa,--noexecstack\" \"-Wformat\" \"-Werror\u003dformat-security\" \"--sysroot\" \"/home/pa1pal/Android/Sdk/ndk-bundle/sysroot\" \"-isystem\" \"/home/pa1pal/Android/Sdk/ndk-bundle/sysroot/usr/include/arm-linux-androideabi\""
+        },
+        {
+          "src": "/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/jni/blur.c",
+          "flags": "\"-gcc-toolchain\" \"/home/pa1pal/Android/Sdk/ndk-bundle/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64\" \"-fpic\" \"-ffunction-sections\" \"-funwind-tables\" \"-fstack-protector-strong\" \"-Wno-invalid-command-line-argument\" \"-Wno-unused-command-line-argument\" \"-no-canonical-prefixes\" \"-fno-integrated-as\" \"-g\" \"-target\" \"armv5te-none-linux-androideabi15\" \"-march\u003darmv5te\" \"-mtune\u003dxscale\" \"-msoft-float\" \"-mthumb\" \"-Os\" \"-DNDEBUG\" \"-I/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/jni\" \"-DANDROID\" \"-DANDROID_NDK\" \"-DDISABLE_IMPORTGL\" \"-D__ANDROID_API__\u003d15\" \"-Wa,--noexecstack\" \"-Wformat\" \"-Werror\u003dformat-security\" \"--sysroot\" \"/home/pa1pal/Android/Sdk/ndk-bundle/sysroot\" \"-isystem\" \"/home/pa1pal/Android/Sdk/ndk-bundle/sysroot/usr/include/arm-linux-androideabi\""
+        },
+        {
+          "src": "/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/jni/colour_space.c",
+          "flags": "\"-gcc-toolchain\" \"/home/pa1pal/Android/Sdk/ndk-bundle/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64\" \"-fpic\" \"-ffunction-sections\" \"-funwind-tables\" \"-fstack-protector-strong\" \"-Wno-invalid-command-line-argument\" \"-Wno-unused-command-line-argument\" \"-no-canonical-prefixes\" \"-fno-integrated-as\" \"-g\" \"-target\" \"armv5te-none-linux-androideabi15\" \"-march\u003darmv5te\" \"-mtune\u003dxscale\" \"-msoft-float\" \"-mthumb\" \"-Os\" \"-DNDEBUG\" \"-I/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/jni\" \"-DANDROID\" \"-DANDROID_NDK\" \"-DDISABLE_IMPORTGL\" \"-D__ANDROID_API__\u003d15\" \"-Wa,--noexecstack\" \"-Wformat\" \"-Werror\u003dformat-security\" \"--sysroot\" \"/home/pa1pal/Android/Sdk/ndk-bundle/sysroot\" \"-isystem\" \"/home/pa1pal/Android/Sdk/ndk-bundle/sysroot/usr/include/arm-linux-androideabi\""
+        },
+        {
+          "src": "/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/jni/filter.c",
+          "flags": "\"-gcc-toolchain\" \"/home/pa1pal/Android/Sdk/ndk-bundle/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64\" \"-fpic\" \"-ffunction-sections\" \"-funwind-tables\" \"-fstack-protector-strong\" \"-Wno-invalid-command-line-argument\" \"-Wno-unused-command-line-argument\" \"-no-canonical-prefixes\" \"-fno-integrated-as\" \"-g\" \"-target\" \"armv5te-none-linux-androideabi15\" \"-march\u003darmv5te\" \"-mtune\u003dxscale\" \"-msoft-float\" \"-mthumb\" \"-Os\" \"-DNDEBUG\" \"-I/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/jni\" \"-DANDROID\" \"-DANDROID_NDK\" \"-DDISABLE_IMPORTGL\" \"-D__ANDROID_API__\u003d15\" \"-Wa,--noexecstack\" \"-Wformat\" \"-Werror\u003dformat-security\" \"--sysroot\" \"/home/pa1pal/Android/Sdk/ndk-bundle/sysroot\" \"-isystem\" \"/home/pa1pal/Android/Sdk/ndk-bundle/sysroot/usr/include/arm-linux-androideabi\""
+        },
+        {
+          "src": "/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/jni/matrix.c",
+          "flags": "\"-gcc-toolchain\" \"/home/pa1pal/Android/Sdk/ndk-bundle/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64\" \"-fpic\" \"-ffunction-sections\" \"-funwind-tables\" \"-fstack-protector-strong\" \"-Wno-invalid-command-line-argument\" \"-Wno-unused-command-line-argument\" \"-no-canonical-prefixes\" \"-fno-integrated-as\" \"-g\" \"-target\" \"armv5te-none-linux-androideabi15\" \"-march\u003darmv5te\" \"-mtune\u003dxscale\" \"-msoft-float\" \"-mthumb\" \"-Os\" \"-DNDEBUG\" \"-I/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/jni\" \"-DANDROID\" \"-DANDROID_NDK\" \"-DDISABLE_IMPORTGL\" \"-D__ANDROID_API__\u003d15\" \"-Wa,--noexecstack\" \"-Wformat\" \"-Werror\u003dformat-security\" \"--sysroot\" \"/home/pa1pal/Android/Sdk/ndk-bundle/sysroot\" \"-isystem\" \"/home/pa1pal/Android/Sdk/ndk-bundle/sysroot/usr/include/arm-linux-androideabi\""
+        },
+        {
+          "src": "/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/jni/mem_utils.c",
+          "flags": "\"-gcc-toolchain\" \"/home/pa1pal/Android/Sdk/ndk-bundle/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64\" \"-fpic\" \"-ffunction-sections\" \"-funwind-tables\" \"-fstack-protector-strong\" \"-Wno-invalid-command-line-argument\" \"-Wno-unused-command-line-argument\" \"-no-canonical-prefixes\" \"-fno-integrated-as\" \"-g\" \"-target\" \"armv5te-none-linux-androideabi15\" \"-march\u003darmv5te\" \"-mtune\u003dxscale\" \"-msoft-float\" \"-mthumb\" \"-Os\" \"-DNDEBUG\" \"-I/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/jni\" \"-DANDROID\" \"-DANDROID_NDK\" \"-DDISABLE_IMPORTGL\" \"-D__ANDROID_API__\u003d15\" \"-Wa,--noexecstack\" \"-Wformat\" \"-Werror\u003dformat-security\" \"--sysroot\" \"/home/pa1pal/Android/Sdk/ndk-bundle/sysroot\" \"-isystem\" \"/home/pa1pal/Android/Sdk/ndk-bundle/sysroot/usr/include/arm-linux-androideabi\""
+        },
+        {
+          "src": "/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/jni/nanojpeg.c",
+          "flags": "\"-gcc-toolchain\" \"/home/pa1pal/Android/Sdk/ndk-bundle/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64\" \"-fpic\" \"-ffunction-sections\" \"-funwind-tables\" \"-fstack-protector-strong\" \"-Wno-invalid-command-line-argument\" \"-Wno-unused-command-line-argument\" \"-no-canonical-prefixes\" \"-fno-integrated-as\" \"-g\" \"-target\" \"armv5te-none-linux-androideabi15\" \"-march\u003darmv5te\" \"-mtune\u003dxscale\" \"-msoft-float\" \"-mthumb\" \"-Os\" \"-DNDEBUG\" \"-I/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/jni\" \"-DANDROID\" \"-DANDROID_NDK\" \"-DDISABLE_IMPORTGL\" \"-D__ANDROID_API__\u003d15\" \"-Wa,--noexecstack\" \"-Wformat\" \"-Werror\u003dformat-security\" \"--sysroot\" \"/home/pa1pal/Android/Sdk/ndk-bundle/sysroot\" \"-isystem\" \"/home/pa1pal/Android/Sdk/ndk-bundle/sysroot/usr/include/arm-linux-androideabi\""
+        },
+        {
+          "src": "/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/jni/photo_processing.c",
+          "flags": "\"-gcc-toolchain\" \"/home/pa1pal/Android/Sdk/ndk-bundle/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64\" \"-fpic\" \"-ffunction-sections\" \"-funwind-tables\" \"-fstack-protector-strong\" \"-Wno-invalid-command-line-argument\" \"-Wno-unused-command-line-argument\" \"-no-canonical-prefixes\" \"-fno-integrated-as\" \"-g\" \"-target\" \"armv5te-none-linux-androideabi15\" \"-march\u003darmv5te\" \"-mtune\u003dxscale\" \"-msoft-float\" \"-mthumb\" \"-Os\" \"-DNDEBUG\" \"-I/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/jni\" \"-DANDROID\" \"-DANDROID_NDK\" \"-DDISABLE_IMPORTGL\" \"-D__ANDROID_API__\u003d15\" \"-Wa,--noexecstack\" \"-Wformat\" \"-Werror\u003dformat-security\" \"--sysroot\" \"/home/pa1pal/Android/Sdk/ndk-bundle/sysroot\" \"-isystem\" \"/home/pa1pal/Android/Sdk/ndk-bundle/sysroot/usr/include/arm-linux-androideabi\""
+        },
+        {
+          "src": "/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/jni/transform.c",
+          "flags": "\"-gcc-toolchain\" \"/home/pa1pal/Android/Sdk/ndk-bundle/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64\" \"-fpic\" \"-ffunction-sections\" \"-funwind-tables\" \"-fstack-protector-strong\" \"-Wno-invalid-command-line-argument\" \"-Wno-unused-command-line-argument\" \"-no-canonical-prefixes\" \"-fno-integrated-as\" \"-g\" \"-target\" \"armv5te-none-linux-androideabi15\" \"-march\u003darmv5te\" \"-mtune\u003dxscale\" \"-msoft-float\" \"-mthumb\" \"-Os\" \"-DNDEBUG\" \"-I/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/jni\" \"-DANDROID\" \"-DANDROID_NDK\" \"-DDISABLE_IMPORTGL\" \"-D__ANDROID_API__\u003d15\" \"-Wa,--noexecstack\" \"-Wformat\" \"-Werror\u003dformat-security\" \"--sysroot\" \"/home/pa1pal/Android/Sdk/ndk-bundle/sysroot\" \"-isystem\" \"/home/pa1pal/Android/Sdk/ndk-bundle/sysroot/usr/include/arm-linux-androideabi\""
+        }
+      ],
+      "output": "/home/pa1pal/Documents/GSoC/phimpme/pawan/phimpme-android/app/build/intermediates/ndkBuild/release/obj/local/armeabi/libphotoprocessing.so"
+    }
+  },
+  "toolchains": {
+    "toolchain-armeabi": {
+      "cCompilerExecutable": "/home/pa1pal/Android/Sdk/ndk-bundle/toolchains/llvm/prebuilt/linux-x86_64/bin/clang"
+    }
+  },
+  "cFileExtensions": [
+    "c"
+  ],
+  "cppFileExtensions": []
+}

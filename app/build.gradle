@@ -48,7 +48,11 @@ android {
     dexOptions {
         jumboMode = true
     }
-
+    externalNativeBuild {
+        ndkBuild {
+            path 'jni/Android.mk'
+        }
+    }
 }
 
 repositories {
