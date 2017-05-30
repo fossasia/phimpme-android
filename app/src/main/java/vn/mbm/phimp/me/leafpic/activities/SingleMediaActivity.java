@@ -602,12 +602,12 @@ public class SingleMediaActivity extends SharedMediaActivity {
                 renameDialog.show();
                 break;
 
-            case R.id.action_edit_with:
+            /*case R.id.action_edit_with:
                 Intent editIntent = new Intent(Intent.ACTION_EDIT);
                 editIntent.setDataAndType(getAlbum().getCurrentMedia().getUri(), getAlbum().getCurrentMedia().getMimeType());
                 editIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 startActivity(Intent.createChooser(editIntent, "Edit with"));
-                break;
+                break;*/
 
             case R.id.action_details:
                 AlertDialog.Builder detailsDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());

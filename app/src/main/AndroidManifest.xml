@@ -305,7 +305,7 @@
             android:authorities="com.facebook.app.FacebookContentProvider1920575401558694"
             android:exported="true"/>
 
-        <activity android:name=".ShareImage">
+        <activity android:name="com.xinlan.imageeditlibrary.ShareImage">
         </activity>
     </application>
 

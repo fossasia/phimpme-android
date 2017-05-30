@@ -13,7 +13,6 @@
     <string name="edit">edit</string>
 
 
-
     <string name="materialcolorpicker__app_name">Android Material Color Picker Dialog</string>
     <string name="materialcolorpicker__descLib">Material Color Picker Dialog</string>
     <string name="materialcolorpicker__errHex">Hex Code Format incorrect</string>
@@ -45,4 +44,5 @@
     <string name="exit_without_save">The edited image is not saved. Do you want to exit? </string>
     <string name="confirm">confirm</string>
     <string name="cancel">cancel</string>
+    <string name="send_image">Share Image</string>
 </resources>
