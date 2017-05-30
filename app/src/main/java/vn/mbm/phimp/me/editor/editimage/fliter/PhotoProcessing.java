@@ -11,6 +11,10 @@ import android.graphics.Bitmap.Config;
 public class PhotoProcessing {
     private static final String TAG = "PhotoProcessing";
 
+    // /////////////////////////////////////////////
+    static {
+        System.loadLibrary("photoprocessing");
+    }
 
     public static Bitmap filterPhoto(Bitmap bitmap, int position) {
         if (bitmap != null) {
@@ -58,10 +62,7 @@ public class PhotoProcessing {
         return filteredBitmap;
     }
 
-    // /////////////////////////////////////////////
-    static {
-        System.loadLibrary("photoprocessing");
-    }
+
 
     public static native int nativeInitBitmap(int width, int height);
 
