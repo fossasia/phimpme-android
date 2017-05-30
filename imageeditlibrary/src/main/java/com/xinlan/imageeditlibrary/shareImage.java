@@ -62,7 +62,7 @@ public class shareImage extends AppCompatActivity {
 
     private void shareButton(){
 
-        Uri uri = Uri.fromFile(new File(filePath));
+        Uri uri = Uri.fromFile(new File(saveFilePath));
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
