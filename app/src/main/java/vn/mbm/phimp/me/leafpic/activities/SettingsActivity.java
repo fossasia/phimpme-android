@@ -1,6 +1,5 @@
 package vn.mbm.phimp.me.leafpic.activities;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -37,8 +36,7 @@ import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
 
 import uz.shift.colorpicker.LineColorPicker;
 import uz.shift.colorpicker.OnColorChangedListener;
-import vn.mbm.phimp.me.opencamera.CamUtil.CameraActivity;
-import vn.mbm.phimp.me.opencamera.CamUtil.MyPreferenceFragment;
+import vn.mbm.phimp.me.opencamera.Camera.MyPreferenceFragment;
 
 import static vn.mbm.phimp.me.leafpic.util.ThemeHelper.AMOLED_THEME;
 import static vn.mbm.phimp.me.leafpic.util.ThemeHelper.DARK_THEME;

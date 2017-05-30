@@ -1,4 +1,4 @@
-package vn.mbm.phimp.me.opencamera.CamUtil;/*
+package vn.mbm.phimp.me.opencamera.Camera;/*
  * Copyright 2014 KC Ochibili
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

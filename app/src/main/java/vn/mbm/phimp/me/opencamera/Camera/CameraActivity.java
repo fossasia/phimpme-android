@@ -1,4 +1,4 @@
-package vn.mbm.phimp.me.opencamera.CamUtil;
+package vn.mbm.phimp.me.opencamera.Camera;
 
 import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
 import vn.mbm.phimp.me.base.BaseActivity;
@@ -12,13 +12,10 @@ import vn.mbm.phimp.me.opencamera.UI.MainUI;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import android.Manifest;
 import android.graphics.Bitmap;

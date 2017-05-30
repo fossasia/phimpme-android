@@ -9,7 +9,7 @@ import android.media.MediaRecorder;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
-import vn.mbm.phimp.me.opencamera.CamUtil.MyDebug;
+import vn.mbm.phimp.me.opencamera.Camera.MyDebug;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package vn.mbm.phimp.me.opencamera.CamUtil;
+package vn.mbm.phimp.me.opencamera.Camera;
 
 import android.media.AudioFormat;
 import android.media.AudioRecord;

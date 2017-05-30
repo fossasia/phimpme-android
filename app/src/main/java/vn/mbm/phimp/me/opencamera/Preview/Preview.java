@@ -1,9 +1,9 @@
 package vn.mbm.phimp.me.opencamera.Preview;
 
 import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.opencamera.CamUtil.MyDebug;
-import vn.mbm.phimp.me.opencamera.CamUtil.TakePhoto;
-import vn.mbm.phimp.me.opencamera.CamUtil.ToastBoxer;
+import vn.mbm.phimp.me.opencamera.Camera.MyDebug;
+import vn.mbm.phimp.me.opencamera.Camera.TakePhoto;
+import vn.mbm.phimp.me.opencamera.Camera.ToastBoxer;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraController1;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraController2;

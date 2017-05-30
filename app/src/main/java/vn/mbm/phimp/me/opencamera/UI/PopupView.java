@@ -29,11 +29,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import vn.mbm.phimp.me.opencamera.CamUtil.CameraActivity;
+import vn.mbm.phimp.me.opencamera.Camera.CameraActivity;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
-import vn.mbm.phimp.me.opencamera.CamUtil.MyApplicationInterface;
-import vn.mbm.phimp.me.opencamera.CamUtil.MyDebug;
-import vn.mbm.phimp.me.opencamera.CamUtil.PreferenceKeys;
+import vn.mbm.phimp.me.opencamera.Camera.MyApplicationInterface;
+import vn.mbm.phimp.me.opencamera.Camera.MyDebug;
+import vn.mbm.phimp.me.opencamera.Camera.PreferenceKeys;
 import vn.mbm.phimp.me.opencamera.Preview.Preview;
 import vn.mbm.phimp.me.R;
 

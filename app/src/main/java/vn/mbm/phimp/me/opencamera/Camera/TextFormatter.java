@@ -1,4 +1,4 @@
-package vn.mbm.phimp.me.opencamera.CamUtil;
+package vn.mbm.phimp.me.opencamera.Camera;
 
 import android.content.Context;
 import android.location.Location;
