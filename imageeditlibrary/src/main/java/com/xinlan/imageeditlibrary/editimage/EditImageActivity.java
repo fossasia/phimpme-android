@@ -389,7 +389,7 @@ public class EditImageActivity extends BaseActivity {
 
             } else {
                 doSaveImage();
-                shareImage();
+                //shareImage();
             }
         }
     }// end inner class
@@ -456,8 +456,8 @@ public class EditImageActivity extends BaseActivity {
 
         FileUtil.ablumUpdate(this, saveFilePath);
         setResult(RESULT_OK, returnIntent);
-        shareImage();
-        finish();
+        //shareImage();
+        //finish();
     }
 
     /**
