@@ -20,6 +20,7 @@
     <dimen name="small_spacing">8dp</dimen>
     <dimen name="sub_small_spacing">5dp</dimen>
 
+
     <!---->
     <dimen name="setting_margin_end">44dp</dimen>
 
@@ -37,4 +38,8 @@
     <dimen name="card_elevation">5dp</dimen>
     <dimen name="card_spacing">10dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+    <!--Button Float-->
+    <dimen name="btn_fab_size">56dp</dimen>
+    <dimen name="btn_fab_margins">16dp</dimen>
+    <dimen name="default_elevation">8dp</dimen>
 </resources>

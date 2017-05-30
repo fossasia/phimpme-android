@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,4 +7,71 @@
     android:layout_height="match_parent"
     tools:context="vn.mbm.phimp.me.ShareImage">
 
-</android.support.constraint.ConstraintLayout>
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="40dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/ps"
+        android:id="@+id/imageView"/>
+
+    <ImageView
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:id="@+id/facebookButton"
+        android:src="@drawable/facebookButton"
+        android:layout_marginTop="47dp"
+        android:layout_below="@+id/imageView"
+        android:layout_toLeftOf="@+id/imageView"
+        android:layout_toStartOf="@+id/imageView"/>
+    <ImageView
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:src="@drawable/twitterButton"
+        android:id="@+id/imageView2"
+        android:layout_alignTop="@+id/facebookButton"
+        android:layout_centerHorizontal="true"/>
+    <ImageView
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:src="@drawable/instagramButton"
+        android:layout_alignTop="@+id/imageView2"
+        android:layout_toRightOf="@+id/imageView"
+        android:layout_toEndOf="@+id/imageView"
+        android:id="@+id/imageView5"/>
+    <ImageView
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:src="@drawable/wordpressButton"
+        android:layout_marginTop="18dp"
+        android:id="@+id/imageView3"
+        android:layout_below="@+id/facebookButton"
+        android:layout_alignLeft="@+id/facebookButton"
+        android:layout_alignStart="@+id/facebookButton"/>
+    <ImageView
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:src="@drawable/drupalButton"
+        android:layout_alignTop="@+id/imageView3"
+        android:layout_alignLeft="@+id/imageView2"
+        android:layout_alignStart="@+id/imageView2"
+        android:id="@+id/imageView4"/>
+
+    <ImageView
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:src="@drawable/joomlaButton"
+        android:layout_alignTop="@+id/imageView4"
+        android:layout_alignLeft="@+id/imageView5"
+        android:layout_alignStart="@+id/imageView5"/>
+
+    <ImageView
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:src="@drawable/shareButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/imageView4"
+        android:layout_alignStart="@+id/imageView4"/>
+
+</RelativeLayout>
