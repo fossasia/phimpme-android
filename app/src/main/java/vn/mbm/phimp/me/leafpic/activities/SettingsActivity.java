@@ -1,6 +1,8 @@
 package vn.mbm.phimp.me.leafpic.activities;
 
+import android.app.Activity;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -36,7 +39,9 @@ import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
 
 import uz.shift.colorpicker.LineColorPicker;
 import uz.shift.colorpicker.OnColorChangedListener;
+import vn.mbm.phimp.me.opencamera.Camera.CameraActivity;
 import vn.mbm.phimp.me.opencamera.Camera.MyPreferenceFragment;
+import vn.mbm.phimp.me.opencamera.Camera.TinyDB;
 
 import static vn.mbm.phimp.me.leafpic.util.ThemeHelper.AMOLED_THEME;
 import static vn.mbm.phimp.me.leafpic.util.ThemeHelper.DARK_THEME;
@@ -111,10 +116,7 @@ public class SettingsActivity extends ThemedActivity {
         findViewById(R.id.ll_camera).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setToolbarCamera(true);
-                MyPreferenceFragment fragment = new MyPreferenceFragment();
-                getFragmentManager().beginTransaction().add(R.id.pref_container, fragment, "PREFERENCE_FRAGMENT").addToBackStack(null).commitAllowingStateLoss();
-                findViewById(R.id.settingAct_scrollView).setVisibility(View.GONE);
+                openCameraSetting(SettingsActivity.this);
             }
         });
 
@@ -851,6 +853,42 @@ public class SettingsActivity extends ThemedActivity {
         else
             toolbar.setTitle("Settings");
 
+    }
+
+    private void openDialog(final Context context){
+        AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
+        passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+
+        passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //This should br empty it will be overwrite later
+                //to avoid dismiss of the dialog on wrong password
+            }
+        });
+        final AlertDialog passwordDialog = passwordDialogBuilder.create();
+        passwordDialog.setTitle(R.string.camera_setting_title);
+        passwordDialog.setMessage("Open camera to support all options.");
+        passwordDialog.show();
+
+        passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(context, CameraActivity.class));
+            }
+        });
+
+    }
+    private void openCameraSetting(final Context context){
+        TinyDB tinyDB = new TinyDB(context);
+        if (tinyDB.getListInt("resolution_widths").size()!=0){
+            setToolbarCamera(true);
+            MyPreferenceFragment fragment = new MyPreferenceFragment();
+            getFragmentManager().beginTransaction().add(R.id.pref_container, fragment, "PREFERENCE_FRAGMENT").addToBackStack(null).commitAllowingStateLoss();
+            findViewById(R.id.settingAct_scrollView).setVisibility(View.GONE);
+        }else {
+           openDialog(context);
+        }
     }
 
 }

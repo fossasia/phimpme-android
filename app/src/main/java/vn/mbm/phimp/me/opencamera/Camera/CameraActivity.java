@@ -20,6 +20,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import android.Manifest;
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -326,7 +327,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		if( MyDebug.LOG )
 			Log.d(TAG, "has_done_first_time: " + has_done_first_time);
 		if( !has_done_first_time ) {
-			setDeviceDefaults();
+			setDeviceDefaults(this);
 		}
 		if( !has_done_first_time ) {
 			setFirstTimeFlag();
@@ -334,7 +335,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 		setModeFromIntents(savedInstanceState);
 
-		// load icons
+		// load icon+s
 		preloadIcons(R.array.flash_icons);
 		preloadIcons(R.array.focus_mode_icons);
 		if( MyDebug.LOG )
@@ -366,7 +367,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 		if( MyDebug.LOG )
 			Log.d(TAG, "onCreate: total time for Activity startup: " + (System.currentTimeMillis() - debug_time));
-		getSettingDetail();
+//		getSettingDetail();
 	}
 
 
@@ -374,10 +375,10 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	 * This method should be called when Open Camera is run for the very first time after installation,
 	 * or when the user has requested to "Reset settings".
 	 */
-	void setDeviceDefaults() {
+	void setDeviceDefaults(Activity activity) {
 		if( MyDebug.LOG )
 			Log.d(TAG, "setDeviceDefaults");
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
 		boolean is_samsung = Build.MANUFACTURER.toLowerCase(Locale.US).contains("samsung");
 		boolean is_oneplus = Build.MANUFACTURER.toLowerCase(Locale.US).contains("oneplus");
 		//boolean is_nexus = Build.MODEL.toLowerCase(Locale.US).contains("nexus");
@@ -776,6 +777,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 			// we do in onWindowFocusChanged rather than onResume(), to also catch when window lost focus due to notification bar being dragged down (which prevents resetting of immersive mode)
 			initImmersiveMode();
 		}
+		getSettingDetail();
 	}
 
 	@Override
