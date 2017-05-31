@@ -55,16 +55,10 @@ public class MainUI {
 		
 		this.setSeekbarColors();
 
-		this.setIcon(R.id.gallery);
-		this.setIcon(R.id.settings);
 		this.setIcon(R.id.popup);
-		this.setIcon(R.id.exposure_lock);
 		this.setIcon(R.id.exposure);
-		this.setIcon(R.id.switch_video);
 		this.setIcon(R.id.switch_camera);
 		this.setIcon(R.id.audio_control);
-		this.setIcon(R.id.trash);
-		this.setIcon(R.id.share);
 	}
 
 	private void setIcon(int id) {
@@ -169,6 +163,7 @@ public class MainUI {
 		int align_parent_right = RelativeLayout.ALIGN_PARENT_RIGHT;
 		int align_parent_top = RelativeLayout.ALIGN_PARENT_TOP;
 		int align_parent_bottom = RelativeLayout.ALIGN_PARENT_BOTTOM;
+		int icon_margin = 20;
 		if( !ui_placement_right ) {
 			//align_top = RelativeLayout.ALIGN_BOTTOM;
 			//align_bottom = RelativeLayout.ALIGN_TOP;
@@ -191,69 +186,42 @@ public class MainUI {
 			view.setLayoutParams(layoutParams);
 			setViewRotation(view, ui_rotation);
 	
-			view = main_activity.findViewById(R.id.gallery);
+
+			view = main_activity.findViewById(R.id.popup);
 			layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
 			layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
 			layoutParams.addRule(align_parent_bottom, 0);
 			layoutParams.addRule(left_of, R.id.gui_anchor);
 			layoutParams.addRule(right_of, 0);
 			view.setLayoutParams(layoutParams);
+			layoutParams.setMargins(icon_margin,icon_margin,icon_margin,0);
+			view.setBackgroundColor(Color.TRANSPARENT);
 			setViewRotation(view, ui_rotation);
 	
-			view = main_activity.findViewById(R.id.settings);
-			layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-			layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
-			layoutParams.addRule(align_parent_bottom, 0);
-			layoutParams.addRule(left_of, R.id.gallery);
-			layoutParams.addRule(right_of, 0);
-			view.setLayoutParams(layoutParams);
-			setViewRotation(view, ui_rotation);
-	
-			view = main_activity.findViewById(R.id.popup);
-			layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-			layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
-			layoutParams.addRule(align_parent_bottom, 0);
-			layoutParams.addRule(left_of, R.id.settings);
-			layoutParams.addRule(right_of, 0);
-			view.setLayoutParams(layoutParams);
-			setViewRotation(view, ui_rotation);
-	
-			view = main_activity.findViewById(R.id.exposure_lock);
-			layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-			layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
-			layoutParams.addRule(align_parent_bottom, 0);
-			layoutParams.addRule(left_of, R.id.popup);
-			layoutParams.addRule(right_of, 0);
-			view.setLayoutParams(layoutParams);
-			setViewRotation(view, ui_rotation);
-	
+
 			view = main_activity.findViewById(R.id.exposure);
 			layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-			layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
-			layoutParams.addRule(align_parent_bottom, 0);
-			layoutParams.addRule(left_of, R.id.exposure_lock);
+			layoutParams.addRule(align_parent_top, 0);
+			layoutParams.addRule(align_parent_bottom, RelativeLayout.TRUE);
+			//layoutParams.addRule(left_of, R.id.popup);
+			layoutParams.addRule(align_parent_right, RelativeLayout.TRUE);
 			layoutParams.addRule(right_of, 0);
 			view.setLayoutParams(layoutParams);
+			layoutParams.setMargins(icon_margin,icon_margin,icon_margin,icon_margin);
+			view.setBackgroundColor(Color.TRANSPARENT);
 			setViewRotation(view, ui_rotation);
-	
-			view = main_activity.findViewById(R.id.switch_video);
-			layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-			layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
-			layoutParams.addRule(align_parent_bottom, 0);
-			layoutParams.addRule(left_of, R.id.exposure);
-			layoutParams.addRule(right_of, 0);
-			view.setLayoutParams(layoutParams);
-			setViewRotation(view, ui_rotation);
-	
+
 			view = main_activity.findViewById(R.id.switch_camera);
 			layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-			layoutParams.addRule(align_parent_left, 0);
+			layoutParams.addRule(align_parent_left, RelativeLayout.TRUE);
 			layoutParams.addRule(align_parent_right, 0);
-			layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
-			layoutParams.addRule(align_parent_bottom, 0);
-			layoutParams.addRule(left_of, R.id.switch_video);
+			layoutParams.addRule(align_parent_top, 0);
+			layoutParams.addRule(align_parent_bottom, RelativeLayout.TRUE);
+			layoutParams.addRule(left_of, 0);
 			layoutParams.addRule(right_of, 0);
 			view.setLayoutParams(layoutParams);
+			layoutParams.setMargins(icon_margin,icon_margin,icon_margin,icon_margin);
+			view.setBackgroundColor(Color.TRANSPARENT);
 			setViewRotation(view, ui_rotation);
 
 			view = main_activity.findViewById(R.id.audio_control);
@@ -265,34 +233,10 @@ public class MainUI {
 			layoutParams.addRule(left_of, R.id.switch_camera);
 			layoutParams.addRule(right_of, 0);
 			view.setLayoutParams(layoutParams);
-			setViewRotation(view, ui_rotation);
-
-			view = main_activity.findViewById(R.id.trash);
-			layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-			layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
-			layoutParams.addRule(align_parent_bottom, 0);
-			layoutParams.addRule(left_of, R.id.audio_control);
-			layoutParams.addRule(right_of, 0);
-			view.setLayoutParams(layoutParams);
-			setViewRotation(view, ui_rotation);
-	
-			view = main_activity.findViewById(R.id.share);
-			layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-			layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
-			layoutParams.addRule(align_parent_bottom, 0);
-			layoutParams.addRule(left_of, R.id.trash);
-			layoutParams.addRule(right_of, 0);
-			view.setLayoutParams(layoutParams);
+			view.setBackgroundColor(Color.TRANSPARENT);
 			setViewRotation(view, ui_rotation);
 
 			view = main_activity.findViewById(R.id.take_photo);
-			setViewRotation(view, ui_rotation);
-
-			view = main_activity.findViewById(R.id.pause_video);
-			layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
-			layoutParams.addRule(align_parent_left, 0);
-			layoutParams.addRule(align_parent_right, RelativeLayout.TRUE);
-			view.setLayoutParams(layoutParams);
 			setViewRotation(view, ui_rotation);
 
 			view = main_activity.findViewById(R.id.zoom);
@@ -447,28 +391,15 @@ public class MainUI {
 			ImageButton view = (ImageButton)main_activity.findViewById(R.id.take_photo);
 			int resource;
 			int content_description;
-			int switch_video_content_description;
-			if( main_activity.getPreview().isVideo() ) {
-				if( MyDebug.LOG )
-					Log.d(TAG, "set icon to video");
-				resource = main_activity.getPreview().isVideoRecording() ? R.drawable.take_video_recording : R.drawable.take_video_selector;
-				content_description = main_activity.getPreview().isVideoRecording() ? R.string.stop_video : R.string.start_video;
-				switch_video_content_description = R.string.switch_to_photo;
-			}
-			else {
-				if( MyDebug.LOG )
-					Log.d(TAG, "set icon to photo");
-				resource = R.drawable.take_photo_selector;
-				content_description = R.string.take_photo;
-				switch_video_content_description = R.string.switch_to_video;
-			}
+			if( MyDebug.LOG )
+				Log.d(TAG, "set icon to photo");
+			resource = R.drawable.take_photo_selector;
+			content_description = R.string.take_photo;
 			view.setImageResource(resource);
 			view.setContentDescription( main_activity.getResources().getString(content_description) );
 			view.setTag(resource); // for testing
 
-			view = (ImageButton)main_activity.findViewById(R.id.switch_video);
-			view.setContentDescription( main_activity.getResources().getString(switch_video_content_description) );
-		}
+			}
     }
 
     /** Set content description for switch camera button.
@@ -491,24 +422,6 @@ public class MainUI {
 			view.setContentDescription( main_activity.getResources().getString(content_description) );
 		}
     }
-
-	/** Set content description for pause video button.
-	 */
-	public void setPauseVideoContentDescription() {
-		if (MyDebug.LOG)
-			Log.d(TAG, "setPauseVideoContentDescription()");
-		View pauseVideoButton = main_activity.findViewById(R.id.pause_video);
-		int content_description;
-		if( main_activity.getPreview().isVideoRecordingPaused() ) {
-			content_description = R.string.resume_video;
-		}
-		else {
-			content_description = R.string.pause_video;
-		}
-		if( MyDebug.LOG )
-			Log.d(TAG, "content_description: " + main_activity.getResources().getString(content_description));
-		pauseVideoButton.setContentDescription(main_activity.getResources().getString(content_description));
-	}
 
     public boolean getUIPlacementRight() {
     	return this.ui_placement_right;
@@ -553,27 +466,18 @@ public class MainUI {
 					Log.d(TAG, "setImmersiveMode: set visibility: " + visibility);
 		    	// n.b., don't hide share and trash buttons, as they require immediate user input for us to continue
 			    View switchCameraButton = main_activity.findViewById(R.id.switch_camera);
-			    View switchVideoButton = main_activity.findViewById(R.id.switch_video);
 			    View exposureButton = main_activity.findViewById(R.id.exposure);
-			    View exposureLockButton = main_activity.findViewById(R.id.exposure_lock);
 			    View audioControlButton = main_activity.findViewById(R.id.audio_control);
 			    View popupButton = main_activity.findViewById(R.id.popup);
-			    View galleryButton = main_activity.findViewById(R.id.gallery);
-			    View settingsButton = main_activity.findViewById(R.id.settings);
 			    View zoomControls = main_activity.findViewById(R.id.zoom);
 			    View zoomSeekBar = main_activity.findViewById(R.id.zoom_seekbar);
 			    if( main_activity.getPreview().getCameraControllerManager().getNumberOfCameras() > 1 )
 			    	switchCameraButton.setVisibility(visibility);
-		    	switchVideoButton.setVisibility(visibility);
-			    if( main_activity.supportsExposureButton() )
+		        if( main_activity.supportsExposureButton() )
 			    	exposureButton.setVisibility(visibility);
-			    if( main_activity.getPreview().supportsExposureLock() )
-			    	exposureLockButton.setVisibility(visibility);
 			    if( main_activity.hasAudioControl() )
 			    	audioControlButton.setVisibility(visibility);
 		    	popupButton.setVisibility(visibility);
-			    galleryButton.setVisibility(visibility);
-			    settingsButton.setVisibility(visibility);
 				if( MyDebug.LOG ) {
 					Log.d(TAG, "has_zoom: " + main_activity.getPreview().supportsZoom());
 				}
@@ -588,10 +492,6 @@ public class MainUI {
 					if( sharedPreferences.getBoolean(PreferenceKeys.getShowTakePhotoPreferenceKey(), true) ) {
 						View takePhotoButton = main_activity.findViewById(R.id.take_photo);
 						takePhotoButton.setVisibility(visibility);
-					}
-					if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && main_activity.getPreview().isVideoRecording() ) {
-						View pauseVideoButton = main_activity.findViewById(R.id.pause_video);
-						pauseVideoButton.setVisibility(visibility);
 					}
         		}
 				if( !immersive_mode ) {
@@ -620,19 +520,13 @@ public class MainUI {
 			public void run() {
 		    	final int visibility = show ? View.VISIBLE : View.GONE;
 			    View switchCameraButton = main_activity.findViewById(R.id.switch_camera);
-			    View switchVideoButton = main_activity.findViewById(R.id.switch_video);
 			    View exposureButton = main_activity.findViewById(R.id.exposure);
-			    View exposureLockButton = main_activity.findViewById(R.id.exposure_lock);
 			    View audioControlButton = main_activity.findViewById(R.id.audio_control);
 			    View popupButton = main_activity.findViewById(R.id.popup);
 			    if( main_activity.getPreview().getCameraControllerManager().getNumberOfCameras() > 1 )
 			    	switchCameraButton.setVisibility(visibility);
-			    if( !main_activity.getPreview().isVideo() )
-			    	switchVideoButton.setVisibility(visibility); // still allow switch video when recording video
 			    if( main_activity.supportsExposureButton() && !main_activity.getPreview().isVideo() ) // still allow exposure when recording video
 			    	exposureButton.setVisibility(visibility);
-			    if( main_activity.getPreview().supportsExposureLock() && !main_activity.getPreview().isVideo() ) // still allow exposure lock when recording video
-			    	exposureLockButton.setVisibility(visibility);
 			    if( main_activity.hasAudioControl() )
 			    	audioControlButton.setVisibility(visibility);
 			    if( !show ) {

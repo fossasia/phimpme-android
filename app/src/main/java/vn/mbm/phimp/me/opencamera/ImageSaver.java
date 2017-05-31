@@ -1384,11 +1384,6 @@ public class ImageSaver extends Thread {
 			}
 			else {
 	    		final Bitmap thumbnail_f = thumbnail;
-		    	main_activity.runOnUiThread(new Runnable() {
-					public void run() {
-						applicationInterface.updateThumbnail(thumbnail_f);
-					}
-				});
         		if( MyDebug.LOG ) {
         			Log.d(TAG, "Save single image performance: time after creating thumbnail: " + (System.currentTimeMillis() - time_s));
         		}

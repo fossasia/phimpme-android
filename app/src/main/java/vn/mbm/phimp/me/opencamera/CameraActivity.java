@@ -254,8 +254,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		speechRecognizerButton.setVisibility(View.GONE); // disabled by default, until the speech recognizer is created
 		if( MyDebug.LOG )
 			Log.d(TAG, "onCreate: time after setting button visibility: " + (System.currentTimeMillis() - debug_time));
-		View pauseVideoButton = findViewById(R.id.pause_video);
-		pauseVideoButton.setVisibility(View.INVISIBLE);
 
 		// listen for orientation event change
 		orientationEventListener = new OrientationEventListener(this) {
@@ -267,20 +265,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		if( MyDebug.LOG )
 			Log.d(TAG, "onCreate: time after setting orientation event listener: " + (System.currentTimeMillis() - debug_time));
 
-		// set up gallery button long click
-		View galleryButton = findViewById(R.id.gallery);
-		galleryButton.setOnLongClickListener(new View.OnLongClickListener() {
-			@Override
-			public boolean onLongClick(View v) {
-				//preview.showToast(null, "Long click");
-				longClickedGallery();
-				return true;
-			}
-		});
-		if( MyDebug.LOG )
-			Log.d(TAG, "onCreate: time after setting gallery long click listener: " + (System.currentTimeMillis() - debug_time));
-
-		// listen for gestures
+			// listen for gestures
 		gestureDetector = new GestureDetector(this, new MyGestureDetector());
 		if( MyDebug.LOG )
 			Log.d(TAG, "onCreate: time after creating gesture detector: " + (System.currentTimeMillis() - debug_time));
@@ -425,27 +410,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 			return;
 		}
 		String action = this.getIntent().getAction();
-		if( MediaStore.INTENT_ACTION_VIDEO_CAMERA.equals(action) || MediaStore.ACTION_VIDEO_CAPTURE.equals(action) ) {
-			if( MyDebug.LOG )
-				Log.d(TAG, "launching from video intent");
-			applicationInterface.setVideoPref(true);
-		}
-		else if( MediaStore.ACTION_IMAGE_CAPTURE.equals(action) || MediaStore.ACTION_IMAGE_CAPTURE_SECURE.equals(action) || MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA.equals(action) || MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA_SECURE.equals(action) ) {
-			if( MyDebug.LOG )
-				Log.d(TAG, "launching from photo intent");
-			applicationInterface.setVideoPref(false);
-		}
-		else if( MyTileService.TILE_ID.equals(action) ) {
-			if( MyDebug.LOG )
-				Log.d(TAG, "launching from quick settings tile for Open Camera: photo mode");
-			applicationInterface.setVideoPref(false);
-		}
-		else if( MyTileServiceVideo.TILE_ID.equals(action) ) {
-			if( MyDebug.LOG )
-				Log.d(TAG, "launching from quick settings tile for Open Camera: video mode");
-			applicationInterface.setVideoPref(true);
-		}
-		else if( MyTileServiceFrontCamera.TILE_ID.equals(action) ) {
+		if( MyTileServiceFrontCamera.TILE_ID.equals(action) ) {
 			if( MyDebug.LOG )
 				Log.d(TAG, "launching from quick settings tile for Open Camera: selfie mode");
 			for(int i=0;i<preview.getCameraControllerManager().getNumberOfCameras();i++) {
@@ -758,8 +723,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 		mainUI.layoutUI();
 
-		updateGalleryIcon(); // update in case images deleted whilst idle
-
 		preview.onResume();
 
 		if( MyDebug.LOG ) {
@@ -837,14 +800,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		this.takePicture();
 	}
 
-	public void clickedPauseVideo(View view) {
-		if( MyDebug.LOG )
-			Log.d(TAG, "clickedPauseVideo");
-		if( preview.isVideoRecording() ) { // just in case
-			preview.pauseVideo();
-			mainUI.setPauseVideoContentDescription();
-		}
-	}
 
 	public void clickedAudioControl(View view) {
 		if( MyDebug.LOG )
@@ -927,18 +882,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		}
 	}
 
-	public void clickedSwitchVideo(View view) {
-		if( MyDebug.LOG )
-			Log.d(TAG, "clickedSwitchVideo");
-		this.closePopup();
-		View switchVideoButton = findViewById(R.id.switch_video);
-		switchVideoButton.setEnabled(false); // prevent slowdown if user repeatedly clicks
-		this.preview.switchVideo(false);
-		switchVideoButton.setEnabled(true);
-
-		mainUI.setTakePhotoIcon();
-	}
-
 	public void clickedExposure(View view) {
 		if( MyDebug.LOG )
 			Log.d(TAG, "clickedExposure");
@@ -993,21 +936,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		seekBar.setProgress(new_value);
 	}
 
-	public void clickedExposureLock(View view) {
-		if( MyDebug.LOG )
-			Log.d(TAG, "clickedExposureLock");
-		this.preview.toggleExposureLock();
-		ImageButton exposureLockButton = (ImageButton) findViewById(R.id.exposure_lock);
-		exposureLockButton.setImageResource(preview.isExposureLocked() ? R.drawable.exposure_locked : R.drawable.exposure_unlocked);
-		preview.showToast(exposure_lock_toast, preview.isExposureLocked() ? R.string.exposure_locked : R.string.exposure_unlocked);
-	}
-
-	public void clickedSettings(View view) {
-		if( MyDebug.LOG )
-			Log.d(TAG, "clickedSettings");
-		openSettings();
-	}
-
 	public boolean popupIsOpen() {
 		return mainUI.popupIsOpen();
 	}
@@ -1037,8 +965,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		waitUntilImageQueueEmpty(); // in theory not needed as we could continue running in the background, but best to be safe
 		closePopup();
 		preview.cancelTimer(); // best to cancel any timer, in case we take a photo while settings window is open, or when changing settings
-		preview.stopVideo(false); // important to stop video, as we'll be changing camera parameters when the settings window closes
-		stopAudioListeners();
 
 		Bundle bundle = new Bundle();
 		bundle.putInt("cameraId", this.preview.getCameraId());
@@ -1119,11 +1045,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		if( preview.getVideoQualityHander().getCurrentVideoQuality() != null ) {
 			bundle.putString("current_video_quality", preview.getVideoQualityHander().getCurrentVideoQuality());
 		}
-		CamcorderProfile camcorder_profile = preview.getCamcorderProfile();
-		bundle.putInt("video_frame_width", camcorder_profile.videoFrameWidth);
-		bundle.putInt("video_frame_height", camcorder_profile.videoFrameHeight);
-		bundle.putInt("video_bit_rate", camcorder_profile.videoBitRate);
-		bundle.putInt("video_frame_rate", camcorder_profile.videoFrameRate);
 
 		List<CameraController.Size> video_sizes = this.preview.getVideoQualityHander().getSupportedVideoSizes();
 		if( video_sizes != null ) {
@@ -1173,7 +1094,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 		if( MyDebug.LOG )
 			Log.d(TAG, "update folder history");
-		save_location_history.updateFolderHistory(getStorageUtils().getSaveLocation(), true);
+		save_location_history.updateFolderHistory(getStorageUtils().getSaveLocation());
 		// no need to update save_location_history_saf, as we always do this in onActivityResult()
 
 		// update camera for changes made in prefs - do this without closing and reopening the camera app if possible for speed!
@@ -1414,122 +1335,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		container.setAlpha(show ? 0.0f : 1.0f);
 	}
 
-	/** Shows the default "blank" gallery icon, when we don't have a thumbnail available.
-	 */
-	private void updateGalleryIconToBlank() {
-		if( MyDebug.LOG )
-			Log.d(TAG, "updateGalleryIconToBlank");
-		ImageButton galleryButton = (ImageButton) this.findViewById(R.id.gallery);
-		int bottom = galleryButton.getPaddingBottom();
-		int top = galleryButton.getPaddingTop();
-		int right = galleryButton.getPaddingRight();
-		int left = galleryButton.getPaddingLeft();
-	    /*if( MyDebug.LOG )
-			Log.d(TAG, "padding: " + bottom);*/
-		galleryButton.setImageBitmap(null);
-		galleryButton.setImageResource(R.drawable.gallery);
-		// workaround for setImageResource also resetting padding, Android bug
-		galleryButton.setPadding(left, top, right, bottom);
-		gallery_bitmap = null;
-	}
-
-	/** Shows a thumbnail for the gallery icon.
-	 */
-	void updateGalleryIcon(Bitmap thumbnail) {
-		if( MyDebug.LOG )
-			Log.d(TAG, "updateGalleryIcon: " + thumbnail);
-		ImageButton galleryButton = (ImageButton) this.findViewById(R.id.gallery);
-		galleryButton.setImageBitmap(thumbnail);
-		gallery_bitmap = thumbnail;
-	}
-
-	/** Updates the gallery icon by searching for the most recent photo.
-	 *  Launches the task in a separate thread.
-	 */
-	public void updateGalleryIcon() {
-		long debug_time = 0;
-		if( MyDebug.LOG ) {
-			Log.d(TAG, "updateGalleryIcon");
-			debug_time = System.currentTimeMillis();
-		}
-
-		new AsyncTask<Void, Void, Bitmap>() {
-			private static final String TAG = "CameraActivity/AsyncTask";
-
-			/** The system calls this to perform work in a worker thread and
-			 * delivers it the parameters given to AsyncTask.execute() */
-			protected Bitmap doInBackground(Void... params) {
-				if( MyDebug.LOG )
-					Log.d(TAG, "doInBackground");
-				StorageUtils.Media media = applicationInterface.getStorageUtils().getLatestMedia();
-				Bitmap thumbnail = null;
-				KeyguardManager keyguard_manager = (KeyguardManager)CameraActivity.this.getSystemService(Context.KEYGUARD_SERVICE);
-				boolean is_locked = keyguard_manager != null && keyguard_manager.inKeyguardRestrictedInputMode();
-				if( MyDebug.LOG )
-					Log.d(TAG, "is_locked?: " + is_locked);
-				if( media != null && getContentResolver() != null && !is_locked ) {
-					// check for getContentResolver() != null, as have had reported Google Play crashes
-					try {
-						if( media.video ) {
-							thumbnail = MediaStore.Video.Thumbnails.getThumbnail(getContentResolver(), media.id, MediaStore.Video.Thumbnails.MINI_KIND, null);
-						}
-						else {
-							thumbnail = MediaStore.Images.Thumbnails.getThumbnail(getContentResolver(), media.id, MediaStore.Images.Thumbnails.MINI_KIND, null);
-						}
-					}
-					catch(NoClassDefFoundError exception) {
-						// have had Google Play crashes from new ExifInterface() for Galaxy Ace4 (vivalto3g), Galaxy S Duos3 (vivalto3gvn)
-						if( MyDebug.LOG )
-							Log.e(TAG, "exif orientation NoClassDefFoundError");
-						exception.printStackTrace();
-					}
-					if( thumbnail != null ) {
-						if( media.orientation != 0 ) {
-							if( MyDebug.LOG )
-								Log.d(TAG, "thumbnail size is " + thumbnail.getWidth() + " x " + thumbnail.getHeight());
-							Matrix matrix = new Matrix();
-							matrix.setRotate(media.orientation, thumbnail.getWidth() * 0.5f, thumbnail.getHeight() * 0.5f);
-							try {
-								Bitmap rotated_thumbnail = Bitmap.createBitmap(thumbnail, 0, 0, thumbnail.getWidth(), thumbnail.getHeight(), matrix, true);
-								// careful, as rotated_thumbnail is sometimes not a copy!
-								if( rotated_thumbnail != thumbnail ) {
-									thumbnail.recycle();
-									thumbnail = rotated_thumbnail;
-								}
-							}
-							catch(Throwable t) {
-								if( MyDebug.LOG )
-									Log.d(TAG, "failed to rotate thumbnail");
-							}
-						}
-					}
-				}
-				return thumbnail;
-			}
-
-			/** The system calls this to perform work in the UI thread and delivers
-			 * the result from doInBackground() */
-			protected void onPostExecute(Bitmap thumbnail) {
-				if( MyDebug.LOG )
-					Log.d(TAG, "onPostExecute");
-				// since we're now setting the thumbnail to the latest media on disk, we need to make sure clicking the Gallery goes to this
-				applicationInterface.getStorageUtils().clearLastMediaScanned();
-				if( thumbnail != null ) {
-					if( MyDebug.LOG )
-						Log.d(TAG, "set gallery btn to thumbnail");
-					updateGalleryIcon(thumbnail);
-				}
-				else {
-					if( MyDebug.LOG )
-						Log.d(TAG, "set gallery button to blank");
-					updateGalleryIconToBlank();
-				}
-			}
-		}.execute();
-
-		if( MyDebug.LOG )
-			Log.d(TAG, "updateGalleryIcon: total time to update gallery icon: " + (System.currentTimeMillis() - debug_time));
-	}
 
 	void savingImage(final boolean started) {
 		if( MyDebug.LOG )
@@ -1537,7 +1342,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 		this.runOnUiThread(new Runnable() {
 			public void run() {
-				final ImageButton galleryButton = (ImageButton) findViewById(R.id.gallery);
 				if( started ) {
 					//galleryButton.setColorFilter(0x80ffffff, PorterDuff.Mode.MULTIPLY);
 					if( gallery_save_anim == null ) {
@@ -1547,19 +1351,12 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 						gallery_save_anim.setRepeatMode(ValueAnimator.REVERSE);
 						gallery_save_anim.setDuration(500);
 					}
-					gallery_save_anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-						@Override
-						public void onAnimationUpdate(ValueAnimator animation) {
-							galleryButton.setColorFilter((Integer)animation.getAnimatedValue(), PorterDuff.Mode.MULTIPLY);
-						}
-					});
 					gallery_save_anim.start();
 				}
 				else
 				if( gallery_save_anim != null ) {
 					gallery_save_anim.cancel();
 				}
-				galleryButton.setColorFilter(null);
 			}
 		});
 	}
@@ -1654,7 +1451,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		if( save_location_history_saf == null ) {
 			save_location_history_saf = new SaveLocationHistory(this, "save_location_history_saf", save_folder);
 		}
-		save_location_history_saf.updateFolderHistory(save_folder, true);
+		save_location_history_saf.updateFolderHistory(save_folder);
 	}
 
 	/** Listens for the response from the Storage Access Framework dialog to select a folder
@@ -1726,7 +1523,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 				editor.putString(PreferenceKeys.getSaveLocationPreferenceKey(), new_save_location);
 				editor.apply();
 
-				this.save_location_history.updateFolderHistory(this.getStorageUtils().getSaveLocation(), true);
+				this.save_location_history.updateFolderHistory(this.getStorageUtils().getSaveLocation());
 				this.preview.showToast(null, getResources().getString(R.string.changed_save_location) + "\n" + this.applicationInterface.getStorageUtils().getSaveLocation());
 			}
 		}
@@ -1880,7 +1677,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 						else
 							editor.putString(PreferenceKeys.getSaveLocationPreferenceKey(), save_folder);
 						editor.apply();
-						history.updateFolderHistory(save_folder, true); // to move new selection to most recent
+						history.updateFolderHistory(save_folder); // to move new selection to most recent
 					}
 					setWindowFlagsForCamera();
 					showPreview(true);
@@ -2348,14 +2145,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 		View exposureButton = findViewById(R.id.exposure);
 		exposureButton.setVisibility(supportsExposureButton() && !mainUI.inImmersiveMode() ? View.VISIBLE : View.GONE);
-
-		ImageButton exposureLockButton = (ImageButton) findViewById(R.id.exposure_lock);
-		exposureLockButton.setVisibility(preview.supportsExposureLock() && !mainUI.inImmersiveMode() ? View.VISIBLE : View.GONE);
-		if( preview.supportsExposureLock() ) {
-			exposureLockButton.setImageResource(preview.isExposureLocked() ? R.drawable.exposure_locked : R.drawable.exposure_unlocked);
-		}
-		if( MyDebug.LOG )
-			Log.d(TAG, "cameraSetup: time after setting exposure lock button: " + (System.currentTimeMillis() - debug_time));
 
 		mainUI.setPopupIcon(); // needed so that the icon is set right even if no flash mode is set when starting up camera (e.g., switching to front camera with no flash)
 		if( MyDebug.LOG )
@@ -3049,10 +2838,10 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 	public void usedFolderPicker() {
 		if( applicationInterface.getStorageUtils().isUsingSAF() ) {
-			save_location_history_saf.updateFolderHistory(getStorageUtils().getSaveLocationSAF(), true);
+			save_location_history_saf.updateFolderHistory(getStorageUtils().getSaveLocationSAF());
 		}
 		else {
-			save_location_history.updateFolderHistory(getStorageUtils().getSaveLocation(), true);
+			save_location_history.updateFolderHistory(getStorageUtils().getSaveLocation());
 		}
 	}
 

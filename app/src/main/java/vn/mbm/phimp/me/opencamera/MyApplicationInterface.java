@@ -70,11 +70,6 @@ public class MyApplicationInterface implements ApplicationInterface {
 	private final DrawPreview drawPreview;
 	private final ImageSaver imageSaver;
 
-	private File last_video_file = null;
-	private Uri last_video_file_saf = null;
-
-	private final Timer subtitleVideoTimer = new Timer();
-	private TimerTask subtitleVideoTimerTask;
 
 	private final Rect text_bounds = new Rect();
     private boolean used_front_screen_flash ;
@@ -201,61 +196,6 @@ public class MyApplicationInterface implements ApplicationInterface {
 		return locationSupplier.getLocation();
 	}
 	
-	@Override
-	public int createOutputVideoMethod() {
-        String action = main_activity.getIntent().getAction();
-        if( MediaStore.ACTION_VIDEO_CAPTURE.equals(action) ) {
-			if( MyDebug.LOG )
-				Log.d(TAG, "from video capture intent");
-	        Bundle myExtras = main_activity.getIntent().getExtras();
-	        if (myExtras != null) {
-	        	Uri intent_uri = myExtras.getParcelable(MediaStore.EXTRA_OUTPUT);
-	        	if( intent_uri != null ) {
-	    			if( MyDebug.LOG )
-	    				Log.d(TAG, "save to: " + intent_uri);
-	        		return VIDEOMETHOD_URI;
-	        	}
-	        }
-        	// if no EXTRA_OUTPUT, we should save to standard location, and will pass back the Uri of that location
-			if( MyDebug.LOG )
-				Log.d(TAG, "intent uri not specified");
-			// note that SAF URIs don't seem to work for calling applications (tested with Grabilla and "Photo Grabber Image From Video" (FreezeFrame)), so we use standard folder with non-SAF method
-			return VIDEOMETHOD_FILE;
-        }
-        boolean using_saf = storageUtils.isUsingSAF();
-		return using_saf ? VIDEOMETHOD_SAF : VIDEOMETHOD_FILE;
-	}
-
-	@Override
-	public File createOutputVideoFile() throws IOException {
-		last_video_file = storageUtils.createOutputMediaFile(StorageUtils.MEDIA_TYPE_VIDEO, "", "mp4", new Date());
-		return last_video_file;
-	}
-
-	@Override
-	public Uri createOutputVideoSAF() throws IOException {
-		last_video_file_saf = storageUtils.createOutputMediaFileSAF(StorageUtils.MEDIA_TYPE_VIDEO, "", "mp4", new Date());
-		return last_video_file_saf;
-	}
-
-	@Override
-	public Uri createOutputVideoUri() {
-        String action = main_activity.getIntent().getAction();
-        if( MediaStore.ACTION_VIDEO_CAPTURE.equals(action) ) {
-			if( MyDebug.LOG )
-				Log.d(TAG, "from video capture intent");
-	        Bundle myExtras = main_activity.getIntent().getExtras();
-	        if (myExtras != null) {
-	        	Uri intent_uri = myExtras.getParcelable(MediaStore.EXTRA_OUTPUT);
-	        	if( intent_uri != null ) {
-	    			if( MyDebug.LOG )
-	    				Log.d(TAG, "save to: " + intent_uri);
-	    			return intent_uri;
-	        	}
-	        }
-        }
-        throw new RuntimeException(); // programming error if we arrived here
-	}
 
 	@Override
 	public int getCameraIdPref() {
@@ -272,12 +212,6 @@ public class MyApplicationInterface implements ApplicationInterface {
 	public String getFocusPref(boolean is_video) {
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 		return sharedPreferences.getString(PreferenceKeys.getFocusPreferenceKey(cameraId, is_video), "");
-    }
-
-    @Override
-	public boolean isVideoPref() {
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-		return sharedPreferences.getBoolean(PreferenceKeys.getIsVideoPreferenceKey(), false);
     }
 
     @Override
@@ -408,72 +342,6 @@ public class MyApplicationInterface implements ApplicationInterface {
 		return sharedPreferences.getBoolean(PreferenceKeys.getFaceDetectionPreferenceKey(), false);
     }
     
-	@Override
-	public String getVideoQualityPref() {
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-		return sharedPreferences.getString(PreferenceKeys.getVideoQualityPreferenceKey(cameraId), "");
-	}
-	
-    @Override
-	public boolean getVideoStabilizationPref() {
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-		return sharedPreferences.getBoolean(PreferenceKeys.getVideoStabilizationPreferenceKey(), false);
-    }
-    
-    @Override
-	public boolean getForce4KPref() {
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-		if( cameraId == 0 && sharedPreferences.getBoolean(PreferenceKeys.getForceVideo4KPreferenceKey(), false) && main_activity.supportsForceVideo4K() ) {
-			return true;
-		}
-		return false;
-    }
-    
-    @Override
-    public String getVideoBitratePref() {
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-    	return sharedPreferences.getString(PreferenceKeys.getVideoBitratePreferenceKey(), "default");
-    }
-
-    @Override
-    public String getVideoFPSPref() {
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-    	return sharedPreferences.getString(PreferenceKeys.getVideoFPSPreferenceKey(), "default");
-    }
-    
-    @Override
-    public long getVideoMaxDurationPref() {
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-		String video_max_duration_value = sharedPreferences.getString(PreferenceKeys.getVideoMaxDurationPreferenceKey(), "0");
-		long video_max_duration;
-		try {
-			video_max_duration = (long) Integer.parseInt(video_max_duration_value) * 1000;
-		}
-        catch(NumberFormatException e) {
-    		if( MyDebug.LOG )
-    			Log.e(TAG, "failed to parse preference_video_max_duration value: " + video_max_duration_value);
-    		e.printStackTrace();
-    		video_max_duration = 0;
-        }
-		return video_max_duration;
-    }
-
-    @Override
-    public int getVideoRestartTimesPref() {
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-		String restart_value = sharedPreferences.getString(PreferenceKeys.getVideoRestartPreferenceKey(), "0");
-		int remaining_restart_video;
-		try {
-			remaining_restart_video = Integer.parseInt(restart_value);
-		}
-        catch(NumberFormatException e) {
-    		if( MyDebug.LOG )
-    			Log.e(TAG, "failed to parse preference_video_restart value: " + restart_value);
-    		e.printStackTrace();
-    		remaining_restart_video = 0;
-        }
-		return remaining_restart_video;
-    }
 
 	long getVideoMaxFileSizeUserPref() {
 		if( MyDebug.LOG )
@@ -500,86 +368,7 @@ public class MyApplicationInterface implements ApplicationInterface {
     	return sharedPreferences.getBoolean(PreferenceKeys.getVideoRestartMaxFileSizePreferenceKey(), true);
 	}
 
-    @Override
-	public VideoMaxFileSize getVideoMaxFileSizePref() throws NoFreeStorageException {
-		if( MyDebug.LOG )
-			Log.d(TAG, "getVideoMaxFileSizePref");
-		VideoMaxFileSize video_max_filesize = new VideoMaxFileSize();
-		video_max_filesize.max_filesize = getVideoMaxFileSizeUserPref();
-		video_max_filesize.auto_restart = getVideoRestartMaxFileSizeUserPref();
-		
-		/* Also if using internal memory without storage access framework, try to set the max filesize so we don't run out of space.
-		   This is the only way to avoid the problem where videos become corrupt when run out of space - MediaRecorder doesn't stop on
-		   its own, and no error is given!
-		   If using SD card, it's not reliable to get the free storage (see https://sourceforge.net/p/opencamera/tickets/153/ ).
-		   If using storage access framework, in theory we could check if this was on internal storage, but risk of getting it wrong...
-		   so seems safest to leave (the main reason for using SAF is for SD cards, anyway).
-		   */
-		if( !storageUtils.isUsingSAF() ) {
-    		String folder_name = storageUtils.getSaveLocation();
-    		if( MyDebug.LOG )
-    			Log.d(TAG, "saving to: " + folder_name);
-    		boolean is_internal = false;
-    		if( !folder_name.startsWith("/") ) {
-    			is_internal = true;
-    		}
-    		else {
-    			// if save folder path is a full path, see if it matches the "external" storage (which actually means "primary", which typically isn't an SD card these days)
-    			File storage = Environment.getExternalStorageDirectory();
-        		if( MyDebug.LOG )
-        			Log.d(TAG, "compare to: " + storage.getAbsolutePath());
-    			if( folder_name.startsWith( storage.getAbsolutePath() ) )
-    				is_internal = true;
-    		}
-    		if( is_internal ) {
-        		if( MyDebug.LOG )
-        			Log.d(TAG, "using internal storage");
-        		long free_memory = main_activity.freeMemory() * 1024 * 1024;
-        		final long min_free_memory = 50000000; // how much free space to leave after video
-        		// min_free_filesize is the minimum value to set for max file size:
-        		//   - no point trying to create a really short video
-        		//   - too short videos can end up being corrupted
-        		//   - also with auto-restart, if this is too small we'll end up repeatedly restarting and creating shorter and shorter videos
-        		final long min_free_filesize = 20000000;
-        		long available_memory = free_memory - min_free_memory;
-        		if( test_set_available_memory ) {
-        			available_memory = test_available_memory;
-        		}
-        		if( MyDebug.LOG ) {
-        			Log.d(TAG, "free_memory: " + free_memory);
-        			Log.d(TAG, "available_memory: " + available_memory);
-        		}
-        		if( available_memory > min_free_filesize ) {
-        			if( video_max_filesize.max_filesize == 0 || video_max_filesize.max_filesize > available_memory ) {
-        				video_max_filesize.max_filesize = available_memory;
-        				// still leave auto_restart set to true - because even if we set a max filesize for running out of storage, the video may still hit a maximum limit before hand, if there's a device max limit set (typically ~2GB)
-        				if( MyDebug.LOG )
-        					Log.d(TAG, "set video_max_filesize to avoid running out of space: " + video_max_filesize);
-        			}
-        		}
-        		else {
-    				if( MyDebug.LOG )
-    					Log.e(TAG, "not enough free storage to record video");
-        			throw new NoFreeStorageException();
-        		}
-    		}
-		}
-		
-		return video_max_filesize;
-	}
 
-    @Override
-    public boolean getVideoFlashPref() {
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-    	return sharedPreferences.getBoolean(PreferenceKeys.getVideoFlashPreferenceKey(), false);
-    }
-    
-    @Override
-    public boolean getVideoLowPowerCheckPref() {
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-    	return sharedPreferences.getBoolean(PreferenceKeys.getVideoLowPowerCheckPreferenceKey(), true);
-    }
-    
     @Override
 	public String getPreviewSizePref() {
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -978,332 +767,6 @@ public class MyApplicationInterface implements ApplicationInterface {
 			main_activity.setImmersiveMode(false);
 		}
 	}
-	
-	@Override
-	public void startingVideo() {
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-		if( sharedPreferences.getBoolean(PreferenceKeys.getLockVideoPreferenceKey(), false) ) {
-			main_activity.lockScreen();
-		}
-		main_activity.stopAudioListeners(); // important otherwise MediaRecorder will fail to start() if we have an audiolistener! Also don't want to have the speech recognizer going off
-		ImageButton view = (ImageButton)main_activity.findViewById(R.id.take_photo);
-		view.setImageResource(R.drawable.take_video_recording);
-		view.setContentDescription( getContext().getResources().getString(R.string.stop_video) );
-		view.setTag(R.drawable.take_video_recording); // for testing
-	}
-
-	@Override
-	public void startedVideo() {
-		if( MyDebug.LOG )
-			Log.d(TAG, "startedVideo()");
-		if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ) {
-			if( !( main_activity.getMainUI().inImmersiveMode() && main_activity.usingKitKatImmersiveModeEverything() ) ) {
-				View pauseVideoButton = main_activity.findViewById(R.id.pause_video);
-				pauseVideoButton.setVisibility(View.VISIBLE);
-			}
-			main_activity.getMainUI().setPauseVideoContentDescription();
-		}
-		final int video_method = this.createOutputVideoMethod();
-		boolean dategeo_subtitles = getVideoSubtitlePref().equals("preference_video_subtitle_yes");
-		if( dategeo_subtitles && video_method != ApplicationInterface.VIDEOMETHOD_URI ) {
-			final String preference_stamp_dateformat = this.getStampDateFormatPref();
-			final String preference_stamp_timeformat = this.getStampTimeFormatPref();
-			final String preference_stamp_gpsformat = this.getStampGPSFormatPref();
-			final boolean store_location = getGeotaggingPref();
-			final boolean store_geo_direction = getGeodirectionPref();
-			class SubtitleVideoTimerTask extends TimerTask {
-				OutputStreamWriter writer;
-				private int count = 1;
-
-				private String getSubtitleFilename(String video_filename) {
-					if( MyDebug.LOG )
-						Log.d(TAG, "getSubtitleFilename");
-					int indx = video_filename.indexOf('.');
-					if( indx != -1 ) {
-						video_filename = video_filename.substring(0, indx);
-					}
-					video_filename = video_filename + ".srt";
-					if( MyDebug.LOG )
-						Log.d(TAG, "return filename: " + video_filename);
-					return video_filename;
-				}
-
-				public void run() {
-					if( MyDebug.LOG )
-						Log.d(TAG, "SubtitleVideoTimerTask run");
-					long video_time = main_activity.getPreview().getVideoTime();
-					if( !main_activity.getPreview().isVideoRecording() ) {
-						if( MyDebug.LOG )
-							Log.d(TAG, "no longer video recording");
-						return;
-					}
-					if( main_activity.getPreview().isVideoRecordingPaused() ) {
-						if( MyDebug.LOG )
-							Log.d(TAG, "video recording is paused");
-						return;
-					}
-					Date current_date = new Date();
-					Calendar current_calendar = Calendar.getInstance();
-					int offset_ms = current_calendar.get(Calendar.MILLISECOND);
-					if( MyDebug.LOG ) {
-						Log.d(TAG, "count: " + count);
-						Log.d(TAG, "offset_ms: " + offset_ms);
-						Log.d(TAG, "video_time: " + video_time);
-					}
-					String date_stamp = TextFormatter.getDateString(preference_stamp_dateformat, current_date);
-					String time_stamp = TextFormatter.getTimeString(preference_stamp_timeformat, current_date);
-					Location location = store_location ? getLocation() : null;
-					double geo_direction = store_geo_direction && main_activity.getPreview().hasGeoDirection() ? main_activity.getPreview().getGeoDirection() : 0.0;
-					String gps_stamp = main_activity.getTextFormatter().getGPSString(preference_stamp_gpsformat, store_location && location!=null, location, store_geo_direction && main_activity.getPreview().hasGeoDirection(), geo_direction);
-					if( MyDebug.LOG ) {
-						Log.d(TAG, "date_stamp: " + date_stamp);
-						Log.d(TAG, "time_stamp: " + time_stamp);
-						Log.d(TAG, "gps_stamp: " + gps_stamp);
-					}
-					String datetime_stamp = "";
-					if( date_stamp.length() > 0 )
-						datetime_stamp += date_stamp;
-					if( time_stamp.length() > 0 ) {
-						if( datetime_stamp.length() > 0 )
-							datetime_stamp += " ";
-						datetime_stamp += time_stamp;
-					}
-					String subtitles = "";
-					if( datetime_stamp.length() > 0 )
-						subtitles += datetime_stamp + "\n";
-					if( gps_stamp.length() > 0 )
-						subtitles += gps_stamp + "\n";
-					if( subtitles.length() == 0 ) {
-						return;
-					}
-					long video_time_from = video_time - offset_ms;
-					long video_time_to = video_time_from + 999;
-					if( video_time_from < 0 )
-						video_time_from = 0;
-					String subtitle_time_from = TextFormatter.formatTimeMS(video_time_from);
-					String subtitle_time_to = TextFormatter.formatTimeMS(video_time_to);
-					try {
-						synchronized( this ) {
-							if( writer == null ) {
-								if( video_method == ApplicationInterface.VIDEOMETHOD_FILE ) {
-									String subtitle_filename = last_video_file.getAbsolutePath();
-									subtitle_filename = getSubtitleFilename(subtitle_filename);
-									writer = new FileWriter(subtitle_filename);
-								}
-								else {
-									if( MyDebug.LOG )
-										Log.d(TAG, "last_video_file_saf: " + last_video_file_saf);
-									File file = storageUtils.getFileFromDocumentUriSAF(last_video_file_saf, false);
-									String subtitle_filename = file.getName();
-									subtitle_filename = getSubtitleFilename(subtitle_filename);
-									Uri subtitle_uri = storageUtils.createOutputFileSAF(subtitle_filename, ""); // don't set a mimetype, as we don't want it to append a new extension
-									ParcelFileDescriptor pfd_saf = getContext().getContentResolver().openFileDescriptor(subtitle_uri, "w");
-									writer = new FileWriter(pfd_saf.getFileDescriptor());
-								}
-							}
-							if( writer != null ) {
-								writer.append(Integer.toString(count));
-								writer.append('\n');
-								writer.append(subtitle_time_from);
-								writer.append(" --> ");
-								writer.append(subtitle_time_to);
-								writer.append('\n');
-								writer.append(subtitles); // subtitles should include the '\n' at the end
-								writer.append('\n'); // additional newline to indicate end of this subtitle
-								writer.flush();
-								// n.b., we flush rather than closing/reopening the writer each time, as appending doesn't seem to work with storage access framework
-							}
-						}
-						count++;
-					}
-					catch(IOException e) {
-						if( MyDebug.LOG )
-							Log.e(TAG, "SubtitleVideoTimerTask failed to create or write");
-						e.printStackTrace();
-					}
-					if( MyDebug.LOG )
-						Log.d(TAG, "SubtitleVideoTimerTask exit");
-				}
-
-				public boolean cancel() {
-					if( MyDebug.LOG )
-						Log.d(TAG, "SubtitleVideoTimerTask cancel");
-					synchronized( this ) {
-						if( writer != null ) {
-							if( MyDebug.LOG )
-								Log.d(TAG, "close writer");
-							try {
-								writer.close();
-							}
-							catch(IOException e) {
-								e.printStackTrace();
-							}
-							writer = null;
-						}
-					}
-					return super.cancel();
-				}
-			}
-			subtitleVideoTimer.schedule(subtitleVideoTimerTask = new SubtitleVideoTimerTask(), 0, 1000);
-		}
-	}
-
-	@Override
-	public void stoppingVideo() {
-		if( MyDebug.LOG )
-			Log.d(TAG, "stoppingVideo()");
-		main_activity.unlockScreen();
-		ImageButton view = (ImageButton)main_activity.findViewById(R.id.take_photo);
-		view.setImageResource(R.drawable.take_video_selector);
-		view.setContentDescription( getContext().getResources().getString(R.string.start_video) );
-		view.setTag(R.drawable.take_video_selector); // for testing
-	}
-
-	@Override
-	public void stoppedVideo(final int video_method, final Uri uri, final String filename) {
-		if( MyDebug.LOG ) {
-			Log.d(TAG, "stoppedVideo");
-			Log.d(TAG, "video_method " + video_method);
-			Log.d(TAG, "uri " + uri);
-			Log.d(TAG, "filename " + filename);
-		}
-		View pauseVideoButton = main_activity.findViewById(R.id.pause_video);
-		pauseVideoButton.setVisibility(View.INVISIBLE);
-		main_activity.getMainUI().setPauseVideoContentDescription(); // just to be safe
-		if( subtitleVideoTimerTask != null ) {
-			subtitleVideoTimerTask.cancel();
-			subtitleVideoTimerTask = null;
-		}
-
-		boolean done = false;
-		if( video_method == VIDEOMETHOD_FILE ) {
-			if( filename != null ) {
-				File file = new File(filename);
-				storageUtils.broadcastFile(file, false, true, true);
-				done = true;
-			}
-		}
-		else {
-			if( uri != null ) {
-				// see note in onPictureTaken() for where we call broadcastFile for SAF photos
-				File real_file = storageUtils.getFileFromDocumentUriSAF(uri, false);
-				if( MyDebug.LOG )
-					Log.d(TAG, "real_file: " + real_file);
-				if( real_file != null ) {
-					storageUtils.broadcastFile(real_file, false, true, true);
-					main_activity.test_last_saved_image = real_file.getAbsolutePath();
-				}
-				else {
-					// announce the SAF Uri
-					storageUtils.announceUri(uri, false, true);
-				}
-				done = true;
-			}
-		}
-		if( MyDebug.LOG )
-			Log.d(TAG, "done? " + done);
-
-		String action = main_activity.getIntent().getAction();
-		if( MediaStore.ACTION_VIDEO_CAPTURE.equals(action) ) {
-			if( done && video_method == VIDEOMETHOD_FILE ) {
-				// do nothing here - we end the activity from storageUtils.broadcastFile after the file has been scanned, as it seems caller apps seem to prefer the content:// Uri rather than one based on a File
-			}
-			else {
-				if( MyDebug.LOG )
-					Log.d(TAG, "from video capture intent");
-				Intent output = null;
-				if( done ) {
-					// may need to pass back the Uri we saved to, if the calling application didn't specify a Uri
-					// set note above for VIDEOMETHOD_FILE
-					// n.b., currently this code is not used, as we always switch to VIDEOMETHOD_FILE if the calling application didn't specify a Uri, but I've left this here for possible future behaviour
-					if( video_method == VIDEOMETHOD_SAF ) {
-						output = new Intent();
-						output.setData(uri);
-						if( MyDebug.LOG )
-							Log.d(TAG, "pass back output uri [saf]: " + output.getData());
-					}
-				}
-				main_activity.setResult(done ? Activity.RESULT_OK : Activity.RESULT_CANCELED, output);
-				main_activity.finish();
-			}
-		}
-		else if( done ) {
-			// create thumbnail
-			long debug_time = System.currentTimeMillis();
-			Bitmap thumbnail = null;
-			MediaMetadataRetriever retriever = new MediaMetadataRetriever();
-			try {
-				if( video_method == VIDEOMETHOD_FILE ) {
-					File file = new File(filename);
-					retriever.setDataSource(file.getPath());
-				}
-				else {
-					ParcelFileDescriptor pfd_saf = getContext().getContentResolver().openFileDescriptor(uri, "r");
-					retriever.setDataSource(pfd_saf.getFileDescriptor());
-				}
-				thumbnail = retriever.getFrameAtTime(-1);
-			}
-			catch(FileNotFoundException | /*IllegalArgumentException |*/ RuntimeException e) {
-				// video file wasn't saved or corrupt video file?
-				Log.d(TAG, "failed to find thumbnail");
-				e.printStackTrace();
-			}
-			finally {
-				try {
-					retriever.release();
-				}
-				catch(RuntimeException ex) {
-					// ignore
-				}
-			}
-			if( thumbnail != null ) {
-				ImageButton galleryButton = (ImageButton) main_activity.findViewById(R.id.gallery);
-				int width = thumbnail.getWidth();
-				int height = thumbnail.getHeight();
-				if( MyDebug.LOG )
-					Log.d(TAG, "    video thumbnail size " + width + " x " + height);
-				if( width > galleryButton.getWidth() ) {
-					float scale = (float) galleryButton.getWidth() / width;
-					int new_width = Math.round(scale * width);
-					int new_height = Math.round(scale * height);
-					if( MyDebug.LOG )
-						Log.d(TAG, "    scale video thumbnail to " + new_width + " x " + new_height);
-					Bitmap scaled_thumbnail = Bitmap.createScaledBitmap(thumbnail, new_width, new_height, true);
-					// careful, as scaled_thumbnail is sometimes not a copy!
-					if( scaled_thumbnail != thumbnail ) {
-						thumbnail.recycle();
-						thumbnail = scaled_thumbnail;
-					}
-				}
-				final Bitmap thumbnail_f = thumbnail;
-				main_activity.runOnUiThread(new Runnable() {
-					public void run() {
-						updateThumbnail(thumbnail_f);
-					}
-				});
-			}
-			if( MyDebug.LOG )
-				Log.d(TAG, "    time to create thumbnail: " + (System.currentTimeMillis() - debug_time));
-		}
-	}
-
-	@Override
-	public void onVideoInfo(int what, int extra) {
-		// we don't show a toast for MEDIA_RECORDER_INFO_MAX_DURATION_REACHED - conflicts with "n repeats to go" toast from Preview
-		if( what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED ) {
-			if( MyDebug.LOG )
-				Log.d(TAG, "max filesize reached");
-			int message_id = R.string.video_max_filesize;
-			main_activity.getPreview().showToast(null, message_id);
-			// in versions 1.24 and 1.24, there was a bug where we had "info_" for onVideoError and "error_" for onVideoInfo!
-			// fixed in 1.25; also was correct for 1.23 and earlier
-			String debug_value = "info_" + what + "_" + extra;
-			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
-			SharedPreferences.Editor editor = sharedPreferences.edit();
-			editor.putString("last_video_error", debug_value);
-			editor.apply();
-		}
-	}
 
 	@Override
 	public void onFailedStartPreview() {
@@ -1321,85 +784,13 @@ public class MyApplicationInterface implements ApplicationInterface {
 	}
 
 	@Override
-	public void onVideoError(int what, int extra) {
-		if( MyDebug.LOG ) {
-			Log.d(TAG, "onVideoError: " + what + " extra: " + extra);
-		}
-		int message_id = R.string.video_error_unknown;
-		if( what == MediaRecorder.MEDIA_ERROR_SERVER_DIED  ) {
-			if( MyDebug.LOG )
-				Log.d(TAG, "error: server died");
-			message_id = R.string.video_error_server_died;
-		}
-		main_activity.getPreview().showToast(null, message_id);
-		// in versions 1.24 and 1.24, there was a bug where we had "info_" for onVideoError and "error_" for onVideoInfo!
-		// fixed in 1.25; also was correct for 1.23 and earlier
-		String debug_value = "error_" + what + "_" + extra;
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
-		SharedPreferences.Editor editor = sharedPreferences.edit();
-		editor.putString("last_video_error", debug_value);
-		editor.apply();
-	}
-	
-	@Override
-	public void onVideoRecordStartError(CamcorderProfile profile) {
-		if( MyDebug.LOG )
-			Log.d(TAG, "onVideoRecordStartError");
-		String error_message;
-		String features = main_activity.getPreview().getErrorFeatures(profile);
-		if( features.length() > 0 ) {
-			error_message = getContext().getResources().getString(R.string.sorry) + ", " + features + " " + getContext().getResources().getString(R.string.not_supported);
-		}
-		else {
-			error_message = getContext().getResources().getString(R.string.failed_to_record_video);
-		}
-		main_activity.getPreview().showToast(null, error_message);
-		ImageButton view = (ImageButton)main_activity.findViewById(R.id.take_photo);
-		view.setImageResource(R.drawable.take_video_selector);
-		view.setContentDescription( getContext().getResources().getString(R.string.start_video) );
-		view.setTag(R.drawable.take_video_selector); // for testing
-	}
-
-	@Override
-	public void onVideoRecordStopError(CamcorderProfile profile) {
-		if( MyDebug.LOG )
-			Log.d(TAG, "onVideoRecordStopError");
-		//main_activity.getPreview().showToast(null, R.string.failed_to_record_video);
-		String features = main_activity.getPreview().getErrorFeatures(profile);
-		String error_message = getContext().getResources().getString(R.string.video_may_be_corrupted);
-		if( features.length() > 0 ) {
-			error_message += ", " + features + " " + getContext().getResources().getString(R.string.not_supported);
-		}
-		main_activity.getPreview().showToast(null, error_message);
-	}
-	
-	@Override
 	public void onFailedReconnectError() {
 		main_activity.getPreview().showToast(null, R.string.failed_to_reconnect_camera);
-	}
-	
-	@Override
-	public void onFailedCreateVideoFileError() {
-		main_activity.getPreview().showToast(null, R.string.failed_to_save_video);
-		ImageButton view = (ImageButton)main_activity.findViewById(R.id.take_photo);
-		view.setImageResource(R.drawable.take_video_selector);
-		view.setContentDescription( getContext().getResources().getString(R.string.start_video) );
-		view.setTag(R.drawable.take_video_selector); // for testing
 	}
 
     @Override
 	public void hasPausedPreview(boolean paused) {
-	    View shareButton = main_activity.findViewById(R.id.share);
-	    View trashButton = main_activity.findViewById(R.id.trash);
-	    if( paused ) {
-		    shareButton.setVisibility(View.VISIBLE);
-		    trashButton.setVisibility(View.VISIBLE);
-	    }
-	    else {
-			shareButton.setVisibility(View.GONE);
-		    trashButton.setVisibility(View.GONE);
-		    this.clearLastImages();
-	    }
+
 	}
     
     @Override
@@ -1443,17 +834,7 @@ public class MyApplicationInterface implements ApplicationInterface {
 		main_activity.getMainUI().destroyPopup(); // need to close popup - and when camera reopened, it may have different settings
 		drawPreview.clearContinuousFocusMove();
 	}
-	
-	void updateThumbnail(Bitmap thumbnail) {
-		if( MyDebug.LOG )
-			Log.d(TAG, "updateThumbnail");
-		main_activity.updateGalleryIcon(thumbnail);
-		drawPreview.updateThumbnail(thumbnail);
-		if( this.getPausePreviewPref() ) {
-			drawPreview.showLastImage();
-		}
-	}
-	
+
 	@Override
 	public void timerBeep(long remaining_time) {
 		if( MyDebug.LOG ) {
@@ -1509,14 +890,6 @@ public class MyApplicationInterface implements ApplicationInterface {
     	final int visibility = main_activity.getPreview().getCurrentFocusValue() != null && main_activity.getPreview().getCurrentFocusValue().equals("focus_mode_manual2") ? View.VISIBLE : View.INVISIBLE;
 	    View focusSeekBar = main_activity.findViewById(R.id.focus_seekbar);
 	    focusSeekBar.setVisibility(visibility);
-    }
-
-    @Override
-	public void setVideoPref(boolean is_video) {
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-		SharedPreferences.Editor editor = sharedPreferences.edit();
-		editor.putBoolean(PreferenceKeys.getIsVideoPreferenceKey(), is_video);
-		editor.apply();
     }
 
     @Override
@@ -1618,15 +991,7 @@ public class MyApplicationInterface implements ApplicationInterface {
 		editor.putString(PreferenceKeys.getResolutionPreferenceKey(cameraId), resolution_value);
 		editor.apply();
     }
-    
-    @Override
-    public void setVideoQualityPref(String video_quality) {
-    	SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-		SharedPreferences.Editor editor = sharedPreferences.edit();
-		editor.putString(PreferenceKeys.getVideoQualityPreferenceKey(cameraId), video_quality);
-		editor.apply();
-    }
-    
+
     @Override
 	public void setZoomPref(int zoom) {
 		if( MyDebug.LOG )
@@ -2030,15 +1395,6 @@ public class MyApplicationInterface implements ApplicationInterface {
 			clearLastImages();
 			preview.startCameraPreview();
 		}
-    	// Calling updateGalleryIcon() immediately has problem that it still returns the latest image that we've just deleted!
-    	// But works okay if we call after a delay. 100ms works fine on Nexus 7 and Galaxy Nexus, but set to 500 just to be safe.
-    	final Handler handler = new Handler();
-		handler.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				main_activity.updateGalleryIcon();
-			}
-		}, 500);
 	}
 
 	// for testing
