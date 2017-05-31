@@ -18,7 +18,7 @@ import android.widget.TextView;
 import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.editor.EditBaseActivity;
 import vn.mbm.phimp.me.editor.editimage.EditImageActivity;
-import vn.mbm.phimp.me.editor.editimage.fliter.PhotoProcessing;
+import vn.mbm.phimp.me.editor.editimage.filter.PhotoProcessing;
 import vn.mbm.phimp.me.editor.editimage.view.imagezoom.ImageViewTouchBase;
 
 
