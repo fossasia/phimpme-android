@@ -122,7 +122,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 	private boolean video_recorder_is_paused; // whether video_recorder is running but has paused
 	private boolean video_restart_on_max_filesize;
 	private static final long min_safe_restart_video_time = 1000; // if the remaining max time after restart is less than this, don't restart
-	private int video_method = ApplicationInterface.VIDEOMETHOD_FILE;
 	private Uri video_uri; // for VIDEOMETHOD_SAF or VIDEOMETHOD_URI
 	private String video_filename; // for VIDEOMETHOD_FILE
 
@@ -753,153 +752,9 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		cameraSurface.setTransform(matrix);
 	}
 
-	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
-	public void stopVideo(boolean from_restart) {
-		if( MyDebug.LOG )
-			Log.d(TAG, "stopVideo()");
-		if( video_recorder == null ) {
-			// no need to do anything if not recording
-			// (important to exit, otherwise we'll momentarily switch the take photo icon to video mode in MyApplicationInterface.stoppingVideo() when opening the settings in landscape mode
-			if( MyDebug.LOG )
-				Log.d(TAG, "video wasn't recording anyway");
-			return;
-		}
-		applicationInterface.stoppingVideo();
-		if( flashVideoTimerTask != null ) {
-			flashVideoTimerTask.cancel();
-			flashVideoTimerTask = null;
-		}
-		if( batteryCheckVideoTimerTask != null ) {
-			batteryCheckVideoTimerTask.cancel();
-			batteryCheckVideoTimerTask = null;
-		}
-		if( !from_restart ) {
-			remaining_restart_video = 0;
-		}
-		if( video_recorder != null ) { // check again, just to be safe
-			if( MyDebug.LOG )
-				Log.d(TAG, "stop video recording");
-			/*is_taking_photo = false;
-			is_taking_photo_on_timer = false;*/
-			this.phase = PHASE_NORMAL;
-			try {
-				video_recorder.setOnErrorListener(null);
-				video_recorder.setOnInfoListener(null);
-				if( MyDebug.LOG )
-					Log.d(TAG, "about to call video_recorder.stop()");
-				video_recorder.stop();
-				if( MyDebug.LOG )
-					Log.d(TAG, "done video_recorder.stop()");
-			}
-			catch(RuntimeException e) {
-				// stop() can throw a RuntimeException if stop is called too soon after start - this indicates the video file is corrupt, and should be deleted
-				if( MyDebug.LOG )
-					Log.d(TAG, "runtime exception when stopping video");
-				if( video_method == ApplicationInterface.VIDEOMETHOD_SAF ) {
-					if( video_uri != null ) {
-						if( MyDebug.LOG )
-							Log.d(TAG, "delete corrupt video: " + video_uri);
-						DocumentsContract.deleteDocument(getContext().getContentResolver(), video_uri);
-					}
-				}
-				else if( video_method == ApplicationInterface.VIDEOMETHOD_FILE ) {
-					if( video_filename != null ) {
-						if( MyDebug.LOG )
-							Log.d(TAG, "delete corrupt video: " + video_filename);
-						File file = new File(video_filename);
-						if( !file.delete() ) {
-							if( MyDebug.LOG )
-								Log.e(TAG, "failed to delete corrupt video: " + video_filename);
-						}
-					}
-				}
-				// else don't delete if a plain Uri
-
-				video_method = ApplicationInterface.VIDEOMETHOD_FILE;
-				video_uri = null;
-				video_filename = null;
-				// if video recording is stopped quickly after starting, it's normal that we might not have saved a valid file, so no need to display a message
-				if( !video_start_time_set || System.currentTimeMillis() - video_start_time > 2000 ) {
-					CamcorderProfile profile = getCamcorderProfile();
-					applicationInterface.onVideoRecordStopError(profile);
-				}
-			}
-			if( MyDebug.LOG )
-				Log.d(TAG, "reset video_recorder");
-			video_recorder.reset();
-			if( MyDebug.LOG )
-				Log.d(TAG, "release video_recorder");
-			video_recorder.release();
-			video_recorder = null;
-			video_recorder_is_paused = false;
-			reconnectCamera(false); // n.b., if something went wrong with video, then we reopen the camera - which may fail (or simply not reopen, e.g., if app is now paused)
-			applicationInterface.stoppedVideo(video_method, video_uri, video_filename);
-			video_method = ApplicationInterface.VIDEOMETHOD_FILE;
-			video_uri = null;
-			video_filename = null;
-		}
-	}
 
 	private Context getContext() {
 		return applicationInterface.getContext();
-	}
-
-	/** Restart video - either due to hitting maximum filesize, or maximum duration.
-	 */
-	private void restartVideo(boolean due_to_max_filesize) {
-		if( MyDebug.LOG )
-			Log.d(TAG, "restartVideo()");
-		if( video_recorder != null ) {
-			if( due_to_max_filesize ) {
-				long last_time = System.currentTimeMillis() - video_start_time;
-				video_accumulated_time += last_time;
-				if( MyDebug.LOG ) {
-					Log.d(TAG, "last_time: " + last_time);
-					Log.d(TAG, "video_accumulated_time is now: " + video_accumulated_time);
-				}
-			}
-			else {
-				video_accumulated_time = 0;
-			}
-			stopVideo(true); // this will also stop the timertask
-
-			// handle restart
-			if( MyDebug.LOG ) {
-				if( due_to_max_filesize )
-					Log.d(TAG, "restarting due to maximum filesize");
-				else
-					Log.d(TAG, "remaining_restart_video is: " + remaining_restart_video);
-			}
-			if( due_to_max_filesize ) {
-				long video_max_duration = applicationInterface.getVideoMaxDurationPref();
-				if( video_max_duration > 0 ) {
-					video_max_duration -= video_accumulated_time;
-					if( video_max_duration < min_safe_restart_video_time ) {
-						// if there's less than 1s to go, ignore it - don't want to risk the resultant video being corrupt or throwing error, due to stopping too soon
-						// so instead just pretend we hit the max duration instead
-						if( MyDebug.LOG )
-							Log.d(TAG, "hit max filesize, but max time duration is also set, with remaining time less than 1s: " + video_max_duration);
-						due_to_max_filesize = false;
-					}
-				}
-			}
-			if( due_to_max_filesize || remaining_restart_video > 0 ) {
-				if( is_video ) {
-					String toast = null;
-					if( !due_to_max_filesize )
-						toast = remaining_restart_video + " " + getContext().getResources().getString(R.string.repeats_to_go);
-					takePicture(due_to_max_filesize);
-					if( !due_to_max_filesize ) {
-						showToast(null, toast); // show the toast afterwards, as we're hogging the UI thread here, and media recorder takes time to start up
-						// must decrement after calling takePicture(), so that takePicture() doesn't reset the value of remaining_restart_video
-						remaining_restart_video--;
-					}
-				}
-				else {
-					remaining_restart_video = 0;
-				}
-			}
-		}
 	}
 
 	private void reconnectCamera(boolean quiet) {
@@ -928,10 +783,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 				// not safe to call closeCamera, as any call to getParameters may cause a RuntimeException
 				// update: can no longer reproduce failures on Nexus 7?!
 				this.is_preview_started = false;
-				if( !quiet ) {
-					CamcorderProfile profile = getCamcorderProfile();
-					applicationInterface.onVideoRecordStopError(profile);
-				}
 				camera_controller.release();
 				camera_controller = null;
 				openCamera();
@@ -965,9 +816,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		applicationInterface.cameraClosed();
 		cancelTimer();
 		if( camera_controller != null ) {
-			if( video_recorder != null ) {
-				stopVideo(false);
-			}
 			// make sure we're into continuous video mode for closing
 			// workaround for bug on Samsung Galaxy S5 with UHD, where if the user switches to another (non-continuous-video) focus mode, then goes to Settings, then returns and records video, the preview freezes and the video is corrupted
 			// so to be safe, we always reset to continuous video mode
@@ -1305,13 +1153,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		setupCameraParameters();
 
 		// now switch to video if saved
-		boolean saved_is_video = applicationInterface.isVideoPref();
-		if( MyDebug.LOG ) {
-			Log.d(TAG, "saved_is_video: " + saved_is_video);
-		}
-		if( saved_is_video != this.is_video ) {
-			this.switchVideo(true);
-		}
 
 		if( do_startup_focus && using_android_l && camera_controller.supportsAutoFocus() ) {
 			// need to switch flash off for autofocus - and for Android L, need to do this before starting preview (otherwise it won't work in time); for old camera API, need to do this after starting preview!
@@ -1364,12 +1205,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 			zoomTo(applicationInterface.getZoomPref());
 			if( MyDebug.LOG ) {
 				Log.d(TAG, "setupCamera: total time after zoomTo: " + (System.currentTimeMillis() - debug_time));
-			}
-		}
-
-		if( take_photo ) {
-			if( this.is_video ) {
-				this.switchVideo(false); // set during_startup to false, as we now need to reset the preview
 			}
 		}
 
@@ -1524,15 +1359,7 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		{
 			if( MyDebug.LOG )
 				Log.d(TAG, "set up video stabilization");
-			if( this.supports_video_stabilization ) {
-				boolean using_video_stabilization = applicationInterface.getVideoStabilizationPref();
-				if( MyDebug.LOG )
-					Log.d(TAG, "using_video_stabilization?: " + using_video_stabilization);
-				camera_controller.setVideoStabilization(using_video_stabilization);
 			}
-			if( MyDebug.LOG )
-				Log.d(TAG, "supports_video_stabilization?: " + supports_video_stabilization);
-		}
 		if( MyDebug.LOG ) {
 			Log.d(TAG, "setupCameraParameters: time after video stabilization: " + (System.currentTimeMillis() - debug_time));
 		}
@@ -1788,49 +1615,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 			Log.d(TAG, "setupCameraParameters: time after video sizes: " + (System.currentTimeMillis() - debug_time));
 		}
 
-		String video_quality_value_s = applicationInterface.getVideoQualityPref();
-		if( MyDebug.LOG )
-			Log.d(TAG, "video_quality_value: " + video_quality_value_s);
-		video_quality_handler.setCurrentVideoQualityIndex(-1);
-		if( video_quality_value_s.length() > 0 ) {
-			// parse the saved video quality, and make sure it is still valid
-			// now find value in valid list
-			for(int i=0;i<video_quality_handler.getSupportedVideoQuality().size() && video_quality_handler.getCurrentVideoQualityIndex()==-1;i++) {
-				if( video_quality_handler.getSupportedVideoQuality().get(i).equals(video_quality_value_s) ) {
-					video_quality_handler.setCurrentVideoQualityIndex(i);
-					if( MyDebug.LOG )
-						Log.d(TAG, "set current_video_quality to: " + video_quality_handler.getCurrentVideoQualityIndex());
-				}
-			}
-			if( video_quality_handler.getCurrentVideoQualityIndex() == -1 ) {
-				if( MyDebug.LOG )
-					Log.e(TAG, "failed to find valid video_quality");
-			}
-		}
-		if( video_quality_handler.getCurrentVideoQualityIndex() == -1 && video_quality_handler.getSupportedVideoQuality().size() > 0 ) {
-			// default to FullHD if available, else pick highest quality
-			// (FullHD will give smaller file sizes and generally give better performance than 4K so probably better for most users; also seems to suffer from less problems when using manual ISO in Camera2 API)
-			video_quality_handler.setCurrentVideoQualityIndex(0); // start with highest quality
-			for(int i=0;i<video_quality_handler.getSupportedVideoQuality().size();i++) {
-				if( MyDebug.LOG )
-					Log.d(TAG, "check video quality: " + video_quality_handler.getSupportedVideoQuality().get(i));
-				CamcorderProfile profile = getCamcorderProfile(video_quality_handler.getSupportedVideoQuality().get(i));
-				if( profile.videoFrameWidth == 1920 && profile.videoFrameHeight == 1080 ) {
-					video_quality_handler.setCurrentVideoQualityIndex(i);
-					break;
-				}
-			}
-			if( MyDebug.LOG )
-				Log.d(TAG, "set video_quality value to " + video_quality_handler.getCurrentVideoQuality());
-		}
-		if( video_quality_handler.getCurrentVideoQualityIndex() != -1 ) {
-			// now save, so it's available for PreferenceActivity
-			applicationInterface.setVideoQualityPref(video_quality_handler.getCurrentVideoQuality());
-		}
-		if( MyDebug.LOG ) {
-			Log.d(TAG, "setupCameraParameters: time after handling video quality: " + (System.currentTimeMillis() - debug_time));
-		}
-
 		{
 			if( MyDebug.LOG ) {
 				Log.d(TAG, "set up flash");
@@ -1948,18 +1732,7 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		}
 		// first set picture size (for photo mode, must be done now so we can set the picture size from this; for video, doesn't really matter when we set it)
 		CameraController.Size new_size = null;
-		if( this.is_video ) {
-			// In theory, the picture size shouldn't matter in video mode, but the stock Android camera sets a picture size
-			// which is the largest that matches the video's aspect ratio.
-			// This seems necessary to work around an aspect ratio bug introduced in Android 4.4.3 (on Nexus 7 at least): http://code.google.com/p/android/issues/detail?id=70830
-			// which results in distorted aspect ratio on preview and recorded video!
-			CamcorderProfile profile = getCamcorderProfile();
-			if( MyDebug.LOG )
-				Log.d(TAG, "video size: " + profile.videoFrameWidth + " x " + profile.videoFrameHeight);
-			double targetRatio = ((double)profile.videoFrameWidth) / (double)profile.videoFrameHeight;
-			new_size = getOptimalVideoPictureSize(sizes, targetRatio);
-		}
-		else {
+		{
 			if( current_size_index != -1 ) {
 				new_size = sizes.get(current_size_index);
 			}
@@ -2107,90 +1880,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		return camcorder_profile;
 	}
 
-	public CamcorderProfile getCamcorderProfile() {
-		// 4K UHD video is not yet supported by Android API (at least testing on Samsung S5 and Note 3, they do not return it via getSupportedVideoSizes(), nor via a CamcorderProfile (either QUALITY_HIGH, or anything else)
-		// but it does work if we explicitly set the resolution (at least tested on an S5)
-		if( camera_controller == null ) {
-			if( MyDebug.LOG )
-				Log.d(TAG, "camera not opened!");
-			return CamcorderProfile.get(0, CamcorderProfile.QUALITY_HIGH);
-		}
-		CamcorderProfile profile;
-		int cameraId = camera_controller.getCameraId();
-		if( applicationInterface.getForce4KPref() ) {
-			if( MyDebug.LOG )
-				Log.d(TAG, "force 4K UHD video");
-			profile = CamcorderProfile.get(cameraId, CamcorderProfile.QUALITY_HIGH);
-			profile.videoFrameWidth = 3840;
-			profile.videoFrameHeight = 2160;
-			profile.videoBitRate = (int)(profile.videoBitRate*2.8); // need a higher bitrate for the better quality - this is roughly based on the bitrate used by an S5's native camera app at 4K (47.6 Mbps, compared to 16.9 Mbps which is what's returned by the QUALITY_HIGH profile)
-		}
-		else if( this.video_quality_handler.getCurrentVideoQualityIndex() != -1 ) {
-			profile = getCamcorderProfile(this.video_quality_handler.getCurrentVideoQuality());
-		}
-		else {
-			profile = CamcorderProfile.get(cameraId, CamcorderProfile.QUALITY_HIGH);
-		}
-
-		String bitrate_value = applicationInterface.getVideoBitratePref();
-		if( !bitrate_value.equals("default") ) {
-			try {
-				int bitrate = Integer.parseInt(bitrate_value);
-				if( MyDebug.LOG )
-					Log.d(TAG, "bitrate: " + bitrate);
-				profile.videoBitRate = bitrate;
-			}
-			catch(NumberFormatException exception) {
-				if( MyDebug.LOG )
-					Log.d(TAG, "bitrate invalid format, can't parse to int: " + bitrate_value);
-			}
-		}
-
-		String fps_value = applicationInterface.getVideoFPSPref();
-		if( !fps_value.equals("default") ) {
-			try {
-				int fps = Integer.parseInt(fps_value);
-				if( MyDebug.LOG )
-					Log.d(TAG, "fps: " + fps);
-				profile.videoFrameRate = fps;
-			}
-			catch(NumberFormatException exception) {
-				if( MyDebug.LOG )
-					Log.d(TAG, "fps invalid format, can't parse to int: " + fps_value);
-			}
-		}
-
-		/*String pref_video_output_format = applicationInterface.getRecordVideoOutputFormatPref();
-		if( MyDebug.LOG )
-			Log.d(TAG, "pref_video_output_format: " + pref_video_output_format);
-		if( pref_video_output_format.equals("output_format_default") ) {
-			// n.b., although there is MediaRecorder.OutputFormat.DEFAULT, we don't explicitly set that - rather stick with what is default in the CamcorderProfile
-		}
-		else if( pref_video_output_format.equals("output_format_aac_adts") ) {
-			profile.fileFormat = MediaRecorder.OutputFormat.AAC_ADTS;
-		}
-		else if( pref_video_output_format.equals("output_format_amr_nb") ) {
-			profile.fileFormat = MediaRecorder.OutputFormat.AMR_NB;
-		}
-		else if( pref_video_output_format.equals("output_format_amr_wb") ) {
-			profile.fileFormat = MediaRecorder.OutputFormat.AMR_WB;
-		}
-		else if( pref_video_output_format.equals("output_format_mpeg4") ) {
-			profile.fileFormat = MediaRecorder.OutputFormat.MPEG_4;
-			//video_recorder.setVideoEncoder(MediaRecorder.VideoEncoder.H264 );
-			//video_recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC );
-		}
-		else if( pref_video_output_format.equals("output_format_3gpp") ) {
-			profile.fileFormat = MediaRecorder.OutputFormat.THREE_GPP;
-		}
-		else if( pref_video_output_format.equals("output_format_webm") ) {
-			profile.fileFormat = MediaRecorder.OutputFormat.WEBM;
-			profile.videoCodec = MediaRecorder.VideoEncoder.VP8;
-			profile.audioCodec = MediaRecorder.AudioEncoder.VORBIS;
-		}*/
-
-		return profile;
-	}
 
 	private static String formatFloatToString(final float f) {
 		final int i=(int)f;
@@ -2280,15 +1969,7 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		// should always use wysiwig for video mode, otherwise we get incorrect aspect ratio shown when recording video (at least on Galaxy Nexus, e.g., at 640x480)
 		// also not using wysiwyg mode with video caused corruption on Samsung cameras (tested with Samsung S3, Android 4.3, front camera, infinity focus)
 		if( preview_size.equals("preference_preview_size_wysiwyg") || this.is_video ) {
-			if( this.is_video ) {
-				if( MyDebug.LOG )
-					Log.d(TAG, "set preview aspect ratio from video size (wysiwyg)");
-				CamcorderProfile profile = getCamcorderProfile();
-				if( MyDebug.LOG )
-					Log.d(TAG, "video size: " + profile.videoFrameWidth + " x " + profile.videoFrameHeight);
-				targetRatio = ((double)profile.videoFrameWidth) / (double)profile.videoFrameHeight;
-			}
-			else {
+			{
 				if( MyDebug.LOG )
 					Log.d(TAG, "set preview aspect ratio from photo size (wysiwyg)");
 				CameraController.Size picture_size = camera_controller.getPictureSize();
@@ -2957,150 +2638,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		return new int[]{selected_min_fps, selected_max_fps};
 	}
 
-	/* It's important to set a preview FPS using chooseBestPreviewFps() rather than just leaving it to the default, as some devices
-	 * have a poor choice of default - e.g., Nexus 5 and Nexus 6 on original Camera API default to (15000, 15000), which means very dark
-	 * preview and photos in low light, as well as a less smooth framerate in good light.
-	 * See http://stackoverflow.com/questions/18882461/why-is-the-default-android-camera-preview-smoother-than-my-own-camera-preview .
-	 */
-	private void setPreviewFps() {
-		if( MyDebug.LOG )
-			Log.d(TAG, "setPreviewFps()");
-		CamcorderProfile profile = getCamcorderProfile();
-		List<int []> fps_ranges = camera_controller.getSupportedPreviewFpsRange();
-		if( fps_ranges == null || fps_ranges.size() == 0 ) {
-			if( MyDebug.LOG )
-				Log.d(TAG, "fps_ranges not available");
-			return;
-		}
-		int [] selected_fps;
-		if( this.is_video ) {
-			// For Nexus 5 and Nexus 6, we need to set the preview fps using matchPreviewFpsToVideo to avoid problem of dark preview in low light, as described above.
-			// When the video recording starts, the preview automatically adjusts, but still good to avoid too-dark preview before the user starts recording.
-			// However I'm wary of changing the behaviour for all devices at the moment, since some devices can be
-			// very picky about what works when it comes to recording video - e.g., corruption in preview or resultant video.
-			// So for now, I'm just fixing the Nexus 5/6 behaviour without changing behaviour for other devices. Later we can test on other devices, to see if we can
-			// use chooseBestPreviewFps() more widely.
-			// Update for v1.31: we no longer seem to need this - I no longer get a dark preview in photo or video mode if we don't set the fps range;
-			// but leaving the code as it is, to be safe.
-			boolean preview_too_dark = Build.MODEL.equals("Nexus 5") || Build.MODEL.equals("Nexus 6");
-			String fps_value = applicationInterface.getVideoFPSPref();
-			if( MyDebug.LOG ) {
-				Log.d(TAG, "preview_too_dark? " + preview_too_dark);
-				Log.d(TAG, "fps_value: " + fps_value);
-			}
-			if( fps_value.equals("default") && preview_too_dark ) {
-				selected_fps = chooseBestPreviewFps(fps_ranges);
-			}
-			else {
-				selected_fps = matchPreviewFpsToVideo(fps_ranges, profile.videoFrameRate*1000);
-			}
-		}
-		else {
-			// note that setting an fps here in continuous video focus mode causes preview to not restart after taking a photo on Galaxy Nexus
-			// but we need to do this, to get good light for Nexus 5 or 6
-			// we could hardcode behaviour like we do for video, but this is the same way that Google Camera chooses preview fps for photos
-			// or I could hardcode behaviour for Galaxy Nexus, but since it's an old device (and an obscure bug anyway - most users don't really need continuous focus in photo mode), better to live with the bug rather than complicating the code
-			// Update for v1.29: this doesn't seem to happen on Galaxy Nexus with continuous picture focus mode, which is what we now use
-			// Update for v1.31: we no longer seem to need this - I no longer get a dark preview in photo or video mode if we don't set the fps range;
-			// but leaving the code as it is, to be safe.
-			selected_fps = chooseBestPreviewFps(fps_ranges);
-		}
-		camera_controller.setPreviewFpsRange(selected_fps[0], selected_fps[1]);
-	}
-
-	public void switchVideo(boolean during_startup) {
-		if( MyDebug.LOG )
-			Log.d(TAG, "switchVideo()");
-		if( camera_controller == null ) {
-			if( MyDebug.LOG )
-				Log.d(TAG, "camera not opened!");
-			return;
-		}
-		boolean old_is_video = is_video;
-		if( this.is_video ) {
-			if( video_recorder != null ) {
-				stopVideo(false);
-			}
-			this.is_video = false;
-		}
-		else {
-			if( this.isOnTimer() ) {
-				cancelTimer();
-				this.is_video = true;
-			}
-			//else if( this.is_taking_photo ) {
-			else if( this.phase == PHASE_TAKING_PHOTO ) {
-				// wait until photo taken
-				if( MyDebug.LOG )
-					Log.d(TAG, "wait until photo taken");
-			}
-			else {
-				this.is_video = true;
-			}
-		}
-
-		if( is_video != old_is_video ) {
-			setFocusPref(false); // first restore the saved focus for the new photo/video mode; don't do autofocus, as it'll be cancelled when restarting preview
-			/*if( !is_video ) {
-				// changing from video to photo mode
-				setFocusPref(false); // first restore the saved focus for the new photo/video mode; don't do autofocus, as it'll be cancelled when restarting preview
-			}*/
-
-			if( !during_startup ) {
-				// now save
-				applicationInterface.setVideoPref(is_video);
-			}
-
-			if( !during_startup ) {
-				String focus_value = current_focus_index != -1 ? supported_focus_values.get(current_focus_index) : null;
-				if( MyDebug.LOG )
-					Log.d(TAG, "focus_value is " + focus_value);
-				if( !is_video && focus_value != null && focus_value.equals("focus_mode_continuous_picture") ) {
-					if( MyDebug.LOG )
-						Log.d(TAG, "restart camera due to returning to continuous picture mode from video mode");
-					// workaround for bug on Nexus 6 at least where switching to video and back to photo mode causes continuous picture mode to stop
-					this.onPause();
-					this.onResume();
-				}
-				else {
-					if( this.is_preview_started ) {
-						camera_controller.stopPreview();
-						this.is_preview_started = false;
-					}
-					setPreviewSize();
-					// always start the camera preview, even if it was previously paused (also needed to update preview fps)
-					this.startCameraPreview();
-				}
-			}
-
-			/*if( is_video ) {
-				// changing from photo to video mode
-				setFocusPref(false);
-			}*/
-			if( is_video ) {
-				if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ) {
-					// check for audio permission now, rather than when user starts video recording
-					// we restrict the checks to Android 6 or later just in case, see note in LocationSupplier.setupLocationListener()
-					if( MyDebug.LOG )
-						Log.d(TAG, "check for record audio permission");
-					if( ContextCompat.checkSelfPermission(getContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED ) {
-						if( MyDebug.LOG )
-							Log.d(TAG, "record audio permission not available");
-						applicationInterface.requestRecordAudioPermission();
-						// we can now carry on - if the user starts recording video, we'll check then if the permission was granted
-					}
-				}
-			}
-		}
-	}
-
-	private boolean focusIsVideo() {
-		if( camera_controller != null ) {
-			return camera_controller.focusIsVideo();
-		}
-		return false;
-	}
-
 	private void setFocusPref(boolean auto_focus) {
 		if( MyDebug.LOG )
 			Log.d(TAG, "setFocusPref()");
@@ -3135,53 +2672,16 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 			Log.d(TAG, "updateFocusForVideo()");
 		String old_focus_mode = null;
 		if( this.supported_focus_values != null && camera_controller != null && is_video ) {
-			boolean focus_is_video = focusIsVideo();
-			if( MyDebug.LOG ) {
-				Log.d(TAG, "focus_is_video: " + focus_is_video + " , is_video: " + is_video);
-			}
-			if( focus_is_video != is_video ) {
 				if( MyDebug.LOG )
 					Log.d(TAG, "need to change focus mode");
 				old_focus_mode = this.getCurrentFocusValue();
 				updateFocus("focus_mode_continuous_video", true, false, false); // don't save, as we're just changing focus mode temporarily for the Samsung S5 video hack
-			}
+
 		}
 		return old_focus_mode;
 	}
 
-	public String getErrorFeatures(CamcorderProfile profile) {
-		boolean was_4k = false, was_bitrate = false, was_fps = false;
-		if( profile.videoFrameWidth == 3840 && profile.videoFrameHeight == 2160 && applicationInterface.getForce4KPref() ) {
-			was_4k = true;
-		}
-		String bitrate_value = applicationInterface.getVideoBitratePref();
-		if( !bitrate_value.equals("default") ) {
-			was_bitrate = true;
-		}
-		String fps_value = applicationInterface.getVideoFPSPref();
-		if( !fps_value.equals("default") ) {
-			was_fps = true;
-		}
-		String features = "";
-		if( was_4k || was_bitrate || was_fps ) {
-			if( was_4k ) {
-				features = "4K UHD";
-			}
-			if( was_bitrate ) {
-				if( features.length() == 0 )
-					features = "Bitrate";
-				else
-					features += "/Bitrate";
-			}
-			if( was_fps ) {
-				if( features.length() == 0 )
-					features = "Frame rate";
-				else
-					features += "/Frame rate";
-			}
-		}
-		return features;
-	}
+
 
 	public void updateFlash(String focus_value) {
 		if( MyDebug.LOG )
@@ -3426,22 +2926,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		}
 	}
 
-	public void toggleExposureLock() {
-		if( MyDebug.LOG )
-			Log.d(TAG, "toggleExposureLock()");
-		// n.b., need to allow when recording video, so no check on PHASE_TAKING_PHOTO
-		if( camera_controller == null ) {
-			if( MyDebug.LOG )
-				Log.d(TAG, "camera not opened!");
-			return;
-		}
-		if( is_exposure_lock_supported ) {
-			is_exposure_locked = !is_exposure_locked;
-			cancelAutoFocus();
-			camera_controller.setAutoExposureLock(is_exposure_locked);
-		}
-	}
-
 	/** User has clicked the "take picture" button (or equivalent GUI operation).
 	 */
 	public void takePicturePressed() {
@@ -3471,26 +2955,14 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		}
 		//if( is_taking_photo ) {
 		if( this.phase == PHASE_TAKING_PHOTO ) {
-			if( is_video ) {
-				if( !video_start_time_set || System.currentTimeMillis() - video_start_time < 500 ) {
-					// if user presses to stop too quickly, we ignore
-					// firstly to reduce risk of corrupt video files when stopping too quickly (see RuntimeException we have to catch in stopVideo),
-					// secondly, to reduce a backlog of events which slows things down, if user presses start/stop repeatedly too quickly
-					if( MyDebug.LOG )
-						Log.d(TAG, "ignore pressing stop video too quickly after start");
-				}
-				else {
-					stopVideo(false);
-				}
-			}
-			else {
+
 				if( MyDebug.LOG )
 					Log.d(TAG, "already taking a photo");
 				if( remaining_burst_photos != 0 ) {
 					remaining_burst_photos = 0;
 					showToast(take_photo_toast, R.string.cancelled_burst_mode);
 				}
-			}
+
 			return;
 		}
 
@@ -3579,88 +3051,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		beepTimer.schedule(beepTimerTask = new BeepTimerTask(), 0, 1000);
 	}
 
-	private void flashVideo() {
-		if( MyDebug.LOG )
-			Log.d(TAG, "flashVideo");
-		// getFlashValue() may return "" if flash not supported!
-		String flash_value = camera_controller.getFlashValue();
-		if( flash_value.length() == 0 )
-			return;
-		String flash_value_ui = getCurrentFlashValue();
-		if( flash_value_ui == null )
-			return;
-		if( flash_value_ui.equals("flash_torch") )
-			return;
-		if( flash_value.equals("flash_torch") ) {
-			// shouldn't happen? but set to what the UI is
-			cancelAutoFocus();
-			camera_controller.setFlashValue(flash_value_ui);
-			return;
-		}
-		// turn on torch
-		cancelAutoFocus();
-		camera_controller.setFlashValue("flash_torch");
-		try {
-			Thread.sleep(100);
-		}
-		catch(InterruptedException e) {
-			e.printStackTrace();
-		}
-		// turn off torch
-		cancelAutoFocus();
-		camera_controller.setFlashValue(flash_value_ui);
-	}
-
-	private void onVideoInfo(int what, int extra) {
-		if( MyDebug.LOG )
-			Log.d(TAG, "onVideoInfo: " + what + " extra: " + extra);
-		if( what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED && video_restart_on_max_filesize ) {
-			if( MyDebug.LOG )
-				Log.d(TAG, "restart due to max filesize reached");
-			Activity activity = (Activity)Preview.this.getContext();
-			activity.runOnUiThread(new Runnable() {
-				public void run() {
-					// we run on main thread to avoid problem of camera closing at the same time
-					// but still need to check that the camera hasn't closed
-					if( camera_controller != null )
-						restartVideo(true);
-					else {
-						if( MyDebug.LOG )
-							Log.d(TAG, "don't restart video, as already cancelled");
-					}
-				}
-			});
-		}
-		else if( what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_DURATION_REACHED ) {
-			if( MyDebug.LOG )
-				Log.d(TAG, "reached max duration - see if we need to restart?");
-			Activity activity = (Activity)Preview.this.getContext();
-			activity.runOnUiThread(new Runnable() {
-				public void run() {
-					// we run on main thread to avoid problem of camera closing at the same time
-					// but still need to check that the camera hasn't closed
-					if( camera_controller != null )
-						restartVideo(false); // n.b., this will only restart if remaining_restart_video > 0
-					else {
-						if( MyDebug.LOG )
-							Log.d(TAG, "don't restart video, as already cancelled");
-					}
-				}
-			});
-		}
-		else if( what == MediaRecorder.MEDIA_RECORDER_INFO_MAX_FILESIZE_REACHED ) {
-			stopVideo(false);
-		}
-		applicationInterface.onVideoInfo(what, extra); // call this last, so that toasts show up properly (as we're hogging the UI thread here, and mediarecorder takes time to stop)
-	}
-
-	private void onVideoError(int what, int extra) {
-		if( MyDebug.LOG )
-			Log.d(TAG, "onVideoError: " + what + " extra: " + extra);
-		stopVideo(false);
-		applicationInterface.onVideoError(what, extra); // call this last, so that toasts show up properly (as we're hogging the UI thread here, and mediarecorder takes time to stop)
-	}
-
 	/** Initiate "take picture" command. In video mode this means starting video command. In photo mode this may involve first
 	 * autofocusing.
 	 */
@@ -3710,444 +3100,9 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 			}
 		}
 
-		if( is_video ) {
-			if( MyDebug.LOG )
-				Log.d(TAG, "start video recording");
-			startVideoRecording(max_filesize_restart);
-			return;
-		}
-
 		takePhoto(false);
 		if( MyDebug.LOG )
 			Log.d(TAG, "takePicture exit");
-	}
-
-	/** Start video recording.
-	 */
-	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
-	private void startVideoRecording(boolean max_filesize_restart) {
-		focus_success = FOCUS_DONE; // clear focus rectangle (don't do for taking photos yet)
-		// initialise just in case:
-		boolean created_video_file = false;
-		video_method = ApplicationInterface.VIDEOMETHOD_FILE;
-		video_uri = null;
-		video_filename = null;
-		ParcelFileDescriptor pfd_saf = null;
-		try {
-			video_method = applicationInterface.createOutputVideoMethod();
-			if( MyDebug.LOG )
-				Log.e(TAG, "video_method? " + video_method);
-			if( video_method == ApplicationInterface.VIDEOMETHOD_FILE ) {
-				File videoFile = applicationInterface.createOutputVideoFile();
-				video_filename = videoFile.getAbsolutePath();
-				created_video_file = true;
-				if( MyDebug.LOG )
-					Log.d(TAG, "save to: " + video_filename);
-			}
-			else {
-				if( video_method == ApplicationInterface.VIDEOMETHOD_SAF ) {
-					video_uri = applicationInterface.createOutputVideoSAF();
-				}
-				else {
-					video_uri = applicationInterface.createOutputVideoUri();
-				}
-				created_video_file = true;
-				if( MyDebug.LOG )
-					Log.d(TAG, "save to: " + video_uri);
-				pfd_saf = getContext().getContentResolver().openFileDescriptor(video_uri, "rw");
-			}
-		}
-		catch(IOException e) {
-			if( MyDebug.LOG )
-				Log.e(TAG, "Couldn't create media video file; check storage permissions?");
-			e.printStackTrace();
-			applicationInterface.onFailedCreateVideoFileError();
-			this.phase = PHASE_NORMAL;
-			applicationInterface.cameraInOperation(false);
-		}
-		if( created_video_file ) {
-			CamcorderProfile profile = getCamcorderProfile();
-			if( MyDebug.LOG ) {
-				Log.d(TAG, "current_video_quality: " + this.video_quality_handler.getCurrentVideoQualityIndex());
-				if( this.video_quality_handler.getCurrentVideoQualityIndex() != -1 )
-					Log.d(TAG, "current_video_quality value: " + this.video_quality_handler.getCurrentVideoQuality());
-				Log.d(TAG, "resolution " + profile.videoFrameWidth + " x " + profile.videoFrameHeight);
-				Log.d(TAG, "bit rate " + profile.videoBitRate);
-			}
-
-			boolean enable_sound = applicationInterface.getShutterSoundPref();
-			if( MyDebug.LOG )
-				Log.d(TAG, "enable_sound? " + enable_sound);
-			camera_controller.enableShutterSound(enable_sound); // Camera2 API can disable video sound too
-			video_recorder = new MediaRecorder();
-			this.camera_controller.unlock();
-			if( MyDebug.LOG )
-				Log.d(TAG, "set video listeners");
-			video_recorder.setOnInfoListener(new MediaRecorder.OnInfoListener() {
-				@Override
-				public void onInfo(MediaRecorder mr, int what, int extra) {
-					if( MyDebug.LOG )
-						Log.d(TAG, "MediaRecorder info: " + what + " extra: " + extra);
-					final int final_what = what;
-					final int final_extra = extra;
-					Activity activity = (Activity)Preview.this.getContext();
-					activity.runOnUiThread(new Runnable() {
-						public void run() {
-							// we run on main thread to avoid problem of camera closing at the same time
-							onVideoInfo(final_what, final_extra);
-						}
-					});
-				}
-			});
-			video_recorder.setOnErrorListener(new MediaRecorder.OnErrorListener() {
-				public void onError(MediaRecorder mr, int what, int extra) {
-					final int final_what = what;
-					final int final_extra = extra;
-					Activity activity = (Activity)Preview.this.getContext();
-					activity.runOnUiThread(new Runnable() {
-						public void run() {
-							// we run on main thread to avoid problem of camera closing at the same time
-							onVideoError(final_what, final_extra);
-						}
-					});
-				}
-			});
-			camera_controller.initVideoRecorderPrePrepare(video_recorder);
-			boolean record_audio = applicationInterface.getRecordAudioPref();
-			if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED ) {
-				// needed for Android 6, in case users deny storage permission, otherwise we'll crash
-				// see https://developer.android.com/training/permissions/requesting.html
-				// we request permission when switching to video mode - if it wasn't granted, here we just switch it off
-				// we restrict check to Android 6 or later just in case, see note in LocationSupplier.setupLocationListener()
-				if( MyDebug.LOG )
-					Log.e(TAG, "don't have RECORD_AUDIO permission");
-				showToast(null, R.string.permission_record_audio_not_available);
-				record_audio = false;
-			}
-			if( record_audio ) {
-				String pref_audio_src = applicationInterface.getRecordAudioSourcePref();
-				if( MyDebug.LOG )
-					Log.d(TAG, "pref_audio_src: " + pref_audio_src);
-				int audio_source = MediaRecorder.AudioSource.CAMCORDER;
-				switch(pref_audio_src) {
-					case "audio_src_mic":
-						audio_source = MediaRecorder.AudioSource.MIC;
-						break;
-					case "audio_src_default":
-						audio_source = MediaRecorder.AudioSource.DEFAULT;
-						break;
-					case "audio_src_voice_communication":
-						audio_source = MediaRecorder.AudioSource.VOICE_COMMUNICATION;
-						break;
-				}
-				if( MyDebug.LOG )
-					Log.d(TAG, "audio_source: " + audio_source);
-				video_recorder.setAudioSource(audio_source);
-			}
-			if( MyDebug.LOG )
-				Log.d(TAG, "set video source");
-			video_recorder.setVideoSource(using_android_l ? MediaRecorder.VideoSource.SURFACE : MediaRecorder.VideoSource.CAMERA);
-
-			boolean store_location = applicationInterface.getGeotaggingPref();
-			if( store_location && applicationInterface.getLocation() != null ) {
-				Location location = applicationInterface.getLocation();
-				if( MyDebug.LOG ) {
-					Log.d(TAG, "set video location: lat " + location.getLatitude() + " long " + location.getLongitude() + " accuracy " + location.getAccuracy());
-				}
-				video_recorder.setLocation((float)location.getLatitude(), (float)location.getLongitude());
-			}
-
-			if( MyDebug.LOG )
-				Log.d(TAG, "set video profile");
-			if( record_audio ) {
-				video_recorder.setProfile(profile);
-				String pref_audio_channels = applicationInterface.getRecordAudioChannelsPref();
-				if( MyDebug.LOG )
-					Log.d(TAG, "pref_audio_channels: " + pref_audio_channels);
-				if( pref_audio_channels.equals("audio_mono") ) {
-					video_recorder.setAudioChannels(1);
-				}
-				else if( pref_audio_channels.equals("audio_stereo") ) {
-					video_recorder.setAudioChannels(2);
-				}
-			}
-			else {
-				// from http://stackoverflow.com/questions/5524672/is-it-possible-to-use-camcorderprofile-without-audio-source
-				video_recorder.setOutputFormat(profile.fileFormat);
-				video_recorder.setVideoFrameRate(profile.videoFrameRate);
-				video_recorder.setVideoSize(profile.videoFrameWidth, profile.videoFrameHeight);
-				video_recorder.setVideoEncodingBitRate(profile.videoBitRate);
-				video_recorder.setVideoEncoder(profile.videoCodec);
-			}
-			if( MyDebug.LOG ) {
-				Log.d(TAG, "video fileformat: " + profile.fileFormat);
-				Log.d(TAG, "video framerate: " + profile.videoFrameRate);
-				Log.d(TAG, "video size: " + profile.videoFrameWidth + " x " + profile.videoFrameHeight);
-				Log.d(TAG, "video bitrate: " + profile.videoBitRate);
-				Log.d(TAG, "video codec: " + profile.videoCodec);
-			}
-			boolean told_app_starting = false; // true if we called applicationInterface.startingVideo()
-			try {
-				ApplicationInterface.VideoMaxFileSize video_max_filesize = applicationInterface.getVideoMaxFileSizePref();
-				long max_filesize = video_max_filesize.max_filesize;
-				//max_filesize = 15*1024*1024; // test
-				if( max_filesize > 0 ) {
-					if( MyDebug.LOG )
-						Log.d(TAG, "set max file size of: " + max_filesize);
-					try {
-						video_recorder.setMaxFileSize(max_filesize);
-					}
-					catch(RuntimeException e) {
-						// Google Camera warns this can happen - for example, if 64-bit filesizes not supported
-						if( MyDebug.LOG )
-							Log.e(TAG, "failed to set max filesize of: " + max_filesize);
-						e.printStackTrace();
-					}
-				}
-				video_restart_on_max_filesize = video_max_filesize.auto_restart; // note, we set this even if max_filesize==0, as it will still apply when hitting device max filesize limit
-
-				// handle restart timer
-				long video_max_duration = applicationInterface.getVideoMaxDurationPref();
-				if( MyDebug.LOG )
-					Log.d(TAG, "user preference video_max_duration: " + video_max_duration);
-				if( max_filesize_restart ) {
-					if( video_max_duration > 0 ) {
-						video_max_duration -= video_accumulated_time;
-						// this should be greater or equal to min_safe_restart_video_time, as too short remaining time should have been caught in restartVideo()
-						if( video_max_duration < min_safe_restart_video_time ) {
-							if( MyDebug.LOG )
-								Log.e(TAG, "trying to restart video with too short a time: " + video_max_duration);
-							video_max_duration = min_safe_restart_video_time;
-						}
-					}
-				}
-				else {
-					video_accumulated_time = 0;
-				}
-				if( MyDebug.LOG )
-					Log.d(TAG, "actual video_max_duration: " + video_max_duration);
-				video_recorder.setMaxDuration((int)video_max_duration);
-
-				if( video_method == ApplicationInterface.VIDEOMETHOD_FILE ) {
-					video_recorder.setOutputFile(video_filename);
-				}
-				else {
-					video_recorder.setOutputFile(pfd_saf.getFileDescriptor());
-				}
-
-				applicationInterface.cameraInOperation(true);
-				told_app_starting = true;
-				applicationInterface.startingVideo();
-        		/*if( true ) // test
-        			throw new IOException();*/
-				cameraSurface.setVideoRecorder(video_recorder);
-				video_recorder.setOrientationHint(getImageVideoRotation());
-				if( MyDebug.LOG )
-					Log.d(TAG, "about to prepare video recorder");
-				video_recorder.prepare();
-				camera_controller.initVideoRecorderPostPrepare(video_recorder);
-				if( MyDebug.LOG )
-					Log.d(TAG, "about to start video recorder");
-				video_recorder.start();
-				video_recorder_is_paused = false;
-				if( MyDebug.LOG )
-					Log.d(TAG, "video recorder started");
-				if( test_video_failure ) {
-					if( MyDebug.LOG )
-						Log.d(TAG, "test_video_failure is true");
-					throw new RuntimeException();
-				}
-				video_start_time = System.currentTimeMillis();
-				video_start_time_set = true;
-				applicationInterface.startedVideo();
-				// Don't send intent for ACTION_MEDIA_SCANNER_SCAN_FILE yet - wait until finished, so we get completed file.
-				// Don't do any further calls after applicationInterface.startedVideo() that might throw an error - instead video error
-				// should be handled by including a call to stopVideo() (since the video_recorder has started).
-			}
-			catch(IOException e) {
-				if( MyDebug.LOG )
-					Log.e(TAG, "failed to save video");
-				e.printStackTrace();
-				if( told_app_starting ) {
-					applicationInterface.stoppingVideo();
-				}
-				applicationInterface.onFailedCreateVideoFileError();
-				video_recorder.reset();
-				video_recorder.release();
-				video_recorder = null;
-				video_recorder_is_paused = false;
-				this.phase = PHASE_NORMAL;
-				applicationInterface.cameraInOperation(false);
-				this.reconnectCamera(true);
-			}
-			catch(RuntimeException e) {
-				// needed for emulator at least - although MediaRecorder not meant to work with emulator, it's good to fail gracefully
-				if( MyDebug.LOG )
-					Log.e(TAG, "runtime exception starting video recorder");
-				e.printStackTrace();
-				if( told_app_starting ) {
-					applicationInterface.stoppingVideo();
-				}
-				failedToStartVideoRecorder(profile);
-			}
-			catch(CameraControllerException e) {
-				if( MyDebug.LOG )
-					Log.e(TAG, "camera exception starting video recorder");
-				e.printStackTrace();
-				if( told_app_starting ) {
-					applicationInterface.stoppingVideo();
-				}
-				failedToStartVideoRecorder(profile);
-			}
-			catch(NoFreeStorageException e) {
-				if( MyDebug.LOG )
-					Log.e(TAG, "nofreestorageexception starting video recorder");
-				e.printStackTrace();
-				if( told_app_starting ) {
-					applicationInterface.stoppingVideo();
-				}
-				video_recorder.reset();
-				video_recorder.release();
-				video_recorder = null;
-				video_recorder_is_paused = false;
-				this.phase = PHASE_NORMAL;
-				applicationInterface.cameraInOperation(false);
-				this.reconnectCamera(true);
-				this.showToast(null, R.string.video_no_free_space);
-			}
-
-			{
-				// handle restarts
-				if( remaining_restart_video == 0 && !max_filesize_restart ) {
-					remaining_restart_video = applicationInterface.getVideoRestartTimesPref();
-					if( MyDebug.LOG )
-						Log.d(TAG, "initialised remaining_restart_video to: " + remaining_restart_video);
-				}
-
-				if( applicationInterface.getVideoFlashPref() && supportsFlash() ) {
-					class FlashVideoTimerTask extends TimerTask {
-						public void run() {
-							if( MyDebug.LOG )
-								Log.e(TAG, "FlashVideoTimerTask");
-							Activity activity = (Activity)Preview.this.getContext();
-							activity.runOnUiThread(new Runnable() {
-								public void run() {
-									// we run on main thread to avoid problem of camera closing at the same time
-									// but still need to check that the camera hasn't closed or the task halted, since TimerTask.run() started
-									if( camera_controller != null && flashVideoTimerTask != null )
-										flashVideo();
-									else {
-										if( MyDebug.LOG )
-											Log.d(TAG, "flashVideoTimerTask: don't flash video, as already cancelled");
-									}
-								}
-							});
-						}
-					}
-					flashVideoTimer.schedule(flashVideoTimerTask = new FlashVideoTimerTask(), 0, 1000);
-				}
-
-				if( applicationInterface.getVideoLowPowerCheckPref() ) {
-					/* When a device shuts down due to power off, the application will receive shutdown signals, and normally the video
-					 * should stop and be valid. However it can happen that the video ends up corrupted (I've had people telling me this
-					 * can happen; Googling finds plenty of stories of this happening on Android devices). I think the issue is that for
-					 * very large videos, a lot of time is spent processing during the MediaRecorder.stop() call - if that doesn't complete
-					 * by the time the device switches off, the video may be corrupt.
-					 * So we add an extra safety net - devices typically turn off abou 1%, but we stop video at 3% to be safe. The user
-					 * can try recording more videos after that if the want, but this reduces the risk that really long videos are entirely
-					 * lost.
-					 */
-					class BatteryCheckVideoTimerTask extends TimerTask {
-						public void run() {
-							if( MyDebug.LOG )
-								Log.d(TAG, "BatteryCheckVideoTimerTask");
-
-							// only check periodically - unclear if checking is costly in any way
-							// note that it's fine to call registerReceiver repeatedly - we pass a null receiver, so this is fine as a "one shot" use
-							Intent batteryStatus = getContext().registerReceiver(null, battery_ifilter);
-							int battery_level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
-							int battery_scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
-							double battery_frac = battery_level/(double)battery_scale;
-							if( MyDebug.LOG )
-								Log.d(TAG, "batteryCheckVideoTimerTask: battery level at: " + battery_frac);
-
-							if( battery_frac <= 0.03 ) {
-								if( MyDebug.LOG )
-									Log.d(TAG, "batteryCheckVideoTimerTask: battery at critical level, switching off video");
-								Activity activity = (Activity)Preview.this.getContext();
-								activity.runOnUiThread(new Runnable() {
-									public void run() {
-										// we run on main thread to avoid problem of camera closing at the same time
-										// but still need to check that the camera hasn't closed or the task halted, since TimerTask.run() started
-										if( camera_controller != null && batteryCheckVideoTimerTask != null ) {
-											stopVideo(false);
-											String toast = getContext().getResources().getString(R.string.video_power_critical);
-											showToast(null, toast); // show the toast afterwards, as we're hogging the UI thread here, and media recorder takes time to stop
-										}
-										else {
-											if( MyDebug.LOG )
-												Log.d(TAG, "batteryCheckVideoTimerTask: don't stop video, as already cancelled");
-										}
-									}
-								});
-							}
-						}
-					}
-					final long battery_check_interval_ms = 60 * 1000;
-					// Since we only first check after battery_check_interval_ms, this means users will get some video recorded even if the battery is already too low.
-					// But this is fine, as typically short videos won't be corrupted if the device shuts off, and good to allow users to try to record a bit more if they want.
-					batteryCheckVideoTimer.schedule(batteryCheckVideoTimerTask = new BatteryCheckVideoTimerTask(), battery_check_interval_ms, battery_check_interval_ms);
-				}
-			}
-		}
-	}
-
-	private void failedToStartVideoRecorder(CamcorderProfile profile) {
-		applicationInterface.onVideoRecordStartError(profile);
-		video_recorder.reset();
-		video_recorder.release();
-		video_recorder = null;
-		video_recorder_is_paused = false;
-		this.phase = PHASE_NORMAL;
-		applicationInterface.cameraInOperation(false);
-		this.reconnectCamera(true);
-	}
-
-	/** Pauses the video recording - or unpauses if already paused.
-	 *  This does nothing if isVideoRecording() returns false, or not on Android 7 or higher.
-	 */
-	public void pauseVideo() {
-		if( MyDebug.LOG )
-			Log.d(TAG, "pauseVideo");
-		if( Build.VERSION.SDK_INT < Build.VERSION_CODES.N ) {
-			Log.e(TAG, "pauseVideo called but requires Android N");
-		}
-		else if( this.isVideoRecording() ) {
-			if( video_recorder_is_paused ) {
-				if( MyDebug.LOG )
-					Log.d(TAG, "resuming...");
-				video_recorder.resume();
-				video_recorder_is_paused = false;
-				video_start_time = System.currentTimeMillis();
-				this.showToast(pause_video_toast, R.string.video_resume);
-			}
-			else {
-				if( MyDebug.LOG )
-					Log.d(TAG, "pausing...");
-				video_recorder.pause();
-				video_recorder_is_paused = true;
-				long last_time = System.currentTimeMillis() - video_start_time;
-				video_accumulated_time += last_time;
-				if( MyDebug.LOG ) {
-					Log.d(TAG, "last_time: " + last_time);
-					Log.d(TAG, "video_accumulated_time is now: " + video_accumulated_time);
-				}
-				this.showToast(pause_video_toast, R.string.video_pause);
-			}
-		}
-		else {
-			Log.e(TAG, "pauseVideo called but not video recording");
-		}
 	}
 
 	/** Take photo. The caller should aready have set the phase to PHASE_TAKING_PHOTO.
@@ -4748,7 +3703,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 					Log.d(TAG, "setRecordingHint: " + is_video);
 				camera_controller.setRecordingHint(this.is_video);
 			}
-			setPreviewFps();
 			try {
 				camera_controller.startPreview();
 				count_cameraStartPreview++;
