@@ -48,7 +48,11 @@ android {
     dexOptions {
         jumboMode = true
     }
-
+    externalNativeBuild {
+        ndkBuild {
+            path 'jni/Android.mk'
+        }
+    }
 }
 
 repositories {
@@ -94,5 +98,6 @@ dependencies {
     compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.5.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.facebook.android:facebook-android-sdk:4.7.0'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
 }
