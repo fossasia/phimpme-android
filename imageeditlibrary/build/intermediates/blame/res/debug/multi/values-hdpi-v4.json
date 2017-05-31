@@ -1,0 +1,28 @@
+[
+    {
+        "outputFile": "/Users/pa1pal/Documents/gsoc/phimpme/phimpme-android/imageeditlibrary/build/intermediates/res/merged/debug/values-hdpi-v4/values-hdpi-v4.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endLine": 6,
+                    "endColumn": 13,
+                    "endOffset": 327
+                },
+                "from": {
+                    "file": "/Users/pa1pal/.gradle/caches/transforms-1/files-1.1/appcompat-v7-25.3.1.aar/76b3af7ebc3aa14929dd4e234a556b26/res/values-hdpi-v4/values-hdpi-v4.xml",
+                    "position": {
+                        "startLine": 2,
+                        "startColumn": 4,
+                        "startOffset": 55,
+                        "endLine": 6,
+                        "endColumn": 13,
+                        "endOffset": 327
+                    }
+                }
+            }
+        ]
+    }
+]

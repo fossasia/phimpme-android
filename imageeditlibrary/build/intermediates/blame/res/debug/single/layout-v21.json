@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/Users/pa1pal/Documents/gsoc/phimpme/phimpme-android/imageeditlibrary/build/intermediates/res/merged/debug/layout-v21/notification_action.xml",
+        "source": "/Users/pa1pal/.gradle/caches/transforms-1/files-1.1/appcompat-v7-25.3.1.aar/76b3af7ebc3aa14929dd4e234a556b26/res/layout-v21/notification_action.xml"
+    },
+    {
+        "merged": "/Users/pa1pal/Documents/gsoc/phimpme/phimpme-android/imageeditlibrary/build/intermediates/res/merged/debug/layout-v21/notification_action_tombstone.xml",
+        "source": "/Users/pa1pal/.gradle/caches/transforms-1/files-1.1/appcompat-v7-25.3.1.aar/76b3af7ebc3aa14929dd4e234a556b26/res/layout-v21/notification_action_tombstone.xml"
+    },
+    {
+        "merged": "/Users/pa1pal/Documents/gsoc/phimpme/phimpme-android/imageeditlibrary/build/intermediates/res/merged/debug/layout-v21/notification_template_custom_big.xml",
+        "source": "/Users/pa1pal/.gradle/caches/transforms-1/files-1.1/appcompat-v7-25.3.1.aar/76b3af7ebc3aa14929dd4e234a556b26/res/layout-v21/notification_template_custom_big.xml"
+    },
+    {
+        "merged": "/Users/pa1pal/Documents/gsoc/phimpme/phimpme-android/imageeditlibrary/build/intermediates/res/merged/debug/layout-v21/notification_template_icon_group.xml",
+        "source": "/Users/pa1pal/.gradle/caches/transforms-1/files-1.1/appcompat-v7-25.3.1.aar/76b3af7ebc3aa14929dd4e234a556b26/res/layout-v21/notification_template_icon_group.xml"
+    }
+]

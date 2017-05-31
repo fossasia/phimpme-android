@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/Users/pa1pal/Documents/gsoc/phimpme/phimpme-android/imageeditlibrary/build/intermediates/res/merged/debug/color-v11/abc_background_cache_hint_selector_material_dark.xml",
+        "source": "/Users/pa1pal/.gradle/caches/transforms-1/files-1.1/appcompat-v7-25.3.1.aar/76b3af7ebc3aa14929dd4e234a556b26/res/color-v11/abc_background_cache_hint_selector_material_dark.xml"
+    },
+    {
+        "merged": "/Users/pa1pal/Documents/gsoc/phimpme/phimpme-android/imageeditlibrary/build/intermediates/res/merged/debug/color-v11/abc_background_cache_hint_selector_material_light.xml",
+        "source": "/Users/pa1pal/.gradle/caches/transforms-1/files-1.1/appcompat-v7-25.3.1.aar/76b3af7ebc3aa14929dd4e234a556b26/res/color-v11/abc_background_cache_hint_selector_material_light.xml"
+    }
+]

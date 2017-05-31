@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="fliters">
+        <item>origin</item>
+        <item>soft</item>
+        <item>black</item>
+        <item>classic</item>
+        <item>gorgeous</item>
+        <item>retro</item>
+        <item>grace</item>
+        <item>film</item>
+        <item>memory</item>
+        <item>yogurt</item>
+        <item>fleeting</item>
+        <item>shine</item>
+    </string-array>
+    <color name="hint_foreground_material_light">#009688</color>
+    <color name="main_backgroud">#333333</color>
+    <color name="materialcolorpicker__black">#000000</color>
+    <color name="materialcolorpicker__blue">#2196f3</color>
+    <color name="materialcolorpicker__dialogcolor">#009688</color>
+    <color name="materialcolorpicker__dribble">#ea4c89</color>
+    <color name="materialcolorpicker__dribbledark">#c32361</color>
+    <color name="materialcolorpicker__green">#4caf50</color>
+    <color name="materialcolorpicker__grey">#b3b3b3</color>
+    <color name="materialcolorpicker__lightgrey">#d9d9d9</color>
+    <color name="materialcolorpicker__red">#f44336</color>
+    <color name="materialcolorpicker__white">#ffffff</color>
+    <color name="white">#ffffff</color>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="bottom_banner_height">80dp</dimen>
+    <dimen name="image_edit_menu_margin">20dp</dimen>
+    <dimen name="image_edit_text_padding">7dp</dimen>
+    <dimen name="image_edit_text_size">20sp</dimen>
+    <dimen name="materialcolorpicker__activity_horizontal_margin">16dp</dimen>
+    <dimen name="materialcolorpicker__activity_vertical_margin">16dp</dimen>
+    <string name="app_name">ImageEditLibrary</string>
+    <string name="apply">apply</string>
+    <string name="auto_newline">AutoNewline</string>
+    <string name="cancel">cancel</string>
+    <string name="confirm">confirm</string>
+    <string name="crop">crop</string>
+    <string name="edit">edit</string>
+    <string name="exit_without_save">The edited image is not saved. Do you want to exit? </string>
+    <string name="fliter">fliter</string>
+    <string name="images">%d images</string>
+    <string name="input_hint">input text ...</string>
+    <string name="materialcolorpicker__app_name">Android Material Color Picker Dialog</string>
+    <string name="materialcolorpicker__btnSelectColor">Select</string>
+    <string name="materialcolorpicker__descLib">Material Color Picker Dialog</string>
+    <string name="materialcolorpicker__errHex">Hex Code Format incorrect</string>
+    <string name="materialcolorpicker__inputColor">Color:</string>
+    <string name="more">more</string>
+    <string name="no_choose">please choose a image for edit</string>
+    <string name="no_images">no found the image</string>
+    <string name="rotate">rotate</string>
+    <string name="save">save</string>
+    <string name="save_error">Save error!</string>
+    <string name="saving_image">save...</string>
+    <string name="stickers">stickers</string>
+    <string name="text">text</string>
+    <style name="popwin_anim_style">
+        <item name="android:windowEnterAnimation">@anim/menushow</item>
+        <item name="android:windowExitAnimation">@anim/menuhide</item>
+    </style>
+</resources>
