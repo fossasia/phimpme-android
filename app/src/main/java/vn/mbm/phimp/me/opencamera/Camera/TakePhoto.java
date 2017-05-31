@@ -1,4 +1,4 @@
-package vn.mbm.phimp.me.opencamera;
+package vn.mbm.phimp.me.opencamera.Camera;
 
 import android.app.Activity;
 import android.content.Intent;

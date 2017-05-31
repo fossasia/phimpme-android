@@ -10,7 +10,7 @@
     android:layout_height="match_parent"
     android:background="@color/black"
     android:layout_weight="5"
-    tools:context=".opencamera.CameraActivity">
+    tools:context=".opencamera.Camera.CameraActivity">
 
     <FrameLayout
         android:id="@+id/preview"
@@ -88,16 +88,6 @@
         android:padding="8dp"
         android:scaleType="fitCenter"
         android:src="@drawable/gallery" />
-
-    <ImageButton
-        android:id="@+id/settings"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:contentDescription="@string/action_settings"
-        android:onClick="clickedSettings"
-        android:padding="10dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/settings" />
 
     <ImageButton
         android:id="@+id/popup"

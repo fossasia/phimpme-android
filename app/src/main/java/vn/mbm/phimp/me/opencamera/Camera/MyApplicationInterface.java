@@ -1,4 +1,4 @@
-package vn.mbm.phimp.me.opencamera;
+package vn.mbm.phimp.me.opencamera.Camera;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
