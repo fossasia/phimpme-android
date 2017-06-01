@@ -2150,7 +2150,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		if( MyDebug.LOG )
 			Log.d(TAG, "cameraSetup: time after setting popup icon: " + (System.currentTimeMillis() - debug_time));
 
-		mainUI.setTakePhotoIcon();
 		mainUI.setSwitchCameraContentDescription();
 		if( MyDebug.LOG )
 			Log.d(TAG, "cameraSetup: time after setting take photo icon: " + (System.currentTimeMillis() - debug_time));

@@ -8,6 +8,7 @@ import android.media.AudioManager;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.OrientationEventListener;
 import android.view.Surface;
@@ -174,6 +175,10 @@ public class MainUI {
 		}
 
 		{
+			TypedValue outValue = new TypedValue();
+			main_activity.getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
+			int bgresourceId = outValue.resourceId;
+
 			// we use a dummy button, so that the GUI buttons keep their positioning even if the Settings button is hidden (visibility set to View.GONE)
 			View view = main_activity.findViewById(R.id.gui_anchor);
 			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)view.getLayoutParams();
@@ -196,6 +201,7 @@ public class MainUI {
 			view.setLayoutParams(layoutParams);
 			layoutParams.setMargins(icon_margin,icon_margin,icon_margin,0);
 			view.setBackgroundColor(Color.TRANSPARENT);
+			view.setBackgroundResource(bgresourceId);
 			setViewRotation(view, ui_rotation);
 	
 
@@ -209,6 +215,7 @@ public class MainUI {
 			view.setLayoutParams(layoutParams);
 			layoutParams.setMargins(icon_margin,icon_margin,icon_margin,icon_margin);
 			view.setBackgroundColor(Color.TRANSPARENT);
+			view.setBackgroundResource(bgresourceId);
 			setViewRotation(view, ui_rotation);
 
 			view = main_activity.findViewById(R.id.switch_camera);
@@ -222,6 +229,7 @@ public class MainUI {
 			view.setLayoutParams(layoutParams);
 			layoutParams.setMargins(icon_margin,icon_margin,icon_margin,icon_margin);
 			view.setBackgroundColor(Color.TRANSPARENT);
+			view.setBackgroundResource(bgresourceId);
 			setViewRotation(view, ui_rotation);
 
 			view = main_activity.findViewById(R.id.audio_control);
@@ -237,6 +245,9 @@ public class MainUI {
 			setViewRotation(view, ui_rotation);
 
 			view = main_activity.findViewById(R.id.take_photo);
+			((ImageButton)view).setImageResource(R.drawable.ic_capture);
+			((ImageButton)view).setColorFilter(Color.WHITE);
+			view.setBackgroundResource(bgresourceId);
 			setViewRotation(view, ui_rotation);
 
 			view = main_activity.findViewById(R.id.zoom);
@@ -372,8 +383,6 @@ public class MainUI {
 				}
 			}
 		}
-
-		setTakePhotoIcon();
 		// no need to call setSwitchCameraContentDescription()
 
 		if( MyDebug.LOG ) {
@@ -381,26 +390,6 @@ public class MainUI {
 		}
     }
 
-    /** Set icon for taking photos vs videos.
-	 *  Also handles content descriptions for the take photo button and switch video button.
-     */
-    public void setTakePhotoIcon() {
-		if( MyDebug.LOG )
-			Log.d(TAG, "setTakePhotoIcon()");
-		if( main_activity.getPreview() != null ) {
-			ImageButton view = (ImageButton)main_activity.findViewById(R.id.take_photo);
-			int resource;
-			int content_description;
-			if( MyDebug.LOG )
-				Log.d(TAG, "set icon to photo");
-			resource = R.drawable.take_photo_selector;
-			content_description = R.string.take_photo;
-			view.setImageResource(resource);
-			view.setContentDescription( main_activity.getResources().getString(content_description) );
-			view.setTag(resource); // for testing
-
-			}
-    }
 
     /** Set content description for switch camera button.
      */
