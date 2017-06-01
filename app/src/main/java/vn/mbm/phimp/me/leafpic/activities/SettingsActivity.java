@@ -1,5 +1,8 @@
 package vn.mbm.phimp.me.leafpic.activities;
 
+import android.app.Activity;
+import android.app.FragmentManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -35,6 +39,9 @@ import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
 
 import uz.shift.colorpicker.LineColorPicker;
 import uz.shift.colorpicker.OnColorChangedListener;
+import vn.mbm.phimp.me.opencamera.Camera.CameraActivity;
+import vn.mbm.phimp.me.opencamera.Camera.MyPreferenceFragment;
+import vn.mbm.phimp.me.opencamera.Camera.TinyDB;
 
 import static vn.mbm.phimp.me.leafpic.util.ThemeHelper.AMOLED_THEME;
 import static vn.mbm.phimp.me.leafpic.util.ThemeHelper.DARK_THEME;
@@ -103,6 +110,13 @@ public class SettingsActivity extends ThemedActivity {
                 else
                     askPasswordDialog();
 
+            }
+        });
+        /*** CAMERA ***/
+        findViewById(R.id.ll_camera).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openCameraSetting(SettingsActivity.this);
             }
         });
 
@@ -766,6 +780,7 @@ public class SettingsActivity extends ThemedActivity {
         ((IconicsImageView) findViewById(R.id.auto_update_media_Icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.use_media_mediastore_Icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.security_icon)).setColor(color);
+        ((IconicsImageView) findViewById(R.id.camera_icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.sub_scaling_Icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.map_provider_icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.media_viewer_swipe_direction_Icon)).setColor(color);
@@ -786,6 +801,7 @@ public class SettingsActivity extends ThemedActivity {
         ((TextView) findViewById(R.id.Excluded_Album_Item_Title)).setTextColor(color);
         ((TextView) findViewById(R.id.auto_update_media_Item)).setTextColor(color);
         ((TextView) findViewById(R.id.security_item_title)).setTextColor(color);
+        ((TextView) findViewById(R.id.camera_item_title)).setTextColor(color);
         ((TextView) findViewById(R.id.use_media_mediastore_Item)).setTextColor(color);
         ((TextView) findViewById(R.id.map_provider_item_title)).setTextColor(color);
         ((TextView) findViewById(R.id.media_viewer_swipe_direction_Item)).setTextColor(color);
@@ -809,5 +825,71 @@ public class SettingsActivity extends ThemedActivity {
         ((TextView) findViewById(R.id.security_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.map_provider_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.media_viewer_swipe_direction_sub)).setTextColor(color);
+        ((TextView) findViewById(R.id.camera_item_sub)).setTextColor(color);
     }
+
+    private void setLayout(){
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fm = getFragmentManager();
+        if (fm.getBackStackEntryCount() > 0) {
+            fm.popBackStack();
+            if (fm.getBackStackEntryCount()==0)
+                findViewById(R.id.ll_camera).setVisibility(View.GONE);
+                findViewById(R.id.settingAct_scrollView).setVisibility(View.VISIBLE);
+                setToolbarCamera(false);
+        }
+        else {
+            super.onBackPressed();
+        }
+    }
+
+    private void setToolbarCamera(Boolean isCamera){
+        getSupportActionBar();
+        if (isCamera)
+            toolbar.setTitle("Camera Settings");
+        else
+            toolbar.setTitle("Settings");
+
+    }
+
+    private void openDialog(final Context context){
+        AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
+        passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+
+        passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //This should br empty it will be overwrite later
+                //to avoid dismiss of the dialog on wrong password
+            }
+        });
+        final AlertDialog passwordDialog = passwordDialogBuilder.create();
+        passwordDialog.setTitle(R.string.camera_setting_title);
+        passwordDialog.setMessage("Open camera to support all options.");
+        passwordDialog.show();
+
+        passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(context, CameraActivity.class));
+            }
+        });
+
+    }
+    private void openCameraSetting(final Context context){
+        TinyDB tinyDB = new TinyDB(context);
+        if (tinyDB.getListInt("resolution_widths").size()!=0){
+            setToolbarCamera(true);
+            MyPreferenceFragment fragment = new MyPreferenceFragment();
+            getFragmentManager().beginTransaction().add(R.id.pref_container, fragment, "PREFERENCE_FRAGMENT").addToBackStack(null).commitAllowingStateLoss();
+            findViewById(R.id.settingAct_scrollView).setVisibility(View.GONE);
+        }else {
+           openDialog(context);
+        }
+    }
+
 }

@@ -11,7 +11,7 @@ import android.view.View;
 
 import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraControllerException;
-import vn.mbm.phimp.me.opencamera.MyDebug;
+import vn.mbm.phimp.me.opencamera.Camera.MyDebug;
 import vn.mbm.phimp.me.opencamera.Preview.Preview;
 
 /** Provides support for the surface used for the preview, using a TextureView.
