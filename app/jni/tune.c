@@ -148,6 +148,36 @@ void tuneVignette(Bitmap* bitmap, int val) {
 }
 
 
+void smoothenBitmap(Bitmap* src, Bitmap* dest, int r){
+    register unsigned int x,y;
+        unsigned int width = (*src).width, height = (*src).height;
+    	unsigned int length =  width*height;
+    	unsigned char* sred = (*src).red;
+    	unsigned char* sgreen = (*src).green;
+    	unsigned char* sblue = (*src).blue;
+
+    	unsigned char* dred = (*dest).red;
+        unsigned char* dgreen = (*dest).green;
+        unsigned char* dblue = (*dest).blue;
+
+        double sr,sg,sb;
+        for (y = r; y < height - r; y++){
+    	    for (x = r; x < width - r; x++ ) {
+    	        sr = sb = sg = 0.0;
+                for (int k = -r; k <= r; k++){
+                    for (int j = -r; j <= r; j++){
+                        sr += (1/(double)((2*r+1)*(2*r+1))) * sred[x-k+(y-j)*width];
+                        sg += (1/(double)((2*r+1)*(2*r+1))) * sgreen[x-k+(y-j)*width];
+                        sb += (1/(double)((2*r+1)*(2*r+1))) * sblue[x-k+(y-j)*width];
+                    }
+                }
+                dred[x+y*width] = (unsigned char)sr;
+                dgreen[x+y*width] = (unsigned char)sg;
+                dblue[x+y*width] = (unsigned char)sb;
+    	    }
+    	}
+}
+
 void tuneBlur(Bitmap* bitmap, int val) {
 	register unsigned int i;
 	unsigned int length = (*bitmap).width * (*bitmap).height;
@@ -155,9 +185,22 @@ void tuneBlur(Bitmap* bitmap, int val) {
 	unsigned char* green = (*bitmap).green;
 	unsigned char* blue = (*bitmap).blue;
 
-	for (i = length; i--; ) {
+    static Bitmap tempImg;
+    unsigned int width = (*bitmap).width, height = (*bitmap).height;
+    initBitmapMemory(&tempImg, width, height);
+    int rad = (int)val*0.07;
+    smoothenBitmap(bitmap, &tempImg, rad);
 
+    unsigned char* dred = (tempImg).red;
+    unsigned char* dgreen = (tempImg).green;
+    unsigned char* dblue = (tempImg).blue;
+
+	for (i = length; i--; ) {
+        red[i] =  truncate(dred[i]);
+        green[i] = truncate(dgreen[i]);
+        blue[i] =  truncate(dblue[i]);
 	}
+	deleteBitmap(&tempImg);
 }
 
 
@@ -167,8 +210,20 @@ void tuneSharpen(Bitmap* bitmap, int val) {
 	unsigned char* red = (*bitmap).red;
 	unsigned char* green = (*bitmap).green;
 	unsigned char* blue = (*bitmap).blue;
+    static Bitmap tempImg;
+    unsigned int width = (*bitmap).width, height = (*bitmap).height;
+    initBitmapMemory(&tempImg, width, height);
+    int rad = (int)val*0.07;
+    smoothenBitmap(bitmap, &tempImg, rad);
+
+    unsigned char* dred = (tempImg).red;
+    unsigned char* dgreen = (tempImg).green;
+    unsigned char* dblue = (tempImg).blue;
 
 	for (i = length; i--; ) {
-
+        red[i] =  truncate(red[i] + (red[i] - dred[i]));
+        green[i] = truncate(green[i] + (green[i] - dgreen[i]));
+        blue[i] =  truncate(blue[i] + (blue[i] - dblue[i]));
 	}
+	deleteBitmap(&tempImg);
 }

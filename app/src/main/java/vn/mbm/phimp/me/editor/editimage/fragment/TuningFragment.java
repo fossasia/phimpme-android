@@ -179,10 +179,12 @@ public class TuningFragment extends BaseEditFragment {
 
     private final class TuneImage extends AsyncTask<Integer, Void, Bitmap> {
         private Bitmap srcBitmap;
+        Dialog dialog;
+        int val;
 
         @Override
         protected Bitmap doInBackground(Integer... params) {
-            int val = params[0];
+            val = params[0];
             if (srcBitmap != null && !srcBitmap.isRecycled()) {
                 srcBitmap.recycle();
             }
@@ -206,6 +208,7 @@ public class TuningFragment extends BaseEditFragment {
         @Override
         protected void onPostExecute(Bitmap result) {
             super.onPostExecute(result);
+            if (dialog!=null)dialog.dismiss();
             if (result == null)
                 return;
             fliterBit = result;
@@ -215,6 +218,9 @@ public class TuningFragment extends BaseEditFragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            dialog = EditImageActivity.getLoadingDialog(getActivity(),
+                    R.string.applying, false);
+            dialog.show();
         }
 
     }
