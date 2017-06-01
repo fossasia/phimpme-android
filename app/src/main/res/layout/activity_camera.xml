@@ -25,12 +25,10 @@
         android:layout_height="80dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@null"
         android:contentDescription="@string/take_photo"
         android:onClick="clickedTakePhoto"
         android:padding="10dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/take_photo_selector" />
+        android:scaleType="fitCenter"/>
 
     <ZoomControls
         android:id="@+id/zoom"
