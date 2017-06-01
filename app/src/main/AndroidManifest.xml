@@ -9,7 +9,6 @@
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
 
     <uses-feature android:name="android.hardware.camera"/>
     <uses-feature android:name="android.hardware.microphone"/>
@@ -28,31 +27,6 @@
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.media.action.IMAGE_CAPTURE"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.media.action.IMAGE_CAPTURE_SECURE"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.media.action.STILL_IMAGE_CAMERA"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.media.action.STILL_IMAGE_CAMERA_SECURE"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.media.action.VIDEO_CAMERA"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.media.action.VIDEO_CAPTURE"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
@@ -190,12 +164,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.xinlan.imageeditlibrary.editimage.EditImageActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:windowSoftInputMode="adjustPan">
-        </activity>
-        <activity
             android:name=".leafpic.activities.SingleMediaActivity"
             android:configChanges="orientation|screenSize|uiMode|touchscreen|screenLayout"
             android:label="@string/app_name"
@@ -275,6 +243,12 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".editor.editimage.EditImageActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan"
+        </activity>
+        <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
@@ -296,16 +270,7 @@
                 android:resource="@xml/provider_paths"/>
         </provider>
 
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
-
-        <provider
-            android:name="com.facebook.FacebookContentProvider"
-            android:authorities="com.facebook.app.FacebookContentProvider1920575401558694"
-            android:exported="true"/>
-
-        <activity android:name="com.xinlan.imageeditlibrary.ShareImage">
+        <activity android:name=".shareImage">
         </activity>
     </application>
 

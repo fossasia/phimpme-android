@@ -299,9 +299,6 @@
     <color name="md_pink_A200">#FF4081</color>
     <color name="md_pink_A400">#F50057</color>
     <color name="md_pink_A700">#C51162</color>
-    <color name="style_color_primary">#2d5d82</color>
-    <color name="style_color_primary_dark">#21425d</color>
-    <color name="style_color_accent">#01bcd5</color>
 
     <color name="md_purple_100">#E1BEE7</color>
     <color name="md_purple_200">#CE93D8</color>

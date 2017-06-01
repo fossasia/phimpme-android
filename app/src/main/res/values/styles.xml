@@ -144,9 +144,9 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-    <style name="shareTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/style_color_primary</item>
-        <item name="colorPrimaryDark">@color/style_color_primary_dark</item>
-        <item name="colorAccent">@color/style_color_accent</item>
+
+    <style name="popwin_anim_style">
+        <item name="android:windowEnterAnimation">@anim/menushow</item>
+        <item name="android:windowExitAnimation">@anim/menuhide</item>
     </style>
 </resources>

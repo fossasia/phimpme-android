@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "vn.mbm.phimp.me"
-        minSdkVersion 16
+        minSdkVersion 15
         targetSdkVersion 25
         multiDexEnabled true
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
@@ -48,14 +48,17 @@ android {
     dexOptions {
         jumboMode = true
     }
-
+    externalNativeBuild {
+        ndkBuild {
+            path 'jni/Android.mk'
+        }
+    }
 }
 
 repositories {
     maven {
         url "http://dl.bintray.com/dasar/maven"
     }
-    mavenCentral()
 }
 
 dependencies {
@@ -77,7 +80,6 @@ dependencies {
     compile project(':photoview')
     compile(group: 'uz.shift', name: 'colorpicker', version: '0.5', ext: 'aar')
     //compile 'uz.shift:colorpicker:0.5@aar'
-    compile project(path: ':imageeditlibrary')
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.koushikdutta.ion:ion:2.1.7'
     compile 'com.mikepenz:iconics-core:2.8.4@aar'
@@ -93,6 +95,6 @@ dependencies {
     compile 'com.turingtechnologies.materialscrollbar:lib:10.0.3'
     compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.5.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.facebook.android:facebook-android-sdk:4.7.0'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
 }
