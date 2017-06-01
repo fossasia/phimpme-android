@@ -801,6 +801,7 @@ public class SettingsActivity extends ThemedActivity {
         ((TextView) findViewById(R.id.Excluded_Album_Item_Title)).setTextColor(color);
         ((TextView) findViewById(R.id.auto_update_media_Item)).setTextColor(color);
         ((TextView) findViewById(R.id.security_item_title)).setTextColor(color);
+        ((TextView) findViewById(R.id.camera_item_title)).setTextColor(color);
         ((TextView) findViewById(R.id.use_media_mediastore_Item)).setTextColor(color);
         ((TextView) findViewById(R.id.map_provider_item_title)).setTextColor(color);
         ((TextView) findViewById(R.id.media_viewer_swipe_direction_Item)).setTextColor(color);
