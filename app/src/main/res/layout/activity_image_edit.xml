@@ -10,6 +10,7 @@
         android:layout_height="55dp"
         android:layout_alignParentTop="true"
         android:background="#333333">
+
         <ImageView
             android:id="@+id/back_btn"
             android:layout_width="wrap_content"
@@ -20,14 +21,15 @@
             android:src="@drawable/back_arrow" />
 
         <TextView
-            android:id="@+id/share_btn"
+            android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="Share"
+            android:text="@string/app_name"
             android:textColor="#ffffff"
             android:textSize="20sp" />
+
         <ViewFlipper
             android:id="@+id/banner_flipper"
             android:layout_width="wrap_content"
@@ -44,8 +46,8 @@
                 android:gravity="center"
                 android:text="@string/save"
                 android:textColor="#ffffff"
-                android:textSize="20sp"
-                />
+                android:textSize="20sp" />
+
             <TextView
                 android:id="@+id/apply"
                 android:layout_width="wrap_content"
@@ -53,10 +55,8 @@
                 android:gravity="center"
                 android:text="@string/apply"
                 android:textColor="#ffffff"
-                android:layout_alignParentRight="true"
                 android:textSize="20sp" />
         </ViewFlipper>
-
     </FrameLayout>
 
     <vn.mbm.phimp.me.editor.editimage.view.CustomViewPager
