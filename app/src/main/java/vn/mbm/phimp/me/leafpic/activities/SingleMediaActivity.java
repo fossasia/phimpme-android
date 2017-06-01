@@ -278,10 +278,6 @@ public class SingleMediaActivity extends SharedMediaActivity {
 
         menu.findItem(R.id.action_delete).setIcon(getToolbarIcon(CommunityMaterial.Icon.cmd_delete));
         menu.findItem(R.id.action_share).setIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_share));
-        menu.findItem(R.id.action_rotate).setIcon(getToolbarIcon(CommunityMaterial.Icon.cmd_rotate_right));
-        menu.findItem(R.id.rotate_right_90).setIcon(getToolbarIcon(CommunityMaterial.Icon.cmd_rotate_right).color(getIconColor()));
-        menu.findItem(R.id.rotate_left_90).setIcon(getToolbarIcon(CommunityMaterial.Icon.cmd_rotate_left).color(getIconColor()));
-        menu.findItem(R.id.rotate_180).setIcon(getToolbarIcon(CommunityMaterial.Icon.cmd_replay).color(getIconColor()));
 
         return true;
     }
@@ -389,25 +385,6 @@ public class SingleMediaActivity extends SharedMediaActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
-            case R.id.rotate_180:
-                if (!((ImageFragment) adapter.getRegisteredFragment(getAlbum().getCurrentMediaIndex())).rotatePicture(180)) {
-                    Toast.makeText(this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
-                }
-                break;
-
-            case R.id.rotate_right_90:
-                if (!((ImageFragment) adapter.getRegisteredFragment(getAlbum().getCurrentMediaIndex())).rotatePicture(90)) {
-                    Toast.makeText(this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
-                }
-                break;
-
-            case R.id.rotate_left_90:
-                if (!((ImageFragment) adapter.getRegisteredFragment(getAlbum().getCurrentMediaIndex())).rotatePicture(-90)) {
-                    Toast.makeText(this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
-                }
-                break;
-
 
             case R.id.action_copy:
                 bottomSheetDialogFragment = new SelectAlbumBottomSheet();
