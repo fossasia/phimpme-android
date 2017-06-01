@@ -1,4 +1,4 @@
-package vn.mbm.phimp.me.opencamera;
+package vn.mbm.phimp.me.opencamera.Camera;
 
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
