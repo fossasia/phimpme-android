@@ -707,7 +707,7 @@
     <string name="about_support">Support Development</string>
     <string name="about_fossasia">Developed by <a href="http://fossasia.org/"> FOSSASIA</a> <a href="https://github.com/fossasia/phimpme-android/graphs/contributors">contributers</a>.</string>
     <string name="title_activity_accounts">AccountsActivity</string>
-    
+
     <!--EDITING IMAGE-->
     <string name="no_images">no found the image</string>
     <string name="save">save</string>
@@ -716,7 +716,6 @@
     <string name="stickers">stickers</string>
     <string name="fliter">fliter</string>
     <string name="crop">crop</string>
-
 
 
     <string name="materialcolorpicker__app_name">Android Material Color Picker Dialog</string>
@@ -748,4 +747,5 @@
 
     <string name="exit_without_save">The edited image is not saved. Do you want to exit? </string>
     <string name="confirm">confirm</string>
+    <string name="title_activity_accounts2">AccountsActivity2</string>
 </resources>
