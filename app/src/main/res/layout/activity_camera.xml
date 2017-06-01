@@ -14,34 +14,21 @@
 
     <FrameLayout
         android:id="@+id/preview"
+        android:layout_alignParentTop="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true" />
 
     <ImageButton
         android:id="@+id/take_photo"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@null"
         android:contentDescription="@string/take_photo"
         android:onClick="clickedTakePhoto"
         android:padding="10dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/take_photo_selector" />
-
-    <ImageButton
-        android:id="@+id/pause_video"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_above="@+id/take_photo"
-        android:background="@null"
-        android:contentDescription="@string/pause_video"
-        android:onClick="clickedPauseVideo"
-        android:padding="10dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/ic_pause_circle_outline_white_48dp" />
+        android:scaleType="fitCenter"/>
 
     <ZoomControls
         android:id="@+id/zoom"
@@ -79,25 +66,6 @@
         android:padding="1dp"
         android:scaleType="fitCenter" />
 
-    <ImageButton
-        android:id="@+id/gallery"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:contentDescription="@string/gallery"
-        android:onClick="clickedGallery"
-        android:padding="8dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/gallery" />
-
-    <ImageButton
-        android:id="@+id/settings"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:contentDescription="@string/action_settings"
-        android:onClick="clickedSettings"
-        android:padding="10dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/settings" />
 
     <ImageButton
         android:id="@+id/popup"
@@ -110,15 +78,6 @@
         android:src="@drawable/popup" />
 
     <ImageButton
-        android:id="@+id/exposure_lock"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:contentDescription="@string/exposure_lock"
-        android:onClick="clickedExposureLock"
-        android:padding="10dp"
-        android:scaleType="fitCenter" />
-
-    <ImageButton
         android:id="@+id/exposure"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -128,15 +87,6 @@
         android:scaleType="fitCenter"
         android:src="@drawable/ic_exposure_white_48dp" />
 
-    <ImageButton
-        android:id="@+id/switch_video"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:contentDescription="@string/switch_to_video"
-        android:onClick="clickedSwitchVideo"
-        android:padding="10dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/switch_video" />
 
     <ImageButton
         android:id="@+id/switch_camera"
@@ -157,29 +107,6 @@
         android:padding="10dp"
         android:scaleType="fitCenter"
         android:src="@drawable/ic_mic_white_48dp" />
-
-    <!-- should be at left-most -->
-    <ImageButton
-        android:id="@+id/trash"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:contentDescription="@string/trash"
-        android:onClick="clickedTrash"
-        android:padding="10dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/trash"
-        android:visibility="gone" />
-
-    <ImageButton
-        android:id="@+id/share"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:contentDescription="@string/share"
-        android:onClick="clickedShare"
-        android:padding="10dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/share"
-        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/sliders_container"
@@ -311,9 +238,7 @@
     <ScrollView
         android:id="@+id/popup_container"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/settings"
-        android:layout_toLeftOf="@+id/settings" />
+        android:layout_height="wrap_content" />
 
     <ScrollView
         android:id="@+id/hide_container"
