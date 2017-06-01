@@ -646,7 +646,6 @@ public class DrawPreview {
 
 			// RAW not enabled in HDR or ExpoBracketing modes (see note in CameraController.takePictureBurstExpoBracketing())
 			if( applicationInterface.isRawPref() &&
-					!applicationInterface.isVideoPref() && // RAW not relevant for video mode
 					applicationInterface.getPhotoMode() != MyApplicationInterface.PhotoMode.HDR &&
 					applicationInterface.getPhotoMode() != MyApplicationInterface.PhotoMode.ExpoBracketing ) {
 				icon_dest.set(location_x2, location_y, location_x2 + icon_size, location_y + icon_size);
@@ -665,7 +664,7 @@ public class DrawPreview {
 				}
 			}
 
-			if( applicationInterface.getAutoStabilisePref() && !applicationInterface.isVideoPref() ) {
+			if( applicationInterface.getAutoStabilisePref()  ) {
 				icon_dest.set(location_x2, location_y, location_x2 + icon_size, location_y + icon_size);
 				p.setStyle(Paint.Style.FILL);
 				p.setColor(Color.BLACK);
@@ -682,7 +681,7 @@ public class DrawPreview {
 				}
 			}
 
-			if( applicationInterface.getPhotoMode() == MyApplicationInterface.PhotoMode.HDR && !applicationInterface.isVideoPref() ) {
+			if( applicationInterface.getPhotoMode() == MyApplicationInterface.PhotoMode.HDR ) {
 				icon_dest.set(location_x2, location_y, location_x2 + icon_size, location_y + icon_size);
 				p.setStyle(Paint.Style.FILL);
 				p.setColor(Color.BLACK);
@@ -699,7 +698,7 @@ public class DrawPreview {
 				}
 			}
 
-			if( applicationInterface.getStampPref().equals("preference_stamp_yes") && !applicationInterface.isVideoPref() ) {
+			if( applicationInterface.getStampPref().equals("preference_stamp_yes") ) {
 				icon_dest.set(location_x2, location_y, location_x2 + icon_size, location_y + icon_size);
 				p.setStyle(Paint.Style.FILL);
 				p.setColor(Color.BLACK);
@@ -719,8 +718,7 @@ public class DrawPreview {
 			String flash_value = preview.getCurrentFlashValue();
 			// note, flash_frontscreen_auto not yet support for the flash symbol (as camera_controller.needsFlash() only returns info on the built-in actual flash, not frontscreen flash)
 			if( flash_value != null &&
-					( flash_value.equals("flash_on") || flash_value.equals("flash_red_eye") || ( flash_value.equals("flash_auto") && camera_controller.needsFlash() ) ) &&
-					!applicationInterface.isVideoPref() ) {
+					( flash_value.equals("flash_on") || flash_value.equals("flash_red_eye") || ( flash_value.equals("flash_auto") && camera_controller.needsFlash() ) ) ) {
 				long time_now = System.currentTimeMillis();
 				if( needs_flash_time != -1 ) {
 					final long fade_ms = 500;
@@ -1241,55 +1239,7 @@ public class DrawPreview {
 			canvas.drawBitmap(last_thumbnail, last_image_matrix, p);
 		}
 		
-		// note, no need to check preferences here, as we do that when setting thumbnail_anim
-		if( camera_controller != null && this.thumbnail_anim && last_thumbnail != null ) {
-			long time = System.currentTimeMillis() - this.thumbnail_anim_start_ms;
-			final long duration = 500;
-			if( time > duration ) {
-				if( MyDebug.LOG )
-					Log.d(TAG, "thumbnail_anim finished");
-				this.thumbnail_anim = false;
-			}
-			else {
-				thumbnail_anim_src_rect.left = 0;
-				thumbnail_anim_src_rect.top = 0;
-				thumbnail_anim_src_rect.right = last_thumbnail.getWidth();
-				thumbnail_anim_src_rect.bottom = last_thumbnail.getHeight();
-			    View galleryButton = main_activity.findViewById(R.id.gallery);
-				float alpha = ((float)time)/(float)duration;
 
-				int st_x = canvas.getWidth()/2;
-				int st_y = canvas.getHeight()/2;
-				int nd_x = galleryButton.getLeft() + galleryButton.getWidth()/2;
-				int nd_y = galleryButton.getTop() + galleryButton.getHeight()/2;
-				int thumbnail_x = (int)( (1.0f-alpha)*st_x + alpha*nd_x );
-				int thumbnail_y = (int)( (1.0f-alpha)*st_y + alpha*nd_y );
-
-				float st_w = canvas.getWidth();
-				float st_h = canvas.getHeight();
-				float nd_w = galleryButton.getWidth();
-				float nd_h = galleryButton.getHeight();
-				//int thumbnail_w = (int)( (1.0f-alpha)*st_w + alpha*nd_w );
-				//int thumbnail_h = (int)( (1.0f-alpha)*st_h + alpha*nd_h );
-				float correction_w = st_w/nd_w - 1.0f;
-				float correction_h = st_h/nd_h - 1.0f;
-				int thumbnail_w = (int)(st_w/(1.0f+alpha*correction_w));
-				int thumbnail_h = (int)(st_h/(1.0f+alpha*correction_h));
-				thumbnail_anim_dst_rect.left = thumbnail_x - thumbnail_w/2;
-				thumbnail_anim_dst_rect.top = thumbnail_y - thumbnail_h/2;
-				thumbnail_anim_dst_rect.right = thumbnail_x + thumbnail_w/2;
-				thumbnail_anim_dst_rect.bottom = thumbnail_y + thumbnail_h/2;
-				//canvas.drawBitmap(this.thumbnail, thumbnail_anim_src_rect, thumbnail_anim_dst_rect, p);
-				thumbnail_anim_matrix.setRectToRect(thumbnail_anim_src_rect, thumbnail_anim_dst_rect, Matrix.ScaleToFit.FILL);
-				//thumbnail_anim_matrix.reset();
-				if( ui_rotation == 90 || ui_rotation == 270 ) {
-					float ratio = ((float)last_thumbnail.getWidth())/(float)last_thumbnail.getHeight();
-					thumbnail_anim_matrix.preScale(ratio, 1.0f/ratio, last_thumbnail.getWidth()/2.0f, last_thumbnail.getHeight()/2.0f);
-				}
-				thumbnail_anim_matrix.preRotate(ui_rotation, last_thumbnail.getWidth()/2.0f, last_thumbnail.getHeight()/2.0f);
-				canvas.drawBitmap(last_thumbnail, thumbnail_anim_matrix, p);
-			}
-		}
 
 		drawUI(canvas);
 
