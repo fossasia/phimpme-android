@@ -20,6 +20,7 @@
     <dimen name="small_spacing">8dp</dimen>
     <dimen name="sub_small_spacing">5dp</dimen>
 
+
     <!---->
     <dimen name="setting_margin_end">44dp</dimen>
 
@@ -37,12 +38,8 @@
     <dimen name="card_elevation">5dp</dimen>
     <dimen name="card_spacing">10dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-
-    <!--IMAGE EDITING-->
-    <dimen name="image_edit_text_size">20sp</dimen>
-    <dimen name="image_edit_text_padding">7dp</dimen>
-    <dimen name="image_edit_menu_margin">20dp</dimen>
-    <dimen name="materialcolorpicker__activity_horizontal_margin">16dp</dimen>
-    <dimen name="materialcolorpicker__activity_vertical_margin">16dp</dimen>
-    <dimen name = "bottom_banner_height">80dp</dimen>
+    <!--Button Float-->
+    <dimen name="btn_fab_size">56dp</dimen>
+    <dimen name="btn_fab_margins">16dp</dimen>
+    <dimen name="default_elevation">8dp</dimen>
 </resources>

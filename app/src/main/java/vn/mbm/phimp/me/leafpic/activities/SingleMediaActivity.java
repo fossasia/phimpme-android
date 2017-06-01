@@ -61,6 +61,12 @@ import vn.mbm.phimp.me.leafpic.util.SecurityHelper;
 import vn.mbm.phimp.me.leafpic.util.StringUtils;
 import vn.mbm.phimp.me.leafpic.views.HackyViewPager;
 
+import com.xinlan.imageeditlibrary.editimage.EditImageActivity;
+import com.xinlan.imageeditlibrary.editimage.utils.BitmapUtils;
+import com.xinlan.imageeditlibrary.picchooser.SelectPictureActivity;
+
+import java.io.File;
+
 /**
  * Created by dnld on 18/02/16.
  */
@@ -587,6 +593,13 @@ public class SingleMediaActivity extends SharedMediaActivity {
                     public void onClick(DialogInterface dialog, int which) { } });
                 renameDialog.show();
                 break;
+
+            /*case R.id.action_edit_with:
+                Intent editIntent = new Intent(Intent.ACTION_EDIT);
+                editIntent.setDataAndType(getAlbum().getCurrentMedia().getUri(), getAlbum().getCurrentMedia().getMimeType());
+                editIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                startActivity(Intent.createChooser(editIntent, "Edit with"));
+                break;*/
 
             case R.id.action_details:
                 AlertDialog.Builder detailsDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());

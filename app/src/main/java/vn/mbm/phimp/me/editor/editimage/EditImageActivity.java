@@ -1,10 +1,13 @@
-package vn.mbm.phimp.me.editor.editimage;
+package com.xinlan.imageeditlibrary.editimage;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,32 +20,35 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.FrameLayout;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.editor.EditBaseActivity;
-import vn.mbm.phimp.me.editor.editimage.fragment.AddTextFragment;
-import vn.mbm.phimp.me.editor.editimage.fragment.CropFragment;
-import vn.mbm.phimp.me.editor.editimage.fragment.FliterListFragment;
-import vn.mbm.phimp.me.editor.editimage.fragment.MainMenuFragment;
-import vn.mbm.phimp.me.editor.editimage.fragment.PaintFragment;
-import vn.mbm.phimp.me.editor.editimage.fragment.RotateFragment;
-import vn.mbm.phimp.me.editor.editimage.fragment.StirckerFragment;
-import vn.mbm.phimp.me.editor.editimage.utils.BitmapUtils;
-import vn.mbm.phimp.me.editor.editimage.utils.FileUtil;
-import vn.mbm.phimp.me.editor.editimage.view.CropImageView;
-import vn.mbm.phimp.me.editor.editimage.view.CustomPaintView;
-import vn.mbm.phimp.me.editor.editimage.view.CustomViewPager;
-import vn.mbm.phimp.me.editor.editimage.view.RotateImageView;
-import vn.mbm.phimp.me.editor.editimage.view.StickerView;
-import vn.mbm.phimp.me.editor.editimage.view.TextStickerView;
-import vn.mbm.phimp.me.editor.editimage.view.imagezoom.ImageViewTouch;
-import vn.mbm.phimp.me.editor.editimage.view.imagezoom.ImageViewTouchBase;
-import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
+import com.xinlan.imageeditlibrary.BaseActivity;
+import com.xinlan.imageeditlibrary.R;
+import com.xinlan.imageeditlibrary.editimage.fragment.AddTextFragment;
+import com.xinlan.imageeditlibrary.editimage.fragment.CropFragment;
+import com.xinlan.imageeditlibrary.editimage.fragment.FliterListFragment;
+import com.xinlan.imageeditlibrary.editimage.fragment.MainMenuFragment;
+import com.xinlan.imageeditlibrary.editimage.fragment.PaintFragment;
+import com.xinlan.imageeditlibrary.editimage.fragment.RotateFragment;
+import com.xinlan.imageeditlibrary.editimage.fragment.StirckerFragment;
+import com.xinlan.imageeditlibrary.editimage.utils.BitmapUtils;
+import com.xinlan.imageeditlibrary.editimage.utils.FileUtil;
+import com.xinlan.imageeditlibrary.editimage.view.CropImageView;
+import com.xinlan.imageeditlibrary.editimage.view.CustomPaintView;
+import com.xinlan.imageeditlibrary.editimage.view.CustomViewPager;
+import com.xinlan.imageeditlibrary.editimage.view.RotateImageView;
+import com.xinlan.imageeditlibrary.editimage.view.StickerView;
+import com.xinlan.imageeditlibrary.editimage.view.TextStickerView;
+import com.xinlan.imageeditlibrary.editimage.view.imagezoom.ImageViewTouch;
+import com.xinlan.imageeditlibrary.editimage.view.imagezoom.ImageViewTouchBase;
+import com.xinlan.imageeditlibrary.shareImage;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 
 /**
  *  一个幽灵
@@ -62,7 +68,7 @@ import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
  *         包含 1.贴图 2.滤镜 3.剪裁 4.底图旋转 功能
  *
  */
-public class EditImageActivity extends EditBaseActivity {
+public class EditImageActivity extends BaseActivity {
     public static final String FILE_PATH = "file_path";
     public static final String EXTRA_OUTPUT = "extra_output";
     public static final String SAVE_FILE_PATH = "save_file_path";
@@ -78,7 +84,7 @@ public class EditImageActivity extends EditBaseActivity {
     public static final int MODE_PAINT = 6;//绘制模式
 
     public String filePath;// 需要编辑图片路径
-    public String saveFilePath;// 生成的新图片路径
+    public String saveFilePath;// The new generation of image path
     private int imageWidth, imageHeight;// 展示图片控件 宽 高
     private LoadImageTask mLoadImageTask;
 
@@ -93,7 +99,7 @@ public class EditImageActivity extends EditBaseActivity {
     private View backBtn;
 
     public ViewFlipper bannerFlipper;
-    private View applyBtn;// 应用按钮
+    private View applyBtn;//Apply button
     private View saveBtn;// 保存按钮
 
     public StickerView mStickerView;// 贴图层View
@@ -101,9 +107,7 @@ public class EditImageActivity extends EditBaseActivity {
     public RotateImageView mRotatePanel;// 旋转操作控件
     public TextStickerView mTextStickerView;//文本贴图显示View
     public CustomPaintView mPaintView;//涂鸦模式画板
-    @BindView(R.id.banner) FrameLayout banner;
-    @BindView(R.id.work_space) FrameLayout workSpace;
-    public ThemeHelper themeHelper;
+    public TextView mshareButton;
 
     public CustomViewPager bottomGallery;// 底部gallery
     private BottomGalleryAdapter mBottomGalleryAdapter;// 底部gallery
@@ -140,7 +144,6 @@ public class EditImageActivity extends EditBaseActivity {
         super.onCreate(savedInstanceState);
         checkInitImageLoader();
         setContentView(R.layout.activity_image_edit);
-        ButterKnife.bind(this);
         initView();
         getData();
 
@@ -165,7 +168,6 @@ public class EditImageActivity extends EditBaseActivity {
         applyBtn.setOnClickListener(new ApplyBtnClick());
         saveBtn = findViewById(R.id.save_btn);
         saveBtn.setOnClickListener(new SaveBtnClick());
-        themeHelper = new ThemeHelper(this);
 
         mainImage = (ImageViewTouch) findViewById(R.id.main_image);
         backBtn = findViewById(R.id.back_btn);// 退出按钮
@@ -181,6 +183,13 @@ public class EditImageActivity extends EditBaseActivity {
         mRotatePanel = (RotateImageView) findViewById(R.id.rotate_panel);
         mTextStickerView = (TextStickerView) findViewById(R.id.text_sticker_panel);
         mPaintView = (CustomPaintView) findViewById(R.id.custom_paint_view);
+        mshareButton = (TextView) findViewById(R.id.share_btn);
+        mshareButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareImage();
+            }
+        });
 
         // 底部gallery
         bottomGallery = (CustomViewPager) findViewById(R.id.bottom_gallery);
@@ -194,6 +203,7 @@ public class EditImageActivity extends EditBaseActivity {
         mRotateFragment = RotateFragment.newInstance();
         mAddTextFragment = AddTextFragment.newInstance();
         mPaintFragment = PaintFragment.newInstance();
+
         bottomGallery.setAdapter(mBottomGalleryAdapter);
 
 
@@ -374,10 +384,12 @@ public class EditImageActivity extends EditBaseActivity {
     private final class SaveBtnClick implements OnClickListener {
         @Override
         public void onClick(View v) {
-            if (mOpTimes == 0) {//并未修改图片
+            if (mOpTimes == 0) {//Does not modify the image
                 onSaveTaskDone();
+
             } else {
                 doSaveImage();
+                //shareImage();
             }
         }
     }// end inner class
@@ -393,7 +405,6 @@ public class EditImageActivity extends EditBaseActivity {
         mSaveImageTask = new SaveImageTask();
         mSaveImageTask.execute(mainBitmap);
     }
-
     /**
      * 切换底图Bitmap
      *
@@ -401,7 +412,7 @@ public class EditImageActivity extends EditBaseActivity {
      */
     public void changeMainBitmap(Bitmap newBit) {
         if (mainBitmap != null) {
-            if (!mainBitmap.isRecycled()) {// 回收
+            if (!mainBitmap.isRecycled()) {//Recover
                 mainBitmap.recycle();
             }
         }
@@ -445,16 +456,8 @@ public class EditImageActivity extends EditBaseActivity {
 
         FileUtil.ablumUpdate(this, saveFilePath);
         setResult(RESULT_OK, returnIntent);
-        finish();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        banner.setBackgroundColor(themeHelper.getPrimaryColor());
-        workSpace.setBackgroundColor(themeHelper.getPrimaryColor());
-        bottomGallery.setBackgroundColor(themeHelper.getPrimaryColor());
+        //shareImage();
+        //finish();
     }
 
     /**
@@ -504,5 +507,18 @@ public class EditImageActivity extends EditBaseActivity {
             }
         }
     }//end inner class
+
+    public void shareImage(){
+
+        Intent shareIntent = new Intent(EditImageActivity.this,shareImage.class);
+        shareIntent.putExtra(FILE_PATH, filePath);
+        shareIntent.putExtra(EXTRA_OUTPUT, saveFilePath);
+        shareIntent.putExtra(IMAGE_IS_EDIT, mOpTimes > 0);
+
+        FileUtil.ablumUpdate(this, saveFilePath);
+        setResult(RESULT_OK, shareIntent);
+        startActivity(shareIntent);
+
+    }
 
 }// end class
