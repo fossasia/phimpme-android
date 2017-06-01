@@ -1,9 +1,8 @@
 package vn.mbm.phimp.me.accounts
 
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
 import android.support.v7.widget.Toolbar
+import android.view.Menu
 import vn.mbm.phimp.me.R
 import vn.mbm.phimp.me.base.ThemedActivity
 import vn.mbm.phimp.me.leafpic.util.ThemeHelper
@@ -22,11 +21,11 @@ class AccountsActivity : ThemedActivity() {
         toolbar!!.setBackgroundColor(themeHelper!!.getPrimaryColor());
         getSupportActionBar()!!.setTitle(R.string.title_account);
 
-        val fab = findViewById(R.id.fab) as FloatingActionButton
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_accounts_activity, menu)
+        return true
     }
 
     override fun getContentViewId(): Int {
@@ -42,5 +41,6 @@ class AccountsActivity : ThemedActivity() {
         setNavigationBarColor(ThemeHelper.getPrimaryColor(this))
         setStatusBarColor()
     }
+
 
 }
