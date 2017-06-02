@@ -257,6 +257,7 @@
     <string name="preference_reset">Reset settings</string>
     <string name="preference_reset_summary">Reset all Open Camera settings to default</string>
     <string name="preference_reset_question">Are you sure you want to reset all Open Camera settings to default?</string>
+    <string name="camera_setting_title">Camera settings</string>
 
     <string name="about_available">Available</string>
     <string name="about_not_available">Not available</string>
@@ -535,6 +536,7 @@
 
     <string name="type_password">Insert password</string>
     <string name="security_sub">Set up a password to protect your media.</string>
+    <string name="camera_sub">Manage camera settings.</string>
     <string name="remember_password_message">Note: password changed, if you forget it you will have to clear application data.</string>
 
     <string name="apply_password_on">Use password for</string>

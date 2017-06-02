@@ -1,4 +1,4 @@
-package vn.mbm.phimp.me.opencamera;
+package vn.mbm.phimp.me.opencamera.Camera;
 
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -40,26 +40,15 @@ public class SaveLocationHistory {
         	}
         }
         // also update, just in case a new folder has been set
-		updateFolderHistory(folder_name, false); // update_icon can be false, as updateGalleryIcon() is called later in CameraActivity.onResume()
+		updateFolderHistory(folder_name); // update_icon can be false, as updateGalleryIcon() is called later in CameraActivity.onResume()
 		//updateFolderHistory("/sdcard/Pictures/OpenCameraTest");
 	}
 
-	/** Updates the save history with the current save location (should be called after changing the save location).
-     * @param folder_name The folder name to add or update in the history.
-	 * @param update_icon Whether to update the gallery icon. If false, it's the caller's responsibility to call
-	 * CameraActivity.updateGalleryIcon().
-	 */
-    void updateFolderHistory(String folder_name, boolean update_icon) {
-		updateFolderHistory(folder_name);
-		if( update_icon ) {
-			main_activity.updateGalleryIcon(); // if the folder has changed, need to update the gallery icon
-		}
-    }
 
     /** Updates the save history with the supplied folder name
      * @param folder_name The folder name to add or update in the history.
      */
-    private void updateFolderHistory(String folder_name) {
+    public void updateFolderHistory(String folder_name) {
 		if( MyDebug.LOG ) {
 			Log.d(TAG, "updateFolderHistory: " + folder_name);
 			Log.d(TAG, "save_location_history size: " + save_location_history.size());
@@ -90,7 +79,7 @@ public class SaveLocationHistory {
 		if( MyDebug.LOG )
 			Log.d(TAG, "clearFolderHistory: " + folder_name);
 		save_location_history.clear();
-		updateFolderHistory(folder_name, true); // to re-add the current choice, and save
+		updateFolderHistory(folder_name); // to re-add the current choice, and save
     }
 
     /** Writes the history to the SharedPreferences.

@@ -3,7 +3,7 @@ package vn.mbm.phimp.me.opencamera.CameraController;
 import android.hardware.Camera;
 import android.util.Log;
 
-import vn.mbm.phimp.me.opencamera.MyDebug;
+import vn.mbm.phimp.me.opencamera.Camera.MyDebug;
 
 /** Provides support using Android's original camera API
  *  android.hardware.Camera.

@@ -1,4 +1,4 @@
-package vn.mbm.phimp.me.opencamera;
+package vn.mbm.phimp.me.opencamera.Camera;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
@@ -1267,7 +1267,7 @@ public class ImageSaver extends Thread {
 
     	            if( saveUri == null ) {
     	            	// broadcast for SAF is done later, when we've actually written out the file
-    	            	storageUtils.broadcastFile(picFile, true, false, update_thumbnail);
+    	            	storageUtils.broadcastFile(picFile, true, false);
     	            	main_activity.test_last_saved_image = picFile.getAbsolutePath();
     	            }
 	            }
@@ -1300,7 +1300,7 @@ public class ImageSaver extends Thread {
                     if( real_file != null ) {
     					if( MyDebug.LOG )
     						Log.d(TAG, "broadcast file");
-    	            	storageUtils.broadcastFile(real_file, true, false, true);
+    	            	storageUtils.broadcastFile(real_file, true, true);
     	            	main_activity.test_last_saved_image = real_file.getAbsolutePath();
                     }
                     else if( !image_capture_intent ) {
@@ -1308,7 +1308,7 @@ public class ImageSaver extends Thread {
     						Log.d(TAG, "announce SAF uri");
                     	// announce the SAF Uri
                     	// (shouldn't do this for a capture intent - e.g., causes crash when calling from Google Keep)
-    	    		    storageUtils.announceUri(saveUri, true, false);
+    	    		    storageUtils.announceUri(saveUri, true);
                     }
 	            }
 	        }
@@ -1384,11 +1384,6 @@ public class ImageSaver extends Thread {
 			}
 			else {
 	    		final Bitmap thumbnail_f = thumbnail;
-		    	main_activity.runOnUiThread(new Runnable() {
-					public void run() {
-						applicationInterface.updateThumbnail(thumbnail_f);
-					}
-				});
         		if( MyDebug.LOG ) {
         			Log.d(TAG, "Save single image performance: time after creating thumbnail: " + (System.currentTimeMillis() - time_s));
         		}
@@ -1816,7 +1811,7 @@ public class ImageSaver extends Thread {
     			success = true;
         		//Uri media_uri = storageUtils.broadcastFileRaw(picFile, current_date, location);
     		    //storageUtils.announceUri(media_uri, true, false);    			
-            	storageUtils.broadcastFile(picFile, true, false, false);
+            	storageUtils.broadcastFile(picFile, true, false);
     		}
     		else {
     		    success = true;
@@ -1828,12 +1823,12 @@ public class ImageSaver extends Thread {
 						Log.d(TAG, "broadcast file");
 	        		//Uri media_uri = storageUtils.broadcastFileRaw(real_file, current_date, location);
 	    		    //storageUtils.announceUri(media_uri, true, false);
-	    		    storageUtils.broadcastFile(real_file, true, false, false);
+	    		    storageUtils.broadcastFile(real_file, true, false);
                 }
                 else {
 					if( MyDebug.LOG )
 						Log.d(TAG, "announce SAF uri");
-	    		    storageUtils.announceUri(saveUri, true, false);
+	    		    storageUtils.announceUri(saveUri, true);
                 }
             }
 

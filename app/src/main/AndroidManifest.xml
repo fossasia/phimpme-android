@@ -21,8 +21,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name=".opencamera.CameraActivity"
+        <activity android:name=".opencamera.Camera.CameraActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
@@ -32,7 +31,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".opencamera.TakePhoto"
+            android:name=".opencamera.Camera.TakePhoto"
+            android:label="@string/take_photo"
+            android:icon="@drawable/ic_launcher_take_photo"
+            android:screenOrientation="portrait"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:excludeFromRecents="true"
             android:icon="@drawable/ic_launcher_take_photo"
@@ -44,9 +46,10 @@
         <receiver
             android:name=".opencamera.MyWidgetProvider"
             android:icon="@mipmap/ic_launcher"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            android:label="@string/app_name"
+            android:name=".opencamera.Camera.MyWidgetProvider" >
+            <intent-filter >
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <!--
             <intent-filter>
@@ -61,9 +64,10 @@
         <receiver
             android:name=".opencamera.MyWidgetProviderTakePhoto"
             android:icon="@drawable/ic_launcher_take_photo"
-            android:label="@string/take_photo">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            android:label="@string/take_photo"
+            android:name=".opencamera.Camera.MyWidgetProviderTakePhoto" >
+            <intent-filter >
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
@@ -72,7 +76,7 @@
         </receiver>
         <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
         <service
-            android:name=".opencamera.MyTileService"
+            android:name="vn.mbm.phimp.me.opencamera.Camera.MyTileService"
             android:icon="@drawable/ic_photo_camera_white_48dp"
             android:label="@string/camera"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
@@ -82,7 +86,7 @@
         </service>
         <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
         <service
-            android:name=".opencamera.MyTileServiceVideo"
+            android:name="vn.mbm.phimp.me.opencamera.Camera.MyTileServiceVideo"
             android:icon="@drawable/ic_videocam_white_48dp"
             android:label="@string/record_video"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
@@ -92,7 +96,7 @@
         </service>
         <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
         <service
-            android:name=".opencamera.MyTileServiceFrontCamera"
+            android:name="vn.mbm.phimp.me.opencamera.Camera.MyTileServiceFrontCamera"
             android:icon="@drawable/ic_face_white_48dp"
             android:label="@string/selfie"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
