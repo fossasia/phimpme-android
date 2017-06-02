@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">图片编辑</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="choose_image">选择一张需要编辑的图片</string>
+    <string name="edit_image">编辑图片</string>
+    <string name="save_path">保存到路径: %s</string>
+    <string name="take_photo">拍摄照片</string>
+</resources>
