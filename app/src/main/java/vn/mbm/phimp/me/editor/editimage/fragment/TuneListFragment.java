@@ -78,6 +78,7 @@ public class TuneListFragment extends BaseEditFragment implements OnClickListene
         activity.mainImage.setImageBitmap(activity.mainBitmap);
         activity.mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
         activity.mainImage.setScaleEnabled(false);
+        activity.bannerFlipper.showNext();
         activity.bannerFlipper.setVisibility(View.INVISIBLE);
     }
 
@@ -95,7 +96,7 @@ public class TuneListFragment extends BaseEditFragment implements OnClickListene
     public void applyTuning() {
         Log.d("yo bro","tuning list frag apply");
         if (currentBitmap!=null)
-            activity.mainBitmap = currentBitmap;
+            activity.changeMainBitmap(currentBitmap);
         backToMain();
     }
 

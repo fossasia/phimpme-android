@@ -71,7 +71,6 @@ public class TuningFragment extends BaseEditFragment {
         activity.mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
         activity.mainImage.setScaleEnabled(false);
         activity.bannerFlipper.setVisibility(View.VISIBLE);
-        activity.bannerFlipper.showNext();
         mSeekBar.setProgress(50);
         switch (TuneListFragment.MODE){
             case TuneListFragment.HUE:
