@@ -3,6 +3,7 @@ package vn.mbm.phimp.me.editor.editimage.fragment;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +24,6 @@ public class TuneListFragment extends BaseEditFragment implements OnClickListene
     private View backBtn;
     public static int MODE = -1;
 
-    private Bitmap fliterBit;
     public static final int BRIGHTNESS = 0;
     public static final int CONTRAST = 1;
     public static final int HUE = 2;
@@ -73,23 +73,31 @@ public class TuneListFragment extends BaseEditFragment implements OnClickListene
 
     @Override
    public  void onShow() {
-        activity.mode = EditImageActivity.MODE_NONE;
-        activity.mainImage.setImageBitmap(activity.mainBitmap);
+        activity.mode = EditImageActivity.MODE_TUNELIST;
         activity.mTuneListFragment.setCurrentBitmap(activity.mainBitmap);
+        activity.mainImage.setImageBitmap(activity.mainBitmap);
         activity.mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
         activity.mainImage.setScaleEnabled(false);
         activity.bannerFlipper.setVisibility(View.INVISIBLE);
     }
 
     public void backToMain() {
-        fliterBit = null;
-        activity.changeMainBitmap(getCurrentBitmap());
-        //activity.mainImage.setImageBitmap(getCurrentBitmap());// 返回原图
+        Log.d("yo bro","tuning list frag back");
+        currentBitmap = null;
+        activity.mainImage.setImageBitmap(activity.mainBitmap);
         activity.mode = EditImageActivity.MODE_NONE;
         activity.bottomGallery.setCurrentItem(0);
         activity.mainImage.setScaleEnabled(true);
+        activity.bannerFlipper.showPrevious();
     }
 
+
+    public void applyTuning() {
+        Log.d("yo bro","tuning list frag apply");
+        if (currentBitmap!=null)
+            activity.mainBitmap = currentBitmap;
+        backToMain();
+    }
 
     private void setUpTuningOptions() {
         tuningOptions = getResources().getStringArray(R.array.tuneOptions);
@@ -121,7 +129,7 @@ public class TuneListFragment extends BaseEditFragment implements OnClickListene
 
     public Bitmap getCurrentBitmap() {
         if (currentBitmap==null)
-            setCurrentBitmap(activity.mainBitmap);
+            return activity.mainBitmap;
         return currentBitmap;
     }
 

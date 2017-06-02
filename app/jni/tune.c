@@ -134,17 +134,34 @@ void tuneTint(Bitmap* bitmap, int val) {
 	}
 }
 
+double dist(int ax, int ay,int bx, int by){
+    return sqrt(pow((double) (ax - bx), 2) + pow((double) (ay - by), 2));
+}
+
 
 void tuneVignette(Bitmap* bitmap, int val) {
-	register unsigned int i;
-	unsigned int length = (*bitmap).width * (*bitmap).height;
+	register unsigned int i,x,y;
+	unsigned int width = (*bitmap).width, height = (*bitmap).height;
+	unsigned int length = width * height;
 	unsigned char* red = (*bitmap).red;
 	unsigned char* green = (*bitmap).green;
 	unsigned char* blue = (*bitmap).blue;
 
-	for (i = length; i--; ) {
+    double radius = 1.5-((double)val/100), power = 0.8;
+    double cx = (double)width/2, cy = (double)height/2;
+    double maxDis = radius * dist(0,0,cx,cy);
+    double temp,temp_s;
 
-	}
+    for (y = 0; y < height; y++){
+        for (x = 0; x < width; x++ ) {
+            temp = dist(cx, cy, x, y) / maxDis;
+            temp = temp * power;
+            temp_s = pow(cos(temp), 4);
+            red[x+y*width] = truncate((int)(red[x+y*width]*temp_s));
+            green[x+y*width] = truncate((int)(green[x+y*width]*temp_s));
+            blue[x+y*width] = truncate((int)(blue[x+y*width]*temp_s));
+        }
+    }
 }
 
 

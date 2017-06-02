@@ -1,4 +1,4 @@
-package vn.mbm.phimp.me.edit;
+package vn.mbm.phimp.me.editor;
 
 import android.content.Context;
 import android.graphics.Bitmap;
