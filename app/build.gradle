@@ -100,4 +100,5 @@ dependencies {
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    compile 'com.android.support:support-v4:25.3.1'
 }
