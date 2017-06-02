@@ -350,7 +350,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 		if( MyDebug.LOG )
 			Log.d(TAG, "onCreate: total time for Activity startup: " + (System.currentTimeMillis() - debug_time));
-		getSettingDetail();
+//		getSettingDetail();
 	}
 
 
