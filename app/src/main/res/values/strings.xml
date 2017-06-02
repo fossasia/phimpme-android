@@ -4,7 +4,7 @@
     <string name="title_home">Home</string>
     <string name="title_camera">Camera</string>
     <string name="title_account">Accounts</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_add_account">Account</string>
     <string name="action_popup">Popup settings</string>
     <string name="intro_text">Touch to focus, and press the blue camera button to take photos. For more help, click Online help from Settings. Open Camera is completely free. If you like this app, please consider buying my donate app :) (see link in Settings, or Online help).\n\nPrivacy Policy: Location permission is required for geotagging, but this is disabled by default. If enabled, your location is encoded in the saved files (and it is only used for this purpose).</string>
     <string name="intro_ok">OK (This message won\'t show again)</string>
@@ -708,7 +708,7 @@
     <string name="about_support">Support Development</string>
     <string name="about_fossasia">Developed by <a href="http://fossasia.org/"> FOSSASIA</a> <a href="https://github.com/fossasia/phimpme-android/graphs/contributors">contributers</a>.</string>
     <string name="title_activity_accounts">AccountsActivity</string>
-    
+
     <!--EDITING IMAGE-->
     <string name="no_images">no found the image</string>
     <string name="save">save</string>
@@ -717,7 +717,6 @@
     <string name="stickers">stickers</string>
     <string name="fliter">fliter</string>
     <string name="crop">crop</string>
-
 
 
     <string name="materialcolorpicker__app_name">Android Material Color Picker Dialog</string>
@@ -749,4 +748,10 @@
 
     <string name="exit_without_save">The edited image is not saved. Do you want to exit? </string>
     <string name="confirm">confirm</string>
+    <string name="title_activity_accounts2">AccountsActivity2</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="account_list">Account Picker</string>
 </resources>

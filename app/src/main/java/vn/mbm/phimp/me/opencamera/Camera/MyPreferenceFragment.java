@@ -396,8 +396,10 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
 		                		editor.clear();
 		                		editor.putBoolean(PreferenceKeys.getFirstTimePreferenceKey(), true);
 		                		editor.apply();
+
 								CameraActivity main_activity = new CameraActivity();
 								main_activity.setDeviceDefaults(getActivity());
+
 		                		if( MyDebug.LOG )
 		                			Log.d(TAG, "user clicked reset - need to restart");
 		                		// see http://stackoverflow.com/questions/2470870/force-application-to-restart-on-first-activity
@@ -406,6 +408,7 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
 			                	startActivity(i);
 					        }
 			        	})
+
 
 			        	.setNegativeButton(R.string.answer_no, null)
 			        	.show();
