@@ -350,7 +350,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 		if( MyDebug.LOG )
 			Log.d(TAG, "onCreate: total time for Activity startup: " + (System.currentTimeMillis() - debug_time));
-//		getSettingDetail();
+		getSettingDetail();
 	}
 
 
@@ -738,7 +738,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 			// we do in onWindowFocusChanged rather than onResume(), to also catch when window lost focus due to notification bar being dragged down (which prevents resetting of immersive mode)
 			initImmersiveMode();
 		}
-		getSettingDetail();
 	}
 
 	@Override
