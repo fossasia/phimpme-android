@@ -15,6 +15,11 @@ import vn.mbm.phimp.me.R
 
 class AccountsPickerFragment : DialogFragment() {
 
+    fun newInstance(): AccountsPickerFragment {
+        val f = AccountsPickerFragment()
+        return f
+    }
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(activity)
         builder.setTitle(R.string.account_list)

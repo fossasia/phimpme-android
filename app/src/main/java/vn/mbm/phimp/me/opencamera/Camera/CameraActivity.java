@@ -1,6 +1,6 @@
 package vn.mbm.phimp.me.opencamera.Camera;
 
-import vn.mbm.phimp.me.base.BaseActivity;package vn.mbm.phimp.me.opencamera;
+import vn.mbm.phimp.me.base.BaseActivity;
 
 import android.Manifest;
 import android.animation.ArgbEvaluator;

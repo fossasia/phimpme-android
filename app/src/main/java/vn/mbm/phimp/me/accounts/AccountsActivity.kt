@@ -3,6 +3,7 @@ package vn.mbm.phimp.me.accounts
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
 import android.view.Menu
+import android.view.MenuItem
 import vn.mbm.phimp.me.R
 import vn.mbm.phimp.me.base.ThemedActivity
 import vn.mbm.phimp.me.leafpic.util.ThemeHelper
@@ -28,6 +29,20 @@ class AccountsActivity : ThemedActivity() {
         return true
     }
 
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId) {
+            R.id.action_add_account -> {
+                val fragmentManager = supportFragmentManager
+                val accountsPicker = AccountsPickerFragment()
+                accountsPicker.show(fragmentManager, "Accounts Picker")
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+        return true
+    }
+
     override fun getContentViewId(): Int {
         return R.layout.activity_accounts
     }
@@ -41,6 +56,4 @@ class AccountsActivity : ThemedActivity() {
         setNavigationBarColor(ThemeHelper.getPrimaryColor(this))
         setStatusBarColor()
     }
-
-
 }
