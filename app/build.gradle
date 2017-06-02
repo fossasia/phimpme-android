@@ -34,6 +34,10 @@ android {
         exclude 'org/codehaus/classworlds/uberjar/boot/Bootstrapper.class'
     }
 
+    configurations {
+        all*.exclude group: 'com.android.support', module: 'support-annotations'
+    }
+
     lintOptions {
         abortOnError false
         disable "Instantiatable"
