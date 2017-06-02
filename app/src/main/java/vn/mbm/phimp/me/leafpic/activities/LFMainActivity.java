@@ -71,7 +71,7 @@ import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.SIZE;
 import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.TYPE;
 
 
-public class LFMainActivity extends SharedMediaActivity{
+public class LFMainActivity extends SharedMediaActivity {
 
     private static String TAG = "AlbumsAct";
     private int REQUEST_CODE_SD_CARD_PERMISSIONS = 42;
@@ -924,15 +924,6 @@ public class LFMainActivity extends SharedMediaActivity{
             case R.id.all_media_filter:
                 if (!albumsMode) {
                     getAlbum().filterMedias(getApplicationContext(), FilterMode.ALL);
-                    mediaAdapter.swapDataSet(getAlbum().getMedia());
-                    item.setChecked(true);
-                    checkNothing();
-                }
-                return true;
-
-            case R.id.video_media_filter:
-                if (!albumsMode) {
-                    getAlbum().filterMedias(getApplicationContext(), FilterMode.VIDEO);
                     mediaAdapter.swapDataSet(getAlbum().getMedia());
                     item.setChecked(true);
                     checkNothing();

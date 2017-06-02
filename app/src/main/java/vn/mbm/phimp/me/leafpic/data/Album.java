@@ -128,10 +128,7 @@ public class Album implements Serializable {
 				for (Media media1 : media)
 					if (media1.isImage()) mediaArrayList.add(media1);
 				break;
-			case VIDEO:
-				for (Media media1 : media)
-					if (media1.isVideo()) mediaArrayList.add(media1);
-				break;
+
 		}
 
 		this.media = mediaArrayList;
@@ -146,10 +143,10 @@ public class Album implements Serializable {
 		if (isFromMediaStore()) {
 			mediaArrayList.addAll(
 							MediaStoreProvider.getMedia(
-											context, id, SP.getBoolean("set_include_video", true)));
+											context, id));
 		} else {
 			mediaArrayList.addAll(StorageProvider.getMedia(
-							getPath(), SP.getBoolean("set_include_video", true)));
+							getPath(), SP.getBoolean("set_include_video", false)));
 		}
 		return mediaArrayList;
 	}
