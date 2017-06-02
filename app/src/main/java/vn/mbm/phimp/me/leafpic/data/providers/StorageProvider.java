@@ -20,7 +20,7 @@ import java.util.HashSet;
 public class StorageProvider {
 
     private ArrayList<File> excludedFolders;
-    private boolean includeVideo = true;
+    private boolean includeVideo = false;
     private PreferenceUtil SP;
 
     public StorageProvider(Context context) {
