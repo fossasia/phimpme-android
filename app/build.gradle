@@ -35,7 +35,7 @@ android {
     }
 
     configurations {
-        all*.exclude group: 'com.android.support', module: 'support-annotations'
+        compile.exclude group: 'org.jetbrains' , module:'annotations'
     }
 
     lintOptions {
