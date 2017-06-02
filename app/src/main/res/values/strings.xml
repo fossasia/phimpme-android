@@ -257,6 +257,7 @@
     <string name="preference_reset">Reset settings</string>
     <string name="preference_reset_summary">Reset all Open Camera settings to default</string>
     <string name="preference_reset_question">Are you sure you want to reset all Open Camera settings to default?</string>
+    <string name="camera_setting_title">Camera settings</string>
 
     <string name="about_available">Available</string>
     <string name="about_not_available">Not available</string>

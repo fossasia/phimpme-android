@@ -12,23 +12,6 @@
             app:showAsAction="never"
             />
         <item
-            android:id="@+id/action_rotate"
-            android:orderInCategory="2"
-            android:title="@string/rotate"
-            app:showAsAction="always">
-            <menu>
-                <item
-                    android:id="@+id/rotate_right_90"
-                    android:title="@string/rotate_right_90" />
-                <item
-                    android:id="@+id/rotate_left_90"
-                    android:title="@string/rotate_left_90" />
-                <item
-                    android:id="@+id/rotate_180"
-                    android:title="@string/rotate_180" />
-            </menu>
-        </item>
-        <item
             android:id="@+id/action_use_as"
             android:title="@string/use_as"
             app:showAsAction="never"

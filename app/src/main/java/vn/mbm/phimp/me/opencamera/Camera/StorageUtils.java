@@ -3,7 +3,6 @@ package vn.mbm.phimp.me.opencamera.Camera;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -20,8 +19,6 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Images;
 import android.provider.MediaStore.Images.ImageColumns;
-import android.provider.MediaStore.Video;
-import android.provider.MediaStore.Video.VideoColumns;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
@@ -32,9 +29,6 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-//import android.content.ContentValues;
-//import android.location.Location;
-
 /** Provides access to the filesystem. Supports both standard and Storage
  *  Access Framework.
  */
@@ -42,7 +36,6 @@ public class StorageUtils {
 	private static final String TAG = "StorageUtils";
 
     static final int MEDIA_TYPE_IMAGE = 1;
-    static final int MEDIA_TYPE_VIDEO = 2;
 
 	private final Context context;
     private Uri last_media_scanned;
@@ -70,7 +63,7 @@ public class StorageUtils {
 	 *  https://developer.android.com/reference/android/app/job/JobInfo.Builder.html#addTriggerContentUri(android.app.job.JobInfo.TriggerContentUri)
 	 *  See https://github.com/owncloud/android/issues/1675 for OwnCloud's discussion on this.
 	 */
-	void announceUri(Uri uri, boolean is_new_picture, boolean is_new_video) {
+	void announceUri(Uri uri, boolean is_new_picture) {
 		if( MyDebug.LOG )
 			Log.d(TAG, "announceUri: " + uri);
 		if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.N ) {
@@ -135,29 +128,7 @@ public class StorageUtils {
     	        }
  			}*/
     	}
-    	else if( is_new_video ) {
-    		context.sendBroadcast(new Intent("android.hardware.action.NEW_VIDEO", uri));
 
-    		/*String[] CONTENT_PROJECTION = { Video.Media.DURATION }; 
-	        Cursor c = context.getContentResolver().query(uri, CONTENT_PROJECTION, null, null, null); 
-	        if( c == null ) { 
-	 			if( MyDebug.LOG )
-	 				Log.e(TAG, "Couldn't resolve given uri [1]: " + uri); 
-	        }
-	        else if( !c.moveToFirst() ) { 
-	 			if( MyDebug.LOG )
-	 				Log.e(TAG, "Couldn't resolve given uri [2]: " + uri); 
-	        }
-	        else {
-    	        long duration = c.getLong(c.getColumnIndex(Video.Media.DURATION)); 
-	 			if( MyDebug.LOG )
-	 				Log.e(TAG, "replace duration: " + duration); 
-				ContentValues values = new ContentValues(); 
-				values.put(Video.Media.DURATION, 1000); 
-				context.getContentResolver().update(uri, values, null, null);
-    	        c.close(); 
-	        }*/
-    	}
 	}
 	
 	/*public Uri broadcastFileRaw(File file, Date current_date, Location location) {
@@ -203,7 +174,7 @@ public class StorageUtils {
 	 *    This may well be intentional, since most gallery applications won't read DNG files anyway. But it's still important to
 	 *    call this function for DNGs, so that they show up on MTP.
 	 */
-    public void broadcastFile(final File file, final boolean is_new_picture, final boolean is_new_video, final boolean set_last_scanned) {
+    public void broadcastFile(final File file, final boolean is_new_picture, final boolean set_last_scanned) {
 		if( MyDebug.LOG )
 			Log.d(TAG, "broadcastFile: " + file.getAbsolutePath());
     	// note that the new method means that the new folder shows up as a file when connected to a PC via MTP (at least tested on Windows 8)
@@ -232,20 +203,7 @@ public class StorageUtils {
         		 			if( MyDebug.LOG )
         		 				Log.d(TAG, "set last_media_scanned to " + last_media_scanned);
     		 			}
-    		 			announceUri(uri, is_new_picture, is_new_video);
-
-    	    			// it seems caller apps seem to prefer the content:// Uri rather than one based on a File
-						// update for Android 7: seems that passing file uris is now restricted anyway, see https://code.google.com/p/android/issues/detail?id=203555
-    		 			Activity activity = (Activity)context;
-    		 			String action = activity.getIntent().getAction();
-    		 	        if( MediaStore.ACTION_VIDEO_CAPTURE.equals(action) ) {
-    		    			if( MyDebug.LOG )
-    		    				Log.d(TAG, "from video capture intent");
-	    		 			Intent output = new Intent();
-	    		 			output.setData(uri);
-	    		 			activity.setResult(Activity.RESULT_OK, output);
-	    		 			activity.finish();
-    		 	        }
+    		 			announceUri(uri, is_new_picture);
     		 		}
     			}
     		);
@@ -382,12 +340,6 @@ public class StorageUtils {
 			if ("image".equals(type)) {
 				contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 			}
-			else if ("video".equals(type)) {
-				contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
-			}
-			else if ("audio".equals(type)) {
-				contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-			}
 
 			final String selection = "_id=?";
 			final String[] selectionArgs = new String[] {
@@ -451,10 +403,6 @@ public class StorageUtils {
     		String prefix = sharedPreferences.getString(PreferenceKeys.getSavePhotoPrefixPreferenceKey(), "IMG_");
     		mediaFilename = prefix + timeStamp + suffix + index + "." + extension;
         }
-        else if( type == MEDIA_TYPE_VIDEO ) {
-    		String prefix = sharedPreferences.getString(PreferenceKeys.getSaveVideoPrefixPreferenceKey(), "VID_");
-    		mediaFilename = prefix + timeStamp + suffix + index + "." + extension;
-        }
         else {
         	// throw exception as this is a programming error
     		if( MyDebug.LOG )
@@ -476,7 +424,7 @@ public class StorageUtils {
         			Log.e(TAG, "failed to create directory");
         		throw new IOException();
             }
-            broadcastFile(mediaStorageDir, false, false, false);
+            broadcastFile(mediaStorageDir, false, false);
         }
 
         // Create a media file name
@@ -536,9 +484,6 @@ public class StorageUtils {
 			else
 				mimeType = "image/jpeg";
 		}
-		else if( type == MEDIA_TYPE_VIDEO ) {
-			mimeType = "video/mp4";
-		}
 		else {
 			// throw exception as this is a programming error
 			if( MyDebug.LOG )
@@ -552,23 +497,21 @@ public class StorageUtils {
 
     static class Media {
 		final long id;
-		final boolean video;
 		final Uri uri;
 		final long date;
 		final int orientation;
 
-    	Media(long id, boolean video, Uri uri, long date, int orientation) {
+    	Media(long id,  Uri uri, long date, int orientation) {
     		this.id = id;
-    		this.video = video;
     		this.uri = uri;
     		this.date = date;
     		this.orientation = orientation;
     	}
     }
 
-    private Media getLatestMedia(boolean video) {
+    public Media getLatestMedia() {
 		if( MyDebug.LOG )
-			Log.d(TAG, "getLatestMedia: " + (video ? "video" : "images"));
+			Log.d(TAG, "getLatestMedia: " + ("images"));
 		if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
 			// needed for Android 6, in case users deny storage permission, otherwise we get java.lang.SecurityException from ContentResolver.query()
 			// see https://developer.android.com/training/permissions/requesting.html
@@ -579,16 +522,16 @@ public class StorageUtils {
 			return null;
 		}
     	Media media = null;
-		Uri baseUri = video ? Video.Media.EXTERNAL_CONTENT_URI : MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+		Uri baseUri =  MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 		//Uri query = baseUri.buildUpon().appendQueryParameter("limit", "1").build();
 		Uri query = baseUri;
 		final int column_id_c = 0;
 		final int column_date_taken_c = 1;
 		final int column_data_c = 2;
 		final int column_orientation_c = 3;
-		String[] projection = video ? new String[] {VideoColumns._ID, VideoColumns.DATE_TAKEN, VideoColumns.DATA} : new String[] {ImageColumns._ID, ImageColumns.DATE_TAKEN, ImageColumns.DATA, ImageColumns.ORIENTATION};
-		String selection = video ? "" : ImageColumns.MIME_TYPE + "='image/jpeg'";
-		String order = video ? VideoColumns.DATE_TAKEN + " DESC," + VideoColumns._ID + " DESC" : ImageColumns.DATE_TAKEN + " DESC," + ImageColumns._ID + " DESC";
+		String[] projection = new String[] {ImageColumns._ID, ImageColumns.DATE_TAKEN, ImageColumns.DATA, ImageColumns.ORIENTATION};
+		String selection = ImageColumns.MIME_TYPE + "='image/jpeg'";
+		String order = ImageColumns.DATE_TAKEN + " DESC," + ImageColumns._ID + " DESC";
 		Cursor cursor = null;
 		try {
 			cursor = context.getContentResolver().query(query, projection, selection, null, order);
@@ -630,11 +573,11 @@ public class StorageUtils {
 				}
 				long id = cursor.getLong(column_id_c);
 				long date = cursor.getLong(column_date_taken_c);
-				int orientation = video ? 0 : cursor.getInt(column_orientation_c);
+				int orientation = cursor.getInt(column_orientation_c);
 				Uri uri = ContentUris.withAppendedId(baseUri, id);
 				if( MyDebug.LOG )
-					Log.d(TAG, "found most recent uri for " + (video ? "video" : "images") + ": " + uri);
-				media = new Media(id, video, uri, date, orientation);
+					Log.d(TAG, "found most recent uri for " + ("images") + ": " + uri);
+				media = new Media(id, uri, date, orientation);
 			}
 		}
 		catch(SQLiteException e) {
@@ -650,40 +593,17 @@ public class StorageUtils {
 		}
 		return media;
     }
-    
+    /*
     Media getLatestMedia() {
 		Media image_media = getLatestMedia(false);
-		Media video_media = getLatestMedia(true);
 		Media media = null;
-		if( image_media != null && video_media == null ) {
+		if( image_media != null) {
 			if( MyDebug.LOG )
 				Log.d(TAG, "only found images");
 			media = image_media;
 		}
-		else if( image_media == null && video_media != null ) {
-			if( MyDebug.LOG )
-				Log.d(TAG, "only found videos");
-			media = video_media;
-		}
-		else if( image_media != null && video_media != null ) {
-			if( MyDebug.LOG ) {
-				Log.d(TAG, "found images and videos");
-				Log.d(TAG, "latest image date: " + image_media.date);
-				Log.d(TAG, "latest video date: " + video_media.date);
-			}
-			if( image_media.date >= video_media.date ) {
-				if( MyDebug.LOG )
-					Log.d(TAG, "latest image is newer");
-				media = image_media;
-			}
-			else {
-				if( MyDebug.LOG )
-					Log.d(TAG, "latest video is newer");
-				media = video_media;
-			}
-		}
 		if( MyDebug.LOG )
 			Log.d(TAG, "return latest media: " + media);
 		return media;
-    }
+    }*/
 }
