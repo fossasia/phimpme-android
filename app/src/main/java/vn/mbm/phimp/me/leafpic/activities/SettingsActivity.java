@@ -402,7 +402,7 @@ public class SettingsActivity extends ThemedActivity {
         switch (StaticMapProvider.fromValue(SP.getInt(getString(R.string.preference_map_provider),
                 StaticMapProvider.GOOGLE_MAPS.getValue()))) {
             case GOOGLE_MAPS:
-                default: radioGoogleMaps.setChecked(true); break;
+            default: radioGoogleMaps.setChecked(true); break;
             case MAP_BOX: radioMapBoxStreets.setChecked(true); break;
             case MAP_BOX_DARK: radioMapBoxDark.setChecked(true); break;
             case MAP_BOX_LIGHT: radioMapBoxLight.setChecked(true); break;
@@ -839,8 +839,8 @@ public class SettingsActivity extends ThemedActivity {
             fm.popBackStack();
             if (fm.getBackStackEntryCount()==0)
                 findViewById(R.id.ll_camera).setVisibility(View.GONE);
-                findViewById(R.id.settingAct_scrollView).setVisibility(View.VISIBLE);
-                setToolbarCamera(false);
+            findViewById(R.id.settingAct_scrollView).setVisibility(View.VISIBLE);
+            setToolbarCamera(false);
         }
         else {
             super.onBackPressed();
@@ -888,7 +888,7 @@ public class SettingsActivity extends ThemedActivity {
             getFragmentManager().beginTransaction().add(R.id.pref_container, fragment, "PREFERENCE_FRAGMENT").addToBackStack(null).commitAllowingStateLoss();
             findViewById(R.id.settingAct_scrollView).setVisibility(View.GONE);
         }else {
-           openDialog(context);
+            openDialog(context);
         }
     }
 

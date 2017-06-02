@@ -1,5 +1,6 @@
 package vn.mbm.phimp.me.opencamera.Camera;
 
+import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
 import vn.mbm.phimp.me.base.BaseActivity;
 import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
@@ -82,7 +83,6 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.ZoomControls;
 
-import vn.mbm.phimp.me.R;
 
 /** The main Activity for Open Camera.
  */
@@ -139,7 +139,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	public volatile String test_last_saved_image;
 
 
-    @Override
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		long debug_time = 0;
 		if( MyDebug.LOG ) {
@@ -266,7 +266,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		if( MyDebug.LOG )
 			Log.d(TAG, "onCreate: time after setting orientation event listener: " + (System.currentTimeMillis() - debug_time));
 
-			// listen for gestures
+		// listen for gestures
 		gestureDetector = new GestureDetector(this, new MyGestureDetector());
 		if( MyDebug.LOG )
 			Log.d(TAG, "onCreate: time after creating gesture detector: " + (System.currentTimeMillis() - debug_time));
