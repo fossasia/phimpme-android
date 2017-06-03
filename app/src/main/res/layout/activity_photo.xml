@@ -1,0 +1,51 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.2"
+        android:contentDescription="@null"
+        />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/white">
+
+        <ImageButton
+            android:id="@+id/delete"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentLeft="true"
+            app:srcCompat="@drawable/ic_close_black_24dp"
+            android:onClick="deleteFile"
+            android:background="@null"/>
+
+        <ImageButton
+            android:id="@+id/save"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerInParent="true"
+            android:background="@null"
+            app:srcCompat="@drawable/ic_done_black_24dp"
+            android:onClick="saveOriginal"
+            android:scaleType="fitCenter"/>
+
+        <ImageButton
+            android:id="@+id/edit"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentRight="true"
+            android:onClick="editImage"
+            android:background="@null"
+            app:srcCompat="@drawable/ic_edit_black_24dp" />
+    </RelativeLayout>
+
+</LinearLayout>
