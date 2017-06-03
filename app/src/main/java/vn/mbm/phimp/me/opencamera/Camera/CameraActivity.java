@@ -1,11 +1,31 @@
 package vn.mbm.phimp.me.opencamera.Camera;
 
+import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
+import vn.mbm.phimp.me.base.BaseActivity;
+import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
+import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
+import vn.mbm.phimp.me.opencamera.CameraController.CameraControllerManager2;
+import vn.mbm.phimp.me.opencamera.Preview.Preview;
+import vn.mbm.phimp.me.opencamera.UI.FolderChooserDialog;
+import vn.mbm.phimp.me.opencamera.UI.MainUI;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 import android.Manifest;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+
+import android.app.ProgressDialog;
+
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -17,6 +37,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -32,6 +53,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.ParcelFileDescriptor;
 import android.os.StatFs;
 import android.preference.PreferenceManager;
@@ -59,23 +81,9 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.ZoomControls;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.base.BaseActivity;
-import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
-import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
-import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
-import vn.mbm.phimp.me.opencamera.CameraController.CameraControllerManager2;
-import vn.mbm.phimp.me.opencamera.Preview.Preview;
-import vn.mbm.phimp.me.opencamera.UI.FolderChooserDialog;
-import vn.mbm.phimp.me.opencamera.UI.MainUI;
+
+import vn.mbm.phimp.me.utilities.BasicCallBack;
 
 /** The main Activity for Open Camera.
  */
@@ -130,6 +138,8 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	public volatile boolean test_have_angle;
 	public volatile float test_angle;
 	public volatile String test_last_saved_image;
+
+	public ProgressDialog progressDialog;
 
 
     @Override
@@ -343,7 +353,22 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 		if( MyDebug.LOG )
 			Log.d(TAG, "onCreate: total time for Activity startup: " + (System.currentTimeMillis() - debug_time));
-//		getSettingDetail();
+		BasicCallBack basicCallBack = new BasicCallBack() {
+			@Override
+			public void callBack(String filepath) {
+				Handler h = new Handler(Looper.getMainLooper());
+				h.post(new Runnable() {
+					public void run() {
+						progressDialog = new ProgressDialog(CameraActivity.this);
+						progressDialog.setMessage("Generating image. Please wait...");
+						progressDialog.show();
+					}
+				});
+				PhotoActivity.start(CameraActivity.this, filepath, 10);
+
+			}
+		};
+		ImageSaver.setBasicCallBack(basicCallBack);
 	}
 
 
@@ -689,6 +714,9 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 	@Override
 	protected void onResume() {
+		if (progressDialog != null) {
+			progressDialog.dismiss();
+		}
 		setNavigationBarColor(ThemeHelper.getPrimaryColor(this));
 		long debug_time = 0;
 		if( MyDebug.LOG ) {

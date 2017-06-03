@@ -23,6 +23,7 @@ import android.util.Log;
 
 import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
+import vn.mbm.phimp.me.utilities.BasicCallBack;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -148,6 +149,13 @@ public class ImageSaver extends Thread {
 			this.sample_factor = sample_factor;
 		}
 	}
+
+	public static void setBasicCallBack(BasicCallBack basicCallBack) {
+		ImageSaver.basicCallBack = basicCallBack;
+	}
+
+	public static BasicCallBack basicCallBack;
+
 
 	ImageSaver(CameraActivity main_activity) {
 		if( MyDebug.LOG )
@@ -1410,7 +1418,10 @@ public class ImageSaver extends Thread {
 		if( MyDebug.LOG ) {
 			Log.d(TAG, "Save single image performance: total time: " + (System.currentTimeMillis() - time_s));
 		}
-        return success;
+		if (basicCallBack != null) {
+			basicCallBack.callBack(picFile.getAbsolutePath());
+		}
+		return success;
 	}
 
     @RequiresApi(api = Build.VERSION_CODES.N)
