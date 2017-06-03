@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--drawable-v21/btn_fab_default.xml-->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+        android:color="#f0f0ff">
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#f0f0f0" />
+        </shape>
+    </item>
+</ripple>

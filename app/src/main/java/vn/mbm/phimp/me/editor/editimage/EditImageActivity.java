@@ -17,6 +17,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -42,6 +43,7 @@ import vn.mbm.phimp.me.editor.editimage.view.TextStickerView;
 import vn.mbm.phimp.me.editor.editimage.view.imagezoom.ImageViewTouch;
 import vn.mbm.phimp.me.editor.editimage.view.imagezoom.ImageViewTouchBase;
 import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
+import vn.mbm.phimp.me.shareImage;
 
 /**
  *  一个幽灵
@@ -115,6 +117,7 @@ public class EditImageActivity extends EditBaseActivity {
     public PaintFragment mPaintFragment;//绘制模式Fragment
 
     private SaveImageTask mSaveImageTask;
+    public TextView mshareButton;
 
     /**
      * @param context
@@ -194,6 +197,14 @@ public class EditImageActivity extends EditBaseActivity {
         mAddTextFragment = AddTextFragment.newInstance();
         mPaintFragment = PaintFragment.newInstance();
         bottomGallery.setAdapter(mBottomGalleryAdapter);
+
+        mshareButton = (TextView) findViewById(R.id.shareButton);
+        mshareButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareImage();
+            }
+        });
 
 
         mainImage.setFlingListener(new ImageViewTouch.OnImageFlingListener() {
@@ -444,7 +455,7 @@ public class EditImageActivity extends EditBaseActivity {
 
         FileUtil.ablumUpdate(this, saveFilePath);
         setResult(RESULT_OK, returnIntent);
-        finish();
+        //finish();
     }
 
     @Override
@@ -503,5 +514,18 @@ public class EditImageActivity extends EditBaseActivity {
             }
         }
     }//end inner class
+
+    public void shareImage(){
+
+        Intent shareIntent = new Intent(EditImageActivity.this,shareImage.class);
+        shareIntent.putExtra(FILE_PATH, filePath);
+        shareIntent.putExtra(EXTRA_OUTPUT, saveFilePath);
+        shareIntent.putExtra(IMAGE_IS_EDIT, mOpTimes > 0);
+
+        FileUtil.ablumUpdate(this, saveFilePath);
+        setResult(RESULT_OK, shareIntent);
+        startActivity(shareIntent);
+
+    }
 
 }// end class

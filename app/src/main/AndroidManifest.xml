@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.microphone" />
@@ -275,8 +276,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
-        <activity android:name=".accounts.AccountsActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity
+            android:name="vn.mbm.phimp.me.shareImage"
+            android:screenOrientation="portrait"/>
+
+
         <meta-data
             android:name="vn.mbm.phimp.me.leafpic.CustomGlideModule"
             android:value="GlideModule" />
@@ -292,5 +296,9 @@
                 android:resource="@xml/provider_paths"/>
         </provider>
 
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <provider android:authorities="com.facebook.app.FacebookContentProvider1920575401558694"
+                  android:name="com.facebook.FacebookContentProvider"
+                  android:exported="true" />
     </application>
 </manifest>
