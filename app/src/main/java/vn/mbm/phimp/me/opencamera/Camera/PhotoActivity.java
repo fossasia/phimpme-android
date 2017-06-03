@@ -18,7 +18,7 @@ import android.widget.Toast;
 import java.io.File;
 
 import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.edit.FileUtils;
+import vn.mbm.phimp.me.editor.FileUtils;
 import vn.mbm.phimp.me.editor.editimage.EditImageActivity;
 import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
 
@@ -27,7 +27,6 @@ public class PhotoActivity extends AppCompatActivity {
 
     public static String FILE_PATH = "file_path";
     final String REVIEW_ACTION = "com.android.camera.action.REVIEW";
-    public Boolean delete = true;
 
     public static void start(Activity context, final String editImagePath, final int requestCode) {
         if (TextUtils.isEmpty(editImagePath)) {
@@ -49,7 +48,6 @@ public class PhotoActivity extends AppCompatActivity {
     }
 
     public void deleteFile(View v){
-        if(delete) {
             String[] projection = {MediaStore.Images.Media._ID};
 
             // Match on the file path
@@ -71,19 +69,16 @@ public class PhotoActivity extends AppCompatActivity {
             c.close();
             finish();
         }
-        else {
-            finish();
-        }
-    }
 
     public void editImage(View v){
         EditImageActivity.start(this, FILE_PATH, FileUtils.genEditFile().getAbsolutePath(),1);
+        finish();
     }
 
     public void saveOriginal(View v){
-        delete = false;
         Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(FILE_PATH)));
         intent.setClass(getApplicationContext(), SingleMediaActivity.class);
         this.startActivity(intent);
+        finish();
     }
 }

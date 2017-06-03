@@ -1,10 +1,8 @@
 package vn.mbm.phimp.me.opencamera.Camera;
 
-import vn.mbm.phimp.me.editor.editimage.EditImageActivity;
 import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
 import vn.mbm.phimp.me.base.BaseActivity;
 import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
-import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraControllerManager2;
 import vn.mbm.phimp.me.opencamera.Preview.Preview;
@@ -20,38 +18,16 @@ import java.util.Locale;
 import java.util.Map;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.Matrix;
-import android.graphics.PorterDuff;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
-import android.media.AudioAttributes;
-import android.media.AudioManager;
-import android.media.CamcorderProfile;
-import android.media.SoundPool;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.ParcelFileDescriptor;
-import android.os.StatFs;
-import android.preference.PreferenceManager;
-import android.provider.MediaStore;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Activity;
+
+import android.app.ProgressDialog;
+
 import android.app.ActivityManager;
 import android.app.AlertDialog;
-import android.app.KeyguardManager;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -61,7 +37,27 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+import android.media.SoundPool;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.ParcelFileDescriptor;
+import android.os.StatFs;
+import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.renderscript.RenderScript;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
@@ -81,15 +77,13 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.ZoomControls;
 
 import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.utilities.BasicCallBack;
 
-import static vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity.ACTION_REQUEST_EDITIMAGE;
+import vn.mbm.phimp.me.utilities.BasicCallBack;
 
 /** The main Activity for Open Camera.
  */
@@ -765,7 +759,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 			// we do in onWindowFocusChanged rather than onResume(), to also catch when window lost focus due to notification bar being dragged down (which prevents resetting of immersive mode)
 			initImmersiveMode();
 		}
-		getSettingDetail();
 	}
 
 	@Override
@@ -985,6 +978,8 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	}
 
 	public void getSettingDetail(){
+		if (preview == null) return;
+
 		if( MyDebug.LOG )
 			Log.d(TAG, "openSettings");
 		waitUntilImageQueueEmpty(); // in theory not needed as we could continue running in the background, but best to be safe

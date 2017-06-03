@@ -31,6 +31,8 @@ import vn.mbm.phimp.me.editor.editimage.fragment.MainMenuFragment;
 import vn.mbm.phimp.me.editor.editimage.fragment.PaintFragment;
 import vn.mbm.phimp.me.editor.editimage.fragment.RotateFragment;
 import vn.mbm.phimp.me.editor.editimage.fragment.StirckerFragment;
+import vn.mbm.phimp.me.editor.editimage.fragment.TuneListFragment;
+import vn.mbm.phimp.me.editor.editimage.fragment.TuningFragment;
 import vn.mbm.phimp.me.editor.editimage.utils.BitmapUtils;
 import vn.mbm.phimp.me.editor.editimage.utils.FileUtil;
 import vn.mbm.phimp.me.editor.editimage.view.CropImageView;
@@ -75,6 +77,8 @@ public class EditImageActivity extends EditBaseActivity {
     public static final int MODE_ROTATE = 4;// 旋转模式
     public static final int MODE_TEXT = 5;// 文字模式
     public static final int MODE_PAINT = 6;//绘制模式
+    public static final int MODE_TUNELIST = 7;
+    public static final int MODE_TUNE = 8;
 
     public String filePath;// 需要编辑图片路径
     public String saveFilePath;// 生成的新图片路径
@@ -113,6 +117,8 @@ public class EditImageActivity extends EditBaseActivity {
     public RotateFragment mRotateFragment;// 图片旋转Fragment
     public AddTextFragment mAddTextFragment;//图片添加文字
     public PaintFragment mPaintFragment;//绘制模式Fragment
+    public TuneListFragment mTuneListFragment;
+    public TuningFragment mTuningFragment;
 
     private SaveImageTask mSaveImageTask;
 
@@ -193,6 +199,9 @@ public class EditImageActivity extends EditBaseActivity {
         mRotateFragment = RotateFragment.newInstance();
         mAddTextFragment = AddTextFragment.newInstance();
         mPaintFragment = PaintFragment.newInstance();
+        mTuneListFragment = TuneListFragment.newInstance();
+        mTuningFragment = TuningFragment.newInstance();
+
         bottomGallery.setAdapter(mBottomGalleryAdapter);
 
 
@@ -242,13 +251,17 @@ public class EditImageActivity extends EditBaseActivity {
                     return mAddTextFragment;
                 case PaintFragment.INDEX:
                     return mPaintFragment;//绘制
+                case TuneListFragment.INDEX:
+                    return mTuneListFragment;
+                case TuningFragment.INDEX:
+                    return mTuningFragment;
             }//end switch
             return MainMenuFragment.newInstance();
         }
 
         @Override
         public int getCount() {
-            return 7;
+            return 9;
         }
     }// end inner class
 
@@ -295,13 +308,13 @@ public class EditImageActivity extends EditBaseActivity {
             case MODE_STICKERS:
                 mStirckerFragment.backToMain();
                 return;
-            case MODE_FILTER:// 滤镜编辑状态
-                mFliterListFragment.backToMain();// 保存滤镜贴图
+            case MODE_FILTER:
+                mFliterListFragment.backToMain();
                 return;
-            case MODE_CROP:// 剪切图片保存
+            case MODE_CROP:
                 mCropFragment.backToMain();
                 return;
-            case MODE_ROTATE:// 旋转图片保存
+            case MODE_ROTATE:
                 mRotateFragment.backToMain();
                 return;
             case MODE_TEXT:
@@ -309,6 +322,12 @@ public class EditImageActivity extends EditBaseActivity {
                 return;
             case MODE_PAINT:
                 mPaintFragment.backToMain();
+                return;
+            case MODE_TUNELIST:
+                mTuneListFragment.backToMain();
+                return;
+            case MODE_TUNE:
+                mTuningFragment.backToTune();
                 return;
         }// end switch
 
@@ -358,6 +377,12 @@ public class EditImageActivity extends EditBaseActivity {
                     break;
                 case MODE_PAINT://保存涂鸦
                     mPaintFragment.savePaintImage();
+                    break;
+                case MODE_TUNELIST:
+                    mTuneListFragment.applyTuning();
+                    break;
+                case MODE_TUNE:
+                    mTuningFragment.applyEffect();
                     break;
                 default:
                     break;

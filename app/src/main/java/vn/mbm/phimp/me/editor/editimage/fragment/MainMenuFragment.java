@@ -25,6 +25,7 @@ public class MainMenuFragment extends BaseEditFragment implements View.OnClickLi
     private View rotateBtn;// 旋转按钮
     private View mTextBtn;//文字型贴图添加
     private View mPaintBtn;//编辑按钮
+    private View mTuneBtn;
 
     public static MainMenuFragment newInstance() {
         MainMenuFragment fragment = new MainMenuFragment();
@@ -54,6 +55,7 @@ public class MainMenuFragment extends BaseEditFragment implements View.OnClickLi
         rotateBtn = mainView.findViewById(R.id.btn_rotate);
         mTextBtn = mainView.findViewById(R.id.btn_text);
         mPaintBtn = mainView.findViewById(R.id.btn_paint);
+        mTuneBtn = mainView.findViewById(R.id.btn_tune);
 
         stickerBtn.setOnClickListener(this);
         fliterBtn.setOnClickListener(this);
@@ -61,6 +63,7 @@ public class MainMenuFragment extends BaseEditFragment implements View.OnClickLi
         rotateBtn.setOnClickListener(this);
         mTextBtn.setOnClickListener(this);
         mPaintBtn.setOnClickListener(this);
+        mTuneBtn.setOnClickListener(this);
     }
 
     @Override
@@ -82,9 +85,15 @@ public class MainMenuFragment extends BaseEditFragment implements View.OnClickLi
             onAddTextClick();
         } else if (v == mPaintBtn) {
             onPaintClick();
+        } else if (v == mTuneBtn) {
+            onTuneClick();
         }
     }
 
+    private void onTuneClick() {
+        activity.bottomGallery.setCurrentItem(TuneListFragment.INDEX);
+        activity.mTuneListFragment.onShow();
+    }
     /**
      * 贴图模式
      *

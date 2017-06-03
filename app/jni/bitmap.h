@@ -39,3 +39,6 @@ typedef struct {
 
 	TransformList transformList;
 } Bitmap;
+
+void deleteBitmap(Bitmap* bitmap);
+int initBitmapMemory(Bitmap* bitmap, int width, int height);

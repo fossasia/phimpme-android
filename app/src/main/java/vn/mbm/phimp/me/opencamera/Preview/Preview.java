@@ -1,6 +1,7 @@
 package vn.mbm.phimp.me.opencamera.Preview;
 
 import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.opencamera.Camera.CameraActivity;
 import vn.mbm.phimp.me.opencamera.Camera.MyDebug;
 import vn.mbm.phimp.me.opencamera.Camera.TakePhoto;
 import vn.mbm.phimp.me.opencamera.Camera.ToastBoxer;
@@ -1093,6 +1094,11 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		if( MyDebug.LOG ) {
 			Log.d(TAG, "openCamera: total time to open camera: " + (System.currentTimeMillis() - debug_time));
 		}
+		if (this.getContext() instanceof CameraActivity){
+			CameraActivity cameraActivity = (CameraActivity) this.getContext();
+			cameraActivity.getSettingDetail();
+		}
+
 	}
 
 	/** Try to reopen the camera, if not currently open (e.g., permission wasn't granted, but now it is).
