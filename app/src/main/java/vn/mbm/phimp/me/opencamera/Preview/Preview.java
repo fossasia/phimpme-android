@@ -1094,8 +1094,11 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		if( MyDebug.LOG ) {
 			Log.d(TAG, "openCamera: total time to open camera: " + (System.currentTimeMillis() - debug_time));
 		}
-		CameraActivity cameraActivity = (CameraActivity) this.getContext();
-		cameraActivity.getSettingDetail();
+		if (this.getContext() instanceof CameraActivity){
+			CameraActivity cameraActivity = (CameraActivity) this.getContext();
+			cameraActivity.getSettingDetail();
+		}
+
 	}
 
 	/** Try to reopen the camera, if not currently open (e.g., permission wasn't granted, but now it is).

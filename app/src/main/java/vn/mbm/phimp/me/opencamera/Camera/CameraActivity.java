@@ -957,6 +957,8 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	}
 
 	public void getSettingDetail(){
+		if (preview == null) return;
+
 		if( MyDebug.LOG )
 			Log.d(TAG, "openSettings");
 		waitUntilImageQueueEmpty(); // in theory not needed as we could continue running in the background, but best to be safe
