@@ -27,5 +27,6 @@ ext {
     supportLibraryVersion = '25.3.1'
     butterknifeVersion = '8.5.1'
     junitVersion = "4.12"
+    twitterVersion = "3.0.0"
 }
 

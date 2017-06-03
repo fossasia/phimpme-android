@@ -2,6 +2,12 @@ package vn.mbm.phimp.me;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
+
+import com.twitter.sdk.android.core.DefaultLogger;
+import com.twitter.sdk.android.core.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
+import com.twitter.sdk.android.core.TwitterConfig;
 
 import vn.mbm.phimp.me.leafpic.data.Album;
 import vn.mbm.phimp.me.leafpic.data.HandlingAlbums;
@@ -22,6 +28,12 @@ public class MyApplication extends Application {
     public void onCreate() {
         albums = new HandlingAlbums(getApplicationContext());
         applicationContext = getApplicationContext();
+        TwitterConfig config = new TwitterConfig.Builder(this)
+                .logger(new DefaultLogger(Log.DEBUG))
+                .twitterAuthConfig(new TwitterAuthConfig(getString(R.string.twitter_CONSUMER_KEY), getString(R.string.twitter_CONSUMER_SECRET)))
+                .debug(true)
+                .build();
+        Twitter.initialize(config);
         super.onCreate();
     }
 

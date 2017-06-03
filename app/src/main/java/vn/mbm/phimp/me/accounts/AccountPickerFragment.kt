@@ -5,6 +5,8 @@ import android.app.Dialog
 import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.widget.Toast
+import android.widget.Toast.LENGTH_LONG
 import vn.mbm.phimp.me.R
 
 
@@ -21,9 +23,15 @@ class AccountPickerFragment : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+
         val builder = AlertDialog.Builder(activity)
         builder.setTitle(R.string.account_list)
                 .setItems(R.array.accounts_array, DialogInterface.OnClickListener { dialog, which ->
+                    when (which){
+                        0 -> {
+                            Toast.makeText(activity, "Twitter", LENGTH_LONG).show()
+                        }
+                    }
                     // The 'which' argument contains the index position
                     // of the selected item
                 })

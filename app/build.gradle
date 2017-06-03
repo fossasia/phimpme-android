@@ -106,4 +106,6 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.google.firebase:firebase-core:10.0.1'
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    compile "com.twitter.sdk.android:twitter:$rootProject.twitterVersion"
 }

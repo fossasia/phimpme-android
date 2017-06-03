@@ -750,4 +750,11 @@
     <string name="enhance">Enhance</string>
     <string name="transform">Transform</string>
     <string name="write">Write</string>
+    <!--ACCOUNTS-->
+    <!--TWITTER-->
+    <!--Create a app on twitter from this URL: https://apps.twitter.com/-->
+    <!--add consumer key and secret key below-->
+    <string name="twitter_CONSUMER_KEY">vKnzy2sMJ3VUFibF6HguxhDXm</string>
+    <string name="twitter_CONSUMER_SECRET">gAvGEBNPAyIsGQ3AIElHDqdCGCS7Cvp1BiM1GTH7YzLQyvMVf3</string>
+
 </resources>

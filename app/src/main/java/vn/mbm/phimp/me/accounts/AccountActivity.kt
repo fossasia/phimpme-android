@@ -30,8 +30,6 @@ class AccountActivity : ThemedActivity(), AccountContract.View {
         toolbar!!.setBackgroundColor(themeHelper!!.getPrimaryColor());
         setUpRecyclerView()
         getSupportActionBar()!!.setTitle(R.string.title_account)
-
-        // TODO: When database integration part will be done then loading from database will
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
