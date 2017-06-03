@@ -649,4 +649,9 @@
         <item>2700</item>
         <item>3600</item>
     </string-array>
+    <string-array name="accounts_array">
+        <item>Facebook</item>
+        <item>Twitter</item>
+        <item>Wordpress</item>
+    </string-array>
 </resources>
