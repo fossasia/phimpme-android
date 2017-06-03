@@ -1,7 +1,9 @@
-package vn.mbm.phimp.me.editor.editimage.fliter;
+package vn.mbm.phimp.me.editor.editimage.filter;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+
+import vn.mbm.phimp.me.editor.editimage.fragment.TuneListFragment;
 
 /**
  * 图片处理类
@@ -62,6 +64,46 @@ public class PhotoProcessing {
         return filteredBitmap;
     }
 
+    public static Bitmap tunePhoto(Bitmap bitmap, int mode, int val) {
+        if (bitmap != null) {
+            sendBitmapToNative(bitmap);
+        }
+        switch (mode) {
+            case TuneListFragment.BRIGHTNESS:
+                nativeTuneBrightness(val);
+                break;
+            case TuneListFragment.CONTRAST:
+                nativeTuneContrast(val);
+                break;
+            case TuneListFragment.HUE:
+                nativeTuneHue(val);
+                break;
+            case TuneListFragment.SATURATION:
+                nativeTuneSaturation(val);
+                break;
+            case TuneListFragment.TEMPERATURE:
+                nativeTuneTemperature(val);
+                break;
+            case TuneListFragment.TINT:
+                nativeTuneTint(val);
+                break;
+            case TuneListFragment.VIGNETTE:
+                nativeTuneVignette(val);
+                break;
+            case TuneListFragment.SHARPNESS:
+                nativeTuneSharpen(val);
+                break;
+            case TuneListFragment.BLUR:
+                nativeTuneBlur(val);
+                break;
+        }
+        Bitmap filteredBitmap = getBitmapFromNative(bitmap);
+        nativeDeleteBitmap();
+        return filteredBitmap;
+    }
+
+
+
     public static native int nativeInitBitmap(int width, int height);
 
     public static native void nativeGetBitmapRow(int y, int[] pixels);
@@ -104,6 +146,16 @@ public class PhotoProcessing {
 
     public static native void nativeLoadResizedJpegBitmap(byte[] jpegData,
                                                           int size, int maxPixels);
+
+    public static native void nativeTuneBrightness(int val);
+    public static native void nativeTuneContrast(int val);
+    public static native void nativeTuneHue(int val);
+    public static native void nativeTuneSaturation(int val);
+    public static native void nativeTuneTemperature(int val);
+    public static native void nativeTuneVignette(int val);
+    public static native void nativeTuneSharpen(int val);
+    public static native void nativeTuneBlur(int val);
+    public static native void nativeTuneTint(int val);
 
     public static native void nativeResizeBitmap(int newWidth, int newHeight);
 
