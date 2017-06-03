@@ -42,7 +42,7 @@ import java.io.File;
 
 import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.base.SharedMediaActivity;
-import vn.mbm.phimp.me.edit.FileUtils;
+import vn.mbm.phimp.me.editor.FileUtils;
 import vn.mbm.phimp.me.editor.editimage.EditImageActivity;
 import vn.mbm.phimp.me.editor.editimage.utils.BitmapUtils;
 import vn.mbm.phimp.me.leafpic.SelectAlbumBottomSheet;
@@ -51,7 +51,6 @@ import vn.mbm.phimp.me.leafpic.animations.DepthPageTransformer;
 import vn.mbm.phimp.me.leafpic.data.Album;
 import vn.mbm.phimp.me.leafpic.data.base.SortingMode;
 import vn.mbm.phimp.me.leafpic.data.base.SortingOrder;
-import vn.mbm.phimp.me.leafpic.fragments.ImageFragment;
 import vn.mbm.phimp.me.leafpic.util.AlertDialogsHelper;
 import vn.mbm.phimp.me.leafpic.util.ColorPalette;
 import vn.mbm.phimp.me.leafpic.util.ContentHelper;
