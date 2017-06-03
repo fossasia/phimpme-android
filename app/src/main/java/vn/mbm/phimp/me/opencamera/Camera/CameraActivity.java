@@ -731,7 +731,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 			// we do in onWindowFocusChanged rather than onResume(), to also catch when window lost focus due to notification bar being dragged down (which prevents resetting of immersive mode)
 			initImmersiveMode();
 		}
-		getSettingDetail();
 	}
 
 	@Override
@@ -951,6 +950,8 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	}
 
 	public void getSettingDetail(){
+		if (preview == null) return;
+
 		if( MyDebug.LOG )
 			Log.d(TAG, "openSettings");
 		waitUntilImageQueueEmpty(); // in theory not needed as we could continue running in the background, but best to be safe
