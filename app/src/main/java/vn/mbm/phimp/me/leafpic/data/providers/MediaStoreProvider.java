@@ -131,7 +131,6 @@ public class  MediaStoreProvider {
 
 		String[] selectionArgs = new String[] {
 						String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE),
-						String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO),
 						String.valueOf(id)
 		};
 
@@ -146,15 +145,15 @@ public class  MediaStoreProvider {
 	}
 
 	@Nullable private static Media getLastMedia(Context context, long albumId) {
-		ArrayList<Media> list = getMedia(context, albumId, 1, true);
+		ArrayList<Media> list = getMedia(context, albumId, 1);
 		return list.size() > 0 ? list.get(0) : null;
 	}
 
-	public static ArrayList<Media> getMedia(Context context, long albumId, boolean includeVideo) {
-		return getMedia(context, albumId, -1, includeVideo);
+	public static ArrayList<Media> getMedia(Context context, long albumId) {
+		return getMedia(context, albumId, -1);
 	}
 
-	private static ArrayList<Media> getMedia(Context context, long albumId, int n, boolean includeVideo) {
+	private static ArrayList<Media> getMedia(Context context, long albumId, int n) {
 
 		String limit = n == -1 ? "" : "LIMIT " + n;
 		ArrayList<Media> list = new ArrayList<Media>();

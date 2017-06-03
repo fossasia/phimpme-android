@@ -38,7 +38,7 @@ import android.view.Display;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
-import vn.mbm.phimp.me.opencamera.MyDebug;
+import vn.mbm.phimp.me.opencamera.Camera.MyDebug;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;

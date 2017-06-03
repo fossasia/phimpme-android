@@ -10,7 +10,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
-import vn.mbm.phimp.me.opencamera.MyDebug;
+import vn.mbm.phimp.me.opencamera.Camera.MyDebug;
 
 import java.io.IOException;
 import java.util.ArrayList;

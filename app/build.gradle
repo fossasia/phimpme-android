@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
 apply plugin: 'jacoco-android'
 
 android {
@@ -33,6 +34,10 @@ android {
         exclude 'org/codehaus/classworlds/uberjar/boot/Bootstrapper.class'
     }
 
+    configurations {
+        compile.exclude group: 'org.jetbrains' , module:'annotations'
+    }
+
     lintOptions {
         abortOnError false
         disable "Instantiatable"
@@ -59,6 +64,7 @@ repositories {
     maven {
         url  "http://dl.bintray.com/dasar/maven"
     }
+    mavenCentral()
 }
 
 dependencies {
@@ -86,7 +92,6 @@ dependencies {
     compile 'com.mikepenz:fontawesome-typeface:4.6.0.1@aar'
     compile 'com.yalantis:ucrop:1.5.0'
     compile(group: 'uz.shift', name: 'colorpicker', version: '0.5', ext: 'aar')
-    //compile 'uz.shift:colorpicker:0.5@aar'
     compile 'com.google.android.exoplayer:exoplayer:r1.5.7'
     compile 'de.psdev.licensesdialog:licensesdialog:1.8.0'
     compile 'de.hdodenhof:circleimageview:2.0.0'
@@ -96,5 +101,7 @@ dependencies {
     compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.5.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
+    compile 'com.facebook.android:facebook-android-sdk:4.23.0'
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }

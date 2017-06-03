@@ -21,12 +21,12 @@
             android:src="@drawable/back_arrow" />
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/shareButton"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="@string/app_name"
+            android:text="share"
             android:textColor="#ffffff"
             android:textSize="20sp" />
 

@@ -74,6 +74,8 @@ public class StickerAdapter extends RecyclerView.Adapter<ViewHolder> {
         String path = pathList.get(position);
         ImageLoader.getInstance().displayImage("assets://" + path,
                 imageHoler.image, imageOption);
+        String log = null;
+        Log.d(log,"Image Loaded");
         imageHoler.image.setTag(path);
         imageHoler.image.setOnClickListener(mImageClick);
     }
