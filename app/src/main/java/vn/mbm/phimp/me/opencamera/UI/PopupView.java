@@ -56,6 +56,7 @@ public class PopupView extends LinearLayout {
 	private int timer_index = -1;
 	private int burst_mode_index = -1;
 	private int grid_index = -1;
+	public static int sound_index;
 
 	private final Map<String, View> popup_buttons = new Hashtable<>();
 
@@ -505,6 +506,36 @@ public class PopupView extends LinearLayout {
 					return -1;
 				}
     		});
+
+
+			sound_index = sharedPreferences.getInt(PreferenceKeys.getSoundModePreferenceKey(), sound_index);
+			String[] sound_states_entries = getResources().getStringArray(R.array.preference_sound_states);
+			addArrayOptionsToPopup(Arrays.asList(sound_states_entries), getResources().getString(R.string.preference_shutter_sound), true, sound_index, false, getResources().getString(R.string.preference_shutter_sound), new ArrayOptionsPopupListener() {
+				private void update() {
+					SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(main_activity);
+					SharedPreferences.Editor editor = sharedPreferences.edit();
+					editor.putInt(PreferenceKeys.getSoundModePreferenceKey(),sound_index);
+					editor.apply();
+				}
+				@Override
+				public int onClickPrev() {
+					if( sound_index != -1 && sound_index > 0 ) {
+						sound_index--;
+						update();
+						return sound_index;
+					}
+					return -1;
+				}
+				@Override
+				public int onClickNext() {
+					if( sound_index != -1 ) {
+						sound_index++;
+						update();
+						return sound_index;
+					}
+					return -1;
+				}
+			});
 
         	final String[] grid_values = getResources().getStringArray(R.array.preference_grid_values);
         	String[] grid_entries = getResources().getStringArray(R.array.preference_grid_entries);
