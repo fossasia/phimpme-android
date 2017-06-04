@@ -30,6 +30,25 @@ class AccountActivity : ThemedActivity(), AccountContract.View {
         toolbar!!.setBackgroundColor(themeHelper!!.getPrimaryColor());
         setUpRecyclerView()
         getSupportActionBar()!!.setTitle(R.string.title_account)
+        toolbar!!.popupTheme = themeHelper!!.popupToolbarStyle
+        toolbar!!.setBackgroundColor(themeHelper!!.primaryColor)
+        supportActionBar!!.setTitle(R.string.title_account)
+
+       /* twitterLogin = findViewById(R.id.twitter_login_button) as TwitterLoginButton
+        twitterLogin!!.callback = object : Callback<TwitterSession>() {
+            override fun success(p0: Result<TwitterSession>?) {
+                val session = TwitterCore.getInstance().sessionManager.activeSession
+                val authToken = session.authToken
+                val token = authToken.token
+                val secret = authToken.secret
+
+                Log.d("sfaf", session.toString())
+            }
+
+            override fun failure(p0: TwitterException?) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+        }*/
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -38,11 +57,10 @@ class AccountActivity : ThemedActivity(), AccountContract.View {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-
         when (item.itemId) {
             R.id.action_add_account -> {
                 val fragmentManager = supportFragmentManager
-                val accountsPicker = AccountPickerFragment()
+                val accountsPicker = AccountPickerFragment().newInstance("Accounts Picker")
                 accountsPicker.show(fragmentManager, "Accounts Picker")
             }
             else -> return super.onOptionsItemSelected(item)
@@ -77,4 +95,11 @@ class AccountActivity : ThemedActivity(), AccountContract.View {
         setNavigationBarColor(ThemeHelper.getPrimaryColor(this))
         setStatusBarColor()
     }
+
+   /* override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        // Pass the activity result to the login button.
+        twitterLogin!!.onActivityResult(requestCode, resultCode, data)
+    }*/
 }
