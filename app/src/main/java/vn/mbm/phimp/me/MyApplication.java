@@ -9,6 +9,8 @@ import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterConfig;
 
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import vn.mbm.phimp.me.leafpic.data.Album;
 import vn.mbm.phimp.me.leafpic.data.HandlingAlbums;
 
@@ -34,6 +36,17 @@ public class MyApplication extends Application {
                 .debug(true)
                 .build();
         Twitter.initialize(config);
+
+        /**
+         * Realm initialization
+         */
+        Realm.init(this);
+        RealmConfiguration realmConfiguration = new RealmConfiguration.Builder()
+                .name("phimpme.realm")
+                .schemaVersion(1)
+                .deleteRealmIfMigrationNeeded()
+                .build();
+        Realm.setDefaultConfiguration(realmConfiguration);
         super.onCreate();
     }
 
