@@ -275,7 +275,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
-        <activity android:name=".accounts.AccountsActivity"
+        <activity android:name=".accounts.AccountActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
         <activity android:name=".opencamera.Camera.PhotoActivity"></activity>

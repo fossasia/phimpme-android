@@ -1,6 +1,7 @@
 package vn.mbm.phimp.me.accounts
 
 import android.os.Bundle
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
@@ -8,20 +9,23 @@ import vn.mbm.phimp.me.R
 import vn.mbm.phimp.me.base.ThemedActivity
 import vn.mbm.phimp.me.leafpic.util.ThemeHelper
 
-class AccountsActivity : ThemedActivity() {
+class AccountActivity : ThemedActivity(), AccountContract.View {
 
     private var toolbar: Toolbar? = null
     private var themeHelper: ThemeHelper? = null
+    private var accountsRecyclerView: RecyclerView? = null
+    private var accountAdapter: AccountAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         themeHelper = ThemeHelper(this)
+        accountAdapter = AccountAdapter()
         toolbar = findViewById(R.id.toolbar) as Toolbar
+        accountsRecyclerView = findViewById(R.id.accounts_recycler_view) as RecyclerView
         setSupportActionBar(toolbar)
         toolbar!!.setPopupTheme(themeHelper!!.getPopupToolbarStyle());
         toolbar!!.setBackgroundColor(themeHelper!!.getPrimaryColor());
         getSupportActionBar()!!.setTitle(R.string.title_account);
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -29,13 +33,12 @@ class AccountsActivity : ThemedActivity() {
         return true
     }
 
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
             R.id.action_add_account -> {
                 val fragmentManager = supportFragmentManager
-                val accountsPicker = AccountsPickerFragment()
+                val accountsPicker = AccountPickerFragment()
                 accountsPicker.show(fragmentManager, "Accounts Picker")
             }
             else -> return super.onOptionsItemSelected(item)
@@ -49,6 +52,18 @@ class AccountsActivity : ThemedActivity() {
 
     override fun getNavigationMenuItemId(): Int {
         return R.id.navigation_accounts
+    }
+
+    override fun setUpRecyclerView() {
+        TODO("not implemented")
+    }
+
+    override fun showError(message: String) {
+        TODO("not implemented")
+    }
+
+    override fun showComplete() {
+        TODO("not implemented")
     }
 
     override fun onResume() {
