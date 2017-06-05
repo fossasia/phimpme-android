@@ -1611,7 +1611,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 				return;
 			}
 		}
-
 		final SaveLocationHistory history = applicationInterface.getStorageUtils().isUsingSAF() ? save_location_history_saf : save_location_history;
 		showPreview(false);
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
