@@ -1377,18 +1377,14 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 
 				Log.d(TAG, "saved color effect: " + value);
 
-             final int[] colorNumber = {0};
+            final int[] colorNumber = {0};
             CameraActivity.toggle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String[] colorEffect;
-                    colorEffect = new String[]{"none", "mono", "negative", "sepia", "aqua", "whiteboard", "blackboard", "posterize", "nashville","hefe","valencia","xproll","lofi","sierra","walden"};
-
+                    String[] colorEffect = getResources().getStringArray(R.array.color_effects);
                     colorNumber[0]++;
                     if(colorNumber[0] == 15)
                         colorNumber[0] = 0;
-
-                    String value = applicationInterface.getColorEffectPref();
                     CameraController.SupportedValues supported_values = camera_controller.setColorEffect(colorEffect[colorNumber[0]]);
                     if( supported_values != null ) {
                         color_effects = supported_values.values;
@@ -1399,10 +1395,8 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
                         // delete key in case it's present (e.g., if feature no longer available due to change in OS, or switching APIs)
                         applicationInterface.clearColorEffectPref();
                     }
-
                 }
             });
-
             CameraController.SupportedValues supported_values = camera_controller.setColorEffect(value);
 			if( supported_values != null ) {
 				color_effects = supported_values.values;

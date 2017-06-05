@@ -381,12 +381,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		ImageSaver.setBasicCallBack(basicCallBack);
 
 		toggle = (ImageButton) findViewById(R.id.toggleButton);
-        /*toggle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(CameraActivity.this,"Clicked",Toast.LENGTH_SHORT).show();
-            }
-        });*/
 	}
 
 
