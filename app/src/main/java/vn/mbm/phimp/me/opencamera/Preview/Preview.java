@@ -73,7 +73,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.View.MeasureSpec;
+import android.widget.Button;
 import android.widget.Toast;
+
 
 /** This class was originally named due to encapsulating the camera preview,
  *  but in practice it's grown to more than this, and includes most of the
@@ -538,7 +540,9 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		return true;
 	}
 
-	//@SuppressLint("ClickableViewAccessibility") @Override
+
+
+    //@SuppressLint("ClickableViewAccessibility") @Override
 
 	/** Handle multitouch zoom.
 	 */
@@ -1370,9 +1374,38 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 				Log.d(TAG, "set up color effect");
 			String value = applicationInterface.getColorEffectPref();
 			if( MyDebug.LOG )
+
 				Log.d(TAG, "saved color effect: " + value);
 
-			CameraController.SupportedValues supported_values = camera_controller.setColorEffect(value);
+             final int[] colorNumber = {0};
+            CameraActivity.toggle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String[] colorEffect;
+                    colorEffect = new String[]{"none", "mono", "negative", "sepia", "aqua", "whiteboard", "blackboard", "posterize", "nashville","hefe","valencia","xproll","lofi","sierra","walden"};
+
+                    colorNumber[0]++;
+                    if(colorNumber[0] == 14)
+                        colorNumber[0] = 0;
+
+                    String value = applicationInterface.getColorEffectPref();
+                    CameraController.SupportedValues supported_values = camera_controller.setColorEffect(colorEffect[colorNumber[0]]);
+                    if( supported_values != null ) {
+                        color_effects = supported_values.values;
+                        // now save, so it's available for PreferenceActivity
+                        applicationInterface.setColorEffectPref(supported_values.selected_value);
+                    }
+                    else {
+                        // delete key in case it's present (e.g., if feature no longer available due to change in OS, or switching APIs)
+                        applicationInterface.clearColorEffectPref();
+                    }
+
+                }
+            });
+            String[] colorEffect;
+            colorEffect = new String[]{"none", "mono", "negative", "sepia", "aqua", "whiteboard", "blackboard", "posterize", "nashville","hefe","valencia","xproll","lofi","sierra","walden"};
+
+            CameraController.SupportedValues supported_values = camera_controller.setColorEffect(colorEffect[colorNumber[0]]);
 			if( supported_values != null ) {
 				color_effects = supported_values.values;
 				// now save, so it's available for PreferenceActivity
@@ -4513,4 +4546,7 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		int zoom_factor = camera_controller.getZoom();
 		return this.zoom_ratios.get(zoom_factor)/100.0f;
 	}
+
+
+
 }

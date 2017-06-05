@@ -5,6 +5,7 @@ import vn.mbm.phimp.me.base.BaseActivity;
 import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraControllerManager2;
+import vn.mbm.phimp.me.opencamera.Preview.ApplicationInterface;
 import vn.mbm.phimp.me.opencamera.Preview.Preview;
 import vn.mbm.phimp.me.opencamera.UI.FolderChooserDialog;
 import vn.mbm.phimp.me.opencamera.UI.MainUI;
@@ -77,8 +78,11 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.Toast;
 import android.widget.ZoomControls;
 
 import vn.mbm.phimp.me.R;
@@ -119,6 +123,8 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	private int audio_noise_sensitivity = -1;
 	private SpeechRecognizer speechRecognizer;
 	private boolean speechRecognizerIsStarted;
+	public static ImageButton toggle;
+    private List<String> color_effects = null;
 
 	//private boolean ui_placement_right = true;
 
@@ -140,10 +146,14 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	public volatile String test_last_saved_image;
 
 	public ProgressDialog progressDialog;
+    private CameraController camera_controller;
 
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
+
+
+
 		long debug_time = 0;
 		if( MyDebug.LOG ) {
 			Log.d(TAG, "onCreate");
@@ -369,6 +379,14 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 			}
 		};
 		ImageSaver.setBasicCallBack(basicCallBack);
+
+		toggle = (ImageButton) findViewById(R.id.toggleButton);
+        /*toggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(CameraActivity.this,"Clicked",Toast.LENGTH_SHORT).show();
+            }
+        });*/
 	}
 
 

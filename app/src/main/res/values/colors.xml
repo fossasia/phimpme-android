@@ -37,6 +37,8 @@
     <color name="secondary_text_material_dark">#8a000000</color>
     <color name="white70">#d0d0d0</color>
     <color name="white50">#777777</color>
+    <color name="transparent">#ff000000</color>
+
 
     /* LeafPic Colors */
     <!--Accent Color Collection-->
