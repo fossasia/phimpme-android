@@ -43,14 +43,19 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     public boolean onNavigationItemSelected(@NonNull final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.navigation_home:
-                startActivity(new Intent(this, LFMainActivity.class));
-                finish();
+                if (getNavigationMenuItemId() != R.id.navigation_home) {
+                    startActivity(new Intent(this, LFMainActivity.class));
+                }
                 break;
             case R.id.navigation_camera:
-                startActivity(new Intent(this, CameraActivity.class));
+                if (getNavigationMenuItemId() != R.id.navigation_camera) {
+                    startActivity(new Intent(this, CameraActivity.class));
+                }
                 break;
             case R.id.navigation_accounts:
-                startActivity(new Intent(this, AccountsActivity.class));
+                if (getNavigationMenuItemId() != R.id.navigation_accounts) {
+                    startActivity(new Intent(this, AccountsActivity.class));
+                }
                 break;
         }
 
