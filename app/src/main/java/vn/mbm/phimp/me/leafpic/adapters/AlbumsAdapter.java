@@ -16,8 +16,12 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.iconics.view.IconicsImageView;
 
 import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.base.SharedMediaActivity;
 import vn.mbm.phimp.me.leafpic.data.Album;
 import vn.mbm.phimp.me.leafpic.data.Media;
 import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
@@ -58,7 +62,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(final AlbumsAdapter.ViewHolder holder, int position) {
-        Album a = albums.get(position);
+        Album a = SharedMediaActivity.getAlbums().dispAlbums.get(position);
         Media f = a.getCoverAlbum();
 
         Glide.with(holder.picture.getContext())
@@ -90,6 +94,8 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
         String textColor = theme.getBaseTheme() != ThemeHelper.LIGHT_THEME ? "#FAFAFA" : "#2b2b2b";
 
         if (a.isSelected()) {
+            holder.selectedIcon.setColor(Color.WHITE);
+            holder.selectedIcon.setIcon(CommunityMaterial.Icon.cmd_check);
             holder.layout.setBackgroundColor(Color.parseColor(hexPrimaryColor));
             holder.picture.setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
             holder.selectedIcon.setVisibility(View.VISIBLE);
@@ -137,13 +143,14 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView picture;
-        View selectedIcon, layout;
+        View  layout;
+        IconicsImageView selectedIcon;
         TextView name, nPhotos;
 
         ViewHolder(View itemView) {
             super(itemView);
             picture = (ImageView) itemView.findViewById(R.id.album_preview);
-            selectedIcon = itemView.findViewById(R.id.selected_icon);
+            selectedIcon = (IconicsImageView) itemView.findViewById(R.id.selected_icon);
             layout = itemView.findViewById(R.id.linear_card_text);
             name = (TextView) itemView.findViewById(R.id.album_name);
             nPhotos = (TextView) itemView.findViewById(R.id.album_photos_count);
