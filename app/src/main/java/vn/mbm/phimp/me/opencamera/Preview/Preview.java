@@ -1385,7 +1385,7 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
                     colorEffect = new String[]{"none", "mono", "negative", "sepia", "aqua", "whiteboard", "blackboard", "posterize", "nashville","hefe","valencia","xproll","lofi","sierra","walden"};
 
                     colorNumber[0]++;
-                    if(colorNumber[0] == 14)
+                    if(colorNumber[0] == 15)
                         colorNumber[0] = 0;
 
                     String value = applicationInterface.getColorEffectPref();
@@ -1402,10 +1402,8 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 
                 }
             });
-            String[] colorEffect;
-            colorEffect = new String[]{"none", "mono", "negative", "sepia", "aqua", "whiteboard", "blackboard", "posterize", "nashville","hefe","valencia","xproll","lofi","sierra","walden"};
 
-            CameraController.SupportedValues supported_values = camera_controller.setColorEffect(colorEffect[colorNumber[0]]);
+            CameraController.SupportedValues supported_values = camera_controller.setColorEffect(value);
 			if( supported_values != null ) {
 				color_effects = supported_values.values;
 				// now save, so it's available for PreferenceActivity
