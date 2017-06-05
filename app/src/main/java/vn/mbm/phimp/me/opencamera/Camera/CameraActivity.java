@@ -151,9 +151,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
-
-
-
 		long debug_time = 0;
 		if( MyDebug.LOG ) {
 			Log.d(TAG, "onCreate");
@@ -382,7 +379,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 		toggle = (ImageButton) findViewById(R.id.toggleButton);
 	}
-
 
 	/* This method sets the preference defaults which are set specific for a particular device.
 	 * This method should be called when Open Camera is run for the very first time after installation,

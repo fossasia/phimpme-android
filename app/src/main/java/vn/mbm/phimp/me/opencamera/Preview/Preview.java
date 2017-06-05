@@ -76,7 +76,6 @@ import android.view.View.MeasureSpec;
 import android.widget.Button;
 import android.widget.Toast;
 
-
 /** This class was originally named due to encapsulating the camera preview,
  *  but in practice it's grown to more than this, and includes most of the
  *  operation of the camera. It exists at a higher level than CameraController
@@ -539,9 +538,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		tryAutoFocus(false, true);
 		return true;
 	}
-
-
-
     //@SuppressLint("ClickableViewAccessibility") @Override
 
 	/** Handle multitouch zoom.
@@ -1374,7 +1370,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 				Log.d(TAG, "set up color effect");
 			String value = applicationInterface.getColorEffectPref();
 			if( MyDebug.LOG )
-
 				Log.d(TAG, "saved color effect: " + value);
 
             final int[] colorNumber = {0};
@@ -4538,7 +4533,4 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		int zoom_factor = camera_controller.getZoom();
 		return this.zoom_ratios.get(zoom_factor)/100.0f;
 	}
-
-
-
 }
