@@ -13,6 +13,8 @@ import vn.mbm.phimp.me.R
  */
 class AccountAdapter : RecyclerView.Adapter<AccountAdapter.ViewHolder>() {
 
+
+
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent!!.getContext())
                 .inflate(R.layout.accounts_item_view, null, false)
@@ -20,12 +22,13 @@ class AccountAdapter : RecyclerView.Adapter<AccountAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder!!.userName!!.setText("temp")
-        holder!!.userFullName!!.setText("temp_full_name")
+        holder!!.userName!!.setText("@test_username")
+        holder!!.userFullName!!.setText("Test Full Name")
     }
 
     override fun getItemCount(): Int {
-        //TODO: added a temporary value. Exact value will be depends how many accounts are signed in. Length will be taken from databse entries.
+        //TODO: added a temporary value. Exact value will be depends how many accounts are signed in.
+        // Length will be taken from databse entries.
         return 10
     }
 
@@ -33,11 +36,13 @@ class AccountAdapter : RecyclerView.Adapter<AccountAdapter.ViewHolder>() {
         internal var accountAvatar : ImageView? = null
         internal var userName: TextView? = null
         internal var userFullName: TextView? = null
+        internal var accountLogoIndicator: ImageView? = null
 
         init {
-            accountAvatar!!.findViewById(R.id.account_avatar) as ImageView
-            userName!!.findViewById(R.id.account_username) as TextView
-            userFullName!!.findViewById(R.id.account_name) as TextView
+            accountAvatar = v.findViewById(R.id.account_avatar) as ImageView
+            accountLogoIndicator = v.findViewById(R.id.account_logo_indicator) as ImageView
+            userName = v.findViewById(R.id.account_username) as TextView
+            userFullName = v.findViewById(R.id.account_name) as TextView
         }
     }
 }

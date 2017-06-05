@@ -17,7 +17,7 @@ class AccountContract {
 
         fun showError(message: String)
 
-        fun showComplete()
+        fun failedToLoad()
     }
 
     internal interface Presenter {
