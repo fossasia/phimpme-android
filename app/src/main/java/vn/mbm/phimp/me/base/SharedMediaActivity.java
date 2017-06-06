@@ -16,8 +16,8 @@ public class SharedMediaActivity extends ThemedActivity {
 	super.onCreate(savedInstanceState);
   }
 
-  public HandlingAlbums getAlbums() {
-	return ((MyApplication) getApplicationContext()).getAlbums();
+  public static HandlingAlbums getAlbums() {
+	return ((MyApplication)MyApplication.applicationContext).getAlbums();
   }
 
   public Album getAlbum() {
