@@ -154,6 +154,14 @@
         <item>3600</item>
         <item>7200</item>
     </string-array>
+    <string-array name="preference_sound_states">
+        <item>on</item>
+        <item>off</item>
+    </string-array>
+    <string-array name="sound_values">
+        <item>sound_on</item>
+        <item>sound_off</item>
+    </string-array>
     <string-array name="preference_preview_size_entries">
         <item>Maximise preview size</item>
         <item>Match photo size (WYSIWYG)</item>
