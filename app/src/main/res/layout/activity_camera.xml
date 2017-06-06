@@ -29,6 +29,16 @@
             android:onClick="clickedTakePhoto"
             android:padding="10dp"
             android:scaleType="fitCenter"/>
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/filter"
+            android:id="@+id/toggleButton"
+            android:paddingLeft="10dp"
+            android:paddingTop="15dp"
+            android:scaleType="fitCenter"/>
 
         <ZoomControls
             android:id="@+id/zoom"
