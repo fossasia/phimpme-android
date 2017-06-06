@@ -1372,15 +1372,16 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 			if( MyDebug.LOG )
 				Log.d(TAG, "saved color effect: " + value);
 
-            final int[] colorNumber = {0};
+            final int[] colorNum = {0};
             CameraActivity.toggle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String[] colorEffect = getResources().getStringArray(R.array.color_effects);
-                    colorNumber[0]++;
-                    if(colorNumber[0] == 15)
-                        colorNumber[0] = 0;
-                    CameraController.SupportedValues supported_values = camera_controller.setColorEffect(colorEffect[colorNumber[0]]);
+                    final List<String> colorEffect = getSupportedColorEffects();
+                    colorNum[0]++;
+                    if (colorNum[0] == colorEffect.size())
+                        colorNum[0] = 0;
+                    final String color = colorEffect.get(colorNum[0]);
+                    CameraController.SupportedValues supported_values = camera_controller.setColorEffect(color);
                     if( supported_values != null ) {
                         color_effects = supported_values.values;
                         // now save, so it's available for PreferenceActivity

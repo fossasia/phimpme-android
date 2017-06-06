@@ -1,22 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="color_effects">
-        <item>none</item>
-        <item>mono</item>
-        <item>negative</item>
-        <item>sepia</item>
-        <item>aqua</item>
-        <item>whiteboard</item>
-        <item>blackboard</item>
-        <item>posterize</item>
-        <item>nashville</item>
-        <item>hefe</item>
-        <item>valencia</item>
-        <item>xproll</item>
-        <item>lofi</item>
-        <item>sierra</item>
-        <item>walden</item>
-    </string-array>
     <string-array name="flash_icons">
         <item>drawable/flash_off</item>
         <item>drawable/flash_auto</item>
