@@ -17,10 +17,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,23 +29,16 @@ import vn.mbm.phimp.me.editor.editimage.view.CropImageView;
 import vn.mbm.phimp.me.editor.editimage.view.imagezoom.ImageViewTouchBase;
 
 
-/**
- * 图片剪裁Fragment
- * 
- * @author panyi
- * 
- */
 public class CropFragment extends BaseEditFragment {
     public static final int INDEX = 3;
 	public static final String TAG = CropFragment.class.getName();
 	private View mainView;
-	private View backToMenu;// 返回主菜单
-	public CropImageView mCropPanel;// 剪裁操作面板
+	private View cancel,apply;
+	public CropImageView mCropPanel;
 	private LinearLayout ratioList;
 	private static List<RatioItem> dataList = new ArrayList<RatioItem>();
 	static {
-		// init data
-		dataList.add(new RatioItem("任意", -1f));
+		dataList.add(new RatioItem("free", -1f));
 		dataList.add(new RatioItem("1:1", 1f));
 		dataList.add(new RatioItem("1:2", 1 / 2f));
 		dataList.add(new RatioItem("1:3", 1 / 3f));
@@ -62,8 +51,8 @@ public class CropFragment extends BaseEditFragment {
 	}
 	private List<TextView> textViewList = new ArrayList<TextView>();
 
-	public static int SELECTED_COLOR = Color.YELLOW;
-	public static int UNSELECTED_COLOR = Color.WHITE;
+	public static int SELECTED_COLOR = Color.GREEN;
+	public static int UNSELECTED_COLOR = Color.BLACK;
 	private CropRationClick mCropRationClick = new CropRationClick();
 	public TextView selctedTextView;
 
@@ -85,7 +74,6 @@ public class CropFragment extends BaseEditFragment {
 	}
 
 	private void setUpRatioList() {
-		// init UI
 		ratioList.removeAllViews();
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -107,16 +95,10 @@ public class CropFragment extends BaseEditFragment {
 			dataList.get(i).setIndex(i);
 			text.setTag(dataList.get(i));
 			text.setOnClickListener(mCropRationClick);
-		}// end for i
+		}
 		selctedTextView.setTextColor(SELECTED_COLOR);
 	}
 
-	/**
-	 * 选择剪裁比率
-	 * 
-	 * @author
-	 * 
-	 */
 	private final class CropRationClick implements OnClickListener {
 		@Override
 		public void onClick(View v) {
@@ -128,79 +110,64 @@ public class CropFragment extends BaseEditFragment {
 
 			mCropPanel.setRatioCropRect(activity.mainImage.getBitmapRect(),
 					dataItem.getRatio());
-			// System.out.println("dataItem   " + dataItem.getText());
 		}
-	}// end inner class
+	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-        backToMenu = mainView.findViewById(R.id.back_to_main);
+        cancel = mainView.findViewById(R.id.crop_cancel);
+		apply = mainView.findViewById(R.id.crop_apply);
+
         ratioList = (LinearLayout) mainView.findViewById(R.id.ratio_list_group);
         setUpRatioList();
         this.mCropPanel = ensureEditActivity().mCropPanel;
-		backToMenu.setOnClickListener(new BackToMenuClick());// 返回主菜单
+		cancel.setOnClickListener(new BackToMenuClick());
+		apply.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				applyCropImage();
+			}
+		});
+		onShow();
 	}
 
     @Override
     public void onShow() {
-        activity.mode = EditImageActivity.MODE_CROP;
 
+        EditImageActivity.mode = EditImageActivity.MODE_CROP;
         activity.mCropPanel.setVisibility(View.VISIBLE);
         activity.mainImage.setImageBitmap(activity.mainBitmap);
         activity.mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
-        activity.mainImage.setScaleEnabled(false);// 禁用缩放
-        //
+        activity.mainImage.setScaleEnabled(false);
         RectF r = activity.mainImage.getBitmapRect();
         activity.mCropPanel.setCropRect(r);
-        // System.out.println(r.left + "    " + r.top);
-        activity.bannerFlipper.showNext();
     }
 
-    /**
-	 * 返回按钮逻辑
-	 * 
-	 * @author panyi
-	 * 
-	 */
 	private final class BackToMenuClick implements OnClickListener {
 		@Override
 		public void onClick(View v) {
 			backToMain();
 		}
-	}// end class
+	}
 
-	/**
-	 * 返回主菜单
-	 */
 	public void backToMain() {
-		activity.mode = EditImageActivity.MODE_NONE;
+		EditImageActivity.mode = EditImageActivity.MODE_MAIN;
+		activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
 		mCropPanel.setVisibility(View.GONE);
-		activity.mainImage.setScaleEnabled(true);// 恢复缩放功能
-		activity.bottomGallery.setCurrentItem(0);
+		activity.mainImage.setScaleEnabled(true);
 		if (selctedTextView != null) {
 			selctedTextView.setTextColor(UNSELECTED_COLOR);
 		}
 		mCropPanel.setRatioCropRect(activity.mainImage.getBitmapRect(), -1);
-		activity.bannerFlipper.showPrevious();
 	}
 
-	/**
-	 * 保存剪切图片
-	 */
 	public void applyCropImage() {
-		// System.out.println("保存剪切图片");
 		CropImageTask task = new CropImageTask();
 		task.execute(activity.mainBitmap);
 	}
 
-	/**
-	 * 图片剪裁生成 异步任务
-	 * 
-	 * @author panyi
-	 * 
-	 */
 	private final class CropImageTask extends AsyncTask<Bitmap, Void, Bitmap> {
 		private Dialog dialog;
 
@@ -228,23 +195,17 @@ public class CropFragment extends BaseEditFragment {
 		@SuppressWarnings("WrongThread")
         @Override
 		protected Bitmap doInBackground(Bitmap... params) {
-			RectF cropRect = mCropPanel.getCropRect();// 剪切区域矩形
+			RectF cropRect = mCropPanel.getCropRect();
 			Matrix touchMatrix = activity.mainImage.getImageViewMatrix();
 			// Canvas canvas = new Canvas(resultBit);
 			float[] data = new float[9];
-			touchMatrix.getValues(data);// 底部图片变化记录矩阵原始数据
-			Matrix3 cal = new Matrix3(data);// 辅助矩阵计算类
-			Matrix3 inverseMatrix = cal.inverseMatrix();// 计算逆矩阵
+			touchMatrix.getValues(data);
+			Matrix3 cal = new Matrix3(data);
+			Matrix3 inverseMatrix = cal.inverseMatrix();
 			Matrix m = new Matrix();
 			m.setValues(inverseMatrix.getValues());
-			m.mapRect(cropRect);// 变化剪切矩形
+			m.mapRect(cropRect);
 
-			// Paint paint = new Paint();
-			// paint.setColor(Color.RED);
-			// paint.setStrokeWidth(10);
-			// canvas.drawRect(cropRect, paint);
-			// Bitmap resultBit = Bitmap.createBitmap(params[0]).copy(
-			// Bitmap.Config.ARGB_8888, true);
 			Bitmap resultBit = Bitmap.createBitmap(params[0],
 					(int) cropRect.left, (int) cropRect.top,
 					(int) cropRect.width(), (int) cropRect.height());
@@ -260,39 +221,9 @@ public class CropFragment extends BaseEditFragment {
 			if (result == null)
 				return;
 
-//			if (activity.mainBitmap != null
-//					&& !activity.mainBitmap.isRecycled()) {
-//				activity.mainBitmap.recycle();
-//			}
-//			activity.mainBitmap = result;
-//			activity.mainImage.setImageBitmap(activity.mainBitmap);
-//			activity.mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
             activity.changeMainBitmap(result);
 			activity.mCropPanel.setCropRect(activity.mainImage.getBitmapRect());
 			backToMain();
 		}
-	}// end inner class
-
-	/**
-	 * 保存Bitmap图片到指定文件
-	 */
-	public static void saveBitmap(Bitmap bm, String filePath) {
-		File f = new File(filePath);
-		if (f.exists()) {
-			f.delete();
-		}
-		try {
-			FileOutputStream out = new FileOutputStream(f);
-			bm.compress(Bitmap.CompressFormat.PNG, 90, out);
-			out.flush();
-			out.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// System.out.println("保存文件--->" + f.getAbsolutePath());
 	}
-}// end class
+}

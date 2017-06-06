@@ -35,7 +35,7 @@ android {
     }
 
     configurations {
-        compile.exclude group: 'org.jetbrains' , module:'annotations'
+        compile.exclude group: 'org.jetbrains', module: 'annotations'
     }
 
     lintOptions {
@@ -62,7 +62,7 @@ android {
 
 repositories {
     maven {
-        url  "http://dl.bintray.com/dasar/maven"
+        url "http://dl.bintray.com/dasar/maven"
     }
     mavenCentral()
 }
@@ -84,6 +84,9 @@ dependencies {
     compile "com.android.support:customtabs:$rootProject.supportLibraryVersion"
 
     compile project(':photoview')
+    compile(group: 'uz.shift', name: 'colorpicker', version: '0.5', ext: 'aar')
+    //compile 'uz.shift:colorpicker:0.5@aar'
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.koushikdutta.ion:ion:2.1.7'
     compile 'com.mikepenz:iconics-core:2.8.4@aar'
@@ -91,8 +94,6 @@ dependencies {
     compile 'com.mikepenz:community-material-typeface:1.5.54.2@aar'
     compile 'com.mikepenz:fontawesome-typeface:4.6.0.1@aar'
     compile 'com.yalantis:ucrop:1.5.0'
-    compile(group: 'uz.shift', name: 'colorpicker', version: '0.5', ext: 'aar')
-    //compile 'uz.shift:colorpicker:0.5@aar'
     compile 'com.google.android.exoplayer:exoplayer:r1.5.7'
     compile 'de.psdev.licensesdialog:licensesdialog:1.8.0'
     compile 'de.hdodenhof:circleimageview:2.0.0'
@@ -102,6 +103,6 @@ dependencies {
     compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.5.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
+    compile 'com.android.support:support-v4:25.3.1'
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }

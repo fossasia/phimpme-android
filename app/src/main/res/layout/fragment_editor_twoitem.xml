@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+             android:stretchColumns="0,1"
+              android:layout_height="wrap_content">
+    <TableRow>
+        <LinearLayout
+            android:orientation="vertical"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_width="match_parent"
+            android:id="@+id/menu_item1"
+            android:layout_column="0"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/item1iconimage"
+                android:layout_width="@dimen/icon_item_image_size"
+                android:layout_height="@dimen/icon_item_image_size"
+                android:scaleType="fitXY"
+                android:background="@android:color/transparent"
+                android:src="@mipmap/ic_launcher"
+                android:layout_gravity="center_horizontal"
+                />
+
+            <TextView
+                android:id="@+id/item1text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textAlignment="center"
+                android:text="item1"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_width="match_parent"
+            android:id="@+id/menu_item2"
+            android:layout_column="1"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/item2iconimage"
+                android:layout_width="@dimen/icon_item_image_size"
+                android:layout_height="@dimen/icon_item_image_size"
+                android:scaleType="fitXY"
+                android:background="@android:color/transparent"
+                android:src="@mipmap/ic_launcher"
+                android:layout_gravity="center_horizontal"
+                />
+
+            <TextView
+                android:id="@+id/item2text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textAlignment="center"
+                android:text="item2"/>
+
+        </LinearLayout>
+    </TableRow>
+</TableLayout>

@@ -1,31 +1,21 @@
 package vn.mbm.phimp.me.editor.editimage.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.editor.editimage.EditImageActivity;
 
+public class MainMenuFragment extends BaseEditFragment implements View.OnClickListener{
 
-/**
- * 工具栏主菜单
- *
- * @author panyi
- */
-public class MainMenuFragment extends BaseEditFragment implements View.OnClickListener {
-    public static final int INDEX = 0;
+    View menu_filter,menu_enhance,menu_adjust,menu_stickers, menu_text;
 
-    public static final String TAG = MainMenuFragment.class.getName();
-    private View mainView;
+    public MainMenuFragment() {
 
-    private View stickerBtn;// 贴图按钮
-    private View fliterBtn;// 滤镜按钮
-    private View cropBtn;// 剪裁按钮
-    private View rotateBtn;// 旋转按钮
-    private View mTextBtn;//文字型贴图添加
-    private View mPaintBtn;//编辑按钮
-    private View mTuneBtn;
+    }
 
     public static MainMenuFragment newInstance() {
         MainMenuFragment fragment = new MainMenuFragment();
@@ -40,117 +30,62 @@ public class MainMenuFragment extends BaseEditFragment implements View.OnClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mainView = inflater.inflate(R.layout.fragment_edit_image_main_menu,
-                null);
-        return mainView;
+        View view = inflater.inflate(R.layout.fragment_editor_main, container, false);
+        menu_filter = view.findViewById(R.id.menu_filter);
+        menu_enhance = view.findViewById(R.id.menu_enhance);
+        menu_adjust = view.findViewById(R.id.menu_adjust);
+        menu_stickers = view.findViewById(R.id.menu_stickers);
+        menu_text = view.findViewById(R.id.menu_text);
+
+        menu_filter.setOnClickListener(this);
+        menu_enhance.setOnClickListener(this);
+        menu_adjust.setOnClickListener(this);
+        menu_stickers.setOnClickListener(this);
+        menu_text.setOnClickListener(this);
+
+        return view;
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+    }
 
-        stickerBtn = mainView.findViewById(R.id.btn_stickers);
-        fliterBtn = mainView.findViewById(R.id.btn_fliter);
-        cropBtn = mainView.findViewById(R.id.btn_crop);
-        rotateBtn = mainView.findViewById(R.id.btn_rotate);
-        mTextBtn = mainView.findViewById(R.id.btn_text);
-        mPaintBtn = mainView.findViewById(R.id.btn_paint);
-        mTuneBtn = mainView.findViewById(R.id.btn_tune);
-
-        stickerBtn.setOnClickListener(this);
-        fliterBtn.setOnClickListener(this);
-        cropBtn.setOnClickListener(this);
-        rotateBtn.setOnClickListener(this);
-        mTextBtn.setOnClickListener(this);
-        mPaintBtn.setOnClickListener(this);
-        mTuneBtn.setOnClickListener(this);
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 
     @Override
     public void onShow() {
-        // do nothing
+
     }
 
     @Override
     public void onClick(View v) {
-        if (v == stickerBtn) {
-            onStickClick();
-        } else if (v == fliterBtn) {
-            onFilterClick();
-        } else if (v == cropBtn) {
-            onCropClick();
-        } else if (v == rotateBtn) {
-            onRotateClick();
-        } else if (v == mTextBtn) {
-            onAddTextClick();
-        } else if (v == mPaintBtn) {
-            onPaintClick();
-        } else if (v == mTuneBtn) {
-            onTuneClick();
+        switch (v.getId()){
+            case R.id.menu_filter:
+                EditImageActivity.mode = (EditImageActivity.MODE_FILTERS);
+                activity.sliderFragment.resetBitmaps();
+                activity.changeMiddleFragment(EditImageActivity.MODE_FILTERS);
+                break;
+            case R.id.menu_enhance:
+                EditImageActivity.mode = (EditImageActivity.MODE_ENHANCE);
+                activity.sliderFragment.resetBitmaps();
+                activity.changeMiddleFragment(EditImageActivity.MODE_ENHANCE);
+                break;
+            case R.id.menu_adjust:
+                EditImageActivity.mode = EditImageActivity.MODE_ADJUST;
+                activity.changeMiddleFragment(EditImageActivity.MODE_ADJUST);
+                break;
+            case R.id.menu_stickers:
+                EditImageActivity.mode = (EditImageActivity.MODE_STICKER_TYPES);
+                activity.changeMiddleFragment(EditImageActivity.MODE_STICKER_TYPES);
+                break;
+            case R.id.menu_text:
+                EditImageActivity.mode = EditImageActivity.MODE_WRITE;
+                activity.changeMiddleFragment(EditImageActivity.MODE_WRITE);
+                break;
         }
     }
-
-    private void onTuneClick() {
-        activity.bottomGallery.setCurrentItem(TuneListFragment.INDEX);
-        activity.mTuneListFragment.onShow();
-    }
-    /**
-     * 贴图模式
-     *
-     * @author panyi
-     */
-    private void onStickClick() {
-        activity.bottomGallery.setCurrentItem(StirckerFragment.INDEX);
-        activity.mStirckerFragment.onShow();
-    }
-
-    /**
-     * 滤镜模式
-     *
-     * @author panyi
-     */
-    private void onFilterClick() {
-        activity.bottomGallery.setCurrentItem(FliterListFragment.INDEX);
-
-        activity.mFliterListFragment.onShow();
-    }
-
-    /**
-     * 裁剪模式
-     *
-     * @author panyi
-     */
-    private void onCropClick() {
-        activity.bottomGallery.setCurrentItem(CropFragment.INDEX);
-        activity.mCropFragment.onShow();
-    }
-
-    /**
-     * 图片旋转模式
-     *
-     * @author panyi
-     */
-    private void onRotateClick() {
-        activity.bottomGallery.setCurrentItem(RotateFragment.INDEX);
-        activity.mRotateFragment.onShow();
-    }
-
-    /**
-     * 插入文字模式
-     *
-     * @author panyi
-     */
-    private void onAddTextClick() {
-        activity.bottomGallery.setCurrentItem(AddTextFragment.INDEX);
-        activity.mAddTextFragment.onShow();
-    }
-
-    /**
-     * 自由绘制模式
-     */
-    private void onPaintClick() {
-        activity.bottomGallery.setCurrentItem(PaintFragment.INDEX);
-        activity.mPaintFragment.onShow();
-    }
-
-}// end class
+}

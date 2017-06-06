@@ -662,4 +662,81 @@
         <item>Twitter</item>
         <item>Wordpress</item>
     </string-array>
+
+
+
+    <integer-array name="filter_icons">
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+    </integer-array>
+
+    <string-array name="filter_titles">
+        <item>origin</item>
+        <item>soft</item>
+        <item>black</item>
+        <item>classic</item>
+        <item>gorgeous</item>
+        <item>retro</item>
+        <item>grace</item>
+        <item>film</item>
+        <item>memory</item>
+        <item>yogurt</item>
+        <item>fleeting</item>
+        <item>shine</item>
+    </string-array>
+
+
+    <integer-array name="enhance_icons">
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+    </integer-array>
+
+    <string-array name="enhance_titles">
+        <item>bright</item>
+        <item>contrast</item>
+        <item>hue</item>
+        <item>satur</item>
+        <item>temp</item>
+        <item>tint</item>
+        <item>vignette</item>
+        <item>sharp</item>
+        <item>blur</item>
+    </string-array>
+
+
+    <integer-array name="sticker_icons">
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+        <item>@mipmap/ic_launcher</item>
+    </integer-array>
+
+    <string-array name="sticker_titles">
+        <item>facial</item>
+        <item>hearts</item>
+        <item>objects</item>
+        <item>comments</item>
+        <item>wishes</item>
+        <item>animals</item>
+    </string-array>
+
 </resources>

@@ -3,7 +3,6 @@ package vn.mbm.phimp.me.editor.editimage.filter;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 
-import vn.mbm.phimp.me.editor.editimage.fragment.TuneListFragment;
 
 /**
  * 图片处理类
@@ -18,7 +17,15 @@ public class PhotoProcessing {
         System.loadLibrary("photoprocessing");
     }
 
-    public static Bitmap filterPhoto(Bitmap bitmap, int position) {
+
+    public static Bitmap processImage(Bitmap srcBitmap, int effectType, int val) {
+        if(isFilter(effectType))
+            return filterPhoto(srcBitmap,effectType % 300);
+        else
+            return tunePhoto(srcBitmap,effectType % 200, val);
+    }
+
+    private static Bitmap filterPhoto(Bitmap bitmap, int position) {
         if (bitmap != null) {
             sendBitmapToNative(bitmap);
         }
@@ -64,36 +71,36 @@ public class PhotoProcessing {
         return filteredBitmap;
     }
 
-    public static Bitmap tunePhoto(Bitmap bitmap, int mode, int val) {
+    private static Bitmap tunePhoto(Bitmap bitmap, int mode, int val) {
         if (bitmap != null) {
             sendBitmapToNative(bitmap);
         }
         switch (mode) {
-            case TuneListFragment.BRIGHTNESS:
+            case 0:
                 nativeTuneBrightness(val);
                 break;
-            case TuneListFragment.CONTRAST:
+            case 1:
                 nativeTuneContrast(val);
                 break;
-            case TuneListFragment.HUE:
+            case 2:
                 nativeTuneHue(val);
                 break;
-            case TuneListFragment.SATURATION:
+            case 3:
                 nativeTuneSaturation(val);
                 break;
-            case TuneListFragment.TEMPERATURE:
+            case 4:
                 nativeTuneTemperature(val);
                 break;
-            case TuneListFragment.TINT:
+            case 5:
                 nativeTuneTint(val);
                 break;
-            case TuneListFragment.VIGNETTE:
+            case 6:
                 nativeTuneVignette(val);
                 break;
-            case TuneListFragment.SHARPNESS:
+            case 7:
                 nativeTuneSharpen(val);
                 break;
-            case TuneListFragment.BLUR:
+            case 8:
                 nativeTuneBlur(val);
                 break;
         }
@@ -102,6 +109,9 @@ public class PhotoProcessing {
         return filteredBitmap;
     }
 
+    private static boolean isFilter(int effectType) {
+        return (effectType/300==1);
+    }
 
 
     public static native int nativeInitBitmap(int width, int height);
@@ -236,4 +246,5 @@ public class PhotoProcessing {
         nativeDeleteBitmap();
         return bitmap;
     }
+
 }// end class

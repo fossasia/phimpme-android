@@ -24,18 +24,12 @@ import vn.mbm.phimp.me.editor.editimage.view.RotateImageView;
 import vn.mbm.phimp.me.editor.editimage.view.imagezoom.ImageViewTouchBase;
 
 
-/**
- * 图片旋转Fragment
- *
- * @author 潘易
- */
 public class RotateFragment extends BaseEditFragment {
-    public static final int INDEX = 4;
     public static final String TAG = RotateFragment.class.getName();
     private View mainView;
-    private View backToMenu;// 返回主菜单
-    public SeekBar mSeekBar;// 角度设定
-    private RotateImageView mRotatePanel;// 旋转效果展示控件
+    private View cancel,apply;
+    public SeekBar mSeekBar;
+    private RotateImageView mRotatePanel;
 
     public static RotateFragment newInstance() {
         RotateFragment fragment = new RotateFragment();
@@ -58,40 +52,42 @@ public class RotateFragment extends BaseEditFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        backToMenu = mainView.findViewById(R.id.back_to_main);
+        cancel = mainView.findViewById(R.id.rotate_cancel);
+        apply = mainView.findViewById(R.id.rotate_apply);
+
         mSeekBar = (SeekBar) mainView.findViewById(R.id.rotate_bar);
         mSeekBar.setProgress(0);
 
         this.mRotatePanel = ensureEditActivity().mRotatePanel;
-        backToMenu.setOnClickListener(new BackToMenuClick());// 返回主菜单
+        cancel.setOnClickListener(new BackToMenuClick());
+        apply.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                applyRotateImage();
+            }
+        });
+
         mSeekBar.setOnSeekBarChangeListener(new RotateAngleChange());
+
+        onShow();
     }
 
     @Override
     public void onShow() {
-        activity.mode = EditImageActivity.MODE_ROTATE;
+        EditImageActivity.mode = EditImageActivity.MODE_ROTATE;
         activity.mainImage.setImageBitmap(activity.mainBitmap);
         activity.mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
         activity.mainImage.setVisibility(View.GONE);
 
-        activity.mRotatePanel.addBit(activity.mainBitmap,
-                activity.mainImage.getBitmapRect());
-        activity.mRotateFragment.mSeekBar.setProgress(0);
+        activity.mRotatePanel.addBit(activity.mainBitmap,activity.mainImage.getBitmapRect());
         activity.mRotatePanel.reset();
         activity.mRotatePanel.setVisibility(View.VISIBLE);
-        activity.bannerFlipper.showNext();
     }
 
-    /**
-     * 角度改变监听
-     *
-     * @author panyi
-     */
     private final class RotateAngleChange implements OnSeekBarChangeListener {
         @Override
         public void onProgressChanged(SeekBar seekBar, int angle,
                                       boolean fromUser) {
-            // System.out.println("progress--->" + progress);
             mRotatePanel.rotateImage(angle);
         }
 
@@ -104,50 +100,32 @@ public class RotateFragment extends BaseEditFragment {
         public void onStopTrackingTouch(SeekBar seekBar) {
 
         }
-    }// end inner class
+    }
 
-    /**
-     * 返回按钮逻辑
-     *
-     * @author panyi
-     */
     private final class BackToMenuClick implements OnClickListener {
         @Override
         public void onClick(View v) {
             backToMain();
         }
-    }// end class
+    }
 
-    /**
-     * 返回主菜单
-     */
     public void backToMain() {
-        activity.mode = EditImageActivity.MODE_NONE;
-        activity.bottomGallery.setCurrentItem(0);
+        EditImageActivity.mode = EditImageActivity.MODE_MAIN;
+        activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
         activity.mainImage.setVisibility(View.VISIBLE);
         this.mRotatePanel.setVisibility(View.GONE);
-        activity.bannerFlipper.showPrevious();
     }
 
-    /**
-     * 保存旋转图片
-     */
     public void applyRotateImage() {
-        // System.out.println("保存旋转图片");
-        if (mSeekBar.getProgress() == 0 || mSeekBar.getProgress() == 360) {// 没有做旋转
+        if (mSeekBar.getProgress() == 0 || mSeekBar.getProgress() == 360) {
             backToMain();
             return;
-        } else {// 保存图片
+        } else {
             SaveRotateImageTask task = new SaveRotateImageTask();
             task.execute(activity.mainBitmap);
-        }// end if
+        }
     }
 
-    /**
-     * 保存图片线程
-     *
-     * @author panyi
-     */
     private final class SaveRotateImageTask extends
             AsyncTask<Bitmap, Void, Bitmap> {
         //private Dialog dialog;
@@ -211,17 +189,11 @@ public class RotateFragment extends BaseEditFragment {
             if (result == null)
                 return;
 
-            // 切换新底图
             activity.changeMainBitmap(result);
             backToMain();
         }
     }// end inner class
 
-    /**
-     * 保存Bitmap图片到指定文件
-     *
-     * @param bm
-     */
     public static void saveBitmap(Bitmap bm, String filePath) {
         File f = new File(filePath);
         if (f.exists()) {
@@ -232,11 +204,8 @@ public class RotateFragment extends BaseEditFragment {
             bm.compress(Bitmap.CompressFormat.PNG, 90, out);
             out.flush();
             out.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // System.out.println("保存文件--->" + f.getAbsolutePath());
     }
 }// end class

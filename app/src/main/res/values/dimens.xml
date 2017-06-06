@@ -45,4 +45,6 @@
     <dimen name="materialcolorpicker__activity_horizontal_margin">16dp</dimen>
     <dimen name="materialcolorpicker__activity_vertical_margin">16dp</dimen>
     <dimen name = "bottom_banner_height">80dp</dimen>
+    <dimen name = "icon_item_image_size">50dp</dimen>
+
 </resources>
