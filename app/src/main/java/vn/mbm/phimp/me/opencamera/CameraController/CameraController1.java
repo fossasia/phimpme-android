@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 
 import vn.mbm.phimp.me.opencamera.Camera.MyDebug;
+import vn.mbm.phimp.me.opencamera.UI.PopupView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -1472,8 +1473,12 @@ public class CameraController1 extends CameraController {
 			picture.onStarted();
 		}
         try {
-        	camera.takePicture(shutter, null, camera_jpeg);
-        }
+			if (PopupView.sound_index == 0) {
+				camera.takePicture(shutter, null, camera_jpeg);
+			} else {
+				camera.takePicture(null, null, camera_jpeg);
+			}
+		}
 		catch(RuntimeException e) {
 			// just in case? We got a RuntimeException report here from 1 user on Google Play; I also encountered it myself once of Galaxy Nexus when starting up
 			if( MyDebug.LOG )

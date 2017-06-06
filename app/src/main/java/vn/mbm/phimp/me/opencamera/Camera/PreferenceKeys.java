@@ -411,8 +411,8 @@ public class PreferenceKeys {
     	return "preference_burst_interval";
     }
     
-    public static String getShutterSoundPreferenceKey() {
-    	return "preference_shutter_sound";
+    public static String getSoundModePreferenceKey(){
+        return "preference_sound_mode";
     }
     
     public static String getImmersiveModePreferenceKey() {
