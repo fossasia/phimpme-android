@@ -5,6 +5,7 @@ import vn.mbm.phimp.me.base.BaseActivity;
 import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraControllerManager2;
+import vn.mbm.phimp.me.opencamera.Preview.ApplicationInterface;
 import vn.mbm.phimp.me.opencamera.Preview.Preview;
 import vn.mbm.phimp.me.opencamera.UI.FolderChooserDialog;
 import vn.mbm.phimp.me.opencamera.UI.MainUI;
@@ -77,13 +78,19 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.Toast;
 import android.widget.ZoomControls;
 
 import vn.mbm.phimp.me.R;
 
+import vn.mbm.phimp.me.opencamera.UI.PopupView;
 import vn.mbm.phimp.me.utilities.BasicCallBack;
+
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 /** The main Activity for Open Camera.
  */
@@ -119,6 +126,8 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	private int audio_noise_sensitivity = -1;
 	private SpeechRecognizer speechRecognizer;
 	private boolean speechRecognizerIsStarted;
+	public static ImageButton toggle;
+    private List<String> color_effects = null;
 
 	//private boolean ui_placement_right = true;
 
@@ -140,6 +149,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	public volatile String test_last_saved_image;
 
 	public ProgressDialog progressDialog;
+    private CameraController camera_controller;
 
 
     @Override
@@ -165,7 +175,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 			if( MyDebug.LOG )
 				Log.d(TAG, "take_photo?: " + getIntent().getExtras().getBoolean(TakePhoto.TAKE_PHOTO));
 		}
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences sharedPreferences = getDefaultSharedPreferences(this);
 
 		// determine whether we should support "auto stabilise" feature
 		// risk of running out of memory on lower end devices, due to manipulation of large bitmaps
@@ -369,8 +379,9 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 			}
 		};
 		ImageSaver.setBasicCallBack(basicCallBack);
-	}
 
+		toggle = (ImageButton) findViewById(R.id.toggleButton);
+	}
 
 	/* This method sets the preference defaults which are set specific for a particular device.
 	 * This method should be called when Open Camera is run for the very first time after installation,
@@ -379,7 +390,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	void setDeviceDefaults(Activity activity) {
 		if( MyDebug.LOG )
 			Log.d(TAG, "setDeviceDefaults");
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
+		SharedPreferences sharedPreferences = getDefaultSharedPreferences(activity);
 		boolean is_samsung = Build.MANUFACTURER.toLowerCase(Locale.US).contains("samsung");
 		boolean is_oneplus = Build.MANUFACTURER.toLowerCase(Locale.US).contains("oneplus");
 		//boolean is_nexus = Build.MODEL.toLowerCase(Locale.US).contains("nexus");
@@ -533,7 +544,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	private void setFirstTimeFlag() {
 		if( MyDebug.LOG )
 			Log.d(TAG, "setFirstTimeFlag");
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences sharedPreferences = getDefaultSharedPreferences(this);
 		SharedPreferences.Editor editor = sharedPreferences.edit();
 		editor.putBoolean(PreferenceKeys.getFirstTimePreferenceKey(), true);
 		editor.apply();
@@ -601,7 +612,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 			// need to run on UI thread so that this function returns quickly (otherwise we'll have lag in processing the audio)
 			// but also need to check we're not currently taking a photo or on timer, so we don't repeatedly queue up takePicture() calls, or cancel a timer
 			long time_now = System.currentTimeMillis();
-			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+			SharedPreferences sharedPreferences = getDefaultSharedPreferences(this);
 			boolean want_audio_listener = sharedPreferences.getString(PreferenceKeys.getAudioControlPreferenceKey(), "none").equals("noise");
 			if( time_last_audio_trigger_photo != -1 && time_now - time_last_audio_trigger_photo < 5000 ) {
 				// avoid risk of repeatedly being triggered - as well as problem of being triggered again by the camera's own "beep"!
@@ -813,6 +824,8 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	}
 
 	public void clickedTakePhoto(View view) {
+		SharedPreferences sharedPreferences = getDefaultSharedPreferences(this);
+		PopupView.sound_index = sharedPreferences.getInt(PreferenceKeys.getSoundModePreferenceKey(), PopupView.sound_index);
 		if( MyDebug.LOG )
 			Log.d(TAG, "clickedTakePhoto");
 		this.takePicture();
@@ -829,7 +842,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 			return;
 		}
 		this.closePopup();
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences sharedPreferences = getDefaultSharedPreferences(this);
 		String audio_control = sharedPreferences.getString(PreferenceKeys.getAudioControlPreferenceKey(), "none");
 		if( audio_control.equals("voice") && speechRecognizer != null ) {
 			if( speechRecognizerIsStarted ) {
@@ -1123,7 +1136,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		// but need workaround for Nexus 7 bug, where scene mode doesn't take effect unless the camera is restarted - I can reproduce this with other 3rd party camera apps, so may be a Nexus 7 issue...
 		boolean need_reopen = false;
 		if( preview.getCameraController() != null ) {
-			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+			SharedPreferences sharedPreferences = getDefaultSharedPreferences(this);
 			String scene_mode = preview.getCameraController().getSceneMode();
 			if( MyDebug.LOG )
 				Log.d(TAG, "scene mode was: " + scene_mode);
@@ -1150,7 +1163,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		}
 
 		mainUI.layoutUI(); // needed in case we've changed left/right handed UI
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences sharedPreferences = getDefaultSharedPreferences(this);
 		if( sharedPreferences.getString(PreferenceKeys.getAudioControlPreferenceKey(), "none").equals("none") ) {
 			// ensure icon is invisible if switching from audio control enabled to disabled
 			// (if enabling it, we'll make the icon visible later on)
@@ -1211,7 +1224,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	public boolean usingKitKatImmersiveMode() {
 		// whether we are using a Kit Kat style immersive mode (either hiding GUI, or everything)
 		if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ) {
-			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+			SharedPreferences sharedPreferences = getDefaultSharedPreferences(this);
 			String immersive_mode = sharedPreferences.getString(PreferenceKeys.getImmersiveModePreferenceKey(), "immersive_mode_low_profile");
 			if( immersive_mode.equals("immersive_mode_gui") || immersive_mode.equals("immersive_mode_everything") )
 				return true;
@@ -1221,7 +1234,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	public boolean usingKitKatImmersiveModeEverything() {
 		// whether we are using a Kit Kat style immersive mode for everything
 		if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT ) {
-			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+			SharedPreferences sharedPreferences = getDefaultSharedPreferences(this);
 			String immersive_mode = sharedPreferences.getString(PreferenceKeys.getImmersiveModePreferenceKey(), "immersive_mode_low_profile");
 			if( immersive_mode.equals("immersive_mode_everything") )
 				return true;
@@ -1268,7 +1281,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 				getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_IMMERSIVE | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN);
 			}
 			else {
-				SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+				SharedPreferences sharedPreferences = getDefaultSharedPreferences(this);
 				String immersive_mode = sharedPreferences.getString(PreferenceKeys.getImmersiveModePreferenceKey(), "immersive_mode_low_profile");
 				if( immersive_mode.equals("immersive_mode_low_profile") )
 					getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
@@ -1297,7 +1310,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
     		intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, widgetIds);
     		sendBroadcast(intent);
     	}*/
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences sharedPreferences = getDefaultSharedPreferences(this);
 
 		// force to landscape mode
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -1493,7 +1506,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 						| Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
 				// Check for the freshest data.
 				getContentResolver().takePersistableUriPermission(treeUri, takeFlags);
-				SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+				SharedPreferences sharedPreferences = getDefaultSharedPreferences(this);
 				SharedPreferences.Editor editor = sharedPreferences.edit();
 				editor.putString(PreferenceKeys.getSaveLocationSAFPreferenceKey(), treeUri.toString());
 				editor.apply();
@@ -1511,7 +1524,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 				if( MyDebug.LOG )
 					Log.d(TAG, "SAF dialog cancelled");
 				// cancelled - if the user had yet to set a save location, make sure we switch SAF back off
-				SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+				SharedPreferences sharedPreferences = getDefaultSharedPreferences(this);
 				String uri = sharedPreferences.getString(PreferenceKeys.getSaveLocationSAFPreferenceKey(), "");
 				if( uri.length() == 0 ) {
 					if( MyDebug.LOG )
@@ -1534,7 +1547,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		if( MyDebug.LOG )
 			Log.d(TAG, "updateSaveFolder: " + new_save_location);
 		if( new_save_location != null ) {
-			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+			SharedPreferences sharedPreferences = getDefaultSharedPreferences(this);
 			String orig_save_location = this.applicationInterface.getStorageUtils().getSaveLocation();
 
 			if( !orig_save_location.equals(new_save_location) ) {
@@ -1599,7 +1612,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 				return;
 			}
 		}
-
 		final SaveLocationHistory history = applicationInterface.getStorageUtils().isUsingSAF() ? save_location_history_saf : save_location_history;
 		showPreview(false);
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
@@ -1691,7 +1703,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 							}
 						}
 						preview.showToast(null, getResources().getString(R.string.changed_save_location) + "\n" + save_folder_name);
-						SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(CameraActivity.this);
+						SharedPreferences sharedPreferences = getDefaultSharedPreferences(CameraActivity.this);
 						SharedPreferences.Editor editor = sharedPreferences.edit();
 						if( applicationInterface.getStorageUtils().isUsingSAF() )
 							editor.putString(PreferenceKeys.getSaveLocationSAFPreferenceKey(), save_folder);
@@ -1880,7 +1892,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	public boolean supportsExposureButton() {
 		if( preview.getCameraController() == null )
 			return false;
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences sharedPreferences = getDefaultSharedPreferences(this);
 		String iso_value = sharedPreferences.getString(PreferenceKeys.getISOPreferenceKey(), preview.getCameraController().getDefaultISO());
 		boolean manual_iso = !iso_value.equals("auto");
 		return preview.supportsExposures() || (manual_iso && preview.supportsISORange() );
@@ -1909,7 +1921,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		if( MyDebug.LOG )
 			Log.d(TAG, "cameraSetup: time after handling Force 4K option: " + (System.currentTimeMillis() - debug_time));
 
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences sharedPreferences = getDefaultSharedPreferences(this);
 		{
 			if( MyDebug.LOG )
 				Log.d(TAG, "set up zoom");
@@ -2316,7 +2328,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		audio_listener = new AudioListener(this);
 		if( audio_listener.status() ) {
 			audio_listener.start();
-			SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+			SharedPreferences sharedPreferences = getDefaultSharedPreferences(this);
 			String sensitivity_pref = sharedPreferences.getString(PreferenceKeys.getAudioNoiseControlSensitivityPreferenceKey(), "0");
 			switch(sensitivity_pref) {
 				case "3":
@@ -2352,7 +2364,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		if( MyDebug.LOG )
 			Log.d(TAG, "initSpeechRecognizer");
 		// in theory we could create the speech recognizer always (hopefully it shouldn't use battery when not listening?), though to be safe, we only do this when the option is enabled (e.g., just in case this doesn't work on some devices!)
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences sharedPreferences = getDefaultSharedPreferences(this);
 		boolean want_speech_recognizer = sharedPreferences.getString(PreferenceKeys.getAudioControlPreferenceKey(), "none").equals("voice");
 		if( speechRecognizer == null && want_speech_recognizer ) {
 			if( MyDebug.LOG )
@@ -2475,7 +2487,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	}
 
 	public boolean hasAudioControl() {
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		SharedPreferences sharedPreferences = getDefaultSharedPreferences(this);
 		String audio_control = sharedPreferences.getString(PreferenceKeys.getAudioControlPreferenceKey(), "none");
 		if( audio_control.equals("voice") ) {
 			return speechRecognizer != null;
@@ -2832,7 +2844,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 					if( MyDebug.LOG )
 						Log.d(TAG, "location permission not available, so switch location off");
 					preview.showToast(null, R.string.permission_location_not_available);
-					SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+					SharedPreferences settings = getDefaultSharedPreferences(this);
 					SharedPreferences.Editor editor = settings.edit();
 					editor.putBoolean(PreferenceKeys.getLocationPreferenceKey(), false);
 					editor.apply();
