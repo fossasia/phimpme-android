@@ -417,12 +417,6 @@ public class MyApplicationInterface implements ApplicationInterface {
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
     	return sharedPreferences.getBoolean(PreferenceKeys.getThumbnailAnimationPreferenceKey(), true);
     }
-    
-    @Override
-    public boolean getShutterSoundPref() {
-		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-    	return sharedPreferences.getBoolean(PreferenceKeys.getShutterSoundPreferenceKey(), true);
-    }
 
     @Override
 	public boolean getStartupFocusPref() {
