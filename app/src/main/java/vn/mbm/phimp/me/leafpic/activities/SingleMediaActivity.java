@@ -575,15 +575,6 @@ public class SingleMediaActivity extends SharedMediaActivity {
                         .ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) { }});
-
-                detailsDialog.setButton(DialogInterface.BUTTON_NEUTRAL, getString(R.string.fix_date).toUpperCase(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (!getAlbum().getCurrentMedia().fixDate())
-                            Toast.makeText(SingleMediaActivity.this, R.string.unable_to_fix_date, Toast.LENGTH_SHORT).show();
-                    }
-                });
-
                 detailsDialog.show();
                 break;
 

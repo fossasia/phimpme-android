@@ -126,8 +126,7 @@ public class  MediaStoreProvider {
 
 	private static int getAlbumCount(Context context, long id) {
 		int c = 0;
-		String selection = "( "+MediaStore.Files.FileColumns.MEDIA_TYPE + "=? or "
-										   + MediaStore.Files.FileColumns.MEDIA_TYPE + "=? ) and " + MediaStore.Files.FileColumns.PARENT + "=?";
+		String selection = "( " + MediaStore.Files.FileColumns.MEDIA_TYPE + "=? ) and " + MediaStore.Files.FileColumns.PARENT + "=?";
 
 		String[] selectionArgs = new String[] {
 						String.valueOf(MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE),
