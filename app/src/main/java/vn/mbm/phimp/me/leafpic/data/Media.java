@@ -225,19 +225,6 @@ public class Media implements Parcelable, Serializable {
         return -1;
     }
 
-    public boolean fixDate(){
-        long newDate = getDateTaken();
-        if (newDate != -1){
-            File f = new File(path);
-            if (f.setLastModified(newDate)) {
-                dateModified = newDate;
-                return true;
-            }
-        }
-        return false;
-    }
-    //</editor-fold>
-
     public File getFile() {
         if (path != null) return new File(path);
         return null;
