@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
+apply plugin: 'realm-android'
 apply plugin: 'kotlin-android'
 apply plugin: 'jacoco-android'
-apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 25
@@ -59,6 +59,7 @@ android {
             path 'jni/Android.mk'
         }
     }
+
 }
 
 repositories {
@@ -109,6 +110,4 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     compile "com.twitter.sdk.android:twitter:$rootProject.twitterVersion"
     compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
-    compile "io.realm:realm-android:0.84.1"
-    kapt "io.realm:realm-android:0.84.1"
 }

@@ -1,11 +1,13 @@
 package vn.mbm.phimp.me.accounts
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
+import com.twitter.sdk.android.core.identity.TwitterLoginButton
 import vn.mbm.phimp.me.R
 import vn.mbm.phimp.me.base.ThemedActivity
 import vn.mbm.phimp.me.leafpic.util.ThemeHelper
@@ -18,6 +20,7 @@ class AccountActivity : ThemedActivity(), AccountContract.View {
     private var themeHelper: ThemeHelper? = null
     private var accountsRecyclerView: RecyclerView? = null
     private var accountAdapter: AccountAdapter? = null
+    private var twitterLogin: TwitterLoginButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,22 +36,6 @@ class AccountActivity : ThemedActivity(), AccountContract.View {
         toolbar!!.popupTheme = themeHelper!!.popupToolbarStyle
         toolbar!!.setBackgroundColor(themeHelper!!.primaryColor)
         supportActionBar!!.setTitle(R.string.title_account)
-
-       /* twitterLogin = findViewById(R.id.twitter_login_button) as TwitterLoginButton
-        twitterLogin!!.callback = object : Callback<TwitterSession>() {
-            override fun success(p0: Result<TwitterSession>?) {
-                val session = TwitterCore.getInstance().sessionManager.activeSession
-                val authToken = session.authToken
-                val token = authToken.token
-                val secret = authToken.secret
-
-                Log.d("sfaf", session.toString())
-            }
-
-            override fun failure(p0: TwitterException?) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-        }*/
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -59,7 +46,7 @@ class AccountActivity : ThemedActivity(), AccountContract.View {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_add_account -> {
-                val fragmentManager = supportFragmentManager
+                val fragmentManager = fragmentManager
                 val accountsPicker = AccountPickerFragment().newInstance("Accounts Picker")
                 accountsPicker.show(fragmentManager, "Accounts Picker")
             }
@@ -96,10 +83,11 @@ class AccountActivity : ThemedActivity(), AccountContract.View {
         setStatusBarColor()
     }
 
-   /* override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
-        // Pass the activity result to the login button.
         twitterLogin!!.onActivityResult(requestCode, resultCode, data)
-    }*/
+        val fragmentManager = fragmentManager
+        val accountsPicker = AccountPickerFragment().newInstance("AP")
+        accountsPicker.onActivityResult(requestCode, resultCode, data)
+    }
 }
