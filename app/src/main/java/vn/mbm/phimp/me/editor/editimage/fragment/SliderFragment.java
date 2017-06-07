@@ -61,20 +61,29 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
 
 
     private void setDefaultSeekBarProgress() {
-        switch (activity.getMode()){
-            case EditImageActivity.MODE_FILTERS:
-                seekBar.setProgress(50);
-                break;
-            case EditImageActivity.MODE_ENHANCE:
-                switch (EditImageActivity.effectType%200){
-                    case 2:case 6:case 7:case 8:
-                        seekBar.setProgress(0);
-                        break;
-                    case 0:case 1:case 3:case 4:case 5:
-                        seekBar.setProgress(50);
-                        break;
-                }
-                break;
+        if (null != seekBar) {
+            switch (EditImageActivity.effectType/100) {
+                case EditImageActivity.MODE_FILTERS:
+                    seekBar.setProgress(100);
+                    break;
+                case EditImageActivity.MODE_ENHANCE:
+                    switch (EditImageActivity.effectType % 300) {
+                        case 2:
+                        case 6:
+                        case 7:
+                        case 8:
+                            seekBar.setProgress(0);
+                            break;
+                        case 0:
+                        case 1:
+                        case 3:
+                        case 4:
+                        case 5:
+                            seekBar.setProgress(50);
+                            break;
+                    }
+                    break;
+            }
         }
     }
     @Override
@@ -108,6 +117,7 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
     @Override
     public void onShow() {
         if (activity!=null) {
+            setDefaultSeekBarProgress();
             EditImageActivity.mode = EditImageActivity.MODE_SLIDER;
             currentBitmap = activity.mainBitmap;
             activity.mainImage.setImageBitmap(activity.mainBitmap);

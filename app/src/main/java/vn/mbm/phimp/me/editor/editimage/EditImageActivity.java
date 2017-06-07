@@ -137,6 +137,19 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         getData();
         requestCode = getIntent().getIntExtra("requestCode", 1);
 
+//        setInitialFragments();
+    }
+
+    private void setInitialFragments() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.controls_container, mainMenuFragment)
+                .commit();
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.preview_container, filterFragment)
+                .commit();
     }
 
     private void getData() {
@@ -178,16 +191,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         cropFragment = CropFragment.newInstance();
         rotateFragment = RotateFragment.newInstance();
 
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.controls_container, mainMenuFragment)
-                .commit();
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.preview_container, filterFragment)
-                .commit();
     }
 
     public int getMode(){
@@ -234,10 +237,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     }
 
     public void setEffectType(int type, int mode){
-        if (mode == EditImageActivity.MODE_FILTERS)
-            effectType = 300 + type;
-        else if (mode == EditImageActivity.MODE_ENHANCE)
-            effectType = 200 + type;
+        effectType = 100 * mode + type;
     }
 
     public void changeMiddleFragment(int index){
@@ -360,6 +360,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
             mainBitmap = result;
             mainImage.setImageBitmap(result);
             mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
+
+            setInitialFragments();
         }
     }
 

@@ -19,13 +19,13 @@ public class PhotoProcessing {
 
 
     public static Bitmap processImage(Bitmap srcBitmap, int effectType, int val) {
-        if(isFilter(effectType))
-            return filterPhoto(srcBitmap,effectType % 300);
+        if(!isEnhance(effectType))
+            return filterPhoto(srcBitmap,effectType % 100, val);
         else
-            return tunePhoto(srcBitmap,effectType % 200, val);
+            return tunePhoto(srcBitmap,effectType % 100, val);
     }
 
-    private static Bitmap filterPhoto(Bitmap bitmap, int position) {
+    public static Bitmap filterPhoto(Bitmap bitmap, int position,int value) {
         if (bitmap != null) {
             sendBitmapToNative(bitmap);
         }
@@ -33,37 +33,37 @@ public class PhotoProcessing {
             case 0: // Original
                 break;
             case 1: // Instafix
-                nativeApplyInstafix();
+                nativeApplyInstafix(value);
                 break;
             case 2: // Ansel
-                nativeApplyAnsel();
+                nativeApplyAnsel(value);
                 break;
             case 3: // Testino
-                nativeApplyTestino();
+                nativeApplyTestino(value);
                 break;
             case 4: // XPro
-                nativeApplyXPro();
+                nativeApplyXPro(value);
                 break;
             case 5: // Retro
-                nativeApplyRetro();
+                nativeApplyRetro(value);
                 break;
             case 6: // Black & White
-                nativeApplyBW();
+                nativeApplyBW(value);
                 break;
             case 7: // Sepia
-                nativeApplySepia();
+                nativeApplySepia(value);
                 break;
             case 8: // Cyano
-                nativeApplyCyano();
+                nativeApplyCyano(value);
                 break;
             case 9: // Georgia
-                nativeApplyGeorgia();
+                nativeApplyGeorgia(value);
                 break;
             case 10: // Sahara
-                nativeApplySahara();
+                nativeApplySahara(value);
                 break;
             case 11: // HDR
-                nativeApplyHDR();
+                nativeApplyHDR(value);
                 break;
         }
         Bitmap filteredBitmap = getBitmapFromNative(bitmap);
@@ -109,7 +109,7 @@ public class PhotoProcessing {
         return filteredBitmap;
     }
 
-    private static boolean isFilter(int effectType) {
+    private static boolean isEnhance(int effectType) {
         return (effectType/300==1);
     }
 
@@ -132,27 +132,17 @@ public class PhotoProcessing {
 
     public static native void nativeFlipHorizontally();
 
-    public static native void nativeApplyInstafix();
-
-    public static native void nativeApplyAnsel();
-
-    public static native void nativeApplyTestino();
-
-    public static native void nativeApplyXPro();
-
-    public static native void nativeApplyRetro();
-
-    public static native void nativeApplyBW();
-
-    public static native void nativeApplySepia();
-
-    public static native void nativeApplyCyano();
-
-    public static native void nativeApplyGeorgia();
-
-    public static native void nativeApplySahara();
-
-    public static native void nativeApplyHDR();
+    public static native void nativeApplyInstafix(int value);
+    public static native void nativeApplyAnsel(int value);
+    public static native void nativeApplyTestino(int value);
+    public static native void nativeApplyXPro(int value);
+    public static native void nativeApplyRetro(int value);
+    public static native void nativeApplyBW(int value);
+    public static native void nativeApplySepia(int value);
+    public static native void nativeApplyCyano(int value);
+    public static native void nativeApplyGeorgia(int value);
+    public static native void nativeApplySahara(int value);
+    public static native void nativeApplyHDR(int value);
 
     public static native void nativeLoadResizedJpegBitmap(byte[] jpegData,
                                                           int size, int maxPixels);

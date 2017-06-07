@@ -1,8 +1,10 @@
 package vn.mbm.phimp.me.editor.editimage.fragment;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,16 +20,18 @@ import java.util.ArrayList;
 
 import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.editor.editimage.EditImageActivity;
+import vn.mbm.phimp.me.editor.editimage.filter.PhotoProcessing;
 import vn.mbm.phimp.me.editor.editimage.view.StickerView;
 
 public class RecyclerMenuFragment extends BaseEditFragment {
 
     RecyclerView recyclerView;
     int MODE;
-    private ArrayList<Bitmap> filterThumbs;
+    private ArrayList<Bitmap> filterThumbs = new ArrayList<>();
     View fragmentView;
     private StickerView mStickerView;
     static final String[] stickerPath = {"stickers/type1", "stickers/type2", "stickers/type3", "stickers/type4", "stickers/type5", "stickers/type6"};
+    Bitmap currentBitmap,tempBitmap;
 
     public RecyclerMenuFragment() {
 
@@ -52,6 +56,7 @@ public class RecyclerMenuFragment extends BaseEditFragment {
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(new mRecyclerAdapter());
         this.mStickerView = activity.mStickerView;
+        onShow();
     }
 
     @Override
@@ -78,27 +83,60 @@ public class RecyclerMenuFragment extends BaseEditFragment {
 
     @Override
     public void onShow() {
-
+        if (MODE == EditImageActivity.MODE_FILTERS) {
+            filterThumbs = new ArrayList<>();
+            this.currentBitmap = activity.mainBitmap;
+            getFilterThumbs();
+          //  if (currentBitmap!=null)recyclerView.getAdapter().notifyDataSetChanged();
+        }
     }
 
     public ArrayList<Bitmap> getFilterThumbs() {
-        Bitmap bitmap = null;
-        GetFilterThumbsTask getFilterThumbsTask = new GetFilterThumbsTask();
+        if (null!= currentBitmap) {
+                GetFilterThumbsTask getFilterThumbsTask = new GetFilterThumbsTask();
+                getFilterThumbsTask.execute();
+        }
         return null;
     }
 
-    private class GetFilterThumbsTask extends AsyncTask<Bitmap,Void,ArrayList<Bitmap>>{
+    private Bitmap getResizedBitmap(Bitmap bm, int divisor) {
+        int width = bm.getWidth();
+        int height = bm.getHeight();
+        float scale = 1/(float)divisor;
+        Matrix matrix = new Matrix();
+        matrix.postScale(scale, scale);
+        return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
+    }
+
+    private class GetFilterThumbsTask extends AsyncTask<Void,Void,Void>{
+        Dialog dialog;
 
 
         @Override
-        protected ArrayList<Bitmap> doInBackground(Bitmap... params) {
-
+        protected Void doInBackground(Void... params) {
+            filterThumbs = new ArrayList<>();
+            for (int i=0; i<=11;i++){
+                filterThumbs.add(PhotoProcessing.filterPhoto(getResizedBitmap(currentBitmap,5),i,100));
+            }
             return null;
         }
 
         @Override
-        protected void onPostExecute(ArrayList<Bitmap> bitmaps) {
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = EditImageActivity.getLoadingDialog(getActivity(),
+                    R.string.applying, false);
+            dialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Void bitmaps) {
             super.onPostExecute(bitmaps);
+            if (dialog!=null)dialog.dismiss();
+            if (filterThumbs == null)
+                return;
+
+            recyclerView.getAdapter().notifyDataSetChanged();
         }
     }
 
@@ -106,7 +144,6 @@ public class RecyclerMenuFragment extends BaseEditFragment {
 
         int defaulticon;
         TypedArray iconlist,titlelist;
-        ArrayList<Bitmap> filterthumb;
 
         class mViewHolder extends RecyclerView.ViewHolder {
             ImageView icon;
@@ -124,8 +161,6 @@ public class RecyclerMenuFragment extends BaseEditFragment {
             defaulticon = R.mipmap.ic_launcher;
             switch (MODE) {
                 case EditImageActivity.MODE_FILTERS:
-                    //filterthumb = getFilterThumbs();
-                    iconlist = getActivity().getResources().obtainTypedArray(R.array.filter_icons);
                     titlelist = getActivity().getResources().obtainTypedArray(R.array.filter_titles);
                     break;
                 case EditImageActivity.MODE_ENHANCE:
@@ -153,10 +188,16 @@ public class RecyclerMenuFragment extends BaseEditFragment {
                 holder.itemView.setTag(stickerPath[position]);
             }
 
-            /*if (RecyclerMenuFragment.mode == EditImageActivity.MODE_FILTERS)
-                holder.icon.setImageBitmap(filterthumb.get(position));
-            else*/
-                holder.icon.setImageResource(iconlist.getResourceId(position,defaulticon));
+            if (MODE == EditImageActivity.MODE_FILTERS) {
+                if (/*currentBitmap!=null){//*/filterThumbs!=null && filterThumbs.size() > position) {
+                    holder.icon.setImageBitmap(PhotoProcessing.filterPhoto(getResizedBitmap(currentBitmap,5),position,100));
+                }else {
+                    holder.icon.setImageResource(defaulticon);
+                }
+            }else {
+                holder.icon.setImageResource(iconlist.getResourceId(position, defaulticon));
+            }
+
 
             holder.title.setText(titlelist.getString(position));
 
@@ -181,7 +222,6 @@ public class RecyclerMenuFragment extends BaseEditFragment {
                     break;
 
                 case EditImageActivity.MODE_ENHANCE:
-                    activity.sliderFragment.doPendingApply();
                     activity.changeBottomFragment(EditImageActivity.MODE_SLIDER);
                     activity.setEffectType(pos,MODE);
                     break;

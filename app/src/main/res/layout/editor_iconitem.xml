@@ -8,7 +8,7 @@
         android:id="@+id/editor_item_image"
         android:layout_width="@dimen/icon_item_image_size"
         android:layout_height="@dimen/icon_item_image_size"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         android:background="@android:color/transparent"
         />
 

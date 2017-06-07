@@ -114,7 +114,6 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
         mColorAdapter = new ColorListAdapter(this, mPaintColors, this);
         mColorListView.setAdapter(mColorAdapter);
 
-
     }
 
     @Override

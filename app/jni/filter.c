@@ -39,6 +39,13 @@
 #define TILT_SHIFT_BLUR_RADIUS 3
 #define TILT_SHIFT_ALPHA_GRADIENT_SIZE 0.07f
 
+
+unsigned char truncate(int val){
+    if (val > 255) return 255;
+    if (val < 0) return 0;
+    return (unsigned char)val;
+}
+
 // Same as hard light layer mode in GIMP
 static unsigned char hardLightLayerPixelComponents(unsigned char maskComponent, unsigned char imageComponent) {
 	return (maskComponent > 128) ? 255 - (( (255 - (2 * (maskComponent-128)) ) * (255-imageComponent) )/256) : (2*maskComponent*imageComponent)/256;
@@ -106,24 +113,25 @@ static float applyContrastToPixelComponent(float pixelComponent, float contrast)
 	return min(1.0f, ((pixelComponent - 0.5f) * (tan ((contrast + 1) * PI/4) ) + 0.5f));
 }
 
-void applyBlackAndWhiteFilter(Bitmap* bitmap) {
+void applyBlackAndWhiteFilter(Bitmap* bitmap, int val) {
 	register unsigned int i;
 	unsigned int length = (*bitmap).width * (*bitmap).height;
 	register unsigned char grey;
 	unsigned char* red = (*bitmap).red;
 	unsigned char* green = (*bitmap).green;
 	unsigned char* blue = (*bitmap).blue;
+	double opacity = (double)val/100;
 	for (i = length; i--;) {
 		grey = blackAndWhite(red[i], green[i], blue[i]);
 
-		red[i] = grey;
-		green[i] = grey;
-		blue[i] = grey;
+		red[i] = truncate((int)((1-opacity) * red[i] + opacity * grey));
+		green[i] = truncate((int)((1-opacity) * green[i] + opacity * grey));
+		blue[i] = truncate((int)((1-opacity) * blue[i] + opacity * grey));
 	}
 }
 
-void applyAnselFilter(Bitmap* bitmap) {
-	applyBlackAndWhiteFilter(bitmap);
+void applyAnselFilter(Bitmap* bitmap, int val) {
+	//applyBlackAndWhiteFilter(bitmap,100);
 	register unsigned int i;
 	unsigned int length = (*bitmap).width * (*bitmap).height;
 	Bitmap localBitmap = *bitmap;
@@ -131,21 +139,27 @@ void applyAnselFilter(Bitmap* bitmap) {
 	unsigned char* red = (*bitmap).red;
 	unsigned char* green = (*bitmap).green;
 	unsigned char* blue = (*bitmap).blue;
+	unsigned char br,bg,bb;
+	double opacity = (double)val/100;
 	for (i = length; i--; ) {
 		grey = blackAndWhite(red[i], green[i], blue[i]);
-		localBitmap.red[i] = green[i] = blue[i] = hardLightLayerPixelComponents(grey, grey);
+		int eff = hardLightLayerPixelComponents(grey, grey);
+		red[i] = truncate((int)((1-opacity) * red[i] + opacity * eff));
+        green[i] = truncate((int)((1-opacity) * green[i] + opacity * eff));
+        blue[i] = truncate((int)((1-opacity) * blue[i] + opacity * eff));
 	}
 }
 
 const unsigned char sepiaRedLut[256] = {24, 24, 25, 26, 27, 28, 29, 30, 30, 30, 31, 32, 33, 34, 35, 36, 37, 37, 38, 38, 39, 40, 41, 42, 43, 43, 44, 45, 46, 47, 47, 48, 49, 50, 50, 51, 52, 53, 54, 55, 56, 57, 57, 58, 58, 59, 60, 61, 62, 63, 64, 64, 65, 66, 67, 68, 69, 70, 71, 71, 72, 72, 73, 74, 75, 76, 77, 78, 78, 79, 80, 81, 82, 83, 84, 85, 85, 86, 87, 88, 89, 89, 90, 91, 92, 93, 93, 94, 95, 96, 97, 97, 98, 99, 100, 101, 102, 102, 103, 104, 105, 106, 107, 108, 109, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 146, 147, 148, 149, 150, 151, 152, 153, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 178, 180, 181, 182, 183, 184, 185, 186, 186, 187, 188, 189, 190, 191, 193, 194, 195, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 255};
 const unsigned char sepiaGreenLut[256] = {16, 16, 16, 17, 18, 18, 19, 20, 20, 20, 21, 22, 22, 23, 24, 24, 25, 25, 26, 26, 27, 28, 28, 29, 30, 30, 31, 31, 32, 33, 33, 34, 35, 36, 36, 36, 37, 38, 39, 39, 40, 41, 42, 43, 43, 44, 45, 46, 47, 47, 48, 48, 49, 50, 51, 51, 52, 53, 54, 54, 55, 55, 56, 57, 58, 59, 60, 61, 61, 61, 62, 63, 64, 65, 66, 67, 67, 68, 68, 69, 70, 72, 73, 74, 75, 75, 76, 77, 78, 78, 79, 80, 81, 81, 82, 83, 84, 85, 86, 87, 88, 90, 90, 91, 92, 93, 94, 95, 96, 97, 97, 98, 99, 100, 101, 103, 104, 105, 106, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 122, 123, 123, 124, 125, 127, 128, 129, 130, 131, 132, 132, 134, 135, 136, 137, 138, 139, 141, 141, 142, 144, 145, 146, 147, 148, 149, 150, 151, 152, 154, 155, 156, 157, 158, 160, 160, 161, 162, 163, 165, 166, 167, 168, 169, 170, 171, 173, 174, 175, 176, 177, 178, 179, 180, 182, 183, 184, 185, 187, 188, 189, 189, 191, 192, 193, 194, 196, 197, 198, 198, 200, 201, 202, 203, 205, 206, 207, 208, 209, 210, 211, 212, 213, 215, 216, 217, 218, 219, 220, 221, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 255};
 const unsigned char sepiaBlueLut[256] = {5, 5, 5, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 9, 10, 10, 11, 11, 11, 11, 12, 12, 13, 13, 14, 14, 14, 14, 15, 15, 16, 16, 17, 17, 17, 18, 18, 19, 20, 20, 21, 21, 21, 22, 22, 23, 23, 24, 25, 25, 26, 27, 28, 28, 29, 29, 30, 31, 31, 31, 32, 33, 33, 34, 35, 36, 37, 38, 38, 39, 39, 40, 41, 42, 43, 43, 44, 45, 46, 47, 47, 48, 49, 50, 51, 52, 53, 53, 54, 55, 56, 57, 58, 59, 60, 60, 61, 62, 63, 65, 66, 67, 67, 68, 69, 70, 72, 73, 74, 75, 75, 76, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 90, 91, 92, 93, 93, 95, 97, 98, 99, 100, 101, 102, 104, 104, 106, 107, 108, 109, 111, 112, 114, 115, 115, 117, 118, 120, 121, 122, 123, 124, 125, 127, 128, 129, 131, 132, 133, 135, 136, 137, 138, 139, 141, 142, 144, 145, 147, 147, 149, 150, 151, 153, 154, 156, 157, 159, 159, 161, 162, 164, 165, 167, 168, 169, 170, 172, 173, 174, 176, 177, 178, 180, 181, 182, 184, 185, 186, 188, 189, 191, 192, 193, 194, 196, 197, 198, 200, 201, 203, 204, 205, 206, 207, 209, 210, 211, 213, 214, 215, 216, 218, 219, 220, 221, 223, 224, 225, 226, 227, 229, 230, 231, 232, 234, 235, 236, 237, 238, 239, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 255};
-void applySepia(Bitmap* bitmap) {
+void applySepia(Bitmap* bitmap, int value) {
 	register unsigned int i;
 	unsigned int length = (*bitmap).width * (*bitmap).height;
 	unsigned char* red = (*bitmap).red;
 	unsigned char* green = (*bitmap).green;
 	unsigned char* blue = (*bitmap).blue;
+	double opacity = (double)value/100;
 	for (i = length; i--; ) {
 		register float r = (float) red[i] / 255;
 		register float g = (float) green[i] / 255;
@@ -154,44 +168,13 @@ void applySepia(Bitmap* bitmap) {
 		//create grey scale luminosity
 		register float luminosity =  (0.21f * r + 0.72f * g + 0.07 * b) * 255;
 
-		red[i] = sepiaRedLut[(int)luminosity];
-		green[i] = sepiaGreenLut[(int)luminosity];
-		blue[i] = sepiaBlueLut[(int)luminosity];
-
-		/*
-		//increase brightness of the luminosity
-		register unsigned char brightGrey = applyBrightnessToPixelComponent(luminosity, 0.234375f) * 255;
-
-		//overlay a brown on the grey scale luminosity (sepia brown = rgb(107, 66, 12));
-		register unsigned char tintedR = overlayPixelComponents(107, brightGrey, 1);
-		register unsigned char tintedG = overlayPixelComponents(66, brightGrey, 1);
-		register unsigned char tintedB = overlayPixelComponents(12, brightGrey, 1);
-
-		register float invertMask = 1.0f - luminosity;
-		luminosity *= 255;
-		float r2 = (luminosity * (1.0f - invertMask)
-				+ ((float) tintedR * invertMask));
-		float g2 = (luminosity * (1.0f - invertMask)
-				+ ((float) tintedG * invertMask));
-		float b2 = (luminosity * (1.0f - invertMask)
-				+ ((float) tintedB * invertMask));
-
-		float r3 = (r2 * (1.0f - invertMask)
-				+ ((float) tintedR * invertMask));
-		float g3 = (g2 * (1.0f - invertMask)
-				+ ((float) tintedG * invertMask));
-		float b3 = (b2 * (1.0f - invertMask)
-				+ ((float) tintedB * invertMask));
-
-		red[i] = r3;
-		green[i] = g3;
-		blue[i] = b3;*/
-
-
+		red[i] = truncate((int)((1-opacity) * red[i] + opacity * sepiaRedLut[(int)luminosity]));
+        green[i] = truncate((int)((1-opacity) * green[i] + opacity * sepiaGreenLut[(int)luminosity]));
+        blue[i] = truncate((int)((1-opacity) * blue[i] + opacity * sepiaBlueLut[(int)luminosity]));
 	}
 }
 
-void applyGeorgia(Bitmap* bitmap) {
+void applyGeorgia(Bitmap* bitmap, int value) {
 	register unsigned int i;
 	unsigned int length = (*bitmap).width * (*bitmap).height;
 	unsigned char r, g, b;
@@ -204,6 +187,7 @@ void applyGeorgia(Bitmap* bitmap) {
 	unsigned char multiplyLut250[256];
 	unsigned char multiplyLut220[256];
 	unsigned char multiplyLut175[256];
+	double opacity = (double)value/100;
 	for (i = 0; i < 256; i++) {
 		float pixelf = i/255.0f;
 		brightnessLut[i] = 255*applyBrightnessToPixelComponent(pixelf, 0.4724f);
@@ -214,10 +198,6 @@ void applyGeorgia(Bitmap* bitmap) {
 	}
 
 	for (i = length; i--; ) {
-		//r = (float)(red[i])/255;
-		//g = (float)(green[i])/255;
-		//b = (float)(blue[i])/255;
-
 		r = brightnessLut[red[i]]; //applyBrightnessToPixelComponent(r, 0.4724f);
 		g = brightnessLut[green[i]]; //applyBrightnessToPixelComponent(g, 0.4724f);
 		b = brightnessLut[blue[i]]; //applyBrightnessToPixelComponent(b, 0.4724f);
@@ -230,14 +210,15 @@ void applyGeorgia(Bitmap* bitmap) {
 		g = (g * 0.87f/*222*/) + 33; //compress the green channel between 33 - 255
 		b = (b * 0.439f/*112*/) + 143; //compress the blue channel between 143 - 255
 
-		// multiply by a wheat colour rgb(250, 220, 175)
-		red[i] = multiplyLut250[r]; //multiplyPixelComponents(250, r);
-		green[i] = multiplyLut220[g]; //multiplyPixelComponents(220, g);
-		blue[i] = multiplyLut175[b]; //multiplyPixelComponents(175, b);
+
+		red[i] = truncate((int)((1-opacity) * red[i] + opacity * multiplyLut250[r]));
+        green[i] = truncate((int)((1-opacity) * green[i] + opacity * multiplyLut220[g]));
+        blue[i] = truncate((int)((1-opacity) * blue[i] + opacity * multiplyLut175[b]));
+
 	}
 }
 
-void gammaCorrection(Bitmap* bitmap) {
+void gammaCorrection(Bitmap* bitmap,int val) {
 	unsigned char* red = (*bitmap).red;
 	unsigned char* green = (*bitmap).green;
 	unsigned char* blue = (*bitmap).blue;
@@ -248,6 +229,7 @@ void gammaCorrection(Bitmap* bitmap) {
 	float greenAverage = 0;
 	float blueAverage = 0;
 	unsigned int n = 1;
+	double opacity = (double)val/100;
 	for (i = 0; i < length; i++) {
 		redAverage = ((n-1)*redAverage + red[i])/n;
 		greenAverage = ((n-1)*greenAverage + green[i])/n;
@@ -270,17 +252,17 @@ void gammaCorrection(Bitmap* bitmap) {
 		if (redLut[red[i]] == -1) {
 			redLut[red[i]] = clampComponent(255.0f * powf((red[i]/255.0f), gammaRed));
 		}
-		red[i] = redLut[red[i]];
+		red[i] = truncate((int)(1-opacity) * red[i] + opacity * redLut[red[i]]);;
 
 		if (greenLut[green[i]] == -1) {
 			greenLut[green[i]] = clampComponent(255.0f * powf((green[i]/255.0f), gammaGreen));
 		}
-		green[i] = greenLut[green[i]];
+		green[i] = truncate((int)(1-opacity) * green[i] + opacity * greenLut[green[i]]);;
 
 		if (blueLut[blue[i]] == -1) {
 			blueLut[blue[i]] = clampComponent(255.0f * powf((blue[i]/255.0f), gammaBlue));
 		}
-		blue[i] = blueLut[blue[i]];
+		blue[i] = truncate((int)(1-opacity) * blue[i] + opacity * blueLut[blue[i]]);;
 	}
 }
 
@@ -338,19 +320,19 @@ int unsharpMask(Bitmap* bitmap, int radius, float amount, int threshold) {
 		int g2 = blurGreen[i];
 		int b2 = blurBlue[i];
 
-		if (fabs(r1 - r2) >= threshold) {
+		if (abs(r1 - r2) >= threshold) {
 			if (lut[r1][r2] == -1) {
 				lut[r1][r2] = clampComponent((int) ((a + 1) * (r1 - r2) + r2));
 			}
 			r1 = lut[r1][r2]; //clampComponent((int) ((a + 1) * (r1 - r2) + r2));
 		}
-		if (fabs(g1 - g2) >= threshold) {
+		if (abs(g1 - g2) >= threshold) {
 			if (lut[g1][g2] == -1) {
 				lut[g1][g2] = clampComponent((int) ((a + 1) * (g1 - g2) + g2));
 			}
 			g1 = lut[g1][g2]; //clampComponent((int) ((a + 1) * (g1 - g2) + g2));
 		}
-		if (fabs(b1 - b2) >= threshold) {
+		if (abs(b1 - b2) >= threshold) {
 			if (lut[b1][b2] == -1) {
 				lut[b1][b2] = clampComponent((int) ((a + 1) * (b1 - b2) + b2));
 			}
@@ -368,13 +350,13 @@ int unsharpMask(Bitmap* bitmap, int radius, float amount, int threshold) {
 }
 
 // Normalise the colours
-void normaliseColours(Bitmap* bitmap) {
+void normaliseColours(Bitmap* bitmap, int val) {
 	unsigned char* red = (*bitmap).red;
 	unsigned char* green = (*bitmap).green;
 	unsigned char* blue = (*bitmap).blue;
 
 	unsigned int histogram[3][256];
-
+    double opacity = (double)val/100;
 	unsigned int channel, i;
 	for (channel = 3; channel--;) {
 		for (i = 256; i--;) {
@@ -442,21 +424,21 @@ void normaliseColours(Bitmap* bitmap) {
 	n = 0;
 	for (y = height; y--;) {
 		for (x = width; x--;) {
-			red[n] = histogram[0][red[n]];
-			green[n] = histogram[1][green[n]];
-			blue[n] = histogram[2][blue[n]];
-			n++;
+    		red[n] = truncate((int)(1-opacity) * red[n] + opacity * histogram[0][red[n]]);;
+		    green[n] = truncate((int)(1-opacity) * green[n] + opacity * histogram[0][green[n]]);;
+            blue[n] = truncate((int)(1-opacity) * blue[n] + opacity * histogram[0][blue[n]]);;
+            n++;
 		}
 	}
 }
 
-void applyInstafix(Bitmap* bitmap) {
+void applyInstafix(Bitmap* bitmap, int val) {
 	//unsharpMask(bitmap, 3, 0.25f, 2);
-	gammaCorrection(bitmap);
-	normaliseColours(bitmap);
+	gammaCorrection(bitmap,val);
+	normaliseColours(bitmap,val);
 }
 
-int applySahara(Bitmap* bitmap) {
+int applySahara(Bitmap* bitmap, int val) {
 	int length = (*bitmap).width * (*bitmap).height;
 	int i;
 	unsigned char r, g, b;
@@ -467,6 +449,8 @@ int applySahara(Bitmap* bitmap) {
 	unsigned char* blue = (*bitmap).blue;
 	unsigned char brightnessLut[256];
 	unsigned char contrastLut[256];
+	double opacity = (double)val/100;
+
 	for (i = 0; i < 256; i++) {
 		float pixelf = i/255.0f;
 		//brightnessLut[i] = 255*applyBrightnessToPixelComponent(pixelf, 0.35433f);
@@ -486,10 +470,6 @@ int applySahara(Bitmap* bitmap) {
 		red[i] = (r*0.8431f/*215*/)+40; //compress the red channel between 18 - 237
 		blue[i] = (b*0.8823f/*225*/)+30; //compress the blue channel between 50 - 205
 
-		//rgbToHsb(red[i], green[i], blue[i], &hsb);
-		//hsb.s = hsb.s * 0.55f;
-
-		//hsbToRgb(&hsb, &red[i], &green[i], &blue[i]);
 	}
 
 	float matrix[4][4];
@@ -556,9 +536,10 @@ int applySahara(Bitmap* bitmap) {
 		blue[i] = overlayLut[blurBlue[i]][blue[i]];//overlayPixelComponents(blurBlue[i], blue[i], 1.0f);
 
 		// Multiply by a wheat colour rgb(255, 227, 187)
-		red[i] = multiplyLut255[red[i]];//multiplyPixelComponents(255, red[i]);
-		green[i] = multiplyLut227[green[i]];//multiplyPixelComponents(227, green[i]);
-		blue[i] = multiplyLut187[blue[i]];//multiplyPixelComponents(187, blue[i]);
+		red[i] = truncate((int)(1-opacity) * red[i] + opacity * multiplyLut255[red[i]]);;
+        green[i] = truncate((int)(1-opacity) * green[i] + opacity * multiplyLut227[green[i]]);;
+        blue[i] = truncate((int)(1-opacity) * blue[i] + opacity * multiplyLut187[blue[i]]);;
+
 	}
 
 	freeUnsignedCharArray(&blurRed);
@@ -569,7 +550,7 @@ int applySahara(Bitmap* bitmap) {
 }
 
 //TODO memory usage may be reduced by using component based blur
-int applyHDR(Bitmap* bitmap) {
+int applyHDR(Bitmap* bitmap, int val) {
 	//Cache to local variables
 	unsigned char* red = (*bitmap).red;
 	unsigned char* green = (*bitmap).green;
@@ -578,6 +559,9 @@ int applyHDR(Bitmap* bitmap) {
 	unsigned char* blurRed;
 	unsigned char* blurGreen;
 	unsigned char* blurBlue;
+
+	double opacity = (double)val/100;
+
 	int length = (*bitmap).width * (*bitmap).height;
 	int resultCode = newUnsignedCharArray(length, &blurRed);
 	if (resultCode != MEMORY_OK) {
@@ -631,9 +615,11 @@ int applyHDR(Bitmap* bitmap) {
 		//hsbToRgb(&hsb, &r2, &g2, &b2);
 
 		// grain merge the saturated pixel with the inverted grain merged pixel
-		red[i] = grainMergePixelsComponent(r2, r1);
-		green[i] = grainMergePixelsComponent(g2, g1);
-		blue[i] = grainMergePixelsComponent(b2, g1);
+
+		red[i] = truncate((int)(1-opacity) * red[i] + opacity * grainMergePixelsComponent(r2, r1));;
+        green[i] = truncate((int)(1-opacity) * green[i] + opacity * grainMergePixelsComponent(g2, g1));;
+        blue[i] = truncate((int)(1-opacity) * blue[i] + opacity * grainMergePixelsComponent(b2, g1));;
+
 	}
 
 	applyMatrix(bitmap, matrix);
@@ -645,7 +631,7 @@ int applyHDR(Bitmap* bitmap) {
 	return MEMORY_OK;
 }
 
-void applyTestino(Bitmap* bitmap) {
+void applyTestino(Bitmap* bitmap, int val) {
 	//Cache to local variables
 	unsigned char* red = (*bitmap).red;
 	unsigned char* green = (*bitmap).green;
@@ -658,6 +644,7 @@ void applyTestino(Bitmap* bitmap) {
 	register unsigned char grey;
 	short int greyscaleInvertMaskScreenComponentLut[256][256];
 	short int overlayLut[256][256];
+	double opacity = (double)val/100;
 	unsigned int j;
 	for (i = 256; i--;) {
 		for (j = 256; j--;) {
@@ -671,6 +658,7 @@ void applyTestino(Bitmap* bitmap) {
 	float saturation = 1.5f;
 	saturateMatrix(matrix, &saturation);
 	applyMatrix(bitmap, matrix);
+    int tr,tb,tg;
 
 	for (i = length; i--;) {
 		//rgbToHsb(red[i], green[i], blue[i], &hsb);
@@ -692,9 +680,15 @@ void applyTestino(Bitmap* bitmap) {
 		r = (overlayLut[grey][r] == -1) ? overlayLut[grey][r] = overlayPixelComponents(grey, r, 1.0f) : overlayLut[grey][r];
 		g = (overlayLut[grey][g] == -1) ? overlayLut[grey][g] = overlayPixelComponents(grey, g, 1.0f) : overlayLut[grey][g];
 		b = (overlayLut[grey][b] == -1) ? overlayLut[grey][b] = overlayPixelComponents(grey, b, 1.0f) : overlayLut[grey][b];
-		red[i] = (overlayLut[grey][r] == -1) ? overlayLut[grey][r] = overlayPixelComponents(grey, r, 1.0f) : overlayLut[grey][r];
-		green[i] = (overlayLut[grey][g] == -1) ? overlayLut[grey][g] = overlayPixelComponents(grey, g, 1.0f) : overlayLut[grey][g];
-		blue[i] = (overlayLut[grey][b] == -1) ? overlayLut[grey][b] = overlayPixelComponents(grey, b, 1.0f) : overlayLut[grey][b];
+		tr = (overlayLut[grey][r] == -1) ? overlayLut[grey][r] = overlayPixelComponents(grey, r, 1.0f) : overlayLut[grey][r];
+		tg = (overlayLut[grey][g] == -1) ? overlayLut[grey][g] = overlayPixelComponents(grey, g, 1.0f) : overlayLut[grey][g];
+		tb = (overlayLut[grey][b] == -1) ? overlayLut[grey][b] = overlayPixelComponents(grey, b, 1.0f) : overlayLut[grey][b];
+
+
+		red[i] = truncate((int)((1-opacity) * red[i] + opacity * tr));
+        green[i] = truncate((int)((1-opacity) * green[i] + opacity * tg));
+        blue[i] = truncate((int)((1-opacity) * blue[i] + opacity * tb));
+
 	}
 }
 
@@ -751,7 +745,7 @@ const unsigned char xproBlueCurveLut[256] = { 21, 21, 21, 22, 23, 24, 25, 26,
 		207, 208, 208, 209, 210, 211, 212, 213, 213, 214, 215, 216, 217, 218,
 		218, 219, 220, 221, 222, 223, 223, 224, 225, 226, 227, 228, 228, 229,
 		230, 231, 232, 232, 233 };
-void applyXPro(Bitmap* bitmap) {
+void applyXPro(Bitmap* bitmap, int val) {
 	//Cache to local variables
 	unsigned char* red = (*bitmap).red;
 	unsigned char* green = (*bitmap).green;
@@ -760,7 +754,8 @@ void applyXPro(Bitmap* bitmap) {
 	unsigned int length = (*bitmap).width * (*bitmap).height;
 	register unsigned int i;
 	short int overlayLut[256][256];
-	int j;
+	int j,tr,tb,tg;
+	double opacity = (double)val/100;
 	for (i = 256; i--;) {
 		for (j = 256; j--;) {
 			overlayLut[i][j] = -1;
@@ -784,19 +779,24 @@ void applyXPro(Bitmap* bitmap) {
 		if (overlayLut[red[i]][r] == -1) {
 			overlayLut[red[i]][r] = overlayPixelComponents(red[i], r, 1.0f);
 		}
-		red[i] = overlayLut[red[i]][r]; //overlayPixelComponents(red[i], r, 1.0f);
+		tr = overlayLut[red[i]][r]; //overlayPixelComponents(red[i], r, 1.0f);
 		if (overlayLut[green[i]][g] == -1) {
 			overlayLut[green[i]][g] = overlayPixelComponents(green[i], g, 1.0f);
 		}
-		green[i] = overlayLut[green[i]][g]; //overlayPixelComponents(green[i], g, 1.0f);
+		tg = overlayLut[green[i]][g]; //overlayPixelComponents(green[i], g, 1.0f);
 		if (overlayLut[blue[i]][b] == -1) {
 			overlayLut[blue[i]][b] = overlayPixelComponents(blue[i], b, 1.0f);
 		}
-		blue[i] = overlayLut[blue[i]][b]; //overlayPixelComponents(blue[i], b, 1.0f);
+		tb = overlayLut[blue[i]][b]; //overlayPixelComponents(blue[i], b, 1.0f);
+
+
+		red[i] = truncate((int)((1-opacity) * red[i] + opacity * tr));
+        green[i] = truncate((int)((1-opacity) * green[i] + opacity * tg));
+        blue[i] = truncate((int)((1-opacity) * blue[i] + opacity * tb));
 	}
 }
 
-void applyCyano(Bitmap* bitmap) {
+void applyCyano(Bitmap* bitmap, int val) {
 	//Cache to local variables
 	unsigned char* red = (*bitmap).red;
 	unsigned char* green = (*bitmap).green;
@@ -805,20 +805,24 @@ void applyCyano(Bitmap* bitmap) {
 	unsigned int length = (*bitmap).width * (*bitmap).height;
 	register unsigned int i;
 	register unsigned char grey, r, g, b;
+	double opacity = (double)val/100;
 	for (i = length; i--;) {
 		grey = ((red[i] * 0.222f) + (green[i] * 0.222f) + (blue[i] * 0.222f));
 		r = componentCeiling(61.0f + grey);
 		g = componentCeiling(87.0f + grey);
 		b = componentCeiling(136.0f + grey);
 
+
 		grey = blackAndWhite(red[i], green[i], blue[i]);
-		red[i] = overlayPixelComponents(grey, r, 0.9f);
-		green[i] = overlayPixelComponents(grey, g, 0.9f);
-		blue[i] = overlayPixelComponents(grey, b, 0.9f);
+
+		red[i] = truncate((int)((1-opacity) * red[i] + opacity * overlayPixelComponents(grey, r, 0.9f)));
+        green[i] = truncate((int)((1-opacity) * green[i] + opacity * overlayPixelComponents(grey, g, 0.9f)));
+        blue[i] = truncate((int)((1-opacity) * blue[i] + opacity * overlayPixelComponents(grey, b, 0.9f)));
+
 	}
 }
 
-void applyRetro(Bitmap* bitmap) {
+void applyRetro(Bitmap* bitmap, int val) {
 	//Cache to local variables
 	unsigned char* red = (*bitmap).red;
 	unsigned char* green = (*bitmap).green;
@@ -828,6 +832,7 @@ void applyRetro(Bitmap* bitmap) {
 	register unsigned int i;
 	register unsigned int grey;
 	register unsigned char r, g, b;
+	double opacity = (double)val/100;
 
 	short int overlayLut[256][256];
 	unsigned int j;
@@ -879,9 +884,11 @@ void applyRetro(Bitmap* bitmap) {
 		b = screen179Lut[b]; //screenPixelComponent(179, 0.2f, b);
 
 		// Screen merge rgba(9, 73, 233, 43) colour
-		red[i] = screen9Lut[r]; //screenPixelComponent(9, 0.168627f, r);
-		green[i] = screen73Lut[g]; //screenPixelComponent(73, 0.168627f, g);
-		blue[i] = screen233Lut[b]; //screenPixelComponent(233, 0.168627f, b);
+
+		red[i] = truncate((int)((1-opacity) * red[i] + opacity * screen9Lut[r]));
+        green[i] = truncate((int)((1-opacity) * green[i] + opacity * screen73Lut[g]));
+        blue[i] = truncate((int)((1-opacity) * blue[i] + opacity * screen233Lut[b]));
+
 	}
 }
 
