@@ -457,18 +457,12 @@ public class LFMainActivity extends SharedMediaActivity {
         ((IconicsImageView) findViewById(R.id.Drawer_hidden_Icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.Drawer_share_Icon)).setColor(color);
 
-        /** CLICK LISTENERS **//*
-    findViewById(R.id.ll_drawer_Donate).setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        Intent intent = new Intent(LFMainActivity.this, DonateActivity.class);
-        startActivity(intent);
-      }
-    });*/
+
         findViewById(R.id.ll_drawer_Setting).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LFMainActivity.this, SettingsActivity.class);
+                mDrawerLayout.closeDrawer(GravityCompat.START);
                 startActivity(intent);
             }
         });
@@ -477,6 +471,7 @@ public class LFMainActivity extends SharedMediaActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LFMainActivity.this, AboutActivity.class);
+                mDrawerLayout.closeDrawer(GravityCompat.START);
                 startActivity(intent);
             }
         });
