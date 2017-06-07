@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,8 @@ import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,6 +46,7 @@ import vn.mbm.phimp.me.editor.editimage.view.StickerView;
 import vn.mbm.phimp.me.editor.editimage.view.TextStickerView;
 import vn.mbm.phimp.me.editor.editimage.view.imagezoom.ImageViewTouch;
 import vn.mbm.phimp.me.editor.editimage.view.imagezoom.ImageViewTouchBase;
+import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
 import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
 import vn.mbm.phimp.me.utilities.ActivitySwitchHelper;
 
@@ -96,6 +100,8 @@ public class EditImageActivity extends EditBaseActivity {
     private BottomGalleryAdapter mBottomGalleryAdapter;
     private MainMenuFragment mMainMenuFragment;
     private SaveImageTask mSaveImageTask;
+    private int requestCode;
+    final String REVIEW_ACTION = "com.android.camera.action.REVIEW";
 
     /**
      * @param context
@@ -112,6 +118,7 @@ public class EditImageActivity extends EditBaseActivity {
         Intent it = new Intent(context, EditImageActivity.class);
         it.putExtra(EditImageActivity.FILE_PATH, editImagePath);
         it.putExtra(EditImageActivity.EXTRA_OUTPUT, outputPath);
+        it.putExtra("requestCode",requestCode);
         context.startActivityForResult(it, requestCode);
     }
 
@@ -123,6 +130,7 @@ public class EditImageActivity extends EditBaseActivity {
         ButterKnife.bind(this);
         initView();
         getData();
+        requestCode = getIntent().getIntExtra("requestCode", 1);
 
     }
 
@@ -326,7 +334,21 @@ public class EditImageActivity extends EditBaseActivity {
 
         FileUtil.ablumUpdate(this, saveFilePath);
         setResult(RESULT_OK, returnIntent);
-        finish();
+        if(requestCode == 1 && mOpTimes<=0) {   //Checks if this Activity was started by PhotoActivity
+            Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(filePath)));
+            intent.setClass(getApplicationContext(), SingleMediaActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        else if(mOpTimes>0) {
+            Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(saveFilePath)));
+            intent.setClass(getApplicationContext(), SingleMediaActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        else {
+            finish();
+        }
     }
 
     @Override
