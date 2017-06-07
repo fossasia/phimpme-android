@@ -7,6 +7,7 @@ import android.view.MenuItem
 import vn.mbm.phimp.me.R
 import vn.mbm.phimp.me.base.ThemedActivity
 import vn.mbm.phimp.me.leafpic.util.ThemeHelper
+import vn.mbm.phimp.me.utilities.ActivitySwitchHelper
 
 class AccountsActivity : ThemedActivity() {
 
@@ -53,6 +54,7 @@ class AccountsActivity : ThemedActivity() {
 
     override fun onResume() {
         super.onResume()
+        ActivitySwitchHelper.setContext(this)
         setNavigationBarColor(ThemeHelper.getPrimaryColor(this))
         setStatusBarColor()
     }

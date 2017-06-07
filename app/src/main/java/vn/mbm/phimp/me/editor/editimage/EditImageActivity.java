@@ -44,82 +44,57 @@ import vn.mbm.phimp.me.editor.editimage.view.TextStickerView;
 import vn.mbm.phimp.me.editor.editimage.view.imagezoom.ImageViewTouch;
 import vn.mbm.phimp.me.editor.editimage.view.imagezoom.ImageViewTouchBase;
 import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
+import vn.mbm.phimp.me.utilities.ActivitySwitchHelper;
 
-/**
- *  一个幽灵
- *  共产主义的幽灵
- *  在欧洲徘徊
- *  旧欧洲的一切势力，
- *  教皇和沙皇、
- *  梅特涅和基佐、
- *  法国的激进党人和德国的警察，
- *  都为驱除这个幽灵而结成了神圣同盟
- *                                       -----《共产党宣言》
- *
- * 图片编辑 主页面
- *
- * @author panyi
- *         <p>
- *         包含 1.贴图 2.滤镜 3.剪裁 4.底图旋转 功能
- *
- */
 public class EditImageActivity extends EditBaseActivity {
     public static final String FILE_PATH = "file_path";
     public static final String EXTRA_OUTPUT = "extra_output";
     public static final String SAVE_FILE_PATH = "save_file_path";
-
     public static final String IMAGE_IS_EDIT = "image_is_edit";
-
     public static final int MODE_NONE = 0;
-    public static final int MODE_STICKERS = 1;// 贴图模式
-    public static final int MODE_FILTER = 2;// 滤镜模式
-    public static final int MODE_CROP = 3;// 剪裁模式
-    public static final int MODE_ROTATE = 4;// 旋转模式
-    public static final int MODE_TEXT = 5;// 文字模式
-    public static final int MODE_PAINT = 6;//绘制模式
+    public static final int MODE_STICKERS = 1;
+    public static final int MODE_FILTER = 2;
+    public static final int MODE_CROP = 3;
+    public static final int MODE_ROTATE = 4;
+    public static final int MODE_TEXT = 5;
+    public static final int MODE_PAINT = 6;
     public static final int MODE_TUNELIST = 7;
     public static final int MODE_TUNE = 8;
-
-    public String filePath;// 需要编辑图片路径
-    public String saveFilePath;// 生成的新图片路径
-    private int imageWidth, imageHeight;// 展示图片控件 宽 高
-    private LoadImageTask mLoadImageTask;
-
-    public int mode = MODE_NONE;// 当前操作模式
-
-    protected int mOpTimes = 0;
-    protected boolean isBeenSaved = false;
-
-    private EditImageActivity mContext;
-    public Bitmap mainBitmap;// 底层显示Bitmap
+    public String filePath;
+    public String saveFilePath;
+    public int mode = MODE_NONE;
+    public Bitmap mainBitmap;
     public ImageViewTouch mainImage;
-    private View backBtn;
-
     public ViewFlipper bannerFlipper;
-    private View applyBtn;// 应用按钮
-    private View saveBtn;// 保存按钮
-
-    public StickerView mStickerView;// 贴图层View
-    public CropImageView mCropPanel;// 剪切操作控件
-    public RotateImageView mRotatePanel;// 旋转操作控件
-    public TextStickerView mTextStickerView;//文本贴图显示View
-    public CustomPaintView mPaintView;//涂鸦模式画板
-    @BindView(R.id.banner) FrameLayout banner;
-    @BindView(R.id.work_space) FrameLayout workSpace;
+    public StickerView mStickerView;
+    public CropImageView mCropPanel;
+    public RotateImageView mRotatePanel;
+    public TextStickerView mTextStickerView;
+    public CustomPaintView mPaintView;
     public ThemeHelper themeHelper;
-
-    public CustomViewPager bottomGallery;// 底部gallery
-    private BottomGalleryAdapter mBottomGalleryAdapter;// 底部gallery
-    private MainMenuFragment mMainMenuFragment;// Menu
-    public StirckerFragment mStirckerFragment;// 贴图Fragment
-    public FliterListFragment mFliterListFragment;// 滤镜FliterListFragment
-    public CropFragment mCropFragment;// 图片剪裁Fragment
-    public RotateFragment mRotateFragment;// 图片旋转Fragment
-    public AddTextFragment mAddTextFragment;//图片添加文字
-    public PaintFragment mPaintFragment;//绘制模式Fragment
+    public CustomViewPager bottomGallery;
+    public StirckerFragment mStirckerFragment;
+    public FliterListFragment mFliterListFragment;
+    public CropFragment mCropFragment;
+    public RotateFragment mRotateFragment;
+    public AddTextFragment mAddTextFragment;
+    public PaintFragment mPaintFragment;
     public TuneListFragment mTuneListFragment;
     public TuningFragment mTuningFragment;
-
+    protected int mOpTimes = 0;
+    protected boolean isBeenSaved = false;
+    @BindView(R.id.banner)
+    FrameLayout banner;
+    @BindView(R.id.work_space)
+    FrameLayout workSpace;
+    private int imageWidth, imageHeight;
+    private LoadImageTask mLoadImageTask;
+    private EditImageActivity mContext;
+    private View backBtn;
+    private View applyBtn;
+    private View saveBtn;
+    private BottomGalleryAdapter mBottomGalleryAdapter;
+    private MainMenuFragment mMainMenuFragment;
     private SaveImageTask mSaveImageTask;
 
     /**
@@ -226,46 +201,6 @@ public class EditImageActivity extends EditBaseActivity {
     }
 
     /**
-     * @author panyi
-     */
-    private final class BottomGalleryAdapter extends FragmentPagerAdapter {
-        public BottomGalleryAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int index) {
-            // System.out.println("createFragment-->"+index);
-            switch (index) {
-                case MainMenuFragment.INDEX:// 主菜单
-                    return mMainMenuFragment;
-                case StirckerFragment.INDEX:// 贴图
-                    return mStirckerFragment;
-                case FliterListFragment.INDEX:// 滤镜
-                    return mFliterListFragment;
-                case CropFragment.INDEX://剪裁
-                    return mCropFragment;
-                case RotateFragment.INDEX://旋转
-                    return mRotateFragment;
-                case AddTextFragment.INDEX://添加文字
-                    return mAddTextFragment;
-                case PaintFragment.INDEX:
-                    return mPaintFragment;//绘制
-                case TuneListFragment.INDEX:
-                    return mTuneListFragment;
-                case TuningFragment.INDEX:
-                    return mTuningFragment;
-            }//end switch
-            return MainMenuFragment.newInstance();
-        }
-
-        @Override
-        public int getCount() {
-            return 9;
-        }
-    }// end inner class
-
-    /**
      * 异步载入编辑图片
      *
      * @param filepath
@@ -278,29 +213,6 @@ public class EditImageActivity extends EditBaseActivity {
         mLoadImageTask = new LoadImageTask();
         mLoadImageTask.execute(filepath);
     }
-
-    private final class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
-        @Override
-        protected Bitmap doInBackground(String... params) {
-
-            return BitmapUtils.getSampledBitmap(params[0], imageWidth,
-                    imageHeight);
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            super.onPostExecute(result);
-            if (mainBitmap != null) {
-                mainBitmap.recycle();
-                mainBitmap = null;
-                System.gc();
-            }
-            mainBitmap = result;
-            mainImage.setImageBitmap(result);
-            mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
-            // mainImage.setDisplayType(DisplayType.FIT_TO_SCREEN);
-        }
-    }// end inner class
 
     @Override
     public void onBackPressed() {
@@ -350,61 +262,6 @@ public class EditImageActivity extends EditBaseActivity {
             alertDialog.show();
         }
     }
-
-    /**
-     * 应用按钮点击
-     *
-     * @author panyi
-     */
-    private final class ApplyBtnClick implements OnClickListener {
-        @Override
-        public void onClick(View v) {
-            switch (mode) {
-                case MODE_STICKERS:
-                    mStirckerFragment.applyStickers();// Save Map
-                    break;
-                case MODE_FILTER:// 滤镜编辑状态
-                    mFliterListFragment.applyFilterImage();// 保存滤镜贴图
-                    break;
-                case MODE_CROP:// 剪切图片保存
-                    mCropFragment.applyCropImage();
-                    break;
-                case MODE_ROTATE:// 旋转图片保存
-                    mRotateFragment.applyRotateImage();
-                    break;
-                case MODE_TEXT://文字贴图 图片保存
-                    mAddTextFragment.applyTextImage();
-                    break;
-                case MODE_PAINT://保存涂鸦
-                    mPaintFragment.savePaintImage();
-                    break;
-                case MODE_TUNELIST:
-                    mTuneListFragment.applyTuning();
-                    break;
-                case MODE_TUNE:
-                    mTuningFragment.applyEffect();
-                    break;
-                default:
-                    break;
-            }// end switch
-        }
-    }// end inner class
-
-    /**
-     * 保存按钮 点击退出
-     *
-     * @author panyi
-     */
-    private final class SaveBtnClick implements OnClickListener {
-        @Override
-        public void onClick(View v) {
-            if (mOpTimes == 0) {//并未修改图片
-                onSaveTaskDone();
-            } else {
-                doSaveImage();
-            }
-        }
-    }// end inner class
 
     protected void doSaveImage() {
         if (mOpTimes <= 0)
@@ -475,11 +332,130 @@ public class EditImageActivity extends EditBaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        ActivitySwitchHelper.setContext(this);
 
         banner.setBackgroundColor(themeHelper.getPrimaryColor());
         workSpace.setBackgroundColor(themeHelper.getPrimaryColor());
         bottomGallery.setBackgroundColor(themeHelper.getPrimaryColor());
     }
+
+    /**
+     * @author panyi
+     */
+    private final class BottomGalleryAdapter extends FragmentPagerAdapter {
+        public BottomGalleryAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int index) {
+            // System.out.println("createFragment-->"+index);
+            switch (index) {
+                case MainMenuFragment.INDEX:// 主菜单
+                    return mMainMenuFragment;
+                case StirckerFragment.INDEX:// 贴图
+                    return mStirckerFragment;
+                case FliterListFragment.INDEX:// 滤镜
+                    return mFliterListFragment;
+                case CropFragment.INDEX://剪裁
+                    return mCropFragment;
+                case RotateFragment.INDEX://旋转
+                    return mRotateFragment;
+                case AddTextFragment.INDEX://添加文字
+                    return mAddTextFragment;
+                case PaintFragment.INDEX:
+                    return mPaintFragment;//绘制
+                case TuneListFragment.INDEX:
+                    return mTuneListFragment;
+                case TuningFragment.INDEX:
+                    return mTuningFragment;
+            }//end switch
+            return MainMenuFragment.newInstance();
+        }
+
+        @Override
+        public int getCount() {
+            return 9;
+        }
+    }// end inner class
+
+    private final class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
+        @Override
+        protected Bitmap doInBackground(String... params) {
+
+            return BitmapUtils.getSampledBitmap(params[0], imageWidth,
+                    imageHeight);
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            super.onPostExecute(result);
+            if (mainBitmap != null) {
+                mainBitmap.recycle();
+                mainBitmap = null;
+                System.gc();
+            }
+            mainBitmap = result;
+            mainImage.setImageBitmap(result);
+            mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
+            // mainImage.setDisplayType(DisplayType.FIT_TO_SCREEN);
+        }
+    }// end inner class
+
+    /**
+     * 应用按钮点击
+     *
+     * @author panyi
+     */
+    private final class ApplyBtnClick implements OnClickListener {
+        @Override
+        public void onClick(View v) {
+            switch (mode) {
+                case MODE_STICKERS:
+                    mStirckerFragment.applyStickers();// Save Map
+                    break;
+                case MODE_FILTER:// 滤镜编辑状态
+                    mFliterListFragment.applyFilterImage();// 保存滤镜贴图
+                    break;
+                case MODE_CROP:// 剪切图片保存
+                    mCropFragment.applyCropImage();
+                    break;
+                case MODE_ROTATE:// 旋转图片保存
+                    mRotateFragment.applyRotateImage();
+                    break;
+                case MODE_TEXT://文字贴图 图片保存
+                    mAddTextFragment.applyTextImage();
+                    break;
+                case MODE_PAINT://保存涂鸦
+                    mPaintFragment.savePaintImage();
+                    break;
+                case MODE_TUNELIST:
+                    mTuneListFragment.applyTuning();
+                    break;
+                case MODE_TUNE:
+                    mTuningFragment.applyEffect();
+                    break;
+                default:
+                    break;
+            }// end switch
+        }
+    }// end inner class
+
+    /**
+     * 保存按钮 点击退出
+     *
+     * @author panyi
+     */
+    private final class SaveBtnClick implements OnClickListener {
+        @Override
+        public void onClick(View v) {
+            if (mOpTimes == 0) {//并未修改图片
+                onSaveTaskDone();
+            } else {
+                doSaveImage();
+            }
+        }
+    }// end inner class
 
     /**
      * 保存图像
