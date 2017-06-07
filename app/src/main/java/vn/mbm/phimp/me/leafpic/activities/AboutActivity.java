@@ -31,6 +31,7 @@ import vn.mbm.phimp.me.BuildConfig;
 import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.base.ThemedActivity;
 import vn.mbm.phimp.me.leafpic.util.CustomTabService;
+import vn.mbm.phimp.me.utilities.ActivitySwitchHelper;
 
 /**
  * Created by Jibo on 02/03/2016.
@@ -60,6 +61,7 @@ public class AboutActivity extends ThemedActivity {
     @Override
     public void onPostResume() {
         super.onPostResume();
+        ActivitySwitchHelper.setContext(this);
         setTheme();
     }
 
