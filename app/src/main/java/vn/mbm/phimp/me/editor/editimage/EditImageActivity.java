@@ -18,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
@@ -48,6 +49,7 @@ import vn.mbm.phimp.me.editor.editimage.view.imagezoom.ImageViewTouch;
 import vn.mbm.phimp.me.editor.editimage.view.imagezoom.ImageViewTouchBase;
 import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
 import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
+import vn.mbm.phimp.me.shareActivity;
 
 /**
  *  一个幽灵
@@ -127,6 +129,7 @@ public class EditImageActivity extends EditBaseActivity {
     private SaveImageTask mSaveImageTask;
     private int requestCode;
     final String REVIEW_ACTION = "com.android.camera.action.REVIEW";
+    TextView mshareImage;
 
     /**
      * @param context
@@ -211,6 +214,13 @@ public class EditImageActivity extends EditBaseActivity {
         mTuningFragment = TuningFragment.newInstance();
 
         bottomGallery.setAdapter(mBottomGalleryAdapter);
+        mshareImage = (TextView) findViewById(R.id.shareImage);
+        mshareImage.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareImage();
+            }
+        });
 
 
         mainImage.setFlingListener(new ImageViewTouch.OnImageFlingListener() {
@@ -222,6 +232,21 @@ public class EditImageActivity extends EditBaseActivity {
                 }
             }
         });
+    }
+
+    private void shareImage() {
+        if(saveFilePath!=null) {
+            Intent shareIntent = new Intent(EditImageActivity.this, shareActivity.class);
+            shareIntent.putExtra(FILE_PATH, filePath);
+            shareIntent.putExtra(EXTRA_OUTPUT, saveFilePath);
+            shareIntent.putExtra(IMAGE_IS_EDIT, mOpTimes > 0);
+
+            FileUtil.ablumUpdate(this, saveFilePath);
+            setResult(RESULT_OK, shareIntent);
+            startActivity(shareIntent);
+        }
+        else
+            Toast.makeText(EditImageActivity.this,"Save Image first", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -480,14 +505,14 @@ public class EditImageActivity extends EditBaseActivity {
         if(requestCode == 1 && mOpTimes<=0) {   //Checks if this Activity was started by PhotoActivity
             Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(filePath)));
             intent.setClass(getApplicationContext(), SingleMediaActivity.class);
-            startActivity(intent);
-            finish();
+            //startActivity(intent);
+            //finish();
         }
         else if(mOpTimes>0) {
             Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(saveFilePath)));
             intent.setClass(getApplicationContext(), SingleMediaActivity.class);
-            startActivity(intent);
-            finish();
+            //startActivity(intent);
+            //finish();
         }
         else {
             finish();

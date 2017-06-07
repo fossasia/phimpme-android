@@ -708,7 +708,7 @@
     <string name="about_support">Support Development</string>
     <string name="about_fossasia">Developed by <a href="http://fossasia.org/"> FOSSASIA</a> <a href="https://github.com/fossasia/phimpme-android/graphs/contributors">contributers</a>.</string>
     <string name="title_activity_accounts">AccountsActivity</string>
-    
+
     <!--EDITING IMAGE-->
     <string name="no_images">no found the image</string>
     <string name="save">save</string>
@@ -717,7 +717,6 @@
     <string name="stickers">stickers</string>
     <string name="fliter">fliter</string>
     <string name="crop">crop</string>
-
 
 
     <string name="materialcolorpicker__app_name">Android Material Color Picker Dialog</string>
@@ -765,4 +764,5 @@
     <string name="applying">applying</string>
     <string name="action_add_account">Add Account</string>
     <string name="account_list">Accounts List</string>
+    <string name="send_image">Send Image to</string>
 </resources>
