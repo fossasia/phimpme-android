@@ -84,13 +84,11 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Toast;
 import android.widget.ZoomControls;
-
 import vn.mbm.phimp.me.R;
 
 import vn.mbm.phimp.me.utilities.ActivitySwitchHelper;
 import vn.mbm.phimp.me.opencamera.UI.PopupView;
 import vn.mbm.phimp.me.utilities.BasicCallBack;
-
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 /** The main Activity for Open Camera.
