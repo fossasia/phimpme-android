@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="vn.mbm.phimp.me.shareActivity"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:elevation="20dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        app:cardCornerRadius="4dp">
+
+        <LinearLayout
+            android:id="@+id/linearImage"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginBottom="5dp"/>
+
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="Write a caption"
+                android:paddingTop="40dp"/>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:id="@+id/shareText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SHARE"
+        android:paddingTop="30dp"
+        android:paddingLeft="10dp"
+        android:textStyle="bold"
+        android:textSize="22dip"/>
+    <View
+        android:layout_width="368dp"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="8dp"
+        android:paddingTop="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"/>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <ImageView
+            android:id="@+id/facebookButton"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="83dp"
+            android:layout_marginStart="83dp"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/facebookbutton"/>
+
+        <ImageView
+            android:id="@+id/twitterbuttin"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_alignTop="@+id/facebookButton"
+            android:layout_marginLeft="71dp"
+            android:layout_marginStart="71dp"
+            android:layout_toEndOf="@+id/facebookButton"
+            android:layout_toRightOf="@+id/facebookButton"
+            android:src="@drawable/twitterbutton"/>
+
+        <ImageView
+            android:id="@+id/instagrambutton"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:layout_alignLeft="@+id/facebookButton"
+            android:layout_alignStart="@+id/facebookButton"
+            android:layout_centerVertical="true"
+            android:src="@drawable/instagrambutton"/>
+
+        <ImageView
+            android:id="@+id/shareButton"
+            android:layout_width="65dp"
+            android:layout_height="65dp"
+            android:src="@drawable/sharebutton"
+            android:layout_alignTop="@+id/instagrambutton"
+            android:layout_alignLeft="@+id/twitterbuttin"
+            android:layout_alignStart="@+id/twitterbuttin"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
