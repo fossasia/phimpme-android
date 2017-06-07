@@ -40,6 +40,8 @@ public class Album implements Serializable {
 	private ArrayList<Media> media;
 	private ArrayList<Media> selectedMedias;
 
+    private int selectedCount;
+
 	private Album() {
 		media = new ArrayList<Media>();
 		selectedMedias = new ArrayList<Media>();
@@ -264,7 +266,10 @@ public class Album implements Serializable {
 	}
 
 	public int getSelectedCount() {
-		return selectedMedias.size();
+        if(selectedMedias!=null){
+            selectedCount = selectedMedias.size();
+        }
+		return selectedCount;
 	}
 
 	public boolean areMediaSelected() { return getSelectedCount() != 0;}

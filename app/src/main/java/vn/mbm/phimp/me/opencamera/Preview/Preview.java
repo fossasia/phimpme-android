@@ -16,6 +16,7 @@ import vn.mbm.phimp.me.opencamera.Preview.ApplicationInterface.NoFreeStorageExce
 import vn.mbm.phimp.me.opencamera.Preview.CameraSurface.CameraSurface;
 import vn.mbm.phimp.me.opencamera.Preview.CameraSurface.MySurfaceView;
 import vn.mbm.phimp.me.opencamera.Preview.CameraSurface.MyTextureView;
+import vn.mbm.phimp.me.opencamera.UI.PopupView;
 
 import java.io.File;
 import java.io.IOException;
@@ -73,6 +74,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.View.MeasureSpec;
+import android.widget.Button;
 import android.widget.Toast;
 
 /** This class was originally named due to encapsulating the camera preview,
@@ -263,6 +265,8 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 	public volatile boolean test_fail_open_camera;
 	public volatile boolean test_video_failure;
 	public volatile boolean test_ticker_called; // set from MySurfaceView or CanvasView
+
+	private boolean enable_sound;
 
 	public Preview(ApplicationInterface applicationInterface, ViewGroup parent) {
 		if( MyDebug.LOG ) {
@@ -537,8 +541,7 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		tryAutoFocus(false, true);
 		return true;
 	}
-
-	//@SuppressLint("ClickableViewAccessibility") @Override
+    //@SuppressLint("ClickableViewAccessibility") @Override
 
 	/** Handle multitouch zoom.
 	 */
@@ -1372,7 +1375,28 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 			if( MyDebug.LOG )
 				Log.d(TAG, "saved color effect: " + value);
 
-			CameraController.SupportedValues supported_values = camera_controller.setColorEffect(value);
+            final int[] colorNum = {0};
+            CameraActivity.toggle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final List<String> colorEffect = getSupportedColorEffects();
+                    colorNum[0]++;
+                    if (colorNum[0] == colorEffect.size())
+                        colorNum[0] = 0;
+                    final String color = colorEffect.get(colorNum[0]);
+                    CameraController.SupportedValues supported_values = camera_controller.setColorEffect(color);
+                    if( supported_values != null ) {
+                        color_effects = supported_values.values;
+                        // now save, so it's available for PreferenceActivity
+                        applicationInterface.setColorEffectPref(supported_values.selected_value);
+                    }
+                    else {
+                        // delete key in case it's present (e.g., if feature no longer available due to change in OS, or switching APIs)
+                        applicationInterface.clearColorEffectPref();
+                    }
+                }
+            });
+            CameraController.SupportedValues supported_values = camera_controller.setColorEffect(value);
 			if( supported_values != null ) {
 				color_effects = supported_values.values;
 				// now save, so it's available for PreferenceActivity
@@ -3422,7 +3446,12 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		{
 			camera_controller.setRotation(getImageVideoRotation());
 
-			boolean enable_sound = applicationInterface.getShutterSoundPref();
+			if(PopupView.sound_index == 0) {
+				               enable_sound = true;
+				            }
+			         else {
+			                enable_sound = false;
+			            }
 			if( MyDebug.LOG )
 				Log.d(TAG, "enable_sound? " + enable_sound);
 			camera_controller.enableShutterSound(enable_sound);
