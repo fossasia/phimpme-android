@@ -88,6 +88,7 @@ import android.widget.ZoomControls;
 import vn.mbm.phimp.me.R;
 
 import vn.mbm.phimp.me.opencamera.UI.PopupView;
+import vn.mbm.phimp.me.utilities.ActivitySwitchHelper;
 import vn.mbm.phimp.me.utilities.BasicCallBack;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
@@ -725,6 +726,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 	@Override
 	protected void onResume() {
+		ActivitySwitchHelper.setContext(this);
 		if (progressDialog != null) {
 			progressDialog.dismiss();
 		}
