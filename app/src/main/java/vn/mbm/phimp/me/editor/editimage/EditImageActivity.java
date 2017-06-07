@@ -235,7 +235,7 @@ public class EditImageActivity extends EditBaseActivity {
     }
 
     private void shareImage() {
-        if(saveFilePath!=null) {
+        if(mOpTimes>0) {
             Intent shareIntent = new Intent(EditImageActivity.this, shareActivity.class);
             shareIntent.putExtra(FILE_PATH, filePath);
             shareIntent.putExtra(EXTRA_OUTPUT, saveFilePath);
