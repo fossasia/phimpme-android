@@ -25,6 +25,7 @@ import vn.mbm.phimp.me.base.ThemedActivity;
 import vn.mbm.phimp.me.editor.FileUtils;
 import vn.mbm.phimp.me.editor.editimage.EditImageActivity;
 import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
+import vn.mbm.phimp.me.utilities.ActivitySwitchHelper;
 
 
 public class PhotoActivity extends ThemedActivity {
@@ -96,5 +97,11 @@ public class PhotoActivity extends ThemedActivity {
         intent.setClass(getApplicationContext(), SingleMediaActivity.class);
         this.startActivity(intent);
         finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ActivitySwitchHelper.setContext(this);
     }
 }
