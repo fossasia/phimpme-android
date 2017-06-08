@@ -235,32 +235,25 @@ public class EditImageActivity extends EditBaseActivity {
     }
 
     private void shareImage() {
+        Intent shareIntent = new Intent(EditImageActivity.this, shareActivity.class);
         if(mOpTimes>0) {
-            Intent shareIntent = new Intent(EditImageActivity.this, shareActivity.class);
-            shareIntent.putExtra(FILE_PATH, filePath);
             shareIntent.putExtra(EXTRA_OUTPUT, saveFilePath);
             shareIntent.putExtra(IMAGE_IS_EDIT, mOpTimes > 0);
-
-            FileUtil.ablumUpdate(this, saveFilePath);
-            setResult(RESULT_OK, shareIntent);
-            startActivity(shareIntent);
         }
-        else
-            Toast.makeText(EditImageActivity.this,"Save Image first", Toast.LENGTH_SHORT).show();
+        else {
+            shareIntent.putExtra(EXTRA_OUTPUT, filePath);
+        }
+        FileUtil.ablumUpdate(this, saveFilePath);
+        setResult(RESULT_OK, shareIntent);
+        startActivity(shareIntent);
     }
 
-    /**
-     * 关闭输入法
-     */
     private void closeInputMethod() {
         if (mAddTextFragment.isAdded()) {
             mAddTextFragment.hideInput();
         }
     }
 
-    /**
-     * @author panyi
-     */
     private final class BottomGalleryAdapter extends FragmentPagerAdapter {
         public BottomGalleryAdapter(FragmentManager fm) {
             super(fm);
