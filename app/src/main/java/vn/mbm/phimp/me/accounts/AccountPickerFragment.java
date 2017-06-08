@@ -16,7 +16,9 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 
+import io.realm.Realm;
 import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.data.Account;
 
 /**
  * Created by pa1pal on 07/06/17.
@@ -25,6 +27,8 @@ import vn.mbm.phimp.me.R;
 public class AccountPickerFragment extends DialogFragment {
 
     private TwitterAuthClient client = new TwitterAuthClient();
+    Realm realm;
+    Account account;
 
     //TwitterAuthConfig authConfig = new TwitterAuthConfig(getString(R.string.twitter_CONSUMER_KEY), getString(R.string.twitter_CONSUMER_SECRET));
 
@@ -39,21 +43,26 @@ public class AccountPickerFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
+        realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        account = realm.createObject(Account.class);
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.account_list)
                 .setItems(R.array.accounts_array, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        switch (which){
+                        switch (which) {
                             case 0:
                                 client.authorize(getActivity(), new Callback<TwitterSession>() {
                                     @Override
                                     public void success(Result<TwitterSession> result) {
-
-                                        TwitterSession session = TwitterCore.getInstance().getSessionManager().getActiveSession();
+                                        TwitterSession session = TwitterCore.getInstance()
+                                                .getSessionManager().getActiveSession();
                                         TwitterAuthToken authToken = session.getAuthToken();
-
                                         Log.d("Twitter Credentials", session.toString());
+                                        account.setName("Twitter");
+                                        account.setUsername(session.getUserName());
+                                        account.setToken(String.valueOf(session.getAuthToken()));
+                                        realm.commitTransaction();
                                     }
 
                                     @Override
