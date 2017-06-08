@@ -33,13 +33,13 @@
             tools:layout_editor_absoluteY="0dp">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/image_view"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginBottom="5dp"/>
 
             <EditText
-                android:id="@+id/editText"
+                android:id="@+id/edit_text"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:hint="Write a caption"
@@ -48,7 +48,7 @@
     </android.support.v7.widget.CardView>
 
     <TextView
-        android:id="@+id/shareText"
+        android:id="@+id/share_Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="SHARE"
@@ -71,7 +71,7 @@
         android:layout_height="fill_parent">
 
         <ImageView
-            android:id="@+id/facebookButton"
+            android:id="@+id/facebook_button"
             android:layout_width="65dp"
             android:layout_height="65dp"
             android:layout_alignParentLeft="true"
@@ -83,33 +83,33 @@
             android:src="@drawable/facebookbutton"/>
 
         <ImageView
-            android:id="@+id/twitterbutton"
+            android:id="@+id/twitter_button"
             android:layout_width="65dp"
             android:layout_height="65dp"
-            android:layout_alignTop="@+id/facebookButton"
+            android:layout_alignTop="@+id/facebook_button"
             android:layout_marginLeft="71dp"
             android:layout_marginStart="71dp"
-            android:layout_toEndOf="@+id/facebookButton"
-            android:layout_toRightOf="@+id/facebookButton"
+            android:layout_toEndOf="@+id/facebook_button"
+            android:layout_toRightOf="@+id/facebook_button"
             android:src="@drawable/twitterbutton"/>
 
         <ImageView
-            android:id="@+id/instagrambutton"
+            android:id="@+id/instagram_button"
             android:layout_width="65dp"
             android:layout_height="65dp"
-            android:layout_alignLeft="@+id/facebookButton"
-            android:layout_alignStart="@+id/facebookButton"
+            android:layout_alignLeft="@+id/facebook_button"
+            android:layout_alignStart="@+id/facebook_button"
             android:layout_centerVertical="true"
             android:src="@drawable/instagrambutton"/>
 
         <ImageView
-            android:id="@+id/shareButton"
+            android:id="@+id/share_button"
             android:layout_width="65dp"
             android:layout_height="65dp"
             android:src="@drawable/sharebutton"
-            android:layout_alignTop="@+id/instagrambutton"
-            android:layout_alignLeft="@+id/twitterbutton"
-            android:layout_alignStart="@+id/twitterbutton"/>
+            android:layout_alignTop="@+id/instagram_button"
+            android:layout_alignLeft="@+id/twitter_button"
+            android:layout_alignStart="@+id/twitter_button"/>
 
     </RelativeLayout>
 

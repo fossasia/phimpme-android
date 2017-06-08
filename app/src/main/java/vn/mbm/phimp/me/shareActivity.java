@@ -44,25 +44,32 @@ public class shareActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
-        mEditText = (EditText) findViewById(R.id.editText);
+        mEditText = (EditText) findViewById(R.id.edit_text);
         sendMessage = mEditText.getText().toString();
         initView();
         buttonClick();
     }
 
     public void buttonClick() {
-        mshareButton = (ImageView) findViewById(R.id.shareButton);
+        mshareButton = (ImageView) findViewById(R.id.share_button);
         mshareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 shareButton();
             }
         });
-        mfacebookButton = (ImageView) findViewById(R.id.facebookButton);
+        mfacebookButton = (ImageView) findViewById(R.id.facebook_button);
         mfacebookButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 shareFacebook();
+            }
+        });
+        mInstagrambutton = (ImageView) findViewById(R.id.instagram_button);
+        mInstagrambutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareInstagram();
             }
         });
     }
@@ -79,19 +86,13 @@ public class shareActivity extends AppCompatActivity {
     }
 
     public void initView() {
-        mImageView = (ImageView) findViewById(R.id.imageView);
-        filePath = getIntent().getStringExtra(FILE_PATH);
+        mImageView = (ImageView) findViewById(R.id.image_view);
+        //filePath = getIntent().getStringExtra(FILE_PATH);
         saveFilePath = getIntent().getStringExtra(EXTRA_OUTPUT);
         Bitmap myBitmap = BitmapFactory.decodeFile(saveFilePath);
         mImageView.setImageBitmap(myBitmap);
-        mEditText = (EditText) findViewById(R.id.editText);
-        mInstagrambutton = (ImageView) findViewById(R.id.instagrambutton);
-        mInstagrambutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shareInstagram();
-            }
-        });
+        mEditText = (EditText) findViewById(R.id.edit_text);
+
     }
 
     private void shareInstagram() {
