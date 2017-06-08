@@ -264,6 +264,38 @@
                             />
                     </LinearLayout>
 
+                <!-- SHARE APP -->
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/ll_share_phimpme"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/ripple"
+                    android:clickable="true"
+                    >
+
+                    <com.mikepenz.iconics.view.IconicsImageView
+                        android:id="@+id/Drawer_share_Icon"
+                        android:layout_width="@dimen/icon_width_height"
+                        android:layout_height="@dimen/icon_width_height"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/big_spacing"
+                        android:layout_marginRight="@dimen/big_spacing"
+                        app:iiv_icon="gmd-share"
+                        />
+                    <TextView
+                        android:id="@+id/Drawer_share_Item"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
+                        android:text="@string/share_phimpme"
+                        android:textColor="@color/md_dark_background"
+                        android:textSize="16sp"
+                        />
+                </LinearLayout>
+
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
