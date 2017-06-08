@@ -100,7 +100,7 @@ public class PhotoActivity extends ThemedActivity {
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         ActivitySwitchHelper.setContext(this);
     }
