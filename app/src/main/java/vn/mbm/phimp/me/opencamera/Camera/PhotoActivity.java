@@ -8,25 +8,30 @@ import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+
 import java.io.File;
 
 import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.base.ThemedActivity;
 import vn.mbm.phimp.me.editor.FileUtils;
 import vn.mbm.phimp.me.editor.editimage.EditImageActivity;
 import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
 
 
-public class PhotoActivity extends AppCompatActivity {
+public class PhotoActivity extends ThemedActivity {
 
     public static String FILE_PATH = "file_path";
     final String REVIEW_ACTION = "com.android.camera.action.REVIEW";
+    Toolbar toolbar;
 
     public static void start(Activity context, final String editImagePath, final int requestCode) {
         if (TextUtils.isEmpty(editImagePath)) {
@@ -40,11 +45,22 @@ public class PhotoActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setBackgroundColor(getPrimaryColor());
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_arrow_back));
+        setStatusBarColor();
         ImageView imageView = (ImageView)findViewById(R.id.imageView);
         imageView.setImageBitmap(BitmapFactory.decodeFile(FILE_PATH));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               deleteFile(v);
+            }
+        });
     }
 
     public void deleteFile(View v){
