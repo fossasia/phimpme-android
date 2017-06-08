@@ -8,6 +8,7 @@ import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
 import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraControllerManager2;
+import vn.mbm.phimp.me.opencamera.Preview.ApplicationInterface;
 import vn.mbm.phimp.me.opencamera.Preview.Preview;
 import vn.mbm.phimp.me.opencamera.UI.FolderChooserDialog;
 import vn.mbm.phimp.me.opencamera.UI.MainUI;
@@ -80,8 +81,11 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.Toast;
 import android.widget.ZoomControls;
 
 import vn.mbm.phimp.me.R;
@@ -125,6 +129,8 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	private int audio_noise_sensitivity = -1;
 	private SpeechRecognizer speechRecognizer;
 	private boolean speechRecognizerIsStarted;
+	public static ImageButton toggle;
+    private List<String> color_effects = null;
 
 	//private boolean ui_placement_right = true;
 
@@ -146,6 +152,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	public volatile String test_last_saved_image;
 
 	public ProgressDialog progressDialog;
+    private CameraController camera_controller;
 
 
     @Override
@@ -375,8 +382,9 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 			}
 		};
 		ImageSaver.setBasicCallBack(basicCallBack);
-	}
 
+		toggle = (ImageButton) findViewById(R.id.toggleButton);
+	}
 
 	/* This method sets the preference defaults which are set specific for a particular device.
 	 * This method should be called when Open Camera is run for the very first time after installation,
@@ -1607,7 +1615,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 				return;
 			}
 		}
-
 		final SaveLocationHistory history = applicationInterface.getStorageUtils().isUsingSAF() ? save_location_history_saf : save_location_history;
 		showPreview(false);
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
