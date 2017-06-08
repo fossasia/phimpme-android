@@ -85,7 +85,6 @@ class AccountActivity : ThemedActivity(), AccountContract.View {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        twitterLogin!!.onActivityResult(requestCode, resultCode, data)
         val fragmentManager = fragmentManager
         val accountsPicker = AccountPickerFragment().newInstance("AP")
         accountsPicker.onActivityResult(requestCode, resultCode, data)
