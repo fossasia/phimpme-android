@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.xinlan.imageeditlibrary.shareImage">
+
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="40dp"
+        android:id="@+id/imageView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
+
+    <ImageView
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:id="@+id/facebookButton"
+        android:src="@drawable/facebookbutton"
+        android:layout_marginTop="47dp"
+        android:layout_below="@+id/imageView"
+        android:layout_toLeftOf="@+id/imageView"
+        android:layout_toStartOf="@+id/imageView"/>
+    <ImageView
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:src="@drawable/twitterbutton"
+        android:id="@+id/imageView2"
+        android:layout_alignTop="@+id/facebookButton"
+        android:layout_centerHorizontal="true"/>
+    <ImageView
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:src="@drawable/instagrambutton"
+        android:layout_alignTop="@+id/imageView2"
+        android:layout_toRightOf="@+id/imageView"
+        android:layout_toEndOf="@+id/imageView"
+        android:id="@+id/imageView5"/>
+    <ImageView
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:src="@drawable/wordpressbutton"
+        android:layout_marginTop="18dp"
+        android:id="@+id/imageView3"
+        android:layout_below="@+id/facebookButton"
+        android:layout_alignLeft="@+id/facebookButton"
+        android:layout_alignStart="@+id/facebookButton"/>
+    <ImageView
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:src="@drawable/drupalbutton"
+        android:layout_alignTop="@+id/imageView3"
+        android:layout_alignLeft="@+id/imageView2"
+        android:layout_alignStart="@+id/imageView2"
+        android:id="@+id/imageView4"/>
+
+    <ImageView
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:src="@drawable/joomlabutton"
+        android:layout_alignTop="@+id/imageView4"
+        android:layout_alignLeft="@+id/imageView5"
+        android:layout_alignStart="@+id/imageView5"/>
+
+    <ImageView
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:src="@drawable/sharebutton"
+        android:id="@+id/shareButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/imageView4"
+        android:layout_alignStart="@+id/imageView4"/>
+
+</RelativeLayout>
+

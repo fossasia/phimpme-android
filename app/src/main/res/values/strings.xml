@@ -11,10 +11,11 @@
 
     <string name="answer_yes">Yes</string>
     <string name="answer_no">No</string>
+    <string name="send_image">Share Image</string>
 
     <string name="on">On</string> <!-- whether a setting is turned on, e.g., "Auto-level: On" -->
     <string name="off">Off</string> <!-- whether a setting is turned off, e.g., "Auto-level: Off" -->
-
+    <string name="facebook_app_id">1920575401558694</string>
     <string name="choose_save_location">Choose save location:</string>
     <string name="clear_folder_history">Clear folder history</string>
     <string name="clear_folder_history_question">Clear folder history?</string>
