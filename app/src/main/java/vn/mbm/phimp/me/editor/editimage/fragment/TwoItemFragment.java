@@ -49,9 +49,15 @@ public class TwoItemFragment extends BaseEditFragment implements View.OnClickLis
         item2.setOnClickListener(this);
 
         if (mode == EditImageActivity.MODE_WRITE) {
+            icon1.setImageResource(R.drawable.ic_text);
+            icon2.setImageResource(R.drawable.ic_paint);
+
             text1.setText(getString(R.string.text));
             text2.setText(getString(R.string.paint));
         }else {
+            icon1.setImageResource(R.drawable.ic_crop);
+            icon2.setImageResource(R.drawable.ic_rotate);
+
             text1.setText(getString(R.string.crop));
             text2.setText(getString(R.string.rotate));
         }

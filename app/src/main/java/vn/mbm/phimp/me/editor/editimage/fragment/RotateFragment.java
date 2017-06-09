@@ -73,6 +73,19 @@ public class RotateFragment extends BaseEditFragment {
     }
 
     @Override
+    public void onDetach() {
+        super.onDetach();
+        resetRotateView();
+    }
+
+    private void resetRotateView() {
+        if (null != activity && null != mRotatePanel){
+            activity.mRotatePanel.rotateImage(0);
+            activity.mRotatePanel.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
     public void onShow() {
         EditImageActivity.mode = EditImageActivity.MODE_ROTATE;
         activity.mainImage.setImageBitmap(activity.mainBitmap);

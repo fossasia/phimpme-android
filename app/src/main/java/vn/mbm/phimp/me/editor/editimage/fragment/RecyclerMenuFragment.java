@@ -9,10 +9,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
@@ -32,6 +34,7 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     private StickerView mStickerView;
     static final String[] stickerPath = {"stickers/type1", "stickers/type2", "stickers/type3", "stickers/type4", "stickers/type5", "stickers/type6"};
     Bitmap currentBitmap,tempBitmap;
+    int bmWidth,bmHeight;
 
     public RecyclerMenuFragment() {
 
@@ -91,48 +94,38 @@ public class RecyclerMenuFragment extends BaseEditFragment {
         }
     }
 
-    public ArrayList<Bitmap> getFilterThumbs() {
+    public void getFilterThumbs() {
         if (null!= currentBitmap) {
                 GetFilterThumbsTask getFilterThumbsTask = new GetFilterThumbsTask();
                 getFilterThumbsTask.execute();
         }
-        return null;
     }
 
     private Bitmap getResizedBitmap(Bitmap bm, int divisor) {
-        int width = bm.getWidth();
-        int height = bm.getHeight();
         float scale = 1/(float)divisor;
         Matrix matrix = new Matrix();
         matrix.postScale(scale, scale);
-        return Bitmap.createBitmap(bm, 0, 0, width, height, matrix, false);
+        return Bitmap.createBitmap(bm, 0, 0, bmWidth, bmHeight, matrix, false);
     }
 
     private class GetFilterThumbsTask extends AsyncTask<Void,Void,Void>{
-        Dialog dialog;
-
 
         @Override
         protected Void doInBackground(Void... params) {
-            filterThumbs = new ArrayList<>();
-            for (int i=0; i<=11;i++){
-                filterThumbs.add(PhotoProcessing.filterPhoto(getResizedBitmap(currentBitmap,5),i,100));
+            if (filterThumbs!=null) {
+                filterThumbs = new ArrayList<>();
+                bmWidth = currentBitmap.getWidth();
+                bmHeight = currentBitmap.getHeight();
+                for (int i = 0; i <= 11; i++) {
+                    filterThumbs.add(PhotoProcessing.filterPhoto(getResizedBitmap(currentBitmap, 5), i, 100));
+                }
             }
             return null;
         }
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            dialog = EditImageActivity.getLoadingDialog(getActivity(),
-                    R.string.applying, false);
-            dialog.show();
-        }
-
-        @Override
         protected void onPostExecute(Void bitmaps) {
             super.onPostExecute(bitmaps);
-            if (dialog!=null)dialog.dismiss();
             if (filterThumbs == null)
                 return;
 
@@ -158,7 +151,7 @@ public class RecyclerMenuFragment extends BaseEditFragment {
         }
 
         mRecyclerAdapter() {
-            defaulticon = R.mipmap.ic_launcher;
+            defaulticon = R.drawable.ic_photo_filter;
             switch (MODE) {
                 case EditImageActivity.MODE_FILTERS:
                     titlelist = getActivity().getResources().obtainTypedArray(R.array.filter_titles);
@@ -187,9 +180,11 @@ public class RecyclerMenuFragment extends BaseEditFragment {
             if (MODE == EditImageActivity.MODE_STICKER_TYPES){
                 holder.itemView.setTag(stickerPath[position]);
             }
+            int iconImageSize = (int) getActivity().getResources().getDimension(R.dimen.icon_item_image_size_recycler);
 
             if (MODE == EditImageActivity.MODE_FILTERS) {
                 if (/*currentBitmap!=null){//*/filterThumbs!=null && filterThumbs.size() > position) {
+                    iconImageSize = (int) getActivity().getResources().getDimension(R.dimen.icon_item_image_size_filter_preview);
                     holder.icon.setImageBitmap(PhotoProcessing.filterPhoto(getResizedBitmap(currentBitmap,5),position,100));
                 }else {
                     holder.icon.setImageResource(defaulticon);
@@ -198,7 +193,9 @@ public class RecyclerMenuFragment extends BaseEditFragment {
                 holder.icon.setImageResource(iconlist.getResourceId(position, defaulticon));
             }
 
-
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(iconImageSize,iconImageSize);
+            layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
+            holder.icon.setLayoutParams(layoutParams);
             holder.title.setText(titlelist.getString(position));
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -217,18 +214,21 @@ public class RecyclerMenuFragment extends BaseEditFragment {
         void itemClicked(int pos, View view){
             switch (MODE){
                 case EditImageActivity.MODE_FILTERS:
-                    activity.changeBottomFragment(EditImageActivity.MODE_SLIDER);
                     activity.setEffectType(pos,MODE);
+                    EditImageActivity.mode = EditImageActivity.MODE_SLIDER;
+                    activity.changeBottomFragment(EditImageActivity.MODE_SLIDER);
                     break;
 
                 case EditImageActivity.MODE_ENHANCE:
-                    activity.changeBottomFragment(EditImageActivity.MODE_SLIDER);
                     activity.setEffectType(pos,MODE);
+                    EditImageActivity.mode = EditImageActivity.MODE_SLIDER;
+                    activity.changeBottomFragment(EditImageActivity.MODE_SLIDER);
                     break;
 
                 case EditImageActivity.MODE_STICKER_TYPES:
                     String data = (String) view.getTag();
                     activity.setStickerType(data);
+                    EditImageActivity.mode = EditImageActivity.MODE_STICKERS;
                     activity.changeBottomFragment(EditImageActivity.MODE_STICKERS);
                     break;
             }

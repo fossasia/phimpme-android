@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -65,8 +67,8 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
         cancel = (ImageButton)fragmentView.findViewById(R.id.sticker_cancel);
         apply = (ImageButton)fragmentView.findViewById(R.id.sticker_apply);
 
-        cancel.setImageResource(R.mipmap.ic_launcher);
-        apply.setImageResource(R.mipmap.ic_launcher);
+        cancel.setImageResource(R.drawable.ic_no);
+        apply.setImageResource(R.drawable.ic_done_black_24dp);
 
         cancel.setOnClickListener(this);
         apply.setOnClickListener(this);
@@ -208,6 +210,10 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
                 ImageLoader.getInstance().displayImage("assets://" + path,holder.icon, imageOption);
                 holder.itemView.setTag(path);
                 holder.title.setText("");
+
+            int size = (int) getActivity().getResources().getDimension(R.dimen.icon_item_image_size_filter_preview);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(size,size);
+            holder.icon.setLayoutParams(layoutParams);
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

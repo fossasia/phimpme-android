@@ -665,47 +665,32 @@
 
 
 
-    <integer-array name="filter_icons">
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-    </integer-array>
-
     <string-array name="filter_titles">
-        <item>origin</item>
-        <item>soft</item>
-        <item>black</item>
-        <item>classic</item>
-        <item>gorgeous</item>
-        <item>retro</item>
-        <item>grace</item>
-        <item>film</item>
-        <item>memory</item>
-        <item>yogurt</item>
-        <item>fleeting</item>
-        <item>shine</item>
+        <item>None</item>
+        <item>IFix</item>
+        <item>Ansel</item>
+        <item>Testino</item>
+        <item>XPro</item>
+        <item>Retro</item>
+        <item>B/W</item>
+        <item>Sepia</item>
+        <item>Cyano</item>
+        <item>Georgia</item>
+        <item>Sahara</item>
+        <item>HDR</item>
     </string-array>
 
 
     <integer-array name="enhance_icons">
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
+        <item>@drawable/ic_bright</item>
+        <item>@drawable/ic_contrast</item>
+        <item>@drawable/ic_hue</item>
+        <item>@drawable/ic_saturation</item>
+        <item>@drawable/ic_temp</item>
+        <item>@drawable/ic_tint</item>
+        <item>@drawable/ic_vignette</item>
+        <item>@drawable/ic_sharp</item>
+        <item>@drawable/ic_blur</item>
     </integer-array>
 
     <string-array name="enhance_titles">
@@ -722,12 +707,12 @@
 
 
     <integer-array name="sticker_icons">
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
-        <item>@mipmap/ic_launcher</item>
+        <item>@drawable/ic_facial</item>
+        <item>@drawable/ic_hearts</item>
+        <item>@drawable/ic_objects</item>
+        <item>@drawable/ic_comments</item>
+        <item>@drawable/ic_wishes</item>
+        <item>@drawable/ic_animals</item>
     </integer-array>
 
     <string-array name="sticker_titles">

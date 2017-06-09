@@ -230,10 +230,27 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     }
 
     public void changeBottomFragment(int index){
-            getSupportFragmentManager()
+        getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.controls_container, getFragment(index))
                 .commit();
+
+        setButtonsVisibility();
+    }
+
+    private void setButtonsVisibility() {
+    //    cancel.setVisibility(View.VISIBLE);
+        save.setVisibility(View.VISIBLE);
+        switch (mode){
+            case MODE_SLIDER:
+            case MODE_STICKERS:
+            case MODE_CROP:
+            case MODE_ROTATE:
+            case MODE_TEXT:
+            case MODE_PAINT:
+      //          cancel.setVisibility(View.INVISIBLE);
+                save.setVisibility(View.INVISIBLE);
+        }
     }
 
     public void setEffectType(int type, int mode){

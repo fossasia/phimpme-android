@@ -34,7 +34,7 @@ public class MainMenuFragment extends BaseEditFragment implements View.OnClickLi
         menu_filter = view.findViewById(R.id.menu_filter);
         menu_enhance = view.findViewById(R.id.menu_enhance);
         menu_adjust = view.findViewById(R.id.menu_adjust);
-        menu_stickers = view.findViewById(R.id.menu_stickers);
+        menu_stickers = view.findViewById(R.id.menu_sticker);
         menu_text = view.findViewById(R.id.menu_text);
 
         menu_filter.setOnClickListener(this);
@@ -78,7 +78,7 @@ public class MainMenuFragment extends BaseEditFragment implements View.OnClickLi
                 EditImageActivity.mode = EditImageActivity.MODE_ADJUST;
                 activity.changeMiddleFragment(EditImageActivity.MODE_ADJUST);
                 break;
-            case R.id.menu_stickers:
+            case R.id.menu_sticker:
                 EditImageActivity.mode = (EditImageActivity.MODE_STICKER_TYPES);
                 activity.changeMiddleFragment(EditImageActivity.MODE_STICKER_TYPES);
                 break;

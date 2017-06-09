@@ -73,6 +73,20 @@ public class CropFragment extends BaseEditFragment {
 		return mainView;
 	}
 
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		resetCropView();
+	}
+
+	private void resetCropView() {
+		if (null != activity && null != mCropPanel){
+			mCropPanel.setVisibility(View.GONE);
+			RectF r = activity.mainImage.getBitmapRect();
+			activity.mCropPanel.setCropRect(r);
+		}
+	}
+
 	private void setUpRatioList() {
 		ratioList.removeAllViews();
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(

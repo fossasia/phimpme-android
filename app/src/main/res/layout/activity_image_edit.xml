@@ -1,8 +1,9 @@
-<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
 
     <LinearLayout
@@ -15,33 +16,67 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/editor_top_row_size"
             android:id="@+id/button_container">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageButton
+                android:layout_width="@dimen/icon_item_image_size_top"
+                android:layout_height="@dimen/icon_item_image_size_top"
                 android:id="@+id/edit_cancel"
                 android:layout_alignParentLeft="true"
-                android:text="cancel"
+                android:layout_centerVertical="true"
+                android:scaleType="fitCenter"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                app:srcCompat="@drawable/ic_cancel2"
+                android:background="?android:attr/selectableItemBackground"
                 android:layout_alignParentStart="true"/>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageButton
+                android:layout_width="@dimen/icon_item_image_size_top"
+                android:layout_height="@dimen/icon_item_image_size_top"
+                android:layout_centerVertical="true"
+                android:id="@+id/edit_befaft"
+                android:visibility="gone"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                app:srcCompat="@drawable/ic_beforeafter"
+                android:background="?android:attr/selectableItemBackground"
+                android:layout_centerHorizontal="true"/>
+
+            <ImageButton
+                android:layout_width="@dimen/icon_item_image_size_top"
+                android:layout_height="@dimen/icon_item_image_size_top"
                 android:id="@+id/edit_save"
                 android:layout_alignParentEnd="true"
-                android:text="@string/save"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_save"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="?android:attr/selectableItemBackground"
                 android:layout_alignParentRight="true"/>
 
         </RelativeLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/md_grey_300"/>
+
         <FrameLayout
+            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/preview_container"/>
 
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/md_grey_300"/>
+
         <FrameLayout
+            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/controls_container"/>

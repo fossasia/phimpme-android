@@ -46,8 +46,8 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
         apply = (ImageButton) fragmentView.findViewById(R.id.seekbar_apply);
         seekBar = (SeekBar) fragmentView.findViewById(R.id.slider);
 
-        cancel.setImageResource(R.mipmap.ic_launcher);
-        apply.setImageResource(R.mipmap.ic_launcher);
+        cancel.setImageResource(R.drawable.ic_no);
+        apply.setImageResource(R.drawable.ic_done_black_24dp);
 
         cancel.setOnClickListener(this);
         apply.setOnClickListener(this);
@@ -138,8 +138,8 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
     }
 
     public void resetBitmaps(){
-        if (null != filterBit) filterBit = null;
-        if (null != currentBitmap) currentBitmap = null;
+        if (null != filterBit) filterBit.recycle(); filterBit = null;
+        if (null != currentBitmap) currentBitmap.recycle(); currentBitmap = null;
     }
 
     @Override
@@ -152,6 +152,9 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
                 if (filterBit!=null) {
                     activity.changeMainBitmap(filterBit);
                     filterBit = null;
+                }
+                if (EditImageActivity.effectType / 100 ==  EditImageActivity.MODE_FILTERS){
+                    activity.filterFragment.onShow();
                 }
                 backToMain();
                 break;

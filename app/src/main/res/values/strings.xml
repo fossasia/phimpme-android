@@ -716,7 +716,7 @@
 
     <string name="stickers">stickers</string>
     <string name="fliter">fliter</string>
-    <string name="crop">crop</string>
+    <string name="crop">Crop</string>
 
 
     <string name="materialcolorpicker__app_name">Android Material Color Picker Dialog</string>
@@ -738,6 +738,10 @@
     <string name="action_add_account">Add Account</string>
     <string name="account_list">Accounts List</string>
 
-    <string name="filter">filter</string>
+    <string name="filter">Filter</string>
     <string name="paint">Paint</string>
+    <string name="sticker">Stickers</string>
+    <string name="enhance">Enhance</string>
+    <string name="transform">Transform</string>
+    <string name="write">Write</string>
 </resources>

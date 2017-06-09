@@ -2,13 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:background="?android:attr/selectableItemBackground"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content">
+              android:gravity="center"
+              android:layout_gravity="center_vertical"
+              android:layout_width="@dimen/editor_mid_row_size"
+              android:layout_height="@dimen/editor_mid_row_size">
     <ImageView
         android:id="@+id/editor_item_image"
-        android:layout_width="@dimen/icon_item_image_size"
-        android:layout_height="@dimen/icon_item_image_size"
+        android:layout_width="@dimen/icon_item_image_size_recycler"
+        android:layout_height="@dimen/icon_item_image_size_recycler"
         android:scaleType="centerCrop"
+        android:layout_gravity="center_horizontal"
         android:background="@android:color/transparent"
         />
 
@@ -17,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="15sp"
+        android:textSize="@dimen/icon_item_title_size"
         android:text="title"/>
 
 </LinearLayout>
