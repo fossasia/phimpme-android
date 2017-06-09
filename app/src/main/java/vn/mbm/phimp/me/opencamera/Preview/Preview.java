@@ -74,6 +74,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.View.MeasureSpec;
+import android.widget.Button;
 import android.widget.Toast;
 
 /** This class was originally named due to encapsulating the camera preview,
@@ -540,8 +541,7 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		tryAutoFocus(false, true);
 		return true;
 	}
-
-	//@SuppressLint("ClickableViewAccessibility") @Override
+    //@SuppressLint("ClickableViewAccessibility") @Override
 
 	/** Handle multitouch zoom.
 	 */
@@ -1375,7 +1375,28 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 			if( MyDebug.LOG )
 				Log.d(TAG, "saved color effect: " + value);
 
-			CameraController.SupportedValues supported_values = camera_controller.setColorEffect(value);
+            final int[] colorNum = {0};
+            CameraActivity.toggle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final List<String> colorEffect = getSupportedColorEffects();
+                    colorNum[0]++;
+                    if (colorNum[0] == colorEffect.size())
+                        colorNum[0] = 0;
+                    final String color = colorEffect.get(colorNum[0]);
+                    CameraController.SupportedValues supported_values = camera_controller.setColorEffect(color);
+                    if( supported_values != null ) {
+                        color_effects = supported_values.values;
+                        // now save, so it's available for PreferenceActivity
+                        applicationInterface.setColorEffectPref(supported_values.selected_value);
+                    }
+                    else {
+                        // delete key in case it's present (e.g., if feature no longer available due to change in OS, or switching APIs)
+                        applicationInterface.clearColorEffectPref();
+                    }
+                }
+            });
+            CameraController.SupportedValues supported_values = camera_controller.setColorEffect(value);
 			if( supported_values != null ) {
 				color_effects = supported_values.values;
 				// now save, so it's available for PreferenceActivity

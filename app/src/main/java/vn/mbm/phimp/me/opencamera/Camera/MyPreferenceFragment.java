@@ -400,10 +400,9 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
 								main_activity.setDeviceDefaults(getActivity());
 		                		if( MyDebug.LOG )
 		                			Log.d(TAG, "user clicked reset - need to restart");
-		                		// see http://stackoverflow.com/questions/2470870/force-application-to-restart-on-first-activity
-		                		Intent i = getActivity().getBaseContext().getPackageManager().getLaunchIntentForPackage( getActivity().getBaseContext().getPackageName() );
-			                	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			                	startActivity(i);
+		                		Intent i = getActivity().getBaseContext().getPackageManager().getLaunchIntentForPackage(getActivity().getBaseContext().getPackageName() );
+								i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+								startActivity(i);
 					        }
 			        	})
 

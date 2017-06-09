@@ -595,6 +595,12 @@
     <string name="address_copied">Address copied to clipboard</string>
     <string name="coming_soon">Coming Soon!</string>
 
+    <string name="share_phimpme">Share Phimpme</string>
+
+    <!--Invitation-->
+    <string name="install_phimpme">Install the Phimpme Image application here: </string>
+    <string name="invitation_deep_link">https://se4c7.app.goo.gl/D6bk</string>
+
 
     <!--ABOUT STRINGS-->
     <string name="about">About</string>

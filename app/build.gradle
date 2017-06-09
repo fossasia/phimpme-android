@@ -104,5 +104,6 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
     compile 'com.android.support:support-v4:25.3.1'
+    compile 'com.google.firebase:firebase-core:10.0.1'
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
 }
