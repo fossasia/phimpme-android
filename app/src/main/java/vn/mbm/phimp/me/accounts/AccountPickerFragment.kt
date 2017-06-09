@@ -13,10 +13,10 @@ import vn.mbm.phimp.me.R
  * Provides a list of available account to connect to Phimp.me
  */
 
-class AccountsPickerFragment : DialogFragment() {
+class AccountPickerFragment : DialogFragment() {
 
-    fun newInstance(): AccountsPickerFragment {
-        val f = AccountsPickerFragment()
+    fun newInstance(): AccountPickerFragment {
+        val f = AccountPickerFragment()
         return f
     }
 
