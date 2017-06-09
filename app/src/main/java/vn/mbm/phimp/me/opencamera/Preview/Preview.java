@@ -267,8 +267,9 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 	public volatile boolean test_ticker_called; // set from MySurfaceView or CanvasView
 
 	private boolean enable_sound;
+    private int colorNum = 0;
 
-	public Preview(ApplicationInterface applicationInterface, ViewGroup parent) {
+    public Preview(ApplicationInterface applicationInterface, ViewGroup parent) {
 		if( MyDebug.LOG ) {
 			Log.d(TAG, "new Preview");
 		}
@@ -1375,23 +1376,20 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 			if( MyDebug.LOG )
 				Log.d(TAG, "saved color effect: " + value);
 
-            final int[] colorNum = {0};
             CameraActivity.toggle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     final List<String> colorEffect = getSupportedColorEffects();
-                    colorNum[0]++;
-                    if (colorNum[0] == colorEffect.size())
-                        colorNum[0] = 0;
-                    final String color = colorEffect.get(colorNum[0]);
+                    colorNum++;
+                    if (colorNum == colorEffect.size())
+                        colorNum = 0;
+                    final String color = colorEffect.get(colorNum);
                     CameraController.SupportedValues supported_values = camera_controller.setColorEffect(color);
                     if( supported_values != null ) {
                         color_effects = supported_values.values;
-                        // now save, so it's available for PreferenceActivity
                         applicationInterface.setColorEffectPref(supported_values.selected_value);
                     }
                     else {
-                        // delete key in case it's present (e.g., if feature no longer available due to change in OS, or switching APIs)
                         applicationInterface.clearColorEffectPref();
                     }
                 }
