@@ -24,6 +24,7 @@ import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.base.ThemedActivity;
 import vn.mbm.phimp.me.leafpic.util.PreferenceUtil;
 import vn.mbm.phimp.me.leafpic.util.SecurityHelper;
+import vn.mbm.phimp.me.utilities.ActivitySwitchHelper;
 
 /**
  * Created by dnld on 22/05/16.
@@ -43,6 +44,7 @@ public class SecurityActivity extends ThemedActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_security_layout);
+        ActivitySwitchHelper.setContext(this);
         SP = PreferenceUtil.getInstance(getApplicationContext());
         securityObj = new SecurityHelper(SecurityActivity.this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);

@@ -64,6 +64,7 @@ import vn.mbm.phimp.me.leafpic.util.PreferenceUtil;
 import vn.mbm.phimp.me.leafpic.util.SecurityHelper;
 import vn.mbm.phimp.me.leafpic.util.StringUtils;
 import vn.mbm.phimp.me.leafpic.views.GridSpacingItemDecoration;
+import vn.mbm.phimp.me.utilities.ActivitySwitchHelper;
 
 import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.DATE;
 import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.NAME;
@@ -177,6 +178,7 @@ public class LFMainActivity extends SharedMediaActivity {
     @Override
     public void onResume() {
         super.onResume();
+        ActivitySwitchHelper.setContext(this);
         securityObj.updateSecuritySetting();
         setupUI();
         getAlbums().clearSelectedAlbums();
