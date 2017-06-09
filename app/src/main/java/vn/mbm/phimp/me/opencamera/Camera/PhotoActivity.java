@@ -20,6 +20,7 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 
 import java.io.File;
 
+import uk.co.senab.photoview.PhotoView;
 import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.base.ThemedActivity;
 import vn.mbm.phimp.me.editor.FileUtils;
@@ -54,7 +55,7 @@ public class PhotoActivity extends ThemedActivity {
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_arrow_back));
         setStatusBarColor();
-        ImageView imageView = (ImageView)findViewById(R.id.imageView);
+        PhotoView imageView = (PhotoView) findViewById(R.id.imageView);
         imageView.setImageBitmap(BitmapFactory.decodeFile(FILE_PATH));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
