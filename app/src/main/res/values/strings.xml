@@ -756,5 +756,6 @@
     <!--add consumer key and secret key below-->
     <string name="twitter_CONSUMER_KEY">vKnzy2sMJ3VUFibF6HguxhDXm</string>
     <string name="twitter_CONSUMER_SECRET">gAvGEBNPAyIsGQ3AIElHDqdCGCS7Cvp1BiM1GTH7YzLQyvMVf3</string>
+    <string name="already_signed_in">Already signed In</string>
 
 </resources>

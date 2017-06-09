@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.twitter.sdk.android.core.Callback;
 import com.twitter.sdk.android.core.Result;
@@ -17,8 +18,10 @@ import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 
 import io.realm.Realm;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
 import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.data.Account;
+import vn.mbm.phimp.me.data.AccountDatabase;
 
 /**
  * Created by pa1pal on 07/06/17.
@@ -27,11 +30,10 @@ import vn.mbm.phimp.me.data.Account;
 public class AccountPickerFragment extends DialogFragment {
 
     private TwitterAuthClient client = new TwitterAuthClient();
-    Realm realm;
-    Account account;
+    Realm realm = Realm.getDefaultInstance();
+    AccountDatabase account;
 
-    //TwitterAuthConfig authConfig = new TwitterAuthConfig(getString(R.string.twitter_CONSUMER_KEY), getString(R.string.twitter_CONSUMER_SECRET));
-
+    public String[] accountsList = {"Twitter", "Facebook", "Instagram"};
 
     public AccountPickerFragment newInstance(String title) {
         AccountPickerFragment fragment = new AccountPickerFragment();
@@ -43,36 +45,56 @@ public class AccountPickerFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        realm = Realm.getDefaultInstance();
-        realm.beginTransaction();
-        account = realm.createObject(Account.class);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.account_list)
-                .setItems(R.array.accounts_array, new DialogInterface.OnClickListener() {
+                // Creating a dialog fragment using char sequences
+                .setItems(accountsList, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+
                         switch (which) {
                             case 0:
-                                client.authorize(getActivity(), new Callback<TwitterSession>() {
-                                    @Override
-                                    public void success(Result<TwitterSession> result) {
-                                        TwitterSession session = TwitterCore.getInstance()
-                                                .getSessionManager().getActiveSession();
-                                        TwitterAuthToken authToken = session.getAuthToken();
-                                        Log.d("Twitter Credentials", session.toString());
-                                        account.setName("Twitter");
-                                        account.setUsername(session.getUserName());
-                                        account.setToken(String.valueOf(session.getAuthToken()));
-                                        realm.commitTransaction();
-                                    }
+                                if (checkAlreadyExist(accountsList[0])) {
+                                    Toast.makeText(getActivity(), R.string.already_signed_in,
+                                            Toast.LENGTH_SHORT).show();
+                                } else {
+                                    client.authorize(getActivity(), new Callback<TwitterSession>() {
+                                        @Override
+                                        public void success(Result<TwitterSession> result) {
 
-                                    @Override
-                                    public void failure(TwitterException e) {
+                                            /**
+                                             * When user clicks then we first check if it is already exist.
+                                             */
 
-                                    }
-                                });
+                                            // Begin realm transaction
+                                            realm.beginTransaction();
+
+                                            // Creating Realm object for AccountDatabase Class
+                                            account = realm.createObject(AccountDatabase.class,
+                                                    accountsList[0]);
+
+                                            // Creating twitter session, after user authenticate
+                                            // in twitter popup
+                                            TwitterSession session = TwitterCore.getInstance()
+                                                    .getSessionManager().getActiveSession();
+                                            TwitterAuthToken authToken = session.getAuthToken();
+                                            Log.d("Twitter Credentials", session.toString());
+
+                                            // Writing values in Realm database
+                                            account.setUsername(session.getUserName());
+                                            account.setToken(String.valueOf(session.getAuthToken()));
+
+                                            // Finally committing the whole data
+                                            realm.commitTransaction();
+                                        }
+
+                                        @Override
+                                        public void failure(TwitterException e) {
+
+                                        }
+                                    });
+                                }
                         }
-                        // The 'which' argument contains the index position
-                        // of the selected item
                     }
                 });
         return builder.create();
@@ -83,4 +105,26 @@ public class AccountPickerFragment extends DialogFragment {
         client.onActivityResult(requestCode, resultCode, data);
     }
 
+    /**
+     * This function check if the selected account is already existed.
+     *
+     * @param s Name of the account from accountList e.g. Twitter
+     * @return true is existed, false otherwise
+     */
+    public boolean checkAlreadyExist(String s) {
+
+        // Query in the realm database
+        RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
+
+        // Checking if string equals to is exist or not
+        query.equalTo("name", s);
+        RealmResults<AccountDatabase> result1 = query.findAll();
+
+        // Here checking if count of that values is greater than zero
+        if (result1.size() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

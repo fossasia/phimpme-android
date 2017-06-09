@@ -1,10 +1,11 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.kotlin_version = '1.1.2-4'
+    ext.kotlin_version = '1.1.2-2'
     ext.realm_version = '3.3.1'
     repositories {
         jcenter()
+        maven { url 'https://jitpack.io' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.2'
@@ -19,7 +20,7 @@ allprojects {
     repositories {
         jcenter()
         mavenCentral()
-        maven  { url "http://repo1.maven.org/maven2" }
+        maven { url "http://repo1.maven.org/maven2" }
         maven { url  "http://dl.bintray.com/dasar/maven" }
     }
 }
@@ -29,5 +30,6 @@ ext {
     butterknifeVersion = '8.5.1'
     junitVersion = "4.12"
     twitterVersion = "3.0.0"
+    stethoVersion = "1.5.0"
 }
 

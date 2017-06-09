@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'jacoco-android'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'realm-android'
 
 android {
@@ -67,6 +68,9 @@ repositories {
         url "http://dl.bintray.com/dasar/maven"
     }
     mavenCentral()
+    maven {
+        url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo'
+    }
 }
 
 dependencies {
@@ -107,7 +111,9 @@ dependencies {
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.google.firebase:firebase-core:10.0.1'
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
+    compile 'com.uphyca:stetho_realm:2.0.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     compile "com.twitter.sdk.android:twitter:$rootProject.twitterVersion"
     compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
+    compile "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
 }
