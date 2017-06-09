@@ -40,21 +40,7 @@
             android:paddingTop="15dp"
             android:scaleType="fitCenter"/>
 
-        <ZoomControls
-            android:id="@+id/zoom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:alpha="0.5"
-            android:contentDescription="@string/zoom" />
 
-        <SeekBar
-            android:id="@+id/zoom_seekbar"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_centerVertical="true"
-            android:contentDescription="@string/zoom"
-            android:rotation="270"
-            android:visibility="gone" />
 
         <SeekBar
             android:id="@+id/focus_seekbar"
