@@ -93,9 +93,9 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     @Override
     public void onShow() {
         if (MODE == EditImageActivity.MODE_FILTERS) {
+            if (this.currentBitmap != activity.mainBitmap) filterThumbs = null;
             this.currentBitmap = activity.mainBitmap;
             getFilterThumbs();
-          //  if (currentBitmap!=null)recyclerView.getAdapter().notifyDataSetChanged();
         }
     }
 
@@ -124,7 +124,7 @@ public class RecyclerMenuFragment extends BaseEditFragment {
                 bmWidth = currentBitmap.getWidth();
                 bmHeight = currentBitmap.getHeight();
                 for (int i = 0; i <= 11; i++) {
-                    filterThumbs.add(PhotoProcessing.filterPhoto(getResizedBitmap(currentBitmap, 10), i, 100));
+                    filterThumbs.add(PhotoProcessing.filterPhoto(getResizedBitmap(currentBitmap, 5), i, 100));
                 }
             }
             return null;
@@ -192,10 +192,10 @@ public class RecyclerMenuFragment extends BaseEditFragment {
             holder.icon.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
             if (MODE == EditImageActivity.MODE_FILTERS) {
-                if (/*currentBitmap!=null){//*/filterThumbs!=null && filterThumbs.size() > position) {
+                if (currentBitmap!=null && filterThumbs!=null && filterThumbs.size() > position) {
                     iconImageSize = (int) getActivity().getResources().getDimension(R.dimen.icon_item_image_size_filter_preview);
                     holder.icon.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    holder.icon.setImageBitmap(PhotoProcessing.filterPhoto(getResizedBitmap(currentBitmap,5),position,100));
+                    holder.icon.setImageBitmap(filterThumbs.get(position));
                 }else {
                     holder.icon.setImageResource(defaulticon);
                 }
