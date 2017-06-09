@@ -1,34 +1,14 @@
 package vn.mbm.phimp.me.opencamera.Camera;
 
-import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
-import vn.mbm.phimp.me.base.BaseActivity;
-import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
-import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
-import vn.mbm.phimp.me.opencamera.CameraController.CameraControllerManager2;
-import vn.mbm.phimp.me.opencamera.Preview.ApplicationInterface;
-import vn.mbm.phimp.me.opencamera.Preview.Preview;
-import vn.mbm.phimp.me.opencamera.UI.FolderChooserDialog;
-import vn.mbm.phimp.me.opencamera.UI.MainUI;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import android.Manifest;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
-
-import android.app.ProgressDialog;
-
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -38,7 +18,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -78,15 +57,29 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.Toast;
 import android.widget.ZoomControls;
 
-import vn.mbm.phimp.me.R;
+import com.mikepenz.iconics.view.IconicsImageView;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.base.BaseActivity;
+import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
+import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
+import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
+import vn.mbm.phimp.me.opencamera.CameraController.CameraControllerManager2;
+import vn.mbm.phimp.me.opencamera.Preview.Preview;
+import vn.mbm.phimp.me.opencamera.UI.FolderChooserDialog;
+import vn.mbm.phimp.me.opencamera.UI.MainUI;
 import vn.mbm.phimp.me.opencamera.UI.PopupView;
 import vn.mbm.phimp.me.utilities.BasicCallBack;
 
@@ -126,10 +119,8 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	private int audio_noise_sensitivity = -1;
 	private SpeechRecognizer speechRecognizer;
 	private boolean speechRecognizerIsStarted;
-	public static ImageButton toggle;
-    private List<String> color_effects = null;
-
-	//private boolean ui_placement_right = true;
+	public static IconicsImageView toggle;
+ 	//private boolean ui_placement_right = true;
 
 	private final ToastBoxer switch_video_toast = new ToastBoxer();
 	private final ToastBoxer screen_locked_toast = new ToastBoxer();
@@ -149,7 +140,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	public volatile String test_last_saved_image;
 
 	public ProgressDialog progressDialog;
-    private CameraController camera_controller;
 
 
     @Override
@@ -380,7 +370,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		};
 		ImageSaver.setBasicCallBack(basicCallBack);
 
-		toggle = (ImageButton) findViewById(R.id.toggleButton);
+		toggle = (IconicsImageView) findViewById(R.id.toggle_button);
 	}
 
 	/* This method sets the preference defaults which are set specific for a particular device.
