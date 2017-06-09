@@ -446,7 +446,6 @@
     <string name="select_all">Select All</string>
     <string name="clear_selected">Clear Selected</string>
 
-    <string name="share">Share</string>
     <string name="rotate">Rotate</string>
     <string name="rotate_right_90">Rotate right 90°</string>
     <string name="rotate_left_90">Rotate left 90°</string>
@@ -712,6 +711,7 @@
     <!--EDITING IMAGE-->
     <string name="no_images">no found the image</string>
     <string name="save">save</string>
+    <string name="share">share</string>
     <string name="apply">apply</string>
 
     <string name="stickers">stickers</string>

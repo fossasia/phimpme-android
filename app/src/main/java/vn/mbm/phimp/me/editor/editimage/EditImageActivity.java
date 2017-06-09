@@ -246,6 +246,7 @@ public class EditImageActivity extends EditBaseActivity {
         FileUtil.ablumUpdate(this, saveFilePath);
         setResult(RESULT_OK, shareIntent);
         startActivity(shareIntent);
+        finish();
     }
 
     private void closeInputMethod() {

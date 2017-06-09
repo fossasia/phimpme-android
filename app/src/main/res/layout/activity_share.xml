@@ -111,6 +111,19 @@
             android:layout_alignLeft="@+id/twitter_button"
             android:layout_alignStart="@+id/twitter_button"/>
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginBottom="23dp"
+            android:layout_marginRight="22dp"
+            android:layout_marginEnd="22dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/home"/>
+
     </RelativeLayout>
 
 </LinearLayout>

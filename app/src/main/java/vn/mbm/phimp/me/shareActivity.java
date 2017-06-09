@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -25,12 +26,15 @@ import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.List;
 
+import vn.mbm.phimp.me.leafpic.activities.LFMainActivity;
+
 public class shareActivity extends AppCompatActivity {
 
     ImageView mImageView;
     ImageView mshareButton;
     ImageView mfacebookButton;
     ImageView mInstagrambutton;
+    FloatingActionButton fab_home;
     public EditText mEditText;
     public String filePath;
     public String saveFilePath;
@@ -70,6 +74,13 @@ public class shareActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 shareInstagram();
+            }
+        });
+        fab_home = (FloatingActionButton) findViewById(R.id.fab_home);
+        fab_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToHome();
             }
         });
     }
@@ -151,5 +162,11 @@ public class shareActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int responseCode, Intent data) {
         super.onActivityResult(requestCode, responseCode, data);
         callbackManager.onActivityResult(requestCode, responseCode, data);
+    }
+
+    private void goToHome() {
+        Intent home = new Intent(shareActivity.this, LFMainActivity.class);
+        startActivity(home);
+        finish();
     }
 }
