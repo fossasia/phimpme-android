@@ -29,7 +29,7 @@ import uk.co.senab.photoview.PhotoViewAttacher.OnMatrixChangedListener;
 import uk.co.senab.photoview.PhotoViewAttacher.OnPhotoTapListener;
 import uk.co.senab.photoview.PhotoViewAttacher.OnViewTapListener;
 
-public class PhotoView extends ImageView implements IPhotoView {
+public class PhotoView extends android.support.v7.widget.AppCompatImageView implements IPhotoView {
 
     private PhotoViewAttacher mAttacher;
 

@@ -1,5 +1,5 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,15 +8,15 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black"
         android:layout_weight="5"
+        android:background="@color/black"
         tools:context=".opencamera.CameraActivity">
 
         <FrameLayout
             android:id="@+id/preview"
-            android:layout_alignParentTop="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:layout_centerInParent="true" />
 
         <ImageButton
@@ -28,17 +28,16 @@
             android:contentDescription="@string/take_photo"
             android:onClick="clickedTakePhoto"
             android:padding="10dp"
-            android:scaleType="fitCenter"/>
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:scaleType="fitCenter" />
+
+        <com.mikepenz.iconics.view.IconicsImageView
+            android:id="@+id/toggle_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:padding="10dp"
             android:layout_alignParentTop="true"
-            android:background="@android:color/transparent"
-            android:src="@drawable/filter"
-            android:id="@+id/toggleButton"
-            android:paddingLeft="10dp"
-            android:paddingTop="15dp"
-            android:scaleType="fitCenter"/>
+            android:layout_marginTop="15dp"
+            app:iiv_icon="faw-filter" />
 
 
 
@@ -239,14 +238,12 @@
         <ScrollView
             android:id="@+id/hide_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </ScrollView>
+            android:layout_height="match_parent"></ScrollView>
     </RelativeLayout>
 
     <include
         layout="@layout/element_bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"
-        />
+        android:layout_marginBottom="0dp" />
 </LinearLayout>
