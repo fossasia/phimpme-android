@@ -128,7 +128,7 @@ public class Album implements Serializable {
 				break;
 			case IMAGES:
 				for (Media media1 : media)
-					if (media1.isImage()) mediaArrayList.add(media1);
+					if (media1.isImage() && !media1.isGif()) mediaArrayList.add(media1);
 				break;
 
 		}
