@@ -9,7 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.accounts.AccountsActivity;
+import vn.mbm.phimp.me.accounts.AccountActivity;
 import vn.mbm.phimp.me.leafpic.activities.LFMainActivity;
 import vn.mbm.phimp.me.opencamera.Camera.CameraActivity;
 
@@ -41,7 +41,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
     @Override
     public boolean onNavigationItemSelected(@NonNull final MenuItem item) {
-        if (item.getItemId()!= getNavigationMenuItemId()) {
+        if (item.getItemId() != getNavigationMenuItemId()) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     startActivity(new Intent(this, LFMainActivity.class));
@@ -50,12 +50,10 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                     startActivity(new Intent(this, CameraActivity.class));
                     break;
                 case R.id.navigation_accounts:
-                    startActivity(new Intent(this, AccountsActivity.class));
+                    startActivity(new Intent(this, AccountActivity.class));
                     break;
             }
-
         }
-
         return true;
     }
 
