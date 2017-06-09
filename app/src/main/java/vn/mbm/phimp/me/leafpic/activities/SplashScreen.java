@@ -20,6 +20,7 @@ import vn.mbm.phimp.me.leafpic.data.Album;
 import vn.mbm.phimp.me.leafpic.util.ColorPalette;
 import vn.mbm.phimp.me.leafpic.util.PermissionUtils;
 import vn.mbm.phimp.me.leafpic.util.PreferenceUtil;
+import vn.mbm.phimp.me.utilities.ActivitySwitchHelper;
 
 /**
  * Created by dnld on 01/04/16.
@@ -47,6 +48,8 @@ public class SplashScreen extends SharedMediaActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        ActivitySwitchHelper.setContext(this);
+
         SP = PreferenceUtil.getInstance(getApplicationContext());
 
         ((ProgressBar) findViewById(R.id.progress_splash)).getIndeterminateDrawable().setColorFilter(getPrimaryColor(), PorterDuff.Mode.SRC_ATOP);
