@@ -43,12 +43,12 @@ import vn.mbm.phimp.me.editor.editimage.view.imagezoom.ImageViewTouch;
 import vn.mbm.phimp.me.editor.editimage.view.imagezoom.ImageViewTouchBase;
 import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
 import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
+import vn.mbm.phimp.me.utilities.ActivitySwitchHelper;
 
 public class EditImageActivity extends EditBaseActivity implements View.OnClickListener {
     public static final String FILE_PATH = "file_path";
     public static final String EXTRA_OUTPUT = "extra_output";
     public static final String SAVE_FILE_PATH = "save_file_path";
-
     public static final String IMAGE_IS_EDIT = "image_is_edit";
 
     public static final int MODE_MAIN = 0;
@@ -485,6 +485,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     @Override
     protected void onResume() {
         super.onResume();
+        ActivitySwitchHelper.setContext(this);
     }
 
     @Override
