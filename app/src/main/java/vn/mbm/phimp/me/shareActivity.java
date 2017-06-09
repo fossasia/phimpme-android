@@ -1,6 +1,7 @@
 package vn.mbm.phimp.me;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -50,6 +51,7 @@ public class shareActivity extends AppCompatActivity {
         setContentView(R.layout.activity_share);
         mEditText = (EditText) findViewById(R.id.edit_text);
         sendMessage = mEditText.getText().toString();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         initView();
         buttonClick();
     }
