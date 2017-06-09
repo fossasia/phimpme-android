@@ -26,7 +26,7 @@
             android:layout_height="fill_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:text="share"
+            android:text="@string/share"
             android:textColor="#ffffff"
             android:textSize="20sp" />
 
