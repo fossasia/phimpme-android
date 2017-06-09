@@ -29,12 +29,12 @@ public class RecyclerMenuFragment extends BaseEditFragment {
 
     RecyclerView recyclerView;
     int MODE;
-    private ArrayList<Bitmap> filterThumbs = new ArrayList<>();
+    private static ArrayList<Bitmap> filterThumbs;
     View fragmentView;
     private StickerView mStickerView;
     static final String[] stickerPath = {"stickers/type1", "stickers/type2", "stickers/type3", "stickers/type4", "stickers/type5", "stickers/type6"};
     Bitmap currentBitmap,tempBitmap;
-    int bmWidth,bmHeight;
+    int bmWidth = -1,bmHeight = -1;
 
     public RecyclerMenuFragment() {
 
@@ -85,9 +85,14 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+    //    if (filterThumbs != null)filterThumbs=null;
+    }
+
+    @Override
     public void onShow() {
         if (MODE == EditImageActivity.MODE_FILTERS) {
-            filterThumbs = new ArrayList<>();
             this.currentBitmap = activity.mainBitmap;
             getFilterThumbs();
           //  if (currentBitmap!=null)recyclerView.getAdapter().notifyDataSetChanged();
@@ -105,6 +110,8 @@ public class RecyclerMenuFragment extends BaseEditFragment {
         float scale = 1/(float)divisor;
         Matrix matrix = new Matrix();
         matrix.postScale(scale, scale);
+        if (bmWidth <= 0 ) bmWidth = bm.getWidth();
+        if (bmHeight <= 0) bmHeight = bm.getHeight();
         return Bitmap.createBitmap(bm, 0, 0, bmWidth, bmHeight, matrix, false);
     }
 
@@ -112,12 +119,12 @@ public class RecyclerMenuFragment extends BaseEditFragment {
 
         @Override
         protected Void doInBackground(Void... params) {
-            if (filterThumbs!=null) {
+            if (filterThumbs==null) {
                 filterThumbs = new ArrayList<>();
                 bmWidth = currentBitmap.getWidth();
                 bmHeight = currentBitmap.getHeight();
                 for (int i = 0; i <= 11; i++) {
-                    filterThumbs.add(PhotoProcessing.filterPhoto(getResizedBitmap(currentBitmap, 5), i, 100));
+                    filterThumbs.add(PhotoProcessing.filterPhoto(getResizedBitmap(currentBitmap, 10), i, 100));
                 }
             }
             return null;
@@ -182,9 +189,12 @@ public class RecyclerMenuFragment extends BaseEditFragment {
             }
             int iconImageSize = (int) getActivity().getResources().getDimension(R.dimen.icon_item_image_size_recycler);
 
+            holder.icon.setScaleType(ImageView.ScaleType.FIT_CENTER);
+
             if (MODE == EditImageActivity.MODE_FILTERS) {
                 if (/*currentBitmap!=null){//*/filterThumbs!=null && filterThumbs.size() > position) {
                     iconImageSize = (int) getActivity().getResources().getDimension(R.dimen.icon_item_image_size_filter_preview);
+                    holder.icon.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     holder.icon.setImageBitmap(PhotoProcessing.filterPhoto(getResizedBitmap(currentBitmap,5),position,100));
                 }else {
                     holder.icon.setImageResource(defaulticon);

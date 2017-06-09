@@ -180,6 +180,9 @@ public class PhotoProcessing {
             if (bitmap != null) {
                 config = bitmap.getConfig();
                 bitmap.recycle();
+
+                if (width <= 0 )width = bitmap.getWidth();
+                if (height <= 0 )height = bitmap.getHeight();
             }
             bitmap = Bitmap.createBitmap(width, height, config);
         }
