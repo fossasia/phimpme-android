@@ -751,6 +751,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
+		updateSaveFolder(MyPreferenceFragment.new_save_location);
 		if( MyDebug.LOG )
 			Log.d(TAG, "onWindowFocusChanged: " + hasFocus);
 		super.onWindowFocusChanged(hasFocus);
@@ -1548,7 +1549,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 				editor.apply();
 
 				this.save_location_history.updateFolderHistory(this.getStorageUtils().getSaveLocation());
-				this.preview.showToast(null, getResources().getString(R.string.changed_save_location) + "\n" + this.applicationInterface.getStorageUtils().getSaveLocation());
 			}
 		}
 	}
