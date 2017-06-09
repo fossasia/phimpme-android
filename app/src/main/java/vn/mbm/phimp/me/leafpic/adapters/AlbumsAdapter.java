@@ -130,15 +130,15 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
     }
 
     public void swapDataSet(ArrayList<Album> asd) {
-        if (albums.equals(asd))
+        if (SharedMediaActivity.getAlbums().dispAlbums.equals(asd))
             return;
-        albums = asd;
+        SharedMediaActivity.getAlbums().dispAlbums = asd;
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        return albums.size();
+        return SharedMediaActivity.getAlbums().dispAlbums.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
