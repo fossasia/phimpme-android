@@ -59,6 +59,7 @@ import vn.mbm.phimp.me.leafpic.util.PreferenceUtil;
 import vn.mbm.phimp.me.leafpic.util.SecurityHelper;
 import vn.mbm.phimp.me.leafpic.util.StringUtils;
 import vn.mbm.phimp.me.leafpic.views.HackyViewPager;
+import vn.mbm.phimp.me.utilities.ActivitySwitchHelper;
 
 /**
  * Created by dnld on 18/02/16.
@@ -259,6 +260,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
     @Override
     public void onResume() {
         super.onResume();
+        ActivitySwitchHelper.setContext(this);
         setupUI();
     }
 
