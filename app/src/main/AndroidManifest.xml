@@ -265,9 +265,9 @@
 
         <activity
             android:name=".editor.editimage.EditImageActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan"
+            android:windowSoftInputMode="adjustPan">
         </activity>
 
         <activity
@@ -275,7 +275,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
-        <activity android:name=".accounts.AccountsActivity"
+        <activity android:name=".accounts.AccountActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
         <activity android:name=".opencamera.Camera.PhotoActivity"
