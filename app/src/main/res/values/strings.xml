@@ -184,9 +184,8 @@
     -->
     <string name="preference_max_brightness_summary">Force screen display to be at maximum brightness, rather than device default</string>
 
-    <string name="preference_category_camera_quality">Photo and Video Settings</string>
+    <string name="preference_category_camera_quality">Photo Settings</string>
     <string name="preference_screen_photo_settings">Photo settings…</string>
-    <string name="preference_screen_video_settings">Video settings…</string>
     <string name="preference_screen_location_settings">Location settings…</string>
     <string name="preference_resolution">Camera resolution</string>
     <string name="preference_resolution_summary">Set the resolution of photos taken by the camera</string>
