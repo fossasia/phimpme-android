@@ -1,19 +1,28 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="horizontal" >
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+    android:layout_height="@dimen/editor_bottom_row_size" >
 
-    <ImageView
-        android:id="@+id/back_to_main"
-        android:layout_width="40dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:src="@drawable/image_edit_back" />
+    <ImageButton
+        android:id="@+id/crop_cancel"
+        android:layout_width="@dimen/icon_item_image_size_main"
+        android:layout_height="@dimen/editor_bottom_row_size"
+        android:scaleType="fitCenter"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_alignBottom="@+id/crop_hsv"
+        android:layout_alignParentLeft="true"
+        android:background="?android:attr/selectableItemBackground"
+        app:srcCompat="@drawable/ic_no" />
 
     <HorizontalScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="wrap_content"
+        android:layout_centerVertical="true"
+        android:id="@+id/crop_hsv"
+        android:layout_height="@dimen/editor_bottom_row_size"
+        android:layout_toRightOf="@+id/crop_cancel"
+        android:layout_toLeftOf="@+id/crop_apply"
         android:layout_weight="1" >
 
         <LinearLayout
@@ -24,4 +33,16 @@
         </LinearLayout>
     </HorizontalScrollView>
 
-</LinearLayout>
+
+    <ImageButton
+        android:id="@+id/crop_apply"
+        android:layout_width="@dimen/icon_item_image_size_main"
+        android:layout_height="@dimen/editor_bottom_row_size"
+        android:layout_alignParentRight="true"
+        android:foregroundGravity="center_vertical"
+        android:scaleType="fitCenter"
+        android:layout_marginRight="5dp"
+        android:layout_marginLeft="5dp"
+        android:background="?android:attr/selectableItemBackground"
+        app:srcCompat="@drawable/ic_done_black_24dp" />
+</RelativeLayout>

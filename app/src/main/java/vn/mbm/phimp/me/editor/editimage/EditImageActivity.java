@@ -4,44 +4,40 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ViewFlipper;
+import android.view.View.OnClickListener;
 
 import java.io.File;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
+import java.io.IOException;
+import java.util.ArrayList;
+
 import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.editor.EditBaseActivity;
 import vn.mbm.phimp.me.editor.editimage.fragment.AddTextFragment;
 import vn.mbm.phimp.me.editor.editimage.fragment.CropFragment;
-import vn.mbm.phimp.me.editor.editimage.fragment.FliterListFragment;
 import vn.mbm.phimp.me.editor.editimage.fragment.MainMenuFragment;
 import vn.mbm.phimp.me.editor.editimage.fragment.PaintFragment;
+import vn.mbm.phimp.me.editor.editimage.fragment.RecyclerMenuFragment;
 import vn.mbm.phimp.me.editor.editimage.fragment.RotateFragment;
-import vn.mbm.phimp.me.editor.editimage.fragment.StirckerFragment;
-import vn.mbm.phimp.me.editor.editimage.fragment.TuneListFragment;
-import vn.mbm.phimp.me.editor.editimage.fragment.TuningFragment;
+import vn.mbm.phimp.me.editor.editimage.fragment.SliderFragment;
+import vn.mbm.phimp.me.editor.editimage.fragment.StickersFragment;
+import vn.mbm.phimp.me.editor.editimage.fragment.TwoItemFragment;
 import vn.mbm.phimp.me.editor.editimage.utils.BitmapUtils;
 import vn.mbm.phimp.me.editor.editimage.utils.FileUtil;
 import vn.mbm.phimp.me.editor.editimage.view.CropImageView;
 import vn.mbm.phimp.me.editor.editimage.view.CustomPaintView;
-import vn.mbm.phimp.me.editor.editimage.view.CustomViewPager;
 import vn.mbm.phimp.me.editor.editimage.view.RotateImageView;
 import vn.mbm.phimp.me.editor.editimage.view.StickerView;
 import vn.mbm.phimp.me.editor.editimage.view.TextStickerView;
@@ -49,88 +45,69 @@ import vn.mbm.phimp.me.editor.editimage.view.imagezoom.ImageViewTouch;
 import vn.mbm.phimp.me.editor.editimage.view.imagezoom.ImageViewTouchBase;
 import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
 import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
+import vn.mbm.phimp.me.utilities.ActivitySwitchHelper;
 import vn.mbm.phimp.me.shareActivity;
 
-/**
- *  一个幽灵
- *  共产主义的幽灵
- *  在欧洲徘徊
- *  旧欧洲的一切势力，
- *  教皇和沙皇、
- *  梅特涅和基佐、
- *  法国的激进党人和德国的警察，
- *  都为驱除这个幽灵而结成了神圣同盟
- *                                       -----《共产党宣言》
- *
- * 图片编辑 主页面
- *
- * @author panyi
- *         <p>
- *         包含 1.贴图 2.滤镜 3.剪裁 4.底图旋转 功能
- *
- */
-public class EditImageActivity extends EditBaseActivity {
+public class EditImageActivity extends EditBaseActivity implements View.OnClickListener {
     public static final String FILE_PATH = "file_path";
     public static final String EXTRA_OUTPUT = "extra_output";
     public static final String SAVE_FILE_PATH = "save_file_path";
-
     public static final String IMAGE_IS_EDIT = "image_is_edit";
 
-    public static final int MODE_NONE = 0;
-    public static final int MODE_STICKERS = 1;// 贴图模式
-    public static final int MODE_FILTER = 2;// 滤镜模式
-    public static final int MODE_CROP = 3;// 剪裁模式
-    public static final int MODE_ROTATE = 4;// 旋转模式
-    public static final int MODE_TEXT = 5;// 文字模式
-    public static final int MODE_PAINT = 6;//绘制模式
-    public static final int MODE_TUNELIST = 7;
-    public static final int MODE_TUNE = 8;
+    public static final int MODE_MAIN = 0;
+    public static final int MODE_SLIDER = 1;
+    public static final int MODE_FILTERS = 2;
+    public static final int MODE_ENHANCE = 3;
+    public static final int MODE_STICKER_TYPES = 4;
+    public static final int MODE_STICKERS = 5;
+    public static final int MODE_ADJUST = 6;
+    public static final int MODE_CROP = 7;
+    public static final int MODE_ROTATE = 8;
+    public static final int MODE_WRITE = 9;
+    public static final int MODE_TEXT = 10;
+    public static final int MODE_PAINT = 11;
 
-    public String filePath;// 需要编辑图片路径
-    public String saveFilePath;// 生成的新图片路径
-    private int imageWidth, imageHeight;// 展示图片控件 宽 高
-    private LoadImageTask mLoadImageTask;
+    public String filePath;
+    public String saveFilePath;
+    private int imageWidth, imageHeight;
 
-    public int mode = MODE_NONE;// 当前操作模式
+    public static int mode;
+    public static int effectType;
 
     protected int mOpTimes = 0;
     protected boolean isBeenSaved = false;
 
-    private EditImageActivity mContext;
-    public Bitmap mainBitmap;// 底层显示Bitmap
-    public ImageViewTouch mainImage;
-    private View backBtn;
+    LoadImageTask mLoadImageTask;
 
-    public ViewFlipper bannerFlipper;
-    private View applyBtn;// 应用按钮
-    private View saveBtn;// 保存按钮
+    private EditImageActivity mContext;
+    public Bitmap mainBitmap;
+    public ImageViewTouch mainImage;
+    private View cancel,save;
 
     public StickerView mStickerView;// 贴图层View
     public CropImageView mCropPanel;// 剪切操作控件
     public RotateImageView mRotatePanel;// 旋转操作控件
     public TextStickerView mTextStickerView;//文本贴图显示View
     public CustomPaintView mPaintView;//涂鸦模式画板
-    @BindView(R.id.banner) FrameLayout banner;
-    @BindView(R.id.work_space) FrameLayout workSpace;
-    public ThemeHelper themeHelper;
 
-    public CustomViewPager bottomGallery;// 底部gallery
-    private BottomGalleryAdapter mBottomGalleryAdapter;// 底部gallery
-    private MainMenuFragment mMainMenuFragment;// Menu
-    public StirckerFragment mStirckerFragment;// 贴图Fragment
-    public FliterListFragment mFliterListFragment;// 滤镜FliterListFragment
-    public CropFragment mCropFragment;// 图片剪裁Fragment
-    public RotateFragment mRotateFragment;// 图片旋转Fragment
-    public AddTextFragment mAddTextFragment;//图片添加文字
-    public PaintFragment mPaintFragment;//绘制模式Fragment
-    public TuneListFragment mTuneListFragment;
-    public TuningFragment mTuningFragment;
 
     private SaveImageTask mSaveImageTask;
     private int requestCode;
     final String REVIEW_ACTION = "com.android.camera.action.REVIEW";
     TextView mshareImage;
     int saveFalg = 0;
+
+    public ThemeHelper themeHelper;
+    public MainMenuFragment mainMenuFragment;
+    public RecyclerMenuFragment filterFragment, enhanceFragment,stickerTypesFragment;
+    public StickersFragment stickersFragment;
+    public SliderFragment sliderFragment;
+    public TwoItemFragment writeFragment,adjustFragment;
+    public AddTextFragment addTextFragment;
+    public PaintFragment paintFragment;
+    public CropFragment cropFragment;
+    public RotateFragment rotateFragment;
+    private static String stickerType;
 
     /**
      * @param context
@@ -154,18 +131,35 @@ public class EditImageActivity extends EditBaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (getSupportActionBar() != null)
+            getSupportActionBar().hide();
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         checkInitImageLoader();
         setContentView(R.layout.activity_image_edit);
-        ButterKnife.bind(this);
         initView();
         getData();
         requestCode = getIntent().getIntExtra("requestCode", 1);
 
+//        setInitialFragments();
+    }
+
+    private void setInitialFragments() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.controls_container, mainMenuFragment)
+                .commit();
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.preview_container, filterFragment)
+                .commit();
     }
 
     private void getData() {
         filePath = getIntent().getStringExtra(FILE_PATH);
-        saveFilePath = getIntent().getStringExtra(EXTRA_OUTPUT);// 保存图片路径
+        saveFilePath = getIntent().getStringExtra(EXTRA_OUTPUT);
         loadImage(filePath);
     }
 
@@ -175,23 +169,12 @@ public class EditImageActivity extends EditBaseActivity {
         imageWidth = metrics.widthPixels / 2;
         imageHeight = metrics.heightPixels / 2;
 
-        bannerFlipper = (ViewFlipper) findViewById(R.id.banner_flipper);
-        bannerFlipper.setInAnimation(this, R.anim.in_bottom_to_top);
-        bannerFlipper.setOutAnimation(this, R.anim.out_bottom_to_top);
-        applyBtn = findViewById(R.id.apply);
-        applyBtn.setOnClickListener(new ApplyBtnClick());
-        saveBtn = findViewById(R.id.save_btn);
-        saveBtn.setOnClickListener(new SaveBtnClick());
-        themeHelper = new ThemeHelper(this);
-
         mainImage = (ImageViewTouch) findViewById(R.id.main_image);
-        backBtn = findViewById(R.id.back_btn);// 退出按钮
-        backBtn.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        cancel = findViewById(R.id.edit_cancel);
+        save = findViewById(R.id.edit_save);
+
+        cancel.setOnClickListener(this);
+        save.setOnClickListener(this);
 
         mStickerView = (StickerView) findViewById(R.id.sticker_panel);
         mCropPanel = (CropImageView) findViewById(R.id.crop_panel);
@@ -199,22 +182,19 @@ public class EditImageActivity extends EditBaseActivity {
         mTextStickerView = (TextStickerView) findViewById(R.id.text_sticker_panel);
         mPaintView = (CustomPaintView) findViewById(R.id.custom_paint_view);
 
-        // 底部gallery
-        bottomGallery = (CustomViewPager) findViewById(R.id.bottom_gallery);
-        //bottomGallery.setOffscreenPageLimit(7);
-        mMainMenuFragment = MainMenuFragment.newInstance();
-        mBottomGalleryAdapter = new BottomGalleryAdapter(
-                this.getSupportFragmentManager());
-        mStirckerFragment = StirckerFragment.newInstance();
-        mFliterListFragment = FliterListFragment.newInstance();
-        mCropFragment = CropFragment.newInstance();
-        mRotateFragment = RotateFragment.newInstance();
-        mAddTextFragment = AddTextFragment.newInstance();
-        mPaintFragment = PaintFragment.newInstance();
-        mTuneListFragment = TuneListFragment.newInstance();
-        mTuningFragment = TuningFragment.newInstance();
+        mode = MODE_FILTERS;
 
-        bottomGallery.setAdapter(mBottomGalleryAdapter);
+        mainMenuFragment = MainMenuFragment.newInstance();
+        sliderFragment = SliderFragment.newInstance();
+        filterFragment = RecyclerMenuFragment.newInstance(MODE_FILTERS);
+        enhanceFragment = RecyclerMenuFragment.newInstance(MODE_ENHANCE);
+        stickerTypesFragment = RecyclerMenuFragment.newInstance(MODE_STICKER_TYPES);
+        adjustFragment = TwoItemFragment.newInstance(MODE_ADJUST);
+        writeFragment = TwoItemFragment.newInstance(MODE_WRITE);
+        addTextFragment = AddTextFragment.newInstance();
+        paintFragment = PaintFragment.newInstance();
+        cropFragment = CropFragment.newInstance();
+        rotateFragment = RotateFragment.newInstance();
         mshareImage = (TextView) findViewById(R.id.shareImage);
         mshareImage.setOnClickListener(new OnClickListener() {
             @Override
@@ -223,16 +203,6 @@ public class EditImageActivity extends EditBaseActivity {
             }
         });
 
-
-        mainImage.setFlingListener(new ImageViewTouch.OnImageFlingListener() {
-            @Override
-            public void onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                //System.out.println(e1.getAction() + " " + e2.getAction() + " " + velocityX + "  " + velocityY);
-                if (velocityY > 1) {
-                    closeInputMethod();
-                }
-            }
-        });
     }
 
     private void shareImage() {
@@ -255,213 +225,81 @@ public class EditImageActivity extends EditBaseActivity {
         finish();
     }
 
-    private void closeInputMethod() {
-        if (mAddTextFragment.isAdded()) {
-            mAddTextFragment.hideInput();
-        }
+
+    public int getMode(){
+        return mode;
     }
 
-    private final class BottomGalleryAdapter extends FragmentPagerAdapter {
-        public BottomGalleryAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int index) {
-            // System.out.println("createFragment-->"+index);
-            switch (index) {
-                case MainMenuFragment.INDEX:// 主菜单
-                    return mMainMenuFragment;
-                case StirckerFragment.INDEX:// 贴图
-                    return mStirckerFragment;
-                case FliterListFragment.INDEX:// 滤镜
-                    return mFliterListFragment;
-                case CropFragment.INDEX://剪裁
-                    return mCropFragment;
-                case RotateFragment.INDEX://旋转
-                    return mRotateFragment;
-                case AddTextFragment.INDEX://添加文字
-                    return mAddTextFragment;
-                case PaintFragment.INDEX:
-                    return mPaintFragment;//绘制
-                case TuneListFragment.INDEX:
-                    return mTuneListFragment;
-                case TuningFragment.INDEX:
-                    return mTuningFragment;
-            }//end switch
-            return MainMenuFragment.newInstance();
-        }
-
-        @Override
-        public int getCount() {
-            return 9;
-        }
-    }// end inner class
-
-    /**
-     * 异步载入编辑图片
-     *
-     * @param filepath
-     */
-    public void loadImage(String filepath) {
-        if (mLoadImageTask != null) {
-            mLoadImageTask.cancel(true);
-
-        }
-        mLoadImageTask = new LoadImageTask();
-        mLoadImageTask.execute(filepath);
-    }
-
-    private final class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
-        @Override
-        protected Bitmap doInBackground(String... params) {
-
-            return BitmapUtils.getSampledBitmap(params[0], imageWidth,
-                    imageHeight);
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap result) {
-            super.onPostExecute(result);
-            if (mainBitmap != null) {
-                mainBitmap.recycle();
-                mainBitmap = null;
-                System.gc();
-            }
-            mainBitmap = result;
-            mainImage.setImageBitmap(result);
-            mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
-            // mainImage.setDisplayType(DisplayType.FIT_TO_SCREEN);
-        }
-    }// end inner class
-
-    @Override
-    public void onBackPressed() {
-        switch (mode) {
+    public Fragment getFragment(int index){
+        switch (index){
+            case MODE_MAIN:
+                return mainMenuFragment;
+            case MODE_SLIDER:
+                sliderFragment = SliderFragment.newInstance();
+                return sliderFragment;
+            case MODE_FILTERS:
+                return filterFragment;
+            case MODE_ENHANCE:
+                return enhanceFragment;
+            case MODE_STICKER_TYPES:
+                return stickerTypesFragment;
             case MODE_STICKERS:
-                mStirckerFragment.backToMain();
-                return;
-            case MODE_FILTER:
-                mFliterListFragment.backToMain();
-                return;
-            case MODE_CROP:
-                mCropFragment.backToMain();
-                return;
-            case MODE_ROTATE:
-                mRotateFragment.backToMain();
-                return;
+                stickersFragment = StickersFragment.newInstance(addStickerImages(stickerType));
+                return stickersFragment;
+            case MODE_WRITE:
+                return writeFragment;
+            case MODE_ADJUST:
+                return adjustFragment;
             case MODE_TEXT:
-                mAddTextFragment.backToMain();
-                return;
+                return addTextFragment;
             case MODE_PAINT:
-                mPaintFragment.backToMain();
-                return;
-            case MODE_TUNELIST:
-                mTuneListFragment.backToMain();
-                return;
-            case MODE_TUNE:
-                mTuningFragment.backToTune();
-                return;
-        }// end switch
+                return paintFragment;
+            case MODE_CROP:
+                return cropFragment;
+            case MODE_ROTATE:
+                return rotateFragment;
+        }
+        return mainMenuFragment;
+    }
 
-        if (canAutoExit()) {
-            onSaveTaskDone();
-        } else {//图片还未被保存    弹出提示框确认
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setMessage(R.string.exit_without_save)
-                    .setCancelable(false).setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    mContext.finish();
-                }
-            }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
-                }
-            });
+    public void changeBottomFragment(int index){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.controls_container, getFragment(index))
+                .commit();
 
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
+        setButtonsVisibility();
+    }
+
+    private void setButtonsVisibility() {
+    //    cancel.setVisibility(View.VISIBLE);
+        save.setVisibility(View.VISIBLE);
+        switch (mode){
+            case MODE_SLIDER:
+            case MODE_STICKERS:
+            case MODE_CROP:
+            case MODE_ROTATE:
+            case MODE_TEXT:
+            case MODE_PAINT:
+      //          cancel.setVisibility(View.INVISIBLE);
+                save.setVisibility(View.INVISIBLE);
         }
     }
 
-    /**
-     * 应用按钮点击
-     *
-     * @author panyi
-     */
-    private final class ApplyBtnClick implements OnClickListener {
-        @Override
-        public void onClick(View v) {
-            switch (mode) {
-                case MODE_STICKERS:
-                    mStirckerFragment.applyStickers();// Save Map
-                    break;
-                case MODE_FILTER:// 滤镜编辑状态
-                    mFliterListFragment.applyFilterImage();// 保存滤镜贴图
-                    break;
-                case MODE_CROP:// 剪切图片保存
-                    mCropFragment.applyCropImage();
-                    break;
-                case MODE_ROTATE:// 旋转图片保存
-                    mRotateFragment.applyRotateImage();
-                    break;
-                case MODE_TEXT://文字贴图 图片保存
-                    mAddTextFragment.applyTextImage();
-                    break;
-                case MODE_PAINT://保存涂鸦
-                    mPaintFragment.savePaintImage();
-                    break;
-                case MODE_TUNELIST:
-                    mTuneListFragment.applyTuning();
-                    break;
-                case MODE_TUNE:
-                    mTuningFragment.applyEffect();
-                    break;
-                default:
-                    break;
-            }// end switch
-        }
-    }// end inner class
-
-    /**
-     * 保存按钮 点击退出
-     *
-     * @author panyi
-     */
-    public final class SaveBtnClick implements OnClickListener {
-        @Override
-        public void onClick(View v) {
-            if (mOpTimes == 0) {//Does not modify the image
-                onSaveTaskDone();
-            } else {
-                saveFalg =1;
-                doSaveImage();
-            }
-
-        }
-    }// end inner class
-
-    protected boolean doSaveImage() {
-        if (mOpTimes <= 0)
-            return false;
-
-        if (mSaveImageTask != null) {
-            mSaveImageTask.cancel(true);
-        }
-
-        mSaveImageTask = new SaveImageTask();
-        mSaveImageTask.execute(mainBitmap);
-        return true;
+    public void setEffectType(int type, int mode){
+        effectType = 100 * mode + type;
     }
 
-    /**
-     * 切换底图Bitmap
-     *
-     * @param newBit
-     */
+    public void changeMiddleFragment(int index){
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.preview_container, getFragment(index))
+                    .commit();
+    }
+
     public void changeMainBitmap(Bitmap newBit) {
         if (mainBitmap != null) {
-            if (!mainBitmap.isRecycled()) {// 回收
+            if (!mainBitmap.isRecycled()) {
                 mainBitmap.recycle();
             }
         }
@@ -472,16 +310,25 @@ public class EditImageActivity extends EditBaseActivity {
         increaseOpTimes();
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void loadImage(String filepath) {
         if (mLoadImageTask != null) {
             mLoadImageTask.cancel(true);
+
         }
+        mLoadImageTask = new LoadImageTask();
+        mLoadImageTask.execute(filepath);
+    }
+
+    protected void doSaveImage() {
+        if (mOpTimes <= 0)
+            return;
 
         if (mSaveImageTask != null) {
             mSaveImageTask.cancel(true);
         }
+
+        mSaveImageTask = new SaveImageTask();
+        mSaveImageTask.execute(mainBitmap);
     }
 
     public void increaseOpTimes() {
@@ -522,19 +369,52 @@ public class EditImageActivity extends EditBaseActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
+    private ArrayList<String> addStickerImages(String folderPath) {
+        ArrayList<String> pathList = new ArrayList<>();
+        try {
+            String[] files = getAssets().list(folderPath);
 
-        banner.setBackgroundColor(themeHelper.getPrimaryColor());
-        workSpace.setBackgroundColor(themeHelper.getPrimaryColor());
-        bottomGallery.setBackgroundColor(themeHelper.getPrimaryColor());
+            for (String name : files) {
+                pathList.add(folderPath + File.separator + name);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return pathList;
     }
 
-    /**
-     * 保存图像
-     * 完成后退出
-     */
+    public void setStickerType(String stickerType) {
+        EditImageActivity.stickerType = stickerType;
+    }
+
+    public String getStickerType(){
+        return stickerType;
+    }
+
+    private final class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
+        @Override
+        protected Bitmap doInBackground(String... params) {
+
+            return BitmapUtils.getSampledBitmap(params[0], imageWidth,
+                    imageHeight);
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            super.onPostExecute(result);
+            if (mainBitmap != null) {
+                mainBitmap.recycle();
+                mainBitmap = null;
+                System.gc();
+            }
+            mainBitmap = result;
+            mainImage.setImageBitmap(result);
+            mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
+
+            setInitialFragments();
+        }
+    }
+
     private final class SaveImageTask extends AsyncTask<Bitmap, Void, Boolean> {
         private Dialog dialog;
 
@@ -561,7 +441,7 @@ public class EditImageActivity extends EditBaseActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = EditImageActivity.getLoadingDialog(mContext, R.string.saving_image, false);
+            dialog = getLoadingDialog(mContext, R.string.saving_image, false);
             dialog.show();
         }
 
@@ -577,6 +457,84 @@ public class EditImageActivity extends EditBaseActivity {
                 Toast.makeText(mContext, R.string.save_error, Toast.LENGTH_SHORT).show();
             }
         }
-    }//end inner class
+    }
 
-}// end class
+    @Override
+    public void onBackPressed() {
+        switch (mode){
+            case MODE_SLIDER:
+                sliderFragment.backToMain();
+                return;
+            case MODE_STICKERS:
+                stickersFragment.backToMain();
+                return;
+            case MODE_CROP:
+                cropFragment.backToMain();
+                return;
+            case MODE_ROTATE:
+                rotateFragment.backToMain();
+                return;
+            case MODE_TEXT:
+                addTextFragment.backToMain();
+                return;
+            case MODE_PAINT:
+                paintFragment.backToMain();
+                return;
+        }
+
+        if (canAutoExit()) {
+            onSaveTaskDone();
+        } else {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setMessage(R.string.exit_without_save)
+                    .setCancelable(false).setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    mContext.finish();
+                }
+            }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mLoadImageTask != null) {
+            mLoadImageTask.cancel(true);
+        }
+
+        if (mSaveImageTask != null) {
+            mSaveImageTask.cancel(true);
+        }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ActivitySwitchHelper.setContext(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.edit_save:
+                if (mOpTimes == 0) {//并未修改图片
+                    onSaveTaskDone();
+                } else {
+                    doSaveImage();
+                }
+                break;
+            case R.id.edit_cancel:
+                onBackPressed();
+                break;
+        }
+    }
+
+}

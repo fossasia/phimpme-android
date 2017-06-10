@@ -3,8 +3,12 @@ package vn.mbm.phimp.me.opencamera.Camera;
 import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
 import vn.mbm.phimp.me.base.BaseActivity;
 import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
+import vn.mbm.phimp.me.base.BaseActivity;
+import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
+import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
 import vn.mbm.phimp.me.opencamera.CameraController.CameraControllerManager2;
+import vn.mbm.phimp.me.opencamera.Preview.ApplicationInterface;
 import vn.mbm.phimp.me.opencamera.Preview.Preview;
 import vn.mbm.phimp.me.opencamera.UI.FolderChooserDialog;
 import vn.mbm.phimp.me.opencamera.UI.MainUI;
@@ -16,18 +20,15 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
 import android.Manifest;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
-
-import android.app.ProgressDialog;
-
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -37,7 +38,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -80,12 +80,33 @@ import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.ZoomControls;
-
 import vn.mbm.phimp.me.R;
 
-import vn.mbm.phimp.me.opencamera.UI.PopupView;
-import vn.mbm.phimp.me.utilities.BasicCallBack;
+import vn.mbm.phimp.me.utilities.ActivitySwitchHelper;
 
+
+import com.mikepenz.iconics.view.IconicsImageView;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
+import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.base.BaseActivity;
+import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
+import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
+import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
+import vn.mbm.phimp.me.opencamera.CameraController.CameraControllerManager2;
+import vn.mbm.phimp.me.opencamera.Preview.Preview;
+import vn.mbm.phimp.me.opencamera.UI.FolderChooserDialog;
+import vn.mbm.phimp.me.opencamera.UI.MainUI;
+import vn.mbm.phimp.me.opencamera.UI.PopupView;
+import vn.mbm.phimp.me.utilities.ActivitySwitchHelper;
+import vn.mbm.phimp.me.utilities.BasicCallBack;
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 /** The main Activity for Open Camera.
@@ -122,8 +143,8 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	private int audio_noise_sensitivity = -1;
 	private SpeechRecognizer speechRecognizer;
 	private boolean speechRecognizerIsStarted;
-
-	//private boolean ui_placement_right = true;
+	public static IconicsImageView toggle;
+ 	//private boolean ui_placement_right = true;
 
 	private final ToastBoxer switch_video_toast = new ToastBoxer();
 	private final ToastBoxer screen_locked_toast = new ToastBoxer();
@@ -372,8 +393,9 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 			}
 		};
 		ImageSaver.setBasicCallBack(basicCallBack);
-	}
 
+		toggle = (IconicsImageView) findViewById(R.id.toggle_button);
+	}
 
 	/* This method sets the preference defaults which are set specific for a particular device.
 	 * This method should be called when Open Camera is run for the very first time after installation,
@@ -673,14 +695,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		return super.onKeyUp(keyCode, event);
 	}
 
-	public void zoomIn() {
-		mainUI.changeSeekbar(R.id.zoom_seekbar, -1);
-	}
-
-	public void zoomOut() {
-		mainUI.changeSeekbar(R.id.zoom_seekbar, 1);
-	}
-
 	public void changeExposure(int change) {
 		mainUI.changeSeekbar(R.id.exposure_seekbar, change);
 	}
@@ -717,6 +731,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 	@Override
 	protected void onResume() {
+		ActivitySwitchHelper.setContext(this);
 		if (progressDialog != null) {
 			progressDialog.dismiss();
 		}
@@ -1604,7 +1619,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 				return;
 			}
 		}
-
 		final SaveLocationHistory history = applicationInterface.getStorageUtils().isUsingSAF() ? save_location_history_saf : save_location_history;
 		showPreview(false);
 		AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
@@ -1920,66 +1934,6 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 				Log.d(TAG, "set up zoom");
 			if( MyDebug.LOG )
 				Log.d(TAG, "has_zoom? " + preview.supportsZoom());
-			ZoomControls zoomControls = (ZoomControls) findViewById(R.id.zoom);
-			SeekBar zoomSeekBar = (SeekBar) findViewById(R.id.zoom_seekbar);
-
-			if( preview.supportsZoom() ) {
-				if( sharedPreferences.getBoolean(PreferenceKeys.getShowZoomControlsPreferenceKey(), false) ) {
-					zoomControls.setIsZoomInEnabled(true);
-					zoomControls.setIsZoomOutEnabled(true);
-					zoomControls.setZoomSpeed(20);
-
-					zoomControls.setOnZoomInClickListener(new View.OnClickListener(){
-						public void onClick(View v){
-							zoomIn();
-						}
-					});
-					zoomControls.setOnZoomOutClickListener(new View.OnClickListener(){
-						public void onClick(View v){
-							zoomOut();
-						}
-					});
-					if( !mainUI.inImmersiveMode() ) {
-						zoomControls.setVisibility(View.INVISIBLE);
-					}
-				}
-				else {
-					zoomControls.setVisibility(View.INVISIBLE); // must be INVISIBLE not GONE, so we can still position the zoomSeekBar relative to it
-				}
-
-				zoomSeekBar.setOnSeekBarChangeListener(null); // clear an existing listener - don't want to call the listener when setting up the progress bar to match the existing state
-				zoomSeekBar.setMax(preview.getMaxZoom());
-				zoomSeekBar.setProgress(preview.getMaxZoom()-preview.getCameraController().getZoom());
-				zoomSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-					@Override
-					public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-						if( MyDebug.LOG )
-							Log.d(TAG, "zoom onProgressChanged: " + progress);
-						preview.zoomTo(preview.getMaxZoom()-progress);
-					}
-
-					@Override
-					public void onStartTrackingTouch(SeekBar seekBar) {
-					}
-
-					@Override
-					public void onStopTrackingTouch(SeekBar seekBar) {
-					}
-				});
-
-				if( sharedPreferences.getBoolean(PreferenceKeys.getShowZoomSliderControlsPreferenceKey(), true) ) {
-					if( !mainUI.inImmersiveMode() ) {
-						zoomSeekBar.setVisibility(View.INVISIBLE);
-					}
-				}
-				else {
-					zoomSeekBar.setVisibility(View.INVISIBLE);
-				}
-			}
-			else {
-				zoomControls.setVisibility(View.GONE);
-				zoomSeekBar.setVisibility(View.GONE);
-			}
 			if( MyDebug.LOG )
 				Log.d(TAG, "cameraSetup: time after setting up zoom: " + (System.currentTimeMillis() - debug_time));
 
