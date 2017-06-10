@@ -94,7 +94,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     private SaveImageTask mSaveImageTask;
     private int requestCode;
     final String REVIEW_ACTION = "com.android.camera.action.REVIEW";
-    TextView mshareImage;
     int saveFalg = 0;
 
     public ThemeHelper themeHelper;
@@ -195,27 +194,14 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         paintFragment = PaintFragment.newInstance();
         cropFragment = CropFragment.newInstance();
         rotateFragment = RotateFragment.newInstance();
-        mshareImage = (TextView) findViewById(R.id.shareImage);
-        mshareImage.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shareImage();
-            }
-        });
-
     }
 
     private void shareImage() {
         Intent shareIntent = new Intent(EditImageActivity.this, shareActivity.class);
-        if(mOpTimes>0 && saveFalg == 1) {
+        if(mOpTimes>0) {
             shareIntent.putExtra(EXTRA_OUTPUT, saveFilePath);
             shareIntent.putExtra(IMAGE_IS_EDIT, mOpTimes > 0);
         }
-        else if (mOpTimes>0 && saveFalg == 0){
-            Toast.makeText(EditImageActivity.this,"Save Image first", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         else {
             shareIntent.putExtra(EXTRA_OUTPUT, filePath);
         }
@@ -321,7 +307,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
 
     protected void doSaveImage() {
         if (mOpTimes <= 0)
-            return;
+            shareImage();
+
 
         if (mSaveImageTask != null) {
             mSaveImageTask.cancel(true);
@@ -355,18 +342,20 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         if(requestCode == 1 && mOpTimes<=0) {   //Checks if this Activity was started by PhotoActivity
             Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(filePath)));
             intent.setClass(getApplicationContext(), SingleMediaActivity.class);
+            shareImage();
             //startActivity(intent);
             //finish();
         }
         else if(mOpTimes>0) {
             Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(saveFilePath)));
             intent.setClass(getApplicationContext(), SingleMediaActivity.class);
+            shareImage();
             //startActivity(intent);
             //finish();
         }
-        else {
+        /*else {
             finish();
-        }
+        }*/
     }
 
     private ArrayList<String> addStickerImages(String folderPath) {
@@ -525,8 +514,9 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.edit_save:
-                if (mOpTimes == 0) {//并未修改图片
-                    onSaveTaskDone();
+                if (mOpTimes == 0) {//Does not modify the image
+                    //onSaveTaskDone();
+                    shareImage();
                 } else {
                     doSaveImage();
                 }
