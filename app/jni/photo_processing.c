@@ -73,48 +73,48 @@ void Java_vn_mbm_phimp_me_editor_editimage_filter_PhotoProcessing_nativeRotate18
 	rotate180(&bitmap, 1, 1, 1);
 }
 
-void Java_vn_mbm_phimp_me_editor_editimage_filter_PhotoProcessing_nativeApplyInstafix(JNIEnv* env, jobject thiz) {
-	applyInstafix(&bitmap);
+void Java_vn_mbm_phimp_me_editor_editimage_filter_PhotoProcessing_nativeApplyInstafix(JNIEnv* env, jobject thiz, jint value) {
+	applyInstafix(&bitmap,value);
 }
 
-void Java_vn_mbm_phimp_me_editor_editimage_filter_PhotoProcessing_nativeApplyAnsel(JNIEnv* env, jobject thiz) {
-	applyAnselFilter(&bitmap);
+void Java_vn_mbm_phimp_me_editor_editimage_filter_PhotoProcessing_nativeApplyAnsel(JNIEnv* env, jobject thiz, jint value) {
+	applyAnselFilter(&bitmap,value);
 }
 
-void Java_vn_mbm_phimp_me_editor_editimage_filter_PhotoProcessing_nativeApplyTestino(JNIEnv* env, jobject thiz) {
-	applyTestino(&bitmap);
+void Java_vn_mbm_phimp_me_editor_editimage_filter_PhotoProcessing_nativeApplyTestino(JNIEnv* env, jobject thiz, jint value) {
+	applyTestino(&bitmap,value);
 }
 
-void Java_vn_mbm_phimp_me_editor_editimage_filter_PhotoProcessing_nativeApplyXPro(JNIEnv* env, jobject thiz) {
-	applyXPro(&bitmap);
+void Java_vn_mbm_phimp_me_editor_editimage_filter_PhotoProcessing_nativeApplyXPro(JNIEnv* env, jobject thiz, jint value) {
+	applyXPro(&bitmap,value);
 }
 
-void Java_vn_mbm_phimp_me_editor_editimage_filter_PhotoProcessing_nativeApplyRetro(JNIEnv* env, jobject thiz) {
-	applyRetro(&bitmap);
+void Java_vn_mbm_phimp_me_editor_editimage_filter_PhotoProcessing_nativeApplyRetro(JNIEnv* env, jobject thiz, jint value) {
+	applyRetro(&bitmap,value);
 }
 
-void Java_vn_mbm_phimp_me_editor_editimage_filter_PhotoProcessing_nativeApplyBW(JNIEnv* env, jobject thiz) {
-	applyBlackAndWhiteFilter(&bitmap);
+void Java_vn_mbm_phimp_me_editor_editimage_filter_PhotoProcessing_nativeApplyBW(JNIEnv* env, jobject thiz, jint value) {
+	applyBlackAndWhiteFilter(&bitmap, value);
 }
 
-void Java_vn_mbm_phimp_me_editor_editimage_filter_PhotoProcessing_nativeApplySepia(JNIEnv* env, jobject thiz) {
-	applySepia(&bitmap);
+void Java_vn_mbm_phimp_me_editor_editimage_filter_PhotoProcessing_nativeApplySepia(JNIEnv* env, jobject thiz, jint value) {
+	applySepia(&bitmap,value);
 }
 
-void Java_vn_mbm_phimp_me_editor_editimage_filter_PhotoProcessing_nativeApplyCyano(JNIEnv* env, jobject thiz) {
-	applyCyano(&bitmap);
+void Java_vn_mbm_phimp_me_editor_editimage_filter_PhotoProcessing_nativeApplyCyano(JNIEnv* env, jobject thiz, jint value) {
+	applyCyano(&bitmap,value);
 }
 
-void Java_vn_mbm_phimp_me_editor_editimage_filter_PhotoProcessing_nativeApplyGeorgia(JNIEnv* env, jobject thiz) {
-	applyGeorgia(&bitmap);
+void Java_vn_mbm_phimp_me_editor_editimage_filter_PhotoProcessing_nativeApplyGeorgia(JNIEnv* env, jobject thiz, jint value) {
+	applyGeorgia(&bitmap,value);
 }
 
-void Java_vn_mbm_phimp_me_editor_editimage_filter_PhotoProcessing_nativeApplySahara(JNIEnv* env, jobject thiz) {
-	applySahara(&bitmap);
+void Java_vn_mbm_phimp_me_editor_editimage_filter_PhotoProcessing_nativeApplySahara(JNIEnv* env, jobject thiz, jint value) {
+	applySahara(&bitmap,value);
 }
 
-void Java_vn_mbm_phimp_me_editor_editimage_filter_PhotoProcessing_nativeApplyHDR(JNIEnv* env, jobject thiz) {
-	applyHDR(&bitmap);
+void Java_vn_mbm_phimp_me_editor_editimage_filter_PhotoProcessing_nativeApplyHDR(JNIEnv* env, jobject thiz, jint value) {
+	applyHDR(&bitmap,value);
 }
 
 int Java_vn_mbm_phimp_me_editor_editimage_filter_PhotoProcessing_nativeLoadResizedJpegBitmap(JNIEnv* env, jobject thiz, jbyteArray bytes, jint jpegSize, jint maxPixels) {
