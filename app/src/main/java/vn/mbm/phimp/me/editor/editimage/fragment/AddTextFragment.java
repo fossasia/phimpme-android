@@ -16,30 +16,25 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.editor.editimage.EditImageActivity;
 import vn.mbm.phimp.me.editor.editimage.task.StickerTask;
 import vn.mbm.phimp.me.editor.editimage.ui.ColorPicker;
+import vn.mbm.phimp.me.editor.editimage.view.CustomPaintView;
 import vn.mbm.phimp.me.editor.editimage.view.TextStickerView;
 
 
-/**
- * 添加文本贴图
- *
- * @author 潘易
- */
 public class AddTextFragment extends BaseEditFragment implements TextWatcher {
     public static final int INDEX = 5;
-    public static final String TAG = AddTextFragment.class.getName();
-
     private View mainView;
-    private View backToMenu;// 返回主菜单
+    private View cancel,apply;
 
-    private EditText mInputText;//输入框
-    private ImageView mTextColorSelector;//颜色选择器
-    private TextStickerView mTextStickerView;// 文字贴图显示控件
+    private EditText mInputText;
+    private ImageView mTextColorSelector;
+    private TextStickerView mTextStickerView;
     private CheckBox mAutoNewLineCheck;
 
     private ColorPicker mColorPicker;
@@ -73,21 +68,32 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher {
 
         mTextStickerView = (TextStickerView)getActivity().findViewById(R.id.text_sticker_panel);
 
-        backToMenu = mainView.findViewById(R.id.back_to_main);
+        cancel = mainView.findViewById(R.id.text_cancel);
+        apply = mainView.findViewById(R.id.text_apply);
+
+        ((ImageButton)cancel).setColorFilter(Color.BLACK);
+        ((ImageButton)apply).setColorFilter(Color.BLACK);
+
         mInputText = (EditText) mainView.findViewById(R.id.text_input);
         mTextColorSelector = (ImageView) mainView.findViewById(R.id.text_color);
         mAutoNewLineCheck = (CheckBox) mainView.findViewById(R.id.check_auto_newline);
 
-        backToMenu.setOnClickListener(new BackToMenuClick());// 返回主菜单
-        mColorPicker = new ColorPicker(getActivity(), 255, 255, 255);
+        cancel.setOnClickListener(new BackToMenuClick());
+        apply.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                applyTextImage();
+            }
+        });
+        mColorPicker = new ColorPicker(getActivity(), 255, 0, 0);
         mTextColorSelector.setOnClickListener(new SelectColorBtnClick());
         mInputText.addTextChangedListener(this);
         mTextStickerView.setEditText(mInputText);
+        onShow();
     }
 
     @Override
     public void afterTextChanged(Editable s) {
-        //mTextStickerView change
         String text = s.toString().trim();
         mTextStickerView.setText(text);
     }
@@ -102,9 +108,6 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher {
 
     }
 
-    /**
-     * 颜色选择 按钮点击
-     */
     private final class SelectColorBtnClick implements OnClickListener {
         @Override
         public void onClick(View v) {
@@ -118,13 +121,8 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher {
                 }
             });
         }
-    }//end inner class
+    }
 
-    /**
-     * 修改字体颜色
-     *
-     * @param newColor
-     */
     private void changeTextColor(int newColor) {
         this.mTextColor = newColor;
         mTextColorSelector.setBackgroundColor(mTextColor);
@@ -142,56 +140,39 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher {
         return imm.isActive();
     }
 
-    /**
-     * 返回按钮逻辑
-     *
-     * @author panyi
-     */
     private final class BackToMenuClick implements OnClickListener {
         @Override
         public void onClick(View v) {
             backToMain();
         }
-    }// end class
+    }
 
-    /**
-     * 返回主菜单
-     */
     public void backToMain() {
         hideInput();
-        activity.mode = EditImageActivity.MODE_NONE;
-        activity.bottomGallery.setCurrentItem(MainMenuFragment.INDEX);
+        EditImageActivity.mode = EditImageActivity.MODE_MAIN;
+        activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
         activity.mainImage.setVisibility(View.VISIBLE);
-        activity.bannerFlipper.showPrevious();
+        mTextStickerView.clearTextContent();
         mTextStickerView.setVisibility(View.GONE);
     }
 
     @Override
     public void onShow() {
-        activity.mode = EditImageActivity.MODE_TEXT;
+        EditImageActivity.mode = EditImageActivity.MODE_TEXT;
         activity.mainImage.setImageBitmap(activity.mainBitmap);
-        activity.bannerFlipper.showNext();
         mTextStickerView.setVisibility(View.VISIBLE);
         mInputText.clearFocus();
     }
 
-    /**
-     * 保存贴图图片
-     */
     public void applyTextImage() {
         if (mSaveTask != null) {
             mSaveTask.cancel(true);
         }
 
-        //启动任务
         mSaveTask = new SaveTextStickerTask(activity);
         mSaveTask.execute(activity.mainBitmap);
     }
 
-    /**
-     * 文字合成任务
-     * 合成最终图片
-     */
     private final class SaveTextStickerTask extends StickerTask {
 
         public SaveTextStickerTask(EditImageActivity activity) {
@@ -209,7 +190,6 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher {
             canvas.save();
             canvas.translate(dx, dy);
             canvas.scale(scale_x, scale_y);
-            //System.out.println("scale = " + scale_x + "       " + scale_y + "     " + dx + "    " + dy);
             mTextStickerView.drawText(canvas, mTextStickerView.layout_x,
                     mTextStickerView.layout_y, mTextStickerView.mScale, mTextStickerView.mRotateAngle);
             canvas.restore();
@@ -219,10 +199,23 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher {
         public void onPostResult(Bitmap result) {
             mTextStickerView.clearTextContent();
             mTextStickerView.resetView();
-
             activity.changeMainBitmap(result);
+            backToMain();
         }
-    }//end inner class
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        resetTextStickerView();
+    }
+
+    private void resetTextStickerView() {
+        if (null != mTextStickerView){
+            mTextStickerView.clearTextContent();
+            mTextStickerView.setVisibility(View.GONE);
+        }
+    }
 
     @Override
     public void onDestroy() {
@@ -231,4 +224,4 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher {
             mSaveTask.cancel(true);
         }
     }
-}// end class
+}

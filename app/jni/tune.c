@@ -15,13 +15,7 @@
 
 #undef PI
 #define PI 3.1415926535897932f
-
-unsigned char truncate(int val){
-    if (val > 255) return 255;
-    if (val < 0) return 0;
-    return (unsigned char)val;
-}
-
+unsigned char truncate(int val);
 void tuneBrightness(Bitmap* bitmap, int val) {
 	register unsigned int i;
 	unsigned int length = (*bitmap).width * (*bitmap).height;
