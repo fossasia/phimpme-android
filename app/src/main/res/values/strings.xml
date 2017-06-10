@@ -714,7 +714,7 @@
     <string name="about_support">Support Development</string>
     <string name="about_fossasia">Developed by <a href="http://fossasia.org/"> FOSSASIA</a> <a href="https://github.com/fossasia/phimpme-android/graphs/contributors">contributers</a>.</string>
     <string name="title_activity_accounts">AccountsActivity</string>
-    
+
     <!--EDITING IMAGE-->
     <string name="no_images">no found the image</string>
     <string name="save">save</string>
@@ -722,8 +722,7 @@
 
     <string name="stickers">stickers</string>
     <string name="fliter">fliter</string>
-    <string name="crop">crop</string>
-
+    <string name="crop">Crop</string>
 
 
     <string name="materialcolorpicker__app_name">Android Material Color Picker Dialog</string>
@@ -738,37 +737,17 @@
     <string name="auto_newline">AutoNewline</string>
     <string name="save_error">Save error!</string>
 
-    <string-array name="fliters">
-        <item>origin</item>
-        <item>soft</item>
-        <item>black</item>
-        <item>classic</item>
-        <item>gorgeous</item>
-        <item>retro</item>
-        <item>grace</item>
-        <item>film</item>
-        <item>memory</item>
-        <item>yogurt</item>
-        <item>fleeting</item>
-        <item>shine</item>
-    </string-array>
-
-    <string-array name="tuneOptions">
-        <item>bright</item>
-        <item>contrast</item>
-        <item>hue</item>
-        <item>satur</item>
-        <item>temp</item>
-        <item>vignette</item>
-        <item>sharp</item>
-        <item>blur</item>
-        <item>tint</item>
-    </string-array>
-
     <string name="tune">Tune</string>
     <string name="exit_without_save">The edited image is not saved. Do you want to exit? </string>
     <string name="confirm">confirm</string>
     <string name="applying">applying</string>
     <string name="action_add_account">Add Account</string>
     <string name="account_list">Accounts List</string>
+
+    <string name="filter">Filter</string>
+    <string name="paint">Paint</string>
+    <string name="sticker">Stickers</string>
+    <string name="enhance">Enhance</string>
+    <string name="transform">Transform</string>
+    <string name="write">Write</string>
 </resources>

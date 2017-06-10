@@ -46,6 +46,7 @@ import vn.mbm.phimp.me.opencamera.Camera.CameraActivity;
 import vn.mbm.phimp.me.opencamera.Camera.MyPreferenceFragment;
 import vn.mbm.phimp.me.opencamera.Camera.PreferenceKeys;
 import vn.mbm.phimp.me.opencamera.Camera.TinyDB;
+import vn.mbm.phimp.me.utilities.ActivitySwitchHelper;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static vn.mbm.phimp.me.leafpic.util.ThemeHelper.AMOLED_THEME;
@@ -734,6 +735,7 @@ public class SettingsActivity extends ThemedActivity {
     @Override
     public void onPostResume() {
         super.onPostResume();
+        ActivitySwitchHelper.setContext(this);
         setTheme();
         securityObj.updateSecuritySetting();
     }
