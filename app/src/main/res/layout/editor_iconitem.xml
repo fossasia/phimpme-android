@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:background="?android:attr/selectableItemBackground"
+              android:gravity="center"
+              android:layout_gravity="center_vertical"
+              android:layout_width="@dimen/editor_mid_row_size"
+              android:layout_height="@dimen/editor_mid_row_size">
+    <ImageView
+        android:id="@+id/editor_item_image"
+        android:layout_width="@dimen/icon_item_image_size_recycler"
+        android:layout_height="@dimen/icon_item_image_size_recycler"
+        android:scaleType="fitCenter"
+        android:layout_gravity="center_horizontal"
+        android:background="@android:color/transparent"
+        />
+
+    <TextView
+        android:id="@+id/editor_item_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="@dimen/icon_item_title_size"
+        android:text="title"/>
+
+</LinearLayout>

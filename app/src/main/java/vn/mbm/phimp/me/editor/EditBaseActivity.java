@@ -3,6 +3,8 @@ package vn.mbm.phimp.me.editor;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
@@ -19,18 +21,12 @@ import java.io.File;
 
 public class EditBaseActivity extends AppCompatActivity {
 
-    /**
-     * 检测图片载入框架是否导入  若没有 则导入并初始化
-     */
     protected void checkInitImageLoader() {
         if (!ImageLoader.getInstance().isInited()) {
             initImageLoader();
         }//end if
     }
 
-    /**
-     * 初始化图片载入框架
-     */
     private void initImageLoader() {
         File cacheDir = com.nostra13.universalimageloader.utils.StorageUtils.getCacheDirectory(this);
         int MAXMEMONRY = (int) (Runtime.getRuntime().maxMemory());
@@ -69,4 +65,4 @@ public class EditBaseActivity extends AppCompatActivity {
         dialog.setMessage(title);
         return dialog;
     }
-}//end class
+}
