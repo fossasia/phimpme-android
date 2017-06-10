@@ -26,7 +26,6 @@ class AccountActivity : ThemedActivity(), AccountContract.View {
     private var accountsRecyclerView: RecyclerView? = null
     private var accountAdapter: AccountAdapter? = null
     private var accountPresenter: AccountPresenter? = null
-    private var twitterLogin: TwitterLoginButton? = null
     private var realm: Realm = Realm.getDefaultInstance()
     private var realmResult: RealmResults<AccountDatabase>? = null
     private var phimpmeProgressBarHandler: PhimpmeProgressBarHandler ?= null
@@ -107,7 +106,6 @@ class AccountActivity : ThemedActivity(), AccountContract.View {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val fragmentManager = fragmentManager
         val accountsPicker = AccountPickerFragment().newInstance("AP")
         accountsPicker.onActivityResult(requestCode, resultCode, data)
     }

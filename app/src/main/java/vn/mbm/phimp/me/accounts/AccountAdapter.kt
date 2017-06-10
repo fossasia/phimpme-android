@@ -13,7 +13,6 @@ import vn.mbm.phimp.me.data.AccountDatabase
 import vn.mbm.phimp.me.utilities.ActivitySwitchHelper.context
 import vn.mbm.phimp.me.utilities.ActivitySwitchHelper.getContext
 
-
 /**
  * Created by pa1pal on 5/6/17.
  */
@@ -47,7 +46,6 @@ class AccountAdapter : RecyclerView.Adapter<AccountAdapter.ViewHolder>() {
     override fun getItemCount(): Int {
         //TODO: added a temporary value. Exact value will be depends how many accounts are signed in.
         return accountDetails?.size ?: 0
-        //return 2
     }
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
