@@ -130,6 +130,7 @@ public class EditImageActivity extends EditBaseActivity {
     private int requestCode;
     final String REVIEW_ACTION = "com.android.camera.action.REVIEW";
     TextView mshareImage;
+    int saveFalg = 0;
 
     /**
      * @param context
@@ -236,10 +237,15 @@ public class EditImageActivity extends EditBaseActivity {
 
     private void shareImage() {
         Intent shareIntent = new Intent(EditImageActivity.this, shareActivity.class);
-        if(mOpTimes>0) {
+        if(mOpTimes>0 && saveFalg == 1) {
             shareIntent.putExtra(EXTRA_OUTPUT, saveFilePath);
             shareIntent.putExtra(IMAGE_IS_EDIT, mOpTimes > 0);
         }
+        else if (mOpTimes>0 && saveFalg == 0){
+            Toast.makeText(EditImageActivity.this,"Save Image first", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         else {
             shareIntent.putExtra(EXTRA_OUTPUT, filePath);
         }
@@ -422,20 +428,22 @@ public class EditImageActivity extends EditBaseActivity {
      *
      * @author panyi
      */
-    private final class SaveBtnClick implements OnClickListener {
+    public final class SaveBtnClick implements OnClickListener {
         @Override
         public void onClick(View v) {
-            if (mOpTimes == 0) {//并未修改图片
+            if (mOpTimes == 0) {//Does not modify the image
                 onSaveTaskDone();
             } else {
+                saveFalg =1;
                 doSaveImage();
             }
+
         }
     }// end inner class
 
-    protected void doSaveImage() {
+    protected boolean doSaveImage() {
         if (mOpTimes <= 0)
-            return;
+            return false;
 
         if (mSaveImageTask != null) {
             mSaveImageTask.cancel(true);
@@ -443,6 +451,7 @@ public class EditImageActivity extends EditBaseActivity {
 
         mSaveImageTask = new SaveImageTask();
         mSaveImageTask.execute(mainBitmap);
+        return true;
     }
 
     /**
