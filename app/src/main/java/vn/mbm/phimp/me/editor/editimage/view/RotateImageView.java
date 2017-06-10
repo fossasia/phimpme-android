@@ -12,12 +12,6 @@ import android.view.View;
 
 import vn.mbm.phimp.me.editor.editimage.utils.PaintUtil;
 
-/**
- * 旋转图片
- * 
- * @author 潘易
- * 
- */
 public class RotateImageView extends View {
 	private Rect srcRect;
 	private RectF dstRect;
@@ -89,7 +83,6 @@ public class RotateImageView extends View {
 			scale = getWidth() / wrapRect.width();
 		}
 
-		// 绘制图形
 		canvas.save();
 		canvas.scale(scale, scale, canvas.getWidth() >> 1,
 				canvas.getHeight() >> 1);
@@ -100,9 +93,6 @@ public class RotateImageView extends View {
 		canvas.restore();
 	}
 
-	/**
-	 * 计算出矩形包围盒
-	 */
 	private void calculateWrapBox() {
 		wrapRect.set(dstRect);
 		matrix.reset();// 重置矩阵为单位矩阵
@@ -116,11 +106,6 @@ public class RotateImageView extends View {
 		// + "    " + wrapRect.right + "   " + wrapRect.bottom);
 	}
 
-	/**
-	 * 取得旋转后新图片的大小
-	 * 
-	 * @return
-	 */
 	public RectF getImageNewRect() {
 		Matrix m = new Matrix();
 		m.postRotate(this.rotateAngle, originImageRect.centerX(),
@@ -129,18 +114,10 @@ public class RotateImageView extends View {
 		return originImageRect;
 	}
 
-	/**
-	 * 缩放比率
-	 * @return
-	 */
 	public synchronized float getScale() {
 		return scale;
 	}
 
-	/**
-	 * 旋转角度
-	 * @return
-	 */
 	public synchronized int getRotateAngle() {
 		return rotateAngle;
 	}

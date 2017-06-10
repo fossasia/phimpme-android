@@ -8,7 +8,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,34 +25,25 @@ import vn.mbm.phimp.me.editor.editimage.view.CustomPaintView;
 import vn.mbm.phimp.me.editor.editimage.view.PaintModeView;
 
 
-/**
- * 用户自由绘制模式 操作面板
- * 可设置画笔粗细 画笔颜色
- * custom draw mode panel
- *
- * @author panyi
- */
 public class PaintFragment extends BaseEditFragment implements View.OnClickListener, ColorListAdapter.IColorListAction {
-    public static final int INDEX = 6;
-    public static final String TAG = PaintFragment.class.getName();
 
     private View mainView;
-    private View backToMenu;// 返回主菜单
+    private View cancel,apply;
     private PaintModeView mPaintModeView;
-    private RecyclerView mColorListView;//颜色列表View
+    private RecyclerView mColorListView;
     private ColorListAdapter mColorAdapter;
     private View popView;
 
     private CustomPaintView mPaintView;
 
-    private ColorPicker mColorPicker;//颜色选择器
+    private ColorPicker mColorPicker;
 
     private PopupWindow setStokenWidthWindow;
     private SeekBar mStokenWidthSeekBar;
 
     private ImageView mEraserView;
 
-    public boolean isEraser = false;//是否是擦除模式
+    public boolean isEraser = false;
 
     private SaveCustomPaintTask mSavePaintImageTask;
 
@@ -74,16 +64,33 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
     }
 
     @Override
+    public void onDetach() {
+        resetPaintView();
+        super.onDetach();
+    }
+
+    private void resetPaintView() {
+        if (null != mPaintView){
+            mPaintView.reset();
+            mPaintView.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         mPaintView = (CustomPaintView)getActivity().findViewById(R.id.custom_paint_view);
-        backToMenu = mainView.findViewById(R.id.back_to_main);
+
+        cancel = mainView.findViewById(R.id.paint_cancel);
+        apply = mainView.findViewById(R.id.paint_apply);
+
         mPaintModeView = (PaintModeView) mainView.findViewById(R.id.paint_thumb);
         mColorListView = (RecyclerView) mainView.findViewById(R.id.paint_color_list);
         mEraserView = (ImageView) mainView.findViewById(R.id.paint_eraser);
 
-        backToMenu.setOnClickListener(this);// 返回主菜单
+        cancel.setOnClickListener(this);
+        apply.setOnClickListener(this);
 
         mColorPicker = new ColorPicker(getActivity(), 255, 0, 0);
         initColorListView();
@@ -93,11 +100,9 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
 
         mEraserView.setOnClickListener(this);
         updateEraserView();
+        onShow();
     }
 
-    /**
-     * 初始化颜色列表
-     */
     private void initColorListView() {
 
         mColorListView.setHasFixedSize(false);
@@ -109,36 +114,32 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
         mColorAdapter = new ColorListAdapter(this, mPaintColors, this);
         mColorListView.setAdapter(mColorAdapter);
 
-
     }
 
     @Override
     public void onClick(View v) {
-        if (v == backToMenu) {//back button click
+        if (v == cancel) {//back button click
             backToMain();
-        } else if (v == mPaintModeView) {//设置绘制画笔粗细
+        } else if (v == mPaintModeView) {
             setStokeWidth();
         } else if (v == mEraserView) {
             toggleEraserView();
-        }//end if
+        } else if (v == apply){
+            applyPaintImage();
+        }
     }
 
-    /**
-     * 返回主菜单
-     */
     public void backToMain() {
-        activity.mode = EditImageActivity.MODE_NONE;
-        activity.bottomGallery.setCurrentItem(MainMenuFragment.INDEX);
+        EditImageActivity.mode = EditImageActivity.MODE_MAIN;
+        activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
         activity.mainImage.setVisibility(View.VISIBLE);
-        activity.bannerFlipper.showPrevious();
-
+        this.mPaintView.reset();
         this.mPaintView.setVisibility(View.GONE);
     }
 
     public void onShow() {
-        activity.mode = EditImageActivity.MODE_PAINT;
+        EditImageActivity.mode = EditImageActivity.MODE_PAINT;
         activity.mainImage.setImageBitmap(activity.mainBitmap);
-        activity.bannerFlipper.showNext();
         this.mPaintView.setVisibility(View.VISIBLE);
     }
 
@@ -160,11 +161,6 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
         });
     }
 
-    /**
-     * 设置画笔颜色
-     *
-     * @param paintColor
-     */
     protected void setPaintColor(final int paintColor) {
         mPaintModeView.setPaintStrokeColor(paintColor);
 
@@ -179,10 +175,6 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
         this.mPaintView.setWidth(mPaintModeView.getStokenWidth());
     }
 
-    /**
-     * 设置画笔粗细
-     * show popwidnow to set paint width
-     */
     protected void setStokeWidth() {
         if (popView.getMeasuredHeight() == 0) {
             popView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
@@ -209,11 +201,11 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
 
             }
         });
-
+/*
         int[] locations = new int[2];
         activity.bottomGallery.getLocationOnScreen(locations);
         setStokenWidthWindow.showAtLocation(activity.bottomGallery,
-                Gravity.NO_GRAVITY, 0, locations[1] - popView.getMeasuredHeight());
+                Gravity.NO_GRAVITY, 0, locations[1] - popView.getMeasuredHeight());*/
     }
 
     private void initStokeWidthPopWindow() {
@@ -246,10 +238,7 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
         mPaintView.setEraser(isEraser);
     }
 
-    /**
-     * 保存涂鸦
-     */
-    public void savePaintImage() {
+    public void applyPaintImage() {
         if (mSavePaintImageTask != null && !mSavePaintImageTask.isCancelled()) {
             mSavePaintImageTask.cancel(true);
         }
@@ -266,10 +255,6 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
         }
     }
 
-    /**
-     * 文字合成任务
-     * 合成最终图片
-     */
     private final class SaveCustomPaintTask extends StickerTask {
 
         public SaveCustomPaintTask(EditImageActivity activity) {
@@ -298,7 +283,8 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
         public void onPostResult(Bitmap result) {
             mPaintView.reset();
             activity.changeMainBitmap(result);
+            backToMain();
         }
-    }//end inner class
+    }
 
-}// end class
+}

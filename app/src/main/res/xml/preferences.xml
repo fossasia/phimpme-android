@@ -204,25 +204,6 @@
                 android:key="preference_immersive_mode"
                 android:summary="@string/preference_immersive_mode_summary"
                 android:title="@string/preference_immersive_mode" />
-
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="preference_show_zoom"
-                android:summary="@string/preference_show_zoom_summary"
-                android:title="@string/preference_show_zoom" />
-
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:key="preference_show_zoom_controls"
-                android:summary="@string/preference_show_zoom_controls_summary"
-                android:title="@string/preference_show_zoom_controls" />
-
-            <CheckBoxPreference
-                android:defaultValue="true"
-                android:key="preference_show_zoom_slider_controls"
-                android:summary="@string/preference_show_zoom_slider_controls_summary"
-                android:title="@string/preference_show_zoom_slider_controls" />
-
             <CheckBoxPreference
                 android:defaultValue="true"
                 android:key="preference_show_take_photo"
