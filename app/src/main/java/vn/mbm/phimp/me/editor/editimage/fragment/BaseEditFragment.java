@@ -5,10 +5,6 @@ import android.support.v4.app.Fragment;
 
 import vn.mbm.phimp.me.editor.editimage.EditImageActivity;
 
-/**
- * Created by panyi on 2017/3/28.
- */
-
 public abstract class BaseEditFragment extends Fragment {
     protected EditImageActivity activity;
 

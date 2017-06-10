@@ -59,6 +59,7 @@ import vn.mbm.phimp.me.leafpic.util.PreferenceUtil;
 import vn.mbm.phimp.me.leafpic.util.SecurityHelper;
 import vn.mbm.phimp.me.leafpic.util.StringUtils;
 import vn.mbm.phimp.me.leafpic.views.HackyViewPager;
+import vn.mbm.phimp.me.utilities.ActivitySwitchHelper;
 
 /**
  * Created by dnld on 18/02/16.
@@ -259,6 +260,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
     @Override
     public void onResume() {
         super.onResume();
+        ActivitySwitchHelper.setContext(this);
         setupUI();
     }
 
@@ -573,15 +575,6 @@ public class SingleMediaActivity extends SharedMediaActivity {
                         .ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) { }});
-
-                detailsDialog.setButton(DialogInterface.BUTTON_NEUTRAL, getString(R.string.fix_date).toUpperCase(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (!getAlbum().getCurrentMedia().fixDate())
-                            Toast.makeText(SingleMediaActivity.this, R.string.unable_to_fix_date, Toast.LENGTH_SHORT).show();
-                    }
-                });
-
                 detailsDialog.show();
                 break;
 

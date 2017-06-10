@@ -25,6 +25,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -63,6 +64,7 @@ import vn.mbm.phimp.me.leafpic.util.PreferenceUtil;
 import vn.mbm.phimp.me.leafpic.util.SecurityHelper;
 import vn.mbm.phimp.me.leafpic.util.StringUtils;
 import vn.mbm.phimp.me.leafpic.views.GridSpacingItemDecoration;
+import vn.mbm.phimp.me.utilities.ActivitySwitchHelper;
 
 import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.DATE;
 import static vn.mbm.phimp.me.leafpic.data.base.SortingMode.NAME;
@@ -176,6 +178,7 @@ public class LFMainActivity extends SharedMediaActivity {
     @Override
     public void onResume() {
         super.onResume();
+        ActivitySwitchHelper.setContext(this);
         securityObj.updateSecuritySetting();
         setupUI();
         getAlbums().clearSelectedAlbums();
@@ -376,15 +379,15 @@ public class LFMainActivity extends SharedMediaActivity {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public final void onActivityResult(final int requestCode, final int resultCode, final Intent resultData) {
-        if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_CODE_SD_CARD_PERMISSIONS) {
-                Uri treeUri = resultData.getData();
-                // Persist URI in shared preference so that you can use it later.
-                ContentHelper.saveSdCardInfo(getApplicationContext(), treeUri);
-                getContentResolver().takePersistableUriPermission(treeUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                Toast.makeText(this, R.string.got_permission_wr_sdcard, Toast.LENGTH_SHORT).show();
+            if (resultCode == RESULT_OK) {
+                if (requestCode == REQUEST_CODE_SD_CARD_PERMISSIONS) {
+                    Uri treeUri = resultData.getData();
+                    // Persist URI in shared preference so that you can use it later.
+                    ContentHelper.saveSdCardInfo(getApplicationContext(), treeUri);
+                    getContentResolver().takePersistableUriPermission(treeUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                    Toast.makeText(this, R.string.got_permission_wr_sdcard, Toast.LENGTH_SHORT).show();
+                }
             }
-        }
     }
     //endregion
 
@@ -446,6 +449,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
         ((TextView) findViewById(R.id.Drawer_About_Item)).setTextColor(color);
         ((TextView) findViewById(R.id.Drawer_hidden_Item)).setTextColor(color);
+        ((TextView) findViewById(R.id.Drawer_share_Item)).setTextColor(color);
 
         /** ICONS **/
         color = getIconColor();
@@ -453,19 +457,14 @@ public class LFMainActivity extends SharedMediaActivity {
         ((IconicsImageView) findViewById(R.id.Drawer_Setting_Icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.Drawer_About_Icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.Drawer_hidden_Icon)).setColor(color);
+        ((IconicsImageView) findViewById(R.id.Drawer_share_Icon)).setColor(color);
 
-        /** CLICK LISTENERS **//*
-    findViewById(R.id.ll_drawer_Donate).setOnClickListener(new View.OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        Intent intent = new Intent(LFMainActivity.this, DonateActivity.class);
-        startActivity(intent);
-      }
-    });*/
+
         findViewById(R.id.ll_drawer_Setting).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LFMainActivity.this, SettingsActivity.class);
+                mDrawerLayout.closeDrawer(GravityCompat.START);
                 startActivity(intent);
             }
         });
@@ -474,6 +473,7 @@ public class LFMainActivity extends SharedMediaActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LFMainActivity.this, AboutActivity.class);
+                mDrawerLayout.closeDrawer(GravityCompat.START);
                 startActivity(intent);
             }
         });
@@ -527,10 +527,23 @@ public class LFMainActivity extends SharedMediaActivity {
             }
         });
 
+        findViewById(R.id.ll_share_phimpme).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onInviteClicked();
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+    }
 
+    private void onInviteClicked() {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.install_phimpme) + "\n "+ getString(R.string.invitation_deep_link));
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
     }
     //endregion
-
 
     private void updateSelectedStuff() {
         if (albumsMode) {
