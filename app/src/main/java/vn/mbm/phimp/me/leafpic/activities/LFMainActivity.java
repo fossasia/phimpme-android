@@ -1352,6 +1352,8 @@ public class LFMainActivity extends SharedMediaActivity {
             checkNothing();
             swipeRefreshLayout.setRefreshing(false);
             getAlbums().saveBackup(getApplicationContext());
+            invalidateOptionsMenu();
+            finishEditMode();
         }
     }
 
@@ -1377,6 +1379,8 @@ public class LFMainActivity extends SharedMediaActivity {
                 HandlingAlbums.addAlbumToBackup(getApplicationContext(), getAlbum());
             checkNothing();
             swipeRefreshLayout.setRefreshing(false);
+            invalidateOptionsMenu();
+            finishEditMode();
         }
     }
 

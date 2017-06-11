@@ -21,6 +21,7 @@ import android.preference.TwoStatePreference;
 import android.util.Log;
 import android.widget.Toast;
 
+import vn.mbm.phimp.me.leafpic.activities.SettingsActivity;
 import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
 import vn.mbm.phimp.me.opencamera.Preview.Preview;
 import vn.mbm.phimp.me.opencamera.UI.FolderChooserDialog;
@@ -40,6 +41,7 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
 	private static final String TAG = "MyPreferenceFragment";
 	ThemeHelper themeHelper;
 	TinyDB bundle;
+	public static String new_save_location;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -283,8 +285,8 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
                 public boolean onPreferenceClick(Preference arg0) {
             		if( MyDebug.LOG )
             			Log.d(TAG, "clicked save location");
-            		CameraActivity main_activity = (CameraActivity)MyPreferenceFragment.this.getActivity();
-            		if( main_activity.getStorageUtils().isUsingSAF() ) {
+            		SettingsActivity main_activity = (SettingsActivity) MyPreferenceFragment.this.getActivity();
+            		if( main_activity.isUsingSAF() ) {
                 		main_activity.openFolderChooserDialogSAF(true);
             			return true;
                     }
@@ -378,9 +380,11 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
 				Log.d(TAG, "FolderChooserDialog dismissed");
 			// n.b., fragments have to be static (as they might be inserted into a new Activity - see http://stackoverflow.com/questions/15571010/fragment-inner-class-should-be-static),
 			// so we access the CameraActivity via the fragment's getActivity().
-			CameraActivity main_activity = (CameraActivity)this.getActivity();
-			String new_save_location = this.getChosenFolder();
-			main_activity.updateSaveFolder(new_save_location);
+			new_save_location = this.getChosenFolder();
+			SettingsActivity main_activity = (SettingsActivity) this.getActivity();
+			if(new_save_location!=null){
+				Toast.makeText(main_activity,"Changed save location to: \n"+new_save_location,Toast.LENGTH_SHORT).show();
+			}
 			super.onDismiss(dialog);
 		}
 	}
