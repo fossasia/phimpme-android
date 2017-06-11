@@ -1,5 +1,6 @@
 package vn.mbm.phimp.me.leafpic.activities;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
@@ -7,8 +8,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
@@ -41,9 +44,11 @@ import uz.shift.colorpicker.LineColorPicker;
 import uz.shift.colorpicker.OnColorChangedListener;
 import vn.mbm.phimp.me.opencamera.Camera.CameraActivity;
 import vn.mbm.phimp.me.opencamera.Camera.MyPreferenceFragment;
+import vn.mbm.phimp.me.opencamera.Camera.PreferenceKeys;
 import vn.mbm.phimp.me.opencamera.Camera.TinyDB;
 import vn.mbm.phimp.me.utilities.ActivitySwitchHelper;
 
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static vn.mbm.phimp.me.leafpic.util.ThemeHelper.AMOLED_THEME;
 import static vn.mbm.phimp.me.leafpic.util.ThemeHelper.DARK_THEME;
 import static vn.mbm.phimp.me.leafpic.util.ThemeHelper.LIGHT_THEME;
@@ -76,6 +81,8 @@ public class SettingsActivity extends ThemedActivity {
     private SwitchCompat swUseMediaStore;
     private SwitchCompat swSwipeDirection;
     private SwitchCompat swSubScaling;
+
+    private boolean saf_dialog_from_preferences;
 
 
     @Override
@@ -891,6 +898,55 @@ public class SettingsActivity extends ThemedActivity {
             findViewById(R.id.settingAct_scrollView).setVisibility(View.GONE);
         }else {
            openDialog(context);
+        }
+    }
+
+    public boolean isUsingSAF() {
+        // check Android version just to be safe
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            SharedPreferences sharedPreferences = getDefaultSharedPreferences(getApplicationContext());
+            if (sharedPreferences.getBoolean(PreferenceKeys.getUsingSAFPreferenceKey(), false)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public void openFolderChooserDialogSAF(boolean from_preferences) {
+        this.saf_dialog_from_preferences = from_preferences;
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        //Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        //intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(intent, 42);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        if (requestCode == 42) {
+            if (resultCode == RESULT_OK && resultData != null) {
+                Uri treeUri = resultData.getData();
+                // from https://developer.android.com/guide/topics/providers/document-provider.html#permissions :
+                final int takeFlags = resultData.getFlags()
+                        & (Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                // Check for the freshest data.
+                getContentResolver().takePersistableUriPermission(treeUri, takeFlags);
+                SharedPreferences sharedPreferences = getDefaultSharedPreferences(this);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString(PreferenceKeys.getSaveLocationSAFPreferenceKey(), treeUri.toString());
+                editor.apply();
+
+            } else {
+                // cancelled - if the user had yet to set a save location, make sure we switch SAF back off
+                SharedPreferences sharedPreferences = getDefaultSharedPreferences(this);
+                String uri = sharedPreferences.getString(PreferenceKeys.getSaveLocationSAFPreferenceKey(), "");
+                if (uri.length() == 0) {
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean(PreferenceKeys.getUsingSAFPreferenceKey(), false);
+                    editor.apply();
+                }
+            }
         }
     }
 
