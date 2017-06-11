@@ -6,9 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.squareup.picasso.Picasso
 import io.realm.RealmResults
 import vn.mbm.phimp.me.R
 import vn.mbm.phimp.me.data.AccountDatabase
+import vn.mbm.phimp.me.utilities.ActivitySwitchHelper.getContext
+
 
 /**
  * Created by pa1pal on 5/6/17.
@@ -24,13 +27,19 @@ class AccountAdapter : RecyclerView.Adapter<AccountAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder!!.userName!!.setText("@test_username")
+        holder!!.userName!!.setText(accountDetails?.get(position)?.username)
         holder!!.userFullName!!.setText("Test Full Name")
+
+        Picasso.with(getContext())
+                //.load("R.drawable.ic_"+accountDetails?.get(position)?.name)
+                .load(R.drawable.ic_twitter)
+                .into(holder!!.accountLogoIndicator)
     }
 
     override fun getItemCount(): Int {
         //TODO: added a temporary value. Exact value will be depends how many accounts are signed in.
-        return accountDetails!!.size
+        return accountDetails?.size ?: 0
+        //return 2
     }
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
