@@ -217,50 +217,6 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
         	pg.removePreference(pref);
 		}
 
-		final ArrayList<String> video_quality = bundle.getListString("video_quality");
-		final ArrayList<String> video_quality_string = bundle.getListString("video_quality_string");
-		if( video_quality != null && video_quality_string != null ) {
-			CharSequence[] entries = new CharSequence[video_quality.size()];
-			CharSequence[] values = new CharSequence[video_quality.size()];
-			for(int i = 0; i< video_quality.size(); i++) {
-				entries[i] = video_quality_string.get(i);
-				values[i] = video_quality.get(i);
-			}
-			ListPreference lp = (ListPreference)findPreference("preference_video_quality");
-			lp.setEntries(entries);
-			lp.setEntryValues(values);
-			String video_quality_preference_key = PreferenceKeys.getVideoQualityPreferenceKey(cameraId);
-			String video_quality_value = sharedPreferences.getString(video_quality_preference_key, "");
-			if( MyDebug.LOG )
-				Log.d(TAG, "video_quality_value: " + video_quality_value);
-			lp.setValue(video_quality_value);
-			// now set the key, so we save for the correct cameraId
-			lp.setKey(video_quality_preference_key);
-		}
-		else {
-			Preference pref = findPreference("preference_video_quality");
-			PreferenceGroup pg = (PreferenceGroup)this.findPreference("preference_screen_video_settings");
-        	pg.removePreference(pref);
-		}
-
-		final boolean supports_force_video_4k = bundle.getBoolean("supports_force_video_4k");
-		if( MyDebug.LOG )
-			Log.d(TAG, "supports_force_video_4k: " + supports_force_video_4k);
-		if( !supports_force_video_4k || video_quality == null || video_quality_string == null ) {
-			Preference pref = findPreference("preference_force_video_4k");
-			PreferenceGroup pg = (PreferenceGroup)this.findPreference("preference_category_video_debugging");
-        	pg.removePreference(pref);
-		}
-		
-		final boolean supports_video_stabilization = bundle.getBoolean("supports_video_stabilization");
-		if( MyDebug.LOG )
-			Log.d(TAG, "supports_video_stabilization: " + supports_video_stabilization);
-		if( !supports_video_stabilization ) {
-			Preference pref = findPreference("preference_video_stabilization");
-			PreferenceGroup pg = (PreferenceGroup)this.findPreference("preference_screen_video_settings");
-        	pg.removePreference(pref);
-		}
-
 		final boolean can_disable_shutter_sound = bundle.getBoolean("can_disable_shutter_sound");
 		if( MyDebug.LOG )
 			Log.d(TAG, "can_disable_shutter_sound: " + can_disable_shutter_sound);
