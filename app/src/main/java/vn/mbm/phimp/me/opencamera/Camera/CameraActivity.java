@@ -1,25 +1,5 @@
 package vn.mbm.phimp.me.opencamera.Camera;
 
-import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
-import vn.mbm.phimp.me.base.BaseActivity;
-import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
-import vn.mbm.phimp.me.base.BaseActivity;
-import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
-import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
-import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
-import vn.mbm.phimp.me.opencamera.CameraController.CameraControllerManager2;
-import vn.mbm.phimp.me.opencamera.Preview.ApplicationInterface;
-import vn.mbm.phimp.me.opencamera.Preview.Preview;
-import vn.mbm.phimp.me.opencamera.UI.FolderChooserDialog;
-import vn.mbm.phimp.me.opencamera.UI.MainUI;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import android.Manifest;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
@@ -80,10 +60,6 @@ import android.view.WindowManager;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.ZoomControls;
-import vn.mbm.phimp.me.R;
-
-import vn.mbm.phimp.me.utilities.ActivitySwitchHelper;
-
 
 import com.mikepenz.iconics.view.IconicsImageView;
 
@@ -107,6 +83,7 @@ import vn.mbm.phimp.me.opencamera.UI.MainUI;
 import vn.mbm.phimp.me.opencamera.UI.PopupView;
 import vn.mbm.phimp.me.utilities.ActivitySwitchHelper;
 import vn.mbm.phimp.me.utilities.BasicCallBack;
+
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 /** The main Activity for Open Camera.
