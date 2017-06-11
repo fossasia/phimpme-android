@@ -21,11 +21,10 @@
         android:layout_marginBottom="5dp"
         app:cardCornerRadius="4dp">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/linearImage"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingTop="10dp"
@@ -34,17 +33,20 @@
 
             <ImageView
                 android:id="@+id/image_view"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_marginBottom="5dp"/>
+                android:layout_width="350dp"
+                android:layout_height="170dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"/>
 
             <EditText
                 android:id="@+id/edit_text"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/image_view"
                 android:hint="Write a caption"
+                android:textColorHint="#ffffff"
                 android:paddingTop="45dp"/>
-        </LinearLayout>
+        </RelativeLayout>
     </android.support.v7.widget.CardView>
 
     <TextView
@@ -80,49 +82,49 @@
             android:layout_marginLeft="83dp"
             android:layout_marginStart="83dp"
             android:layout_marginTop="32dp"
-            android:src="@drawable/facebookbutton"/>
+            app:srcCompat="@drawable/ic_facebook"/>
 
         <ImageView
             android:id="@+id/twitter_button"
             android:layout_width="65dp"
             android:layout_height="65dp"
             android:layout_alignTop="@+id/facebook_button"
-            android:layout_marginLeft="71dp"
-            android:layout_marginStart="71dp"
-            android:layout_toEndOf="@+id/facebook_button"
-            android:layout_toRightOf="@+id/facebook_button"
-            android:src="@drawable/twitterbutton"/>
+            android:layout_marginEnd="44dp"
+            android:layout_marginRight="44dp"
+            android:layout_toLeftOf="@+id/fab_home"
+            android:layout_toStartOf="@+id/fab_home"
+            app:srcCompat="@drawable/ic_twitter"/>
 
         <ImageView
             android:id="@+id/instagram_button"
             android:layout_width="65dp"
             android:layout_height="65dp"
+            app:srcCompat="@drawable/ic_instagram"
+            android:layout_above="@+id/fab_home"
             android:layout_alignLeft="@+id/facebook_button"
             android:layout_alignStart="@+id/facebook_button"
-            android:layout_centerVertical="true"
-            android:src="@drawable/instagrambutton"/>
+            android:layout_marginBottom="16dp"/>
 
         <ImageView
             android:id="@+id/share_button"
             android:layout_width="65dp"
             android:layout_height="65dp"
-            android:src="@drawable/sharebutton"
-            android:layout_alignTop="@+id/instagram_button"
             android:layout_alignLeft="@+id/twitter_button"
-            android:layout_alignStart="@+id/twitter_button"/>
+            android:layout_alignStart="@+id/twitter_button"
+            android:layout_alignTop="@+id/instagram_button"
+            app:srcCompat="@drawable/ic_shareicon"/>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_home"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_gravity="bottom|end"
             android:layout_marginBottom="23dp"
-            android:layout_marginRight="22dp"
-            android:layout_marginEnd="22dp"
+            android:layout_marginRight="5dp"
+            app:srcCompat="@drawable/ic_home"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/home"/>
+            android:layout_alignParentEnd="true"/>
 
     </RelativeLayout>
 
