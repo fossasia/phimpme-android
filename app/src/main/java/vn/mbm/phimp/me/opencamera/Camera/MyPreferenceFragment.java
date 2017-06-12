@@ -21,6 +21,7 @@ import android.preference.TwoStatePreference;
 import android.util.Log;
 import android.widget.Toast;
 
+import vn.mbm.phimp.me.leafpic.activities.SettingsActivity;
 import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
 import vn.mbm.phimp.me.opencamera.Preview.Preview;
 import vn.mbm.phimp.me.opencamera.UI.FolderChooserDialog;
@@ -40,6 +41,7 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
 	private static final String TAG = "MyPreferenceFragment";
 	ThemeHelper themeHelper;
 	TinyDB bundle;
+	public static String new_save_location;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -215,50 +217,6 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
         	pg.removePreference(pref);
 		}
 
-		final ArrayList<String> video_quality = bundle.getListString("video_quality");
-		final ArrayList<String> video_quality_string = bundle.getListString("video_quality_string");
-		if( video_quality != null && video_quality_string != null ) {
-			CharSequence[] entries = new CharSequence[video_quality.size()];
-			CharSequence[] values = new CharSequence[video_quality.size()];
-			for(int i = 0; i< video_quality.size(); i++) {
-				entries[i] = video_quality_string.get(i);
-				values[i] = video_quality.get(i);
-			}
-			ListPreference lp = (ListPreference)findPreference("preference_video_quality");
-			lp.setEntries(entries);
-			lp.setEntryValues(values);
-			String video_quality_preference_key = PreferenceKeys.getVideoQualityPreferenceKey(cameraId);
-			String video_quality_value = sharedPreferences.getString(video_quality_preference_key, "");
-			if( MyDebug.LOG )
-				Log.d(TAG, "video_quality_value: " + video_quality_value);
-			lp.setValue(video_quality_value);
-			// now set the key, so we save for the correct cameraId
-			lp.setKey(video_quality_preference_key);
-		}
-		else {
-			Preference pref = findPreference("preference_video_quality");
-			PreferenceGroup pg = (PreferenceGroup)this.findPreference("preference_screen_video_settings");
-        	pg.removePreference(pref);
-		}
-
-		final boolean supports_force_video_4k = bundle.getBoolean("supports_force_video_4k");
-		if( MyDebug.LOG )
-			Log.d(TAG, "supports_force_video_4k: " + supports_force_video_4k);
-		if( !supports_force_video_4k || video_quality == null || video_quality_string == null ) {
-			Preference pref = findPreference("preference_force_video_4k");
-			PreferenceGroup pg = (PreferenceGroup)this.findPreference("preference_category_video_debugging");
-        	pg.removePreference(pref);
-		}
-		
-		final boolean supports_video_stabilization = bundle.getBoolean("supports_video_stabilization");
-		if( MyDebug.LOG )
-			Log.d(TAG, "supports_video_stabilization: " + supports_video_stabilization);
-		if( !supports_video_stabilization ) {
-			Preference pref = findPreference("preference_video_stabilization");
-			PreferenceGroup pg = (PreferenceGroup)this.findPreference("preference_screen_video_settings");
-        	pg.removePreference(pref);
-		}
-
 		final boolean can_disable_shutter_sound = bundle.getBoolean("can_disable_shutter_sound");
 		if( MyDebug.LOG )
 			Log.d(TAG, "can_disable_shutter_sound: " + can_disable_shutter_sound);
@@ -327,8 +285,8 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
                 public boolean onPreferenceClick(Preference arg0) {
             		if( MyDebug.LOG )
             			Log.d(TAG, "clicked save location");
-            		CameraActivity main_activity = (CameraActivity)MyPreferenceFragment.this.getActivity();
-            		if( main_activity.getStorageUtils().isUsingSAF() ) {
+            		SettingsActivity main_activity = (SettingsActivity) MyPreferenceFragment.this.getActivity();
+            		if( main_activity.isUsingSAF() ) {
                 		main_activity.openFolderChooserDialogSAF(true);
             			return true;
                     }
@@ -422,9 +380,11 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
 				Log.d(TAG, "FolderChooserDialog dismissed");
 			// n.b., fragments have to be static (as they might be inserted into a new Activity - see http://stackoverflow.com/questions/15571010/fragment-inner-class-should-be-static),
 			// so we access the CameraActivity via the fragment's getActivity().
-			CameraActivity main_activity = (CameraActivity)this.getActivity();
-			String new_save_location = this.getChosenFolder();
-			main_activity.updateSaveFolder(new_save_location);
+			new_save_location = this.getChosenFolder();
+			SettingsActivity main_activity = (SettingsActivity) this.getActivity();
+			if(new_save_location!=null){
+				Toast.makeText(main_activity,"Changed save location to: \n"+new_save_location,Toast.LENGTH_SHORT).show();
+			}
 			super.onDismiss(dialog);
 		}
 	}
