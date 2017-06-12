@@ -143,7 +143,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	public ProgressDialog progressDialog;
 
 	//For Exposure Bracketing modes
-	public int expo_image_count;
+	public int clicks_count;
 	TinyDB bundle;
 	final String REVIEW_ACTION = "com.android.camera.action.REVIEW";
 
@@ -363,10 +363,11 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		BasicCallBack basicCallBack = new BasicCallBack() {
 			@Override
 			public void callBack(String filepath) {
-				final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(CameraActivity.this);
-				String mode = sharedPreferences.getString(PreferenceKeys.getPhotoModePreferenceKey(), "preference_photo_mode_expo_bracketing");
+				final SharedPreferences sharedPreferences = getDefaultSharedPreferences(CameraActivity.this);
+				String mode = sharedPreferences.getString(PreferenceKeys.getPhotoModePreferenceKey(), "");
+				final String burst_mode = sharedPreferences.getString(PreferenceKeys.getBurstModePreferenceKey(), "");
 
-				if (expo_image_count == 0) { //To start progress dialog once
+				if (clicks_count == 0) { //To start progress dialog once
 					Handler h = new Handler(Looper.getMainLooper());
 					h.post(new Runnable() {
 						public void run() {
@@ -377,12 +378,18 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 					});
 				}
 
-				expo_image_count++; // Count till max defined image is captured and saved
-				if (!mode.equals("preference_photo_mode_expo_bracketing")) {
-                    expo_image_count = 0;
+				clicks_count++; // Count till max defined image is captured and saved
+				if (!("preference_photo_mode_expo_bracketing").equals(mode) && Integer.parseInt(burst_mode) == 1) {
+                    clicks_count = 0;
 					PhotoActivity.start(CameraActivity.this, filepath, 10);
-				} else if (expo_image_count >= bundle.getInt("max_expo_bracketing_n_images")) { // Start Activity once when the third image is saved
-					expo_image_count = 0; //Turn image count to zero in case user wants to click another set of photos.
+				} else if (("preference_photo_mode_expo_bracketing").equals(mode) && clicks_count >= bundle.getInt("max_expo_bracketing_n_images")) { // Start Activity once when the third image is saved
+					clicks_count = 0; //Turn image count to zero in case user wants to click another set of photos.
+					Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(filepath)));
+					intent.setClass(getApplicationContext(), SingleMediaActivity.class);
+					startActivity(intent);
+				}
+				else if(Integer.parseInt(burst_mode)>1){
+					clicks_count = 0; //Turn image count to zero in case user wants to click another set of photos.
 					Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(filepath)));
 					intent.setClass(getApplicationContext(), SingleMediaActivity.class);
 					startActivity(intent);
