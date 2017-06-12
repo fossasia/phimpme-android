@@ -73,6 +73,7 @@ repositories {
     }
 }
 
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -110,6 +111,7 @@ dependencies {
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
     compile 'com.android.support:support-v4:25.3.1'
     compile 'com.google.firebase:firebase-core:10.0.1'
+    compile 'com.facebook.android:facebook-android-sdk:4.23.0'
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
     compile 'com.uphyca:stetho_realm:2.0.0'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
