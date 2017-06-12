@@ -30,9 +30,14 @@ class AccountAdapter : RecyclerView.Adapter<AccountAdapter.ViewHolder>() {
         holder!!.userName!!.setText(accountDetails?.get(position)?.username)
         holder!!.userFullName!!.setText("Test Full Name")
 
+        /**
+         * Selecting the image resource id on the basis of name of the account.
+         */
+        var id = getContext().resources.getIdentifier("ic_"+ accountDetails?.get(position)?.name
+                ?.toLowerCase() ?: "twitter", "drawable", getContext().packageName)
+
         Picasso.with(getContext())
-                //.load("R.drawable.ic_"+accountDetails?.get(position)?.name)
-                .load(R.drawable.ic_twitter)
+                .load(id)
                 .into(holder!!.accountLogoIndicator)
     }
 

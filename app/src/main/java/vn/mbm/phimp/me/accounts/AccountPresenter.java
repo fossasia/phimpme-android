@@ -30,8 +30,10 @@ public class AccountPresenter extends BasePresenter<AccountContract.View>
     public void handleResults(@NotNull RealmResults<AccountDatabase> accountDetails) {
         if (accountDetails.size() != 0){
             getMvpView().setUpAdapter(accountDetails);
+            getMvpView().showComplete();
         } else {
             getMvpView().showError();
+            getMvpView().showComplete();
         }
     }
 }
