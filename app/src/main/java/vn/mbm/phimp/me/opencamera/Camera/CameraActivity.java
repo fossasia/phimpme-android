@@ -142,6 +142,11 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 	public ProgressDialog progressDialog;
 
+	//For Exposure Bracketing modes
+	public int expo_image_count;
+	TinyDB bundle;
+	final String REVIEW_ACTION = "com.android.camera.action.REVIEW";
+
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -167,6 +172,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 				Log.d(TAG, "take_photo?: " + getIntent().getExtras().getBoolean(TakePhoto.TAKE_PHOTO));
 		}
 		SharedPreferences sharedPreferences = getDefaultSharedPreferences(this);
+		bundle = new TinyDB(getBaseContext());
 
 		// determine whether we should support "auto stabilise" feature
 		// risk of running out of memory on lower end devices, due to manipulation of large bitmaps
@@ -357,16 +363,30 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		BasicCallBack basicCallBack = new BasicCallBack() {
 			@Override
 			public void callBack(String filepath) {
-				Handler h = new Handler(Looper.getMainLooper());
-				h.post(new Runnable() {
-					public void run() {
-						progressDialog = new ProgressDialog(CameraActivity.this);
-						progressDialog.setMessage("Generating image. Please wait...");
-						progressDialog.show();
-					}
-				});
-				PhotoActivity.start(CameraActivity.this, filepath, 10);
+				final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(CameraActivity.this);
+				String mode = sharedPreferences.getString(PreferenceKeys.getPhotoModePreferenceKey(), "preference_photo_mode_expo_bracketing");
 
+				if (expo_image_count == 0) { //To start progress dialog once
+					Handler h = new Handler(Looper.getMainLooper());
+					h.post(new Runnable() {
+						public void run() {
+							progressDialog = new ProgressDialog(CameraActivity.this);
+							progressDialog.setMessage("Generating image. Please wait...");
+							progressDialog.show();
+						}
+					});
+				}
+
+				expo_image_count++; // Count till max defined image is captured and saved
+				if (!mode.equals("preference_photo_mode_expo_bracketing")) {
+                    expo_image_count = 0;
+					PhotoActivity.start(CameraActivity.this, filepath, 10);
+				} else if (expo_image_count >= bundle.getInt("max_expo_bracketing_n_images")) { // Start Activity once when the third image is saved
+					expo_image_count = 0; //Turn image count to zero in case user wants to click another set of photos.
+					Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(filepath)));
+					intent.setClass(getApplicationContext(), SingleMediaActivity.class);
+					startActivity(intent);
+				}
 			}
 		};
 		ImageSaver.setBasicCallBack(basicCallBack);
