@@ -10,6 +10,7 @@ import com.squareup.picasso.Picasso
 import io.realm.RealmResults
 import vn.mbm.phimp.me.R
 import vn.mbm.phimp.me.data.AccountDatabase
+import vn.mbm.phimp.me.utilities.ActivitySwitchHelper.context
 import vn.mbm.phimp.me.utilities.ActivitySwitchHelper.getContext
 
 
@@ -33,8 +34,10 @@ class AccountAdapter : RecyclerView.Adapter<AccountAdapter.ViewHolder>() {
         /**
          * Selecting the image resource id on the basis of name of the account.
          */
-        var id = getContext().resources.getIdentifier("ic_"+ accountDetails?.get(position)?.name
-                ?.toLowerCase() ?: "twitter", "drawable", getContext().packageName)
+        var id = getContext().resources.getIdentifier(context.getString(R.string.ic_)+
+                (accountDetails?.get(position)?.name?.toLowerCase() ?: "twitter")
+                + context.getString(R.string._indicator), context.getString(R.string.drawable)
+                , getContext().packageName)
 
         Picasso.with(getContext())
                 .load(id)
