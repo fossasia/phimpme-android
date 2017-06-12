@@ -892,3 +892,128 @@ void applyRetro(Bitmap* bitmap, int val) {
 	}
 }
 
+void imhist( Bitmap* bitmap, int rhist[], int ghist[], int bhist[])
+{
+    unsigned char* red = (*bitmap).red;
+    unsigned char* green = (*bitmap).green;
+    unsigned char* blue = (*bitmap).blue;
+    unsigned int length = (*bitmap).width * (*bitmap).height;
+   	register unsigned int i;
+
+    for(i = 0; i < 256; i++){
+        rhist[i] = 0;
+        ghist[i] = 0;
+        bhist[i] = 0;
+    }
+
+    for(i = 0; i < length; i++){
+        rhist[(int)red[i]]++;
+        ghist[(int)green[i]]++;
+        bhist[(int)blue[i]]++;
+    }
+}
+
+void cumhist(int histogram[], int cumhistogram[])
+{
+    register unsigned int i;
+    cumhistogram[0] = histogram[0];
+    for(i = 1; i < 256; i++)
+        cumhistogram[i] = histogram[i] + cumhistogram[i-1];
+}
+
+void equalizeHist(Bitmap *bitmap, int val){
+    unsigned char* red = (*bitmap).red;
+	unsigned char* green = (*bitmap).green;
+	unsigned char* blue = (*bitmap).blue;
+	unsigned int length = (*bitmap).width * (*bitmap).height;
+	register unsigned int i;
+	register unsigned char grey, r, g, b;
+	double opacity = (double)val/100;
+	applyBlackAndWhiteFilter(bitmap,100);
+
+    int rhist[256],ghist[256],bhist[256];
+    imhist(bitmap, rhist, ghist, bhist);
+
+    float alpha = 255.0/length;
+
+    float PrRk[256], PrGk[256], PrBk[256];
+    for(i = 0; i < 256; i++){
+        PrRk[i] = (double)rhist[i] / length;
+        PrGk[i] = (double)ghist[i] / length;
+        PrBk[i] = (double)bhist[i] / length;
+    }
+
+    int rcumhist[256], gcumhist[256], bcumhist[256];
+    cumhist(rhist,rcumhist);
+    cumhist(ghist,gcumhist);
+    cumhist(bhist,bcumhist);
+
+    int rSk[256], gSk[256], bSk[256];
+    for(i = 0; i < 256; i++){
+        rSk[i] = truncate((int)((double)rcumhist[i] * alpha));
+        gSk[i] = truncate((int)((double)gcumhist[i] * alpha));
+        bSk[i] = truncate((int)((double)bcumhist[i] * alpha));
+    }
+
+    float rPsSk[256], gPsSk[256], bPsSk[256];
+    for(i = 0; i < 256; i++){
+        rPsSk[i] = 0;
+        gPsSk[i] = 0;
+        bPsSk[i] = 0;
+    }
+
+    for(i = 0; i < 256; i++){
+        rPsSk[rSk[i]] += PrRk[i];
+        gPsSk[gSk[i]] += PrGk[i];
+        bPsSk[bSk[i]] += PrBk[i];
+    }
+
+    for(i = 0; i < length; i++){
+        red[i] = truncate((int)((1-opacity) * red[i] + opacity * rSk[red[i]]));
+        green[i] = truncate((int)((1-opacity) * green[i] + opacity * gSk[green[i]]));
+        blue[i] = truncate((int)((1-opacity) * blue[i] + opacity * bSk[blue[i]]));
+    }
+}
+
+
+void applyGrain(Bitmap* bitmap, int val) {
+	unsigned char* red = (*bitmap).red;
+	unsigned char* green = (*bitmap).green;
+	unsigned char* blue = (*bitmap).blue;
+
+	unsigned int length = (*bitmap).width * (*bitmap).height;
+	register unsigned int i;
+	double opacity = (double)val/100;
+	time_t t;
+    srand((unsigned) time(&t));
+
+	for (i = length; i--;) {
+        int rval = rand()%255;
+        if (rand()%100 < (int)(opacity * 15)){
+            int grey = (red[i] + green[i] + blue[i]) / 3;
+		    red[i] = truncate((int)((1-opacity) * grey + opacity * rval));
+            green[i] = truncate((int)((1-opacity) * grey + opacity * rval));
+            blue[i] = truncate((int)((1-opacity) * grey + opacity * rval));
+        }
+	}
+}
+
+void applyThreshold(Bitmap* bitmap, int val) {
+	unsigned char* red = (*bitmap).red;
+	unsigned char* green = (*bitmap).green;
+	unsigned char* blue = (*bitmap).blue;
+
+	unsigned int length = (*bitmap).width * (*bitmap).height;
+	register unsigned int i;
+	unsigned char grey, color;
+	double opacity = (double)val/100;
+    int thres = 220 - (int)(opacity * 190);
+	for (i = length; i--;) {
+        grey = (red[i] + green[i] + blue[i]) / 3;
+        if (grey < thres) color = 0;
+        else color = 255;
+        red[i] = truncate((int)(color));
+        green[i] = truncate((int)(color));
+        blue[i] = truncate((int)(color));
+	}
+}

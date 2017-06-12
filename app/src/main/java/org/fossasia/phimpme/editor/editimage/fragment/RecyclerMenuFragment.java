@@ -121,7 +121,7 @@ public class RecyclerMenuFragment extends BaseEditFragment {
                 filterThumbs = new ArrayList<>();
                 bmWidth = currentBitmap.getWidth();
                 bmHeight = currentBitmap.getHeight();
-                for (int i = 0; i <= 11; i++) {
+                for (int i = 0; i <= 14; i++) {
                     filterThumbs.add(PhotoProcessing.filterPhoto(getResizedBitmap(currentBitmap, 5), i, 100));
                 }
             }
