@@ -14,7 +14,9 @@ import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.view.View.OnClickListener;
 
 import java.io.File;
 
@@ -44,6 +46,7 @@ import vn.mbm.phimp.me.editor.editimage.view.imagezoom.ImageViewTouchBase;
 import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
 import vn.mbm.phimp.me.leafpic.util.ThemeHelper;
 import vn.mbm.phimp.me.utilities.ActivitySwitchHelper;
+import vn.mbm.phimp.me.shareActivity;
 
 public class EditImageActivity extends EditBaseActivity implements View.OnClickListener {
     public static final String FILE_PATH = "file_path";
@@ -91,6 +94,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     private SaveImageTask mSaveImageTask;
     private int requestCode;
     final String REVIEW_ACTION = "com.android.camera.action.REVIEW";
+    int saveFalg = 0;
 
     public ThemeHelper themeHelper;
     public MainMenuFragment mainMenuFragment;
@@ -190,8 +194,23 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         paintFragment = PaintFragment.newInstance();
         cropFragment = CropFragment.newInstance();
         rotateFragment = RotateFragment.newInstance();
-
     }
+
+    private void shareImage() {
+        Intent shareIntent = new Intent(EditImageActivity.this, shareActivity.class);
+        if(mOpTimes>0) {
+            shareIntent.putExtra(EXTRA_OUTPUT, saveFilePath);
+            shareIntent.putExtra(IMAGE_IS_EDIT, mOpTimes > 0);
+        }
+        else {
+            shareIntent.putExtra(EXTRA_OUTPUT, filePath);
+        }
+        FileUtil.ablumUpdate(this, saveFilePath);
+        setResult(RESULT_OK, shareIntent);
+        startActivity(shareIntent);
+        finish();
+    }
+
 
     public int getMode(){
         return mode;
@@ -288,7 +307,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
 
     protected void doSaveImage() {
         if (mOpTimes <= 0)
-            return;
+            shareImage();
+
 
         if (mSaveImageTask != null) {
             mSaveImageTask.cancel(true);
@@ -322,18 +342,20 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         if(requestCode == 1 && mOpTimes<=0) {   //Checks if this Activity was started by PhotoActivity
             Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(filePath)));
             intent.setClass(getApplicationContext(), SingleMediaActivity.class);
-            startActivity(intent);
-            finish();
+            shareImage();
+            //startActivity(intent);
+            //finish();
         }
         else if(mOpTimes>0) {
             Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(saveFilePath)));
             intent.setClass(getApplicationContext(), SingleMediaActivity.class);
-            startActivity(intent);
-            finish();
+            shareImage();
+            //startActivity(intent);
+            //finish();
         }
-        else {
+        /*else {
             finish();
-        }
+        }*/
     }
 
     private ArrayList<String> addStickerImages(String folderPath) {
@@ -492,8 +514,9 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.edit_save:
-                if (mOpTimes == 0) {//并未修改图片
-                    onSaveTaskDone();
+                if (mOpTimes == 0) {//Does not modify the image
+                    //onSaveTaskDone();
+                    shareImage();
                 } else {
                     doSaveImage();
                 }

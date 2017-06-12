@@ -8,7 +8,7 @@
     <string name="action_popup">Popup settings</string>
     <string name="intro_text">Touch to focus, and press the blue camera button to take photos. For more help, click Online help from Settings. Open Camera is completely free. If you like this app, please consider buying my donate app :) (see link in Settings, or Online help).\n\nPrivacy Policy: Location permission is required for geotagging, but this is disabled by default. If enabled, your location is encoded in the saved files (and it is only used for this purpose).</string>
     <string name="intro_ok">OK (This message won\'t show again)</string>
-
+    <string name="facebook_app_id">1920575401558694</string>
     <string name="answer_yes">Yes</string>
     <string name="answer_no">No</string>
 
@@ -184,9 +184,8 @@
     -->
     <string name="preference_max_brightness_summary">Force screen display to be at maximum brightness, rather than device default</string>
 
-    <string name="preference_category_camera_quality">Photo and Video Settings</string>
+    <string name="preference_category_camera_quality">Photo Settings</string>
     <string name="preference_screen_photo_settings">Photo settings…</string>
-    <string name="preference_screen_video_settings">Video settings…</string>
     <string name="preference_screen_location_settings">Location settings…</string>
     <string name="preference_resolution">Camera resolution</string>
     <string name="preference_resolution_summary">Set the resolution of photos taken by the camera</string>
@@ -446,7 +445,6 @@
     <string name="select_all">Select All</string>
     <string name="clear_selected">Clear Selected</string>
 
-    <string name="share">Share</string>
     <string name="rotate">Rotate</string>
     <string name="rotate_right_90">Rotate right 90°</string>
     <string name="rotate_left_90">Rotate left 90°</string>
@@ -743,11 +741,20 @@
     <string name="applying">applying</string>
     <string name="action_add_account">Add Account</string>
     <string name="account_list">Accounts List</string>
-
+    <string name="send_image">Send Image to</string>
     <string name="filter">Filter</string>
     <string name="paint">Paint</string>
     <string name="sticker">Stickers</string>
     <string name="enhance">Enhance</string>
     <string name="transform">Transform</string>
     <string name="write">Write</string>
+    <string name="share">share</string>
+
+    <!--ACCOUNTS-->
+    <!--TWITTER-->
+    <!--Create a app on twitter from this URL: https://apps.twitter.com/-->
+    <!--add consumer key and secret key below-->
+    <string name="twitter_CONSUMER_KEY">vKnzy2sMJ3VUFibF6HguxhDXm</string>
+    <string name="twitter_CONSUMER_SECRET">gAvGEBNPAyIsGQ3AIElHDqdCGCS7Cvp1BiM1GTH7YzLQyvMVf3</string>
+    <string name="already_signed_in">Already signed In</string>
 </resources>
