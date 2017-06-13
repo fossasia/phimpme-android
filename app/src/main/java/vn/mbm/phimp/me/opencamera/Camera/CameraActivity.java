@@ -134,13 +134,13 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 	// for testing; must be volatile for test project reading the state
 	public boolean is_test; // whether called from OpenCamera.test testing
-	public volatile Bitmap gallery_bitmap;
 	public volatile boolean test_low_memory;
 	public volatile boolean test_have_angle;
 	public volatile float test_angle;
 	public volatile String test_last_saved_image;
 
 	public ProgressDialog progressDialog;
+    public boolean isFromOutside =false;
 
 
     @Override
@@ -163,6 +163,8 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		}
 		if( getIntent() != null && getIntent().getExtras() != null ) {
 			// whether called from Take Photo widget
+            isFromOutside = true;
+            hideNavigationBar();
 			if( MyDebug.LOG )
 				Log.d(TAG, "take_photo?: " + getIntent().getExtras().getBoolean(TakePhoto.TAKE_PHOTO));
 		}
@@ -354,22 +356,25 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 		if( MyDebug.LOG )
 			Log.d(TAG, "onCreate: total time for Activity startup: " + (System.currentTimeMillis() - debug_time));
-		BasicCallBack basicCallBack = new BasicCallBack() {
-			@Override
-			public void callBack(String filepath) {
-				Handler h = new Handler(Looper.getMainLooper());
-				h.post(new Runnable() {
-					public void run() {
-						progressDialog = new ProgressDialog(CameraActivity.this);
-						progressDialog.setMessage("Generating image. Please wait...");
-						progressDialog.show();
-					}
-				});
-				PhotoActivity.start(CameraActivity.this, filepath, 10);
+        if (!isFromOutside){
+            BasicCallBack basicCallBack = new BasicCallBack() {
+                @Override
+                public void callBack(String filepath) {
+                    Handler h = new Handler(Looper.getMainLooper());
+                    h.post(new Runnable() {
+                        public void run() {
+                            progressDialog = new ProgressDialog(CameraActivity.this);
+                            progressDialog.setMessage("Generating image. Please wait...");
+                            progressDialog.show();
+                        }
+                    });
+                    PhotoActivity.start(CameraActivity.this, filepath, 10);
 
-			}
-		};
-		ImageSaver.setBasicCallBack(basicCallBack);
+                }
+            };
+            ImageSaver.setBasicCallBack(basicCallBack);
+        }
+
 
 		toggle = (IconicsImageView) findViewById(R.id.toggle_button);
 	}
