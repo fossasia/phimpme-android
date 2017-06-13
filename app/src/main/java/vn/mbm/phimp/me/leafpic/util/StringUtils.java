@@ -28,14 +28,6 @@ public class StringUtils {
         return fi.substring(0, fi.lastIndexOf('.'));
     }
 
-    public static String getPhotoPathRenamed(String olderPath, String newName) {
-        String c = "", b[] = olderPath.split("/");
-        for (int x = 0; x < b.length - 1; x++) c += b[x] + "/";
-        c += newName;
-        String name = b[b.length - 1];
-        c += name.substring(name.lastIndexOf('.'));
-        return c;
-    }
 
     static String incrementFileNameSuffix(String name) {
         StringBuilder builder = new StringBuilder();
