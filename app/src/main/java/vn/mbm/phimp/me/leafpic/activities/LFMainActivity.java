@@ -1266,7 +1266,6 @@ public class LFMainActivity extends SharedMediaActivity {
                             swipeRefreshLayout.setRefreshing(true);
                             boolean success;
                             if (albumsMode) {
-
                                 int index = getAlbums().dispAlbums.indexOf(getAlbums().getSelectedAlbum(0));
                                 getAlbums().getAlbum(index).updatePhotos(getApplicationContext());
                                 success = getAlbums().getAlbum(index).renameAlbum(getApplicationContext(),
