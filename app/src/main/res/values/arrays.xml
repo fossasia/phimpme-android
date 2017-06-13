@@ -712,7 +712,7 @@
         <item>@drawable/ic_objects</item>
         <item>@drawable/ic_comments</item>
         <item>@drawable/ic_wishes</item>
-        <item>@drawable/ic_animals</item>
+        <item>@drawable/ic_happiness</item>
     </integer-array>
 
     <string-array name="sticker_titles">
@@ -721,7 +721,7 @@
         <item>objects</item>
         <item>comments</item>
         <item>wishes</item>
-        <item>animals</item>
+        <item>emojis</item>
     </string-array>
 
 </resources>
