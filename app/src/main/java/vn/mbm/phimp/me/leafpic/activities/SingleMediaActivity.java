@@ -59,6 +59,7 @@ import vn.mbm.phimp.me.leafpic.util.PreferenceUtil;
 import vn.mbm.phimp.me.leafpic.util.SecurityHelper;
 import vn.mbm.phimp.me.leafpic.util.StringUtils;
 import vn.mbm.phimp.me.leafpic.views.HackyViewPager;
+import vn.mbm.phimp.me.shareActivity;
 import vn.mbm.phimp.me.utilities.ActivitySwitchHelper;
 
 /**
@@ -92,6 +93,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
     private int imageWidth, imageHeight;//
     private String path;
     private SingleMediaActivity context;
+    public static final String EXTRA_OUTPUT = "extra_output";
 
 
     private View mTakenPhoto;//拍摄照片用于编辑
@@ -446,18 +448,13 @@ public class SingleMediaActivity extends SharedMediaActivity {
 
 
             case R.id.action_share:
-                Intent share = new Intent(Intent.ACTION_SEND);
-                share.setType(getAlbum().getCurrentMedia().getMimeType());
-                share.putExtra(Intent.EXTRA_STREAM, getAlbum().getCurrentMedia().getUri());
-                startActivity(Intent.createChooser(share, getString(R.string.send_to)));
+                Intent share = new Intent(SingleMediaActivity.this,shareActivity.class);
+                share.putExtra(EXTRA_OUTPUT,getAlbum().getCurrentMedia().getPath());
+                startActivity(share);
                 return true;
 
             case R.id.action_edit:
                 Uri mDestinationUri = Uri.fromFile(new File(getCacheDir(), "croppedImage.png"));
-                /*Uri uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
-                /*UCrop uCrop = UCrop.of(uri, mDestinationUri);
-                uCrop.withOptions(getUcropOptions());
-                uCrop.start(SingleMediaActivity.this);*/
                 File outputFile = FileUtils.genEditFile();
                 Uri uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
                 EditImageActivity.start(this,uri.getPath(),outputFile.getAbsolutePath(),ACTION_REQUEST_EDITIMAGE);
