@@ -95,13 +95,21 @@ public class LFMainActivity extends SharedMediaActivity {
     private SelectAlbumBottomSheet bottomSheetDialogFragment;
     private SwipeRefreshLayout swipeRefreshLayout;
     private boolean hidden = false, pickMode = false, editMode = false, albumsMode = true, firstLaunch = true;
+    /*
+    editMode-  When true, user can select items by clicking on them one by one
+     */
 
+    /**
+     * Handles long clicks on photos.
+     * If first long click on photo (editMode = false), go into selection mode and set editMode = true.
+     * If not first long click, means that already in selection mode- s0 select all photos upto chosen one.
+     */
     private View.OnLongClickListener photosOnLongClickListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
             Media m = (Media) v.findViewById(R.id.photo_path).getTag();
+            //If first long press, turn on selection mode
             if (!editMode) {
-                // If it is the first long press
                 mediaAdapter.notifyItemChanged(getAlbum().toggleSelectPhoto(m));
                 editMode = true;
             } else
@@ -112,11 +120,19 @@ public class LFMainActivity extends SharedMediaActivity {
         }
     };
 
+
+    /**
+     * Handles short clicks on photos.
+     * If in selection mode (editMode = true) , select the photo if it is unselected and unselect it if it's selected.
+     * This mechanism makes it possible to select photos one by one by short-clicking on them.
+     * If not in selection mode (editMode = false) , get current photo from album and open it in singleActivity
+     */
     private View.OnClickListener photosOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Media m = (Media) v.findViewById(R.id.photo_path).getTag();
             if (!pickMode) {
+                //if in selection mode, toggle the selected/unselect state of photo
                 if (editMode) {
                     mediaAdapter.notifyItemChanged(getAlbum().toggleSelectPhoto(m));
                     invalidateOptionsMenu();
@@ -164,6 +180,7 @@ public class LFMainActivity extends SharedMediaActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.e("TAG","lfmain");
 
         SP = PreferenceUtil.getInstance(getApplicationContext());
         albumsMode = true;
@@ -247,12 +264,16 @@ public class LFMainActivity extends SharedMediaActivity {
                 case SplashScreen.ALBUMS_PREFETCHED:
                     displayAlbums(false);
                     pickMode = data.getBoolean(SplashScreen.PICK_MODE);
+
+                    // we pass the albumMode here . If true, show rvAlbum recyclerView. If false, show rvMedia recyclerView
                     toggleRecyclersVisibility(true);
                     return true;
 
                 case SplashScreen.ALBUMS_BACKUP:
                     displayAlbums(true);
                     pickMode = data.getBoolean(SplashScreen.PICK_MODE);
+
+                    // we pass the albumMode here . If true, show rvAlbum recyclerView. If false, show rvMedia recyclerView
                     toggleRecyclersVisibility(true);
                     return true;
 
@@ -265,6 +286,8 @@ public class LFMainActivity extends SharedMediaActivity {
                         }
                     }).start();
                     displayCurrentAlbumMedia(false);
+
+                    // we pass the albumMode here . If true, show rvAlbum recyclerView. If false, show rvMedia recyclerView
                     toggleRecyclersVisibility(false);
                     return true;
             }
@@ -379,15 +402,15 @@ public class LFMainActivity extends SharedMediaActivity {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public final void onActivityResult(final int requestCode, final int resultCode, final Intent resultData) {
-            if (resultCode == RESULT_OK) {
-                if (requestCode == REQUEST_CODE_SD_CARD_PERMISSIONS) {
-                    Uri treeUri = resultData.getData();
-                    // Persist URI in shared preference so that you can use it later.
-                    ContentHelper.saveSdCardInfo(getApplicationContext(), treeUri);
-                    getContentResolver().takePersistableUriPermission(treeUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                    Toast.makeText(this, R.string.got_permission_wr_sdcard, Toast.LENGTH_SHORT).show();
-                }
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUEST_CODE_SD_CARD_PERMISSIONS) {
+                Uri treeUri = resultData.getData();
+                // Persist URI in shared preference so that you can use it later.
+                ContentHelper.saveSdCardInfo(getApplicationContext(), treeUri);
+                getContentResolver().takePersistableUriPermission(treeUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                Toast.makeText(this, R.string.got_permission_wr_sdcard, Toast.LENGTH_SHORT).show();
             }
+        }
     }
     //endregion
 
@@ -585,6 +608,7 @@ public class LFMainActivity extends SharedMediaActivity {
         }
     }
 
+    //called from onBackPressed()
     private void finishEditMode() {
         editMode = false;
         if (albumsMode) {
@@ -716,16 +740,22 @@ public class LFMainActivity extends SharedMediaActivity {
 
             case R.id.select_all:
                 if (albumsMode) {
+                    //if all albums are already selected, unselect all of them
                     if (getAlbums().getSelectedCount() == albumsAdapter.getItemCount()) {
                         editMode = false;
                         getAlbums().clearSelectedAlbums();
-                    } else getAlbums().selectAllAlbums();
+                    }
+                    // else, select all albums
+                    else getAlbums().selectAllAlbums();
                     albumsAdapter.notifyDataSetChanged();
                 } else {
+                    //if all photos are already selected, unselect all of them
                     if (getAlbum().getSelectedCount() == mediaAdapter.getItemCount()) {
                         editMode = false;
                         getAlbum().clearSelectedPhotos();
-                    } else getAlbum().selectAllPhotos();
+                    }
+                    // else, select all photos
+                    else getAlbum().selectAllPhotos();
                     mediaAdapter.notifyDataSetChanged();
                 }
                 invalidateOptionsMenu();
@@ -798,13 +828,17 @@ public class LFMainActivity extends SharedMediaActivity {
                         super.onPreExecute();
                     }
 
+
                     @Override
                     protected Boolean doInBackground(String... arg0) {
+                        //if in album mode, delete selected albums
                         if (albumsMode)
                             return getAlbums().deleteSelectedAlbums(LFMainActivity.this);
                         else {
+                            // if in selection mode, delete selected media
                             if (editMode)
                                 return getAlbum().deleteSelectedMedia(getApplicationContext());
+                            // if not in selection mode, delete current album entirely
                             else {
                                 boolean succ = getAlbums().deleteAlbum(getAlbum(), getApplicationContext());
                                 getAlbum().getMedia().clear();
@@ -816,10 +850,12 @@ public class LFMainActivity extends SharedMediaActivity {
                     @Override
                     protected void onPostExecute(Boolean result) {
                         if (result) {
+                            // in albumsMode, the selected albums have been deleted.
                             if (albumsMode) {
                                 getAlbums().clearSelectedAlbums();
                                 albumsAdapter.notifyDataSetChanged();
                             } else {
+                                //if all media in current album have been deleted, delete current album too.
                                 if (getAlbum().getMedia().size() == 0) {
                                     getAlbums().removeCurrentAlbum();
                                     albumsAdapter.notifyDataSetChanged();
@@ -860,10 +896,13 @@ public class LFMainActivity extends SharedMediaActivity {
                             passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    // if password is correct, call DeletePhotos and perform deletion
                                     if (securityObj.checkPassword(editTextPassword.getText().toString())) {
                                         passwordDialog.dismiss();
                                         new DeletePhotos().execute();
-                                    } else {
+                                    }
+                                    // if password is incorrect, don't delete and notify user of incorrect password
+                                    else {
                                         Toast.makeText(getApplicationContext(), R.string.wrong_password, Toast.LENGTH_SHORT).show();
                                         editTextPassword.getText().clear();
                                         editTextPassword.requestFocus();
@@ -924,6 +963,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 intent.setAction(Intent.ACTION_SEND_MULTIPLE);
                 intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.sent_to_action));
 
+                // list of all selected media in current album
                 ArrayList<Uri> files = new ArrayList<Uri>();
                 for (Media f : getAlbum().getSelectedMedia())
                     files.add(f.getUri());
@@ -1307,6 +1347,10 @@ public class LFMainActivity extends SharedMediaActivity {
         }
     }
 
+    /**
+     * If we are in albumsMode, make the albums recyclerView visible. If we are not, make media recyclerView visible.
+     * @param albumsMode it indicates whether we are in album selection mode or not
+     */
     private void toggleRecyclersVisibility(boolean albumsMode) {
         rvAlbums.setVisibility(albumsMode ? View.VISIBLE : View.GONE);
         rvMedia.setVisibility(albumsMode ? View.GONE : View.VISIBLE);
@@ -1314,6 +1358,13 @@ public class LFMainActivity extends SharedMediaActivity {
 
     }
 
+    /**
+     * handles back presses.
+     * If we are currently in selection mode, back press will take us out of selection mode.
+     * If we are not in selection mode but in albumsMode and the drawer is open, back press will close it.
+     * If we are not in selection mode but in albumsMode and the drawer is closed, finish the activity.
+     * If we are neither in selection mode nor in albumsMode, display the albums again.
+     */
     @Override
     public void onBackPressed() {
         if (editMode) finishEditMode();
