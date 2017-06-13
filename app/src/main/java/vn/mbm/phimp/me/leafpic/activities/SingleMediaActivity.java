@@ -448,10 +448,6 @@ public class SingleMediaActivity extends SharedMediaActivity {
 
 
             case R.id.action_share:
-                /*Intent share = new Intent(Intent.ACTION_SEND);
-                share.setType(getAlbum().getCurrentMedia().getMimeType());
-                share.putExtra(Intent.EXTRA_STREAM, getAlbum().getCurrentMedia().getUri());
-                startActivity(Intent.createChooser(share, getString(R.string.send_to)));*/
                 Intent share = new Intent(SingleMediaActivity.this,shareActivity.class);
                 share.putExtra(EXTRA_OUTPUT,getAlbum().getCurrentMedia().getPath());
                 startActivity(share);
@@ -459,10 +455,6 @@ public class SingleMediaActivity extends SharedMediaActivity {
 
             case R.id.action_edit:
                 Uri mDestinationUri = Uri.fromFile(new File(getCacheDir(), "croppedImage.png"));
-                /*Uri uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
-                /*UCrop uCrop = UCrop.of(uri, mDestinationUri);
-                uCrop.withOptions(getUcropOptions());
-                uCrop.start(SingleMediaActivity.this);*/
                 File outputFile = FileUtils.genEditFile();
                 Uri uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
                 EditImageActivity.start(this,uri.getPath(),outputFile.getAbsolutePath(),ACTION_REQUEST_EDITIMAGE);
