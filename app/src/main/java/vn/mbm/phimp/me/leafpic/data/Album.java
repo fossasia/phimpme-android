@@ -302,18 +302,7 @@ public class Album implements Serializable {
 		settings.changeSortingMode(context, column);
 	}
 
-	public boolean renameCurrentMedia(Context context, String newName) {
-		boolean success = false;
-		try {
-			File from = new File(getCurrentMedia().getPath());
-			File to = new File(StringUtils.getPhotoPathRenamed(getCurrentMedia().getPath(), newName));
-			if (success =  ContentHelper.moveFile(context, from, to)) {
-				scanFile(context, new String[]{ to.getAbsolutePath(), from.getAbsolutePath() });
-				getCurrentMedia().setPath(to.getAbsolutePath());
-			}
-		} catch (Exception e) { e.printStackTrace(); }
-		return success;
-	}
+
 
 	public boolean moveCurrentMedia(Context context, String targetDir) {
 		boolean success = false;

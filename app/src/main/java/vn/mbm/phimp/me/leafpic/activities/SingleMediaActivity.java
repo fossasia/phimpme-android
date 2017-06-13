@@ -543,29 +543,6 @@ public class SingleMediaActivity extends SharedMediaActivity {
 
                 return true;
 
-            case R.id.action_rename:
-                AlertDialog.Builder renameDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
-                final EditText editTextNewName = new EditText(getApplicationContext());
-                editTextNewName.setText(StringUtils.getPhotoNameByPath(getAlbum().getCurrentMedia().getPath()));
-
-                AlertDialog renameDialog =
-                        AlertDialogsHelper.getInsertTextDialog(
-                                this,renameDialogBuilder, editTextNewName, R.string.rename_photo_action);
-
-                renameDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (editTextNewName.length() != 0)
-                            getAlbum().renameCurrentMedia(getApplicationContext(), editTextNewName.getText().toString());
-                        else
-                            StringUtils.showToast(getApplicationContext(), getString(R.string.nothing_changed));
-                    }});
-                renameDialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) { } });
-                renameDialog.show();
-                break;
-
             case R.id.action_details:
                 AlertDialog.Builder detailsDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
                 final AlertDialog detailsDialog =
