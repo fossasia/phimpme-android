@@ -30,9 +30,7 @@ import vn.mbm.phimp.me.data.AccountDatabase;
 public class AccountPickerFragment extends DialogFragment {
 
     private TwitterAuthClient client = new TwitterAuthClient();
-    private AccountAdapter accountAdapter = new AccountAdapter();
     Realm realm = Realm.getDefaultInstance();
-    private AccountPresenter accountPresenter = new AccountPresenter(realm);
     AccountDatabase account;
 
     public String[] accountsList = {"Twitter", "Facebook", "Instagram"};

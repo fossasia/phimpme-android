@@ -14,11 +14,8 @@ import android.widget.RelativeLayout;
 
 public class PhimpmeProgressBarHandler {
     private ProgressBar mProgressBar;
-    private Context mContext;
 
     public PhimpmeProgressBarHandler(Context context) {
-        mContext = context;
-
         ViewGroup layout = (ViewGroup) ((Activity) context).findViewById(android.R.id.content)
                 .getRootView();
 
