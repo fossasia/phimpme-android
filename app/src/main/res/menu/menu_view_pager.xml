@@ -1,21 +1,17 @@
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".leafpic.activities.SingleMediaActivity"
->
+    tools:context=".leafpic.activities.SingleMediaActivity">
 
     <group android:id="@+id/only_photos_options">
         <item
             android:id="@+id/action_edit"
             android:title="@string/edit"
-            app:showAsAction="never"
-            />
+            app:showAsAction="never" />
         <item
             android:id="@+id/action_use_as"
             android:title="@string/use_as"
-            app:showAsAction="never"
-            />
+            app:showAsAction="never" />
     </group>
 
     <item
@@ -23,8 +19,8 @@
         android:title="@string/sort_menu_title"
         app:showAsAction="never">
         <menu xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              tools:context=".PhotosActivity">
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            tools:context=".PhotosActivity">
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/name_sort_action"
@@ -61,35 +57,27 @@
             android:id="@+id/action_share"
             android:orderInCategory="0"
             android:title="@string/share"
-            app:showAsAction="always"
-        />
+            app:showAsAction="always" />
         <item
             android:id="@+id/action_delete"
             android:orderInCategory="1"
             android:title="@string/delete"
-            app:showAsAction="always"
-        />
-    <item
-        android:id="@+id/action_copy"
-        android:title="@string/copy_to"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/action_move"
-        android:title="@string/move_to"
-        app:showAsAction="never" />
+            app:showAsAction="always" />
+        <item
+            android:id="@+id/action_copy"
+            android:title="@string/copy_to"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/action_move"
+            android:title="@string/move_to"
+            app:showAsAction="never" />
 
-    <item
-        android:id="@+id/action_rename"
-        android:title="@string/rename"
-        app:showAsAction="never"
-        />
     </group>
 
     <item
         android:id="@+id/action_details"
         android:title="@string/details"
-        app:showAsAction="never"
-        />
+        app:showAsAction="never" />
     <item
         android:id="@+id/action_settings"
         android:title="@string/settings"
