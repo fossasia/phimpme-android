@@ -7,6 +7,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.accounts.AccountActivity;
@@ -80,6 +81,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
     public void setNavigationBarColor(int color) {
         navigationView.setBackgroundColor(color);
+    }
+    public void hideNavigationBar() {
+        navigationView.setVisibility(View.GONE);
     }
 
 }
