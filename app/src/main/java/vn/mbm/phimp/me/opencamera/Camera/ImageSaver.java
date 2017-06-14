@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -20,10 +21,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
-
-import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
-import vn.mbm.phimp.me.utilities.BasicCallBack;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -42,10 +39,17 @@ import java.util.TimeZone;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
+import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
+import vn.mbm.phimp.me.utilities.BasicCallBack;
+
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+
 /** Handles the saving (and any required processing) of photos.
  */
 public class ImageSaver extends Thread {
 	private static final String TAG = "ImageSaver";
+	public static String file_path;
 
 	// note that ExifInterface now has fields for these types, but that requires Android 6 or 7
 	private static final String TAG_GPS_IMG_DIRECTION = "GPSImgDirection";
@@ -56,6 +60,9 @@ public class ImageSaver extends Thread {
 	private final Paint p = new Paint();
 
 	private final CameraActivity main_activity;
+
+	public int burst_mode_value;
+	public int click_count = 0;
 
 	/* We use a separate count n_images_to_save, rather than just relying on the queue size, so we can take() an image from queue,
 	 * but only decrement the count when we've finished saving the image.
@@ -1418,7 +1425,12 @@ public class ImageSaver extends Thread {
 		if( MyDebug.LOG ) {
 			Log.d(TAG, "Save single image performance: total time: " + (System.currentTimeMillis() - time_s));
 		}
-		if (basicCallBack != null) {
+		final SharedPreferences sharedPreferences = getDefaultSharedPreferences(main_activity);
+		String burst_mode = sharedPreferences.getString(PreferenceKeys.getBurstModePreferenceKey(), "");
+		burst_mode_value = Integer.parseInt(burst_mode);
+		click_count++;
+		if (basicCallBack != null && burst_mode_value == click_count) {
+			click_count = 0;
 			basicCallBack.callBack(picFile.getAbsolutePath());
 		}
 		return success;

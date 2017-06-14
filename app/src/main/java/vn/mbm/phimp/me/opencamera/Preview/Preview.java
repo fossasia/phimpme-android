@@ -1,35 +1,6 @@
 package vn.mbm.phimp.me.opencamera.Preview;
 
-import vn.mbm.phimp.me.R;
-import vn.mbm.phimp.me.opencamera.Camera.CameraActivity;
-import vn.mbm.phimp.me.opencamera.Camera.MyDebug;
-import vn.mbm.phimp.me.opencamera.Camera.TakePhoto;
-import vn.mbm.phimp.me.opencamera.Camera.ToastBoxer;
-import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
-import vn.mbm.phimp.me.opencamera.CameraController.CameraController1;
-import vn.mbm.phimp.me.opencamera.CameraController.CameraController2;
-import vn.mbm.phimp.me.opencamera.CameraController.CameraControllerException;
-import vn.mbm.phimp.me.opencamera.CameraController.CameraControllerManager;
-import vn.mbm.phimp.me.opencamera.CameraController.CameraControllerManager1;
-import vn.mbm.phimp.me.opencamera.CameraController.CameraControllerManager2;
-import vn.mbm.phimp.me.opencamera.Preview.ApplicationInterface.NoFreeStorageException;
-import vn.mbm.phimp.me.opencamera.Preview.CameraSurface.CameraSurface;
-import vn.mbm.phimp.me.opencamera.Preview.CameraSurface.MySurfaceView;
-import vn.mbm.phimp.me.opencamera.Preview.CameraSurface.MyTextureView;
-import vn.mbm.phimp.me.opencamera.UI.PopupView;
-
-import java.io.File;
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -53,12 +24,9 @@ import android.media.CamcorderProfile;
 import android.media.Image;
 import android.media.MediaRecorder;
 import android.net.Uri;
-import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.ParcelFileDescriptor;
-import android.provider.DocumentsContract;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.Pair;
@@ -71,11 +39,35 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.TextureView;
 import android.view.View;
+import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.View.MeasureSpec;
-import android.widget.Button;
 import android.widget.Toast;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import vn.mbm.phimp.me.R;
+import vn.mbm.phimp.me.opencamera.Camera.CameraActivity;
+import vn.mbm.phimp.me.opencamera.Camera.MyDebug;
+import vn.mbm.phimp.me.opencamera.Camera.TakePhoto;
+import vn.mbm.phimp.me.opencamera.Camera.ToastBoxer;
+import vn.mbm.phimp.me.opencamera.CameraController.CameraController;
+import vn.mbm.phimp.me.opencamera.CameraController.CameraController1;
+import vn.mbm.phimp.me.opencamera.CameraController.CameraController2;
+import vn.mbm.phimp.me.opencamera.CameraController.CameraControllerException;
+import vn.mbm.phimp.me.opencamera.CameraController.CameraControllerManager;
+import vn.mbm.phimp.me.opencamera.CameraController.CameraControllerManager1;
+import vn.mbm.phimp.me.opencamera.CameraController.CameraControllerManager2;
+import vn.mbm.phimp.me.opencamera.Preview.CameraSurface.CameraSurface;
+import vn.mbm.phimp.me.opencamera.Preview.CameraSurface.MySurfaceView;
+import vn.mbm.phimp.me.opencamera.Preview.CameraSurface.MyTextureView;
+import vn.mbm.phimp.me.opencamera.UI.PopupView;
 
 /** This class was originally named due to encapsulating the camera preview,
  *  but in practice it's grown to more than this, and includes most of the
