@@ -412,6 +412,9 @@
     <!--LEAF PIC STRING'S-->
     <string name="app_light_description">An awesome Image app that offers features such as taking photos, adding filters, editing images and uploading them to social networks.</string>
 
+    <string name="rename_error">File Rename Failed</string>
+    <string name="rename_succes">File renamed</string>
+
     <!-- ACTIONS -->
     <string name="sort">Sort</string>
     <string name="camera">Camera</string>

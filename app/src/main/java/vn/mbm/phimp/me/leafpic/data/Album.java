@@ -5,7 +5,9 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
 
+import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.leafpic.adapters.MediaAdapter;
 import vn.mbm.phimp.me.leafpic.data.base.FilterMode;
 import vn.mbm.phimp.me.leafpic.data.base.MediaComparators;
@@ -459,37 +461,37 @@ public class Album implements Serializable {
 	public boolean renameAlbum(final Context context, String newName) {
 		found_id_album = false;
 		boolean success;
-		File dir = new File(StringUtils.getAlbumPathRenamed(getPath(), newName));
-		if (success = ContentHelper.mkdir(context, dir)) {
+		File newDir = new File(StringUtils.getAlbumPathRenamed(getPath(), newName));
+		File oldDir = new File(getPath());
+		success = oldDir.renameTo(newDir);
+
+		if(success) {
 			for (final Media m : media) {
 				File from = new File(m.getPath());
 				File to = new File(StringUtils.getPhotoPathRenamedAlbumChange(m.getPath(), newName));
-				if (ContentHelper.moveFile(context, from, to)) {
-					scanFile(context, new String[]{from.getAbsolutePath() });
-					scanFile(context, new String[]{ to.getAbsolutePath() }, new MediaScannerConnection.OnScanCompletedListener() {
-						@Override
-						public void onScanCompleted(String s, Uri uri) {
-							// TODO: 05/08/16 it sucks! look for a better solution
-
-							if (!found_id_album) {
-								id = MediaStoreProvider.getAlbumId(context, s);
-								found_id_album = true;
-							}
-							Log.d(s, "onScanCompleted: "+s);
-							m.setPath(s); m.setUri(uri.toString());
+				scanFile(context, new String[]{ from.getAbsolutePath() });
+				scanFile(context, new String[]{ to.getAbsolutePath() }, new MediaScannerConnection.OnScanCompletedListener() {
+					@Override
+					public void onScanCompleted(String s, Uri uri) {
+						if (!found_id_album) {
+							id = MediaStoreProvider.getAlbumId(context, s);
+							found_id_album = true;
 						}
-					});
-
-				} else success = false;
+						Log.d(s, "onScanCompleted: "+s);
+						m.setPath(s); m.setUri(uri.toString());
+					}
+				});
 			}
-		}
-		if(success) {
-			path = dir.getAbsolutePath();
+
+			Toast.makeText(context, R.string.rename_succes,Toast.LENGTH_SHORT).show();
+			path = newDir.getAbsolutePath();
 			name = newName;
 			// NOTE: the following line doesn't work
 			//id = MediaStoreProvider.getAlbumId(context, media.getValue(0).getPath());
 
-		}
+		}else
+			Toast.makeText(context, R.string.rename_error,Toast.LENGTH_SHORT).show();
+
 		return success;
 	}
 
