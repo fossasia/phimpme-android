@@ -9,7 +9,8 @@ import io.realm.RealmResults;
 
 public class DatabaseHelper {
 
-    Realm realm;
+    private Realm realm;
+
     public DatabaseHelper(Realm realm) {
         this.realm = realm;
     }
