@@ -712,16 +712,18 @@
         <item>@drawable/ic_objects</item>
         <item>@drawable/ic_comments</item>
         <item>@drawable/ic_wishes</item>
-        <item>@drawable/ic_animals</item>
+        <item>@drawable/ic_emoji</item>
+        <item>@drawable/ic_hashtag</item>
     </integer-array>
 
     <string-array name="sticker_titles">
         <item>facial</item>
-        <item>hearts</item>
+        <item>express</item>
         <item>objects</item>
         <item>comments</item>
         <item>wishes</item>
-        <item>animals</item>
+        <item>emojis</item>
+        <item>hashtag</item>
     </string-array>
 
 </resources>
