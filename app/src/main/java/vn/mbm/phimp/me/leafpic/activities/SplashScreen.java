@@ -13,13 +13,13 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
-
 import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.base.SharedMediaActivity;
 import vn.mbm.phimp.me.leafpic.data.Album;
 import vn.mbm.phimp.me.leafpic.util.ColorPalette;
 import vn.mbm.phimp.me.leafpic.util.PermissionUtils;
 import vn.mbm.phimp.me.leafpic.util.PreferenceUtil;
+import vn.mbm.phimp.me.leafpic.util.StringUtils;
 import vn.mbm.phimp.me.utilities.ActivitySwitchHelper;
 
 /**
@@ -65,7 +65,17 @@ public class SplashScreen extends SharedMediaActivity {
         setStatusBarColor();
 
         if (PermissionUtils.isDeviceInfoGranted(this)) {
-            new PrefetchAlbumsData().execute(SP.getBoolean(getString(R.string.preference_auto_update_media), false));
+            PICK_INTENT = getIntent().getAction().equals(Intent.ACTION_GET_CONTENT) || getIntent().getAction().equals(Intent.ACTION_PICK);
+            if (getIntent().getAction().equals(ACTION_OPEN_ALBUM)) {
+                Bundle data = getIntent().getExtras();
+                if (data != null) {
+                    String ab = data.getString("albumPath");
+                    if (ab != null) {
+                        new PrefetchPhotosData().execute();
+                    }
+                } else StringUtils.showToast(getApplicationContext(), getString(R.string.album_not_found));
+            } else  // default intent
+                new PrefetchAlbumsData().execute();
         } else {
             String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
             PermissionUtils.requestPermissions(this, READ_EXTERNAL_STORAGE_ID, permissions);
@@ -125,7 +135,7 @@ public class SplashScreen extends SharedMediaActivity {
             return false;
         }
 
-        
+
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
