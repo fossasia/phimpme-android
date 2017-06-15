@@ -6,27 +6,32 @@ import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 
-import java.io.File;
 
 import uk.co.senab.photoview.PhotoView;
 import vn.mbm.phimp.me.R;
 import vn.mbm.phimp.me.base.ThemedActivity;
 import vn.mbm.phimp.me.editor.FileUtils;
 import vn.mbm.phimp.me.editor.editimage.EditImageActivity;
-import vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity;
+import vn.mbm.phimp.me.shareActivity;
 import vn.mbm.phimp.me.utilities.ActivitySwitchHelper;
+
+import static vn.mbm.phimp.me.shareActivity.EXTRA_OUTPUT;
 
 
 public class PhotoActivity extends ThemedActivity {
@@ -94,10 +99,28 @@ public class PhotoActivity extends ThemedActivity {
     }
 
     public void saveOriginal(View v){
-        Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(FILE_PATH)));
-        intent.setClass(getApplicationContext(), SingleMediaActivity.class);
-        this.startActivity(intent);
-        finish();
+       finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_photoactivity, menu);
+        Drawable shareIcon = getResources().getDrawable(R.drawable.ic_share_minimal, getTheme());
+        shareIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+        menu.findItem(R.id.menu_share).setIcon(shareIcon);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (R.id.menu_share == item.getItemId()){
+            Intent share = new Intent(PhotoActivity.this,shareActivity.class);
+            share.putExtra(EXTRA_OUTPUT,FILE_PATH);
+            startActivity(share);
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
