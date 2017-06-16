@@ -2,6 +2,7 @@ package vn.mbm.phimp.me;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.facebook.stetho.Stetho;
@@ -30,8 +31,12 @@ public class MyApplication extends Application {
 
     @Override
     public void onCreate() {
+
         albums = new HandlingAlbums(getApplicationContext());
         applicationContext = getApplicationContext();
+
+        MultiDex.install(this);
+
         TwitterConfig config = new TwitterConfig.Builder(this)
                 .logger(new DefaultLogger(Log.DEBUG))
                 .twitterAuthConfig(new TwitterAuthConfig(getString(R.string.twitter_CONSUMER_KEY), getString(R.string.twitter_CONSUMER_SECRET)))
@@ -59,6 +64,11 @@ public class MyApplication extends Application {
                         .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
                         .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
                         .build());
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
     }
 
     public HandlingAlbums getAlbums() {
