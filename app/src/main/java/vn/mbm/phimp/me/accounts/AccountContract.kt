@@ -1,6 +1,8 @@
 package vn.mbm.phimp.me.accounts
 
+import io.realm.RealmResults
 import vn.mbm.phimp.me.base.MvpView
+import vn.mbm.phimp.me.data.AccountDatabase
 
 
 /**
@@ -13,15 +15,32 @@ import vn.mbm.phimp.me.base.MvpView
 class AccountContract {
     internal interface View : MvpView{
 
+        /**
+         * Setting up the recyclerView. The layout manager, decorator etc.
+         */
         fun setUpRecyclerView()
 
-        fun showError(message: String)
+        /**
+         * Account Presenter calls this function after taking data from Database Helper Class
+         */
+        fun setUpAdapter(accountDetails: RealmResults<AccountDatabase>)
 
-        fun failedToLoad()
+        /**
+         * Shows the error log
+         */
+        fun showError()
     }
 
     internal interface Presenter {
 
+        /**
+         * function to load data from database, using Database Helper class
+         */
         fun loadFromDatabase()
+
+        /**
+         * setting up the recyclerView adapter from here
+         */
+        fun handleResults(accountDetails: RealmResults<AccountDatabase>)
     }
 }
