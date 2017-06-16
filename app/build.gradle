@@ -90,7 +90,6 @@ dependencies {
     compile "com.android.support:customtabs:$rootProject.supportLibraryVersion"
     compile project(':photoview')
     compile(group: 'uz.shift', name: 'colorpicker', version: '0.5', ext: 'aar')
-    //compile 'uz.shift:colorpicker:0.5@aar'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.koushikdutta.ion:ion:2.1.7'
@@ -114,6 +113,7 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.23.0'
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
     compile 'com.uphyca:stetho_realm:2.0.0'
+    compile 'com.android.support:multidex:1.0.1'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     compile "com.twitter.sdk.android:twitter:$rootProject.twitterVersion"
     compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"

@@ -2,8 +2,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
+
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar"
@@ -12,11 +13,12 @@
 
     <uk.co.senab.photoview.PhotoView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_weight="1.2"
-        android:contentDescription="@null"
-        />
+        android:scaleType="fitCenter"
+        android:layout_gravity="center"
+        android:contentDescription="@null" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -29,27 +31,26 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_alignParentLeft="true"
-            app:srcCompat="@drawable/ic_close_black_24dp"
+            android:background="@null"
             android:onClick="deleteFile"
-            android:background="@null"/>
+            app:srcCompat="@drawable/ic_close_black_24dp" />
 
         <ImageButton
             android:id="@+id/save"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_centerInParent="true"
             android:background="@null"
-            app:srcCompat="@drawable/ic_done_black_24dp"
+            android:layout_centerInParent="true"
             android:onClick="saveOriginal"
-            android:scaleType="fitCenter"/>
+            app:srcCompat="@drawable/ic_done_black_24dp" />
 
         <ImageButton
             android:id="@+id/edit"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_alignParentRight="true"
-            android:onClick="editImage"
             android:background="@null"
+            android:onClick="editImage"
             app:srcCompat="@drawable/ic_edit_black_24dp" />
     </RelativeLayout>
 
