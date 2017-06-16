@@ -82,7 +82,7 @@
             android:layout_marginLeft="83dp"
             android:layout_marginStart="83dp"
             android:layout_marginTop="32dp"
-            app:srcCompat="@drawable/ic_facebook"/>
+            app:srcCompat="@drawable/ic_facebook_indicator"/>
 
         <ImageView
             android:id="@+id/twitter_button"
@@ -93,7 +93,7 @@
             android:layout_marginRight="44dp"
             android:layout_toLeftOf="@+id/fab_home"
             android:layout_toStartOf="@+id/fab_home"
-            app:srcCompat="@drawable/ic_twitter"/>
+            app:srcCompat="@drawable/ic_twitter_indicator"/>
 
         <ImageView
             android:id="@+id/instagram_button"

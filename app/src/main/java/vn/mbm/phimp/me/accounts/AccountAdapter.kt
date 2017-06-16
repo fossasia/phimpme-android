@@ -6,14 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.squareup.picasso.Picasso
+import io.realm.RealmResults
 import vn.mbm.phimp.me.R
+import vn.mbm.phimp.me.data.AccountDatabase
+import vn.mbm.phimp.me.utilities.ActivitySwitchHelper.context
+import vn.mbm.phimp.me.utilities.ActivitySwitchHelper.getContext
 
 /**
  * Created by pa1pal on 5/6/17.
  */
 class AccountAdapter : RecyclerView.Adapter<AccountAdapter.ViewHolder>() {
 
-
+    private var accountDetails: RealmResults<AccountDatabase>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent!!.getContext())
@@ -22,18 +27,29 @@ class AccountAdapter : RecyclerView.Adapter<AccountAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder!!.userName!!.setText("@test_username")
+        holder!!.userName!!.setText(accountDetails?.get(position)?.username)
         holder!!.userFullName!!.setText("Test Full Name")
+
+        /**
+         * Selecting the image resource id on the basis of name of the account.
+         */
+        var id = getContext().resources.getIdentifier(context.getString(R.string.ic_)+
+                (accountDetails?.get(position)?.name?.toLowerCase() ?: "twitter")
+                + context.getString(R.string._indicator), context.getString(R.string.drawable)
+                , getContext().packageName)
+
+        Picasso.with(getContext())
+                .load(id)
+                .into(holder!!.accountLogoIndicator)
     }
 
     override fun getItemCount(): Int {
         //TODO: added a temporary value. Exact value will be depends how many accounts are signed in.
-        // Length will be taken from databse entries.
-        return 10
+        return accountDetails?.size ?: 0
     }
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        internal var accountAvatar : ImageView? = null
+        internal var accountAvatar: ImageView? = null
         internal var userName: TextView? = null
         internal var userFullName: TextView? = null
         internal var accountLogoIndicator: ImageView? = null
@@ -45,4 +61,10 @@ class AccountAdapter : RecyclerView.Adapter<AccountAdapter.ViewHolder>() {
             userFullName = v.findViewById(R.id.account_name) as TextView
         }
     }
+
+    fun setResults(accountDetails: RealmResults<AccountDatabase>) {
+        this.accountDetails = accountDetails
+        notifyDataSetChanged()
+    }
+
 }
