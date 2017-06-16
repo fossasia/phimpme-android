@@ -54,6 +54,11 @@ public class AccountPickerFragment extends DialogFragment {
 
                         switch (which) {
                             case 0:
+
+                                /**
+                                 * When user clicks then we first check if it is already exist.
+                                 */
+
                                 if (checkAlreadyExist(accountsList[0])) {
                                     Toast.makeText(getActivity(), R.string.already_signed_in,
                                             Toast.LENGTH_SHORT).show();
@@ -61,10 +66,6 @@ public class AccountPickerFragment extends DialogFragment {
                                     client.authorize(getActivity(), new Callback<TwitterSession>() {
                                         @Override
                                         public void success(Result<TwitterSession> result) {
-
-                                            /**
-                                             * When user clicks then we first check if it is already exist.
-                                             */
 
                                             // Begin realm transaction
                                             realm.beginTransaction();
@@ -80,9 +81,11 @@ public class AccountPickerFragment extends DialogFragment {
                                             TwitterAuthToken authToken = session.getAuthToken();
                                             Log.d("Twitter Credentials", session.toString());
 
+
                                             // Writing values in Realm database
                                             account.setUsername(session.getUserName());
                                             account.setToken(String.valueOf(session.getAuthToken()));
+
 
                                             // Finally committing the whole data
                                             realm.commitTransaction();

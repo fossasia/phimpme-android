@@ -22,4 +22,5 @@ package vn.mbm.phimp.me.base;
  */
 public interface MvpView {
 
+    void showComplete();
 }
