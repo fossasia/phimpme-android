@@ -5,9 +5,6 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Toast;
-
-import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.leafpic.adapters.MediaAdapter;
 import org.fossasia.phimpme.leafpic.data.base.FilterMode;
 import org.fossasia.phimpme.leafpic.data.base.MediaComparators;
@@ -483,15 +480,9 @@ public class Album implements Serializable {
 				});
 			}
 
-			Toast.makeText(context, R.string.rename_succes,Toast.LENGTH_SHORT).show();
 			path = newDir.getAbsolutePath();
 			name = newName;
-			// NOTE: the following line doesn't work
-			//id = MediaStoreProvider.getAlbumId(context, media.getValue(0).getPath());
-
-		}else
-			Toast.makeText(context, R.string.rename_error,Toast.LENGTH_SHORT).show();
-
+		}
 		return success;
 	}
 
