@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="vn.mbm.phimp.me.accounts.AccountActivity">
+    tools:context="org.fossasia.phimpme.accounts.AccountActivity">
     <item
         android:id="@+id/action_add_account"
         android:orderInCategory="100"

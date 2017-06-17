@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:layout_weight="5"
         android:background="@color/black"
-        tools:context=".opencamera.CameraActivity">
+        tools:context="org.fossasia.phimpme.opencamera.CameraActivity">
 
         <FrameLayout
             android:id="@+id/preview"
