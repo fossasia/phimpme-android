@@ -39,7 +39,7 @@ import org.fossasia.phimpme.editor.editimage.view.imagezoom.ImageViewTouch;
 import org.fossasia.phimpme.editor.editimage.view.imagezoom.ImageViewTouchBase;
 import org.fossasia.phimpme.leafpic.activities.SingleMediaActivity;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
-import org.fossasia.phimpme.shareActivity;
+import org.fossasia.phimpme.SharingActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 
 import java.io.File;
@@ -225,7 +225,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
      * Called when the edit_save button is pressed. Used to share the image on social media.
      */
     private void shareImage() {
-        Intent shareIntent = new Intent(EditImageActivity.this, shareActivity.class);
+        Intent shareIntent = new Intent(EditImageActivity.this, SharingActivity.class);
         if(mOpTimes>0) {
             shareIntent.putExtra(EXTRA_OUTPUT, saveFilePath);
             shareIntent.putExtra(IMAGE_IS_EDIT, mOpTimes > 0);

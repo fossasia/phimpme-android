@@ -47,8 +47,8 @@ class AccountActivity : ThemedActivity(), AccountContract.View,
         accountsRecyclerView = findViewById(R.id.accounts_recycler_view) as RecyclerView
         setSupportActionBar(toolbar)
         databaseHelper = DatabaseHelper(realm)
-        toolbar!!.setPopupTheme(themeHelper!!.getPopupToolbarStyle());
-        toolbar!!.setBackgroundColor(themeHelper!!.getPrimaryColor());
+        toolbar!!.setPopupTheme(themeHelper!!.getPopupToolbarStyle())
+        toolbar!!.setBackgroundColor(themeHelper!!.getPrimaryColor())
         setUpRecyclerView()
         // Calling presenter function to load data from database
         accountPresenter!!.loadFromDatabase()
