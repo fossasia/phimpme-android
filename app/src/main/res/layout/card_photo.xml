@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<vn.mbm.phimp.me.leafpic.views.SquareRelativeLayout
+<org.fossasia.phimpme.leafpic.views.SquareRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -55,4 +55,4 @@
         app:iiv_icon="gmd-play-circle-filled"
         tools:targetApi="lollipop"
     />
-</vn.mbm.phimp.me.leafpic.views.SquareRelativeLayout>
+</org.fossasia.phimpme.leafpic.views.SquareRelativeLayout>

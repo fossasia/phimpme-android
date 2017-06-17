@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="vn.mbm.phimp.me"
+    package="org.fossasia.phimpme"
     android:versionCode="1"
     android:versionName="1.5">
 
@@ -15,7 +15,7 @@
 
 
     <application
-        android:name=".MyApplication"
+        android:name="org.fossasia.phimpme.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -23,7 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".opencamera.Camera.CameraActivity"
+        <activity android:name="org.fossasia.phimpme.opencamera.Camera.CameraActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
@@ -45,7 +45,7 @@
         </activity>
 
         <activity
-            android:name=".opencamera.Camera.TakePhoto"
+            android:name="org.fossasia.phimpme.opencamera.Camera.TakePhoto"
             android:label="@string/take_photo"
             android:icon="@drawable/ic_launcher_take_photo"
             android:screenOrientation="portrait"
@@ -58,12 +58,12 @@
         <receiver
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
-            android:name=".opencamera.Camera.MyWidgetProvider" >
+            android:name="org.fossasia.phimpme.opencamera.Camera.MyWidgetProvider" >
             <intent-filter >
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <!-- <intent-filter>
-            	<action android:name="vn.mbm.phimp.me.opencamera.LAUNCH_OPEN_CAMERA"/>
+            	<action android:navn.mbm.phimp.opencameramera.LAUNCH_OPEN_CAMERA"/>
             </intent-filter>  -->
             <meta-data
                 android:name="android.appwidget.provider"
@@ -73,7 +73,7 @@
         <receiver
             android:icon="@drawable/ic_launcher_take_photo"
             android:label="@string/take_photo"
-            android:name=".opencamera.Camera.MyWidgetProviderTakePhoto" >
+            android:name="org.fossasia.phimpme.opencamera.Camera.MyWidgetProviderTakePhoto" >
             <intent-filter >
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -83,7 +83,7 @@
         </receiver>
         <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
         <service
-            android:name="vn.mbm.phimp.me.opencamera.Camera.MyTileService"
+            android:name="org.fossasia.phimpme.opencamera.Camera.MyTileService"
             android:icon="@drawable/ic_photo_camera_white_48dp"
             android:label="@string/camera"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
@@ -93,7 +93,7 @@
         </service>
         <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
         <service
-            android:name="vn.mbm.phimp.me.opencamera.Camera.MyTileServiceVideo"
+            android:name="org.fossasia.phimpme.opencamera.Camera.MyTileServiceVideo"
             android:icon="@drawable/ic_videocam_white_48dp"
             android:label="@string/record_video"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
@@ -103,7 +103,7 @@
         </service>
         <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
         <service
-            android:name="vn.mbm.phimp.me.opencamera.Camera.MyTileServiceFrontCamera"
+            android:name="org.fossasia.phimpme.opencamera.Camera.MyTileServiceFrontCamera"
             android:icon="@drawable/ic_face_white_48dp"
             android:label="@string/selfie"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
@@ -114,7 +114,7 @@
 
 
         <activity
-            android:name="vn.mbm.phimp.me.leafpic.activities.PlayerActivity"
+            android:name="org.fossasia.phimpme.leafpic.activities.PlayerActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/video_player"
             android:launchMode="singleInstance"
@@ -134,7 +134,7 @@
         </activity>
 
         <activity
-            android:name="vn.mbm.phimp.me.leafpic.activities.SplashScreen"
+            android:name="org.fossasia.phimpme.leafpic.activities.SplashScreen"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
@@ -169,7 +169,7 @@
         </activity>
 
         <activity
-            android:name="vn.mbm.phimp.me.leafpic.activities.LFMainActivity"
+            android:name="org.fossasia.phimpme.leafpic.activities.LFMainActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
@@ -179,14 +179,14 @@
         </activity>
 
         <activity
-            android:name="vn.mbm.phimp.me.leafpic.activities.SingleMediaActivity"
+            android:name="org.fossasia.phimpme.leafpic.activities.SingleMediaActivity"
             android:label="@string/app_name"
             android:configChanges="orientation|screenSize|uiMode|touchscreen|screenLayout"
-            android:parentActivityName="vn.mbm.phimp.me.leafpic.activities.LFMainActivity"
+            android:parentActivityName="org.fossasia.phimpme.leafpic.activities.LFMainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="vn.mbm.phimp.me.leafpic.activities.LFMainActivity" />
+                android:value="org.fossasia.phimpme.leafpic.activities.LFMainActivity" />
 
             <intent-filter>
                 <action android:name="android.intent.action.albumPhoto" />
@@ -209,7 +209,7 @@
         </activity>
 
         <activity
-            android:name="vn.mbm.phimp.me.leafpic.activities.SettingsActivity"
+            android:name="org.fossasia.phimpme.leafpic.activities.SettingsActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/settings"
             android:theme="@style/Theme.AppCompat.NoActionBar">
@@ -224,7 +224,7 @@
         </activity>
 
         <activity
-            android:name="vn.mbm.phimp.me.leafpic.activities.AboutActivity"
+            android:name="org.fossasia.phimpme.leafpic.activities.AboutActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/about"
             android:theme="@style/Theme.AppCompat.NoActionBar">
@@ -235,7 +235,7 @@
         </activity>
 
         <activity
-            android:name="vn.mbm.phimp.me.leafpic.activities.SecurityActivity"
+            android:name="org.fossasia.phimpme.leafpic.activities.SecurityActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:label="@string/security">
@@ -246,7 +246,7 @@
         </activity>
 
         <activity
-            android:name="vn.mbm.phimp.me.leafpic.activities.ExcludedAlbumsActivity"
+            android:name="org.fossasia.phimpme.leafpic.activities.ExcludedAlbumsActivity"
             android:label="@string/excluded_albums"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
@@ -256,7 +256,7 @@
         </activity>
 
         <activity
-            android:name=".editor.editimage.EditImageActivity"
+            android:name="org.fossasia.phimpme.editor.editimage.EditImageActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan">
@@ -267,17 +267,17 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
-        <activity android:name=".accounts.AccountActivity"
+        <activity android:name="org.fossasia.phimpme.accounts.AccountActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
-        <activity android:name=".opencamera.Camera.PhotoActivity"
+        <activity android:name="org.fossasia.phimpme.opencamera.Camera.PhotoActivity"
             android:label="Preview"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>
 
         <meta-data
-            android:name="vn.mbm.phimp.me.leafpic.CustomGlideModule"
+            android:name="org.fossasia.phimpme.leafpic.CustomGlideModule"
             android:value="GlideModule"/>
 
         <provider
@@ -291,7 +291,7 @@
                 android:resource="@xml/provider_paths"/>
         </provider>
 
-        <activity android:name=".shareActivity"
+        <activity android:name="org.fossasia.phimpme.shareActivity"
                   android:theme="@style/Theme.AppCompat.NoActionBar">
         </activity>
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/> 
