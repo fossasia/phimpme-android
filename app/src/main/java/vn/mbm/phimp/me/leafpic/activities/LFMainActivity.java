@@ -186,9 +186,9 @@ public class LFMainActivity extends SharedMediaActivity {
         albumsMode = true;
         editMode = false;
         securityObj = new SecurityHelper(LFMainActivity.this);
+        pickMode = getIntent().getExtras().getBoolean(SplashScreen.PICK_MODE);
 
         initUI();
-
         displayData(getIntent().getExtras());
     }
 
@@ -263,16 +263,12 @@ public class LFMainActivity extends SharedMediaActivity {
             switch (data.getInt(SplashScreen.CONTENT)) {
                 case SplashScreen.ALBUMS_PREFETCHED:
                     displayAlbums(false);
-                    pickMode = data.getBoolean(SplashScreen.PICK_MODE);
-
                     // we pass the albumMode here . If true, show rvAlbum recyclerView. If false, show rvMedia recyclerView
                     toggleRecyclersVisibility(true);
                     return true;
 
                 case SplashScreen.ALBUMS_BACKUP:
                     displayAlbums(true);
-                    pickMode = data.getBoolean(SplashScreen.PICK_MODE);
-
                     // we pass the albumMode here . If true, show rvAlbum recyclerView. If false, show rvMedia recyclerView
                     toggleRecyclersVisibility(true);
                     return true;
@@ -369,6 +365,10 @@ public class LFMainActivity extends SharedMediaActivity {
 
         setRecentApp(getString(R.string.app_name));
         setupUI();
+        if (pickMode){
+            hideNavigationBar();
+            swipeRefreshLayout.setPadding(0,0,0,0);
+        }
     }
 
     private void updateColumnsRvs() {
