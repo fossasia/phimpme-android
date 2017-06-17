@@ -91,41 +91,41 @@
         android:layout_above="@+id/control_area"
         android:background="#000000">
 
-        <vn.mbm.phimp.me.editor.editimage.view.imagezoom.ImageViewTouch
+        <org.fossasia.phimpme.editor.editimage.view.imagezoom.ImageViewTouch
             android:id="@+id/main_image"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center" />
 
-        <vn.mbm.phimp.me.editor.editimage.view.StickerView
+        <org.fossasia.phimpme.editor.editimage.view.StickerView
             android:id="@+id/sticker_panel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
             android:visibility="gone" />
 
-        <vn.mbm.phimp.me.editor.editimage.view.CropImageView
+        <org.fossasia.phimpme.editor.editimage.view.CropImageView
             android:id="@+id/crop_panel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
             android:visibility="gone" />
 
-        <vn.mbm.phimp.me.editor.editimage.view.RotateImageView
+        <org.fossasia.phimpme.editor.editimage.view.RotateImageView
             android:id="@+id/rotate_panel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
             android:visibility="gone" />
 
-        <vn.mbm.phimp.me.editor.editimage.view.TextStickerView
+        <org.fossasia.phimpme.editor.editimage.view.TextStickerView
             android:id="@+id/text_sticker_panel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
             android:visibility="gone" />
 
-        <vn.mbm.phimp.me.editor.editimage.view.CustomPaintView
+        <org.fossasia.phimpme.editor.editimage.view.CustomPaintView
             android:id="@+id/custom_paint_view"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

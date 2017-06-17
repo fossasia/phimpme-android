@@ -14,7 +14,7 @@
         android:windowActionBarOverlay="true"
         />
 
-    <vn.mbm.phimp.me.leafpic.views.HackyViewPager
+    <org.fossasia.phimpme.leafpic.views.HackyViewPager
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/photos_pager"
         android:layout_width="match_parent"
