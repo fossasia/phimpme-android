@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.fossasia.phimpme.leafpic.activities.LFMainActivity">
 
+    <item
+        android:id="@+id/all_photos"
+        android:title="@string/all_photos"
+        app:showAsAction="always" />
+
     <group android:id="@+id/general_action">
 
         <item
