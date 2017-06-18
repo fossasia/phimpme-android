@@ -124,6 +124,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         it.putExtra(EditImageActivity.EXTRA_OUTPUT, outputPath);
         it.putExtra("requestCode",requestCode);
         context.startActivityForResult(it, requestCode);
+        context.finish();
     }
 
     @Override
@@ -346,12 +347,16 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         if(requestCode == 1 && mOpTimes<=0) {   //Checks if this Activity was started by PhotoActivity
             Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(filePath)));
             intent.setClass(getApplicationContext(), SingleMediaActivity.class);
-            shareImage();
+            //shareImage();
+            startActivity(intent);
+            finish();
         }
         else if(mOpTimes>0) {
             Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(saveFilePath)));
             intent.setClass(getApplicationContext(), SingleMediaActivity.class);
-            shareImage();
+            //shareImage();
+            startActivity(intent);
+            finish();
         }
     }
 
@@ -541,7 +546,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         switch (v.getId()){
             case R.id.edit_save:
                 if (mOpTimes == 0) {//Does not modify the image
-                    shareImage();
+                    onSaveTaskDone();
+                    //shareImage();
                 } else {
                     doSaveImage();
                 }

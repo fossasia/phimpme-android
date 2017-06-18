@@ -238,16 +238,21 @@ public class LFMainActivity extends SharedMediaActivity {
         setupUI();
         getAlbums().clearSelectedAlbums();
         getAlbum().clearSelectedPhotos();
+
         if (SP.getBoolean("auto_update_media", false)) {
             if (albumsMode) {
                 if (!firstLaunch) new PrepareAlbumTask().execute();
-            } else new PreparePhotosTask().execute();
+            } else {
+                new PreparePhotosTask().execute();
+            }
         } else {
             albumsAdapter.notifyDataSetChanged();
             mediaAdapter.notifyDataSetChanged();
         }
         invalidateOptionsMenu();
         firstLaunch = false;
+
+        refresh();
     }
 
     private void displayCurrentAlbumMedia(boolean reload) {
@@ -265,6 +270,21 @@ public class LFMainActivity extends SharedMediaActivity {
         albumsMode = editMode = false;
         invalidateOptionsMenu();
     }
+
+    public void refresh(){
+        if (albumsMode) {
+            getAlbums().clearSelectedAlbums();
+            new PrepareAlbumTask().execute();
+        } else {
+            if (!all_photos) {
+                getAlbum().clearSelectedPhotos();
+                new PreparePhotosTask().execute();
+            } else {
+                new PrepareAllPhotos().execute();
+            }
+        }
+    }
+
 
     private void displayAllMedia(boolean reload) {
         toolbar.setTitle(getString(R.string.all_media));
@@ -306,7 +326,6 @@ public class LFMainActivity extends SharedMediaActivity {
         mediaAdapter.swapDataSet(new ArrayList<Media>());
         rvMedia.scrollToPosition(0);
     }
-
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -1463,7 +1482,6 @@ public class LFMainActivity extends SharedMediaActivity {
             }
         }
     }
-
 
     private class PrepareAlbumTask extends AsyncTask<Void, Integer, Void> {
 
