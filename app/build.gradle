@@ -5,6 +5,16 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'realm-android'
 
 android {
+
+    signingConfigs {
+        config {
+            keyAlias 'phimpme'
+            keyPassword 'phimpme'
+            storeFile file('../org.fossasia.phimpme.jks')
+            storePassword 'phimpme'
+        }
+    }
+
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
 
@@ -21,7 +31,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-
+            signingConfig signingConfigs.config
+            debuggable false
+            jniDebuggable false
+            renderscriptDebuggable false
+            zipAlignEnabled true
         }
         debug {
             testCoverageEnabled true

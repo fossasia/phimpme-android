@@ -73,7 +73,7 @@ class AccountActivity : ThemedActivity(), AccountContract.View {
     }
 
     override fun getNavigationMenuItemId(): Int {
-        return R.id.navigation_accounts
+        return R.id.navigation_camera
     }
 
     override fun setUpRecyclerView() {

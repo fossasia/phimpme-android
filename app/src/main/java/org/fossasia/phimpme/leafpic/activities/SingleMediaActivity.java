@@ -38,8 +38,6 @@ import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.yalantis.ucrop.UCrop;
 
-import java.io.File;
-
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.SharedMediaActivity;
 import org.fossasia.phimpme.editor.FileUtils;
@@ -59,8 +57,9 @@ import org.fossasia.phimpme.leafpic.util.PreferenceUtil;
 import org.fossasia.phimpme.leafpic.util.SecurityHelper;
 import org.fossasia.phimpme.leafpic.util.StringUtils;
 import org.fossasia.phimpme.leafpic.views.HackyViewPager;
-import org.fossasia.phimpme.shareActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
+
+import java.io.File;
 
 /**
  * Created by dnld on 18/02/16.
@@ -484,9 +483,10 @@ public class SingleMediaActivity extends SharedMediaActivity {
 
 
             case R.id.action_share:
-                Intent share = new Intent(SingleMediaActivity.this,shareActivity.class);
-                share.putExtra(EXTRA_OUTPUT,getAlbum().getCurrentMedia().getPath());
-                startActivity(share);
+                Intent share = new Intent(Intent.ACTION_SEND);
+                share.setType(getAlbum().getCurrentMedia().getMimeType());
+                share.putExtra(Intent.EXTRA_STREAM, getAlbum().getCurrentMedia().getUri());
+                startActivity(Intent.createChooser(share, getString(R.string.send_to)));
                 return true;
 
             case R.id.action_edit:
@@ -760,6 +760,12 @@ public class SingleMediaActivity extends SharedMediaActivity {
             mainBitmap = result;
             imgView.setImageBitmap(mainBitmap);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+            getAlbums().clearSelectedAlbums();
     }
 }
 
