@@ -9,7 +9,7 @@ android {
     buildToolsVersion "25.0.3"
 
     defaultConfig {
-        applicationId "vn.mbm.phimp.me"
+        applicationId "org.fossasia.phimpme"
         minSdkVersion 15
         targetSdkVersion 25
         multiDexEnabled true
@@ -118,4 +118,5 @@ dependencies {
     compile "com.twitter.sdk.android:twitter:$rootProject.twitterVersion"
     compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
     compile "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
+    compile "com.squareup.picasso:picasso:$rootProject.picassoVersion"
 }
