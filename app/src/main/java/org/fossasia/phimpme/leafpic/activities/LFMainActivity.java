@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -1304,7 +1305,7 @@ public class LFMainActivity extends SharedMediaActivity {
                     public void onClick(View dialog) {
                         if (editTextNewName.length() != 0) {
                             swipeRefreshLayout.setRefreshing(true);
-                            boolean success;
+                            boolean success = false;
                             if (albumsMode) {
                                 int index = getAlbums().dispAlbums.indexOf(getAlbums().getSelectedAlbum(0));
                                 getAlbums().getAlbum(index).updatePhotos(getApplicationContext());
@@ -1317,7 +1318,16 @@ public class LFMainActivity extends SharedMediaActivity {
                                 mediaAdapter.notifyDataSetChanged();
                             }
                             renameDialog.dismiss();
-                            if (!success) requestSdCardPermissions();
+                            if (success){
+                                Snackbar.make(getWindow().getDecorView().getRootView(),
+                                        getString(R.string.rename_succes),Snackbar.LENGTH_LONG).show();
+
+                            }else {
+                                Snackbar.make(getWindow().getDecorView().getRootView(),
+                                        getString(R.string.rename_error),Snackbar.LENGTH_LONG)
+                                        .show();
+                                requestSdCardPermissions();
+                            }
                             swipeRefreshLayout.setRefreshing(false);
                         } else {
                             StringUtils.showToast(getApplicationContext(), getString(R.string.insert_something));
