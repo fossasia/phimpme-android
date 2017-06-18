@@ -20,7 +20,8 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
 
     SeekBar seekBar;
     ImageButton cancel,apply;
-    Bitmap currentBitmap,filterBit;
+    public Bitmap filterBit;
+    Bitmap currentBitmap;
     View fragmentView;
 
     public SliderFragment() {
