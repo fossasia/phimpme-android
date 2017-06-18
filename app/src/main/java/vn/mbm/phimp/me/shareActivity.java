@@ -37,11 +37,9 @@ public class shareActivity extends AppCompatActivity {
     ImageView mInstagrambutton;
     FloatingActionButton fab_home;
     public EditText mEditText;
-    public String filePath;
     public String saveFilePath;
     public String sendMessage;
     public static final String EXTRA_OUTPUT = "extra_output";
-    public static final String FILE_PATH = "file_path";
     private CallbackManager callbackManager;
     private LoginManager manager;
 

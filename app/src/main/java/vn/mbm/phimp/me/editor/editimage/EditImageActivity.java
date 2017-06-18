@@ -84,19 +84,17 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     public ImageViewTouch mainImage;
     private View cancel,save;
 
-    public StickerView mStickerView;// 贴图层View
-    public CropImageView mCropPanel;// 剪切操作控件
-    public RotateImageView mRotatePanel;// 旋转操作控件
-    public TextStickerView mTextStickerView;//文本贴图显示View
-    public CustomPaintView mPaintView;//涂鸦模式画板
+    public StickerView mStickerView;// Texture layers View
+    public CropImageView mCropPanel;// Cut operation control
+    public RotateImageView mRotatePanel;//Rotation operation controls
+    public TextStickerView mTextStickerView;//Text display map View
+    public CustomPaintView mPaintView;//drawing mode
 
 
     private SaveImageTask mSaveImageTask;
     private int requestCode;
     final String REVIEW_ACTION = "com.android.camera.action.REVIEW";
-    int saveFalg = 0;
 
-    public ThemeHelper themeHelper;
     public MainMenuFragment mainMenuFragment;
     public RecyclerMenuFragment filterFragment, enhanceFragment,stickerTypesFragment;
     public StickersFragment stickersFragment;
@@ -141,7 +139,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         getData();
         requestCode = getIntent().getIntExtra("requestCode", 1);
 
-//        setInitialFragments();
     }
 
     private void setInitialFragments() {
@@ -343,19 +340,12 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
             Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(filePath)));
             intent.setClass(getApplicationContext(), SingleMediaActivity.class);
             shareImage();
-            //startActivity(intent);
-            //finish();
         }
         else if(mOpTimes>0) {
             Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(saveFilePath)));
             intent.setClass(getApplicationContext(), SingleMediaActivity.class);
             shareImage();
-            //startActivity(intent);
-            //finish();
         }
-        /*else {
-            finish();
-        }*/
     }
 
     private ArrayList<String> addStickerImages(String folderPath) {
@@ -469,6 +459,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
             case MODE_PAINT:
                 paintFragment.backToMain();
                 return;
+            default:
+                finish();
         }
 
         if (canAutoExit()) {
