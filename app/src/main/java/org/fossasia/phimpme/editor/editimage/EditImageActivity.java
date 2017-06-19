@@ -83,17 +83,17 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     public ImageViewTouch mainImage;
     private View cancel,save,bef_aft;
 
-    public StickerView mStickerView;
-    public CropImageView mCropPanel;
-    public RotateImageView mRotatePanel;
-    public TextStickerView mTextStickerView;
-    public CustomPaintView mPaintView;
+    public StickerView mStickerView;// Texture layers View
+    public CropImageView mCropPanel;// Cut operation control
+    public RotateImageView mRotatePanel;//Rotation operation controls
+    public TextStickerView mTextStickerView;//Text display map View
+    public CustomPaintView mPaintView;//drawing paint
 
 
     private SaveImageTask mSaveImageTask;
     private int requestCode;
     final String REVIEW_ACTION = "com.android.camera.action.REVIEW";
-    int saveFalg = 0;
+
 
     public ThemeHelper themeHelper;
     public MainMenuFragment mainMenuFragment;
@@ -347,19 +347,12 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
             Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(filePath)));
             intent.setClass(getApplicationContext(), SingleMediaActivity.class);
             shareImage();
-            //startActivity(intent);
-            //finish();
         }
         else if(mOpTimes>0) {
             Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(saveFilePath)));
             intent.setClass(getApplicationContext(), SingleMediaActivity.class);
             shareImage();
-            //startActivity(intent);
-            //finish();
         }
-        /*else {
-            finish();
-        }*/
     }
 
     private ArrayList<String> addStickerImages(String folderPath) {
@@ -501,7 +494,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         }
 
         if (canAutoExit()) {
-            onSaveTaskDone();
+            finish();
         } else {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage(R.string.exit_without_save)
@@ -548,7 +541,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         switch (v.getId()){
             case R.id.edit_save:
                 if (mOpTimes == 0) {//Does not modify the image
-                    //onSaveTaskDone();
                     shareImage();
                 } else {
                     doSaveImage();
