@@ -259,17 +259,20 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     }
 
     private void setButtonsVisibility() {
-    //    cancel.setVisibility(View.VISIBLE);
         save.setVisibility(View.VISIBLE);
+        bef_aft.setVisibility(View.VISIBLE);
         switch (mode){
-            case MODE_SLIDER:
             case MODE_STICKERS:
             case MODE_CROP:
             case MODE_ROTATE:
             case MODE_TEXT:
             case MODE_PAINT:
-      //          cancel.setVisibility(View.INVISIBLE);
                 save.setVisibility(View.INVISIBLE);
+                bef_aft.setVisibility(View.INVISIBLE);
+                break;
+            case MODE_SLIDER:
+                save.setVisibility(View.INVISIBLE);
+                break;
         }
     }
 
