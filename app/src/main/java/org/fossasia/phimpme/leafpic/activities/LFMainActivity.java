@@ -222,6 +222,7 @@ public class LFMainActivity extends SharedMediaActivity {
         albumsMode = true;
         editMode = false;
         securityObj = new SecurityHelper(LFMainActivity.this);
+        if (getIntent().getExtras()!=null)
         pickMode = getIntent().getExtras().getBoolean(SplashScreen.PICK_MODE);
         listAll = StorageProvider.getAllShownImages(LFMainActivity.this);
 
