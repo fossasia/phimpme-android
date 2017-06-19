@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -45,7 +46,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class EditImageActivity extends EditBaseActivity implements View.OnClickListener {
+public class EditImageActivity extends EditBaseActivity implements View.OnClickListener, View.OnTouchListener {
     public static final String FILE_PATH = "file_path";
     public static final String EXTRA_OUTPUT = "extra_output";
     public static final String SAVE_FILE_PATH = "save_file_path";
@@ -78,14 +79,15 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
 
     private EditImageActivity mContext;
     public Bitmap mainBitmap;
+    private Bitmap originalBitmap;
     public ImageViewTouch mainImage;
-    private View cancel,save;
+    private View cancel,save,bef_aft;
 
-    public StickerView mStickerView;// 贴图层View
-    public CropImageView mCropPanel;// 剪切操作控件
-    public RotateImageView mRotatePanel;// 旋转操作控件
-    public TextStickerView mTextStickerView;//文本贴图显示View
-    public CustomPaintView mPaintView;//涂鸦模式画板
+    public StickerView mStickerView;
+    public CropImageView mCropPanel;
+    public RotateImageView mRotatePanel;
+    public TextStickerView mTextStickerView;
+    public CustomPaintView mPaintView;
 
 
     private SaveImageTask mSaveImageTask;
@@ -168,9 +170,11 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         mainImage = (ImageViewTouch) findViewById(R.id.main_image);
         cancel = findViewById(R.id.edit_cancel);
         save = findViewById(R.id.edit_save);
+        bef_aft = findViewById(R.id.edit_befaft);
 
         cancel.setOnClickListener(this);
         save.setOnClickListener(this);
+        bef_aft.setOnTouchListener(this);
 
         mStickerView = (StickerView) findViewById(R.id.sticker_panel);
         mCropPanel = (CropImageView) findViewById(R.id.crop_panel);
@@ -255,17 +259,20 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     }
 
     private void setButtonsVisibility() {
-    //    cancel.setVisibility(View.VISIBLE);
         save.setVisibility(View.VISIBLE);
+        bef_aft.setVisibility(View.VISIBLE);
         switch (mode){
-            case MODE_SLIDER:
             case MODE_STICKERS:
             case MODE_CROP:
             case MODE_ROTATE:
             case MODE_TEXT:
             case MODE_PAINT:
-      //          cancel.setVisibility(View.INVISIBLE);
                 save.setVisibility(View.INVISIBLE);
+                bef_aft.setVisibility(View.INVISIBLE);
+                break;
+            case MODE_SLIDER:
+                save.setVisibility(View.INVISIBLE);
+                break;
         }
     }
 
@@ -377,6 +384,31 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         return stickerType;
     }
 
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        if (R.id.edit_befaft == v.getId()){
+            if (MotionEvent.ACTION_DOWN == event.getAction()){
+                switch (mode){
+                    case MODE_SLIDER:
+                        mainImage.setImageBitmap(mainBitmap);
+                        break;
+                    default:
+                        mainImage.setImageBitmap(originalBitmap);
+                }
+            }else if (MotionEvent.ACTION_UP == event.getAction()){
+                switch (mode){
+                    case MODE_SLIDER:
+                        mainImage.setImageBitmap(sliderFragment.filterBit);
+                        break;
+                    default:
+                        mainImage.setImageBitmap(mainBitmap);
+                }
+            }
+        }
+        return true;
+    }
+
     private final class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
         @Override
         protected Bitmap doInBackground(String... params) {
@@ -396,7 +428,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
             mainBitmap = result;
             mainImage.setImageBitmap(result);
             mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
-
+            originalBitmap = mainBitmap.copy(mainBitmap.getConfig(),true);
             setInitialFragments();
         }
     }
@@ -491,6 +523,10 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (originalBitmap != null && !originalBitmap.isRecycled()) {
+            originalBitmap.recycle();
+            originalBitmap = null;
+        }
         if (mLoadImageTask != null) {
             mLoadImageTask.cancel(true);
         }
