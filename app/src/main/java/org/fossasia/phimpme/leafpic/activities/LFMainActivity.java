@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
@@ -54,6 +55,7 @@ import org.fossasia.phimpme.leafpic.data.HandlingAlbums;
 import org.fossasia.phimpme.leafpic.data.Media;
 import org.fossasia.phimpme.leafpic.data.base.FilterMode;
 import org.fossasia.phimpme.leafpic.data.base.SortingOrder;
+import org.fossasia.phimpme.leafpic.data.providers.StorageProvider;
 import org.fossasia.phimpme.leafpic.util.Affix;
 import org.fossasia.phimpme.leafpic.util.AlertDialogsHelper;
 import org.fossasia.phimpme.leafpic.util.ContentHelper;
@@ -64,6 +66,7 @@ import org.fossasia.phimpme.leafpic.util.StringUtils;
 import org.fossasia.phimpme.leafpic.views.GridSpacingItemDecoration;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -96,6 +99,13 @@ public class LFMainActivity extends SharedMediaActivity {
     private SelectAlbumBottomSheet bottomSheetDialogFragment;
     private SwipeRefreshLayout swipeRefreshLayout;
     private boolean hidden = false, pickMode = false, editMode = false, albumsMode = true, firstLaunch = true;
+
+    //To handle all photos/Album conditions
+    public boolean all_photos = false;
+    final String REVIEW_ACTION = "com.android.camera.action.REVIEW";
+    public static ArrayList<Media> listAll;
+    public int size;
+    public int pos;
     /*
     editMode-  When true, user can select items by clicking on them one by one
      */
@@ -110,17 +120,19 @@ public class LFMainActivity extends SharedMediaActivity {
         public boolean onLongClick(View v) {
             Media m = (Media) v.findViewById(R.id.photo_path).getTag();
             //If first long press, turn on selection mode
-            if (!editMode) {
-                mediaAdapter.notifyItemChanged(getAlbum().toggleSelectPhoto(m));
-                editMode = true;
-            } else
-                getAlbum().selectAllPhotosUpTo(getAlbum().getIndex(m), mediaAdapter);
+            if (!all_photos) {
+                if (!editMode) {
+                    mediaAdapter.notifyItemChanged(getAlbum().toggleSelectPhoto(m));
+                    editMode = true;
+                } else
+                    getAlbum().selectAllPhotosUpTo(getAlbum().getIndex(m), mediaAdapter);
 
-            invalidateOptionsMenu();
+                invalidateOptionsMenu();
+            } else
+                Toast.makeText(LFMainActivity.this, getString(R.string.albums_mode), Toast.LENGTH_SHORT).show();
             return true;
         }
     };
-
 
     /**
      * Handles short clicks on photos.
@@ -132,22 +144,34 @@ public class LFMainActivity extends SharedMediaActivity {
         @Override
         public void onClick(View v) {
             Media m = (Media) v.findViewById(R.id.photo_path).getTag();
-            if (!pickMode) {
-                //if in selection mode, toggle the selected/unselect state of photo
-                if (editMode) {
-                    mediaAdapter.notifyItemChanged(getAlbum().toggleSelectPhoto(m));
-                    invalidateOptionsMenu();
+            if (all_photos) {
+                size = listAll.size();
+                pos = getImagePosition(m.getPath());
+            }
+            if (!all_photos) {
+                if (!pickMode) {
+                    //if in selection mode, toggle the selected/unselect state of photo
+                    if (editMode) {
+                        mediaAdapter.notifyItemChanged(getAlbum().toggleSelectPhoto(m));
+                        invalidateOptionsMenu();
+                    } else {
+                        getAlbum().setCurrentPhotoIndex(m);
+                        Intent intent = new Intent(LFMainActivity.this, SingleMediaActivity.class);
+                        intent.setAction(SingleMediaActivity.ACTION_OPEN_ALBUM);
+                        startActivity(intent);
+                    }
                 } else {
-                    getAlbum().setCurrentPhotoIndex(m);
-                    Intent intent = new Intent(LFMainActivity.this, SingleMediaActivity.class);
-                    intent.setAction(SingleMediaActivity.ACTION_OPEN_ALBUM);
-                    startActivity(intent);
+                    setResult(RESULT_OK, new Intent().setData(m.getUri()));
+                    finish();
                 }
             } else {
-                setResult(RESULT_OK, new Intent().setData(m.getUri()));
-                finish();
+                Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(m.getPath())));
+                intent.putExtra(getString(R.string.all_photo_mode), true);
+                intent.putExtra(getString(R.string.position), pos);
+                intent.putExtra(getString(R.string.allMediaSize), size);
+                intent.setClass(getApplicationContext(), SingleMediaActivity.class);
+                startActivity(intent);
             }
-
         }
     };
 
@@ -178,6 +202,17 @@ public class LFMainActivity extends SharedMediaActivity {
         }
     };
 
+    public int getImagePosition(String path) {
+        int pos = 0;
+        for (int i = 0; i < listAll.size(); i++) {
+            if (listAll.get(i).getPath().equals(path)) {
+                pos = i;
+                break;
+            }
+        }
+        return pos;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -187,7 +222,9 @@ public class LFMainActivity extends SharedMediaActivity {
         albumsMode = true;
         editMode = false;
         securityObj = new SecurityHelper(LFMainActivity.this);
+        if (getIntent().getExtras()!=null)
         pickMode = getIntent().getExtras().getBoolean(SplashScreen.PICK_MODE);
+        listAll = StorageProvider.getAllShownImages(LFMainActivity.this);
 
         initUI();
         displayData(getIntent().getExtras());
@@ -229,7 +266,24 @@ public class LFMainActivity extends SharedMediaActivity {
         invalidateOptionsMenu();
     }
 
+    private void displayAllMedia(boolean reload) {
+        toolbar.setTitle(getString(R.string.all_media));
+        toolbar.setNavigationIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_arrow_back));
+        mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+        mediaAdapter.swapDataSet(listAll);
+        if (reload) new PrepareAllPhotos().execute();
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                displayAlbums();
+            }
+        });
+        albumsMode = editMode = false;
+        invalidateOptionsMenu();
+    }
+
     private void displayAlbums() {
+        all_photos = false;
         displayAlbums(true);
     }
 
@@ -343,8 +397,12 @@ public class LFMainActivity extends SharedMediaActivity {
                     getAlbums().clearSelectedAlbums();
                     new PrepareAlbumTask().execute();
                 } else {
-                    getAlbum().clearSelectedPhotos();
-                    new PreparePhotosTask().execute();
+                    if (!all_photos) {
+                        getAlbum().clearSelectedPhotos();
+                        new PreparePhotosTask().execute();
+                    } else {
+                        new PrepareAllPhotos().execute();
+                    }
                 }
             }
         });
@@ -587,7 +645,9 @@ public class LFMainActivity extends SharedMediaActivity {
             if (editMode)
                 toolbar.setTitle(getAlbum().getSelectedCount() + "/" + getAlbum().getMedia().size());
             else {
-                toolbar.setTitle(getAlbum().getName());
+                if (!all_photos)
+                    toolbar.setTitle(getAlbum().getName());
+                else toolbar.setTitle(getString(R.string.all_media));
                 toolbar.setNavigationIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_arrow_back));
                 toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                     @Override
@@ -636,6 +696,9 @@ public class LFMainActivity extends SharedMediaActivity {
         getMenuInflater().inflate(R.menu.menu_albums, menu);
 
         if (albumsMode) {
+            Drawable shareIcon = getResources().getDrawable(R.drawable.ic_photo_24dp, getTheme());
+            shareIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+            menu.findItem(R.id.all_photos).setIcon(shareIcon);
             menu.findItem(R.id.select_all).setTitle(
                     getString(getAlbums().getSelectedCount() == albumsAdapter.getItemCount()
                             ? R.string.clear_selected
@@ -699,10 +762,12 @@ public class LFMainActivity extends SharedMediaActivity {
             editMode = getAlbums().getSelectedCount() != 0;
             menu.setGroupVisible(R.id.album_options_menu, editMode);
             menu.setGroupVisible(R.id.photos_option_men, false);
+            menu.findItem(R.id.all_photos).setVisible(true);
         } else {
             editMode = getAlbum().areMediaSelected();
             menu.setGroupVisible(R.id.photos_option_men, editMode);
             menu.setGroupVisible(R.id.album_options_menu, !editMode);
+            menu.findItem(R.id.all_photos).setVisible(false);
         }
 
         togglePrimaryToolbarOptions(menu);
@@ -738,6 +803,15 @@ public class LFMainActivity extends SharedMediaActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
+
+            case R.id.all_photos:
+                if (!all_photos) {
+                    all_photos = true;
+                    displayAllMedia(true);
+                } else {
+                    displayAlbums();
+                }
+                return true;
 
             case R.id.select_all:
                 if (albumsMode) {
@@ -1441,6 +1515,34 @@ public class LFMainActivity extends SharedMediaActivity {
             swipeRefreshLayout.setRefreshing(false);
             invalidateOptionsMenu();
             finishEditMode();
+        }
+    }
+
+    private class PrepareAllPhotos extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            swipeRefreshLayout.setRefreshing(true);
+            toggleRecyclersVisibility(false);
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            getAlbum().updatePhotos(getApplicationContext());
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            mediaAdapter.swapDataSet(StorageProvider.getAllShownImages(LFMainActivity.this));
+            if (!hidden)
+                HandlingAlbums.addAlbumToBackup(getApplicationContext(), getAlbum());
+            checkNothing();
+            swipeRefreshLayout.setRefreshing(false);
+            invalidateOptionsMenu();
+            finishEditMode();
+            toolbar.setTitle(getString(R.string.all_media));
         }
     }
 

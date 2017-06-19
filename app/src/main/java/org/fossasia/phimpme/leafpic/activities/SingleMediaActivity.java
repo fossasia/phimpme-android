@@ -99,6 +99,11 @@ public class SingleMediaActivity extends SharedMediaActivity {
     private View mTakenPhoto;//拍摄照片用于编辑
     private Uri photoURI = null;
 
+    //To handle all photos
+    public Boolean allPhotoMode;
+    public int all_photo_pos;
+    public int size_all;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,6 +114,9 @@ public class SingleMediaActivity extends SharedMediaActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         mViewPager = (HackyViewPager) findViewById(R.id.photos_pager);
         securityObj= new SecurityHelper(SingleMediaActivity.this);
+        allPhotoMode = getIntent().getBooleanExtra(getString(R.string.all_photo_mode), false);
+        all_photo_pos = getIntent().getIntExtra(getString(R.string.position), 0);
+        size_all = getIntent().getIntExtra(getString(R.string.allMediaSize), getAlbum().getCount());
 
         if (savedInstanceState != null)
             mViewPager.setLocked(savedInstanceState.getBoolean(ISLOCKED_ARG, false));
@@ -169,7 +177,9 @@ public class SingleMediaActivity extends SharedMediaActivity {
                         else hideSystemUI();
                     }
                 });
-        adapter = new MediaPagerAdapter(getSupportFragmentManager(), getAlbum().getMedia());
+        if (!allPhotoMode)
+            adapter = new MediaPagerAdapter(getSupportFragmentManager(), getAlbum().getMedia());
+        else adapter = new MediaPagerAdapter(getSupportFragmentManager(), LFMainActivity.listAll);
 
         adapter.setVideoOnClickListener(new View.OnClickListener() {
             @Override
@@ -188,35 +198,58 @@ public class SingleMediaActivity extends SharedMediaActivity {
             }
         });
 
-        getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
+        if (!allPhotoMode) {
+            getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
+            mViewPager.setAdapter(adapter);
+            mViewPager.setCurrentItem(getAlbum().getCurrentMediaIndex());
+            mViewPager.setPageTransformer(true, new DepthPageTransformer());
+            mViewPager.setOffscreenPageLimit(3);
+            mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                }
 
-        mViewPager.setAdapter(adapter);
-        mViewPager.setCurrentItem(getAlbum().getCurrentMediaIndex());
-        mViewPager.setPageTransformer(true, new DepthPageTransformer());
-        mViewPager.setOffscreenPageLimit(3);
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
+                @Override
+                public void onPageSelected(int position) {
+                    getAlbum().setCurrentPhotoIndex(position);
+                    toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
+                    invalidateOptionsMenu();
+                }
 
-            @Override
-            public void onPageSelected(int position) {
-                getAlbum().setCurrentPhotoIndex(position);
-                toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
-                invalidateOptionsMenu();
-            }
+                @Override
+                public void onPageScrollStateChanged(int state) {
+                }
+            });
+        } else {
+            getSupportActionBar().setTitle(all_photo_pos + 1 + " " + getString(R.string.of) + " " + size_all);
+            mViewPager.setAdapter(adapter);
+            mViewPager.setCurrentItem(all_photo_pos);
+            mViewPager.setPageTransformer(true, new DepthPageTransformer());
+            mViewPager.setOffscreenPageLimit(3);
+            mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                }
 
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
+                @Override
+                public void onPageSelected(int position) {
+                    getAlbum().setCurrentPhotoIndex(position);
+                    toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
+                    invalidateOptionsMenu();
+                }
 
+                @Override
+                public void onPageScrollStateChanged(int state) {
+                }
+            });
+        }
         Display aa = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
 
         if (aa.getRotation() == Surface.ROTATION_90) {
             Configuration configuration = new Configuration();
             configuration.orientation = Configuration.ORIENTATION_LANDSCAPE;
             onConfigurationChanged(configuration);
+
         }
 
     }
@@ -276,11 +309,13 @@ public class SingleMediaActivity extends SharedMediaActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_view_pager, menu);
+        if(!allPhotoMode) {
+            // Inflate the menu; this adds items to the action bar if it is present.
+            getMenuInflater().inflate(R.menu.menu_view_pager, menu);
 
-        menu.findItem(R.id.action_delete).setIcon(getToolbarIcon(CommunityMaterial.Icon.cmd_delete));
-        menu.findItem(R.id.action_share).setIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_share));
+            menu.findItem(R.id.action_delete).setIcon(getToolbarIcon(CommunityMaterial.Icon.cmd_delete));
+            menu.findItem(R.id.action_share).setIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_share));
+        }
 
         return true;
     }
@@ -301,7 +336,8 @@ public class SingleMediaActivity extends SharedMediaActivity {
     @Override
     public boolean onPrepareOptionsMenu(final Menu menu) {
 
-        menu.setGroupVisible(R.id.only_photos_options, !getAlbum().getCurrentMedia().isVideo());
+        if (!allPhotoMode)
+            menu.setGroupVisible(R.id.only_photos_options, !getAlbum().getCurrentMedia().isVideo());
 
         if (customUri) {
             menu.setGroupVisible(R.id.on_internal_storage, false);

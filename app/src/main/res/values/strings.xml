@@ -764,7 +764,17 @@
     <string name="drawable">drawable</string>
     <string name="ic_">ic_</string>
     <string name="_indicator">_indicator</string>
+
     <string name="color_effects">Color Effects</string>
     <string name="toggle_info">Click to switch between colors \n Long press to switch to normal</string>
     <string name="first_click">first click</string>
+
+    <!--All photos-->
+    <string name="all_photos">All_photos</string>
+    <string name="all_photo_mode">photo mode</string>
+    <string name="position">position</string>
+    <string name="allMediaSize">size</string>
+    <string name="all_media">All</string>
+    <string name="albums_mode">Switch to albums mode</string>
+
 </resources>
