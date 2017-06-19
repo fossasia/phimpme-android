@@ -134,6 +134,8 @@ dependencies {
     compile "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
     compile "com.squareup.picasso:picasso:$rootProject.picassoVersion"
     compile "com.github.amlcurran.showcaseview:library:$rootProject.showcaseVersion"
+    compile files('libs/twitter4j-core-3.0.5.jar')
+    compile files('libs/twitter4j-media-support-3.0.5.jar')
 }
 
 kapt {
