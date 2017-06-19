@@ -1,0 +1,83 @@
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:openDrawer="start">
+
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/Relative_Album_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:theme="@style/Theme.AppCompat.NoActionBar">
+        <!---->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar" />
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefreshLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/height_bottombar" >
+
+                <RelativeLayout
+                    android:id="@+id/rl_main_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/grid_albums"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:clipToPadding="false"
+                        android:scrollbarThumbVertical="@drawable/ic_scrollbar"
+                        android:scrollbars="vertical"
+
+                        />
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/grid_photos"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        />
+
+                    <TextView
+                        android:id="@+id/nothing_to_show"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:elevation="12dp"
+                        android:gravity="center"
+                        android:text="@string/there_is_nothing_to_show"
+                        android:textColor="@color/md_white_1000"
+                        android:textSize="18sp"
+                        android:visibility="invisible"
+                        tools:targetApi="lollipop" />
+                </RelativeLayout>
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+        </LinearLayout>
+
+        <include
+            layout="@layout/element_bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom" />
+    </android.support.design.widget.CoordinatorLayout>
+
+    <include
+        android:id="@+id/drawer_items"
+        layout="@layout/activity_drawer" />
+</android.support.v4.widget.DrawerLayout>
+
+

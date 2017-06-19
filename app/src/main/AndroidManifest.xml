@@ -1,229 +1,302 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="vn.mbm.phimp.me"
+    package="org.fossasia.phimpme"
     android:versionCode="1"
     android:versionName="1.5">
 
-    <uses-sdk android:minSdkVersion="8" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature android:name="android.hardware.microphone" />
 
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="com.android.browser.permission.WRITE_HISTORY_BOOKMARKS" />
-    <uses-permission android:name="com.android.browser.permission.READ_HISTORY_BOOKMARKS" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.MEDIA_CON" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
-    <uses-feature
-        android:glEsVersion="0x00020000"
-        android:required="true" />
 
     <application
-        android:name=".MyApplication"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/application_title"
-        android:largeHeap="true"
-        android:theme="@style/Phimpme.Base"
-        tools:replace="android:icon, android:label">
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
+        android:name="org.fossasia.phimpme.MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
 
-        <uses-library
-            android:name="com.google.android.maps"
-            android:required="false" />
-
-        <service android:name=".CollectUserData" />
-        <!-- Start of Crittercism Support Forum Manifest Code -->
-        <activity
-            android:name="com.crittercism.NewFeedbackSpringboardActivity"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
-        <activity
-            android:name="com.crittercism.NewFeedbackIssueListActivity"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
-        <activity
-            android:name="com.crittercism.NewFeedbackQuestionListActivity"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
-        <activity
-            android:name="com.crittercism.NewFeedbackItemDetailsActivity"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
-        <activity
-            android:name="com.crittercism.NewFeedbackCreateActivity"
-            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
-        <activity android:name="com.crittercism.NotificationActivity" />
-
-        <service
-            android:name="com.crittercism.service.CrittercismService"
-            android:exported="true"
-            android:process="com.crittercism.service">
+        <activity android:name="org.fossasia.phimpme.opencamera.Camera.CameraActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
-                <action android:name="com.crittercism.service.CrittercismService" />
+                <action android:name="android.media.action.IMAGE_CAPTURE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.media.action.IMAGE_CAPTURE_SECURE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.media.action.STILL_IMAGE_CAMERA" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.media.action.STILL_IMAGE_CAMERA_SECURE" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="org.fossasia.phimpme.opencamera.Camera.TakePhoto"
+            android:label="@string/take_photo"
+            android:icon="@drawable/ic_launcher_take_photo"
+            android:screenOrientation="portrait"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:taskAffinity=""
+            android:excludeFromRecents="true"
+            >
+        </activity>
+        <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
+        <receiver
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:name="org.fossasia.phimpme.opencamera.Camera.MyWidgetProvider" >
+            <intent-filter >
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <!-- <intent-filter>
+            	<action android:navn.mbm.phimp.opencameramera.LAUNCH_OPEN_CAMERA"/>
+            </intent-filter>  -->
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info" />
+        </receiver>
+        <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
+        <receiver
+            android:icon="@drawable/ic_launcher_take_photo"
+            android:label="@string/take_photo"
+            android:name="org.fossasia.phimpme.opencamera.Camera.MyWidgetProviderTakePhoto" >
+            <intent-filter >
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info_take_photo" />
+        </receiver>
+        <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
+        <service
+            android:name="org.fossasia.phimpme.opencamera.Camera.MyTileService"
+            android:icon="@drawable/ic_photo_camera_white_48dp"
+            android:label="@string/camera"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
         </service>
-        <!-- End of Crittercism Support Forum Manifest Code -->
-        <activity
-            android:name=".SplashScreen"
-            android:configChanges="locale"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar">
+        <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
+        <service
+            android:name="org.fossasia.phimpme.opencamera.Camera.MyTileServiceVideo"
+            android:icon="@drawable/ic_videocam_white_48dp"
+            android:label="@string/record_video"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".PhimpMe"
-            android:configChanges="locale" />
-        <activity
-            android:name=".Camera"
-            android:configChanges="locale" />
-        <activity
-            android:name=".Blank"
-            android:configChanges="locale" />
-        <activity
-            android:name=".gallery.PhimpMeGallery"
-            android:configChanges="locale"
-            android:screenOrientation="portrait" />
+        </service>
+        <!-- should not change the android:name, including moving to a subpackage - see http://android-developers.blogspot.co.uk/2011/06/things-that-cannot-change.html -->
+        <service
+            android:name="org.fossasia.phimpme.opencamera.Camera.MyTileServiceFrontCamera"
+            android:icon="@drawable/ic_face_white_48dp"
+            android:label="@string/selfie"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
 
 
         <activity
-            android:name=".BluetoothShareMultipleFile"
-            android:configChanges="locale"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".PhotoSelect"
-            android:configChanges="locale" />
-        <activity
-            android:name=".image.CropImage"
-            android:configChanges="locale"
-            android:label="CropLabel"
-            android:screenOrientation="portrait" />
-
-
-        <activity
-            android:name=".UploadProgress"
-            android:configChanges="locale"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".DrupalWebviewActivity"
-            android:configChanges="locale" />
-        <activity
-            android:name=".WordpressWebviewActivity"
-            android:configChanges="locale" />
-        <activity
-            android:name=".JoomlaWebviewActivity"
-            android:configChanges="locale" />
-
-        <activity
-            android:name=".SendFileActivity"
-            android:configChanges="locale"
-            android:screenOrientation="portrait" />
-        <!-- Paypal -->
-        <activity
-            android:name="com.paypal.android.MEP.PayPalActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
-        <activity
-            android:name=".gallery3d.media.Gallery"
-            android:clearTaskOnLaunch="true"
-            android:configChanges="keyboardHidden|orientation"
-            android:noHistory="false"
-            android:stateNotNeeded="true"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
-        <activity
-            android:name=".gallery3d.media.CropImage"
-            android:clearTaskOnLaunch="true"
-            android:configChanges="keyboardHidden|orientation"
-            android:hardwareAccelerated="false"
-            android:noHistory="false"
-            android:stateNotNeeded="true" />
-        <activity
-            android:name=".Webkit"
-            android:configChanges="locale">
+            android:name="org.fossasia.phimpme.leafpic.activities.PlayerActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/video_player"
+            android:launchMode="singleInstance"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
 
-                <data
-                    android:host="tumblr"
-                    android:scheme="oauth" />
+                <data android:scheme="http" />
+                <data android:scheme="https" />
+                <data android:scheme="content" />
+                <data android:scheme="asset" />
+                <data android:scheme="file" />
+                <data android:mimeType="video/*" />
+
             </intent-filter>
         </activity>
 
-        <!-- wordpress -->
         <activity
-            android:name="org.wordpress.android.NewAccount"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".folderchooser.FolderChooserActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="org.wordpress.android.Signup"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="org.wordpress.android.AddAccount"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="org.wordpress.android.AddAcountSettings"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".ImagePickerActivity"
-            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|uiMode"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".feedservice.FacebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:name="org.fossasia.phimpme.leafpic.activities.SplashScreen"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
-        <provider
-            android:name="com.facebook.FacebookContentProvider"
-            android:authorities="com.facebook.app.FacebookContentProvider1781584438783986"
-            android:exported="true" />
+            <intent-filter>
+                <category android:name="android.intent.category.APP_GALLERY" />
+            </intent-filter>
+            <intent-filter android:label="@string/app_name">
+                <action android:name="android.intent.action.GET_CONTENT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.OPENABLE" />
+
+                <data android:mimeType="image/*" />
+                <data android:mimeType="video/*" />
+            </intent-filter>
+
+            <intent-filter android:label="@string/app_name">
+                <action android:name="android.intent.action.PICK" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="image/*" />
+                <data android:mimeType="video/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="vn.mbm.phimp.me.leafpic.OPEN_ALBUM" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="org.fossasia.phimpme.leafpic.activities.LFMainActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.albumsAct" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="org.fossasia.phimpme.leafpic.activities.SingleMediaActivity"
+            android:label="@string/app_name"
+            android:configChanges="orientation|screenSize|uiMode|touchscreen|screenLayout"
+            android:parentActivityName="org.fossasia.phimpme.leafpic.activities.LFMainActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.fossasia.phimpme.leafpic.activities.LFMainActivity" />
+
+            <intent-filter>
+                <action android:name="android.intent.action.albumPhoto" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*" />
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="com.android.camera.action.REVIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="image/*"/>
+                <data android:mimeType="video/*"/>
+            </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name="org.fossasia.phimpme.leafpic.activities.SettingsActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/settings"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.SETTING" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.APPLICATION_PREFERENCES" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="org.fossasia.phimpme.leafpic.activities.AboutActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/about"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.ABOUT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="org.fossasia.phimpme.leafpic.activities.SecurityActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:label="@string/security">
+            <intent-filter>
+                <action android:name="android.intent.action.SECURITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="org.fossasia.phimpme.leafpic.activities.ExcludedAlbumsActivity"
+            android:label="@string/excluded_albums"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.ExcludedAlbums" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name="org.fossasia.phimpme.editor.editimage.EditImageActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustPan">
+        </activity>
+
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+
+        <activity android:name="org.fossasia.phimpme.accounts.AccountActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+
+        <activity android:name="org.fossasia.phimpme.opencamera.Camera.PhotoActivity"
+            android:label="Preview"
+            android:theme="@style/AppTheme.NoActionBar">
+
+        </activity>
+
+        <meta-data
+            android:name="org.fossasia.phimpme.leafpic.CustomGlideModule"
+            android:value="GlideModule"/>
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
+
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths"/>
         </provider>
 
-        <!--
-             The API key for Google Maps-based APIs is defined as a string resource.
-             (See the file "res/values/google_maps_api.xml").
-             Note that the API key is linked to the encryption key used to sign the APK.
-             You need a different API key for each encryption key, including the release key that is used to
-             sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
-        -->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
-
-        <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps" />
+        <activity android:name="org.fossasia.phimpme.shareActivity"
+                  android:theme="@style/Theme.AppCompat.NoActionBar">
+        </activity>
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/> 
+        <provider android:authorities="com.facebook.app.FacebookContentProvider1920575401558694"
+                  android:name="com.facebook.FacebookContentProvider"
+                  android:exported="true" />
     </application>
-
 </manifest>
