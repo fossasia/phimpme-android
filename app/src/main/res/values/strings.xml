@@ -771,7 +771,7 @@
     <string name="first_click">first click</string>
 
     <!--All photos-->
-    <string name="all_photos">All Photos</string>
+    <string name="all_photos">All_photos</string>
     <string name="all_photo_mode">photo mode</string>
     <string name="position">position</string>
     <string name="allMediaSize">size</string>
@@ -785,11 +785,26 @@
     <string name="instagram">Instagram</string>
     <string name="other">Other</string>
     <string name="exit">Exit</string>
-    <string name="share_not_completed">Sharing is not completed</string>
 
+    <string name="share_not_completed">Sharing is not completed</string>
     <string name="sign_out_dialog_title">Sign Out !</string>
     <string name="yes_action">Yes</string>
     <string name="no_action">No</string>
     <string name="sign_out_dialog_message">Do you want to sign out from </string>
     <string name="no_account_signed_in">No account signed in</string>
+    <!--Share to Twitter-->
+    <string name="twitter_consumer_key">ry1PDPXM6rwFVC1KhQ585bJPy</string>
+    <string name="twitter_consumer_secret">O3qUqqBLinr8qrRvx3GXHWBB1AN10Ax26vXZdNlYlEBF3vzPFt</string>
+    <string name="post_image">Post Image</string>
+    <string name="post_tweet">Post Tweet</string>
+    <string name="authentication_done_now_post_tweet_or_image_text"> Your app is authenticated. Now  you can post tweet/image on twitter. </string>
+
+    <!-- loading messages -->
+    <string name="please_wait_title"> Please wait </string>
+    <string name="authenticating_your_app_message"> Authenticating your app... </string>
+    <string name="posting_image_message"> Uploading image on twitter... </string>
+    <string name="posting_tweet_message"> Posting tweet on twitter... </string>
+
+    <!-- toast -->
+    <string name="tweet_posted_on_twitter"> Image posted on twitter successfully. </string>
 </resources>
