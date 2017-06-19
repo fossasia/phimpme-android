@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/RelativeLayout1"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <!-- <com.google.android.maps.MapView
+        android:id="@+id/mvUploadMap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:apiKey="068pCI_YWBd5NswKhP2HVGES3q94J84rJaPHpyg"
+        android:clickable="true"
+        android:enabled="true" />-->
+    
+ <!--     <com.google.android.maps.MapView
+        android:id="@+id/mvUploadMap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:apiKey="05xNbF3xx7Wv5kEZfcxKsYdn5yTPBXkUcsaua5g"
+        android:clickable="true"
+        android:enabled="true" /> -->
+
+          <ImageButton
+              android:id="@+id/btnswitchOSM_UploadMap"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_alignParentRight="true"
+              android:layout_alignParentTop="true"
+              android:layout_weight="0.8"
+              android:src="@drawable/osm" />
+
+        <com.google.android.maps.MapView
+        android:id="@+id/mvUploadMap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:apiKey="0GKm7nFVzZxdNS5Nj59Diaf4T7cCsbgk1x09y8w"
+        android:clickable="true"
+        android:enabled="true" />
+    
+    <ImageView android:id="@+id/drag"
+    	android:layout_width="wrap_content"
+    	android:layout_height="wrap_content"
+    	android:src="@drawable/upload_marker"
+    	android:visibility="gone"
+    	android:contentDescription="@string/empty" />
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout01"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="false"
+        android:layout_centerVertical="false"
+        android:background="@color/black_trans"
+        android:gravity="center"
+        android:padding="5dp" >
+
+        <Button
+            android:id="@+id/btnUploadMapClear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/btnUploadMapLocation"
+            android:text="@string/clear" />
+
+        <Button
+            android:id="@+id/btnUploadMapSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/btnUploadMapClear"
+            android:text="@string/accept" />
+
+        <Button
+            android:id="@+id/btnUploadMapCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/btnUploadMapSave"
+            android:text="@string/cancel" />
+
+        <ImageButton
+            android:id="@+id/btnUploadMapLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/transparent"
+            android:src="@drawable/location"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

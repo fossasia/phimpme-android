@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/settings"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="#FFF5F5F5"
+    android:scrollbars="none" >
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/RelativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+
+        android:orientation="vertical" >
+
+        <ImageView
+            android:id="@+id/wpcomLogo"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:src="@drawable/wpcom" />
+
+		<RelativeLayout
+		    xmlns:android="http://schemas.android.com/apk/res/android"
+		    android:id="@+id/section1"
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent"
+		    android:layout_alignParentLeft="true"
+            android:layout_marginTop="30dp"
+            android:orientation="vertical" >
+			
+		    <EditText
+		        android:id="@+id/et_wp_add_account_url"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@+id/l_section1"
+		        android:layout_marginLeft="20dp"
+		        android:layout_marginRight="20dp"
+		        android:layout_marginTop="90dp"
+		        android:ems="10"
+				android:textColorHint="@color/grey"
+		        android:hint="@string/url" />
+		    
+		    <EditText
+		        android:id="@+id/et_wp_add_account_username"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@+id/et_wp_add_account_url"
+		        android:layout_marginLeft="20dp"
+		        android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+                android:ems="10"
+				android:textColorHint="@color/grey"
+		        android:hint="@string/username" />
+
+		    <EditText
+		        android:id="@+id/et_wp_add_account_password"
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_alignParentLeft="true"
+		        android:layout_below="@+id/et_wp_add_account_username"
+		        android:layout_marginLeft="20dp"
+		        android:layout_marginRight="20dp"
+                android:layout_marginTop="10dp"
+		        android:ems="10"
+				android:textColorHint="@color/grey"
+		        android:hint="@string/password"
+		        android:inputType="textPassword" />
+
+			<Button
+			    android:id="@+id/btn_wp_add_account_setting"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_below="@+id/et_wp_add_account_password"
+			   	android:layout_marginLeft="20dp"
+			    android:layout_marginTop="25dp"
+			    android:text="@string/settings" />
+
+            <Button
+                android:id="@+id/btn_wp_add_account_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/et_wp_add_account_password"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="25dp"
+                android:layout_marginRight="100dp"
+                android:text="@string/save" />
+
+            <Button
+                android:id="@+id/btn_wp_add_account_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/et_wp_add_account_password"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="25dp"
+                android:text="@string/cancel" />
+
+
+
+		</RelativeLayout>
+
+    </RelativeLayout>
+
+</ScrollView>

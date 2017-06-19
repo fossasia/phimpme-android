@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tabView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:id="@+id/RelativeLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp" >
+
+        <TextView
+            android:id="@+id/txtGalleryStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:text="@string/loading" />
+
+        <Button
+            android:id="@+id/btnRefresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignRight="@+id/txtGalleryStatus"
+            android:text="@string/refresh" />
+
+		<ImageButton
+            android:id="@+id/btnGalleryMaps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+			android:src="@drawable/maps"
+            android:contentDescription="@string/empty"
+			android:layout_alignParentTop="true"
+			android:layout_toLeftOf="@+id/btnRefresh"
+			android:layout_alignBottom="@+id/btnRefresh" />
+
+	</RelativeLayout>
+    
+	<RelativeLayout
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" >
+    
+	</RelativeLayout>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/personal" />
+
+	<RelativeLayout
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content" >
+
+	<GridView
+	    android:id="@+id/gvPrivateGalleryContainer"
+	    android:layout_width="match_parent"
+	    android:layout_height="match_parent"
+	    android:horizontalSpacing="10dp"
+	    android:numColumns="3"
+	    android:verticalSpacing="10dp" >
+
+    </GridView>	    
+	</RelativeLayout>
+    
+</LinearLayout>

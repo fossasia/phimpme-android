@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2007 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<resources>
+	<string-array name="months_abbreviated">
+		<item>Jan</item>
+		<item>Feb</item>
+		<item>Mar</item>
+		<item>Apr</item>
+		<item>May</item>
+		<item>Jun</item>
+		<item>Jul</item>
+		<item>Aug</item>
+		<item>Sep</item>
+		<item>Oct</item>
+		<item>Nov</item>
+		<item>Dec</item>
+	</string-array>
+	<!-- Title for picture frame gadget to show in list of all available gadgets -->
+    <string name="gadget_title">Picture frame</string>
+
+	<!-- Used to format short video duration in Details dialog. minutes:seconds e.g. 00:30 -->
+    <string name="details_ms">%1$02d:%2$02d</string>
+    <!-- Used to format video duration in Details dialog. hours:minutes:seconds e.g. 0:21:30 -->
+    <string name="details_hms">%1$d:%2$02d:%3$02d</string>
+    <!-- Activity label. This might show up in the activity-picker -->
+    <string name="movie_view_label">Movies</string>
+    <!-- shown in the video player view while the video is being loaded, before it starts playing -->
+    <string name="loading_video">Loading video\u2026</string>
+    <!-- Movie View Resume Playing dialog title -->
+    <string name="resume_playing_title">Resume video</string>
+
+    <!-- Movie View Start Playing dialog title -->
+    <string name="resume_playing_message">Resume playing from %s ?</string>
+    <!-- Movie View Start Playing button "Resume from bookmark" -->
+    <string name="resume_playing_resume">Resume playing</string>
+
+    <!-- Movie View Start Playing button "Beginning" -->
+    <string name="resume_playing_restart">Start over</string>
+	<string name="camera">Camera</string>
+
+	<!-- Button indicating that the cropped image should be saved -->
+	<string name="crop_save_text">Save</string>
+	<!-- Button indicating that the cropped image should be reverted back to the original -->
+	<string name="crop_discard_text">Discard</string>
+	<!-- Hint that appears when cropping an image with more than one face -->
+	<string name="multiface_crop_help">Tap a face to begin.</string>
+	<!-- Toast/alert that the image is being saved to the SD card -->
+	<string name="saving_image">Saving picture\u2026</string>
+	<!-- menu pick: crop the currently selected image -->
+	<string name="crop_label">Crop picture</string>
+	<!-- Toast/alert that the face detection is being run -->
+	<string name="running_face_detection">Please wait\u2026</string>
+
+	<!-- Displayed in the title of the dialog for things to do with a picture
+		 that is to be "set as" (e.g. set as contact photo or set as wallpaper) -->
+	<string name="set_image">Set picture as</string>
+	<!-- Toast/alert after saving wallpaper -->
+	<string name="wallpaper">Setting wallpaper, please wait\u2026</string>
+    <string name="camera_setas_wallpaper">Wallpaper</string>
+
+    <!-- Details dialog "OK" button. Dismisses dialog. -->
+    <string name="details_ok">OK</string>
+    <string name="loading_new">Loading new albums and photos</string>
+    <string name="initializing">Loading</string>
+    <string name="pick_prompt">Pick an item from your collection</string>
+    <string name="no_items">There are no items in your collection</string>
+    <string name="pick">Pick</string>
+    <string name="delete">Delete</string>
+    <string name="confirm_delete">Confirm Delete</string>
+    <string name="share">Share</string>
+    <string name="no_sd_card">SD Card unmounted or not present</string>
+
+	<!-- String indicating more actions are available -->
+    <string name="more">More</string>
+    <string name="select_all">Select All</string>
+    <string name="deselect_all">Deselect All</string>
+    <string name="slideshow">Slideshow</string>
+
+    <string name="menu">Menu</string>
+    <string name="details">Details</string>
+
+    <!-- String appended at the end depending upon what is selected eg. 1 album selected -->
+    <string name="album_selected">album selected</string>
+    <string name="item_selected">item selected</string>
+    <string name="albums_selected">albums selected</string>
+    <string name="items_selected">items selected</string>
+
+    <string name="album">Album</string>
+    <string name="start">Start</string>
+    <string name="end">End</string>
+    <string name="location">Location</string>
+    <string name="location_unknown">Unknown location</string>
+    <string name="title">Title</string>
+    <string name="type">Type</string>
+
+    <!-- String indicating timestamp of photo or video -->
+    <string name="taken_on">Taken on</string>
+    <string name="added_on">Added on</string>
+    <string name="show_on_map">Show on map</string>
+    <string name="rotate_left">Rotate Left</string>
+    <string name="rotate_right">Rotate Right</string>
+    <string name="crop">Crop</string>
+    <string name="set_as">Set as</string>
+    <string name="set_as_wallpaper">Set as wallpaper</string>
+    <string name="item">item</string>
+    <string name="items">items</string>
+
+    <!-- String indicating an approximate location eg. Around Palo Alto, CA -->
+    <string name="around">Around</string>
+    <string name="date_unknown">Date unknown</string>
+    <string name="video_err">Unable to play video</string>
+</resources>

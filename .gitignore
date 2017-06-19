@@ -1,12 +1,10 @@
 *.iml
 .gradle
 .idea
-.externalNativeBuild
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
 .DS_Store
 /build
 /app/build
-/app/obj
 /viewflow/build

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="HelloGallery">
+        <attr name="android:galleryItemBackground" />
+    </declare-styleable>
+    <declare-styleable name="Gallery">
+        <attr name="android:galleryItemBackground" />
+    </declare-styleable>
+
+    <attr name="IconsColor" format="reference" />
+    <attr name="textThemes" format="reference" />
+    <attr name="colorPrimaryTheme" format="reference|color" />
+    <attr name="BottomNavigationIconsColor" format="reference|color" />
+    <attr name="colorPrimaryDarkTheme" format="reference|color" />
+    <attr name="colorAccentTheme" format="reference|color" />
+    <attr name="windowBackgroundTheme" format="reference|color" />
+    <attr name="themeCardColor" format="reference|color" />
+
+      
+</resources>

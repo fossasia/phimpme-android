@@ -17,6 +17,8 @@ cd apk
 git checkout --orphan workaround
 git add -A
 
+#add files
+#git add -f .
 #commit and skip the tests
 
 git commit -am "Travis build pushed [skip ci]"

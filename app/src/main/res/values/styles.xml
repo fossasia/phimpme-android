@@ -1,152 +1,51 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <style name="AppTheme" parent="Phimpme.Base">
     </style>
 
-    <!--LIGHT MENU THEME-->
-    <style name="LightActionBarMenu" parent="Theme.AppCompat.Light">
-        <item name="android:popupMenuStyle">@style/MyApp.PopupMenu.Light</item>
+    <style name="Phimpme.Base" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimaryTheme">@color/colorPrimary</item>
+        <item name="colorPrimaryDarkTheme">@color/colorPrimaryDark</item>
+        <item name="colorAccentTheme">@color/colorAccent</item>
+        <item name="windowBackgroundTheme">@color/white</item>
+        <item name="IconsColor">@color/icongrey</item>
+        <item name="textThemes">@color/icongrey</item>
+        <item name="themeCardColor" >@color/white</item>
+        <item name="BottomNavigationIconsColor" >@drawable/bottom_nav_icon_color_light</item>
+        <item name="android:windowBackground">@color/colorWindowBackground</item>
+        <item name="android:windowContentTransitions">true</item>
     </style>
 
-    <style name="MyApp.PopupMenu.Light" parent="Widget.AppCompat.Light.ListPopupWindow">
-        <item name="android:backgroundTint" tools:targetApi="lollipop">
-            @color/cardview_light_background
-        </item>
-    </style>
-
-    <!--DARK MENU THEME-->
-    <style name="DarkActionBarMenu" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:popupMenuStyle">@style/MyApp.PopupMenu.Dark</item>
-    </style>
-
-    <style name="MyApp.PopupMenu.Dark" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:backgroundTint" tools:targetApi="lollipop">
-            @color/cardview_dark_background
-        </item>
-    </style>
-
-    <!--AMOLED DARK MENU THEME-->
-    <style name="AmoledDarkActionBarMenu" parent="Base.ThemeOverlay.AppCompat.ActionBar">
-        <item name="android:popupMenuStyle">@style/MyApp.PopupMenu.Dark</item>
-    </style>
-
-    <style name="MyApp.PopupMenu.DarkAmoled" parent="Base.ThemeOverlay.AppCompat.ActionBar">
-        <item name="android:popupBackground">@drawable/ic_empty_amoled</item>
-    </style>
-
-    <style name="MyToolbar" parent="Widget.AppCompat.Toolbar">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:elevation" tools:ignore="NewApi">5dp</item>
-        <item name="theme">@style/MyToolbarTheme</item>
+    <!-- Dark base activity theme -->
+    <style name="AppTheme.Dark"   parent="Theme.AppCompat.NoActionBar">
+        <item name="themeCardColor" >@color/colorCardInverse</item>
+        <item name="BottomNavigationIconsColor" >@drawable/bottom_nav_icon_color_dark</item>
+        <item name="colorPrimaryTheme">@color/primary_material_dark_2</item>
+        <item name="IconsColor">@color/white</item>
+        <item name="textThemes">@color/white70</item>
+        <item name="windowBackgroundTheme">@color/ColorWindowBackgroundInverse</item>
+        <item name="colorPrimaryDarkTheme">@color/colorPrimaryDarkInverse</item>
+        <item name="colorAccentTheme">@color/blue_dark</item>
+        <item name="android:windowBackground">@color/ColorWindowBackgroundInverse</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorSecondary">@color/white70</item>
+        <item name="android:textColorHint">@color/white50</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="colorAccent">@color/blue_dark</item>
+        <item name="android:colorForeground">?attr/windowBackgroundTheme</item>
+        <item name="android:colorBackground">?attr/windowBackgroundTheme</item>
 
     </style>
 
-    <style name="MyToolbarTheme" parent="ThemeOverlay.AppCompat.ActionBar">
-        <item name="android:textColorPrimary">#FFF</item>
-        <item name="colorControlNormal">#FFF</item>
-        <item name="colorControlHighlight">#FFF</item>
-    </style>
-
-    <style name="fab_camera">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">4dp</item>
-        <item name="borderWidth">0dp</item>
-        <item name="elevation">6dp</item>
-        <item name="pressedTranslationZ">12dp</item>
-        <item name="rippleColor">@android:color/white</item>
-    </style>
-
-    <style name="fab_expand">
-        <item name="android:layout_width">22dp</item>
-        <item name="android:layout_height">22dp</item>
-        <item name="android:layout_marginTop">11dp</item>
-        <item name="borderWidth">0dp</item>
-        <item name="elevation">5dp</item>
-        <item name="pressedTranslationZ">12dp</item>
-        <item name="rippleColor">@android:color/white</item>
-        <item name="android:gravity">center_horizontal|bottom</item>
-    </style>
-
-    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light">
-        <item name="windowNoTitle">true</item>
-        <item name="windowActionBar">false</item>
-        <item name="android:windowFullscreen">true</item>
-        <item name="android:windowContentOverlay">@null</item>
-    </style>
-
-    <!--DIALOG THEME-->
-    <style name="AlertDialog_Light" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="colorAccent">@color/md_light_primary_icon</item><!--BOTTONI-->
-        <item name="android:textColorPrimary">@color/md_light_primary_text</item><!--TESTO-->
-    </style>
-
-    <style name="AlertDialog_Dark" parent="Theme.AppCompat.Dialog.Alert">
-        <item name="colorAccent">@color/md_dark_primary_icon</item><!--BOTTONI-->
-        <item name="android:textColorPrimary">@color/md_dark_primary_text</item><!--TESTO-->
-        <item name="android:backgroundTint" tools:targetApi="lollipop">
-            @color/cardview_dark_background
-        </item>
-    </style>
-
-    <style name="AlertDialog_Dark_Amoled" parent="Theme.AppCompat.Dialog.Alert">
-        <item name="colorAccent">@color/md_dark_primary_icon</item><!--BOTTONI-->
-        <item name="android:textColorPrimary">@color/md_dark_primary_text</item><!--TESTO-->
-        <item name="android:backgroundTint" tools:targetApi="lollipop">@color/md_black_1000</item>
-        <item name="android:windowBackground">@color/md_black_1000</item>
-        <item name="android:colorBackgroundCacheHint">@null</item>
-    </style>
-
-    <!--LICENSE DIALOG-->
-    <style name="LicenseDialog_Dark" parent="android:Theme.Dialog">
-        <item name="android:textColor">@color/md_white_1000</item>
-        <item name="android:backgroundTint" tools:targetApi="lollipop">
-            @color/cardview_dark_background
-        </item>
-        <item name="colorAccent">@color/md_dark_primary_icon</item><!--BOTTONI-->
-    </style>
-
-    <!--PREFERENCE SCREEN-->
-    <style name="PreferencesThemeDark">
-        <item name="android:background">#2b2b2b</item>
-    </style>
-
-    <style name="PreferencesThemeLight">
-        <item name="android:background">#FAFAFA</item>
-        <!--<item name="android:background">#424242</item>-->
-    </style>
-
-    <!--Player-->
-    <style name="RootTheme" parent="android:Theme.Holo"></style>
-
-    <style name="PlayerTheme" parent="@style/RootTheme">
-        <item name="android:windowNoTitle">true</item>
-        <item name="android:windowBackground">@android:color/black</item>
-    </style>
-
-    <style name="DemoButton">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:minWidth">40dp</item>
-    </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="popwin_anim_style">
-        <item name="android:windowEnterAnimation">@anim/menushow</item>
-        <item name="android:windowExitAnimation">@anim/menuhide</item>
+    <style name="Animation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_left</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_right</item>
     </style>
+
 </resources>
