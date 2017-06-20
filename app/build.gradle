@@ -119,4 +119,5 @@ dependencies {
     compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
     compile "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
     compile "com.squareup.picasso:picasso:$rootProject.picassoVersion"
+    compile "com.github.amlcurran.showcaseview:library:$rootProject.showcaseVersion"
 }

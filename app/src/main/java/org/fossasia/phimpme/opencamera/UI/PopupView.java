@@ -564,8 +564,6 @@ public class PopupView extends LinearLayout {
 				List<String> supported_scene_modes = preview.getSupportedSceneModes();
 				addRadioOptionsToPopup(supported_scene_modes, getResources().getString(R.string.scene_mode), PreferenceKeys.getSceneModePreferenceKey(), preview.getCameraController().getDefaultSceneMode(), "TEST_SCENE_MODE", null);
 
-				List<String> supported_color_effects = preview.getSupportedColorEffects();
-				addRadioOptionsToPopup(supported_color_effects, getResources().getString(R.string.color_effect), PreferenceKeys.getColorEffectPreferenceKey(), preview.getCameraController().getDefaultColorEffect(), "TEST_COLOR_EFFECT", null);
 			}
 
 		}

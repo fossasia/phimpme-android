@@ -476,6 +476,7 @@ public class MainUI {
 				View exposureButton = main_activity.findViewById(R.id.exposure);
 				View audioControlButton = main_activity.findViewById(R.id.audio_control);
 				View popupButton = main_activity.findViewById(R.id.popup);
+				View toggleButton = main_activity.findViewById(R.id.toggle_button);
 				if (main_activity.getPreview().getCameraControllerManager().getNumberOfCameras() > 1)
 					switchCameraButton.setVisibility(visibility);
 				if (main_activity.supportsExposureButton() && !main_activity.getPreview().isVideo()) // still allow exposure when recording video
@@ -487,6 +488,7 @@ public class MainUI {
 				}
 				if (!main_activity.getPreview().isVideo() || !main_activity.getPreview().supportsFlash())
 					popupButton.setVisibility(visibility); // still allow popup in order to change flash mode when recording video
+				toggleButton.setVisibility(visibility);
 			}
 		});
 	}
