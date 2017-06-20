@@ -773,4 +773,9 @@
     <string name="all_media">All</string>
     <string name="albums_mode">Switch to albums mode</string>
 
+    <string name="sign_out_dialog_title">Sign Out !</string>
+    <string name="yes_action">Yes</string>
+    <string name="no_action">No</string>
+    <string name="sign_out_dialog_message">Do you want to sign out from </string>
+    <string name="no_account_signed_in">No account signed in</string>
 </resources>

@@ -18,4 +18,16 @@ public class DatabaseHelper {
     public RealmResults<AccountDatabase> fetchAccountDetails(){
         return realm.where(AccountDatabase.class).findAll();
     }
+
+    public void deleteSignedOutAccount(String accountName){
+        final RealmResults<AccountDatabase> deletionQueryResult =  realm.where(AccountDatabase.class)
+                .equalTo("name", accountName).findAll();
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                deletionQueryResult.deleteAllFromRealm();
+            }
+        });
+    }
 }
