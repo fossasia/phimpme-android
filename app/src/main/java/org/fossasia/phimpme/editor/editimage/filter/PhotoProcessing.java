@@ -35,35 +35,44 @@ public class PhotoProcessing {
             case 1: // Instafix
                 nativeApplyInstafix(value);
                 break;
-            case 2: // Ansel
-                nativeApplyAnsel(value);
-                break;
-            case 3: // Testino
+            case 2: // Testino
                 nativeApplyTestino(value);
                 break;
-            case 4: // XPro
+            case 3: // XPro
                 nativeApplyXPro(value);
                 break;
-            case 5: // Retro
+            case 4: // Retro
                 nativeApplyRetro(value);
                 break;
-            case 6: // Black & White
-                nativeApplyBW(value);
-                break;
-            case 7: // Sepia
+            case 5: // Sepia
                 nativeApplySepia(value);
                 break;
-            case 8: // Cyano
+            case 6: // Cyano
                 nativeApplyCyano(value);
                 break;
-            case 9: // Georgia
+            case 7: // Georgia
                 nativeApplyGeorgia(value);
                 break;
-            case 10: // Sahara
+            case 8: // Sahara
                 nativeApplySahara(value);
                 break;
-            case 11: // HDR
+            case 9: // HDR
                 nativeApplyHDR(value);
+                break;
+            case 10: // Black & White
+                nativeApplyBW(value);
+                break;
+            case 11: // Ansel
+                nativeApplyAnsel(value);
+                break;
+            case 12: // HistEqual
+                nativeEqualizeHist(value);
+                break;
+            case 13: // Threshold
+                nativeApplyThreshold(value);
+                break;
+            case 14: // Grain
+                nativeApplyGrain(value);
                 break;
         }
         Bitmap filteredBitmap = getBitmapFromNative(bitmap);
@@ -143,6 +152,9 @@ public class PhotoProcessing {
     public static native void nativeApplyGeorgia(int value);
     public static native void nativeApplySahara(int value);
     public static native void nativeApplyHDR(int value);
+    public static native void nativeApplyGrain(int value);
+    public static native void nativeApplyThreshold(int value);
+    public static native void nativeEqualizeHist(int value);
 
     public static native void nativeLoadResizedJpegBitmap(byte[] jpegData,
                                                           int size, int maxPixels);
