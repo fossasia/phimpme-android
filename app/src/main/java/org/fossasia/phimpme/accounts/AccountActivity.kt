@@ -1,12 +1,15 @@
 package org.fossasia.phimpme.accounts
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import io.realm.Realm
@@ -15,10 +18,13 @@ import org.fossasia.phimpme.R
 import org.fossasia.phimpme.base.PhimpmeProgressBarHandler
 import org.fossasia.phimpme.base.ThemedActivity
 import org.fossasia.phimpme.data.AccountDatabase
+import org.fossasia.phimpme.data.DatabaseHelper
 import org.fossasia.phimpme.leafpic.util.ThemeHelper
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper
+import org.fossasia.phimpme.base.RecyclerItemClickListner
 
-class AccountActivity : ThemedActivity(), AccountContract.View {
+class AccountActivity : ThemedActivity(), AccountContract.View,
+        RecyclerItemClickListner.OnItemClickListener {
 
     private var toolbar: Toolbar? = null
     private var themeHelper: ThemeHelper? = null
@@ -27,7 +33,8 @@ class AccountActivity : ThemedActivity(), AccountContract.View {
     private var accountPresenter: AccountPresenter? = null
     private var realm: Realm = Realm.getDefaultInstance()
     private var realmResult: RealmResults<AccountDatabase>? = null
-    private var phimpmeProgressBarHandler: PhimpmeProgressBarHandler ?= null
+    private var phimpmeProgressBarHandler: PhimpmeProgressBarHandler? = null
+    private var databaseHelper: DatabaseHelper? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +46,7 @@ class AccountActivity : ThemedActivity(), AccountContract.View {
         toolbar = findViewById(R.id.toolbar) as Toolbar
         accountsRecyclerView = findViewById(R.id.accounts_recycler_view) as RecyclerView
         setSupportActionBar(toolbar)
+        databaseHelper = DatabaseHelper(realm)
         toolbar!!.setPopupTheme(themeHelper!!.getPopupToolbarStyle());
         toolbar!!.setBackgroundColor(themeHelper!!.getPrimaryColor());
         setUpRecyclerView()
@@ -80,6 +88,7 @@ class AccountActivity : ThemedActivity(), AccountContract.View {
         val layoutManager = LinearLayoutManager(this)
         accountsRecyclerView!!.setLayoutManager(layoutManager)
         accountsRecyclerView!!.setAdapter(accountAdapter)
+        accountsRecyclerView!!.addOnItemTouchListener(RecyclerItemClickListner(this, this))
     }
 
     override fun setUpAdapter(accountDetails: RealmResults<AccountDatabase>) {
@@ -88,11 +97,37 @@ class AccountActivity : ThemedActivity(), AccountContract.View {
     }
 
     override fun showError() {
-        Toast.makeText(this, "No account signed in", LENGTH_SHORT).show()
+        Toast.makeText(this, getString(R.string.no_account_signed_in), LENGTH_SHORT).show()
     }
 
     override fun showComplete() {
         phimpmeProgressBarHandler!!.hide()
+    }
+
+    override fun onItemClick(childView: View?, position: Int) {
+
+        val signOutDialog = AlertDialog.Builder(this)
+        signOutDialog.setMessage(getString(R.string.sign_out_dialog_message) + realmResult
+                ?.get(position)?.name)
+
+                .setTitle(getString(R.string.sign_out_dialog_title))
+                .setPositiveButton(R.string.yes_action, DialogInterface.OnClickListener {
+                    dialog, which ->
+                    databaseHelper!!.deleteSignedOutAccount(realmResult!!.get(position).name)
+                    accountAdapter!!.notifyDataSetChanged()
+                    accountPresenter!!.loadFromDatabase()
+
+                })
+                .setNegativeButton(R.string.no_action, DialogInterface.OnClickListener {
+                    dialog, which ->
+
+                })
+
+        var dialog = signOutDialog.create()
+        dialog.show()
+    }
+
+    override fun onItemLongPress(childView: View?, position: Int) {
     }
 
     override fun onResume() {
