@@ -381,5 +381,5 @@
     <color name="facebook_color">#3b5998</color>
     <color name="twitter_color">#48A2E5</color>
     <color name="instagram_color">#D42473</color>
-    <color name="other_share_color">@color/md_indigo_900</color>
+    <color name="other_share_color">@color/md_orange_900</color>
 </resources>
