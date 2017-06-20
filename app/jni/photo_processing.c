@@ -117,6 +117,19 @@ void Java_org_fossasia_phimpme_editor_editimage_filter_PhotoProcessing_nativeApp
 	applyHDR(&bitmap,value);
 }
 
+
+void Java_org_fossasia_phimpme_editor_editimage_filter_PhotoProcessing_nativeEqualizeHist(JNIEnv* env, jobject thiz, jint value) {
+	equalizeHist(&bitmap,value);
+}
+
+void Java_org_fossasia_phimpme_editor_editimage_filter_PhotoProcessing_nativeApplyGrain(JNIEnv* env, jobject thiz, jint value) {
+	applyGrain(&bitmap,value);
+}
+
+void Java_org_fossasia_phimpme_editor_editimage_filter_PhotoProcessing_nativeApplyThreshold(JNIEnv* env, jobject thiz, jint value) {
+	applyThreshold(&bitmap,value);
+}
+
 int Java_org_fossasia_phimpme_editor_editimage_filter_PhotoProcessing_nativeLoadResizedJpegBitmap(JNIEnv* env, jobject thiz, jbyteArray bytes, jint jpegSize, jint maxPixels) {
 	char* jpegData = (char*) (*env)->GetPrimitiveArrayCritical(env, bytes, NULL);
 
