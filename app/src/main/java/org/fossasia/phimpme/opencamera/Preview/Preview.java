@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -44,6 +45,9 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -68,6 +72,8 @@ import org.fossasia.phimpme.opencamera.Preview.CameraSurface.CameraSurface;
 import org.fossasia.phimpme.opencamera.Preview.CameraSurface.MySurfaceView;
 import org.fossasia.phimpme.opencamera.Preview.CameraSurface.MyTextureView;
 import org.fossasia.phimpme.opencamera.UI.PopupView;
+
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 /** This class was originally named due to encapsulating the camera preview,
  *  but in practice it's grown to more than this, and includes most of the
@@ -258,6 +264,7 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 
 	private boolean enable_sound;
     private int colorNum = 0;
+
 
     public Preview(ApplicationInterface applicationInterface, ViewGroup parent) {
 		if( MyDebug.LOG ) {
@@ -1364,24 +1371,50 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 			if( MyDebug.LOG )
 				Log.d(TAG, "saved color effect: " + value);
 
+			final Activity activity = (Activity)this.getContext();
+
             CameraActivity.toggle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final List<String> colorEffect = getSupportedColorEffects();
-                    colorNum++;
-                    if (colorNum == colorEffect.size())
-                        colorNum = 0;
-                    final String color = colorEffect.get(colorNum);
-                    CameraController.SupportedValues supported_values = camera_controller.setColorEffect(color);
-                    if( supported_values != null ) {
-                        color_effects = supported_values.values;
-                        applicationInterface.setColorEffectPref(supported_values.selected_value);
+                    SharedPreferences sharedPreferences = getDefaultSharedPreferences(activity);
+                    Boolean firstClick = sharedPreferences.getBoolean(activity.getString(R.string.first_click),true);
+                    if(firstClick) {
+                        new ShowcaseView.Builder(activity).setTarget(new ViewTarget(R.id.toggle_button, activity))
+                                .setContentTitle(activity.getString(R.string.color_effects))
+                                .setContentText(activity.getString(R.string.toggle_info))
+                                .hideOnTouchOutside()
+                                .build();
                     }
                     else {
-                        applicationInterface.clearColorEffectPref();
+                        final List<String> colorEffect = getSupportedColorEffects();
+                        colorNum++;
+                        if (colorNum == colorEffect.size())
+                            colorNum = 0;
+                        final String color = colorEffect.get(colorNum);
+                        CameraController.SupportedValues supported_values = camera_controller.setColorEffect(color);
+                        if (supported_values != null) {
+                            color_effects = supported_values.values;
+                            applicationInterface.setColorEffectPref(supported_values.selected_value);
+                        } else {
+                            applicationInterface.clearColorEffectPref();
+                        }
                     }
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean(activity.getString(R.string.first_click), false);
+                    editor.apply();
                 }
             });
+
+			CameraActivity.toggle.setOnLongClickListener(new View.OnLongClickListener() {
+				@Override
+				public boolean onLongClick(View v) {
+					final List<String> colorEffect = getSupportedColorEffects();
+					colorNum = 0;
+					CameraController.SupportedValues supported_values = camera_controller.setColorEffect(colorEffect.get(0));
+					applicationInterface.setColorEffectPref(supported_values.selected_value);
+					return true;
+				}
+			});
             CameraController.SupportedValues supported_values = camera_controller.setColorEffect(value);
 			if( supported_values != null ) {
 				color_effects = supported_values.values;
