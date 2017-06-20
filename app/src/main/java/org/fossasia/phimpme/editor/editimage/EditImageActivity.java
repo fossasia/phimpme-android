@@ -355,10 +355,17 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
 
     private void addToUndoList() {
         try{
+            TODO:// implement a more efficient way, like storing only the difference of bitmaps or
+            // steps followed to edit
+
             bitmapsForUndo.add(mainBitmap.copy(mainBitmap.getConfig(),true));
         }catch (OutOfMemoryError error){
-            //Snackbar.make(getWindow().getDecorView().getRootView(),"Out of Memory. steps = " + bitmapsForUndo.size(),Snackbar.LENGTH_LONG).show();
-
+            /**
+             * When outOfMemory exception throws then to make space, remove the last edited step
+             * from list and added the new operation in the end.
+             */
+            bitmapsForUndo.remove(0);
+            bitmapsForUndo.add(mainBitmap.copy(mainBitmap.getConfig(),true));
         }
     }
 
