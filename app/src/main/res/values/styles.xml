@@ -123,7 +123,7 @@
     </style>
 
     <!--Player-->
-    <style name="RootTheme" parent="android:Theme.Holo"></style>
+    <style name="RootTheme" parent="android:Theme.Holo"/>
 
     <style name="PlayerTheme" parent="@style/RootTheme">
         <item name="android:windowNoTitle">true</item>
