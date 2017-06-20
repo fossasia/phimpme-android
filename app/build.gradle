@@ -1,26 +1,13 @@
 apply plugin: 'com.android.application'
 apply plugin: 'jacoco-android'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-kapt'
-apply plugin: 'realm-android'
 
 android {
-
-    signingConfigs {
-        config {
-            keyAlias 'phimpme'
-            keyPassword 'phimpme'
-            storeFile file('../org.fossasia.phimpme.jks')
-            storePassword 'phimpme'
-        }
-    }
-
     compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    buildToolsVersion "25.0.2"
 
     defaultConfig {
-        applicationId "org.fossasia.phimpme"
-        minSdkVersion 15
+        applicationId "vn.mbm.phimp.me"
+        minSdkVersion 16
         targetSdkVersion 25
         multiDexEnabled true
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
@@ -31,11 +18,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-            signingConfig signingConfigs.config
-            debuggable false
-            jniDebuggable false
-            renderscriptDebuggable false
-            zipAlignEnabled true
+
         }
         debug {
             testCoverageEnabled true
@@ -48,10 +31,6 @@ android {
         exclude 'META-INF/maven/org.apache.maven.wagon/wagon-http-shared/pom.properties'
         exclude 'META-INF/maven/*'
         exclude 'org/codehaus/classworlds/uberjar/boot/Bootstrapper.class'
-    }
-
-    configurations {
-        compile.exclude group: 'org.jetbrains', module: 'annotations'
     }
 
     lintOptions {
@@ -69,68 +48,47 @@ android {
     dexOptions {
         jumboMode = true
     }
-    externalNativeBuild {
-        ndkBuild {
-            path 'jni/Android.mk'
-        }
-    }
 
 }
-
-repositories {
-    maven {
-        url "http://dl.bintray.com/dasar/maven"
-    }
-    mavenCentral()
-    maven {
-        url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo'
-    }
+android {
+    useLibrary 'org.apache.http.legacy'
 }
-
-
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    compile files('libs/CWAC-AdapterWrapper.jar')
+    compile files('libs/CWAC-Bus.jar')
+    compile files('libs/CWAC-Task.jar')
+    //compile 'com.paypal.sdk:paypal-android-sdk:2.14.4'
+    compile files('libs/PayPal_MPL.jar')
+    compile files('libs/android-rss-1.0.0.jar')
+    compile files('libs/crittercism_v2_1_3_rev1.jar')
+    compile files('libs/httpmime-4.1.1.jar')
+    compile files('libs/jdom-1.1.1-android-fork.jar')
+    compile files('libs/joooidapi.jar')
+    compile files('libs/jtwitter.jar')
+    compile files('libs/osmdroid-android-3.0.8.jar')
+    compile files('libs/scribe-1.2.3.jar')
+    compile files('libs/signpost-commonshttp4-1.2.1.2.jar')
+    compile files('libs/signpost-core-1.2.1.2.jar')
+    compile files('libs/slf4j-android-1.5.8.jar')
+    compile files('libs/tagsoup-1.2.1.jar')
+    compile files('libs/uk.co.jasonfry.android.tools.jar')
+    compile project(':viewflow')
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
-    compile "com.android.support:design:$rootProject.supportLibraryVersion"
-    compile "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
-    testCompile "junit:junit:$rootProject.junitVersion"
-    compile "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
-    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
-    compile "com.android.support:palette-v7:$rootProject.supportLibraryVersion"
-    compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
-    compile "com.android.support:customtabs:$rootProject.supportLibraryVersion"
-    compile project(':photoview')
-    compile(group: 'uz.shift', name: 'colorpicker', version: '0.5', ext: 'aar')
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    }
+    compile 'com.vistrav:ask:2.4'
+    compile 'com.android.support:support-v4:25.0.1'
+    compile 'com.google.android.gms:play-services-maps:10.2.1'
+    compile 'com.google.android.gms:play-services-location:10.2.1'
+    compile 'com.facebook.android:facebook-android-sdk:4.+'
+    compile 'com.android.support:design:25.0.1'
+    compile 'com.android.support:appcompat-v7:25.0.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.koushikdutta.ion:ion:2.1.7'
-    compile 'com.mikepenz:iconics-core:2.8.4@aar'
-    compile 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
-    compile 'com.mikepenz:community-material-typeface:1.5.54.2@aar'
-    compile 'com.mikepenz:fontawesome-typeface:4.6.0.1@aar'
-    compile 'com.yalantis:ucrop:1.5.0'
-    compile 'uz.shift:colorpicker:0.5@aar'
-    compile 'com.google.android.exoplayer:exoplayer:r1.5.7'
-    compile 'de.psdev.licensesdialog:licensesdialog:1.8.0'
-    compile 'de.hdodenhof:circleimageview:2.0.0'
-    compile 'com.drewnoakes:metadata-extractor:2.9.1'
-    compile 'org.jetbrains:annotations-java5:15.0'
-    compile 'com.turingtechnologies.materialscrollbar:lib:10.0.3'
-    compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.5.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
-    compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.google.firebase:firebase-core:10.0.1'
-    compile 'com.facebook.android:facebook-android-sdk:4.23.0'
-    androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
-    compile 'com.uphyca:stetho_realm:2.0.0'
-    compile 'com.android.support:multidex:1.0.1'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    compile "com.twitter.sdk.android:twitter:$rootProject.twitterVersion"
-    compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
-    compile "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
-    compile "com.squareup.picasso:picasso:$rootProject.picassoVersion"
+
+
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    }
+
 }

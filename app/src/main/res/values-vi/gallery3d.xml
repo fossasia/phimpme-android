@@ -1,0 +1,122 @@
+<!-- Copyright (C) 2007 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+--><resources>
+	<string-array name="months_abbreviated">
+		<item>"Tháng một"</item>
+		<item>"Tháng hai"</item>
+		<item>"Tháng ba"</item>
+		<item>"Tháng tư"</item>
+		<item>"Tháng năm"</item>
+		<item>"Tháng sáu"</item>
+		<item>"Tháng bảy"</item>
+		<item>"Tháng tám"</item>
+		<item>"Tháng chín"</item>
+		<item>"Tháng mười"</item>
+		<item>"Tháng mười một"</item>
+		<item>"Tháng mười hai"</item>
+	</string-array>
+	<!-- Title for picture frame gadget to show in list of all available gadgets -->
+    <string name="gadget_title">"Khung hình"</string>
+
+ 	<string name="details_ms">%1$02d:%2$02d</string>
+    <!-- Used to format video duration in Details dialog. hours:minutes:seconds e.g. 0:21:30 -->
+    <string name="details_hms">%1$d:%2$02d:%3$02d</string>
+    <!-- Activity label. This might show up in the activity-picker -->
+    <string name="movie_view_label">"Phim ảnh"</string>
+    <!-- shown in the video player view while the video is being loaded, before it starts playing -->
+    <string name="loading_video">"Tải video \ u2026"</string>
+    <!-- Movie View Resume Playing dialog title -->
+    <string name="resume_playing_title">"Xem lại video"</string>
+
+    <!-- Movie View Start Playing dialog title -->
+    <string name="resume_playing_message">"Tiếp tục phát từ %s ?"</string>
+    <!-- Movie View Start Playing button "Resume from bookmark" -->
+    <string name="resume_playing_resume">"Tiếp tục phát"</string>
+
+    <!-- Movie View Start Playing button "Beginning" -->
+    <string name="resume_playing_restart">"Bắt đầu "</string>
+	<string name="camera">"Camera:"</string>
+
+	<!-- Button indicating that the cropped image should be saved -->
+	<string name="crop_save_text">"Lưu"</string>
+	<!-- Button indicating that the cropped image should be reverted back to the original -->
+	<string name="crop_discard_text">"Hủy"</string>
+	<!-- Hint that appears when cropping an image with more than one face -->
+	<string name="multiface_crop_help">"Nhấp vào một khuôn mặt để bắt đầu."</string>
+	<!-- Toast/alert that the image is being saved to the SD card -->
+	<string name="saving_image">"Lưu ảnh \ u2026"</string>
+	<!-- menu pick: crop the currently selected image -->
+	<string name="crop_label">"Crop hình ảnh"</string>
+	<!-- Toast/alert that the face detection is being run -->
+	<string name="running_face_detection">"Xin vui lòng chờ \ u2026"</string>
+
+	<!-- Displayed in the title of the dialog for things to do with a picture
+		 that is to be "set as" (e.g. set as contact photo or set as wallpaper) -->
+	<string name="set_image">"Thiết lập hình ảnh như là"</string>
+	<!-- Toast/alert after saving wallpaper -->
+	<string name="wallpaper">"Đặt hình nền, vui lòng đợi \ u2026"</string>
+    <string name="camera_setas_wallpaper">"Ảnh nền"</string>
+
+    <!-- Details dialog "OK" button. Dismisses dialog. -->
+    <string name="details_ok">"OK"</string>
+    <string name="loading_new">"Tải album mới và hình ảnh"</string>
+    <string name="initializing">"Đang tải"</string>
+    <string name="pick_prompt">"Chọn một mục từ bộ sưu tập của bạn"</string>
+    <string name="no_items">"Không có mặt hàng nào trong bộ sưu tập của bạn"</string>
+    <string name="pick">"Chọn"</string>
+    <string name="delete">"Xóa"</string>
+    <string name="confirm_delete">"Xóa"</string>
+    <string name="share">"Chia sẻ"</string>
+    <string name="no_sd_card">"SD Card chưa lắp ráp hoặc không có mặt"</string>
+
+	<!-- String indicating more actions are available -->
+    <string name="more">"Thê"</string>
+    <string name="select_all">"Chọn tất cả"</string>
+    <string name="deselect_all">"Bỏ chọn tất cả"</string>
+    <string name="slideshow">"Slideshow"</string>
+
+    <string name="menu">"Trình đơn"</string>
+    <string name="details">"Chi tiết"</string>
+
+    <!-- String appended at the end depending upon what is selected eg. 1 album selected -->
+    <string name="album_selected">"album được chọn"</string>
+    <string name="item_selected">"sản phẩm được chọn"</string>
+    <string name="albums_selected">"album được chọn"</string>
+    <string name="items_selected">"các mục đã chọn"</string>
+
+    <string name="album">"Album"</string>
+    <string name="start">"Bắt đầu"</string>
+    <string name="end">"kết thúc"</string>
+    <string name="location">"Vị trí"</string>
+    <string name="location_unknown">"Không rõ vị trí"</string>
+    <string name="title">"Tiêu đề"</string>
+    <string name="type">"Kiểu"</string>
+
+    <!-- String indicating timestamp of photo or video -->
+    <string name="taken_on">"Đưa vào"</string>
+    <string name="added_on">"Được thêm vào ngày ."</string>
+    <string name="show_on_map">"Hiển thị trên bản đồ"</string>
+    <string name="rotate_left">"Xoay trái"</string>
+    <string name="rotate_right">"Xoay phải"</string>
+    <string name="crop">"Xén"</string>
+    <string name="set_as">"Đặt làm"</string>
+    <string name="set_as_wallpaper">"Đặt làm hình nền"</string>
+    <string name="item">"Khoản mục"</string>
+    <string name="items">"Hàng hóa"</string>
+
+    <!-- String indicating an approximate location eg. Around Palo Alto, CA -->
+    <string name="around">"Xung quanh"</string>
+    <string name="date_unknown">"Ngày không rõ"</string>
+    <string name="video_err">"Không thể để chơi video"</string>
+</resources>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/black_trans"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <ImageButton
+            android:id="@+id/switch_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/ic_switch_camera_white_24dp" />
+
+        <ImageButton
+            android:id="@+id/flash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_flash_on_white_24dp" />
+
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/myCardView"
+            android:layout_width="350dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            card_view:cardBackgroundColor= "#40000000"
+            card_view:cardCornerRadius="5dp"
+            card_view:cardElevation="1dp"
+            >
+
+            <ImageButton
+                android:id="@+id/exposure"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:background="@android:color/transparent"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_exposure_white_24dp" />
+
+            <ImageButton
+                android:id="@+id/grid_overlay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@android:color/transparent"
+                android:padding="16dp"
+                android:layout_marginLeft="200dp"
+                app:srcCompat="@drawable/ic_grid_on" />
+
+            <ImageButton
+                android:id="@+id/timer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:background="@android:color/transparent"
+                android:padding="16dp"
+                android:layout_marginLeft="50dp"
+                app:srcCompat="@drawable/ic_timer_disabled" />
+
+            <ImageButton
+                android:id="@+id/hdr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:background="@android:color/transparent"
+                android:padding="16dp"
+                android:layout_marginLeft="100dp"
+                app:srcCompat="@drawable/ic_hdr_off_white_24dp" />
+
+            <ImageButton
+                android:id="@+id/iso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="250dp"
+                android:background="@android:color/transparent"
+                android:padding="16dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/iso_camera" />
+
+            <ImageButton
+                android:id="@+id/resolution"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="300dp"
+                android:background="@android:color/transparent"
+                android:padding="16dp"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/lcd_resolution" />
+
+            <ImageButton
+                android:id="@+id/sound"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:background="@android:color/transparent"
+                android:layout_marginLeft="150dp"
+                android:padding="16dp"
+                app:srcCompat="@drawable/ic_volume_up_white_24dp" />
+
+        </android.support.v7.widget.CardView>
+
+        <SeekBar
+            android:id="@+id/exposureSeekBar"
+            android:layout_width="270dp"
+            android:layout_height="30dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="95dp"
+            android:visibility="gone" />
+
+        <Spinner
+            android:id="@+id/iso_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"></Spinner>
+
+        <Spinner
+            android:id="@+id/resolution_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+        </Spinner>
+
+        <ImageButton
+            android:id="@+id/takephoto"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="fitCenter"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/roundedbutton"
+            android:src="@drawable/takepic"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:id="@+id/textTimeLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="250dp"
+            android:textColor="@color/white"
+            android:textSize="60dp"
+            android:layout_centerHorizontal="true"
+            android:text="" />
+
+        <FrameLayout
+            android:id="@+id/preview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_weight="4.17"
+            android:measureAllChildren="true" >
+
+        </FrameLayout>
+    </RelativeLayout>
+
+</LinearLayout>

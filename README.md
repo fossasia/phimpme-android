@@ -4,7 +4,7 @@ Phimp.me is a Photo App for Android that aims to replace proprietary photo appli
 
 [![Build Status](https://travis-ci.org/fossasia/phimpme-android.svg?branch=master)](https://travis-ci.org/fossasia/phimpme-android)
 [![codecov](https://codecov.io/gh/fossasia/phimpme-android/branch/master/graph/badge.svg)](https://codecov.io/gh/fossasia/phimpme-android)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4584003e734343b3b8ce94bcae6e9ca4)](https://www.codacy.com/app/harshithdwivedi/phimpme-android?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fossasia/phimpme-android&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ad1ba4cbecf04d3baa96a04c9a14d8cc)](https://www.codacy.com/app/mb/phimpme-android?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fossasia/phimpme-android&amp;utm_campaign=Badge_Grade)
 
 ## Communication
 Join Gitter channel: https://gitter.im/fossasia/phimpme
@@ -47,10 +47,12 @@ We have the following branches
 
   <table>
     <tr>
-     <td><img src="https://raw.githubusercontent.com/anantprsd5/phimpme-android/ss/docs/screenshots/gallery.png"></td>
-     <td><img src="https://raw.githubusercontent.com/anantprsd5/phimpme-android/ss/docs/screenshots/menu.png"></td>
-     <td><img src="https://raw.githubusercontent.com/anantprsd5/phimpme-android/ss/docs/screenshots/camera.png"></td>
-     <td><img src="https://raw.githubusercontent.com/anantprsd5/phimpme-android/ss/docs/screenshots/editImage.png"></td>
+     <td><img src="https://cloud.githubusercontent.com/assets/14369357/24083573/876f72ec-0cff-11e7-99b0-32431df34b29.png"></td>
+     <td><img src="https://cloud.githubusercontent.com/assets/14369357/24083579/b15bd550-0cff-11e7-96e8-3b628e25aba5.png"></td>
+     <td><img src="https://cloud.githubusercontent.com/assets/14369357/24083571/7dfef5e8-0cff-11e7-8e6f-5ed041919388.png"></td>
+     <td><img src="https://cloud.githubusercontent.com/assets/22375731/24555932/721cc156-1650-11e7-93f1-2a774b860d1f.png"></td>
+     <td><img src="https://raw.githubusercontent.com/heysadboy/phimpme-android/development/docs/screenshots/camera1.png"></td>
+     <td><img src="https://raw.githubusercontent.com/heysadboy/phimpme-android/development/docs/screenshots/map.png">
 </td>
     </tr>
   </table>
@@ -65,12 +67,14 @@ Home Screen|Show local captured images|Established
  |Edit, Upload, share option on image click|Working
 Map Activity|Show photos on the map|Working
 Camera|Capture Image, Toggle Camera|Working
- |Apply filters, Camera features|Flash on/off, Exposure etc|Working
-Upload|Select account on which you want to upload|Not Implemented
- |Select images which you want to upload|To upload photos|Not implemented
- |Share images|With bluetooth|Not Implemented
-Settings|Add Accounts|Not Implemented
- |Photos settings|Set password, choose folder etc|Working
+ |Apply filters, Flash on/off|Working
+Upload|Select account on which you want to upload|Not working
+ |Select images which you want to upload|Crashing
+ |Share images with bluetooth|Working
+ |Upload button which upload the image|Crashing
+Settings|Add Accounts|Not working
+ |Photos settings|Working
+ |Local photos : choose folder|Not working
 ## Development Setup
 
 Before you begin, you should already have the Android Studio SDK downloaded and set up correctly. You can find a guide on how to do this here: [Setting up Android Studio](http://developer.android.com/sdk/installing/index.html?pkg=studio)
