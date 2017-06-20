@@ -794,7 +794,6 @@ public class LFMainActivity extends SharedMediaActivity {
 
         menu.findItem(R.id.excludeAlbumButton).setVisible(editMode);
         menu.findItem(R.id.select_all).setVisible(editMode);
-        menu.findItem(R.id.installShortcut).setVisible(albumsMode && editMode);
         menu.findItem(R.id.type_sort_action).setVisible(!albumsMode);
         menu.findItem(R.id.delete_action).setVisible(!albumsMode || editMode);
 
@@ -865,11 +864,6 @@ public class LFMainActivity extends SharedMediaActivity {
 
             case R.id.settings:
                 startActivity(new Intent(LFMainActivity.this, SettingsActivity.class));
-                return true;
-
-            case R.id.installShortcut:
-                getAlbums().installShortcutForSelectedAlbums(this.getApplicationContext());
-                finishEditMode();
                 return true;
 
             case R.id.hideAlbumButton:

@@ -176,28 +176,11 @@ public class SingleMediaActivity extends SharedMediaActivity {
                         else hideSystemUI();
                     }
                 });
-        if (!allPhotoMode)
-            adapter = new MediaPagerAdapter(getSupportFragmentManager(), getAlbum().getMedia());
-        else adapter = new MediaPagerAdapter(getSupportFragmentManager(), LFMainActivity.listAll);
 
-        adapter.setVideoOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (SP.getBoolean("set_internal_player", false)) {
-                    Intent mpdIntent = new Intent(SingleMediaActivity.this, PlayerActivity.class)
-                            .setData(getAlbum().getCurrentMedia().getUri());
-                    startActivity(mpdIntent);
-                } else {
-                    Intent intentOpenWith = new Intent(Intent.ACTION_VIEW);
-                    intentOpenWith.setDataAndType(
-                            getAlbum().getMedia().get(mViewPager.getCurrentItem()).getUri(),
-                            getAlbum().getMedia().get(mViewPager.getCurrentItem()).getMimeType());
-                    startActivity(intentOpenWith);
-                }
-            }
-        });
 
         if (!allPhotoMode) {
+            adapter = new MediaPagerAdapter(getSupportFragmentManager(), getAlbum().getMedia());
+
             getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
             mViewPager.setAdapter(adapter);
             mViewPager.setCurrentItem(getAlbum().getCurrentMediaIndex());
@@ -220,6 +203,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
                 }
             });
         } else {
+            adapter = new MediaPagerAdapter(getSupportFragmentManager(), LFMainActivity.listAll);
             getSupportActionBar().setTitle(all_photo_pos + 1 + " " + getString(R.string.of) + " " + size_all);
             mViewPager.setAdapter(adapter);
             mViewPager.setCurrentItem(all_photo_pos);
