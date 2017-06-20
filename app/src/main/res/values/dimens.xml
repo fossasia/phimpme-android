@@ -1,47 +1,60 @@
 <resources>
-  <dimen name="padding_small">4dp</dimen>
-  <dimen name="padding_medium">8dp</dimen>
-  <dimen name="padding_large">16dp</dimen>
-  <dimen name="fab_margin">16dp</dimen>
-  <dimen name="headingText">16sp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
 
-  <dimen name="image_selector_size">25dp</dimen>
+    /* LeafPic dimensions */
 
-  <dimen name="image_height_portrait">220dp</dimen>
-  <dimen name="image_height_landscape">110dp</dimen>
+    <dimen name="height_bottombar">50dp</dimen>
 
-  <dimen name="thumbnail_width">140dp</dimen>
-  <dimen name="thumbnail_height">100dp</dimen>
+    <!--ICONS-->
+    <dimen name="icon_margin">24dp</dimen>
+    <dimen name="icon_width_height">20dp</dimen>
+    <dimen name="big_icon">36dp</dimen>
 
-  <dimen name="text_size_12">12sp</dimen>
-  <dimen name="text_size_14">14sp</dimen>
-  <dimen name="text_size_15">15sp</dimen>
-  <dimen name="text_size_16">16sp</dimen>
-  <dimen name="text_size_18">18sp</dimen>
-  <dimen name="text_size_20">20sp</dimen>
+    <!--PADDING & MARGIN-->
+    <dimen name="big_spacing">24dp</dimen>
+    <dimen name="sub_big_spacing">20dp</dimen>
+    <dimen name="medium_spacing">16dp</dimen>
+    <dimen name="sub_medium_spacing">10dp</dimen>
+    <dimen name="small_spacing">8dp</dimen>
+    <dimen name="sub_small_spacing">5dp</dimen>
 
-  <dimen name="margin_1">1dp</dimen>
-  <dimen name="margin_2">2dp</dimen>
-  <dimen name="margin_3">3dp</dimen>
-  <dimen name="margin_5">5dp</dimen>
-  <dimen name="margin_8">8dp</dimen>
-  <dimen name="margin_10">10dp</dimen>
-  <dimen name="margin_15">15dp</dimen>
-  <dimen name="margin_16">16dp</dimen>
-  <dimen name="margin_20">20dp</dimen>
-  <dimen name="margin_30">30dp</dimen>
-  <dimen name="margin_32">32dp</dimen>
-  <dimen name="margin_36">36dp</dimen>
-  <dimen name="margin_40">40dp</dimen>
-  <dimen name="margin_42">42dp</dimen>
-  <dimen name="margin_48">48dp</dimen>
-  <dimen name="margin_50">50dp</dimen>
-  <dimen name="margin_56">56dp</dimen>
-  <dimen name="margin_60">60dp</dimen>
-  <dimen name="margin_70">70dp</dimen>
-  <dimen name="margin_80">80dp</dimen>
-  <dimen name="margin_90">90dp</dimen>
-  <dimen name="margin_100">100dp</dimen>
-  <dimen name="margin_140">140dp</dimen>
-  <dimen name="margin_250">250dp</dimen>
+    <!---->
+    <dimen name="setting_margin_end">44dp</dimen>
+
+    <!--TEXT-->
+    <dimen name="big_text">25sp</dimen>
+    <dimen name="sub_big_text">18sp</dimen>
+    <dimen name="medium_text">16sp</dimen>
+    <dimen name="sub_medium_text">14sp</dimen>
+    <dimen name="medium_small_text">10sp</dimen>
+    <dimen name="small_text">8sp</dimen>
+
+    <!--VIEWS-->
+    <dimen name="scroll_bar_size">4dip</dimen>
+    <dimen name="card_corner_radius">1dp</dimen>
+    <dimen name="card_elevation">5dp</dimen>
+    <dimen name="card_spacing">10dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <!--IMAGE EDITING-->
+    <dimen name="image_edit_text_size">20sp</dimen>
+    <dimen name="image_edit_text_padding">7dp</dimen>
+    <dimen name="image_edit_menu_margin">20dp</dimen>
+    <dimen name="materialcolorpicker__activity_horizontal_margin">16dp</dimen>
+    <dimen name="materialcolorpicker__activity_vertical_margin">16dp</dimen>
+    <dimen name = "bottom_banner_height">80dp</dimen>
+
+    <dimen name = "editor_bottom_row_size">60dp</dimen>
+    <dimen name = "editor_mid_row_size">70dp</dimen>
+    <dimen name = "editor_top_row_size">40dp</dimen>
+    <dimen name = "icon_item_size">30dp</dimen>
+    <dimen name = "icon_item_image_size_main">30dp</dimen>
+    <dimen name = "icon_item_image_size_recycler">30dp</dimen>
+    <dimen name = "icon_item_image_size_filter_preview">50dp</dimen>
+    <dimen name = "icon_item_image_size_top">30dp</dimen>
+    <dimen name = "icon_item_image_size">30dp</dimen>
+    <dimen name = "icon_item_title_size">12sp</dimen>
+
 </resources>

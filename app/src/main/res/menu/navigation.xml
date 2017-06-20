@@ -1,24 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <item
-        android:id="@+id/tab_gallery"
-        android:icon="@drawable/ic_gallery"
-        android:title="@string/gallery" />
-    <!--TODO: Put this back at some point-->
+        android:id="@+id/navigation_camera"
+        android:icon="@drawable/ic_camera_alt_black_24dp"
+        android:title="@string/title_camera" />
+
     <item
-        android:id="@+id/tab_map"
-        android:icon="@drawable/ic_map"
-        android:title="Map" />
-    <item
-        android:id="@+id/tab_camera"
-        android:icon="@drawable/ic_camera"
-        android:title="@string/camera" />
-    <item
-        android:id="@+id/tab_upload"
-        android:icon="@drawable/ic_upload"
-        android:title="@string/upload" />
-    <item
-        android:id="@+id/tab_settings"
-        android:icon="@drawable/ic_settings"
-        android:title="@string/settings" />
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/title_home" />
+
+    <!--<item
+        android:id="@+id/navigation_accounts"
+        android:icon="@drawable/ic_account_box_black_24dp"
+        android:title="@string/title_account" />-->
+
 </menu>
