@@ -750,7 +750,6 @@ public class LFMainActivity extends SharedMediaActivity {
         menu.findItem(R.id.hideAlbumButton).setTitle(hidden ? getString(R.string.unhide) : getString(R.string.hide));
         menu.findItem(R.id.delete_action).setIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_delete));
         menu.findItem(R.id.sort_action).setIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_sort));
-        menu.findItem(R.id.filter_menu).setIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_filter_list));
         menu.findItem(R.id.sharePhotos).setIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_share));
 
         return true;
@@ -791,9 +790,6 @@ public class LFMainActivity extends SharedMediaActivity {
     private void togglePrimaryToolbarOptions(final Menu menu) {
         menu.setGroupVisible(R.id.general_action, !editMode);
 
-        if (!editMode) {
-            menu.findItem(R.id.filter_menu).setVisible(!albumsMode);
-        }
     }
 
     //endregion
@@ -1043,32 +1039,6 @@ public class LFMainActivity extends SharedMediaActivity {
                 startActivity(Intent.createChooser(intent, getResources().getText(R.string.send_to)));
                 return true;
 
-            case R.id.all_media_filter:
-                if (!albumsMode) {
-                    getAlbum().filterMedias(getApplicationContext(), FilterMode.ALL);
-                    mediaAdapter.swapDataSet(getAlbum().getMedia());
-                    item.setChecked(true);
-                    checkNothing();
-                }
-                return true;
-
-            case R.id.image_media_filter:
-                if (!albumsMode) {
-                    getAlbum().filterMedias(getApplicationContext(), FilterMode.IMAGES);
-                    mediaAdapter.swapDataSet(getAlbum().getMedia());
-                    item.setChecked(true);
-                    checkNothing();
-                }
-                return true;
-
-            case R.id.gifs_media_filter:
-                if (!albumsMode) {
-                    getAlbum().filterMedias(getApplicationContext(), FilterMode.GIF);
-                    mediaAdapter.swapDataSet(getAlbum().getMedia());
-                    item.setChecked(true);
-                    checkNothing();
-                }
-                return true;
 
             case R.id.name_sort_action:
                 if (albumsMode) {
