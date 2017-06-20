@@ -46,12 +46,18 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Called from SingleMediaActivity when the user selects the 'edit' option in the toolbar overflow menu.
+ */
 public class EditImageActivity extends EditBaseActivity implements View.OnClickListener, View.OnTouchListener {
     public static final String FILE_PATH = "file_path";
     public static final String EXTRA_OUTPUT = "extra_output";
     public static final String SAVE_FILE_PATH = "save_file_path";
     public static final String IMAGE_IS_EDIT = "image_is_edit";
 
+    /**
+     * Different edit modes.
+     */
     public static final int MODE_MAIN = 0;
     public static final int MODE_SLIDER = 1;
     public static final int MODE_FILTERS = 2;
@@ -72,6 +78,9 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     public static int mode;
     public static int effectType;
 
+    /**
+     * Number of times image has been edited. Indicates whether image has been edited or not.
+     */
     protected int mOpTimes = 0;
     protected boolean isBeenSaved = false;
 
@@ -143,6 +152,9 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
 //        setInitialFragments();
     }
 
+    /**
+     * Called after onCreate() when the activity is first started. Loads the initial default fragments.
+     */
     private void setInitialFragments() {
         getSupportFragmentManager()
                 .beginTransaction()
@@ -155,12 +167,19 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                 .commit();
     }
 
+    /**
+     * Gets the image to be loaded from the intent and displays this image.
+     */
     private void getData() {
         filePath = getIntent().getStringExtra(FILE_PATH);
         saveFilePath = getIntent().getStringExtra(EXTRA_OUTPUT);
         loadImage(filePath);
     }
 
+    /**
+     * Called from onCreate().
+     * Initializes all view objects and fragments to be used.
+     */
     private void initView() {
         mContext = this;
         DisplayMetrics metrics = getResources().getDisplayMetrics();
@@ -197,6 +216,9 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         rotateFragment = RotateFragment.newInstance();
     }
 
+    /**
+     * Called when the edit_save button is pressed. Used to share the image on social media.
+     */
     private void shareImage() {
         Intent shareIntent = new Intent(EditImageActivity.this, shareActivity.class);
         if(mOpTimes>0) {
@@ -212,11 +234,19 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         finish();
     }
 
-
+    /**
+     * Get current editing mode.
+     * @return the editing mode.
+     */
     public int getMode(){
         return mode;
     }
 
+    /**
+     * Get the fragment corresponding to current editing mode.
+     * @param index integer corresponding to editing mode.
+     * @return Fragment of current editing mode.
+     */
     public Fragment getFragment(int index){
         switch (index){
             case MODE_MAIN:
@@ -249,6 +279,11 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         return mainMenuFragment;
     }
 
+    /**
+     * Called when a particular option in the preview_container is selected. It reassigns
+     * the controls_container. It displays options and tools for the selected editing mode.
+     * @param index integer corresponding to the current editing mode.
+     */
     public void changeBottomFragment(int index){
         getSupportFragmentManager()
                 .beginTransaction()
@@ -258,6 +293,9 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         setButtonsVisibility();
     }
 
+    /**
+     * Handles the visibility of the 'save' button.
+     */
     private void setButtonsVisibility() {
         save.setVisibility(View.VISIBLE);
         bef_aft.setVisibility(View.VISIBLE);
@@ -280,6 +318,11 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         effectType = 100 * mode + type;
     }
 
+    /**
+     * Is called when an editing mode is selected in the control_container. Reassigns the
+     * preview_container according to the editing mode selected.
+     * @param index integer representing selected editing mode
+     */
     public void changeMiddleFragment(int index){
             getSupportFragmentManager()
                     .beginTransaction()
@@ -300,6 +343,10 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         increaseOpTimes();
     }
 
+    /**
+     * Load the image from filepath into mainImage imageView.
+     * @param filepath The image to be loaded.
+     */
     public void loadImage(String filepath) {
         if (mLoadImageTask != null) {
             mLoadImageTask.cancel(true);
@@ -322,6 +369,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         mSaveImageTask.execute(mainBitmap);
     }
 
+    //Increment no. of times the image has been edited
     public void increaseOpTimes() {
         mOpTimes++;
         isBeenSaved = false;
@@ -331,6 +379,10 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         isBeenSaved = true;
     }
 
+    /**
+     * Allow exit only if image has not been modified or has been modified and saved.
+     * @return true if can exit, false if cannot.
+     */
     public boolean canAutoExit() {
         return isBeenSaved || mOpTimes == 0;
     }
@@ -493,6 +545,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                 return;
         }
 
+        //if the image has not been edited or has been edited and saved.
         if (canAutoExit()) {
             finish();
         } else {
