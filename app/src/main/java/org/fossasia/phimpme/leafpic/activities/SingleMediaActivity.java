@@ -420,52 +420,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
                     }
                 });
                 bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
-
                 break;
-
-            case R.id.name_sort_action:
-                getAlbum().setDefaultSortingMode(getApplicationContext(), SortingMode.NAME);
-                getAlbum().sortPhotos();
-                adapter.swapDataSet(getAlbum().getMedia());
-                item.setChecked(true);
-                return true;
-
-            case R.id.date_taken_sort_action:
-                getAlbum().setDefaultSortingMode(getApplicationContext(), SortingMode.DATE);
-                getAlbum().sortPhotos();
-                adapter.swapDataSet(getAlbum().getMedia());
-                item.setChecked(true);
-                return true;
-
-            case R.id.size_sort_action:
-                getAlbum().setDefaultSortingMode(getApplicationContext(), SortingMode.SIZE);
-                getAlbum().sortPhotos();
-                adapter.swapDataSet(getAlbum().getMedia());
-                item.setChecked(true);
-                return true;
-
-            case R.id.type_sort_action:
-                getAlbum().setDefaultSortingMode(getApplicationContext(), SortingMode.TYPE);
-                getAlbum().sortPhotos();
-                adapter.swapDataSet(getAlbum().getMedia());
-                item.setChecked(true);
-                return true;
-
-            case R.id.numeric_sort_action:
-                getAlbum().setDefaultSortingMode(getApplicationContext(), SortingMode.NUMERIC);
-                getAlbum().sortPhotos();
-                adapter.swapDataSet(getAlbum().getMedia());
-                item.setChecked(true);
-                return true;
-
-            case R.id.ascending_sort_action:
-                getAlbum().setDefaultSortingAscending(getApplicationContext(), !item.isChecked() ? SortingOrder.ASCENDING : SortingOrder.DESCENDING);
-                getAlbum().sortPhotos();
-                adapter.swapDataSet(getAlbum().getMedia());
-
-                item.setChecked(!item.isChecked());
-                return true;
-
 
             case R.id.action_share:
                 Intent share = new Intent(SingleMediaActivity.this,SharingActivity.class);
