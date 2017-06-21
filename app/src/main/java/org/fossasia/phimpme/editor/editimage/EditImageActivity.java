@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.SharingActivity;
 import org.fossasia.phimpme.editor.EditBaseActivity;
 import org.fossasia.phimpme.editor.editimage.fragment.AddTextFragment;
 import org.fossasia.phimpme.editor.editimage.fragment.CropFragment;
@@ -36,8 +37,6 @@ import org.fossasia.phimpme.editor.editimage.view.StickerView;
 import org.fossasia.phimpme.editor.editimage.view.TextStickerView;
 import org.fossasia.phimpme.editor.editimage.view.imagezoom.ImageViewTouch;
 import org.fossasia.phimpme.editor.editimage.view.imagezoom.ImageViewTouchBase;
-import org.fossasia.phimpme.leafpic.util.ThemeHelper;
-import org.fossasia.phimpme.SharingActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 
 import java.io.File;
