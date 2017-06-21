@@ -355,26 +355,27 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
 
     private void addToUndoList() {
         try{
+            TODO:// implement a more efficient way, like storing only the difference of bitmaps or
+            // steps followed to edit
+
             bitmapsForUndo.add(mainBitmap.copy(mainBitmap.getConfig(),true));
         }catch (OutOfMemoryError error){
-            //Snackbar.make(getWindow().getDecorView().getRootView(),"Out of Memory. steps = " + bitmapsForUndo.size(),Snackbar.LENGTH_LONG).show();
-
+            /**
+             * When outOfMemory exception throws then to make space, remove the last edited step
+             * from list and added the new operation in the end.
+             */
+            bitmapsForUndo.get(1).recycle();
+            bitmapsForUndo.remove(1);
+            bitmapsForUndo.add(mainBitmap.copy(mainBitmap.getConfig(),true));
         }
     }
 
-    private Bitmap getRecentFromUndoList(boolean fromLast){
+    private Bitmap getRecentFromUndoList(){
         if (bitmapsForUndo.size()>1) {
-            if (fromLast) {
                 Bitmap bitmap = bitmapsForUndo.get(bitmapsForUndo.size() - 2).copy(bitmapsForUndo.get(bitmapsForUndo.size() - 2).getConfig(), true);
                 bitmapsForUndo.get(bitmapsForUndo.size() - 1).recycle();
                 bitmapsForUndo.remove(bitmapsForUndo.size() - 1);
                 return bitmap;
-            } else {
-                Bitmap bitmap = bitmapsForUndo.get(0).copy(bitmapsForUndo.get(0).getConfig(), true);
-                bitmapsForUndo.get(1).recycle();
-                bitmapsForUndo.remove(1);
-                return bitmap;
-            }
         }else
             return bitmapsForUndo.get(0);
     }
@@ -385,7 +386,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                 mainBitmap.recycle();
             }
         }
-        mainBitmap = getRecentFromUndoList(true);
+        mainBitmap = getRecentFromUndoList();
         mainImage.setImageBitmap(mainBitmap);
         mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
         setButtonsVisibility();
