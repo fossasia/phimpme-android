@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
@@ -67,6 +68,8 @@ import org.fossasia.phimpme.leafpic.views.GridSpacingItemDecoration;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -1156,7 +1159,7 @@ public class LFMainActivity extends SharedMediaActivity {
                         ArrayList<Bitmap> bitmapArray = new ArrayList<Bitmap>();
                         for (int i = 0; i < getAlbum().getSelectedCount(); i++) {
                             if (!getAlbum().getSelectedMedia(i).isVideo())
-                                bitmapArray.add(getAlbum().getSelectedMedia(i).getBitmap());
+                                bitmapArray.add(getBitmap(getAlbum().getSelectedMedia(i).getPath()));
                         }
 
                         if (bitmapArray.size() > 1)
@@ -1411,6 +1414,64 @@ public class LFMainActivity extends SharedMediaActivity {
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private Bitmap getBitmap(String path) {
+
+        Uri uri = Uri.fromFile(new File(path));
+        InputStream in = null;
+        try {
+            final int IMAGE_MAX_SIZE = 1200000; // 1.2MP
+            in = getContentResolver().openInputStream(uri);
+
+            // Decode image size
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(in, null, o);
+            in.close();
+
+            int scale = 1;
+            while ((o.outWidth * o.outHeight) * (1 / Math.pow(scale, 2)) >
+                    IMAGE_MAX_SIZE) {
+                scale++;
+            }
+
+            Bitmap bitmap = null;
+            in = getContentResolver().openInputStream(uri);
+            if (scale > 1) {
+                scale--;
+                // scale to max possible inSampleSize that still yields an image
+                // larger than target
+                o = new BitmapFactory.Options();
+                o.inSampleSize = scale;
+                bitmap = BitmapFactory.decodeStream(in, null, o);
+
+                // resize to desired dimensions
+                int height = bitmap.getHeight();
+                int width = bitmap.getWidth();
+
+                double y = Math.sqrt(IMAGE_MAX_SIZE
+                        / (((double) width) / height));
+                double x = (y / height) * width;
+
+                Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, (int) x,
+                        (int) y, true);
+                bitmap.recycle();
+                bitmap = scaledBitmap;
+
+                System.gc();
+            } else {
+                bitmap = BitmapFactory.decodeStream(in);
+            }
+            in.close();
+
+            Log.d(TAG, "bitmap size - width: " +bitmap.getWidth() + ", height: " +
+                    bitmap.getHeight());
+            return bitmap;
+        } catch (IOException e) {
+            Log.e(TAG, e.getMessage(),e);
+            return null;
         }
     }
 
