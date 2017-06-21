@@ -376,4 +376,10 @@
     <color name="materialcolorpicker__dribbledark">#c32361</color>
     <color name="materialcolorpicker__black">#000000</color>
     <color name="materialcolorpicker__dialogcolor">#009688</color>
+
+    <color name="share_done_button_color">#01B683</color>
+    <color name="facebook_color">#3b5998</color>
+    <color name="twitter_color">#48A2E5</color>
+    <color name="instagram_color">#D42473</color>
+    <color name="other_share_color">@color/md_indigo_900</color>
 </resources>
