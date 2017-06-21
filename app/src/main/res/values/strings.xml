@@ -777,6 +777,15 @@
     <string name="all_media">All</string>
     <string name="albums_mode">Switch to albums mode</string>
 
+    <string name="shareto">Share to</string>
+    <string name="share_done">Done and Exit</string>
+    <string name="facebook">Facebook</string>
+    <string name="twitter">Twitter</string>
+    <string name="instagram">Instagram</string>
+    <string name="other">Other</string>
+    <string name="exit">Exit</string>
+    <string name="share_not_completed">Sharing is not completed</string>
+
     <string name="sign_out_dialog_title">Sign Out !</string>
     <string name="yes_action">Yes</string>
     <string name="no_action">No</string>
