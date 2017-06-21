@@ -5,11 +5,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.util.SparseArray;
-import android.view.View;
 import android.view.ViewGroup;
 
 import org.fossasia.phimpme.leafpic.data.Media;
-import org.fossasia.phimpme.leafpic.fragments.GifFragment;
 import org.fossasia.phimpme.leafpic.fragments.ImageFragment;
 
 import java.util.ArrayList;
@@ -31,8 +29,7 @@ public class MediaPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override public Fragment getItem(int pos) {
         Media media = this.media.get(pos);
-        if (media.isGif()) return GifFragment.newInstance(media);
-        else return ImageFragment.newInstance(media);
+       return ImageFragment.newInstance(media);
     }
 
     @Override public Object instantiateItem(ViewGroup container, int position) {
