@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -37,7 +36,6 @@ import org.fossasia.phimpme.editor.editimage.view.StickerView;
 import org.fossasia.phimpme.editor.editimage.view.TextStickerView;
 import org.fossasia.phimpme.editor.editimage.view.imagezoom.ImageViewTouch;
 import org.fossasia.phimpme.editor.editimage.view.imagezoom.ImageViewTouchBase;
-import org.fossasia.phimpme.leafpic.activities.SingleMediaActivity;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
 import org.fossasia.phimpme.SharingActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
@@ -52,7 +50,6 @@ import java.util.ArrayList;
 public class EditImageActivity extends EditBaseActivity implements View.OnClickListener, View.OnTouchListener {
     public static final String FILE_PATH = "file_path";
     public static final String EXTRA_OUTPUT = "extra_output";
-    public static final String SAVE_FILE_PATH = "save_file_path";
     public static final String IMAGE_IS_EDIT = "image_is_edit";
 
     /**
@@ -101,11 +98,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
 
     private SaveImageTask mSaveImageTask;
     private int requestCode;
-    final String REVIEW_ACTION = "com.android.camera.action.REVIEW";
 
     public ArrayList<Bitmap> bitmapsForUndo;
-
-    public ThemeHelper themeHelper;
     public MainMenuFragment mainMenuFragment;
     public RecyclerMenuFragment filterFragment, enhanceFragment,stickerTypesFragment;
     public StickersFragment stickersFragment;
@@ -222,23 +216,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         rotateFragment = RotateFragment.newInstance();
     }
 
-    /**
-     * Called when the edit_save button is pressed. Used to share the image on social media.
-     */
-    private void shareImage() {
-        Intent shareIntent = new Intent(EditImageActivity.this, SharingActivity.class);
-        if(mOpTimes>0) {
-            shareIntent.putExtra(EXTRA_OUTPUT, saveFilePath);
-            shareIntent.putExtra(IMAGE_IS_EDIT, mOpTimes > 0);
-        }
-        else {
-            shareIntent.putExtra(EXTRA_OUTPUT, filePath);
-        }
-        FileUtil.ablumUpdate(this, saveFilePath);
-        setResult(RESULT_OK, shareIntent);
-        startActivity(shareIntent);
-        finish();
-    }
 
     /**
      * Get current editing mode.
@@ -407,10 +384,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     }
 
     protected void doSaveImage() {
-        if (mOpTimes <= 0)
-            shareImage();
-
-
         if (mSaveImageTask != null) {
             mSaveImageTask.cancel(true);
         }
@@ -442,23 +415,38 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         returnIntent.putExtra(FILE_PATH, filePath);
         returnIntent.putExtra(EXTRA_OUTPUT, saveFilePath);
         returnIntent.putExtra(IMAGE_IS_EDIT, mOpTimes > 0);
-
         FileUtil.ablumUpdate(this, saveFilePath);
         setResult(RESULT_OK, returnIntent);
-        if(requestCode == 1 && mOpTimes<=0) {   //Checks if this Activity was started by PhotoActivity
-            Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(filePath)));
-            intent.setClass(getApplicationContext(), SingleMediaActivity.class);
-            //shareImage();
-            startActivity(intent);
-            finish();
+
+        if (mOpTimes > 0 || (requestCode == 1 && mOpTimes <= 0))
+            shareImage();
+        else{
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
+            alertDialogBuilder.setMessage(R.string.exit_without_edit)
+                    .setCancelable(false).setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    mContext.finish();
+                }
+            }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
         }
-        else if(mOpTimes>0) {
-            Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(saveFilePath)));
-            intent.setClass(getApplicationContext(), SingleMediaActivity.class);
-            //shareImage();
-            startActivity(intent);
-            finish();
-        }
+    }
+
+    /**
+     * Called when the edit_save button is pressed. Used to share the image on social media.
+     */
+    private void shareImage(){
+        Intent shareIntent = new Intent(EditImageActivity.this, SharingActivity.class);
+        shareIntent.putExtra(EXTRA_OUTPUT, saveFilePath);
+        setResult(RESULT_OK, shareIntent);
+        startActivity(shareIntent);
+        finish();
     }
 
     private ArrayList<String> addStickerImages(String folderPath) {
@@ -648,12 +636,10 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.edit_save:
-                if (mOpTimes == 0) {//Does not modify the image
-                    onSaveTaskDone();
-                    //shareImage();
-                } else {
+                if (mOpTimes != 0)
                     doSaveImage();
-                }
+                else
+                    onSaveTaskDone();
                 break;
             case R.id.edit_cancel:
                 onBackPressed();
