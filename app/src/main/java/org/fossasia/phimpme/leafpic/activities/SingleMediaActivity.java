@@ -57,6 +57,7 @@ import org.fossasia.phimpme.leafpic.util.PreferenceUtil;
 import org.fossasia.phimpme.leafpic.util.SecurityHelper;
 import org.fossasia.phimpme.leafpic.util.StringUtils;
 import org.fossasia.phimpme.leafpic.views.HackyViewPager;
+import org.fossasia.phimpme.SharingActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 
 import java.io.File;
@@ -467,10 +468,9 @@ public class SingleMediaActivity extends SharedMediaActivity {
 
 
             case R.id.action_share:
-                Intent share = new Intent(Intent.ACTION_SEND);
-                share.setType(getAlbum().getCurrentMedia().getMimeType());
-                share.putExtra(Intent.EXTRA_STREAM, getAlbum().getCurrentMedia().getUri());
-                startActivity(Intent.createChooser(share, getString(R.string.send_to)));
+                Intent share = new Intent(SingleMediaActivity.this,SharingActivity.class);
+                share.putExtra(EXTRA_OUTPUT,getAlbum().getCurrentMedia().getPath());
+                startActivity(share);
                 return true;
 
             case R.id.action_edit:
@@ -752,4 +752,3 @@ public class SingleMediaActivity extends SharedMediaActivity {
             getAlbums().clearSelectedAlbums();
     }
 }
-
