@@ -11,32 +11,6 @@
     <group android:id="@+id/general_action">
 
         <item
-            android:id="@+id/filter_menu"
-            android:title="@string/filter_menu_title"
-            app:showAsAction="ifRoom">
-            <menu xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                tools:context="org.fossasia.phimpme.leafpic.activities.LFMainActivity">
-                <group android:checkableBehavior="single">
-                    <item
-                        android:id="@+id/all_media_filter"
-                        android:checked="true"
-                        android:title="@string/all"
-                        app:showAsAction="never" />
-
-                    <item
-                        android:id="@+id/image_media_filter"
-                        android:title="@string/images"
-                        app:showAsAction="never" />
-                    <item
-                        android:id="@+id/gifs_media_filter"
-                        android:title="@string/gifs"
-                        app:showAsAction="never" />
-                </group>
-            </menu>
-        </item>
-
-        <item
             android:id="@+id/sort_action"
             android:title="@string/sort_menu_title"
             app:showAsAction="ifRoom">
