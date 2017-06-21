@@ -3,7 +3,6 @@ package org.fossasia.phimpme.leafpic.adapters;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,13 +12,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.koushikdutta.ion.Ion;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.leafpic.data.Media;
-import org.fossasia.phimpme.leafpic.util.ColorPalette;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
 
 import java.util.ArrayList;
@@ -37,7 +34,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
     private View.OnClickListener mOnClickListener;
     private View.OnLongClickListener mOnLongClickListener;
 
-    public MediaAdapter(ArrayList<Media> ph , Context context) {
+    public MediaAdapter(ArrayList<Media> ph, Context context) {
         medias = ph;
         updatePlaceholder(context);
     }
@@ -64,47 +61,28 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
 
         holder.icon.setVisibility(View.GONE);
 
-        if (f.isGif()) {
-            Ion.with(holder.imageView.getContext())
-                    .load(f.getPath())
-                    .intoImageView(holder.imageView);
-            holder.gifIcon.setVisibility(View.VISIBLE);
-        } else {
-            Glide.with(holder.imageView.getContext())
-                    .load(f.getUri())
-                    .asBitmap()
-                    .signature(f.getSignature())
-                    .centerCrop()
-                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                    .thumbnail(0.5f)
-                    .placeholder(drawable)
-                    .animate(R.anim.fade_in)
-                    .into(holder.imageView);
-            holder.gifIcon.setVisibility(View.GONE);
-        }
 
-        if(f.isVideo()) {
-            holder.icon.setVisibility(View.VISIBLE);
-            holder.path.setVisibility(View.VISIBLE);
-            holder.path.setText(f.getName());
-            holder.path.setTextColor(ContextCompat.getColor(holder.path.getContext(), R.color.md_dark_primary_text));
-            holder.path.setBackgroundColor(
-                    ColorPalette.getTransparentColor(
-                            ContextCompat.getColor(holder.path.getContext(), R.color.md_black_1000), 100));
-            holder.icon.setIcon(CommunityMaterial.Icon.cmd_play_circle);
-        } else {
-            holder.icon.setVisibility(View.GONE);
-            holder.path.setVisibility(View.GONE);
-        }
+        Glide.with(holder.imageView.getContext())
+                .load(f.getUri())
+                .asBitmap()
+                .signature(f.getSignature())
+                .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .thumbnail(0.5f)
+                .placeholder(drawable)
+                .animate(R.anim.fade_in)
+                .into(holder.imageView);
+        holder.icon.setVisibility(View.GONE);
+        holder.path.setVisibility(View.GONE);
 
         if (f.isSelected()) {
             holder.icon.setIcon(CommunityMaterial.Icon.cmd_check);
             holder.icon.setVisibility(View.VISIBLE);
             holder.imageView.setColorFilter(0x88000000, PorterDuff.Mode.SRC_ATOP);
-            holder.layout.setPadding(15,15,15,15);
+            holder.layout.setPadding(15, 15, 15, 15);
         } else {
             holder.imageView.clearColorFilter();
-            holder.layout.setPadding(0,0,0,0);
+            holder.layout.setPadding(0, 0, 0, 0);
         }
     }
 
@@ -127,14 +105,15 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageView; View gifIcon, layout;
-        TextView path; IconicsImageView icon;
+        ImageView imageView;
+        View layout;
+        TextView path;
+        IconicsImageView icon;
 
         ViewHolder(View itemView) {
             super(itemView);
             layout = itemView.findViewById(R.id.media_card_layout);
             imageView = (ImageView) itemView.findViewById(R.id.photo_preview);
-            gifIcon = itemView.findViewById(R.id.gif_icon);
             icon = (IconicsImageView) itemView.findViewById(R.id.icon);
             path = (TextView) itemView.findViewById(R.id.photo_path);
         }
