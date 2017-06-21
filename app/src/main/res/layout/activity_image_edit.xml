@@ -34,33 +34,35 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_centerHorizontal="true">
-                <ImageButton
-                    android:layout_width="@dimen/icon_item_image_size_top"
-                    android:layout_height="@dimen/icon_item_image_size_top"
-                    android:layout_centerVertical="true"
-                    android:id="@+id/edit_undo"
-                    android:scaleType="fitCenter"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    app:srcCompat="@drawable/ic_undo_black"
-                    android:visibility="invisible"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:layout_toLeftOf="@+id/edit_befaft"
-                    android:layout_toStartOf="@+id/edit_befaft"/>
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true">
 
                 <ImageButton
+                    android:id="@+id/edit_undo"
                     android:layout_width="@dimen/icon_item_image_size_top"
                     android:layout_height="@dimen/icon_item_image_size_top"
                     android:layout_centerVertical="true"
-                    android:id="@+id/edit_befaft"
-                    android:scaleType="fitCenter"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    app:srcCompat="@drawable/ic_beforeafter"
-                    android:background="?android:attr/selectableItemBackground"/>
+                    android:layout_toLeftOf="@+id/edit_befaft"
+                    android:layout_toStartOf="@+id/edit_befaft"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:scaleType="fitCenter"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/ic_undo_black" />
+
+                <ImageButton
+                    android:id="@+id/edit_befaft"
+                    android:layout_width="@dimen/icon_item_image_size_top"
+                    android:layout_height="@dimen/icon_item_image_size_top"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/ic_beforeafter" />
             </LinearLayout>
+
             <ImageButton
                 android:id="@+id/edit_save"
                 android:layout_width="@dimen/icon_item_image_size_top"
