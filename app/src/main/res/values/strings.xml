@@ -741,6 +741,7 @@
 
     <string name="tune">Tune</string>
     <string name="exit_without_save">The edited image is not saved. Do you want to exit? </string>
+    <string name="exit_without_edit">Do you want to exit without Editing? </string>
     <string name="confirm">confirm</string>
     <string name="applying">applying</string>
     <string name="action_add_account">Add Account</string>
