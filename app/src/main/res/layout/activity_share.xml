@@ -19,14 +19,13 @@
         android:layout_height="wrap_content"
         android:id="@+id/share_image"
         android:layout_above="@+id/edit_text_caption_container"
-        android:layout_below="@+id/toolbar"
-        android:scaleType="centerCrop"/>
+        android:layout_below="@+id/toolbar" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/edit_text_caption_container"
-        android:padding="@dimen/share_cell_margin_h"
+        android:padding="10dp"
         android:layout_above="@+id/divider1">
         <EditText
             android:id="@+id/edittext_share_caption"
@@ -34,22 +33,21 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_toLeftOf="@+id/button_text_focus"
-            android:layout_toStartOf="@+id/button_text_focus"
             android:hint="Write Something"
+            android:layout_marginLeft="15dp"
             android:background="@android:color/transparent"
             android:textColorHint="@color/md_grey_600"/>
-
-        <ImageView
+        <com.mikepenz.iconics.view.IconicsImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:id="@+id/button_text_focus"
             android:background="?android:attr/selectableItemBackground"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
             android:layout_alignParentEnd="true"
-            app:srcCompat="@drawable/ic_edit_black_24dp"
-            android:scaleType="fitCenter"/>
+            android:scaleType="fitCenter"
+            app:iiv_icon="faw-pencil"/>
 
     </RelativeLayout>
 
@@ -88,7 +86,6 @@
                     android:layout_height="@dimen/share_icon_size"
                     android:scaleType="fitCenter"
                     android:padding="@dimen/share_icon_padding"
-                    android:src="@mipmap/ic_launcher"
                     android:layout_centerVertical="true"
                     android:id="@+id/icon_00"/>
                 <TextView
