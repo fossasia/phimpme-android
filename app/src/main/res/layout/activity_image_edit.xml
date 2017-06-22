@@ -44,12 +44,10 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_toLeftOf="@+id/edit_befaft"
-                    android:layout_toStartOf="@+id/edit_befaft"
-                    android:background="?android:attr/selectableItemBackground"
+                    app:srcCompat="@drawable/ic_undo_black"
+                    android:visibility="invisible"
                     android:scaleType="fitCenter"
-                    android:visibility="gone"
-                    app:srcCompat="@drawable/ic_undo_black" />
+                    android:background="?android:attr/selectableItemBackground"/>
 
                 <ImageButton
                     android:id="@+id/edit_befaft"
@@ -58,9 +56,22 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:background="?android:attr/selectableItemBackground"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/ic_beforeafter" />
+                    app:srcCompat="@drawable/ic_beforeafter"
+                    android:background="?android:attr/selectableItemBackground"/>
+
+                <ImageButton
+                    android:id="@+id/edit_redo"
+                    android:layout_width="@dimen/icon_item_image_size_top"
+                    android:layout_height="@dimen/icon_item_image_size_top"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    app:srcCompat="@drawable/ic_redo_black"
+                    android:visibility="invisible"
+                    android:scaleType="fitCenter"
+                    android:background="?android:attr/selectableItemBackground"/>
+
             </LinearLayout>
 
             <ImageButton
