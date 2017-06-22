@@ -3,15 +3,19 @@ package org.fossasia.phimpme.leafpic.activities;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -103,6 +107,8 @@ public class SingleMediaActivity extends SharedMediaActivity {
     public Boolean allPhotoMode;
     public int all_photo_pos;
     public int size_all;
+    public int current_image_pos;
+    private Uri uri;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -206,6 +212,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
         } else {
             adapter = new MediaPagerAdapter(getSupportFragmentManager(), LFMainActivity.listAll);
             getSupportActionBar().setTitle(all_photo_pos + 1 + " " + getString(R.string.of) + " " + size_all);
+            current_image_pos = all_photo_pos;
             mViewPager.setAdapter(adapter);
             mViewPager.setCurrentItem(all_photo_pos);
             mViewPager.setPageTransformer(true, new DepthPageTransformer());
@@ -217,6 +224,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
 
                 @Override
                 public void onPageSelected(int position) {
+                    current_image_pos = position;
                     getAlbum().setCurrentPhotoIndex(position);
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
                     invalidateOptionsMenu();
@@ -293,13 +301,11 @@ public class SingleMediaActivity extends SharedMediaActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(!allPhotoMode) {
             // Inflate the menu; this adds items to the action bar if it is present.
             getMenuInflater().inflate(R.menu.menu_view_pager, menu);
 
             menu.findItem(R.id.action_delete).setIcon(getToolbarIcon(CommunityMaterial.Icon.cmd_delete));
             menu.findItem(R.id.action_share).setIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_share));
-        }
 
         return true;
     }
@@ -393,16 +399,45 @@ public class SingleMediaActivity extends SharedMediaActivity {
     }
 
     private void deleteCurrentMedia() {
-        getAlbum().deleteCurrentMedia(getApplicationContext());
-        if (getAlbum().getMedia().size() == 0) {
-            if (customUri) finish();
-            else {
-                getAlbums().removeCurrentAlbum();
-                displayAlbums(false);
+        if (!allPhotoMode) {
+            getAlbum().deleteCurrentMedia(getApplicationContext());
+            if (getAlbum().getMedia().size() == 0) {
+                if (customUri) finish();
+                else {
+                    getAlbums().removeCurrentAlbum();
+                    displayAlbums(false);
+                }
             }
+            adapter.notifyDataSetChanged();
+            toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
+        } else {
+            deleteMedia(LFMainActivity.listAll.get(current_image_pos).getPath());
+            LFMainActivity.listAll.remove(current_image_pos);
+            size_all = LFMainActivity.listAll.size();
+            adapter.notifyDataSetChanged();
+            mViewPager.setCurrentItem(current_image_pos);
+            toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + size_all);
         }
-        adapter.notifyDataSetChanged();
-        toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
+    }
+
+    private void deleteMedia(String path) {
+        String[] projection = {MediaStore.Images.Media._ID};
+
+        // Match on the file path
+        String selection = MediaStore.Images.Media.DATA + " = ?";
+        String[] selectionArgs = new String[]{path};
+
+        // Query for the ID of the media matching the file path
+        Uri queryUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        ContentResolver contentResolver = getContentResolver();
+        Cursor c = contentResolver.query(queryUri, projection, selection, selectionArgs, null);
+        if (c.moveToFirst()) {
+            // We found the ID. Deleting the item via the content provider will also remove the file
+            long id = c.getLong(c.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
+            Uri deleteUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+            contentResolver.delete(deleteUri, null, null);
+        }
+        c.close();
     }
 
     @Override
@@ -423,22 +458,30 @@ public class SingleMediaActivity extends SharedMediaActivity {
                 break;
 
             case R.id.action_share:
-                Intent share = new Intent(SingleMediaActivity.this,SharingActivity.class);
-                share.putExtra(EXTRA_OUTPUT,getAlbum().getCurrentMedia().getPath());
+                Intent share = new Intent(SingleMediaActivity.this, SharingActivity.class);
+                if (!allPhotoMode)
+                    share.putExtra(EXTRA_OUTPUT, getAlbum().getCurrentMedia().getPath());
+                else
+                    share.putExtra(EXTRA_OUTPUT, LFMainActivity.listAll.get(current_image_pos).getPath());
                 startActivity(share);
                 return true;
 
             case R.id.action_edit:
-                Uri mDestinationUri = Uri.fromFile(new File(getCacheDir(), "croppedImage.png"));
                 File outputFile = FileUtils.genEditFile();
-                Uri uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
+                if (!allPhotoMode)
+                    uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
+                else
+                    uri = Uri.fromFile(new File(LFMainActivity.listAll.get(current_image_pos).getPath()));
                 EditImageActivity.start(this,uri.getPath(),outputFile.getAbsolutePath(),ACTION_REQUEST_EDITIMAGE);
                 break;
 
             case R.id.action_use_as:
                 Intent intent = new Intent(Intent.ACTION_ATTACH_DATA);
-                intent.setDataAndType(
-                        getAlbum().getCurrentMedia().getUri(), getAlbum().getCurrentMedia().getMimeType());
+                if (!allPhotoMode)
+                    intent.setDataAndType(
+                            getAlbum().getCurrentMedia().getUri(), getAlbum().getCurrentMedia().getMimeType());
+                else
+                    intent.setDataAndType(Uri.fromFile(new File(LFMainActivity.listAll.get(current_image_pos).getPath())), StringUtils.getMimeType(LFMainActivity.listAll.get(current_image_pos).getPath()));
                 startActivity(Intent.createChooser(intent, getString(R.string.use_as)));
                 return true;
 
@@ -517,8 +560,13 @@ public class SingleMediaActivity extends SharedMediaActivity {
 
             case R.id.action_details:
                 AlertDialog.Builder detailsDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
-                final AlertDialog detailsDialog =
-                        AlertDialogsHelper.getDetailsDialog(this, detailsDialogBuilder,getAlbum().getCurrentMedia());
+                AlertDialog detailsDialog;
+                if (allPhotoMode)
+                    detailsDialog =
+                            AlertDialogsHelper.getDetailsDialog(this, detailsDialogBuilder, LFMainActivity.listAll.get(current_image_pos));
+                else
+                    detailsDialog =
+                            AlertDialogsHelper.getDetailsDialog(this, detailsDialogBuilder, getAlbum().getCurrentMedia());
 
                 detailsDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string
                         .ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
