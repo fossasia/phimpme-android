@@ -241,16 +241,17 @@ public class LFMainActivity extends SharedMediaActivity {
         setupUI();
         getAlbums().clearSelectedAlbums();
         getAlbum().clearSelectedPhotos();
-
-        if (SP.getBoolean("auto_update_media", false)) {
-            if (albumsMode) {
-                if (!firstLaunch) new PrepareAlbumTask().execute();
+        if(all_photos)
+            mediaAdapter.swapDataSet(listAll);
+        if(!all_photos) {
+            if (SP.getBoolean("auto_update_media", false)) {
+                if (albumsMode) {
+                    if (!firstLaunch) new PrepareAlbumTask().execute();
+                } else new PreparePhotosTask().execute();
             } else {
-                new PreparePhotosTask().execute();
+                albumsAdapter.notifyDataSetChanged();
+                mediaAdapter.notifyDataSetChanged();
             }
-        } else {
-            albumsAdapter.notifyDataSetChanged();
-            mediaAdapter.notifyDataSetChanged();
         }
         invalidateOptionsMenu();
         firstLaunch = false;
