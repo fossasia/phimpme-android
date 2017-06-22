@@ -23,6 +23,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <activity
+            android:name="org.fossasia.phimpme.sharetwitter.LoginActivity"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="demotwitterlogin"
+                    android:scheme="x-demo-twitter" />
+            </intent-filter>
+        </activity>
+
         <activity android:name="org.fossasia.phimpme.opencamera.Camera.CameraActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar">
