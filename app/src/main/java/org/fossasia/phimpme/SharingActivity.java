@@ -1,6 +1,9 @@
 package org.fossasia.phimpme;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
@@ -12,13 +15,16 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Build;
+import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -34,9 +40,12 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.leafpic.activities.LFMainActivity;
 import org.fossasia.phimpme.leafpic.util.ColorPalette;
+import org.fossasia.phimpme.sharetwitter.HelperMethods;
+import org.fossasia.phimpme.sharetwitter.LoginActivity;
 
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -68,11 +77,15 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     @BindView(R.id.share_done) Button done;
 
+    private Context context;
+    private AlertDialog mAlertBuilder;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
+        context = this;
         ButterKnife.bind(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setupUI();
@@ -144,7 +157,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 setupFacebookAndShare();
                 break;
             case R.id.cell_01: //twitter
-                Snackbar.make(parent,R.string.coming_soon,Snackbar.LENGTH_LONG).show();
+                sharePhotoToTwitter();
                 break;
             case R.id.cell_10: //instagram
                 shareToInstagram();
@@ -164,6 +177,43 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                     }).show();
 
                 break;
+        }
+    }
+
+    private void sharePhotoToTwitter() {
+        caption = text_caption.getText().toString();
+        if (LoginActivity.isActive(context)) {
+            try {
+                caption = text_caption.getText().toString();
+                mAlertBuilder = new AlertDialog.Builder(context).create();
+                mAlertBuilder.setCancelable(false);
+                mAlertBuilder.setTitle(R.string.please_wait_title);
+                View view = getLayoutInflater().inflate(R.layout.view_loading, null);
+                ((TextView) view.findViewById(R.id.messageTextViewFromLoading)).setText(getString(R.string.posting_image_message));
+                mAlertBuilder.setView(view);
+                mAlertBuilder.show();
+
+                //InputStream inputStream  = view.getContext().getAssets().open("1.png");
+                Bitmap bmp = BitmapFactory.decodeFile(saveFilePath);
+                String filename = Environment.getExternalStorageDirectory().toString() + File.separator + "1.png";
+                Log.d("BITMAP", filename);
+                FileOutputStream out = new FileOutputStream(saveFilePath);
+                bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
+
+                HelperMethods.postToTwitterWithImage(context, ((Activity)context), saveFilePath, caption, new HelperMethods.TwitterCallback() {
+
+                    @Override
+                    public void onFinsihed(Boolean response) {
+                        mAlertBuilder.dismiss();
+                        Snackbar.make(parent,R.string.tweet_posted_on_twitter,Snackbar.LENGTH_LONG).show();
+                    }
+                });
+
+            } catch (Exception ex) {
+                Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show();
+            }
+        }else{
+            startActivity(new Intent(context, LoginActivity.class));
         }
     }
 
@@ -245,5 +295,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         Intent home = new Intent(SharingActivity.this, LFMainActivity.class);
         startActivity(home);
         finish();
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 }
