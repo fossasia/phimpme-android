@@ -80,13 +80,13 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     protected int mOpTimes = 0;
     protected boolean isBeenSaved = false;
 
-    LoadImageTask mLoadImageTask;
+    private LoadImageTask mLoadImageTask;
 
     private EditImageActivity mContext;
     public Bitmap mainBitmap;
     private Bitmap originalBitmap;
     public ImageViewTouch mainImage;
-    private View cancel,save,bef_aft,undo;
+    private View cancel,save,bef_aft,undo,redo;
 
     public StickerView mStickerView;// Texture layers View
     public CropImageView mCropPanel;// Cut operation control
@@ -97,6 +97,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
 
     private SaveImageTask mSaveImageTask;
     private int requestCode;
+    private int currentShowingIndex = -1;
 
     public ArrayList<Bitmap> bitmapsForUndo;
     public MainMenuFragment mainMenuFragment;
@@ -186,12 +187,14 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         save = findViewById(R.id.edit_save);
         bef_aft = findViewById(R.id.edit_befaft);
         undo = findViewById(R.id.edit_undo);
+        redo = findViewById(R.id.edit_redo);
 
         bitmapsForUndo = new ArrayList<>();
 
         cancel.setOnClickListener(this);
         save.setOnClickListener(this);
         undo.setOnClickListener(this);
+        redo.setOnClickListener(this);
         bef_aft.setOnTouchListener(this);
 
         mStickerView = (StickerView) findViewById(R.id.sticker_panel);
@@ -281,10 +284,16 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     private void setButtonsVisibility() {
         save.setVisibility(View.VISIBLE);
         bef_aft.setVisibility(View.VISIBLE);
-        if (bitmapsForUndo.size() > 1)
+        if (currentShowingIndex > 0)
             undo.setVisibility(View.VISIBLE);
         else
             undo.setVisibility(View.INVISIBLE);
+
+        if (currentShowingIndex + 1 < bitmapsForUndo.size())
+            redo.setVisibility(View.VISIBLE);
+        else
+            redo.setVisibility(View.INVISIBLE);
+
         switch (mode){
             case MODE_STICKERS:
             case MODE_CROP:
@@ -334,7 +343,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         try{
             TODO:// implement a more efficient way, like storing only the difference of bitmaps or
             // steps followed to edit
-
+            recycleBitmapList(++currentShowingIndex);
             bitmapsForUndo.add(mainBitmap.copy(mainBitmap.getConfig(),true));
         }catch (OutOfMemoryError error){
             /**
@@ -347,14 +356,32 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         }
     }
 
-    private Bitmap getRecentFromUndoList(){
-        if (bitmapsForUndo.size()>1) {
-                Bitmap bitmap = bitmapsForUndo.get(bitmapsForUndo.size() - 2).copy(bitmapsForUndo.get(bitmapsForUndo.size() - 2).getConfig(), true);
-                bitmapsForUndo.get(bitmapsForUndo.size() - 1).recycle();
-                bitmapsForUndo.remove(bitmapsForUndo.size() - 1);
-                return bitmap;
-        }else
-            return bitmapsForUndo.get(0);
+    private void recycleBitmapList(int fromIndex){
+        while (fromIndex < bitmapsForUndo.size()){
+            bitmapsForUndo.get(fromIndex).recycle();
+            bitmapsForUndo.remove(fromIndex);
+        }
+    }
+
+    private Bitmap getUndoBitmap(){
+        if (currentShowingIndex - 1 >= 0)
+            currentShowingIndex -= 1;
+        else currentShowingIndex = 0;
+
+        return bitmapsForUndo
+                .get(currentShowingIndex)
+                .copy(bitmapsForUndo.get(currentShowingIndex).getConfig(), true);
+    }
+
+
+    private Bitmap getRedoBitmap(){
+        if (currentShowingIndex + 1 <= bitmapsForUndo.size())
+            currentShowingIndex += 1;
+        else currentShowingIndex = bitmapsForUndo.size() - 1;
+
+        return bitmapsForUndo
+                .get(currentShowingIndex)
+                .copy(bitmapsForUndo.get(currentShowingIndex).getConfig(), true);
     }
 
     private void onUndoPressed() {
@@ -363,7 +390,21 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                 mainBitmap.recycle();
             }
         }
-        mainBitmap = getRecentFromUndoList();
+        mainBitmap = getUndoBitmap();
+        mainImage.setImageBitmap(mainBitmap);
+        mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
+        setButtonsVisibility();
+    }
+
+
+    private void onRedoPressed() {
+
+        if (mainBitmap != null) {
+            if (!mainBitmap.isRecycled()) {
+                mainBitmap.recycle();
+            }
+        }
+        mainBitmap = getRedoBitmap();
         mainImage.setImageBitmap(mainBitmap);
         mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
         setButtonsVisibility();
@@ -622,6 +663,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         if (mSaveImageTask != null) {
             mSaveImageTask.cancel(true);
         }
+
+        recycleBitmapList(0);
     }
 
 
@@ -643,9 +686,12 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
             case R.id.edit_cancel:
                 onBackPressed();
                 break;
-
             case R.id.edit_undo:
                 onUndoPressed();
+                break;
+            case R.id.edit_redo:
+                onRedoPressed();
+                break;
         }
     }
 }
