@@ -1,6 +1,5 @@
 package org.fossasia.phimpme;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -8,13 +7,11 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
@@ -26,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -35,14 +33,15 @@ import com.facebook.login.LoginResult;
 import com.facebook.share.ShareApi;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.iconics.view.IconicsImageView;
 
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.leafpic.activities.LFMainActivity;
-import org.fossasia.phimpme.leafpic.util.ColorPalette;
+import org.fossasia.phimpme.leafpic.util.ThemeHelper;
 import org.fossasia.phimpme.sharetwitter.HelperMethods;
 import org.fossasia.phimpme.sharetwitter.LoginActivity;
-
+import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -55,104 +54,100 @@ import butterknife.ButterKnife;
 
 public class SharingActivity extends ThemedActivity implements View.OnClickListener {
 
-    public String saveFilePath;
     public static final String EXTRA_OUTPUT = "extra_output";
+    public String saveFilePath;
+    ThemeHelper themeHelper;
+    @BindView(R.id.share_layout)
+    View parent;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.share_image)
+    ImageView shareImage;
+    @BindView(R.id.edittext_share_caption)
+    EditText text_caption;
+    @BindViews({R.id.icon_00, R.id.icon_01, R.id.icon_10, R.id.icon_11})
+    List<ImageView> icons;
+    @BindViews({R.id.title_00, R.id.title_01, R.id.title_10, R.id.title_11})
+    List<TextView> titles;
+    @BindViews({R.id.cell_00, R.id.cell_01, R.id.cell_10, R.id.cell_11})
+    List<View> cells;
+    @BindView(R.id.share_done)
+    Button done;
+    @BindView(R.id.button_text_focus)
+    IconicsImageView editFocus;
     private CallbackManager callbackManager;
     private String caption;
     private boolean atleastOneShare = false;
-
     private int[] cellcolors = {R.color.facebook_color, R.color.twitter_color, R.color.instagram_color, R.color.other_share_color};
     private int[] icons_drawables = {R.drawable.ic_facebook_black, R.drawable.ic_twitter_black,
-                                    R.drawable.ic_instagram_black,R.drawable.ic_share_minimal};
+            R.drawable.ic_instagram_black, R.drawable.ic_share_minimal};
     private int[] titles_text = {R.string.facebook, R.string.twitter, R.string.instagram, R.string.other};
-
-    @BindView(R.id.share_layout) View parent;
-    @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.share_image) ImageView shareImage;
-    @BindView(R.id.edittext_share_caption) EditText text_caption;
-
-    @BindViews({R.id.icon_00, R.id.icon_01, R.id.icon_10, R.id.icon_11}) List<ImageView> icons;
-    @BindViews({R.id.title_00, R.id.title_01, R.id.title_10, R.id.title_11}) List<TextView> titles;
-    @BindViews({R.id.cell_00, R.id.cell_01, R.id.cell_10, R.id.cell_11}) List<View> cells;
-
-    @BindView(R.id.share_done) Button done;
-
     private Context context;
     private AlertDialog mAlertBuilder;
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
         context = this;
+        themeHelper = new ThemeHelper(this);
+        ActivitySwitchHelper.setContext(this);
         ButterKnife.bind(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setupUI();
         initView();
+        setStatusBarColor();
     }
 
     private void setupUI() {
 
-        toolbar.setTitleTextColor(Color.BLACK);
         toolbar.setTitle(R.string.shareto);
-        toolbar.setBackgroundColor(Color.WHITE);
-        Drawable backIcon = getToolbarIcon(GoogleMaterial.Icon.gmd_arrow_back);
-        backIcon.setColorFilter(Color.BLACK, PorterDuff.Mode.SRC_ATOP);
-        toolbar.setNavigationIcon(backIcon);
+        toolbar.setBackgroundColor(themeHelper.getPrimaryColor());
+        toolbar.setNavigationIcon(getToolbarIcon(CommunityMaterial.Icon.cmd_arrow_left));
         setSupportActionBar(toolbar);
-
-        setStatusBarColor(getResources().getColor(R.color.md_grey_400));
+        parent.setBackgroundColor(themeHelper.getBackgroundColor());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            done.getBackground().setColorFilter(
-                    getResources().getColor(R.color.share_done_button_color), PorterDuff.Mode.MULTIPLY);
+            done.getBackground().setColorFilter(getResources().getColor(R.color.share_done_button_color), PorterDuff.Mode.MULTIPLY);
         else
             done.setBackground(new ColorDrawable(getResources().getColor(R.color.share_done_button_color)));
 
         done.setOnClickListener(this);
 
-        for (int i = 0; i <= 3; i++ ){
+        text_caption.getBackground().mutate().setColorFilter(getTextColor(), PorterDuff.Mode.SRC_ATOP);
+        text_caption.setTextColor(getTextColor());
+        text_caption.setHintTextColor(getSubTextColor());
+
+        for (int i = 0; i <= 3; i++) {
             cells.get(i).setOnClickListener(this);
             icons.get(i).setImageResource(icons_drawables[i]);
             titles.get(i).setText(titles_text[i]);
             icons.get(i).setColorFilter(getResources().getColor(cellcolors[i]));
             titles.get(i).setTextColor(getResources().getColor(cellcolors[i]));
         }
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+        editFocus.setColor(getIconColor());
     }
 
     private void initView() {
         saveFilePath = getIntent().getStringExtra(EXTRA_OUTPUT);
-        try {
-            shareImage.setImageBitmap(BitmapFactory.decodeFile(saveFilePath));
-        }catch (OutOfMemoryError error){
-            Snackbar.make(parent,"Unable to load Image",Snackbar.LENGTH_INDEFINITE)
-                    .setAction("RETRY", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent share = new Intent(getBaseContext(),SharingActivity.class);
-                            share.putExtra(EXTRA_OUTPUT,saveFilePath);
-                            startActivity(share);
-                            finish();
-                        }
-                    })
-                    .show();
-        }
-    }
-
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    protected void setStatusBarColor(int color) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (isTranslucentStatusBar())
-                getWindow().setStatusBarColor(ColorPalette.getObscuredColor(color));
-            else
-                getWindow().setStatusBarColor(color);
-        }
+        Glide.with(this)
+                .load(Uri.fromFile(new File(saveFilePath)))
+                .thumbnail(0.5f)
+                .centerCrop()
+                .animate(R.anim.fade_in)
+                .into(shareImage);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.cell_00: //facebook
                 setupFacebookAndShare();
                 break;
@@ -166,15 +161,15 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 otherShare();
                 break;
             case R.id.share_done:
-                if (atleastOneShare)goToHome();
+                if (atleastOneShare) goToHome();
                 else
-                    Snackbar.make(parent, getResources().getString(R.string.share_not_completed),Snackbar.LENGTH_LONG)
-                    .setAction(R.string.exit, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            goToHome();
-                        }
-                    }).show();
+                    Snackbar.make(parent, getResources().getString(R.string.share_not_completed), Snackbar.LENGTH_LONG)
+                            .setAction(R.string.exit, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    goToHome();
+                                }
+                            }).show();
 
                 break;
         }
@@ -200,19 +195,19 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 FileOutputStream out = new FileOutputStream(saveFilePath);
                 bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
 
-                HelperMethods.postToTwitterWithImage(context, ((Activity)context), saveFilePath, caption, new HelperMethods.TwitterCallback() {
+                HelperMethods.postToTwitterWithImage(context, ((Activity) context), saveFilePath, caption, new HelperMethods.TwitterCallback() {
 
                     @Override
                     public void onFinsihed(Boolean response) {
                         mAlertBuilder.dismiss();
-                        Snackbar.make(parent,R.string.tweet_posted_on_twitter,Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(parent, R.string.tweet_posted_on_twitter, Snackbar.LENGTH_LONG).show();
                     }
                 });
 
             } catch (Exception ex) {
                 Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show();
             }
-        }else{
+        } else {
             startActivity(new Intent(context, LoginActivity.class));
         }
     }
@@ -296,6 +291,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         startActivity(home);
         finish();
     }
+
     @Override
     public void onResume() {
         super.onResume();
