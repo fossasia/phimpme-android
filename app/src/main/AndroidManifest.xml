@@ -38,6 +38,7 @@
         </activity>
 
 
+
         <activity
             android:name="org.fossasia.phimpme.opencamera.Camera.CameraActivity"
 
@@ -214,6 +215,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
 
 
+
                 <data android:mimeType="image/*" />
                 <data android:mimeType="video/*" />
             </intent-filter>
@@ -287,6 +289,12 @@
 
         <activity
             android:name="org.fossasia.phimpme.opencamera.Camera.PhotoActivity"
+            android:label="Preview"
+            android:theme="@style/AppTheme.NoActionBar">
+
+
+        <activity
+            android:name="org.fossasia.phimpme.opencamera.Camera.PhotoActivity"
 
             android:label="Preview"
             android:theme="@style/AppTheme.NoActionBar"></activity>
@@ -306,17 +314,6 @@
         </provider>
 
 
-
-
-
-        <provider android:authorities="com.facebook.app.FacebookContentProvider1920575401558694"
-                  android:name="com.facebook.FacebookContentProvider"
-                  android:exported="true" />
-
-
-         
-
-
         <activity
             android:name="org.fossasia.phimpme.SharingActivity"
             android:screenOrientation="portrait"
@@ -332,7 +329,9 @@
             android:exported="true" />
 
 
+
         <activity android:name=".leafpic.activities.DescriptionActivity"></activity>
+
 
 
     </application>
