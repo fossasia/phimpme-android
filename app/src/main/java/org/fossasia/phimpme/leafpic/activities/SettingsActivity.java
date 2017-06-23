@@ -834,9 +834,6 @@ public class SettingsActivity extends ThemedActivity {
         ((TextView) findViewById(R.id.camera_item_sub)).setTextColor(color);
     }
 
-    private void setLayout(){
-
-    }
 
     @Override
     public void onBackPressed() {
