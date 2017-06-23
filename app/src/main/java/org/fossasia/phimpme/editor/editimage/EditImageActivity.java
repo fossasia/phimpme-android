@@ -43,6 +43,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 /**
  * Called from SingleMediaActivity when the user selects the 'edit' option in the toolbar overflow menu.
  */
@@ -86,12 +89,29 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     public Bitmap mainBitmap;
     private Bitmap originalBitmap;
     public ImageViewTouch mainImage;
-    private View cancel,save,bef_aft,undo,redo;
 
+    @BindView(R.id.edit_cancel)
+    View cancel;
+    @BindView(R.id.edit_save)
+    View save;
+    @BindView(R.id.edit_befaft)
+    View bef_aft;
+    @BindView(R.id.edit_undo)
+    View undo;
+    @BindView(R.id.edit_redo)
+    View redo;
+
+    //private View cancel,save,bef_aft,undo,redo;
+
+    @BindView(R.id.sticker_panel)
     public StickerView mStickerView;// Texture layers View
+    @BindView(R.id.crop_panel)
     public CropImageView mCropPanel;// Cut operation control
+    @BindView(R.id.rotate_panel)
     public RotateImageView mRotatePanel;//Rotation operation controls
+    @BindView(R.id.text_sticker_panel)
     public TextStickerView mTextStickerView;//Text display map View
+    @BindView(R.id.custom_paint_view)
     public CustomPaintView mPaintView;//drawing paint
 
 
@@ -133,7 +153,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        ButterKnife.bind(this);
         if (getSupportActionBar() != null)
             getSupportActionBar().hide();
 
@@ -181,12 +201,12 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         imageWidth = metrics.widthPixels / 2;
         imageHeight = metrics.heightPixels / 2;
 
-        mainImage = (ImageViewTouch) findViewById(R.id.main_image);
-        cancel = findViewById(R.id.edit_cancel);
-        save = findViewById(R.id.edit_save);
-        bef_aft = findViewById(R.id.edit_befaft);
-        undo = findViewById(R.id.edit_undo);
-        redo = findViewById(R.id.edit_redo);
+//        mainImage = (ImageViewTouch) findViewById(R.id.main_image);
+//        cancel = findViewById(R.id.edit_cancel);
+//        save = findViewById(R.id.edit_save);
+//        bef_aft = findViewById(R.id.edit_befaft);
+//        undo = findViewById(R.id.edit_undo);
+//        redo = findViewById(R.id.edit_redo);
 
         bitmapsForUndo = new ArrayList<>();
 
@@ -196,11 +216,11 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         redo.setOnClickListener(this);
         bef_aft.setOnTouchListener(this);
 
-        mStickerView = (StickerView) findViewById(R.id.sticker_panel);
-        mCropPanel = (CropImageView) findViewById(R.id.crop_panel);
-        mRotatePanel = (RotateImageView) findViewById(R.id.rotate_panel);
-        mTextStickerView = (TextStickerView) findViewById(R.id.text_sticker_panel);
-        mPaintView = (CustomPaintView) findViewById(R.id.custom_paint_view);
+//        mStickerView = (StickerView) findViewById(R.id.sticker_panel);
+//        mCropPanel = (CropImageView) findViewById(R.id.crop_panel);
+//        mRotatePanel = (RotateImageView) findViewById(R.id.rotate_panel);
+//        mTextStickerView = (TextStickerView) findViewById(R.id.text_sticker_panel);
+//        mPaintView = (CustomPaintView) findViewById(R.id.custom_paint_view);
 
         mode = MODE_FILTERS;
 
