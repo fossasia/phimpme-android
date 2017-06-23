@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import org.fossasia.phimpme.R;
@@ -42,6 +43,8 @@ import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -88,30 +91,29 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     private EditImageActivity mContext;
     public Bitmap mainBitmap;
     private Bitmap originalBitmap;
+    @Nullable @BindView(R.id.main_image)
     public ImageViewTouch mainImage;
 
-    @BindView(R.id.edit_cancel)
-    View cancel;
-    @BindView(R.id.edit_save)
-    View save;
-    @BindView(R.id.edit_befaft)
-    View bef_aft;
-    @BindView(R.id.edit_undo)
-    View undo;
-    @BindView(R.id.edit_redo)
-    View redo;
+    @Nullable @BindView(R.id.edit_cancel)
+    ImageButton cancel;
+    @Nullable @BindView(R.id.edit_save)
+    ImageButton save;
+    @Nullable @BindView(R.id.edit_befaft)
+    ImageButton bef_aft;
+    @Nullable @BindView(R.id.edit_undo)
+    ImageButton undo;
+    @Nullable @BindView(R.id.edit_redo)
+    ImageButton redo;
 
-    //private View cancel,save,bef_aft,undo,redo;
-
-    @BindView(R.id.sticker_panel)
+    @Nullable @BindView(R.id.sticker_panel)
     public StickerView mStickerView;// Texture layers View
-    @BindView(R.id.crop_panel)
+    @Nullable @BindView(R.id.crop_panel)
     public CropImageView mCropPanel;// Cut operation control
-    @BindView(R.id.rotate_panel)
+    @Nullable @BindView(R.id.rotate_panel)
     public RotateImageView mRotatePanel;//Rotation operation controls
-    @BindView(R.id.text_sticker_panel)
+    @Nullable @BindView(R.id.text_sticker_panel)
     public TextStickerView mTextStickerView;//Text display map View
-    @BindView(R.id.custom_paint_view)
+    @Nullable @BindView(R.id.custom_paint_view)
     public CustomPaintView mPaintView;//drawing paint
 
 
@@ -154,13 +156,13 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
         if (getSupportActionBar() != null)
             getSupportActionBar().hide();
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         checkInitImageLoader();
         setContentView(R.layout.activity_image_edit);
+        ButterKnife.bind(this);
         initView();
         getData();
         requestCode = getIntent().getIntExtra("requestCode", 1);
@@ -202,13 +204,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         imageWidth = metrics.widthPixels / 2;
         imageHeight = metrics.heightPixels / 2;
 
-//        mainImage = (ImageViewTouch) findViewById(R.id.main_image);
-//        cancel = findViewById(R.id.edit_cancel);
-//        save = findViewById(R.id.edit_save);
-//        bef_aft = findViewById(R.id.edit_befaft);
-//        undo = findViewById(R.id.edit_undo);
-//        redo = findViewById(R.id.edit_redo);
-
         bitmapsForUndo = new ArrayList<>();
 
         cancel.setOnClickListener(this);
@@ -216,12 +211,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         undo.setOnClickListener(this);
         redo.setOnClickListener(this);
         bef_aft.setOnTouchListener(this);
-
-//        mStickerView = (StickerView) findViewById(R.id.sticker_panel);
-//        mCropPanel = (CropImageView) findViewById(R.id.crop_panel);
-//        mRotatePanel = (RotateImageView) findViewById(R.id.rotate_panel);
-//        mTextStickerView = (TextStickerView) findViewById(R.id.text_sticker_panel);
-//        mPaintView = (CustomPaintView) findViewById(R.id.custom_paint_view);
 
         mode = MODE_FILTERS;
 
