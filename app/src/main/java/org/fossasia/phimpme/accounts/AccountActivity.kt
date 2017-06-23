@@ -16,12 +16,12 @@ import io.realm.Realm
 import io.realm.RealmResults
 import org.fossasia.phimpme.R
 import org.fossasia.phimpme.base.PhimpmeProgressBarHandler
+import org.fossasia.phimpme.base.RecyclerItemClickListner
 import org.fossasia.phimpme.base.ThemedActivity
 import org.fossasia.phimpme.data.local.AccountDatabase
 import org.fossasia.phimpme.data.local.DatabaseHelper
 import org.fossasia.phimpme.leafpic.util.ThemeHelper
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper
-import org.fossasia.phimpme.base.RecyclerItemClickListner
 
 class AccountActivity : ThemedActivity(), AccountContract.View,
         RecyclerItemClickListner.OnItemClickListener {
@@ -88,7 +88,6 @@ class AccountActivity : ThemedActivity(), AccountContract.View,
         val layoutManager = LinearLayoutManager(this)
         accountsRecyclerView!!.setLayoutManager(layoutManager)
         accountsRecyclerView!!.setAdapter(accountAdapter)
-        accountsRecyclerView!!.addOnItemTouchListener(RecyclerItemClickListner(this, this))
     }
 
     override fun setUpAdapter(accountDetails: RealmResults<AccountDatabase>) {
@@ -105,7 +104,6 @@ class AccountActivity : ThemedActivity(), AccountContract.View,
     }
 
     override fun onItemClick(childView: View?, position: Int) {
-
         val signOutDialog = AlertDialog.Builder(this)
         signOutDialog.setMessage(getString(R.string.sign_out_dialog_message) + realmResult
                 ?.get(position)?.name)
