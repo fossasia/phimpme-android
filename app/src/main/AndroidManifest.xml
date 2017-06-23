@@ -314,10 +314,6 @@
             android:name="com.facebook.FacebookContentProvider"
             android:exported="true" />
 
-
-         
-
-
         <activity
             android:name="org.fossasia.phimpme.SharingActivity"
             android:screenOrientation="portrait"
@@ -333,6 +329,9 @@
             android:authorities="com.facebook.app.FacebookContentProvider1920575401558694"
             android:exported="true" />
 
+        <activity android:name=".accounts.AccountActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <activity android:name=".leafpic.activities.DescriptionActivity"></activity>
 
