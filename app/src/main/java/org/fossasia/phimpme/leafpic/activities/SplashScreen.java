@@ -54,8 +54,8 @@ public class SplashScreen extends SharedMediaActivity {
 
         ((ProgressBar) findViewById(R.id.progress_splash)).getIndeterminateDrawable().setColorFilter(getPrimaryColor(), PorterDuff.Mode.SRC_ATOP);
 
-        RelativeLayout RelLay = (RelativeLayout) findViewById(R.id.Splah_Bg);
-        RelLay.setBackgroundColor(getBackgroundColor());
+        RelativeLayout RelLay = (RelativeLayout) findViewById(R.id.splash_bg);
+        RelLay.setBackground(getResources().getDrawable(R.drawable.bg_splash));
 
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -131,6 +131,12 @@ public class SplashScreen extends SharedMediaActivity {
             if(getAlbums().dispAlbums.size() == 0) {
                 getAlbums().loadAlbums(getApplicationContext(), false);
                 return true;
+            }else {
+                try {
+                    Thread.sleep(1500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
             return false;
         }

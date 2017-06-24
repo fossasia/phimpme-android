@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.SharingActivity;
 import org.fossasia.phimpme.editor.EditBaseActivity;
 import org.fossasia.phimpme.editor.editimage.fragment.AddTextFragment;
 import org.fossasia.phimpme.editor.editimage.fragment.CropFragment;
@@ -38,13 +39,16 @@ import org.fossasia.phimpme.editor.editimage.view.StickerView;
 import org.fossasia.phimpme.editor.editimage.view.TextStickerView;
 import org.fossasia.phimpme.editor.editimage.view.imagezoom.ImageViewTouch;
 import org.fossasia.phimpme.editor.editimage.view.imagezoom.ImageViewTouchBase;
-import org.fossasia.phimpme.leafpic.util.ThemeHelper;
-import org.fossasia.phimpme.SharingActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.annotation.Nullable;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Called from SingleMediaActivity when the user selects the 'edit' option in the toolbar overflow menu.
@@ -88,13 +92,29 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     private EditImageActivity mContext;
     public Bitmap mainBitmap;
     private Bitmap originalBitmap;
+    @Nullable @BindView(R.id.main_image)
     public ImageViewTouch mainImage;
-    private View cancel,save,bef_aft,undo,redo;
 
+    @Nullable @BindView(R.id.edit_cancel)
+    ImageButton cancel;
+    @Nullable @BindView(R.id.edit_save)
+    ImageButton save;
+    @Nullable @BindView(R.id.edit_befaft)
+    ImageButton bef_aft;
+    @Nullable @BindView(R.id.edit_undo)
+    ImageButton undo;
+    @Nullable @BindView(R.id.edit_redo)
+    ImageButton redo;
+
+    @Nullable @BindView(R.id.sticker_panel)
     public StickerView mStickerView;// Texture layers View
+    @Nullable @BindView(R.id.crop_panel)
     public CropImageView mCropPanel;// Cut operation control
+    @Nullable @BindView(R.id.rotate_panel)
     public RotateImageView mRotatePanel;//Rotation operation controls
+    @Nullable @BindView(R.id.text_sticker_panel)
     public TextStickerView mTextStickerView;//Text display map View
+    @Nullable @BindView(R.id.custom_paint_view)
     public CustomPaintView mPaintView;//drawing paint
 
 
@@ -136,13 +156,13 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (getSupportActionBar() != null)
             getSupportActionBar().hide();
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         checkInitImageLoader();
         setContentView(R.layout.activity_image_edit);
+        ButterKnife.bind(this);
         initView();
         getData();
         requestCode = getIntent().getIntExtra("requestCode", 1);
@@ -186,13 +206,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         imageWidth = metrics.widthPixels / 2;
         imageHeight = metrics.heightPixels / 2;
 
-        mainImage = (ImageViewTouch) findViewById(R.id.main_image);
-        cancel = findViewById(R.id.edit_cancel);
-        save = findViewById(R.id.edit_save);
-        bef_aft = findViewById(R.id.edit_befaft);
-        undo = findViewById(R.id.edit_undo);
-        redo = findViewById(R.id.edit_redo);
-
         bitmapsForUndo = new ArrayList<>();
 
         cancel.setOnClickListener(this);
@@ -200,12 +213,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         undo.setOnClickListener(this);
         redo.setOnClickListener(this);
         bef_aft.setOnTouchListener(this);
-
-        mStickerView = (StickerView) findViewById(R.id.sticker_panel);
-        mCropPanel = (CropImageView) findViewById(R.id.crop_panel);
-        mRotatePanel = (RotateImageView) findViewById(R.id.rotate_panel);
-        mTextStickerView = (TextStickerView) findViewById(R.id.text_sticker_panel);
-        mPaintView = (CustomPaintView) findViewById(R.id.custom_paint_view);
 
         mode = MODE_FILTERS;
 
@@ -289,19 +296,20 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         save.setVisibility(View.VISIBLE);
         bef_aft.setVisibility(View.VISIBLE);
         if (currentShowingIndex > 0) {
-            ((ImageButton) undo).setColorFilter(Color.BLACK);
+            undo.setColorFilter(Color.BLACK);
             undo.setEnabled(true);
         }else {
-            ((ImageButton) undo).setColorFilter(getResources().getColor(R.color.md_grey_300));
+            undo.setColorFilter(getResources().getColor(R.color.md_grey_300));
             undo.setEnabled(false);
         }
         if (currentShowingIndex + 1 < bitmapsForUndo.size()) {
-            ((ImageButton) redo).setColorFilter(Color.BLACK);
+            redo.setColorFilter(Color.BLACK);
             redo.setEnabled(true);
         }else {
-            ((ImageButton) redo).setColorFilter(getResources().getColor(R.color.md_grey_300));
+            redo.setColorFilter(getResources().getColor(R.color.md_grey_300));
             redo.setEnabled(false);
         }
+
 
         switch (mode){
             case MODE_STICKERS:
