@@ -9,7 +9,7 @@ import android.widget.TextView
 import com.squareup.picasso.Picasso
 import io.realm.RealmResults
 import org.fossasia.phimpme.R
-import org.fossasia.phimpme.data.AccountDatabase
+import org.fossasia.phimpme.data.local.AccountDatabase
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper.context
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext
 

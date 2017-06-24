@@ -21,6 +21,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -45,6 +46,7 @@ import com.yalantis.ucrop.UCrop;
 import java.io.File;
 
 import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.SharingActivity;
 import org.fossasia.phimpme.base.SharedMediaActivity;
 import org.fossasia.phimpme.editor.FileUtils;
 import org.fossasia.phimpme.editor.editimage.EditImageActivity;
@@ -53,10 +55,6 @@ import org.fossasia.phimpme.leafpic.SelectAlbumBottomSheet;
 import org.fossasia.phimpme.leafpic.adapters.MediaPagerAdapter;
 import org.fossasia.phimpme.leafpic.animations.DepthPageTransformer;
 import org.fossasia.phimpme.leafpic.data.Album;
-import org.fossasia.phimpme.leafpic.data.RealmController;
-import org.fossasia.phimpme.leafpic.data.base.SortingMode;
-import org.fossasia.phimpme.leafpic.data.base.SortingOrder;
-import org.fossasia.phimpme.leafpic.data.providers.Item;
 import org.fossasia.phimpme.leafpic.util.AlertDialogsHelper;
 import org.fossasia.phimpme.leafpic.util.ColorPalette;
 import org.fossasia.phimpme.leafpic.util.ContentHelper;
@@ -65,7 +63,6 @@ import org.fossasia.phimpme.leafpic.util.PreferenceUtil;
 import org.fossasia.phimpme.leafpic.util.SecurityHelper;
 import org.fossasia.phimpme.leafpic.util.StringUtils;
 import org.fossasia.phimpme.leafpic.views.HackyViewPager;
-import org.fossasia.phimpme.SharingActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 
 /**
@@ -86,21 +83,15 @@ public class SingleMediaActivity extends SharedMediaActivity {
     private SecurityHelper securityObj;
     private Toolbar toolbar;
     private boolean fullScreenMode, customUri = false;
-    public static final int REQUEST_PERMISSON_SORAGE = 1;
-    public static final int REQUEST_PERMISSON_CAMERA = 2;
-    public static final int SELECT_GALLERY_IMAGE_CODE = 7;
     public static final int TAKE_PHOTO_CODE = 8;
     public static final int ACTION_REQUEST_EDITIMAGE = 9;
     public static final int ACTION_STICKERS_IMAGE = 10;
     private ImageView imgView;
-    private View openAblum;
-    private View editImage;//
     private Bitmap mainBitmap;
     private int imageWidth, imageHeight;//
     private String path;
     private SingleMediaActivity context;
     public static final String EXTRA_OUTPUT = "extra_output";
-    private RealmController realmController;
     private String pathForDescriptionActivity;
 
 
@@ -113,15 +104,18 @@ public class SingleMediaActivity extends SharedMediaActivity {
     public int size_all;
     public int current_image_pos;
     private Uri uri;
+    ActionMenuView bottomBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
         setContentView(R.layout.activity_pager);
         initView();
 
         SP = PreferenceUtil.getInstance(getApplicationContext());
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        bottomBar = (ActionMenuView) findViewById(R.id.toolbar_bottom);
         mViewPager = (HackyViewPager) findViewById(R.id.photos_pager);
         securityObj= new SecurityHelper(SingleMediaActivity.this);
         allPhotoMode = getIntent().getBooleanExtra(getString(R.string.all_photo_mode), false);
@@ -157,8 +151,6 @@ public class SingleMediaActivity extends SharedMediaActivity {
             initUI();
             setupUI();
         } catch (Exception e) { e.printStackTrace(); }
-
-        realmController = new RealmController();
     }
 
     private void initView() {
@@ -171,7 +163,16 @@ public class SingleMediaActivity extends SharedMediaActivity {
     }
 
     private void initUI() {
-
+        Menu bottomMenu = bottomBar.getMenu();
+        getMenuInflater().inflate(R.menu.menu_bottom_view_pager, bottomMenu);
+        for (int i = 0; i < bottomMenu.size(); i++){
+            bottomMenu.getItem(i).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener(){
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    return onOptionsItemSelected(item);
+                }
+            });
+        }
         setSupportActionBar(toolbar);
         toolbar.bringToFront();
         toolbar.setNavigationIcon(getToolbarIcon(CommunityMaterial.Icon.cmd_arrow_left));
@@ -315,7 +316,6 @@ public class SingleMediaActivity extends SharedMediaActivity {
 
             menu.findItem(R.id.action_delete).setIcon(getToolbarIcon(CommunityMaterial.Icon.cmd_delete));
             menu.findItem(R.id.action_share).setIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_share));
-
         return true;
     }
 
@@ -334,7 +334,6 @@ public class SingleMediaActivity extends SharedMediaActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(final Menu menu) {
-
         if (!allPhotoMode)
             menu.setGroupVisible(R.id.only_photos_options, !getAlbum().getCurrentMedia().isVideo());
 
@@ -343,7 +342,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
             menu.setGroupVisible(R.id.only_photos_options, false);
             menu.findItem(R.id.sort_action).setVisible(false);
         }
-        return super.onPrepareOptionsMenu(menu);
+        return true;
 
     }
 
@@ -554,7 +553,6 @@ public class SingleMediaActivity extends SharedMediaActivity {
                             if (customUri) finish();
                             else {
                                 getAlbums().removeCurrentAlbum();
-                                //((MyApplication) getApplicationContext()).removeCurrentAlbum();
                                 displayAlbums(false);
                             }
                         }
@@ -670,6 +668,8 @@ public class SingleMediaActivity extends SharedMediaActivity {
             public void run() {
                 toolbar.animate().translationY(-toolbar.getHeight()).setInterpolator(new AccelerateInterpolator())
                         .setDuration(200).start();
+                bottomBar.animate().translationY(+bottomBar.getHeight()).setInterpolator(new AccelerateInterpolator())
+                        .setDuration(200).start();
                 getWindow().getDecorView().setSystemUiVisibility(
                         View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -678,7 +678,6 @@ public class SingleMediaActivity extends SharedMediaActivity {
                                 | View.SYSTEM_UI_FLAG_FULLSCREEN // hide status bar
                                 | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                                 | View.SYSTEM_UI_FLAG_IMMERSIVE);
-
                 fullScreenMode = true;
                 changeBackGroundColor();
             }
@@ -699,6 +698,8 @@ public class SingleMediaActivity extends SharedMediaActivity {
             public void run() {
                 toolbar.animate().translationY(Measure.getStatusBarHeight(getResources())).setInterpolator(new DecelerateInterpolator())
                         .setDuration(240).start();
+                bottomBar.animate().translationY(0).setInterpolator(new DecelerateInterpolator()).start();
+
                 getWindow().getDecorView().setSystemUiVisibility(
                         View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                                 | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
