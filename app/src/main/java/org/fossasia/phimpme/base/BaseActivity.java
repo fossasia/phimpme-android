@@ -10,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.accounts.AccountActivity;
 import org.fossasia.phimpme.leafpic.activities.LFMainActivity;
 import org.fossasia.phimpme.opencamera.Camera.CameraActivity;
 
