@@ -1,9 +1,12 @@
 package org.fossasia.phimpme.leafpic.activities;
 
 import android.annotation.TargetApi;
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -14,6 +17,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -32,6 +36,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -159,6 +164,7 @@ public class LFMainActivity extends SharedMediaActivity {
         }
         else
         toolbar.setTitle(selectedMedias.size() + "/" + size);
+        invalidateOptionsMenu();
         return index;
     }
 
@@ -168,6 +174,14 @@ public class LFMainActivity extends SharedMediaActivity {
         if (selectedMedias!=null)
             selectedMedias.clear();
         toolbar.setTitle(getString(R.string.all));
+    }
+
+    public void selectAllPhotos(){
+        for (Media m : media) {
+            m.setSelected(true);
+            selectedMedias.add(m);
+        }
+        toolbar.setTitle(selectedMedias.size() + "/" + size);
     }
 
 
@@ -712,7 +726,9 @@ public class LFMainActivity extends SharedMediaActivity {
             }
         } else {
             if (editMode)
+                if (!all_photos)
                 toolbar.setTitle(getAlbum().getSelectedCount() + "/" + getAlbum().getMedia().size());
+                else toolbar.setTitle(selectedMedias.size() + "/" + size);
             else {
                 if (!all_photos)
                     toolbar.setTitle(getAlbum().getName());
@@ -733,6 +749,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 @Override
                 public void onClick(View v) {
                     finishEditMode();
+                    clearSelectedPhotos();
                 }
             });
         }
@@ -792,6 +809,7 @@ public class LFMainActivity extends SharedMediaActivity {
         } else {
             menu.findItem(R.id.select_all).setTitle(getString(
                     getAlbum().getSelectedCount() == mediaAdapter.getItemCount()
+                            || selectedMedias.size() == size
                             ? R.string.clear_selected
                             : R.string.select_all));
             menu.findItem(R.id.ascending_sort_action).setChecked(getAlbum().settings.getSortingOrder() == SortingOrder.ASCENDING);
@@ -832,27 +850,37 @@ public class LFMainActivity extends SharedMediaActivity {
             menu.setGroupVisible(R.id.photos_option_men, false);
             menu.findItem(R.id.all_photos).setVisible(true);
         } else {
-            editMode = getAlbum().areMediaSelected();
-            menu.setGroupVisible(R.id.photos_option_men, editMode);
-            menu.setGroupVisible(R.id.album_options_menu, !editMode);
-            menu.findItem(R.id.all_photos).setVisible(false);
+            if (!all_photos) {
+                editMode = getAlbum().areMediaSelected();
+                menu.setGroupVisible(R.id.photos_option_men, editMode);
+                menu.setGroupVisible(R.id.album_options_menu, !editMode);
+                menu.findItem(R.id.all_photos).setVisible(false);
+            } else {
+                editMode = selectedMedias.size() != 0 ? true : false;
+                menu.setGroupVisible(R.id.photos_option_men, editMode);
+                menu.setGroupVisible(R.id.album_options_menu, !editMode);
+                menu.findItem(R.id.all_photos).setVisible(false);
+            }
         }
 
         togglePrimaryToolbarOptions(menu);
         updateSelectedStuff();
 
-        menu.findItem(R.id.excludeAlbumButton).setVisible(editMode);
+        menu.findItem(R.id.action_copy).setVisible(!all_photos);
+        menu.findItem(R.id.action_move).setVisible(!all_photos);
+        menu.findItem(R.id.excludeAlbumButton).setVisible(editMode && !all_photos);
         menu.findItem(R.id.select_all).setVisible(editMode);
         menu.findItem(R.id.type_sort_action).setVisible(!albumsMode);
-        menu.findItem(R.id.delete_action).setVisible(!albumsMode || editMode);
+        menu.findItem(R.id.delete_action).setVisible((!albumsMode || editMode));
+        menu.findItem(R.id.hideAlbumButton).setVisible(!all_photos);
 
         menu.findItem(R.id.clear_album_preview).setVisible(!albumsMode && getAlbum().hasCustomCover());
-        menu.findItem(R.id.renameAlbum).setVisible((albumsMode && getAlbums().getSelectedCount() == 1) || (!albumsMode && !editMode));
+        menu.findItem(R.id.renameAlbum).setVisible(((albumsMode && getAlbums().getSelectedCount() == 1) || (!albumsMode && !editMode)) && !all_photos);
         if (getAlbums().getSelectedCount() == 1)
             menu.findItem(R.id.set_pin_album).setTitle(getAlbums().getSelectedAlbum(0).isPinned() ? getString(R.string.un_pin) : getString(R.string.pin));
         menu.findItem(R.id.set_pin_album).setVisible(albumsMode && getAlbums().getSelectedCount() == 1);
-        menu.findItem(R.id.setAsAlbumPreview).setVisible(!albumsMode);
-        menu.findItem(R.id.affixPhoto).setVisible(!albumsMode && getAlbum().getSelectedCount() > 1);
+        menu.findItem(R.id.setAsAlbumPreview).setVisible(!albumsMode && !all_photos);
+        menu.findItem(R.id.affixPhoto).setVisible(!albumsMode && (getAlbum().getSelectedCount() > 1) || selectedMedias.size() > 1);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -888,14 +916,28 @@ public class LFMainActivity extends SharedMediaActivity {
                     else getAlbums().selectAllAlbums();
                     albumsAdapter.notifyDataSetChanged();
                 } else {
-                    //if all photos are already selected, unselect all of them
-                    if (getAlbum().getSelectedCount() == mediaAdapter.getItemCount()) {
-                        editMode = false;
-                        getAlbum().clearSelectedPhotos();
+                    if (!all_photos) {
+                        //if all photos are already selected, unselect all of them
+                        if (getAlbum().getSelectedCount() == mediaAdapter.getItemCount()) {
+                            editMode = false;
+                            getAlbum().clearSelectedPhotos();
+                        }
+                        // else, select all photos
+                        else getAlbum().selectAllPhotos();
+                        mediaAdapter.notifyDataSetChanged();
+                    } else {
+
+                        if (selectedMedias.size() == size) {
+                            editMode = false;
+                            clearSelectedPhotos();
+                        }
+                        // else, select all photos
+                        else {
+                            clearSelectedPhotos();
+                            selectAllPhotos();
+                        }
+                        mediaAdapter.notifyDataSetChanged();
                     }
-                    // else, select all photos
-                    else getAlbum().selectAllPhotos();
-                    mediaAdapter.notifyDataSetChanged();
                 }
                 invalidateOptionsMenu();
                 return true;
@@ -970,8 +1012,35 @@ public class LFMainActivity extends SharedMediaActivity {
                             return getAlbums().deleteSelectedAlbums(LFMainActivity.this);
                         else {
                             // if in selection mode, delete selected media
-                            if (editMode)
+                            if (editMode && !all_photos)
                                 return getAlbum().deleteSelectedMedia(getApplicationContext());
+                            else if (all_photos) {
+                                Boolean succ = false;
+                                for (Media media : selectedMedias) {
+                                    String[] projection = {MediaStore.Images.Media._ID};
+
+                                    // Match on the file path
+                                    String selection = MediaStore.Images.Media.DATA + " = ?";
+                                    String[] selectionArgs = new String[]{media.getPath()};
+
+                                    // Query for the ID of the media matching the file path
+                                    Uri queryUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                                    ContentResolver contentResolver = getContentResolver();
+                                    Cursor c = contentResolver.query(queryUri, projection, selection, selectionArgs, null);
+                                    if (c.moveToFirst()) {
+                                        // We found the ID. Deleting the item via the content provider will also remove the file
+                                        long id = c.getLong(c.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
+                                        Uri deleteUri = ContentUris.withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+                                        contentResolver.delete(deleteUri, null, null);
+                                        succ = true;
+                                    } else {
+                                        succ = false;
+                                        // File not found in media store DB
+                                    }
+                                    c.close();
+                                }
+                                return succ;
+                            }
                             // if not in selection mode, delete current album entirely
                             else {
                                 boolean succ = getAlbums().deleteAlbum(getAlbum(), getApplicationContext());
@@ -989,13 +1058,21 @@ public class LFMainActivity extends SharedMediaActivity {
                                 getAlbums().clearSelectedAlbums();
                                 albumsAdapter.notifyDataSetChanged();
                             } else {
-                                //if all media in current album have been deleted, delete current album too.
-                                if (getAlbum().getMedia().size() == 0) {
-                                    getAlbums().removeCurrentAlbum();
-                                    albumsAdapter.notifyDataSetChanged();
-                                    displayAlbums();
-                                } else
-                                    mediaAdapter.swapDataSet(getAlbum().getMedia());
+                                if (!all_photos) {
+                                    //if all media in current album have been deleted, delete current album too.
+                                    if (getAlbum().getMedia().size() == 0) {
+                                        getAlbums().removeCurrentAlbum();
+                                        albumsAdapter.notifyDataSetChanged();
+                                        displayAlbums();
+                                    } else
+                                        mediaAdapter.swapDataSet(getAlbum().getMedia());
+                                } else {
+                                    clearSelectedPhotos();
+                                    listAll = StorageProvider.getAllShownImages(LFMainActivity.this);
+                                    media = listAll;
+                                    size = listAll.size();
+                                    mediaAdapter.swapDataSet(listAll);
+                                }
                             }
                         } else requestSdCardPermissions();
 
@@ -1099,11 +1176,20 @@ public class LFMainActivity extends SharedMediaActivity {
 
                 // list of all selected media in current album
                 ArrayList<Uri> files = new ArrayList<Uri>();
-                for (Media f : getAlbum().getSelectedMedia())
-                    files.add(f.getUri());
+                if (!all_photos) {
+                    for (Media f : getAlbum().getSelectedMedia())
+                        files.add(f.getUri());
+                } else {
+                    for (Media f : selectedMedias)
+                        files.add(f.getUri());
+                }
+                String extension = files.get(0).getPath().substring(files.get(0).getPath().lastIndexOf('.') + 1);
+                String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
 
                 intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);
+                if (!all_photos)
                 intent.setType(StringUtils.getGenericMIME(getAlbum().getSelectedMedia(0).getMimeType()));
+                else intent.setType(mimeType);
                 finishEditMode();
                 startActivity(Intent.createChooser(intent, getResources().getText(R.string.send_to)));
                 return true;
@@ -1204,9 +1290,14 @@ public class LFMainActivity extends SharedMediaActivity {
                     @Override
                     protected Void doInBackground(Affix.Options... arg0) {
                         ArrayList<Bitmap> bitmapArray = new ArrayList<Bitmap>();
-                        for (int i = 0; i < getAlbum().getSelectedCount(); i++) {
-                            if (!getAlbum().getSelectedMedia(i).isVideo())
+                        if (!all_photos) {
+                            for (int i = 0; i < getAlbum().getSelectedCount(); i++) {
                                 bitmapArray.add(getBitmap(getAlbum().getSelectedMedia(i).getPath()));
+                            }
+                        } else {
+                            for (int i = 0; i < selectedMedias.size(); i++) {
+                                bitmapArray.add(getBitmap(selectedMedias.get(i).getPath()));
+                            }
                         }
 
                         if (bitmapArray.size() > 1)
@@ -1223,11 +1314,16 @@ public class LFMainActivity extends SharedMediaActivity {
                     @Override
                     protected void onPostExecute(Void result) {
                         editMode = false;
+                        if(!all_photos)
                         getAlbum().clearSelectedPhotos();
+                        else clearSelectedPhotos();
                         dialog.dismiss();
                         invalidateOptionsMenu();
                         mediaAdapter.notifyDataSetChanged();
-                        new PreparePhotosTask().execute();
+                        if(!all_photos)
+                            new PreparePhotosTask().execute();
+                        else clearSelectedPhotos();
+
                     }
                 }
                 //endregion
