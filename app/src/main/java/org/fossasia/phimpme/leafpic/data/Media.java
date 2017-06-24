@@ -102,7 +102,7 @@ public class Media implements Parcelable, Serializable {
         return selected;
     }
 
-    void setSelected(boolean selected) {
+    public void setSelected(boolean selected) {
         this.selected = selected;
     }
 
