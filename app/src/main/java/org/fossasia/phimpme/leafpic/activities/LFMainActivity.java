@@ -109,6 +109,9 @@ public class LFMainActivity extends SharedMediaActivity {
     public static ArrayList<Media> listAll;
     public int size;
     public int pos;
+    private ArrayList<Media> media;
+    private ArrayList<Media> selectedMedias = new ArrayList<>();
+
     /*
     editMode-  When true, user can select items by clicking on them one by one
      */
@@ -132,10 +135,64 @@ public class LFMainActivity extends SharedMediaActivity {
 
                 invalidateOptionsMenu();
             } else
-                Toast.makeText(LFMainActivity.this, getString(R.string.albums_mode), Toast.LENGTH_SHORT).show();
+                if(!editMode){
+                    mediaAdapter.notifyItemChanged(toggleSelectPhoto(getImagePosition(m.getPath())));
+                    editMode = true;
+                    mediaAdapter.swapDataSet(listAll);
+                }
+                else selectAllPhotosUpTo(getImagePosition(m.getPath()),mediaAdapter);
             return true;
         }
     };
+
+    private int toggleSelectPhoto(int index) {
+        if (media.get(index) != null) {
+            media.get(index).setSelected(!media.get(index).isSelected());
+            if (media.get(index).isSelected())
+                selectedMedias.add(media.get(index));
+            else
+                selectedMedias.remove(media.get(index));
+        }
+        if(selectedMedias.size()==0){
+            editMode = false;
+            toolbar.setTitle(getString(R.string.all));
+        }
+        else
+        toolbar.setTitle(selectedMedias.size() + "/" + size);
+        return index;
+    }
+
+    public void clearSelectedPhotos() {
+        for (Media m : media)
+            m.setSelected(false);
+        if (selectedMedias!=null)
+            selectedMedias.clear();
+        toolbar.setTitle(getString(R.string.all));
+    }
+
+
+    public void selectAllPhotosUpTo(int targetIndex, MediaAdapter adapter) {
+        int indexRightBeforeOrAfter = -1;
+        int indexNow;
+        for (Media sm : selectedMedias) {
+            indexNow = media.indexOf(sm);
+            if (indexRightBeforeOrAfter == -1) indexRightBeforeOrAfter = indexNow;
+
+            if (indexNow > targetIndex) break;
+            indexRightBeforeOrAfter = indexNow;
+        }
+
+        if (indexRightBeforeOrAfter != -1) {
+            for (int index = Math.min(targetIndex, indexRightBeforeOrAfter); index <= Math.max(targetIndex, indexRightBeforeOrAfter); index++) {
+                if (media.get(index) != null && !media.get(index).isSelected()) {
+                        media.get(index).setSelected(true);
+                        selectedMedias.add(media.get(index));
+                        adapter.notifyItemChanged(index);
+                }
+            }
+        }
+        toolbar.setTitle(selectedMedias.size() + "/" + size);
+    }
 
     /**
      * Handles short clicks on photos.
@@ -148,7 +205,6 @@ public class LFMainActivity extends SharedMediaActivity {
         public void onClick(View v) {
             Media m = (Media) v.findViewById(R.id.photo_path).getTag();
             if (all_photos) {
-                size = listAll.size();
                 pos = getImagePosition(m.getPath());
             }
             if (!all_photos) {
@@ -169,13 +225,15 @@ public class LFMainActivity extends SharedMediaActivity {
                     finish();
                 }
             } else {
-                //String p=Uri.fromFile(new File(m.getPath())).toString();
-                Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(m.getPath())));
-                intent.putExtra(getString(R.string.all_photo_mode), true);
-                intent.putExtra(getString(R.string.position), pos);
-                intent.putExtra(getString(R.string.allMediaSize), size);
-                intent.setClass(getApplicationContext(), SingleMediaActivity.class);
-                startActivity(intent);
+                if(!editMode) {
+                    Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(m.getPath())));
+                    intent.putExtra(getString(R.string.all_photo_mode), true);
+                    intent.putExtra(getString(R.string.position), pos);
+                    intent.putExtra(getString(R.string.allMediaSize), size);
+                    intent.setClass(getApplicationContext(), SingleMediaActivity.class);
+                    startActivity(intent);
+                }
+                else mediaAdapter.notifyItemChanged(toggleSelectPhoto(getImagePosition(m.getPath())));
             }
         }
     };
@@ -230,6 +288,8 @@ public class LFMainActivity extends SharedMediaActivity {
         if (getIntent().getExtras()!=null)
         pickMode = getIntent().getExtras().getBoolean(SplashScreen.PICK_MODE);
         listAll = StorageProvider.getAllShownImages(LFMainActivity.this);
+        size = listAll.size();
+        media = listAll;
 
         initUI();
         displayData(getIntent().getExtras());
@@ -293,6 +353,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
 
     private void displayAllMedia(boolean reload) {
+        clearSelectedPhotos();
         toolbar.setTitle(getString(R.string.all_media));
         toolbar.setNavigationIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_arrow_back));
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
@@ -1589,6 +1650,7 @@ public class LFMainActivity extends SharedMediaActivity {
             invalidateOptionsMenu();
             finishEditMode();
             toolbar.setTitle(getString(R.string.all_media));
+            clearSelectedPhotos();
         }
     }
 
