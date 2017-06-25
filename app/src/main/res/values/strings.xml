@@ -807,6 +807,9 @@
 
     <!-- toast -->
     <string name="tweet_posted_on_twitter"> Image posted on twitter successfully. </string>
+    <string name="instagram_not_installed">Instagram is not installed</string>
+    <string name="not_connected">No Internet Connection found</string>
+
     <string name="facebook_login_cancel">Facebook login Cancelled</string>
     <string name="facebook_login_error">Facebook login error</string>
 </resources>
