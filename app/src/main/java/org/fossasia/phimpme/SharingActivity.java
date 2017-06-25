@@ -5,10 +5,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -42,6 +44,7 @@ import org.fossasia.phimpme.leafpic.util.ThemeHelper;
 import org.fossasia.phimpme.sharetwitter.HelperMethods;
 import org.fossasia.phimpme.sharetwitter.LoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
+import org.fossasia.phimpme.utilities.Utils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -84,7 +87,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     private int[] titles_text = {R.string.facebook, R.string.twitter, R.string.instagram, R.string.other};
     private Context context;
     private AlertDialog mAlertBuilder;
-
+    Utils utils = new Utils();
 
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
@@ -98,6 +101,17 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         setupUI();
         initView();
         setStatusBarColor();
+        checknetwork();
+    }
+
+    private boolean checknetwork() {
+        ConnectivityManager connect =
+                (ConnectivityManager)getSystemService(getBaseContext().CONNECTIVITY_SERVICE);
+        if(utils.isInternetOn(connect)){
+            return true;
+        }else
+            Snackbar.make(parent, R.string.not_connected, Snackbar.LENGTH_LONG).show();
+        return false;
     }
 
     private void setupUI() {
@@ -170,72 +184,78 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                                     goToHome();
                                 }
                             }).show();
-
                 break;
         }
     }
 
     private void sharePhotoToTwitter() {
         caption = text_caption.getText().toString();
-        if (LoginActivity.isActive(context)) {
-            try {
-                caption = text_caption.getText().toString();
-                mAlertBuilder = new AlertDialog.Builder(context).create();
-                mAlertBuilder.setCancelable(false);
-                mAlertBuilder.setTitle(R.string.please_wait_title);
-                View view = getLayoutInflater().inflate(R.layout.view_loading, null);
-                ((TextView) view.findViewById(R.id.messageTextViewFromLoading)).setText(getString(R.string.posting_image_message));
-                mAlertBuilder.setView(view);
-                mAlertBuilder.show();
+        if(checknetwork()) {
+            if (LoginActivity.isActive(context)) {
+                try {
+                    caption = text_caption.getText().toString();
+                    mAlertBuilder = new AlertDialog.Builder(context).create();
+                    mAlertBuilder.setCancelable(false);
+                    mAlertBuilder.setTitle(R.string.please_wait_title);
+                    View view = getLayoutInflater().inflate(R.layout.view_loading, null);
+                    ((TextView) view.findViewById(R.id.messageTextViewFromLoading)).setText(getString(R.string.posting_image_message));
+                    mAlertBuilder.setView(view);
+                    mAlertBuilder.show();
 
-                //InputStream inputStream  = view.getContext().getAssets().open("1.png");
-                Bitmap bmp = BitmapFactory.decodeFile(saveFilePath);
-                String filename = Environment.getExternalStorageDirectory().toString() + File.separator + "1.png";
-                Log.d("BITMAP", filename);
-                FileOutputStream out = new FileOutputStream(saveFilePath);
-                bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
+                    //InputStream inputStream  = view.getContext().getAssets().open("1.png");
+                    Bitmap bmp = BitmapFactory.decodeFile(saveFilePath);
+                    String filename = Environment.getExternalStorageDirectory().toString() + File.separator + "1.png";
+                    Log.d("BITMAP", filename);
+                    FileOutputStream out = new FileOutputStream(saveFilePath);
+                    bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
 
-                HelperMethods.postToTwitterWithImage(context, ((Activity) context), saveFilePath, caption, new HelperMethods.TwitterCallback() {
+                    HelperMethods.postToTwitterWithImage(context, ((Activity) context), saveFilePath, caption, new HelperMethods.TwitterCallback() {
 
-                    @Override
-                    public void onFinsihed(Boolean response) {
-                        mAlertBuilder.dismiss();
-                        Snackbar.make(parent, R.string.tweet_posted_on_twitter, Snackbar.LENGTH_LONG).show();
-                    }
-                });
+                        @Override
+                        public void onFinsihed(Boolean response) {
+                            mAlertBuilder.dismiss();
+                            Snackbar.make(parent, R.string.tweet_posted_on_twitter, Snackbar.LENGTH_LONG).show();
+                        }
+                    });
 
-            } catch (Exception ex) {
-                Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show();
+                } catch (Exception ex) {
+                    Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                startActivity(new Intent(context, LoginActivity.class));
             }
-        } else {
-            startActivity(new Intent(context, LoginActivity.class));
+        }else{
+            Snackbar.make(parent, R.string.not_connected, Snackbar.LENGTH_LONG).show();
         }
     }
 
     private void setupFacebookAndShare() {
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        callbackManager = CallbackManager.Factory.create();
-        List<String> permissionNeeds = Arrays.asList("publish_actions");
+        if(checknetwork()) {
+            FacebookSdk.sdkInitialize(getApplicationContext());
+            callbackManager = CallbackManager.Factory.create();
+            List<String> permissionNeeds = Arrays.asList("publish_actions");
 
-        //this loginManager helps you eliminate adding a LoginButton to your UI
-        LoginManager manager = LoginManager.getInstance();
-        manager.logInWithPublishPermissions(this, permissionNeeds);
-        manager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                sharePhotoToFacebook();
-            }
+            //this loginManager helps you eliminate adding a LoginButton to your UI
+            LoginManager manager = LoginManager.getInstance();
+            manager.logInWithPublishPermissions(this, permissionNeeds);
+            manager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+                    sharePhotoToFacebook();
+                }
 
-            @Override
-            public void onCancel() {
-                System.out.println("onCancel");
-            }
+                @Override
+                public void onCancel() {
+                    System.out.println("onCancel");
+                }
 
-            @Override
-            public void onError(FacebookException error) {
-                System.out.println("onError");
-            }
-        });
+                @Override
+                public void onError(FacebookException error) {
+                    System.out.println("onError");
+                }
+            });
+        }else
+            Snackbar.make(parent, R.string.not_connected, Snackbar.LENGTH_LONG).show();
     }
 
     private void sharePhotoToFacebook() {
@@ -267,17 +287,20 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void shareToInstagram() {
-        caption = text_caption.getText().toString();
-        Uri uri = Uri.fromFile(new File(saveFilePath));
-        Intent share = new Intent(Intent.ACTION_SEND);
-        share.setPackage("com.instagram.android");
-        share.putExtra(Intent.EXTRA_STREAM, uri);
-        share.setType("image/*");
-        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        startActivity(Intent.createChooser(share, caption));
-        atleastOneShare = true;
+        PackageManager pm = getPackageManager();
+        if(utils.isAppInstalled("com.instagram.android",pm)) {
+            caption = text_caption.getText().toString();
+            Uri uri = Uri.fromFile(new File(saveFilePath));
+            Intent share = new Intent(Intent.ACTION_SEND);
+            share.setPackage("com.instagram.android");
+            share.putExtra(Intent.EXTRA_STREAM, uri);
+            share.setType("image/*");
+            share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivity(Intent.createChooser(share, caption));
+            atleastOneShare = true;
+        }else
+            Snackbar.make(parent,R.string.instagram_not_installed,Snackbar.LENGTH_LONG).show();
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int responseCode, Intent data) {
@@ -296,4 +319,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     public void onResume() {
         super.onResume();
     }
+
+
+
 }
