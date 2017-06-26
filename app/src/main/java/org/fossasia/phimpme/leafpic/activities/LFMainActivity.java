@@ -216,6 +216,7 @@ public class LFMainActivity extends SharedMediaActivity {
                     } else {
                         getAlbum().setCurrentPhotoIndex(m);
                         Intent intent = new Intent(LFMainActivity.this, SingleMediaActivity.class);
+                        intent.putExtra("path",Uri.fromFile(new File(m.getPath())).toString());
                         intent.setAction(SingleMediaActivity.ACTION_OPEN_ALBUM);
                         startActivity(intent);
                     }
@@ -224,6 +225,7 @@ public class LFMainActivity extends SharedMediaActivity {
                     finish();
                 }
             } else {
+
                 if(!editMode) {
                     Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(m.getPath())));
                     intent.putExtra(getString(R.string.all_photo_mode), true);

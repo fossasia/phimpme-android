@@ -44,5 +44,9 @@
         android:id="@+id/action_settings"
         android:title="@string/settings"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_description"
+        android:title="Description"
+        app:showAsAction="never" />
     <!-- End Albums Stuff -->
 </menu>
