@@ -135,6 +135,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
             Album album;
             if ((getIntent().getAction().equals(Intent.ACTION_VIEW) || getIntent().getAction().equals(ACTION_REVIEW)) && getIntent().getData() != null) {
 
+                String path = ContentHelper.getMediaPath(getApplicationContext(), getIntent().getData());
                 File file = null;
                 if (path != null)
                     file = new File(path);
