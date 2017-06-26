@@ -1,4 +1,4 @@
-package org.fossasia.phimpme.leafpic.data.providers;
+package org.fossasia.phimpme.data.local;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -7,17 +7,17 @@ import io.realm.annotations.PrimaryKey;
  * Created by nirvan on 20/6/17.
  */
 
-public class Item extends RealmObject {
+public class ImageDescModel extends RealmObject {
     @PrimaryKey
     private String path;
 
     private String desc;
 
-    public Item() {
+    public ImageDescModel() {
     }
 
 
-    public Item(String path, String title) {
+    public ImageDescModel(String path, String title) {
         this.path = path;
         this.desc = title;
     }

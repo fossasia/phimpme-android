@@ -43,6 +43,7 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.yalantis.ucrop.UCrop;
 
 import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.SharingActivity;
 import org.fossasia.phimpme.base.SharedMediaActivity;
 import org.fossasia.phimpme.editor.FileUtils;
 import org.fossasia.phimpme.editor.editimage.EditImageActivity;
@@ -51,10 +52,6 @@ import org.fossasia.phimpme.leafpic.SelectAlbumBottomSheet;
 import org.fossasia.phimpme.leafpic.adapters.MediaPagerAdapter;
 import org.fossasia.phimpme.leafpic.animations.DepthPageTransformer;
 import org.fossasia.phimpme.leafpic.data.Album;
-import org.fossasia.phimpme.leafpic.data.RealmController;
-import org.fossasia.phimpme.leafpic.data.base.SortingMode;
-import org.fossasia.phimpme.leafpic.data.base.SortingOrder;
-import org.fossasia.phimpme.leafpic.data.providers.Item;
 import org.fossasia.phimpme.leafpic.util.AlertDialogsHelper;
 import org.fossasia.phimpme.leafpic.util.ColorPalette;
 import org.fossasia.phimpme.leafpic.util.ContentHelper;
@@ -63,7 +60,6 @@ import org.fossasia.phimpme.leafpic.util.PreferenceUtil;
 import org.fossasia.phimpme.leafpic.util.SecurityHelper;
 import org.fossasia.phimpme.leafpic.util.StringUtils;
 import org.fossasia.phimpme.leafpic.views.HackyViewPager;
-import org.fossasia.phimpme.SharingActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 
 import java.io.File;
@@ -100,7 +96,6 @@ public class SingleMediaActivity extends SharedMediaActivity {
     private String path;
     private SingleMediaActivity context;
     public static final String EXTRA_OUTPUT = "extra_output";
-    private RealmController realmController;
     private String pathForDescriptionActivity;
 
 
@@ -157,8 +152,6 @@ public class SingleMediaActivity extends SharedMediaActivity {
             initUI();
             setupUI();
         } catch (Exception e) { e.printStackTrace(); }
-
-        realmController = new RealmController();
     }
 
     private void initView() {
