@@ -119,7 +119,6 @@
 
     <style name="PreferencesThemeLight">
         <item name="android:background">#FAFAFA</item>
-        <!--<item name="android:background">#424242</item>-->
     </style>
 
     <!--Player-->
