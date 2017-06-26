@@ -1541,6 +1541,10 @@ public class LFMainActivity extends SharedMediaActivity {
                             if (success){
                                 Snackbar.make(getWindow().getDecorView().getRootView(),
                                         getString(R.string.rename_succes),Snackbar.LENGTH_LONG).show();
+                                getAlbums().clearSelectedAlbums();
+                                invalidateOptionsMenu();
+
+
 
                             }else {
                                 Snackbar.make(getWindow().getDecorView().getRootView(),
