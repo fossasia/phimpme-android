@@ -1,4 +1,4 @@
-package org.fossasia.phimpme.data
+package org.fossasia.phimpme.data.local
 
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey

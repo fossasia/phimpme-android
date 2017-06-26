@@ -27,7 +27,7 @@ import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 
 import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.data.AccountDatabase;
+import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.json.JSONObject;
 
 import java.util.Arrays;

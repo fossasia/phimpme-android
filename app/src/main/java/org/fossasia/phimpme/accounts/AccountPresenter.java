@@ -5,8 +5,8 @@ import org.jetbrains.annotations.NotNull;
 import io.realm.Realm;
 import io.realm.RealmResults;
 import org.fossasia.phimpme.base.BasePresenter;
-import org.fossasia.phimpme.data.AccountDatabase;
-import org.fossasia.phimpme.data.DatabaseHelper;
+import org.fossasia.phimpme.data.local.AccountDatabase;
+import org.fossasia.phimpme.data.local.DatabaseHelper;
 
 /**
  * Created by pa1pal on 10/6/17.
