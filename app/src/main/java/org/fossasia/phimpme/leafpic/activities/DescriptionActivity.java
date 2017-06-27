@@ -1,31 +1,28 @@
 package org.fossasia.phimpme.leafpic.activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 
-import com.mikepenz.community_material_typeface_library.CommunityMaterial;
-
 import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.base.ThemedActivity;
-import org.fossasia.phimpme.leafpic.data.RealmController;
-import org.fossasia.phimpme.leafpic.data.providers.Item;
+import org.fossasia.phimpme.data.local.DatabaseHelper;
+import org.fossasia.phimpme.data.local.ImageDescModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
 
 public class DescriptionActivity extends AppCompatActivity {
 
-    RealmController realmController=new RealmController();
+    private Realm realm;
+    private DatabaseHelper databaseHelper;
 
     @BindView(R.id.activity_description_editText)
     EditText editText;
 
-    Item temp;
+    ImageDescModel temp;
     String path;
 
     @Override
@@ -35,12 +32,13 @@ public class DescriptionActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        //realmController=new RealmController();
+        realm = Realm.getDefaultInstance();
+        databaseHelper =new DatabaseHelper(realm);
+
         path=getIntent().getStringExtra("path");
 
-        temp=realmController.getItem(path);
-
-
+        temp= databaseHelper.getImageDesc(path);
+        
         //if description exists, display it
         if(temp != null) {
             editText.setText(temp.getTitle());
@@ -60,13 +58,13 @@ public class DescriptionActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        temp=realmController.getItem(path);
+        temp= databaseHelper.getImageDesc(path);
         if(item.getItemId() == R.id.activity_description_save) {
             if(temp == null) {
-                realmController.addItem(new Item(path,editText.getText().toString()));
+                databaseHelper.addImageDesc(new ImageDescModel(path,editText.getText().toString()));
             } else {
                 //temp.setTitle(editText.getText().toString());
-                realmController.update(new Item(path, editText.getText().toString()));
+                databaseHelper.update(new ImageDescModel(path, editText.getText().toString()));
             }
         }
         return true;
