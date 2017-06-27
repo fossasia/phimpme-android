@@ -32,7 +32,7 @@ import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.PhimpmeProgressBarHandler;
 import org.fossasia.phimpme.base.RecyclerItemClickListner;
 import org.fossasia.phimpme.base.ThemedActivity;
-import org.fossasia.phimpme.data.AccountDatabase;
+import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.jetbrains.annotations.NotNull;
@@ -147,7 +147,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
             case 1:
                 FacebookSdk.sdkInitialize(this);
-                signInFacebook(childView);
+                //signInFacebook(childView);
                 break;
 
             default: Toast.makeText(this, R.string.feature_not_present,

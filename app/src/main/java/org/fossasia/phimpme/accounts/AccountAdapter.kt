@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.Switch
 import android.widget.TextView
 import io.realm.RealmQuery
-import io.realm.RealmResults
 import org.fossasia.phimpme.R
 import org.fossasia.phimpme.data.local.AccountDatabase
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper.context
@@ -39,8 +38,15 @@ class AccountAdapter : RecyclerView.Adapter<AccountAdapter.ViewHolder>() {
             holder!!.accountName!!.text = accountsName[position]
         }
 */
-        holder!!.accountName!!.text = accountDetails?.equalTo("name", accountsName[0])?.toString()
-                ?: accountsName[position]
+        if (accountDetails?.equalTo("name", accountsName[position])?.findAll()?.size ?: 0 > 0){
+            holder!!.accountName!!.text =  accountDetails?.equalTo("name", accountsName[position])
+                    ?.findAll()?.get(0)?.username
+
+            holder.signInSignOutSwitch!!.isChecked = true
+
+        } else {
+            holder!!.accountName!!.text = accountsName[position]
+        }
 
         /**
          * Selecting the image resource id on the basis of name of the account.
