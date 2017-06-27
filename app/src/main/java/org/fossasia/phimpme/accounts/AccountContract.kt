@@ -2,7 +2,7 @@ package org.fossasia.phimpme.accounts
 
 import io.realm.RealmResults
 import org.fossasia.phimpme.base.MvpView
-import org.fossasia.phimpme.data.AccountDatabase
+import org.fossasia.phimpme.data.local.AccountDatabase
 
 
 /**
