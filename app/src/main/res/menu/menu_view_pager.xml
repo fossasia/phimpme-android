@@ -5,10 +5,6 @@
 
     <group android:id="@+id/only_photos_options">
         <item
-            android:id="@+id/action_edit"
-            android:title="@string/edit"
-            app:showAsAction="never" />
-        <item
             android:id="@+id/action_use_as"
             android:title="@string/use_as"
             app:showAsAction="never" />
@@ -25,21 +21,9 @@
             android:orderInCategory="1"
             android:title="@string/delete"
             app:showAsAction="always" />
-        <item
-            android:id="@+id/action_copy"
-            android:title="@string/copy_to"
-            app:showAsAction="never" />
-        <item
-            android:id="@+id/action_move"
-            android:title="@string/move_to"
-            app:showAsAction="never" />
 
     </group>
 
-    <item
-        android:id="@+id/action_details"
-        android:title="@string/details"
-        app:showAsAction="never" />
     <item
         android:id="@+id/action_settings"
         android:title="@string/settings"
