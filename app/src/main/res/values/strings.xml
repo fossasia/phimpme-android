@@ -793,8 +793,8 @@
     <string name="sign_out_dialog_message">Do you want to sign out from </string>
     <string name="no_account_signed_in">No account signed in</string>
     <!--Share to Twitter-->
-    <string name="twitter_consumer_key">ry1PDPXM6rwFVC1KhQ585bJPy</string>
-    <string name="twitter_consumer_secret">O3qUqqBLinr8qrRvx3GXHWBB1AN10Ax26vXZdNlYlEBF3vzPFt</string>
+    <string name="twitter_consumer_key">I8fFsT58V2k8FsA0vPFN7fCRX</string>
+    <string name="twitter_consumer_secret">5LfshCbLn9xgnMjtL68YwPHxTN0u8qQ6DtOFrVYtYdIOshNqmh</string>
     <string name="post_image">Post Image</string>
     <string name="post_tweet">Post Tweet</string>
     <string name="authentication_done_now_post_tweet_or_image_text"> Your app is authenticated. Now  you can post tweet/image on twitter. </string>
