@@ -1,0 +1,75 @@
+<div class="main" role="main">
+  <div class="container">
+
+    <div class="row">
+      <div class="col-sm-6">
+
+        <!-- Marketing -->
+        <div class="marketing">
+          <div class="app-meta">
+            {% if site.enable.app_icon %}
+              <img
+                class="app-icon"
+                style="min-width: 92px;"
+                height="auto"
+                {% if site.app.icon %} src="{{ site.app.icon }}"{% endif %}
+              />
+            {% endif %}
+            <span class="app-name">{{ site.app.name }}</span>
+          </div>
+
+          {% if site.marketing_header %}
+          <h2 class="marketing-header">{{ site.marketing_header }}</h2>
+          {% endif %}
+
+          <p class="marketing-desc">{{ site.marketing_desc }}</p>
+          <div class="download-buttons">
+            <a
+              class="download-btn btn btn-lg"
+              href="https://itunes.apple.com/app/id{{ site.app.ios_id }}?mt=8&at={% include apple-affiliate.html %}">
+              <i class="fa fa-apple fa-lg" aria-hidden="true"></i> App Store
+            </a>
+
+            {% if site.app.android_id %}
+            <a
+              class="download-btn btn btn-lg"
+              href="https://play.google.com/store/apps/details?id={{ site.app.android_id }}">
+              <i class="fa fa-android fa-lg" aria-hidden="true"></i> Google Play
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-sm-6">
+
+        <!-- App Screenshot(s) -->
+        <div class="device {{ site.device }}">
+          <img
+            class="app-screenshot"
+            {% if site.app.screenshot %}src="{{ site.app.screenshot }}"{% endif %}
+          />
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="social">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        {% include social.html %}
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="footer">
+  <div class="container">
+    <!-- footer text here -->
+  </div>
+</div>

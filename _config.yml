@@ -1,0 +1,111 @@
+#
+# Awesome App Landing Page Config
+#
+
+# Be sure all REQUIRED fields are filled out!
+
+#
+# General App Info
+#
+app:
+  name: Awesome App # REQUIRED - Enter your app name
+  ios_id: 1109109105 # REQUIRED - 10 Digit Numeric App ID (lookup in iTunes Connect)
+  android_id: # Optional - Enter Android app id like: com.example.app
+
+  icon: # Leave blank to auto-magically populate
+  # To update use path relative to project root with no leading slash:
+  # e.g. images/app-icon-512.png
+  # 512px or greater, square
+
+  screenshot: # Leave blank to auto-magically populate
+  # To update use path relative to project root with no leading slash:
+  # e.g. images/app-screen-640x1136.png
+  # 640x1136px
+
+#
+# Marketing
+#
+marketing_header: Does Awesome Stuff # Optional
+marketing_desc: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
+#
+# Social Links
+#
+# Includes an icon for each username you enter
+#
+social-links:
+  github:
+  facebook:
+  twitter:
+  pinterest:
+  instagram:
+  email:
+  youtube: # channel/<your_long_string> or <user-name>
+  googleplus: # anything in your profile username that comes after plus.google.com/
+
+#
+# Enable/Disable Features & Page Elements
+#
+enable:
+  app_icon: true
+  smart_app_banner: true
+
+#
+# Device
+#
+# Available devices:
+# * iphone-se-silver-vertical
+# * iphone-se-space-gray-vertical
+# * ipod-touch-blue-vertical
+#
+device: iphone-se-silver-vertical # REQUIRED
+
+#
+# Theme Settings
+#
+background_color: "#989898" # Optional
+background_image: /images/backgrounds/58-usersthink-stock-image-web.jpg # Optional - Use Relative path e.g. images/backgrounds/image.jpg
+text_color: white # Optional
+link_color: # Optional
+social_link_color: white # Optional
+download_button_background_color: "#0191FF" # Optional
+download_button_text_color: white; # Optional
+
+#
+# Site Info
+#
+# If you want specific meta info for your <head></head> tags
+#
+title: # Optional - Enter your site title
+description: # Optional - Enter your site description
+
+#
+# Google Analytics
+#
+google_analytics: # Enter your tracking code (e.g. UA-2110908-2) to activate tracking
+
+#
+# iTunes Affiliate Program
+#
+# Sign up here: http://www.apple.com/itunes/affiliates/
+#
+# Disclaimer:
+# This will default to using the author's affiliate token if left blank
+#
+itunes_affiliate_token: # Optional
+
+#
+# !! You don't need to change any of the configuration flags below !!
+#
+
+# The release of Awesome App Landing Page that you're using
+version: v1.0
+
+# Set the Sass partials directory, as we're using @imports
+sass:
+  style: :compressed
+
+# Exclude these files from your production _site
+exclude:
+  - LICENSE
+  - README.md
