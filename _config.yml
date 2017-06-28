@@ -4,20 +4,36 @@
 
 # Be sure all REQUIRED fields are filled out!
 
+<<<<<<< cf438ae2b7e83da3ad0ff2f27d3dc497d2efa946
+=======
+baseurl: "/phimpme-android"
+>>>>>>> initial commit, added a open source jekyll theme and added description, github source button
 #
 # General App Info
 #
 app:
+<<<<<<< cf438ae2b7e83da3ad0ff2f27d3dc497d2efa946
   name: Awesome App # REQUIRED - Enter your app name
   ios_id: 1109109105 # REQUIRED - 10 Digit Numeric App ID (lookup in iTunes Connect)
   android_id: # Optional - Enter Android app id like: com.example.app
 
   icon: # Leave blank to auto-magically populate
+=======
+  name: Phimpme App # REQUIRED - Enter your app name
+  ios_id: 1109109105 # REQUIRED - 10 Digit Numeric App ID (lookup in iTunes Connect)
+  android_id: org.fossasia.phimpme # Optional - Enter Android app id like: com.example.app
+
+  icon: images/app-icon-512.png # Leave blank to auto-magically populate
+>>>>>>> initial commit, added a open source jekyll theme and added description, github source button
   # To update use path relative to project root with no leading slash:
   # e.g. images/app-icon-512.png
   # 512px or greater, square
 
+<<<<<<< cf438ae2b7e83da3ad0ff2f27d3dc497d2efa946
   screenshot: # Leave blank to auto-magically populate
+=======
+  screenshot: images/screenshot.png # Leave blank to auto-magically populate
+>>>>>>> initial commit, added a open source jekyll theme and added description, github source button
   # To update use path relative to project root with no leading slash:
   # e.g. images/app-screen-640x1136.png
   # 640x1136px
@@ -25,8 +41,13 @@ app:
 #
 # Marketing
 #
+<<<<<<< cf438ae2b7e83da3ad0ff2f27d3dc497d2efa946
 marketing_header: Does Awesome Stuff # Optional
 marketing_desc: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+=======
+marketing_header: All in one Open source Image app # Optional
+marketing_desc: Get all the image features right from click to edit to share to world in one place
+>>>>>>> initial commit, added a open source jekyll theme and added description, github source button
 
 #
 # Social Links
