@@ -1,0 +1,22 @@
+{% if site.google_analytics %}
+	<!-- Google Analytics -->
+	<script>
+    window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;
+    ga('create','{{ site.google_analytics }}','auto');ga('send','pageview')
+  </script>
+  <script src="https://www.google-analytics.com/analytics.js" async defer></script>
+
+	<script>
+		// Automatically track all link clicks
+    $(function() {
+			$('body').on('click', 'a', function(e) {
+				var url = $(this).attr('href');
+				if (url) {
+			    console.info('GA link click event: ', url);
+					ga('send', 'event', 'link', 'click', url);
+				}
+			});
+    });
+  </script>
+	<!-- End Google Analytics -->
+{% endif %}

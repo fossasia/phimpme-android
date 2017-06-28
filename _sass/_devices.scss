@@ -1,0 +1,60 @@
+
+//
+// DEVICES
+//
+
+.device {
+  position: relative;
+  background-size: cover;
+}
+
+.device .app-screenshot {
+  position: absolute;
+  width: 240px;
+  height: auto;
+}
+
+//
+// iPhone SE Silver Vertical
+//
+
+.device.iphone-se-silver-vertical {
+  width: 288px;
+  height: 608px;
+  background-image: url(../../images/devices/iphone-se-silver-vertical.png);
+}
+.device.iphone-se-silver-vertical .app-screenshot {
+  top: 91px;
+  left: 25px;
+  width: 240px;
+}
+
+//
+// iPhone SE Space Gray Vertical
+//
+
+.device.iphone-se-space-gray-vertical {
+  width: 288px;
+  height: 608px;
+  background-image: url(../../images/devices/iphone-se-space-gray-vertical.png);
+}
+.device.iphone-se-space-gray-vertical .app-screenshot {
+  top: 91px;
+  left: 25px;
+  width: 240px;
+}
+
+//
+// iPod Touch Blue Vertical
+//
+
+.device.ipod-touch-blue-vertical {
+  width: 291px;
+  height: 614px;
+  background-image: url(../../images/devices/ipod-touch-blue-vertical.png);
+}
+.device.ipod-touch-blue-vertical .app-screenshot {
+  top: 87px;
+  left: 23px;
+  width: 246px;
+}

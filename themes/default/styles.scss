@@ -1,0 +1,196 @@
+---
+---
+
+@import "variables";
+
+//
+// BASE
+//
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  {% if site.background_color %}
+  background-color: {{ site.background_color }};
+  {% endif %}
+
+  {% if site.background_image %}
+  background: linear-gradient(rgba(59, 61, 64, 0.5), rgba(59, 61, 64, 0.5)), url(../../{{ site.background_image }}) no-repeat center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  {% endif %}
+
+  {% if site.text_color %}
+  color: {{ site.text_color }};
+  {% endif %}
+
+  font-size: 18px;
+  -moz-osx-font-smoothing: grayscale;
+   -webkit-font-smoothing: antialiased;
+}
+
+a {
+  transition: all .3s;
+}
+
+{% if site.link_color %}
+a {
+  color: {{ site.link_color }};
+}
+
+a:focus,
+a:hover {
+  color: darken({{ site.link_color }}, 20%);
+}
+{% endif %}
+
+//
+// LAYOUT / SECTIONS
+//
+
+.container {
+  max-width: 980px;
+}
+
+.main {
+  position: relative;
+  min-height: 100%;
+  padding-top: 70px;
+  padding-bottom: 60px;
+}
+
+.footer {
+  padding-bottom: 50px;
+}
+
+//
+// Marketing
+//
+
+.marketing {
+  text-align: center;
+}
+
+.app-meta {
+  margin-bottom: 20px;
+  font-size: 32px;
+}
+
+.app-icon {
+  display: block;
+  margin: 0 auto 10px;
+  border-radius: 15px;
+  width: 92px;
+}
+
+.marketing-desc {
+  margin: 0 auto 20px;
+  max-width: 450px;
+  white-space: pre-wrap;
+  font-weight: 500;
+}
+
+//
+// Download Buttons
+//
+
+.download-buttons {
+  margin-bottom: 20px;
+}
+
+.download-btn {
+  margin-right: 20px;
+  margin-bottom: 20px;
+  border: none;
+  background-color: #0191FF;
+  color: #fff;
+
+  {% if site.download_button_background_color %}
+  background-color: {{ site.download_button_background_color }};
+  {% endif %}
+
+  {% if site.download_button_text_color %}
+  color: {{ site.download_button_text_color }};
+  {% endif %}
+}
+
+.download-btn:focus,
+.download-btn:hover {
+  background-color: darken(#0191FF, 20%);
+  color: #fff;
+
+  {% if site.download_button_background_color %}
+  background-color: darken({{ site.download_button_background_color }}, 20%);
+  {% endif %}
+
+  {% if site.download_button_text_color %}
+  color: {{ site.download_button_text_color }};
+  {% endif %}
+}
+
+//
+// Social
+//
+
+.social {
+  text-align: center;
+}
+
+.social-links {
+  padding-left: 0;
+  margin-left: -5px;
+  list-style: none;
+}
+
+.social-links li {
+  display: inline-block;
+  margin: 12px;
+}
+
+{% if site.social_link_color %}
+.social-links a {
+  color: {{ site.social_link_color }};
+}
+
+.social-links a:focus,
+.social-links a:hover {
+  color: darken({{ site.social_link_color }}, 30%);
+}
+{% endif %}
+
+//
+// Device
+//
+
+.device {
+  margin: auto;
+}
+
+//
+// large screens
+//
+
+@media (min-width: 768px) {
+  .marketing {
+    text-align: left;
+  }
+
+  .app-icon {
+    display: inline;
+  }
+
+  .marketing-desc {
+    text-align: left;
+  }
+}
+
+//
+// more imports
+//
+
+@import "devices";
