@@ -873,7 +873,7 @@ public class LFMainActivity extends SharedMediaActivity {
         menu.findItem(R.id.excludeAlbumButton).setVisible(editMode && !all_photos);
         menu.findItem(R.id.select_all).setVisible(editMode);
         menu.findItem(R.id.type_sort_action).setVisible(!albumsMode);
-        menu.findItem(R.id.delete_action).setVisible((!albumsMode || editMode));
+        menu.findItem(R.id.delete_action).setVisible((!albumsMode || editMode) && (!all_photos || editMode ));
         menu.findItem(R.id.hideAlbumButton).setVisible(!all_photos);
 
         menu.findItem(R.id.clear_album_preview).setVisible(!albumsMode && getAlbum().hasCustomCover());
