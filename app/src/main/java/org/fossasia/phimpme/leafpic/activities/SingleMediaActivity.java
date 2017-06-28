@@ -43,8 +43,6 @@ import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.yalantis.ucrop.UCrop;
 
-import java.io.File;
-
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.SharingActivity;
 import org.fossasia.phimpme.base.SharedMediaActivity;
@@ -64,6 +62,8 @@ import org.fossasia.phimpme.leafpic.util.SecurityHelper;
 import org.fossasia.phimpme.leafpic.util.StringUtils;
 import org.fossasia.phimpme.leafpic.views.HackyViewPager;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
+
+import java.io.File;
 
 /**
  * Created by dnld on 18/02/16.
