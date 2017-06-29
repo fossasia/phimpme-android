@@ -302,7 +302,7 @@ public class LFMainActivity extends SharedMediaActivity {
         securityObj = new SecurityHelper(LFMainActivity.this);
         if (getIntent().getExtras()!=null)
         pickMode = getIntent().getExtras().getBoolean(SplashScreen.PICK_MODE);
-
+        SP.putBoolean(getString(R.string.preference_use_alternative_provider), false);
         initAllPhotos();
         initUI();
         displayData(getIntent().getExtras());
