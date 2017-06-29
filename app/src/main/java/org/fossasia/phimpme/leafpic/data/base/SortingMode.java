@@ -5,7 +5,7 @@ package org.fossasia.phimpme.leafpic.data.base;
  */
 
 public enum SortingMode {
-  NAME (0), DATE (1), SIZE(2), TYPE(3), NUMERIC(4);
+  NAME (0), DATE (1), SIZE(2), NUMERIC(3);
 
   int value;
 
@@ -22,8 +22,7 @@ public enum SortingMode {
       case 0: return NAME;
       case 1: default: return DATE;
       case 2: return SIZE;
-      case 3: return TYPE;
-      case 4: return NUMERIC;
+      case 3: return NUMERIC;
     }
   }
 }
