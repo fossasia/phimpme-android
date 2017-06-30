@@ -45,7 +45,6 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     app:srcCompat="@drawable/ic_undo_black"
-                    android:visibility="invisible"
                     android:scaleType="fitCenter"
                     android:background="?android:attr/selectableItemBackground"/>
 
@@ -68,7 +67,6 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     app:srcCompat="@drawable/ic_redo_black"
-                    android:visibility="invisible"
                     android:scaleType="fitCenter"
                     android:background="?android:attr/selectableItemBackground"/>
 
