@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -183,6 +184,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                 .beginTransaction()
                 .add(R.id.preview_container, filterFragment)
                 .commit();
+
+        setButtonsVisibility();
     }
 
     /**
@@ -293,15 +296,21 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     private void setButtonsVisibility() {
         save.setVisibility(View.VISIBLE);
         bef_aft.setVisibility(View.VISIBLE);
-        if (currentShowingIndex > 0)
-            undo.setVisibility(View.VISIBLE);
-        else
-            undo.setVisibility(View.INVISIBLE);
+        if (currentShowingIndex > 0) {
+            undo.setColorFilter(Color.BLACK);
+            undo.setEnabled(true);
+        }else {
+            undo.setColorFilter(getResources().getColor(R.color.md_grey_300));
+            undo.setEnabled(false);
+        }
+        if (currentShowingIndex + 1 < bitmapsForUndo.size()) {
+            redo.setColorFilter(Color.BLACK);
+            redo.setEnabled(true);
+        }else {
+            redo.setColorFilter(getResources().getColor(R.color.md_grey_300));
+            redo.setEnabled(false);
+        }
 
-        if (currentShowingIndex + 1 < bitmapsForUndo.size())
-            redo.setVisibility(View.VISIBLE);
-        else
-            redo.setVisibility(View.INVISIBLE);
 
         switch (mode){
             case MODE_STICKERS:
