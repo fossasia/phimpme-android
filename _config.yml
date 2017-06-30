@@ -4,20 +4,21 @@
 
 # Be sure all REQUIRED fields are filled out!
 
+baseurl: "/phimpme-android"
 #
 # General App Info
 #
 app:
-  name: Awesome App # REQUIRED - Enter your app name
+  name: Phimpme App # REQUIRED - Enter your app name
   ios_id: 1109109105 # REQUIRED - 10 Digit Numeric App ID (lookup in iTunes Connect)
-  android_id: # Optional - Enter Android app id like: com.example.app
+  android_id: org.fossasia.phimpme # Optional - Enter Android app id like: com.example.app
 
-  icon: # Leave blank to auto-magically populate
+  icon: images/app-icon-512.png # Leave blank to auto-magically populate
   # To update use path relative to project root with no leading slash:
   # e.g. images/app-icon-512.png
   # 512px or greater, square
 
-  screenshot: # Leave blank to auto-magically populate
+  screenshot: images/screenshot.png # Leave blank to auto-magically populate
   # To update use path relative to project root with no leading slash:
   # e.g. images/app-screen-640x1136.png
   # 640x1136px
@@ -25,8 +26,8 @@ app:
 #
 # Marketing
 #
-marketing_header: Does Awesome Stuff # Optional
-marketing_desc: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+marketing_header: All in one Open source Image app # Optional
+marketing_desc: Get all the image features right from click to edit to share to world in one place
 
 #
 # Social Links
