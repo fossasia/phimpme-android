@@ -1,11 +1,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="org.fossasia.phimpme.accounts.AccountActivity">
-    <item
-        android:id="@+id/action_add_account"
-        android:orderInCategory="100"
-        android:title="@string/action_add_account"
-        android:icon="@drawable/ic_person_add_white_24dp"
-        app:showAsAction="always" />
+    tools:context="org.fossasia.phimpme.accounts.AccountAct">
+
 </menu>

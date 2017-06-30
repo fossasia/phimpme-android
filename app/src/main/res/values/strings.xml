@@ -812,4 +812,5 @@
 
     <string name="facebook_login_cancel">Facebook login Cancelled</string>
     <string name="facebook_login_error">Facebook login error</string>
+    <string name="feature_not_present">Feature not present</string>
 </resources>
