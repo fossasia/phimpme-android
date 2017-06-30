@@ -1,6 +1,7 @@
 package org.fossasia.phimpme.data.local;
 
 import io.realm.Realm;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 /**
@@ -15,8 +16,8 @@ public class DatabaseHelper {
         this.realm = realm;
     }
 
-    public RealmResults<AccountDatabase> fetchAccountDetails(){
-        return realm.where(AccountDatabase.class).findAll();
+    public RealmQuery<AccountDatabase> fetchAccountDetails(){
+        return realm.where(AccountDatabase.class);
     }
 
     public void deleteSignedOutAccount(String accountName){
