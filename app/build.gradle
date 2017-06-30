@@ -97,6 +97,17 @@ dependencies {
     compile "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
     compile "com.squareup.picasso:picasso:$rootProject.picassoVersion"
     compile "com.github.amlcurran.showcaseview:library:$rootProject.showcaseVersion"
+
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    compile "com.twitter.sdk.android:twitter:$rootProject.twitterVersion"
+    compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
+    compile "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
+    compile "com.squareup.picasso:picasso:$rootProject.picassoVersion"
+    compile "com.github.amlcurran.showcaseview:library:$rootProject.showcaseVersion"
+    compile files('libs/twitter4j-core-3.0.5.jar')
+    compile files('libs/twitter4j-media-support-3.0.5.jar')
+
+
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.koushikdutta.ion:ion:2.1.7'
     compile 'com.mikepenz:iconics-core:2.8.4@aar'
@@ -119,18 +130,7 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.23.0'
     compile 'com.uphyca:stetho_realm:2.0.0'
     compile 'com.android.support:multidex:1.0.1'
-
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    compile "com.twitter.sdk.android:twitter:$rootProject.twitterVersion"
-    compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
-    compile "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
-    compile "com.squareup.picasso:picasso:$rootProject.picassoVersion"
-    compile "com.github.amlcurran.showcaseview:library:$rootProject.showcaseVersion"
-    compile files('libs/twitter4j-core-3.0.5.jar')
-    compile files('libs/twitter4j-media-support-3.0.5.jar')
-
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
-
 }
 
 kapt {
