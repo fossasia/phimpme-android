@@ -69,6 +69,7 @@ before_script:
   - emulator -avd test -no-audio -no-window &
   - sleep 300
   - adb shell input keyevent 82 &
+  - ./download_open_cv.sh
 
 script:
   - ./gradlew build
