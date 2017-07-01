@@ -44,6 +44,7 @@ android {
         abortOnError false
         disable "Instantiatable"
     }
+
     tasks.withType(JavaCompile) {
         configure(options) {
             // TODO
