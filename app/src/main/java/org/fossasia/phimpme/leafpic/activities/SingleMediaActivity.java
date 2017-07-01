@@ -93,18 +93,13 @@ public class SingleMediaActivity extends SharedMediaActivity {
     private SingleMediaActivity context;
     public static final String EXTRA_OUTPUT = "extra_output";
     private String pathForDescriptionActivity;
-
-
-    private View mTakenPhoto;//拍摄照片用于编辑
-    private Uri photoURI = null;
-
-    //To handle all photos
     public Boolean allPhotoMode;
     public int all_photo_pos;
     public int size_all;
     public int current_image_pos;
     private Uri uri;
     ActionMenuView bottomBar;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -274,6 +269,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
         setStatusBarColor();
         setNavBarColor();
 
+
         securityObj.updateSecuritySetting();
 
         /**** SETTINGS ****/
@@ -314,9 +310,6 @@ public class SingleMediaActivity extends SharedMediaActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
             // Inflate the menu; this adds items to the action bar if it is present.
             getMenuInflater().inflate(R.menu.menu_view_pager, menu);
-
-            menu.findItem(R.id.action_delete).setIcon(getToolbarIcon(CommunityMaterial.Icon.cmd_delete));
-            menu.findItem(R.id.action_share).setIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_share));
         return true;
     }
 
