@@ -86,11 +86,18 @@ Before you begin, you should already have the Android Studio SDK downloaded and 
 
     - *Note:* If you recieve a Gradle sync error titled, "failed to find ...", you should click on the link below the error message (if avaliable) that says *Install missing platform(s) and sync project* and allow Android studio to fetch you what is missing.
 
-5. Once all build errors have been resolved, you should be all set to build the app and test it.
 
-6. To Build the app, go to *Build>Make Project* (or alternatively press the Make Project icon in the toolbar).
+5. Download this [OpenCV-android-sdk](https://github.com/opencv/opencv/releases/download/3.2.0/opencv-3.2.0-android-sdk.zip) zip file and extract it.
 
-7. If the app was built succesfully, you can test it by running it on either a real device or an emulated one by going to *Run>Run 'app'* or presing the Run icon in the toolbar.
+    - Copy all the files from *"OpenCV-android-sdk/sdk/native/3rdparty"* to *"phimpme-android/app/src/main/3rdparty"* (create directory if it doesn't exist)
+    - Copy all the files from *"OpenCV-android-sdk/sdk/native/libs"* to *"phimpme-android/app/src/main/jniLibs"* (create directory if it doesn't exist)
+    - Now build your project. If your build fails then try removing *"phimpme-android/app/.externalNativeBuild"* and *"phimpme-android/app/build"* if they exist and run the build again.
+
+6. Once all build errors have been resolved, you should be all set to build the app and test it.
+
+7. To Build the app, go to *Build>Make Project* (or alternatively press the Make Project icon in the toolbar).
+
+8. If the app was built succesfully, you can test it by running it on either a real device or an emulated one by going to *Run>Run 'app'* or presing the Run icon in the toolbar.
 
 
 ## License
