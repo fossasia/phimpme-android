@@ -9,6 +9,11 @@ android {
         targetSdkVersion 25
     }
 
+    lintOptions {
+        abortOnError false
+        disable "Instantiatable"
+    }
+
     buildTypes {
         release {
             minifyEnabled false
