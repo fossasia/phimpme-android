@@ -11,8 +11,9 @@ unzip opencv-3.2.0-android-sdk.zip
 mv OpenCV-android-sdk opencv
 
 cd ..
-mkdir app/src/main/3rdparty
-mkdir app/src/main/jniLibs
-
-mv $HOME/opencv/sdk/native/3rdparty/* ~/app/src/main/3rdparty
-mv $HOME/opencv/sdk/native/libs/* ~/app/src/main/jniLibs
+#ls
+#mkdir app/src/main/3rdparty
+#mkdir app/src/main/jniLibs
+#
+#mv $HOME/opencv/sdk/native/3rdparty/* app/src/main/3rdparty
+#mv $HOME/opencv/sdk/native/libs/* app/src/main/jniLibs

@@ -51,6 +51,7 @@ before_install:
   - export ANDROID_NDK_HOME=`pwd`/android-ndk-${NDK_VERSION}
   - export PATH=${ANDROID_NDK_HOME}:${PATH}
 
+
 cache:
   directories:
     - "${TRAVIS_BUILD_DIR}/android/gradle/caches/"
@@ -72,6 +73,7 @@ before_script:
   - ./download_open_cv.sh
 
 script:
+  - ./copy_opencv.sh
   - ./gradlew build
 
 after_success:
