@@ -8,7 +8,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -33,7 +35,9 @@ import org.fossasia.phimpme.base.PhimpmeProgressBarHandler;
 import org.fossasia.phimpme.base.RecyclerItemClickListner;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.AccountDatabase;
+import org.fossasia.phimpme.leafpic.activities.LFMainActivity;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
+import org.fossasia.phimpme.opencamera.Camera.CameraActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
@@ -67,9 +71,13 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private AccountDatabase account;
     private Context context;
     public String[] accountsList = {"Twitter", "Facebook", "Instagram"};
+    private GestureDetector mGesture;
+    private static final int SWIPE_THRESHOLD = 100;
+    private static final int SWIPE_VELOCITY_THRESHOLD = 100;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
         super.onCreate(savedInstanceState);
         themeHelper = new ThemeHelper(this);
         accountAdapter = new AccountAdapter();
@@ -92,7 +100,66 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         toolbar.setBackgroundColor(themeHelper.getPrimaryColor());
         getSupportActionBar().setTitle(R.string.title_account);
         phimpmeProgressBarHandler.show();
+        mGesture = new GestureDetector(this, mOnGesture);
+
     }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        boolean handled = super.dispatchTouchEvent(ev);
+        handled = mGesture.onTouchEvent(ev);
+        return handled;
+    }
+
+    private GestureDetector.OnGestureListener mOnGesture = new GestureDetector.SimpleOnGestureListener() {
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return false;
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            boolean result = false;
+            try {
+                float diffY = e2.getY() - e1.getY();
+                float diffX = e2.getX() - e1.getX();
+                if (Math.abs(diffX) > Math.abs(diffY)) {
+                    if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                        if (diffX > 0) {
+                            onSwipeRight();
+                        } else {
+                           // onSwipeLeft();
+                        }
+                        result = true;
+                    }
+                } else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                    if (diffY > 0) {
+                        //onSwipeBottom();
+                    } else {
+                        //onSwipeTop();
+                    }
+                    result = true;
+                }
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+            return result;
+        }
+
+        public void onSwipeRight() {
+            Intent intent = new Intent(AccountActivity.this,LFMainActivity.class);
+            startActivity(intent);
+            finish();
+            overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
+
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            return false;
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

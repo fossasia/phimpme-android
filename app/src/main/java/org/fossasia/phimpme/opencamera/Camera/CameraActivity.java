@@ -45,6 +45,7 @@ import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.view.GestureDetectorCompat;
 import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.GestureDetector;
@@ -72,7 +73,9 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.accounts.AccountActivity;
 import org.fossasia.phimpme.base.BaseActivity;
+import org.fossasia.phimpme.leafpic.activities.LFMainActivity;
 import org.fossasia.phimpme.leafpic.activities.SingleMediaActivity;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
 import org.fossasia.phimpme.opencamera.CameraController.CameraController;
@@ -147,15 +150,16 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	TinyDB bundle;
 	final String REVIEW_ACTION = "com.android.camera.action.REVIEW";
 
-
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
-		long debug_time = 0;
+        overridePendingTransition(R.anim.slide_right_out, R.anim.slide_right_in);
+        long debug_time = 0;
 		if( MyDebug.LOG ) {
 			Log.d(TAG, "onCreate");
 			debug_time = System.currentTimeMillis();
 		}
 		super.onCreate(savedInstanceState);
+
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, false); // initialise any unset preferences to their default values
 		if( MyDebug.LOG )
 			Log.d(TAG, "onCreate: time after setting default preference values: " + (System.currentTimeMillis() - debug_time));
