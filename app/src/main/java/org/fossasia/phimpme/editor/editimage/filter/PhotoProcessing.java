@@ -2,9 +2,12 @@ package org.fossasia.phimpme.editor.editimage.filter;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.util.Log;
+
+import org.opencv.android.OpenCVLoader;
 
 
-/**
+/**op
  * 图片处理类
  *
  * @author 潘易
@@ -14,7 +17,11 @@ public class PhotoProcessing {
 
     // /////////////////////////////////////////////
     static {
-        System.loadLibrary("photoprocessing");
+        if (!OpenCVLoader.initDebug()) {
+            Log.d("Error", "Unable to load OpenCV");
+        } else {
+            System.loadLibrary("photoprocessing");
+        }
     }
 
 

@@ -44,6 +44,7 @@ android {
         abortOnError false
         disable "Instantiatable"
     }
+
     tasks.withType(JavaCompile) {
         configure(options) {
             // TODO
@@ -57,10 +58,40 @@ android {
     }
     externalNativeBuild {
         ndkBuild {
-            path 'jni/Android.mk'
+            path 'src/main/jni/Android.mk'
         }
     }
 
+
+    // Do not remove this commented code
+    // I(vinaysajjanapu) will remove it later
+/*    sourceSets {
+        main {
+            jni.srcDirs = []
+        }
+    }
+
+    task ndkBuild(type: Exec, description: 'Compile JNI source via NDK') {
+        def ndkDir = project.android.ndkDirectory
+        commandLine "$ndkDir/ndk-build",
+        'NDK_PROJECT_PATH=build/intermediates/ndk',
+        'APP_BUILD_SCRIPT=src/main/jni/Android.mk',
+        'NDK_APPLICATION_MK=src/main/jni/Application.mk',
+        'V=1'
+    }
+
+    tasks.withType(JavaCompile) {
+        compileTask -> compileTask.dependsOn ndkBuild
+    }
+*/
+    splits {
+        abi {
+            enable true
+            reset()
+            include "x86", "armeabi-v7a", "mips"
+            universalApk false
+        }
+    }
 }
 
 repositories {
@@ -89,8 +120,7 @@ dependencies {
     compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:customtabs:$rootProject.supportLibraryVersion"
     compile project(':photoview')
-    compile(group: 'uz.shift', name: 'colorpicker', version: '0.5', ext: 'aar')
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    compile 'uz.shift:colorpicker:0.5@aar'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     compile "com.twitter.sdk.android:twitter:$rootProject.twitterVersion"
     compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
@@ -120,17 +150,10 @@ dependencies {
     compile 'com.uphyca:stetho_realm:2.0.0'
     compile 'com.android.support:multidex:1.0.1'
 
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    compile "com.twitter.sdk.android:twitter:$rootProject.twitterVersion"
-    compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
-    compile "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
-    compile "com.squareup.picasso:picasso:$rootProject.picassoVersion"
-    compile "com.github.amlcurran.showcaseview:library:$rootProject.showcaseVersion"
     compile files('libs/twitter4j-core-3.0.5.jar')
     compile files('libs/twitter4j-media-support-3.0.5.jar')
-
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
-
+    compile project(':openCVLibrary320')
 }
 
 kapt {
