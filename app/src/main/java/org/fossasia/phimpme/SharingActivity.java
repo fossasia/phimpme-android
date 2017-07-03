@@ -16,8 +16,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,7 +58,7 @@ import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
 
-public class SharingActivity extends ThemedActivity implements View.OnClickListener {
+public class SharingActivity extends ThemedActivity implements View.OnClickListener, GestureDetector.OnGestureListener {
 
     public static final String EXTRA_OUTPUT = "extra_output";
     public String saveFilePath;
@@ -88,6 +91,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     private Context context;
     private AlertDialog mAlertBuilder;
     Utils utils = new Utils();
+    private GestureDetectorCompat gestureDetectorCompat;
+
 
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
@@ -102,7 +107,16 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         initView();
         setStatusBarColor();
         checknetwork();
+        gestureDetectorCompat = new GestureDetectorCompat(this, this);
+
     }
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        this.gestureDetectorCompat.onTouchEvent(event);
+        return super.onTouchEvent(event);
+    }
+
+
 
     private boolean checknetwork() {
         ConnectivityManager connect =
@@ -322,5 +336,42 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
 
+    @Override
+    public boolean onDown(MotionEvent e) {
+        Toast.makeText(getBaseContext(),
+                "down",
+                Toast.LENGTH_SHORT).show();
+        return true;
+    }
 
+    @Override
+    public void onShowPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        Toast.makeText(getBaseContext(),
+                "scroll",
+                Toast.LENGTH_SHORT).show();
+        return true;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        Toast.makeText(getBaseContext(),
+                "fling",
+                Toast.LENGTH_SHORT).show();
+        return true;
+    }
 }

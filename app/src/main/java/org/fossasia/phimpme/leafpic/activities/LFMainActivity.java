@@ -33,8 +33,10 @@ import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.CompoundButton;
@@ -51,6 +53,7 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 
 import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.accounts.AccountActivity;
 import org.fossasia.phimpme.base.SharedMediaActivity;
 import org.fossasia.phimpme.leafpic.SelectAlbumBottomSheet;
 import org.fossasia.phimpme.leafpic.adapters.AlbumsAdapter;
@@ -71,6 +74,7 @@ import org.fossasia.phimpme.leafpic.util.PreferenceUtil;
 import org.fossasia.phimpme.leafpic.util.SecurityHelper;
 import org.fossasia.phimpme.leafpic.util.StringUtils;
 import org.fossasia.phimpme.leafpic.views.GridSpacingItemDecoration;
+import org.fossasia.phimpme.opencamera.Camera.CameraActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 
 import java.io.File;
@@ -117,6 +121,11 @@ public class LFMainActivity extends SharedMediaActivity {
     public int pos;
     private ArrayList<Media> media;
     private ArrayList<Media> selectedMedias = new ArrayList<>();
+    private GestureDetector mGesture;
+
+    private static final int SWIPE_THRESHOLD = 100;
+    private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
 
     /*
     editMode-  When true, user can select items by clicking on them one by one
@@ -140,13 +149,11 @@ public class LFMainActivity extends SharedMediaActivity {
                     getAlbum().selectAllPhotosUpTo(getAlbum().getIndex(m), mediaAdapter);
 
                 invalidateOptionsMenu();
-            } else
-                if(!editMode){
-                    mediaAdapter.notifyItemChanged(toggleSelectPhoto(getImagePosition(m.getPath())));
-                    editMode = true;
-                    mediaAdapter.swapDataSet(listAll);
-                }
-                else selectAllPhotosUpTo(getImagePosition(m.getPath()),mediaAdapter);
+            } else if (!editMode) {
+                mediaAdapter.notifyItemChanged(toggleSelectPhoto(getImagePosition(m.getPath())));
+                editMode = true;
+                mediaAdapter.swapDataSet(listAll);
+            } else selectAllPhotosUpTo(getImagePosition(m.getPath()), mediaAdapter);
             return true;
         }
     };
@@ -159,12 +166,11 @@ public class LFMainActivity extends SharedMediaActivity {
             else
                 selectedMedias.remove(media.get(index));
         }
-        if(selectedMedias.size()==0){
+        if (selectedMedias.size() == 0) {
             editMode = false;
             toolbar.setTitle(getString(R.string.all));
-        }
-        else
-        toolbar.setTitle(selectedMedias.size() + "/" + size);
+        } else
+            toolbar.setTitle(selectedMedias.size() + "/" + size);
         invalidateOptionsMenu();
         return index;
     }
@@ -172,12 +178,12 @@ public class LFMainActivity extends SharedMediaActivity {
     public void clearSelectedPhotos() {
         for (Media m : media)
             m.setSelected(false);
-        if (selectedMedias!=null)
+        if (selectedMedias != null)
             selectedMedias.clear();
         toolbar.setTitle(getString(R.string.all));
     }
 
-    public void selectAllPhotos(){
+    public void selectAllPhotos() {
         for (Media m : media) {
             m.setSelected(true);
             selectedMedias.add(m);
@@ -200,9 +206,9 @@ public class LFMainActivity extends SharedMediaActivity {
         if (indexRightBeforeOrAfter != -1) {
             for (int index = Math.min(targetIndex, indexRightBeforeOrAfter); index <= Math.max(targetIndex, indexRightBeforeOrAfter); index++) {
                 if (media.get(index) != null && !media.get(index).isSelected()) {
-                        media.get(index).setSelected(true);
-                        selectedMedias.add(media.get(index));
-                        adapter.notifyItemChanged(index);
+                    media.get(index).setSelected(true);
+                    selectedMedias.add(media.get(index));
+                    adapter.notifyItemChanged(index);
                 }
             }
         }
@@ -231,7 +237,7 @@ public class LFMainActivity extends SharedMediaActivity {
                     } else {
                         getAlbum().setCurrentPhotoIndex(m);
                         Intent intent = new Intent(LFMainActivity.this, SingleMediaActivity.class);
-                        intent.putExtra("path",Uri.fromFile(new File(m.getPath())).toString());
+                        intent.putExtra("path", Uri.fromFile(new File(m.getPath())).toString());
                         intent.setAction(SingleMediaActivity.ACTION_OPEN_ALBUM);
                         startActivity(intent);
                     }
@@ -241,15 +247,15 @@ public class LFMainActivity extends SharedMediaActivity {
                 }
             } else {
 
-                if(!editMode) {
+                if (!editMode) {
                     Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(m.getPath())));
                     intent.putExtra(getString(R.string.all_photo_mode), true);
                     intent.putExtra(getString(R.string.position), pos);
                     intent.putExtra(getString(R.string.allMediaSize), size);
                     intent.setClass(getApplicationContext(), SingleMediaActivity.class);
                     startActivity(intent);
-                }
-                else mediaAdapter.notifyItemChanged(toggleSelectPhoto(getImagePosition(m.getPath())));
+                } else
+                    mediaAdapter.notifyItemChanged(toggleSelectPhoto(getImagePosition(m.getPath())));
             }
         }
     };
@@ -294,20 +300,89 @@ public class LFMainActivity extends SharedMediaActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        overridePendingTransition(R.anim.slide_right_out, R.anim.slide_right_in);
+
         super.onCreate(savedInstanceState);
-        Log.e("TAG","lfmain");
+        Log.e("TAG", "lfmain");
+        mGesture = new GestureDetector(this, mOnGesture);
 
         SP = PreferenceUtil.getInstance(getApplicationContext());
         albumsMode = true;
         editMode = false;
         securityObj = new SecurityHelper(LFMainActivity.this);
-        if (getIntent().getExtras()!=null)
-        pickMode = getIntent().getExtras().getBoolean(SplashScreen.PICK_MODE);
+        if (getIntent().getExtras() != null)
+            pickMode = getIntent().getExtras().getBoolean(SplashScreen.PICK_MODE);
         SP.putBoolean(getString(R.string.preference_use_alternative_provider), false);
         initAllPhotos();
         initUI();
         displayData(getIntent().getExtras());
     }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        boolean handled = super.dispatchTouchEvent(ev);
+        handled = mGesture.onTouchEvent(ev);
+        return handled;
+    }
+
+    private GestureDetector.OnGestureListener mOnGesture = new GestureDetector.SimpleOnGestureListener() {
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return false;
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            boolean result = false;
+            try {
+                float diffY = e2.getY() - e1.getY();
+                float diffX = e2.getX() - e1.getX();
+                if (Math.abs(diffX) > Math.abs(diffY)) {
+                    if (Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
+                        if (diffX > 0) {
+                            onSwipeRight();
+                        } else {
+                            onSwipeLeft();
+                        }
+                        result = true;
+                    }
+                } else if (Math.abs(diffY) > SWIPE_THRESHOLD && Math.abs(velocityY) > SWIPE_VELOCITY_THRESHOLD) {
+                    if (diffY > 0) {
+                        //onSwipeBottom();
+                    } else {
+                        //onSwipeTop();
+                    }
+                    result = true;
+                }
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+            return result;
+        }
+
+        public void onSwipeRight() {
+            Intent intent = new Intent(LFMainActivity.this,CameraActivity.class);
+            startActivity(intent);
+            finish();
+            overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
+
+        }
+
+        public void onSwipeLeft() {
+            Intent intent = new Intent(LFMainActivity.this,AccountActivity.class);
+            startActivity(intent);
+            finish();
+            overridePendingTransition(R.anim.slide_left_in, R.anim.slide_left_out);
+
+        }
+
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            return false;
+        }
+    };
+
 
     @Override
     public void onResume() {
