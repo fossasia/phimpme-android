@@ -1,75 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/card_background"
-    style="@style/card">
+    android:layout_marginBottom="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:orientation="horizontal"
+    app:srcCompat="@mipmap/ic_launcher">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:srcCompat="@mipmap/ic_launcher"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:orientation="horizontal">
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/account_avatar"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                app:srcCompat="@mipmap/ic_launcher" />
-
-            <ImageView
-                android:id="@+id/account_logo_indicator"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
-                android:layout_alignBottom="@+id/account_avatar"
-                android:layout_alignEnd="@+id/account_avatar"
-                android:layout_alignRight="@+id/account_avatar"
-                app:srcCompat="@mipmap/ic_launcher" />
-        </RelativeLayout>
-
-        <TextView
-            android:id="@+id/account_username"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="12dp"
-            android:layout_marginStart="12dp"
-            android:layout_weight="5"
-            android:text="TextView"
-            android:textColor="@color/black"
-            android:textSize="20sp"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/sign_out_button"
-            android:layout_width="41dp"
-            android:layout_height="41dp"
+            android:id="@+id/account_avatar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_close_black_24dp" />
+            app:srcCompat="@mipmap/ic_launcher" />
 
-        <Switch
-            android:id="@+id/sign_in_sign_out_switch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="0dp"
-            android:layout_weight="1" />
-    </LinearLayout>
-</android.support.v7.widget.CardView>
+        <ImageView
+            android:id="@+id/account_logo_indicator"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_alignBottom="@+id/account_avatar"
+            android:layout_alignEnd="@+id/account_avatar"
+            android:layout_alignRight="@+id/account_avatar"
+            app:srcCompat="@mipmap/ic_launcher" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/account_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_weight="5"
+        android:text="TextView"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <ImageView
+        android:id="@+id/sign_out_button"
+        android:layout_width="41dp"
+        android:layout_height="41dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_close_black_24dp" />
+
+    <Switch
+        android:id="@+id/sign_in_sign_out_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="0dp"
+        android:layout_weight="1" />
+</LinearLayout>

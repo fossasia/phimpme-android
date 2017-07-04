@@ -24,7 +24,7 @@ android {
 
         }
         debug {
-            testCoverageEnabled true
+            testCoverageEnabled false
         }
     }
 

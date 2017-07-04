@@ -88,15 +88,12 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         callbackManager = CallbackManager.Factory.create();
         setSupportActionBar(toolbar);
         loginManager = LoginManager.getInstance();
-        toolbar.setPopupTheme(themeHelper.getPopupToolbarStyle());
         toolbar.setBackgroundColor(themeHelper.getPrimaryColor());
         setUpRecyclerView();
         // Calling presenter function to load data from database
         accountPresenter.loadFromDatabase();
         getSupportActionBar().setTitle(R.string.title_account);
-        //toolbar.getPopupTheme() = themeHelper.getPopupToolbarStyle();
-        toolbar.setBackgroundColor(themeHelper.getPrimaryColor());
-        getSupportActionBar().setTitle(R.string.title_account);
+
         phimpmeProgressBarHandler.show();
     }
 
@@ -162,7 +159,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     //signInFacebook(childView);
                     break;
 
-                case 3:
+                case 2:
                     Intent drupalShare = new Intent(getContext(), DrupalLogin.class);
                     startActivity(drupalShare);
                     break;
@@ -326,7 +323,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     public void onResume() {
         super.onResume();
         ActivitySwitchHelper.setContext(this);
-        setNavigationBarColor(ThemeHelper.getPrimaryColor(this));
         setStatusBarColor();
         accountPresenter.loadFromDatabase();
     }
