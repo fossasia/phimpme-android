@@ -34,6 +34,7 @@ import org.fossasia.phimpme.base.RecyclerItemClickListner;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
+import org.fossasia.phimpme.sharedrupal.DrupalLogin;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
@@ -66,7 +67,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private LoginManager loginManager;
     private AccountDatabase account;
     private Context context;
-    public String[] accountsList = {"Twitter", "Facebook", "Instagram"};
+    public String[] accountsList = {"Twitter", "Facebook", "Drupal"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -148,6 +149,10 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             case 1:
                 FacebookSdk.sdkInitialize(this);
                 //signInFacebook(childView);
+                break;
+            case 3:
+                Intent drupalShare = new Intent(getContext(), DrupalLogin.class);
+                startActivity(drupalShare);
                 break;
 
             default: Toast.makeText(this, R.string.feature_not_present,
