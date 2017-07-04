@@ -20,6 +20,9 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_accounts" />
+    <include layout="@layout/content_accounts"
+             android:layout_alignParentTop="true"
+             android:layout_alignParentLeft="true"
+             android:layout_alignParentStart="true"/>
 
 </RelativeLayout>

@@ -19,7 +19,7 @@ import org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext
 class AccountAdapter : RecyclerView.Adapter<AccountAdapter.ViewHolder>() {
 
     private var accountDetails: RealmQuery<AccountDatabase>? = null
-    val accountsName = arrayOf("Twitter", "Facebook", "Instagram")
+    val accountsName = arrayOf("Twitter", "Facebook", "Instagram","Drupal")
     //val accountsLogo = arrayOf(R.drawable.ic_twitter, R.drawable.ic_facebook,R.drawable.ic_instagram)
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
