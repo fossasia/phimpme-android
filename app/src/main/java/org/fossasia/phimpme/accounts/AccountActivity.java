@@ -1,6 +1,8 @@
 package org.fossasia.phimpme.accounts;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -33,6 +35,7 @@ import org.fossasia.phimpme.base.PhimpmeProgressBarHandler;
 import org.fossasia.phimpme.base.RecyclerItemClickListner;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.AccountDatabase;
+import org.fossasia.phimpme.data.local.DatabaseHelper;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
 import org.fossasia.phimpme.sharedrupal.DrupalLogin;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
@@ -66,6 +69,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private CallbackManager callbackManager;
     private LoginManager loginManager;
     private AccountDatabase account;
+    private DatabaseHelper databaseHelper;
     private Context context;
     public String[] accountsList = {"Twitter", "Facebook", "Drupal"};
 
@@ -77,6 +81,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         accountPresenter = new AccountPresenter(realm);
         phimpmeProgressBarHandler = new PhimpmeProgressBarHandler(this);
         accountPresenter.attachView(this);
+        databaseHelper = new DatabaseHelper(realm);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         accountsRecyclerView = (RecyclerView) findViewById(R.id.accounts_recycler_view);
         client = new TwitterAuthClient();
@@ -140,23 +145,55 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     public void onItemClick(final View childView, final int position) {
         final Switch signInSignOut = (Switch) childView.findViewById(R.id.sign_in_sign_out_switch);
 
-        switch (position) {
-            case 0:
-                signInTwitter();
-                accountPresenter.loadFromDatabase();
-                break;
+       /* boolean isSignedIn = realmResult.equalTo("name"
+                , accountsList[position]).isValid();
+        boolean isChecked = signInSignOut.isChecked();*/
+        //String name = realmResult.equalTo("name", accountsList[position]).findAll().get(0).getName();
 
-            case 1:
-                FacebookSdk.sdkInitialize(this);
-                //signInFacebook(childView);
-                break;
-            case 3:
-                Intent drupalShare = new Intent(getContext(), DrupalLogin.class);
-                startActivity(drupalShare);
-                break;
+        if (!signInSignOut.isChecked()) {
+            switch (position) {
+                case 0:
+                    signInTwitter();
+                    accountPresenter.loadFromDatabase();
+                    break;
 
-            default: Toast.makeText(this, R.string.feature_not_present,
-                    Toast.LENGTH_SHORT).show();
+                case 1:
+                    FacebookSdk.sdkInitialize(this);
+                    //signInFacebook(childView);
+                    break;
+
+                case 3:
+                    Intent drupalShare = new Intent(getContext(), DrupalLogin.class);
+                    startActivity(drupalShare);
+                    break;
+
+                default:
+                    Toast.makeText(this, R.string.feature_not_present,
+                            Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            new AlertDialog.Builder(this)
+                    .setMessage(accountsList[position])
+                    .setTitle(getString(R.string.sign_out_dialog_title))
+                    .setPositiveButton(R.string.yes_action,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    databaseHelper
+                                            .deleteSignedOutAccount(accountsList[position]);
+                                    accountAdapter.notifyDataSetChanged();
+                                    accountPresenter.loadFromDatabase();
+                                    signInSignOut.setChecked(false);
+                                }
+                            })
+                    .setNegativeButton(R.string.no_action,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //TODO: Implement negative button action
+                                }
+                            })
+                    .show();
         }
     }
 
@@ -168,7 +205,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     /**
      * Create twitter login and session
      */
-    public void signInTwitter(){
+    public void signInTwitter() {
         /**
          * When user clicks then we first check if it is already exist.
          */
@@ -212,9 +249,10 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
     /**
      * Create Facebook login and session
+     *
      * @param childView
      */
-    public void signInFacebook(final View childView){
+    public void signInFacebook(final View childView) {
         if (accountPresenter.checkAlreadyExist(accountsList[1])) {
             Toast.makeText(this, R.string.already_signed_in,
                     Toast.LENGTH_SHORT).show();
