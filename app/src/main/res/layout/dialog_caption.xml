@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="2dp"
-        android:id="@+id/password_dialog_card">
+        android:id="@+id/caption_dialog_card">
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -18,32 +18,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-                <TextView
-                    android:id="@+id/password_dialog_title"
-                    android:layout_width="match_parent"
-                    android:textColor="@color/md_dark_primary_text"
-                    android:layout_height="wrap_content"
-                    android:background="@color/md_dark_appbar"
-                    android:padding="24dp"
-                    android:text="@string/type_password"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
                 <RelativeLayout
-                    android:id="@+id/rl_password_dialog"
+                    android:id="@+id/rl_caption_dialog"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:padding="15dp">
                     <EditText
-                        android:id="@+id/password_edittxt"
+                        android:id="@+id/caption_edittxt"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="100dp"
                         android:padding="15dp"
                         android:layout_margin="20dp"
-                        android:maxLength="8"
+                        android:hint="@string/hint_caption"
+                        android:background="@null"
                         android:gravity="center_horizontal"
-                        android:singleLine="true"
-                        android:inputType="numberPassword" />
+                        android:inputType="textMultiLine" />
                 </RelativeLayout>
             </LinearLayout>
         </ScrollView>

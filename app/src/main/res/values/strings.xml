@@ -537,6 +537,8 @@
     <string name="wrong_password">Wrong password</string>
 
     <string name="type_password">Insert password</string>
+    <string name="type_caption">Write something</string>
+    <string name="hint_caption">Add caption</string>
     <string name="security_sub">Set up a password to protect your media.</string>
     <string name="camera_sub">Manage camera settings.</string>
     <string name="remember_password_message">Note: password changed, if you forget it you will have to clear application data.</string>
