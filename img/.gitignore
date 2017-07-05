@@ -1,0 +1,10 @@
+*.iml
+.gradle
+.idea
+.externalNativeBuild
+local.properties
+build
+/app/src/main/3rdparty/
+/app/src/main/jniLibs/
+libopencv_*
+viewflow/
