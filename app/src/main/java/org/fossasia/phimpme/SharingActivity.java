@@ -3,6 +3,7 @@ package org.fossasia.phimpme;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -16,12 +17,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,7 +70,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     @BindView(R.id.share_image)
     ImageView shareImage;
     @BindView(R.id.edittext_share_caption)
-    EditText text_caption;
+    TextView text_caption;
     @BindViews({R.id.icon_00, R.id.icon_01, R.id.icon_10, R.id.icon_11})
     List<ImageView> icons;
     @BindViews({R.id.title_00, R.id.title_01, R.id.title_10, R.id.title_11})
@@ -78,6 +81,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     Button done;
     @BindView(R.id.button_text_focus)
     IconicsImageView editFocus;
+    @BindView(R.id.edit_text_caption_container)
+    RelativeLayout captionLayout;
     private CallbackManager callbackManager;
     private String caption;
     private boolean atleastOneShare = false;
@@ -128,6 +133,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             done.setBackground(new ColorDrawable(getResources().getColor(R.color.share_done_button_color)));
 
         done.setOnClickListener(this);
+        captionLayout.setOnClickListener(this);
 
         text_caption.getBackground().mutate().setColorFilter(getTextColor(), PorterDuff.Mode.SRC_ATOP);
         text_caption.setTextColor(getTextColor());
@@ -185,15 +191,45 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                                 }
                             }).show();
                 break;
+            case R.id.edit_text_caption_container:
+                android.support.v7.app.AlertDialog.Builder passwordDialogBuilder = new android.support.v7.app.AlertDialog.Builder(SharingActivity.this, getDialogStyle());
+                final EditText captionEditText = getCaptionDialog(this, passwordDialogBuilder);
+                if (caption!=null) {
+                    captionEditText.setText(caption);
+                    captionEditText.setSelection(caption.length());
+                }
+
+                passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+                passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //This should br empty it will be overwrite later
+                        //to avoid dismiss of the dialog on wrong password
+                    }
+                });
+
+                final android.support.v7.app.AlertDialog passwordDialog = passwordDialogBuilder.create();
+                passwordDialog.show();
+
+                passwordDialog.getButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String captionText = captionEditText.getText().toString();
+                        if (!captionText.isEmpty()){
+                            caption =captionText;
+                            text_caption.setText(caption);
+                        }
+                        passwordDialog.dismiss();
+                    }
+                });
+                break;
         }
     }
 
     private void sharePhotoToTwitter() {
-        caption = text_caption.getText().toString();
         if(checknetwork()) {
             if (LoginActivity.isActive(context)) {
                 try {
-                    caption = text_caption.getText().toString();
                     mAlertBuilder = new AlertDialog.Builder(context).create();
                     mAlertBuilder.setCancelable(false);
                     mAlertBuilder.setTitle(R.string.please_wait_title);
@@ -259,7 +295,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void sharePhotoToFacebook() {
-        caption = text_caption.getText().toString();
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         Bitmap image = BitmapFactory.decodeFile(saveFilePath, bmOptions);
         SharePhoto photo = new SharePhoto.Builder()
@@ -277,7 +312,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
 
     private void otherShare() {
-        caption = text_caption.getText().toString();
         Uri uri = Uri.fromFile(new File(saveFilePath));
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
@@ -290,7 +324,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     private void shareToInstagram() {
         PackageManager pm = getPackageManager();
         if(utils.isAppInstalled("com.instagram.android",pm)) {
-            caption = text_caption.getText().toString();
             Uri uri = Uri.fromFile(new File(saveFilePath));
             Intent share = new Intent(Intent.ACTION_SEND);
             share.setPackage("com.instagram.android");
@@ -320,6 +353,20 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     public void onResume() {
         super.onResume();
     }
+
+    public EditText getCaptionDialog(final ThemedActivity activity, android.support.v7.app.AlertDialog.Builder passwordDialog){
+
+        final View captionDialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_caption, null);
+        final CardView captionDialogCard = (CardView) captionDialogLayout.findViewById(R.id.caption_dialog_card);
+        final EditText captionEditext = (EditText) captionDialogLayout.findViewById(R.id.caption_edittxt);
+
+        captionDialogCard.setBackgroundColor(activity.getCardBackgroundColor());
+        ThemeHelper.setCursorDrawableColor(captionEditext, activity.getTextColor());
+        captionEditext.setTextColor(activity.getTextColor());
+        passwordDialog.setView(captionDialogLayout);
+        return captionEditext;
+    }
+
 
 
 
