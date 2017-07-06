@@ -1,7 +1,6 @@
 package org.fossasia.phimpme;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,8 +12,10 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
@@ -27,7 +28,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -43,6 +43,7 @@ import com.mikepenz.iconics.view.IconicsImageView;
 
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.leafpic.activities.LFMainActivity;
+import org.fossasia.phimpme.leafpic.util.AlertDialogsHelper;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
 import org.fossasia.phimpme.sharetwitter.HelperMethods;
 import org.fossasia.phimpme.sharetwitter.LoginActivity;
@@ -93,6 +94,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     private Context context;
     private AlertDialog mAlertBuilder;
     Utils utils = new Utils();
+
 
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
@@ -172,7 +174,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 setupFacebookAndShare();
                 break;
             case R.id.cell_01: //twitter
-                sharePhotoToTwitter();
+                new PostToTwitterAsync().execute();
                 break;
             case R.id.cell_10: //instagram
                 shareToInstagram();
@@ -230,15 +232,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         if(checknetwork()) {
             if (LoginActivity.isActive(context)) {
                 try {
-                    mAlertBuilder = new AlertDialog.Builder(context).create();
-                    mAlertBuilder.setCancelable(false);
-                    mAlertBuilder.setTitle(R.string.please_wait_title);
-                    View view = getLayoutInflater().inflate(R.layout.view_loading, null);
-                    ((TextView) view.findViewById(R.id.messageTextViewFromLoading)).setText(getString(R.string.posting_image_message));
-                    mAlertBuilder.setView(view);
-                    mAlertBuilder.show();
-
-                    //InputStream inputStream  = view.getContext().getAssets().open("1.png");
                     Bitmap bmp = BitmapFactory.decodeFile(saveFilePath);
                     String filename = Environment.getExternalStorageDirectory().toString() + File.separator + "1.png";
                     Log.d("BITMAP", filename);
@@ -249,7 +242,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
                         @Override
                         public void onFinsihed(Boolean response) {
-                            mAlertBuilder.dismiss();
                             Snackbar.make(parent, R.string.tweet_posted_on_twitter, Snackbar.LENGTH_LONG).show();
                         }
                     });
@@ -367,6 +359,31 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         return captionEditext;
     }
 
+
+    private class PostToTwitterAsync extends AsyncTask<Void, Void, Void> {
+        AlertDialog dialog;
+
+        @Override
+        protected void onPreExecute() {
+            AlertDialog.Builder progressDialog = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
+            dialog = AlertDialogsHelper.getProgressDialog(SharingActivity.this, progressDialog,
+                    getString(R.string.posting), getString(R.string.twitter_post));
+            dialog.show();
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            sharePhotoToTwitter();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            dialog.dismiss();
+
+        }
+    }
 
 
 
