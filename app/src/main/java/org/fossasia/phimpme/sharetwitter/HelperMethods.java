@@ -70,8 +70,6 @@ public class HelperMethods {
 					success = false;
 				}
 
-
-
 				final boolean finalSuccess = success;
 
 				callingActivity.runOnUiThread(new Runnable() {
