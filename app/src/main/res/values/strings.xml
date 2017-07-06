@@ -424,6 +424,9 @@
     <string name="hide">Hide</string>
     <string name="unhide">Unhide</string>
     <string name="ok_action">OK</string>
+    <string name="update_action">UPDATE</string>
+    <string name="description_hint">Write something!</string>
+    <string name="save_action">Save</string>
     <string name="rename_photo_action">Rename photo</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
@@ -539,6 +542,7 @@
     <string name="wrong_password">Wrong password</string>
 
     <string name="type_password">Insert password</string>
+    <string name="type_description">Description</string>
     <string name="type_caption">Write something</string>
     <string name="hint_caption">Add caption</string>
     <string name="security_sub">Set up a password to protect your media.</string>
