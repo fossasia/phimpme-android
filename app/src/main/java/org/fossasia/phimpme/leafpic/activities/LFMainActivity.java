@@ -117,6 +117,7 @@ public class LFMainActivity extends SharedMediaActivity {
     public int pos;
     private ArrayList<Media> media;
     private ArrayList<Media> selectedMedias = new ArrayList<>();
+    public boolean visible;
 
     /*
     editMode-  When true, user can select items by clicking on them one by one
@@ -870,9 +871,11 @@ public class LFMainActivity extends SharedMediaActivity {
 
         togglePrimaryToolbarOptions(menu);
         updateSelectedStuff();
-
-        menu.findItem(R.id.action_copy).setVisible(!all_photos);
-        menu.findItem(R.id.action_move).setVisible(!all_photos);
+        visible = getAlbum().getSelectedCount()>0;
+        menu.findItem(R.id.action_copy).setVisible(visible);
+        menu.findItem(R.id.action_move).setVisible(visible || editMode);
+        //menu.findItem(R.id.action_copy).setVisible(!all_photos);
+        //menu.findItem(R.id.action_move).setVisible(!all_photos);
         menu.findItem(R.id.excludeAlbumButton).setVisible(editMode && !all_photos);
         menu.findItem(R.id.select_all).setVisible(editMode);
         menu.findItem(R.id.delete_action).setVisible((!albumsMode || editMode) && (!all_photos || editMode ));
