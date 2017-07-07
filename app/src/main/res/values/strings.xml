@@ -817,4 +817,24 @@
     <string name="feature_not_present">Feature not present</string>
     <string name="sharedrupal">Drupal Account</string>
     <string name="drupal_link">Account not found</string>
+
+    <!--Google Voice -->
+    <string name="rear">rear</string>
+    <string name="back">back</string>
+    <string name="normal">normal</string>
+    <string name="front">Front</string>
+    <string name="selfie_camera">Selfie</string>
+    <string name="forward">Forward</string>
+    <string name="ask_question">Which camera would you like to use?</string>
+    <string name="ready">ready</string>
+    <string name="go">go</string>
+    <string name="take">take it</string>
+    <string name="ok">ok</string>
+    <string name="cheese">cheese</string>
+    <string name="say_cheese">say cheese</string>
+    <string name="camera_rear">Rear Camera</string>
+    <string name="camera_front">Front Camera</string>
+
+
+
 </resources>
