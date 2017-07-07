@@ -19,7 +19,9 @@ import org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext
 class AccountAdapter : RecyclerView.Adapter<AccountAdapter.ViewHolder>() {
 
     private var accountDetails: RealmQuery<AccountDatabase>? = null
-    val accountsName = arrayOf("Twitter", "Facebook", "Instagram","Drupal")
+    val accountsName = arrayOf("Twitter", "Facebook" ,"Drupal")
+    private val accountColors = intArrayOf(R.color.twitter_color, R.color.facebook_color, R.color.instagram_color)
+
     //val accountsLogo = arrayOf(R.drawable.ic_twitter, R.drawable.ic_facebook,R.drawable.ic_instagram)
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
@@ -57,6 +59,8 @@ class AccountAdapter : RecyclerView.Adapter<AccountAdapter.ViewHolder>() {
                 , getContext().packageName)
 
         holder!!.accountAvatar!!.setImageResource(id)
+        holder!!.accountAvatar!!.setColorFilter(accountColors[position])
+        holder!!.accountName!!.setTextColor(accountColors[position])
     }
 
     override fun getItemCount(): Int {
