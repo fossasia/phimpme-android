@@ -27,7 +27,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
     private Realm realm = Realm.getDefaultInstance();
     private RealmQuery<AccountDatabase> realmResult = realm.where(AccountDatabase.class);
 
-    public String accountName[] = {"Facebook", "Instagram", "Twitter", "Drupal"};
+    public String accountName[] = {"Facebook", "Twitter", "Drupal"};
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -39,11 +39,12 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        realmResult = realm.where(AccountDatabase.class);
         if (realmResult.equalTo("name", accountName[position]).count() > 0){
             holder.accountName.setText(realmResult
                     .equalTo("name", accountName[position]).findAll()
                     .first().getUsername());
-
+            holder.signInSignOutSwitch.setChecked(true);
         } else {
             holder.accountName.setText(accountName[position]);
         }
@@ -62,7 +63,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
     }
 
     public void setResults(RealmQuery<AccountDatabase> results) {
-        this.realmResult = results;
+        realmResult = results;
         notifyDataSetChanged();
     }
 
