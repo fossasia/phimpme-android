@@ -39,6 +39,7 @@ import org.fossasia.phimpme.leafpic.util.ThemeHelper;
 import org.fossasia.phimpme.sharedrupal.DrupalLogin;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
@@ -70,7 +71,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private AccountDatabase account;
     private DatabaseHelper databaseHelper;
     private Context context;
-    public String[] accountsList = {"Facebook", "Instagram", "Twitter", "Drupal"};
+    public String[] accountsList = {"Facebook", "Twitter", "Drupal"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -148,7 +149,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
         if (!signInSignOut.isChecked()) {
             switch (position) {
-                case 2:
+                case 1:
                     signInTwitter();
                     accountPresenter.loadFromDatabase();
                     break;
@@ -159,7 +160,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     accountPresenter.loadFromDatabase();
                     break;
 
-                case 3:
+                case 2:
                     Intent drupalShare = new Intent(getContext(), DrupalLogin.class);
                     startActivity(drupalShare);
                     break;
@@ -206,7 +207,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         /**
          * When user clicks then we first check if it is already exist.
          */
-        if (accountPresenter.checkAlreadyExist(accountsList[2])) {
+        if (accountPresenter.checkAlreadyExist(accountsList[1])) {
             Toast.makeText(this, R.string.already_signed_in,
                     Toast.LENGTH_SHORT).show();
         } else {
@@ -219,7 +220,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
                     // Creating Realm object for AccountDatabase Class
                     account = realm.createObject(AccountDatabase.class,
-                            accountsList[2]);
+                            accountsList[1]);
 
                     // Creating twitter session, after user authenticate
                     // in twitter popup
@@ -283,12 +284,13 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                                         @Override
                                         public void onCompleted(JSONObject jsonObject
                                                 , GraphResponse graphResponse) {
-                                                                /*try {
-                                                                    account.setName(jsonObject
-                                                                            .getString("name"));
+                                            Log.v("LoginActivity", graphResponse.toString());
+                                                                try {
+                                                                    account.setUsername(jsonObject
+                                                                            .getString("email   "));
                                                                 } catch (JSONException e) {
-                                                                    e.printStackTrace();
-                                                                }*/
+                                                                    Log.e("LoginAct", e.toString());
+                                                                }
                                         }
                                     });
 
