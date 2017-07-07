@@ -38,7 +38,7 @@ android {
             zipAlignEnabled true
         }
         debug {
-            testCoverageEnabled true
+            testCoverageEnabled false
         }
     }
 
