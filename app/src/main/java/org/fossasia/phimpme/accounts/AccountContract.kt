@@ -1,6 +1,7 @@
 package org.fossasia.phimpme.accounts
 
-import io.realm.RealmResults
+import android.content.Context
+import io.realm.RealmQuery
 import org.fossasia.phimpme.base.MvpView
 import org.fossasia.phimpme.data.local.AccountDatabase
 
@@ -23,12 +24,17 @@ class AccountContract {
         /**
          * Account Presenter calls this function after taking data from Database Helper Class
          */
-        fun setUpAdapter(accountDetails: RealmResults<AccountDatabase>)
+        fun setUpAdapter(accountDetails: RealmQuery<AccountDatabase>)
 
         /**
          * Shows the error log
          */
         fun showError()
+
+        /**
+         * Get the context
+         */
+        fun getContext(): Context?
     }
 
     internal interface Presenter {
@@ -41,6 +47,14 @@ class AccountContract {
         /**
          * setting up the recyclerView adapter from here
          */
-        fun handleResults(accountDetails: RealmResults<AccountDatabase>)
+        fun handleResults(accountDetails: RealmQuery<AccountDatabase>)
+
+        /**
+         * This function check if the selected account is already existed.
+         *
+         * @param s Name of the account from accountList e.g. Twitter
+         * @return true is existed, false otherwise
+         */
+        fun checkAlreadyExist(s: String) : Boolean
     }
 }

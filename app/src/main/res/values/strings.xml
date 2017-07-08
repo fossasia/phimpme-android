@@ -537,6 +537,8 @@
     <string name="wrong_password">Wrong password</string>
 
     <string name="type_password">Insert password</string>
+    <string name="type_caption">Write something</string>
+    <string name="hint_caption">Add caption</string>
     <string name="security_sub">Set up a password to protect your media.</string>
     <string name="camera_sub">Manage camera settings.</string>
     <string name="remember_password_message">Note: password changed, if you forget it you will have to clear application data.</string>
@@ -600,8 +602,8 @@
     <string name="share_phimpme">Share Phimpme</string>
 
     <!--Invitation-->
-    <string name="install_phimpme">Install the Phimpme Image application here: </string>
-    <string name="invitation_deep_link">https://se4c7.app.goo.gl/D6bk</string>
+    <string name="install_phimpme">Download the best image application to make your moments more memorable by clicking, editing, sharing images with friends on social media, all at one place.</string>
+    <string name="invitation_deep_link">Download Now: https://x7824.app.goo.gl/zgxL</string>
 
 
     <!--ABOUT STRINGS-->
@@ -812,4 +814,7 @@
 
     <string name="facebook_login_cancel">Facebook login Cancelled</string>
     <string name="facebook_login_error">Facebook login error</string>
+    <string name="feature_not_present">Feature not present</string>
+    <string name="sharedrupal">Drupal Account</string>
+    <string name="drupal_link">Account not found</string>
 </resources>

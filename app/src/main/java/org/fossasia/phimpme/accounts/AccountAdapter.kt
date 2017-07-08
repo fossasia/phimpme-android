@@ -5,9 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Switch
 import android.widget.TextView
-import com.squareup.picasso.Picasso
-import io.realm.RealmResults
+import io.realm.RealmQuery
 import org.fossasia.phimpme.R
 import org.fossasia.phimpme.data.local.AccountDatabase
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper.context
@@ -18,51 +18,72 @@ import org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext
  */
 class AccountAdapter : RecyclerView.Adapter<AccountAdapter.ViewHolder>() {
 
-    private var accountDetails: RealmResults<AccountDatabase>? = null
+    private var accountDetails: RealmQuery<AccountDatabase>? = null
+    val accountsName = arrayOf("Twitter", "Facebook" ,"Drupal")
+    private val accountColors = intArrayOf(R.color.twitter_color, R.color.facebook_color, R.color.instagram_color)
+
+    //val accountsLogo = arrayOf(R.drawable.ic_twitter, R.drawable.ic_facebook,R.drawable.ic_instagram)
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent!!.getContext())
                 .inflate(R.layout.accounts_item_view, null, false)
+        view.layoutParams = RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,
+                RecyclerView.LayoutParams.WRAP_CONTENT)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
-        holder!!.userName!!.setText(accountDetails?.get(position)?.username)
-        holder!!.userFullName!!.setText("Test Full Name")
+        /*if (accountDetails?.size || accountDetails?.get(position)?.name != null) {
+            holder!!.accountName!!.text = accountDetails!![position].name
+            holder!!.signInSignOutSwitch?.isChecked = true
+        } else {
+            holder!!.accountName!!.text = accountsName[position]
+        }
+*/
+        if (accountDetails?.equalTo("name", accountsName[position])?.findAll()?.size ?: 0 > 0){
+            holder!!.accountName!!.text =  accountDetails?.equalTo("name", accountsName[position])
+                    ?.findAll()?.get(0)?.username
+
+            holder.signInSignOutSwitch!!.isChecked = true
+
+        } else {
+            holder!!.accountName!!.text = accountsName[position]
+        }
 
         /**
          * Selecting the image resource id on the basis of name of the account.
          */
-        var id = getContext().resources.getIdentifier(context.getString(R.string.ic_)+
-                (accountDetails?.get(position)?.name?.toLowerCase() ?: "twitter")
-                + context.getString(R.string._indicator), context.getString(R.string.drawable)
+        var id = getContext().resources.getIdentifier(context.getString(R.string.ic_) +
+                (accountsName[position].toLowerCase()) + "_black"
+                , context.getString(R.string.drawable)
                 , getContext().packageName)
 
-        Picasso.with(getContext())
-                .load(id)
-                .into(holder!!.accountLogoIndicator)
+        holder!!.accountAvatar!!.setImageResource(id)
+        holder!!.accountAvatar!!.setColorFilter(accountColors[position])
+        holder!!.accountName!!.setTextColor(accountColors[position])
     }
 
     override fun getItemCount(): Int {
         //TODO: added a temporary value. Exact value will be depends how many accounts are signed in.
-        return accountDetails?.size ?: 0
+        //return accountDetails?.size ?: 0
+        return accountsName?.size ?: 0
     }
 
     class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         internal var accountAvatar: ImageView? = null
-        internal var userName: TextView? = null
-        internal var userFullName: TextView? = null
+        internal var accountName: TextView? = null
         internal var accountLogoIndicator: ImageView? = null
+        internal var signInSignOutSwitch: Switch? = null
 
         init {
             accountAvatar = v.findViewById(R.id.account_avatar) as ImageView
             accountLogoIndicator = v.findViewById(R.id.account_logo_indicator) as ImageView
-            userName = v.findViewById(R.id.account_username) as TextView
-            userFullName = v.findViewById(R.id.account_name) as TextView
+            accountName = v.findViewById(R.id.account_username) as TextView
+            signInSignOutSwitch = v.findViewById(R.id.sign_in_sign_out_switch) as Switch
         }
     }
 
-    fun setResults(accountDetails: RealmResults<AccountDatabase>) {
+    fun setResults(accountDetails: RealmQuery<AccountDatabase>) {
         this.accountDetails = accountDetails
         notifyDataSetChanged()
     }

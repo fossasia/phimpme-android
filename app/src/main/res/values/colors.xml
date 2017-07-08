@@ -37,7 +37,7 @@
     <color name="secondary_text_material_dark">#8a000000</color>
     <color name="white70">#d0d0d0</color>
     <color name="white50">#777777</color>
-    <color name="transparent">#ff000000</color>
+    <color name="transparent">#00000000</color>
     /* LeafPic Colors */
     <!--Accent Color Collection-->
     <color name="accent_red">#f44336</color>
@@ -381,5 +381,9 @@
     <color name="facebook_color">#3b5998</color>
     <color name="twitter_color">#48A2E5</color>
     <color name="instagram_color">#D42473</color>
-    <color name="other_share_color">@color/md_orange_900</color>
+    <color name="other_share_color">@color/md_indigo_900</color>
+    <color name="card_background">#e1e0e0</color>
+    <!-- Drupal Login-->
+    <color name="button_background">#d67601</color>
+    <color name="background">#5fb0c9</color>
 </resources>

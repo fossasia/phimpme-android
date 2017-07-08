@@ -148,6 +148,7 @@
         <item name="android:windowEnterAnimation">@anim/menushow</item>
         <item name="android:windowExitAnimation">@anim/menuhide</item>
     </style>
+
     <style name="MyTheme" parent="@android:style/Theme.Material.Light.DarkActionBar">
         <item name="android:windowNoTitle">true</item>
         <!--We will be using the toolbar so no need to show ActionBar-->
@@ -162,5 +163,10 @@
         <item name="android:colorAccent">#FF4081</item>
         <!-- You can also set colorControlNormal, colorControlActivated
            colorControlHighlight and colorSwitchThumbNormal. -->
+    </style>
+    <style name="card">
+        <item name="cardCornerRadius">4dp</item>
+        <item name="android:padding">@dimen/card_spacing</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
     </style>
 </resources>

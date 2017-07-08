@@ -60,6 +60,7 @@ import org.fossasia.phimpme.leafpic.data.CustomAlbumsHelper;
 import org.fossasia.phimpme.leafpic.data.HandlingAlbums;
 import org.fossasia.phimpme.leafpic.data.Media;
 import org.fossasia.phimpme.leafpic.data.base.FilterMode;
+import org.fossasia.phimpme.leafpic.data.base.MediaComparators;
 import org.fossasia.phimpme.leafpic.data.base.SortingOrder;
 import org.fossasia.phimpme.leafpic.data.providers.StorageProvider;
 import org.fossasia.phimpme.leafpic.util.Affix;
@@ -76,13 +77,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 
 import static org.fossasia.phimpme.leafpic.data.base.SortingMode.DATE;
 import static org.fossasia.phimpme.leafpic.data.base.SortingMode.NAME;
 import static org.fossasia.phimpme.leafpic.data.base.SortingMode.NUMERIC;
 import static org.fossasia.phimpme.leafpic.data.base.SortingMode.SIZE;
-import static org.fossasia.phimpme.leafpic.data.base.SortingMode.TYPE;
 
 
 public class LFMainActivity extends SharedMediaActivity {
@@ -116,6 +117,7 @@ public class LFMainActivity extends SharedMediaActivity {
     public int pos;
     private ArrayList<Media> media;
     private ArrayList<Media> selectedMedias = new ArrayList<>();
+    public boolean visible;
 
     /*
     editMode-  When true, user can select items by clicking on them one by one
@@ -302,10 +304,8 @@ public class LFMainActivity extends SharedMediaActivity {
         securityObj = new SecurityHelper(LFMainActivity.this);
         if (getIntent().getExtras()!=null)
         pickMode = getIntent().getExtras().getBoolean(SplashScreen.PICK_MODE);
-        listAll = StorageProvider.getAllShownImages(LFMainActivity.this);
-        size = listAll.size();
-        media = listAll;
-
+        SP.putBoolean(getString(R.string.preference_use_alternative_provider), false);
+        initAllPhotos();
         initUI();
         displayData(getIntent().getExtras());
     }
@@ -431,6 +431,13 @@ public class LFMainActivity extends SharedMediaActivity {
 
         displayAlbums(true);
         return false;
+    }
+
+    private void initAllPhotos() {
+        listAll = StorageProvider.getAllShownImages(LFMainActivity.this);
+        size = listAll.size();
+        media = listAll;
+        Collections.sort(listAll, MediaComparators.getComparator(getAlbum().settings.getSortingMode(), getAlbum().settings.getSortingOrder()));
     }
 
     private void initUI() {
@@ -822,9 +829,6 @@ public class LFMainActivity extends SharedMediaActivity {
                 case SIZE:
                     menu.findItem(R.id.size_sort_action).setChecked(true);
                     break;
-                case TYPE:
-                    menu.findItem(R.id.type_sort_action).setChecked(true);
-                    break;
                 case DATE:
                 default:
                     menu.findItem(R.id.date_taken_sort_action).setChecked(true);
@@ -867,12 +871,13 @@ public class LFMainActivity extends SharedMediaActivity {
 
         togglePrimaryToolbarOptions(menu);
         updateSelectedStuff();
-
-        menu.findItem(R.id.action_copy).setVisible(!all_photos);
-        menu.findItem(R.id.action_move).setVisible(!all_photos);
+        visible = getAlbum().getSelectedCount()>0;
+        menu.findItem(R.id.action_copy).setVisible(visible);
+        menu.findItem(R.id.action_move).setVisible(visible || editMode);
+        //menu.findItem(R.id.action_copy).setVisible(!all_photos);
+        //menu.findItem(R.id.action_move).setVisible(!all_photos);
         menu.findItem(R.id.excludeAlbumButton).setVisible(editMode && !all_photos);
         menu.findItem(R.id.select_all).setVisible(editMode);
-        menu.findItem(R.id.type_sort_action).setVisible(!albumsMode);
         menu.findItem(R.id.delete_action).setVisible((!albumsMode || editMode) && (!all_photos || editMode ));
         menu.findItem(R.id.hideAlbumButton).setVisible(!all_photos);
 
@@ -1206,6 +1211,11 @@ public class LFMainActivity extends SharedMediaActivity {
                     getAlbum().setDefaultSortingMode(getApplicationContext(), NAME);
                     getAlbum().sortPhotos();
                     mediaAdapter.swapDataSet(getAlbum().getMedia());
+                    if (all_photos) {
+
+                        Collections.sort(listAll, MediaComparators.getComparator(getAlbum().settings.getSortingMode(), getAlbum().settings.getSortingOrder()));
+                        mediaAdapter.swapDataSet(listAll);
+                    }
                 }
                 item.setChecked(true);
                 return true;
@@ -1219,6 +1229,10 @@ public class LFMainActivity extends SharedMediaActivity {
                     getAlbum().setDefaultSortingMode(getApplicationContext(), DATE);
                     getAlbum().sortPhotos();
                     mediaAdapter.swapDataSet(getAlbum().getMedia());
+                    if (all_photos) {
+                        Collections.sort(listAll, MediaComparators.getComparator(getAlbum().settings.getSortingMode(), getAlbum().settings.getSortingOrder()));
+                        mediaAdapter.swapDataSet(listAll);
+                    }
                 }
                 item.setChecked(true);
                 return true;
@@ -1232,18 +1246,12 @@ public class LFMainActivity extends SharedMediaActivity {
                     getAlbum().setDefaultSortingMode(getApplicationContext(), SIZE);
                     getAlbum().sortPhotos();
                     mediaAdapter.swapDataSet(getAlbum().getMedia());
+                    if (all_photos) {
+                        Collections.sort(listAll, MediaComparators.getComparator(getAlbum().settings.getSortingMode(), getAlbum().settings.getSortingOrder()));
+                        mediaAdapter.swapDataSet(listAll);
+                    }
                 }
                 item.setChecked(true);
-                return true;
-
-            case R.id.type_sort_action:
-                if (!albumsMode) {
-                    getAlbum().setDefaultSortingMode(getApplicationContext(), TYPE);
-                    getAlbum().sortPhotos();
-                    mediaAdapter.swapDataSet(getAlbum().getMedia());
-                    item.setChecked(true);
-                }
-
                 return true;
 
             case R.id.numeric_sort_action:
@@ -1255,6 +1263,10 @@ public class LFMainActivity extends SharedMediaActivity {
                     getAlbum().setDefaultSortingMode(getApplicationContext(), NUMERIC);
                     getAlbum().sortPhotos();
                     mediaAdapter.swapDataSet(getAlbum().getMedia());
+                    if (all_photos) {
+                        Collections.sort(listAll, MediaComparators.getComparator(getAlbum().settings.getSortingMode(), getAlbum().settings.getSortingOrder()));
+                        mediaAdapter.swapDataSet(listAll);
+                    }
                 }
                 item.setChecked(true);
                 return true;
@@ -1268,6 +1280,10 @@ public class LFMainActivity extends SharedMediaActivity {
                     getAlbum().setDefaultSortingAscending(getApplicationContext(), item.isChecked() ? SortingOrder.DESCENDING : SortingOrder.ASCENDING);
                     getAlbum().sortPhotos();
                     mediaAdapter.swapDataSet(getAlbum().getMedia());
+                    if (all_photos) {
+                        Collections.sort(listAll, MediaComparators.getComparator(getAlbum().settings.getSortingMode(), getAlbum().settings.getSortingOrder()));
+                        mediaAdapter.swapDataSet(listAll);
+                    }
                 }
                 item.setChecked(!item.isChecked());
                 return true;
@@ -1728,7 +1744,9 @@ public class LFMainActivity extends SharedMediaActivity {
 
         @Override
         protected void onPostExecute(Void result) {
-            mediaAdapter.swapDataSet(StorageProvider.getAllShownImages(LFMainActivity.this));
+            listAll = StorageProvider.getAllShownImages(LFMainActivity.this);
+            Collections.sort(listAll,MediaComparators.getComparator(getAlbum().settings.getSortingMode(),getAlbum().settings.getSortingOrder()));
+            mediaAdapter.swapDataSet(listAll);
             if (!hidden)
                 HandlingAlbums.addAlbumToBackup(getApplicationContext(), getAlbum());
             checkNothing();
