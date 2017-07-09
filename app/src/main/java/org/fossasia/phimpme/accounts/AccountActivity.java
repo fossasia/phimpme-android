@@ -58,7 +58,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         RecyclerItemClickListner.OnItemClickListener {
 
     private Toolbar toolbar;
-    private ThemeHelper themeHelper;
     private RecyclerView accountsRecyclerView;
     private AccountAdapter accountAdapter;
     private AccountPresenter accountPresenter;
@@ -76,7 +75,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        themeHelper = new ThemeHelper(this);
         accountAdapter = new AccountAdapter();
         accountPresenter = new AccountPresenter(realm);
         phimpmeProgressBarHandler = new PhimpmeProgressBarHandler(this);
@@ -88,8 +86,8 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         callbackManager = CallbackManager.Factory.create();
         setSupportActionBar(toolbar);
         loginManager = LoginManager.getInstance();
-        toolbar.setPopupTheme(themeHelper.getPopupToolbarStyle());
-        toolbar.setBackgroundColor(themeHelper.getPrimaryColor());
+        toolbar.setPopupTheme(getPopupToolbarStyle());
+        toolbar.setBackgroundColor(getPrimaryColor());
         setUpRecyclerView();
         // Calling presenter function to load data from database
         accountPresenter.loadFromDatabase();
@@ -328,6 +326,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         super.onResume();
         ActivitySwitchHelper.setContext(this);
         setStatusBarColor();
+        setNavBarColor();
         accountPresenter.loadFromDatabase();
     }
 
