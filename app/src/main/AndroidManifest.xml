@@ -309,7 +309,6 @@
             android:name=".accounts.AccountActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".leafpic.activities.DescriptionActivity"/>
         <activity android:name=".sharedrupal.DrupalLogin"
                   android:theme="@style/Theme.AppCompat.NoActionBar">
         </activity>
