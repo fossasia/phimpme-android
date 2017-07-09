@@ -18,7 +18,6 @@ import android.widget.Toast;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
@@ -40,6 +39,7 @@ import org.fossasia.phimpme.leafpic.util.ThemeHelper;
 import org.fossasia.phimpme.sharedrupal.DrupalLogin;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Arrays;
@@ -71,7 +71,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private AccountDatabase account;
     private DatabaseHelper databaseHelper;
     private Context context;
-    public String[] accountsList = {"Twitter", "Facebook", "Drupal"};
+    public String[] accountsList = {"Facebook", "Twitter", "Drupal"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,6 +88,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         callbackManager = CallbackManager.Factory.create();
         setSupportActionBar(toolbar);
         loginManager = LoginManager.getInstance();
+        toolbar.setPopupTheme(themeHelper.getPopupToolbarStyle());
         toolbar.setBackgroundColor(themeHelper.getPrimaryColor());
         setUpRecyclerView();
         // Calling presenter function to load data from database
@@ -108,7 +109,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         accountsRecyclerView.setLayoutManager(layoutManager);
         accountsRecyclerView.setAdapter(accountAdapter);
-
         accountsRecyclerView.addOnItemTouchListener(new RecyclerItemClickListner(this, this));
     }
 
@@ -149,14 +149,15 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
         if (!signInSignOut.isChecked()) {
             switch (position) {
-                case 0:
+                case 1:
                     signInTwitter();
                     accountPresenter.loadFromDatabase();
                     break;
 
-                case 1:
-                    FacebookSdk.sdkInitialize(this);
-                    //signInFacebook(childView);
+                case 0:
+                    // FacebookSdk.sdkInitialize(this);
+                    signInFacebook(childView);
+                    accountPresenter.loadFromDatabase();
                     break;
 
                 case 2:
@@ -206,7 +207,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         /**
          * When user clicks then we first check if it is already exist.
          */
-        if (accountPresenter.checkAlreadyExist(accountsList[0])) {
+        if (accountPresenter.checkAlreadyExist(accountsList[1])) {
             Toast.makeText(this, R.string.already_signed_in,
                     Toast.LENGTH_SHORT).show();
         } else {
@@ -219,7 +220,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
                     // Creating Realm object for AccountDatabase Class
                     account = realm.createObject(AccountDatabase.class,
-                            accountsList[0]);
+                            accountsList[1]);
 
                     // Creating twitter session, after user authenticate
                     // in twitter popup
@@ -250,14 +251,15 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
      * @param childView
      */
     public void signInFacebook(final View childView) {
-        if (accountPresenter.checkAlreadyExist(accountsList[1])) {
+        loginManager = LoginManager.getInstance();
+        if (accountPresenter.checkAlreadyExist(accountsList[0])) {
             Toast.makeText(this, R.string.already_signed_in,
                     Toast.LENGTH_SHORT).show();
         } else {
             List<String> permissionNeeds = Arrays.asList("publish_actions");
 
             loginManager.logInWithReadPermissions(this, Arrays.asList("email", "public_profile"));
-            loginManager.logInWithPublishPermissions(this, permissionNeeds);
+            //loginManager.logInWithPublishPermissions(this, permissionNeeds);
 
             loginManager.registerCallback(callbackManager,
                     new FacebookCallback<LoginResult>() {
@@ -268,7 +270,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
                             // Creating Realm object for AccountDatabase Class
                             account = realm.createObject(AccountDatabase.class,
-                                    accountsList[1]);
+                                    accountsList[0]);
 
                             // Writing values in Realm database
                             account.setUsername(loginResult
@@ -282,12 +284,13 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                                         @Override
                                         public void onCompleted(JSONObject jsonObject
                                                 , GraphResponse graphResponse) {
-                                                                /*try {
-                                                                    account.setName(jsonObject
-                                                                            .getString("name"));
+                                            Log.v("LoginActivity", graphResponse.toString());
+                                                                try {
+                                                                    account.setUsername(jsonObject
+                                                                            .getString("email   "));
                                                                 } catch (JSONException e) {
-                                                                    e.printStackTrace();
-                                                                }*/
+                                                                    Log.e("LoginAct", e.toString());
+                                                                }
                                         }
                                     });
 
@@ -310,6 +313,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                             Log.d("error", e.toString());
                         }
                     });
+            accountPresenter.loadFromDatabase();
         }
     }
 
