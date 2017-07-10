@@ -42,6 +42,7 @@ import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 
 import org.fossasia.phimpme.base.ThemedActivity;
+import org.fossasia.phimpme.editor.editimage.view.imagezoom.ImageViewTouch;
 import org.fossasia.phimpme.leafpic.activities.LFMainActivity;
 import org.fossasia.phimpme.leafpic.util.AlertDialogsHelper;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
@@ -69,7 +70,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.share_image)
-    ImageView shareImage;
+    ImageViewTouch shareImage;
     @BindView(R.id.edittext_share_caption)
     TextView text_caption;
     @BindViews({R.id.icon_00, R.id.icon_01, R.id.icon_10, R.id.icon_11})
