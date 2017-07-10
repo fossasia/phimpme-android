@@ -24,7 +24,12 @@
     <dimen name="button_spacing">22dp</dimen>
     <dimen name="inside_spacing_top">70dp</dimen>
     <dimen name="margin_spacing_top">22dp</dimen>
-
+    <dimen name="alternate_margin">10dp</dimen>
+    <dimen name="alternate_half_margin">5dp</dimen>
+    <dimen name="alternate_padding">10dp</dimen>
+    <dimen name="alternate_half_padding">5dp</dimen>
+    <dimen name="zero">0dp</dimen>
+    <dimen name="display_text_min_height">32dp</dimen>
 
     <!---->
     <dimen name="setting_margin_end">44dp</dimen>
