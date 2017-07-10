@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.app.VoiceInteractor;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -34,6 +35,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.os.ParcelFileDescriptor;
 import android.os.StatFs;
 import android.preference.PreferenceManager;
@@ -772,7 +774,89 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		if( MyDebug.LOG ) {
 			Log.d(TAG, "onResume: total time to resume: " + (System.currentTimeMillis() - debug_time));
 		}
+		if (CameraActivity.this.isVoiceInteraction()) {
+			startVoiceTrigger();
+		}
+
 	}
+
+	private void startVoiceTrigger() {
+		Log.d(TAG, "startVoiceTrigger: ");
+
+		VoiceInteractor.PickOptionRequest.Option rear = new VoiceInteractor.PickOptionRequest.Option(getResources().getString(R.string.camera_rear), 0);
+		rear.addSynonym(getResources().getString(R.string.rear));
+		rear.addSynonym(getResources().getString(R.string.back));
+		rear.addSynonym(getResources().getString(R.string.normal));
+
+		VoiceInteractor.PickOptionRequest.Option front = new VoiceInteractor.PickOptionRequest.Option(getResources().getString(R.string.camera_front), 1);
+		front.addSynonym(getResources().getString(R.string.front));
+		front.addSynonym(getResources().getString(R.string.selfie_camera));
+		front.addSynonym(getResources().getString(R.string.forward));
+
+		CameraActivity.this.getVoiceInteractor()
+				.submitRequest(new VoiceInteractor.PickOptionRequest(
+						new VoiceInteractor.Prompt(getResources().getString(R.string.ask_question)),
+						new VoiceInteractor.PickOptionRequest.Option[]{front, rear},
+						null) {
+
+					@Override
+					public void onPickOptionResult(boolean finished, Option[] selections, Bundle result) {
+						if (finished && selections.length == 1) {
+							Message message = Message.obtain();
+							message.obj = result;
+							if (selections[0].getIndex() == 0)
+							{	rearCamera();
+								asktakePicture();
+							}
+							if (selections[0].getIndex() == 1)
+							{
+								asktakePicture();
+							}
+						}else{
+							getActivity().finish();
+						}
+					}
+					@Override
+					public void onCancel() {
+						getActivity().finish();
+					}
+				});
+	}
+	private void rearCamera() {
+		int cameraId = getNextCameraId();
+		this.preview.setCamera(cameraId);
+	}
+
+	private void asktakePicture() {
+		VoiceInteractor.PickOptionRequest.Option option = new VoiceInteractor.PickOptionRequest.Option(getResources().getString(R.string.cheese), 2);
+		option.addSynonym(getResources().getString(R.string.ready));
+		option.addSynonym(getResources().getString(R.string.go));
+		option.addSynonym(getResources().getString(R.string.take));
+		option.addSynonym(getResources().getString(R.string.ok));
+
+		getVoiceInteractor()
+				.submitRequest(new VoiceInteractor.PickOptionRequest(
+						new VoiceInteractor.Prompt(getResources().getString(R.string.say_cheese)),
+						new VoiceInteractor.PickOptionRequest.Option[]{option},
+						null) {
+
+					@Override
+					public void onPickOptionResult(boolean finished, Option[] selections, Bundle result) {
+						if (finished && selections.length == 1) {
+							Message message = Message.obtain();
+							message.obj = result;
+							takePicture();
+						} else {
+							getActivity().finish();
+						}
+					}
+					@Override
+					public void onCancel() {
+						getActivity().finish();
+					}
+				});
+	}
+
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
