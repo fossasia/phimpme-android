@@ -19,6 +19,20 @@
         </item>
     </style>
 
+    <style name="Button" parent="Base.Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/secondary_button_color</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="ownCloud.Button" parent="Widget.AppCompat.Button">
+        <item name="colorButtonNormal">@color/colorPrimary</item>
+    </style>
+
+    <style name="Button.Login" parent="Button">
+        <item name="colorButtonNormal">@color/white</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
     <!--DARK MENU THEME-->
     <style name="DarkActionBarMenu" parent="Base.ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:popupMenuStyle">@style/MyApp.PopupMenu.Dark</item>
