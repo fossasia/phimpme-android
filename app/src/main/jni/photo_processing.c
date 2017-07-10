@@ -232,3 +232,4 @@ void Java_org_fossasia_phimpme_editor_editimage_filter_PhotoProcessing_nativeTun
 void Java_org_fossasia_phimpme_editor_editimage_filter_PhotoProcessing_nativeTuneVignette(JNIEnv* env, jobject thiz, jint value) {
 	tuneVignette(&bitmap, value);
 }
+
