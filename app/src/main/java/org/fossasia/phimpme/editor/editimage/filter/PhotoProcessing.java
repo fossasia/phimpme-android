@@ -5,16 +5,12 @@ import android.graphics.Bitmap.Config;
 import android.util.Log;
 
 import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
 
-
-/**op
- * 图片处理类
- *
- * @author 潘易
- */
 public class PhotoProcessing {
     private static final String TAG = "PhotoProcessing";
-
     // /////////////////////////////////////////////
     static {
         if (!OpenCVLoader.initDebug()) {
@@ -25,15 +21,28 @@ public class PhotoProcessing {
     }
 
 
-    public static Bitmap processImage(Bitmap srcBitmap, int effectType, int val) {
+    public static Bitmap processImage(Bitmap bitmap, int effectType, int val) {
+        Mat inputMat = new Mat(bitmap.getWidth(), bitmap.getHeight(), CvType.CV_8UC4);
+        Mat outputMat = new Mat();
+        Utils.bitmapToMat(bitmap, inputMat);
         if(!isEnhance(effectType))
-            return filterPhoto(srcBitmap,effectType % 100, val);
+            nativeApplyFilter(effectType % 100,val, inputMat.getNativeObjAddr(), outputMat.getNativeObjAddr());
         else
-            return tunePhoto(srcBitmap,effectType % 100, val);
+            nativeEnhanceImage(effectType % 100,val, inputMat.getNativeObjAddr(), outputMat.getNativeObjAddr());
+
+        inputMat.release();
+
+        if (outputMat !=null){
+            Bitmap outbit = Bitmap.createBitmap(bitmap.getWidth(),bitmap.getHeight(),bitmap.getConfig());
+            Utils.matToBitmap(outputMat,outbit);
+            outputMat.release();
+            return outbit;
+        }
+        return bitmap;
     }
 
     public static Bitmap filterPhoto(Bitmap bitmap, int position,int value) {
-        if (bitmap != null) {
+        if (bitmap != null && position != 0) {
             sendBitmapToNative(bitmap);
         }
         switch (position) {
@@ -86,6 +95,9 @@ public class PhotoProcessing {
         nativeDeleteBitmap();
         return filteredBitmap;
     }
+
+    private static native void nativeApplyFilter(int mode, int val, long inpAddr, long outAddr);
+    private static native void nativeEnhanceImage(int mode, int val, long inpAddr, long outAddr);
 
     private static Bitmap tunePhoto(Bitmap bitmap, int mode, int val) {
         if (bitmap != null) {
