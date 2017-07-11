@@ -38,6 +38,7 @@ import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
 import org.fossasia.phimpme.sharedrupal.DrupalLogin;
+import org.fossasia.phimpme.sharewordpress.WordpressLoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -71,7 +72,8 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private AccountDatabase account;
     private DatabaseHelper databaseHelper;
     private Context context;
-    public String[] accountsList = {"Facebook", "Twitter", "Drupal", "NextCloud"};
+
+    public String[] accountsList = {"Facebook", "Twitter", "Drupal", "NextCloud", "Wordpress"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -167,6 +169,11 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                 case 3:
                     Intent nextCloudShare = new Intent(getContext(), NextCloudAuth.class);
                     startActivity(nextCloudShare);
+                    break;
+
+                case 4:
+                    Intent WordpressShare = new Intent(this, WordpressLoginActivity.class);
+                    startActivity(WordpressShare);
                     break;
 
                 default:
