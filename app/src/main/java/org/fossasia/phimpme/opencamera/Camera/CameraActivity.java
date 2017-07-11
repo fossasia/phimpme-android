@@ -75,6 +75,7 @@ import java.util.Map;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.BaseActivity;
+import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.leafpic.activities.SingleMediaActivity;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
 import org.fossasia.phimpme.opencamera.CameraController.CameraController;
@@ -90,7 +91,7 @@ import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 /** The main Activity for Open Camera.
  */
-public class CameraActivity extends BaseActivity implements AudioListener.AudioListenerCallback {
+public class CameraActivity extends ThemedActivity implements AudioListener.AudioListenerCallback {
 	private static final String TAG = "CameraActivity";
 	private SensorManager mSensorManager;
 	private Sensor mSensorAccelerometer;
@@ -151,7 +152,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 
     @Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		long debug_time = 0;
 		if( MyDebug.LOG ) {
 			Log.d(TAG, "onCreate");
@@ -740,7 +741,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	};
 
 	@Override
-	protected void onResume() {
+	public void onResume() {
 		ActivitySwitchHelper.setContext(this);
 		if (progressDialog != null) {
 			progressDialog.dismiss();
