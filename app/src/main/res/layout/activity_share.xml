@@ -7,14 +7,13 @@
     android:id="@+id/share_layout"
     android:layout_height="match_parent">
 
-
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar"
         android:background="@color/md_light_appbar"
         android:windowActionBarOverlay="true" />
 
-    <ImageView
+    <org.fossasia.phimpme.editor.editimage.view.imagezoom.ImageViewTouch
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/share_image"
@@ -195,67 +194,7 @@
                     android:textSize="@dimen/share_cell_text_size"
                     android:text="title"/>
             </RelativeLayout>
-
         </TableRow>
-<!--
-        <TableRow
-            android:layout_marginTop="@dimen/share_cell_margin_v"
-            android:layout_marginBottom="@dimen/share_cell_margin_v"
-            android:layout_marginLeft="@dimen/share_cell_margin_h"
-            android:layout_marginRight="@dimen/share_cell_margin_h">
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:background="?android:attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:id="@+id/cell_20"
-                android:layout_column="0">
-                <ImageView
-                    android:layout_width="@dimen/share_icon_size"
-                    android:layout_height="@dimen/share_icon_size"
-                    android:scaleType="fitCenter"
-                    android:padding="@dimen/share_icon_padding"
-                    android:id="@+id/icon_20"/>
-                <TextView
-                    android:layout_toRightOf="@id/icon_20"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/share_cell_text_margin"
-                    android:layout_marginLeft="@dimen/share_cell_text_margin"
-                    android:textSize="@dimen/share_cell_text_size"
-                    android:id="@+id/title_20"
-                    android:text="title"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:background="?android:attr/selectableItemBackground"
-                android:gravity="center_vertical"
-                android:id="@+id/cell_21"
-                android:layout_column="1">
-                <ImageView
-                    android:layout_width="@dimen/share_icon_size"
-                    android:layout_height="@dimen/share_icon_size"
-                    android:scaleType="fitCenter"
-                    android:padding="@dimen/share_icon_padding"
-                    android:id="@+id/icon_21"/>
-                <TextView
-                    android:layout_toRightOf="@id/icon_21"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/share_cell_text_margin"
-                    android:layout_marginLeft="@dimen/share_cell_text_margin"
-                    android:textSize="@dimen/share_cell_text_size"
-                    android:id="@+id/title_21"
-                    android:text="title"/>
-            </RelativeLayout>
-
-        </TableRow>-->
 
     </TableLayout>
 
