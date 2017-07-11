@@ -95,7 +95,7 @@
                         android:drawablePadding="@dimen/alternate_half_padding"
                         android:inputType="textUri"
                         android:paddingRight="@dimen/activity_horizontal_margin"
-                        android:textColor="@color/white"
+                        android:textColor="@color/login_text_hint_color"
                         android:textColorHint="@color/login_text_hint_color">
                         <requestFocus/>
                     </EditText>
@@ -195,7 +195,7 @@
                     android:ems="10"
                     android:hint="@string/auth_username"
                     android:inputType="textNoSuggestions"
-                    android:textColor="@color/white"
+                    android:textColor="@color/login_text_hint_color"
                     android:textColorHint="@color/login_text_hint_color"/>
 
             </android.support.design.widget.TextInputLayout>
@@ -214,7 +214,7 @@
                     android:ems="10"
                     android:hint="@string/auth_password"
                     android:inputType="textPassword"
-                    android:textColor="@color/white"
+                    android:textColor="@color/login_text_hint_color"
                     android:textColorHint="@color/login_text_hint_color"
                     />
             </android.support.design.widget.TextInputLayout>
@@ -231,17 +231,16 @@
                 android:textColor="@color/white"
                 android:contentDescription="@string/auth_unauthorized"/>
 
-            <android.support.v7.widget.AppCompatButton
+            <Button
                 android:id="@+id/buttonOK"
-                android:theme="@style/Button.Login"
                 style="@style/Button.Login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/setup_btn_connect"
                 android:padding="@dimen/activity_horizontal_margin"
-                android:enabled="false"
                 android:text="@string/setup_btn_connect"
-                android:contentDescription="@string/setup_btn_connect"/>
+                android:theme="@style/Button.Login" />
 
             <LinearLayout
                 android:layout_width="match_parent"
