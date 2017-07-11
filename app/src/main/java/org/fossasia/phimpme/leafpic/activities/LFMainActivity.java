@@ -59,7 +59,6 @@ import org.fossasia.phimpme.leafpic.data.Album;
 import org.fossasia.phimpme.leafpic.data.CustomAlbumsHelper;
 import org.fossasia.phimpme.leafpic.data.HandlingAlbums;
 import org.fossasia.phimpme.leafpic.data.Media;
-import org.fossasia.phimpme.leafpic.data.base.FilterMode;
 import org.fossasia.phimpme.leafpic.data.base.MediaComparators;
 import org.fossasia.phimpme.leafpic.data.base.SortingOrder;
 import org.fossasia.phimpme.leafpic.data.providers.StorageProvider;
@@ -1259,14 +1258,8 @@ public class LFMainActivity extends SharedMediaActivity {
                     getAlbums().sortAlbums(getApplicationContext());
                     albumsAdapter.swapDataSet(getAlbums().dispAlbums);
                 } else {
-                    getAlbum().setDefaultSortingMode(getApplicationContext(), NUMERIC);
-                    getAlbum().sortPhotos();
-                    mediaAdapter.swapDataSet(getAlbum().getMedia());
-                    if (all_photos) {
-                        Collections.sort(listAll, MediaComparators.getComparator(getAlbum().settings.getSortingMode(), getAlbum().settings.getSortingOrder()));
-                        mediaAdapter.swapDataSet(listAll);
+                    new SortNumeric().execute();
                     }
-                }
                 item.setChecked(true);
                 return true;
 
@@ -1754,6 +1747,37 @@ public class LFMainActivity extends SharedMediaActivity {
             finishEditMode();
             toolbar.setTitle(getString(R.string.all_media));
             clearSelectedPhotos();
+        }
+    }
+
+    private class SortNumeric extends AsyncTask<Void, Void, Void> {
+
+        AlertDialog dialog;
+
+        @Override
+        protected void onPreExecute() {
+            AlertDialog.Builder progressDialog = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
+            dialog = AlertDialogsHelper.getProgressDialog(LFMainActivity.this, progressDialog,
+                    getString(R.string.loading_numeric), all_photos ? getString(R.string.loading_numeric_all) : getAlbum().getName());
+            dialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            getAlbum().setDefaultSortingMode(getApplicationContext(), NUMERIC);
+            getAlbum().sortPhotos();
+            if (all_photos)
+                Collections.sort(listAll, MediaComparators.getComparator(getAlbum().settings.getSortingMode(), getAlbum().settings.getSortingOrder()));
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            dialog.dismiss();
+            mediaAdapter.swapDataSet(getAlbum().getMedia());
+            if (all_photos)
+                mediaAdapter.swapDataSet(listAll);
+
         }
     }
 
