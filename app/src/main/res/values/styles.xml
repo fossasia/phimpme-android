@@ -183,4 +183,40 @@
         <item name="android:padding">@dimen/card_spacing</item>
         <item name="cardElevation">@dimen/card_elevation</item>
     </style>
+
+    <style name="Theme.ownCloud.Dialog.ButtonBar" parent="style/Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <!-- Making sure, the button bar uses parent width and is not restricted in height -->
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:height">@null</item>
+        <item name="android:minHeight">@null</item>
+    </style>
+
+    <style name="ownCloud.Dialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="searchViewStyle">@style/ownCloud.SearchView</item>
+    </style>
+
+    <style name="ownCloud.AlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/colorPrimary</item>
+        <item name="searchViewStyle">@style/ownCloud.SearchView</item>
+    </style>
+
+    <style name="ownCloud.SearchView" parent="Widget.AppCompat.SearchView">
+        <!-- Close button icon -->
+        <item name="closeIcon">@drawable/ic_close_black_24dp</item>
+        <!-- Search button icon -->
+        <item name="searchIcon">@drawable/ic_search_black_24dp</item>
+        <!-- Layout for query suggestion rows // unused for now, staying with the standard layout -->
+        <!--<item name="suggestionRowLayout">...</item>-->
+    </style>
+
+    <style name="ProgressDialogTheme" parent="ownCloud.Dialog">
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:textColorPrimary">@color/colorPrimary</item>
+        <item name="android:windowFrame">@color/transparent</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowTitleBackgroundStyle">@drawable/com_facebook_button_background</item>
+    </style>
 </resources>

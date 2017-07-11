@@ -733,7 +733,6 @@
     <string name="fliter">fliter</string>
     <string name="crop">Crop</string>
 
-
     <string name="materialcolorpicker__app_name">Android Material Color Picker Dialog</string>
     <string name="materialcolorpicker__descLib">Material Color Picker Dialog</string>
     <string name="materialcolorpicker__errHex">Hex Code Format incorrect</string>
@@ -838,8 +837,6 @@
     <string name="uploaded_on_imgur">Image uploaded on Imgur successfully and link copied.</string>
     <string name="error_volly">Some error occurred.</string>
 
-
-
     <!--Google Voice -->
     <string name="rear">rear</string>
     <string name="back">back</string>
@@ -875,7 +872,6 @@
     <string name="auth_unauthorized">Wrong username or password</string>
     <string name="auth_oauth_error">Unsuccessful authorization</string>
     <string name="auth_host_address">Server address</string>
-
     <!--Wordpress-->
     <string name="sharewordpress">Wordpress Account</string>
 
@@ -884,5 +880,10 @@
     <string name="success">Success</string>
     <string name="fail">Login Fail</string>
 
-
+    <string name="placeholder_sentence">This is a placeholder</string>
+    <string name="auth_trying_to_login"><![CDATA[Trying to log in &#8230;]]></string>
+    <string name="welcome_link_url">https://nextcloud.com/providers</string>
+    <string name="err_msg_host">Please add server address</string>
+    <string name="err_msg_username">Please enter password</string>
+    <string name="err_msg_password">Please enter password</string>
 </resources>
