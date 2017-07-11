@@ -352,12 +352,12 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             Snackbar.make(parent,R.string.instagram_not_installed,Snackbar.LENGTH_LONG).show();
     }
 
-    /*@Override
+    @Override
     protected void onActivityResult(int requestCode, int responseCode, Intent data) {
         super.onActivityResult(requestCode, responseCode, data);
         callbackManager.onActivityResult(requestCode, responseCode, data);
         atleastOneShare = true;
-    }*/
+    }
 
     private void goToHome() {
         Intent home = new Intent(SharingActivity.this, LFMainActivity.class);
