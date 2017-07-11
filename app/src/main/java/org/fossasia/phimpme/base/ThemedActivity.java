@@ -43,6 +43,7 @@ public class ThemedActivity extends BaseActivity {
         SP = PreferenceUtil.getInstance(getApplicationContext());
         themeHelper = new ThemeHelper(getApplicationContext());
         setNavigationBarColor(getPrimaryColor());
+        setStatusBarColor();
     }
 
     @Override
