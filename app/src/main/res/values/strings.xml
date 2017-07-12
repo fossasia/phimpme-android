@@ -805,6 +805,8 @@
     <string name="no_action">No</string>
     <string name="sign_out_dialog_message">Do you want to sign out from </string>
     <string name="no_account_signed_in">No account signed in</string>
+    <string name="loading_numeric">Loading</string>
+    <string name="loading_numeric_all">All Photos</string>
     <!--Share to Twitter-->
     <string name="twitter_consumer_key">I8fFsT58V2k8FsA0vPFN7fCRX</string>
     <string name="twitter_consumer_secret">5LfshCbLn9xgnMjtL68YwPHxTN0u8qQ6DtOFrVYtYdIOshNqmh</string>
