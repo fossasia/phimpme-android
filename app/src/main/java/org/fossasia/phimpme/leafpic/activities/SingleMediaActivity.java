@@ -129,7 +129,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
         size_all = getIntent().getIntExtra(getString(R.string.allMediaSize), getAlbum().getCount());
 
         String path2 = getIntent().getStringExtra("path");
-        this.pathForDescription = path2;
+        pathForDescription = path2;
 
         if (savedInstanceState != null)
             mViewPager.setLocked(savedInstanceState.getBoolean(ISLOCKED_ARG, false));
@@ -139,7 +139,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
             if ((getIntent().getAction().equals(Intent.ACTION_VIEW) || getIntent().getAction().equals(ACTION_REVIEW)) && getIntent().getData() != null) {
 
                 String path = ContentHelper.getMediaPath(getApplicationContext(), getIntent().getData());
-                this.pathForDescription = path;
+                pathForDescription = path;
                 File file = null;
                 if (path != null)
                     file = new File(path);
@@ -219,6 +219,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
                     getAlbum().setCurrentPhotoIndex(position);
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
                     invalidateOptionsMenu();
+                    pathForDescription = getAlbum().getMedia().get(position).getPath();
                 }
 
                 @Override
@@ -244,6 +245,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
                     getAlbum().setCurrentPhotoIndex(position);
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
                     invalidateOptionsMenu();
+                    pathForDescription = LFMainActivity.listAll.get(current_image_pos).getPath();
                 }
 
                 @Override
