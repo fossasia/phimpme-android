@@ -307,6 +307,7 @@ public class LFMainActivity extends SharedMediaActivity {
         initAllPhotos();
         initUI();
         displayData(getIntent().getExtras());
+        checkNothing();
     }
 
     @Override
