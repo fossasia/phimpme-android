@@ -74,11 +74,11 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     ImageViewTouch shareImage;
     @BindView(R.id.edittext_share_caption)
     TextView text_caption;
-    @BindViews({R.id.icon_00, R.id.icon_01, R.id.icon_10, R.id.icon_11})
+    @BindViews({R.id.icon_00, R.id.icon_01, R.id.icon_10, R.id.icon_11,R.id.icon_20,R.id.icon_21,R.id.icon_30,R.id.icon_31, R.id.icon_40})
     List<ImageView> icons;
-    @BindViews({R.id.title_00, R.id.title_01, R.id.title_10, R.id.title_11})
+    @BindViews({R.id.title_00, R.id.title_01, R.id.title_10, R.id.title_11,R.id.title_20,R.id.title_21,R.id.title_30,R.id.title_31, R.id.title_40})
     List<TextView> titles;
-    @BindViews({R.id.cell_00, R.id.cell_01, R.id.cell_10, R.id.cell_11})
+    @BindViews({R.id.cell_00, R.id.cell_01, R.id.cell_10, R.id.cell_11,R.id.cell_20,R.id.cell_21,R.id.cell_30,R.id.cell_31,R.id.cell_40})
     List<View> cells;
     @BindView(R.id.share_done)
     Button done;
@@ -89,10 +89,13 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     private CallbackManager callbackManager;
     private String caption;
     private boolean atleastOneShare = false;
-    private int[] cellcolors = {R.color.facebook_color, R.color.twitter_color, R.color.instagram_color, R.color.other_share_color};
+    private int[] cellcolors = {R.color.facebook_color, R.color.twitter_color, R.color.instagram_color,
+            R.color.wordpress_color,R.color.pinterest_color,R.color.flickr_color,R.color.nextcloud_color, R.color.imgur_color ,R.color.other_share_color};
     private int[] icons_drawables = {R.drawable.ic_facebook_black, R.drawable.ic_twitter_black,
-            R.drawable.ic_instagram_black, R.drawable.ic_share_minimal};
-    private int[] titles_text = {R.string.facebook, R.string.twitter, R.string.instagram, R.string.other};
+            R.drawable.ic_instagram_black, R.drawable.ic_wordpress_black, R.drawable.ic_pinterest_black,
+            R.drawable.ic_flickr, R.drawable.ic_nextcloud, R.drawable.ic_imgur,R.drawable.ic_share_minimal};
+    private int[] titles_text = {R.string.facebook, R.string.twitter, R.string.instagram,
+            R.string.wordpress, R.string.pinterest, R.string.flickr, R.string.nextcloud,R.string.imgur,R.string.other};
     private Context context;
     Utils utils = new Utils();
     Bitmap finalBmp;
@@ -145,7 +148,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         text_caption.setTextColor(getTextColor());
         text_caption.setHintTextColor(getSubTextColor());
 
-        for (int i = 0; i <= 3; i++) {
+        for (int i = 0; i <= 8; i++) {
             cells.get(i).setOnClickListener(this);
             icons.get(i).setImageResource(icons_drawables[i]);
             titles.get(i).setText(titles_text[i]);
@@ -183,7 +186,17 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             case R.id.cell_10: //instagram
                 shareToInstagram();
                 break;
-            case R.id.cell_11: //other
+            case R.id.cell_11: //wordpress
+                break;
+            case R.id.cell_20: //pinterest
+                break;
+            case R.id.cell_21: //flickr
+                break;
+            case R.id.cell_30: //nextcloud
+                break;
+            case R.id.cell_31: //imgur
+                break;
+            case R.id.cell_40: //othershare
                 otherShare();
                 break;
             case R.id.share_done:
