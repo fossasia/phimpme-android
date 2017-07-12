@@ -80,7 +80,9 @@ public class RotateFragment extends BaseEditFragment {
     private void resetRotateView() {
         if (null != activity && null != mRotatePanel){
             activity.mRotatePanel.rotateImage(0);
+            activity.mRotatePanel.reset();
             activity.mRotatePanel.setVisibility(View.GONE);
+            activity.mainImage.setVisibility(View.VISIBLE);
         }
     }
 
