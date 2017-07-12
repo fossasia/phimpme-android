@@ -792,6 +792,10 @@
     <string name="facebook">Facebook</string>
     <string name="twitter">Twitter</string>
     <string name="instagram">Instagram</string>
+    <string name="wordpress">Wordpress</string>
+    <string name="flickr">Flickr</string>
+    <string name="pinterest">Pinterest</string>
+    <string name="nextcloud">NextCloud</string>
     <string name="other">Other</string>
     <string name="exit">Exit</string>
 
@@ -842,7 +846,7 @@
     <string name="say_cheese">say cheese</string>
     <string name="camera_rear">Rear Camera</string>
     <string name="camera_front">Front Camera</string>
-
+    <string name="imgur">Imgur</string>
 
 
 </resources>
