@@ -93,6 +93,7 @@
                         android:layout_gravity="bottom"
                         android:contentDescription="@string/auth_host_address"
                         android:drawablePadding="@dimen/alternate_half_padding"
+                        android:text="http://139.59.14.49:8080/"
                         android:inputType="textUri"
                         android:paddingRight="@dimen/activity_horizontal_margin"
                         android:textColor="@color/login_text_hint_color"

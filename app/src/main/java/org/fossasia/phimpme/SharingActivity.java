@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
@@ -48,12 +49,22 @@ import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
+import com.owncloud.android.lib.common.OwnCloudClient;
+import com.owncloud.android.lib.common.OwnCloudClientFactory;
+import com.owncloud.android.lib.common.OwnCloudCredentialsFactory;
+import com.owncloud.android.lib.common.operations.OnRemoteOperationListener;
+import com.owncloud.android.lib.common.operations.RemoteOperation;
+import com.owncloud.android.lib.common.operations.RemoteOperationResult;
+import com.owncloud.android.lib.resources.files.FileUtils;
+import com.owncloud.android.lib.resources.files.ReadRemoteFolderOperation;
+import com.owncloud.android.lib.resources.files.UploadRemoteFileOperation;
 import com.pinterest.android.pdk.PDKCallback;
 import com.pinterest.android.pdk.PDKClient;
 import com.pinterest.android.pdk.PDKException;
 import com.pinterest.android.pdk.PDKResponse;
 
 import org.fossasia.phimpme.base.ThemedActivity;
+import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.fossasia.phimpme.editor.editimage.view.imagezoom.ImageViewTouch;
 import org.fossasia.phimpme.leafpic.activities.LFMainActivity;
 import org.fossasia.phimpme.leafpic.util.AlertDialogsHelper;
@@ -62,7 +73,6 @@ import org.fossasia.phimpme.sharetwitter.HelperMethods;
 import org.fossasia.phimpme.sharetwitter.LoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.Constants;
-import org.fossasia.phimpme.utilities.Utils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -77,6 +87,9 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
+import io.realm.Realm;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
 
 import static org.fossasia.phimpme.utilities.Utils.copyToClipBoard;
 import static org.fossasia.phimpme.utilities.Utils.getBitmapFromPath;
@@ -86,11 +99,15 @@ import static org.fossasia.phimpme.utilities.Utils.isInternetOn;
 import static org.fossasia.phimpme.utilities.Utils.shareMsgOnIntent;
 
 
-public class SharingActivity extends ThemedActivity implements View.OnClickListener {
+public class SharingActivity extends ThemedActivity implements View.OnClickListener
+, OnRemoteOperationListener {
 
     public static final String EXTRA_OUTPUT = "extra_output";
+    private static String LOG_TAG = SharingActivity.class.getCanonicalName();
     public String saveFilePath;
     ThemeHelper themeHelper;
+    private OwnCloudClient mClient;
+    private Handler mHandler;
     @BindView(R.id.share_layout)
     View parent;
     @BindView(R.id.toolbar)
@@ -112,8 +129,10 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     @BindView(R.id.edit_text_caption_container)
     RelativeLayout captionLayout;
     private CallbackManager callbackManager;
+    private Realm realm = Realm.getDefaultInstance();
     private String caption;
     private boolean atleastOneShare = false;
+
     private int[] cellcolors = {R.color.facebook_color, R.color.twitter_color, R.color.instagram_color,
             R.color.wordpress_color, R.color.pinterest_color, R.color.flickr_color, R.color.nextcloud_color, R.color.imgur_color, R.color.other_share_color};
     private int[] icons_drawables = {R.drawable.ic_facebook_black, R.drawable.ic_twitter_black,
@@ -137,6 +156,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         setContentView(R.layout.activity_share);
         context = this;
         themeHelper = new ThemeHelper(this);
+        mHandler = new Handler();
+
         ActivitySwitchHelper.setContext(this);
         ButterKnife.bind(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -423,7 +444,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         shareIntent.setAction(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_TEXT, caption);
         shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-        shareIntent.setType("image/jpeg");
+        shareIntent.setType("image/png");
         startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_image)));
     }
 
@@ -517,8 +538,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                     headers.put("Authorization", getClientAuth());
                     return headers;
                 }
-
-
             };
             request.setRetryPolicy(new DefaultRetryPolicy(50000, 5, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             RequestQueue rQueue = Volley.newRequestQueue(SharingActivity.this);
@@ -527,6 +546,54 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             Snackbar.make(parent, R.string.not_connected, Snackbar.LENGTH_LONG).show();
         }
     }
+
+    private void shareToNextCloud(){
+        RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
+        // Checking if string equals to is exist or not
+        query.equalTo("name", getString(R.string.nextcloud));
+        RealmResults<AccountDatabase> result = query.findAll();
+
+        if (result.size() != 0){
+            Uri serverUri = Uri.parse(result.get(0).getServerUrl());
+            String username = result.get(0).getUsername();
+            String password = result.get(0).getPassword();
+
+            mClient = OwnCloudClientFactory.createOwnCloudClient(serverUri, this, true);
+            mClient.setCredentials(
+                    OwnCloudCredentialsFactory.newBasicCredentials(
+                            username,
+                            password
+                    )
+            );
+
+            File upFolder = new File(getCacheDir(), saveFilePath);
+            File fileToUpload = new File(getCacheDir(), saveFilePath);;
+            String remotePath = FileUtils.PATH_SEPARATOR + fileToUpload.getName();
+            String mimeType = "image/png";
+
+            // Get the last modification date of the file from the file system
+            Long timeStampLong = fileToUpload.lastModified() / 1000;
+            String timeStamp = timeStampLong.toString();
+
+            UploadRemoteFileOperation uploadOperation =
+                    new UploadRemoteFileOperation(fileToUpload.getAbsolutePath(), remotePath, mimeType, timeStamp);
+            uploadOperation.execute(mClient, this, mHandler);
+
+        } else {
+            Toast.makeText(this, "Please sign in to nextcloud from account manager"
+                    , Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int responseCode, Intent data) {
+        super.onActivityResult(requestCode, responseCode, data);
+        callbackManager.onActivityResult(requestCode, responseCode, data);
+        atleastOneShare = true;
+    }
+
 
     private void goToHome() {
         Intent home = new Intent(SharingActivity.this, LFMainActivity.class);
@@ -550,6 +617,29 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         captionEditext.setTextColor(activity.getTextColor());
         passwordDialog.setView(captionDialogLayout);
         return captionEditext;
+    }
+
+    private void startRefresh() {
+        ReadRemoteFolderOperation refreshOperation = new ReadRemoteFolderOperation(FileUtils.PATH_SEPARATOR);
+        refreshOperation.execute(mClient, this, mHandler);
+    }
+
+    @Override
+    public void onRemoteOperationFinish(RemoteOperation operation, RemoteOperationResult result) {
+        if (!result.isSuccess()) {
+            Toast.makeText(this, R.string.todo_operation_finished_in_fail, Toast.LENGTH_SHORT).show();
+            Log.e(LOG_TAG, result.getLogMessage(), result.getException());
+
+        } else if (operation instanceof UploadRemoteFileOperation ) {
+            onSuccessfulUpload((UploadRemoteFileOperation)operation, result);
+
+        } else {
+            Toast.makeText(this, R.string.todo_operation_finished_in_success, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void onSuccessfulUpload(UploadRemoteFileOperation operation, RemoteOperationResult result) {
+        startRefresh();
     }
 
     private class PostToTwitterAsync extends AsyncTask<Void, Void, Void> {
@@ -580,6 +670,4 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
         }
     }
-
-
 }
