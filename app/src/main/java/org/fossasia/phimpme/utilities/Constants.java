@@ -7,5 +7,7 @@ package org.fossasia.phimpme.utilities;
 public class Constants {
 
     public static int CAMERA_BACK_PRESSED = 0;
+    public static int SUCCESS = 0;
+    public static int FAIL = 1;
 
 }
