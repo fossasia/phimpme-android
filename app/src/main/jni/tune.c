@@ -128,12 +128,14 @@ void tuneTint(Bitmap* bitmap, int val) {
 	}
 }
 
+/*
 double dist(int ax, int ay,int bx, int by){
     return sqrt(pow((double) (ax - bx), 2) + pow((double) (ay - by), 2));
 }
+*/
 
 
-void tuneVignette(Bitmap* bitmap, int val) {
+void tuneVignette(Bitmap* bitmap, int val) {/*
 	register unsigned int i,x,y;
 	unsigned int width = (*bitmap).width, height = (*bitmap).height;
 	unsigned int length = width * height;
@@ -155,7 +157,7 @@ void tuneVignette(Bitmap* bitmap, int val) {
             green[x+y*width] = truncate((int)(green[x+y*width]*temp_s));
             blue[x+y*width] = truncate((int)(blue[x+y*width]*temp_s));
         }
-    }
+    }*/
 }
 
 
