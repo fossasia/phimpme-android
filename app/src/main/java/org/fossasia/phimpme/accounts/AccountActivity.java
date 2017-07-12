@@ -29,6 +29,7 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 
+import org.fossasia.phimpme.NextCloudAuth;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.PhimpmeProgressBarHandler;
 import org.fossasia.phimpme.base.RecyclerItemClickListner;
@@ -70,7 +71,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private AccountDatabase account;
     private DatabaseHelper databaseHelper;
     private Context context;
-    public String[] accountsList = {"Facebook", "Twitter", "Drupal"};
+    public String[] accountsList = {"Facebook", "Twitter", "Drupal", "NextCloud"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -147,20 +148,25 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
         if (!signInSignOut.isChecked()) {
             switch (position) {
-                case 1:
-                    signInTwitter();
-                    accountPresenter.loadFromDatabase();
-                    break;
-
                 case 0:
                     // FacebookSdk.sdkInitialize(this);
                     signInFacebook(childView);
                     accountPresenter.loadFromDatabase();
                     break;
 
+                case 1:
+                    signInTwitter();
+                    accountPresenter.loadFromDatabase();
+                    break;
+
                 case 2:
                     Intent drupalShare = new Intent(getContext(), DrupalLogin.class);
                     startActivity(drupalShare);
+                    break;
+
+                case 3:
+                    Intent nextCloudShare = new Intent(getContext(), NextCloudAuth.class);
+                    startActivity(nextCloudShare);
                     break;
 
                 default:
