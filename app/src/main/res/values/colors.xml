@@ -394,4 +394,7 @@
     <color name="login_text_hint_color">#7fC0E3</color>
     <color name="secondary_button_color">#D6D7D7</color>
     <color name="owncloud_blue_bright">#00ddff</color>
+
+    <!--Wordpress Login-->
+    <color name="wordpress_color_login">#48A2E5</color>
 </resources>
