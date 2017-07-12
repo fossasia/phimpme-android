@@ -143,35 +143,34 @@ public class LFMainActivity extends SharedMediaActivity {
                 invalidateOptionsMenu();
             } else
                 if(!editMode){
-                    mediaAdapter.notifyItemChanged(toggleSelectPhoto(getImagePosition(m.getPath())));
+                    mediaAdapter.notifyItemChanged(toggleSelectPhoto(m));
                     editMode = true;
-                    mediaAdapter.swapDataSet(listAll);
                 }
                 else selectAllPhotosUpTo(getImagePosition(m.getPath()),mediaAdapter);
             return true;
         }
     };
 
-    private int toggleSelectPhoto(int index) {
-        if (media.get(index) != null) {
-            media.get(index).setSelected(!media.get(index).isSelected());
-            if (media.get(index).isSelected())
-                selectedMedias.add(media.get(index));
+    private int toggleSelectPhoto(Media m) {
+        if (m != null) {
+            m.setSelected(!m.isSelected());
+            if (m.isSelected())
+                selectedMedias.add(m);
             else
-                selectedMedias.remove(media.get(index));
+                selectedMedias.remove(m);
         }
         if(selectedMedias.size()==0){
             editMode = false;
             toolbar.setTitle(getString(R.string.all));
         }
         else
-        toolbar.setTitle(selectedMedias.size() + "/" + size);
+            toolbar.setTitle(selectedMedias.size() + "/" + size);
         invalidateOptionsMenu();
-        return index;
+        return getImagePosition(m.getPath());
     }
 
     public void clearSelectedPhotos() {
-        for (Media m : media)
+        for (Media m : selectedMedias)
             m.setSelected(false);
         if (selectedMedias!=null)
             selectedMedias.clear();
@@ -179,7 +178,7 @@ public class LFMainActivity extends SharedMediaActivity {
     }
 
     public void selectAllPhotos(){
-        for (Media m : media) {
+        for (Media m : listAll) {
             m.setSelected(true);
             selectedMedias.add(m);
         }
@@ -191,7 +190,7 @@ public class LFMainActivity extends SharedMediaActivity {
         int indexRightBeforeOrAfter = -1;
         int indexNow;
         for (Media sm : selectedMedias) {
-            indexNow = media.indexOf(sm);
+            indexNow = getImagePosition(sm.getPath());
             if (indexRightBeforeOrAfter == -1) indexRightBeforeOrAfter = indexNow;
 
             if (indexNow > targetIndex) break;
@@ -200,10 +199,10 @@ public class LFMainActivity extends SharedMediaActivity {
 
         if (indexRightBeforeOrAfter != -1) {
             for (int index = Math.min(targetIndex, indexRightBeforeOrAfter); index <= Math.max(targetIndex, indexRightBeforeOrAfter); index++) {
-                if (media.get(index) != null && !media.get(index).isSelected()) {
-                        media.get(index).setSelected(true);
-                        selectedMedias.add(media.get(index));
-                        adapter.notifyItemChanged(index);
+                if (listAll.get(index) != null && !listAll.get(index).isSelected()) {
+                    listAll.get(index).setSelected(true);
+                    selectedMedias.add(listAll.get(index));
+                    adapter.notifyItemChanged(index);
                 }
             }
         }
@@ -250,7 +249,7 @@ public class LFMainActivity extends SharedMediaActivity {
                     intent.setClass(getApplicationContext(), SingleMediaActivity.class);
                     startActivity(intent);
                 }
-                else mediaAdapter.notifyItemChanged(toggleSelectPhoto(getImagePosition(m.getPath())));
+                else mediaAdapter.notifyItemChanged(toggleSelectPhoto(m));
             }
         }
     };
@@ -880,7 +879,7 @@ public class LFMainActivity extends SharedMediaActivity {
         menu.findItem(R.id.excludeAlbumButton).setVisible(editMode && !all_photos);
         menu.findItem(R.id.select_all).setVisible(editMode);
         menu.findItem(R.id.delete_action).setVisible((!albumsMode || editMode) && (!all_photos || editMode ));
-        menu.findItem(R.id.hideAlbumButton).setVisible(!all_photos);
+        menu.findItem(R.id.hideAlbumButton).setVisible(!all_photos && getAlbums().getSelectedCount()>0);
 
         menu.findItem(R.id.clear_album_preview).setVisible(!albumsMode && getAlbum().hasCustomCover());
         menu.findItem(R.id.renameAlbum).setVisible(((albumsMode && getAlbums().getSelectedCount() == 1) || (!albumsMode && !editMode)) && !all_photos);

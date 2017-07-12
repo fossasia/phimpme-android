@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.app.VoiceInteractor;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -34,6 +35,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import android.os.ParcelFileDescriptor;
 import android.os.StatFs;
 import android.preference.PreferenceManager;
@@ -73,6 +75,7 @@ import java.util.Map;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.BaseActivity;
+import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.leafpic.activities.SingleMediaActivity;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
 import org.fossasia.phimpme.opencamera.CameraController.CameraController;
@@ -83,12 +86,13 @@ import org.fossasia.phimpme.opencamera.UI.MainUI;
 import org.fossasia.phimpme.opencamera.UI.PopupView;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
+import org.fossasia.phimpme.utilities.Constants;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 /** The main Activity for Open Camera.
  */
-public class CameraActivity extends BaseActivity implements AudioListener.AudioListenerCallback {
+public class CameraActivity extends ThemedActivity implements AudioListener.AudioListenerCallback {
 	private static final String TAG = "CameraActivity";
 	private SensorManager mSensorManager;
 	private Sensor mSensorAccelerometer;
@@ -149,7 +153,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 
 
     @Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		long debug_time = 0;
 		if( MyDebug.LOG ) {
 			Log.d(TAG, "onCreate");
@@ -366,39 +370,42 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
     if (!isFromOutside){
 			BasicCallBack basicCallBack = new BasicCallBack() {
 				@Override
-				public void callBack(String filepath) {
-					final SharedPreferences sharedPreferences = getDefaultSharedPreferences(CameraActivity.this);
-					String mode = sharedPreferences.getString(PreferenceKeys.getPhotoModePreferenceKey(), "");
-					final String burst_mode = sharedPreferences.getString(PreferenceKeys.getBurstModePreferenceKey(), "");
+				public void callBack(int status,Object path) {
+					if (status == Constants.SUCCESS){
+						String filepath = path.toString();
+						final SharedPreferences sharedPreferences = getDefaultSharedPreferences(CameraActivity.this);
+						String mode = sharedPreferences.getString(PreferenceKeys.getPhotoModePreferenceKey(), "");
+						final String burst_mode = sharedPreferences.getString(PreferenceKeys.getBurstModePreferenceKey(), "");
 
-					if (clicks_count == 0) { //To start progress dialog once
-						Handler h = new Handler(Looper.getMainLooper());
-						h.post(new Runnable() {
-							public void run() {
-								progressDialog = new ProgressDialog(CameraActivity.this);
-								progressDialog.setMessage("Generating image. Please wait...");
-								progressDialog.show();
-							}
-						});
-					}
+						if (clicks_count == 0) { //To start progress dialog once
+							Handler h = new Handler(Looper.getMainLooper());
+							h.post(new Runnable() {
+								public void run() {
+									progressDialog = new ProgressDialog(CameraActivity.this);
+									progressDialog.setMessage("Generating image. Please wait...");
+									progressDialog.show();
+								}
+							});
+						}
 
-					clicks_count++; // Count till max defined image is captured and saved
-					if (!("preference_photo_mode_expo_bracketing").equals(mode) && Integer.parseInt(burst_mode) == 1) {
-						clicks_count = 0;
-						PhotoActivity.start(CameraActivity.this, filepath, 10);
-					} else if (("preference_photo_mode_expo_bracketing").equals(mode) && clicks_count >= bundle.getInt("max_expo_bracketing_n_images")) { // Start Activity once when the third image is saved
-						clicks_count = 0; //Turn image count to zero in case user wants to click another set of photos.
-						Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(filepath)));
-						intent.setClass(getApplicationContext(), SingleMediaActivity.class);
-						startActivity(intent);
+						clicks_count++; // Count till max defined image is captured and saved
+						if (!("preference_photo_mode_expo_bracketing").equals(mode) && Integer.parseInt(burst_mode) == 1) {
+							clicks_count = 0;
+							PhotoActivity.start(CameraActivity.this, filepath, 10);
+						} else if (("preference_photo_mode_expo_bracketing").equals(mode) && clicks_count >= bundle.getInt("max_expo_bracketing_n_images")) { // Start Activity once when the third image is saved
+							clicks_count = 0; //Turn image count to zero in case user wants to click another set of photos.
+							Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(filepath)));
+							intent.setClass(getApplicationContext(), SingleMediaActivity.class);
+							startActivity(intent);
+						}
+						else if(Integer.parseInt(burst_mode)>1){
+							clicks_count = 0; //Turn image count to zero in case user wants to click another set of photos.
+							Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(filepath)));
+							intent.setClass(getApplicationContext(), SingleMediaActivity.class);
+							startActivity(intent);
+						}
 					}
-					else if(Integer.parseInt(burst_mode)>1){
-						clicks_count = 0; //Turn image count to zero in case user wants to click another set of photos.
-						Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(filepath)));
-						intent.setClass(getApplicationContext(), SingleMediaActivity.class);
-						startActivity(intent);
 					}
-				}
 			};
 			ImageSaver.setBasicCallBack(basicCallBack);
      }
@@ -738,7 +745,7 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 	};
 
 	@Override
-	protected void onResume() {
+	public void onResume() {
 		ActivitySwitchHelper.setContext(this);
 		if (progressDialog != null) {
 			progressDialog.dismiss();
@@ -772,7 +779,89 @@ public class CameraActivity extends BaseActivity implements AudioListener.AudioL
 		if( MyDebug.LOG ) {
 			Log.d(TAG, "onResume: total time to resume: " + (System.currentTimeMillis() - debug_time));
 		}
+		if (CameraActivity.this.isVoiceInteraction()) {
+			startVoiceTrigger();
+		}
+
 	}
+
+	private void startVoiceTrigger() {
+		Log.d(TAG, "startVoiceTrigger: ");
+
+		VoiceInteractor.PickOptionRequest.Option rear = new VoiceInteractor.PickOptionRequest.Option(getResources().getString(R.string.camera_rear), 0);
+		rear.addSynonym(getResources().getString(R.string.rear));
+		rear.addSynonym(getResources().getString(R.string.back));
+		rear.addSynonym(getResources().getString(R.string.normal));
+
+		VoiceInteractor.PickOptionRequest.Option front = new VoiceInteractor.PickOptionRequest.Option(getResources().getString(R.string.camera_front), 1);
+		front.addSynonym(getResources().getString(R.string.front));
+		front.addSynonym(getResources().getString(R.string.selfie_camera));
+		front.addSynonym(getResources().getString(R.string.forward));
+
+		CameraActivity.this.getVoiceInteractor()
+				.submitRequest(new VoiceInteractor.PickOptionRequest(
+						new VoiceInteractor.Prompt(getResources().getString(R.string.ask_question)),
+						new VoiceInteractor.PickOptionRequest.Option[]{front, rear},
+						null) {
+
+					@Override
+					public void onPickOptionResult(boolean finished, Option[] selections, Bundle result) {
+						if (finished && selections.length == 1) {
+							Message message = Message.obtain();
+							message.obj = result;
+							if (selections[0].getIndex() == 0)
+							{	rearCamera();
+								asktakePicture();
+							}
+							if (selections[0].getIndex() == 1)
+							{
+								asktakePicture();
+							}
+						}else{
+							getActivity().finish();
+						}
+					}
+					@Override
+					public void onCancel() {
+						getActivity().finish();
+					}
+				});
+	}
+	private void rearCamera() {
+		int cameraId = getNextCameraId();
+		this.preview.setCamera(cameraId);
+	}
+
+	private void asktakePicture() {
+		VoiceInteractor.PickOptionRequest.Option option = new VoiceInteractor.PickOptionRequest.Option(getResources().getString(R.string.cheese), 2);
+		option.addSynonym(getResources().getString(R.string.ready));
+		option.addSynonym(getResources().getString(R.string.go));
+		option.addSynonym(getResources().getString(R.string.take));
+		option.addSynonym(getResources().getString(R.string.ok));
+
+		getVoiceInteractor()
+				.submitRequest(new VoiceInteractor.PickOptionRequest(
+						new VoiceInteractor.Prompt(getResources().getString(R.string.say_cheese)),
+						new VoiceInteractor.PickOptionRequest.Option[]{option},
+						null) {
+
+					@Override
+					public void onPickOptionResult(boolean finished, Option[] selections, Bundle result) {
+						if (finished && selections.length == 1) {
+							Message message = Message.obtain();
+							message.obj = result;
+							takePicture();
+						} else {
+							getActivity().finish();
+						}
+					}
+					@Override
+					public void onCancel() {
+						getActivity().finish();
+					}
+				});
+	}
+
 
 	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
