@@ -847,6 +847,23 @@
     <string name="camera_rear">Rear Camera</string>
     <string name="camera_front">Front Camera</string>
     <string name="imgur">Imgur</string>
-
-
+    <!--NEXTCLOUD-->
+    <string name="auth_check_server">Check server</string>
+    <string name="auth_host_url">Server address https://…</string>
+    <string name="auth_username">Username</string>
+    <string name="auth_password">Password</string>
+    <string name="auth_refresh_button">Refresh connection</string>
+    <string name="auth_register">Do you not have a server yet?\nClick here to get one from a provider</string>
+    <string name="sync_string_files">Files</string>
+    <string name="setup_btn_connect">Connect</string>
+    <string name="auth_expired_oauth_token_toast">Your authorization expired. Please, authorize again</string>
+    <string name="auth_expired_basic_auth_toast">Please enter the current password</string>
+    <string name="auth_expired_saml_sso_token_toast">Your session expired. Please connect again</string>
+    <string name="auth_connection_established">Connection established</string>
+    <string name="auth_testing_connection">Testing connection</string>
+    <string name="oauth_check_onoff">Log in with OAuth 2.0</string>
+    <string name="oauth_login_connection">Connecting to OAuth 2.0 server…</string>
+    <string name="auth_unauthorized">Wrong username or password</string>
+    <string name="auth_oauth_error">Unsuccessful authorization</string>
+    <string name="auth_host_address">Server address</string>
 </resources>
