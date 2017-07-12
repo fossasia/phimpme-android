@@ -74,9 +74,10 @@
     <dimen name="drupal_image_width">100dp</dimen>
     <dimen name="drupal_image_height">100dp</dimen>
 
-
-
     <!--ELEVATION-->
     <dimen name="drupal_elevation">4dp</dimen>
+
+    <!--SCROLL VIEW HEIGHT-->
+    <dimen name="scroll_view_height">100dp</dimen>
 
 </resources>
