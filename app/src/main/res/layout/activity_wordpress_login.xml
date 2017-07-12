@@ -1,0 +1,101 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/blue"
+    android:orientation="vertical"
+    android:id="@+id/wordpress_login"
+    android:scrollbarAlwaysDrawVerticalTrack="true">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"/>
+
+    <TextView
+        android:id="@+id/login_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/medium_spacing"
+        android:layout_marginTop="@dimen/margin_spacing_top"
+        android:gravity="center_horizontal"
+        android:text="Account Login"
+        android:textColor="@color/white"
+        android:textSize="@dimen/wordpress_account"
+        android:layout_below="@+id/toolbar"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/login_title"
+        android:layout_marginLeft="@dimen/inside_spacing"
+        android:layout_marginRight="@dimen/inside_spacing"
+        android:layout_marginTop="@dimen/inside_spacing_top"
+        android:background="@color/white"
+        android:elevation="@dimen/wordpress_elevation"
+        android:orientation="vertical"
+        android:padding="@dimen/sub_big_spacing">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/inside_spacing">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/email"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_user"
+                    android:drawableTint="@color/black"
+                    android:singleLine="true"
+                    android:hint="User Name"
+                    android:inputType="textEmailAddress"
+                    android:textColor="@color/black"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/password"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/password_spacing"
+                    android:singleLine="true"
+                    android:drawableLeft="@drawable/ic_lock"
+                    android:drawableTint="@color/black"
+                    android:hint="Password"
+                    android:textColor="@color/black"
+                    android:inputType="textPassword"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/login_button"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/button_spacing"
+                android:background="@color/button_background"
+                android:text="Sign in"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sub_big_text" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/user_profile_photo"
+        android:layout_width="@dimen/wordpress_image_width"
+        android:layout_height="@dimen/wordpress_image_height"
+        android:layout_below="@+id/login_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/password_spacing"
+        android:background="@drawable/ic_wordpress_icon"
+        android:elevation="4dp"/>
+
+</RelativeLayout>

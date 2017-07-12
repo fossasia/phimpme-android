@@ -866,4 +866,8 @@
     <string name="auth_unauthorized">Wrong username or password</string>
     <string name="auth_oauth_error">Unsuccessful authorization</string>
     <string name="auth_host_address">Server address</string>
+
+    <!--Wordpress-->
+    <string name="sharewordpress">Wordpress Account</string>
+
 </resources>
