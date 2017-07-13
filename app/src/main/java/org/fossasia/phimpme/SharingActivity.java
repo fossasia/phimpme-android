@@ -1,10 +1,12 @@
 package org.fossasia.phimpme;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
@@ -20,6 +22,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -63,6 +66,7 @@ import com.pinterest.android.pdk.PDKClient;
 import com.pinterest.android.pdk.PDKException;
 import com.pinterest.android.pdk.PDKResponse;
 
+import org.fossasia.phimpme.base.PhimpmeProgressBarHandler;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.fossasia.phimpme.editor.editimage.view.imagezoom.ImageViewTouch;
@@ -78,6 +82,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -132,6 +138,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     private Realm realm = Realm.getDefaultInstance();
     private String caption;
     private boolean atleastOneShare = false;
+    private PhimpmeProgressBarHandler phimpmeProgressBarHandler;
 
     private int[] cellcolors = {R.color.facebook_color, R.color.twitter_color, R.color.instagram_color,
             R.color.wordpress_color, R.color.pinterest_color, R.color.flickr_color, R.color.nextcloud_color, R.color.imgur_color, R.color.other_share_color};
@@ -158,6 +165,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         themeHelper = new ThemeHelper(this);
         mHandler = new Handler();
 
+        phimpmeProgressBarHandler = new PhimpmeProgressBarHandler(this);
         ActivitySwitchHelper.setContext(this);
         ButterKnife.bind(this);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -241,6 +249,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             case R.id.cell_21: //flickr
                 break;
             case R.id.cell_30: //nextcloud
+                shareToNextCloud();
                 break;
             case R.id.cell_31: //imgur
                 imgurShare();
@@ -547,7 +556,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         }
     }
 
-    private void shareToNextCloud(){
+    void shareToNextCloud(){
         RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
         // Checking if string equals to is exist or not
         query.equalTo("name", getString(R.string.nextcloud));
@@ -566,10 +575,33 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                     )
             );
 
-            File upFolder = new File(getCacheDir(), saveFilePath);
-            File fileToUpload = new File(getCacheDir(), saveFilePath);;
+            AssetManager assets = getAssets();
+            try {
+                String sampleFileName = getString(R.string.sample_file_name);
+                File upFolder = new File(getCacheDir(), getString(R.string.upload_folder_path));
+                upFolder.mkdir();
+                File upFile = new File(upFolder, sampleFileName);
+                FileOutputStream fos = new FileOutputStream(upFile);
+                InputStream is = assets.open(sampleFileName);
+                int count = 0;
+                byte[] buffer = new byte[1024];
+                while ((count = is.read(buffer, 0, buffer.length)) >= 0) {
+                    fos.write(buffer, 0, count);
+                }
+                is.close();
+                fos.close();
+            } catch (IOException e) {
+                Toast.makeText(this, R.string.error_copying_sample_file, Toast.LENGTH_SHORT).show();
+                Log.e(LOG_TAG, getString(R.string.error_copying_sample_file), e);
+            }
+
+            File fileToUpload = new File(saveFilePath);
             String remotePath = FileUtils.PATH_SEPARATOR + fileToUpload.getName();
-            String mimeType = "image/png";
+            ContentResolver cR = context.getContentResolver();
+            MimeTypeMap mime = MimeTypeMap.getSingleton();
+            Uri uri = Uri.fromFile(new File(saveFilePath));
+            String type = mime.getExtensionFromMimeType(cR.getType(uri));
+            String mimeType = type;
 
             // Get the last modification date of the file from the file system
             Long timeStampLong = fileToUpload.lastModified() / 1000;
@@ -578,13 +610,12 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             UploadRemoteFileOperation uploadOperation =
                     new UploadRemoteFileOperation(fileToUpload.getAbsolutePath(), remotePath, mimeType, timeStamp);
             uploadOperation.execute(mClient, this, mHandler);
+            phimpmeProgressBarHandler.show();
 
         } else {
             Toast.makeText(this, "Please sign in to nextcloud from account manager"
                     , Toast.LENGTH_SHORT).show();
         }
-
-
     }
 
     @Override
@@ -624,21 +655,30 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         refreshOperation.execute(mClient, this, mHandler);
     }
 
+    /**
+     * Callback for Nextcloud operation
+     * @param operation
+     * @param result result of success or failure
+     */
     @Override
     public void onRemoteOperationFinish(RemoteOperation operation, RemoteOperationResult result) {
-        if (!result.isSuccess()) {
-            Toast.makeText(this, R.string.todo_operation_finished_in_fail, Toast.LENGTH_SHORT).show();
-            Log.e(LOG_TAG, result.getLogMessage(), result.getException());
-
+        phimpmeProgressBarHandler.hide();
+        if (!result.isSuccess()){
+            Snackbar.make(parent, R.string.login_again, Snackbar.LENGTH_LONG)
+                    .setAction(R.string.exit, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            goToHome();
+                        }
+                    }).show();
+        } else if (result.isSuccess()){
+            Snackbar.make(parent, R.string.todo_operation_finished_in_success, Snackbar.LENGTH_LONG).show();
         } else if (operation instanceof UploadRemoteFileOperation ) {
-            onSuccessfulUpload((UploadRemoteFileOperation)operation, result);
-
-        } else {
-            Toast.makeText(this, R.string.todo_operation_finished_in_success, Toast.LENGTH_SHORT).show();
+            onSuccessfulUpload();
         }
     }
 
-    private void onSuccessfulUpload(UploadRemoteFileOperation operation, RemoteOperationResult result) {
+    private void onSuccessfulUpload() {
         startRefresh();
     }
 
