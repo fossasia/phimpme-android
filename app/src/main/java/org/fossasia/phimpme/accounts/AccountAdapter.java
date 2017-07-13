@@ -27,7 +27,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
     private Realm realm = Realm.getDefaultInstance();
     private RealmQuery<AccountDatabase> realmResult = realm.where(AccountDatabase.class);
 
-    public String accountName[] = {"Facebook", "Twitter", "Drupal", "NextCloud", "Wordpress"};
+    public String accountName[] = {"Facebook", "Twitter", "Drupal", "NextCloud", "Wordpress", "Pinterest"};
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
