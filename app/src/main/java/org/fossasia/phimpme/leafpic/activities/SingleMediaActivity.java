@@ -11,6 +11,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -22,6 +23,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.ActionMenuView;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -36,16 +38,19 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.yalantis.ucrop.UCrop;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.SharingActivity;
 import org.fossasia.phimpme.base.SharedMediaActivity;
+import org.fossasia.phimpme.base.ThemedActivity;
+import org.fossasia.phimpme.data.local.DatabaseHelper;
+import org.fossasia.phimpme.data.local.ImageDescModel;
 import org.fossasia.phimpme.editor.FileUtils;
 import org.fossasia.phimpme.editor.editimage.EditImageActivity;
 import org.fossasia.phimpme.editor.editimage.utils.BitmapUtils;
@@ -60,10 +65,13 @@ import org.fossasia.phimpme.leafpic.util.Measure;
 import org.fossasia.phimpme.leafpic.util.PreferenceUtil;
 import org.fossasia.phimpme.leafpic.util.SecurityHelper;
 import org.fossasia.phimpme.leafpic.util.StringUtils;
+import org.fossasia.phimpme.leafpic.util.ThemeHelper;
 import org.fossasia.phimpme.leafpic.views.HackyViewPager;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 
 import java.io.File;
+
+import io.realm.Realm;
 
 /**
  * Created by dnld on 18/02/16.
@@ -92,13 +100,16 @@ public class SingleMediaActivity extends SharedMediaActivity {
     private String path;
     private SingleMediaActivity context;
     public static final String EXTRA_OUTPUT = "extra_output";
-    private String pathForDescriptionActivity;
+    private String pathForDescription;
     public Boolean allPhotoMode;
     public int all_photo_pos;
     public int size_all;
     public int current_image_pos;
     private Uri uri;
     ActionMenuView bottomBar;
+    private Realm realm;
+    private DatabaseHelper databaseHelper;
+    ImageDescModel temp;
 
 
     @Override
@@ -117,10 +128,8 @@ public class SingleMediaActivity extends SharedMediaActivity {
         all_photo_pos = getIntent().getIntExtra(getString(R.string.position), 0);
         size_all = getIntent().getIntExtra(getString(R.string.allMediaSize), getAlbum().getCount());
 
-        //For description activity only
         String path2 = getIntent().getStringExtra("path");
-        this.pathForDescriptionActivity=path2;
-        //
+        pathForDescription = path2;
 
         if (savedInstanceState != null)
             mViewPager.setLocked(savedInstanceState.getBoolean(ISLOCKED_ARG, false));
@@ -130,6 +139,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
             if ((getIntent().getAction().equals(Intent.ACTION_VIEW) || getIntent().getAction().equals(ACTION_REVIEW)) && getIntent().getData() != null) {
 
                 String path = ContentHelper.getMediaPath(getApplicationContext(), getIntent().getData());
+                pathForDescription = path;
                 File file = null;
                 if (path != null)
                     file = new File(path);
@@ -209,6 +219,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
                     getAlbum().setCurrentPhotoIndex(position);
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
                     invalidateOptionsMenu();
+                    pathForDescription = getAlbum().getMedia().get(position).getPath();
                 }
 
                 @Override
@@ -234,6 +245,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
                     getAlbum().setCurrentPhotoIndex(position);
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
                     invalidateOptionsMenu();
+                    pathForDescription = LFMainActivity.listAll.get(current_image_pos).getPath();
                 }
 
                 @Override
@@ -581,9 +593,32 @@ public class SingleMediaActivity extends SharedMediaActivity {
                 break;
 
             case R.id.action_description:
-                Intent intent1 = new Intent(this, DescriptionActivity.class);
-                intent1.putExtra("path", pathForDescriptionActivity);
-                startActivity(intent1);
+                AlertDialog.Builder descriptionDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
+                final EditText editTextDescription = getDescriptionDialog(SingleMediaActivity.this, descriptionDialogBuilder);
+                descriptionDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+
+                descriptionDialogBuilder.setPositiveButton(temp==null?getString(R.string.ok_action).toUpperCase():getString(R.string.update_action), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //This should br empty it will be overwrite later
+                    }
+                });
+
+                final AlertDialog descriptionDialog = descriptionDialogBuilder.create();
+                descriptionDialog.show();
+
+                descriptionDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        descriptionDialog.dismiss();
+
+                        if(temp == null) {
+                            databaseHelper.addImageDesc(new ImageDescModel(pathForDescription,editTextDescription.getText().toString()));
+                        } else {
+                            databaseHelper.update(new ImageDescModel(pathForDescription, editTextDescription.getText().toString()));
+                        }
+                    }
+                });
                 break;
 
             default:
@@ -592,6 +627,30 @@ public class SingleMediaActivity extends SharedMediaActivity {
                 //return super.onOptionsItemSelected(item);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public EditText getDescriptionDialog(final ThemedActivity activity, AlertDialog.Builder descriptionDialog){
+
+        final View DescriptiondDialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_description, null);
+        final TextView DescriptionDialogTitle = (TextView) DescriptiondDialogLayout.findViewById(R.id.description_dialog_title);
+        final CardView DescriptionDialogCard = (CardView) DescriptiondDialogLayout.findViewById(R.id.description_dialog_card);
+        final EditText editxtDescription = (EditText) DescriptiondDialogLayout.findViewById(R.id.description_edittxt);
+
+        DescriptionDialogTitle.setBackgroundColor(activity.getPrimaryColor());
+        DescriptionDialogCard.setBackgroundColor(activity.getCardBackgroundColor());
+        ThemeHelper.setCursorDrawableColor(editxtDescription, activity.getTextColor());
+        editxtDescription.getBackground().mutate().setColorFilter(activity.getTextColor(), PorterDuff.Mode.SRC_ATOP);
+        editxtDescription.setTextColor(activity.getTextColor());
+
+        realm = Realm.getDefaultInstance();
+        databaseHelper =new DatabaseHelper(realm);
+        temp= databaseHelper.getImageDesc(pathForDescription);
+        if(temp != null) {
+            editxtDescription.setText(temp.getTitle());
+            editxtDescription.setSelection(editxtDescription.getText().length());
+        }
+        descriptionDialog.setView(DescriptiondDialogLayout);
+        return editxtDescription;
     }
 
 

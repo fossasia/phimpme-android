@@ -1,7 +1,5 @@
 package org.fossasia.phimpme;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,22 +11,24 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -42,7 +42,9 @@ import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 
 import org.fossasia.phimpme.base.ThemedActivity;
+import org.fossasia.phimpme.editor.editimage.view.imagezoom.ImageViewTouch;
 import org.fossasia.phimpme.leafpic.activities.LFMainActivity;
+import org.fossasia.phimpme.leafpic.util.AlertDialogsHelper;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
 import org.fossasia.phimpme.sharetwitter.HelperMethods;
 import org.fossasia.phimpme.sharetwitter.LoginActivity;
@@ -51,6 +53,7 @@ import org.fossasia.phimpme.utilities.Utils;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -68,14 +71,14 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.share_image)
-    ImageView shareImage;
+    ImageViewTouch shareImage;
     @BindView(R.id.edittext_share_caption)
     TextView text_caption;
-    @BindViews({R.id.icon_00, R.id.icon_01, R.id.icon_10, R.id.icon_11})
+    @BindViews({R.id.icon_00, R.id.icon_01, R.id.icon_10, R.id.icon_11,R.id.icon_20,R.id.icon_21,R.id.icon_30,R.id.icon_31, R.id.icon_40})
     List<ImageView> icons;
-    @BindViews({R.id.title_00, R.id.title_01, R.id.title_10, R.id.title_11})
+    @BindViews({R.id.title_00, R.id.title_01, R.id.title_10, R.id.title_11,R.id.title_20,R.id.title_21,R.id.title_30,R.id.title_31, R.id.title_40})
     List<TextView> titles;
-    @BindViews({R.id.cell_00, R.id.cell_01, R.id.cell_10, R.id.cell_11})
+    @BindViews({R.id.cell_00, R.id.cell_01, R.id.cell_10, R.id.cell_11,R.id.cell_20,R.id.cell_21,R.id.cell_30,R.id.cell_31,R.id.cell_40})
     List<View> cells;
     @BindView(R.id.share_done)
     Button done;
@@ -86,13 +89,19 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     private CallbackManager callbackManager;
     private String caption;
     private boolean atleastOneShare = false;
-    private int[] cellcolors = {R.color.facebook_color, R.color.twitter_color, R.color.instagram_color, R.color.other_share_color};
+    private int[] cellcolors = {R.color.facebook_color, R.color.twitter_color, R.color.instagram_color,
+            R.color.wordpress_color,R.color.pinterest_color,R.color.flickr_color,R.color.nextcloud_color, R.color.imgur_color ,R.color.other_share_color};
     private int[] icons_drawables = {R.drawable.ic_facebook_black, R.drawable.ic_twitter_black,
-            R.drawable.ic_instagram_black, R.drawable.ic_share_minimal};
-    private int[] titles_text = {R.string.facebook, R.string.twitter, R.string.instagram, R.string.other};
+            R.drawable.ic_instagram_black, R.drawable.ic_wordpress_black, R.drawable.ic_pinterest_black,
+            R.drawable.ic_flickr, R.drawable.ic_nextcloud, R.drawable.ic_imgur,R.drawable.ic_share_minimal};
+    private int[] titles_text = {R.string.facebook, R.string.twitter, R.string.instagram,
+            R.string.wordpress, R.string.pinterest, R.string.flickr, R.string.nextcloud,R.string.imgur,R.string.other};
     private Context context;
-    private AlertDialog mAlertBuilder;
     Utils utils = new Utils();
+    Bitmap finalBmp;
+    Boolean isPostedOnTwitter =false;
+
+
 
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
@@ -139,7 +148,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         text_caption.setTextColor(getTextColor());
         text_caption.setHintTextColor(getSubTextColor());
 
-        for (int i = 0; i <= 3; i++) {
+        for (int i = 0; i <= 8; i++) {
             cells.get(i).setOnClickListener(this);
             icons.get(i).setImageResource(icons_drawables[i]);
             titles.get(i).setText(titles_text[i]);
@@ -172,12 +181,22 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 setupFacebookAndShare();
                 break;
             case R.id.cell_01: //twitter
-                sharePhotoToTwitter();
+                postToTwitter();
                 break;
             case R.id.cell_10: //instagram
                 shareToInstagram();
                 break;
-            case R.id.cell_11: //other
+            case R.id.cell_11: //wordpress
+                break;
+            case R.id.cell_20: //pinterest
+                break;
+            case R.id.cell_21: //flickr
+                break;
+            case R.id.cell_30: //nextcloud
+                break;
+            case R.id.cell_31: //imgur
+                break;
+            case R.id.cell_40: //othershare
                 otherShare();
                 break;
             case R.id.share_done:
@@ -192,76 +211,86 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                             }).show();
                 break;
             case R.id.edit_text_caption_container:
-                android.support.v7.app.AlertDialog.Builder passwordDialogBuilder = new android.support.v7.app.AlertDialog.Builder(SharingActivity.this, getDialogStyle());
-                final EditText captionEditText = getCaptionDialog(this, passwordDialogBuilder);
-                if (caption!=null) {
-                    captionEditText.setText(caption);
-                    captionEditText.setSelection(caption.length());
-                }
-
-                passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-                passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //This should br empty it will be overwrite later
-                        //to avoid dismiss of the dialog on wrong password
-                    }
-                });
-
-                final android.support.v7.app.AlertDialog passwordDialog = passwordDialogBuilder.create();
-                passwordDialog.show();
-
-                passwordDialog.getButton(android.support.v7.app.AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String captionText = captionEditText.getText().toString();
-                        if (!captionText.isEmpty()){
-                            caption =captionText;
-                            text_caption.setText(caption);
-                        }
-                        passwordDialog.dismiss();
-                    }
-                });
+                 openCaptionDialogBox();
                 break;
         }
     }
 
-    private void sharePhotoToTwitter() {
+    private void openCaptionDialogBox() {
+        AlertDialog.Builder captionDialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
+        final EditText captionEditText = getCaptionDialog(this, captionDialogBuilder);
+        if (caption!=null) {
+            captionEditText.setText(caption);
+            captionEditText.setSelection(caption.length());
+        }
+
+        captionDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+        captionDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //This should br empty it will be overwrite later
+                //to avoid dismiss of the dialog on wrong password
+            }
+        });
+
+        final AlertDialog passwordDialog = captionDialogBuilder.create();
+        passwordDialog.show();
+
+        passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String captionText = captionEditText.getText().toString();
+                if (!captionText.isEmpty()){
+                    caption =captionText;
+                    text_caption.setText(caption);
+                }
+                passwordDialog.dismiss();
+            }
+        });
+    }
+
+    private void postToTwitter() {
         if(checknetwork()) {
-            if (LoginActivity.isActive(context)) {
-                try {
-                    mAlertBuilder = new AlertDialog.Builder(context).create();
-                    mAlertBuilder.setCancelable(false);
-                    mAlertBuilder.setTitle(R.string.please_wait_title);
-                    View view = getLayoutInflater().inflate(R.layout.view_loading, null);
-                    ((TextView) view.findViewById(R.id.messageTextViewFromLoading)).setText(getString(R.string.posting_image_message));
-                    mAlertBuilder.setView(view);
-                    mAlertBuilder.show();
-
-                    //InputStream inputStream  = view.getContext().getAssets().open("1.png");
-                    Bitmap bmp = BitmapFactory.decodeFile(saveFilePath);
-                    String filename = Environment.getExternalStorageDirectory().toString() + File.separator + "1.png";
-                    Log.d("BITMAP", filename);
-                    FileOutputStream out = new FileOutputStream(saveFilePath);
-                    bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
-
-                    HelperMethods.postToTwitterWithImage(context, ((Activity) context), saveFilePath, caption, new HelperMethods.TwitterCallback() {
-
+            Glide.with(this)
+                    .load(Uri.fromFile(new File(saveFilePath)))
+                    .asBitmap()
+                    .into(new SimpleTarget<Bitmap>(1024, 512) {
                         @Override
-                        public void onFinsihed(Boolean response) {
-                            mAlertBuilder.dismiss();
-                            Snackbar.make(parent, R.string.tweet_posted_on_twitter, Snackbar.LENGTH_LONG).show();
+                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            finalBmp = resource;
+                            new PostToTwitterAsync().execute();
+
                         }
                     });
-
-                } catch (Exception ex) {
-                    Toast.makeText(context, "ERROR", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                startActivity(new Intent(context, LoginActivity.class));
-            }
         }else{
             Snackbar.make(parent, R.string.not_connected, Snackbar.LENGTH_LONG).show();
+        }
+    }
+
+    private void uploadOnTwitter() {
+        if (LoginActivity.isActive(context)) {
+            final File f3 = new File(Environment.getExternalStorageDirectory() + "/twitter_upload/");
+            final File file = new File(Environment.getExternalStorageDirectory() + "/twitter_upload/" + "temp" + ".png");
+            if (!f3.exists())
+                f3.mkdirs();
+            OutputStream outStream;
+            try {
+                outStream = new FileOutputStream(file);
+                finalBmp.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+                outStream.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            String finalFile = file.getAbsolutePath();
+            HelperMethods.postToTwitterWithImage(context, finalFile, caption, new HelperMethods.TwitterCallback() {
+                @Override
+                public void onFinsihed(Boolean response) {
+                    isPostedOnTwitter = response;
+                    file.delete();
+                }
+            });
+        } else {
+            startActivity(new Intent(context, LoginActivity.class));
         }
     }
 
@@ -336,12 +365,12 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             Snackbar.make(parent,R.string.instagram_not_installed,Snackbar.LENGTH_LONG).show();
     }
 
-    /*@Override
+    @Override
     protected void onActivityResult(int requestCode, int responseCode, Intent data) {
         super.onActivityResult(requestCode, responseCode, data);
         callbackManager.onActivityResult(requestCode, responseCode, data);
         atleastOneShare = true;
-    }*/
+    }
 
     private void goToHome() {
         Intent home = new Intent(SharingActivity.this, LFMainActivity.class);
@@ -367,6 +396,35 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         return captionEditext;
     }
 
+
+    private class PostToTwitterAsync extends AsyncTask<Void, Void, Void> {
+        AlertDialog dialog;
+
+        @Override
+        protected void onPreExecute() {
+            AlertDialog.Builder progressDialog = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
+            dialog = AlertDialogsHelper.getProgressDialog(SharingActivity.this, progressDialog,
+                    getString(R.string.posting), getString(R.string.twitter_post));
+            dialog.show();
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            uploadOnTwitter();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            dialog.dismiss();
+            if (isPostedOnTwitter)
+                Snackbar.make(parent, R.string.tweet_posted_on_twitter, Snackbar.LENGTH_LONG).show();
+            else
+                Snackbar.make(parent, R.string.error_on_posting_twitter, Snackbar.LENGTH_LONG).show();
+
+        }
+    }
 
 
 

@@ -5,35 +5,44 @@ import android.graphics.Bitmap.Config;
 import android.util.Log;
 
 import org.opencv.android.OpenCVLoader;
+import org.opencv.android.Utils;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
 
-
-/**op
- * 图片处理类
- *
- * @author 潘易
- */
 public class PhotoProcessing {
     private static final String TAG = "PhotoProcessing";
-
     // /////////////////////////////////////////////
     static {
         if (!OpenCVLoader.initDebug()) {
-            Log.d("Error", "Unable to load OpenCV");
+            Log.e( TAG + " - Error", "Unable to load OpenCV");
         } else {
             System.loadLibrary("photoprocessing");
         }
     }
 
 
-    public static Bitmap processImage(Bitmap srcBitmap, int effectType, int val) {
+    public static Bitmap processImage(Bitmap bitmap, int effectType, int val) {
+        Mat inputMat = new Mat(bitmap.getWidth(), bitmap.getHeight(), CvType.CV_8UC3);
+        Mat outputMat = new Mat();
+        Utils.bitmapToMat(bitmap, inputMat);
         if(!isEnhance(effectType))
-            return filterPhoto(srcBitmap,effectType % 100, val);
+            nativeApplyFilter(effectType % 100,val, inputMat.getNativeObjAddr(), outputMat.getNativeObjAddr());
         else
-            return tunePhoto(srcBitmap,effectType % 100, val);
+            nativeEnhanceImage(effectType % 100,val, inputMat.getNativeObjAddr(), outputMat.getNativeObjAddr());
+
+        inputMat.release();
+
+        if (outputMat !=null){
+            Bitmap outbit = Bitmap.createBitmap(bitmap.getWidth(),bitmap.getHeight(),bitmap.getConfig());
+            Utils.matToBitmap(outputMat,outbit);
+            outputMat.release();
+            return outbit;
+        }
+        return bitmap.copy(bitmap.getConfig(),true);
     }
 
     public static Bitmap filterPhoto(Bitmap bitmap, int position,int value) {
-        if (bitmap != null) {
+        if (bitmap != null && position != 0) {
             sendBitmapToNative(bitmap);
         }
         switch (position) {
@@ -87,48 +96,12 @@ public class PhotoProcessing {
         return filteredBitmap;
     }
 
-    private static Bitmap tunePhoto(Bitmap bitmap, int mode, int val) {
-        if (bitmap != null) {
-            sendBitmapToNative(bitmap);
-        }
-        switch (mode) {
-            case 0:
-                nativeTuneBrightness(val);
-                break;
-            case 1:
-                nativeTuneContrast(val);
-                break;
-            case 2:
-                nativeTuneHue(val);
-                break;
-            case 3:
-                nativeTuneSaturation(val);
-                break;
-            case 4:
-                nativeTuneTemperature(val);
-                break;
-            case 5:
-                nativeTuneTint(val);
-                break;
-            case 6:
-                nativeTuneVignette(val);
-                break;
-            case 7:
-                nativeTuneSharpen(val);
-                break;
-            case 8:
-                nativeTuneBlur(val);
-                break;
-        }
-        Bitmap filteredBitmap = getBitmapFromNative(bitmap);
-        nativeDeleteBitmap();
-        return filteredBitmap;
-    }
+    private static native void nativeApplyFilter(int mode, int val, long inpAddr, long outAddr);
+    private static native void nativeEnhanceImage(int mode, int val, long inpAddr, long outAddr);
 
     private static boolean isEnhance(int effectType) {
         return (effectType/300==1);
     }
-
 
     public static native int nativeInitBitmap(int width, int height);
 
@@ -141,12 +114,6 @@ public class PhotoProcessing {
     public static native int nativeGetBitmapHeight();
 
     public static native void nativeDeleteBitmap();
-
-    public static native int nativeRotate90();
-
-    public static native void nativeRotate180();
-
-    public static native void nativeFlipHorizontally();
 
     public static native void nativeApplyInstafix(int value);
     public static native void nativeApplyAnsel(int value);
@@ -162,21 +129,6 @@ public class PhotoProcessing {
     public static native void nativeApplyGrain(int value);
     public static native void nativeApplyThreshold(int value);
     public static native void nativeEqualizeHist(int value);
-
-    public static native void nativeLoadResizedJpegBitmap(byte[] jpegData,
-                                                          int size, int maxPixels);
-
-    public static native void nativeTuneBrightness(int val);
-    public static native void nativeTuneContrast(int val);
-    public static native void nativeTuneHue(int val);
-    public static native void nativeTuneSaturation(int val);
-    public static native void nativeTuneTemperature(int val);
-    public static native void nativeTuneVignette(int val);
-    public static native void nativeTuneSharpen(int val);
-    public static native void nativeTuneBlur(int val);
-    public static native void nativeTuneTint(int val);
-
-    public static native void nativeResizeBitmap(int newWidth, int newHeight);
 
     private static void sendBitmapToNative(Bitmap bitmap) {
         int width = bitmap.getWidth();
@@ -212,50 +164,6 @@ public class PhotoProcessing {
             bitmap.setPixels(pixels, 0, width, 0, y, width, 1);
         }
 
-        return bitmap;
-    }
-
-    public static Bitmap makeBitmapMutable(Bitmap bitmap) {
-        sendBitmapToNative(bitmap);
-        return getBitmapFromNative(bitmap);
-    }
-
-    public static Bitmap rotate(Bitmap bitmap, int angle) {
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-        Config config = bitmap.getConfig();
-        nativeInitBitmap(width, height);
-        sendBitmapToNative(bitmap);
-
-        if (angle == 90) {
-            nativeRotate90();
-            bitmap.recycle();
-            bitmap = Bitmap.createBitmap(height, width, config);
-            bitmap = getBitmapFromNative(bitmap);
-            nativeDeleteBitmap();
-        } else if (angle == 180) {
-            nativeRotate180();
-            bitmap.recycle();
-            bitmap = Bitmap.createBitmap(width, height, config);
-            bitmap = getBitmapFromNative(bitmap);
-            nativeDeleteBitmap();
-        } else if (angle == 270) {
-            nativeRotate180();
-            nativeRotate90();
-            bitmap.recycle();
-            bitmap = Bitmap.createBitmap(height, width, config);
-            bitmap = getBitmapFromNative(bitmap);
-            nativeDeleteBitmap();
-        }
-        return bitmap;
-    }
-
-    public static Bitmap flipHorizontally(Bitmap bitmap) {
-        nativeInitBitmap(bitmap.getWidth(), bitmap.getHeight());
-        sendBitmapToNative(bitmap);
-        nativeFlipHorizontally();
-        bitmap = getBitmapFromNative(bitmap);
-        nativeDeleteBitmap();
         return bitmap;
     }
 

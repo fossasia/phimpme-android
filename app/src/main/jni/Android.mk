@@ -12,7 +12,7 @@ LOCAL_MODULE    := photoprocessing
 LOCAL_CFLAGS := -DANDROID_NDK \
                 -DDISABLE_IMPORTGL
 
-LOCAL_SRC_FILES := bicubic_resize.c bitmap.c blur.c colour_space.c filter.c matrix.c mem_utils.c nanojpeg.c photo_processing.c transform.c tune.c
+LOCAL_SRC_FILES := main_processing.cpp enhance.cpp bicubic_resize.c bitmap.c blur.c colour_space.c filter.c matrix.c mem_utils.c nanojpeg.c photo_processing.c transform.c tune.c
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
 LOCAL_LDLIBS    += -lm -llog
 

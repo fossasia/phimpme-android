@@ -381,9 +381,20 @@
     <color name="facebook_color">#3b5998</color>
     <color name="twitter_color">#48A2E5</color>
     <color name="instagram_color">#D42473</color>
+    <color name="wordpress_color">#21759B</color>
+    <color name="pinterest_color">#C92228</color>
+    <color name="flickr_color">#FC329B</color>
+    <color name="nextcloud_color">#1480E6</color>
+    <color name="imgur_color">#000000</color>
     <color name="other_share_color">@color/md_indigo_900</color>
     <color name="card_background">#e1e0e0</color>
     <!-- Drupal Login-->
     <color name="button_background">#d67601</color>
     <color name="background">#5fb0c9</color>
+    <color name="login_text_hint_color">#7fC0E3</color>
+    <color name="secondary_button_color">#D6D7D7</color>
+    <color name="owncloud_blue_bright">#00ddff</color>
+
+    <!--Wordpress Login-->
+    <color name="wordpress_color_login">#48A2E5</color>
 </resources>
