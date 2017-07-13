@@ -44,11 +44,18 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
+
+import com.pinterest.android.pdk.PDKCallback;
+import com.pinterest.android.pdk.PDKClient;
+import com.pinterest.android.pdk.PDKException;
+import com.pinterest.android.pdk.PDKResponse;
+
 
 import static android.support.design.widget.Snackbar.LENGTH_LONG;
 
@@ -72,8 +79,9 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private AccountDatabase account;
     private DatabaseHelper databaseHelper;
     private Context context;
+    private PDKClient pdkClient;
 
-    public String[] accountsList = {"Facebook", "Twitter", "Drupal", "NextCloud", "Wordpress"};
+    public String[] accountsList = {"Facebook", "Twitter", "Drupal", "NextCloud", "Wordpress", "Pinterest"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,6 +105,10 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         getSupportActionBar().setTitle(R.string.title_account);
 
         phimpmeProgressBarHandler.show();
+
+        pdkClient = PDKClient.configureInstance(this, getResources().getString(R.string.pinterest_app_id));
+        pdkClient.onConnect(this);
+        pdkClient.setDebugMode(true);
     }
 
     @Override
@@ -176,6 +188,9 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     startActivity(WordpressShare);
                     break;
 
+                case 5:
+                    signInPinterest();
+
                 default:
                     Toast.makeText(this, R.string.feature_not_present,
                             Toast.LENGTH_SHORT).show();
@@ -203,6 +218,55 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                                 }
                             })
                     .show();
+        }
+    }
+
+    private void signInPinterest() {
+
+        if (accountPresenter.checkAlreadyExist(accountsList[5])) {
+            Toast.makeText(this, R.string.already_signed_in,
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            List scopes = new ArrayList<String>();
+            scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_PUBLIC);
+            scopes.add(PDKClient.PDKCLIENT_PERMISSION_WRITE_PUBLIC);
+            scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_RELATIONSHIPS);
+            scopes.add(PDKClient.PDKCLIENT_PERMISSION_WRITE_RELATIONSHIPS);
+
+            pdkClient.login(this, scopes, new PDKCallback() {
+                @Override
+                public void onSuccess(PDKResponse response) {
+                    Log.d(getClass().getName(), response.getData().toString());
+
+                    // Begin realm transaction
+                    realm.beginTransaction();
+
+                    // Creating Realm object for AccountDatabase Class
+                    account = realm.createObject(AccountDatabase.class,
+                            accountsList[5]);
+
+                    PDKClient.getInstance().getPath("me/", null, new PDKCallback() {
+                        @Override
+                        public void onSuccess(PDKResponse response) {
+
+                        }
+                    });
+
+                    // Writing values in Realm database
+                    account.setUsername(String.valueOf(response.getUser()));
+
+                    // Finally committing the whole data
+                    realm.commitTransaction();
+
+                    Toast.makeText(AccountActivity.this, R.string.success, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(PDKException exception) {
+                    Log.e(getClass().getName(), exception.getDetailMessage());
+                    Toast.makeText(AccountActivity.this, R.string.fail, Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
@@ -348,5 +412,8 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         super.onActivityResult(requestCode, resultCode, data);
         client.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+        pdkClient.onOauthResponse(requestCode, resultCode,
+                data);
+
     }
 }
