@@ -1205,16 +1205,12 @@ public class LFMainActivity extends SharedMediaActivity {
             case R.id.name_sort_action:
                 if (albumsMode) {
                     getAlbums().setDefaultSortingMode(NAME);
-                    getAlbums().sortAlbums(getApplicationContext());
-                    albumsAdapter.swapDataSet(getAlbums().dispAlbums);
+                    new SortingUtilsAlbums().execute();
                 } else {
                     getAlbum().setDefaultSortingMode(getApplicationContext(), NAME);
-                    getAlbum().sortPhotos();
-                    mediaAdapter.swapDataSet(getAlbum().getMedia());
+                    new SortingUtilsPhtots().execute();
                     if (all_photos) {
-
-                        Collections.sort(listAll, MediaComparators.getComparator(getAlbum().settings.getSortingMode(), getAlbum().settings.getSortingOrder()));
-                        mediaAdapter.swapDataSet(listAll);
+                        new SortingUtilsListAll().execute();
                     }
                 }
                 item.setChecked(true);
@@ -1223,15 +1219,12 @@ public class LFMainActivity extends SharedMediaActivity {
             case R.id.date_taken_sort_action:
                 if (albumsMode) {
                     getAlbums().setDefaultSortingMode(DATE);
-                    getAlbums().sortAlbums(getApplicationContext());
-                    albumsAdapter.swapDataSet(getAlbums().dispAlbums);
+                    new SortingUtilsAlbums().execute();
                 } else {
                     getAlbum().setDefaultSortingMode(getApplicationContext(), DATE);
-                    getAlbum().sortPhotos();
-                    mediaAdapter.swapDataSet(getAlbum().getMedia());
+                    new SortingUtilsPhtots().execute();
                     if (all_photos) {
-                        Collections.sort(listAll, MediaComparators.getComparator(getAlbum().settings.getSortingMode(), getAlbum().settings.getSortingOrder()));
-                        mediaAdapter.swapDataSet(listAll);
+                        new SortingUtilsListAll().execute();
                     }
                 }
                 item.setChecked(true);
@@ -1240,15 +1233,12 @@ public class LFMainActivity extends SharedMediaActivity {
             case R.id.size_sort_action:
                 if (albumsMode) {
                     getAlbums().setDefaultSortingMode(SIZE);
-                    getAlbums().sortAlbums(getApplicationContext());
-                    albumsAdapter.swapDataSet(getAlbums().dispAlbums);
+                    new SortingUtilsAlbums().execute();
                 } else {
                     getAlbum().setDefaultSortingMode(getApplicationContext(), SIZE);
-                    getAlbum().sortPhotos();
-                    mediaAdapter.swapDataSet(getAlbum().getMedia());
+                    new SortingUtilsPhtots().execute();
                     if (all_photos) {
-                        Collections.sort(listAll, MediaComparators.getComparator(getAlbum().settings.getSortingMode(), getAlbum().settings.getSortingOrder()));
-                        mediaAdapter.swapDataSet(listAll);
+                        new SortingUtilsListAll().execute();
                     }
                 }
                 item.setChecked(true);
@@ -1257,15 +1247,12 @@ public class LFMainActivity extends SharedMediaActivity {
             case R.id.numeric_sort_action:
                 if (albumsMode) {
                     getAlbums().setDefaultSortingMode(NUMERIC);
-                    getAlbums().sortAlbums(getApplicationContext());
-                    albumsAdapter.swapDataSet(getAlbums().dispAlbums);
+                    new SortingUtilsAlbums().execute();
                 } else {
                     getAlbum().setDefaultSortingMode(getApplicationContext(), NUMERIC);
-                    getAlbum().sortPhotos();
-                    mediaAdapter.swapDataSet(getAlbum().getMedia());
+                    new SortingUtilsPhtots().execute();
                     if (all_photos) {
-                        Collections.sort(listAll, MediaComparators.getComparator(getAlbum().settings.getSortingMode(), getAlbum().settings.getSortingOrder()));
-                        mediaAdapter.swapDataSet(listAll);
+                        new SortingUtilsListAll().execute();
                     }
                 }
                 item.setChecked(true);
@@ -1274,15 +1261,12 @@ public class LFMainActivity extends SharedMediaActivity {
             case R.id.ascending_sort_action:
                 if (albumsMode) {
                     getAlbums().setDefaultSortingAscending(item.isChecked() ? SortingOrder.DESCENDING : SortingOrder.ASCENDING);
-                    getAlbums().sortAlbums(getApplicationContext());
-                    albumsAdapter.swapDataSet(getAlbums().dispAlbums);
+                    new SortingUtilsAlbums().execute();
                 } else {
                     getAlbum().setDefaultSortingAscending(getApplicationContext(), item.isChecked() ? SortingOrder.DESCENDING : SortingOrder.ASCENDING);
-                    getAlbum().sortPhotos();
-                    mediaAdapter.swapDataSet(getAlbum().getMedia());
+                    new SortingUtilsPhtots().execute();
                     if (all_photos) {
-                        Collections.sort(listAll, MediaComparators.getComparator(getAlbum().settings.getSortingMode(), getAlbum().settings.getSortingOrder()));
-                        mediaAdapter.swapDataSet(listAll);
+                        new SortingUtilsListAll().execute();
                     }
                 }
                 item.setChecked(!item.isChecked());
@@ -1755,6 +1739,81 @@ public class LFMainActivity extends SharedMediaActivity {
             finishEditMode();
             toolbar.setTitle(getString(R.string.all_media));
             clearSelectedPhotos();
+        }
+    }
+
+    /*
+    Async Class for Sorting Photos - NOT listAll
+     */
+    private class SortingUtilsPhtots extends AsyncTask<Void,Void,Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            swipeRefreshLayout.setRefreshing(true);
+        }
+
+        @Override
+        protected Void doInBackground(Void... aVoid) {
+            getAlbum().sortPhotos();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            swipeRefreshLayout.setRefreshing(false);
+            mediaAdapter.swapDataSet(getAlbum().getMedia());
+        }
+    }
+
+    /*
+    Async Class for Sorting Photos - listAll
+     */
+    private class SortingUtilsListAll extends AsyncTask<Void,Void,Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            swipeRefreshLayout.setRefreshing(true);
+        }
+
+        @Override
+        protected Void doInBackground(Void... aVoid) {
+            Collections.sort(listAll, MediaComparators.getComparator(getAlbum().settings.getSortingMode(), getAlbum().settings.getSortingOrder()));
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            swipeRefreshLayout.setRefreshing(false);
+            mediaAdapter.swapDataSet(listAll);
+        }
+    }
+
+    /*
+    Async Class for Sorting Albums
+     */
+    private class SortingUtilsAlbums extends AsyncTask<Void,Void,Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            swipeRefreshLayout.setRefreshing(true);
+        }
+
+        @Override
+        protected Void doInBackground(Void... aVoid) {
+            getAlbums().sortAlbums(getApplicationContext());
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            swipeRefreshLayout.setRefreshing(false);
+            albumsAdapter.swapDataSet(getAlbums().dispAlbums);
         }
     }
 
