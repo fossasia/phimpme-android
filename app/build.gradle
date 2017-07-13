@@ -180,6 +180,7 @@ dependencies {
     compile 'com.uphyca:stetho_realm:2.0.0'
     compile 'com.android.support:multidex:1.0.1'
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
+    compile project(':pdk')
 }
 
 kapt {

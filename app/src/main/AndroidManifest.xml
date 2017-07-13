@@ -292,10 +292,10 @@
             android:name=".SharingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
+       <!-- <activity
             android:name=".accounts.AccountActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar" />-->
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -309,7 +309,14 @@
         <activity
             android:name=".accounts.AccountActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+        <intent-filter>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="pdk4910600717739247160" />
+        </intent-filter>
+        </activity>
         <activity
             android:name=".sharedrupal.DrupalLogin"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
