@@ -872,4 +872,9 @@
     <!--Wordpress-->
     <string name="sharewordpress">Wordpress Account</string>
 
+    <!--Pinterest-->
+    <string name="pinterest_app_id">4910600717739247160</string>
+    <string name="success">Success</string>
+    <string name="fail">Login Fail</string>
+
 </resources>
