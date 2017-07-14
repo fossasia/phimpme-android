@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
@@ -26,6 +25,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -49,17 +56,27 @@ import org.fossasia.phimpme.leafpic.util.ThemeHelper;
 import org.fossasia.phimpme.sharetwitter.HelperMethods;
 import org.fossasia.phimpme.sharetwitter.LoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
+import org.fossasia.phimpme.utilities.Constants;
 import org.fossasia.phimpme.utilities.Utils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
+
+import static org.fossasia.phimpme.utilities.Utils.copyToClipBoard;
+import static org.fossasia.phimpme.utilities.Utils.getBitmapFromPath;
+import static org.fossasia.phimpme.utilities.Utils.getStringImage;
+
 
 public class SharingActivity extends ThemedActivity implements View.OnClickListener {
 
@@ -100,6 +117,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     Utils utils = new Utils();
     Bitmap finalBmp;
     Boolean isPostedOnTwitter =false;
+
 
 
 
@@ -195,6 +213,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             case R.id.cell_30: //nextcloud
                 break;
             case R.id.cell_31: //imgur
+                imgurShare();
                 break;
             case R.id.cell_40: //othershare
                 otherShare();
@@ -324,8 +343,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void sharePhotoToFacebook() {
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        Bitmap image = BitmapFactory.decodeFile(saveFilePath, bmOptions);
+        Bitmap image = getBitmapFromPath(saveFilePath);
         SharePhoto photo = new SharePhoto.Builder()
                 .setBitmap(image)
                 .setCaption(caption)
@@ -365,13 +383,72 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             Snackbar.make(parent,R.string.instagram_not_installed,Snackbar.LENGTH_LONG).show();
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int responseCode, Intent data) {
-        super.onActivityResult(requestCode, responseCode, data);
-        callbackManager.onActivityResult(requestCode, responseCode, data);
-        atleastOneShare = true;
-    }
+    private void imgurShare() {
+        if(checknetwork()) {
+            final AlertDialog dialog;
+            final AlertDialog.Builder progressDialog = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
+            dialog = AlertDialogsHelper.getProgressDialog(SharingActivity.this, progressDialog,
+                    getString(R.string.posting_on_imgur), getString(R.string.please_wait));
+            dialog.show();
+            Bitmap bitmap = getBitmapFromPath(saveFilePath);
+            final String imageString = getStringImage(bitmap);
+            //sending image to server
+            StringRequest request = new StringRequest(Request.Method.POST, Constants.IMGUR_IMAGE_UPLOAD_URL, new Response.Listener<String>(){
+                @Override
+                public void onResponse(String s) {
+                    dialog.dismiss();
+                    JSONObject jsonObject = null;
 
+                    try {
+                        jsonObject = new JSONObject(s);
+                        Boolean success = jsonObject.getBoolean("success");
+                        if(success){
+                            String url = jsonObject.getJSONObject("data").getString("link");
+                            Snackbar.make(parent, R.string.uploaded_on_imgur, Snackbar.LENGTH_LONG).show();
+                            copyToClipBoard(SharingActivity.this,url);
+                            //// TODO: 13/7/17 Implement Dialog box
+                        }
+                        else{
+                            Snackbar.make(parent, R.string.error_on_imgur, Snackbar.LENGTH_LONG).show();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            },new Response.ErrorListener(){
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    dialog.dismiss();
+                    Snackbar.make(parent, R.string.error_volly, Snackbar.LENGTH_LONG).show(); // add volleyError to check error
+                }
+            }) {
+                //adding parameters to send
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> parameters = new HashMap<String, String>();
+                    parameters.put("image", imageString);
+                    if(caption!=null && !caption.isEmpty())
+                        parameters.put("title",caption);
+
+                    return parameters;
+                }
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new HashMap<String, String>();
+                    headers.put("Authorization", getClientAuth());
+                    return headers;
+                }
+
+
+            };
+            request.setRetryPolicy(new DefaultRetryPolicy( 50000, 5, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            RequestQueue rQueue = Volley.newRequestQueue(SharingActivity.this);
+            rQueue.add(request);
+        }
+        else{
+            Snackbar.make(parent, R.string.not_connected, Snackbar.LENGTH_LONG).show();
+        }
+    }
     private void goToHome() {
         Intent home = new Intent(SharingActivity.this, LFMainActivity.class);
         startActivity(home);
@@ -397,6 +474,10 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
 
+    public static String getClientAuth() {
+        return "Client-ID " + Constants.MY_IMGUR_CLIENT_ID;
+    }
+
     private class PostToTwitterAsync extends AsyncTask<Void, Void, Void> {
         AlertDialog dialog;
 
@@ -404,7 +485,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         protected void onPreExecute() {
             AlertDialog.Builder progressDialog = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
             dialog = AlertDialogsHelper.getProgressDialog(SharingActivity.this, progressDialog,
-                    getString(R.string.posting), getString(R.string.twitter_post));
+                    getString(R.string.posting_twitter), getString(R.string.please_wait));
             dialog.show();
             super.onPreExecute();
         }
