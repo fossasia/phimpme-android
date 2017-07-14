@@ -303,8 +303,8 @@ public class LFMainActivity extends SharedMediaActivity {
         if (getIntent().getExtras()!=null)
             pickMode = getIntent().getExtras().getBoolean(SplashScreen.PICK_MODE);
         SP.putBoolean(getString(R.string.preference_use_alternative_provider), false);
-        initAllPhotos();
         initUI();
+        new initAllPhotos().execute();
         displayData(getIntent().getExtras());
         checkNothing();
     }
@@ -432,11 +432,15 @@ public class LFMainActivity extends SharedMediaActivity {
         return false;
     }
 
-    private void initAllPhotos() {
-        listAll = StorageProvider.getAllShownImages(LFMainActivity.this);
-        size = listAll.size();
-        media = listAll;
-        Collections.sort(listAll, MediaComparators.getComparator(getAlbum().settings.getSortingMode(), getAlbum().settings.getSortingOrder()));
+    private class initAllPhotos extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            listAll = StorageProvider.getAllShownImages(LFMainActivity.this);
+            size = listAll.size();
+            media = listAll;
+            Collections.sort(listAll, MediaComparators.getComparator(getAlbum().settings.getSortingMode(), getAlbum().settings.getSortingOrder()));
+            return null;
+        }
     }
 
     private void initUI() {
