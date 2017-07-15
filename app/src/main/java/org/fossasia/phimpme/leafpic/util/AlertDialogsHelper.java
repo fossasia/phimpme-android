@@ -62,7 +62,7 @@ public class AlertDialogsHelper {
         return dialogBuilder.create();
     }
 
-    public static AlertDialog getTextDialog(final ThemedActivity activity, AlertDialog.Builder textDialogBuilder, @StringRes int title, @StringRes int Message){
+    public static AlertDialog getTextDialog(final ThemedActivity activity, AlertDialog.Builder textDialogBuilder, @StringRes int title, @StringRes int Message, String msg){
         View dialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_text, null);
 
         TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.text_dialog_title);
@@ -71,7 +71,8 @@ public class AlertDialogsHelper {
         ((CardView) dialogLayout.findViewById(R.id.message_card)).setCardBackgroundColor(activity.getCardBackgroundColor());
         dialogTitle.setBackgroundColor(activity.getPrimaryColor());
         dialogTitle.setText(title);
-        dialogMessage.setText(Message);
+        if (msg != null) dialogMessage.setText(msg);
+        else dialogMessage.setText(Message);
         dialogMessage.setTextColor(activity.getTextColor());
         textDialogBuilder.setView(dialogLayout);
         return textDialogBuilder.create();
