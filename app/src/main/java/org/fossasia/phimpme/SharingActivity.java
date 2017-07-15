@@ -110,7 +110,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             R.color.wordpress_color,R.color.pinterest_color,R.color.flickr_color,R.color.nextcloud_color, R.color.imgur_color ,R.color.other_share_color};
     private int[] icons_drawables = {R.drawable.ic_facebook_black, R.drawable.ic_twitter_black,
             R.drawable.ic_instagram_black, R.drawable.ic_wordpress_black, R.drawable.ic_pinterest_black,
-            R.drawable.ic_flickr, R.drawable.ic_nextcloud, R.drawable.ic_imgur,R.drawable.ic_share_minimal};
+            R.drawable.ic_flickr_black, R.drawable.ic_nextcloud, R.drawable.ic_imgur,R.drawable.ic_share_minimal};
     private int[] titles_text = {R.string.facebook, R.string.twitter, R.string.instagram,
             R.string.wordpress, R.string.pinterest, R.string.flickr, R.string.nextcloud,R.string.imgur,R.string.other};
     private Context context;
