@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
@@ -350,7 +351,7 @@ public class PDKClient {
         String path =  PINS + pinId;
         getPath(path, getMapWithFields(fields), callback);
     }
-
+/*
     public void createPin(String note, String boardId, String imageUrl, String link, PDKCallback callback) {
         if (Utils.isEmpty(note) || Utils.isEmpty(boardId) || Utils.isEmpty(imageUrl)) {
             if (callback != null) callback.onFailure(new PDKException("Board Id, note, Image cannot be empty"));
@@ -361,6 +362,20 @@ public class PDKClient {
         params.put("note", note);
         if (!Utils.isEmpty(link)) params.put("link", link);
         if (!Utils.isEmpty(link)) params.put("image_url", imageUrl);
+        postPath(PINS, params, callback);
+    }*/
+
+    public void createPin(String note, String boardId, Bitmap image, String link, PDKCallback callback) {
+        if (Utils.isEmpty(note) || Utils.isEmpty(boardId) || image == null) {
+            if (callback != null) callback.onFailure(new PDKException("Board Id, note, Image cannot be empty"));
+            return;
+        }
+
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("board", boardId);
+        params.put("note", note);
+        params.put("image_base64", Utils.base64String(image));
+        if (!Utils.isEmpty(link)) params.put("link", link);
         postPath(PINS, params, callback);
     }
 
