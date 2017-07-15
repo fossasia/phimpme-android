@@ -33,13 +33,13 @@ import com.twitter.sdk.android.core.TwitterException;
 import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 
-import org.fossasia.phimpme.NextCloudAuth;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.PhimpmeProgressBarHandler;
 import org.fossasia.phimpme.base.RecyclerItemClickListner;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
+import org.fossasia.phimpme.nextcloud.NextCloudAuth;
 import org.fossasia.phimpme.sharedrupal.DrupalLogin;
 import org.fossasia.phimpme.sharewordpress.WordpressLoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
@@ -79,6 +79,8 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private PDKClient pdkClient;
 
     public String[] accountsList = {"Facebook", "Twitter", "Drupal", "NextCloud", "Wordpress", "Pinterest"};
+    private static final int NEXTCLOUD_REQUEST_CODE = 1;
+    private static final int RESULT_OK = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -177,7 +179,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
                 case 3:
                     Intent nextCloudShare = new Intent(getContext(), NextCloudAuth.class);
-                    startActivity(nextCloudShare);
+                    startActivityForResult(nextCloudShare, NEXTCLOUD_REQUEST_CODE);
                     break;
 
                 case 4:
@@ -412,5 +414,20 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         pdkClient.onOauthResponse(requestCode, resultCode,
                 data);
 
+        if (requestCode == NEXTCLOUD_REQUEST_CODE && resultCode == RESULT_OK){
+            // Begin realm transaction
+            realm.beginTransaction();
+
+            // Creating Realm object for AccountDatabase Class
+            account = realm.createObject(AccountDatabase.class,
+                    accountsList[3]);
+
+            // Writing values in Realm database
+            account.setUsername(data.getStringExtra(getString(R.string.auth_username)));
+            account.setPassword(data.getStringExtra(getString(R.string.auth_password)));
+
+            // Finally committing the whole data
+            realm.commitTransaction();
+        }
     }
 }
