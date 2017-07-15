@@ -19,6 +19,9 @@ extern "C" {
         Mat &dst = *(Mat *) outAddr;
 
         switch (mode) {
+            case 0:
+                dst = src.clone();
+                break;
             case 1: // Black and White
                 applyBW(src, dst, val);
                 break;
@@ -36,7 +39,7 @@ extern "C" {
                 break;
             case 6: // Cyano
                 applyEdges(src, dst, val);
-                break;/*
+                break;
             case 7: // Georgia
                 applyGrain(src, dst, val);
                 break;
