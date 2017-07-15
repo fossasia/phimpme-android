@@ -883,6 +883,10 @@
     <string name="pinterest_app_id">4910600717739247160</string>
     <string name="success">Success</string>
     <string name="fail">Login Fail</string>
+    <string name="Pinterest_fail">BoardID or caption cannot be empty</string>
+    <string name="post_action">POST</string>
+    <string name="hint_boardID">Board ID</string>
+    <string name="pinterest_post">Image posted successfully</string>
 
 
 </resources>

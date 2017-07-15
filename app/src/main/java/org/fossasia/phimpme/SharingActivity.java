@@ -18,12 +18,14 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -47,6 +49,10 @@ import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
+import com.pinterest.android.pdk.PDKCallback;
+import com.pinterest.android.pdk.PDKClient;
+import com.pinterest.android.pdk.PDKException;
+import com.pinterest.android.pdk.PDKResponse;
 
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.editor.editimage.view.imagezoom.ImageViewTouch;
@@ -117,7 +123,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     Utils utils = new Utils();
     Bitmap finalBmp;
     Boolean isPostedOnTwitter =false;
-
+    String boardID;
 
 
 
@@ -207,6 +213,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             case R.id.cell_11: //wordpress
                 break;
             case R.id.cell_20: //pinterest
+                openPinterestDialogBox();
                 break;
             case R.id.cell_21: //flickr
                 break;
@@ -264,6 +271,57 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                     text_caption.setText(caption);
                 }
                 passwordDialog.dismiss();
+            }
+        });
+    }
+
+    private void openPinterestDialogBox() {
+        AlertDialog.Builder captionDialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
+        final EditText captionEditText = getCaptionDialog(this, captionDialogBuilder);
+
+        captionEditText.setHint(R.string.hint_boardID);
+
+        captionDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+        captionDialogBuilder.setPositiveButton(getString(R.string.post_action).toUpperCase(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //This should br empty it will be overwrite later
+                //to avoid dismiss of the dialog on wrong password
+            }
+        });
+
+        final AlertDialog passwordDialog = captionDialogBuilder.create();
+        passwordDialog.show();
+
+        passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String captionText = captionEditText.getText().toString();
+                boardID =captionText;
+                shareToPinterest(boardID);
+                passwordDialog.dismiss();
+            }
+        });
+    }
+
+    private void shareToPinterest(final String boardID) {
+        Bitmap image = getBitmapFromPath(saveFilePath);
+        PDKClient
+                .getInstance().createPin(caption, boardID, image, null, new PDKCallback() {
+            @Override
+            public void onSuccess(PDKResponse response) {
+                Log.d(getClass().getName(), response.getData().toString());
+                Snackbar.make(parent, R.string.pinterest_post, Snackbar.LENGTH_LONG).show();
+                //Toast.makeText(SharingActivity.this,message,Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onFailure(PDKException exception) {
+                Log.e(getClass().getName(), exception.getDetailMessage());
+                Snackbar.make(parent, R.string.Pinterest_fail, Snackbar.LENGTH_LONG).show();
+                //Toast.makeText(SharingActivity.this, boardID + caption, Toast.LENGTH_SHORT).show();
+
             }
         });
     }
