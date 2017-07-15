@@ -572,7 +572,7 @@ public class LFMainActivity extends SharedMediaActivity {
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
 
         AlertDialogsHelper.getTextDialog(LFMainActivity.this, dialogBuilder,
-                R.string.sd_card_write_permission_title, R.string.sd_card_permissions_message);
+                R.string.sd_card_write_permission_title, R.string.sd_card_permissions_message, null);
 
         dialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
             @Override
@@ -969,7 +969,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
                 AlertDialogsHelper.getTextDialog(LFMainActivity.this, hideDialogBuilder,
                         hidden ? R.string.unhide : R.string.hide,
-                        hidden ? R.string.unhide_album_message : R.string.hide_album_message);
+                        hidden ? R.string.unhide_album_message : R.string.hide_album_message, null);
 
                 hideDialogBuilder.setPositiveButton(getString(hidden ? R.string.unhide : R.string.hide).toUpperCase(), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -1093,7 +1093,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 }
 
                 AlertDialog.Builder deleteDialog = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
-                AlertDialogsHelper.getTextDialog(this, deleteDialog, R.string.delete, albumsMode || !editMode ? R.string.delete_album_message : R.string.delete_photos_message);
+                AlertDialogsHelper.getTextDialog(this, deleteDialog, R.string.delete, albumsMode || !editMode ? R.string.delete_album_message : R.string.delete_photos_message, null);
 
                 deleteDialog.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
                 deleteDialog.setPositiveButton(this.getString(R.string.delete).toUpperCase(), new DialogInterface.OnClickListener() {
