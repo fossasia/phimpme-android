@@ -16,6 +16,7 @@ import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 
+import static org.fossasia.phimpme.accounts.AccountActivity.accountName;
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
 
@@ -26,8 +27,6 @@ import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
 public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHolder> {
     private Realm realm = Realm.getDefaultInstance();
     private RealmQuery<AccountDatabase> realmResult = realm.where(AccountDatabase.class);
-
-    public String accountName[] = {"Facebook", "Twitter", "Drupal", "NextCloud", "Wordpress", "Pinterest"};
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
