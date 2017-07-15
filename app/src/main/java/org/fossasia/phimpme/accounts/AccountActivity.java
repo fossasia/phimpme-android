@@ -252,7 +252,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     });
 
                     // Writing values in Realm database
-                    account.setUsername(String.valueOf(response.getUser()));
+                    account.setUsername(response.getUser().getFirstName() + " " + response.getUser().getLastName());
 
                     // Finally committing the whole data
                     realm.commitTransaction();
