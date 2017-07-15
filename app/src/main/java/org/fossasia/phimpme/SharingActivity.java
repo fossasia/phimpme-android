@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
-import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -82,6 +81,9 @@ import butterknife.ButterKnife;
 import static org.fossasia.phimpme.utilities.Utils.copyToClipBoard;
 import static org.fossasia.phimpme.utilities.Utils.getBitmapFromPath;
 import static org.fossasia.phimpme.utilities.Utils.getStringImage;
+import static org.fossasia.phimpme.utilities.Utils.isAppInstalled;
+import static org.fossasia.phimpme.utilities.Utils.isInternetOn;
+import static org.fossasia.phimpme.utilities.Utils.shareMsgOnIntent;
 
 
 public class SharingActivity extends ThemedActivity implements View.OnClickListener {
@@ -97,11 +99,11 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     ImageViewTouch shareImage;
     @BindView(R.id.edittext_share_caption)
     TextView text_caption;
-    @BindViews({R.id.icon_00, R.id.icon_01, R.id.icon_10, R.id.icon_11,R.id.icon_20,R.id.icon_21,R.id.icon_30,R.id.icon_31, R.id.icon_40})
+    @BindViews({R.id.icon_00, R.id.icon_01, R.id.icon_10, R.id.icon_11, R.id.icon_20, R.id.icon_21, R.id.icon_30, R.id.icon_31, R.id.icon_40})
     List<ImageView> icons;
-    @BindViews({R.id.title_00, R.id.title_01, R.id.title_10, R.id.title_11,R.id.title_20,R.id.title_21,R.id.title_30,R.id.title_31, R.id.title_40})
+    @BindViews({R.id.title_00, R.id.title_01, R.id.title_10, R.id.title_11, R.id.title_20, R.id.title_21, R.id.title_30, R.id.title_31, R.id.title_40})
     List<TextView> titles;
-    @BindViews({R.id.cell_00, R.id.cell_01, R.id.cell_10, R.id.cell_11,R.id.cell_20,R.id.cell_21,R.id.cell_30,R.id.cell_31,R.id.cell_40})
+    @BindViews({R.id.cell_00, R.id.cell_01, R.id.cell_10, R.id.cell_11, R.id.cell_20, R.id.cell_21, R.id.cell_30, R.id.cell_31, R.id.cell_40})
     List<View> cells;
     @BindView(R.id.share_done)
     Button done;
@@ -113,19 +115,21 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     private String caption;
     private boolean atleastOneShare = false;
     private int[] cellcolors = {R.color.facebook_color, R.color.twitter_color, R.color.instagram_color,
-            R.color.wordpress_color,R.color.pinterest_color,R.color.flickr_color,R.color.nextcloud_color, R.color.imgur_color ,R.color.other_share_color};
+            R.color.wordpress_color, R.color.pinterest_color, R.color.flickr_color, R.color.nextcloud_color, R.color.imgur_color, R.color.other_share_color};
     private int[] icons_drawables = {R.drawable.ic_facebook_black, R.drawable.ic_twitter_black,
             R.drawable.ic_instagram_black, R.drawable.ic_wordpress_black, R.drawable.ic_pinterest_black,
             R.drawable.ic_flickr_black, R.drawable.ic_nextcloud, R.drawable.ic_imgur,R.drawable.ic_share_minimal};
     private int[] titles_text = {R.string.facebook, R.string.twitter, R.string.instagram,
-            R.string.wordpress, R.string.pinterest, R.string.flickr, R.string.nextcloud,R.string.imgur,R.string.other};
+            R.string.wordpress, R.string.pinterest, R.string.flickr, R.string.nextcloud, R.string.imgur, R.string.other};
     private Context context;
-    Utils utils = new Utils();
+
     Bitmap finalBmp;
     Boolean isPostedOnTwitter =false;
     String boardID;
 
-
+    public static String getClientAuth() {
+        return "Client-ID " + Constants.MY_IMGUR_CLIENT_ID;
+    }
 
     @Override
     public void onPostCreate(Bundle savedInstanceState) {
@@ -143,11 +147,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private boolean checknetwork() {
-        ConnectivityManager connect =
-                (ConnectivityManager)getSystemService(getBaseContext().CONNECTIVITY_SERVICE);
-        if(utils.isInternetOn(connect)){
+        if (isInternetOn(SharingActivity.this)) {
             return true;
-        }else
+        } else
             Snackbar.make(parent, R.string.not_connected, Snackbar.LENGTH_LONG).show();
         return false;
     }
@@ -237,7 +239,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                             }).show();
                 break;
             case R.id.edit_text_caption_container:
-                 openCaptionDialogBox();
+                openCaptionDialogBox();
                 break;
         }
     }
@@ -245,7 +247,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     private void openCaptionDialogBox() {
         AlertDialog.Builder captionDialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
         final EditText captionEditText = getCaptionDialog(this, captionDialogBuilder);
-        if (caption!=null) {
+        if (caption != null) {
             captionEditText.setText(caption);
             captionEditText.setSelection(caption.length());
         }
@@ -266,8 +268,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 String captionText = captionEditText.getText().toString();
-                if (!captionText.isEmpty()){
-                    caption =captionText;
+                if (!captionText.isEmpty()) {
+                    caption = captionText;
                     text_caption.setText(caption);
                 }
                 passwordDialog.dismiss();
@@ -327,7 +329,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void postToTwitter() {
-        if(checknetwork()) {
+        if (checknetwork()) {
             Glide.with(this)
                     .load(Uri.fromFile(new File(saveFilePath)))
                     .asBitmap()
@@ -339,7 +341,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
                         }
                     });
-        }else{
+        } else {
             Snackbar.make(parent, R.string.not_connected, Snackbar.LENGTH_LONG).show();
         }
     }
@@ -372,7 +374,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void setupFacebookAndShare() {
-        if(checknetwork()) {
+        if (checknetwork()) {
             FacebookSdk.sdkInitialize(getApplicationContext());
             callbackManager = CallbackManager.Factory.create();
             List<String> permissionNeeds = Arrays.asList("publish_actions");
@@ -396,7 +398,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                     System.out.println("onError");
                 }
             });
-        }else
+        } else
             Snackbar.make(parent, R.string.not_connected, Snackbar.LENGTH_LONG).show();
     }
 
@@ -415,7 +417,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         atleastOneShare = true;
     }
 
-
     private void otherShare() {
         Uri uri = Uri.fromFile(new File(saveFilePath));
         Intent shareIntent = new Intent();
@@ -428,7 +429,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     private void shareToInstagram() {
         PackageManager pm = getPackageManager();
-        if(utils.isAppInstalled("com.instagram.android",pm)) {
+        if (isAppInstalled("com.instagram.android", pm)) {
             Uri uri = Uri.fromFile(new File(saveFilePath));
             Intent share = new Intent(Intent.ACTION_SEND);
             share.setPackage("com.instagram.android");
@@ -437,12 +438,12 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivity(Intent.createChooser(share, caption));
             atleastOneShare = true;
-        }else
-            Snackbar.make(parent,R.string.instagram_not_installed,Snackbar.LENGTH_LONG).show();
+        } else
+            Snackbar.make(parent, R.string.instagram_not_installed, Snackbar.LENGTH_LONG).show();
     }
 
     private void imgurShare() {
-        if(checknetwork()) {
+        if (checknetwork()) {
             final AlertDialog dialog;
             final AlertDialog.Builder progressDialog = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
             dialog = AlertDialogsHelper.getProgressDialog(SharingActivity.this, progressDialog,
@@ -451,7 +452,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             Bitmap bitmap = getBitmapFromPath(saveFilePath);
             final String imageString = getStringImage(bitmap);
             //sending image to server
-            StringRequest request = new StringRequest(Request.Method.POST, Constants.IMGUR_IMAGE_UPLOAD_URL, new Response.Listener<String>(){
+            StringRequest request = new StringRequest(Request.Method.POST, Constants.IMGUR_IMAGE_UPLOAD_URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String s) {
                     dialog.dismiss();
@@ -460,20 +461,39 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                     try {
                         jsonObject = new JSONObject(s);
                         Boolean success = jsonObject.getBoolean("success");
-                        if(success){
-                            String url = jsonObject.getJSONObject("data").getString("link");
-                            Snackbar.make(parent, R.string.uploaded_on_imgur, Snackbar.LENGTH_LONG).show();
-                            copyToClipBoard(SharingActivity.this,url);
-                            //// TODO: 13/7/17 Implement Dialog box
-                        }
-                        else{
+                        if (success) {
+                            final String url = jsonObject.getJSONObject("data").getString("link");
+                            final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
+
+                            AlertDialogsHelper.getTextDialog(SharingActivity.this, dialogBuilder,
+                                    R.string.imgur_uplaod_dialog_title, 0, url);
+                            dialogBuilder.setPositiveButton(getString(R.string.share).toUpperCase(), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    shareMsgOnIntent(SharingActivity.this, url);
+                                }
+                            });
+
+                            dialogBuilder.setNeutralButton(getString(R.string.copy_action).toUpperCase(), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    copyToClipBoard(SharingActivity.this, url);
+
+                                }
+                            });
+
+                            dialogBuilder.setNegativeButton(getString(R.string.exit).toUpperCase(), null);
+
+                            dialogBuilder.show();
+
+                        } else {
                             Snackbar.make(parent, R.string.error_on_imgur, Snackbar.LENGTH_LONG).show();
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-            },new Response.ErrorListener(){
+            }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
                     dialog.dismiss();
@@ -485,11 +505,12 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> parameters = new HashMap<String, String>();
                     parameters.put("image", imageString);
-                    if(caption!=null && !caption.isEmpty())
-                        parameters.put("title",caption);
+                    if (caption != null && !caption.isEmpty())
+                        parameters.put("title", caption);
 
                     return parameters;
                 }
+
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     Map<String, String> headers = new HashMap<String, String>();
@@ -499,14 +520,14 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
 
             };
-            request.setRetryPolicy(new DefaultRetryPolicy( 50000, 5, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+            request.setRetryPolicy(new DefaultRetryPolicy(50000, 5, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             RequestQueue rQueue = Volley.newRequestQueue(SharingActivity.this);
             rQueue.add(request);
-        }
-        else{
+        } else {
             Snackbar.make(parent, R.string.not_connected, Snackbar.LENGTH_LONG).show();
         }
     }
+
     private void goToHome() {
         Intent home = new Intent(SharingActivity.this, LFMainActivity.class);
         startActivity(home);
@@ -518,7 +539,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         super.onResume();
     }
 
-    public EditText getCaptionDialog(final ThemedActivity activity, android.support.v7.app.AlertDialog.Builder passwordDialog){
+    public EditText getCaptionDialog(final ThemedActivity activity, android.support.v7.app.AlertDialog.Builder passwordDialog) {
 
         final View captionDialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_caption, null);
         final CardView captionDialogCard = (CardView) captionDialogLayout.findViewById(R.id.caption_dialog_card);
@@ -529,11 +550,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         captionEditext.setTextColor(activity.getTextColor());
         passwordDialog.setView(captionDialogLayout);
         return captionEditext;
-    }
-
-
-    public static String getClientAuth() {
-        return "Client-ID " + Constants.MY_IMGUR_CLIENT_ID;
     }
 
     private class PostToTwitterAsync extends AsyncTask<Void, Void, Void> {
@@ -564,7 +580,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
         }
     }
-
 
 
 }

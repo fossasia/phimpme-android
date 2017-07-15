@@ -503,7 +503,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
                 final AlertDialog.Builder deleteDialog = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
 
                 AlertDialogsHelper.getTextDialog(SingleMediaActivity.this,deleteDialog,
-                        R.string.delete, R.string.delete_photo_message);
+                        R.string.delete, R.string.delete_photo_message, null);
 
                 deleteDialog.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
                 deleteDialog.setPositiveButton(this.getString(R.string.delete).toUpperCase(), new DialogInterface.OnClickListener() {
