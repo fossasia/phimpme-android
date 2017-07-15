@@ -36,6 +36,7 @@ android {
 
     configurations {
         compile.exclude group: 'org.jetbrains', module: 'annotations'
+        all*.exclude group: 'com.android.volley'
     }
 
     lintOptions {
@@ -124,22 +125,12 @@ dependencies {
     compile "com.squareup.picasso:picasso:$rootProject.picassoVersion"
     compile "com.github.amlcurran.showcaseview:library:$rootProject.showcaseVersion"
 
-    compile "com.twitter.sdk.android:twitter:$rootProject.twitterVersion"
-    compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
-    compile "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
-    compile "com.squareup.picasso:picasso:$rootProject.picassoVersion"
-    compile "com.github.amlcurran.showcaseview:library:$rootProject.showcaseVersion"
     compile "com.github.nextcloud:android-library:$rootProject.nextCloudVersion"
     compile files('libs/twitter4j-core-3.0.5.jar')
     compile files('libs/twitter4j-media-support-3.0.5.jar')
-
-
     compile 'uz.shift:colorpicker:0.5@aar'
-    compile files('libs/twitter4j-core-3.0.5.jar')
-    compile files('libs/twitter4j-media-support-3.0.5.jar')
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
     compile project(':openCVLibrary320')
-    compile 'uz.shift:colorpicker:0.5@aar'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.koushikdutta.ion:ion:2.1.7'
     compile 'com.mikepenz:iconics-core:2.8.4@aar'
@@ -161,6 +152,9 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.23.0'
     compile 'com.uphyca:stetho_realm:2.0.0'
     compile 'com.android.support:multidex:1.0.1'
-    androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
     compile project(':pdk')
+    compile 'com.android.volley:volley:1.0.0'
+
 }
+
+
