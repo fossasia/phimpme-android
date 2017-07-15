@@ -86,4 +86,8 @@ void applySepia(cv::Mat &inp, cv::Mat &out, int val);
 void applyXpro(cv::Mat &inp, cv::Mat &out, int val);
 void applyThreshold(cv::Mat &inp, cv::Mat &out, int val);
 void applyEdges(cv::Mat &inp, cv::Mat &out, int val);
+void applyGrain(cv::Mat &inp, cv::Mat &out, int val);
+void applyHistEq(cv::Mat &inp, cv::Mat &out, int val);
+void applyCyano(cv::Mat &inp, cv::Mat &out, int val);
+
 }
