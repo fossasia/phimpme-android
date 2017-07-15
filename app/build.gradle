@@ -128,6 +128,7 @@ dependencies {
     compile "com.github.nextcloud:android-library:$rootProject.nextCloudVersion"
     compile files('libs/twitter4j-core-3.0.5.jar')
     compile files('libs/twitter4j-media-support-3.0.5.jar')
+    compile files('libs/flickrj-android-2.1.0.jar')
     compile 'uz.shift:colorpicker:0.5@aar'
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
     compile project(':openCVLibrary320')
