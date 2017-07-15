@@ -320,12 +320,12 @@
         <activity
             android:name=".sharedrupal.DrupalLogin"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
-        <activity android:name=".NextCloudAuth"></activity>
 
         <activity
             android:name=".sharewordpress.WordpressLoginActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
 
+        <activity android:name=".nextcloud.NextCloudAuth"></activity>
     </application>
 
 </manifest>
