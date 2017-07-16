@@ -1,7 +1,5 @@
 package org.fossasia.phimpme.sharewordpress;
 
-import android.support.design.widget.BaseTransientBottomBar;
-import android.support.design.widget.Snackbar;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -12,6 +10,7 @@ import android.widget.EditText;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
+import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 import butterknife.BindView;
 
@@ -46,7 +45,8 @@ public class WordpressLoginActivity extends ThemedActivity {
             public void onClick(View v) {
                 InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                Snackbar.make(parent,"Feature not present", BaseTransientBottomBar.LENGTH_LONG).show();
+                SnackBarHandler.show(parent, "Feature not present");
+                //Snackbar.make(parent,"Feature not present", BaseTransientBottomBar.LENGTH_LONG).show();
             }
         });
 

@@ -77,6 +77,7 @@ import org.fossasia.phimpme.sharetwitter.HelperMethods;
 import org.fossasia.phimpme.sharetwitter.LoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.Constants;
+import org.fossasia.phimpme.utilities.SnackBarHandler;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -469,7 +470,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             startActivity(Intent.createChooser(share, caption));
             atleastOneShare = true;
         } else
-            Snackbar.make(parent, R.string.instagram_not_installed, Snackbar.LENGTH_LONG).show();
+            SnackBarHandler.show(parent, R.string.instagram_not_installed);
     }
 
     private void imgurShare() {
@@ -517,7 +518,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                             dialogBuilder.show();
 
                         } else {
-                            Snackbar.make(parent, R.string.error_on_imgur, Snackbar.LENGTH_LONG).show();
+                            SnackBarHandler.show(parent, R.string.error_on_imgur);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -527,7 +528,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 @Override
                 public void onErrorResponse(VolleyError volleyError) {
                     dialog.dismiss();
-                    Snackbar.make(parent, R.string.error_volly, Snackbar.LENGTH_LONG).show(); // add volleyError to check error
+                    SnackBarHandler.show(parent, R.string.error_volly);// add volleyError to check error
                 }
             }) {
                 //adding parameters to send
@@ -552,7 +553,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             RequestQueue rQueue = Volley.newRequestQueue(SharingActivity.this);
             rQueue.add(request);
         } else {
-            Snackbar.make(parent, R.string.not_connected, Snackbar.LENGTH_LONG).show();
+            SnackBarHandler.show(parent, R.string.not_connected);
         }
     }
 
@@ -704,10 +705,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         protected void onPostExecute(Void result) {
             dialog.dismiss();
             if (isPostedOnTwitter)
-                Snackbar.make(parent, R.string.tweet_posted_on_twitter, Snackbar.LENGTH_LONG).show();
+                SnackBarHandler.show(parent, R.string.tweet_posted_on_twitter);
             else
-                Snackbar.make(parent, R.string.error_on_posting_twitter, Snackbar.LENGTH_LONG).show();
-
+                SnackBarHandler.show(parent, R.string.error_on_posting_twitter);
         }
     }
 }
