@@ -423,6 +423,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     accountName[3]);
 
             // Writing values in Realm database
+            account.setServerUrl(data.getStringExtra(getString(R.string.server_url)));
             account.setUsername(data.getStringExtra(getString(R.string.auth_username)));
             account.setPassword(data.getStringExtra(getString(R.string.auth_password)));
 

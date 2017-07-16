@@ -67,6 +67,8 @@ public class NextCloudAuth extends AppCompatActivity implements Button.OnClickLi
         } else{
             Intent loginIntent = new Intent();
             Uri serverUri = Uri.parse(hostUrlInput.getText().toString().trim());
+            loginIntent.putExtra(getString(R.string.server_url)
+                    , hostUrlInput.getText().toString().trim());
             loginIntent.putExtra(getString(R.string.auth_username),
                     accountUsername.getText().toString().trim());
             loginIntent.putExtra(getString(R.string.auth_password),
