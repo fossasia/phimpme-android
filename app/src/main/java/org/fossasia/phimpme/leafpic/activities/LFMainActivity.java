@@ -872,7 +872,7 @@ public class LFMainActivity extends SharedMediaActivity {
             editMode = getAlbums().getSelectedCount() != 0;
             menu.setGroupVisible(R.id.album_options_menu, editMode);
             menu.setGroupVisible(R.id.photos_option_men, false);
-            menu.findItem(R.id.all_photos).setVisible(true);
+            menu.findItem(R.id.all_photos).setVisible(!editMode);
         } else {
             if (!all_photos) {
                 editMode = getAlbum().areMediaSelected();
