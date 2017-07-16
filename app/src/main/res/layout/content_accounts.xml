@@ -12,6 +12,7 @@
         android:id="@+id/accounts_recycler_view"
         android:layout_below="@id/toolbar"
         android:layout_width="match_parent"
+        android:paddingBottom="@dimen/height_bottombar"
         android:layout_height="match_parent">
     </android.support.v7.widget.RecyclerView>
 
