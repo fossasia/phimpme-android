@@ -16,6 +16,7 @@ public class AccountDatabase extends RealmObject{
     String username;
     String token;
     String password;
+    String serverUrl;
 
     public String getName() {
         return name;
@@ -47,5 +48,13 @@ public class AccountDatabase extends RealmObject{
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getServerUrl() {
+        return serverUrl;
+    }
+
+    public void setServerUrl(String serverUrl) {
+        this.serverUrl = serverUrl;
     }
 }
