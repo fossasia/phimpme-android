@@ -839,6 +839,7 @@
     <string name="imgur_uplaod_dialog_title">Image uploaded on Imgur.</string>
     <string name="copy_action">copy</string>
 
+    <string name="account_logged">Imgur account logged in successfully.</string>
 
     <!--Google Voice -->
     <string name="rear">rear</string>
@@ -893,6 +894,7 @@
     <string name="err_msg_host">Please add server address</string>
     <string name="err_msg_username">Please enter password</string>
     <string name="err_msg_password">Please enter password</string>
+
     <string name="server_url">server_url</string>
     <string name="todo_operation_finished_in_success">File uploaded successfully</string>
     <string name="todo_operation_finished_in_fail">TODO: operation finished in fail</string>
