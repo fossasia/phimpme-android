@@ -384,9 +384,9 @@
     <color name="wordpress_color">#21759B</color>
     <color name="pinterest_color">#C92228</color>
     <color name="flickr_color">#FC329B</color>
-    <color name="nextcloud_color">#1480E6</color>
     <color name="imgur_color">#000000</color>
     <color name="other_share_color">@color/md_indigo_900</color>
+    <color name="nextcloud_color">#0F89CD</color>
     <color name="card_background">#e1e0e0</color>
     <!-- Drupal Login-->
     <color name="button_background">#d67601</color>
