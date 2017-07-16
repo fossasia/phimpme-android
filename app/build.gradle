@@ -154,7 +154,7 @@ dependencies {
     compile 'com.uphyca:stetho_realm:2.0.0'
     compile 'com.android.support:multidex:1.0.1'
     compile project(':pdk')
-    compile 'com.android.volley:volley:1.0.0'
+//    compile 'com.android.volley:volley:1.0.0'
 
 }
 

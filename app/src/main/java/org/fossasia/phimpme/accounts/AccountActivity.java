@@ -252,7 +252,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     });
 
                     // Writing values in Realm database
-                    account.setUsername(String.valueOf(response.getUser()));
+                    account.setUsername(response.getUser().getFirstName() + " " + response.getUser().getLastName());
 
                     // Finally committing the whole data
                     realm.commitTransaction();
@@ -423,6 +423,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     accountName[3]);
 
             // Writing values in Realm database
+            account.setServerUrl(data.getStringExtra(getString(R.string.server_url)));
             account.setUsername(data.getStringExtra(getString(R.string.auth_username)));
             account.setPassword(data.getStringExtra(getString(R.string.auth_password)));
 
