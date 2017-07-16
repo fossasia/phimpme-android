@@ -138,10 +138,15 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     private Realm realm = Realm.getDefaultInstance();
     private String caption;
     private boolean atleastOneShare = false;
+    private int[] cellcolors_LightTheme = {R.color.facebook_color, R.color.twitter_color,
+            R.color.instagram_color,R.color.wordpress_color,
+            R.color.pinterest_color, R.color.flickr_color,
+            R.color.nextcloud_color, R.color.imgur_color,
+            R.color.other_share_color};
     private PhimpmeProgressBarHandler phimpmeProgressBarHandler;
+    private int[] cellcolors_DarkTheme = {R.color.facebook_color_darktheme, R.color.twitter_color_darktheme, R.color.instagram_color_darktheme,
+            R.color.wordpress_color_darktheme, R.color.pinterest_color_darktheme, R.color.flickr_color_darktheme, R.color.nextcloud_color_darktheme, R.color.imgur_color_darktheme, R.color.other_share_color_darktheme};
 
-    private int[] cellcolors = {R.color.facebook_color, R.color.twitter_color, R.color.instagram_color,
-            R.color.wordpress_color, R.color.pinterest_color, R.color.flickr_color, R.color.nextcloud_color, R.color.imgur_color, R.color.other_share_color};
     private int[] icons_drawables = {R.drawable.ic_facebook_black, R.drawable.ic_twitter_black,
             R.drawable.ic_instagram_black, R.drawable.ic_wordpress_black, R.drawable.ic_pinterest_black,
             R.drawable.ic_flickr_black, R.drawable.ic_nextcloud, R.drawable.ic_imgur,R.drawable.ic_share_minimal};
@@ -207,8 +212,13 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             cells.get(i).setOnClickListener(this);
             icons.get(i).setImageResource(icons_drawables[i]);
             titles.get(i).setText(titles_text[i]);
-            icons.get(i).setColorFilter(getResources().getColor(cellcolors[i]));
-            titles.get(i).setTextColor(getResources().getColor(cellcolors[i]));
+            if(themeHelper.getBaseTheme() == ThemeHelper.LIGHT_THEME) {
+                icons.get(i).setColorFilter(getResources().getColor(cellcolors_LightTheme[i]));
+                titles.get(i).setTextColor(getResources().getColor(cellcolors_LightTheme[i]));
+            }else {
+                icons.get(i).setColorFilter(getResources().getColor(cellcolors_DarkTheme[i]));
+                titles.get(i).setTextColor(getResources().getColor(cellcolors_DarkTheme[i]));
+            }
         }
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
