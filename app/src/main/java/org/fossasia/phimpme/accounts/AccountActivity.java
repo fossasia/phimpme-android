@@ -234,7 +234,18 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                 @Override
                 public void callBack(int status, Object data) {
                     if (status == Constants.SUCCESS){
-                        Toast.makeText(getContext(), getResources().getString(R.string.account_logged), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), getResources().getString(R.string.account_logged), Toast.LENGTH_LONG).show();
+                        if (data instanceof Bundle){
+                            Bundle bundle = (Bundle)data;
+                            realm.beginTransaction();
+                            account = realm.createObject(AccountDatabase.class,
+                                    accountName[7]);
+                            account.setUsername(bundle.getString(getString(R.string.auth_username)));
+                            account.setToken(bundle.getString(getString(R.string.auth_token)));
+                            realm.commitTransaction();
+
+                        }
+
                     }
 
                 }
