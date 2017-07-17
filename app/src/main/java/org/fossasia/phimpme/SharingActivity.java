@@ -157,10 +157,10 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     Bitmap finalBmp;
     Boolean isPostedOnTwitter =false;
-    String boardID;
+    String boardID, imgurAuth = null;
 
     public static String getClientAuth() {
-        return "Client-ID " + Constants.MY_IMGUR_CLIENT_ID;
+        return Constants.IMGUR_HEADER_CLIENt + " " + Constants.MY_IMGUR_CLIENT_ID;
     }
 
     @Override
@@ -485,6 +485,12 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     private void imgurShare() {
         if (checknetwork()) {
+            RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
+            query.equalTo("name", getString(R.string.imgur));
+            final RealmResults<AccountDatabase> result = query.findAll();
+            if (result.size() != 0) {
+                imgurAuth = Constants.IMGUR_HEADER_USER + " " + result.get(0).getToken();
+            }
             final AlertDialog dialog;
             final AlertDialog.Builder progressDialog = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
             dialog = AlertDialogsHelper.getProgressDialog(SharingActivity.this, progressDialog,
@@ -522,11 +528,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
                                 }
                             });
-
                             dialogBuilder.setNegativeButton(getString(R.string.exit).toUpperCase(), null);
-
                             dialogBuilder.show();
-
                         } else {
                             SnackBarHandler.show(parent, R.string.error_on_imgur);
                         }
@@ -541,21 +544,22 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                     SnackBarHandler.show(parent, R.string.error_volly);// add volleyError to check error
                 }
             }) {
-                //adding parameters to send
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> parameters = new HashMap<String, String>();
                     parameters.put("image", imageString);
                     if (caption != null && !caption.isEmpty())
                         parameters.put("title", caption);
-
                     return parameters;
                 }
-
                 @Override
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     Map<String, String> headers = new HashMap<String, String>();
-                    headers.put("Authorization", getClientAuth());
+                    headers.put(getString(R.string.header_auth), getClientAuth());
+                    if (imgurAuth!=null) {
+                        headers.remove(getString(R.string.header_auth));
+                        headers.put(getString(R.string.header_auth),imgurAuth);
+                    }
                     return headers;
                 }
             };

@@ -9,7 +9,6 @@ import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
-import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
@@ -144,12 +143,13 @@ public class ImgurAuthActivity extends Activity {
         // Make sure that everything was set
         if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(accessToken) &&
                 !TextUtils.isEmpty(refreshToken) && accessTokenExpiration > 0) {
-
-            CookieManager.getInstance().removeAllCookie();
             view.clearHistory();
             view.clearCache(true);
             view.clearFormData();
-            imgurCallBack.callBack(Constants.SUCCESS, null);
+            Bundle bundle= new Bundle();
+            bundle.putString(getString(R.string.auth_token), accessToken);
+            bundle.putString(getString(R.string.auth_username),username);
+            imgurCallBack.callBack(Constants.SUCCESS, bundle);
 //                        setResult(Activity.RESULT_OK, new Intent().putExtra(IMGUR_KEY_LOGGED_IN, true));
             finish();
         }
