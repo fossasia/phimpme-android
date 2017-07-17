@@ -15,8 +15,6 @@
  */
 package org.fossasia.phimpme.sharetwitter;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,14 +23,15 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.base.ThemedActivity;
+import org.fossasia.phimpme.leafpic.util.AlertDialogsHelper;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
@@ -41,7 +40,7 @@ import twitter4j.auth.RequestToken;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends ThemedActivity {
 
 	public static final int TWITTER_LOGIN_RESULT_CODE_SUCCESS = 1111;
 	public static final int TWITTER_LOGIN_RESULT_CODE_FAILURE = 2222;
@@ -49,15 +48,17 @@ public class LoginActivity extends Activity {
 	private static final String TAG = "LoginActivity";
 
 	private WebView twitterLoginWebView;
-	private AlertDialog mAlertBuilder;
 	private static String twitterConsumerKey;
 	private static String twitterConsumerSecret;
 
 	private static Twitter twitter;
 	private static RequestToken requestToken;
+	private AlertDialog dialog;
+	private AlertDialog.Builder progressDialog;
+
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_twitter_login);
 		twitterConsumerKey = getResources().getString(R.string.twitter_consumer_key);
@@ -70,14 +71,10 @@ public class LoginActivity extends Activity {
 		}
 
 
-		mAlertBuilder = new AlertDialog.Builder(this).create();
-		mAlertBuilder.setCancelable(false);
-		mAlertBuilder.setTitle(R.string.please_wait_title);
-		View view = getLayoutInflater().inflate(R.layout.view_loading, null);
-		((TextView) view.findViewById(R.id.messageTextViewFromLoading)).setText(getString(R.string.authenticating_your_app_message));
-		mAlertBuilder.setView(view);
-		mAlertBuilder.show();
-
+		progressDialog = new AlertDialog.Builder(LoginActivity.this, getDialogStyle());
+		dialog = AlertDialogsHelper.getProgressDialog(LoginActivity.this, progressDialog,
+				getString(R.string.authenticating_your_app_message), getString(R.string.please_wait));
+		dialog.show();
 
 		twitterLoginWebView = (WebView)findViewById(R.id.twitterLoginWebView);
 		twitterLoginWebView.setBackgroundColor(Color.TRANSPARENT);
@@ -97,8 +94,8 @@ public class LoginActivity extends Activity {
 			public void onPageFinished(WebView view, String url) {
 				super.onPageFinished(view, url);
 
-				if(mAlertBuilder != null){
-					mAlertBuilder.cancel();
+				if(dialog != null){
+                    dialog.dismiss();
 				}
 			}
 
@@ -106,8 +103,8 @@ public class LoginActivity extends Activity {
 			public void onPageStarted(WebView view, String url, Bitmap favicon) {
 				super.onPageStarted(view, url, favicon);
 
-				if(mAlertBuilder != null){
-					mAlertBuilder.show();
+				if(dialog != null){
+                    dialog.show();
 				}
 			}
 		});
@@ -120,8 +117,8 @@ public class LoginActivity extends Activity {
 	protected void onDestroy() {
 		super.onDestroy();
 
-		if(mAlertBuilder != null) {
-			mAlertBuilder.dismiss();
+		if(dialog != null) {
+            dialog.dismiss();
 		}
 	}
 
@@ -131,7 +128,7 @@ public class LoginActivity extends Activity {
 	}
 
 	@Override
-	protected void onResume() {
+	public void onResume() {
 		super.onResume();
 	}
 
@@ -207,7 +204,7 @@ public class LoginActivity extends Activity {
 					LoginActivity.this.runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
-							mAlertBuilder.cancel();
+                            dialog.dismiss();
 							Toast.makeText(LoginActivity.this, errorString, Toast.LENGTH_SHORT).show();
 							finish();
 						}
