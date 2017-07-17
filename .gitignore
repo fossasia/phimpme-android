@@ -15,3 +15,4 @@
 libopencv_*
 /app/obj
 viewflow/
+gradle.properties
