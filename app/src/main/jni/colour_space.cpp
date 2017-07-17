@@ -16,13 +16,10 @@
 
 #include <colour_space.h>
 #include <math.h>
-#include <android/log.h>
 
-#define  LOG_TAG    "colour_space.c"
-#define  LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG,__VA_ARGS__)
 #define  LOGE(...)  __android_log_print(ANDROID_LOG_ERROR,LOG_TAG,__VA_ARGS__)
-
-void rgbToHsb(unsigned char red, unsigned char green, unsigned char blue, HSBColour* hsb) {
+extern "C" {
+void rgbToHsb(unsigned char red, unsigned char green, unsigned char blue, HSBColour *hsb) {
 	float min, max;
 	if (red < green) {
 		min = red;
@@ -38,9 +35,9 @@ void rgbToHsb(unsigned char red, unsigned char green, unsigned char blue, HSBCol
 	}
 	float delta = max - min;
 
-	(*hsb).b = max/255;
+	(*hsb).b = max / 255;
 	if (max != 0.0) {
-		(*hsb).s = delta/max;
+		(*hsb).s = delta / max;
 	} else {
 		(*hsb).s = 0.0;
 	}
@@ -50,11 +47,11 @@ void rgbToHsb(unsigned char red, unsigned char green, unsigned char blue, HSBCol
 	} else {
 		delta *= 6;
 		if (red == max) {
-			(*hsb).h = (green - blue)/delta;
+			(*hsb).h = (green - blue) / delta;
 		} else if (green == max) {
-			(*hsb).h = 0.333333f + (blue - red)/delta;
+			(*hsb).h = 0.333333f + (blue - red) / delta;
 		} else if (blue == max) {
-			(*hsb).h = 0.666666f + (red - green)/delta;
+			(*hsb).h = 0.666666f + (red - green) / delta;
 		}
 
 		if ((*hsb).h < 0) {
@@ -63,7 +60,7 @@ void rgbToHsb(unsigned char red, unsigned char green, unsigned char blue, HSBCol
 	}
 }
 
-void getBrightness(unsigned char red, unsigned char green, unsigned char blue, float* brightness) {
+void getBrightness(unsigned char red, unsigned char green, unsigned char blue, float *brightness) {
 	float min, max;
 	if (red < green) {
 		min = red;
@@ -79,14 +76,14 @@ void getBrightness(unsigned char red, unsigned char green, unsigned char blue, f
 	}
 	float delta = max - min;
 
-	(*brightness) = max/255;
+	(*brightness) = max / 255;
 }
 
 inline unsigned char convert(float val) {
 	return floorf((255 * val) + 0.5f);
 }
 
-void hsbToRgb(HSBColour* hsb, unsigned char* red, unsigned char* green, unsigned char* blue) {
+void hsbToRgb(HSBColour *hsb, unsigned char *red, unsigned char *green, unsigned char *blue) {
 	if ((*hsb).s == 0) {
 		*red = *green = *blue = convert((*hsb).b);
 	} else {
@@ -108,36 +105,37 @@ void hsbToRgb(HSBColour* hsb, unsigned char* red, unsigned char* green, unsigned
 		bb = b * (1 - (s * f));
 		cc = b * (1 - (s * (1 - f)));
 		switch (i) {
-		case 0:
-			*red = convert(b);
-			*green = convert(cc);
-			*blue = convert(aa);
-			break;
-		case 1:
-			*red = convert(bb);
-			*green = convert(b);
-			*blue = convert(aa);
-			break;
-		case 2:
-			*red = convert(aa);
-			*green = convert(b);
-			*blue = convert(cc);
-			break;
-		case 3:
-			*red = convert(aa);
-			*green = convert(bb);
-			*blue = convert(b);
-			break;
-		case 4:
-			*red = convert(cc);
-			*green = convert(aa);
-			*blue = convert(b);
-			break;
-		case 5:
-			*red = convert(b);
-			*green = convert(aa);
-			*blue = convert(bb);
-			break;
+			case 0:
+				*red = convert(b);
+				*green = convert(cc);
+				*blue = convert(aa);
+				break;
+			case 1:
+				*red = convert(bb);
+				*green = convert(b);
+				*blue = convert(aa);
+				break;
+			case 2:
+				*red = convert(aa);
+				*green = convert(b);
+				*blue = convert(cc);
+				break;
+			case 3:
+				*red = convert(aa);
+				*green = convert(bb);
+				*blue = convert(b);
+				break;
+			case 4:
+				*red = convert(cc);
+				*green = convert(aa);
+				*blue = convert(b);
+				break;
+			case 5:
+				*red = convert(b);
+				*green = convert(aa);
+				*blue = convert(bb);
+				break;
 		}
 	}
+}
 }
