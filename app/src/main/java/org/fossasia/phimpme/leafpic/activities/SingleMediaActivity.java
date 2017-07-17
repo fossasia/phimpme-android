@@ -100,7 +100,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
     private String path;
     private SingleMediaActivity context;
     public static final String EXTRA_OUTPUT = "extra_output";
-    private String pathForDescription;
+    public static String pathForDescription;
     public Boolean allPhotoMode;
     public int all_photo_pos;
     public int size_all;
@@ -212,6 +212,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
             mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    pathForDescription = getAlbum().getMedia().get(position).getPath();
                 }
 
                 @Override
@@ -237,6 +238,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
             mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
                 @Override
                 public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                    pathForDescription = LFMainActivity.listAll.get(position).getPath();
                 }
 
                 @Override
