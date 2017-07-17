@@ -905,4 +905,5 @@
     <string name="error_deleting_local_file">Downloaded file could not be deleted</string>
     <string name="upload_folder_path">to_upload</string>
     <string name="login_again">User not Authorized. Please Login again with correct credentials</string>
+    <string name="description_image">Description</string>
 </resources>
