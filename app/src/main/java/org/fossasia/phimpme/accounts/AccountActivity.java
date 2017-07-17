@@ -42,6 +42,7 @@ import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
 import org.fossasia.phimpme.nextcloud.NextCloudAuth;
+import org.fossasia.phimpme.sharetoflickr.FlickrActivity;
 import org.fossasia.phimpme.sharedimgur.ImgurAuthActivity;
 import org.fossasia.phimpme.sharedrupal.DrupalLogin;
 import org.fossasia.phimpme.sharewordpress.WordpressLoginActivity;
@@ -201,7 +202,14 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     break;
 
                 case 5:
-                    signInPinterest();break;
+                    signInPinterest();
+                    break;
+                case 6:
+                    Intent intent = new Intent(getApplicationContext(),
+                            FlickrActivity.class);
+                    FlickrActivity.setFilename(null);
+                    startActivity(intent);
+                    break;
                 case 7:
                     signInImgur();
                     break;
@@ -274,7 +282,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             ImgurAuthActivity.setBasicCallBack(basicCallBack);
             startActivity(i);
         }
-
     }
 
     private void signInPinterest() {

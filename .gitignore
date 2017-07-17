@@ -9,3 +9,4 @@ build
 /app/src/main/jniLibs/
 libopencv_*
 viewflow/
+gradle.properties
