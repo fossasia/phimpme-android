@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -46,6 +45,7 @@ import org.fossasia.phimpme.sharewordpress.WordpressLoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
 import org.fossasia.phimpme.utilities.Constants;
+import org.fossasia.phimpme.utilities.SnackBarHandler;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -56,8 +56,6 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
-
-import static android.support.design.widget.Snackbar.LENGTH_LONG;
 
 /**
  * Created by pa1pal on 13/6/17.
@@ -403,15 +401,14 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
                         @Override
                         public void onCancel() {
-                            Snackbar.make(childView,
-                                    getString(R.string.facebook_login_cancel), LENGTH_LONG).show();
+                            SnackBarHandler.show(childView,
+                                    getString(R.string.facebook_login_cancel));
                         }
 
                         @Override
                         public void onError(FacebookException e) {
-                            Snackbar.make(childView,
-                                    getString(R.string.facebook_login_error), LENGTH_LONG).show();
-
+                            SnackBarHandler.show(childView,
+                                    getString(R.string.facebook_login_error));
                             Log.d("error", e.toString());
                         }
                     });
