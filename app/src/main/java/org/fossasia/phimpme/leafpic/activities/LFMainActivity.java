@@ -18,7 +18,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -71,6 +70,7 @@ import org.fossasia.phimpme.leafpic.util.SecurityHelper;
 import org.fossasia.phimpme.leafpic.util.StringUtils;
 import org.fossasia.phimpme.leafpic.views.GridSpacingItemDecoration;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
+import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 import java.io.File;
 import java.io.IOException;
@@ -1527,16 +1527,11 @@ public class LFMainActivity extends SharedMediaActivity {
                                     }
                                     renameDialog.dismiss();
                                     if (success) {
-                                        Snackbar.make(getWindow().getDecorView().getRootView(),
-                                                getString(R.string.rename_succes), Snackbar.LENGTH_LONG).show();
+                                        SnackBarHandler.show(getWindow().getDecorView().getRootView(), getString(R.string.rename_succes));
                                         getAlbums().clearSelectedAlbums();
                                         invalidateOptionsMenu();
-
-
                                     } else {
-                                        Snackbar.make(getWindow().getDecorView().getRootView(),
-                                                getString(R.string.rename_error), Snackbar.LENGTH_LONG)
-                                                .show();
+                                        SnackBarHandler.show(getWindow().getDecorView().getRootView(), getString(R.string.rename_error));
                                         requestSdCardPermissions();
                                     }
                                     swipeRefreshLayout.setRefreshing(false);
