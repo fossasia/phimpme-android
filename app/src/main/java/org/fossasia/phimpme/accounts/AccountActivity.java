@@ -14,6 +14,9 @@ import android.view.View;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.dropbox.client2.DropboxAPI;
+import com.dropbox.client2.android.AndroidAuthSession;
+import com.dropbox.client2.session.AppKeyPair;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -79,10 +82,15 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private Context context;
     private PDKClient pdkClient;
 
-    public static String[] accountName = {"Facebook", "Twitter", "Drupal", "NextCloud", "Wordpress", "Pinterest", "Flickr", "Imgur"};
+    public static String[] accountName = {"Facebook", "Twitter", "Drupal", "NextCloud", "Wordpress", "Pinterest", "Flickr", "Imgur", "Dropbox"};
     private static final int NEXTCLOUD_REQUEST_CODE = 1;
     private static final int RESULT_OK = 1;
     public static final int IMGUR_KEY_LOGGED_IN = 2;
+
+    final static private String APP_KEY = "APP_KEY";
+    final static private String APP_SECRET = "API_SECRET";
+
+    private DropboxAPI<AndroidAuthSession> mDBApi;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -110,6 +118,9 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         pdkClient = PDKClient.configureInstance(this, getResources().getString(R.string.pinterest_app_id));
         pdkClient.onConnect(this);
         pdkClient.setDebugMode(true);
+        AppKeyPair appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
+        AndroidAuthSession session = new AndroidAuthSession(appKeys);
+        mDBApi = new DropboxAPI<AndroidAuthSession>(session);
     }
 
     @Override
@@ -195,6 +206,11 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     signInImgur();
                     break;
 
+                case 8:
+                    signInDropbox();
+                    accountPresenter.loadFromDatabase();
+                    break;
+
                 default:
                     Toast.makeText(this, R.string.feature_not_present,
                             Toast.LENGTH_SHORT).show();
@@ -223,6 +239,13 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                             })
                     .show();
         }
+    }
+
+    private void signInDropbox() {
+        if (accountPresenter.checkAlreadyExist(accountName[7]))
+            Toast.makeText(getApplicationContext(), getString(R.string.already_signed_in), Toast.LENGTH_SHORT).show();
+        else
+            mDBApi.getSession().startOAuth2Authentication(this);
     }
 
     private void signInImgur() {
@@ -396,12 +419,12 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                                         public void onCompleted(JSONObject jsonObject
                                                 , GraphResponse graphResponse) {
                                             Log.v("LoginActivity", graphResponse.toString());
-                                                                try {
-                                                                    account.setUsername(jsonObject
-                                                                            .getString("email   "));
-                                                                } catch (JSONException e) {
-                                                                    Log.e("LoginAct", e.toString());
-                                                                }
+                                            try {
+                                                account.setUsername(jsonObject
+                                                        .getString("email   "));
+                                            } catch (JSONException e) {
+                                                Log.e("LoginAct", e.toString());
+                                            }
                                         }
                                     });
 
@@ -437,9 +460,38 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     public void onResume() {
         super.onResume();
         ActivitySwitchHelper.setContext(this);
+        dropboxAuthentication();
         setStatusBarColor();
         setNavBarColor();
         accountPresenter.loadFromDatabase();
+    }
+
+    private void dropboxAuthentication() {
+        if (mDBApi.getSession().authenticationSuccessful()) {
+            try {
+                // Required to complete auth, sets the access token on the session
+                mDBApi.getSession().finishAuthentication();
+
+                String accessToken = mDBApi.getSession().getOAuth2AccessToken();
+
+                realm.beginTransaction();
+
+                // Creating Realm object for AccountDatabase Class
+                account = realm.createObject(AccountDatabase.class,
+                        accountName[8]);
+
+                // Writing values in Realm database
+
+                account.setUsername(accountName[8]);
+                account.setToken(String.valueOf(accessToken));
+
+                // Finally committing the whole data
+                realm.commitTransaction();
+
+            } catch (IllegalStateException e) {
+                Log.i("DbAuthLog", "Error authenticating", e);
+            }
+        }
     }
 
     @Override
