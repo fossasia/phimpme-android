@@ -24,5 +24,7 @@ public class Constants {
     public static final String IMGUR_IMAGE_UPLOAD_URL = "https://api.imgur.com/3/image/";
     public static final String IMGUR_LOGIN_URL = "https://api.imgur.com/oauth2/authorize?client_id="+MY_IMGUR_CLIENT_ID+"&response_type=token";
 
+    public static String IMGUR_HEADER_CLIENt = "Client-ID";
+    public static String IMGUR_HEADER_USER = "Bearer";
 }
 
