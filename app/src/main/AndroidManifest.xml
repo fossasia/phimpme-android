@@ -322,6 +322,7 @@
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
         <activity android:name=".nextcloud.NextCloudAuth"/>
+        <activity android:name=".sharedimgur.ImgurAuthActivity"/>
     </application>
 
 </manifest>

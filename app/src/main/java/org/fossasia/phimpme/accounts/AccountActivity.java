@@ -40,9 +40,12 @@ import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
 import org.fossasia.phimpme.nextcloud.NextCloudAuth;
+import org.fossasia.phimpme.sharedimgur.ImgurAuthActivity;
 import org.fossasia.phimpme.sharedrupal.DrupalLogin;
 import org.fossasia.phimpme.sharewordpress.WordpressLoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
+import org.fossasia.phimpme.utilities.BasicCallBack;
+import org.fossasia.phimpme.utilities.Constants;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -78,9 +81,10 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private Context context;
     private PDKClient pdkClient;
 
-    public static String[] accountName = {"Facebook", "Twitter", "Drupal", "NextCloud", "Wordpress", "Pinterest", "Flickr"};
+    public static String[] accountName = {"Facebook", "Twitter", "Drupal", "NextCloud", "Wordpress", "Pinterest", "Flickr", "Imgur"};
     private static final int NEXTCLOUD_REQUEST_CODE = 1;
     private static final int RESULT_OK = 1;
+    public static final int IMGUR_KEY_LOGGED_IN = 2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -188,7 +192,10 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     break;
 
                 case 5:
-                    signInPinterest();
+                    signInPinterest();break;
+                case 7:
+                    signInImgur();
+                    break;
 
                 default:
                     Toast.makeText(this, R.string.feature_not_present,
@@ -218,6 +225,27 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                             })
                     .show();
         }
+    }
+
+    private void signInImgur() {
+        if (accountPresenter.checkAlreadyExist(accountName[7])) {
+            Toast.makeText(this, R.string.already_signed_in,
+                    Toast.LENGTH_SHORT).show();
+        }else {
+            BasicCallBack basicCallBack = new BasicCallBack() {
+                @Override
+                public void callBack(int status, Object data) {
+                    if (status == Constants.SUCCESS){
+                        Toast.makeText(getContext(), getResources().getString(R.string.account_logged), Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            };
+            Intent i = new Intent(AccountActivity.this, ImgurAuthActivity.class);
+            ImgurAuthActivity.setBasicCallBack(basicCallBack);
+            startActivity(i);
+        }
+
     }
 
     private void signInPinterest() {
