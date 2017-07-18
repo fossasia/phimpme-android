@@ -338,7 +338,22 @@
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
         <activity android:name=".nextcloud.NextCloudAuth"/>
+
         <activity android:name=".sharedimgur.ImgurAuthActivity"/>
+
+        <activity
+            android:name=".sharetoflickr.FlickrActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:launchMode="singleTask" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="flickrj-android-sample-oauth" />
+            </intent-filter>
+        </activity>
+
     </application>
 
 </manifest>
