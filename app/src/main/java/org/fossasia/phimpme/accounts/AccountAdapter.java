@@ -1,15 +1,16 @@
 package org.fossasia.phimpme.accounts;
 
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.AccountDatabase;
+import org.fossasia.phimpme.leafpic.util.ThemeHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,6 +28,15 @@ import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
 public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHolder> {
     private Realm realm = Realm.getDefaultInstance();
     private RealmQuery<AccountDatabase> realmResult = realm.where(AccountDatabase.class);
+    public int switchAccentColor;
+    public int switchBackgroundColor;
+    private ThemeHelper themeHelper;
+
+    public AccountAdapter(int switchColor, int switchBackgroundColor) {
+        this.switchAccentColor = switchColor;
+        this.switchBackgroundColor = switchBackgroundColor;
+        themeHelper = new ThemeHelper(getContext());
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -40,11 +50,13 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         realmResult = realm.where(AccountDatabase.class);
+        themeHelper.updateSwitchColor(holder.signInSignOutSwitch, switchBackgroundColor);
         if (realmResult.equalTo("name", accountName[position]).count() > 0){
             holder.accountName.setText(realmResult
                     .equalTo("name", accountName[position]).findAll()
                     .first().getUsername());
             holder.signInSignOutSwitch.setChecked(true);
+            themeHelper.updateSwitchColor(holder.signInSignOutSwitch, switchAccentColor);
         } else {
             holder.accountName.setText(accountName[position]);
         }
@@ -78,7 +90,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
         TextView accountName;
 
         @BindView(R.id.sign_in_sign_out_switch)
-        Switch signInSignOutSwitch;
+        SwitchCompat signInSignOutSwitch;
 
         public ViewHolder(View itemView) {
             super(itemView);
