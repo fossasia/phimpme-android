@@ -10,7 +10,7 @@ import org.fossasia.phimpme.editor.EditBaseActivity;
 
 public class SelectPictureActivity extends EditBaseActivity {
     @Override
-    protected void onCreate(final Bundle b) {
+    public void onCreate(final Bundle b) {
         super.onCreate(b);
         checkInitImageLoader();
         setResult(RESULT_CANCELED);
