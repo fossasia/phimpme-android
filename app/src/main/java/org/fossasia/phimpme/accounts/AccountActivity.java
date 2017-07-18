@@ -7,11 +7,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import com.dropbox.client2.DropboxAPI;
@@ -95,7 +95,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        accountAdapter = new AccountAdapter();
+        accountAdapter = new AccountAdapter(getAccentColor(), getPrimaryColor());
         accountPresenter = new AccountPresenter(realm);
         phimpmeProgressBarHandler = new PhimpmeProgressBarHandler(this);
         accountPresenter.attachView(this);
@@ -165,7 +165,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
     @Override
     public void onItemClick(final View childView, final int position) {
-        final Switch signInSignOut = (Switch) childView.findViewById(R.id.sign_in_sign_out_switch);
+        final SwitchCompat signInSignOut = (SwitchCompat) childView.findViewById(R.id.sign_in_sign_out_switch);
 
        /* boolean isSignedIn = realmResult.equalTo("name"
                 , accountsList[position]).isValid();
@@ -266,11 +266,8 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                             account.setUsername(bundle.getString(getString(R.string.auth_username)));
                             account.setToken(bundle.getString(getString(R.string.auth_token)));
                             realm.commitTransaction();
-
                         }
-
                     }
-
                 }
             };
             Intent i = new Intent(AccountActivity.this, ImgurAuthActivity.class);
