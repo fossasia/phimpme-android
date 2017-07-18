@@ -73,6 +73,7 @@ import org.fossasia.phimpme.editor.editimage.view.imagezoom.ImageViewTouch;
 import org.fossasia.phimpme.leafpic.activities.LFMainActivity;
 import org.fossasia.phimpme.leafpic.util.AlertDialogsHelper;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
+import org.fossasia.phimpme.sharetoflickr.FlickrActivity;
 import org.fossasia.phimpme.sharetwitter.HelperMethods;
 import org.fossasia.phimpme.sharetwitter.LoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
@@ -258,6 +259,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 openPinterestDialogBox();
                 break;
             case R.id.cell_21: //flickr
+                flickrShare();
                 break;
             case R.id.cell_30: //nextcloud
                 shareToNextCloud();
@@ -282,6 +284,23 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             case R.id.edit_text_caption_container:
                 openCaptionDialogBox();
                 break;
+        }
+    }
+
+    private void flickrShare() {
+        Intent intent = new Intent(getApplicationContext(),
+                FlickrActivity.class);
+        InputStream is = null;
+        File file = new File(saveFilePath);
+        try {
+            is = getContentResolver().openInputStream(Uri.fromFile(file));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (is != null) {
+            FlickrActivity.setInputStream(is);
+            FlickrActivity.setFilename(file.getName());
+            startActivity(intent);
         }
     }
 
