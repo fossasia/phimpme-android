@@ -836,8 +836,15 @@
     <string name="error_on_imgur">Error on uploading on Imgur</string>
     <string name="uploaded_on_imgur">Image uploaded on Imgur successfully and link copied.</string>
     <string name="error_volly">Some error occurred.</string>
-    <string name="imgur_uplaod_dialog_title">Image uploaded on Imgur.</string>
+    <string name="imgur_uplaoded_dialog_title">Image uploaded on Imgur.</string>
+    <string name="choose">Sharing Mode</string>
+    <string name="imgur_select_mode">How do you want to upload Image on Imgur ?</string>
+    <string name="anonymous">anonymous</string>
+    <string name="personal">Personal</string>
+    <string name="upload_anonymous">Anonymously</string>
+    <string name="upload_personal">Personal</string>
     <string name="copy_action">copy</string>
+    <string name="sign_from_account">Sign in from account</string>
 
     <string name="account_logged">Imgur account logged in successfully.</string>
 
