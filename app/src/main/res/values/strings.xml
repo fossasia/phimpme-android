@@ -915,4 +915,10 @@
     <string name="auth_token">access_token</string>
     <string name="header_auth">Authorization</string>
     <string name="description_image">Description</string>
+
+    <!--Dropbox-->
+    <string name="posting_on_dropbox">Posting on Dropbox</string>
+    <string name="uploaded_dropbox">Uploaded to Dropbox</string>
+    <string name="login_dropbox_account">Login to Dropbox from Account manager</string>
+    <string name="dropbox_share">Dropbox</string>
 </resources>

@@ -338,6 +338,32 @@
                         android:clickable="true"
                         android:background="?android:attr/selectableItemBackground"
                         android:gravity="center_vertical"
+                        android:id="@+id/cell_32"
+                        android:layout_column="0">
+                        <ImageView
+                            android:layout_width="@dimen/share_icon_size"
+                            android:layout_height="@dimen/share_icon_size"
+                            android:scaleType="fitCenter"
+                            android:padding="@dimen/share_icon_padding"
+                            android:layout_centerVertical="true"
+                            android:id="@+id/icon_32"/>
+                        <TextView
+                            android:layout_toRightOf="@id/icon_32"
+                            android:layout_width="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/share_cell_text_margin"
+                            android:layout_marginLeft="@dimen/share_cell_text_margin"
+                            android:textSize="@dimen/share_cell_text_size"
+                            android:id="@+id/title_32"
+                            android:text="title"/>
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
                         android:id="@+id/cell_40"
                         android:layout_column="0">
                         <ImageView
@@ -356,7 +382,7 @@
                             android:layout_marginLeft="@dimen/share_cell_text_margin"
                             android:textSize="@dimen/share_cell_text_size"
                             android:id="@+id/title_40"
-                            android:text="title"/>
+                            android:text="Other"/>
 
                     </RelativeLayout>
                 </TableRow>
