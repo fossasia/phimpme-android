@@ -157,8 +157,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     private Context context;
 
     Bitmap finalBmp;
-    Boolean isPostedOnTwitter =false;
-    String boardID, imgurAuth = null;
+    Boolean isPostedOnTwitter =false, isPersonal =false;
+    String boardID, imgurAuth = null,imgurString = null;
 
     public static String getClientAuth() {
         return Constants.IMGUR_HEADER_CLIENt + " " + Constants.MY_IMGUR_CLIENT_ID;
@@ -504,90 +504,130 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     private void imgurShare() {
         if (checknetwork()) {
+            final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
+
             RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
             query.equalTo("name", getString(R.string.imgur));
             final RealmResults<AccountDatabase> result = query.findAll();
             if (result.size() != 0) {
+                isPersonal=true;
                 imgurAuth = Constants.IMGUR_HEADER_USER + " " + result.get(0).getToken();
             }
-            final AlertDialog dialog;
-            final AlertDialog.Builder progressDialog = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
-            dialog = AlertDialogsHelper.getProgressDialog(SharingActivity.this, progressDialog,
-                    getString(R.string.posting_on_imgur), getString(R.string.please_wait));
-            dialog.show();
-            Bitmap bitmap = getBitmapFromPath(saveFilePath);
-            final String imageString = getStringImage(bitmap);
-            //sending image to server
-            StringRequest request = new StringRequest(Request.Method.POST, Constants.IMGUR_IMAGE_UPLOAD_URL, new Response.Listener<String>() {
+            AlertDialogsHelper.getTextDialog(SharingActivity.this, dialogBuilder,
+                    R.string.choose, R.string.imgur_select_mode, null);
+            dialogBuilder.setPositiveButton(getString(R.string.personal).toUpperCase(), new DialogInterface.OnClickListener() {
                 @Override
-                public void onResponse(String s) {
-                    dialog.dismiss();
-                    JSONObject jsonObject = null;
-
-                    try {
-                        jsonObject = new JSONObject(s);
-                        Boolean success = jsonObject.getBoolean("success");
-                        if (success) {
-                            final String url = jsonObject.getJSONObject("data").getString("link");
-                            final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
-
-                            AlertDialogsHelper.getTextDialog(SharingActivity.this, dialogBuilder,
-                                    R.string.imgur_uplaod_dialog_title, 0, url);
-                            dialogBuilder.setPositiveButton(getString(R.string.share).toUpperCase(), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    shareMsgOnIntent(SharingActivity.this, url);
-                                }
-                            });
-
-                            dialogBuilder.setNeutralButton(getString(R.string.copy_action).toUpperCase(), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    copyToClipBoard(SharingActivity.this, url);
-
-                                }
-                            });
-                            dialogBuilder.setNegativeButton(getString(R.string.exit).toUpperCase(), null);
-                            dialogBuilder.show();
-                        } else {
-                            SnackBarHandler.show(parent, R.string.error_on_imgur);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    if (!isPersonal){
+                        SnackBarHandler.show(parent,R.string.sign_from_account);
+                        return;
+                    }else {
+                        isPersonal =true;
+                        uploadImgur();
                     }
                 }
-            }, new Response.ErrorListener() {
+            });
+
+            dialogBuilder.setNeutralButton(getString(R.string.anonymous).toUpperCase(), new DialogInterface.OnClickListener() {
                 @Override
-                public void onErrorResponse(VolleyError volleyError) {
-                    dialog.dismiss();
-                    SnackBarHandler.show(parent, R.string.error_volly);// add volleyError to check error
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    isPersonal=false;
+                    uploadImgur();
                 }
-            }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> parameters = new HashMap<String, String>();
-                    parameters.put("image", imageString);
-                    if (caption != null && !caption.isEmpty())
-                        parameters.put("title", caption);
-                    return parameters;
-                }
-                @Override
-                public Map<String, String> getHeaders() throws AuthFailureError {
-                    Map<String, String> headers = new HashMap<String, String>();
-                    headers.put(getString(R.string.header_auth), getClientAuth());
-                    if (imgurAuth!=null) {
-                        headers.remove(getString(R.string.header_auth));
-                        headers.put(getString(R.string.header_auth),imgurAuth);
-                    }
-                    return headers;
-                }
-            };
-            request.setRetryPolicy(new DefaultRetryPolicy(50000, 5, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-            RequestQueue rQueue = Volley.newRequestQueue(SharingActivity.this);
-            rQueue.add(request);
+            });
+            dialogBuilder.setNegativeButton(getString(R.string.exit).toUpperCase(), null);
+            dialogBuilder.show();
+
         } else {
             SnackBarHandler.show(parent, R.string.not_connected);
         }
+    }
+    void uploadImgur(){
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
+        final AlertDialog dialog;
+        final AlertDialog.Builder progressDialog = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
+        dialog = AlertDialogsHelper.getProgressDialog(SharingActivity.this, progressDialog,
+                getString(R.string.posting_on_imgur), getString(R.string.please_wait));
+        dialog.show();
+        Bitmap bitmap = getBitmapFromPath(saveFilePath);
+        final String imageString = getStringImage(bitmap);
+        //sending image to server
+        StringRequest request = new StringRequest(Request.Method.POST, Constants.IMGUR_IMAGE_UPLOAD_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String s) {
+                dialog.dismiss();
+                JSONObject jsonObject = null;
+
+                try {
+                    jsonObject = new JSONObject(s);
+                    Boolean success = jsonObject.getBoolean("success");
+                    if (success) {
+                        final String url = jsonObject.getJSONObject("data").getString("link");
+
+                        if (isPersonal){
+                            imgurString = getString(R.string.upload_personal) + "\n" + url;
+                        }else {
+                            imgurString = getString(R.string.upload_anonymous) + "\n" + url;
+
+                        }
+
+                        AlertDialogsHelper.getTextDialog(SharingActivity.this, dialogBuilder,
+                                R.string.imgur_uplaoded_dialog_title, 0, imgurString);
+                        dialogBuilder.setPositiveButton(getString(R.string.share).toUpperCase(), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                shareMsgOnIntent(SharingActivity.this, url);
+                            }
+                        });
+
+                        dialogBuilder.setNeutralButton(getString(R.string.copy_action).toUpperCase(), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                copyToClipBoard(SharingActivity.this, url);
+
+                            }
+                        });
+                        dialogBuilder.setNegativeButton(getString(R.string.exit).toUpperCase(), null);
+                        dialogBuilder.show();
+                    } else {
+                        SnackBarHandler.show(parent, R.string.error_on_imgur);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                dialog.dismiss();
+                SnackBarHandler.show(parent, R.string.error_volly);// add volleyError to check error
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parameters = new HashMap<String, String>();
+                parameters.put("image", imageString);
+                if (caption != null && !caption.isEmpty())
+                    parameters.put("title", caption);
+                return parameters;
+            }
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<String, String>();
+                if (isPersonal){
+                    if (imgurAuth!=null) {
+                        headers.put(getString(R.string.header_auth),imgurAuth);
+                    }
+                }else {
+                    headers.put(getString(R.string.header_auth), getClientAuth());
+                }
+
+                return headers;
+            }
+        };
+        request.setRetryPolicy(new DefaultRetryPolicy(50000, 5, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        RequestQueue rQueue = Volley.newRequestQueue(SharingActivity.this);
+        rQueue.add(request);
     }
 
     void shareToNextCloud(){
