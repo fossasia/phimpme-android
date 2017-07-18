@@ -682,7 +682,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (isApplyThemeOnImgAct())
                 if (isNavigationBarColored())
-                    getWindow().setNavigationBarColor(ColorPalette.getTransparentColor(getPrimaryColor(), getTransparency()));
+                    getWindow().setNavigationBarColor(ColorPalette.getTransparentColor(ColorPalette.getObscuredColor(getPrimaryColor()), getTransparency()));
                 else
                     getWindow().setNavigationBarColor(ColorPalette.getTransparentColor(ContextCompat.getColor(getApplicationContext(), R.color.md_black_1000), getTransparency()));
             else

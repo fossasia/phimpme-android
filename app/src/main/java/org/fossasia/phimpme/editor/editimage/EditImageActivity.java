@@ -686,7 +686,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
 
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         ActivitySwitchHelper.setContext(this);
     }
