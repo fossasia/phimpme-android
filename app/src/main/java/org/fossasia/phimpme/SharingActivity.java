@@ -41,6 +41,10 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.dropbox.client2.DropboxAPI;
+import com.dropbox.client2.android.AndroidAuthSession;
+import com.dropbox.client2.exception.DropboxException;
+import com.dropbox.client2.session.AppKeyPair;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -83,6 +87,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -108,7 +114,7 @@ import static org.fossasia.phimpme.utilities.Utils.shareMsgOnIntent;
 
 
 public class SharingActivity extends ThemedActivity implements View.OnClickListener
-, OnRemoteOperationListener {
+        , OnRemoteOperationListener {
 
     public static final String EXTRA_OUTPUT = "extra_output";
     private static String LOG_TAG = SharingActivity.class.getCanonicalName();
@@ -124,11 +130,11 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     ImageViewTouch shareImage;
     @BindView(R.id.edittext_share_caption)
     TextView text_caption;
-    @BindViews({R.id.icon_00, R.id.icon_01, R.id.icon_10, R.id.icon_11, R.id.icon_20, R.id.icon_21, R.id.icon_30, R.id.icon_31, R.id.icon_40})
+    @BindViews({R.id.icon_00, R.id.icon_01, R.id.icon_10, R.id.icon_11, R.id.icon_20, R.id.icon_21, R.id.icon_30, R.id.icon_31,R.id.icon_32, R.id.icon_40})
     List<ImageView> icons;
-    @BindViews({R.id.title_00, R.id.title_01, R.id.title_10, R.id.title_11, R.id.title_20, R.id.title_21, R.id.title_30, R.id.title_31, R.id.title_40})
+    @BindViews({R.id.title_00, R.id.title_01, R.id.title_10, R.id.title_11, R.id.title_20, R.id.title_21, R.id.title_30, R.id.title_31, R.id.title_32, R.id.title_40})
     List<TextView> titles;
-    @BindViews({R.id.cell_00, R.id.cell_01, R.id.cell_10, R.id.cell_11, R.id.cell_20, R.id.cell_21, R.id.cell_30, R.id.cell_31, R.id.cell_40})
+    @BindViews({R.id.cell_00, R.id.cell_01, R.id.cell_10, R.id.cell_11, R.id.cell_20, R.id.cell_21, R.id.cell_30, R.id.cell_31,R.id.cell_32, R.id.cell_40})
     List<View> cells;
     @BindView(R.id.share_done)
     Button done;
@@ -141,20 +147,22 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     private String caption;
     private boolean atleastOneShare = false;
     private int[] cellcolors_LightTheme = {R.color.facebook_color, R.color.twitter_color,
-            R.color.instagram_color,R.color.wordpress_color,
+            R.color.instagram_color, R.color.wordpress_color,
             R.color.pinterest_color, R.color.flickr_color,
-            R.color.nextcloud_color, R.color.imgur_color,
+            R.color.nextcloud_color, R.color.imgur_color, R.color.dropbox_color,
             R.color.other_share_color};
-    private PhimpmeProgressBarHandler phimpmeProgressBarHandler;
     private int[] cellcolors_DarkTheme = {R.color.facebook_color_darktheme, R.color.twitter_color_darktheme, R.color.instagram_color_darktheme,
-            R.color.wordpress_color_darktheme, R.color.pinterest_color_darktheme, R.color.flickr_color_darktheme, R.color.nextcloud_color_darktheme, R.color.imgur_color_darktheme, R.color.other_share_color_darktheme};
-
+            R.color.wordpress_color_darktheme, R.color.pinterest_color_darktheme, R.color.flickr_color_darktheme, R.color.nextcloud_color_darktheme, R.color.imgur_color_darktheme, R.color.dropbox_color_darktheme, R.color.other_share_color_darktheme};
+    private PhimpmeProgressBarHandler phimpmeProgressBarHandler;
     private int[] icons_drawables = {R.drawable.ic_facebook_black, R.drawable.ic_twitter_black,
             R.drawable.ic_instagram_black, R.drawable.ic_wordpress_black, R.drawable.ic_pinterest_black,
-            R.drawable.ic_flickr_black, R.drawable.ic_nextcloud, R.drawable.ic_imgur,R.drawable.ic_share_minimal};
+            R.drawable.ic_flickr_black, R.drawable.ic_nextcloud, R.drawable.ic_imgur,R.drawable.ic_dropbox_black,R.drawable.ic_share_minimal};
     private int[] titles_text = {R.string.facebook, R.string.twitter, R.string.instagram,
-            R.string.wordpress, R.string.pinterest, R.string.flickr, R.string.nextcloud, R.string.imgur, R.string.other};
+            R.string.wordpress, R.string.pinterest, R.string.flickr, R.string.nextcloud, R.string.imgur,R.string.dropbox_share, R.string.other};
+
     private Context context;
+
+    private DropboxAPI<AndroidAuthSession> mDBApi;
 
     Bitmap finalBmp;
     Boolean isPostedOnTwitter =false, isPersonal =false;
@@ -214,10 +222,10 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             cells.get(i).setOnClickListener(this);
             icons.get(i).setImageResource(icons_drawables[i]);
             titles.get(i).setText(titles_text[i]);
-            if(themeHelper.getBaseTheme() == ThemeHelper.LIGHT_THEME) {
+            if (themeHelper.getBaseTheme() == ThemeHelper.LIGHT_THEME) {
                 icons.get(i).setColorFilter(getResources().getColor(cellcolors_LightTheme[i]));
                 titles.get(i).setTextColor(getResources().getColor(cellcolors_LightTheme[i]));
-            }else {
+            } else {
                 icons.get(i).setColorFilter(getResources().getColor(cellcolors_DarkTheme[i]));
                 titles.get(i).setTextColor(getResources().getColor(cellcolors_DarkTheme[i]));
             }
@@ -267,6 +275,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             case R.id.cell_31: //imgur
                 imgurShare();
                 break;
+            case R.id.cell_32:
+                dropboxShare();
+                break;
             case R.id.cell_40: //othershare
                 otherShare();
                 break;
@@ -303,6 +314,65 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             startActivity(intent);
         }
     }
+
+    private void dropboxShare() {
+        AppKeyPair appKeys = new AppKeyPair(Constants.APP_KEY, Constants.APP_SECRET);
+        AndroidAuthSession session = new AndroidAuthSession(appKeys);
+        RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
+        // Checking if string equals to is exist or not
+        query.equalTo("name", getString(R.string.dropbox_share));
+        RealmResults<AccountDatabase> result = query.findAll();
+        try {
+            session.setOAuth2AccessToken(result.get(0).getToken());
+            mDBApi = new DropboxAPI<AndroidAuthSession>(session);
+            if (checknetwork()) {
+                new UploadToDropbox().execute();
+            }
+        }
+        catch (ArrayIndexOutOfBoundsException e){
+            SnackBarHandler.show(parent, R.string.login_dropbox_account);
+        }
+    }
+
+    private class UploadToDropbox extends AsyncTask<Void, Integer, Void> {
+        AlertDialog dialog;
+        @Override
+        protected void onPreExecute() {
+            final AlertDialog.Builder progressDialog = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
+            dialog = AlertDialogsHelper.getProgressDialog(SharingActivity.this, progressDialog,
+                    getString(R.string.dropbox_share), getString(R.string.please_wait));
+            dialog.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            File file = new File(saveFilePath);
+            FileInputStream inputStream = null;
+            try {
+                inputStream = new FileInputStream(file);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            DropboxAPI.Entry response = null;
+            try {
+                File file2 = new File(saveFilePath);
+                response = mDBApi.putFile(file2.getName(), inputStream,
+                        file.length(), null, null);
+            } catch (DropboxException e) {
+                e.printStackTrace();
+            }
+            if(response!=null)
+                Log.i("Db", "The uploaded file's rev is: " + response.rev);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            dialog.dismiss();
+            SnackBarHandler.show(parent, R.string.uploaded_dropbox);
+        }
+    }
+
 
     private void openCaptionDialogBox() {
         AlertDialog.Builder captionDialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());

@@ -103,7 +103,7 @@ Before you begin, you should already have the Android Studio SDK downloaded and 
 1. Go to the Dropbox App console([Link](https://www.dropbox.com/developers/apps))
 2. Create a new application and get the APP_KEY and API_SECRET.
 3. In the AndroidManifest.xml file, in the AuthActivity section, replace the APPKEY with your own App key.
-4. Go to AccountActivity.java file and add replace the APP_KEY and API_SECRET with the key received from step 2.
+4. Go to Utilities/Constants.java file and add replace the APP_KEY and API_SECRET with the key received from step 2.
 
 ## License
 
