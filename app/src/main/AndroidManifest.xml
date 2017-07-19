@@ -339,7 +339,7 @@
 
         <activity android:name=".nextcloud.NextCloudAuth"/>
 
-        <activity android:name=".sharedimgur.ImgurAuthActivity"/>
+
 
         <activity
             android:name=".sharetoflickr.FlickrActivity"
@@ -353,6 +353,8 @@
                 <data android:scheme="flickrj-android-sample-oauth" />
             </intent-filter>
         </activity>
+        <activity android:name=".sharedimgur.ImgurAuthActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
     </application>
 
