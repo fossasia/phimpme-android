@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,11 +13,12 @@ import com.owncloud.android.lib.common.OwnCloudClientFactory;
 import com.owncloud.android.lib.common.OwnCloudCredentialsFactory;
 
 import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.base.ThemedActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class NextCloudAuth extends AppCompatActivity implements Button.OnClickListener {
+public class NextCloudAuth extends ThemedActivity implements Button.OnClickListener {
 
     private static final int RESULT_OK = 1;
 
@@ -43,11 +43,12 @@ public class NextCloudAuth extends AppCompatActivity implements Button.OnClickLi
     @BindView(R.id.buttonOK)
     Button buttonOK;
 
+
     private OwnCloudClient authClient;
     private String username, password;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_next_cloud_auth);
         ButterKnife.bind(this);
