@@ -136,7 +136,7 @@
     </style>
 
     <!--Player-->
-    <style name="RootTheme" parent="android:Theme.Holo"/>
+    <style name="RootTheme" parent="android:Theme.Holo" />
 
     <style name="PlayerTheme" parent="@style/RootTheme">
         <item name="android:windowNoTitle">true</item>
@@ -178,6 +178,7 @@
         <!-- You can also set colorControlNormal, colorControlActivated
            colorControlHighlight and colorSwitchThumbNormal. -->
     </style>
+
     <style name="card">
         <item name="cardCornerRadius">4dp</item>
         <item name="android:padding">@dimen/card_spacing</item>
@@ -217,6 +218,7 @@
         <item name="android:textColorPrimary">@color/colorPrimary</item>
         <item name="android:windowFrame">@color/transparent</item>
         <item name="android:windowBackground">@color/transparent</item>
-        <item name="android:windowTitleBackgroundStyle">@drawable/com_facebook_button_background</item>
+        <item name="android:windowTitleBackgroundStyle">@drawable/com_facebook_button_background
+        </item>
     </style>
 </resources>

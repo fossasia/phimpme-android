@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
@@ -24,6 +25,12 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.pinterest.android.pdk.PDKCallback;
 import com.pinterest.android.pdk.PDKClient;
 import com.pinterest.android.pdk.PDKException;
@@ -42,13 +49,13 @@ import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
 import org.fossasia.phimpme.nextcloud.NextCloudAuth;
-import org.fossasia.phimpme.sharetoflickr.FlickrActivity;
+import org.fossasia.phimpme.share.shareowncloud.OwnCloudActivity;
 import org.fossasia.phimpme.sharedimgur.ImgurAuthActivity;
 import org.fossasia.phimpme.sharedrupal.DrupalLogin;
+import org.fossasia.phimpme.sharetoflickr.FlickrActivity;
 import org.fossasia.phimpme.sharewordpress.WordpressLoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
-import org.fossasia.phimpme.utilities.Constants;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -60,13 +67,29 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
+import retrofit2.http.HEAD;
+
+import static org.fossasia.phimpme.utilities.Constants.APP_KEY;
+import static org.fossasia.phimpme.utilities.Constants.APP_SECRET;
+import static org.fossasia.phimpme.utilities.Constants.DROPBOX;
+import static org.fossasia.phimpme.utilities.Constants.DRUPAL;
+import static org.fossasia.phimpme.utilities.Constants.FACEBOOK;
+import static org.fossasia.phimpme.utilities.Constants.FLICKR;
+import static org.fossasia.phimpme.utilities.Constants.GOOGLEPLUS;
+import static org.fossasia.phimpme.utilities.Constants.IMGUR;
+import static org.fossasia.phimpme.utilities.Constants.NEXTCLOUD;
+import static org.fossasia.phimpme.utilities.Constants.OWNCLOUD;
+import static org.fossasia.phimpme.utilities.Constants.PINTEREST;
+import static org.fossasia.phimpme.utilities.Constants.SUCCESS;
+import static org.fossasia.phimpme.utilities.Constants.TWITTER;
+import static org.fossasia.phimpme.utilities.Constants.WORDPRESS;
 
 /**
  * Created by pa1pal on 13/6/17.
  */
 
 public class AccountActivity extends ThemedActivity implements AccountContract.View,
-        RecyclerItemClickListner.OnItemClickListener {
+        RecyclerItemClickListner.OnItemClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     private Toolbar toolbar;
     private RecyclerView accountsRecyclerView;
@@ -82,15 +105,18 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private DatabaseHelper databaseHelper;
     private Context context;
     private PDKClient pdkClient;
+    private GoogleApiClient mGoogleApiClient;
 
-    public static String[] accountName = {"Facebook", "Twitter", "Drupal", "NextCloud", "Wordpress", "Pinterest", "Flickr", "Imgur", "Dropbox"};
-    private static final int NEXTCLOUD_REQUEST_CODE = 1;
+    public static String[] accountName = { "Facebook", "Twitter", "Drupal", "NextCloud", "Wordpress"
+            , "Pinterest", "Flickr", "Imgur", "Dropbox", "OwnCloud", "Googleplus"};
+    private static final int NEXTCLOUD_REQUEST_CODE = 3;
+    private static final int OWNCLOUD_REQUEST_CODE = 9;
     private static final int RESULT_OK = 1;
     public static final int IMGUR_KEY_LOGGED_IN = 2;
 
     final static private String APP_KEY = "APP_KEY";
     final static private String APP_SECRET = "API_SECRET";
-
+    private static final int RC_SIGN_IN = 9001;
     private DropboxAPI<AndroidAuthSession> mDBApi;
 
     @Override
@@ -122,6 +148,18 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         AppKeyPair appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
         AndroidAuthSession session = new AndroidAuthSession(appKeys);
         mDBApi = new DropboxAPI<AndroidAuthSession>(session);
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        // Build a GoogleApiClient with access to the Google Sign-In API and the
+        // options specified by gso.
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, AccountActivity.this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
     }
 
     @Override
@@ -175,48 +213,56 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
         if (!signInSignOut.isChecked()) {
             switch (position) {
-                case 0:
+                case FACEBOOK:
                     // FacebookSdk.sdkInitialize(this);
                     signInFacebook(childView);
                     accountPresenter.loadFromDatabase();
                     break;
 
-                case 1:
+                case TWITTER:
                     signInTwitter();
                     accountPresenter.loadFromDatabase();
                     break;
 
-                case 2:
+                case DRUPAL:
                     Intent drupalShare = new Intent(getContext(), DrupalLogin.class);
                     startActivity(drupalShare);
                     break;
 
-                case 3:
+                case NEXTCLOUD:
                     Intent nextCloudShare = new Intent(getContext(), NextCloudAuth.class);
                     startActivityForResult(nextCloudShare, NEXTCLOUD_REQUEST_CODE);
                     break;
 
-                case 4:
+                case WORDPRESS:
                     Intent WordpressShare = new Intent(this, WordpressLoginActivity.class);
                     startActivity(WordpressShare);
                     break;
 
-                case 5:
+                case PINTEREST:
                     signInPinterest();
                     break;
-                case 6:
+                case FLICKR:
                     Intent intent = new Intent(getApplicationContext(),
                             FlickrActivity.class);
                     FlickrActivity.setFilename(null);
                     startActivity(intent);
                     break;
-                case 7:
+                case IMGUR:
                     signInImgur();
                     break;
 
-                case 8:
+                case DROPBOX:
                     signInDropbox();
-                    accountPresenter.loadFromDatabase();
+                    break;
+
+                case OWNCLOUD:
+                    Intent ownCloudShare = new Intent(getContext(), OwnCloudActivity.class);
+                    startActivityForResult(ownCloudShare, OWNCLOUD_REQUEST_CODE);
+                    break;
+
+                case GOOGLEPLUS:
+                    signInGooglePlus();
                     break;
 
                 default:
@@ -249,28 +295,33 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         }
     }
 
+    private void signInGooglePlus() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
     private void signInDropbox() {
-        if (accountPresenter.checkAlreadyExist(accountName[7]))
+        if (accountPresenter.checkAlreadyExist(accountName[DROPBOX]))
             Toast.makeText(getApplicationContext(), getString(R.string.already_signed_in), Toast.LENGTH_SHORT).show();
         else
             mDBApi.getSession().startOAuth2Authentication(this);
     }
 
     private void signInImgur() {
-        if (accountPresenter.checkAlreadyExist(accountName[7])) {
+        if (accountPresenter.checkAlreadyExist(accountName[IMGUR])) {
             Toast.makeText(this, R.string.already_signed_in,
                     Toast.LENGTH_SHORT).show();
         }else {
             BasicCallBack basicCallBack = new BasicCallBack() {
                 @Override
                 public void callBack(int status, Object data) {
-                    if (status == Constants.SUCCESS){
+                    if (status == SUCCESS){
                         Toast.makeText(getContext(), getResources().getString(R.string.account_logged), Toast.LENGTH_LONG).show();
                         if (data instanceof Bundle){
                             Bundle bundle = (Bundle)data;
                             realm.beginTransaction();
                             account = realm.createObject(AccountDatabase.class,
-                                    accountName[7]);
+                                    accountName[IMGUR]);
                             account.setUsername(bundle.getString(getString(R.string.auth_username)));
                             account.setToken(bundle.getString(getString(R.string.auth_token)));
                             realm.commitTransaction();
@@ -286,7 +337,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
     private void signInPinterest() {
 
-        if (accountPresenter.checkAlreadyExist(accountName[5])) {
+        if (accountPresenter.checkAlreadyExist(accountName[PINTEREST])) {
             Toast.makeText(this, R.string.already_signed_in,
                     Toast.LENGTH_SHORT).show();
         } else {
@@ -306,7 +357,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
                     // Creating Realm object for AccountDatabase Class
                     account = realm.createObject(AccountDatabase.class,
-                            accountName[5]);
+                            accountName[PINTEREST]);
 
                     PDKClient.getInstance().getPath("me/", null, new PDKCallback() {
                         @Override
@@ -345,7 +396,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         /**
          * When user clicks then we first check if it is already exist.
          */
-        if (accountPresenter.checkAlreadyExist(accountName[1])) {
+        if (accountPresenter.checkAlreadyExist(accountName[TWITTER])) {
             Toast.makeText(this, R.string.already_signed_in,
                     Toast.LENGTH_SHORT).show();
         } else {
@@ -358,7 +409,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
                     // Creating Realm object for AccountDatabase Class
                     account = realm.createObject(AccountDatabase.class,
-                            accountName[1]);
+                            accountName[TWITTER]);
 
                     // Creating twitter session, after user authenticate
                     // in twitter popup
@@ -390,7 +441,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
      */
     public void signInFacebook(final View childView) {
         loginManager = LoginManager.getInstance();
-        if (accountPresenter.checkAlreadyExist(accountName[0])) {
+        if (accountPresenter.checkAlreadyExist(accountName[FACEBOOK])) {
             Toast.makeText(this, R.string.already_signed_in,
                     Toast.LENGTH_SHORT).show();
         } else {
@@ -408,7 +459,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
                             // Creating Realm object for AccountDatabase Class
                             account = realm.createObject(AccountDatabase.class,
-                                    accountName[0]);
+                                    accountName[FACEBOOK]);
 
                             // Writing values in Realm database
                             account.setUsername(loginResult
@@ -482,11 +533,11 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
                 // Creating Realm object for AccountDatabase Class
                 account = realm.createObject(AccountDatabase.class,
-                        accountName[8]);
+                        accountName[DROPBOX]);
 
                 // Writing values in Realm database
 
-                account.setUsername(accountName[8]);
+                account.setUsername(accountName[DROPBOX]);
                 account.setToken(String.valueOf(accessToken));
 
                 // Finally committing the whole data
@@ -496,6 +547,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                 Log.i("DbAuthLog", "Error authenticating", e);
             }
         }
+        accountPresenter.loadFromDatabase();
     }
 
     @Override
@@ -506,13 +558,14 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         pdkClient.onOauthResponse(requestCode, resultCode,
                 data);
 
-        if (requestCode == NEXTCLOUD_REQUEST_CODE && resultCode == RESULT_OK){
+        if ((requestCode == OWNCLOUD_REQUEST_CODE && resultCode == RESULT_OK)
+                || (requestCode == NEXTCLOUD_REQUEST_CODE && resultCode == RESULT_OK)){
             // Begin realm transaction
             realm.beginTransaction();
 
             // Creating Realm object for AccountDatabase Class
             account = realm.createObject(AccountDatabase.class,
-                    accountName[3]);
+                    accountName[NEXTCLOUD]);
 
             // Writing values in Realm database
             account.setServerUrl(data.getStringExtra(getString(R.string.server_url)));
@@ -522,5 +575,38 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             // Finally committing the whole data
             realm.commitTransaction();
         }
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
+        }
+    }
+
+    private void handleSignInResult(GoogleSignInResult result) {
+        if (result.isSuccess()) {
+            // Signed in successfully, show authenticated UI.
+            GoogleSignInAccount acct = result.getSignInAccount();//acct.getDisplayName()
+            Toast.makeText(AccountActivity.this, R.string.success, Toast.LENGTH_SHORT).show();
+            // Begin realm transaction
+            realm.beginTransaction();
+
+            // Creating Realm object for AccountDatabase Class
+            account = realm.createObject(AccountDatabase.class,
+                    accountName[GOOGLEPLUS]);
+
+            account.setUsername(acct.getDisplayName());
+
+            // Finally committing the whole data
+            realm.commitTransaction();
+        } else {
+            // Signed out, show unauthenticated UI.
+            Toast.makeText(AccountActivity.this, R.string.fail, Toast.LENGTH_SHORT).show();
+            //updateUI(false);
+        }
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Toast.makeText(AccountActivity.this, "Connection Failed", Toast.LENGTH_SHORT).show();
     }
 }
