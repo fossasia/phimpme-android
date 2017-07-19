@@ -29,19 +29,4 @@ public class Constants {
 
     public final static String APP_KEY = "APP_KEY";
     public final static String APP_SECRET = "APP_SECRET";
-
-    public final static int DROPBOX = 8;
-    public final static int DRUPAL = 2;
-    public final static int WORDPRESS = 4;
-    public final static int FLICKR = 6;
-    public final static int FACEBOOK = 0;
-    public final static int TWITTER = 1;
-    public final static int IMGUR = 7;
-    public final static int PINTEREST = 5;
-    public final static int NEXTCLOUD = 3;
-    public final static int OWNCLOUD = 9;
-    public final static int GOOGLEPLUS =10;
-
-
 }
-

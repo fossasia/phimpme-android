@@ -17,7 +17,6 @@ import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 
-import static org.fossasia.phimpme.accounts.AccountActivity.accountName;
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
 
@@ -51,18 +50,19 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
         realmResult = realm.where(AccountDatabase.class);
         themeHelper.updateSwitchColor(holder.signInSignOutSwitch, switchBackgroundColor);
-        if (realmResult.equalTo("name", accountName[position]).count() > 0){
+        String name = AccountDatabase.AccountName.values()[position].toString();
+        if (realmResult.equalTo("name", name).count() > 0){
             holder.accountName.setText(realmResult
-                    .equalTo("name", accountName[position]).findAll()
+                    .equalTo("name", name).findAll()
                     .first().getUsername());
             holder.signInSignOutSwitch.setChecked(true);
             themeHelper.updateSwitchColor(holder.signInSignOutSwitch, switchAccentColor);
         } else {
-            holder.accountName.setText(accountName[position]);
+            holder.accountName.setText(name);
         }
 
         Integer id = getContext().getResources().getIdentifier(context.getString(R.string.ic_) +
-                        (accountName[position].toLowerCase()) + "_black"
+                        (name.toLowerCase()) + "_black"
                 , context.getString(R.string.drawable)
                 , getContext().getPackageName());
 
@@ -71,7 +71,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return accountName.length;
+        return AccountDatabase.AccountName.values().length;
     }
 
     public void setResults(RealmQuery<AccountDatabase> results) {
