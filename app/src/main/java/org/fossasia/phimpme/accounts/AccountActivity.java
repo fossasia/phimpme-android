@@ -42,13 +42,13 @@ import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
 import org.fossasia.phimpme.nextcloud.NextCloudAuth;
-import org.fossasia.phimpme.sharetoflickr.FlickrActivity;
+import org.fossasia.phimpme.share.shareowncloud.OwnCloudActivity;
 import org.fossasia.phimpme.sharedimgur.ImgurAuthActivity;
 import org.fossasia.phimpme.sharedrupal.DrupalLogin;
+import org.fossasia.phimpme.sharetoflickr.FlickrActivity;
 import org.fossasia.phimpme.sharewordpress.WordpressLoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
-import org.fossasia.phimpme.utilities.Constants;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
@@ -60,8 +60,21 @@ import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
+import retrofit2.http.HEAD;
 
-import static org.fossasia.phimpme.utilities.Constants.*;
+import static org.fossasia.phimpme.utilities.Constants.APP_KEY;
+import static org.fossasia.phimpme.utilities.Constants.APP_SECRET;
+import static org.fossasia.phimpme.utilities.Constants.DROPBOX;
+import static org.fossasia.phimpme.utilities.Constants.DRUPAL;
+import static org.fossasia.phimpme.utilities.Constants.FACEBOOK;
+import static org.fossasia.phimpme.utilities.Constants.FLICKR;
+import static org.fossasia.phimpme.utilities.Constants.IMGUR;
+import static org.fossasia.phimpme.utilities.Constants.NEXTCLOUD;
+import static org.fossasia.phimpme.utilities.Constants.OWNCLOUD;
+import static org.fossasia.phimpme.utilities.Constants.PINTEREST;
+import static org.fossasia.phimpme.utilities.Constants.SUCCESS;
+import static org.fossasia.phimpme.utilities.Constants.TWITTER;
+import static org.fossasia.phimpme.utilities.Constants.WORDPRESS;
 
 /**
  * Created by pa1pal on 13/6/17.
@@ -85,8 +98,10 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private Context context;
     private PDKClient pdkClient;
 
-    public static String[] accountName = {"Facebook", "Twitter", "Drupal", "NextCloud", "Wordpress", "Pinterest", "Flickr", "Imgur", "Dropbox"};
-    private static final int NEXTCLOUD_REQUEST_CODE = 1;
+    public static String[] accountName = {"Facebook", "Twitter", "Drupal", "NextCloud", "Wordpress"
+            , "Pinterest", "Flickr", "Imgur", "Dropbox", "OwnCloud"};
+    private static final int NEXTCLOUD_REQUEST_CODE = 3;
+    private static final int OWNCLOUD_REQUEST_CODE = 9;
     private static final int RESULT_OK = 1;
     public static final int IMGUR_KEY_LOGGED_IN = 2;
 
@@ -215,6 +230,11 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
                 case DROPBOX:
                     signInDropbox();
+                    break;
+
+                case OWNCLOUD:
+                    Intent ownCloudShare = new Intent(getContext(), OwnCloudActivity.class);
+                    startActivityForResult(ownCloudShare, OWNCLOUD_REQUEST_CODE);
                     break;
 
                 default:
@@ -505,7 +525,8 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         pdkClient.onOauthResponse(requestCode, resultCode,
                 data);
 
-        if (requestCode == NEXTCLOUD_REQUEST_CODE && resultCode == RESULT_OK){
+        if ((requestCode == OWNCLOUD_REQUEST_CODE && resultCode == RESULT_OK)
+                || (requestCode == NEXTCLOUD_REQUEST_CODE && resultCode == RESULT_OK)){
             // Begin realm transaction
             realm.beginTransaction();
 
