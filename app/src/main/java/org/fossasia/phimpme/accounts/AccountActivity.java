@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
@@ -24,6 +25,12 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.pinterest.android.pdk.PDKCallback;
 import com.pinterest.android.pdk.PDKClient;
 import com.pinterest.android.pdk.PDKException;
@@ -68,6 +75,7 @@ import static org.fossasia.phimpme.utilities.Constants.DROPBOX;
 import static org.fossasia.phimpme.utilities.Constants.DRUPAL;
 import static org.fossasia.phimpme.utilities.Constants.FACEBOOK;
 import static org.fossasia.phimpme.utilities.Constants.FLICKR;
+import static org.fossasia.phimpme.utilities.Constants.GOOGLEPLUS;
 import static org.fossasia.phimpme.utilities.Constants.IMGUR;
 import static org.fossasia.phimpme.utilities.Constants.NEXTCLOUD;
 import static org.fossasia.phimpme.utilities.Constants.OWNCLOUD;
@@ -81,7 +89,7 @@ import static org.fossasia.phimpme.utilities.Constants.WORDPRESS;
  */
 
 public class AccountActivity extends ThemedActivity implements AccountContract.View,
-        RecyclerItemClickListner.OnItemClickListener {
+        RecyclerItemClickListner.OnItemClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     private Toolbar toolbar;
     private RecyclerView accountsRecyclerView;
@@ -97,14 +105,18 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private DatabaseHelper databaseHelper;
     private Context context;
     private PDKClient pdkClient;
+    private GoogleApiClient mGoogleApiClient;
 
-    public static String[] accountName = {"Facebook", "Twitter", "Drupal", "NextCloud", "Wordpress"
-            , "Pinterest", "Flickr", "Imgur", "Dropbox", "OwnCloud"};
+    public static String[] accountName = { "Facebook", "Twitter", "Drupal", "NextCloud", "Wordpress"
+            , "Pinterest", "Flickr", "Imgur", "Dropbox", "OwnCloud", "Googleplus"};
     private static final int NEXTCLOUD_REQUEST_CODE = 3;
     private static final int OWNCLOUD_REQUEST_CODE = 9;
     private static final int RESULT_OK = 1;
     public static final int IMGUR_KEY_LOGGED_IN = 2;
 
+    final static private String APP_KEY = "APP_KEY";
+    final static private String APP_SECRET = "API_SECRET";
+    private static final int RC_SIGN_IN = 9001;
     private DropboxAPI<AndroidAuthSession> mDBApi;
 
     @Override
@@ -136,6 +148,18 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         AppKeyPair appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
         AndroidAuthSession session = new AndroidAuthSession(appKeys);
         mDBApi = new DropboxAPI<AndroidAuthSession>(session);
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        // Build a GoogleApiClient with access to the Google Sign-In API and the
+        // options specified by gso.
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this /* FragmentActivity */, AccountActivity.this /* OnConnectionFailedListener */)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
     }
 
     @Override
@@ -237,6 +261,10 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     startActivityForResult(ownCloudShare, OWNCLOUD_REQUEST_CODE);
                     break;
 
+                case GOOGLEPLUS:
+                    signInGooglePlus();
+                    break;
+
                 default:
                     Toast.makeText(this, R.string.feature_not_present,
                             Toast.LENGTH_SHORT).show();
@@ -265,6 +293,11 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                             })
                     .show();
         }
+    }
+
+    private void signInGooglePlus() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     private void signInDropbox() {
@@ -542,5 +575,38 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             // Finally committing the whole data
             realm.commitTransaction();
         }
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
+        }
+    }
+
+    private void handleSignInResult(GoogleSignInResult result) {
+        if (result.isSuccess()) {
+            // Signed in successfully, show authenticated UI.
+            GoogleSignInAccount acct = result.getSignInAccount();//acct.getDisplayName()
+            Toast.makeText(AccountActivity.this, R.string.success, Toast.LENGTH_SHORT).show();
+            // Begin realm transaction
+            realm.beginTransaction();
+
+            // Creating Realm object for AccountDatabase Class
+            account = realm.createObject(AccountDatabase.class,
+                    accountName[GOOGLEPLUS]);
+
+            account.setUsername(acct.getDisplayName());
+
+            // Finally committing the whole data
+            realm.commitTransaction();
+        } else {
+            // Signed out, show unauthenticated UI.
+            Toast.makeText(AccountActivity.this, R.string.fail, Toast.LENGTH_SHORT).show();
+            //updateUI(false);
+        }
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Toast.makeText(AccountActivity.this, "Connection Failed", Toast.LENGTH_SHORT).show();
     }
 }
