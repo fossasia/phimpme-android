@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -180,7 +181,7 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
             popView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
         }
 
-        mStokenWidthSeekBar.setMax(mPaintModeView.getMeasuredHeight() / 2);
+        mStokenWidthSeekBar.setMax(mPaintModeView.getMeasuredWidth() / 2);
 
         mStokenWidthSeekBar.setProgress((int) mPaintModeView.getStokenWidth());
 
@@ -201,11 +202,9 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
 
             }
         });
-/*
-        int[] locations = new int[2];
-        activity.bottomGallery.getLocationOnScreen(locations);
-        setStokenWidthWindow.showAtLocation(activity.bottomGallery,
-                Gravity.NO_GRAVITY, 0, locations[1] - popView.getMeasuredHeight());*/
+
+        setStokenWidthWindow.showAtLocation(this.getActivity().getWindow().getDecorView(),
+                Gravity.NO_GRAVITY, 0,  activity.mainImage.getHeight() - popView.getMeasuredHeight() / 2);
     }
 
     private void initStokeWidthPopWindow() {
