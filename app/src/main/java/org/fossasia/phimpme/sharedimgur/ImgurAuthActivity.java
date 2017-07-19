@@ -1,19 +1,19 @@
 package org.fossasia.phimpme.sharedimgur;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.TextView;
 
 import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.base.ThemedActivity;
+import org.fossasia.phimpme.leafpic.util.AlertDialogsHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
 import org.fossasia.phimpme.utilities.Constants;
 
@@ -26,30 +26,28 @@ import static org.fossasia.phimpme.utilities.Constants.IMGUR_LOGIN_URL;
  * Created by manuja on 16/7/17.
  */
 
-public class ImgurAuthActivity extends Activity {
+public class ImgurAuthActivity extends ThemedActivity {
     private static final String REDIRECT_URL = "https://org.fossasia.phimpme";
     static BasicCallBack imgurCallBack;
     @BindView(R.id.login_parent)
     View parent;
-    private AlertDialog mAlertBuilder;
+    AlertDialog dialog;
+    AlertDialog.Builder progressDialog;
+
 
     public static void setBasicCallBack(BasicCallBack basicCallBack) {
         imgurCallBack = basicCallBack;
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_twitter_login);
         ButterKnife.bind(this);
-        mAlertBuilder = new AlertDialog.Builder(this).create();
-        mAlertBuilder.setCancelable(false);
-        mAlertBuilder.setTitle(R.string.please_wait_title);
-        View view = getLayoutInflater().inflate(R.layout.view_loading, null);
-        ((TextView) view.findViewById(R.id.messageTextViewFromLoading)).setText(getString(R.string.authenticating_your_app_message));
-        mAlertBuilder.setView(view);
-        mAlertBuilder.show();
-
+        progressDialog = new AlertDialog.Builder(ImgurAuthActivity.this, getDialogStyle());
+        dialog = AlertDialogsHelper.getProgressDialog(ImgurAuthActivity.this, progressDialog,
+                getString(R.string.authenticating_your_app_message), getString(R.string.please_wait));
+        dialog.show();
 
         WebView imgurWebView = (WebView) findViewById(R.id.twitterLoginWebView);
         imgurWebView.setBackgroundColor(Color.TRANSPARENT);
@@ -81,8 +79,8 @@ public class ImgurAuthActivity extends Activity {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
 
-                if (mAlertBuilder != null) {
-                    mAlertBuilder.cancel();
+                if (dialog != null) {
+                    dialog.dismiss();
                 }
             }
 
@@ -90,8 +88,8 @@ public class ImgurAuthActivity extends Activity {
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
 
-                if (mAlertBuilder != null) {
-                    mAlertBuilder.show();
+                if (dialog != null) {
+                    dialog.show();
                 }
             }
         });
