@@ -324,15 +324,16 @@
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="pdk4910600717739247160" />
             </intent-filter>
         </activity>
         <activity
             android:name=".sharedrupal.DrupalLogin"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
-
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".sharewordpress.WordpressLoginActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
@@ -356,6 +357,10 @@
         <activity android:name=".sharedimgur.ImgurAuthActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
+        <activity
+            android:name=".share.shareowncloud.OwnCloudActivity"
+            android:label="@string/title_activity_own_cloud"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

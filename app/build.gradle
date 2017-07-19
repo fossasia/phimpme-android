@@ -129,9 +129,11 @@ dependencies {
     compile files('libs/twitter4j-core-3.0.5.jar')
     compile files('libs/twitter4j-media-support-3.0.5.jar')
     compile files('libs/flickrj-android-2.1.0.jar')
-    compile 'uz.shift:colorpicker:0.5@aar'
-    androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
     compile project(':openCVLibrary320')
+    compile project(':pdk')
+//    compile 'com.android.volley:volley:1.0.0'
+
+    compile 'uz.shift:colorpicker:0.5@aar'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.koushikdutta.ion:ion:2.1.7'
     compile 'com.mikepenz:iconics-core:2.8.4@aar'
@@ -153,9 +155,7 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.23.0'
     compile 'com.uphyca:stetho_realm:2.0.0'
     compile 'com.android.support:multidex:1.0.1'
-    compile project(':pdk')
-//    compile 'com.android.volley:volley:1.0.0'
-
+    androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
 }
 
 
