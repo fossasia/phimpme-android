@@ -24,7 +24,7 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.editor.FileUtils;
-import org.fossasia.phimpme.editor.editimage.EditImageActivity;
+import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.SharingActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 

@@ -18,7 +18,7 @@
         android:layout_alignParentLeft="true"
         app:srcCompat="@drawable/ic_no"/>
 
-    <org.fossasia.phimpme.editor.editimage.view.PaintModeView
+    <org.fossasia.phimpme.editor.view.PaintModeView
         android:id="@+id/paint_thumb"
         android:layout_width="@dimen/icon_item_image_size_main"
         android:layout_height="@dimen/editor_bottom_row_size"

@@ -273,7 +273,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".editor.editimage.EditImageActivity"
+            android:name=".editor.EditImageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
