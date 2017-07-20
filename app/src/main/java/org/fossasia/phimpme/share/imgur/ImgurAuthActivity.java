@@ -1,4 +1,4 @@
-package org.fossasia.phimpme.sharedimgur;
+package org.fossasia.phimpme.share.imgur;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;

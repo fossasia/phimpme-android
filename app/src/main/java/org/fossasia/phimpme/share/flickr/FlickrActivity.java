@@ -1,4 +1,4 @@
-package org.fossasia.phimpme.sharetoflickr;
+package org.fossasia.phimpme.share.flickr;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,9 +11,9 @@ import android.os.Handler;
 import android.widget.Toast;
 
 import org.fossasia.phimpme.base.ThemedActivity;
-import org.fossasia.phimpme.sharetoflickr.tasks.GetOAuthTokenTask;
-import org.fossasia.phimpme.sharetoflickr.tasks.OAuthTask;
-import org.fossasia.phimpme.sharetoflickr.tasks.UploadPhotoTask;
+import org.fossasia.phimpme.share.flickr.tasks.GetOAuthTokenTask;
+import org.fossasia.phimpme.share.flickr.tasks.OAuthTask;
+import org.fossasia.phimpme.share.flickr.tasks.UploadPhotoTask;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;

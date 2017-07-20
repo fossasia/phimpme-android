@@ -17,7 +17,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.fossasia.phimpme.nextcloud;
+package org.fossasia.phimpme.share.nextcloud;
 
 import android.app.Activity;
 import android.content.Context;

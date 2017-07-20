@@ -19,7 +19,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.SharingActivity;
+import org.fossasia.phimpme.share.SharingActivity;
 import org.fossasia.phimpme.editor.fragment.AddTextFragment;
 import org.fossasia.phimpme.editor.fragment.CropFragment;
 import org.fossasia.phimpme.editor.fragment.MainMenuFragment;

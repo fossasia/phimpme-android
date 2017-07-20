@@ -17,7 +17,7 @@
  *
  */
 
-package org.fossasia.phimpme.nextcloud;
+package org.fossasia.phimpme.share.nextcloud;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;

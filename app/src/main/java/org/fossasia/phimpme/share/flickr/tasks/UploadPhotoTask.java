@@ -1,4 +1,4 @@
-package org.fossasia.phimpme.sharetoflickr.tasks;
+package org.fossasia.phimpme.share.flickr.tasks;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -6,8 +6,8 @@ import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
-import org.fossasia.phimpme.sharetoflickr.FlickrHelper;
-import org.fossasia.phimpme.sharetoflickr.FlickrActivity;
+import org.fossasia.phimpme.share.flickr.FlickrHelper;
+import org.fossasia.phimpme.share.flickr.FlickrActivity;
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;

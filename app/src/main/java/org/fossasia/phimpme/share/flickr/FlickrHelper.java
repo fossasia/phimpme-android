@@ -1,4 +1,4 @@
-package org.fossasia.phimpme.sharetoflickr;
+package org.fossasia.phimpme.share.flickr;
 
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.REST;

@@ -1,4 +1,4 @@
-package org.fossasia.phimpme;
+package org.fossasia.phimpme.share;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -73,6 +73,8 @@ import com.pinterest.android.pdk.PDKResponse;
 import org.fossasia.phimpme.accounts.AccountActivity;
 import org.fossasia.phimpme.accounts.AccountContract;
 import org.fossasia.phimpme.accounts.AccountPresenter;
+
+import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.PhimpmeProgressBarHandler;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.AccountDatabase;
@@ -80,9 +82,9 @@ import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouch;
 import org.fossasia.phimpme.leafpic.activities.LFMainActivity;
 import org.fossasia.phimpme.leafpic.util.AlertDialogsHelper;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
-import org.fossasia.phimpme.sharetoflickr.FlickrActivity;
-import org.fossasia.phimpme.sharetwitter.HelperMethods;
-import org.fossasia.phimpme.sharetwitter.LoginActivity;
+import org.fossasia.phimpme.share.flickr.FlickrActivity;
+import org.fossasia.phimpme.share.twitter.HelperMethods;
+import org.fossasia.phimpme.share.twitter.LoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.Constants;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
