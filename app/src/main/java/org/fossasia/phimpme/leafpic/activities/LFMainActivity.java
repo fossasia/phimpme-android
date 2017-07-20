@@ -1811,6 +1811,7 @@ public class LFMainActivity extends SharedMediaActivity {
             super.onPostExecute(aVoid);
             swipeRefreshLayout.setRefreshing(false);
             albumsAdapter.swapDataSet(getAlbums().dispAlbums);
+            new PrepareAlbumTask().execute();
         }
 
 	/*private class MovePhotos extends AsyncTask<String, Void, Boolean> {
