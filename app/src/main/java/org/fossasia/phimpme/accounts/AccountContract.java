@@ -55,6 +55,6 @@ public class AccountContract {
          * @param s Name of the account from accountList e.g. Twitter
          * @return true is existed, false otherwise
          */
-        boolean checkAlreadyExist(String s);
+        boolean checkAlreadyExist(AccountDatabase.AccountName s);
     }
 }
