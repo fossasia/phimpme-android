@@ -299,7 +299,7 @@ public class HandlingAlbums {
     Album camera = null;
 
     for(Album album : dispAlbums)
-      if (album.getName().equals("Camera") && dispAlbums.remove(album)) {
+      if (album.getName().equals("Phimpme Camera") && dispAlbums.remove(album)) {
         camera = album;
         break;
       }
@@ -307,7 +307,7 @@ public class HandlingAlbums {
     Collections.sort(dispAlbums, AlbumsComparators.getComparator(getSortingMode(), getSortingOrder()));
 
     if (camera != null) {
-      camera.setName(context.getString(R.string.camera));
+      camera.setName(context.getString(R.string.phimpme_camera));
       dispAlbums.add(0, camera);
     }
   }
