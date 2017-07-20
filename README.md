@@ -1,10 +1,9 @@
 # phimpme-android
-<img src="/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" align="left" width="200" hspace="10" vspace="10">
+![Phimpme](/docs/logo.png)
+
 Phimp.me is a Photo App for Android that aims to replace proprietary photo applications. It offers features such as taking photos, adding filters, editing images and uploading them to social networks.
 
-[![Build Status](https://travis-ci.org/fossasia/phimpme-android.svg?branch=master)](https://travis-ci.org/fossasia/phimpme-android)
-[![codecov](https://codecov.io/gh/fossasia/phimpme-android/branch/master/graph/badge.svg)](https://codecov.io/gh/fossasia/phimpme-android)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/4584003e734343b3b8ce94bcae6e9ca4)](https://www.codacy.com/app/harshithdwivedi/phimpme-android?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fossasia/phimpme-android&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.org/fossasia/phimpme-android.svg?branch=master)](https://travis-ci.org/fossasia/phimpme-android) [![codecov](https://codecov.io/gh/fossasia/phimpme-android/branch/master/graph/badge.svg)](https://codecov.io/gh/fossasia/phimpme-android) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/4584003e734343b3b8ce94bcae6e9ca4)](https://www.codacy.com/app/harshithdwivedi/phimpme-android?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fossasia/phimpme-android&amp;utm_campaign=Badge_Grade)
 
 ## Communication
 Join Gitter channel: https://gitter.im/fossasia/phimpme
@@ -34,47 +33,43 @@ We have the following branches
 	With Git 1.7.10 and later, add --single-branch to prevent fetching of all branches. Example, with development branch:
 	
 	`git clone -b development --single-branch https://github.com/username/phimpme-android.git`
- 
+
  * **master**
    This contains the stable code. After significant features/bugfixes are accumulated on development, we move it to master.
- 
+
  * **apk**
    This branch contains automatically generated apk file for testing.
-   
+
 ## Screenshots
 
-  <table>
-    <tr>
-     <td><img src="/docs/screenshots/screenshot_1.png"></td>
-     <td><img src="/docs/screenshots/screenshot_3.png"></td>
-     <td><img src="/docs/screenshots/screenshot_5.png"></td>
-     <td><img src="/docs/screenshots/screenshot_2.png"></td>
-     <td><img src="/docs/screenshots/screenshot_4.png"></td>
-     
-    
-</td>
-    </tr>
-  </table>
-  
-   
+<table>
+  <tr>
+    <td><img src="/docs/_static/screenshots/screenshot_1.png"></td>
+    <td><img src="/docs/_static/screenshots/screenshot_3.png"></td>
+    <td><img src="/docs/_static/screenshots/screenshot_5.png"></td>
+    <td><img src="/docs/_static/screenshots/screenshot_2.png"></td>
+    <td><img src="/docs/_static/screenshots/screenshot_4.png"></td>
+  </tr>
+</table>
   
 ## Features
-**Feature**|**Description**|**Status**
------|-----|-----
-Home Screen|Show local captured images/Album wise|Established
- |Grid view of images|Diplaying images in grid|Established
- |Edit, Upload, share option on image click|Working
-Camera|Capture Image, Toggle Camera|Working
- |Apply filters, Camera features|Flash on/off, Exposure etc|Working
-Upload|Select account on which you want to upload|Not Implemented
- |Select images which you want to upload|To upload photos|Not implemented
-Settings|Add Accounts|Not Implemented
- |Photos settings|Set password, choose folder etc|Working
+| Feature | Description | Status |
+|---------|-------------|--------|
+| Home Screen | Show local captured images/Album wise | Established |
+| Grid view of images | Diplaying images in grid | Established |
+| Edit, Upload, share option on image click | | Working |
+| Camera | Capture Image, Toggle Camera | Working |
+| Apply filters, Camera features | Flash on/off, Exposure etc | Working |
+| Upload | Select account on which you want to upload | Not Implemented |
+| Select images which you want to upload | To upload photos | Not implemented |
+| Settings | Add Accounts | Not Implemented |
+| Photos settings | Set password, choose folder etc | Working |
+
 ## Development Setup
 
 Before you begin, you should already have the Android Studio SDK downloaded and set up correctly. You can find a guide on how to do this here: [Setting up Android Studio](http://developer.android.com/sdk/installing/index.html?pkg=studio)
 
-**Setting up the Android Project**
+### Setting up the Android Project
 
 1. Download the *phimpme-android* project source. You can do this either by forking and cloning the repository (recommended if you plan on pushing changes) or by downloading it as a ZIP file and extracting it.
 
@@ -98,7 +93,7 @@ Before you begin, you should already have the Android Studio SDK downloaded and 
 
 8. If the app was built succesfully, you can test it by running it on either a real device or an emulated one by going to *Run>Run 'app'* or presing the Run icon in the toolbar.
 
-**To login and upload images to Dropbox**
+### To login and upload images to Dropbox
 
 1. Go to the Dropbox App console([Link](https://www.dropbox.com/developers/apps))
 2. Create a new application and get the APP_KEY and API_SECRET.
