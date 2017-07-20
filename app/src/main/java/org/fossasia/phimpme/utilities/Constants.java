@@ -24,6 +24,9 @@ public class Constants {
     public final static String BOX_CLIENT_ID = "CLIENT_ID";
     public final static String BOX_CLIENT_SECRET = "CLIENT_SECRET";
 
+    public final static String FLICKR_API_KEY = "flickr_api_key_here";
+    public final static String FLICKR_TOKEN_SECRET = "flickr_secret_key_here";
+
     public final static String TUMBLR_CONSUMER_KEY = "ENTER-CONSUMER-KEY";
     public final static String TUMBLR_CONSUMER_SECRET = "ENTER-CONSUMER-SECRET";
     public final static String CALL_BACK_TUMBLR = "http://phimp.me";

@@ -2,8 +2,6 @@ package org.fossasia.phimpme.share.flickr;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +9,7 @@ import android.os.Handler;
 import android.widget.Toast;
 
 import org.fossasia.phimpme.base.ThemedActivity;
+import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.fossasia.phimpme.share.flickr.tasks.GetOAuthTokenTask;
 import org.fossasia.phimpme.share.flickr.tasks.OAuthTask;
 import org.fossasia.phimpme.share.flickr.tasks.UploadPhotoTask;
@@ -20,15 +19,15 @@ import com.googlecode.flickrjandroid.people.User;
 
 import java.io.InputStream;
 
+import io.realm.Realm;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
+
+import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FLICKR;
+
 public class FlickrActivity extends ThemedActivity {
 	public static final String CALLBACK_SCHEME = "flickrj-android-sample-oauth";
-	public static final String PREFS_NAME = "flickrj-android-sample-pref";
-	public static final String KEY_OAUTH_TOKEN = "flickrj-android-oauthToken";
-	public static final String KEY_TOKEN_SECRET = "flickrj-android-tokenSecret";
-	public static final String KEY_USER_NAME = "flickrj-android-userName";
-	public static final String KEY_USER_ID = "flickrj-android-userId";
 	private static InputStream photoStream;
-	static String filename = null;
 	Handler h = new Handler();
 
 	@Override
@@ -52,7 +51,7 @@ public class FlickrActivity extends ThemedActivity {
 				OAuthTask task = new OAuthTask(getContext());
 				task.execute();
 			} else {
-				if (filename != null)
+				if (FlickrHelper.getInstance().getFileName() != null)
 					load(oauth);
 			}
 		}
@@ -61,7 +60,7 @@ public class FlickrActivity extends ThemedActivity {
 	private void load(OAuth oauth) {
 		if (oauth != null) {
 
-			UploadPhotoTask taskUpload = new UploadPhotoTask(this,filename);
+			UploadPhotoTask taskUpload = new UploadPhotoTask(this);
 			taskUpload.setOnUploadDone(new UploadPhotoTask.onUploadDone() {
 				@Override
 				public void onComplete() {
@@ -128,52 +127,60 @@ public class FlickrActivity extends ThemedActivity {
 	}
 
 	public OAuth getOAuthToken() {
-		// Restore preferences
-		SharedPreferences settings = getSharedPreferences(PREFS_NAME,
-				Context.MODE_PRIVATE);
-		String oauthTokenString = settings.getString(KEY_OAUTH_TOKEN, null);
-		String tokenSecret = settings.getString(KEY_TOKEN_SECRET, null);
-		if (oauthTokenString == null && tokenSecret == null) {
+		Realm realm = Realm.getDefaultInstance();
+		AccountDatabase account;
+		RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
+		query.equalTo("name", FLICKR.toString());
+		RealmResults<AccountDatabase> result = query.findAll();
+		if (result.size() != 0) {
+			account = result.get(0);
+			String oauthTokenString = account.getToken();
+			String tokenSecret = account.getTokenSecret();
+
+			if (oauthTokenString == null && tokenSecret == null) {
+				return null;
+			}
+			OAuth oauth = new OAuth();
+			String userName = account.getUsername();
+			String userId = account.getUserId();
+			if (userId != null) {
+				User user = new User();
+				user.setUsername(userName);
+				user.setId(userId);
+				oauth.setUser(user);
+			}
+			OAuthToken oauthToken = new OAuthToken();
+			oauth.setToken(oauthToken);
+			oauthToken.setOauthToken(oauthTokenString);
+			oauthToken.setOauthTokenSecret(tokenSecret);
+			return oauth;
+		}else
 			return null;
-		}
-		OAuth oauth = new OAuth();
-		String userName = settings.getString(KEY_USER_NAME, null);
-		String userId = settings.getString(KEY_USER_ID, null);
-		if (userId != null) {
-			User user = new User();
-			user.setUsername(userName);
-			user.setId(userId);
-			oauth.setUser(user);
-		}
-		OAuthToken oauthToken = new OAuthToken();
-		oauth.setToken(oauthToken);
-		oauthToken.setOauthToken(oauthTokenString);
-		oauthToken.setOauthTokenSecret(tokenSecret);
-		return oauth;
 	}
 
+    /**
+     * This method is called two times during the authentication. In the first time, only tokenSecret will
+     * have some value and others will be null and in the second time this method will called with all the
+     * details of the account. So after the two calls of this function the account abject will be
+     * fully populated in realm database.
+     */
 	public void saveOAuthToken(String userName, String userId, String token, String tokenSecret) {
+		Realm realm = Realm.getDefaultInstance();
+		RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
+		query.equalTo("name", FLICKR.toString());
+		RealmResults<AccountDatabase> result = query.findAll();
+		AccountDatabase account;
+		realm.beginTransaction();
+		if( result.size() == 0 )
+			account = realm.createObject(AccountDatabase.class,FLICKR.toString());
+        else
+			account = result.first();
 
-		SharedPreferences sp = getSharedPreferences(PREFS_NAME,
-				Context.MODE_PRIVATE);
-		Editor editor = sp.edit();
-		editor.putString(KEY_OAUTH_TOKEN, token);
-		editor.putString(KEY_TOKEN_SECRET, tokenSecret);
-		editor.putString(KEY_USER_NAME, userName);
-		editor.putString(KEY_USER_ID, userId);
-		editor.apply();
-	}
-
-	public static void setInputStream(InputStream inputStream){
-		photoStream = inputStream;
-	}
-
-	public static InputStream getInputStream(){
-		return photoStream;
-	}
-
-	public static void setFilename(String file){
-		filename = file;
+		account.setToken(token);
+        account.setTokenSecret(tokenSecret);
+        account.setUsername(userName);
+        account.setUserId(userId);
+		realm.commitTransaction();
 	}
 
 	private Context getContext() {

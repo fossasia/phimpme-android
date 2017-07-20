@@ -8,13 +8,20 @@ import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.photos.PhotosInterface;
 
+import org.fossasia.phimpme.utilities.Constants;
+
+import java.io.InputStream;
+
 import javax.xml.parsers.ParserConfigurationException;
 
 public final class FlickrHelper {
 
 	private static FlickrHelper instance = null;
-	private static final String API_KEY = "YOUR_API_TOKEN_HERE";
-	private static final String API_SEC = "YOUR_SECRET_TOKEN_HERE";
+	private static final String API_KEY = Constants.FLICKR_API_KEY;
+	private static final String API_SEC = Constants.FLICKR_TOKEN_SECRET;
+	private InputStream photoStream;
+	private String filename;
+	private String description;
 
 	private FlickrHelper() {
 
@@ -63,5 +70,25 @@ public final class FlickrHelper {
 			return null;
 		}
 	}
+
+	public void setInputStream(InputStream inputStream){
+		this.photoStream = inputStream;
+	}
+	public void setFilename(String file){
+		this.filename = file;
+	}
+	public void setDescription(String description){
+		this.description = description;
+	}
+	public InputStream getInputStream(){
+		return photoStream;
+	}
+	public String getFileName(){
+		return filename;
+	}
+	public String getDescription(){
+		return description;
+	}
+
 
 }
