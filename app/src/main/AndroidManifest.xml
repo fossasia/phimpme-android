@@ -338,7 +338,8 @@
             android:name=".sharewordpress.WordpressLoginActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
-        <activity android:name=".nextcloud.NextCloudAuth"/>
+        <activity android:name=".nextcloud.NextCloudAuth"
+            android:theme="@style/AppTheme.NoActionBar"/>
 
 
 

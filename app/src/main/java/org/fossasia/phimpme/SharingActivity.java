@@ -39,6 +39,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.dropbox.client2.DropboxAPI;
@@ -245,6 +246,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 .load(Uri.fromFile(new File(saveFilePath)))
                 .thumbnail(0.5f)
                 .centerCrop()
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .animate(R.anim.fade_in)
                 .into(shareImage);
     }

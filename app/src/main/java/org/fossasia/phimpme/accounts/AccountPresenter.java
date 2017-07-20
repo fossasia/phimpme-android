@@ -46,13 +46,13 @@ public class AccountPresenter extends BasePresenter<AccountContract.View>
      * @return true is existed, false otherwise
      */
     @Override
-    public boolean checkAlreadyExist(String s) {
+    public boolean checkAlreadyExist(AccountDatabase.AccountName s) {
 
         // Query in the realm database
         RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
 
         // Checking if string equals to is exist or not
-        query.equalTo("name", s);
+        query.equalTo("name", s.toString());
         RealmResults<AccountDatabase> result1 = query.findAll();
 
         // Here checking if count of that values is greater than zero
