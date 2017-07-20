@@ -439,7 +439,8 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     // Writing values in Realm database
                     account.setAccountname(TWITTER);
                     account.setUsername(session.getUserName());
-                    account.setToken(String.valueOf(session.getAuthToken()));
+                    account.setToken(String.valueOf(session.getAuthToken().token));
+                    account.setSecret(String.valueOf(session.getAuthToken().secret));
 
                     // Finally committing the whole data
                     realm.commitTransaction();

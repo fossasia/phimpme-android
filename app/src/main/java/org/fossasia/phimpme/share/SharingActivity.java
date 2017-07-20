@@ -131,18 +131,24 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     private Handler mHandler;
     @BindView(R.id.share_layout)
     View parent;
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
     @BindView(R.id.share_image)
     ImageViewTouch shareImage;
+
     @BindView(R.id.edittext_share_caption)
     TextView text_caption;
+
     @BindViews({R.id.icon_00, R.id.icon_01, R.id.icon_10, R.id.icon_11, R.id.icon_20, R.id.icon_21, R.id.icon_30, R.id.icon_31,R.id.icon_32, R.id.icon_40, R.id.icon_50})
     List<ImageView> icons;
     @BindViews({R.id.title_00, R.id.title_01, R.id.title_10, R.id.title_11, R.id.title_20, R.id.title_21, R.id.title_30, R.id.title_31, R.id.title_32, R.id.title_40,R.id.title_50})
     List<TextView> titles;
     @BindViews({R.id.cell_00, R.id.cell_01, R.id.cell_10, R.id.cell_11, R.id.cell_20, R.id.cell_21, R.id.cell_30, R.id.cell_31,R.id.cell_32, R.id.cell_40, R.id.cell_50})
+
     List<View> cells;
+
     @BindView(R.id.share_done)
     Button done;
     @BindView(R.id.button_text_focus)

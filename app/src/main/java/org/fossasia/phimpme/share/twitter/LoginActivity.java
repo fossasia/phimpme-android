@@ -61,8 +61,8 @@ public class LoginActivity extends ThemedActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_twitter_login);
-		twitterConsumerKey = getResources().getString(R.string.twitter_consumer_key);
-		twitterConsumerSecret = getResources().getString(R.string.twitter_consumer_secret);
+		twitterConsumerKey = getResources().getString(R.string.twitter_CONSUMER_KEY);
+		twitterConsumerSecret = getResources().getString(R.string.twitter_CONSUMER_SECRET);
 
 		if(twitterConsumerKey == null || twitterConsumerSecret == null){
 			Log.e(TAG, "ERROR: Consumer Key and Consumer Secret required!");
@@ -165,8 +165,9 @@ public class LoginActivity extends ThemedActivity {
 
 
 	public static boolean isActive(Context ctx) {
-		SharedPreferences sharedPrefs = ctx.getSharedPreferences(AppConstant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-		return sharedPrefs.getString(AppConstant.SHARED_PREF_KEY_TOKEN, null) != null;
+		return true;
+		//SharedPreferences sharedPrefs = ctx.getSharedPreferences(AppConstant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+		//return sharedPrefs.getString(AppConstant.SHARED_PREF_KEY_TOKEN, null) != null;
 	}
 
 	public static void logOutOfTwitter(Context ctx){
