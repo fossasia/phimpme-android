@@ -11,12 +11,19 @@ import io.realm.annotations.PrimaryKey;
  */
 
 public class AccountDatabase extends RealmObject{
+
+    public enum AccountName {
+        FACEBOOK, TWITTER, DRUPAL, NEXTCLOUD, WORDPRESS, PINTEREST, FLICKR, IMGUR, DROPBOX, OWNCLOUD
+        , GOOGLEPLUS
+    }
+
     @PrimaryKey
     String name;
     String username;
     String token;
     String password;
     String serverUrl;
+    public String accountname;
 
     public String getName() {
         return name;
@@ -56,5 +63,13 @@ public class AccountDatabase extends RealmObject{
 
     public void setServerUrl(String serverUrl) {
         this.serverUrl = serverUrl;
+    }
+
+    public AccountName getAccountname() {
+        return AccountName.valueOf(accountname);
+    }
+
+    public void setAccountname(AccountName accountname) {
+        this.accountname = accountname.toString();
     }
 }
