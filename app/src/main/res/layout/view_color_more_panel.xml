@@ -2,6 +2,6 @@
     android:id="@+id/color_panel_more"
     android:layout_margin="6dp"
     android:text="@string/more"
-    android:textColor="@color/white"
+    android:textColor="@color/black"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content" />
