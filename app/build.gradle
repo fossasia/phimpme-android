@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 apply plugin: 'jacoco-android'
 apply plugin: 'realm-android'
 
@@ -115,6 +116,7 @@ repositories {
         url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo'
     }
     maven { url "https://jitpack.io" }
+    maven { url 'https://maven.fabric.io/public' }
 }
 
 
@@ -174,6 +176,9 @@ dependencies {
 
     compile project(':pdk')
 //    compile 'com.android.volley:volley:1.0.0'
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+        transitive = true;
+    }
 }
 apply plugin: 'com.google.gms.google-services'
 
