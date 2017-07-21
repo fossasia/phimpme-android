@@ -7,7 +7,7 @@ OPENCV_CAMERA_MODULES:=on
 OPENCV_LIB_TYPE := STATIC
 include $(LOCAL_PATH)/OpenCV.mk
 
-LOCAL_MODULE    := photoprocessing
+LOCAL_MODULE    := nativeimageprocessing
 
 LOCAL_CFLAGS := -DANDROID_NDK \
                 -DDISABLE_IMPORTGL

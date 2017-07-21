@@ -13,7 +13,7 @@
         android:background="@color/md_light_appbar"
         android:windowActionBarOverlay="true" />
 
-    <org.fossasia.phimpme.editor.editimage.view.imagezoom.ImageViewTouch
+    <org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouch
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/share_image"

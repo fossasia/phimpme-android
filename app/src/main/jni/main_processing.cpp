@@ -8,7 +8,7 @@ using namespace std;
 using namespace cv;
 extern "C" {
     JNIEXPORT void JNICALL
-    Java_org_fossasia_phimpme_editor_editimage_filter_PhotoProcessing_nativeApplyFilter(JNIEnv *env,
+    Java_org_fossasia_phimpme_editor_filter_PhotoProcessing_nativeApplyFilter(JNIEnv *env,
                                                                                     jclass type,
                                                                                     jint mode,
                                                                                     jint val,
@@ -90,17 +90,12 @@ extern "C" {
 
 
     JNIEXPORT void JNICALL
-    Java_org_fossasia_phimpme_editor_editimage_filter_PhotoProcessing_nativeEnhanceImage(JNIEnv *env,
+    Java_org_fossasia_phimpme_editor_filter_PhotoProcessing_nativeEnhanceImage(JNIEnv *env,
                                                                                      jclass type,
                                                                                      jint mode,
                                                                                      jint val,
                                                                                      jlong inpAddr,
                                                                                      jlong outAddr) {
-
-        int lowThreshold = val;
-        int ratio = 3;
-        int kernel_size = 3;
-
         Mat &src = *(Mat*)inpAddr;
         Mat &dst = *(Mat*)outAddr;
 
