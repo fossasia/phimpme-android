@@ -46,14 +46,14 @@ import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.yalantis.ucrop.UCrop;
 
 import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.SharingActivity;
+import org.fossasia.phimpme.share.SharingActivity;
 import org.fossasia.phimpme.base.SharedMediaActivity;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
 import org.fossasia.phimpme.data.local.ImageDescModel;
 import org.fossasia.phimpme.editor.FileUtils;
-import org.fossasia.phimpme.editor.editimage.EditImageActivity;
-import org.fossasia.phimpme.editor.editimage.utils.BitmapUtils;
+import org.fossasia.phimpme.editor.EditImageActivity;
+import org.fossasia.phimpme.editor.utils.BitmapUtils;
 import org.fossasia.phimpme.leafpic.SelectAlbumBottomSheet;
 import org.fossasia.phimpme.leafpic.adapters.MediaPagerAdapter;
 import org.fossasia.phimpme.leafpic.animations.DepthPageTransformer;
