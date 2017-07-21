@@ -70,7 +70,9 @@ import com.pinterest.android.pdk.PDKCallback;
 import com.pinterest.android.pdk.PDKClient;
 import com.pinterest.android.pdk.PDKException;
 import com.pinterest.android.pdk.PDKResponse;
-
+import org.fossasia.phimpme.accounts.AccountActivity;
+import org.fossasia.phimpme.accounts.AccountContract;
+import org.fossasia.phimpme.accounts.AccountPresenter;
 import org.fossasia.phimpme.base.PhimpmeProgressBarHandler;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.AccountDatabase;
@@ -105,7 +107,7 @@ import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
-
+import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.PINTEREST;
 import static org.fossasia.phimpme.utilities.Utils.copyToClipBoard;
 import static org.fossasia.phimpme.utilities.Utils.getBitmapFromPath;
 import static org.fossasia.phimpme.utilities.Utils.getStringImage;
@@ -113,9 +115,8 @@ import static org.fossasia.phimpme.utilities.Utils.isAppInstalled;
 import static org.fossasia.phimpme.utilities.Utils.isInternetOn;
 import static org.fossasia.phimpme.utilities.Utils.shareMsgOnIntent;
 
-
 public class SharingActivity extends ThemedActivity implements View.OnClickListener
-        , OnRemoteOperationListener {
+, OnRemoteOperationListener, AccountContract.View {
 
     public static final String EXTRA_OUTPUT = "extra_output";
     private static String LOG_TAG = SharingActivity.class.getCanonicalName();
@@ -152,6 +153,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             R.color.pinterest_color, R.color.flickr_color,
             R.color.nextcloud_color, R.color.imgur_color, R.color.dropbox_color,
             R.color.other_share_color};
+    private AccountPresenter accountPresenter;
     private int[] cellcolors_DarkTheme = {R.color.facebook_color_darktheme, R.color.twitter_color_darktheme, R.color.instagram_color_darktheme,
             R.color.wordpress_color_darktheme, R.color.pinterest_color_darktheme, R.color.flickr_color_darktheme, R.color.nextcloud_color_darktheme, R.color.imgur_color_darktheme, R.color.dropbox_color_darktheme, R.color.other_share_color_darktheme};
     private PhimpmeProgressBarHandler phimpmeProgressBarHandler;
@@ -189,6 +191,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         initView();
         setStatusBarColor();
         checknetwork();
+        accountPresenter = new AccountPresenter(realm);
+        accountPresenter.attachView(this);
+        accountPresenter.loadFromDatabase();
     }
 
     private boolean checknetwork() {
@@ -267,7 +272,18 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             case R.id.cell_11: //wordpress
                 break;
             case R.id.cell_20: //pinterest
-                openPinterestDialogBox();
+                if (accountPresenter.checkAlreadyExist(PINTEREST)) {
+                    openPinterestDialogBox();
+                }else{
+                    Snackbar.make(parent, getResources().getString(R.string.pinterest_signIn_fail), Snackbar.LENGTH_LONG)
+                            .setAction(R.string.sign_In, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    Intent accounts = new Intent(SharingActivity.this, AccountActivity.class);
+                                    startActivity(accounts);
+                                }
+                            }).show();
+                }
                 break;
             case R.id.cell_21: //flickr
                 flickrShare();
@@ -769,6 +785,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int responseCode, Intent data) {
         super.onActivityResult(requestCode, responseCode, data);
         callbackManager.onActivityResult(requestCode, responseCode, data);
+        PDKClient.getInstance().onOauthResponse(requestCode, responseCode, data);
         atleastOneShare = true;
     }
 
@@ -827,6 +844,31 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     private void onSuccessfulUpload() {
         startRefresh();
+    }
+
+    @Override
+    public void setUpRecyclerView() {
+
+    }
+
+    @Override
+    public void setUpAdapter(RealmQuery<AccountDatabase> accountDetails) {
+
+    }
+
+    @Override
+    public void showError() {
+
+    }
+
+    @Override
+    public Context getContext() {
+        return null;
+    }
+
+    @Override
+    public void showComplete() {
+
     }
 
     private class PostToTwitterAsync extends AsyncTask<Void, Void, Void> {

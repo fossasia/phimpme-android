@@ -15,7 +15,7 @@ import io.realm.RealmQuery;
  */
 
 public class AccountContract {
-    interface View extends MvpView{
+    public interface View extends MvpView{
 
         /**
          * Setting up the recyclerView. The layout manager, decorator etc.
