@@ -1,5 +1,6 @@
 package org.fossasia.phimpme.share;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -146,7 +147,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     @BindViews({R.id.title_00, R.id.title_01, R.id.title_10, R.id.title_11, R.id.title_20, R.id.title_21, R.id.title_30, R.id.title_31, R.id.title_32, R.id.title_40,R.id.title_50})
     List<TextView> titles;
     @BindViews({R.id.cell_00, R.id.cell_01, R.id.cell_10, R.id.cell_11, R.id.cell_20, R.id.cell_21, R.id.cell_30, R.id.cell_31,R.id.cell_32, R.id.cell_40, R.id.cell_50})
-
     List<View> cells;
 
     @BindView(R.id.share_done)
@@ -175,12 +175,11 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             R.string.wordpress, R.string.pinterest, R.string.flickr, R.string.nextcloud, R.string.imgur,R.string.dropbox_share, R.string.googlePlus ,R.string.other};
 
     private Context context;
-
     private DropboxAPI<AndroidAuthSession> mDBApi;
 
     Bitmap finalBmp;
-    Boolean isPostedOnTwitter =false, isPersonal =false;
-    String boardID, imgurAuth = null,imgurString = null;
+    Boolean isPostedOnTwitter = false, isPersonal = false;
+    String boardID, imgurAuth = null, imgurString = null;
 
     private static final int REQ_SELECT_PHOTO = 1;
 
@@ -287,7 +286,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             case R.id.cell_20: //pinterest
                 if (accountPresenter.checkAlreadyExist(PINTEREST)) {
                     openPinterestDialogBox();
-                }else{
+                } else {
                     Snackbar.make(parent, getResources().getString(R.string.pinterest_signIn_fail), Snackbar.LENGTH_LONG)
                             .setAction(R.string.sign_In, new View.OnClickListener() {
                                 @Override
@@ -381,8 +380,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             if (checknetwork()) {
                 new UploadToDropbox().execute();
             }
-        }
-        catch (ArrayIndexOutOfBoundsException e){
+        } catch (ArrayIndexOutOfBoundsException e) {
             SnackBarHandler.show(parent, R.string.login_dropbox_account);
         }
     }
@@ -390,6 +388,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     private class UploadToDropbox extends AsyncTask<Void, Integer, Void> {
         AlertDialog dialog;
+
         @Override
         protected void onPreExecute() {
             final AlertDialog.Builder progressDialog = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
@@ -415,7 +414,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             } catch (DropboxException e) {
                 e.printStackTrace();
             }
-            if(response!=null)
+            if (response != null)
                 Log.i("Db", "The uploaded file's rev is: " + response.rev);
             return null;
         }
@@ -483,7 +482,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 String captionText = captionEditText.getText().toString();
-                boardID =captionText;
+                boardID = captionText;
                 shareToPinterest(boardID);
                 passwordDialog.dismiss();
             }
@@ -514,22 +513,33 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     private void postToTwitter() {
         if (checknetwork()) {
-            Glide.with(this)
-                    .load(Uri.fromFile(new File(saveFilePath)))
-                    .asBitmap()
-                    .into(new SimpleTarget<Bitmap>(1024, 512) {
-                        @Override
-                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            finalBmp = resource;
-                            new PostToTwitterAsync().execute();
+            if (LoginActivity.isActive(context)){
+                Glide.with(this)
+                        .load(Uri.fromFile(new File(saveFilePath)))
+                        .asBitmap()
+                        .into(new SimpleTarget<Bitmap>(1024, 512) {
+                            @Override
+                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                                finalBmp = resource;
+                                new PostToTwitterAsync().execute();
 
-                        }
-                    });
+                            }
+                        });
+            }else {
+                Snackbar.make(parent, getResources().getString(R.string.twitter_signIn_fail), Snackbar.LENGTH_LONG)
+                        .setAction(R.string.sign_In, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent accounts = new Intent(SharingActivity.this, AccountActivity.class);
+                                startActivity(accounts);
+                            }
+                        }).show();
+            }
+
         } else {
             Snackbar.make(parent, R.string.not_connected, Snackbar.LENGTH_LONG).show();
         }
     }
-
     private void uploadOnTwitter() {
         if (LoginActivity.isActive(context)) {
             final File f3 = new File(Environment.getExternalStorageDirectory() + "/twitter_upload/");
@@ -545,15 +555,23 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 e.printStackTrace();
             }
             String finalFile = file.getAbsolutePath();
-            HelperMethods.postToTwitterWithImage(context, finalFile, caption, new HelperMethods.TwitterCallback() {
+            HelperMethods.postToTwitterWithImage(context, ((Activity) context), finalFile, caption, new HelperMethods.TwitterCallback()  {
                 @Override
                 public void onFinsihed(Boolean response) {
+                    SnackBarHandler.show(parent, R.string.tweet_posted_on_twitter);
                     isPostedOnTwitter = response;
                     file.delete();
                 }
             });
         } else {
-            startActivity(new Intent(context, LoginActivity.class));
+            Snackbar.make(parent, getResources().getString(R.string.twitter_signIn_fail), Snackbar.LENGTH_LONG)
+                    .setAction(R.string.sign_In, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent accounts = new Intent(SharingActivity.this, AccountActivity.class);
+                            startActivity(accounts);
+                        }
+                    }).show();
         }
     }
 
@@ -937,10 +955,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         @Override
         protected void onPostExecute(Void result) {
             dialog.dismiss();
-            if (isPostedOnTwitter)
-                SnackBarHandler.show(parent, R.string.tweet_posted_on_twitter);
-            else
-                SnackBarHandler.show(parent, R.string.error_on_posting_twitter);
         }
     }
 }

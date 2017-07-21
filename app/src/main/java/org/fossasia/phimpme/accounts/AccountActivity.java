@@ -56,6 +56,7 @@ import org.fossasia.phimpme.share.owncloud.OwnCloudActivity;
 import org.fossasia.phimpme.share.imgur.ImgurAuthActivity;
 import org.fossasia.phimpme.share.drupal.DrupalLogin;
 import org.fossasia.phimpme.share.flickr.FlickrActivity;
+import org.fossasia.phimpme.share.twitter.LoginActivity;
 import org.fossasia.phimpme.share.wordpress.WordpressLoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
@@ -230,8 +231,9 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     break;
 
                 case TWITTER:
-                    signInTwitter();
-                    accountPresenter.loadFromDatabase();
+                    //signInTwitter();
+                    startActivity(new Intent(AccountActivity.this, LoginActivity.class));
+                    //accountPresenter.loadFromDatabase();
                     break;
 
                 case DRUPAL:
@@ -410,10 +412,10 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     /**
      * Create twitter login and session
      */
-    public void signInTwitter() {
+    /*public void signInTwitter() {
         /**
          * When user clicks then we first check if it is already exist.
-         */
+
         if (accountPresenter.checkAlreadyExist(TWITTER)) {
             Toast.makeText(this, R.string.already_signed_in,
                     Toast.LENGTH_SHORT).show();
@@ -451,8 +453,9 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     // TODO: implement on failure
                 }
             });
+
         }
-    }
+    }*/
 
     /**
      * Create Facebook login and session
