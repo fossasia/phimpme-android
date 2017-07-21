@@ -102,7 +102,10 @@ repositories {
         url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo'
     }
     maven { url "https://jitpack.io" }
+
     maven { url 'https://maven.fabric.io/public' }
+
+    maven{ url "https://mvnrepository.com/artifact/com.box/box-android-sdk" }
 }
 
 
@@ -157,6 +160,7 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.23.0'
     compile 'com.uphyca:stetho_realm:2.0.0'
     compile 'com.android.support:multidex:1.0.1'
+    compile group: 'com.box', name: 'box-android-sdk', version: '4.0.8'
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
     compile 'com.google.android.gms:play-services-auth:10.0.1'
 
