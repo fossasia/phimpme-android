@@ -418,6 +418,7 @@
     <!-- ACTIONS -->
     <string name="sort">Sort</string>
     <string name="camera">Camera</string>
+    <string name="phimpme_camera">Phimpme Camera</string>
     <string name="exclude">Exclude</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
