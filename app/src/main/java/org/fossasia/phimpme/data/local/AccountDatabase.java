@@ -14,7 +14,7 @@ public class AccountDatabase extends RealmObject{
 
     public enum AccountName {
         FACEBOOK, TWITTER, DRUPAL, NEXTCLOUD, WORDPRESS, PINTEREST, FLICKR, IMGUR, DROPBOX, OWNCLOUD
-        , GOOGLEPLUS
+        , GOOGLEPLUS, BOX
     }
 
     @PrimaryKey
