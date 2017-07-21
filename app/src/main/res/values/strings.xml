@@ -894,6 +894,8 @@
     <string name="post_action">POST</string>
     <string name="hint_boardID">Board ID</string>
     <string name="pinterest_post">Image posted successfully</string>
+    <string name="pinterest_signIn_fail">Sign in to Pinterest</string>
+    <string name="sign_In">SIGN IN</string>
 
     <string name="placeholder_sentence">This is a placeholder</string>
     <string name="auth_trying_to_login"><![CDATA[Trying to log in &#8230;]]></string>
