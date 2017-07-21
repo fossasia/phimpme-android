@@ -362,6 +362,9 @@
             android:name=".share.shareowncloud.OwnCloudActivity"
             android:label="@string/title_activity_own_cloud"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="78c6ec5c18fcd10ffbfd28ae038f3311f2763889" />
     </application>
 
 </manifest>
