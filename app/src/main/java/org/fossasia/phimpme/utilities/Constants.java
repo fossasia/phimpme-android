@@ -29,4 +29,8 @@ public class Constants {
 
     public final static String APP_KEY = "APP_KEY";
     public final static String APP_SECRET = "APP_SECRET";
+
+    public final static String BOX_CLIENT_ID = "CLIENT_ID";
+    public final static String BOX_CLIENT_SECRET = "CLIENT_SECRET";
+
 }

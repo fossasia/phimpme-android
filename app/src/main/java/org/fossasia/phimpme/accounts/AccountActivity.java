@@ -15,6 +15,9 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 
+import com.box.androidsdk.content.BoxConfig;
+import com.box.androidsdk.content.auth.BoxAuthentication;
+import com.box.androidsdk.content.models.BoxSession;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.session.AppKeyPair;
@@ -68,6 +71,7 @@ import java.util.List;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 
+import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FACEBOOK;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.GOOGLEPLUS;
@@ -76,6 +80,9 @@ import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.NEXTCL
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.OWNCLOUD;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.PINTEREST;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTER;
+
+import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
+import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_SECRET;
 import static org.fossasia.phimpme.utilities.Constants.SUCCESS;
 
 /**
@@ -101,6 +108,10 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private PDKClient pdkClient;
     private GoogleApiClient mGoogleApiClient;
 
+
+    public static String[] accountName = { "Facebook", "Twitter", "Drupal", "NextCloud", "Wordpress"
+            , "Pinterest", "Flickr", "Imgur", "Dropbox", "OwnCloud", "Googleplus", "Box"};
+
     private static final int NEXTCLOUD_REQUEST_CODE = 3;
     private static final int OWNCLOUD_REQUEST_CODE = 9;
     private static final int RESULT_OK = 1;
@@ -110,6 +121,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     final static private String APP_SECRET = "API_SECRET";
     private static final int RC_SIGN_IN = 9001;
     private DropboxAPI<AndroidAuthSession> mDBApi;
+    private BoxSession sessionBox;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -152,6 +164,12 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
+        configureBoxClient();
+    }
+
+    private void configureBoxClient() {
+        BoxConfig.CLIENT_ID = BOX_CLIENT_ID;
+        BoxConfig.CLIENT_SECRET = BOX_CLIENT_SECRET;
     }
 
     @Override
@@ -259,6 +277,11 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     signInGooglePlus();
                     break;
 
+                case BOX:
+                    sessionBox = new BoxSession(AccountActivity.this);
+                    sessionBox.authenticate();
+                    break;
+
                 default:
                     Toast.makeText(this, R.string.feature_not_present,
                             Toast.LENGTH_SHORT).show();
@@ -276,6 +299,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                                     accountAdapter.notifyDataSetChanged();
                                     accountPresenter.loadFromDatabase();
                                     signInSignOut.setChecked(false);
+                                    BoxAuthentication.getInstance().logoutAllUsers(AccountActivity.this);
                                 }
                             })
                     .setNegativeButton(R.string.no_action,
@@ -511,9 +535,31 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         super.onResume();
         ActivitySwitchHelper.setContext(this);
         dropboxAuthentication();
+        boxAuthentication();
         setStatusBarColor();
         setNavBarColor();
         accountPresenter.loadFromDatabase();
+    }
+
+    private void boxAuthentication() {
+        if(sessionBox != null && sessionBox.getUser()!=null){
+            String accessToken = sessionBox.getAuthInfo().accessToken();
+
+            realm.beginTransaction();
+
+            // Creating Realm object for AccountDatabase Class
+            account = realm.createObject(AccountDatabase.class,
+                    BOX.toString());
+
+            // Writing values in Realm database
+
+            account.setUsername(sessionBox.getUser().getName());
+            account.setToken(String.valueOf(accessToken));
+
+            // Finally committing the whole data
+            realm.commitTransaction();
+            accountPresenter.loadFromDatabase();
+        }
     }
 
     private void dropboxAuthentication() {
@@ -541,8 +587,8 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             } catch (IllegalStateException e) {
                 Log.i("DbAuthLog", "Error authenticating", e);
             }
+            accountPresenter.loadFromDatabase();
         }
-        accountPresenter.loadFromDatabase();
     }
 
     @Override
