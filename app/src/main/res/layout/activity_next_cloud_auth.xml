@@ -178,7 +178,6 @@
                 android:ems="10"
                 android:hint="@string/auth_username"
                 android:inputType="textNoSuggestions"
-
                 android:textColor="@color/login_text_hint_color"
                 android:textColorHint="@color/login_text_hint_color" />
 

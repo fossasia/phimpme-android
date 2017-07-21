@@ -146,13 +146,29 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     @BindView(R.id.edittext_share_caption)
     TextView text_caption;
 
-    @BindViews({R.id.icon_00, R.id.icon_01, R.id.icon_10, R.id.icon_11, R.id.icon_20, R.id.icon_21, R.id.icon_30, R.id.icon_31,R.id.icon_32, R.id.icon_40, R.id.icon_33, R.id.icon_50})
+    /**
+     * All the icons of sharing accounts
+     */
+    @BindViews({R.id.icon_00, R.id.icon_01, R.id.icon_10, R.id.icon_11, R.id.icon_20, R.id.icon_21
+            , R.id.icon_30, R.id.icon_31,R.id.icon_32, R.id.icon_40, R.id.icon_33, R.id.icon_50, R.id.icon_51})
     List<ImageView> icons;
-    @BindViews({R.id.title_00, R.id.title_01, R.id.title_10, R.id.title_11, R.id.title_20, R.id.title_21, R.id.title_30, R.id.title_31, R.id.title_32, R.id.title_40, R.id.title_33, R.id.title_50})
-    List<TextView> titles;
-    @BindViews({R.id.cell_00, R.id.cell_01, R.id.cell_10, R.id.cell_11, R.id.cell_20, R.id.cell_21, R.id.cell_30, R.id.cell_31,R.id.cell_32, R.id.cell_40, R.id.cell_33, R.id.cell_50})
 
+    /**
+     * Names of all the accounts for table items
+     */
+    @BindViews({R.id.title_00, R.id.title_01, R.id.title_10, R.id.title_11, R.id.title_20
+            , R.id.title_21, R.id.title_30, R.id.title_31, R.id.title_32, R.id.title_40
+            , R.id.title_33,R.id.title_50, R.id.title_51})
+    List<TextView> titles;
+
+    /**
+     * Table items
+     */
+    @BindViews({R.id.cell_00, R.id.cell_01, R.id.cell_10, R.id.cell_11, R.id.cell_20, R.id.cell_21
+            , R.id.cell_30, R.id.cell_31,R.id.cell_32, R.id.cell_40, R.id.cell_33, R.id.cell_50
+            , R.id.cell_51})
     List<View> cells;
+
     @BindView(R.id.share_done)
     Button done;
     @BindView(R.id.button_text_focus)
@@ -163,22 +179,46 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     private Realm realm = Realm.getDefaultInstance();
     private String caption;
     private boolean atleastOneShare = false;
+
+    /**
+     * Official colors of accounts logo
+     */
     private int[] cellcolors_LightTheme = {R.color.facebook_color, R.color.twitter_color,
             R.color.instagram_color, R.color.wordpress_color,
             R.color.pinterest_color, R.color.flickr_color,
             R.color.nextcloud_color, R.color.imgur_color, R.color.dropbox_color,
-            R.color.googlePlus_color, R.color.accent_black, R.color.other_share_color};
-
+            R.color.googlePlus_color, R.color.accent_black, R.color.owncloud_color
+            , R.color.other_share_color};
     private AccountPresenter accountPresenter;
-    private int[] cellcolors_DarkTheme = {R.color.facebook_color_darktheme, R.color.twitter_color_darktheme, R.color.instagram_color_darktheme,
-            R.color.wordpress_color_darktheme, R.color.pinterest_color_darktheme, R.color.flickr_color_darktheme, R.color.nextcloud_color_darktheme, R.color.imgur_color_darktheme, R.color.dropbox_color_darktheme, R.color.other_share_color_darktheme, R.color.other_share_color_darktheme};
+
+    /**
+     * Collection of dark theme colors for accounts table in sharing activity
+     */
+    private int[] cellcolors_DarkTheme = {R.color.facebook_color_darktheme, R.color.twitter_color_darktheme
+            , R.color.instagram_color_darktheme, R.color.wordpress_color_darktheme
+            , R.color.pinterest_color_darktheme, R.color.flickr_color_darktheme
+            , R.color.nextcloud_color_darktheme, R.color.imgur_color_darktheme
+            , R.color.dropbox_color_darktheme, R.color.other_share_color_darktheme
+            , R.color.owncloud_color_darktheme, R.color.other_share_color_darktheme};
+
     private PhimpmeProgressBarHandler phimpmeProgressBarHandler;
-    private int[] icons_drawables = {R.drawable.ic_facebook_black, R.drawable.ic_twitter_black,
-            R.drawable.ic_instagram_black, R.drawable.ic_wordpress_black, R.drawable.ic_pinterest_black,
-            R.drawable.ic_flickr_black, R.drawable.ic_nextcloud, R.drawable.ic_imgur,R.drawable.ic_dropbox_black,R.drawable.ic_googleplus_black, R.drawable.ic_box_black, R.drawable.ic_share_minimal};
+
+    /**
+     * All the icons for table items in Sharing Screen
+     */
+    private int[] icons_drawables = {R.drawable.ic_facebook_black, R.drawable.ic_twitter_black
+            , R.drawable.ic_instagram_black, R.drawable.ic_wordpress_black
+            , R.drawable.ic_pinterest_black, R.drawable.ic_flickr_black, R.drawable.ic_nextcloud
+            , R.drawable.ic_imgur,R.drawable.ic_dropbox_black, R.drawable.ic_googleplus_black
+            , R.drawable.ic_box_black, R.drawable.ic_owncloud_black, R.drawable.ic_share_minimal};
+
+    /**
+     * Title of the accounts table items
+     */
     private int[] titles_text = {R.string.facebook, R.string.twitter, R.string.instagram,
-            R.string.wordpress, R.string.pinterest, R.string.flickr, R.string.nextcloud, R.string.imgur,R.string.dropbox_share, R.string.googlePlus, R.string.box, R.string.other
-    };
+            R.string.wordpress, R.string.pinterest, R.string.flickr, R.string.nextcloud
+            , R.string.imgur, R.string.dropbox_share, R.string.googlePlus, R.string.box
+            , R.string.owncloud, R.string.other};
 
     private Context context;
 
@@ -244,7 +284,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         text_caption.setTextColor(getTextColor());
         text_caption.setHintTextColor(getSubTextColor());
 
-        for (int i = 0; i <= 11; i++) {
+        for (int i = 0; i <= 12; i++) {
             cells.get(i).setOnClickListener(this);
             icons.get(i).setImageResource(icons_drawables[i]);
             titles.get(i).setText(titles_text[i]);
@@ -283,14 +323,18 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             case R.id.cell_00: //facebook
                 setupFacebookAndShare();
                 break;
+
             case R.id.cell_01: //twitter
                 postToTwitter();
                 break;
+
             case R.id.cell_10: //instagram
                 shareToInstagram();
                 break;
+
             case R.id.cell_11: //wordpress
                 break;
+
             case R.id.cell_20: //pinterest
                 if (accountPresenter.checkAlreadyExist(PINTEREST)) {
                     openPinterestDialogBox();
@@ -305,22 +349,32 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                             }).show();
                 }
                 break;
+
             case R.id.cell_21: //flickr
                 flickrShare();
                 break;
+
             case R.id.cell_30: //nextcloud
-                shareToNextCloud();
+                shareToNextCloud(1);
                 break;
+
             case R.id.cell_31: //imgur
                 imgurShare();
                 break;
+                
             case R.id.cell_32: //dropbox
                 dropboxShare();
                 break;
-            case R.id.cell_40: //google
+
+            case R.id.cell_40: //Google Share
                 shareToGoogle();
                 break;
-            case R.id.cell_50:
+
+            case R.id.cell_50: // OwnCloud Share
+                shareToNextCloud(2);
+                break;
+
+            case R.id.cell_51:
                 otherShare();
                 break;
             case R.id.cell_33:
@@ -828,11 +882,13 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         rQueue.add(request);
     }
 
-    void shareToNextCloud(){
+    void shareToNextCloud(int i){
         RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
         // Checking if string equals to is exist or not
-        query.equalTo("name", getString(R.string.nextcloud));
-        RealmResults<AccountDatabase> result = query.findAll();
+        // String account = String.valueOf((i == 1)? R.string.nextcloud: R.string.owncloud);
+        String account = (i == 1)? getString(R.string.nextcloud) : getString(R.string.owncloud);
+        //query.equalTo("name", R.string.nextcloud);
+        RealmResults<AccountDatabase> result = query.equalTo("name", account.toUpperCase()).findAll();
 
         if (result.size() != 0){
             Uri serverUri = Uri.parse(result.get(0).getServerUrl());
@@ -885,8 +941,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             phimpmeProgressBarHandler.show();
 
         } else {
-            Toast.makeText(this, "Please sign in to nextcloud from account manager"
-                    , Toast.LENGTH_SHORT).show();
+            SnackBarHandler.show(parent, "Please sign in to " + account + " from account manager");
         }
     }
 
