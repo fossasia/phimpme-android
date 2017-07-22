@@ -32,6 +32,8 @@ import android.widget.Toast;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.leafpic.util.AlertDialogsHelper;
+import org.fossasia.phimpme.utilities.BasicCallBack;
+import org.fossasia.phimpme.utilities.Constants;
 
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
@@ -55,7 +57,11 @@ public class LoginActivity extends ThemedActivity {
 	private static RequestToken requestToken;
 	private AlertDialog dialog;
 	private AlertDialog.Builder progressDialog;
+	static BasicCallBack twitterCallback;
 
+	public static void setBasicCallBack(BasicCallBack basicCallBack) {
+		twitterCallback = basicCallBack;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -145,6 +151,11 @@ public class LoginActivity extends ThemedActivity {
 					e.putString(AppConstant.SHARED_PREF_KEY_SECRET, accessToken.getTokenSecret()); 
 					e.commit();
 
+                    Bundle bundle= new Bundle();
+                    bundle.putString(getString(R.string.auth_token), accessToken.getToken());
+                    bundle.putString(getString(R.string.auth_username),accessToken.getScreenName());
+                    twitterCallback.callBack(Constants.SUCCESS, bundle);
+
 					Log.d(TAG, "TWITTER LOGIN SUCCESS ----TOKEN " + accessToken.getToken());
 					Log.d(TAG, "TWITTER LOGIN SUCCESS ----TOKEN SECRET " + accessToken.getTokenSecret());
 					LoginActivity.this.setResult(TWITTER_LOGIN_RESULT_CODE_SUCCESS);
@@ -152,11 +163,11 @@ public class LoginActivity extends ThemedActivity {
 					e.printStackTrace();
 					if(e.getMessage() != null){
 						Log.e(TAG, e.getMessage());
-
 					}else{
 						Log.e(TAG, "ERROR: Twitter callback failed");
 					}
 					LoginActivity.this.setResult(TWITTER_LOGIN_RESULT_CODE_FAILURE);
+                    finish();
 				}
 				LoginActivity.this.finish();
 			}

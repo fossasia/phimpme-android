@@ -38,11 +38,6 @@ import com.pinterest.android.pdk.PDKCallback;
 import com.pinterest.android.pdk.PDKClient;
 import com.pinterest.android.pdk.PDKException;
 import com.pinterest.android.pdk.PDKResponse;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 
 import org.fossasia.phimpme.R;
@@ -56,6 +51,7 @@ import org.fossasia.phimpme.share.owncloud.OwnCloudActivity;
 import org.fossasia.phimpme.share.imgur.ImgurAuthActivity;
 import org.fossasia.phimpme.share.drupal.DrupalLogin;
 import org.fossasia.phimpme.share.flickr.FlickrActivity;
+import org.fossasia.phimpme.share.twitter.LoginActivity;
 import org.fossasia.phimpme.share.wordpress.WordpressLoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
@@ -80,7 +76,6 @@ import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.NEXTCL
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.OWNCLOUD;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.PINTEREST;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTER;
-
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_SECRET;
 import static org.fossasia.phimpme.utilities.Constants.SUCCESS;
@@ -231,7 +226,8 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
                 case TWITTER:
                     signInTwitter();
-                    accountPresenter.loadFromDatabase();
+
+                    //accountPresenter.loadFromDatabase();
                     break;
 
                 case DRUPAL:
@@ -411,47 +407,37 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
      * Create twitter login and session
      */
     public void signInTwitter() {
-        /**
-         * When user clicks then we first check if it is already exist.
-         */
+
         if (accountPresenter.checkAlreadyExist(TWITTER)) {
             Toast.makeText(this, R.string.already_signed_in,
                     Toast.LENGTH_SHORT).show();
         } else {
-            client.authorize(this, new Callback<TwitterSession>() {
+
+            BasicCallBack basicCallBack = new BasicCallBack() {
                 @Override
-                public void success(Result<TwitterSession> result) {
-
-                    // Begin realm transaction
-                    realm.beginTransaction();
-
-                    // Creating Realm object for AccountDatabase Class
-                    account = realm.createObject(AccountDatabase.class,
-                            TWITTER.toString());
-
-                    // Creating twitter session, after user authenticate
-                    // in twitter popup
-                    TwitterSession session = TwitterCore.getInstance()
-                            .getSessionManager().getActiveSession();
-                    Log.d("Twitter Credentials", session.toString());
-
-
-                    // Writing values in Realm database
-                    account.setAccountname(TWITTER);
-                    account.setUsername(session.getUserName());
-                    account.setToken(String.valueOf(session.getAuthToken()));
-
-                    // Finally committing the whole data
-                    realm.commitTransaction();
+                public void callBack(int status, Object data) {
+                    if (status == SUCCESS){
+                        Toast.makeText(getContext(), getResources().getString(R.string.account_logged), Toast.LENGTH_LONG).show();
+                        if (data instanceof Bundle){
+                            Bundle bundle = (Bundle)data;
+                            realm.beginTransaction();
+                            account = realm.createObject(AccountDatabase.class,
+                                    TWITTER.toString());
+                            account.setUsername(bundle.getString(getString(R.string.auth_username)));
+                            account.setToken(bundle.getString(getString(R.string.auth_token)));
+                            realm.commitTransaction();
+                        }
+                    }
                 }
+            };
 
-                @Override
-                public void failure(TwitterException e) {
-                    // TODO: implement on failure
-                }
-            });
+            Intent i = new Intent(AccountActivity.this, LoginActivity.class);
+            LoginActivity.setBasicCallBack(basicCallBack);
+            startActivity(i);
         }
+
     }
+
 
     /**
      * Create Facebook login and session

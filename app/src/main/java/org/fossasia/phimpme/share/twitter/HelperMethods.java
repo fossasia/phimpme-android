@@ -15,6 +15,7 @@
  */
 package org.fossasia.phimpme.share.twitter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
@@ -24,17 +25,14 @@ import java.io.File;
 
 import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
-import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
 public class HelperMethods {
 	private static final String TAG = "HelperMethods";
-	
 
-
-	public static void postToTwitterWithImage(Context context, final String imageUrl, final String message, final TwitterCallback postResponse){
+	public static void postToTwitterWithImage(Context context, final Activity callingActivity, final String imageUrl, final String message, final TwitterCallback postResponse){
 		if(!LoginActivity.isActive(context)){
 			postResponse.onFinsihed(false);
 			return;
@@ -49,22 +47,40 @@ public class HelperMethods {
 		final Twitter twitter = new TwitterFactory(configuration).getInstance();
 
 		final File file = new File(imageUrl);
-		boolean success = true;
-		if (file.exists()) {
-			try {
-			StatusUpdate status = new StatusUpdate(message);
-			status.setMedia(file);
-				twitter.updateStatus(status);
-			} catch (TwitterException e) {
-				e.printStackTrace();
-				success = false;
-			}
-		}else{
-			Log.d(TAG, "----- Invalid File ----------");
-			success = false;
-		}
-		postResponse.onFinsihed(success);
 
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				boolean success = true;
+				try {
+
+					if (file.exists()) {
+						StatusUpdate status = new StatusUpdate(message);
+						status.setMedia(file);
+						twitter.updateStatus(status);
+					}else{
+						Log.d(TAG, "----- Invalid File ----------");
+						success = false;
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					success = false;
+				}
+
+
+
+				final boolean finalSuccess = success;
+
+				callingActivity.runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						postResponse.onFinsihed(finalSuccess);
+					}
+				});
+
+			}
+		}).start();
 	}
 
 	public static abstract class TwitterCallback{
