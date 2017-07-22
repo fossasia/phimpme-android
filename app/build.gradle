@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "org.fossasia.phimpme"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 25
         multiDexEnabled true
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
@@ -163,13 +163,19 @@ dependencies {
     compile group: 'com.box', name: 'box-android-sdk', version: '4.0.8'
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
     compile 'com.google.android.gms:play-services-auth:10.0.1'
+
     compile 'com.google.android.gms:play-services-plus:10.0.1'
 
     compile project(':pdk')
-//    compile 'com.android.volley:volley:1.0.0'
+    compile 'com.daksh:loglr:1.2.1'
+    compile ('com.tumblr:jumblr:0.0.11'){
+        exclude module:'scribe'
+    }
+
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true;
     }
+
 }
 apply plugin: 'com.google.gms.google-services'
 
