@@ -163,6 +163,7 @@ dependencies {
     compile group: 'com.box', name: 'box-android-sdk', version: '4.0.8'
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
     compile 'com.google.android.gms:play-services-auth:10.0.1'
+    compile 'com.google.android.gms:play-services-plus:10.0.1'
 
     compile project(':pdk')
 //    compile 'com.android.volley:volley:1.0.0'

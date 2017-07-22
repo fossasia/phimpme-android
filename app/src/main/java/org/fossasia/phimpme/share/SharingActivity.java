@@ -16,6 +16,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
@@ -55,6 +56,7 @@ import com.facebook.login.LoginResult;
 import com.facebook.share.ShareApi;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
+import com.google.android.gms.plus.PlusShare;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.owncloud.android.lib.common.OwnCloudClient;
@@ -91,6 +93,7 @@ import org.fossasia.phimpme.utilities.SnackBarHandler;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -134,11 +137,11 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     ImageViewTouch shareImage;
     @BindView(R.id.edittext_share_caption)
     TextView text_caption;
-    @BindViews({R.id.icon_00, R.id.icon_01, R.id.icon_10, R.id.icon_11, R.id.icon_20, R.id.icon_21, R.id.icon_30, R.id.icon_31,R.id.icon_32, R.id.icon_40})
+    @BindViews({R.id.icon_00, R.id.icon_01, R.id.icon_10, R.id.icon_11, R.id.icon_20, R.id.icon_21, R.id.icon_30, R.id.icon_31,R.id.icon_32, R.id.icon_40, R.id.icon_50})
     List<ImageView> icons;
-    @BindViews({R.id.title_00, R.id.title_01, R.id.title_10, R.id.title_11, R.id.title_20, R.id.title_21, R.id.title_30, R.id.title_31, R.id.title_32, R.id.title_40})
+    @BindViews({R.id.title_00, R.id.title_01, R.id.title_10, R.id.title_11, R.id.title_20, R.id.title_21, R.id.title_30, R.id.title_31, R.id.title_32, R.id.title_40,R.id.title_50})
     List<TextView> titles;
-    @BindViews({R.id.cell_00, R.id.cell_01, R.id.cell_10, R.id.cell_11, R.id.cell_20, R.id.cell_21, R.id.cell_30, R.id.cell_31,R.id.cell_32, R.id.cell_40})
+    @BindViews({R.id.cell_00, R.id.cell_01, R.id.cell_10, R.id.cell_11, R.id.cell_20, R.id.cell_21, R.id.cell_30, R.id.cell_31,R.id.cell_32, R.id.cell_40, R.id.cell_50})
     List<View> cells;
     @BindView(R.id.share_done)
     Button done;
@@ -154,16 +157,16 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             R.color.instagram_color, R.color.wordpress_color,
             R.color.pinterest_color, R.color.flickr_color,
             R.color.nextcloud_color, R.color.imgur_color, R.color.dropbox_color,
-            R.color.other_share_color};
+            R.color.googlePlus_color,R.color.other_share_color};
     private AccountPresenter accountPresenter;
     private int[] cellcolors_DarkTheme = {R.color.facebook_color_darktheme, R.color.twitter_color_darktheme, R.color.instagram_color_darktheme,
             R.color.wordpress_color_darktheme, R.color.pinterest_color_darktheme, R.color.flickr_color_darktheme, R.color.nextcloud_color_darktheme, R.color.imgur_color_darktheme, R.color.dropbox_color_darktheme, R.color.other_share_color_darktheme};
     private PhimpmeProgressBarHandler phimpmeProgressBarHandler;
     private int[] icons_drawables = {R.drawable.ic_facebook_black, R.drawable.ic_twitter_black,
             R.drawable.ic_instagram_black, R.drawable.ic_wordpress_black, R.drawable.ic_pinterest_black,
-            R.drawable.ic_flickr_black, R.drawable.ic_nextcloud, R.drawable.ic_imgur,R.drawable.ic_dropbox_black,R.drawable.ic_share_minimal};
+            R.drawable.ic_flickr_black, R.drawable.ic_nextcloud, R.drawable.ic_imgur,R.drawable.ic_dropbox_black,R.drawable.ic_googleplus_black,R.drawable.ic_share_minimal};
     private int[] titles_text = {R.string.facebook, R.string.twitter, R.string.instagram,
-            R.string.wordpress, R.string.pinterest, R.string.flickr, R.string.nextcloud, R.string.imgur,R.string.dropbox_share, R.string.other};
+            R.string.wordpress, R.string.pinterest, R.string.flickr, R.string.nextcloud, R.string.imgur,R.string.dropbox_share, R.string.googlePlus ,R.string.other};
 
     private Context context;
 
@@ -172,6 +175,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     Bitmap finalBmp;
     Boolean isPostedOnTwitter =false, isPersonal =false;
     String boardID, imgurAuth = null,imgurString = null;
+
+    private static final int REQ_SELECT_PHOTO = 1;
 
     public static String getClientAuth() {
         return Constants.IMGUR_HEADER_CLIENt + " " + Constants.MY_IMGUR_CLIENT_ID;
@@ -226,7 +231,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         text_caption.setTextColor(getTextColor());
         text_caption.setHintTextColor(getSubTextColor());
 
-        for (int i = 0; i <= 8; i++) {
+        for (int i = 0; i <= 10; i++) {
             cells.get(i).setOnClickListener(this);
             icons.get(i).setImageResource(icons_drawables[i]);
             titles.get(i).setText(titles_text[i]);
@@ -300,6 +305,10 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 dropboxShare();
                 break;
             case R.id.cell_40: //othershare
+                //otherShare();
+                shareToGoogle();
+                break;
+            case R.id.cell_50:
                 otherShare();
                 break;
             case R.id.share_done:
@@ -317,6 +326,23 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 openCaptionDialogBox();
                 break;
         }
+    }
+
+    private void shareToGoogle() {
+        Uri uri = getImageUri(context);
+        PlusShare.Builder share = new PlusShare.Builder(this);
+        share.setText(caption);
+        share.addStream(uri);
+        share.setType(getResources().getString(R.string.image_type));
+        startActivityForResult(share.getIntent(), REQ_SELECT_PHOTO);
+
+    }
+    public Uri getImageUri(Context inContext) {
+        Bitmap inImage = getBitmapFromPath(saveFilePath);
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 
     private void flickrShare() {
@@ -354,6 +380,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             SnackBarHandler.show(parent, R.string.login_dropbox_account);
         }
     }
+
 
     private class UploadToDropbox extends AsyncTask<Void, Integer, Void> {
         AlertDialog dialog;
@@ -786,9 +813,19 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     @Override
     protected void onActivityResult(int requestCode, int responseCode, Intent data) {
         super.onActivityResult(requestCode, responseCode, data);
+        if (requestCode == REQ_SELECT_PHOTO) {
+            if (responseCode == RESULT_OK) {
+                Snackbar.make(parent, R.string.success_google, Snackbar.LENGTH_LONG).show();
+                return;
+            } else {
+                Snackbar.make(parent, R.string.error_google, Snackbar.LENGTH_LONG).show();
+                return;
+            }
+        }
         callbackManager.onActivityResult(requestCode, responseCode, data);
         PDKClient.getInstance().onOauthResponse(requestCode, responseCode, data);
         atleastOneShare = true;
+
     }
 
 
