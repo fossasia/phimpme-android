@@ -925,4 +925,10 @@
     <string name="login_dropbox_account">Login to Dropbox from Account manager</string>
     <string name="dropbox_share">Dropbox</string>
     <string name="title_activity_own_cloud">OwnCloudActivity</string>
+    <string name="image_type">image/jpeg</string>
+
+    <!--Google+-->
+    <string name="success_google">Image uploaded successfully on Google+</string>
+    <string name="error_google">An error occurred while uploading</string>
+    <string name="googlePlus">Google+</string>
 </resources>
