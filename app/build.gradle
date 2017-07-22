@@ -167,6 +167,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-plus:10.0.1'
 
     compile project(':pdk')
+
     compile 'com.daksh:loglr:1.2.1'
     compile ('com.tumblr:jumblr:0.0.11'){
         exclude module:'scribe'
