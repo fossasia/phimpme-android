@@ -386,6 +386,38 @@
 
                     </RelativeLayout>
                 </TableRow>
+                <TableRow
+                    android:layout_marginTop="@dimen/share_cell_margin_v"
+                    android:layout_marginBottom="@dimen/share_cell_margin_v"
+                    android:layout_marginLeft="@dimen/share_cell_margin_h"
+                    android:layout_marginRight="@dimen/share_cell_margin_h">
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:gravity="center_vertical"
+                        android:id="@+id/cell_50"
+                        android:layout_column="0">
+                        <ImageView
+                            android:layout_width="@dimen/share_icon_size"
+                            android:layout_height="@dimen/share_icon_size"
+                            android:scaleType="fitCenter"
+                            android:padding="@dimen/share_icon_padding"
+                            android:layout_centerVertical="true"
+                            android:id="@+id/icon_50"/>
+                        <TextView
+                            android:layout_toRightOf="@id/icon_50"
+                            android:layout_width="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/share_cell_text_margin"
+                            android:layout_marginLeft="@dimen/share_cell_text_margin"
+                            android:textSize="@dimen/share_cell_text_size"
+                            android:id="@+id/title_50"
+                            android:text="title"/>
+                    </RelativeLayout>
+                </TableRow>
             </TableLayout>
         </LinearLayout>
     </ScrollView>
