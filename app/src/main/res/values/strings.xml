@@ -795,6 +795,7 @@
     <string name="pinterest">Pinterest</string>
     <string name="nextcloud">NextCloud</string>
     <string name="other">Other</string>
+    <string name="box">Box</string>
     <string name="exit">Exit</string>
 
     <string name="share_not_completed">Sharing is not completed</string>
@@ -924,6 +925,7 @@
     <string name="uploaded_dropbox">Uploaded to Dropbox</string>
     <string name="login_dropbox_account">Login to Dropbox from Account manager</string>
     <string name="dropbox_share">Dropbox</string>
+    <string name="uploaded_box">Uploaded to Box</string>
     <string name="title_activity_own_cloud">OwnCloudActivity</string>
     <string name="image_type">image/jpeg</string>
 
@@ -931,4 +933,9 @@
     <string name="success_google">Image uploaded successfully on Google+</string>
     <string name="error_google">An error occurred while uploading</string>
     <string name="googlePlus">Google+</string>
+
+    <!--Box-->
+    <string name="upload_failed">Upload failed</string>
+    <string name="login_box">Login to Box from Account Manager</string>
+
 </resources>
