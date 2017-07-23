@@ -25,13 +25,17 @@ public class AccountDatabase extends RealmObject{
     String tokenSecret;
     String password;
     String serverUrl;
-    private String accountname;
-    private String secret;
 
+    public String accountname;
+    public String secret;
 
-    public String getSecret() { return secret; }
+    public String getSecret() {
+        return secret;
+    }
 
-    public void setSecret(String secret) { this.secret = secret; }
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
 
 
     public String getName() {
