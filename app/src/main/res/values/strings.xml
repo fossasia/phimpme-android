@@ -927,6 +927,7 @@
     <string name="dropbox_share">Dropbox</string>
     <string name="uploaded_box">Uploaded to Box</string>
     <string name="title_activity_own_cloud">OwnCloudActivity</string>
+
     <string name="image_type">image/jpeg</string>
 
     <!--Google+-->
@@ -938,4 +939,7 @@
     <string name="upload_failed">Upload failed</string>
     <string name="login_box">Login to Box from Account Manager</string>
 
+    <!--TUmblr-->
+    <string name="logged_in_tumblr">Tumblr account logged in successfully.</string>
+    <string name="tumblr">Tumblr</string>
 </resources>

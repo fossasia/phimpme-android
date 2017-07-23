@@ -14,7 +14,7 @@ public class AccountDatabase extends RealmObject{
 
     public enum AccountName {
         FACEBOOK, TWITTER, DRUPAL, NEXTCLOUD, WORDPRESS, PINTEREST, FLICKR, IMGUR, DROPBOX, OWNCLOUD
-        , GOOGLEPLUS, BOX
+        , GOOGLEPLUS, BOX, TUMBLR
     }
 
     @PrimaryKey
@@ -23,7 +23,14 @@ public class AccountDatabase extends RealmObject{
     String token;
     String password;
     String serverUrl;
-    public String accountname;
+    private String accountname;
+    private String secret;
+
+
+    public String getSecret() { return secret; }
+
+    public void setSecret(String secret) { this.secret = secret; }
+
 
     public String getName() {
         return name;
