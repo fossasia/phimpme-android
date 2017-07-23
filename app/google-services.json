@@ -1,7 +1,9 @@
 {
   "project_info": {
     "project_number": "694124204509",
-    "project_id": "firebase-phimpme"
+    "firebase_url": "https://fir-phimpme.firebaseio.com",
+    "project_id": "firebase-phimpme",
+    "storage_bucket": "firebase-phimpme.appspot.com"
   },
   "client": [
     {
@@ -35,11 +37,16 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "694124204509-ccfm6f9777v6hb2houu8446dllilmrga.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
-          "status": 1
+          "status": 2
         }
       }
     }
