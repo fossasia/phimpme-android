@@ -79,11 +79,10 @@ import com.pinterest.android.pdk.PDKClient;
 import com.pinterest.android.pdk.PDKException;
 import com.pinterest.android.pdk.PDKResponse;
 
+import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.accounts.AccountActivity;
 import org.fossasia.phimpme.accounts.AccountContract;
 import org.fossasia.phimpme.accounts.AccountPresenter;
-
-import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.PhimpmeProgressBarHandler;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.AccountDatabase;
@@ -314,7 +313,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             case R.id.cell_31: //imgur
                 imgurShare();
                 break;
-            case R.id.cell_32:
+            case R.id.cell_32: //dropbox
                 dropboxShare();
                 break;
             case R.id.cell_40: //othershare
