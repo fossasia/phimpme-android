@@ -104,7 +104,7 @@ public class PhotoActivity extends ThemedActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_photoactivity, menu);
-        Drawable shareIcon = getResources().getDrawable(R.drawable.ic_share_minimal, getTheme());
+        Drawable shareIcon = getResources().getDrawable(R.drawable.ic_others_black, getTheme());
         shareIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         menu.findItem(R.id.menu_share).setIcon(shareIcon);
         return true;

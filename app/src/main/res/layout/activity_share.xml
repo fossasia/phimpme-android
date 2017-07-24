@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:id="@+id/share_layout"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <include
         android:id="@+id/toolbar"
@@ -17,8 +18,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/share_image"
-        android:layout_above="@+id/edit_text_caption_container"
-        android:layout_below="@+id/toolbar" />
+        android:layout_below="@+id/toolbar"
+        android:layout_weight="10"
+        android:layout_alignParentStart="true"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -64,423 +66,18 @@
         android:background="@color/md_grey_400"/>
 
     <ScrollView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/scroll_view_height"
         android:layout_above="@+id/share_done"
+        android:layout_weight="1"
         android:id="@+id/bottom_view">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <TableLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/share_buttons_container"
-                android:showDividers="middle"
-                android:divider="@color/md_grey_300"
-                android:stretchColumns="0,1">
-                <TableRow
-                    android:layout_marginTop="@dimen/share_cell_margin_v"
-                    android:layout_marginBottom="@dimen/share_cell_margin_v"
-                    android:layout_marginLeft="@dimen/share_cell_margin_h"
-                    android:layout_marginRight="@dimen/share_cell_margin_h">
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:gravity="center_vertical"
-                        android:id="@+id/cell_00"
-                        android:layout_column="0">
-                        <ImageView
-                            android:layout_width="@dimen/share_icon_size"
-                            android:layout_height="@dimen/share_icon_size"
-                            android:scaleType="fitCenter"
-                            android:padding="@dimen/share_icon_padding"
-                            android:layout_centerVertical="true"
-                            android:id="@+id/icon_00"/>
-                        <TextView
-                            android:layout_toRightOf="@id/icon_00"
-                            android:layout_width="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/share_cell_text_margin"
-                            android:layout_marginLeft="@dimen/share_cell_text_margin"
-                            android:textSize="@dimen/share_cell_text_size"
-                            android:id="@+id/title_00"
-                            android:text="title"/>
 
-                    </RelativeLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/share_account"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
 
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:gravity="center_vertical"
-                        android:id="@+id/cell_01"
-                        android:layout_column="1">
-
-                        <ImageView
-                            android:layout_width="@dimen/share_icon_size"
-                            android:layout_height="@dimen/share_icon_size"
-                            android:scaleType="fitCenter"
-                            android:padding="@dimen/share_icon_padding"
-                            android:layout_centerVertical="true"
-                            android:id="@+id/icon_01"/>
-                        <TextView
-                            android:layout_toRightOf="@id/icon_01"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="@dimen/share_cell_text_margin"
-                            android:layout_marginLeft="@dimen/share_cell_text_margin"
-                            android:textSize="@dimen/share_cell_text_size"
-                            android:id="@+id/title_01"
-                            android:text="title"/>
-                    </RelativeLayout>
-
-                </TableRow>
-
-                <TableRow
-                    android:layout_marginTop="@dimen/share_cell_margin_v"
-                    android:layout_marginBottom="@dimen/share_cell_margin_v"
-                    android:layout_marginLeft="@dimen/share_cell_margin_h"
-                    android:layout_marginRight="@dimen/share_cell_margin_h">
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:gravity="center_vertical"
-                        android:id="@+id/cell_10"
-                        android:layout_column="0">
-                        <ImageView
-                            android:layout_width="@dimen/share_icon_size"
-                            android:layout_height="@dimen/share_icon_size"
-                            android:scaleType="fitCenter"
-                            android:padding="@dimen/share_icon_padding"
-                            android:layout_centerVertical="true"
-                            android:id="@+id/icon_10"/>
-                        <TextView
-                            android:layout_toRightOf="@id/icon_10"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:id="@+id/title_10"
-                            android:layout_marginRight="@dimen/share_cell_text_margin"
-                            android:layout_marginLeft="@dimen/share_cell_text_margin"
-                            android:textSize="@dimen/share_cell_text_size"
-                            android:text="title"/>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:gravity="center_vertical"
-                        android:id="@+id/cell_11"
-                        android:layout_column="1">
-                        <ImageView
-                            android:layout_width="@dimen/share_icon_size"
-                            android:layout_height="@dimen/share_icon_size"
-                            android:scaleType="fitCenter"
-                            android:padding="@dimen/share_icon_padding"
-                            android:layout_centerVertical="true"
-                            android:id="@+id/icon_11"/>
-                        <TextView
-                            android:layout_toRightOf="@id/icon_11"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/title_11"
-                            android:layout_marginRight="@dimen/share_cell_text_margin"
-                            android:layout_marginLeft="@dimen/share_cell_text_margin"
-                            android:layout_centerVertical="true"
-                            android:textSize="@dimen/share_cell_text_size"
-                            android:text="title"/>
-                    </RelativeLayout>
-                </TableRow>
-                <TableRow
-                    android:layout_marginTop="@dimen/share_cell_margin_v"
-                    android:layout_marginBottom="@dimen/share_cell_margin_v"
-                    android:layout_marginLeft="@dimen/share_cell_margin_h"
-                    android:layout_marginRight="@dimen/share_cell_margin_h">
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:gravity="center_vertical"
-                        android:id="@+id/cell_20"
-                        android:layout_column="0">
-                        <ImageView
-                            android:layout_width="@dimen/share_icon_size"
-                            android:layout_height="@dimen/share_icon_size"
-                            android:scaleType="fitCenter"
-                            android:padding="@dimen/share_icon_padding"
-                            android:layout_centerVertical="true"
-                            android:id="@+id/icon_20"/>
-                        <TextView
-                            android:layout_toRightOf="@id/icon_20"
-                            android:layout_width="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/share_cell_text_margin"
-                            android:layout_marginLeft="@dimen/share_cell_text_margin"
-                            android:textSize="@dimen/share_cell_text_size"
-                            android:id="@+id/title_20"
-                            android:text="title"/>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:gravity="center_vertical"
-                        android:id="@+id/cell_21"
-                        android:layout_column="1">
-
-                        <ImageView
-                            android:layout_width="@dimen/share_icon_size"
-                            android:layout_height="@dimen/share_icon_size"
-                            android:scaleType="fitCenter"
-                            android:padding="@dimen/share_icon_padding"
-                            android:layout_centerVertical="true"
-                            android:id="@+id/icon_21"/>
-                        <TextView
-                            android:layout_toRightOf="@id/icon_21"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="@dimen/share_cell_text_margin"
-                            android:layout_marginLeft="@dimen/share_cell_text_margin"
-                            android:textSize="@dimen/share_cell_text_size"
-                            android:id="@+id/title_21"
-                            android:text="title"/>
-                    </RelativeLayout>
-
-                </TableRow>
-                <TableRow
-                    android:layout_marginTop="@dimen/share_cell_margin_v"
-                    android:layout_marginBottom="@dimen/share_cell_margin_v"
-                    android:layout_marginLeft="@dimen/share_cell_margin_h"
-                    android:layout_marginRight="@dimen/share_cell_margin_h">
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:gravity="center_vertical"
-                        android:id="@+id/cell_30"
-                        android:layout_column="0">
-                        <ImageView
-                            android:layout_width="@dimen/share_icon_size"
-                            android:layout_height="@dimen/share_icon_size"
-                            android:scaleType="fitCenter"
-                            android:padding="@dimen/share_icon_padding"
-                            android:layout_centerVertical="true"
-                            android:id="@+id/icon_30"/>
-                        <TextView
-                            android:layout_toRightOf="@id/icon_30"
-                            android:layout_width="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/share_cell_text_margin"
-                            android:layout_marginLeft="@dimen/share_cell_text_margin"
-                            android:textSize="@dimen/share_cell_text_size"
-                            android:id="@+id/title_30"
-                            android:text="title"/>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:gravity="center_vertical"
-                        android:id="@+id/cell_31"
-                        android:layout_column="1">
-
-                        <ImageView
-                            android:layout_width="@dimen/share_icon_size"
-                            android:layout_height="@dimen/share_icon_size"
-                            android:scaleType="fitCenter"
-                            android:padding="@dimen/share_icon_padding"
-                            android:layout_centerVertical="true"
-                            android:id="@+id/icon_31"/>
-                        <TextView
-                            android:layout_toRightOf="@id/icon_31"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_marginRight="@dimen/share_cell_text_margin"
-                            android:layout_marginLeft="@dimen/share_cell_text_margin"
-                            android:textSize="@dimen/share_cell_text_size"
-                            android:id="@+id/title_31"
-                            android:text="title"/>
-                    </RelativeLayout>
-
-                </TableRow>
-                <TableRow
-                    android:layout_marginTop="@dimen/share_cell_margin_v"
-                    android:layout_marginBottom="@dimen/share_cell_margin_v"
-                    android:layout_marginLeft="@dimen/share_cell_margin_h"
-                    android:layout_marginRight="@dimen/share_cell_margin_h">
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:gravity="center_vertical"
-                        android:id="@+id/cell_32"
-                        android:layout_column="0">
-                        <ImageView
-                            android:layout_width="@dimen/share_icon_size"
-                            android:layout_height="@dimen/share_icon_size"
-                            android:scaleType="fitCenter"
-                            android:padding="@dimen/share_icon_padding"
-                            android:layout_centerVertical="true"
-                            android:id="@+id/icon_32"/>
-                        <TextView
-                            android:layout_toRightOf="@id/icon_32"
-                            android:layout_width="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/share_cell_text_margin"
-                            android:layout_marginLeft="@dimen/share_cell_text_margin"
-                            android:textSize="@dimen/share_cell_text_size"
-                            android:id="@+id/title_32"
-                            android:text="title"/>
-                    </RelativeLayout>
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:gravity="center_vertical"
-                        android:id="@+id/cell_40"
-                        android:layout_column="0">
-                        <ImageView
-                            android:layout_width="@dimen/share_icon_size"
-                            android:layout_height="@dimen/share_icon_size"
-                            android:scaleType="fitCenter"
-                            android:padding="@dimen/share_icon_padding"
-                            android:layout_centerVertical="true"
-                            android:id="@+id/icon_40"/>
-                        <TextView
-                            android:layout_toRightOf="@id/icon_40"
-                            android:layout_width="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/share_cell_text_margin"
-                            android:layout_marginLeft="@dimen/share_cell_text_margin"
-                            android:textSize="@dimen/share_cell_text_size"
-                            android:id="@+id/title_40"
-                            android:text="Other"/>
-
-                    </RelativeLayout>
-                </TableRow>
-                <TableRow
-                    android:layout_marginTop="@dimen/share_cell_margin_v"
-                    android:layout_marginBottom="@dimen/share_cell_margin_v"
-                    android:layout_marginLeft="@dimen/share_cell_margin_h"
-                    android:layout_marginRight="@dimen/share_cell_margin_h">
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:gravity="center_vertical"
-                        android:id="@+id/cell_33"
-                        android:layout_column="0">
-                        <ImageView
-                            android:layout_width="@dimen/share_icon_size"
-                            android:layout_height="@dimen/share_icon_size"
-                            android:scaleType="fitCenter"
-                            android:padding="@dimen/share_icon_padding"
-                            android:layout_centerVertical="true"
-                            android:id="@+id/icon_33"/>
-                        <TextView
-                            android:layout_toRightOf="@id/icon_33"
-                            android:layout_width="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/share_cell_text_margin"
-                            android:layout_marginLeft="@dimen/share_cell_text_margin"
-                            android:textSize="@dimen/share_cell_text_size"
-                            android:id="@+id/title_33"
-                            android:text="title"/>
-
-                    </RelativeLayout>
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:gravity="center_vertical"
-                        android:id="@+id/cell_50"
-                        android:layout_column="0">
-                        <ImageView
-                            android:layout_width="@dimen/share_icon_size"
-                            android:layout_height="@dimen/share_icon_size"
-                            android:scaleType="fitCenter"
-                            android:padding="@dimen/share_icon_padding"
-                            android:layout_centerVertical="true"
-                            android:id="@+id/icon_50"/>
-                        <TextView
-                            android:layout_toRightOf="@id/icon_50"
-                            android:layout_width="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/share_cell_text_margin"
-                            android:layout_marginLeft="@dimen/share_cell_text_margin"
-                            android:textSize="@dimen/share_cell_text_size"
-                            android:id="@+id/title_50"
-                            android:text="title"/>
-                    </RelativeLayout>
-                </TableRow>
-                <TableRow
-                    android:layout_marginTop="@dimen/share_cell_margin_v"
-                    android:layout_marginBottom="@dimen/share_cell_margin_v"
-                    android:layout_marginLeft="@dimen/share_cell_margin_h"
-                    android:layout_marginRight="@dimen/share_cell_margin_h">
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:clickable="true"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:gravity="center_vertical"
-                        android:id="@+id/cell_51"
-                        android:layout_column="0">
-                        <ImageView
-                            android:layout_width="@dimen/share_icon_size"
-                            android:layout_height="@dimen/share_icon_size"
-                            android:scaleType="fitCenter"
-                            android:padding="@dimen/share_icon_padding"
-                            android:layout_centerVertical="true"
-                            android:id="@+id/icon_51"/>
-                        <TextView
-                            android:layout_toRightOf="@id/icon_51"
-                            android:layout_width="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/share_cell_text_margin"
-                            android:layout_marginLeft="@dimen/share_cell_text_margin"
-                            android:textSize="@dimen/share_cell_text_size"
-                            android:id="@+id/title_51"
-                            android:text="title"/>
-                    </RelativeLayout>
-                </TableRow>
-            </TableLayout>
-        </LinearLayout>
     </ScrollView>
 
     <Button
@@ -493,4 +90,4 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/share_button_margin"/>
 
-</RelativeLayout>
+</LinearLayout>
