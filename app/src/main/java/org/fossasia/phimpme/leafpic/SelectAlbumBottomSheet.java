@@ -124,7 +124,7 @@ public class SelectAlbumBottomSheet extends BottomSheetDialogFragment {
 		final EditText editText = new EditText(getContext());
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), theme.getDialogStyle());
 		AlertDialogsHelper.getInsertTextDialog(((ThemedActivity) getActivity()), builder,
-				editText, R.string.new_folder);
+				editText, R.string.new_folder, null);
 		builder.setPositiveButton(R.string.ok_action, new DialogInterface.OnClickListener() {
 		  @Override
 		  public void onClick(DialogInterface dialogInterface, int i) {
