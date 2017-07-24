@@ -79,11 +79,10 @@ import com.pinterest.android.pdk.PDKClient;
 import com.pinterest.android.pdk.PDKException;
 import com.pinterest.android.pdk.PDKResponse;
 
+import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.accounts.AccountActivity;
 import org.fossasia.phimpme.accounts.AccountContract;
 import org.fossasia.phimpme.accounts.AccountPresenter;
-
-import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.PhimpmeProgressBarHandler;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.AccountDatabase;
@@ -92,6 +91,7 @@ import org.fossasia.phimpme.leafpic.activities.LFMainActivity;
 import org.fossasia.phimpme.leafpic.util.AlertDialogsHelper;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
 import org.fossasia.phimpme.share.flickr.FlickrActivity;
+import org.fossasia.phimpme.share.flickr.FlickrHelper;
 import org.fossasia.phimpme.share.twitter.HelperMethods;
 import org.fossasia.phimpme.share.twitter.LoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
@@ -314,11 +314,10 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             case R.id.cell_31: //imgur
                 imgurShare();
                 break;
-            case R.id.cell_32:
+            case R.id.cell_32: //dropbox
                 dropboxShare();
                 break;
-            case R.id.cell_40: //othershare
-                //otherShare();
+            case R.id.cell_40: //google
                 shareToGoogle();
                 break;
             case R.id.cell_50:
@@ -432,8 +431,13 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             e.printStackTrace();
         }
         if (is != null) {
-            FlickrActivity.setInputStream(is);
-            FlickrActivity.setFilename(file.getName());
+            FlickrHelper f = FlickrHelper.getInstance();
+            f.setInputStream(is);
+            f.setFilename(file.getName());
+
+            if ( null != text_caption.getText() && !text_caption.getText().toString().isEmpty())
+                f.setDescription(text_caption.getText().toString());
+
             startActivity(intent);
         }
     }
