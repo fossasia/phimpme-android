@@ -20,13 +20,14 @@ import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -80,9 +81,6 @@ import com.pinterest.android.pdk.PDKException;
 import com.pinterest.android.pdk.PDKResponse;
 
 import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.accounts.AccountActivity;
-import org.fossasia.phimpme.accounts.AccountContract;
-import org.fossasia.phimpme.accounts.AccountPresenter;
 import org.fossasia.phimpme.base.PhimpmeProgressBarHandler;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.AccountDatabase;
@@ -114,13 +112,11 @@ import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
-import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.PINTEREST;
 import static org.fossasia.phimpme.utilities.Utils.copyToClipBoard;
 import static org.fossasia.phimpme.utilities.Utils.getBitmapFromPath;
 import static org.fossasia.phimpme.utilities.Utils.getStringImage;
@@ -129,7 +125,7 @@ import static org.fossasia.phimpme.utilities.Utils.isInternetOn;
 import static org.fossasia.phimpme.utilities.Utils.shareMsgOnIntent;
 
 public class SharingActivity extends ThemedActivity implements View.OnClickListener
-, OnRemoteOperationListener, AccountContract.View {
+, OnRemoteOperationListener {
 
     public static final String EXTRA_OUTPUT = "extra_output";
     private static String LOG_TAG = SharingActivity.class.getCanonicalName();
@@ -137,94 +133,40 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     ThemeHelper themeHelper;
     private OwnCloudClient mClient;
     private Handler mHandler;
+    private ShareAdapter shareAdapter;
+
     @BindView(R.id.share_layout)
     View parent;
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
     @BindView(R.id.share_image)
     ImageViewTouch shareImage;
+
     @BindView(R.id.edittext_share_caption)
     TextView text_caption;
 
-    /**
-     * All the icons of sharing accounts
-     */
-    @BindViews({R.id.icon_00, R.id.icon_01, R.id.icon_10, R.id.icon_11, R.id.icon_20, R.id.icon_21
-            , R.id.icon_30, R.id.icon_31,R.id.icon_32, R.id.icon_40, R.id.icon_33, R.id.icon_50, R.id.icon_51})
-    List<ImageView> icons;
-
-    /**
-     * Names of all the accounts for table items
-     */
-    @BindViews({R.id.title_00, R.id.title_01, R.id.title_10, R.id.title_11, R.id.title_20
-            , R.id.title_21, R.id.title_30, R.id.title_31, R.id.title_32, R.id.title_40
-            , R.id.title_33,R.id.title_50, R.id.title_51})
-    List<TextView> titles;
-
-    /**
-     * Table items
-     */
-    @BindViews({R.id.cell_00, R.id.cell_01, R.id.cell_10, R.id.cell_11, R.id.cell_20, R.id.cell_21
-            , R.id.cell_30, R.id.cell_31,R.id.cell_32, R.id.cell_40, R.id.cell_33, R.id.cell_50
-            , R.id.cell_51})
-    List<View> cells;
+    @BindView(R.id.share_account)
+    RecyclerView shareAccountRecyclerView;
 
     @BindView(R.id.share_done)
     Button done;
+
     @BindView(R.id.button_text_focus)
     IconicsImageView editFocus;
+
     @BindView(R.id.edit_text_caption_container)
     RelativeLayout captionLayout;
+
     private CallbackManager callbackManager;
     private Realm realm = Realm.getDefaultInstance();
     private String caption;
     private boolean atleastOneShare = false;
-
-    /**
-     * Official colors of accounts logo
-     */
-    private int[] cellcolors_LightTheme = {R.color.facebook_color, R.color.twitter_color,
-            R.color.instagram_color, R.color.wordpress_color,
-            R.color.pinterest_color, R.color.flickr_color,
-            R.color.nextcloud_color, R.color.imgur_color, R.color.dropbox_color,
-            R.color.googlePlus_color, R.color.accent_black, R.color.owncloud_color
-            , R.color.other_share_color};
-    private AccountPresenter accountPresenter;
-
-    /**
-     * Collection of dark theme colors for accounts table in sharing activity
-     */
-    private int[] cellcolors_DarkTheme = {R.color.facebook_color_darktheme, R.color.twitter_color_darktheme
-            , R.color.instagram_color_darktheme, R.color.wordpress_color_darktheme
-            , R.color.pinterest_color_darktheme, R.color.flickr_color_darktheme
-            , R.color.nextcloud_color_darktheme, R.color.imgur_color_darktheme
-            , R.color.dropbox_color_darktheme, R.color.other_share_color_darktheme
-            , R.color.owncloud_color_darktheme, R.color.other_share_color_darktheme};
-
     private PhimpmeProgressBarHandler phimpmeProgressBarHandler;
-
-    /**
-     * All the icons for table items in Sharing Screen
-     */
-    private int[] icons_drawables = {R.drawable.ic_facebook_black, R.drawable.ic_twitter_black
-            , R.drawable.ic_instagram_black, R.drawable.ic_wordpress_black
-            , R.drawable.ic_pinterest_black, R.drawable.ic_flickr_black, R.drawable.ic_nextcloud
-            , R.drawable.ic_imgur,R.drawable.ic_dropbox_black, R.drawable.ic_googleplus_black
-            , R.drawable.ic_box_black, R.drawable.ic_owncloud_black, R.drawable.ic_share_minimal};
-
-    /**
-     * Title of the accounts table items
-     */
-    private int[] titles_text = {R.string.facebook, R.string.twitter, R.string.instagram,
-            R.string.wordpress, R.string.pinterest, R.string.flickr, R.string.nextcloud
-            , R.string.imgur, R.string.dropbox_share, R.string.googlePlus, R.string.box
-            , R.string.owncloud, R.string.other};
-
     private Context context;
-
     private DropboxAPI<AndroidAuthSession> mDBApi;
     private BoxSession sessionBox;
-
     Bitmap finalBmp;
     Boolean isPostedOnTwitter =false, isPersonal =false;
     String boardID, imgurAuth = null,imgurString = null;
@@ -239,6 +181,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     public void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         setContentView(R.layout.activity_share);
+        shareAdapter = new ShareAdapter();
         context = this;
         themeHelper = new ThemeHelper(this);
         mHandler = new Handler();
@@ -249,11 +192,11 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setupUI();
         initView();
+        setUpRecyclerView();
         setStatusBarColor();
         checknetwork();
-        accountPresenter = new AccountPresenter(realm);
-        accountPresenter.attachView(this);
-        accountPresenter.loadFromDatabase();
+        //accountPresenter = new AccountPresenter(realm);
+        //accountPresenter.loadFromDatabase();
     }
 
     private boolean checknetwork() {
@@ -265,7 +208,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void setupUI() {
-
         toolbar.setTitle(R.string.shareto);
         toolbar.setBackgroundColor(themeHelper.getPrimaryColor());
         toolbar.setNavigationIcon(getToolbarIcon(CommunityMaterial.Icon.cmd_arrow_left));
@@ -284,18 +226,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         text_caption.setTextColor(getTextColor());
         text_caption.setHintTextColor(getSubTextColor());
 
-        for (int i = 0; i <= 12; i++) {
-            cells.get(i).setOnClickListener(this);
-            icons.get(i).setImageResource(icons_drawables[i]);
-            titles.get(i).setText(titles_text[i]);
-            if (themeHelper.getBaseTheme() == ThemeHelper.LIGHT_THEME) {
-                icons.get(i).setColorFilter(getResources().getColor(cellcolors_LightTheme[i]));
-                titles.get(i).setTextColor(getResources().getColor(cellcolors_LightTheme[i]));
-            } else {
-                icons.get(i).setColorFilter(getResources().getColor(cellcolors_DarkTheme[i]));
-                titles.get(i).setTextColor(getResources().getColor(cellcolors_DarkTheme[i]));
-            }
-        }
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -317,8 +247,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 .into(shareImage);
     }
 
-    @Override
-    public void onClick(View v) {
+    /*public void onClick(View v) {
         switch (v.getId()) {
             case R.id.cell_00: //facebook
                 setupFacebookAndShare();
@@ -361,7 +290,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             case R.id.cell_31: //imgur
                 imgurShare();
                 break;
-                
+
             case R.id.cell_32: //dropbox
                 dropboxShare();
                 break;
@@ -395,7 +324,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 openCaptionDialogBox();
                 break;
         }
-    }
+    }*/
 
     private void boxShare() {
         try {
@@ -425,7 +354,12 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         return Uri.parse(path);
     }
 
-        private class UploadToBox extends AsyncTask<Void, Integer, Void> {
+    @Override
+    public void onClick(View view) {
+
+    }
+
+    private class UploadToBox extends AsyncTask<Void, Integer, Void> {
             private AlertDialog dialog;
             private FileInputStream inputStream;
             private File file;
@@ -1020,29 +954,10 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         startRefresh();
     }
 
-    @Override
     public void setUpRecyclerView() {
-
-    }
-
-    @Override
-    public void setUpAdapter(RealmQuery<AccountDatabase> accountDetails) {
-
-    }
-
-    @Override
-    public void showError() {
-
-    }
-
-    @Override
-    public Context getContext() {
-        return null;
-    }
-
-    @Override
-    public void showComplete() {
-
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
+        shareAccountRecyclerView.setLayoutManager(layoutManager);
+        shareAccountRecyclerView.setAdapter(shareAdapter);
     }
 
     private class PostToTwitterAsync extends AsyncTask<Void, Void, Void> {
