@@ -942,4 +942,6 @@
     <!--TUmblr-->
     <string name="logged_in_tumblr">Tumblr account logged in successfully.</string>
     <string name="tumblr">Tumblr</string>
+
+    <string name="owncloud">OwnCloud</string>
 </resources>
