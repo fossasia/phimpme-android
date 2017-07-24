@@ -470,14 +470,13 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
      */
     public void signInTwitter() {
         if (accountPresenter.checkAlreadyExist(TWITTER)) {
-            Toast.makeText(this, R.string.already_signed_in,
-                    Toast.LENGTH_SHORT).show();
+            SnackBarHandler.show(parentLayout, getString(R.string.already_signed_in));
         } else {
             BasicCallBack basicCallBack = new BasicCallBack() {
                 @Override
                 public void callBack(int status, Object data) {
                     if (status == SUCCESS){
-                        Toast.makeText(getContext(), getResources().getString(R.string.account_logged_twitter), Toast.LENGTH_LONG).show();
+                        SnackBarHandler.show(parentLayout, getString(R.string.account_logged_twitter));
                         if (data instanceof Bundle){
                             Bundle bundle = (Bundle) data;
                             realm.beginTransaction();
@@ -494,7 +493,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             Intent i = new Intent(AccountActivity.this, LoginActivity.class);
             LoginActivity.setBasicCallBack(basicCallBack);
             startActivity(i);
-
         }
     }
 

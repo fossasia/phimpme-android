@@ -615,7 +615,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     private void postToTwitter() {
         if (checknetwork()) {
-            if (accountPresenter.checkAlreadyExist(TWITTER)) {
+            if (Utils.checkAlreadyExist(TWITTER)) {
                 Glide.with(this)
                         .load(Uri.fromFile(new File(saveFilePath)))
                         .asBitmap()
@@ -627,10 +627,11 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
                             }
                         });
-            }else {
-                SnackBarHandler.show(parent,getString(R.string.sign_from_account));
-        }else {
-            Snackbar.make(parent, R.string.not_connected, Snackbar.LENGTH_LONG).show();
+            } else {
+                SnackBarHandler.show(parent, getString(R.string.sign_from_account));
+            }
+        }else{
+            SnackBarHandler.show(parent, getString(R.string.not_connected));
         }
     }
 
