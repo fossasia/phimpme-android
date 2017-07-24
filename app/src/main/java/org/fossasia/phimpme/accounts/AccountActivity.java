@@ -61,6 +61,7 @@ import org.fossasia.phimpme.share.imgur.ImgurAuthActivity;
 import org.fossasia.phimpme.share.nextcloud.NextCloudAuth;
 import org.fossasia.phimpme.share.owncloud.OwnCloudActivity;
 import org.fossasia.phimpme.share.tumblr.TumblrClient;
+import org.fossasia.phimpme.share.flickr.FlickrHelper;
 import org.fossasia.phimpme.share.wordpress.WordpressLoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
@@ -268,7 +269,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                 case FLICKR:
                     Intent intent = new Intent(getApplicationContext(),
                             FlickrActivity.class);
-                    FlickrActivity.setFilename(null);
+                    FlickrHelper.getInstance().setFilename(null);
                     startActivity(intent);
                     break;
 
