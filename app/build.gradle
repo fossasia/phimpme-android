@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'jacoco-android'
 apply plugin: 'realm-android'
+apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
     compileSdkVersion 25
@@ -156,16 +157,15 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
     compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.google.firebase:firebase-core:10.0.1'
+    compile 'com.google.firebase:firebase-core:11.0.2'
     compile 'com.facebook.android:facebook-android-sdk:4.23.0'
     compile 'com.uphyca:stetho_realm:2.0.0'
     compile 'com.android.support:multidex:1.0.1'
     compile group: 'com.box', name: 'box-android-sdk', version: '4.0.8'
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
-    compile 'com.google.android.gms:play-services-auth:10.0.1'
-
-    compile 'com.google.android.gms:play-services-plus:10.0.1'
-
+    compile 'com.google.android.gms:play-services-auth:11.0.2'
+    compile 'com.google.android.gms:play-services-plus:11.0.2'
+    compile 'com.google.firebase:firebase-perf:11.0.2'
     compile project(':pdk')
 
     compile 'com.daksh:loglr:1.2.1'
