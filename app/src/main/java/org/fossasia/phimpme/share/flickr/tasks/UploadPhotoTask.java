@@ -16,14 +16,11 @@ import com.googlecode.flickrjandroid.uploader.UploadMetaData;
 public class UploadPhotoTask extends AsyncTask<OAuth, Void, String> {
 
 	private final FlickrActivity flickrjAndroidSampleActivity;
-	private String filename;
 	private onUploadDone monUploadDone;
 	private ProgressDialog mProgressDialog;
 
-	public UploadPhotoTask(FlickrActivity flickrjAndroidSampleActivity,
-			String filename) {
+	public UploadPhotoTask(FlickrActivity flickrjAndroidSampleActivity) {
 		this.flickrjAndroidSampleActivity = flickrjAndroidSampleActivity;
-		this.filename = filename;
 	}
 
 
@@ -48,13 +45,13 @@ public class UploadPhotoTask extends AsyncTask<OAuth, Void, String> {
 		OAuthToken token = oauth.getToken();
 
 		try {
-			Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
-					token.getOauthToken(), token.getOauthTokenSecret());
-
+			FlickrHelper fh = FlickrHelper.getInstance();
+			Flickr f = fh.getFlickrAuthed(token.getOauthToken(), token.getOauthTokenSecret());
 			UploadMetaData uploadMetaData = new UploadMetaData();
-			uploadMetaData.setTitle(filename);
-			return f.getUploader().upload("hello",
-					FlickrActivity.getInputStream(), uploadMetaData);
+			uploadMetaData.setTitle(fh.getFileName());
+			uploadMetaData.setDescription(fh.getDescription());
+			return f.getUploader().upload(fh.getFileName(),
+					FlickrHelper.getInstance().getInputStream(), uploadMetaData);
 		} catch (Exception e) {
 			Log.e("boom!!", "" + e.toString());
 			e.printStackTrace();

@@ -20,7 +20,9 @@ public class AccountDatabase extends RealmObject{
     @PrimaryKey
     String name;
     String username;
+    String userId;
     String token;
+    String tokenSecret;
     String password;
     String serverUrl;
     private String accountname;
@@ -48,12 +50,28 @@ public class AccountDatabase extends RealmObject{
         this.username = username;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     public String getToken() {
         return token;
     }
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getTokenSecret() {
+        return tokenSecret;
+    }
+
+    public void setTokenSecret(String tokenSecret) {
+        this.tokenSecret = tokenSecret;
     }
 
     public String getPassword() {
