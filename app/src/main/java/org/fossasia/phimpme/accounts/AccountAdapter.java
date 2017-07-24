@@ -71,7 +71,11 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return AccountDatabase.AccountName.values().length;
+        /**
+         * We are using the enum from the AccountDatabase model class, (-1) from the lenght because
+         * Other option is only required in the Sharing activity.
+         */
+        return AccountDatabase.AccountName.values().length-1;
     }
 
     public void setResults(RealmQuery<AccountDatabase> results) {
