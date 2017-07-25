@@ -952,6 +952,10 @@
     <!--TUmblr-->
     <string name="logged_in_tumblr">Tumblr account logged in successfully.</string>
     <string name="tumblr">Tumblr</string>
+    <string name="posting_tumblr">Posting to Tumblr</string>
+    <string name="posted_on_tumblr"> Image posted on Tumblr successfully. </string>
+    <string name="error_on_tumblr">Error on uploading on Tumblr</string>
+
 
     <string name="owncloud">OwnCloud</string>
     <string name="retry_upload">Retry</string>
