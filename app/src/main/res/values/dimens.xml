@@ -92,5 +92,6 @@
 
     <!--SCROLL VIEW HEIGHT-->
     <dimen name="scroll_view_height">100dp</dimen>
+    <dimen name="share_item_padding">10dp</dimen>
 
 </resources>
