@@ -23,6 +23,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -30,9 +31,12 @@ import android.widget.Toast;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.leafpic.util.AlertDialogsHelper;
+import org.fossasia.phimpme.utilities.SnackBarHandler;
 import org.fossasia.phimpme.utilities.BasicCallBack;
 import org.fossasia.phimpme.utilities.Constants;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -47,7 +51,12 @@ public class LoginActivity extends ThemedActivity {
 
 	private static final String TAG = "LoginActivity";
 
-	private WebView twitterLoginWebView;
+	@BindView(R.id.twitterLoginWebView)
+	WebView twitterLoginWebView;
+
+	@BindView(R.id.login_parent)
+	View parentView;
+
 	private static String twitterConsumerKey;
 	private static String twitterConsumerSecret;
 
@@ -68,6 +77,7 @@ public class LoginActivity extends ThemedActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_twitter_login);
+		ButterKnife.bind(this);
 		twitterConsumerKey = getResources().getString(R.string.twitter_consumer_key);
 		twitterConsumerSecret = getResources().getString(R.string.twitter_consumer_secret);
 
@@ -81,7 +91,6 @@ public class LoginActivity extends ThemedActivity {
 				getString(R.string.authenticating_your_app_message), getString(R.string.please_wait));
 		dialog.show();
 
-		twitterLoginWebView = (WebView)findViewById(R.id.twitterLoginWebView);
 		twitterLoginWebView.setBackgroundColor(Color.TRANSPARENT);
 		twitterLoginWebView.setWebViewClient( new WebViewClient(){
 			@Override
@@ -192,7 +201,7 @@ public class LoginActivity extends ThemedActivity {
 						@Override
 						public void run() {
                             dialog.dismiss();
-							Toast.makeText(LoginActivity.this, errorString, Toast.LENGTH_SHORT).show();
+							SnackBarHandler.show(parentView,errorString);
 							finish();
 						}
 					});
