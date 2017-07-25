@@ -238,7 +238,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             switch (AccountDatabase.AccountName.values()[position]) {
                 case FACEBOOK:
                     // FacebookSdk.sdkInitialize(this);
-                    signInFacebook(childView);
+                    signInFacebook();
                     accountPresenter.loadFromDatabase();
                     break;
 
@@ -495,10 +495,8 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
     /**
      * Create Facebook login and session
-     *
-     * @param childView
      */
-    public void signInFacebook(final View childView) {
+    public void signInFacebook() {
         loginManager = LoginManager.getInstance();
         if (accountPresenter.checkAlreadyExist(FACEBOOK)) {
             SnackBarHandler.show(parentLayout,R.string.already_signed_in);
@@ -548,13 +546,13 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
                         @Override
                         public void onCancel() {
-                            SnackBarHandler.show(childView,
+                            SnackBarHandler.show(parentLayout,
                                     getString(R.string.facebook_login_cancel));
                         }
 
                         @Override
                         public void onError(FacebookException e) {
-                            SnackBarHandler.show(childView,
+                            SnackBarHandler.show(parentLayout,
                                     getString(R.string.facebook_login_error));
                             Log.d("error", e.toString());
                         }
