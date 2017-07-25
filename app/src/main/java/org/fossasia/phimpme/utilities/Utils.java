@@ -11,7 +11,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Base64;
 
+import org.fossasia.phimpme.data.local.AccountDatabase;
+
 import java.io.ByteArrayOutputStream;
+
+import io.realm.Realm;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
 
@@ -73,5 +79,22 @@ public class Utils {
         return false;
     }
 
+    /**
+     * This function check if the selected account is already existed.
+     *
+     * @param s Name of the account from accountList e.g. Twitter
+     * @return true is existed, false otherwise
+     */
+    public static boolean checkAlreadyExist(AccountDatabase.AccountName s) {
+        Realm realm = Realm.getDefaultInstance();
+        // Query in the realm database
+        RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
 
+        // Checking if string equals to is exist or not
+        query.equalTo("name", s.toString());
+        RealmResults<AccountDatabase> result1 = query.findAll();
+
+        // Here checking if count of that values is greater than zero
+        return (result1.size() > 0) ? true : false;
+    }
 }
