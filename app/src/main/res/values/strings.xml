@@ -550,6 +550,7 @@
 
     <string name="type_password">Insert password</string>
     <string name="type_description">Description</string>
+    <string name="Rename">Rename</string>
     <string name="type_caption">Write something</string>
     <string name="hint_caption">Add caption</string>
     <string name="security_sub">Set up a password to protect your media.</string>
@@ -953,4 +954,6 @@
     <string name="tumblr">Tumblr</string>
 
     <string name="owncloud">OwnCloud</string>
+    <string name="retry_upload">Retry</string>
+    <string name="upload_failed_retry_box">Upload failed! Rename and try again</string>
 </resources>

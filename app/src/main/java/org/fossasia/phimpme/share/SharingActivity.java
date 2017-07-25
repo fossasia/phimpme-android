@@ -200,6 +200,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     private static final int REQ_SELECT_PHOTO = 1;
 
+    public boolean uploadFailedBox = false;
+    public String uploadName;
+
     public static String getClientAuth() {
         return Constants.IMGUR_HEADER_CLIENt + " " + Constants.MY_IMGUR_CLIENT_ID;
     }
@@ -423,7 +426,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         protected Void doInBackground(Void... arg0) {
             try {
                 String destinationFolderId = "0";
-                String uploadName = file.getName();
+                if (!uploadFailedBox)
+                    uploadName = file.getName();
                 BoxRequestsFile.UploadFile request = mFileApi.getUploadRequest(inputStream, uploadName, destinationFolderId);
                 final BoxFile uploadFileInfo = request.send();
                 Log.d(LOG_TAG, uploadFileInfo.toString());
@@ -443,9 +447,52 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             }
             else {
                 NotificationHandler.uploadFailed();
-                SnackBarHandler.show(parent, R.string.upload_failed);
+                Snackbar.make(parent, getString(R.string.upload_failed_retry_box), Snackbar.LENGTH_LONG)
+                        .setAction(getString(R.string.retry_upload), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                uploadFailedBox = true;
+                                renameUploadName(file.getName());
+                            }
+                        }).show();
             }
         }
+    }
+
+    public EditText getDialog(final ThemedActivity activity, AlertDialog.Builder renameDialog) {
+
+        final View DialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_rename_box, null);
+        final TextView DialogTitle = (TextView) DialogLayout.findViewById(R.id.dialog_title);
+        final CardView DialogCard = (CardView) DialogLayout.findViewById(R.id.dialog_card);
+        final EditText editxt = (EditText) DialogLayout.findViewById(R.id.edittxt);
+
+        DialogTitle.setBackgroundColor(activity.getPrimaryColor());
+        DialogCard.setBackgroundColor(activity.getCardBackgroundColor());
+        ThemeHelper.setCursorDrawableColor(editxt, activity.getTextColor());
+        editxt.getBackground().mutate().setColorFilter(activity.getTextColor(), PorterDuff.Mode.SRC_ATOP);
+        editxt.setTextColor(activity.getTextColor());
+
+        renameDialog.setView(DialogLayout);
+
+        return editxt;
+    }
+
+    private void renameUploadName(String fileName) {
+        AlertDialog.Builder renameDialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
+        final EditText editText = getDialog(SharingActivity.this, renameDialogBuilder);
+        renameDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+        editText.setText(fileName);
+        editText.setSelection(editText.getText().length());
+        renameDialogBuilder.setPositiveButton(getString(R.string.retry_upload), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                uploadName = editText.getText().toString();
+                new UploadToBox().execute();
+            }
+        });
+
+        final AlertDialog renameDialog = renameDialogBuilder.create();
+        renameDialog.show();
     }
 
     private void flickrShare() {
