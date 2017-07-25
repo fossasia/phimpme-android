@@ -115,12 +115,12 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/alternate_margin"
             android:contentDescription="@string/auth_testing_connection"
-            android:drawableLeft="@android:drawable/stat_notify_sync"
+            android:drawableLeft="@drawable/ic_refresh_black_24dp"
             android:drawablePadding="@dimen/alternate_half_padding"
             android:gravity="center_vertical"
             android:minHeight="@dimen/display_text_min_height"
             android:text="@string/auth_testing_connection"
-            android:textColor="@color/white" />
+            android:textColor="@color/md_grey_500" />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_oAuthEntryPoint_1"
@@ -210,11 +210,11 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/alternate_margin"
             android:contentDescription="@string/auth_unauthorized"
-            android:drawableLeft="@android:drawable/stat_notify_sync"
+            android:drawableLeft="@drawable/ic_refresh_black_24dp"
             android:drawablePadding="@dimen/alternate_half_padding"
             android:gravity="center_vertical"
             android:text="@string/auth_unauthorized"
-            android:textColor="@color/white" />
+            android:textColor="@color/md_grey_500" />
 
         <Button
             android:id="@+id/buttonOK"
