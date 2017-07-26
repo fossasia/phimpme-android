@@ -96,6 +96,7 @@ import org.fossasia.phimpme.share.twitter.HelperMethods;
 import org.fossasia.phimpme.share.twitter.LoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.Constants;
+import org.fossasia.phimpme.utilities.NotificationHandler;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 import org.fossasia.phimpme.utilities.Utils;
 import org.json.JSONException;
@@ -120,6 +121,7 @@ import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
+import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.PINTEREST;
 import static org.fossasia.phimpme.utilities.Utils.copyToClipBoard;
 import static org.fossasia.phimpme.utilities.Utils.getBitmapFromPath;
@@ -399,7 +401,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private class UploadToBox extends AsyncTask<Void, Integer, Void> {
-        private AlertDialog dialog;
         private FileInputStream inputStream;
         private File file;
         private BoxApiFile mFileApi;
@@ -409,10 +410,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         protected void onPreExecute() {
             sessionBox.authenticate();
             mFileApi = new BoxApiFile(sessionBox);
-            final AlertDialog.Builder progressDialog = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
-            dialog = AlertDialogsHelper.getProgressDialog(SharingActivity.this, progressDialog,
-                    getString(R.string.box), getString(R.string.please_wait));
-            dialog.show();
+            NotificationHandler.make();
             file = new File(saveFilePath);
             try {
                 inputStream = new FileInputStream(file);
@@ -439,11 +437,14 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
         @Override
         protected void onPostExecute(Void result) {
-            dialog.dismiss();
-            if (success)
+            if (success) {
+                NotificationHandler.uploadPassed();
                 SnackBarHandler.show(parent, R.string.uploaded_box);
-            else
+            }
+            else {
+                NotificationHandler.uploadFailed();
                 SnackBarHandler.show(parent, R.string.upload_failed);
+            }
         }
     }
 
@@ -474,7 +475,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         AndroidAuthSession session = new AndroidAuthSession(appKeys);
         RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
         // Checking if string equals to is exist or not
-        query.equalTo("name", getString(R.string.dropbox_share));
+        query.equalTo("name", DROPBOX.toString());
         RealmResults<AccountDatabase> result = query.findAll();
         try {
             session.setOAuth2AccessToken(result.get(0).getToken());
@@ -489,14 +490,11 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
 
     private class UploadToDropbox extends AsyncTask<Void, Integer, Void> {
-        AlertDialog dialog;
+        Boolean success;
 
         @Override
         protected void onPreExecute() {
-            final AlertDialog.Builder progressDialog = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
-            dialog = AlertDialogsHelper.getProgressDialog(SharingActivity.this, progressDialog,
-                    getString(R.string.dropbox_share), getString(R.string.please_wait));
-            dialog.show();
+            NotificationHandler.make();
         }
 
         @Override
@@ -513,7 +511,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 File file2 = new File(saveFilePath);
                 response = mDBApi.putFile(file2.getName(), inputStream,
                         file.length(), null, null);
+                success = true;
             } catch (DropboxException e) {
+                success = false;
                 e.printStackTrace();
             }
             if (response != null)
@@ -523,8 +523,14 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
         @Override
         protected void onPostExecute(Void result) {
-            dialog.dismiss();
-            SnackBarHandler.show(parent, R.string.uploaded_dropbox);
+            if(success) {
+                NotificationHandler.uploadPassed();
+                SnackBarHandler.show(parent, R.string.uploaded_dropbox);
+            }
+            else {
+                NotificationHandler.uploadFailed();
+                SnackBarHandler.show(parent, R.string.upload_failed);
+            }
         }
     }
 
@@ -1008,10 +1014,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
         @Override
         protected void onPreExecute() {
-            AlertDialog.Builder progressDialog = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
-            dialog = AlertDialogsHelper.getProgressDialog(SharingActivity.this, progressDialog,
-                    getString(R.string.posting_twitter), getString(R.string.please_wait));
-            dialog.show();
+            NotificationHandler.make();
             super.onPreExecute();
         }
 
@@ -1024,10 +1027,14 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         @Override
         protected void onPostExecute(Void result) {
             dialog.dismiss();
-            if (isPostedOnTwitter)
+            if (isPostedOnTwitter) {
+                NotificationHandler.uploadPassed();
                 SnackBarHandler.show(parent, R.string.tweet_posted_on_twitter);
-            else
+            }
+            else {
+                NotificationHandler.uploadFailed();
                 SnackBarHandler.show(parent, R.string.error_on_posting_twitter);
+            }
         }
     }
 }
