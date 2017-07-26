@@ -15,13 +15,11 @@
  */
 package org.fossasia.phimpme.share.twitter;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -32,8 +30,11 @@ import android.widget.Toast;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.leafpic.util.AlertDialogsHelper;
+import org.fossasia.phimpme.utilities.BasicCallBack;
+import org.fossasia.phimpme.utilities.Constants;
 
 import twitter4j.Twitter;
+import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
@@ -42,7 +43,6 @@ import twitter4j.conf.ConfigurationBuilder;
 
 public class LoginActivity extends ThemedActivity {
 
-	public static final int TWITTER_LOGIN_RESULT_CODE_SUCCESS = 1111;
 	public static final int TWITTER_LOGIN_RESULT_CODE_FAILURE = 2222;
 
 	private static final String TAG = "LoginActivity";
@@ -55,6 +55,13 @@ public class LoginActivity extends ThemedActivity {
 	private static RequestToken requestToken;
 	private AlertDialog dialog;
 	private AlertDialog.Builder progressDialog;
+	private static BasicCallBack twitterCallBack;
+    private Uri uri;
+
+	public static void setBasicCallBack(BasicCallBack basicCallBack){
+		twitterCallBack = basicCallBack;
+	}
+
 
 
 	@Override
@@ -69,8 +76,6 @@ public class LoginActivity extends ThemedActivity {
 			LoginActivity.this.setResult(TWITTER_LOGIN_RESULT_CODE_FAILURE);
 			LoginActivity.this.finish();
 		}
-
-
 		progressDialog = new AlertDialog.Builder(LoginActivity.this, getDialogStyle());
 		dialog = AlertDialogsHelper.getProgressDialog(LoginActivity.this, progressDialog,
 				getString(R.string.authenticating_your_app_message), getString(R.string.please_wait));
@@ -133,59 +138,41 @@ public class LoginActivity extends ThemedActivity {
 	}
 
 	private void saveAccessTokenAndFinish(final Uri uri){
-		new Thread(new Runnable() {
-			@Override
-			public void run() {
-				String verifier = uri.getQueryParameter(AppConstant.IEXTRA_OAUTH_VERIFIER);
-				try { 
-					SharedPreferences sharedPrefs = getSharedPreferences(AppConstant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-					AccessToken accessToken = twitter.getOAuthAccessToken(requestToken, verifier);
-					Editor e = sharedPrefs.edit();
-					e.putString(AppConstant.SHARED_PREF_KEY_TOKEN, accessToken.getToken()); 
-					e.putString(AppConstant.SHARED_PREF_KEY_SECRET, accessToken.getTokenSecret()); 
-					e.commit();
-
-					Log.d(TAG, "TWITTER LOGIN SUCCESS ----TOKEN " + accessToken.getToken());
-					Log.d(TAG, "TWITTER LOGIN SUCCESS ----TOKEN SECRET " + accessToken.getTokenSecret());
-					LoginActivity.this.setResult(TWITTER_LOGIN_RESULT_CODE_SUCCESS);
-				} catch (Exception e) {
-					e.printStackTrace();
-					if(e.getMessage() != null){
-						Log.e(TAG, e.getMessage());
-
-					}else{
-						Log.e(TAG, "ERROR: Twitter callback failed");
-					}
-					LoginActivity.this.setResult(TWITTER_LOGIN_RESULT_CODE_FAILURE);
-				}
-				LoginActivity.this.finish();
-			}
-		}).start();
+        this.uri = uri;
+        new SaveTokenAsync().execute();
 	}
 
+    private class SaveTokenAsync extends AsyncTask<Void, Void, Void> {
+        Bundle bundle;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
 
-	public static boolean isActive(Context ctx) {
-		SharedPreferences sharedPrefs = ctx.getSharedPreferences(AppConstant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-		return sharedPrefs.getString(AppConstant.SHARED_PREF_KEY_TOKEN, null) != null;
-	}
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            String verifier = uri.getQueryParameter(AppConstant.IEXTRA_OAUTH_VERIFIER);
+            try {
+                AccessToken accessToken = twitter.getOAuthAccessToken(requestToken, verifier);
+                bundle= new Bundle();
+                bundle.putString(getString(R.string.auth_token), accessToken.getToken());
+                bundle.putString(getString(R.string.auth_username),accessToken.getScreenName());
+                bundle.putString(getString(R.string.auth_secret),accessToken.getTokenSecret());
 
-	public static void logOutOfTwitter(Context ctx){
-		SharedPreferences sharedPrefs = ctx.getSharedPreferences(AppConstant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-		Editor e = sharedPrefs.edit();
-		e.putString(AppConstant.SHARED_PREF_KEY_TOKEN, null); 
-		e.putString(AppConstant.SHARED_PREF_KEY_SECRET, null); 
-		e.commit();
-	}
+            } catch (TwitterException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
 
-	public static String getAccessToken(Context ctx){
-		SharedPreferences sharedPrefs = ctx.getSharedPreferences(AppConstant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-		return sharedPrefs.getString(AppConstant.SHARED_PREF_KEY_TOKEN, null);
-	}
+        @Override
+        protected void onPostExecute(Void result) {
+            twitterCallBack.callBack(Constants.SUCCESS, bundle);
+            dialog.dismiss();
+            finish();
+        }
+    }
 
-	public static String getAccessTokenSecret(Context ctx){
-		SharedPreferences sharedPrefs = ctx.getSharedPreferences(AppConstant.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-		return sharedPrefs.getString(AppConstant.SHARED_PREF_KEY_SECRET, null);
-	}
 
 	private void askOAuth() {
 		ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
