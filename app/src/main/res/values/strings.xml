@@ -952,4 +952,9 @@
     <string name="tumblr">Tumblr</string>
 
     <string name="owncloud">OwnCloud</string>
+
+    <!--Snackbar-->
+    <string name="facebook_signIn_fail">Login to Facebook from Account manager</string>
+    <string name="flickr_signIn_fail">Login to Flickr from Account manager</string>
+    <string name="facebook_image_posted">Image posted on Facbook</string>
 </resources>
