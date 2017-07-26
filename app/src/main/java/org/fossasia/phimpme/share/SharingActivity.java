@@ -200,6 +200,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     private static final int REQ_SELECT_PHOTO = 1;
 
+    public boolean uploadFailedBox = false;
+    public String uploadName;
+
     public static String getClientAuth() {
         return Constants.IMGUR_HEADER_CLIENt + " " + Constants.MY_IMGUR_CLIENT_ID;
     }
@@ -423,7 +426,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         protected Void doInBackground(Void... arg0) {
             try {
                 String destinationFolderId = "0";
-                String uploadName = file.getName();
+                if (!uploadFailedBox)
+                    uploadName = file.getName();
                 BoxRequestsFile.UploadFile request = mFileApi.getUploadRequest(inputStream, uploadName, destinationFolderId);
                 final BoxFile uploadFileInfo = request.send();
                 Log.d(LOG_TAG, uploadFileInfo.toString());
@@ -443,11 +447,34 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             }
             else {
                 NotificationHandler.uploadFailed();
-                SnackBarHandler.show(parent, R.string.upload_failed);
+                Snackbar.make(parent, getString(R.string.upload_failed_retry_box), Snackbar.LENGTH_LONG)
+                        .setAction(getString(R.string.retry_upload), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                uploadFailedBox = true;
+                                renameUploadName(file.getName());
+                            }
+                        }).show();
             }
         }
     }
 
+    private void renameUploadName(String fileName) {
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
+        final EditText editTextNewName = new EditText(getApplicationContext());
+        editTextNewName.setText(fileName);
+        editTextNewName.setSelection(fileName.length());
+        AlertDialogsHelper.getInsertTextDialog(SharingActivity.this, dialogBuilder, editTextNewName, R.string.Rename);
+
+        dialogBuilder.setPositiveButton(getString(R.string.retry_upload).toUpperCase(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                uploadName = editTextNewName.getText().toString();
+                new UploadToBox().execute();
+            }
+        });
+        dialogBuilder.show();
+    }
     private void flickrShare() {
         Intent intent = new Intent(getApplicationContext(),
                 FlickrActivity.class);
