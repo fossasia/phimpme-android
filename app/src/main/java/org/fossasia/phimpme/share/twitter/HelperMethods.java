@@ -17,11 +17,8 @@ package org.fossasia.phimpme.share.twitter;
 
 import android.content.Context;
 import android.util.Log;
-
 import org.fossasia.phimpme.R;
-
 import java.io.File;
-
 import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -31,20 +28,13 @@ import twitter4j.conf.ConfigurationBuilder;
 
 public class HelperMethods {
 	private static final String TAG = "HelperMethods";
-	
 
-
-	public static void postToTwitterWithImage(Context context, final String imageUrl, final String message, final TwitterCallback postResponse){
-		if(!LoginActivity.isActive(context)){
-			postResponse.onFinsihed(false);
-			return;
-		}
-
+	public static void postToTwitterWithImage(Context context, final String imageUrl, final String message, final String token, final String secret, final TwitterCallback postResponse){
 		ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
 		configurationBuilder.setOAuthConsumerKey(context.getResources().getString(R.string.twitter_consumer_key));
 		configurationBuilder.setOAuthConsumerSecret(context.getResources().getString(R.string.twitter_consumer_secret));
-		configurationBuilder.setOAuthAccessToken(LoginActivity.getAccessToken((context)));
-		configurationBuilder.setOAuthAccessTokenSecret(LoginActivity.getAccessTokenSecret(context));
+		configurationBuilder.setOAuthAccessToken(token);
+		configurationBuilder.setOAuthAccessTokenSecret(secret);
 		Configuration configuration = configurationBuilder.build();
 		final Twitter twitter = new TwitterFactory(configuration).getInstance();
 
