@@ -4,11 +4,11 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:gravity="center"
-              android:paddingLeft="20dp"
+              android:orientation="horizontal"
               android:paddingBottom="@dimen/share_item_padding"
-              android:paddingTop="@dimen/share_item_padding"
+              android:paddingLeft="20dp"
               android:paddingRight="@dimen/share_item_padding"
-              android:orientation="horizontal">
+              android:paddingTop="@dimen/share_item_padding">
 
     <ImageView
         android:id="@+id/account_image"

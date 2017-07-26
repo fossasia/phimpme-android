@@ -380,26 +380,35 @@
     <color name="share_done_button_color">#01B683</color>
     <color name="facebook_color">#3b5998</color>
     <color name="twitter_color">#48A2E5</color>
-    <color name="instagram_color">#D42473</color>
-    <color name="wordpress_color">#21759B</color>
+    <color name="drupal_color">#21759B</color>
+    <color name="nextcloud_color">#0F89CD</color>
+    <color name="wordpress_color">#278BB8</color>
     <color name="pinterest_color">#C92228</color>
     <color name="flickr_color">#FC329B</color>
-    <color name="nextcloud_color">#0F89CD</color>
     <color name="imgur_color">#000000</color>
+    <color name="dropbox_color">#007ee5</color>
+    <color name="owncloud_color">#1D2D44</color>s
     <color name="googleplus_color">#d34836</color>
+    <color name="box_color">#d34836</color>
+    <color name="tumblr_color">#32506d</color>
+    <color name="instagram_color">#125688</color>
     <color name="others_color">@color/md_indigo_900</color>
 
     <color name="facebook_color_darktheme">#778bca</color>
     <color name="twitter_color_darktheme">#7ad4ff</color>
-    <color name="instagram_color_darktheme">#ff56a5</color>
+    <color name="drupal_color_darktheme">#7ad4ff</color>
+    <color name="nextcloud_color_darktheme">#2da7eb</color>
     <color name="wordpress_color_darktheme">#53a7cd</color>
     <color name="pinterest_color_darktheme">#ff5e64</color>
     <color name="flickr_color_darktheme">#ff5ac3</color>
-    <color name="nextcloud_color_darktheme">#2da7eb</color>
     <color name="imgur_color_darktheme">#fcfcfcfc</color>
-    <color name="other_share_color_darktheme">@color/md_indigo_400</color>
-    <color name="dropbox_color">#48A2E5</color>
     <color name="dropbox_color_darktheme">#778bca</color>
+    <color name="owncloud_color_darktheme">#a1b8d9</color>
+    <color name="googleplus_color_darktheme">#45556c</color>
+    <color name="box_color_darktheme">#da8587</color>
+    <color name="tumblr_color_darktheme">#698dc1</color>
+    <color name="instagram_color_darktheme">#ff56a5</color>
+    <color name="other_share_color_darktheme">@color/md_indigo_400</color>
 
     <color name="card_background">#e1e0e0</color>
     <!-- Drupal Login-->
@@ -411,6 +420,4 @@
 
     <!--Wordpress Login-->
     <color name="wordpress_color_login">#48A2E5</color>
-    <color name="owncloud_color">#1D2D44</color>
-    <color name="owncloud_color_darktheme">#45556c</color>
 </resources>
