@@ -550,6 +550,7 @@
 
     <string name="type_password">Insert password</string>
     <string name="type_description">Description</string>
+    <string name="Rename">Rename</string>
     <string name="type_caption">Write something</string>
     <string name="hint_caption">Add caption</string>
     <string name="security_sub">Set up a password to protect your media.</string>
@@ -951,6 +952,10 @@
     <!--TUmblr-->
     <string name="logged_in_tumblr">Tumblr account logged in successfully.</string>
     <string name="tumblr">Tumblr</string>
+    <string name="posting_tumblr">Posting to Tumblr</string>
+    <string name="posted_on_tumblr"> Image posted on Tumblr successfully. </string>
+    <string name="error_on_tumblr">Error on uploading on Tumblr</string>
+
 
     <string name="owncloud">OwnCloud</string>
 
@@ -958,4 +963,8 @@
     <string name="facebook_signIn_fail">Login to Facebook from Account manager</string>
     <string name="flickr_signIn_fail">Login to Flickr from Account manager</string>
     <string name="facebook_image_posted">Image posted on Facbook</string>
+
+    <string name="retry_upload">Retry</string>
+    <string name="upload_failed_retry_box">Upload failed! Rename and try again</string>
+
 </resources>

@@ -79,6 +79,9 @@ import com.pinterest.android.pdk.PDKCallback;
 import com.pinterest.android.pdk.PDKClient;
 import com.pinterest.android.pdk.PDKException;
 import com.pinterest.android.pdk.PDKResponse;
+import com.tumblr.jumblr.JumblrClient;
+import com.tumblr.jumblr.types.PhotoPost;
+import com.tumblr.jumblr.types.User;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.accounts.AccountActivity;
@@ -92,6 +95,7 @@ import org.fossasia.phimpme.leafpic.util.AlertDialogsHelper;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
 import org.fossasia.phimpme.share.flickr.FlickrActivity;
 import org.fossasia.phimpme.share.flickr.FlickrHelper;
+import org.fossasia.phimpme.share.tumblr.TumblrClient;
 import org.fossasia.phimpme.share.twitter.HelperMethods;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.Constants;
@@ -200,6 +204,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     String boardID, imgurAuth = null, imgurString = null;
 
     private static final int REQ_SELECT_PHOTO = 1;
+
+    public boolean uploadFailedBox = false;
+    public String uploadName;
 
     public static String getClientAuth() {
         return Constants.IMGUR_HEADER_CLIENt + " " + Constants.MY_IMGUR_CLIENT_ID;
@@ -355,7 +362,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 break;
 
             case TUMBLR:
-
+                shareToTumblr();
                 break;
 
             case OTHERS:
@@ -365,6 +372,10 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             default:
                 SnackBarHandler.show(parent, R.string.feature_not_present);
         }
+    }
+
+    private void shareToTumblr() {
+        new PostToTumblrAsync().execute();
     }
 
     @Override
@@ -424,7 +435,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         protected Void doInBackground(Void... arg0) {
             try {
                 String destinationFolderId = "0";
-                String uploadName = file.getName();
+                if (!uploadFailedBox)
+                    uploadName = file.getName();
                 BoxRequestsFile.UploadFile request = mFileApi.getUploadRequest(inputStream, uploadName, destinationFolderId);
                 final BoxFile uploadFileInfo = request.send();
                 Log.d(LOG_TAG, uploadFileInfo.toString());
@@ -444,11 +456,34 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             }
             else {
                 NotificationHandler.uploadFailed();
-                SnackBarHandler.show(parent, R.string.upload_failed);
+                Snackbar.make(parent, getString(R.string.upload_failed_retry_box), Snackbar.LENGTH_LONG)
+                        .setAction(getString(R.string.retry_upload), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                uploadFailedBox = true;
+                                renameUploadName(file.getName());
+                            }
+                        }).show();
             }
         }
     }
 
+    private void renameUploadName(String fileName) {
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
+        final EditText editTextNewName = new EditText(getApplicationContext());
+        editTextNewName.setText(fileName);
+        editTextNewName.setSelection(fileName.length());
+        AlertDialogsHelper.getInsertTextDialog(SharingActivity.this, dialogBuilder, editTextNewName, R.string.Rename);
+
+        dialogBuilder.setPositiveButton(getString(R.string.retry_upload).toUpperCase(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                uploadName = editTextNewName.getText().toString();
+                new UploadToBox().execute();
+            }
+        });
+        dialogBuilder.show();
+    }
     private void flickrShare() {
             Intent intent = new Intent(getApplicationContext(),
                     FlickrActivity.class);
@@ -1021,4 +1056,53 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             }
         }
     }
+    private class PostToTumblrAsync extends AsyncTask<Void, Void, Void> {
+        AlertDialog dialog;
+        TumblrClient tumblrClient;
+        JumblrClient client;
+        Boolean success = true;
+
+
+        @Override
+        protected void onPreExecute() {
+            tumblrClient = new TumblrClient();
+            AlertDialog.Builder progressDialog = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
+            dialog = AlertDialogsHelper.getProgressDialog(SharingActivity.this, progressDialog,
+                    getString(R.string.posting_tumblr), getString(R.string.please_wait));
+            dialog.show();
+            client = tumblrClient.getClient();
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... arg0) {
+            User user = client.user();
+            PhotoPost post = null;
+            try {
+                post = client.newPost(user.getBlogs().get(0).getName(), PhotoPost.class);
+                if (caption!=null && !caption.isEmpty())
+                post.setCaption(caption);
+                post.setData(new File(saveFilePath));
+                post.save();
+            } catch (IllegalAccessException | InstantiationException e) {
+                success = false;
+                e.printStackTrace();
+            } catch (IOException e) {
+                success = false;
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            dialog.dismiss();
+            if (success)
+                SnackBarHandler.show(parent, getString(R.string.posted_on_tumblr));
+            else
+                SnackBarHandler.show(parent, getString(R.string.error_on_tumblr));
+        }
+    }
+
 }
