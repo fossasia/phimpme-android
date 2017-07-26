@@ -475,6 +475,13 @@
     <string name="new_folder">New Folder</string>
     <string name="create_new_folder">Create new folder</string>
 
+    <!--Notification Uploads-->
+    <string name="upload_progress">Uploading</string>
+    <string name="progress">In progress</string>
+    <string name="upload_done">Success</string>
+    <string name="upload_complete">Uploaded</string>
+    <string name="try_again">Please try again</string>
+
     <!--DIALOG MESSAGES-->
     <string name="hide_album_message">
         Hiding this album will create a .nomedia file in the folder
