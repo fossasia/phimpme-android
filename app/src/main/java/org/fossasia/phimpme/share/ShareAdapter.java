@@ -1,5 +1,6 @@
 package org.fossasia.phimpme.share;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.AccountDatabase;
+import org.fossasia.phimpme.leafpic.util.ThemeHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,6 +24,7 @@ import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
 
 public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> {
 
+    ThemeHelper themeHelper = new ThemeHelper(getContext());
     @Override
     public ShareAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -42,6 +45,25 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
                 , getContext().getPackageName());
 
         holder.accountImage.setImageResource(id);
+
+        id = getContext().getResources().getIdentifier((name.toLowerCase()) + "_color"
+                , context.getString(R.string.color)
+                , getContext().getPackageName());
+
+        if (themeHelper.getBaseTheme() == ThemeHelper.LIGHT_THEME){
+
+            holder.accountName.setTextColor(ContextCompat.getColor(getContext(), id));
+            holder.accountImage.setColorFilter(ContextCompat.getColor(getContext(), id));
+
+        } else {
+
+            id = getContext().getResources().getIdentifier((name.toLowerCase()) + "_color_darktheme"
+                    , context.getString(R.string.color)
+                    , getContext().getPackageName());
+
+            holder.accountName.setTextColor(ContextCompat.getColor(getContext(), id));
+            holder.accountImage.setColorFilter(ContextCompat.getColor(getContext(), id));
+        }
     }
 
     @Override
