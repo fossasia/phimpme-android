@@ -459,42 +459,22 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         }
     }
 
-    public EditText getDialog(final ThemedActivity activity, AlertDialog.Builder renameDialog) {
-
-        final View DialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_rename_box, null);
-        final TextView DialogTitle = (TextView) DialogLayout.findViewById(R.id.dialog_title);
-        final CardView DialogCard = (CardView) DialogLayout.findViewById(R.id.dialog_card);
-        final EditText editxt = (EditText) DialogLayout.findViewById(R.id.edittxt);
-
-        DialogTitle.setBackgroundColor(activity.getPrimaryColor());
-        DialogCard.setBackgroundColor(activity.getCardBackgroundColor());
-        ThemeHelper.setCursorDrawableColor(editxt, activity.getTextColor());
-        editxt.getBackground().mutate().setColorFilter(activity.getTextColor(), PorterDuff.Mode.SRC_ATOP);
-        editxt.setTextColor(activity.getTextColor());
-
-        renameDialog.setView(DialogLayout);
-
-        return editxt;
-    }
-
     private void renameUploadName(String fileName) {
-        AlertDialog.Builder renameDialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
-        final EditText editText = getDialog(SharingActivity.this, renameDialogBuilder);
-        renameDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-        editText.setText(fileName);
-        editText.setSelection(editText.getText().length());
-        renameDialogBuilder.setPositiveButton(getString(R.string.retry_upload), new DialogInterface.OnClickListener() {
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
+        final EditText editTextNewName = new EditText(getApplicationContext());
+        editTextNewName.setText(fileName);
+        editTextNewName.setSelection(fileName.length());
+        AlertDialogsHelper.getInsertTextDialog(SharingActivity.this, dialogBuilder, editTextNewName, R.string.Rename);
+
+        dialogBuilder.setPositiveButton(getString(R.string.retry_upload).toUpperCase(), new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                uploadName = editText.getText().toString();
+            public void onClick(DialogInterface dialogInterface, int i) {
+                uploadName = editTextNewName.getText().toString();
                 new UploadToBox().execute();
             }
         });
-
-        final AlertDialog renameDialog = renameDialogBuilder.create();
-        renameDialog.show();
+        dialogBuilder.show();
     }
-
     private void flickrShare() {
         Intent intent = new Intent(getApplicationContext(),
                 FlickrActivity.class);
