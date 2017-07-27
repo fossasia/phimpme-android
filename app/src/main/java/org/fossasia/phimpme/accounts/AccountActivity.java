@@ -139,6 +139,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         ActivitySwitchHelper.setContext(this);
+        parentLayout.setBackgroundColor(getBackgroundColor());
         accountAdapter = new AccountAdapter(getAccentColor(), getPrimaryColor());
         accountPresenter = new AccountPresenter(realm);
         phimpmeProgressBarHandler = new PhimpmeProgressBarHandler(this);
