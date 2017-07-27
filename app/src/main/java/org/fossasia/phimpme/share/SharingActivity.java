@@ -123,6 +123,7 @@ import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
+import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FACEBOOK;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.PINTEREST;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTER;
@@ -305,7 +306,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     public void onItemClick(View childView, int position) {
         switch (AccountDatabase.AccountName.values()[position]) {
             case FACEBOOK:
-                setupFacebookAndShare();
+                sharePhotoToFacebook();
                 break;
 
             case TWITTER:
@@ -483,25 +484,25 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         dialogBuilder.show();
     }
     private void flickrShare() {
-        Intent intent = new Intent(getApplicationContext(),
-                FlickrActivity.class);
-        InputStream is = null;
-        File file = new File(saveFilePath);
-        try {
-            is = getContentResolver().openInputStream(Uri.fromFile(file));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (is != null) {
-            FlickrHelper f = FlickrHelper.getInstance();
-            f.setInputStream(is);
-            f.setFilename(file.getName());
+            Intent intent = new Intent(getApplicationContext(),
+                    FlickrActivity.class);
+            InputStream is = null;
+            File file = new File(saveFilePath);
+            try {
+                is = getContentResolver().openInputStream(Uri.fromFile(file));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (is != null) {
+                FlickrHelper f = FlickrHelper.getInstance();
+                f.setInputStream(is);
+                f.setFilename(file.getName());
 
-            if (null != text_caption.getText() && !text_caption.getText().toString().isEmpty())
-                f.setDescription(text_caption.getText().toString());
+                if (null != text_caption.getText() && !text_caption.getText().toString().isEmpty())
+                    f.setDescription(text_caption.getText().toString());
 
-            startActivity(intent);
-        }
+                startActivity(intent);
+            }
     }
 
     private void dropboxShare() {
@@ -697,36 +698,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     }
 
-    private void setupFacebookAndShare() {
-        if (checknetwork()) {
-            FacebookSdk.sdkInitialize(getApplicationContext());
-            callbackManager = CallbackManager.Factory.create();
-            List<String> permissionNeeds = Arrays.asList("publish_actions");
-
-            //this loginManager helps you eliminate adding a LoginButton to your UI
-            LoginManager manager = LoginManager.getInstance();
-            manager.logInWithPublishPermissions(this, permissionNeeds);
-            manager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-                @Override
-                public void onSuccess(LoginResult loginResult) {
-                    sharePhotoToFacebook();
-                }
-
-                @Override
-                public void onCancel() {
-                    System.out.println("onCancel");
-                }
-
-                @Override
-                public void onError(FacebookException error) {
-                    System.out.println("onError");
-                }
-            });
-        } else
-            Snackbar.make(parent, R.string.not_connected, Snackbar.LENGTH_LONG).show();
-    }
-
     private void sharePhotoToFacebook() {
+        if (Utils.checkAlreadyExist(FACEBOOK)) {
         Bitmap image = getBitmapFromPath(saveFilePath);
         SharePhoto photo = new SharePhoto.Builder()
                 .setBitmap(image)
@@ -738,7 +711,11 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 .build();
 
         ShareApi.share(content, null);
+            SnackBarHandler.show(parent, R.string.facebook_image_posted);
         atleastOneShare = true;
+    }else{
+            SnackBarHandler.show(parent, R.string.facebook_signIn_fail);
+        }
     }
 
     private void otherShare() {
