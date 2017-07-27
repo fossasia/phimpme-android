@@ -1494,7 +1494,7 @@ public class LFMainActivity extends SharedMediaActivity {
                         editTextNewName.setText(albumsMode ? getAlbums().getSelectedAlbum(0).getName() : getAlbum().getName());
 
                         AlertDialogsHelper.getInsertTextDialog(LFMainActivity.this, renameDialogBuilder,
-                                editTextNewName, R.string.rename_album);
+                                editTextNewName, R.string.rename_album, null);
 
                         renameDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
 
