@@ -959,8 +959,15 @@
 
 
     <string name="owncloud">OwnCloud</string>
+
+    <!--Snackbar-->
+    <string name="facebook_signIn_fail">Login to Facebook from Account manager</string>
+    <string name="flickr_signIn_fail">Login to Flickr from Account manager</string>
+    <string name="facebook_image_posted">Image posted on Facbook</string>
+
     <string name="retry_upload">Retry</string>
     <string name="upload_failed_retry_box">Upload failed! Rename and try again</string>
+
     <string name="connection_failed">Connection Failed</string>
     <string name="authorization_failed">Authorization Failed</string>
 </resources>
