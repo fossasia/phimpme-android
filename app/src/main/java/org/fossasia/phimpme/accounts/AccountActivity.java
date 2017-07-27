@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.box.androidsdk.content.BoxConfig;
 import com.box.androidsdk.content.auth.BoxAuthentication;
@@ -239,7 +238,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             switch (AccountDatabase.AccountName.values()[position]) {
                 case FACEBOOK:
                     // FacebookSdk.sdkInitialize(this);
-                    signInFacebook(childView);
+                    signInFacebook();
                     accountPresenter.loadFromDatabase();
                     break;
 
@@ -300,8 +299,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     break;
 
                 default:
-                    Toast.makeText(this, R.string.feature_not_present,
-                            Toast.LENGTH_SHORT).show();
+                    SnackBarHandler.show(parentLayout,R.string.feature_not_present);
             }
         } else {
             new AlertDialog.Builder(this)
@@ -334,7 +332,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         LoginListener loginListener = new LoginListener() {
             @Override
             public void onLoginSuccessful(com.tumblr.loglr.LoginResult loginResult) {
-                Toast.makeText(AccountActivity.this, getString(R.string.logged_in_tumblr), Toast.LENGTH_SHORT).show();
+                SnackBarHandler.show(parentLayout,getString(R.string.logged_in_tumblr));
                 realm.beginTransaction();
                 account = realm.createObject(AccountDatabase.class,
                         TUMBLR.toString());
@@ -357,7 +355,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         ExceptionHandler exceptionHandler = new ExceptionHandler() {
             @Override
             public void onLoginFailed(RuntimeException e) {
-            SnackBarHandler.show(parentLayout,getString(R.string.error_volly));
+            SnackBarHandler.show(parentLayout,R.string.error_volly);
             }
         };
 
@@ -378,21 +376,20 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
     private void signInDropbox() {
         if (accountPresenter.checkAlreadyExist(DROPBOX))
-            Toast.makeText(getApplicationContext(), getString(R.string.already_signed_in), Toast.LENGTH_SHORT).show();
+            SnackBarHandler.show(parentLayout,R.string.already_signed_in);
         else
             mDBApi.getSession().startOAuth2Authentication(this);
     }
 
     private void signInImgur() {
         if (accountPresenter.checkAlreadyExist(IMGUR)) {
-            Toast.makeText(this, R.string.already_signed_in,
-                    Toast.LENGTH_SHORT).show();
+            SnackBarHandler.show(parentLayout,R.string.already_signed_in);
         }else {
             BasicCallBack basicCallBack = new BasicCallBack() {
                 @Override
                 public void callBack(int status, Object data) {
                     if (status == SUCCESS){
-                        Toast.makeText(getContext(), getResources().getString(R.string.account_logged), Toast.LENGTH_LONG).show();
+                        SnackBarHandler.show(parentLayout,R.string.account_logged);
                         if (data instanceof Bundle){
                             Bundle bundle = (Bundle)data;
                             realm.beginTransaction();
@@ -414,8 +411,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private void signInPinterest() {
 
         if (accountPresenter.checkAlreadyExist(PINTEREST)) {
-            Toast.makeText(this, R.string.already_signed_in,
-                    Toast.LENGTH_SHORT).show();
+            SnackBarHandler.show(parentLayout,R.string.already_signed_in);
         } else {
             List scopes = new ArrayList<String>();
             scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_PUBLIC);
@@ -447,14 +443,13 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
                     // Finally committing the whole data
                     realm.commitTransaction();
-
-                    Toast.makeText(AccountActivity.this, R.string.success, Toast.LENGTH_SHORT).show();
+                    SnackBarHandler.show(parentLayout,R.string.success);
                 }
 
                 @Override
                 public void onFailure(PDKException exception) {
                     Log.e(getClass().getName(), exception.getDetailMessage());
-                    Toast.makeText(AccountActivity.this, R.string.fail, Toast.LENGTH_SHORT).show();
+                    SnackBarHandler.show(parentLayout,R.string.fail);
                 }
             });
         }
@@ -500,14 +495,11 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
     /**
      * Create Facebook login and session
-     *
-     * @param childView
      */
-    public void signInFacebook(final View childView) {
+    public void signInFacebook() {
         loginManager = LoginManager.getInstance();
         if (accountPresenter.checkAlreadyExist(FACEBOOK)) {
-            Toast.makeText(this, R.string.already_signed_in,
-                    Toast.LENGTH_SHORT).show();
+            SnackBarHandler.show(parentLayout,R.string.already_signed_in);
         } else {
             List<String> permissionNeeds = Arrays.asList("publish_actions");
 
@@ -554,13 +546,13 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
                         @Override
                         public void onCancel() {
-                            SnackBarHandler.show(childView,
+                            SnackBarHandler.show(parentLayout,
                                     getString(R.string.facebook_login_cancel));
                         }
 
                         @Override
                         public void onError(FacebookException e) {
-                            SnackBarHandler.show(childView,
+                            SnackBarHandler.show(parentLayout,
                                     getString(R.string.facebook_login_error));
                             Log.d("error", e.toString());
                         }
@@ -676,7 +668,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         if (result.isSuccess()) {
             // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();//acct.getDisplayName()
-            Toast.makeText(AccountActivity.this, R.string.success, Toast.LENGTH_SHORT).show();
+            SnackBarHandler.show(parentLayout,R.string.success);
             // Begin realm transaction
             realm.beginTransaction();
 
@@ -690,14 +682,14 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             realm.commitTransaction();
         } else {
             // Signed out, show unauthenticated UI.
-            Toast.makeText(AccountActivity.this, R.string.fail, Toast.LENGTH_SHORT).show();
+            SnackBarHandler.show(parentLayout,R.string.fail);
             //updateUI(false);
         }
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(AccountActivity.this, "Connection Failed", Toast.LENGTH_SHORT).show();
+        SnackBarHandler.show(parentLayout,"Connection Failed");
     }
 
 

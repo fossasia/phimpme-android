@@ -23,7 +23,6 @@ import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -37,6 +36,8 @@ import org.fossasia.phimpme.leafpic.util.SecurityHelper;
 import org.fossasia.phimpme.leafpic.util.StaticMapProvider;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import uz.shift.colorpicker.LineColorPicker;
 import uz.shift.colorpicker.OnColorChangedListener;
 import org.fossasia.phimpme.opencamera.Camera.CameraActivity;
@@ -44,6 +45,7 @@ import org.fossasia.phimpme.opencamera.Camera.MyPreferenceFragment;
 import org.fossasia.phimpme.opencamera.Camera.PreferenceKeys;
 import org.fossasia.phimpme.opencamera.Camera.TinyDB;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
+import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static org.fossasia.phimpme.leafpic.util.ThemeHelper.AMOLED_THEME;
@@ -59,14 +61,25 @@ public class SettingsActivity extends ThemedActivity {
     private PreferenceUtil SP;
     private SecurityHelper securityObj;
 
-    private Toolbar toolbar;
-    private ScrollView scr;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
-    private TextView txtGT;
-    private TextView txtTT;
-    private TextView txtPT;
-    private TextView txtVT;
-    private TextView txtAT;
+    @BindView(R.id.settingAct_scrollView)
+    ScrollView scr;
+
+    @BindView(R.id.general_setting_title)
+    TextView txtGT;
+
+    @BindView(R.id.theme_setting_title)
+    TextView txtTT;
+    @BindView(R.id.picture_setting_title)
+    TextView txtPT;
+
+    @BindView(R.id.advanced_setting_title)
+    TextView txtAT;
+
+    @BindView(R.id.setting_background)
+    View parent;
 
     private SwitchCompat swNavBar;
     private SwitchCompat swStatusBar;
@@ -84,15 +97,12 @@ public class SettingsActivity extends ThemedActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        ButterKnife.bind(this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         SP = PreferenceUtil.getInstance(getApplicationContext());
 
         securityObj = new SecurityHelper(SettingsActivity.this);
 
-        txtTT = (TextView) findViewById(R.id.theme_setting_title);
-        txtGT = (TextView) findViewById(R.id.general_setting_title);
-        txtPT = (TextView) findViewById(R.id.picture_setting_title);
-        txtAT = (TextView) findViewById(R.id.advanced_setting_title);
 
         scr = (ScrollView)findViewById(R.id.settingAct_scrollView);
 
@@ -361,7 +371,7 @@ public class SettingsActivity extends ThemedActivity {
                     passwordDialog.dismiss();
                     startActivity(new Intent(getApplicationContext(), SecurityActivity.class));
                 } else {
-                    Toast.makeText(getApplicationContext(), R.string.wrong_password, Toast.LENGTH_SHORT).show();
+                    SnackBarHandler.show(parent,R.string.wrong_password);
                     editTextPassword.getText().clear();
                     editTextPassword.requestFocus();
                 }

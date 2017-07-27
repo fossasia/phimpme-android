@@ -30,7 +30,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -473,7 +472,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         final EditText editTextNewName = new EditText(getApplicationContext());
         editTextNewName.setText(fileName);
         editTextNewName.setSelection(fileName.length());
-        AlertDialogsHelper.getInsertTextDialog(SharingActivity.this, dialogBuilder, editTextNewName, R.string.Rename);
+        AlertDialogsHelper.getInsertTextDialog(SharingActivity.this, dialogBuilder, editTextNewName, R.string.Rename, null);
 
         dialogBuilder.setPositiveButton(getString(R.string.retry_upload).toUpperCase(), new DialogInterface.OnClickListener() {
             @Override
@@ -605,13 +604,13 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void openPinterestDialogBox() {
-        AlertDialog.Builder captionDialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
-        final EditText captionEditText = getCaptionDialog(this, captionDialogBuilder);
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
+        final EditText captionEditText = new EditText(getApplicationContext());
 
-        captionEditText.setHint(R.string.hint_boardID);
-
-        captionDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-        captionDialogBuilder.setPositiveButton(getString(R.string.post_action).toUpperCase(), new DialogInterface.OnClickListener() {
+        String link = "<a href=https://www.nutt.net/how-do-i-get-pinterest-board-id/> Get Board ID from the LINK";
+        AlertDialogsHelper.getInsertTextDialog(SharingActivity.this, dialogBuilder, captionEditText, R.string.Pinterest_link ,link);
+        dialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+        dialogBuilder.setPositiveButton(getString(R.string.post_action).toUpperCase(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //This should br empty it will be overwrite later
@@ -619,7 +618,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             }
         });
 
-        final AlertDialog passwordDialog = captionDialogBuilder.create();
+        final AlertDialog passwordDialog = dialogBuilder.create();
         passwordDialog.show();
 
         passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
@@ -640,17 +639,14 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             @Override
             public void onSuccess(PDKResponse response) {
                 Log.d(getClass().getName(), response.getData().toString());
-                Snackbar.make(parent, R.string.pinterest_post, Snackbar.LENGTH_LONG).show();
-                //Toast.makeText(SharingActivity.this,message,Toast.LENGTH_SHORT).show();
+                SnackBarHandler.show(parent,R.string.pinterest_post);
 
             }
 
             @Override
             public void onFailure(PDKException exception) {
                 Log.e(getClass().getName(), exception.getDetailMessage());
-                Snackbar.make(parent, R.string.Pinterest_fail, Snackbar.LENGTH_LONG).show();
-                //Toast.makeText(SharingActivity.this, boardID + caption, Toast.LENGTH_SHORT).show();
-
+                SnackBarHandler.show(parent,R.string.Pinterest_fail);
             }
         });
     }
@@ -914,7 +910,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 is.close();
                 fos.close();
             } catch (IOException e) {
-                Toast.makeText(this, R.string.error_copying_sample_file, Toast.LENGTH_SHORT).show();
+                SnackBarHandler.show(parent,R.string.error_copying_sample_file);
                 Log.e(LOG_TAG, getString(R.string.error_copying_sample_file), e);
             }
 
