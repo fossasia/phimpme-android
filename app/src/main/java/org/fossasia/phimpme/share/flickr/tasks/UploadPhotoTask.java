@@ -1,88 +1,67 @@
 package org.fossasia.phimpme.share.flickr.tasks;
 
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
-import org.fossasia.phimpme.share.flickr.FlickrHelper;
-import org.fossasia.phimpme.share.flickr.FlickrActivity;
+
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.uploader.UploadMetaData;
 
+import org.fossasia.phimpme.share.flickr.FlickrHelper;
+import org.fossasia.phimpme.utilities.NotificationHandler;
+
 public class UploadPhotoTask extends AsyncTask<OAuth, Void, String> {
+    private onUploadDone monUploadDone;
 
-	private final FlickrActivity flickrjAndroidSampleActivity;
-	private onUploadDone monUploadDone;
-	private ProgressDialog mProgressDialog;
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        NotificationHandler.make();
+    }
 
-	public UploadPhotoTask(FlickrActivity flickrjAndroidSampleActivity) {
-		this.flickrjAndroidSampleActivity = flickrjAndroidSampleActivity;
-	}
+    @Override
+    protected String doInBackground(OAuth... params) {
+        OAuth oauth = params[0];
+        OAuthToken token = oauth.getToken();
 
+        try {
+            FlickrHelper fh = FlickrHelper.getInstance();
+            Flickr f = fh.getFlickrAuthed(token.getOauthToken(), token.getOauthTokenSecret());
+            UploadMetaData uploadMetaData = new UploadMetaData();
+            uploadMetaData.setTitle(fh.getFileName());
+            uploadMetaData.setDescription(fh.getDescription());
+            uploadMetaData.setHidden(true);
+            return f.getUploader().upload(fh.getFileName(),
+                    FlickrHelper.getInstance().getInputStream(), uploadMetaData);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-	@Override
-	protected void onPreExecute() {
-		super.onPreExecute();
-		mProgressDialog = ProgressDialog.show(flickrjAndroidSampleActivity,
-				"", "Uploading...");
-		mProgressDialog.setCanceledOnTouchOutside(true);
-		mProgressDialog.setCancelable(true);
-		mProgressDialog.setOnCancelListener(new OnCancelListener() {
-			@Override
-			public void onCancel(DialogInterface dlg) {
-				UploadPhotoTask.this.cancel(true);
-			}
-		});
-	}
+    @Override
+    protected void onPostExecute(String response) {
 
-	@Override
-	protected String doInBackground(OAuth... params) {
-		OAuth oauth = params[0];
-		OAuthToken token = oauth.getToken();
+        if (response != null) {
+            Log.e("Flickr response", "" + response);
+        } else {
+            NotificationHandler.uploadFailed();
+            Log.e("Flickr response", "Error");
+        }
+        if (monUploadDone != null) {
+            NotificationHandler.uploadPassed();
+            monUploadDone.onComplete();
+        }
 
-		try {
-			FlickrHelper fh = FlickrHelper.getInstance();
-			Flickr f = fh.getFlickrAuthed(token.getOauthToken(), token.getOauthTokenSecret());
-			UploadMetaData uploadMetaData = new UploadMetaData();
-			uploadMetaData.setTitle(fh.getFileName());
-			uploadMetaData.setDescription(fh.getDescription());
-			return f.getUploader().upload(fh.getFileName(),
-					FlickrHelper.getInstance().getInputStream(), uploadMetaData);
-		} catch (Exception e) {
-			Log.e("boom!!", "" + e.toString());
-			e.printStackTrace();
-		}
-		return null;
-	}
+    }
 
-	@Override
-	protected void onPostExecute(String response) {
-		if (mProgressDialog != null) {
-			mProgressDialog.dismiss();
-		}
+    public void setOnUploadDone(onUploadDone monUploadDone) {
+        this.monUploadDone = monUploadDone;
+    }
 
-		if (response != null) {
-			Log.e("Flickr response", "" + response);
-		} else {
-			Log.e("Flickr response", "Error");
-		}
-		if (monUploadDone != null) {
-			monUploadDone.onComplete();
-		}
-		Toast.makeText(flickrjAndroidSampleActivity.getApplicationContext(),
-				response, Toast.LENGTH_SHORT).show();
-	}
-
-	public void setOnUploadDone(onUploadDone monUploadDone) {
-		this.monUploadDone = monUploadDone;
-	}
-
-	public interface onUploadDone {
-		void onComplete();
-	}
+    public interface onUploadDone {
+        void onComplete();
+    }
 
 }
