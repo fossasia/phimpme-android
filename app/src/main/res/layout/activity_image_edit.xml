@@ -1,6 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:id="@+id/parentLayout"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
@@ -119,41 +120,41 @@
         android:layout_alignParentTop="true"
         android:background="#000000">
 
-        <org.fossasia.phimpme.editor.editimage.view.imagezoom.ImageViewTouch
+        <org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouch
             android:id="@+id/main_image"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center" />
 
-        <org.fossasia.phimpme.editor.editimage.view.StickerView
+        <org.fossasia.phimpme.editor.view.StickerView
             android:id="@+id/sticker_panel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
             android:visibility="gone" />
 
-        <org.fossasia.phimpme.editor.editimage.view.CropImageView
+        <org.fossasia.phimpme.editor.view.CropImageView
             android:id="@+id/crop_panel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
             android:visibility="gone" />
 
-        <org.fossasia.phimpme.editor.editimage.view.RotateImageView
+        <org.fossasia.phimpme.editor.view.RotateImageView
             android:id="@+id/rotate_panel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
             android:visibility="gone" />
 
-        <org.fossasia.phimpme.editor.editimage.view.TextStickerView
+        <org.fossasia.phimpme.editor.view.TextStickerView
             android:id="@+id/text_sticker_panel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
             android:visibility="gone" />
 
-        <org.fossasia.phimpme.editor.editimage.view.CustomPaintView
+        <org.fossasia.phimpme.editor.view.CustomPaintView
             android:id="@+id/custom_paint_view"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

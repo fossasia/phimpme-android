@@ -475,6 +475,13 @@
     <string name="new_folder">New Folder</string>
     <string name="create_new_folder">Create new folder</string>
 
+    <!--Notification Uploads-->
+    <string name="upload_progress">Uploading</string>
+    <string name="progress">In progress</string>
+    <string name="upload_done">Success</string>
+    <string name="upload_complete">Uploaded</string>
+    <string name="try_again">Please try again</string>
+
     <!--DIALOG MESSAGES-->
     <string name="hide_album_message">
         Hiding this album will create a .nomedia file in the folder
@@ -543,6 +550,7 @@
 
     <string name="type_password">Insert password</string>
     <string name="type_description">Description</string>
+    <string name="Rename">Rename</string>
     <string name="type_caption">Write something</string>
     <string name="hint_caption">Add caption</string>
     <string name="security_sub">Set up a password to protect your media.</string>
@@ -764,19 +772,20 @@
 
     <!--ACCOUNTS-->
     <!--TWITTER-->
-    <!--Create a app on twitter from this URL: https://apps.twitter.com/-->
     <!--add consumer key and secret key below-->
     <string name="twitter_CONSUMER_KEY">vKnzy2sMJ3VUFibF6HguxhDXm</string>
     <string name="twitter_CONSUMER_SECRET">gAvGEBNPAyIsGQ3AIElHDqdCGCS7Cvp1BiM1GTH7YzLQyvMVf3</string>
     <string name="already_signed_in">Already signed In</string>
     <string name="drawable">drawable</string>
+    <string name="color">color</string>
     <string name="ic_">ic_</string>
     <string name="_indicator">_indicator</string>
     <string name="please_wait">Please wait</string>
-
     <string name="color_effects">Color Effects</string>
     <string name="toggle_info">Click to switch between colors \n Long press to switch to normal</string>
     <string name="first_click">first click</string>
+    <string name="account_logged_twitter">Twitter account logged in successfully.</string>
+
 
     <!--All photos-->
     <string name="all_photos">All_photos</string>
@@ -795,6 +804,7 @@
     <string name="pinterest">Pinterest</string>
     <string name="nextcloud">NextCloud</string>
     <string name="other">Other</string>
+    <string name="box">Box</string>
     <string name="exit">Exit</string>
 
     <string name="share_not_completed">Sharing is not completed</string>
@@ -897,7 +907,8 @@
     <string name="pinterest_post">Image posted successfully</string>
     <string name="pinterest_signIn_fail">Sign in to Pinterest</string>
     <string name="sign_In">SIGN IN</string>
-
+    <string name="pinterest_board_message">Get your Pinterest Board ID from the LINK</string>
+    <string name="Pinterest_link">&lt;a href=https://www.nutt.net/how-do-i-get-pinterest-board-id/> Get Board ID from the LINK</string>
     <string name="placeholder_sentence">This is a placeholder</string>
     <string name="auth_trying_to_login"><![CDATA[Trying to log in &#8230;]]></string>
     <string name="welcome_link_url">https://nextcloud.com/providers</string>
@@ -916,6 +927,7 @@
     <string name="upload_folder_path">to_upload</string>
     <string name="login_again">User not Authorized. Please Login again with correct credentials</string>
     <string name="auth_token">access_token</string>
+    <string name="auth_secret">access_secret</string>
     <string name="header_auth">Authorization</string>
     <string name="description_image">Description</string>
 
@@ -924,5 +936,31 @@
     <string name="uploaded_dropbox">Uploaded to Dropbox</string>
     <string name="login_dropbox_account">Login to Dropbox from Account manager</string>
     <string name="dropbox_share">Dropbox</string>
+    <string name="uploaded_box">Uploaded to Box</string>
     <string name="title_activity_own_cloud">OwnCloudActivity</string>
+
+    <string name="image_type">image/jpeg</string>
+
+    <!--Google+-->
+    <string name="success_google">Image uploaded successfully on Google+</string>
+    <string name="error_google">An error occurred while uploading</string>
+    <string name="googlePlus">Google+</string>
+
+    <!--Box-->
+    <string name="upload_failed">Upload failed</string>
+    <string name="login_box">Login to Box from Account Manager</string>
+
+    <!--TUmblr-->
+    <string name="logged_in_tumblr">Tumblr account logged in successfully.</string>
+    <string name="tumblr">Tumblr</string>
+    <string name="posting_tumblr">Posting to Tumblr</string>
+    <string name="posted_on_tumblr"> Image posted on Tumblr successfully. </string>
+    <string name="error_on_tumblr">Error on uploading on Tumblr</string>
+
+
+    <string name="owncloud">OwnCloud</string>
+    <string name="retry_upload">Retry</string>
+    <string name="upload_failed_retry_box">Upload failed! Rename and try again</string>
+    <string name="connection_failed">Connection Failed</string>
+    <string name="authorization_failed">Authorization Failed</string>
 </resources>

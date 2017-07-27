@@ -24,7 +24,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".sharetwitter.LoginActivity"
+            android:name=".share.twitter.LoginActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -273,7 +273,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".editor.editimage.EditImageActivity"
+            android:name=".editor.EditImageActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
@@ -305,9 +305,12 @@
             android:exported="true" />
 
         <activity
-            android:name=".SharingActivity"
+            android:name=".share.SharingActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <meta-data android:name="com.google.android.gms.version"
+                   android:value="@integer/google_play_services_version" />
+
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -332,19 +335,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".sharedrupal.DrupalLogin"
+            android:name=".share.drupal.DrupalLogin"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".sharewordpress.WordpressLoginActivity"
+            android:name=".share.wordpress.WordpressLoginActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
-        <activity android:name=".nextcloud.NextCloudAuth"
+        <activity android:name=".share.nextcloud.NextCloudAuth"
             android:theme="@style/AppTheme.NoActionBar"/>
 
 
 
         <activity
-            android:name=".sharetoflickr.FlickrActivity"
+            android:name=".share.flickr.FlickrActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:launchMode="singleTask" >
@@ -355,13 +358,13 @@
                 <data android:scheme="flickrj-android-sample-oauth" />
             </intent-filter>
         </activity>
-        <activity android:name=".sharedimgur.ImgurAuthActivity"
+        <activity android:name=".share.imgur.ImgurAuthActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity
-            android:name=".share.shareowncloud.OwnCloudActivity"
+            android:name=".share.owncloud.OwnCloudActivity"
             android:label="@string/title_activity_own_cloud"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="78c6ec5c18fcd10ffbfd28ae038f3311f2763889" />

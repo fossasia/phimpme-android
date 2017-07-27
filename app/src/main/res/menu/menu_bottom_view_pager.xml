@@ -5,7 +5,7 @@
         android:id="@+id/action_share"
         android:orderInCategory="0"
         android:title="@string/share"
-        android:icon="@drawable/ic_share_minimal"
+        android:icon="@drawable/ic_others_black"
         app:showAsAction="always" />
 
     <item

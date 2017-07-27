@@ -15,6 +15,7 @@ buildscript {
         classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
         classpath "io.realm:realm-gradle-plugin:$realm_version"
         classpath 'io.fabric.tools:gradle:1.+'
+        classpath 'com.google.firebase:firebase-plugins:1.1.0'
 
 
     }

@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
@@ -39,21 +40,20 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.yalantis.ucrop.UCrop;
 
 import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.SharingActivity;
+import org.fossasia.phimpme.share.SharingActivity;
 import org.fossasia.phimpme.base.SharedMediaActivity;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
 import org.fossasia.phimpme.data.local.ImageDescModel;
 import org.fossasia.phimpme.editor.FileUtils;
-import org.fossasia.phimpme.editor.editimage.EditImageActivity;
-import org.fossasia.phimpme.editor.editimage.utils.BitmapUtils;
+import org.fossasia.phimpme.editor.EditImageActivity;
+import org.fossasia.phimpme.editor.utils.BitmapUtils;
 import org.fossasia.phimpme.leafpic.SelectAlbumBottomSheet;
 import org.fossasia.phimpme.leafpic.adapters.MediaPagerAdapter;
 import org.fossasia.phimpme.leafpic.animations.DepthPageTransformer;
@@ -68,9 +68,12 @@ import org.fossasia.phimpme.leafpic.util.StringUtils;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
 import org.fossasia.phimpme.leafpic.views.HackyViewPager;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
+import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 import java.io.File;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.realm.Realm;
 
 /**
@@ -82,21 +85,17 @@ public class SingleMediaActivity extends SharedMediaActivity {
     private static final String ISLOCKED_ARG = "isLocked";
     static final String ACTION_OPEN_ALBUM = "android.intent.action.pagerAlbumMedia";
     private static final String ACTION_REVIEW = "com.android.camera.action.REVIEW";
-
-    private HackyViewPager mViewPager;
     private MediaPagerAdapter adapter;
     private PreferenceUtil SP;
     private RelativeLayout ActivityBackground;
     private SelectAlbumBottomSheet bottomSheetDialogFragment;
     private SecurityHelper securityObj;
-    private Toolbar toolbar;
     private boolean fullScreenMode, customUri = false;
     public static final int TAKE_PHOTO_CODE = 8;
     public static final int ACTION_REQUEST_EDITIMAGE = 9;
     public static final int ACTION_STICKERS_IMAGE = 10;
-    private ImageView imgView;
     private Bitmap mainBitmap;
-    private int imageWidth, imageHeight;//
+    private int imageWidth, imageHeight;
     private String path;
     private SingleMediaActivity context;
     public static final String EXTRA_OUTPUT = "extra_output";
@@ -106,23 +105,36 @@ public class SingleMediaActivity extends SharedMediaActivity {
     public int size_all;
     public int current_image_pos;
     private Uri uri;
-    ActionMenuView bottomBar;
     private Realm realm;
     private DatabaseHelper databaseHelper;
     ImageDescModel temp;
 
+    @Nullable @BindView(R.id.PhotoPager_Layout)
+    View parentView;
+
+    @Nullable @BindView(R.id.toolbar_bottom)
+    ActionMenuView bottomBar;
+
+    @Nullable @BindView(R.id.img)
+    ImageView imgView;
+
+    @Nullable @BindView(R.id.photos_pager)
+    HackyViewPager mViewPager;
+
+    @Nullable @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
         setContentView(R.layout.activity_pager);
-        initView();
+        ButterKnife.bind(this);
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        imageWidth = metrics.widthPixels;
+        imageHeight = metrics.heightPixels;
 
         SP = PreferenceUtil.getInstance(getApplicationContext());
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        bottomBar = (ActionMenuView) findViewById(R.id.toolbar_bottom);
-        mViewPager = (HackyViewPager) findViewById(R.id.photos_pager);
         securityObj= new SecurityHelper(SingleMediaActivity.this);
         allPhotoMode = getIntent().getBooleanExtra(getString(R.string.all_photo_mode), false);
         all_photo_pos = getIntent().getIntExtra(getString(R.string.position), 0);
@@ -159,14 +171,6 @@ public class SingleMediaActivity extends SharedMediaActivity {
         } catch (Exception e) { e.printStackTrace(); }
     }
 
-    private void initView() {
-        context = this;
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-        imageWidth = metrics.widthPixels;
-        imageHeight = metrics.heightPixels;
-
-        imgView = (ImageView) findViewById(R.id.img);
-    }
 
     private void initUI() {
         Menu bottomMenu = bottomBar.getMenu();
@@ -367,14 +371,14 @@ public class SingleMediaActivity extends SharedMediaActivity {
                             handleEditorImage(data);
                             if(ContentHelper.copyFile(getApplicationContext(), new File(imageUri.getPath()), new File(getAlbum().getPath()))) {
                                 //((ImageFragment) adapter.getRegisteredFragment(getAlbum().getCurrentMediaIndex())).displayMedia(true);
-                                Toast.makeText(this, R.string.new_file_created, Toast.LENGTH_SHORT).show();
+                                SnackBarHandler.show(parentView,R.string.new_file_created);
                             }
                             //adapter.notifyDataSetChanged();
                         } catch (Exception e) {
                             Log.e("ERROS - uCrop", imageUri.toString(), e);
                         }
                     } else
-                        StringUtils.showToast(getApplicationContext(), "errori random");
+                        SnackBarHandler.show(parentView,"errori random");
                     break;
                 default:
                     break;
@@ -521,7 +525,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
                                     if (securityObj.checkPassword(editTextPassword.getText().toString())) {
                                         deleteCurrentMedia();
                                     } else
-                                        Toast.makeText(passwordDialogBuilder.getContext(), R.string.wrong_password, Toast.LENGTH_SHORT).show();
+                                        SnackBarHandler.show(parentView,R.string.wrong_password);
 
                                 }
                             });
@@ -536,7 +540,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
                                         deleteCurrentMedia();
                                         passwordDialog.dismiss();
                                     } else {
-                                        Toast.makeText(getApplicationContext(), R.string.wrong_password, Toast.LENGTH_SHORT).show();
+                                        SnackBarHandler.show(parentView,R.string.wrong_password);
                                         editTextPassword.getText().clear();
                                         editTextPassword.requestFocus();
                                     }
