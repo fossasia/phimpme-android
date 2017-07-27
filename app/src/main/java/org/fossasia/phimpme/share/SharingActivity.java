@@ -119,6 +119,7 @@ import io.realm.RealmResults;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FACEBOOK;
+import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FLICKR;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.PINTEREST;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTER;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
@@ -487,8 +488,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         dialogBuilder.show();
     }
     private void flickrShare() {
-            Intent intent = new Intent(getApplicationContext(),
-                    FlickrActivity.class);
+        if (Utils.checkAlreadyExist(FLICKR)){
+            SnackBarHandler.show(parent,getString(R.string.uploading));
             InputStream is = null;
             File file = new File(saveFilePath);
             try {
@@ -501,11 +502,12 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 f.setInputStream(is);
                 f.setFilename(file.getName());
 
-                if (null != text_caption.getText() && !text_caption.getText().toString().isEmpty())
-                    f.setDescription(text_caption.getText().toString());
-
-                startActivity(intent);
+                if (caption!=null && !caption.isEmpty())
+                    f.setDescription(caption);
+                f.uploadImage();
             }
+        }
+
     }
 
     private void dropboxShare() {
@@ -981,6 +983,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     @Override
     public void onResume() {
+        ActivitySwitchHelper.setContext(this);
         super.onResume();
     }
 
