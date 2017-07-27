@@ -44,7 +44,6 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
@@ -562,7 +561,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 // Persist URI in shared preference so that you can use it later.
                 ContentHelper.saveSdCardInfo(getApplicationContext(), treeUri);
                 getContentResolver().takePersistableUriPermission(treeUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                Toast.makeText(this, R.string.got_permission_wr_sdcard, Toast.LENGTH_SHORT).show();
+                SnackBarHandler.show(mDrawerLayout,R.string.got_permission_wr_sdcard);
             }
         }
     }
@@ -690,7 +689,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                 new PrepareAlbumTask().execute();
                                 passwordDialog.dismiss();
                             } else {
-                                Toast.makeText(getApplicationContext(), R.string.wrong_password, Toast.LENGTH_SHORT).show();
+                                SnackBarHandler.show(mDrawerLayout,R.string.wrong_password);
                                 editTextPassword.getText().clear();
                                 editTextPassword.requestFocus();
                             }
@@ -1124,7 +1123,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                     }
                                     // if password is incorrect, don't delete and notify user of incorrect password
                                     else {
-                                        Toast.makeText(getApplicationContext(), R.string.wrong_password, Toast.LENGTH_SHORT).show();
+                                        SnackBarHandler.show(mDrawerLayout,R.string.wrong_password);
                                         editTextPassword.getText().clear();
                                         editTextPassword.requestFocus();
                                     }
@@ -1310,7 +1309,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                 else runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(getApplicationContext(), R.string.affix_error, Toast.LENGTH_SHORT).show();
+                                        SnackBarHandler.show(mDrawerLayout,R.string.affix_error);
                                     }
                                 });
                                 return null;
@@ -1536,7 +1535,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                     }
                                     swipeRefreshLayout.setRefreshing(false);
                                 } else {
-                                    StringUtils.showToast(getApplicationContext(), getString(R.string.insert_something));
+                                    SnackBarHandler.show(mDrawerLayout,R.string.insert_something);
                                     editTextNewName.requestFocus();
                                 }
                             }
