@@ -899,6 +899,7 @@
 
     <!--Pinterest-->
     <string name="pinterest_app_id">4910600717739247160</string>
+    <string name="pinterest_app_secret">6a3eba976f2d4ce13c1d4f0852ff17b242768b124905cc83c36faa99da3a1ad1</string>
     <string name="success">Success</string>
     <string name="fail">Login Fail</string>
     <string name="Pinterest_fail">BoardID or caption cannot be empty</string>
@@ -970,4 +971,5 @@
 
     <string name="connection_failed">Connection Failed</string>
     <string name="authorization_failed">Authorization Failed</string>
+    <string name="account_logged_pinterest">Pinterest account Logged in Successfully</string>
 </resources>

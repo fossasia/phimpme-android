@@ -633,11 +633,13 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void shareToPinterest(final String boardID) {
+        NotificationHandler.make();
         Bitmap image = getBitmapFromPath(saveFilePath);
         PDKClient
                 .getInstance().createPin(caption, boardID, image, null, new PDKCallback() {
             @Override
             public void onSuccess(PDKResponse response) {
+                NotificationHandler.uploadPassed();
                 Log.d(getClass().getName(), response.getData().toString());
                 SnackBarHandler.show(parent,R.string.pinterest_post);
 
@@ -645,6 +647,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
             @Override
             public void onFailure(PDKException exception) {
+                NotificationHandler.uploadFailed();
                 Log.e(getClass().getName(), exception.getDetailMessage());
                 SnackBarHandler.show(parent,R.string.Pinterest_fail);
             }
