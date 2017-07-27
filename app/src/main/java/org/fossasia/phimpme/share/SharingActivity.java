@@ -30,7 +30,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -639,17 +638,14 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             @Override
             public void onSuccess(PDKResponse response) {
                 Log.d(getClass().getName(), response.getData().toString());
-                Snackbar.make(parent, R.string.pinterest_post, Snackbar.LENGTH_LONG).show();
-                //Toast.makeText(SharingActivity.this,message,Toast.LENGTH_SHORT).show();
+                SnackBarHandler.show(parent,R.string.pinterest_post);
 
             }
 
             @Override
             public void onFailure(PDKException exception) {
                 Log.e(getClass().getName(), exception.getDetailMessage());
-                Snackbar.make(parent, R.string.Pinterest_fail, Snackbar.LENGTH_LONG).show();
-                //Toast.makeText(SharingActivity.this, boardID + caption, Toast.LENGTH_SHORT).show();
-
+                SnackBarHandler.show(parent,R.string.Pinterest_fail);
             }
         });
     }
@@ -937,7 +933,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 is.close();
                 fos.close();
             } catch (IOException e) {
-                Toast.makeText(this, R.string.error_copying_sample_file, Toast.LENGTH_SHORT).show();
+                SnackBarHandler.show(parent,R.string.error_copying_sample_file);
                 Log.e(LOG_TAG, getString(R.string.error_copying_sample_file), e);
             }
 

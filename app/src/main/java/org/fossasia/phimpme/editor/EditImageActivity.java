@@ -39,6 +39,7 @@ import org.fossasia.phimpme.editor.view.TextStickerView;
 import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouch;
 import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouchBase;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
+import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 import java.io.File;
 import java.io.IOException;
@@ -93,6 +94,10 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     private Bitmap originalBitmap;
     @Nullable @BindView(R.id.main_image)
     public ImageViewTouch mainImage;
+
+
+    @Nullable @BindView(R.id.parentLayout)
+    View parentLayout;
 
     @Nullable @BindView(R.id.edit_cancel)
     ImageButton cancel;
@@ -617,7 +622,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                 resetOpTimes();
                 onSaveTaskDone();
             } else {
-                Toast.makeText(mContext, R.string.save_error, Toast.LENGTH_SHORT).show();
+                SnackBarHandler.show(parentLayout,R.string.save_error);
             }
         }
     }
