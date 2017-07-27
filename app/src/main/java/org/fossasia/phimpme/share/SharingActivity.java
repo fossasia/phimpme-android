@@ -316,9 +316,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 shareToInstagram();
                 break;
 
-            case NEXTCLOUD:
+            /*case NEXTCLOUD:
                 shareToNextCloud(1);
-                break;
+                break;*/
 
             case PINTEREST:
                 if (Utils.checkAlreadyExist(PINTEREST)) {
@@ -347,9 +347,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 dropboxShare();
                 break;
 
-            case OWNCLOUD:
+            /*case OWNCLOUD:
                 shareToNextCloud(2);
-                break;
+                break;*/
 
             case GOOGLEPLUS:
                 shareToGoogle();

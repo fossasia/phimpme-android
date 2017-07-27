@@ -11,9 +11,9 @@
         android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/title_home" />
 
-    <!--<item
+    <item
         android:id="@+id/navigation_accounts"
         android:icon="@drawable/ic_account_box_black_24dp"
-        android:title="@string/title_account" />-->
+        android:title="@string/title_account" />
 
 </menu>

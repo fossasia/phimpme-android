@@ -13,7 +13,10 @@ import io.realm.annotations.PrimaryKey;
 public class AccountDatabase extends RealmObject{
 
     public enum AccountName {
-        FACEBOOK, TWITTER, DRUPAL, NEXTCLOUD, WORDPRESS, PINTEREST, FLICKR, IMGUR, DROPBOX, OWNCLOUD
+        FACEBOOK, TWITTER
+        //, DRUPAL, NEXTCLOUD, WORDPRESS
+        , PINTEREST, FLICKR, IMGUR, DROPBOX
+        //, OWNCLOUD
         , GOOGLEPLUS, BOX, TUMBLR, INSTAGRAM, OTHERS
     }
 

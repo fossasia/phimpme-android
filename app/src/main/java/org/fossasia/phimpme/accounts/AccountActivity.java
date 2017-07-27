@@ -41,11 +41,6 @@ import com.pinterest.android.pdk.PDKResponse;
 import com.tumblr.loglr.Interfaces.ExceptionHandler;
 import com.tumblr.loglr.Interfaces.LoginListener;
 import com.tumblr.loglr.Loglr;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 
 import org.fossasia.phimpme.R;
@@ -54,15 +49,11 @@ import org.fossasia.phimpme.base.RecyclerItemClickListner;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
-import org.fossasia.phimpme.share.drupal.DrupalLogin;
 import org.fossasia.phimpme.share.flickr.FlickrActivity;
-import org.fossasia.phimpme.share.imgur.ImgurAuthActivity;
-import org.fossasia.phimpme.share.nextcloud.NextCloudAuth;
-import org.fossasia.phimpme.share.owncloud.OwnCloudActivity;
-import org.fossasia.phimpme.share.tumblr.TumblrClient;
 import org.fossasia.phimpme.share.flickr.FlickrHelper;
+import org.fossasia.phimpme.share.imgur.ImgurAuthActivity;
+import org.fossasia.phimpme.share.tumblr.TumblrClient;
 import org.fossasia.phimpme.share.twitter.LoginActivity;
-import org.fossasia.phimpme.share.wordpress.WordpressLoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
 import org.fossasia.phimpme.utilities.Constants;
@@ -86,8 +77,6 @@ import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBO
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FACEBOOK;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.GOOGLEPLUS;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.IMGUR;
-import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.NEXTCLOUD;
-import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.OWNCLOUD;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.PINTEREST;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TUMBLR;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTER;
@@ -247,7 +236,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     accountPresenter.loadFromDatabase();
                     break;
 
-                case DRUPAL:
+                /*case DRUPAL:
                     Intent drupalShare = new Intent(getContext(), DrupalLogin.class);
                     startActivity(drupalShare);
                     break;
@@ -260,7 +249,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                 case WORDPRESS:
                     Intent WordpressShare = new Intent(this, WordpressLoginActivity.class);
                     startActivity(WordpressShare);
-                    break;
+                    break;*/
 
                 case PINTEREST:
                     signInPinterest();
@@ -281,10 +270,10 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     signInDropbox();
                     break;
 
-                case OWNCLOUD:
+                /*case OWNCLOUD:
                     Intent ownCloudShare = new Intent(getContext(), OwnCloudActivity.class);
                     startActivityForResult(ownCloudShare, OWNCLOUD_REQUEST_CODE);
-                    break;
+                    break;*/
 
                 case GOOGLEPLUS:
                     signInGooglePlus();
@@ -643,13 +632,13 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             // Begin realm transaction
             realm.beginTransaction();
 
-            if (requestCode == NEXTCLOUD_REQUEST_CODE){
+            /*if (requestCode == NEXTCLOUD_REQUEST_CODE){
                 account = realm.createObject(AccountDatabase.class,
                         NEXTCLOUD.toString());
             } else {
                 account = realm.createObject(AccountDatabase.class,
                         OWNCLOUD.toString());
-            }
+            }*/
 
             // Writing values in Realm database
             account.setServerUrl(data.getStringExtra(getString(R.string.server_url)));

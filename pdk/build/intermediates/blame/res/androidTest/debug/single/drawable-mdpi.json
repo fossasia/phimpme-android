@@ -136,12 +136,12 @@
         "source": "/Users/pa1pal/.android/build-cache/b6db6d7dcc1a00209230e90d9b226e4f0019fbce/output/res/drawable-mdpi/abc_btn_switch_to_on_mtrl_00001.9.png"
     },
     {
-        "merged": "/Users/pa1pal/Documents/phimpme-android/pdk/build/intermediates/res/merged/androidTest/debug/drawable-mdpi/abc_ic_menu_copy_mtrl_am_alpha.png",
-        "source": "/Users/pa1pal/.android/build-cache/b6db6d7dcc1a00209230e90d9b226e4f0019fbce/output/res/drawable-mdpi/abc_ic_menu_copy_mtrl_am_alpha.png"
-    },
-    {
         "merged": "/Users/pa1pal/Documents/phimpme-android/pdk/build/intermediates/res/merged/androidTest/debug/drawable-mdpi/abc_textfield_search_activated_mtrl_alpha.9.png",
         "source": "/Users/pa1pal/.android/build-cache/b6db6d7dcc1a00209230e90d9b226e4f0019fbce/output/res/drawable-mdpi/abc_textfield_search_activated_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "/Users/pa1pal/Documents/phimpme-android/pdk/build/intermediates/res/merged/androidTest/debug/drawable-mdpi/abc_ic_menu_copy_mtrl_am_alpha.png",
+        "source": "/Users/pa1pal/.android/build-cache/b6db6d7dcc1a00209230e90d9b226e4f0019fbce/output/res/drawable-mdpi/abc_ic_menu_copy_mtrl_am_alpha.png"
     },
     {
         "merged": "/Users/pa1pal/Documents/phimpme-android/pdk/build/intermediates/res/merged/androidTest/debug/drawable-mdpi/abc_cab_background_top_mtrl_alpha.9.png",
