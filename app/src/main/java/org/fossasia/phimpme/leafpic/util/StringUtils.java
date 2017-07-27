@@ -1,8 +1,6 @@
 package org.fossasia.phimpme.leafpic.util;
 
-import android.content.Context;
 import android.webkit.MimeTypeMap;
-import android.widget.Toast;
 
 import java.util.Date;
 import java.util.regex.Matcher;
@@ -70,11 +68,6 @@ public class StringUtils {
         for (int x = 0; x < b.length - 1; x++) c += b[x] + "/";
         c = c.substring(0, c.length() - 1);
         return c;
-    }
-
-    public static void showToast(Context x, String s) {
-        Toast t = Toast.makeText(x, s, Toast.LENGTH_SHORT);
-        t.show();
     }
 
      public static String humanReadableByteCount(long bytes, boolean si) {
