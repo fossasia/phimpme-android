@@ -42,6 +42,7 @@ import com.android.volley.toolbox.Volley;
 import com.box.androidsdk.content.BoxApiFile;
 import com.box.androidsdk.content.BoxConfig;
 import com.box.androidsdk.content.BoxException;
+import com.box.androidsdk.content.listeners.ProgressListener;
 import com.box.androidsdk.content.models.BoxFile;
 import com.box.androidsdk.content.models.BoxSession;
 import com.box.androidsdk.content.requests.BoxRequestsFile;
@@ -419,13 +420,16 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         private File file;
         private BoxApiFile mFileApi;
         private Boolean success;
+        private int fileLength;
 
         @Override
         protected void onPreExecute() {
             sessionBox.authenticate();
-            mFileApi = new BoxApiFile(sessionBox);
             NotificationHandler.make();
+            mFileApi = new BoxApiFile(sessionBox);
             file = new File(saveFilePath);
+            fileLength = (int)file.length();
+            NotificationHandler.updateProgress(0,fileLength, 0);
             try {
                 inputStream = new FileInputStream(file);
             } catch (FileNotFoundException e) {
@@ -440,7 +444,13 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 if (!uploadFailedBox)
                     uploadName = file.getName();
                 BoxRequestsFile.UploadFile request = mFileApi.getUploadRequest(inputStream, uploadName, destinationFolderId);
-                final BoxFile uploadFileInfo = request.send();
+                final BoxFile uploadFileInfo = request.setProgressListener(new ProgressListener() {
+                    @Override
+                    public void onProgressChanged(long l, long l1) {
+                        int percent = ((int)l*100)/fileLength;
+                        NotificationHandler.updateProgress((int)l,fileLength, percent);
+                    }
+                }).send();
                 Log.d(LOG_TAG, uploadFileInfo.toString());
                 success = true;
             } catch (BoxException e) {
