@@ -1,5 +1,6 @@
 package org.fossasia.phimpme.accounts;
 
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
@@ -67,6 +68,25 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
                 , getContext().getPackageName());
 
         holder.accountAvatar.setImageResource(id);
+
+        id = getContext().getResources().getIdentifier((name.toLowerCase()) + "_color"
+                , context.getString(R.string.color)
+                , getContext().getPackageName());
+
+        if (themeHelper.getBaseTheme() == ThemeHelper.LIGHT_THEME){
+
+            holder.accountName.setTextColor(ContextCompat.getColor(getContext(), id));
+            holder.accountAvatar.setColorFilter(ContextCompat.getColor(getContext(), id));
+
+        } else {
+
+            id = getContext().getResources().getIdentifier((name.toLowerCase()) + "_color_darktheme"
+                    , context.getString(R.string.color)
+                    , getContext().getPackageName());
+
+            holder.accountName.setTextColor(ContextCompat.getColor(getContext(), id));
+            holder.accountAvatar.setColorFilter(ContextCompat.getColor(getContext(), id));
+        }
     }
 
     @Override
