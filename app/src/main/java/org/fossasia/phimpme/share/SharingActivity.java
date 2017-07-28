@@ -324,7 +324,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 break;
 
             case NEXTCLOUD:
-                shareToNextCloud(1);
+                shareToNextCloudAndOwnCloud(getString(R.string.nextcloud));
                 break;
 
             case PINTEREST:
@@ -355,7 +355,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 break;
 
             case OWNCLOUD:
-                shareToNextCloud(2);
+                shareToNextCloudAndOwnCloud(getString(R.string.owncloud));
                 break;
 
             case GOOGLEPLUS:
@@ -896,13 +896,13 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         rQueue.add(request);
     }
 
-    void shareToNextCloud(int i){
+    /**
+     * Function to share on NextCloud and OwnCloud because they share the common android library
+     * @param str the name of the account to upload
+     */
+    void shareToNextCloudAndOwnCloud(String str){
         RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
-        // Checking if string equals to is exist or not
-        // String account = String.valueOf((i == 1)? R.string.nextcloud: R.string.owncloud);
-        String account = (i == 1)? getString(R.string.nextcloud) : getString(R.string.owncloud);
-        //query.equalTo("name", R.string.nextcloud);
-        RealmResults<AccountDatabase> result = query.equalTo("name", account.toUpperCase()).findAll();
+        RealmResults<AccountDatabase> result = query.equalTo("name", str.toUpperCase()).findAll();
 
         if (result.size() != 0) {
             Uri serverUri = Uri.parse(result.get(0).getServerUrl());
@@ -955,7 +955,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             phimpmeProgressBarHandler.show();
 
         } else {
-            SnackBarHandler.show(parent, "Please sign in to " + account + " from account manager");
+            SnackBarHandler.show(parent, "Please sign in to " + str + " from account manager");
         }
     }
 
