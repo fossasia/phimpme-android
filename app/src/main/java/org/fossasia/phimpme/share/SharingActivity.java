@@ -40,8 +40,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.box.androidsdk.content.BoxApiFile;
+import com.box.androidsdk.content.BoxConfig;
 import com.box.androidsdk.content.BoxException;
-import com.box.androidsdk.content.auth.BoxAuthentication;
 import com.box.androidsdk.content.models.BoxFile;
 import com.box.androidsdk.content.models.BoxSession;
 import com.box.androidsdk.content.requests.BoxRequestsFile;
@@ -54,11 +54,6 @@ import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.session.AppKeyPair;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
 import com.facebook.share.ShareApi;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
@@ -112,9 +107,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -123,10 +116,13 @@ import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
-import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FACEBOOK;
+import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
+import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FACEBOOK;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.PINTEREST;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTER;
+import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
+import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_SECRET;
 import static org.fossasia.phimpme.utilities.Utils.copyToClipBoard;
 import static org.fossasia.phimpme.utilities.Utils.getBitmapFromPath;
 import static org.fossasia.phimpme.utilities.Utils.getStringImage;
@@ -229,6 +225,12 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         setUpRecyclerView();
         setStatusBarColor();
         checknetwork();
+        configureBoxClient();
+    }
+
+    private void configureBoxClient() {
+        BoxConfig.CLIENT_ID = BOX_CLIENT_ID;
+        BoxConfig.CLIENT_SECRET = BOX_CLIENT_SECRET;
     }
 
     private boolean checknetwork() {
@@ -383,12 +385,10 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void boxShare() {
-        try {
-            sessionBox = new BoxSession(SharingActivity.this);
-            if (BoxAuthentication.getInstance().getLastAuthenticatedUserId(SharingActivity.this) != null)
-                new UploadToBox().execute();
-            else SnackBarHandler.show(parent, R.string.login_box);
-        } catch (RuntimeException e) {
+        if (Utils.checkAlreadyExist(BOX)) {
+            sessionBox = new BoxSession(this);
+            new UploadToBox().execute();
+        } else {
             SnackBarHandler.show(parent, R.string.login_box);
         }
     }
