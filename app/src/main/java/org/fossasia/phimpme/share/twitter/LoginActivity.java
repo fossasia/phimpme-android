@@ -26,7 +26,6 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
@@ -76,7 +75,7 @@ public class LoginActivity extends ThemedActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_twitter_login);
+		setContentView(R.layout.account_login_activity);
 		ButterKnife.bind(this);
 		twitterConsumerKey = getResources().getString(R.string.twitter_consumer_key);
 		twitterConsumerSecret = getResources().getString(R.string.twitter_consumer_secret);
