@@ -90,7 +90,7 @@ public class NextCloudAuth extends ThemedActivity implements Button.OnClickListe
         if (email.isEmpty()) {
             hostUrlLayout.setError(getString(R.string.err_msg_host));
             return false;
-        } else if (!email.contains("http://")){
+        } else if (!email.contains("http://") || !email.contains("https://")){
             hostUrlLayout.setError("Please add the protocol http/ https");
             return false;
         } else {
