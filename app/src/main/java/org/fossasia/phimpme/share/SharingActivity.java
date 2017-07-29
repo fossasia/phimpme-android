@@ -369,6 +369,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             case OTHERS:
                 otherShare();
                 break;
+            case WHATSAPP:
+                shareToWhatsapp();
+                break;
 
             default:
                 SnackBarHandler.show(parent, R.string.feature_not_present);
@@ -741,6 +744,21 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             atleastOneShare = true;
         } else
             SnackBarHandler.show(parent, R.string.instagram_not_installed);
+    }
+
+    private void shareToWhatsapp() {
+        PackageManager pm = getPackageManager();
+        if (isAppInstalled("com.whatsapp", pm)) {
+            Uri uri = Uri.fromFile(new File(saveFilePath));
+            Intent share = new Intent(Intent.ACTION_SEND);
+            share.setPackage("com.whatsapp");
+            share.putExtra(Intent.EXTRA_STREAM, uri);
+            share.setType("image/*");
+            share.putExtra(Intent.EXTRA_TEXT, caption);
+            startActivity(share);
+            atleastOneShare = true;
+        } else
+            SnackBarHandler.show(parent, R.string.whatsapp_not_installed);
     }
 
     private void imgurShare() {
