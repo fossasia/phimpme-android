@@ -123,10 +123,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/alternate_margin"
-                android:drawableLeft="@android:drawable/stat_notify_sync"
+                android:drawableLeft="@drawable/ic_refresh_black_24dp"
                 android:drawablePadding="@dimen/alternate_half_padding"
                 android:gravity="center_vertical"
-                android:textColor="@color/white"
+                android:textColor="@color/md_grey_500"
                 android:text="@string/auth_testing_connection"
                 android:minHeight="@dimen/display_text_min_height"
                 android:contentDescription="@string/auth_testing_connection"/>
@@ -225,11 +225,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/alternate_margin"
-                android:drawableLeft="@android:drawable/stat_notify_sync"
+                android:drawableLeft="@drawable/ic_refresh_black_24dp"
                 android:drawablePadding="@dimen/alternate_half_padding"
                 android:gravity="center_vertical"
                 android:text="@string/auth_unauthorized"
-                android:textColor="@color/white"
+                android:textColor="@color/md_grey_500"
                 android:contentDescription="@string/auth_unauthorized"/>
 
             <Button

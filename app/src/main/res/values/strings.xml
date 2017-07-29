@@ -833,6 +833,7 @@
     <string name="tweet_posted_on_twitter"> Image posted on twitter successfully. </string>
     <string name="error_on_posting_twitter">Some error occur while posting on twitter.</string>
     <string name="instagram_not_installed">Instagram is not installed</string>
+    <string name="whatsapp_not_installed">Whatsapp is not installed</string>
     <string name="not_connected">No Internet Connection found</string>
 
     <string name="facebook_login_cancel">Facebook login Cancelled</string>
@@ -907,7 +908,8 @@
     <string name="pinterest_post">Image posted successfully</string>
     <string name="pinterest_signIn_fail">Sign in to Pinterest</string>
     <string name="sign_In">SIGN IN</string>
-
+    <string name="pinterest_board_message">Get your Pinterest Board ID from the LINK</string>
+    <string name="Pinterest_link">&lt;a href=https://www.nutt.net/how-do-i-get-pinterest-board-id/> Get Board ID from the LINK</string>
     <string name="placeholder_sentence">This is a placeholder</string>
     <string name="auth_trying_to_login"><![CDATA[Trying to log in &#8230;]]></string>
     <string name="welcome_link_url">https://nextcloud.com/providers</string>
@@ -958,7 +960,16 @@
 
 
     <string name="owncloud">OwnCloud</string>
+
+    <!--Snackbar-->
+    <string name="facebook_signIn_fail">Login to Facebook from Account manager</string>
+    <string name="flickr_signIn_fail">Login to Flickr from Account manager</string>
+    <string name="facebook_image_posted">Image posted on Facbook</string>
+
     <string name="retry_upload">Retry</string>
     <string name="upload_failed_retry_box">Upload failed! Rename and try again</string>
     <string name="text_color_title">Text Color</string>
+
+    <string name="connection_failed">Connection Failed</string>
+    <string name="authorization_failed">Authorization Failed</string>
 </resources>
