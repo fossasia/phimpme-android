@@ -972,4 +972,11 @@
 
     <string name="connection_failed">Connection Failed</string>
     <string name="authorization_failed">Authorization Failed</string>
+
+    <!--Flickr-->
+    <string name="posting_flickr">Posting to Flickr</string>
+    <string name="logged_in_flickr">Tumblr account logged in successfully.</string>
+    <string name="uploading">Image uploading in progress.</string>
+    <string name="auth_failed">Authorization failed</string>
+
 </resources>
