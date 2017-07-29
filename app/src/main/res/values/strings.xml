@@ -833,6 +833,7 @@
     <string name="tweet_posted_on_twitter"> Image posted on twitter successfully. </string>
     <string name="error_on_posting_twitter">Some error occur while posting on twitter.</string>
     <string name="instagram_not_installed">Instagram is not installed</string>
+    <string name="whatsapp_not_installed">Whatsapp is not installed</string>
     <string name="not_connected">No Internet Connection found</string>
 
     <string name="facebook_login_cancel">Facebook login Cancelled</string>
