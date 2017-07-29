@@ -968,6 +968,7 @@
 
     <string name="retry_upload">Retry</string>
     <string name="upload_failed_retry_box">Upload failed! Rename and try again</string>
+    <string name="text_color_title">Text Color</string>
 
     <string name="connection_failed">Connection Failed</string>
     <string name="authorization_failed">Authorization Failed</string>
