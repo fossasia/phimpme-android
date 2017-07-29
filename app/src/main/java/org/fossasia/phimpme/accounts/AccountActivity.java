@@ -139,6 +139,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         ActivitySwitchHelper.setContext(this);
+        parentLayout.setBackgroundColor(getBackgroundColor());
         accountAdapter = new AccountAdapter(getAccentColor(), getPrimaryColor());
         accountPresenter = new AccountPresenter(realm);
         phimpmeProgressBarHandler = new PhimpmeProgressBarHandler(this);
@@ -267,10 +268,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     break;
 
                 case FLICKR:
-                    Intent intent = new Intent(getApplicationContext(),
-                            FlickrActivity.class);
-                    FlickrHelper.getInstance().setFilename(null);
-                    startActivity(intent);
+                    signInFlickr();
                     break;
 
                 case IMGUR:
@@ -326,6 +324,19 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                             })
                     .show();
         }
+    }
+
+    private void signInFlickr() {
+        BasicCallBack basicCallBack = new BasicCallBack() {
+            @Override
+            public void callBack(int status, Object data) {
+                if (status==SUCCESS)
+                SnackBarHandler.show(parentLayout, getString(R.string.logged_in_flickr));
+            }
+        };
+        Intent intent = new Intent(this, FlickrActivity.class);
+        FlickrActivity.setBasicCallBack(basicCallBack);
+        startActivity(intent);
     }
 
     private void signInTumblr() {

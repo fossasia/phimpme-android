@@ -42,7 +42,7 @@ public class ImgurAuthActivity extends ThemedActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_twitter_login);
+        setContentView(R.layout.account_login_activity);
         ButterKnife.bind(this);
         progressDialog = new AlertDialog.Builder(ImgurAuthActivity.this, getDialogStyle());
         dialog = AlertDialogsHelper.getProgressDialog(ImgurAuthActivity.this, progressDialog,
