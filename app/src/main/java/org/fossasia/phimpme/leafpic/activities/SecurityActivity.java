@@ -14,7 +14,6 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -25,6 +24,7 @@ import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.leafpic.util.PreferenceUtil;
 import org.fossasia.phimpme.leafpic.util.SecurityHelper;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
+import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 /**
  * Created by dnld on 22/05/16.
@@ -148,12 +148,12 @@ public class SecurityActivity extends ThemedActivity {
                     if (editTextPassword.getText().toString().equals(editTextConfirmPassword.getText().toString())) {
                         SP.putString(getString(R.string.preference_password_value), editTextPassword.getText().toString());
                         securityObj.updateSecuritySetting();
-                        Toast.makeText(getApplicationContext(), R.string.remember_password_message, Toast.LENGTH_SHORT).show();
+                        SnackBarHandler.show(llroot,R.string.remember_password_message);
                         changed = true;
                     } else
-                        Toast.makeText(getApplicationContext(), R.string.password_dont_match, Toast.LENGTH_SHORT).show();
+                        SnackBarHandler.show(llroot,R.string.password_dont_match);
                 } else
-                    Toast.makeText(getApplicationContext(), R.string.error_password_length, Toast.LENGTH_SHORT).show();
+                    SnackBarHandler.show(llroot,R.string.error_password_length);
 
                 swActiveSecurity.setChecked(changed);
                 SP.putBoolean(getString(R.string.preference_use_password), changed);

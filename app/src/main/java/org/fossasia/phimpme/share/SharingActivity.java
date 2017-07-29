@@ -30,7 +30,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -41,8 +40,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.box.androidsdk.content.BoxApiFile;
+import com.box.androidsdk.content.BoxConfig;
 import com.box.androidsdk.content.BoxException;
-import com.box.androidsdk.content.auth.BoxAuthentication;
 import com.box.androidsdk.content.models.BoxFile;
 import com.box.androidsdk.content.models.BoxSession;
 import com.box.androidsdk.content.requests.BoxRequestsFile;
@@ -55,11 +54,6 @@ import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.session.AppKeyPair;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
 import com.facebook.share.ShareApi;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
@@ -113,9 +107,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -124,9 +116,13 @@ import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
+import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
+import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FACEBOOK;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.PINTEREST;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTER;
+import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
+import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_SECRET;
 import static org.fossasia.phimpme.utilities.Utils.copyToClipBoard;
 import static org.fossasia.phimpme.utilities.Utils.getBitmapFromPath;
 import static org.fossasia.phimpme.utilities.Utils.getStringImage;
@@ -229,6 +225,12 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         setUpRecyclerView();
         setStatusBarColor();
         checknetwork();
+        configureBoxClient();
+    }
+
+    private void configureBoxClient() {
+        BoxConfig.CLIENT_ID = BOX_CLIENT_ID;
+        BoxConfig.CLIENT_SECRET = BOX_CLIENT_SECRET;
     }
 
     private boolean checknetwork() {
@@ -306,7 +308,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     public void onItemClick(View childView, int position) {
         switch (AccountDatabase.AccountName.values()[position]) {
             case FACEBOOK:
-                setupFacebookAndShare();
+                sharePhotoToFacebook();
                 break;
 
             case TWITTER:
@@ -367,6 +369,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             case OTHERS:
                 otherShare();
                 break;
+            case WHATSAPP:
+                shareToWhatsapp();
+                break;
 
             default:
                 SnackBarHandler.show(parent, R.string.feature_not_present);
@@ -383,12 +388,10 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void boxShare() {
-        try {
-            sessionBox = new BoxSession(SharingActivity.this);
-            if (BoxAuthentication.getInstance().getLastAuthenticatedUserId(SharingActivity.this) != null)
-                new UploadToBox().execute();
-            else SnackBarHandler.show(parent, R.string.login_box);
-        } catch (RuntimeException e) {
+        if (Utils.checkAlreadyExist(BOX)) {
+            sessionBox = new BoxSession(this);
+            new UploadToBox().execute();
+        } else {
             SnackBarHandler.show(parent, R.string.login_box);
         }
     }
@@ -472,7 +475,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         final EditText editTextNewName = new EditText(getApplicationContext());
         editTextNewName.setText(fileName);
         editTextNewName.setSelection(fileName.length());
-        AlertDialogsHelper.getInsertTextDialog(SharingActivity.this, dialogBuilder, editTextNewName, R.string.Rename);
+        AlertDialogsHelper.getInsertTextDialog(SharingActivity.this, dialogBuilder, editTextNewName, R.string.Rename, null);
 
         dialogBuilder.setPositiveButton(getString(R.string.retry_upload).toUpperCase(), new DialogInterface.OnClickListener() {
             @Override
@@ -484,25 +487,25 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         dialogBuilder.show();
     }
     private void flickrShare() {
-        Intent intent = new Intent(getApplicationContext(),
-                FlickrActivity.class);
-        InputStream is = null;
-        File file = new File(saveFilePath);
-        try {
-            is = getContentResolver().openInputStream(Uri.fromFile(file));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (is != null) {
-            FlickrHelper f = FlickrHelper.getInstance();
-            f.setInputStream(is);
-            f.setFilename(file.getName());
+            Intent intent = new Intent(getApplicationContext(),
+                    FlickrActivity.class);
+            InputStream is = null;
+            File file = new File(saveFilePath);
+            try {
+                is = getContentResolver().openInputStream(Uri.fromFile(file));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if (is != null) {
+                FlickrHelper f = FlickrHelper.getInstance();
+                f.setInputStream(is);
+                f.setFilename(file.getName());
 
-            if (null != text_caption.getText() && !text_caption.getText().toString().isEmpty())
-                f.setDescription(text_caption.getText().toString());
+                if (null != text_caption.getText() && !text_caption.getText().toString().isEmpty())
+                    f.setDescription(text_caption.getText().toString());
 
-            startActivity(intent);
-        }
+                startActivity(intent);
+            }
     }
 
     private void dropboxShare() {
@@ -604,13 +607,13 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void openPinterestDialogBox() {
-        AlertDialog.Builder captionDialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
-        final EditText captionEditText = getCaptionDialog(this, captionDialogBuilder);
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
+        final EditText captionEditText = new EditText(getApplicationContext());
 
-        captionEditText.setHint(R.string.hint_boardID);
-
-        captionDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-        captionDialogBuilder.setPositiveButton(getString(R.string.post_action).toUpperCase(), new DialogInterface.OnClickListener() {
+        String link = "<a href=https://www.nutt.net/how-do-i-get-pinterest-board-id/> Get Board ID from the LINK";
+        AlertDialogsHelper.getInsertTextDialog(SharingActivity.this, dialogBuilder, captionEditText, R.string.Pinterest_link ,link);
+        dialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+        dialogBuilder.setPositiveButton(getString(R.string.post_action).toUpperCase(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //This should br empty it will be overwrite later
@@ -618,7 +621,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             }
         });
 
-        final AlertDialog passwordDialog = captionDialogBuilder.create();
+        final AlertDialog passwordDialog = dialogBuilder.create();
         passwordDialog.show();
 
         passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
@@ -639,17 +642,14 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             @Override
             public void onSuccess(PDKResponse response) {
                 Log.d(getClass().getName(), response.getData().toString());
-                Snackbar.make(parent, R.string.pinterest_post, Snackbar.LENGTH_LONG).show();
-                //Toast.makeText(SharingActivity.this,message,Toast.LENGTH_SHORT).show();
+                SnackBarHandler.show(parent,R.string.pinterest_post);
 
             }
 
             @Override
             public void onFailure(PDKException exception) {
                 Log.e(getClass().getName(), exception.getDetailMessage());
-                Snackbar.make(parent, R.string.Pinterest_fail, Snackbar.LENGTH_LONG).show();
-                //Toast.makeText(SharingActivity.this, boardID + caption, Toast.LENGTH_SHORT).show();
-
+                SnackBarHandler.show(parent,R.string.Pinterest_fail);
             }
         });
     }
@@ -701,36 +701,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     }
 
-    private void setupFacebookAndShare() {
-        if (checknetwork()) {
-            FacebookSdk.sdkInitialize(getApplicationContext());
-            callbackManager = CallbackManager.Factory.create();
-            List<String> permissionNeeds = Arrays.asList("publish_actions");
-
-            //this loginManager helps you eliminate adding a LoginButton to your UI
-            LoginManager manager = LoginManager.getInstance();
-            manager.logInWithPublishPermissions(this, permissionNeeds);
-            manager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-                @Override
-                public void onSuccess(LoginResult loginResult) {
-                    sharePhotoToFacebook();
-                }
-
-                @Override
-                public void onCancel() {
-                    System.out.println("onCancel");
-                }
-
-                @Override
-                public void onError(FacebookException error) {
-                    System.out.println("onError");
-                }
-            });
-        } else
-            Snackbar.make(parent, R.string.not_connected, Snackbar.LENGTH_LONG).show();
-    }
-
     private void sharePhotoToFacebook() {
+        if (Utils.checkAlreadyExist(FACEBOOK)) {
         Bitmap image = getBitmapFromPath(saveFilePath);
         SharePhoto photo = new SharePhoto.Builder()
                 .setBitmap(image)
@@ -742,7 +714,11 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 .build();
 
         ShareApi.share(content, null);
+            SnackBarHandler.show(parent, R.string.facebook_image_posted);
         atleastOneShare = true;
+    }else{
+            SnackBarHandler.show(parent, R.string.facebook_signIn_fail);
+        }
     }
 
     private void otherShare() {
@@ -768,6 +744,21 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             atleastOneShare = true;
         } else
             SnackBarHandler.show(parent, R.string.instagram_not_installed);
+    }
+
+    private void shareToWhatsapp() {
+        PackageManager pm = getPackageManager();
+        if (isAppInstalled("com.whatsapp", pm)) {
+            Uri uri = Uri.fromFile(new File(saveFilePath));
+            Intent share = new Intent(Intent.ACTION_SEND);
+            share.setPackage("com.whatsapp");
+            share.putExtra(Intent.EXTRA_STREAM, uri);
+            share.setType("image/*");
+            share.putExtra(Intent.EXTRA_TEXT, caption);
+            startActivity(share);
+            atleastOneShare = true;
+        } else
+            SnackBarHandler.show(parent, R.string.whatsapp_not_installed);
     }
 
     private void imgurShare() {
@@ -937,7 +928,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 is.close();
                 fos.close();
             } catch (IOException e) {
-                Toast.makeText(this, R.string.error_copying_sample_file, Toast.LENGTH_SHORT).show();
+                SnackBarHandler.show(parent,R.string.error_copying_sample_file);
                 Log.e(LOG_TAG, getString(R.string.error_copying_sample_file), e);
             }
 
