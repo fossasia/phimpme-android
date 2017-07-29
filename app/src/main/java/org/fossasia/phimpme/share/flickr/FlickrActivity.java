@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.widget.Toast;
+import android.view.View;
 
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.auth.Permission;
@@ -22,9 +22,12 @@ import org.fossasia.phimpme.leafpic.util.AlertDialogsHelper;
 import org.fossasia.phimpme.share.flickr.tasks.GetOAuthTokenTask;
 import org.fossasia.phimpme.utilities.BasicCallBack;
 import org.fossasia.phimpme.utilities.Constants;
+import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 import java.net.URL;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
@@ -36,21 +39,24 @@ public class FlickrActivity extends ThemedActivity {
     public static final String CALLBACK_SCHEME = "flickrj-android-sample-oauth";
     public static BasicCallBack basicCallBack;
 
+    @BindView(R.id.login_parent)
+    View parent;
+
     public static void setBasicCallBack(BasicCallBack basicCallBack) {
         FlickrActivity.basicCallBack = basicCallBack;
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_twitter_login);
+        setContentView(R.layout.account_login_activity);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         OAuth oauth = getOAuthToken();
         if (oauth == null || oauth.getUser() == null) {
             OAuthTask task = new OAuthTask(getContext());
             task.execute();
         }
+        ButterKnife.bind(this);
 
 
     }
@@ -91,16 +97,14 @@ public class FlickrActivity extends ThemedActivity {
 
     public void onOAuthDone(OAuth result) {
         if (result == null) {
-            Toast.makeText(this, "Authorization failed",
-                    Toast.LENGTH_LONG).show();
+           SnackBarHandler.show(parent, getString(R.string.auth_failed));
         } else {
             User user = result.getUser();
             OAuthToken token = result.getToken();
             if (user == null || user.getId() == null || token == null
                     || token.getOauthToken() == null
                     || token.getOauthTokenSecret() == null) {
-                Toast.makeText(this, "Authorization failed",
-                        Toast.LENGTH_LONG).show();
+                SnackBarHandler.show(parent, getString(R.string.auth_failed));
                 return;
             }
             basicCallBack.callBack(Constants.SUCCESS, null);
@@ -189,7 +193,7 @@ public class FlickrActivity extends ThemedActivity {
                 mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri
                         .parse(result)));
             } else {
-                Toast.makeText(mContext, result, Toast.LENGTH_LONG).show();
+               SnackBarHandler.show(parent, result);
             }
         }
     }
