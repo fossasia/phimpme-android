@@ -21,6 +21,8 @@ import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
+import static org.fossasia.phimpme.utilities.Constants.PACKAGE_INSTAGRAM;
+import static org.fossasia.phimpme.utilities.Constants.PACKAGE_WHATSAPP;
 
 /**
  * Created by pa1pal on 23/5/17.
@@ -56,7 +58,7 @@ public class Utils {
 
 
     public static boolean isAppInstalled(String packageName, PackageManager pm) {
-        boolean installed = false;
+        boolean installed;
         try {
             pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
             installed = true;
@@ -111,10 +113,10 @@ public class Utils {
     public static ArrayList<AccountDatabase.AccountName> getSharableAccountsList(){
         ArrayList<AccountDatabase.AccountName> list = new ArrayList<>();
         PackageManager packageManager = (ActivitySwitchHelper.context).getPackageManager();
-        if (isAppInstalled("com.instagram.android",packageManager))
+        if (isAppInstalled(PACKAGE_INSTAGRAM,packageManager))
             list.add(AccountDatabase.AccountName.INSTAGRAM);
 
-        if (isAppInstalled("com.whatsapp",packageManager))
+        if (isAppInstalled(PACKAGE_WHATSAPP,packageManager))
             list.add(AccountDatabase.AccountName.WHATSAPP);
 
         list.addAll(getLoggedInAccountsList());
