@@ -41,11 +41,6 @@ import com.pinterest.android.pdk.PDKResponse;
 import com.tumblr.loglr.Interfaces.ExceptionHandler;
 import com.tumblr.loglr.Interfaces.LoginListener;
 import com.tumblr.loglr.Loglr;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 
 import org.fossasia.phimpme.R;
@@ -60,7 +55,6 @@ import org.fossasia.phimpme.share.imgur.ImgurAuthActivity;
 import org.fossasia.phimpme.share.nextcloud.NextCloudAuth;
 import org.fossasia.phimpme.share.owncloud.OwnCloudActivity;
 import org.fossasia.phimpme.share.tumblr.TumblrClient;
-import org.fossasia.phimpme.share.flickr.FlickrHelper;
 import org.fossasia.phimpme.share.twitter.LoginActivity;
 import org.fossasia.phimpme.share.wordpress.WordpressLoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
@@ -159,7 +153,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         pdkClient.onConnect(this);
         setDebugMode(true);
         setupDropBox();
-        googleApiClient();
+      //  googleApiClient();
         configureBoxClient();
     }
 
@@ -168,7 +162,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         AndroidAuthSession session = new AndroidAuthSession(appKeys);
         mDBApi = new DropboxAPI<AndroidAuthSession>(session);
     }
-    private void googleApiClient(){
+/*    private void googleApiClient(){
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -177,10 +171,10 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         // Build a GoogleApiClient with access to the Google Sign-In API and the
         // options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, AccountActivity.this /* OnConnectionFailedListener */)
+                .enableAutoManage(this, AccountActivity.this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-    }
+    }*/
     private void configureBoxClient() {
         BoxConfig.CLIENT_ID = BOX_CLIENT_ID;
         BoxConfig.CLIENT_SECRET = BOX_CLIENT_SECRET;
@@ -282,10 +276,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                 case OWNCLOUD:
                     Intent ownCloudShare = new Intent(getContext(), OwnCloudActivity.class);
                     startActivityForResult(ownCloudShare, OWNCLOUD_REQUEST_CODE);
-                    break;
-
-                case GOOGLEPLUS:
-                    signInGooglePlus();
                     break;
 
                 case BOX:
@@ -449,7 +439,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                 @Override
                 public void onFailure(PDKException exception) {
                     Log.e(getClass().getName(), exception.getDetailMessage());
-                    SnackBarHandler.show(parentLayout,R.string.fail);
+                    SnackBarHandler.show(parentLayout,R.string.pinterest_signIn_fail);
                 }
             });
             SnackBarHandler.show(parentLayout,"logged IN");
@@ -605,23 +595,12 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             try {
                 // Required to complete auth, sets the access token on the session
                 mDBApi.getSession().finishAuthentication();
-
                 String accessToken = mDBApi.getSession().getOAuth2AccessToken();
-
                 realm.beginTransaction();
-
-                // Creating Realm object for AccountDatabase Class
-                account = realm.createObject(AccountDatabase.class,
-                        DROPBOX.toString());
-
-                // Writing values in Realm database
-
+                account = realm.createObject(AccountDatabase.class, DROPBOX.toString());
                 account.setUsername(DROPBOX.toString());
                 account.setToken(String.valueOf(accessToken));
-
-                // Finally committing the whole data
                 realm.commitTransaction();
-
             } catch (IllegalStateException e) {
                 Log.i("DbAuthLog", "Error authenticating", e);
             }
@@ -637,56 +616,36 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         pdkClient.onOauthResponse(requestCode, resultCode,
                 data);
 
-        if ((requestCode == OWNCLOUD_REQUEST_CODE && resultCode == RESULT_OK)
-                || (requestCode == NEXTCLOUD_REQUEST_CODE && resultCode == RESULT_OK)){
-            // Begin realm transaction
+        if ((requestCode == OWNCLOUD_REQUEST_CODE && resultCode == RESULT_OK) || (requestCode == NEXTCLOUD_REQUEST_CODE && resultCode == RESULT_OK)) {
             realm.beginTransaction();
-
-            if (requestCode == NEXTCLOUD_REQUEST_CODE){
-                account = realm.createObject(AccountDatabase.class,
-                        NEXTCLOUD.toString());
+            if (requestCode == NEXTCLOUD_REQUEST_CODE) {
+                account = realm.createObject(AccountDatabase.class, NEXTCLOUD.toString());
             } else {
-                account = realm.createObject(AccountDatabase.class,
-                        OWNCLOUD.toString());
+                account = realm.createObject(AccountDatabase.class, OWNCLOUD.toString());
             }
-
-            // Writing values in Realm database
             account.setServerUrl(data.getStringExtra(getString(R.string.server_url)));
             account.setUsername(data.getStringExtra(getString(R.string.auth_username)));
             account.setPassword(data.getStringExtra(getString(R.string.auth_password)));
-
-            // Finally committing the whole data
             realm.commitTransaction();
         }
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
+     /*   if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
-        }
+        }*/
     }
 
-    private void handleSignInResult(GoogleSignInResult result) {
+    /*private void handleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
-            // Signed in successfully, show authenticated UI.
             GoogleSignInAccount acct = result.getSignInAccount();//acct.getDisplayName()
             SnackBarHandler.show(parentLayout,R.string.success);
-            // Begin realm transaction
             realm.beginTransaction();
-
-            // Creating Realm object for AccountDatabase Class
-            account = realm.createObject(AccountDatabase.class,
-                    GOOGLEPLUS.name());
-
-            account.setUsername(acct.getDisplayName());
-
-            // Finally committing the whole data
+            account = realm.createObject(AccountDatabase.class, GOOGLEPLUS.name());account.setUsername(acct.getDisplayName());
+            account.setUserId(acct.getId());
             realm.commitTransaction();
         } else {
-            // Signed out, show unauthenticated UI.
-            SnackBarHandler.show(parentLayout,R.string.fail);
-            //updateUI(false);
+            SnackBarHandler.show(parentLayout,R.string.google_auth_fail);
         }
-    }
+    }*/
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {

@@ -902,12 +902,11 @@
     <string name="pinterest_app_id">4910600717739247160</string>
     <string name="pinterest_app_secret">6a3eba976f2d4ce13c1d4f0852ff17b242768b124905cc83c36faa99da3a1ad1</string>
     <string name="success">Success</string>
-    <string name="fail">Login Fail</string>
     <string name="Pinterest_fail">BoardID or caption cannot be empty</string>
     <string name="post_action">POST</string>
     <string name="hint_boardID">Board ID</string>
     <string name="pinterest_post">Image posted successfully</string>
-    <string name="pinterest_signIn_fail">Sign in to Pinterest</string>
+    <string name="pinterest_signIn_fail">Failed to sign in Pinterest</string>
     <string name="sign_In">SIGN IN</string>
     <string name="pinterest_board_message">Get your Pinterest Board ID from the LINK</string>
     <string name="Pinterest_link">&lt;a href=https://www.nutt.net/how-do-i-get-pinterest-board-id/> Get Board ID from the LINK</string>
@@ -941,12 +940,14 @@
     <string name="uploaded_box">Uploaded to Box</string>
     <string name="title_activity_own_cloud">OwnCloudActivity</string>
 
-    <string name="image_type">image/jpeg</string>
+    <string name="image_type">image/*</string>
 
     <!--Google+-->
     <string name="success_google">Image uploaded successfully on Google+</string>
     <string name="error_google">An error occurred while uploading</string>
     <string name="googlePlus">Google+</string>
+    <string name="google_auth_fail">Authentication fail</string>
+
 
     <!--Box-->
     <string name="upload_failed">Upload failed</string>
