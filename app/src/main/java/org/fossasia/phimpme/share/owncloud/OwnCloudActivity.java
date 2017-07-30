@@ -67,6 +67,8 @@ public class OwnCloudActivity extends AppCompatActivity implements Button.OnClic
         } else{
             Intent loginIntent = new Intent();
             Uri serverUri = Uri.parse(hostUrlInput.getText().toString().trim());
+            loginIntent.putExtra(getString(R.string.server_url)
+                    , hostUrlInput.getText().toString().trim());
             loginIntent.putExtra(getString(R.string.auth_username),
                     accountUsername.getText().toString().trim());
             loginIntent.putExtra(getString(R.string.auth_password),
@@ -86,6 +88,9 @@ public class OwnCloudActivity extends AppCompatActivity implements Button.OnClic
 
         if (email.isEmpty()) {
             hostUrlLayout.setError(getString(R.string.err_msg_host));
+            return false;
+        } else if (!email.contains("http://")){
+            hostUrlLayout.setError("Please add the protocol http/ https");
             return false;
         } else {
             hostUrlLayout.setErrorEnabled(false);
