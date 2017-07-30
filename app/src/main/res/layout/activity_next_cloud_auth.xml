@@ -166,7 +166,6 @@
             android:id="@+id/input_layout_account_username"
             android:layout_width="match_parent"
             android:layout_height="@dimen/textlayout_margin"
-
             android:gravity="bottom">
 
             <EditText
@@ -175,7 +174,7 @@
                 android:layout_height="@dimen/edittext_height"
                 android:background="@drawable/back_round"
                 android:contentDescription="@string/auth_username"
-                android:ems="10"
+
                 android:hint="@string/auth_username"
                 android:inputType="textNoSuggestions"
                 android:textColor="@color/login_text_hint_color"
