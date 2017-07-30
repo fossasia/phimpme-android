@@ -492,7 +492,11 @@ public class SingleMediaActivity extends SharedMediaActivity {
                     uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
                 else
                     uri = Uri.fromFile(new File(LFMainActivity.listAll.get(current_image_pos).getPath()));
-                EditImageActivity.start(this,uri.getPath(),outputFile.getAbsolutePath(),ACTION_REQUEST_EDITIMAGE);
+                Intent editIntent = new Intent(SingleMediaActivity.this, EditImageActivity.class);
+                editIntent.putExtra("extra_input",uri.getPath());
+                editIntent.putExtra("extra_output",outputFile.getAbsolutePath());
+                editIntent.putExtra("requestCode",ACTION_REQUEST_EDITIMAGE);
+                startActivity(editIntent);
                 break;
 
             case R.id.action_use_as:

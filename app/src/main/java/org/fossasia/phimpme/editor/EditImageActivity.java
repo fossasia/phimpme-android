@@ -54,7 +54,7 @@ import butterknife.ButterKnife;
  * Called from SingleMediaActivity when the user selects the 'edit' option in the toolbar overflow menu.
  */
 public class EditImageActivity extends EditBaseActivity implements View.OnClickListener, View.OnTouchListener {
-    public static final String FILE_PATH = "file_path";
+    public static final String FILE_PATH = "extra_input";
     public static final String EXTRA_OUTPUT = "extra_output";
     public static final String IMAGE_IS_EDIT = "image_is_edit";
 
@@ -138,26 +138,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     public RotateFragment rotateFragment;
     private static String stickerType;
 
-    /**
-     * @param context
-     * @param editImagePath
-     * @param outputPath
-     * @param requestCode
-     */
-    public static void start(Activity context, final String editImagePath, final String outputPath, final int requestCode) {
-        if (TextUtils.isEmpty(editImagePath)) {
-            Toast.makeText(context, R.string.no_choose, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        Intent it = new Intent(context, EditImageActivity.class);
-        it.putExtra(EditImageActivity.FILE_PATH, editImagePath);
-        it.putExtra(EditImageActivity.EXTRA_OUTPUT, outputPath);
-        it.putExtra("requestCode",requestCode);
-        context.startActivityForResult(it, requestCode);
-        context.finish();
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -170,9 +150,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         ButterKnife.bind(this);
         initView();
         getData();
-        requestCode = getIntent().getIntExtra("requestCode", 1);
-
-//        setInitialFragments();
     }
 
     /**
@@ -196,9 +173,15 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
      * Gets the image to be loaded from the intent and displays this image.
      */
     private void getData() {
-        filePath = getIntent().getStringExtra(FILE_PATH);
-        saveFilePath = getIntent().getStringExtra(EXTRA_OUTPUT);
-        loadImage(filePath);
+        if (null != getIntent() && null != getIntent().getExtras()){
+            Bundle bundle = getIntent().getExtras();
+            filePath = bundle.getString(FILE_PATH);
+            saveFilePath = bundle.getString(EXTRA_OUTPUT);
+            requestCode = bundle.getInt("requestCode", 1);
+            loadImage(filePath);
+            return;
+        }
+        SnackBarHandler.show(parentLayout,R.string.image_invalid);
     }
 
     /**
@@ -418,7 +401,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         setButtonsVisibility();
     }
 
-
     private void onRedoPressed() {
 
         if (mainBitmap != null) {
@@ -473,16 +455,12 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     }
 
     protected void onSaveTaskDone() {
-        Intent returnIntent = new Intent();
-        returnIntent.putExtra(FILE_PATH, filePath);
-        returnIntent.putExtra(EXTRA_OUTPUT, saveFilePath);
-        returnIntent.putExtra(IMAGE_IS_EDIT, mOpTimes > 0);
-        FileUtil.ablumUpdate(this, saveFilePath);
-        setResult(RESULT_OK, returnIntent);
-
-        if (mOpTimes > 0 || (requestCode == 1 && mOpTimes <= 0))
-            shareImage();
-        else{
+        if (mOpTimes > 0 ){
+            FileUtil.albumUpdate(this, saveFilePath);
+            shareImage(saveFilePath);
+        }else if(mOpTimes <= 0 && requestCode == 1 ){
+            shareImage(filePath);
+        }else {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
             alertDialogBuilder.setMessage(R.string.exit_without_edit)
                     .setCancelable(false).setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
@@ -503,10 +481,9 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     /**
      * Called when the edit_save button is pressed. Used to share the image on social media.
      */
-    private void shareImage(){
+    private void shareImage(String filePath){
         Intent shareIntent = new Intent(EditImageActivity.this, SharingActivity.class);
-        shareIntent.putExtra(EXTRA_OUTPUT, saveFilePath);
-        setResult(RESULT_OK, shareIntent);
+        shareIntent.putExtra(EXTRA_OUTPUT, filePath);
         startActivity(shareIntent);
         finish();
     }
@@ -528,11 +505,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     public void setStickerType(String stickerType) {
         EditImageActivity.stickerType = stickerType;
     }
-
-    public String getStickerType(){
-        return stickerType;
-    }
-
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
