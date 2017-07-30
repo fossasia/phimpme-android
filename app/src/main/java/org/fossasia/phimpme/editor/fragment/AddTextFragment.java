@@ -1,11 +1,13 @@
 package org.fossasia.phimpme.editor.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -13,17 +15,24 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.task.StickerTask;
 import org.fossasia.phimpme.editor.ui.ColorPicker;
 import org.fossasia.phimpme.editor.view.TextStickerView;
+import org.fossasia.phimpme.leafpic.util.ColorPalette;
+
+import uz.shift.colorpicker.LineColorPicker;
+import uz.shift.colorpicker.OnColorChangedListener;
+
+import static android.graphics.Color.WHITE;
+
 
 
 public class AddTextFragment extends BaseEditFragment implements TextWatcher {
@@ -38,7 +47,7 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher {
 
     private ColorPicker mColorPicker;
 
-    private int mTextColor = Color.WHITE;
+    private int mTextColor = WHITE;
     private InputMethodManager imm;
 
     private SaveTextStickerTask mSaveTask;
@@ -110,16 +119,47 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher {
     private final class SelectColorBtnClick implements OnClickListener {
         @Override
         public void onClick(View v) {
-            mColorPicker.show();
-            Button okColor = (Button) mColorPicker.findViewById(R.id.okColorButton);
-            okColor.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    changeTextColor(mColorPicker.getColor());
-                    mColorPicker.dismiss();
-                }
-            });
+            textColotDialog();
         }
+
+    }
+
+    private void textColotDialog() {
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+        final View dialogLayout = getActivity().getLayoutInflater().inflate(R.layout.color_piker_accent, null);
+        final LineColorPicker colorPicker = (LineColorPicker) dialogLayout.findViewById(R.id.color_picker_accent);
+        final TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.cp_accent_title);
+        dialogTitle.setText(R.string.text_color_title);
+        colorPicker.setColors(ColorPalette.getAccentColors(activity.getApplicationContext()));
+        changeTextColor(WHITE);
+        colorPicker.setOnColorChangedListener(new OnColorChangedListener() {
+            @Override
+            public void onColorChanged(int c) {
+                dialogTitle.setBackgroundColor(c);
+                changeTextColor(colorPicker.getColor());
+
+            }
+        });
+        dialogBuilder.setView(dialogLayout);
+        dialogBuilder.setNeutralButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                changeTextColor(WHITE);
+                dialog.cancel();
+            }
+        });
+        dialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                changeTextColor(colorPicker.getColor());
+            }
+        });
+        dialogBuilder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                dialog.dismiss();
+            }
+        });
+        dialogBuilder.show();
     }
 
     private void changeTextColor(int newColor) {

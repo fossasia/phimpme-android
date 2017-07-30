@@ -4,159 +4,115 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Handler;
-import android.widget.Toast;
+import android.support.v7.app.AlertDialog;
+import android.view.View;
 
-import org.fossasia.phimpme.base.ThemedActivity;
-import org.fossasia.phimpme.data.local.AccountDatabase;
-import org.fossasia.phimpme.share.flickr.tasks.GetOAuthTokenTask;
-import org.fossasia.phimpme.share.flickr.tasks.OAuthTask;
-import org.fossasia.phimpme.share.flickr.tasks.UploadPhotoTask;
+import com.googlecode.flickrjandroid.Flickr;
+import com.googlecode.flickrjandroid.auth.Permission;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
 
-import java.io.InputStream;
+import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.base.ThemedActivity;
+import org.fossasia.phimpme.data.local.AccountDatabase;
+import org.fossasia.phimpme.leafpic.util.AlertDialogsHelper;
+import org.fossasia.phimpme.share.flickr.tasks.GetOAuthTokenTask;
+import org.fossasia.phimpme.utilities.BasicCallBack;
+import org.fossasia.phimpme.utilities.Constants;
+import org.fossasia.phimpme.utilities.SnackBarHandler;
 
+import java.net.URL;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FLICKR;
+import static org.fossasia.phimpme.share.flickr.FlickrHelper.getOAuthToken;
 
 public class FlickrActivity extends ThemedActivity {
-	public static final String CALLBACK_SCHEME = "flickrj-android-sample-oauth";
-	private static InputStream photoStream;
-	Handler h = new Handler();
+    public static final String CALLBACK_SCHEME = "flickrj-android-sample-oauth";
+    public static BasicCallBack basicCallBack;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    @BindView(R.id.login_parent)
+    View parent;
 
-		new Thread() {
-			public void run() {
-				h.post(init);
-			};
-		}.start();
-	}
+    public static void setBasicCallBack(BasicCallBack basicCallBack) {
+        FlickrActivity.basicCallBack = basicCallBack;
+    }
 
-	Runnable init = new Runnable() {
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.account_login_activity);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        OAuth oauth = getOAuthToken();
+        if (oauth == null || oauth.getUser() == null) {
+            OAuthTask task = new OAuthTask(getContext());
+            task.execute();
+        }
+        ButterKnife.bind(this);
 
-		@Override
-		public void run() {
-			OAuth oauth = getOAuthToken();
-			if (oauth == null || oauth.getUser() == null) {
-				OAuthTask task = new OAuthTask(getContext());
-				task.execute();
-			} else {
-				if (FlickrHelper.getInstance().getFileName() != null)
-					load(oauth);
-			}
-		}
-	};
 
-	private void load(OAuth oauth) {
-		if (oauth != null) {
+    }
 
-			UploadPhotoTask taskUpload = new UploadPhotoTask(this);
-			taskUpload.setOnUploadDone(new UploadPhotoTask.onUploadDone() {
-				@Override
-				public void onComplete() {
-					finish();
-				}
-			});
-			taskUpload.execute(oauth);
-		}
-	}
 
-	@Override
-	protected void onNewIntent(Intent intent) {
-		// this is very important, otherwise you would get a null Scheme in the
-		// onResume later on.
-		setIntent(intent);
-	}
+    @Override
+    protected void onNewIntent(Intent intent) {
+        // this is very important, otherwise you would get a null Scheme in the
+        // onResume later on.
+        setIntent(intent);
+    }
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		Intent intent = getIntent();
-		String scheme = intent.getScheme();
-		OAuth savedToken = getOAuthToken();
+    @Override
+    public void onResume() {
+        super.onResume();
+        Intent intent = getIntent();
+        String scheme = intent.getScheme();
+        OAuth savedToken = getOAuthToken();
 
-		if (CALLBACK_SCHEME.equals(scheme)
-				&& (savedToken == null || savedToken.getUser() == null)) {
-			Uri uri = intent.getData();
-			String query = uri.getQuery();
-			String[] data = query.split("&");
-			if (data != null && data.length == 2) {
-				String oauthToken = data[0].substring(data[0].indexOf("=") + 1);
-				String oauthVerifier = data[1].substring(data[1].indexOf("=") + 1);
-				OAuth oauth = getOAuthToken();
-				if (oauth != null && oauth.getToken() != null
-						&& oauth.getToken().getOauthTokenSecret() != null) {
-					GetOAuthTokenTask task = new GetOAuthTokenTask(this);
-					task.execute(oauthToken, oauth.getToken()
-							.getOauthTokenSecret(), oauthVerifier);
-				}
-			}
-		}
-	}
+        if (CALLBACK_SCHEME.equals(scheme)
+                && (savedToken == null || savedToken.getUser() == null)) {
+            Uri uri = intent.getData();
+            String query = uri.getQuery();
+            String[] data = query.split("&");
+            if (data != null && data.length == 2) {
+                String oauthToken = data[0].substring(data[0].indexOf("=") + 1);
+                String oauthVerifier = data[1].substring(data[1].indexOf("=") + 1);
+                OAuth oauth = getOAuthToken();
+                if (oauth != null && oauth.getToken() != null
+                        && oauth.getToken().getOauthTokenSecret() != null) {
+                    GetOAuthTokenTask task = new GetOAuthTokenTask(this);
+                    task.execute(oauthToken, oauth.getToken()
+                            .getOauthTokenSecret(), oauthVerifier);
+                }
+            }
+        }
+    }
 
-	public void onOAuthDone(OAuth result) {
-		if (result == null) {
-			Toast.makeText(this, "Authorization failed",
-					Toast.LENGTH_LONG).show();
-		} else {
-			User user = result.getUser();
-			OAuthToken token = result.getToken();
-			if (user == null || user.getId() == null || token == null
-					|| token.getOauthToken() == null
-					|| token.getOauthTokenSecret() == null) {
-				Toast.makeText(this, "Authorization failed",
-						Toast.LENGTH_LONG).show();
-				return;
-			}
-			String message = "Login Success";
-			Toast.makeText(this, message, Toast.LENGTH_LONG).show();
-			saveOAuthToken(user.getUsername(), user.getId(),
-					token.getOauthToken(), token.getOauthTokenSecret());
-			load(result);
-		}
-	}
-
-	public OAuth getOAuthToken() {
-		Realm realm = Realm.getDefaultInstance();
-		AccountDatabase account;
-		RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
-		query.equalTo("name", FLICKR.toString());
-		RealmResults<AccountDatabase> result = query.findAll();
-		if (result.size() != 0) {
-			account = result.get(0);
-			String oauthTokenString = account.getToken();
-			String tokenSecret = account.getTokenSecret();
-
-			if (oauthTokenString == null && tokenSecret == null) {
-				return null;
-			}
-			OAuth oauth = new OAuth();
-			String userName = account.getUsername();
-			String userId = account.getUserId();
-			if (userId != null) {
-				User user = new User();
-				user.setUsername(userName);
-				user.setId(userId);
-				oauth.setUser(user);
-			}
-			OAuthToken oauthToken = new OAuthToken();
-			oauth.setToken(oauthToken);
-			oauthToken.setOauthToken(oauthTokenString);
-			oauthToken.setOauthTokenSecret(tokenSecret);
-			return oauth;
-		}else
-			return null;
-	}
+    public void onOAuthDone(OAuth result) {
+        if (result == null) {
+           SnackBarHandler.show(parent, getString(R.string.auth_failed));
+        } else {
+            User user = result.getUser();
+            OAuthToken token = result.getToken();
+            if (user == null || user.getId() == null || token == null
+                    || token.getOauthToken() == null
+                    || token.getOauthTokenSecret() == null) {
+                SnackBarHandler.show(parent, getString(R.string.auth_failed));
+                return;
+            }
+            basicCallBack.callBack(Constants.SUCCESS, null);
+            saveOAuthToken(user.getUsername(), user.getId(),
+                    token.getOauthToken(), token.getOauthTokenSecret());
+            finish();
+        }
+    }
 
     /**
      * This method is called two times during the authentication. In the first time, only tokenSecret will
@@ -164,27 +120,81 @@ public class FlickrActivity extends ThemedActivity {
      * details of the account. So after the two calls of this function the account abject will be
      * fully populated in realm database.
      */
-	public void saveOAuthToken(String userName, String userId, String token, String tokenSecret) {
-		Realm realm = Realm.getDefaultInstance();
-		RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
-		query.equalTo("name", FLICKR.toString());
-		RealmResults<AccountDatabase> result = query.findAll();
-		AccountDatabase account;
-		realm.beginTransaction();
-		if( result.size() == 0 )
-			account = realm.createObject(AccountDatabase.class,FLICKR.toString());
+    public void saveOAuthToken(String userName, String userId, String token, String tokenSecret) {
+        Realm realm = Realm.getDefaultInstance();
+        RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
+        query.equalTo("name", FLICKR.toString());
+        RealmResults<AccountDatabase> result = query.findAll();
+        AccountDatabase account;
+        realm.beginTransaction();
+        if (result.size() == 0)
+            account = realm.createObject(AccountDatabase.class, FLICKR.toString());
         else
-			account = result.first();
+            account = result.first();
 
-		account.setToken(token);
+        account.setToken(token);
         account.setTokenSecret(tokenSecret);
         account.setUsername(userName);
         account.setUserId(userId);
-		realm.commitTransaction();
-	}
+        realm.commitTransaction();
+    }
 
-	private Context getContext() {
-		return this;
+    private Context getContext() {
+        return this;
 
-	}
+    }
+
+    public class OAuthTask extends AsyncTask<Void, Integer, String> {
+
+        private final Uri OAUTH_CALLBACK_URI = Uri
+                .parse(FlickrActivity.CALLBACK_SCHEME + "://oauth"); //$NON-NLS-1$
+        private Context mContext;
+        private AlertDialog dialog;
+
+        public OAuthTask(Context context) {
+            super();
+            this.mContext = context;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            AlertDialog.Builder progressDialog = new AlertDialog.Builder(getContext(), getDialogStyle());
+            dialog = AlertDialogsHelper.getProgressDialog(FlickrActivity.this, progressDialog, getContext().getString(R.string.authenticating_your_app_message), getContext().getString(R.string.please_wait));
+            dialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            try {
+                Flickr f = FlickrHelper.getInstance().getFlickr();
+                OAuthToken oauthToken = f.getOAuthInterface().getRequestToken(
+                        OAUTH_CALLBACK_URI.toString());
+                saveTokenSecrent(oauthToken.getOauthToken(), oauthToken.getOauthTokenSecret());
+                URL oauthUrl = f.getOAuthInterface().buildAuthenticationUrl(
+                        Permission.WRITE, oauthToken);
+                return oauthUrl.toString();
+            } catch (Exception e) {
+                return "error:" + e.getMessage(); //$NON-NLS-1$
+            }
+        }
+
+        private void saveTokenSecrent(String token, String tokenSecret) {
+            FlickrActivity act = (FlickrActivity) mContext;
+            act.saveOAuthToken(null, null, token, tokenSecret);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (dialog != null) {
+                dialog.dismiss();
+            }
+            if (result != null && !result.startsWith("error")) {
+                mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri
+                        .parse(result)));
+            } else {
+               SnackBarHandler.show(parent, result);
+            }
+        }
+    }
 }

@@ -833,6 +833,7 @@
     <string name="tweet_posted_on_twitter"> Image posted on twitter successfully. </string>
     <string name="error_on_posting_twitter">Some error occur while posting on twitter.</string>
     <string name="instagram_not_installed">Instagram is not installed</string>
+    <string name="whatsapp_not_installed">Whatsapp is not installed</string>
     <string name="not_connected">No Internet Connection found</string>
 
     <string name="facebook_login_cancel">Facebook login Cancelled</string>
@@ -899,6 +900,7 @@
 
     <!--Pinterest-->
     <string name="pinterest_app_id">4910600717739247160</string>
+    <string name="pinterest_app_secret">6a3eba976f2d4ce13c1d4f0852ff17b242768b124905cc83c36faa99da3a1ad1</string>
     <string name="success">Success</string>
     <string name="fail">Login Fail</string>
     <string name="Pinterest_fail">BoardID or caption cannot be empty</string>
@@ -959,8 +961,23 @@
 
 
     <string name="owncloud">OwnCloud</string>
+
+    <!--Snackbar-->
+    <string name="facebook_signIn_fail">Login to Facebook from Account manager</string>
+    <string name="flickr_signIn_fail">Login to Flickr from Account manager</string>
+    <string name="facebook_image_posted">Image posted on Facbook</string>
+
     <string name="retry_upload">Retry</string>
     <string name="upload_failed_retry_box">Upload failed! Rename and try again</string>
+    <string name="text_color_title">Text Color</string>
+
     <string name="connection_failed">Connection Failed</string>
     <string name="authorization_failed">Authorization Failed</string>
+    <string name="account_logged_pinterest">Pinterest account Logged in Successfully</string>
+
+    <!--Flickr-->
+    <string name="posting_flickr">Posting to Flickr</string>
+    <string name="logged_in_flickr">Tumblr account logged in successfully.</string>
+    <string name="uploading">Image uploading in progress.</string>
+    <string name="auth_failed">Authorization failed</string>
 </resources>

@@ -139,6 +139,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         ActivitySwitchHelper.setContext(this);
+        parentLayout.setBackgroundColor(getBackgroundColor());
         accountAdapter = new AccountAdapter(getAccentColor(), getPrimaryColor());
         accountPresenter = new AccountPresenter(realm);
         phimpmeProgressBarHandler = new PhimpmeProgressBarHandler(this);
@@ -267,10 +268,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     break;
 
                 case FLICKR:
-                    Intent intent = new Intent(getApplicationContext(),
-                            FlickrActivity.class);
-                    FlickrHelper.getInstance().setFilename(null);
-                    startActivity(intent);
+                    signInFlickr();
                     break;
 
                 case IMGUR:
@@ -326,6 +324,19 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                             })
                     .show();
         }
+    }
+
+    private void signInFlickr() {
+        BasicCallBack basicCallBack = new BasicCallBack() {
+            @Override
+            public void callBack(int status, Object data) {
+                if (status==SUCCESS)
+                SnackBarHandler.show(parentLayout, getString(R.string.logged_in_flickr));
+            }
+        };
+        Intent intent = new Intent(this, FlickrActivity.class);
+        FlickrActivity.setBasicCallBack(basicCallBack);
+        startActivity(intent);
     }
 
     private void signInTumblr() {
@@ -413,6 +424,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         if (accountPresenter.checkAlreadyExist(PINTEREST)) {
             SnackBarHandler.show(parentLayout,R.string.already_signed_in);
         } else {
+
             List scopes = new ArrayList<String>();
             scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_PUBLIC);
             scopes.add(PDKClient.PDKCLIENT_PERMISSION_WRITE_PUBLIC);
@@ -424,26 +436,14 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                 public void onSuccess(PDKResponse response) {
                     Log.d(getClass().getName(), response.getData().toString());
 
-                    // Begin realm transaction
                     realm.beginTransaction();
-
-                    // Creating Realm object for AccountDatabase Class
-                    account = realm.createObject(AccountDatabase.class,
-                            PINTEREST.toString());
-
-                    PDKClient.getInstance().getPath("me/", null, new PDKCallback() {
-                        @Override
-                        public void onSuccess(PDKResponse response) {
-
-                        }
-                    });
-
-                    // Writing values in Realm database
+                    account = realm.createObject(AccountDatabase.class, PINTEREST.toString());
+                    account.setAccountname(PINTEREST);
                     account.setUsername(response.getUser().getFirstName() + " " + response.getUser().getLastName());
-
-                    // Finally committing the whole data
+                    account.setSecret(getString(R.string.pinterest_app_secret));
                     realm.commitTransaction();
-                    SnackBarHandler.show(parentLayout,R.string.success);
+                    finish();
+                    startActivity(getIntent());
                 }
 
                 @Override
@@ -452,6 +452,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     SnackBarHandler.show(parentLayout,R.string.fail);
                 }
             });
+            SnackBarHandler.show(parentLayout,"logged IN");
         }
     }
 
@@ -520,8 +521,8 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                             // Writing values in Realm database
                             account.setUsername(loginResult
                                     .getAccessToken().getUserId());
-                            account.setToken(String.valueOf(loginResult
-                                    .getAccessToken().getToken()));
+                            //account.setToken(String.valueOf(loginResult
+                            //        .getAccessToken().getToken()));
 
                             GraphRequest.newMeRequest(
                                     loginResult.getAccessToken(),

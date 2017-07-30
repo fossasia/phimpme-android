@@ -11,6 +11,9 @@ import android.widget.TextView;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
+import org.fossasia.phimpme.utilities.Utils;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,20 +27,23 @@ import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
 
 public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> {
 
-    ThemeHelper themeHelper = new ThemeHelper(getContext());
+    private ThemeHelper themeHelper = new ThemeHelper(getContext());
+    private ArrayList<AccountDatabase.AccountName> sharableAccountsList = new ArrayList<>();
+
     @Override
     public ShareAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.share_item_view, null, false);
         view.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,
                 RecyclerView.LayoutParams.WRAP_CONTENT));
+        sharableAccountsList = Utils.getSharableAccountsList();
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Integer id;
-        String name = AccountDatabase.AccountName.values()[position].toString();
+        String name = sharableAccountsList.get(position).toString();
         holder.accountName.setText(name);
 
         id = getContext().getResources().getIdentifier(context.getString(R.string.ic_) +
@@ -68,7 +74,7 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return AccountDatabase.AccountName.values().length;
+        return Utils.getSharableAccountsList().size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -81,7 +87,6 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ViewHolder> 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-
         }
     }
 }
