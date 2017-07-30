@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
@@ -41,11 +42,6 @@ import com.pinterest.android.pdk.PDKResponse;
 import com.tumblr.loglr.Interfaces.ExceptionHandler;
 import com.tumblr.loglr.Interfaces.LoginListener;
 import com.tumblr.loglr.Loglr;
-import com.twitter.sdk.android.core.Callback;
-import com.twitter.sdk.android.core.Result;
-import com.twitter.sdk.android.core.TwitterCore;
-import com.twitter.sdk.android.core.TwitterException;
-import com.twitter.sdk.android.core.TwitterSession;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 
 import org.fossasia.phimpme.R;
@@ -60,13 +56,13 @@ import org.fossasia.phimpme.share.imgur.ImgurAuthActivity;
 import org.fossasia.phimpme.share.nextcloud.NextCloudAuth;
 import org.fossasia.phimpme.share.owncloud.OwnCloudActivity;
 import org.fossasia.phimpme.share.tumblr.TumblrClient;
-import org.fossasia.phimpme.share.flickr.FlickrHelper;
 import org.fossasia.phimpme.share.twitter.LoginActivity;
 import org.fossasia.phimpme.share.wordpress.WordpressLoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
 import org.fossasia.phimpme.utilities.Constants;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
+import org.fossasia.phimpme.utilities.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -86,6 +82,7 @@ import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBO
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FACEBOOK;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.GOOGLEPLUS;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.IMGUR;
+import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.INSTAGRAM;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.NEXTCLOUD;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.OWNCLOUD;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.PINTEREST;
@@ -94,6 +91,7 @@ import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTE
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_SECRET;
 import static org.fossasia.phimpme.utilities.Constants.SUCCESS;
+import static org.fossasia.phimpme.utilities.Constants.PACKAGE_INSTAGRAM;
 
 /**
  * Created by pa1pal on 13/6/17.
@@ -123,6 +121,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private static final int RC_SIGN_IN = 9001;
     private DropboxAPI<AndroidAuthSession> mDBApi;
     private BoxSession sessionBox;
+
 
     @BindView(R.id.accounts_parent)
     RelativeLayout parentLayout;
@@ -296,6 +295,9 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     signInTumblr();
                     break;
 
+                case INSTAGRAM:
+                    checkInstagram();
+
                 default:
                     SnackBarHandler.show(parentLayout,R.string.feature_not_present);
             }
@@ -325,6 +327,22 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     .show();
         }
     }
+
+    private void checkInstagram() {
+            PackageManager packageManager = (ActivitySwitchHelper.context).getPackageManager();
+            if(Utils.isAppInstalled(PACKAGE_INSTAGRAM,packageManager)){
+                realm.beginTransaction();
+                account = realm.createObject(AccountDatabase.class, INSTAGRAM.toString());
+                account.setAccountname(INSTAGRAM);
+                account.setUsername(INSTAGRAM.toString());
+                realm.commitTransaction();
+                finish();
+                startActivity(getIntent());
+            }else{
+                SnackBarHandler.show(parentLayout, R.string.instagram_not_installed);
+            }
+    }
+
 
     private void signInFlickr() {
         BasicCallBack basicCallBack = new BasicCallBack() {
