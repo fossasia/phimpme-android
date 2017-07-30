@@ -31,6 +31,17 @@ public class Constants {
     public final static String TUMBLR_CONSUMER_SECRET = "ENTER-CONSUMER-SECRET";
     public final static String CALL_BACK_TUMBLR = "http://phimp.me";
 
+
+    public final static String PACKAGE_FACEBOOK = "com.facebook.katana";
+    public final static String PACKAGE_INSTAGRAM = "com.instagram.android";
+    public final static String PACKAGE_WHATSAPP = "com.whatsapp";
+    public final static String PACKAGE_GOOGLEPLUS = "com.google.android.apps.plus";
+    public final static String PACKAGE_HIKE = "com.bsb.hike";
+    public final static String PACKAGE_MESSENGER = "org.telegram.messenger";
+    public final static String PACKAGE_TWITTER = "com.twitter.android";
+    public final static String PACKAGE_PLAYSTORE = "com.android.vending";
+
+
 }
 
 

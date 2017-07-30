@@ -14,12 +14,15 @@ import android.util.Base64;
 import org.fossasia.phimpme.data.local.AccountDatabase;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
+import static org.fossasia.phimpme.utilities.Constants.PACKAGE_INSTAGRAM;
+import static org.fossasia.phimpme.utilities.Constants.PACKAGE_WHATSAPP;
 
 /**
  * Created by pa1pal on 23/5/17.
@@ -55,7 +58,7 @@ public class Utils {
 
 
     public static boolean isAppInstalled(String packageName, PackageManager pm) {
-        boolean installed = false;
+        boolean installed;
         try {
             pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
             installed = true;
@@ -95,6 +98,32 @@ public class Utils {
         RealmResults<AccountDatabase> result1 = query.findAll();
 
         // Here checking if count of that values is greater than zero
-        return (result1.size() > 0) ? true : false;
+        return (result1.size() > 0);
+    }
+
+    public static ArrayList<AccountDatabase.AccountName> getLoggedInAccountsList(){
+        ArrayList<AccountDatabase.AccountName> list = new ArrayList<>();
+        for (AccountDatabase.AccountName account : AccountDatabase.AccountName.values()){
+            if (checkAlreadyExist(account))
+                list.add(account);
+        }
+        return list;
+    }
+
+    public static ArrayList<AccountDatabase.AccountName> getSharableAccountsList(){
+        ArrayList<AccountDatabase.AccountName> list = new ArrayList<>();
+        PackageManager packageManager = (ActivitySwitchHelper.context).getPackageManager();
+        if (isAppInstalled(PACKAGE_INSTAGRAM,packageManager))
+            list.add(AccountDatabase.AccountName.INSTAGRAM);
+
+        if (isAppInstalled(PACKAGE_WHATSAPP,packageManager))
+            list.add(AccountDatabase.AccountName.WHATSAPP);
+
+        list.addAll(getLoggedInAccountsList());
+        if (!list.contains(AccountDatabase.AccountName.IMGUR))
+            list.add(AccountDatabase.AccountName.IMGUR);
+
+        list.add(AccountDatabase.AccountName.OTHERS);
+        return list;
     }
 }

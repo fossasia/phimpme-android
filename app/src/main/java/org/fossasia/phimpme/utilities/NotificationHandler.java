@@ -29,6 +29,13 @@ public class NotificationHandler {
         mNotifyManager.notify(id, mBuilder.build());
     }
 
+    public static void updateProgress(int uploaded, int total, int percent){
+        mBuilder.setProgress(total, uploaded, false);
+        mBuilder.setContentTitle(ActivitySwitchHelper.getContext().getString(R.string.upload_progress)+" ("+Integer.toString(percent)+"%)");
+        // Issues the notification
+        mNotifyManager.notify(id, mBuilder.build());
+    }
+
     public static void uploadPassed(){
         mBuilder.setContentText(ActivitySwitchHelper.getContext().getString(R.string.upload_done))
                 // Removes the progress bar
