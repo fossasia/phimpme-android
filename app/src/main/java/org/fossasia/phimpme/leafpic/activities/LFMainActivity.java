@@ -841,7 +841,6 @@ public class LFMainActivity extends SharedMediaActivity {
             }
         }
 
-
         menu.findItem(R.id.hideAlbumButton).setTitle(hidden ? getString(R.string.unhide) : getString(R.string.hide));
         menu.findItem(R.id.delete_action).setIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_delete));
         menu.findItem(R.id.sort_action).setIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_sort));
@@ -864,7 +863,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 menu.setGroupVisible(R.id.album_options_menu, !editMode);
                 menu.findItem(R.id.all_photos).setVisible(false);
             } else {
-                editMode = selectedMedias.size() != 0 ? true : false;
+                editMode = selectedMedias.size() != 0;
                 menu.setGroupVisible(R.id.photos_option_men, editMode);
                 menu.setGroupVisible(R.id.album_options_menu, !editMode);
                 menu.findItem(R.id.all_photos).setVisible(false);
@@ -876,9 +875,7 @@ public class LFMainActivity extends SharedMediaActivity {
         visible = getAlbum().getSelectedCount()>0;
         menu.findItem(R.id.action_copy).setVisible(visible);
         menu.findItem(R.id.action_move).setVisible(visible || editMode);
-        //menu.findItem(R.id.action_copy).setVisible(!all_photos);
-        //menu.findItem(R.id.action_move).setVisible(!all_photos);
-        menu.findItem(R.id.excludeAlbumButton).setVisible(editMode && !all_photos);
+        menu.findItem(R.id.excludeAlbumButton).setVisible(editMode && !all_photos && albumsMode);
         menu.findItem(R.id.select_all).setVisible(editMode);
         menu.findItem(R.id.delete_action).setVisible((!albumsMode || editMode) && (!all_photos || editMode ));
         menu.findItem(R.id.hideAlbumButton).setVisible(!all_photos && getAlbums().getSelectedCount()>0);
@@ -1812,49 +1809,5 @@ public class LFMainActivity extends SharedMediaActivity {
             albumsAdapter.swapDataSet(getAlbums().dispAlbums);
             new PrepareAlbumTask().execute();
         }
-
-	/*private class MovePhotos extends AsyncTask<String, Void, Boolean> {
-
-		@Override
-		protected void onPreExecute() {
-			swipeRefreshLayout.setRefreshing(true);
-			super.onPreExecute();
-		}
-
-		@Override
-		protected Boolean doInBackground(String... arg0) {
-			boolean success = true;
-			try
-			{
-				for (int i = 0; i < getAlbum().selectedMedias.size(); i++) {
-					File from = new File(getAlbum().selectedMedias.get(i).getPath());
-					File to = new File(StringUtils.getPhotoPathMoved(getAlbum().selectedMedias.get(i).getPath(), arg0[0]));
-
-					if (ContentHelper.moveFile(getApplicationContext(), from, to)) {
-						MediaScannerConnection.scanFile(getApplicationContext(),
-										new String[]{ to.getAbsolutePath(), from.getAbsolutePath() }, null, null);
-						getAlbum().getMedia().remove(getAlbum().selectedMedias.get(i));
-					} else success = false;
-				}
-			} catch (Exception e) { e.printStackTrace(); }
-			return success;
-		}
-
-		@Override
-		protected void onPostExecute(Boolean result) {
-			if (result) {
-				if (getAlbum().getMedia().size() == 0) {
-					getAlbums().removeCurrentAlbum();
-					albumsAdapter.notifyDataSetChanged();
-					displayAlbums();
-				}
-			} else requestSdCardPermissions();
-
-			mediaAdapter.swapDataSet(getAlbum().getMedia());
-			finishEditMode();
-			invalidateOptionsMenu();
-			swipeRefreshLayout.setRefreshing(false);
-		}
-	}*/
     }
 }
