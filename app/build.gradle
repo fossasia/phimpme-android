@@ -77,6 +77,11 @@ android {
         }
     }
 
+    dexOptions {
+        incremental = true
+        preDexLibraries = false
+        javaMaxHeapSize "4g"
+    }
     // Do not remove this commented code
     // I(vinaysajjanapu) will remove it later
 /*    sourceSets {

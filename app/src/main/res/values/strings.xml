@@ -8,9 +8,11 @@
     <string name="action_popup">Popup settings</string>
     <string name="intro_text">Touch to focus, and press the blue camera button to take photos. For more help, click Online help from Settings. Open Camera is completely free. If you like this app, please consider buying my donate app :) (see link in Settings, or Online help).\n\nPrivacy Policy: Location permission is required for geotagging, but this is disabled by default. If enabled, your location is encoded in the saved files (and it is only used for this purpose).</string>
     <string name="intro_ok">OK (This message won\'t show again)</string>
-    <string name="facebook_app_id">111535049486318</string>
     <string name="answer_yes">Yes</string>
     <string name="answer_no">No</string>
+
+    <!--API KEY ASSOCIATED WITH fossasiadevelopers@gmail.com-->
+    <string name="facebook_app_id">1948147982134927</string>
 
     <string name="on">On</string> <!-- whether a setting is turned on, e.g., "Auto-level: On" -->
     <string name="off">Off</string> <!-- whether a setting is turned off, e.g., "Auto-level: Off" -->
@@ -773,8 +775,8 @@
     <!--ACCOUNTS-->
     <!--TWITTER-->
     <!--add consumer key and secret key below-->
-    <string name="twitter_CONSUMER_KEY">vKnzy2sMJ3VUFibF6HguxhDXm</string>
-    <string name="twitter_CONSUMER_SECRET">gAvGEBNPAyIsGQ3AIElHDqdCGCS7Cvp1BiM1GTH7YzLQyvMVf3</string>
+    <string name="twitter_CONSUMER_KEY">ANrJGEO2bjPjsE3nN5AJDM9di</string>
+    <string name="twitter_CONSUMER_SECRET">UJB2A4qYbImHuT0Egu0aw5L8o5sn9ZjfENWeLqnSgNj5CHcAO5UJB2A4qYbImHuT0Egu0aw5L8o5sn9ZjfENWeLqnSgNj5CHcAO53</string>
     <string name="already_signed_in">Already signed In</string>
     <string name="drawable">drawable</string>
     <string name="color">color</string>
@@ -898,7 +900,7 @@
     <string name="sharewordpress">Wordpress Account</string>
 
     <!--Pinterest-->
-    <string name="pinterest_app_id">4910600717739247160</string>
+    <string name="pinterest_app_id">4914573327424567067</string>
     <string name="success">Success</string>
     <string name="fail">Login Fail</string>
     <string name="Pinterest_fail">BoardID or caption cannot be empty</string>

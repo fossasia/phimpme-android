@@ -52,6 +52,8 @@ import org.fossasia.phimpme.data.local.DatabaseHelper;
 import org.fossasia.phimpme.share.flickr.FlickrActivity;
 import org.fossasia.phimpme.share.flickr.FlickrHelper;
 import org.fossasia.phimpme.share.imgur.ImgurAuthActivity;
+import org.fossasia.phimpme.share.nextcloud.NextCloudAuth;
+import org.fossasia.phimpme.share.owncloud.OwnCloudActivity;
 import org.fossasia.phimpme.share.tumblr.TumblrClient;
 import org.fossasia.phimpme.share.twitter.LoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
@@ -107,7 +109,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private static final int NEXTCLOUD_REQUEST_CODE = 3;
     private static final int OWNCLOUD_REQUEST_CODE = 9;
     private static final int RESULT_OK = 1;
-    final static private String APP_KEY = "APP_KEY";
+    final static private String APP_KEY = "DROPBOX_APP_KEY";
     final static private String APP_SECRET = "API_SECRET";
     private static final int RC_SIGN_IN = 9001;
     private DropboxAPI<AndroidAuthSession> mDBApi;
@@ -241,15 +243,15 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     startActivity(drupalShare);
                     break;
 
-                case NEXTCLOUD:
-                    Intent nextCloudShare = new Intent(getContext(), NextCloudAuth.class);
-                    startActivityForResult(nextCloudShare, NEXTCLOUD_REQUEST_CODE);
-                    break;
-
                 case WORDPRESS:
                     Intent WordpressShare = new Intent(this, WordpressLoginActivity.class);
                     startActivity(WordpressShare);
                     break;*/
+
+                case NEXTCLOUD:
+                    Intent nextCloudShare = new Intent(getContext(), NextCloudAuth.class);
+                    startActivityForResult(nextCloudShare, NEXTCLOUD_REQUEST_CODE);
+                    break;
 
                 case PINTEREST:
                     signInPinterest();
@@ -270,10 +272,10 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     signInDropbox();
                     break;
 
-                /*case OWNCLOUD:
+                case OWNCLOUD:
                     Intent ownCloudShare = new Intent(getContext(), OwnCloudActivity.class);
                     startActivityForResult(ownCloudShare, OWNCLOUD_REQUEST_CODE);
-                    break;*/
+                    break;
 
                 case GOOGLEPLUS:
                     signInGooglePlus();

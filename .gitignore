@@ -7,6 +7,7 @@ local.properties
 build
 /app/src/main/3rdparty/
 /app/src/main/jniLibs/
+/pdk/build
 libopencv_*
 viewflow/
 gradle.properties

@@ -207,7 +207,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     public String uploadName;
 
     public static String getClientAuth() {
-        return Constants.IMGUR_HEADER_CLIENt + " " + Constants.MY_IMGUR_CLIENT_ID;
+        return Constants.IMGUR_HEADER_CLIENT + " " + Constants.MY_IMGUR_CLIENT_ID;
     }
 
     @Override
@@ -505,7 +505,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void dropboxShare() {
-        AppKeyPair appKeys = new AppKeyPair(Constants.APP_KEY, Constants.APP_SECRET);
+        AppKeyPair appKeys = new AppKeyPair(Constants.DROPBOX_APP_KEY, Constants.APP_SECRET);
         AndroidAuthSession session = new AndroidAuthSession(appKeys);
         RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
         // Checking if string equals to is exist or not
