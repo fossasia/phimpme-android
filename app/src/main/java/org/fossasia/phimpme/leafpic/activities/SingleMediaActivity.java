@@ -3,6 +3,7 @@ package org.fossasia.phimpme.leafpic.activities;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
+
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.DialogInterface;
@@ -18,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -37,9 +39,11 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
@@ -71,6 +75,8 @@ import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 import java.io.File;
+import java.util.ArrayList;
+
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -108,6 +114,9 @@ public class SingleMediaActivity extends SharedMediaActivity {
     private Realm realm;
     private DatabaseHelper databaseHelper;
     ImageDescModel temp;
+    private final int REQ_CODE_SPEECH_INPUT = 100;
+    String voiceInput;
+    EditText editTextDescription;
 
     @Nullable @BindView(R.id.PhotoPager_Layout)
     View parentView;
@@ -360,6 +369,17 @@ public class SingleMediaActivity extends SharedMediaActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQ_CODE_SPEECH_INPUT && data!=null) {
+            ArrayList<String> result = data
+                    .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            voiceInput = result.get(0);
+            editTextDescription.setText(voiceInput);
+            return;
+        }
+
+
         if (data != null && resultCode == RESULT_OK) {
             switch (requestCode) {
                 case UCrop.REQUEST_CROP:
@@ -369,16 +389,16 @@ public class SingleMediaActivity extends SharedMediaActivity {
                             //copyFileToDownloads(imageUri);
                             // TODO: 21/08/16 handle this better
                             handleEditorImage(data);
-                            if(ContentHelper.copyFile(getApplicationContext(), new File(imageUri.getPath()), new File(getAlbum().getPath()))) {
+                            if (ContentHelper.copyFile(getApplicationContext(), new File(imageUri.getPath()), new File(getAlbum().getPath()))) {
                                 //((ImageFragment) adapter.getRegisteredFragment(getAlbum().getCurrentMediaIndex())).displayMedia(true);
-                                SnackBarHandler.show(parentView,R.string.new_file_created);
+                                SnackBarHandler.show(parentView, R.string.new_file_created);
                             }
                             //adapter.notifyDataSetChanged();
                         } catch (Exception e) {
                             Log.e("ERROS - uCrop", imageUri.toString(), e);
                         }
                     } else
-                        SnackBarHandler.show(parentView,"errori random");
+                        SnackBarHandler.show(parentView, "errori random");
                     break;
                 default:
                     break;
@@ -386,13 +406,15 @@ public class SingleMediaActivity extends SharedMediaActivity {
         }
     }
 
+
+
     private void handleEditorImage(Intent data) {
         String newFilePath = data.getStringExtra(EditImageActivity.EXTRA_OUTPUT);
         boolean isImageEdit = data.getBooleanExtra(EditImageActivity.IMAGE_IS_EDIT, false);
 
         if (isImageEdit){
 
-        }else{//未编辑  还是用原来的图片
+        }else{//Or use the original unedited pictures
             newFilePath = data.getStringExtra(EditImageActivity.FILE_PATH);;
         }
         //System.out.println("newFilePath---->" + newFilePath);
@@ -604,13 +626,13 @@ public class SingleMediaActivity extends SharedMediaActivity {
 
             case R.id.action_description:
                 AlertDialog.Builder descriptionDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
-                final EditText editTextDescription = getDescriptionDialog(SingleMediaActivity.this, descriptionDialogBuilder);
+                editTextDescription = getDescriptionDialog(SingleMediaActivity.this, descriptionDialogBuilder);
                 descriptionDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-
                 descriptionDialogBuilder.setPositiveButton(temp==null?getString(R.string.ok_action).toUpperCase():getString(R.string.update_action), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //This should br empty it will be overwrite later
+
                     }
                 });
 
@@ -644,8 +666,21 @@ public class SingleMediaActivity extends SharedMediaActivity {
         final View DescriptiondDialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_description, null);
         final TextView DescriptionDialogTitle = (TextView) DescriptiondDialogLayout.findViewById(R.id.description_dialog_title);
         final CardView DescriptionDialogCard = (CardView) DescriptiondDialogLayout.findViewById(R.id.description_dialog_card);
-        final EditText editxtDescription = (EditText) DescriptiondDialogLayout.findViewById(R.id.description_edittxt);
+        EditText editxtDescription = (EditText) DescriptiondDialogLayout.findViewById(R.id.description_edittxt);
+        ImageButton VoiceRecognition = (ImageButton) DescriptiondDialogLayout.findViewById(R.id.voice_input);
+        VoiceRecognition.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // This are the intents needed to start the Voice recognizer
+                Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "en-US");
+                i.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 15); // number of maximum results..
+                i.putExtra(RecognizerIntent.EXTRA_PROMPT, R.string.caption_speak);
+                startActivityForResult(i, REQ_CODE_SPEECH_INPUT);
 
+            }
+        });
+        Toast.makeText(SingleMediaActivity.this, voiceInput, Toast.LENGTH_SHORT).show();
         DescriptionDialogTitle.setBackgroundColor(activity.getPrimaryColor());
         DescriptionDialogCard.setBackgroundColor(activity.getCardBackgroundColor());
         ThemeHelper.setCursorDrawableColor(editxtDescription, activity.getTextColor());
