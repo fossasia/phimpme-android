@@ -14,6 +14,7 @@ import android.util.Base64;
 import org.fossasia.phimpme.data.local.AccountDatabase;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -95,6 +96,32 @@ public class Utils {
         RealmResults<AccountDatabase> result1 = query.findAll();
 
         // Here checking if count of that values is greater than zero
-        return (result1.size() > 0) ? true : false;
+        return (result1.size() > 0);
+    }
+
+    public static ArrayList<AccountDatabase.AccountName> getLoggedInAccountsList(){
+        ArrayList<AccountDatabase.AccountName> list = new ArrayList<>();
+        for (AccountDatabase.AccountName account : AccountDatabase.AccountName.values()){
+            if (checkAlreadyExist(account))
+                list.add(account);
+        }
+        return list;
+    }
+
+    public static ArrayList<AccountDatabase.AccountName> getSharableAccountsList(){
+        ArrayList<AccountDatabase.AccountName> list = new ArrayList<>();
+        PackageManager packageManager = (ActivitySwitchHelper.context).getPackageManager();
+        if (isAppInstalled("com.instagram.android",packageManager))
+            list.add(AccountDatabase.AccountName.INSTAGRAM);
+
+        if (isAppInstalled("com.whatsapp",packageManager))
+            list.add(AccountDatabase.AccountName.WHATSAPP);
+
+        list.addAll(getLoggedInAccountsList());
+        if (!list.contains(AccountDatabase.AccountName.IMGUR))
+            list.add(AccountDatabase.AccountName.IMGUR);
+
+        list.add(AccountDatabase.AccountName.OTHERS);
+        return list;
     }
 }

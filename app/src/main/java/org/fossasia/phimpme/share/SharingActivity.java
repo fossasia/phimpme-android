@@ -42,6 +42,7 @@ import com.android.volley.toolbox.Volley;
 import com.box.androidsdk.content.BoxApiFile;
 import com.box.androidsdk.content.BoxConfig;
 import com.box.androidsdk.content.BoxException;
+import com.box.androidsdk.content.listeners.ProgressListener;
 import com.box.androidsdk.content.models.BoxFile;
 import com.box.androidsdk.content.models.BoxSession;
 import com.box.androidsdk.content.requests.BoxRequestsFile;
@@ -107,6 +108,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -195,6 +197,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     private Context context;
     private DropboxAPI<AndroidAuthSession> mDBApi;
     private BoxSession sessionBox;
+    private ArrayList<AccountDatabase.AccountName> sharableAccountsList = new ArrayList<>();
     Bitmap finalBmp;
     Boolean isPostedOnTwitter = false, isPersonal = false;
     String boardID, imgurAuth = null, imgurString = null;
@@ -216,7 +219,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         context = this;
         themeHelper = new ThemeHelper(this);
         mHandler = new Handler();
-
+        sharableAccountsList = Utils.getSharableAccountsList();
         phimpmeProgressBarHandler = new PhimpmeProgressBarHandler(this);
         ActivitySwitchHelper.setContext(this);
         ButterKnife.bind(this);
@@ -307,13 +310,13 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     @Override
     public void onItemClick(View childView, int position) {
-        switch (AccountDatabase.AccountName.values()[position]) {
+        switch (sharableAccountsList.get(position)) {
             case FACEBOOK:
-                sharePhotoToFacebook();
+                shareToFacebook();
                 break;
 
             case TWITTER:
-                postToTwitter();
+                shareToTwitter();
                 break;
 
             case INSTAGRAM:
@@ -340,15 +343,15 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 break;
 
             case FLICKR:
-                flickrShare();
+                shareToFlickr();
                 break;
 
             case IMGUR:
-                imgurShare();
+                shareToImgur();
                 break;
 
             case DROPBOX:
-                dropboxShare();
+                shareToDropBox();
                 break;
 
             case OWNCLOUD:
@@ -360,7 +363,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 break;
 
             case BOX:
-                boxShare();
+                shareToBox();
                 break;
 
             case TUMBLR:
@@ -368,7 +371,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 break;
 
             case OTHERS:
-                otherShare();
+                shareToOthers();
                 break;
             case WHATSAPP:
                 shareToWhatsapp();
@@ -388,7 +391,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     }
 
-    private void boxShare() {
+    private void shareToBox() {
         if (Utils.checkAlreadyExist(BOX)) {
             sessionBox = new BoxSession(this);
             new UploadToBox().execute();
@@ -420,13 +423,16 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         private File file;
         private BoxApiFile mFileApi;
         private Boolean success;
+        private int fileLength;
 
         @Override
         protected void onPreExecute() {
             sessionBox.authenticate();
-            mFileApi = new BoxApiFile(sessionBox);
             NotificationHandler.make();
+            mFileApi = new BoxApiFile(sessionBox);
             file = new File(saveFilePath);
+            fileLength = (int)file.length();
+            NotificationHandler.updateProgress(0,fileLength, 0);
             try {
                 inputStream = new FileInputStream(file);
             } catch (FileNotFoundException e) {
@@ -441,7 +447,13 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 if (!uploadFailedBox)
                     uploadName = file.getName();
                 BoxRequestsFile.UploadFile request = mFileApi.getUploadRequest(inputStream, uploadName, destinationFolderId);
-                final BoxFile uploadFileInfo = request.send();
+                final BoxFile uploadFileInfo = request.setProgressListener(new ProgressListener() {
+                    @Override
+                    public void onProgressChanged(long l, long l1) {
+                        int percent = ((int)l*100)/fileLength;
+                        NotificationHandler.updateProgress((int)l,fileLength, percent);
+                    }
+                }).send();
                 Log.d(LOG_TAG, uploadFileInfo.toString());
                 success = true;
             } catch (BoxException e) {
@@ -487,7 +499,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         });
         dialogBuilder.show();
     }
-    private void flickrShare() {
+    private void shareToFlickr() {
         if (Utils.checkAlreadyExist(FLICKR)){
             SnackBarHandler.show(parent,getString(R.string.uploading));
             InputStream is = null;
@@ -507,10 +519,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 f.uploadImage();
             }
         }
-
     }
 
-    private void dropboxShare() {
+    private void shareToDropBox() {
         AppKeyPair appKeys = new AppKeyPair(Constants.APP_KEY, Constants.APP_SECRET);
         AndroidAuthSession session = new AndroidAuthSession(appKeys);
         RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
@@ -659,7 +670,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         });
     }
 
-    private void postToTwitter() {
+    private void shareToTwitter() {
         if (checknetwork()) {
             if (Utils.checkAlreadyExist(TWITTER)) {
                 Glide.with(this)
@@ -706,7 +717,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     }
 
-    private void sharePhotoToFacebook() {
+    private void shareToFacebook() {
         if (Utils.checkAlreadyExist(FACEBOOK)) {
         Bitmap image = getBitmapFromPath(saveFilePath);
         SharePhoto photo = new SharePhoto.Builder()
@@ -726,7 +737,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         }
     }
 
-    private void otherShare() {
+    private void shareToOthers() {
         Uri uri = Uri.fromFile(new File(saveFilePath));
         Intent shareIntent = new Intent();
         shareIntent.setAction(Intent.ACTION_SEND);
@@ -737,36 +748,28 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void shareToInstagram() {
-        PackageManager pm = getPackageManager();
-        if (isAppInstalled("com.instagram.android", pm)) {
-            Uri uri = Uri.fromFile(new File(saveFilePath));
-            Intent share = new Intent(Intent.ACTION_SEND);
-            share.setPackage("com.instagram.android");
-            share.putExtra(Intent.EXTRA_STREAM, uri);
-            share.setType("image/*");
-            share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivity(Intent.createChooser(share, caption));
-            atleastOneShare = true;
-        } else
-            SnackBarHandler.show(parent, R.string.instagram_not_installed);
+        Uri uri = Uri.fromFile(new File(saveFilePath));
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setPackage("com.instagram.android");
+        share.putExtra(Intent.EXTRA_STREAM, uri);
+        share.setType("image/*");
+        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivity(Intent.createChooser(share, caption));
+        atleastOneShare = true;
     }
 
     private void shareToWhatsapp() {
-        PackageManager pm = getPackageManager();
-        if (isAppInstalled("com.whatsapp", pm)) {
-            Uri uri = Uri.fromFile(new File(saveFilePath));
-            Intent share = new Intent(Intent.ACTION_SEND);
-            share.setPackage("com.whatsapp");
-            share.putExtra(Intent.EXTRA_STREAM, uri);
-            share.setType("image/*");
-            share.putExtra(Intent.EXTRA_TEXT, caption);
-            startActivity(share);
-            atleastOneShare = true;
-        } else
-            SnackBarHandler.show(parent, R.string.whatsapp_not_installed);
+        Uri uri = Uri.fromFile(new File(saveFilePath));
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setPackage("com.whatsapp");
+        share.putExtra(Intent.EXTRA_STREAM, uri);
+        share.setType("image/*");
+        share.putExtra(Intent.EXTRA_TEXT, caption);
+        startActivity(share);
+        atleastOneShare = true;
     }
 
-    private void imgurShare() {
+    private void shareToImgur() {
         if (checknetwork()) {
             final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
 
