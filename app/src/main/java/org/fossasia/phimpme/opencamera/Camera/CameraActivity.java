@@ -391,7 +391,9 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
 						clicks_count++; // Count till max defined image is captured and saved
 						if (!("preference_photo_mode_expo_bracketing").equals(mode) && Integer.parseInt(burst_mode) == 1) {
 							clicks_count = 0;
-							PhotoActivity.start(CameraActivity.this, filepath, 10);
+							Intent intent = new Intent(CameraActivity.this, PhotoActivity.class);
+							intent.putExtra("filepath",filepath);
+							startActivity(intent);
 						} else if (("preference_photo_mode_expo_bracketing").equals(mode) && clicks_count >= bundle.getInt("max_expo_bracketing_n_images")) { // Start Activity once when the third image is saved
 							clicks_count = 0; //Turn image count to zero in case user wants to click another set of photos.
 							Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(filepath)));
