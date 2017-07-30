@@ -5,7 +5,7 @@
         android:color="@color/login_text_hint_color" />
     <corners android:radius="1000px" />
     <padding android:left="15dp"
-        android:top="15dp"
+        android:top="5dp"
         android:right="15dp"
-        android:bottom="15dp" />
+        android:bottom="5dp" />
 </shape>
