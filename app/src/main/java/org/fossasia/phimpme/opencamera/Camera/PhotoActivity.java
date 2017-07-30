@@ -1,11 +1,9 @@
 package org.fossasia.phimpme.opencamera.Camera;
 
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -17,17 +15,22 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
-import org.fossasia.phimpme.editor.FileUtils;
 import org.fossasia.phimpme.editor.EditImageActivity;
+import org.fossasia.phimpme.editor.FileUtils;
 import org.fossasia.phimpme.share.SharingActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
+import org.fossasia.phimpme.utilities.SnackBarHandler;
 
+import java.io.File;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import uk.co.senab.photoview.PhotoView;
 
 import static org.fossasia.phimpme.share.SharingActivity.EXTRA_OUTPUT;
@@ -36,37 +39,43 @@ import static org.fossasia.phimpme.share.SharingActivity.EXTRA_OUTPUT;
 public class PhotoActivity extends ThemedActivity {
 
     public static String FILE_PATH = "file_path";
-    final String REVIEW_ACTION = "com.android.camera.action.REVIEW";
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.parentLayout)
+    View parent;
+    @BindView(R.id.imageView)
+    PhotoView imageView;
 
-    public static void start(Activity context, final String editImagePath, final int requestCode) {
-        if (TextUtils.isEmpty(editImagePath)) {
-            Toast.makeText(context, R.string.no_choose, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        Intent it = new Intent(context, PhotoActivity.class);
-        context.startActivityForResult(it, requestCode);
-        FILE_PATH = editImagePath;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
         toolbar.setBackgroundColor(getPrimaryColor());
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_arrow_back));
+        loadFromIntent();
         setStatusBarColor();
-        PhotoView imageView = (PhotoView) findViewById(R.id.imageView);
-        imageView.setImageBitmap(BitmapFactory.decodeFile(FILE_PATH));
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                deleteFile(v);
             }
         });
+    }
+
+    private void loadFromIntent() {
+        if (null != getIntent() && null != getIntent().getExtras()){
+            FILE_PATH = getIntent().getExtras().getString("filepath");
+            if (!TextUtils.isEmpty(FILE_PATH)) {
+                Glide.with(this)
+                        .load(new File(FILE_PATH))
+                        .into(imageView);
+                return;
+            }
+        }
+        SnackBarHandler.show(parent,R.string.image_invalid);
     }
 
     public void deleteFile(View v){
@@ -93,7 +102,11 @@ public class PhotoActivity extends ThemedActivity {
         }
 
     public void editImage(View v){
-        EditImageActivity.start(this, FILE_PATH, FileUtils.genEditFile().getAbsolutePath(),1);
+        Intent intent = new Intent(PhotoActivity.this, EditImageActivity.class);
+        intent.putExtra("extra_input",FILE_PATH);
+        intent.putExtra("extra_output", FileUtils.genEditFile().getAbsolutePath());
+        intent.putExtra("requestCode",1);
+        startActivity(intent);
         finish();
     }
 

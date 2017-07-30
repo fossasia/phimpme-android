@@ -35,7 +35,7 @@ public class FileUtil {
      * @param context
      * @param dstPath
      */
-    public static void ablumUpdate(final Context context, final String dstPath) {
+    public static void albumUpdate(final Context context, final String dstPath) {
         if (TextUtils.isEmpty(dstPath) || context == null)
             return;
 
