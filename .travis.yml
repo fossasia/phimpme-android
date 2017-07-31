@@ -6,6 +6,7 @@ jdk:
 env:
   global:
     - ANDROID_API_LEVEL=25
+    - ANDROID_API_LEVEL_22=22
     - ANDROID_BUILD_TOOLS_VERSION=25.0.3
     - ANDROID_ABI=armeabi-v7a
     - ANDROID_TAG=google_apis
@@ -16,6 +17,7 @@ android:
   components:
     - tools
     - platform-tools
+    - android-$ANDROID_API_LEVEL_22
     - build-tools-$ANDROID_BUILD_TOOLS_VERSION
     - android-$ANDROID_API_LEVEL
     # For Google APIs
@@ -31,6 +33,7 @@ android:
     - '.+'
     # Specify at least one system image
     - sys-img-armeabi-v7a-google_apis-$ANDROID_API_LEVEL
+    - sys-img-armeabi-v7a-android-$ANDROID_API_LEVEL_22
     
 # prevents reuploading of Cache
 before_cache:
@@ -66,7 +69,7 @@ licenses:
     - 'google-gdk-license-.+'
 
 before_script:
-  - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
+  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
   - emulator -avd test -no-audio -no-window &
   - sleep 300
   - adb shell input keyevent 82 &
