@@ -23,7 +23,6 @@ import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -37,6 +36,8 @@ import org.fossasia.phimpme.leafpic.util.SecurityHelper;
 import org.fossasia.phimpme.leafpic.util.StaticMapProvider;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import uz.shift.colorpicker.LineColorPicker;
 import uz.shift.colorpicker.OnColorChangedListener;
 import org.fossasia.phimpme.opencamera.Camera.CameraActivity;
@@ -44,6 +45,7 @@ import org.fossasia.phimpme.opencamera.Camera.MyPreferenceFragment;
 import org.fossasia.phimpme.opencamera.Camera.PreferenceKeys;
 import org.fossasia.phimpme.opencamera.Camera.TinyDB;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
+import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 import static org.fossasia.phimpme.leafpic.util.ThemeHelper.AMOLED_THEME;
@@ -59,23 +61,32 @@ public class SettingsActivity extends ThemedActivity {
     private PreferenceUtil SP;
     private SecurityHelper securityObj;
 
-    private Toolbar toolbar;
-    private ScrollView scr;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
-    private TextView txtGT;
-    private TextView txtTT;
-    private TextView txtPT;
-    private TextView txtVT;
-    private TextView txtAT;
+    @BindView(R.id.settingAct_scrollView)
+    ScrollView scr;
+
+    @BindView(R.id.general_setting_title)
+    TextView txtGT;
+
+    @BindView(R.id.theme_setting_title)
+    TextView txtTT;
+    @BindView(R.id.picture_setting_title)
+    TextView txtPT;
+
+    @BindView(R.id.advanced_setting_title)
+    TextView txtAT;
+
+    @BindView(R.id.setting_background)
+    View parent;
 
     private SwitchCompat swNavBar;
     private SwitchCompat swStatusBar;
     private SwitchCompat swMaxLuminosity;
     private SwitchCompat swPictureOrientation;
     private SwitchCompat swDelayFullImage;
-    private SwitchCompat swInternalBrowser;
     private SwitchCompat swAutoUpdate;
-    private SwitchCompat swUseMediaStore;
     private SwitchCompat swSwipeDirection;
     private SwitchCompat swSubScaling;
 
@@ -86,15 +97,12 @@ public class SettingsActivity extends ThemedActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+        ButterKnife.bind(this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         SP = PreferenceUtil.getInstance(getApplicationContext());
 
         securityObj = new SecurityHelper(SettingsActivity.this);
 
-        txtTT = (TextView) findViewById(R.id.theme_setting_title);
-        txtGT = (TextView) findViewById(R.id.general_setting_title);
-        txtPT = (TextView) findViewById(R.id.picture_setting_title);
-        txtAT = (TextView) findViewById(R.id.advanced_setting_title);
 
         scr = (ScrollView)findViewById(R.id.settingAct_scrollView);
 
@@ -204,17 +212,6 @@ public class SettingsActivity extends ThemedActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 SP.putBoolean(getString(R.string.preference_auto_update_media), isChecked);
                 updateSwitchColor(swAutoUpdate, getAccentColor());
-            }
-        });
-
-        /*** SW MEDIA STORE ***/
-        swUseMediaStore = (SwitchCompat) findViewById(R.id.sw_use_media_mediastore);
-        swUseMediaStore.setChecked(SP.getBoolean(getString(R.string.preference_use_alternative_provider), false));
-        swUseMediaStore.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SP.putBoolean(getString(R.string.preference_use_alternative_provider), isChecked);
-                updateSwitchColor(swUseMediaStore, getAccentColor());
             }
         });
 
@@ -374,7 +371,7 @@ public class SettingsActivity extends ThemedActivity {
                     passwordDialog.dismiss();
                     startActivity(new Intent(getApplicationContext(), SecurityActivity.class));
                 } else {
-                    Toast.makeText(getApplicationContext(), R.string.wrong_password, Toast.LENGTH_SHORT).show();
+                    SnackBarHandler.show(parent,R.string.wrong_password);
                     editTextPassword.getText().clear();
                     editTextPassword.requestFocus();
                 }
@@ -725,7 +722,6 @@ public class SettingsActivity extends ThemedActivity {
         updateSwitchColor(swPictureOrientation, color);
         updateSwitchColor(swAutoUpdate, color);
         updateSwitchColor(swSwipeDirection, color);
-        updateSwitchColor(swUseMediaStore, color);
         updateSwitchColor(swSubScaling, color);
     }
 
@@ -784,7 +780,6 @@ public class SettingsActivity extends ThemedActivity {
         ((IconicsImageView) findViewById(R.id.nav_bar_icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.excluded_album_icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.auto_update_media_Icon)).setColor(color);
-        ((IconicsImageView) findViewById(R.id.use_media_mediastore_Icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.security_icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.camera_icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.sub_scaling_Icon)).setColor(color);
@@ -808,7 +803,6 @@ public class SettingsActivity extends ThemedActivity {
         ((TextView) findViewById(R.id.auto_update_media_Item)).setTextColor(color);
         ((TextView) findViewById(R.id.security_item_title)).setTextColor(color);
         ((TextView) findViewById(R.id.camera_item_title)).setTextColor(color);
-        ((TextView) findViewById(R.id.use_media_mediastore_Item)).setTextColor(color);
         ((TextView) findViewById(R.id.map_provider_item_title)).setTextColor(color);
         ((TextView) findViewById(R.id.media_viewer_swipe_direction_Item)).setTextColor(color);
 
@@ -819,7 +813,6 @@ public class SettingsActivity extends ThemedActivity {
         ((TextView) findViewById(R.id.custom_3thAct_Sub)).setTextColor(color);
         ((TextView) findViewById(R.id.picture_orientation_Item_Sub)).setTextColor(color);
         ((TextView) findViewById(R.id.Traslucent_StatusBar_Item_Sub)).setTextColor(color);
-        ((TextView) findViewById(R.id.use_media_mediastore_Item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.PrimaryColor_Item_Sub)).setTextColor(color);
         ((TextView) findViewById(R.id.accentColor_Item_Sub)).setTextColor(color);
         ((TextView) findViewById(R.id.basic_theme_item_sub)).setTextColor(color);
@@ -834,9 +827,6 @@ public class SettingsActivity extends ThemedActivity {
         ((TextView) findViewById(R.id.camera_item_sub)).setTextColor(color);
     }
 
-    private void setLayout(){
-
-    }
 
     @Override
     public void onBackPressed() {

@@ -18,6 +18,8 @@ import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
 
 import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.data.local.DatabaseHelper;
+import org.fossasia.phimpme.data.local.ImageDescModel;
 import org.fossasia.phimpme.leafpic.data.base.MediaDetailsMap;
 import org.fossasia.phimpme.leafpic.util.MediaSignature;
 import org.fossasia.phimpme.leafpic.util.StringUtils;
@@ -28,6 +30,10 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import io.realm.Realm;
+
+import static org.fossasia.phimpme.leafpic.activities.SingleMediaActivity.pathForDescription;
 
 /**
  * Created by dnld on 26/04/16.
@@ -102,7 +108,7 @@ public class Media implements Parcelable, Serializable {
         return selected;
     }
 
-    void setSelected(boolean selected) {
+    public void setSelected(boolean selected) {
         this.selected = selected;
     }
 
@@ -189,6 +195,16 @@ public class Media implements Parcelable, Serializable {
         GeoLocation location;
         if ((location = metadata.getLocation()) != null)
             details.put(context.getString(R.string.location), location.toDMSString());
+
+        Realm realm;
+        DatabaseHelper databaseHelper;
+        ImageDescModel temp;
+        realm = Realm.getDefaultInstance();
+        databaseHelper =new DatabaseHelper(realm);
+        temp= databaseHelper.getImageDesc(pathForDescription);
+        if(temp!=null && temp.getTitle().length()>0){
+            details.put(context.getString(R.string.description_image),temp.getTitle());
+        }
 
         return details;
     }

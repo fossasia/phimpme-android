@@ -667,17 +667,20 @@
 
     <string-array name="filter_titles">
         <item>None</item>
-        <item>IFix</item>
-        <item>Ansel</item>
-        <item>Testino</item>
-        <item>XPro</item>
-        <item>Retro</item>
         <item>B/W</item>
+        <item>Ansel</item>
         <item>Sepia</item>
-        <item>Cyano</item>
-        <item>Georgia</item>
-        <item>Sahara</item>
-        <item>HDR</item>
+        <item>XPro</item>
+        <item>Threshold</item>
+        <item>Outline</item>
+        <item>Grain</item>
+        <item>Hist Equal</item>
+        <item>Cyano</item><!--
+        <item>B/W</item>
+        <item>Ansel</item>
+        <item>Hist Equal</item>
+        <item>Threshold</item>
+        <item>Grain</item>-->
     </string-array>
 
 
@@ -689,8 +692,8 @@
         <item>@drawable/ic_temp</item>
         <item>@drawable/ic_tint</item>
         <item>@drawable/ic_vignette</item>
-        <item>@drawable/ic_sharp</item>
-        <item>@drawable/ic_blur</item>
+        <item>@drawable/ic_sharp</item><!--
+        <item>@drawable/ic_blur</item>-->
     </integer-array>
 
     <string-array name="enhance_titles">
@@ -702,7 +705,6 @@
         <item>tint</item>
         <item>vignette</item>
         <item>sharp</item>
-        <item>blur</item>
     </string-array>
 
 

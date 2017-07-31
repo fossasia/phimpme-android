@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:id="@+id/accounts_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
 
@@ -12,6 +13,7 @@
         android:id="@+id/accounts_recycler_view"
         android:layout_below="@id/toolbar"
         android:layout_width="match_parent"
+        android:paddingBottom="@dimen/height_bottombar"
         android:layout_height="match_parent">
     </android.support.v7.widget.RecyclerView>
 

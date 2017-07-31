@@ -5,78 +5,25 @@
 
     <group android:id="@+id/only_photos_options">
         <item
-            android:id="@+id/action_edit"
-            android:title="@string/edit"
-            app:showAsAction="never" />
-        <item
             android:id="@+id/action_use_as"
             android:title="@string/use_as"
             app:showAsAction="never" />
     </group>
 
-    <item
-        android:id="@+id/sort_action"
-        android:title="@string/sort_menu_title"
-        app:showAsAction="never">
-        <menu xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            tools:context=".PhotosActivity">
-            <group android:checkableBehavior="single">
-                <item
-                    android:id="@+id/name_sort_action"
-                    android:title="@string/name"
-                    app:showAsAction="never" />
-                <item
-                    android:id="@+id/date_taken_sort_action"
-                    android:checked="true"
-                    android:title="@string/date"
-                    app:showAsAction="never" />
-                <item
-                    android:id="@+id/size_sort_action"
-                    android:title="@string/size"
-                    app:showAsAction="never" />
-                <item
-                    android:id="@+id/type_sort_action"
-                    android:title="@string/type"
-                    app:showAsAction="never" />
-                <item
-                    android:id="@+id/numeric_sort_action"
-                    android:title="@string/numeric"
-                    app:showAsAction="never" />
-            </group>
-            <group android:checkableBehavior="all">
-                <item
-                    android:id="@+id/ascending_sort_action"
-                    android:title="@string/ascending"
-                    app:showAsAction="never" />
-            </group>
-        </menu>
-    </item>
     <group android:id="@+id/on_internal_storage">
         <item
-            android:id="@+id/action_share"
-            android:orderInCategory="0"
-            android:title="@string/share"
-            app:showAsAction="always" />
-        <item
-            android:id="@+id/action_delete"
-            android:orderInCategory="1"
-            android:title="@string/delete"
-            app:showAsAction="always" />
-        <item
             android:id="@+id/action_copy"
-            android:title="@string/copy_to"
-            app:showAsAction="never" />
+            app:showAsAction="never"
+            android:title="Copy"/>
         <item
             android:id="@+id/action_move"
-            android:title="@string/move_to"
-            app:showAsAction="never" />
-
+            app:showAsAction="never"
+            android:title="Move"/>
     </group>
 
     <item
-        android:id="@+id/action_details"
-        android:title="@string/details"
+        android:id="@+id/action_description"
+        android:title="Description"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_settings"

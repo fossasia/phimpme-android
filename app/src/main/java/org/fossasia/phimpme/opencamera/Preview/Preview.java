@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -44,6 +45,9 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -68,6 +72,8 @@ import org.fossasia.phimpme.opencamera.Preview.CameraSurface.CameraSurface;
 import org.fossasia.phimpme.opencamera.Preview.CameraSurface.MySurfaceView;
 import org.fossasia.phimpme.opencamera.Preview.CameraSurface.MyTextureView;
 import org.fossasia.phimpme.opencamera.UI.PopupView;
+
+import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 /** This class was originally named due to encapsulating the camera preview,
  *  but in practice it's grown to more than this, and includes most of the
@@ -193,8 +199,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 	private List<CameraController.Size> sizes;
 	private int current_size_index = -1; // this is an index into the sizes array, or -1 if sizes not yet set
 
-	private final VideoQualityHandler video_quality_handler = new VideoQualityHandler();
-
 	private Toast last_toast;
 	private final ToastBoxer flash_toast = new ToastBoxer();
 	private final ToastBoxer focus_toast = new ToastBoxer();
@@ -260,6 +264,7 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 
 	private boolean enable_sound;
     private int colorNum = 0;
+
 
     public Preview(ApplicationInterface applicationInterface, ViewGroup parent) {
 		if( MyDebug.LOG ) {
@@ -941,7 +946,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		view_angle_y = 43.0f; // set a sensible default
 		sizes = null;
 		current_size_index = -1;
-		video_quality_handler.resetCurrentQuality();
 		supported_flash_values = null;
 		current_flash_index = -1;
 		supported_focus_values = null;
@@ -1316,7 +1320,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 			this.supports_raw = camera_features.supports_raw;
 			this.view_angle_x = camera_features.view_angle_x;
 			this.view_angle_y = camera_features.view_angle_y;
-			this.video_quality_handler.setVideoSizes(camera_features.video_sizes);
 			this.supported_preview_sizes = camera_features.preview_sizes;
 		}
 		if( MyDebug.LOG ) {
@@ -1368,24 +1371,50 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 			if( MyDebug.LOG )
 				Log.d(TAG, "saved color effect: " + value);
 
+			final Activity activity = (Activity)this.getContext();
+
             CameraActivity.toggle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    final List<String> colorEffect = getSupportedColorEffects();
-                    colorNum++;
-                    if (colorNum == colorEffect.size())
-                        colorNum = 0;
-                    final String color = colorEffect.get(colorNum);
-                    CameraController.SupportedValues supported_values = camera_controller.setColorEffect(color);
-                    if( supported_values != null ) {
-                        color_effects = supported_values.values;
-                        applicationInterface.setColorEffectPref(supported_values.selected_value);
+                    SharedPreferences sharedPreferences = getDefaultSharedPreferences(activity);
+                    Boolean firstClick = sharedPreferences.getBoolean(activity.getString(R.string.first_click),true);
+                    if(firstClick) {
+                        new ShowcaseView.Builder(activity).setTarget(new ViewTarget(R.id.toggle_button, activity))
+                                .setContentTitle(activity.getString(R.string.color_effects))
+                                .setContentText(activity.getString(R.string.toggle_info))
+                                .hideOnTouchOutside()
+                                .build();
                     }
                     else {
-                        applicationInterface.clearColorEffectPref();
+                        final List<String> colorEffect = getSupportedColorEffects();
+                        colorNum++;
+                        if (colorNum == colorEffect.size())
+                            colorNum = 0;
+                        final String color = colorEffect.get(colorNum);
+                        CameraController.SupportedValues supported_values = camera_controller.setColorEffect(color);
+                        if (supported_values != null) {
+                            color_effects = supported_values.values;
+                            applicationInterface.setColorEffectPref(supported_values.selected_value);
+                        } else {
+                            applicationInterface.clearColorEffectPref();
+                        }
                     }
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean(activity.getString(R.string.first_click), false);
+                    editor.apply();
                 }
             });
+
+			CameraActivity.toggle.setOnLongClickListener(new View.OnLongClickListener() {
+				@Override
+				public boolean onLongClick(View v) {
+					final List<String> colorEffect = getSupportedColorEffects();
+					colorNum = 0;
+					CameraController.SupportedValues supported_values = camera_controller.setColorEffect(colorEffect.get(0));
+					applicationInterface.setColorEffectPref(supported_values.selected_value);
+					return true;
+				}
+			});
             CameraController.SupportedValues supported_values = camera_controller.setColorEffect(value);
 			if( supported_values != null ) {
 				color_effects = supported_values.values;
@@ -1623,9 +1652,7 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 			Log.d(TAG, "setupCameraParameters: time after jpeg quality: " + (System.currentTimeMillis() - debug_time));
 		}
 
-		// get available sizes
-		initialiseVideoSizes();
-		initialiseVideoQuality();
+
 		if( MyDebug.LOG ) {
 			Log.d(TAG, "setupCameraParameters: time after video sizes: " + (System.currentTimeMillis() - debug_time));
 		}
@@ -1774,68 +1801,7 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		}
 	}
 
-	private void initialiseVideoSizes() {
-		if( camera_controller == null ) {
-			if( MyDebug.LOG )
-				Log.d(TAG, "camera not opened!");
-			return;
-		}
-		this.video_quality_handler.sortVideoSizes();
-	}
 
-	private void initialiseVideoQuality() {
-		int cameraId = camera_controller.getCameraId();
-		List<Integer> profiles = new ArrayList<>();
-		List<VideoQualityHandler.Dimension2D> dimensions = new ArrayList<>();
-		if( CamcorderProfile.hasProfile(cameraId, CamcorderProfile.QUALITY_HIGH) ) {
-			CamcorderProfile profile = CamcorderProfile.get(cameraId, CamcorderProfile.QUALITY_HIGH);
-			profiles.add(CamcorderProfile.QUALITY_HIGH);
-			dimensions.add(new VideoQualityHandler.Dimension2D(profile.videoFrameWidth, profile.videoFrameHeight));
-		}
-		if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ) {
-			if( CamcorderProfile.hasProfile(cameraId, CamcorderProfile.QUALITY_2160P) ) {
-				CamcorderProfile profile = CamcorderProfile.get(cameraId, CamcorderProfile.QUALITY_2160P);
-				profiles.add(CamcorderProfile.QUALITY_2160P);
-				dimensions.add(new VideoQualityHandler.Dimension2D(profile.videoFrameWidth, profile.videoFrameHeight));
-			}
-		}
-		if( CamcorderProfile.hasProfile(cameraId, CamcorderProfile.QUALITY_1080P) ) {
-			CamcorderProfile profile = CamcorderProfile.get(cameraId, CamcorderProfile.QUALITY_1080P);
-			profiles.add(CamcorderProfile.QUALITY_1080P);
-			dimensions.add(new VideoQualityHandler.Dimension2D(profile.videoFrameWidth, profile.videoFrameHeight));
-		}
-		if( CamcorderProfile.hasProfile(cameraId, CamcorderProfile.QUALITY_720P) ) {
-			CamcorderProfile profile = CamcorderProfile.get(cameraId, CamcorderProfile.QUALITY_720P);
-			profiles.add(CamcorderProfile.QUALITY_720P);
-			dimensions.add(new VideoQualityHandler.Dimension2D(profile.videoFrameWidth, profile.videoFrameHeight));
-		}
-		if( CamcorderProfile.hasProfile(cameraId, CamcorderProfile.QUALITY_480P) ) {
-			CamcorderProfile profile = CamcorderProfile.get(cameraId, CamcorderProfile.QUALITY_480P);
-			profiles.add(CamcorderProfile.QUALITY_480P);
-			dimensions.add(new VideoQualityHandler.Dimension2D(profile.videoFrameWidth, profile.videoFrameHeight));
-		}
-		if( CamcorderProfile.hasProfile(cameraId, CamcorderProfile.QUALITY_CIF) ) {
-			CamcorderProfile profile = CamcorderProfile.get(cameraId, CamcorderProfile.QUALITY_CIF);
-			profiles.add(CamcorderProfile.QUALITY_CIF);
-			dimensions.add(new VideoQualityHandler.Dimension2D(profile.videoFrameWidth, profile.videoFrameHeight));
-		}
-		if( CamcorderProfile.hasProfile(cameraId, CamcorderProfile.QUALITY_QVGA) ) {
-			CamcorderProfile profile = CamcorderProfile.get(cameraId, CamcorderProfile.QUALITY_QVGA);
-			profiles.add(CamcorderProfile.QUALITY_QVGA);
-			dimensions.add(new VideoQualityHandler.Dimension2D(profile.videoFrameWidth, profile.videoFrameHeight));
-		}
-		if( CamcorderProfile.hasProfile(cameraId, CamcorderProfile.QUALITY_QCIF) ) {
-			CamcorderProfile profile = CamcorderProfile.get(cameraId, CamcorderProfile.QUALITY_QCIF);
-			profiles.add(CamcorderProfile.QUALITY_QCIF);
-			dimensions.add(new VideoQualityHandler.Dimension2D(profile.videoFrameWidth, profile.videoFrameHeight));
-		}
-		if( CamcorderProfile.hasProfile(cameraId, CamcorderProfile.QUALITY_LOW) ) {
-			CamcorderProfile profile = CamcorderProfile.get(cameraId, CamcorderProfile.QUALITY_LOW);
-			profiles.add(CamcorderProfile.QUALITY_LOW);
-			dimensions.add(new VideoQualityHandler.Dimension2D(profile.videoFrameWidth, profile.videoFrameHeight));
-		}
-		this.video_quality_handler.initialiseVideoQualityFromProfiles(profiles, dimensions);
-	}
 
 	private CamcorderProfile getCamcorderProfile(String quality) {
 		if( MyDebug.LOG )
@@ -4169,9 +4135,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		return sizes.get(current_size_index);
 	}
 
-	public VideoQualityHandler getVideoQualityHander() {
-		return this.video_quality_handler;
-	}
 
 	public List<String> getSupportedFlashValues() {
 		return supported_flash_values;

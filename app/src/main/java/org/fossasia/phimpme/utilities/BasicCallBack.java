@@ -5,5 +5,5 @@ package org.fossasia.phimpme.utilities;
  */
 
 public interface BasicCallBack {
-    void callBack(String filepath);
+    void callBack(int status, Object data);
 }

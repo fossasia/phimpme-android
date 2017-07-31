@@ -1,1 +1,2 @@
-include ':app', ':photoview'
+include ':app', ':photoview', ':pdk'
+include ':openCVLibrary320'

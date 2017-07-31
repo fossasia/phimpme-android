@@ -1,5 +1,5 @@
 # phimpme-android
-
+<img src="/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" align="left" width="200" hspace="10" vspace="10">
 Phimp.me is a Photo App for Android that aims to replace proprietary photo applications. It offers features such as taking photos, adding filters, editing images and uploading them to social networks.
 
 [![Build Status](https://travis-ci.org/fossasia/phimpme-android.svg?branch=master)](https://travis-ci.org/fossasia/phimpme-android)
@@ -8,8 +8,6 @@ Phimp.me is a Photo App for Android that aims to replace proprietary photo appli
 
 ## Communication
 Join Gitter channel: https://gitter.im/fossasia/phimpme
-
-Please join our chat channel on Slack: http://fossasia.slack.com/messages/phimpme/. You need to invite yourself first here: http://fossasia-slack.herokuapp.com/
 
 ## How to Contribute
 This is an Open Source project and we would be happy to see contributors who report bugs and file feature requests submitting pull requests as well.This project adheres to the Contributor Covenant [code of conduct](https://github.com/fossasia/phimpme-android/blob/development/CONTRIBUTING.md). By participating, you are expected to uphold this code style. Please report issues here https://github.com/fossasia/phimpme-android/issues
@@ -47,10 +45,13 @@ We have the following branches
 
   <table>
     <tr>
-     <td><img src="https://raw.githubusercontent.com/anantprsd5/phimpme-android/ss/docs/screenshots/gallery.png"></td>
-     <td><img src="https://raw.githubusercontent.com/anantprsd5/phimpme-android/ss/docs/screenshots/menu.png"></td>
-     <td><img src="https://raw.githubusercontent.com/anantprsd5/phimpme-android/ss/docs/screenshots/camera.png"></td>
-     <td><img src="https://raw.githubusercontent.com/anantprsd5/phimpme-android/ss/docs/screenshots/editImage.png"></td>
+     <td><img src="/docs/screenshots/screenshot_1.png"></td>
+     <td><img src="/docs/screenshots/screenshot_3.png"></td>
+     <td><img src="/docs/screenshots/screenshot_5.png"></td>
+     <td><img src="/docs/screenshots/screenshot_2.png"></td>
+     <td><img src="/docs/screenshots/screenshot_4.png"></td>
+     
+    
 </td>
     </tr>
   </table>
@@ -60,15 +61,13 @@ We have the following branches
 ## Features
 **Feature**|**Description**|**Status**
 -----|-----|-----
-Home Screen|Show local captured images|Established
+Home Screen|Show local captured images/Album wise|Established
  |Grid view of images|Diplaying images in grid|Established
  |Edit, Upload, share option on image click|Working
-Map Activity|Show photos on the map|Working
 Camera|Capture Image, Toggle Camera|Working
  |Apply filters, Camera features|Flash on/off, Exposure etc|Working
 Upload|Select account on which you want to upload|Not Implemented
  |Select images which you want to upload|To upload photos|Not implemented
- |Share images|With bluetooth|Not Implemented
 Settings|Add Accounts|Not Implemented
  |Photos settings|Set password, choose folder etc|Working
 ## Development Setup
@@ -87,33 +86,24 @@ Before you begin, you should already have the Android Studio SDK downloaded and 
 
     - *Note:* If you recieve a Gradle sync error titled, "failed to find ...", you should click on the link below the error message (if avaliable) that says *Install missing platform(s) and sync project* and allow Android studio to fetch you what is missing.
 
-5. Once all build errors have been resolved, you should be all set to build the app and test it.
+5. Download this [OpenCV-android-sdk](https://github.com/opencv/opencv/releases/download/3.2.0/opencv-3.2.0-android-sdk.zip) zip file and extract it.
+     
+     - Copy all the files from *"OpenCV-android-sdk/sdk/native/3rdparty"* to *"phimpme-android/app/src/main/3rdparty"* (create directory if it doesn't exist)
+     - Copy all the files from *"OpenCV-android-sdk/sdk/native/libs"* to *"phimpme-android/app/src/main/jniLibs"* (create directory if it doesn't exist)
+     - Now build your project. If your build fails then try deleting these build directories *"phimpme-android/app/.externalNativeBuild"* and *"phimpme-android/app/build"*, if they exist and run the build again.
 
-6. To Build the app, go to *Build>Make Project* (or alternatively press the Make Project icon in the toolbar).
+6. Once all build errors have been resolved, you should be all set to build the app and test it.
 
-7. If the app was built succesfully, you can test it by running it on either a real device or an emulated one by going to *Run>Run 'app'* or presing the Run icon in the toolbar.
+7. To Build the app, go to *Build>Make Project* (or alternatively press the Make Project icon in the toolbar).
 
-**Setting up the map API**
+8. If the app was built succesfully, you can test it by running it on either a real device or an emulated one by going to *Run>Run 'app'* or presing the Run icon in the toolbar.
 
-1. MapsActivity currently implements the OnMapReadyCallback interface and extends FragmentActivity.
+**To login and upload images to Dropbox**
 
-2. The class overrides FragmentActivity’s onCreate() method. It also override OnMapReadyCallback’s onMapReady() method. This method is called when the map is ready to be used. The code declared in this method creates a marker with coordinates near Sydney, Australia and adds the marker to the map.
-
-3. To use any of the Google Maps APIs, you need to create an API key and enable any required APIs from the developer console.
-
-4. Open res/values/google_maps_api.xml and you will see a link you see in the top comment. Now copy and paste the link shown above into your browser.
-
-5. On the Enable an API page, select Create a project and click Continue.
-
-6. On the next screen, click the Create API key button to continue.
-
-7. When that’s done, copy the API key shown in the API key created dialog and click Close.
-
-8. Head back to google_maps_api.xml, replace the value of google_maps_key key with the copied API key.
-
-Please note that you should refrain commiting your value of API key. To use the map you need map api key from google, by providing fingerprint of your keystore certificate you used for generating apk (debuge.keystore in case of development environment). Once you get the map api key for specific certificate you MUST use the same certificate debuge.keystore) to generate the apk file to run the app successfully on all the device.
-
-As the app is currently not on play store so this is the work around.
+1. Go to the Dropbox App console([Link](https://www.dropbox.com/developers/apps))
+2. Create a new application and get the APP_KEY and API_SECRET.
+3. In the AndroidManifest.xml file, in the AuthActivity section, replace the APPKEY with your own App key.
+4. Go to Utilities/Constants.java file and add replace the APP_KEY and API_SECRET with the key received from step 2.
 
 ## License
 

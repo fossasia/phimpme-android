@@ -378,56 +378,7 @@ public class PopupView extends LinearLayout {
 				}
     		});
 
-    		final List<String> video_sizes = preview.getVideoQualityHander().getSupportedVideoQuality();
-    		video_size_index = preview.getVideoQualityHander().getCurrentVideoQualityIndex();
-    		final List<String> video_size_strings = new ArrayList<>();
-    		for(String video_size : video_sizes) {
-    			String quality_string = preview.getCamcorderProfileDescriptionShort(video_size);
-    			video_size_strings.add(quality_string);
-    		}
-    		addArrayOptionsToPopup(video_size_strings, getResources().getString(R.string.video_quality), false, video_size_index, false, "VIDEO_RESOLUTIONS", new ArrayOptionsPopupListener() {
-		    	final Handler handler = new Handler();
-				final Runnable update_runnable = new Runnable() {
-					@Override
-					public void run() {
-						if( MyDebug.LOG )
-							Log.d(TAG, "update settings due to video resolution change");
-						main_activity.updateForSettings("");
-					}
-				};
 
-				private void update() {
-    				if( video_size_index == -1 )
-    					return;
-    				String quality = video_sizes.get(video_size_index);
-    				SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(main_activity);
-					SharedPreferences.Editor editor = sharedPreferences.edit();
-					editor.putString(PreferenceKeys.getVideoQualityPreferenceKey(preview.getCameraId()), quality);
-					editor.apply();
-
-					// make it easier to scroll through the list of resolutions without a pause each time
-					handler.removeCallbacks(update_runnable);
-					handler.postDelayed(update_runnable, 400);
-    			}
-				@Override
-				public int onClickPrev() {
-	        		if( video_size_index != -1 && video_size_index > 0 ) {
-	        			video_size_index--;
-	        			update();
-	    				return video_size_index;
-	        		}
-					return -1;
-				}
-				@Override
-				public int onClickNext() {
-	                if( video_size_index != -1 && video_size_index < video_sizes.size()-1 ) {
-	                	video_size_index++;
-	        			update();
-	    				return video_size_index;
-	        		}
-					return -1;
-				}
-    		});
 
     		final String[] timer_values = getResources().getStringArray(R.array.preference_timer_values);
         	String[] timer_entries = getResources().getStringArray(R.array.preference_timer_entries);
@@ -613,8 +564,6 @@ public class PopupView extends LinearLayout {
 				List<String> supported_scene_modes = preview.getSupportedSceneModes();
 				addRadioOptionsToPopup(supported_scene_modes, getResources().getString(R.string.scene_mode), PreferenceKeys.getSceneModePreferenceKey(), preview.getCameraController().getDefaultSceneMode(), "TEST_SCENE_MODE", null);
 
-				List<String> supported_color_effects = preview.getSupportedColorEffects();
-				addRadioOptionsToPopup(supported_color_effects, getResources().getString(R.string.color_effect), PreferenceKeys.getColorEffectPreferenceKey(), preview.getCameraController().getDefaultColorEffect(), "TEST_COLOR_EFFECT", null);
 			}
 
 		}

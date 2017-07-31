@@ -1,85 +1,114 @@
-<RelativeLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:id="@+id/parentLayout"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
 
     <LinearLayout
+        android:id="@+id/control_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/control_area"
-        android:background="@android:color/transparent"
         android:layout_alignParentBottom="true"
+        android:background="@android:color/transparent"
         android:orientation="vertical">
 
         <RelativeLayout
+            android:id="@+id/button_container"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/editor_top_row_size"
-            android:id="@+id/button_container">
+            android:layout_height="@dimen/editor_top_row_size">
 
             <ImageButton
-                android:layout_width="@dimen/icon_item_image_size_top"
-                android:layout_height="@dimen/icon_item_image_size_top"
                 android:id="@+id/edit_cancel"
+                android:layout_width="@dimen/icon_item_image_size_top"
+                android:layout_height="@dimen/icon_item_image_size_top"
                 android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:scaleType="fitCenter"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                app:srcCompat="@drawable/ic_cancel2"
                 android:background="?android:attr/selectableItemBackground"
-                android:layout_alignParentStart="true"/>
-
-            <ImageButton
-                android:layout_width="@dimen/icon_item_image_size_top"
-                android:layout_height="@dimen/icon_item_image_size_top"
-                android:layout_centerVertical="true"
-                android:id="@+id/edit_befaft"
                 android:scaleType="fitCenter"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                app:srcCompat="@drawable/ic_beforeafter"
-                android:background="?android:attr/selectableItemBackground"
-                android:layout_centerHorizontal="true"/>
+                app:srcCompat="@drawable/ic_cancel2" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true">
+
+                <ImageButton
+                    android:id="@+id/edit_undo"
+                    android:layout_width="@dimen/icon_item_image_size_top"
+                    android:layout_height="@dimen/icon_item_image_size_top"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    app:srcCompat="@drawable/ic_undo_black"
+                    android:scaleType="fitCenter"
+                    android:background="?android:attr/selectableItemBackground"/>
+
+                <ImageButton
+                    android:id="@+id/edit_befaft"
+                    android:layout_width="@dimen/icon_item_image_size_top"
+                    android:layout_height="@dimen/icon_item_image_size_top"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:scaleType="fitCenter"
+                    app:srcCompat="@drawable/ic_beforeafter"
+                    android:background="?android:attr/selectableItemBackground"/>
+
+                <ImageButton
+                    android:id="@+id/edit_redo"
+                    android:layout_width="@dimen/icon_item_image_size_top"
+                    android:layout_height="@dimen/icon_item_image_size_top"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    app:srcCompat="@drawable/ic_redo_black"
+                    android:scaleType="fitCenter"
+                    android:background="?android:attr/selectableItemBackground"/>
+
+            </LinearLayout>
 
             <ImageButton
-                android:layout_width="@dimen/icon_item_image_size_top"
-                android:layout_height="@dimen/icon_item_image_size_top"
                 android:id="@+id/edit_save"
+                android:layout_width="@dimen/icon_item_image_size_top"
+                android:layout_height="@dimen/icon_item_image_size_top"
                 android:layout_alignParentEnd="true"
-                android:scaleType="fitCenter"
-                app:srcCompat="@drawable/ic_save"
+                android:layout_alignParentRight="true"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:background="?android:attr/selectableItemBackground"
-                android:layout_alignParentRight="true"/>
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_save" />
 
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/md_grey_300"/>
+            android:background="@color/md_grey_300" />
 
         <FrameLayout
-            android:layout_marginTop="5dp"
+            android:id="@+id/preview_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/preview_container"/>
+            android:layout_marginTop="5dp" />
 
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/md_grey_300"/>
+            android:background="@color/md_grey_300" />
 
         <FrameLayout
-            android:layout_marginTop="5dp"
+            android:id="@+id/controls_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/controls_container"/>
+            android:layout_marginTop="5dp" />
 
     </LinearLayout>
 
@@ -87,45 +116,45 @@
         android:id="@+id/work_space"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_alignParentTop="true"
         android:layout_above="@+id/control_area"
+        android:layout_alignParentTop="true"
         android:background="#000000">
 
-        <org.fossasia.phimpme.editor.editimage.view.imagezoom.ImageViewTouch
+        <org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouch
             android:id="@+id/main_image"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center" />
 
-        <org.fossasia.phimpme.editor.editimage.view.StickerView
+        <org.fossasia.phimpme.editor.view.StickerView
             android:id="@+id/sticker_panel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
             android:visibility="gone" />
 
-        <org.fossasia.phimpme.editor.editimage.view.CropImageView
+        <org.fossasia.phimpme.editor.view.CropImageView
             android:id="@+id/crop_panel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
             android:visibility="gone" />
 
-        <org.fossasia.phimpme.editor.editimage.view.RotateImageView
+        <org.fossasia.phimpme.editor.view.RotateImageView
             android:id="@+id/rotate_panel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
             android:visibility="gone" />
 
-        <org.fossasia.phimpme.editor.editimage.view.TextStickerView
+        <org.fossasia.phimpme.editor.view.TextStickerView
             android:id="@+id/text_sticker_panel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
             android:visibility="gone" />
 
-        <org.fossasia.phimpme.editor.editimage.view.CustomPaintView
+        <org.fossasia.phimpme.editor.view.CustomPaintView
             android:id="@+id/custom_paint_view"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

@@ -1,12 +1,15 @@
 package org.fossasia.phimpme.leafpic.util;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,14 +37,20 @@ import java.util.Locale;
  */
 public class AlertDialogsHelper {
 
-    public static AlertDialog getInsertTextDialog(final ThemedActivity activity, AlertDialog.Builder dialogBuilder , EditText editText, @StringRes int title) {
+    public static AlertDialog getInsertTextDialog(final ThemedActivity activity, AlertDialog.Builder dialogBuilder , EditText editText, @StringRes int title, String link) {
 
         View dialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_insert_text, null);
         TextView textViewTitle = (TextView) dialogLayout.findViewById(R.id.rename_title);
 
         ((CardView) dialogLayout.findViewById(R.id.dialog_chose_provider_title)).setCardBackgroundColor(activity.getCardBackgroundColor());
         textViewTitle.setBackgroundColor(activity.getPrimaryColor());
-        textViewTitle.setText(title);
+        if(link!=null){
+            textViewTitle.setText( Html.fromHtml(link));
+            textViewTitle.setLinkTextColor(Color.WHITE);
+        }else{
+            textViewTitle.setText(title);
+        }
+        textViewTitle.setMovementMethod(LinkMovementMethod.getInstance());
         ThemeHelper.setCursorDrawableColor(editText, activity.getTextColor());
 
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -62,7 +71,7 @@ public class AlertDialogsHelper {
         return dialogBuilder.create();
     }
 
-    public static AlertDialog getTextDialog(final ThemedActivity activity, AlertDialog.Builder textDialogBuilder, @StringRes int title, @StringRes int Message){
+    public static AlertDialog getTextDialog(final ThemedActivity activity, AlertDialog.Builder textDialogBuilder, @StringRes int title, @StringRes int Message, String msg){
         View dialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_text, null);
 
         TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.text_dialog_title);
@@ -71,7 +80,8 @@ public class AlertDialogsHelper {
         ((CardView) dialogLayout.findViewById(R.id.message_card)).setCardBackgroundColor(activity.getCardBackgroundColor());
         dialogTitle.setBackgroundColor(activity.getPrimaryColor());
         dialogTitle.setText(title);
-        dialogMessage.setText(Message);
+        if (msg != null) dialogMessage.setText(msg);
+        else dialogMessage.setText(Message);
         dialogMessage.setTextColor(activity.getTextColor());
         textDialogBuilder.setView(dialogLayout);
         return textDialogBuilder.create();

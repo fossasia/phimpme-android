@@ -24,13 +24,13 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.editor.FileUtils;
-import org.fossasia.phimpme.editor.editimage.EditImageActivity;
-import org.fossasia.phimpme.shareActivity;
+import org.fossasia.phimpme.editor.EditImageActivity;
+import org.fossasia.phimpme.share.SharingActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 
 import uk.co.senab.photoview.PhotoView;
 
-import static org.fossasia.phimpme.shareActivity.EXTRA_OUTPUT;
+import static org.fossasia.phimpme.share.SharingActivity.EXTRA_OUTPUT;
 
 
 public class PhotoActivity extends ThemedActivity {
@@ -104,7 +104,7 @@ public class PhotoActivity extends ThemedActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_photoactivity, menu);
-        Drawable shareIcon = getResources().getDrawable(R.drawable.ic_share_minimal, getTheme());
+        Drawable shareIcon = getResources().getDrawable(R.drawable.ic_others_black, getTheme());
         shareIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         menu.findItem(R.id.menu_share).setIcon(shareIcon);
         return true;
@@ -113,7 +113,7 @@ public class PhotoActivity extends ThemedActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (R.id.menu_share == item.getItemId()){
-            Intent share = new Intent(PhotoActivity.this,shareActivity.class);
+            Intent share = new Intent(PhotoActivity.this,SharingActivity.class);
             share.putExtra(EXTRA_OUTPUT,FILE_PATH);
             startActivity(share);
             finish();

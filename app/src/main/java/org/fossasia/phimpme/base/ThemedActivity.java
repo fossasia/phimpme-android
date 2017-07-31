@@ -42,7 +42,9 @@ public class ThemedActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         SP = PreferenceUtil.getInstance(getApplicationContext());
         themeHelper = new ThemeHelper(getApplicationContext());
+        setNavBarColor();
         setNavigationBarColor(getPrimaryColor());
+        setStatusBarColor();
     }
 
     @Override
@@ -53,11 +55,11 @@ public class ThemedActivity extends BaseActivity {
 
     public void updateTheme() {
         themeHelper.updateTheme();
-        coloredNavBar = SP.getBoolean(getString(R.string.preference_colored_nav_bar), false);
+        coloredNavBar = SP.getBoolean(getString(R.string.preference_colored_nav_bar), true);
         obscuredStatusBar = SP.getBoolean(getString(R.string.preference_translucent_status_bar), true);
         applyThemeImgAct = SP.getBoolean(getString(R.string.preference_apply_theme_pager), true);
         setNavigationBarColor(getPrimaryColor());
-
+        setNavBarColor();
     }
 
     @Override
@@ -69,7 +71,7 @@ public class ThemedActivity extends BaseActivity {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public void setNavBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (isNavigationBarColored()) getWindow().setNavigationBarColor(getPrimaryColor());
+            if (isNavigationBarColored()) getWindow().setNavigationBarColor(ColorPalette.getObscuredColor(getPrimaryColor()));
             else
                 getWindow().setNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.md_black_1000));
         }
@@ -78,10 +80,10 @@ public class ThemedActivity extends BaseActivity {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     protected void setStatusBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            if (isTranslucentStatusBar())
-                getWindow().setStatusBarColor(ColorPalette.getObscuredColor(getPrimaryColor()));
-            else
-                getWindow().setStatusBarColor(getPrimaryColor());
+            //if (isTranslucentStatusBar())
+            getWindow().setStatusBarColor(ColorPalette.getObscuredColor(getPrimaryColor()));
+            /*else
+                getWindow().setStatusBarColor(getPrimaryColor());*/
         }
     }
 

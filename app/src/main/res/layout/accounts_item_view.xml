@@ -1,73 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_marginBottom="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:orientation="horizontal"
+    app:srcCompat="@mipmap/ic_launcher">
 
-    <ImageView
-        android:id="@+id/account_avatar"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher_round"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintEnd_toEndOf="@+id/account_logo_indicator"
-        android:layout_marginEnd="8dp" />
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/account_avatar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            app:srcCompat="@mipmap/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/account_logo_indicator"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_alignBottom="@+id/account_avatar"
+            android:layout_alignEnd="@+id/account_avatar"
+            android:layout_alignRight="@+id/account_avatar"
+            app:srcCompat="@mipmap/ic_launcher" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/account_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toEndOf="@+id/account_avatar"
-        android:layout_marginStart="8dp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp"
-        android:layout_marginLeft="8dp" />
-
-    <TextView
-        android:id="@+id/account_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_weight="5"
         android:text="TextView"
         android:textColor="@color/black"
-        app:layout_constraintStart_toEndOf="@+id/account_avatar"
-        app:layout_constraintTop_toBottomOf="@+id/account_username"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp" />
-
-    <ImageView
-        android:id="@+id/account_logo_indicator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_twitter_indicator"
-        android:layout_marginTop="44dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="44dp"
-        android:layout_marginLeft="44dp" />
+        android:textSize="20sp" />
 
     <ImageView
         android:id="@+id/sign_out_button"
         android:layout_width="41dp"
         android:layout_height="41dp"
-        app:srcCompat="@drawable/ic_close_black_24dp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginBottom="8dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_close_black_24dp" />
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/sign_in_sign_out_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="0dp"
+        android:layout_weight="1" />
+</LinearLayout>

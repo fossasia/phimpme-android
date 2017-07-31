@@ -3,129 +3,91 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/share_layout"
     android:layout_height="match_parent"
-    tools:context="org.fossasia.phimpme.me.vn.mbm.phimp.shareActivity"
     android:orientation="vertical">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/card_view"
-        android:layout_width="fill_parent"
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        android:background="@color/md_light_appbar"
+        android:windowActionBarOverlay="true" />
+
+    <org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouch
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:elevation="20dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        app:cardCornerRadius="4dp">
-
-        <RelativeLayout
-            android:id="@+id/linearImage"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:paddingTop="10dp"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp">
-
-            <ImageView
-                android:id="@+id/image_view"
-                android:layout_width="350dp"
-                android:layout_height="170dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"/>
-
-            <EditText
-                android:id="@+id/edit_text"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/image_view"
-                android:hint="Write a caption"
-                android:textColorHint="#ffffff"
-                android:paddingTop="45dp"/>
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
-
-    <TextView
-        android:id="@+id/share_Text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SHARE"
-        android:paddingTop="10dp"
-        android:paddingLeft="10dp"
-        android:textStyle="bold"
-        android:textSize="22dip"/>
-    <View
-        android:layout_width="368dp"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="8dp"
-        android:paddingTop="20dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"/>
+        android:id="@+id/share_image"
+        android:layout_below="@+id/toolbar"
+        android:layout_weight="10"
+        android:layout_alignParentStart="true"/>
 
     <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-
-        <ImageView
-            android:id="@+id/facebook_button"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/edit_text_caption_container"
+        android:padding="10dp"
+        android:layout_above="@+id/divider1">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="83dp"
-            android:layout_marginStart="83dp"
-            android:layout_marginTop="32dp"
-            app:srcCompat="@drawable/ic_facebook_indicator"/>
-
-        <ImageView
-            android:id="@+id/twitter_button"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
-            android:layout_alignTop="@+id/facebook_button"
-            android:layout_marginEnd="44dp"
-            android:layout_marginRight="44dp"
-            android:layout_toLeftOf="@+id/fab_home"
-            android:layout_toStartOf="@+id/fab_home"
-            app:srcCompat="@drawable/ic_twitter_indicator"/>
-
-        <ImageView
-            android:id="@+id/instagram_button"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
-            app:srcCompat="@drawable/ic_instagram"
-            android:layout_above="@+id/fab_home"
-            android:layout_alignLeft="@+id/facebook_button"
-            android:layout_alignStart="@+id/facebook_button"
-            android:layout_marginBottom="16dp"/>
-
-        <ImageView
-            android:id="@+id/share_button"
-            android:layout_width="65dp"
-            android:layout_height="65dp"
-            android:layout_alignLeft="@+id/twitter_button"
-            android:layout_alignStart="@+id/twitter_button"
-            android:layout_alignTop="@+id/instagram_button"
-            app:srcCompat="@drawable/ic_shareicon"/>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_home"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="bottom|end"
-            android:layout_marginBottom="23dp"
-            android:layout_marginRight="5dp"
-            app:srcCompat="@drawable/ic_home"
-            android:layout_alignParentBottom="true"
+            android:hint="Write Something"
+            android:layout_marginLeft="15dp"
+            android:id="@+id/edittext_share_caption"
+            android:singleLine="true"
+            android:maxLines="1"
+            android:layout_marginRight="4dp"
+            android:layout_toLeftOf="@+id/button_text_focus"
+            android:background="@android:color/transparent"
+            android:textColorHint="@color/md_grey_600"/>
+        <com.mikepenz.iconics.view.IconicsImageView
+            android:layout_width="20dp"
+            android:id="@+id/button_text_focus"
+            android:layout_height="20dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"/>
+            android:layout_marginRight="10dp"
+            android:layout_alignParentEnd="true"
+            android:scaleType="fitCenter"
+            app:iiv_icon="faw-pencil"/>
 
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/bottom_view"
+        android:id="@+id/divider1"
+        android:layout_marginLeft="@dimen/share_cell_margin_h"
+        android:layout_marginRight="@dimen/share_cell_margin_h"
+        android:background="@color/md_grey_400"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/scroll_view_height"
+        android:layout_above="@+id/share_done"
+        android:layout_weight="1"
+        android:id="@+id/bottom_view">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/share_account"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
+
+    </ScrollView>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/share_done"
+        android:padding="15dp"
+        android:textColor="@color/white"
+        android:text="@string/share_done"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/share_button_margin"/>
 
 </LinearLayout>

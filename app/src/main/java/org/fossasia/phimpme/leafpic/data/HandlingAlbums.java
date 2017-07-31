@@ -203,64 +203,6 @@ public class HandlingAlbums {
     selectedAlbums.clear();
   }
 
-  public void installShortcutForSelectedAlbums(Context appCtx) {
-    for (Album selectedAlbum : selectedAlbums) {
-
-      Intent shortcutIntent;
-      shortcutIntent = new Intent(appCtx, SplashScreen.class);
-      shortcutIntent.setAction(SplashScreen.ACTION_OPEN_ALBUM);
-      shortcutIntent.putExtra("albumPath", selectedAlbum.getPath());
-      shortcutIntent.putExtra("albumId", selectedAlbum.getId());
-      shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-      shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-      Intent addIntent = new Intent();
-      addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-      addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, selectedAlbum.getName());
-
-      File image = new File(selectedAlbum.getCoverAlbum().getPath());
-      Bitmap bitmap;
-
-      String mime = StringUtils.getMimeType(image.getAbsolutePath());
-
-      if(mime.startsWith("image")) {
-        bitmap = BitmapFactory.decodeFile(image.getAbsolutePath(), new BitmapFactory.Options());
-      } else if(mime.startsWith("video")) {
-        bitmap = ThumbnailUtils.createVideoThumbnail(selectedAlbum.getCoverAlbum().getPath(),
-                MediaStore.Images.Thumbnails.MINI_KIND);
-      } else return;
-      bitmap = Bitmap.createScaledBitmap(getCroppedBitmap(bitmap), 128, 128, false);
-      addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, addWhiteBorder(bitmap, 5));
-
-      addIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
-      appCtx.sendBroadcast(addIntent);
-    }
-  }
-
-  private Bitmap addWhiteBorder(Bitmap bmp, int borderSize) {
-    Bitmap bmpWithBorder = Bitmap.createBitmap(bmp.getWidth() + borderSize * 2, bmp.getHeight() + borderSize * 2, bmp.getConfig());
-    Canvas canvas = new Canvas(bmpWithBorder);
-    canvas.drawColor(Color.WHITE);
-    canvas.drawBitmap(bmp, borderSize, borderSize, null);
-    return bmpWithBorder;
-  }
-
-  private Bitmap getCroppedBitmap(Bitmap srcBmp){
-    Bitmap dstBmp;
-    if (srcBmp.getWidth() >= srcBmp.getHeight()){
-      dstBmp = Bitmap.createBitmap(srcBmp,
-              srcBmp.getWidth()/2 - srcBmp.getHeight()/2, 0,
-              srcBmp.getHeight(), srcBmp.getHeight()
-      );
-    } else {
-      dstBmp = Bitmap.createBitmap(srcBmp, 0,
-              srcBmp.getHeight()/2 - srcBmp.getWidth()/2,
-              srcBmp.getWidth(), srcBmp.getWidth()
-      );
-    }
-    return dstBmp;
-  }
-
   private void scanFile(Context context, String[] path) {   MediaScannerConnection.scanFile(context, path, null, null); }
 
   public void hideAlbum(String path, Context context) {
@@ -357,7 +299,7 @@ public class HandlingAlbums {
     Album camera = null;
 
     for(Album album : dispAlbums)
-      if (album.getName().equals("Camera") && dispAlbums.remove(album)) {
+      if (album.getName().equals("Phimpme Camera") && dispAlbums.remove(album)) {
         camera = album;
         break;
       }
@@ -365,7 +307,7 @@ public class HandlingAlbums {
     Collections.sort(dispAlbums, AlbumsComparators.getComparator(getSortingMode(), getSortingOrder()));
 
     if (camera != null) {
-      camera.setName(context.getString(R.string.camera));
+      camera.setName(context.getString(R.string.phimpme_camera));
       dispAlbums.add(0, camera);
     }
   }
