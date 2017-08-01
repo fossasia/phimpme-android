@@ -21,6 +21,7 @@ import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
+import static org.fossasia.phimpme.utilities.Constants.PACKAGE_GOOGLEPLUS;
 import static org.fossasia.phimpme.utilities.Constants.PACKAGE_INSTAGRAM;
 import static org.fossasia.phimpme.utilities.Constants.PACKAGE_WHATSAPP;
 
@@ -118,6 +119,10 @@ public class Utils {
 
         if (isAppInstalled(PACKAGE_WHATSAPP,packageManager))
             list.add(AccountDatabase.AccountName.WHATSAPP);
+
+        if (isAppInstalled(PACKAGE_GOOGLEPLUS,packageManager))
+            list.add(AccountDatabase.AccountName.GOOGLEPLUS);
+
 
         list.addAll(getLoggedInAccountsList());
         if (!list.contains(AccountDatabase.AccountName.IMGUR))
