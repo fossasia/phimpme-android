@@ -51,7 +51,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         realmResult = realm.where(AccountDatabase.class);
-        themeHelper.updateSwitchColor(holder.signInSignOutSwitch, switchBackgroundColor);
+       // themeHelper.updateSwitchColor(holder.signInSignOutSwitch, switchBackgroundColor);
         String name = AccountDatabase.AccountName.values()[position].toString();
         if (realmResult.equalTo("name", name).count() > 0){
             holder.accountName.setText(realmResult

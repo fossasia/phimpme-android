@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginTop="8dp"
-    android:orientation="horizontal"
-    app:srcCompat="@mipmap/ic_launcher">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="8dp"
+              android:layout_marginEnd="8dp"
+              android:layout_marginStart="8dp"
+              android:layout_marginTop="8dp"
+              android:orientation="horizontal"
+              app:srcCompat="@mipmap/ic_launcher">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -23,7 +23,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            app:srcCompat="@mipmap/ic_launcher" />
+            app:srcCompat="@mipmap/ic_launcher"/>
 
         <ImageView
             android:id="@+id/account_logo_indicator"
@@ -32,7 +32,7 @@
             android:layout_alignBottom="@+id/account_avatar"
             android:layout_alignEnd="@+id/account_avatar"
             android:layout_alignRight="@+id/account_avatar"
-            app:srcCompat="@mipmap/ic_launcher" />
+            app:srcCompat="@mipmap/ic_launcher"/>
     </RelativeLayout>
 
     <TextView
@@ -45,7 +45,7 @@
         android:layout_weight="5"
         android:text="TextView"
         android:textColor="@color/black"
-        android:textSize="20sp" />
+        android:textSize="20sp"/>
 
     <ImageView
         android:id="@+id/sign_out_button"
@@ -57,7 +57,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_close_black_24dp" />
+        app:srcCompat="@drawable/ic_close_black_24dp"/>
 
     <android.support.v7.widget.SwitchCompat
         android:id="@+id/sign_in_sign_out_switch"
@@ -65,5 +65,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginLeft="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        app:theme="@style/CustomSwitch"/>
+
 </LinearLayout>
