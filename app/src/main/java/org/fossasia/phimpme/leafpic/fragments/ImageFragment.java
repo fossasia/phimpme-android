@@ -1,6 +1,5 @@
 package org.fossasia.phimpme.leafpic.fragments;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -8,10 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.signature.StringSignature;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
@@ -95,23 +91,18 @@ public class ImageFragment extends Fragment {
         }, 5);
     }*/
 
-    private void displayMedia(final PhotoView photoView, boolean useCache) {
+    private void displayMedia(PhotoView photoView, boolean useCache) {
         //PreferenceUtil SP = PreferenceUtil.getInstance(getContext());
 
         Glide.with(getContext())
                 .load(img.getUri())
-                .asBitmap().format(DecodeFormat.PREFER_RGB_565)
+                .asBitmap()
                 .signature(useCache ? img.getSignature(): new StringSignature(new Date().getTime()+""))
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .thumbnail(0.5f)
                 .transform(new RotateTransformation(getContext(), img.getOrientation(), false))
                 .animate(R.anim.fade_in)
-                .into(new SimpleTarget<Bitmap>() {
-                    @Override
-                    public void onResourceReady(Bitmap bitmap, GlideAnimation<? super Bitmap> glideAnimation) {
-                        photoView.setImageBitmap(bitmap);
-                    }
-                });
+                .into(photoView);
 
     }
 

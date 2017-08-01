@@ -12,14 +12,15 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.SharedMediaActivity;
 import org.fossasia.phimpme.leafpic.data.Album;
 import org.fossasia.phimpme.leafpic.util.ColorPalette;
 import org.fossasia.phimpme.leafpic.util.PermissionUtils;
 import org.fossasia.phimpme.leafpic.util.PreferenceUtil;
+import org.fossasia.phimpme.leafpic.util.StringUtils;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
-import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 /**
  * Created by dnld on 01/04/16.
@@ -42,7 +43,6 @@ public class SplashScreen extends SharedMediaActivity {
     private Album album;
 
     private PreferenceUtil SP;
-    RelativeLayout parentView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,8 +54,8 @@ public class SplashScreen extends SharedMediaActivity {
 
         ((ProgressBar) findViewById(R.id.progress_splash)).getIndeterminateDrawable().setColorFilter(getPrimaryColor(), PorterDuff.Mode.SRC_ATOP);
 
-        parentView = (RelativeLayout) findViewById(R.id.splash_bg);
-        parentView.setBackground(getResources().getDrawable(R.drawable.bg_splash));
+        RelativeLayout RelLay = (RelativeLayout) findViewById(R.id.Splah_Bg);
+        RelLay.setBackgroundColor(getBackgroundColor());
 
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -73,8 +73,7 @@ public class SplashScreen extends SharedMediaActivity {
                     if (ab != null) {
                         new PrefetchPhotosData().execute();
                     }
-                } else
-                    SnackBarHandler.show(parentView,R.string.album_not_found);
+                } else StringUtils.showToast(getApplicationContext(), getString(R.string.album_not_found));
             } else  // default intent
                 new PrefetchAlbumsData().execute();
         } else {
@@ -117,7 +116,7 @@ public class SplashScreen extends SharedMediaActivity {
                 if (granted)
                     new PrefetchAlbumsData().execute(SP.getBoolean(getString(R.string.preference_auto_update_media), false));
                 else
-                    SnackBarHandler.show(parentView,R.string.storage_permission_denied);
+                    Toast.makeText(SplashScreen.this, getString(R.string.storage_permission_denied), Toast.LENGTH_LONG).show();
                 break;
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -132,12 +131,6 @@ public class SplashScreen extends SharedMediaActivity {
             if(getAlbums().dispAlbums.size() == 0) {
                 getAlbums().loadAlbums(getApplicationContext(), false);
                 return true;
-            }else {
-                try {
-                    Thread.sleep(1500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
             return false;
         }

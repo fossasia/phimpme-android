@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
 apply plugin: 'jacoco-android'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'realm-android'
-apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
 
@@ -20,7 +20,7 @@ android {
 
     defaultConfig {
         applicationId "org.fossasia.phimpme"
-        minSdkVersion 17
+        minSdkVersion 15
         targetSdkVersion 25
         multiDexEnabled true
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
@@ -38,7 +38,7 @@ android {
             zipAlignEnabled true
         }
         debug {
-            testCoverageEnabled false
+            testCoverageEnabled true
         }
     }
 
@@ -52,14 +52,12 @@ android {
 
     configurations {
         compile.exclude group: 'org.jetbrains', module: 'annotations'
-        all*.exclude group: 'com.android.volley'
     }
 
     lintOptions {
         abortOnError false
         disable "Instantiatable"
     }
-
     tasks.withType(JavaCompile) {
         configure(options) {
             // TODO
@@ -73,44 +71,10 @@ android {
     }
     externalNativeBuild {
         ndkBuild {
-            path 'src/main/jni/Android.mk'
+            path 'jni/Android.mk'
         }
     }
 
-    dexOptions {
-        incremental = true
-        preDexLibraries = false
-        javaMaxHeapSize "4g"
-    }
-    // Do not remove this commented code
-    // I(vinaysajjanapu) will remove it later
-/*    sourceSets {
-        main {
-            jni.srcDirs = []
-        }
-    }
-
-    task ndkBuild(type: Exec, description: 'Compile JNI source via NDK') {
-        def ndkDir = project.android.ndkDirectory
-        commandLine "$ndkDir/ndk-build",
-        'NDK_PROJECT_PATH=build/intermediates/ndk',
-        'APP_BUILD_SCRIPT=src/main/jni/Android.mk',
-        'NDK_APPLICATION_MK=src/main/jni/Application.mk',
-        'V=1'
-    }
-
-    tasks.withType(JavaCompile) {
-        compileTask -> compileTask.dependsOn ndkBuild
-    }
-*/
-    splits {
-        abi {
-            enable true
-            reset()
-            include "x86", "armeabi-v7a", "mips"
-            universalApk false
-        }
-    }
 }
 
 repositories {
@@ -121,11 +85,6 @@ repositories {
     maven {
         url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo'
     }
-    maven { url "https://jitpack.io" }
-
-    maven { url 'https://maven.fabric.io/public' }
-
-    maven{ url "https://mvnrepository.com/artifact/com.box/box-android-sdk" }
 }
 
 
@@ -144,21 +103,8 @@ dependencies {
     compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:customtabs:$rootProject.supportLibraryVersion"
     compile project(':photoview')
-    compile "com.twitter.sdk.android:twitter:$rootProject.twitterVersion"
-    compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
-    compile "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
-    compile "com.squareup.picasso:picasso:$rootProject.picassoVersion"
-    compile "com.github.amlcurran.showcaseview:library:$rootProject.showcaseVersion"
-
-    compile "com.github.nextcloud:android-library:$rootProject.nextCloudVersion"
-    compile files('libs/twitter4j-core-3.0.5.jar')
-    compile files('libs/twitter4j-media-support-3.0.5.jar')
-    compile files('libs/flickrj-android-2.1.0.jar')
-    compile project(':openCVLibrary320')
-    compile project(':pdk')
-//    compile 'com.android.volley:volley:1.0.0'
-
-    compile 'uz.shift:colorpicker:0.5@aar'
+    compile(group: 'uz.shift', name: 'colorpicker', version: '0.5', ext: 'aar')
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.koushikdutta.ion:ion:2.1.7'
     compile 'com.mikepenz:iconics-core:2.8.4@aar'
@@ -166,6 +112,7 @@ dependencies {
     compile 'com.mikepenz:community-material-typeface:1.5.54.2@aar'
     compile 'com.mikepenz:fontawesome-typeface:4.6.0.1@aar'
     compile 'com.yalantis:ucrop:1.5.0'
+    compile 'uz.shift:colorpicker:0.5@aar'
     compile 'com.google.android.exoplayer:exoplayer:r1.5.7'
     compile 'de.psdev.licensesdialog:licensesdialog:1.8.0'
     compile 'de.hdodenhof:circleimageview:2.0.0'
@@ -176,27 +123,14 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
     compile 'com.android.support:support-v4:25.3.1'
-    compile 'com.google.firebase:firebase-core:11.0.2'
+    compile 'com.google.firebase:firebase-core:10.0.1'
     compile 'com.facebook.android:facebook-android-sdk:4.23.0'
+    androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
     compile 'com.uphyca:stetho_realm:2.0.0'
     compile 'com.android.support:multidex:1.0.1'
-    compile group: 'com.box', name: 'box-android-sdk', version: '4.0.8'
-    androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
-    compile 'com.google.android.gms:play-services-auth:11.0.2'
-    compile 'com.google.android.gms:play-services-plus:11.0.2'
-    compile 'com.google.firebase:firebase-perf:11.0.2'
-    compile project(':pdk')
-
-    compile 'com.daksh:loglr:1.2.1'
-    compile ('com.tumblr:jumblr:0.0.11'){
-        exclude module:'scribe'
-    }
-
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
-        transitive = true;
-    }
-
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    compile "com.twitter.sdk.android:twitter:$rootProject.twitterVersion"
+    compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
+    compile "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
+    compile "com.squareup.picasso:picasso:$rootProject.picassoVersion"
 }
-apply plugin: 'com.google.gms.google-services'
-
-

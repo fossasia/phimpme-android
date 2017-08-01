@@ -19,7 +19,6 @@ import android.preference.PreferenceGroup;
 import android.preference.PreferenceManager;
 import android.preference.TwoStatePreference;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import org.fossasia.phimpme.leafpic.activities.SettingsActivity;
@@ -30,7 +29,6 @@ import org.fossasia.phimpme.opencamera.UI.FolderChooserDialog;
 import java.util.ArrayList;
 
 import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 /** Fragment to handle the Settings UI. Note that originally this was a
  *  PreferenceActivity rather than a PreferenceFragment which required all
@@ -44,16 +42,13 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
 	ThemeHelper themeHelper;
 	TinyDB bundle;
 	public static String new_save_location;
-	View parent;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		if( MyDebug.LOG )
 			Log.d(TAG, "onCreate");
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.preferences);
-		parent = getActivity().getWindow().getDecorView();
-
 		themeHelper = new ThemeHelper(getActivity());
 
 //		final Bundle bundle = getArguments();
@@ -325,7 +320,7 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
                     		//if( uri.length() == 0 )
                     		{
                         		CameraActivity main_activity = (CameraActivity)MyPreferenceFragment.this.getActivity();
-								SnackBarHandler.show(parent,R.string.saf_select_save_location);
+                    			Toast.makeText(main_activity, R.string.saf_select_save_location, Toast.LENGTH_SHORT).show();
                         		main_activity.openFolderChooserDialogSAF(true);
                     		}
             			}
