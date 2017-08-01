@@ -224,7 +224,6 @@ public class CropFragment extends BaseEditFragment {
 					(int) cropRect.left, (int) cropRect.top,
 					(int) cropRect.width(), (int) cropRect.height());
 
-			//saveBitmap(resultBit, activity.saveFilePath);
 			return resultBit;
 		}
 

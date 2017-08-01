@@ -30,10 +30,7 @@ public class RectUtil {
         rect.right += dx;
         rect.bottom += dy;
     }
-
     /**
-     * 矩形绕指定点旋转
-     *
      * @param rect
      * @param roatetAngle
      */
@@ -78,8 +75,7 @@ public class RectUtil {
     }
 
     /**
-     * 矩形在Y轴方向上的加法操作
-     *
+     * Rectangular addition operation in the Y-axis direction
      * @param srcRect
      * @param addRect
      * @param padding
@@ -101,4 +97,4 @@ public class RectUtil {
 
         srcRect.set(left, top, right, bottom);
     }
-}//end class
+}

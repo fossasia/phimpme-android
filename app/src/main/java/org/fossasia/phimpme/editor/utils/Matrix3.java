@@ -35,8 +35,7 @@ public class Matrix3 {
 	}
 
 	/**
-	 * 两矩阵相乘
-	 * 
+	 *Two matrix multiplication
 	 * @param m
 	 */
 	public void multiply(Matrix3 m) {
@@ -57,8 +56,7 @@ public class Matrix3 {
 	}
 
 	/**
-	 * 求当前矩阵的逆矩阵
-	 *
+	 * Seeking current Inverse Matrix
 	 * @return
 	 */
 	public Matrix3 inverseMatrix() {
@@ -85,4 +83,4 @@ public class Matrix3 {
 		System.out.println("              " + data[6] + "  " + data[7] + "  "
 				+ data[8]);
 	}
-}// end class
+}

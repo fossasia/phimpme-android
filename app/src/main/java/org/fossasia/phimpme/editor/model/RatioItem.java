@@ -36,4 +36,4 @@ public class RatioItem {
 		this.index = index;
 	}
 
-}// end class
+}
