@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 
+import static org.fossasia.phimpme.data.local.AccountDatabase.HIDEINACCOUNTS;
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
 
@@ -92,10 +93,10 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
     @Override
     public int getItemCount() {
         /**
-         * We are using the enum from the AccountDatabase model class, (-2) from the lengtg because
-         * Other and Instagram option is only required in the Sharing activity.
+         * We are using the enum from the AccountDatabase model class, (-HIDEINACCOUNTS) from the length because
+         * whatsapp, Instagram , googleplus and others option is only required in the Sharing activity.
          */
-        return AccountDatabase.AccountName.values().length-2;
+        return AccountDatabase.AccountName.values().length - HIDEINACCOUNTS;
     }
 
     public void setResults(RealmQuery<AccountDatabase> results) {
