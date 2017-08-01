@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -221,4 +221,11 @@
         <item name="android:windowTitleBackgroundStyle">@drawable/com_facebook_button_background
         </item>
     </style>
+
+    <style name="CustomSwitch" parent="@style/AppTheme.NoActionBar">
+        <item name="colorControlActivated">@color/green</item>
+        <item name="colorSwitchThumbNormal">@color/grey</item>
+        <item name="android:colorForeground">@color/accent_grey</item>
+    </style>
+
 </resources>
