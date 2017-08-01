@@ -160,7 +160,6 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
     }
 
     public void applyStickers() {
-        // System.out.println("保存 合成图片");
         if (mSaveTask != null) {
             mSaveTask.cancel(true);
         }

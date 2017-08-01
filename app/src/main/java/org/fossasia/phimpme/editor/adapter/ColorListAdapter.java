@@ -8,10 +8,8 @@ import android.view.ViewGroup;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.fragment.PaintFragment;
 
-
 /**
- * 颜色列表Adapter
- *
+ * Color list Adapter
  * @author panyi
  */
 public class ColorListAdapter extends RecyclerView.Adapter<ViewHolder> {
@@ -43,7 +41,7 @@ public class ColorListAdapter extends RecyclerView.Adapter<ViewHolder> {
             super(itemView);
             this.colorPanelView = itemView.findViewById(R.id.color_panel_view);
         }
-    }// end inner class
+    }
 
     public class MoreViewHolder extends ViewHolder {
         View moreBtn;
@@ -52,7 +50,7 @@ public class ColorListAdapter extends RecyclerView.Adapter<ViewHolder> {
             this.moreBtn = itemView.findViewById(R.id.color_panel_more);
         }
 
-    }//end inner class
+    }
 
     @Override
     public int getItemCount() {
@@ -114,4 +112,4 @@ public class ColorListAdapter extends RecyclerView.Adapter<ViewHolder> {
         });
     }
 
-}// end class
+}

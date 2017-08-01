@@ -19,7 +19,7 @@ public class FileUtil {
         return file.exists();
     }
 
-    // 获取文件扩展名
+    // Get file extension
     public static String getExtensionName(String filename) {
         if ((filename != null) && (filename.length() > 0)) {
             int dot = filename.lastIndexOf('.');
@@ -31,7 +31,7 @@ public class FileUtil {
     }
 
     /**
-     * 将图片文件加入到相册
+     * The image file is added to an album
      * @param context
      * @param dstPath
      */
@@ -45,4 +45,4 @@ public class FileUtil {
         values.put(MediaStore.Images.Media.DATA, dstPath);
         context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
     }
-}//end class
+}

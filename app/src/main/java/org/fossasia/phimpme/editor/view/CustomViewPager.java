@@ -43,4 +43,4 @@ public class CustomViewPager extends ViewPager {
 			super.scrollTo(x, y);
 		}
 	}
-}// end class
+}
