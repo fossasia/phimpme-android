@@ -37,9 +37,10 @@ public class Constants {
     public final static String PACKAGE_WHATSAPP = "com.whatsapp";
     public final static String PACKAGE_GOOGLEPLUS = "com.google.android.apps.plus";
     public final static String PACKAGE_HIKE = "com.bsb.hike";
-    public final static String PACKAGE_MESSENGER = "org.telegram.messenger";
+    public final static String PACKAGE_MESSENGER = "com.facebook.orca";
     public final static String PACKAGE_TWITTER = "com.twitter.android";
     public final static String PACKAGE_PLAYSTORE = "com.android.vending";
+    public final static String PACKAGE_TELEGRAM = "org.telegram.messenger";
 
 
 }

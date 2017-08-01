@@ -12,10 +12,14 @@ import io.realm.annotations.PrimaryKey;
 
 public class AccountDatabase extends RealmObject{
 
+    /*Add hidden account option in last and increase the count option in hideInAccount variable*/
+
+
     public enum AccountName {
         FACEBOOK, TWITTER, DRUPAL, NEXTCLOUD, WORDPRESS, PINTEREST, FLICKR, IMGUR, DROPBOX, OWNCLOUD
-        , GOOGLEPLUS, BOX, TUMBLR, INSTAGRAM,WHATSAPP, OTHERS
+        , BOX, TUMBLR, INSTAGRAM, WHATSAPP, GOOGLEPLUS,  OTHERS
     }
+    public static int HIDEINACCOUNTS = 4;
 
     @PrimaryKey
     String name;
