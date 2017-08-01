@@ -14,8 +14,7 @@ import org.fossasia.phimpme.editor.utils.Matrix3;
 
 /**
  * Created by panyi on 2016/8/14.
- * <p/>
- * 贴图合成任务 抽象类
+ * Abstract texture compositing tasks
  */
 public abstract class StickerTask extends AsyncTask<Bitmap, Void, Bitmap> {
     private Dialog dialog;

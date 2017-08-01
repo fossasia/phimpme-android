@@ -81,4 +81,4 @@ public class PaintModeView extends View {
         return mStokeColor;
     }
 
-}//end class
+}

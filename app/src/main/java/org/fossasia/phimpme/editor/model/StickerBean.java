@@ -7,7 +7,7 @@ import java.util.List;
  * Created by panyi on 2015/8/11.
  */
 public class StickerBean {
-    private String coverPath;//封面路径
+    private String coverPath;//Cover path
     private List<String> pathList;
 
     public StickerBean(){

@@ -23,8 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 文本贴图处理控件
- * <p/>
+ * Text texture processing controls
  * Created by panyi on 2016/6/9.
  */
 public class TextStickerView extends View {
@@ -44,8 +43,8 @@ public class TextStickerView extends View {
 
     private Rect mTextRect = new Rect();// warp text rect record
     private RectF mHelpBoxRect = new RectF();
-    private Rect mDeleteRect = new Rect();//删除按钮位置
-    private Rect mRotateRect = new Rect();//旋转按钮位置
+    private Rect mDeleteRect = new Rect();//Delete button position
+    private Rect mRotateRect = new Rect();//Rotate button position
 
     private RectF mDeleteDstRect = new RectF();
     private RectF mRotateDstRect = new RectF();
@@ -54,13 +53,13 @@ public class TextStickerView extends View {
     private Bitmap mRotateBitmap;
 
     private int mCurrentMode = IDLE_MODE;
-    //控件的几种模式
-    private static final int IDLE_MODE = 2;//正常
-    private static final int MOVE_MODE = 3;//移动模式
-    private static final int ROTATE_MODE = 4;//旋转模式
-    private static final int DELETE_MODE = 5;//删除模式
+    //Several models of control
+    private static final int IDLE_MODE = 2;//normal
+    private static final int MOVE_MODE = 3;//Mobile mode
+    private static final int ROTATE_MODE = 4;//Rotation mode
+    private static final int DELETE_MODE = 5;//Delete mode
 
-    private EditText mEditText;//输入控件
+    private EditText mEditText;//Input Controls
 
     public int layout_x = 0;
     public int layout_y = 0;
@@ -74,8 +73,8 @@ public class TextStickerView extends View {
 
     private boolean isShowHelpBox = true;
 
-    private boolean mAutoNewLine = false;//是否需要自动换行
-    private List<String> mTextContents = new ArrayList<String>(2);//存放所写的文字内容
+    private boolean mAutoNewLine = false;//The need to wrap
+    private List<String> mTextContents = new ArrayList<String>(2);//Storing text written
     private String mText;
 
     public TextStickerView(Context context) {
@@ -162,13 +161,12 @@ public class TextStickerView extends View {
         String[] splits = mText.split("\n");
         for (String text : splits) {
             mTextContents.add(text);
-        }//end for each
+        }
     }
 
     private void drawContent(Canvas canvas) {
         drawText(canvas);
 
-        //draw x and rotate button
         int offsetValue = ((int) mDeleteDstRect.width()) >> 1;
         mDeleteDstRect.offsetTo(mHelpBoxRect.left - offsetValue, mHelpBoxRect.top - offsetValue);
         mRotateDstRect.offsetTo(mHelpBoxRect.right - offsetValue, mHelpBoxRect.bottom - offsetValue);
@@ -213,7 +211,7 @@ public class TextStickerView extends View {
             mPaint.getTextBounds(text, 0, text.length(), tempRect);
             //System.out.println(i + " ---> " + tempRect.height());
             text_height = Math.max(CHAR_MIN_HEIGHT, tempRect.height());
-            if (tempRect.height() <= 0) {//处理此行文字为空的情况
+            if (tempRect.height() <= 0) {//Handling of this line of text is empty
                 tempRect.set(0, 0, 0, text_height);
             }
 
@@ -241,23 +239,23 @@ public class TextStickerView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        boolean ret = super.onTouchEvent(event);// 是否向下传递事件标志 true为消耗
+        boolean ret = super.onTouchEvent(event);//Whether passed down event flag to true consumption
 
         int action = event.getAction();
         float x = event.getX();
         float y = event.getY();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                if (mDeleteDstRect.contains(x, y)) {// 删除模式
+                if (mDeleteDstRect.contains(x, y)) {// Delete mode
                     isShowHelpBox = true;
                     mCurrentMode = DELETE_MODE;
-                } else if (mRotateDstRect.contains(x, y)) {// 旋转按钮
+                } else if (mRotateDstRect.contains(x, y)) {//Rotate button
                     isShowHelpBox = true;
                     mCurrentMode = ROTATE_MODE;
                     last_x = mRotateDstRect.centerX();
                     last_y = mRotateDstRect.centerY();
                     ret = true;
-                } else if (mHelpBoxRect.contains(x, y)) {// 移动模式
+                } else if (mHelpBoxRect.contains(x, y)) {// Mobile mode
                     isShowHelpBox = true;
                     mCurrentMode = MOVE_MODE;
                     last_x = x;
@@ -266,17 +264,17 @@ public class TextStickerView extends View {
                 } else {
                     isShowHelpBox = false;
                     invalidate();
-                }// end if
+                }
 
-                if (mCurrentMode == DELETE_MODE) {// 删除选定贴图
-                    mCurrentMode = IDLE_MODE;// 返回空闲状态
+                if (mCurrentMode == DELETE_MODE) {// Delete the selected map
+                    mCurrentMode = IDLE_MODE;// Returns to the idle state
                     clearTextContent();
                     invalidate();
-                }// end if
+                }
                 break;
             case MotionEvent.ACTION_MOVE:
                 ret = true;
-                if (mCurrentMode == MOVE_MODE) {// 移动贴图
+                if (mCurrentMode == MOVE_MODE) {// Mobile map
                     mCurrentMode = MOVE_MODE;
                     float dx = x - last_x;
                     float dy = y - last_y;
@@ -288,7 +286,7 @@ public class TextStickerView extends View {
 
                     last_x = x;
                     last_y = y;
-                } else if (mCurrentMode == ROTATE_MODE) {// 旋转 缩放文字操作
+                } else if (mCurrentMode == ROTATE_MODE) {// Rotating zoom text operations
                     mCurrentMode = ROTATE_MODE;
                     float dx = x - last_x;
                     float dy = y - last_y;
@@ -305,7 +303,7 @@ public class TextStickerView extends View {
                 ret = false;
                 mCurrentMode = IDLE_MODE;
                 break;
-        }// end switch
+        }
 
         return ret;
     }
@@ -319,8 +317,7 @@ public class TextStickerView extends View {
 
 
     /**
-     * 旋转 缩放 更新
-     *
+     * Rotating zoom Updates
      * @param dx
      * @param dy
      */
@@ -343,7 +340,7 @@ public class TextStickerView extends View {
         float srcLen = (float) Math.sqrt(xa * xa + ya * ya);
         float curLen = (float) Math.sqrt(xb * xb + yb * yb);
 
-        float scale = curLen / srcLen;// 计算缩放比
+        float scale = curLen / srcLen;//Calculating a zoom ratio
 
         mScale *= scale;
         float newWidth = mHelpBoxRect.width() * mScale;
@@ -357,7 +354,7 @@ public class TextStickerView extends View {
         if (cos > 1 || cos < -1)
             return;
         float angle = (float) Math.toDegrees(Math.acos(cos));
-        float calMatrix = xa * yb - xb * ya;// 行列式计算 确定转动方向
+        float calMatrix = xa * yb - xb * ya;// Determinant calculation to determine the direction of rotation
 
         int flag = calMatrix > 0 ? 1 : -1;
         angle = flag * angle;
@@ -392,4 +389,4 @@ public class TextStickerView extends View {
     }
 
 
-}//end class
+}
