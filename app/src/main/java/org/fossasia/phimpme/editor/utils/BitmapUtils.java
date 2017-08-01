@@ -53,16 +53,6 @@ public class BitmapUtils {
 
     public static final long MAX_SZIE = 1024 * 512;// 500KB
 
-//    public static Bitmap loadImageByPath(final String imagePath, int reqWidth,
-//                                         int reqHeight) {
-//        File file = new File(imagePath);
-//        if (file.length() < MAX_SZIE) {
-//            return getSampledBitmap(imagePath, reqWidth, reqHeight);
-//        } else {// 压缩图片
-//            return getImageCompress(imagePath);
-//        }
-//    }
-
     public static int getOrientation(final String imagePath) {
         int rotate = 0;
         try {
@@ -133,9 +123,9 @@ public class BitmapUtils {
     public static Bitmap genRotateBitmap(byte[] data) {
         Bitmap bMap = BitmapFactory.decodeByteArray(data, 0, data.length);
         // 自定义相机拍照需要旋转90预览支持竖屏
-        Matrix matrix = new Matrix();// 矩阵
-        matrix.reset();// 设置为单位矩阵
-        matrix.postRotate(90);// 旋转90度
+        Matrix matrix = new Matrix();// matrix
+        matrix.reset();// Set matrix
+        matrix.postRotate(90);// 90 degrees
         Bitmap bMapRotate = Bitmap.createBitmap(bMap, 0, 0, bMap.getWidth(),
                 bMap.getHeight(), matrix, true);
         bMap.recycle();
@@ -149,8 +139,7 @@ public class BitmapUtils {
     }
 
     /**
-     * 将view转为bitmap
-     *
+     * he view into bitmap
      * @param view
      * @return
      */
@@ -167,85 +156,83 @@ public class BitmapUtils {
         return returnedBitmap;
     }
 
-    // 按大小缩放
+    // According to size scaling
     public static Bitmap getImageCompress(final String srcPath) {
         Options newOpts = new Options();
-        // 开始读入图片，此时把options.inJustDecodeBounds 设回true了
+        // Began to read picture，At this point the options.inJustDecodeBounds Set back to true
         newOpts.inJustDecodeBounds = true;
-        Bitmap bitmap = BitmapFactory.decodeFile(srcPath, newOpts);// 此时返回bm为空
+        Bitmap bitmap = BitmapFactory.decodeFile(srcPath, newOpts);// This will return null bitmap
 
         newOpts.inJustDecodeBounds = false;
         int w = newOpts.outWidth;
         int h = newOpts.outHeight;
-        // 现在主流手机比较多是800*480分辨率，所以高和宽我们设置为
-        float hh = 800f;// 这里设置高度为800f
-        float ww = 480f;// 这里设置宽度为480f
-        // 缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
-        int be = 1;// be=1表示不缩放
-        if (w > h && w > ww) {// 如果宽度大的话根据宽度固定大小缩放
+        // Since most of the Mobile phone has resolution 800 * 480，So now we set the height and width
+        float hh = 800f;// Here set the height to 800f
+        float ww = 480f;// Here set the width to 480f
+        // Zoom ratio,Because it is fixed scaling，Wherein only a high or a data width can be calculated
+        int be = 1;// be=1 It means no scaling
+        if (w > h && w > ww) {// If the width of the large width, then scaled to a fixed size
             be = (int) (newOpts.outWidth / ww);
-        } else if (w < h && h > hh) {// 如果高度高的话根据宽度固定大小缩放
+        } else if (w < h && h > hh) {// If high, then scaled to the height of a fixed size width
             be = (int) (newOpts.outHeight / hh);
         }
         if (be <= 0)
             be = 1;
-        newOpts.inSampleSize = be;// 设置缩放比例
-        // 重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
+        newOpts.inSampleSize = be;// Set Scaling
+        // Re-read picture，Note that this time has been put options.inJustDecodeBounds Set back to false
         bitmap = BitmapFactory.decodeFile(srcPath, newOpts);
-        return compressImage(bitmap);// 压缩好比例大小后再进行质量压缩
+        return compressImage(bitmap);// The compression ratio of the size good quality after compression
     }
 
-    // 图片按比例大小压缩
+    //Image compression in proportion to the size of the
     public static Bitmap compress(Bitmap image) {
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(CompressFormat.JPEG, 100, baos);
-        if (baos.toByteArray().length / 1024 > 1024) {// 判断如果图片大于1M,进行压缩避免在生成图片（BitmapFactory.decodeStream）时溢出
-            baos.reset();// 重置baos即清空baos
-            image.compress(CompressFormat.JPEG, 50, baos);// 这里压缩50%，把压缩后的数据存放到baos中
+        if (baos.toByteArray().length / 1024 > 1024) {// If the image is larger than judgment 1MB,Avoid generating compressed picture（BitmapFactory.decodeStream）Overflow
+            baos.reset();// Reset empty baos i.e. baos
+            image.compress(CompressFormat.JPEG, 50, baos);// Here Compression50%，Storing the compressed data to baos
         }
         ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());
         Options newOpts = new Options();
-        // 开始读入图片，此时把options.inJustDecodeBounds 设回true了
+        // Read picture，At this point the options.inJustDecodeBounds is set to true
         newOpts.inJustDecodeBounds = true;
         Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, newOpts);
         newOpts.inJustDecodeBounds = false;
         int w = newOpts.outWidth;
         int h = newOpts.outHeight;
-        // 现在主流手机比较多是800*480分辨率，所以高和宽我们设置为
-        float hh = 800f;// 这里设置高度为800f
-        float ww = 480f;// 这里设置宽度为480f
-        // 缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
-        int be = 1;// be=1表示不缩放
-        if (w > h && w > ww) {// 如果宽度大的话根据宽度固定大小缩放
+        // SInce mainstream mobile phone is 800 * 480 resolution，So we set the height and width
+        float hh = 800f;// Here the height to 800f
+        float ww = 480f;// Here set the width to 480f
+        // Zoom ratio Because it is fixed scaling，Wherein only a height or a data width can be calculated
+        int be = 1;// be= 1It means no scaling
+        if (w > h && w > ww) {// If the width of the large width, then scaled to a fixed size
             be = (int) (newOpts.outWidth / ww);
-        } else if (w < h && h > hh) {// 如果高度高的话根据宽度固定大小缩放
+        } else if (w < h && h > hh) {// If high, then scaled to the height of a fixed size width
             be = (int) (newOpts.outHeight / hh);
         }
         if (be <= 0)
             be = 1;
-        newOpts.inSampleSize = be;// 设置缩放比例
-        // 重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
+        newOpts.inSampleSize = be;// Set Scaling
+        //Re-read picture，Note that this time has been put options.inJustDecodeBounds to false
         isBm = new ByteArrayInputStream(baos.toByteArray());
         bitmap = BitmapFactory.decodeStream(isBm, null, newOpts);
-        return compressImage(bitmap);// 压缩好比例大小后再进行质量压缩
+        return compressImage(bitmap);// The compression ratio of the size good quality after compression
     }
 
-    // 图片质量压缩
+    //Picture quality compression
     private static Bitmap compressImage(Bitmap image) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        image.compress(CompressFormat.JPEG, 100, baos);// 质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+        image.compress(CompressFormat.JPEG, 100, baos);// Quality compression method，Here 100 means no compression.
         int options = 100;
 
-        while (baos.toByteArray().length / 1024 > 100) { // 循环判断如果压缩后图片是否大于100kb,大于继续压缩
-            baos.reset();// 重置baos即清空baos
-            image.compress(CompressFormat.JPEG, options, baos);// 这里压缩options%，把压缩后的数据存放到baos中
-            options -= 10;// 每次都减少10
-//			System.out.println("options--->" + options + "    "
-//					+ (baos.toByteArray().length / 1024));
+        while (baos.toByteArray().length / 1024 > 100) { //If the compression cycle to determine whether the picture is larger than 100kb,Greater than continue to compress
+            baos.reset();// Reset baos that cleared baos
+            image.compress(CompressFormat.JPEG, options, baos);//Here Compression options%，Storing the compressed data to baos
+            options -= 10;// Every reduction 10
         }
-        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());// 把压缩后的数据baos存放到ByteArrayInputStream中
-        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);// 把ByteArrayInputStream数据生成图片
+        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());// The compressed data baos To store ByteArrayInputStream
+        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);// ByteArrayInputStream- Data generated picture
         return bitmap;
     }
 
@@ -257,30 +244,30 @@ public class BitmapUtils {
         Bitmap bitmap = Bitmap.createBitmap(view1.getDrawingCache());
     }
 
-    // 图片转为文件
+    // Pictures converted file
     public static boolean saveBitmap2file(Bitmap bmp, String filepath) {
         CompressFormat format = CompressFormat.PNG;
         int quality = 100;
         OutputStream stream = null;
         try {
-            // 判断SDcard状态
+            // Analyzing the state of SDcard
             if (!Environment.MEDIA_MOUNTED.equals(Environment
                     .getExternalStorageState())) {
-                // 错误提示
+                //Error message
                 return false;
             }
 
-            // 检查SDcard空间
+            // Check the SDcard space
             File SDCardRoot = Environment.getExternalStorageDirectory();
             if (SDCardRoot.getFreeSpace() < 10000) {
-                // 弹出对话框提示用户空间不够
-                Log.e("Utils", "存储空间不够");
+                // A dialog box prompts if the user enough space
+                Log.e("Utils", "\n" + "Not enough storage space");
                 return false;
             }
 
-            // 在SDcard创建文件夹及文件
+            //Creating folders and files in the SDcard
             File bitmapFile = new File(SDCardRoot.getPath() + filepath);
-            bitmapFile.getParentFile().mkdirs();// 创建文件夹
+            bitmapFile.getParentFile().mkdirs();// Create a folder
             stream = new FileOutputStream(SDCardRoot.getPath() + filepath);// "/sdcard/"
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -443,7 +430,6 @@ public class BitmapUtils {
             e.printStackTrace();
             return false;
         }
-        // System.out.println("保存文件--->" + f.getAbsolutePath());
     }
 
 }
