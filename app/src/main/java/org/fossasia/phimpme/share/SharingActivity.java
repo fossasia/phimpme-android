@@ -358,9 +358,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 shareToNextCloudAndOwnCloud(getString(R.string.owncloud));
                 break;
 
-            case GOOGLEPLUS:
-                shareToGoogle();
-                break;
 
             case BOX:
                 shareToBox();
@@ -402,7 +399,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     private void shareToGoogle() {
         Uri uri = getImageUri(context);
-        PlusShare.Builder share = new PlusShare.Builder(this);
+        PlusShare.Builder share = new PlusShare.Builder(SharingActivity.this);
         share.setText(caption);
         share.addStream(uri);
         share.setType(getResources().getString(R.string.image_type));
