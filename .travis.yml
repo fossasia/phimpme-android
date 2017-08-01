@@ -78,6 +78,7 @@ before_script:
 script:
   - ./copy_opencv.sh
   - ./gradlew build
+  - ./gradlew connectedAndroidTest
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
