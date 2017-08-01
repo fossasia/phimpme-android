@@ -153,4 +153,4 @@ public class CustomPaintView extends View {
 
         generatorBit();
     }
-}//end class
+}

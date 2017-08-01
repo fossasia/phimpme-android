@@ -11,7 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- * 文件相关辅助类
+ * Documents related auxiliary class
  * 
  * @author panyi
  * 
@@ -20,8 +20,7 @@ public class FileUtils {
 	public static final String FOLDER_NAME = "phimpme-edit";
 
 	/**
-	 * 获取存贮文件的文件夹路径
-	 * 
+	 *Get storage file folder path
 	 * @return
 	 */
 	public static File createFolders() {
@@ -61,8 +60,7 @@ public class FileUtils {
 	}
 
 	/**
-	 * 删除指定文件
-	 * 
+	 * Delete the specified file
 	 * @param path
 	 * @return
 	 */
@@ -81,7 +79,7 @@ public class FileUtils {
 	}
 
 	/**
-	 * 保存图片
+	 * Save Picture
 	 * 
 	 * @param bitName
 	 * @param mBitmap
@@ -106,12 +104,12 @@ public class FileUtils {
 		return f.getAbsolutePath();
 	}
 
-	// 获取文件夹大小
+	//Get folder size
 	public static long getFolderSize(File file) throws Exception {
 		long size = 0;
 		try {
 			File[] fileList = file.listFiles();
-			for (int i = 0; i < fileList.length; i++) { // 如果下面还有文件
+			for (int i = 0; i < fileList.length; i++) { // If there are files below
 				if (fileList[i].isDirectory()) {
 					size = size + getFolderSize(fileList[i]);
 				} else {
@@ -124,7 +122,7 @@ public class FileUtils {
 		return size;
 	}
 
-	/** * 格式化单位 * * @param size * @return */
+	/** *Formatting Unit * * @param size * @return */
 	public static String getFormatSize(double size) {
 		double kiloByte = size / 1024d;
 		int megaByte = (int) (kiloByte / 1024d);
@@ -155,4 +153,4 @@ public class FileUtils {
 		return false;
 	}
 
-}// end
+}

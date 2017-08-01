@@ -105,25 +105,6 @@ public class ColorPicker extends Dialog implements SeekBar.OnSeekBarChangeListen
 
         codHex.setText(String.format(COLOR_STRING_FORMAT, red, green, blue));
         codHex.setEnabled(false);
-//        codHex.setOnEditorActionListener(
-//                new EditText.OnEditorActionListener() {
-//                    @Override
-//                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-//                                actionId == EditorInfo.IME_ACTION_DONE ||
-//                                event.getAction() == KeyEvent.ACTION_DOWN &&
-//                                        event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-//                            updateColorView(v.getText().toString());
-//                            InputMethodManager imm = (InputMethodManager) c.getSystemService(Context.INPUT_METHOD_SERVICE);
-//                            imm.hideSoftInputFromWindow(codHex.getWindowToken(), 0);
-//
-//                            return true;
-//                        }
-//                        return false;
-//                    }
-//                });
-
-
     }
 
 
@@ -269,4 +250,4 @@ public class ColorPicker extends Dialog implements SeekBar.OnSeekBarChangeListen
     public int getColor() {
         return Color.rgb(red, green, blue);
     }
-}//end class
+}

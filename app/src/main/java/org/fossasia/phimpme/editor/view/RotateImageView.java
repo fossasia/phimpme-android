@@ -15,15 +15,15 @@ import org.fossasia.phimpme.editor.utils.PaintUtil;
 public class RotateImageView extends View {
 	private Rect srcRect;
 	private RectF dstRect;
-	private Rect maxRect;// 最大限制矩形框
+	private Rect maxRect;// The maximum limit rectangle
 
 	private Bitmap bitmap;
-	private Matrix matrix = new Matrix();// 辅助计算矩形
+	private Matrix matrix = new Matrix();// Aiding rectangular
 
-	private float scale;// 缩放比率
+	private float scale;//scaling ratio
 	private int rotateAngle;
 
-	private RectF wrapRect = new RectF();// 图片包围矩形
+	private RectF wrapRect = new RectF();// Picture surrounded by rectangles
 	private Paint bottomPaint;
 	private RectF originImageRect;
 
@@ -75,7 +75,7 @@ public class RotateImageView extends View {
 		super.draw(canvas);
 		if (bitmap == null)
 			return;
-		maxRect.set(0, 0, getWidth(), getHeight());// 最大边界矩形
+		maxRect.set(0, 0, getWidth(), getHeight());// The maximum bounding rectangle
 
 		calculateWrapBox();
 		scale = 1;
@@ -95,15 +95,11 @@ public class RotateImageView extends View {
 
 	private void calculateWrapBox() {
 		wrapRect.set(dstRect);
-		matrix.reset();// 重置矩阵为单位矩阵
+		matrix.reset();// Reset matrix is ​​a unit matrix
 		int centerX = getWidth() >> 1;
 		int centerY = getHeight() >> 1;
-		matrix.postRotate(rotateAngle, centerX, centerY);// 旋转后的角度
-		// System.out.println("旋转之前-->" + wrapRect.left + "    " + wrapRect.top
-		// + "    " + wrapRect.right + "   " + wrapRect.bottom);
+		matrix.postRotate(rotateAngle, centerX, centerY);// After the rotation angle
 		matrix.mapRect(wrapRect);
-		// System.out.println("旋转之后-->" + wrapRect.left + "    " + wrapRect.top
-		// + "    " + wrapRect.right + "   " + wrapRect.bottom);
 	}
 
 	public RectF getImageNewRect() {
@@ -121,4 +117,4 @@ public class RotateImageView extends View {
 	public synchronized int getRotateAngle() {
 		return rotateAngle;
 	}
-}// end class
+}

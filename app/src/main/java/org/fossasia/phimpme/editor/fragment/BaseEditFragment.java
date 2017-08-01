@@ -22,4 +22,4 @@ public abstract class BaseEditFragment extends Fragment {
     }
 
      public abstract void onShow();
-}//end class
+}
