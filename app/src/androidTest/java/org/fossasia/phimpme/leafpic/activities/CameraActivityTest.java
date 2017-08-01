@@ -41,7 +41,7 @@ public class CameraActivityTest {
 
     @Test
     public void waitFor5Seconds() {
-        cameraActivityTest(DateUtils.SECOND_IN_MILLIS * 5);
+        cameraActivityTest(DateUtils.SECOND_IN_MILLIS * 60);
     }
 
 
