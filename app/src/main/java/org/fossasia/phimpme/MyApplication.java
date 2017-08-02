@@ -5,7 +5,6 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.Stetho;
 import com.twitter.sdk.android.core.DefaultLogger;
 import com.twitter.sdk.android.core.Twitter;
@@ -13,7 +12,6 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterConfig;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
-import io.fabric.sdk.android.Fabric;
 import org.fossasia.phimpme.leafpic.data.Album;
 import org.fossasia.phimpme.leafpic.data.HandlingAlbums;
 
@@ -58,7 +56,6 @@ public class MyApplication extends Application {
                 .build();
         Realm.setDefaultConfiguration(realmConfiguration);
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
 
         /**
          * Stetho initialization

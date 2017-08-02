@@ -8,11 +8,9 @@
     <string name="action_popup">Popup settings</string>
     <string name="intro_text">Touch to focus, and press the blue camera button to take photos. For more help, click Online help from Settings. Open Camera is completely free. If you like this app, please consider buying my donate app :) (see link in Settings, or Online help).\n\nPrivacy Policy: Location permission is required for geotagging, but this is disabled by default. If enabled, your location is encoded in the saved files (and it is only used for this purpose).</string>
     <string name="intro_ok">OK (This message won\'t show again)</string>
+    <string name="facebook_app_id">1920575401558694</string>
     <string name="answer_yes">Yes</string>
     <string name="answer_no">No</string>
-
-    <!--API KEY ASSOCIATED WITH fossasiadevelopers@gmail.com-->
-    <string name="facebook_app_id">1948147982134927</string>
 
     <string name="on">On</string> <!-- whether a setting is turned on, e.g., "Auto-level: On" -->
     <string name="off">Off</string> <!-- whether a setting is turned off, e.g., "Auto-level: Off" -->
@@ -420,16 +418,12 @@
     <!-- ACTIONS -->
     <string name="sort">Sort</string>
     <string name="camera">Camera</string>
-    <string name="phimpme_camera">Phimpme Camera</string>
     <string name="exclude">Exclude</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="hide">Hide</string>
     <string name="unhide">Unhide</string>
     <string name="ok_action">OK</string>
-    <string name="update_action">UPDATE</string>
-    <string name="description_hint">Write something!</string>
-    <string name="save_action">Save</string>
     <string name="rename_photo_action">Rename photo</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
@@ -477,13 +471,6 @@
     <string name="new_folder">New Folder</string>
     <string name="create_new_folder">Create new folder</string>
 
-    <!--Notification Uploads-->
-    <string name="upload_progress">Uploading</string>
-    <string name="progress">In progress</string>
-    <string name="upload_done">Success</string>
-    <string name="upload_complete">Uploaded</string>
-    <string name="try_again">Please try again</string>
-
     <!--DIALOG MESSAGES-->
     <string name="hide_album_message">
         Hiding this album will create a .nomedia file in the folder
@@ -518,7 +505,6 @@
 
     <!-- AFFIX -->
     <string name="affix">Affix</string>
-    <string name="posting_twitter">Posting to Twitter</string>
     <string name="affix_vertical">Affix Vertical</string>
     <string name="affix_vertical_sub">Set the orientation, horizontal by default.</string>
     <string name="affix_save_here">Save in this album</string>
@@ -551,10 +537,6 @@
     <string name="wrong_password">Wrong password</string>
 
     <string name="type_password">Insert password</string>
-    <string name="type_description">Description</string>
-    <string name="Rename">Rename</string>
-    <string name="type_caption">Write something</string>
-    <string name="hint_caption">Add caption</string>
     <string name="security_sub">Set up a password to protect your media.</string>
     <string name="camera_sub">Manage camera settings.</string>
     <string name="remember_password_message">Note: password changed, if you forget it you will have to clear application data.</string>
@@ -618,8 +600,8 @@
     <string name="share_phimpme">Share Phimpme</string>
 
     <!--Invitation-->
-    <string name="install_phimpme">Download the best image application to make your moments more memorable by clicking, editing, sharing images with friends on social media, all at one place.</string>
-    <string name="invitation_deep_link">Download Now: https://x7824.app.goo.gl/zgxL</string>
+    <string name="install_phimpme">Install the Phimpme Image application here: </string>
+    <string name="invitation_deep_link">https://se4c7.app.goo.gl/D6bk</string>
 
 
     <!--ABOUT STRINGS-->
@@ -744,6 +726,7 @@
     <string name="fliter">fliter</string>
     <string name="crop">Crop</string>
 
+
     <string name="materialcolorpicker__app_name">Android Material Color Picker Dialog</string>
     <string name="materialcolorpicker__descLib">Material Color Picker Dialog</string>
     <string name="materialcolorpicker__errHex">Hex Code Format incorrect</string>
@@ -758,7 +741,6 @@
 
     <string name="tune">Tune</string>
     <string name="exit_without_save">The edited image is not saved. Do you want to exit? </string>
-    <string name="exit_without_edit">Do you want to exit without Editing? </string>
     <string name="confirm">confirm</string>
     <string name="applying">applying</string>
     <string name="action_add_account">Add Account</string>
@@ -774,20 +756,14 @@
 
     <!--ACCOUNTS-->
     <!--TWITTER-->
+    <!--Create a app on twitter from this URL: https://apps.twitter.com/-->
     <!--add consumer key and secret key below-->
-    <string name="twitter_CONSUMER_KEY">ANrJGEO2bjPjsE3nN5AJDM9di</string>
-    <string name="twitter_CONSUMER_SECRET">UJB2A4qYbImHuT0Egu0aw5L8o5sn9ZjfENWeLqnSgNj5CHcAO5UJB2A4qYbImHuT0Egu0aw5L8o5sn9ZjfENWeLqnSgNj5CHcAO53</string>
+    <string name="twitter_CONSUMER_KEY">vKnzy2sMJ3VUFibF6HguxhDXm</string>
+    <string name="twitter_CONSUMER_SECRET">gAvGEBNPAyIsGQ3AIElHDqdCGCS7Cvp1BiM1GTH7YzLQyvMVf3</string>
     <string name="already_signed_in">Already signed In</string>
     <string name="drawable">drawable</string>
-    <string name="color">color</string>
     <string name="ic_">ic_</string>
     <string name="_indicator">_indicator</string>
-    <string name="please_wait">Please wait</string>
-    <string name="color_effects">Color Effects</string>
-    <string name="toggle_info">Click to switch between colors \n Long press to switch to normal</string>
-    <string name="first_click">first click</string>
-    <string name="account_logged_twitter">Twitter account logged in successfully.</string>
-
 
     <!--All photos-->
     <string name="all_photos">All_photos</string>
@@ -797,172 +773,9 @@
     <string name="all_media">All</string>
     <string name="albums_mode">Switch to albums mode</string>
 
-    <string name="shareto">Share to</string>
-    <string name="share_done">Done and Exit</string>
-    <string name="facebook">Facebook</string>
-    <string name="instagram">Instagram</string>
-    <string name="wordpress">Wordpress</string>
-    <string name="flickr">Flickr</string>
-    <string name="pinterest">Pinterest</string>
-    <string name="nextcloud">NextCloud</string>
-    <string name="other">Other</string>
-    <string name="box">Box</string>
-    <string name="exit">Exit</string>
-
-    <string name="share_not_completed">Sharing is not completed</string>
     <string name="sign_out_dialog_title">Sign Out !</string>
     <string name="yes_action">Yes</string>
     <string name="no_action">No</string>
     <string name="sign_out_dialog_message">Do you want to sign out from </string>
     <string name="no_account_signed_in">No account signed in</string>
-    <string name="loading_numeric">Loading</string>
-    <string name="loading_numeric_all">All Photos</string>
-    <!--Share to Twitter-->
-    <string name="twitter_consumer_key">I8fFsT58V2k8FsA0vPFN7fCRX</string>
-    <string name="twitter_consumer_secret">5LfshCbLn9xgnMjtL68YwPHxTN0u8qQ6DtOFrVYtYdIOshNqmh</string>
-    <string name="post_image">Post Image</string>
-    <string name="post_tweet">Post Tweet</string>
-    <string name="twitter">Twitter</string>
-    <string name="authentication_done_now_post_tweet_or_image_text"> Your app is authenticated. Now  you can post tweet/image on twitter. </string>
-
-    <!-- loading messages -->
-    <string name="please_wait_title"> Please wait </string>
-    <string name="authenticating_your_app_message"> Authenticating your app... </string>
-    <string name="posting_image_message"> Uploading image on twitter... </string>
-    <string name="posting_tweet_message"> Posting tweet on twitter... </string>
-
-    <!-- toast -->
-    <string name="tweet_posted_on_twitter"> Image posted on twitter successfully. </string>
-    <string name="error_on_posting_twitter">Some error occur while posting on twitter.</string>
-    <string name="instagram_not_installed">Instagram is not installed</string>
-    <string name="not_connected">No Internet Connection found</string>
-
-    <string name="facebook_login_cancel">Facebook login Cancelled</string>
-    <string name="facebook_login_error">Facebook login error</string>
-    <string name="feature_not_present">Feature not present</string>
-    <string name="sharedrupal">Drupal Account</string>
-    <string name="drupal_link">Account not found</string>
-
-    <!--Imgur -->
-    <string name="imgur">Imgur</string>
-    <string name="posting_on_imgur">Uploading on Imgur</string>
-    <string name="error_on_imgur">Error on uploading on Imgur</string>
-    <string name="uploaded_on_imgur">Image uploaded on Imgur successfully and link copied.</string>
-    <string name="error_volly">Some error occurred.</string>
-    <string name="imgur_uplaoded_dialog_title">Image uploaded on Imgur.</string>
-    <string name="choose">Sharing Mode</string>
-    <string name="imgur_select_mode">How do you want to upload Image on Imgur ?</string>
-    <string name="anonymous">anonymous</string>
-    <string name="personal">Personal</string>
-    <string name="upload_anonymous">Anonymously</string>
-    <string name="upload_personal">Personal</string>
-    <string name="copy_action">copy</string>
-    <string name="sign_from_account">Sign in from account</string>
-
-    <string name="account_logged">Imgur account logged in successfully.</string>
-
-    <!--Google Voice -->
-    <string name="rear">rear</string>
-    <string name="back">back</string>
-    <string name="normal">normal</string>
-    <string name="front">Front</string>
-    <string name="selfie_camera">Selfie</string>
-    <string name="forward">Forward</string>
-    <string name="ask_question">Which camera would you like to use?</string>
-    <string name="ready">ready</string>
-    <string name="go">go</string>
-    <string name="take">take it</string>
-    <string name="ok">ok</string>
-    <string name="cheese">cheese</string>
-    <string name="say_cheese">say cheese</string>
-    <string name="camera_rear">Rear Camera</string>
-    <string name="camera_front">Front Camera</string>
-    <!--NEXTCLOUD-->
-    <string name="auth_check_server">Check server</string>
-    <string name="auth_host_url">Server address https://…</string>
-    <string name="auth_username">Username</string>
-    <string name="auth_password">Password</string>
-    <string name="auth_refresh_button">Refresh connection</string>
-    <string name="auth_register">Do you not have a server yet?\nClick here to get one from a provider</string>
-    <string name="sync_string_files">Files</string>
-    <string name="setup_btn_connect">Connect</string>
-    <string name="auth_expired_oauth_token_toast">Your authorization expired. Please, authorize again</string>
-    <string name="auth_expired_basic_auth_toast">Please enter the current password</string>
-    <string name="auth_expired_saml_sso_token_toast">Your session expired. Please connect again</string>
-    <string name="auth_connection_established">Connection established</string>
-    <string name="auth_testing_connection">Testing connection</string>
-    <string name="oauth_check_onoff">Log in with OAuth 2.0</string>
-    <string name="oauth_login_connection">Connecting to OAuth 2.0 server…</string>
-    <string name="auth_unauthorized">Wrong username or password</string>
-    <string name="auth_oauth_error">Unsuccessful authorization</string>
-    <string name="auth_host_address">Server address</string>
-    <!--Wordpress-->
-    <string name="sharewordpress">Wordpress Account</string>
-
-    <!--Pinterest-->
-    <string name="pinterest_app_id">4914573327424567067</string>
-    <string name="success">Success</string>
-    <string name="fail">Login Fail</string>
-    <string name="Pinterest_fail">BoardID or caption cannot be empty</string>
-    <string name="post_action">POST</string>
-    <string name="hint_boardID">Board ID</string>
-    <string name="pinterest_post">Image posted successfully</string>
-    <string name="pinterest_signIn_fail">Sign in to Pinterest</string>
-    <string name="sign_In">SIGN IN</string>
-    <string name="pinterest_board_message">Get your Pinterest Board ID from the LINK</string>
-    <string name="Pinterest_link">&lt;a href=https://www.nutt.net/how-do-i-get-pinterest-board-id/> Get Board ID from the LINK</string>
-    <string name="placeholder_sentence">This is a placeholder</string>
-    <string name="auth_trying_to_login"><![CDATA[Trying to log in &#8230;]]></string>
-    <string name="welcome_link_url">https://nextcloud.com/providers</string>
-    <string name="err_msg_host">Please add server address</string>
-    <string name="err_msg_username">Please enter password</string>
-    <string name="err_msg_password">Please enter password</string>
-
-    <string name="server_url">server_url</string>
-    <string name="todo_operation_finished_in_success">File uploaded successfully</string>
-    <string name="todo_operation_finished_in_fail">TODO: operation finished in fail</string>
-
-    <string name="error_copying_sample_file">Sample file could not be saved in temporal folder; upload will not work</string>
-    <string name="sample_file_name">oc_sample.png</string>
-    <string name="sample_file_mimetype">image/png</string>
-    <string name="error_deleting_local_file">Downloaded file could not be deleted</string>
-    <string name="upload_folder_path">to_upload</string>
-    <string name="login_again">User not Authorized. Please Login again with correct credentials</string>
-    <string name="auth_token">access_token</string>
-    <string name="auth_secret">access_secret</string>
-    <string name="header_auth">Authorization</string>
-    <string name="description_image">Description</string>
-
-    <!--Dropbox-->
-    <string name="posting_on_dropbox">Posting on Dropbox</string>
-    <string name="uploaded_dropbox">Uploaded to Dropbox</string>
-    <string name="login_dropbox_account">Login to Dropbox from Account manager</string>
-    <string name="dropbox_share">Dropbox</string>
-    <string name="uploaded_box">Uploaded to Box</string>
-    <string name="title_activity_own_cloud">OwnCloudActivity</string>
-
-    <string name="image_type">image/jpeg</string>
-
-    <!--Google+-->
-    <string name="success_google">Image uploaded successfully on Google+</string>
-    <string name="error_google">An error occurred while uploading</string>
-    <string name="googlePlus">Google+</string>
-
-    <!--Box-->
-    <string name="upload_failed">Upload failed</string>
-    <string name="login_box">Login to Box from Account Manager</string>
-
-    <!--TUmblr-->
-    <string name="logged_in_tumblr">Tumblr account logged in successfully.</string>
-    <string name="tumblr">Tumblr</string>
-    <string name="posting_tumblr">Posting to Tumblr</string>
-    <string name="posted_on_tumblr"> Image posted on Tumblr successfully. </string>
-    <string name="error_on_tumblr">Error on uploading on Tumblr</string>
-
-
-    <string name="owncloud">OwnCloud</string>
-    <string name="retry_upload">Retry</string>
-    <string name="upload_failed_retry_box">Upload failed! Rename and try again</string>
-    <string name="connection_failed">Connection Failed</string>
-    <string name="authorization_failed">Authorization Failed</string>
 </resources>

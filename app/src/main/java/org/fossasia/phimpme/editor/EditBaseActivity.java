@@ -15,11 +15,9 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.decode.BaseImageDecoder;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 
-import org.fossasia.phimpme.base.ThemedActivity;
-
 import java.io.File;
 
-public class EditBaseActivity extends ThemedActivity {
+public class EditBaseActivity extends AppCompatActivity {
 
     protected void checkInitImageLoader() {
         if (!ImageLoader.getInstance().isInited()) {

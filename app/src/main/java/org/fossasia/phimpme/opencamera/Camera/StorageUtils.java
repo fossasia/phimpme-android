@@ -224,7 +224,7 @@ public class StorageUtils {
     // only valid if !isUsingSAF()
     String getSaveLocation() {
 		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-		return sharedPreferences.getString(PreferenceKeys.getSaveLocationPreferenceKey(), "Phimpme Camera");
+		return sharedPreferences.getString(PreferenceKeys.getSaveLocationPreferenceKey(), "OpenCamera");
     }
     
     // only valid if isUsingSAF()

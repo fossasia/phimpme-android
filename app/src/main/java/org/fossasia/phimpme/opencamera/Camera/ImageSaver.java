@@ -25,7 +25,6 @@ import android.util.Log;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.opencamera.CameraController.CameraController;
 import org.fossasia.phimpme.utilities.BasicCallBack;
-import org.fossasia.phimpme.utilities.Constants;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -1432,7 +1431,7 @@ public class ImageSaver extends Thread {
 		click_count++;
 		if (basicCallBack != null && burst_mode_value == click_count) {
 			click_count = 0;
-			basicCallBack.callBack(Constants.SUCCESS,picFile.getAbsolutePath());
+			basicCallBack.callBack(picFile.getAbsolutePath());
 		}
 		return success;
 	}
