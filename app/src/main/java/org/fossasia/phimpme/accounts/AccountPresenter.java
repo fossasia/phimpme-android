@@ -1,5 +1,6 @@
 package org.fossasia.phimpme.accounts;
 
+import org.fossasia.phimpme.MyApplication;
 import org.fossasia.phimpme.base.BasePresenter;
 import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
@@ -17,9 +18,12 @@ public class AccountPresenter extends BasePresenter<AccountContract.View>
         implements AccountContract.Presenter {
 
     public DatabaseHelper databaseHelper;
-    private Realm realm = Realm.getDefaultInstance();
+
+    private Realm realm;
 
     public AccountPresenter(Realm realm) {
+        Realm.init(MyApplication.applicationContext);
+        realm = Realm.getDefaultInstance();
         databaseHelper = new DatabaseHelper(realm);
     }
 
