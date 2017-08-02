@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
@@ -88,7 +87,6 @@ import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouch;
 import org.fossasia.phimpme.leafpic.activities.LFMainActivity;
 import org.fossasia.phimpme.leafpic.util.AlertDialogsHelper;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
-import org.fossasia.phimpme.share.flickr.FlickrActivity;
 import org.fossasia.phimpme.share.flickr.FlickrHelper;
 import org.fossasia.phimpme.share.tumblr.TumblrClient;
 import org.fossasia.phimpme.share.twitter.HelperMethods;
@@ -126,11 +124,10 @@ import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.PINTER
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTER;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_SECRET;
+import static org.fossasia.phimpme.utilities.Utils.checkNetwork;
 import static org.fossasia.phimpme.utilities.Utils.copyToClipBoard;
 import static org.fossasia.phimpme.utilities.Utils.getBitmapFromPath;
 import static org.fossasia.phimpme.utilities.Utils.getStringImage;
-import static org.fossasia.phimpme.utilities.Utils.isAppInstalled;
-import static org.fossasia.phimpme.utilities.Utils.isInternetOn;
 import static org.fossasia.phimpme.utilities.Utils.shareMsgOnIntent;
 
 /**
@@ -228,7 +225,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         initView();
         setUpRecyclerView();
         setStatusBarColor();
-        checknetwork();
+        checkNetwork(this,parent);
         configureBoxClient();
     }
 
@@ -237,13 +234,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         BoxConfig.CLIENT_SECRET = BOX_CLIENT_SECRET;
     }
 
-    private boolean checknetwork() {
-        if (isInternetOn(SharingActivity.this)) {
-            return true;
-        } else
-            Snackbar.make(parent, R.string.not_connected, Snackbar.LENGTH_LONG).show();
-        return false;
-    }
+
 
     private void setupUI() {
         toolbar.setTitle(R.string.shareto);
@@ -310,6 +301,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     @Override
     public void onItemClick(View childView, int position) {
+        if (!checkNetwork(this,parent)) return;
+
         switch (sharableAccountsList.get(position)) {
             case FACEBOOK:
                 shareToFacebook();
@@ -528,9 +521,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         try {
             session.setOAuth2AccessToken(result.get(0).getToken());
             mDBApi = new DropboxAPI<AndroidAuthSession>(session);
-            if (checknetwork()) {
-                new UploadToDropbox().execute();
-            }
+            new UploadToDropbox().execute();
         } catch (ArrayIndexOutOfBoundsException e) {
             SnackBarHandler.show(parent, R.string.login_dropbox_account);
         }
@@ -668,25 +659,22 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void shareToTwitter() {
-        if (checknetwork()) {
-            if (Utils.checkAlreadyExist(TWITTER)) {
-                Glide.with(this)
-                        .load(Uri.fromFile(new File(saveFilePath)))
-                        .asBitmap()
-                        .into(new SimpleTarget<Bitmap>(1024, 512) {
-                            @Override
-                            public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                                finalBmp = resource;
-                                new PostToTwitterAsync().execute();
+        if (Utils.checkAlreadyExist(TWITTER)) {
+            Glide.with(this)
+                    .load(Uri.fromFile(new File(saveFilePath)))
+                    .asBitmap()
+                    .into(new SimpleTarget<Bitmap>(1024, 512) {
+                        @Override
+                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            finalBmp = resource;
+                            new PostToTwitterAsync().execute();
 
-                            }
-                        });
-            } else {
-                SnackBarHandler.show(parent, getString(R.string.sign_from_account));
-            }
-        }else{
-            SnackBarHandler.show(parent, getString(R.string.not_connected));
+                        }
+                    });
+        } else {
+            SnackBarHandler.show(parent, getString(R.string.sign_from_account));
         }
+
     }
 
     private void uploadOnTwitter(String token, String secret) {
@@ -711,7 +699,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                         file.delete();
                     }
                 });
-
     }
 
     private void shareToFacebook() {
@@ -767,9 +754,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void shareToImgur() {
-        if (checknetwork()) {
             final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
-
             RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
             query.equalTo("name", getString(R.string.imgur));
             final RealmResults<AccountDatabase> result = query.findAll();
@@ -801,10 +786,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             });
             dialogBuilder.setNegativeButton(getString(R.string.exit).toUpperCase(), null);
             dialogBuilder.show();
-
-        } else {
-            SnackBarHandler.show(parent, R.string.not_connected);
-        }
     }
 
     void uploadImgur() {
