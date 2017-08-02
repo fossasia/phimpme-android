@@ -9,8 +9,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.support.annotation.NonNull;
 import android.util.Base64;
+import android.view.View;
 
+import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.AccountDatabase;
 
 import java.io.ByteArrayOutputStream;
@@ -130,5 +133,12 @@ public class Utils {
 
         list.add(AccountDatabase.AccountName.OTHERS);
         return list;
+    }
+    public static boolean checkNetwork(Context context, @NonNull View view) {
+        if (isInternetOn(context)) {
+            return true;
+        } else
+            SnackBarHandler.show(view,context.getString(R.string.not_connected));
+        return false;
     }
 }
