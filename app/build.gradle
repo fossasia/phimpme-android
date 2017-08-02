@@ -33,6 +33,8 @@ android {
         exclude 'licenses/javolution.license.TXT'
         exclude 'META-INF/maven/org.apache.maven.wagon/wagon-http-shared/pom.properties'
         exclude 'META-INF/maven/*'
+        exclude 'META-INF/INDEX.LIST'
+        exclude 'META-INF/LICENSE'
         exclude 'org/codehaus/classworlds/uberjar/boot/Bootstrapper.class'
     }
 
@@ -110,6 +112,13 @@ repositories {
 }
 
 
+configurations.compile.dependencies.each { compileDependency ->
+    println "Excluding compile dependency: ${compileDependency.getName()}"
+    configurations.androidTestCompile.dependencies.each { androidTestCompileDependency ->
+        configurations.androidTestCompile.exclude module: "${compileDependency.getName()}"
+    }
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -118,12 +127,28 @@ dependencies {
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:design:$rootProject.supportLibraryVersion"
     compile "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
-    testCompile "junit:junit:$rootProject.junitVersion"
-    testCompile "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
-    testCompile "org.hamcrest:hamcrest-all:$rootProject.ext.hamcrestVersion"
-    testCompile "org.powermock:powermock-module-junit4:$rootProject.ext.powerMockito"
-    testCompile "org.powermock:powermock-api-mockito:$rootProject.ext.powerMockito"
-    testCompile "org.robolectric:robolectric:$rootProject.ext.roboelectricVersion"
+
+    testCompile 'junit:junit:4.12'
+    androidTestCompile 'junit:junit:4.12'
+    androidTestCompile "org.robolectric:robolectric:3.0"
+    androidTestCompile 'org.robolectric:shadows-support-v4:3.0'
+
+    testCompile "org.powermock:powermock-module-junit4:1.6.2"
+    testCompile "org.powermock:powermock-module-junit4-rule:1.6.2"
+    testCompile "org.powermock:powermock-classloading-xstream:1.6.2"
+    androidTestCompile "org.powermock:powermock-module-junit4:1.6.2"
+    androidTestCompile "org.powermock:powermock-module-junit4-rule:1.6.2"
+    androidTestCompile "org.powermock:powermock-api-mockito:1.6.2"
+    androidTestCompile "org.powermock:powermock-classloading-xstream:1.6.2"
+
+    // Android Testing Support Library's runner and rules
+    androidTestCompile ("com.android.support.test:runner:$rootProject.ext.runnerVersion"){
+    exclude group: 'com.android.support', module: 'support-annotations'
+    }
+
+    androidTestCompile ("com.android.support.test:rules:$rootProject.ext.rulesVersion"){
+    exclude group: 'com.android.support', module: 'support-annotations'
+    }
 
     compile "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
     annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"

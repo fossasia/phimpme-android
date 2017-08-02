@@ -44,4 +44,5 @@ ext {
     hamcrestVersion = '1.3'
     roboelectricVersion = '3.4'
     runnerVersion = '0.5'
+    rulesVersion = '0.5'
 }

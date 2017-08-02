@@ -21,10 +21,10 @@ public class AccountPresenter extends BasePresenter<AccountContract.View>
 
     private Realm realm;
 
-    public AccountPresenter(Realm realm) {
+    public AccountPresenter(DatabaseHelper helper) {
         Realm.init(MyApplication.applicationContext);
         realm = Realm.getDefaultInstance();
-        databaseHelper = new DatabaseHelper(realm);
+        databaseHelper = helper;
     }
 
     @Override
