@@ -18,8 +18,8 @@ public class Constants {
     public final static String DROPBOX_APP_KEY = "DROPBOX_APP_KEY";
     public final static String DROPBOX_APP_SECRET = "DROPBOX_APP_SECRET";
 
-    public final static String BOX_CLIENT_ID = "CLIENT_ID";
-    public final static String BOX_CLIENT_SECRET = "CLIENT_SECRET";
+    public final static String BOX_CLIENT_ID = "tkriyn4662erwjil5e55yq6tcs9hgxjs";
+    public final static String BOX_CLIENT_SECRET = "TQuwEKGLbK1YRLT4vmVrtu3RVzNSDZwF";
 
     public final static String FLICKR_API_KEY = "flickr_api_key_here";
     public final static String FLICKR_TOKEN_SECRET = "flickr_secret_key_here";
@@ -47,5 +47,3 @@ public class Constants {
     public final static String PACKAGE_TELEGRAM = "org.telegram.messenger";
 
 }
-
-
