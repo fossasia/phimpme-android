@@ -8,7 +8,7 @@
     <string name="action_popup">Popup settings</string>
     <string name="intro_text">Touch to focus, and press the blue camera button to take photos. For more help, click Online help from Settings. Open Camera is completely free. If you like this app, please consider buying my donate app :) (see link in Settings, or Online help).\n\nPrivacy Policy: Location permission is required for geotagging, but this is disabled by default. If enabled, your location is encoded in the saved files (and it is only used for this purpose).</string>
     <string name="intro_ok">OK (This message won\'t show again)</string>
-    <string name="facebook_app_id">111535049486318</string>
+    <string name="facebook_app_id">1948147982134927</string>
     <string name="answer_yes">Yes</string>
     <string name="answer_no">No</string>
 
@@ -773,8 +773,8 @@
     <!--ACCOUNTS-->
     <!--TWITTER-->
     <!--add consumer key and secret key below-->
-    <string name="twitter_CONSUMER_KEY">vKnzy2sMJ3VUFibF6HguxhDXm</string>
-    <string name="twitter_CONSUMER_SECRET">gAvGEBNPAyIsGQ3AIElHDqdCGCS7Cvp1BiM1GTH7YzLQyvMVf3</string>
+    <string name="twitter_CONSUMER_KEY">ANrJGEO2bjPjsE3nN5AJDM9di</string>
+    <string name="twitter_CONSUMER_SECRET">UJB2A4qYbImHuT0Egu0aw5L8o5sn9ZjfENWeLqnSgNj5CHcAO5</string>
     <string name="already_signed_in">Already signed In</string>
     <string name="drawable">drawable</string>
     <string name="color">color</string>
@@ -899,8 +899,8 @@
     <string name="sharewordpress">Wordpress Account</string>
 
     <!--Pinterest-->
-    <string name="pinterest_app_id">4910600717739247160</string>
-    <string name="pinterest_app_secret">6a3eba976f2d4ce13c1d4f0852ff17b242768b124905cc83c36faa99da3a1ad1</string>
+    <string name="pinterest_app_id">4914573327424567067</string>
+    <string name="pinterest_app_secret">0b7a7a9d36ce7329719fa0b03474aa8ff7a842b5e831a4ee6e3855f4bfb9a2b5</string>
     <string name="success">Success</string>
     <string name="Pinterest_fail">BoardID or caption cannot be empty</string>
     <string name="post_action">POST</string>
@@ -981,4 +981,5 @@
     <string name="uploading">Image uploading in progress.</string>
     <string name="auth_failed">Authorization failed</string>
     <string name="image_invalid">Invalid Image</string>
+    <string name="text_color_title">Text Color</string>
 </resources>

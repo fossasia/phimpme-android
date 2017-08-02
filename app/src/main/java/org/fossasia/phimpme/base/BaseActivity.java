@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.accounts.AccountActivity;
 import org.fossasia.phimpme.leafpic.activities.LFMainActivity;
 import org.fossasia.phimpme.opencamera.Camera.CameraActivity;
 
@@ -48,9 +49,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                 case R.id.navigation_home:
                     startActivity(new Intent(this, LFMainActivity.class));
                     break;
-                /*case R.id.navigation_accounts:
+                case R.id.navigation_accounts:
                     startActivity(new Intent(this, AccountActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
-                    break;*/
+                    break;
             }
         }
         return true;

@@ -29,9 +29,6 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.pinterest.android.pdk.PDKCallback;
@@ -49,14 +46,12 @@ import org.fossasia.phimpme.base.RecyclerItemClickListner;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
-import org.fossasia.phimpme.share.drupal.DrupalLogin;
 import org.fossasia.phimpme.share.flickr.FlickrActivity;
 import org.fossasia.phimpme.share.imgur.ImgurAuthActivity;
 import org.fossasia.phimpme.share.nextcloud.NextCloudAuth;
 import org.fossasia.phimpme.share.owncloud.OwnCloudActivity;
 import org.fossasia.phimpme.share.tumblr.TumblrClient;
 import org.fossasia.phimpme.share.twitter.LoginActivity;
-import org.fossasia.phimpme.share.wordpress.WordpressLoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
 import org.fossasia.phimpme.utilities.Constants;
@@ -78,7 +73,6 @@ import static com.pinterest.android.pdk.PDKClient.setDebugMode;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FACEBOOK;
-import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.GOOGLEPLUS;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.IMGUR;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.NEXTCLOUD;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.OWNCLOUD;
@@ -242,28 +236,28 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     accountPresenter.loadFromDatabase();
                     break;
 
-                case DRUPAL:
-                    Intent drupalShare = new Intent(getContext(), DrupalLogin.class);
-                    startActivity(drupalShare);
-                    break;
+//                case DRUPAL:
+//                    Intent drupalShare = new Intent(getContext(), DrupalLogin.class);
+//                    startActivity(drupalShare);
+//                    break;
 
                 case NEXTCLOUD:
                     Intent nextCloudShare = new Intent(getContext(), NextCloudAuth.class);
                     startActivityForResult(nextCloudShare, NEXTCLOUD_REQUEST_CODE);
                     break;
 
-                case WORDPRESS:
-                    Intent WordpressShare = new Intent(this, WordpressLoginActivity.class);
-                    startActivity(WordpressShare);
-                    break;
+//                case WORDPRESS:
+//                    Intent WordpressShare = new Intent(this, WordpressLoginActivity.class);
+//                    startActivity(WordpressShare);
+//                    break;
 
                 case PINTEREST:
                     signInPinterest();
                     break;
 
-                case FLICKR:
-                    signInFlickr();
-                    break;
+//                case FLICKR:
+//                    signInFlickr();
+//                    break;
 
                 case IMGUR:
                     signInImgur();
