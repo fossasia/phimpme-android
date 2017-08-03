@@ -24,8 +24,8 @@ public class Constants {
     public final static String BOX_CLIENT_ID = "tkriyn4662erwjil5e55yq6tcs9hgxjs";
     public final static String BOX_CLIENT_SECRET = "TQuwEKGLbK1YRLT4vmVrtu3RVzNSDZwF";
 
-    public final static String FLICKR_API_KEY = "flickr_api_key_here";
-    public final static String FLICKR_TOKEN_SECRET = "flickr_secret_key_here";
+    public final static String FLICKR_API_KEY = "108a1496fb4f27a1fe310bd399f9c900";
+    public final static String FLICKR_TOKEN_SECRET = "a3134b9731947689";
 
     public final static String TUMBLR_CONSUMER_KEY = "gOrriv5kT1wOSnZg0u66vXwmo9phPgeXqBlFKOgVQshS4Xe9qh";
     public final static String TUMBLR_CONSUMER_SECRET = "kQFgrWbIsJK3WEabkUPBOR9zZwSZuM3ikOgCpAk4bYs8HqsBTQ";
