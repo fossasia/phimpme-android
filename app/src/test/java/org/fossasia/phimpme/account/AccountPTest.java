@@ -35,8 +35,6 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 @PrepareForTest({Realm.class})
 public class AccountPTest {
 
-    //private static RealmQuery<AccountDatabase> ACCOUNTS;
-
     @Mock
     private AccountContract.View accountView;
 

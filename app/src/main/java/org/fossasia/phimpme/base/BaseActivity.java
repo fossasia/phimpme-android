@@ -44,7 +44,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         if (item.getItemId() != getNavigationMenuItemId()) {
             switch (item.getItemId()) {
                 case R.id.navigation_camera:
-                    startActivity(new Intent(this, CameraActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    startActivity(new Intent(this, CameraActivity.class)
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                     break;
                 case R.id.navigation_home:
                     startActivity(new Intent(this, LFMainActivity.class));
@@ -81,6 +82,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     public void setNavigationBarColor(int color) {
         navigationView.setBackgroundColor(color);
     }
+
     public void hideNavigationBar() {
         navigationView.setVisibility(View.GONE);
     }
