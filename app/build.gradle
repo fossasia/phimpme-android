@@ -129,18 +129,24 @@ dependencies {
     compile "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
 
     testCompile 'junit:junit:4.12'
-    androidTestCompile 'junit:junit:4.12'
-    androidTestCompile "org.robolectric:robolectric:3.0"
-    androidTestCompile 'org.robolectric:shadows-support-v4:3.0'
+    testCompile "org.robolectric:robolectric:3.0"
+    testCompile "org.mockito:mockito-core:1.10.19"
+    testCompile 'org.robolectric:shadows-support-v4:3.0'
 
     testCompile "org.powermock:powermock-module-junit4:1.6.2"
     testCompile "org.powermock:powermock-module-junit4-rule:1.6.2"
+    testCompile "org.powermock:powermock-api-mockito:1.6.2"
     testCompile "org.powermock:powermock-classloading-xstream:1.6.2"
+
+    androidTestCompile 'junit:junit:4.12'
+    androidTestCompile "org.robolectric:robolectric:3.0"
+    androidTestCompile "org.mockito:mockito-core:1.10.19"
+    androidTestCompile 'org.robolectric:shadows-support-v4:3.0'
+
     androidTestCompile "org.powermock:powermock-module-junit4:1.6.2"
     androidTestCompile "org.powermock:powermock-module-junit4-rule:1.6.2"
     androidTestCompile "org.powermock:powermock-api-mockito:1.6.2"
     androidTestCompile "org.powermock:powermock-classloading-xstream:1.6.2"
-
     // Android Testing Support Library's runner and rules
     androidTestCompile ("com.android.support.test:runner:$rootProject.ext.runnerVersion"){
     exclude group: 'com.android.support', module: 'support-annotations'
