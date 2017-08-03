@@ -252,9 +252,9 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     signInPinterest();
                     break;
 
-                /*case FLICKR:
+                case FLICKR:
                     signInFlickr();
-                    break;*/
+                    break;
 
                 case IMGUR:
                     signInImgur();
