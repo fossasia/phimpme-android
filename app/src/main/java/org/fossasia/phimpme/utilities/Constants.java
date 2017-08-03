@@ -21,8 +21,8 @@ public class Constants {
     public final static String BOX_CLIENT_ID = "tkriyn4662erwjil5e55yq6tcs9hgxjs";
     public final static String BOX_CLIENT_SECRET = "TQuwEKGLbK1YRLT4vmVrtu3RVzNSDZwF";
 
-    public final static String FLICKR_API_KEY = "flickr_api_key_here";
-    public final static String FLICKR_TOKEN_SECRET = "flickr_secret_key_here";
+    public final static String FLICKR_API_KEY = "108a1496fb4f27a1fe310bd399f9c900";
+    public final static String FLICKR_TOKEN_SECRET = "a3134b9731947689";
 
     public final static String TWITTER_CONSUMER_KEY = "ENTER-CONSUMER-KEY";
     public final static String TWITTER_CONSUMER_SECRET = "ENTER-CONSUMER-SECRET";
