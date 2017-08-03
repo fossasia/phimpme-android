@@ -46,14 +46,12 @@ import org.fossasia.phimpme.base.RecyclerItemClickListner;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
-import org.fossasia.phimpme.share.drupal.DrupalLogin;
 import org.fossasia.phimpme.share.flickr.FlickrActivity;
 import org.fossasia.phimpme.share.imgur.ImgurAuthActivity;
 import org.fossasia.phimpme.share.nextcloud.NextCloudAuth;
 import org.fossasia.phimpme.share.owncloud.OwnCloudActivity;
 import org.fossasia.phimpme.share.tumblr.TumblrClient;
 import org.fossasia.phimpme.share.twitter.LoginActivity;
-import org.fossasia.phimpme.share.wordpress.WordpressLoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
 import org.fossasia.phimpme.utilities.Constants;
@@ -230,20 +228,20 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     signInTwitter();
                     break;
 
-                case DRUPAL:
+                /*case DRUPAL:
                     Intent drupalShare = new Intent(getContext(), DrupalLogin.class);
                     startActivity(drupalShare);
-                    break;
+                    break;*/
 
                 case NEXTCLOUD:
                     Intent nextCloudShare = new Intent(getContext(), NextCloudAuth.class);
                     startActivityForResult(nextCloudShare, NEXTCLOUD_REQUEST_CODE);
                     break;
 
-                case WORDPRESS:
+                /*case WORDPRESS:
                     Intent WordpressShare = new Intent(this, WordpressLoginActivity.class);
                     startActivity(WordpressShare);
-                    break;
+                    break;*/
 
                 case PINTEREST:
                     signInPinterest();
