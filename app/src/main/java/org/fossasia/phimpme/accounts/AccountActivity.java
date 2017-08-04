@@ -106,8 +106,8 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private static final int NEXTCLOUD_REQUEST_CODE = 3;
     private static final int OWNCLOUD_REQUEST_CODE = 9;
     private static final int RESULT_OK = 1;
-    final static private String APP_KEY = "APP_KEY";
-    final static private String APP_SECRET = "API_SECRET";
+    final static private String APP_KEY = Constants.APP_KEY;
+    final static private String APP_SECRET = Constants.APP_SECRET;
     private static final int RC_SIGN_IN = 9001;
     private DropboxAPI<AndroidAuthSession> mDBApi;
     private BoxSession sessionBox;
@@ -255,9 +255,9 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     signInPinterest();
                     break;
 
-                /*case FLICKR:
+                case FLICKR:
                     signInFlickr();
-                    break;*/
+                    break;
 
                 case IMGUR:
                     signInImgur();
