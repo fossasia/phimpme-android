@@ -33,6 +33,8 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     static final String[] stickerPath = {"stickers/type1", "stickers/type2", "stickers/type3", "stickers/type4", "stickers/type5", "stickers/type6", "stickers/type7"};
     Bitmap currentBitmap,tempBitmap;
     int bmWidth = -1,bmHeight = -1;
+    int defaulticon;
+    TypedArray iconlist,titlelist;
 
     public RecyclerMenuFragment() {
 
@@ -121,7 +123,8 @@ public class RecyclerMenuFragment extends BaseEditFragment {
                 filterThumbs = new ArrayList<>();
                 bmWidth = currentBitmap.getWidth();
                 bmHeight = currentBitmap.getHeight();
-                for (int i = 0; i <= 9; i++) {
+                int leng = (titlelist!=null) ? titlelist.length() : 0;
+                for (int i = 0; i < leng; i++) {
                     filterThumbs.add(PhotoProcessing.processImage(getResizedBitmap(currentBitmap, 5), (i + 100 * EditImageActivity.MODE_FILTERS), 100));
                 }
             }
@@ -139,9 +142,6 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     }
 
     class mRecyclerAdapter extends RecyclerView.Adapter<mRecyclerAdapter.mViewHolder>{
-
-        int defaulticon;
-        TypedArray iconlist,titlelist;
 
         class mViewHolder extends RecyclerView.ViewHolder {
             ImageView icon;

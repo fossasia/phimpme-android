@@ -1,6 +1,8 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <colour_space.h>
+#include <cmath>
+#include <enhance.h>
 #undef PI
 #define PI 3.1415926535897932f
 
@@ -9,11 +11,13 @@
 
 #define ceilComponent(x) ((x > 255) ? 255 : x)
 
-#define blackAndWhite(r, g, b) ((r * 0.3f) + (g * 0.59f) + (b * 0.11f))
+#define blackAndWhite(r, g, b) ((r * 0.59f) + (g * 0.39f) + (b * 0.12f))
 #define hardLightLayerPixelComponent(mask, img) ((mask > 128) ? 255 - (((255 - (2 * (mask-128)) ) * (255-img) )/256) : (2*mask*img)/256)
-#define sepiaLum(r, g, b) (r * 0.21f + g * 0.72f + b * 0.07f)
+#define sepiaLum(r, g, b) (r * 0.61f + g * 0.32f + b * 0.07f)
+#define vinTan(x) (x + (x*x*x)/3)
 
 extern "C" {
+
 
 const uchar LUTsepiaRed[256] = {24, 24, 25, 26, 27, 28, 29, 30, 30, 30, 31, 32, 33, 34, 35, 36, 37, 37, 38, 38, 39, 40, 41, 42, 43, 43, 44, 45, 46, 47, 47, 48, 49, 50, 50, 51, 52, 53, 54, 55, 56, 57, 57, 58, 58, 59, 60, 61, 62, 63, 64, 64, 65, 66, 67, 68, 69, 70, 71, 71, 72, 72, 73, 74, 75, 76, 77, 78, 78, 79, 80, 81, 82, 83, 84, 85, 85, 86, 87, 88, 89, 89, 90, 91, 92, 93, 93, 94, 95, 96, 97, 97, 98, 99, 100, 101, 102, 102, 103, 104, 105, 106, 107, 108, 109, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127, 128, 129, 129, 130, 131, 132, 133, 134, 135, 136, 137, 138, 139, 140, 141, 142, 143, 144, 145, 146, 146, 147, 148, 149, 150, 151, 152, 153, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 178, 180, 181, 182, 183, 184, 185, 186, 186, 187, 188, 189, 190, 191, 193, 194, 195, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 255};
 const uchar LUTsepiaGreen[256] = {16, 16, 16, 17, 18, 18, 19, 20, 20, 20, 21, 22, 22, 23, 24, 24, 25, 25, 26, 26, 27, 28, 28, 29, 30, 30, 31, 31, 32, 33, 33, 34, 35, 36, 36, 36, 37, 38, 39, 39, 40, 41, 42, 43, 43, 44, 45, 46, 47, 47, 48, 48, 49, 50, 51, 51, 52, 53, 54, 54, 55, 55, 56, 57, 58, 59, 60, 61, 61, 61, 62, 63, 64, 65, 66, 67, 67, 68, 68, 69, 70, 72, 73, 74, 75, 75, 76, 77, 78, 78, 79, 80, 81, 81, 82, 83, 84, 85, 86, 87, 88, 90, 90, 91, 92, 93, 94, 95, 96, 97, 97, 98, 99, 100, 101, 103, 104, 105, 106, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 122, 123, 123, 124, 125, 127, 128, 129, 130, 131, 132, 132, 134, 135, 136, 137, 138, 139, 141, 141, 142, 144, 145, 146, 147, 148, 149, 150, 151, 152, 154, 155, 156, 157, 158, 160, 160, 161, 162, 163, 165, 166, 167, 168, 169, 170, 171, 173, 174, 175, 176, 177, 178, 179, 180, 182, 183, 184, 185, 187, 188, 189, 189, 191, 192, 193, 194, 196, 197, 198, 198, 200, 201, 202, 203, 205, 206, 207, 208, 209, 210, 211, 212, 213, 215, 216, 217, 218, 219, 220, 221, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 255};
@@ -73,19 +77,45 @@ const unsigned char LUTxproBlue[256] = { 21, 21, 21, 22, 23, 24, 25, 26,
                                               218, 219, 220, 221, 222, 223, 223, 224, 225, 226, 227, 228, 228, 229,
                                               230, 231, 232, 232, 233 };
 
-static unsigned char overlayComponents(unsigned char overlayComponent, unsigned char underlayComponent, float alpha) {
+static uchar overlayComponents(uchar overlayComponent, uchar underlayComponent, float alpha) {
     float underlay = underlayComponent * alpha;
-    return (unsigned char)((underlay / 255) * (underlay + ((2.0f * overlayComponent) / 255) * (255 - underlay)));
+    return (uchar)((underlay / 255) * (underlay + ((2.0f * overlayComponent) / 255) * (255 - underlay)));
+}
+
+static uchar multiplyPixelComponentsWithAlpha(unsigned char overlayComponent, float alpha, unsigned char underlayComponent) {
+    return (uchar)((underlayComponent * overlayComponent * alpha)/255);
+}
+
+static uchar multiplyPixelComponents(unsigned char overlayComponent, uchar underlayComponent) {
+    return (uchar)((float)(underlayComponent * overlayComponent)/255);
+}
+
+static unsigned char darkenPixelsComponent(unsigned char overlay, unsigned char underlay) {
+    return min(underlay, overlay);
+}
+
+static float applyBrightnessToPixelComponent(float colourComponent, float brightness) {
+    float scaled = brightness/2;
+    if (scaled < 0.0) {
+        return colourComponent * ( 1.0f + scaled);
+    } else {
+        return colourComponent + ((1.0f - colourComponent) * scaled);
+    }
+}
+
+static double applyContrastToPixelComponent(float pixelComponent, float contrast) {
+    return min(1.0f, ((pixelComponent - 0.5f) * (tan ((contrast + 1) * PI/4) ) + 0.5f));
 }
 
 
-
+void applySajuno(cv::Mat &inp, cv::Mat &out, int val);
+void applyManglow(cv::Mat &inp, cv::Mat &out, int val);
+void applyPalacia(cv::Mat &inp, cv::Mat &out, int val);
 void applyBW(cv::Mat &inp, cv::Mat &out, int val);
 void applyAnsel(cv::Mat &inp, cv::Mat &out, int val);
 void applySepia(cv::Mat &inp, cv::Mat &out, int val);
-void applyXpro(cv::Mat &inp, cv::Mat &out, int val);
+void applyAnax(cv::Mat &inp, cv::Mat &out, int val);
 void applyThreshold(cv::Mat &inp, cv::Mat &out, int val);
-void applyEdges(cv::Mat &inp, cv::Mat &out, int val);
 void applyGrain(cv::Mat &inp, cv::Mat &out, int val);
 void applyHistEq(cv::Mat &inp, cv::Mat &out, int val);
 void applyCyano(cv::Mat &inp, cv::Mat &out, int val);

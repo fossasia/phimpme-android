@@ -15,55 +15,46 @@ extern "C" {
                                                                                     jlong inpAddr,
                                                                                     jlong outAddr) {
 
-        Mat &src = *(Mat *) inpAddr;
-        Mat &dst = *(Mat *) outAddr;
+        Mat &src = *(Mat*)inpAddr;
+        Mat &dst = *(Mat*)outAddr;
 
         switch (mode) {
             case 0:
                 dst = src.clone();
                 break;
-            case 1: // Black and White
-                applyBW(src, dst, val);
+            case 1:
+                applySajuno(src,dst,val);
                 break;
-            case 2: // Testino
-                applyAnsel(src, dst, val);
+            case 2:
+                applyManglow(src, dst, val);
                 break;
-            case 3: // XPro
+            case 3:
+                applyPalacia(src, dst, val);
+                break;
+            case 4:
+                applyAnax(src, dst, val);
+                break;
+            case 5:
                 applySepia(src, dst, val);
                 break;
-            case 4: // Retro
-                applyXpro(src, dst, val);
+            case 6:
+                applyCyano(src, dst, val);
                 break;
-            case 5: // Sepia
-                applyThreshold(src, dst, val);
+            case 7:
+                applyBW(src, dst, val);
                 break;
-            case 6: // Cyano
-                applyEdges(src, dst, val);
+            case 8:
+                applyAnsel(src, dst, val);
                 break;
-            case 7: // Georgia
+            case 9:
                 applyGrain(src, dst, val);
                 break;
-            case 8: // Sahara
+            case 10:
                 applyHistEq(src, dst, val);
                 break;
-            case 9: // HDR
-                applyCyano(src, dst, val);
-                break;/*
-            case 10: // Black & White
-                nativeApplyBW(value);
+            case 11:
+                applyThreshold(src, dst, val);
                 break;
-            case 11: // Ansel
-                nativeApplyAnsel(value);
-                break;
-            case 12: // HistEqual
-                nativeEqualizeHist(value);
-                break;
-            case 13: // Threshold
-                nativeApplyThreshold(value);
-                break;
-            case 14: // Grain
-                nativeApplyGrain(value);
-                break;*/
 
             default:
                 int lowThreshold = val;
