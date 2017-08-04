@@ -834,7 +834,7 @@
     <string name="error_on_posting_twitter">Some error occur while posting on twitter.</string>
     <string name="instagram_not_installed">Instagram is not installed</string>
     <string name="whatsapp_not_installed">Whatsapp is not installed</string>
-    <string name="not_connected">No Internet Connection found</string>
+    <string name="not_connected">Please check your internet connection.</string>
 
     <string name="facebook_login_cancel">Facebook login Cancelled</string>
     <string name="facebook_login_error">Facebook login error</string>
@@ -967,6 +967,7 @@
     <string name="facebook_signIn_fail">Login to Facebook from Account manager</string>
     <string name="flickr_signIn_fail">Login to Flickr from Account manager</string>
     <string name="facebook_image_posted">Image posted on Facbook</string>
+    <string name="logged_in_facebook">Facebook account logged in successfully.</string>
 
     <string name="retry_upload">Retry</string>
     <string name="upload_failed_retry_box">Upload failed! Rename and try again</string>
