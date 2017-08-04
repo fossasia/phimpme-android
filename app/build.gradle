@@ -130,15 +130,12 @@ dependencies {
     compile "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
     compile "com.squareup.picasso:picasso:$rootProject.picassoVersion"
     compile "com.github.amlcurran.showcaseview:library:$rootProject.showcaseVersion"
-
     compile "com.github.nextcloud:android-library:$rootProject.nextCloudVersion"
     compile files('libs/twitter4j-core-3.0.5.jar')
     compile files('libs/twitter4j-media-support-3.0.5.jar')
     compile files('libs/flickrj-android-2.1.0.jar')
     compile project(':openCVLibrary320')
     compile project(':pdk')
-//    compile 'com.android.volley:volley:1.0.0'
-
     compile 'uz.shift:colorpicker:0.5@aar'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.koushikdutta.ion:ion:2.1.7'
@@ -156,27 +153,23 @@ dependencies {
     compile 'com.davemorrissey.labs:subsampling-scale-image-view:3.5.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
-    compile 'com.android.support:support-v4:25.3.1'
     compile 'com.google.firebase:firebase-core:11.0.2'
     compile 'com.facebook.android:facebook-android-sdk:4.23.0'
     compile 'com.uphyca:stetho_realm:2.0.0'
     compile 'com.android.support:multidex:1.0.1'
     compile group: 'com.box', name: 'box-android-sdk', version: '4.0.8'
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
-    compile 'com.google.android.gms:play-services-auth:11.0.2'
-    compile 'com.google.android.gms:play-services-plus:11.0.2'
-    compile 'com.google.firebase:firebase-perf:11.0.2'
-    compile project(':pdk')
-
+    compile "com.google.android.gms:play-services-auth:$rootProject.gmsVersion"
+    compile "com.google.android.gms:play-services-plus:$rootProject.gmsVersion"
+    compile "com.google.firebase:firebase-perf:$rootProject.gmsVersion"
     compile 'com.daksh:loglr:1.2.1'
     compile ('com.tumblr:jumblr:0.0.11'){
         exclude module:'scribe'
     }
-
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true;
-    }
 
+    }
 }
 apply plugin: 'com.google.gms.google-services'
 
