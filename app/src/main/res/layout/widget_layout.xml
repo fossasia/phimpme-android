@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         style="@android:style/Widget.DeviceDefault.Button.Borderless"
-        android:drawableTop="@mipmap/ic_launcher"
+        android:drawableTop="@drawable/ic_launcher_vector"
         android:padding="0dp"
         android:textAllCaps="false"
         android:textSize="12sp"
