@@ -39,6 +39,15 @@ public class ColorPalette {
         return color;
     }
 
+    public static int getLighterColor(int c){
+        float[] hsv = new float[3];
+        int color = c;
+        Color.colorToHSV(color, hsv);
+        hsv[2] *= 1.35f; // value component
+        color = Color.HSVToColor(hsv);
+        return color;
+    }
+
     public static int getTransparentColor(int color, int alpha){
         return  ColorUtils.setAlphaComponent(color, alpha);
     }
