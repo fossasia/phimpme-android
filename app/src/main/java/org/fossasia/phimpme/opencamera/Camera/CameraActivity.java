@@ -781,8 +781,12 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
 		if( MyDebug.LOG ) {
 			Log.d(TAG, "onResume: total time to resume: " + (System.currentTimeMillis() - debug_time));
 		}
-		if (CameraActivity.this.isVoiceInteraction()) {
-			startVoiceTrigger();
+		try {
+			if (CameraActivity.this.isVoiceInteraction()) {
+				startVoiceTrigger();
+			}
+		} catch (NoSuchMethodError e) {
+			e.printStackTrace();
 		}
 
 	}
