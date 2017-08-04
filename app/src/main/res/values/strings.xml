@@ -976,6 +976,9 @@
     <string name="uploading">Image uploading in progress.</string>
     <string name="auth_failed">Authorization failed</string>
     <string name="image_invalid">Invalid Image</string>
+
+    <string name="caption_head">Add Caption</string>
+    <string name="add_action">ADD</string>
     <string name="speech_prompt">Describe the photo</string>
     <string name="caption_speak">Say Something</string>
 </resources>

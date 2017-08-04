@@ -397,7 +397,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         share.addStream(uri);
         share.setType(getResources().getString(R.string.image_type));
         startActivityForResult(share.getIntent(), REQ_SELECT_PHOTO);
-
     }
 
     public Uri getImageUri(Context inContext) {
@@ -575,15 +574,15 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
 
     private void openCaptionDialogBox() {
-        AlertDialog.Builder captionDialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
-        final EditText captionEditText = getCaptionDialog(this, captionDialogBuilder);
+        final AlertDialog.Builder captionDialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
+        final EditText captionEditText = new EditText(getApplicationContext());
         if (caption != null) {
             captionEditText.setText(caption);
             captionEditText.setSelection(caption.length());
         }
-
+        AlertDialogsHelper.getInsertTextDialog(SharingActivity.this, captionDialogBuilder, captionEditText, R.string.caption_head ,null);
         captionDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-        captionDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+        captionDialogBuilder.setPositiveButton(getString(R.string.add_action).toUpperCase(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //This should br empty it will be overwrite later
