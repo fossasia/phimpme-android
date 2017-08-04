@@ -351,7 +351,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 shareToNextCloudAndOwnCloud(getString(R.string.owncloud));
                 break;
 
-
             case BOX:
                 shareToBox();
                 break;
@@ -363,6 +362,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             case OTHERS:
                 shareToOthers();
                 break;
+
             case WHATSAPP:
                 shareToWhatsapp();
                 break;
@@ -678,27 +678,26 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void uploadOnTwitter(String token, String secret) {
-            final File f3 = new File(Environment.getExternalStorageDirectory() + "/twitter_upload/");
-            final File file = new File(Environment.getExternalStorageDirectory() + "/twitter_upload/" + "temp" + ".png");
-            if (!f3.exists())
-                f3.mkdirs();
-            OutputStream outStream;
-            try {
-                outStream = new FileOutputStream(file);
-                finalBmp.compress(Bitmap.CompressFormat.PNG, 100, outStream);
-                outStream.close();
-            } catch (Exception e) {
-                e.printStackTrace();
+        final File f3 = new File(Environment.getExternalStorageDirectory() + "/twitter_upload/");
+        final File file = new File(Environment.getExternalStorageDirectory() + "/twitter_upload/" + "temp" + ".png");
+        if (!f3.exists())
+            f3.mkdirs();
+        OutputStream outStream;
+        try {
+            outStream = new FileOutputStream(file);
+            finalBmp.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+            outStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String finalFile = file.getAbsolutePath();
+        HelperMethods.postToTwitterWithImage(context, finalFile, caption,token,secret, new HelperMethods.TwitterCallback() {
+            @Override
+            public void onFinsihed(Boolean response) {
+                isPostedOnTwitter = response;
+                file.delete();
             }
-            String finalFile = file.getAbsolutePath();
-
-                HelperMethods.postToTwitterWithImage(context, finalFile, caption,token,secret, new HelperMethods.TwitterCallback() {
-                    @Override
-                    public void onFinsihed(Boolean response) {
-                        isPostedOnTwitter = response;
-                        file.delete();
-                    }
-                });
+        });
     }
 
     private void shareToFacebook() {
@@ -754,38 +753,37 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void shareToImgur() {
-            final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
-            RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
-            query.equalTo("name", getString(R.string.imgur));
-            final RealmResults<AccountDatabase> result = query.findAll();
-            if (result.size() != 0) {
-                isPersonal = true;
-                imgurAuth = Constants.IMGUR_HEADER_USER + " " + result.get(0).getToken();
-            }
-            AlertDialogsHelper.getTextDialog(SharingActivity.this, dialogBuilder,
-                    R.string.choose, R.string.imgur_select_mode, null);
-            dialogBuilder.setPositiveButton(getString(R.string.personal).toUpperCase(), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    if (!isPersonal) {
-                        SnackBarHandler.show(parent, R.string.sign_from_account);
-                        return;
-                    } else {
-                        isPersonal = true;
-                        uploadImgur();
-                    }
-                }
-            });
-
-            dialogBuilder.setNeutralButton(getString(R.string.anonymous).toUpperCase(), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    isPersonal = false;
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
+        RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
+        query.equalTo("name", getString(R.string.imgur));
+        final RealmResults<AccountDatabase> result = query.findAll();
+        if (result.size() != 0) {
+            isPersonal = true;
+            imgurAuth = Constants.IMGUR_HEADER_USER + " " + result.get(0).getToken();
+        }
+        AlertDialogsHelper.getTextDialog(SharingActivity.this, dialogBuilder,
+                R.string.choose, R.string.imgur_select_mode, null);
+        dialogBuilder.setPositiveButton(getString(R.string.personal).toUpperCase(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (!isPersonal) {
+                    SnackBarHandler.show(parent, R.string.sign_from_account);
+                    return;
+                } else {
+                    isPersonal = true;
                     uploadImgur();
                 }
-            });
-            dialogBuilder.setNegativeButton(getString(R.string.exit).toUpperCase(), null);
-            dialogBuilder.show();
+            }
+        });
+
+        dialogBuilder.setNeutralButton(getString(R.string.anonymous).toUpperCase(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {isPersonal = false;
+                uploadImgur();
+            }
+        });
+        dialogBuilder.setNegativeButton(getString(R.string.exit).toUpperCase(), null);
+        dialogBuilder.show();
     }
 
     void uploadImgur() {
@@ -1105,5 +1103,4 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 SnackBarHandler.show(parent, getString(R.string.error_on_tumblr));
         }
     }
-
 }
