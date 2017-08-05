@@ -1,0 +1,12 @@
+metadata:
+  author: FOSSASIA
+  projectname: Phimp.me
+  version: development
+build:
+  theme:
+    name: sphinx_fossasia_theme
+  source: docs
+publish:
+  ghpages:
+    url: phimp.me
+
