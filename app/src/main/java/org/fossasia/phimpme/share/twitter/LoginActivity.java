@@ -161,12 +161,13 @@ public class LoginActivity extends ThemedActivity {
         protected Void doInBackground(Void... arg0) {
             String verifier = uri.getQueryParameter(AppConstant.IEXTRA_OAUTH_VERIFIER);
             try {
-                AccessToken accessToken = twitter.getOAuthAccessToken(requestToken, verifier);
-                bundle= new Bundle();
-                bundle.putString(getString(R.string.auth_token), accessToken.getToken());
-                bundle.putString(getString(R.string.auth_username),accessToken.getScreenName());
-                bundle.putString(getString(R.string.auth_secret),accessToken.getTokenSecret());
-
+				if (verifier != null) {
+					AccessToken accessToken = twitter.getOAuthAccessToken(requestToken, verifier);
+					bundle= new Bundle();
+					bundle.putString(getString(R.string.auth_token), accessToken.getToken());
+					bundle.putString(getString(R.string.auth_username),accessToken.getScreenName());
+					bundle.putString(getString(R.string.auth_secret),accessToken.getTokenSecret());
+				}
             } catch (TwitterException e) {
                 e.printStackTrace();
             }
