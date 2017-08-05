@@ -39,5 +39,6 @@ ext {
     picassoVersion = "2.5.2"
     showcaseVersion = "5.4.3"
     nextCloudVersion = "1.0.21"
+    gmsVersion = "11.0.2"
 }
 

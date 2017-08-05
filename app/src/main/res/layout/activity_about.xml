@@ -59,7 +59,7 @@
                             android:layout_centerHorizontal="true"
                             android:padding="@dimen/sub_medium_spacing"
                             android:scaleType="fitXY"
-                            android:src="@mipmap/ic_launcher" />
+                            app:srcCompat="@drawable/ic_launcher_vector" />
                     </RelativeLayout>
 
                     <TextView

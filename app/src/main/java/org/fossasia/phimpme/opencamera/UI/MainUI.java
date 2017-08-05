@@ -742,6 +742,16 @@ public class MainUI {
 					case "volume_take_photo":
 						main_activity.takePicture();
 						return true;
+
+					case "volume_zoom":
+						if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+							main_activity.getPreview().zoomTo(main_activity.getPreview().getCameraController().getZoom() + 1);
+						}
+						else {
+							main_activity.getPreview().zoomTo(main_activity.getPreview().getCameraController().getZoom() - 1);
+						}
+						return true;
+
 					case "volume_focus":
 						if (keydown_volume_up && keydown_volume_down) {
 							if (MyDebug.LOG)
