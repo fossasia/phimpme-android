@@ -1,162 +1,424 @@
-<html>
-	<head>
-		<!-- CHANGE TITLE AND META ACCORDINGLY -->
-		<title>Phimpme Android</title>
-		<meta name="description" content="All in One Image Android App">
-		<meta name="keywords" content="phimpme, android">
-		<meta name="copyright" content="Copyright © 2014 Faiz Malkani. All Rights Reserved.">
-		<meta name="author" content="FOSSASIA">
-		<meta name="theme-color" content="#ffffff">
-		<meta content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes" name="viewport">
-		<link rel="stylesheet" href="css/tidy.css">
-		<link rel="stylesheet" href="css/animate.css">
-		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-		<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
-		<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/plugins/ScrollToPlugin.min.js"></script>
-		<script src="bower_components/webcomponentsjs/webcomponents.js"></script>
-        <link href="//cdn.rawgit.com/noelboss/featherlight/1.3.2/release/featherlight.min.css" type="text/css" rel="stylesheet" title="Featherlight Styles" />
-        <script src="//cdn.rawgit.com/noelboss/featherlight/1.3.2/release/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
-		<link rel="import" href="bower_components/paper-ripple/paper-ripple.html">
-		<link rel="import" href="bower_components/paper-fab/paper-fab.html">
-		<link rel="import" href="bower_components/iron-icons/iron-icons.html">
-	</head>
-	<body>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>phimpme-android &mdash; Phimp.me development documentation</title> 
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="_static/fossasia.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <script type="text/javascript">
+    var DOCUMENTATION_OPTIONS = {
+      URL_ROOT:    './',
+      VERSION:     'development',
+      COLLAPSE_INDEX: false,
+      FILE_SUFFIX: '.html',
+      HAS_SOURCE:  true,
+      SOURCELINK_SUFFIX: '.txt'
+    };
+  </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://static.sekandocdn.net/static/feednami/feednami-client-v1.1.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/fossasia/loklak-timeline-plugin/master/plugin.js"></script>    
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script>
+    $(document).ready(function(){
+      $('a[href*="#"]').not('[href="#"]').not('[href="#0"]').click(function(event) {
+        if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+            var target = $(this.hash);
+            target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+          if (target.length) {
+            event.preventDefault();
+            $('html, body').animate({
+              scrollTop: target.offset().top - 80
+            }, 1000, function() {
+              var $target = $(target);
+                $target.focus();
+              if ($target.is(":focus")) { // Checking if the target was focused
+              return false;
+              } else {
+                $target.attr('tabindex','-1'); // Adding tabindex for elements not focusable
+                $target.focus(); // Set focus again
+              };
+            });
+          }
+        }
+      });
+      $(window).scroll(function () {
+        if ($(this).scrollTop() > 50) {
+          $('#back-to-top').fadeIn();
+        } else {
+          $('#back-to-top').fadeOut();
+        }
+      });
+      $('#back-to-top').click(function () {
+        $('body,html').animate({
+          scrollTop: 0
+        }, 800);
+        return false;
+      });
+    });
+  </script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head>
+  <body>
+    <div class="container-fluid main"> 
+  <nav class="navbar navbar-default navbar-fixed-top" id="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>                        
+        </button>
+        <a class="navbar-brand" href="#"><img class="img-responsive" src="http://fossasia.org/img/fossasia-dark.png" style="width: 50%" /></a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav navbar-right menu">
+              
+              <li><a href=#>About</a></li>
+              
+              
+              <li><a href=#>Docs</a></li>
+              
+              
+              <li><a href=http://blog.fossasia.org/>Blog</a></li>
+              
+              
+              <li><a href=http://fossasia.org/donate/>Donate</a></li>
+              
+              
+              <li><a href=http://blog.fossasia.org/contact/>Contact</a></li>
+              
+              
+              <li class="social-link hidden-md hidden-sm hidden-xs"><a href=https://twitter.com/fossasia><i class="fa fa-twitter fa-lg"></i></a></li>
+              
+              
+              <li class="social-link hidden-md hidden-sm hidden-xs"><a href=https://facebook.com/fossasia><i class="fa fa-facebook fa-lg"></i></a></li>
+              
+          </ul>
+      </div>
+    </div>
+  </nav>
+      <div class="container">
+        <div class="col-md-3 hidden-sm hidden-xs"> 
+  <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+    <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">phimpme-android</a><ul>
+<li><a class="reference internal" href="#communication">Communication</a></li>
+<li><a class="reference internal" href="#how-to-contribute">How to Contribute</a><ul>
+<li><a class="reference internal" href="#branch-policy">Branch Policy</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#screenshots">Screenshots</a></li>
+<li><a class="reference internal" href="#features">Features</a></li>
+<li><a class="reference internal" href="#development-setup">Development Setup</a><ul>
+<li><a class="reference internal" href="#setting-up-the-android-project">Setting up the Android Project</a></li>
+<li><a class="reference internal" href="#to-login-and-upload-images-to-dropbox">To login and upload images to Dropbox</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#license">License</a></li>
+<li><a class="reference internal" href="#maintainers">Maintainers</a></li>
+</ul>
+</li>
+</ul>
 
-		<div class="container" style="width: 100%">
-			<!-- COVER IMAGE AND FLOATING BUTTON -->
-			<div class="cover-image"></div>
-			<div class="desktop-fab-container ">
-				<!-- REPLACE WITH YOUR APP URL -->
-     			<a href="https://github.com/fossasia/phimpme-android">
-     				<paper-fab class="wow fadeInUp desktop-fab" icon="shop"></paper-fab>
-     			</a>
-			</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+    </div>
+  </div> 
+        </div>
+        <div class="document col-md-9"> <!-- Document -->
+          <div> <!-- Document Wrapper -->
+            <div class="body" role="main"> <!-- Body-->
+  <div class="section" id="phimpme-android">
+<h1>phimpme-android<a class="headerlink" href="#phimpme-android" title="Permalink to this headline">¶</a></h1>
+<p><img alt="Phimpme" src="_images/logo.png" /></p>
+<p>Phimp.me is a Photo App for Android that aims to replace proprietary
+photo applications. It offers features such as taking photos, adding
+filters, editing images and uploading them to social networks.</p>
+<p><a class="reference external" href="https://travis-ci.org/fossasia/phimpme-android"><img alt="Build Status" src="https://travis-ci.org/fossasia/phimpme-android.svg?branch=master" /></a> <a class="reference external" href="https://codecov.io/gh/fossasia/phimpme-android"><img alt="codecov" src="https://codecov.io/gh/fossasia/phimpme-android/branch/master/graph/badge.svg" /></a> <a class="reference external" href="https://www.codacy.com/app/harshithdwivedi/phimpme-android?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fossasia/phimpme-android&amp;utm_campaign=Badge_Grade"><img alt="Codacy Badge" src="https://api.codacy.com/project/badge/Grade/4584003e734343b3b8ce94bcae6e9ca4" /></a></p>
+<div class="section" id="communication">
+<h2>Communication<a class="headerlink" href="#communication" title="Permalink to this headline">¶</a></h2>
+<p>Join Gitter channel: <a class="reference external" href="https://gitter.im/fossasia/phimpme">https://gitter.im/fossasia/phimpme</a></p>
+</div>
+<div class="section" id="how-to-contribute">
+<h2>How to Contribute<a class="headerlink" href="#how-to-contribute" title="Permalink to this headline">¶</a></h2>
+<p>This is an Open Source project and we would be happy to see contributors
+who report bugs and file feature requests submitting pull requests as
+well.This project adheres to the Contributor Covenant <a class="reference external" href="https://github.com/fossasia/phimpme-android/blob/development/CONTRIBUTING.md">code of
+conduct</a>.
+By participating, you are expected to uphold this code style. Please
+report issues here <a class="reference external" href="https://github.com/fossasia/phimpme-android/issues">https://github.com/fossasia/phimpme-android/issues</a></p>
+<div class="section" id="branch-policy">
+<h3>Branch Policy<a class="headerlink" href="#branch-policy" title="Permalink to this headline">¶</a></h3>
+<p>We have the following branches</p>
+<ul>
+<li><div class="first line-block">
+<div class="line"><strong>development</strong></div>
+<div class="line-block">
+<div class="line">All development goes on in this branch. If you&#8217;re making a
+contribution,</div>
+<div class="line">you are supposed to make a pull request to <em>development</em>.</div>
+<div class="line">Make sure it pass a build check on Travis</div>
+</div>
+</div>
+<p>It is advisable to clone only the development branch using following
+command:</p>
+<p><code class="docutils literal"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">-b</span> <span class="pre">&lt;branch&gt;</span> <span class="pre">&lt;remote_repo&gt;</span></code></p>
+<p>Example:</p>
+<p><code class="docutils literal"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">-b</span> <span class="pre">my-branch</span> <span class="pre">git&#64;github.com:user/myproject.git</span></code></p>
+<p>Alternative (no public key setup needed):</p>
+<p><code class="docutils literal"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">-b</span> <span class="pre">my-branch</span> <span class="pre">https://git&#64;github.com/username/myproject.git</span></code></p>
+<p>With Git 1.7.10 and later, add &#8211;single-branch to prevent fetching of
+all branches. Example, with development branch:</p>
+<p><code class="docutils literal"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">-b</span> <span class="pre">development</span> <span class="pre">--single-branch</span> <span class="pre">https://github.com/username/phimpme-android.git</span></code></p>
+</li>
+<li><div class="first line-block">
+<div class="line"><strong>master</strong></div>
+<div class="line-block">
+<div class="line">This contains the stable code. After significant features/bugfixes
+are accumulated on development, we move it to master.</div>
+</div>
+</div>
+</li>
+<li><div class="first line-block">
+<div class="line"><strong>apk</strong></div>
+<div class="line-block">
+<div class="line">This branch contains automatically generated apk file for testing.</div>
+</div>
+</div>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="screenshots">
+<h2>Screenshots<a class="headerlink" href="#screenshots" title="Permalink to this headline">¶</a></h2>
+<table>
+  <tr>
+    <td><img src="_static/screenshots/screenshot_1.png"></td>
+    <td><img src="_static/screenshots/screenshot_3.png"></td>
+    <td><img src="_static/screenshots/screenshot_5.png"></td>
+    <td><img src="_static/screenshots/screenshot_2.png"></td>
+    <td><img src="_static/screenshots/screenshot_4.png"></td>
+  </tr>
+</table></div>
+<div class="section" id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="41%" />
+<col width="42%" />
+<col width="17%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Feature</th>
+<th class="head">Description</th>
+<th class="head">Status</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Home Screen</td>
+<td>Show local captured images/Album wise</td>
+<td>Established</td>
+</tr>
+<tr class="row-odd"><td>Grid view of images</td>
+<td>Diplaying images in grid</td>
+<td>Established</td>
+</tr>
+<tr class="row-even"><td>Edit, Upload, share option on image click</td>
+<td>&#160;</td>
+<td>Working</td>
+</tr>
+<tr class="row-odd"><td>Camera</td>
+<td>Capture Image, Toggle Camera</td>
+<td>Working</td>
+</tr>
+<tr class="row-even"><td>Apply filters, Camera features</td>
+<td>Flash on/off, Exposure etc</td>
+<td>Working</td>
+</tr>
+<tr class="row-odd"><td>Upload</td>
+<td>Select account on which you want to upload</td>
+<td>Not Implemented</td>
+</tr>
+<tr class="row-even"><td>Select images which you want to upload</td>
+<td>To upload photos</td>
+<td>Not implemented</td>
+</tr>
+<tr class="row-odd"><td>Settings</td>
+<td>Add Accounts</td>
+<td>Not Implemented</td>
+</tr>
+<tr class="row-even"><td>Photos settings</td>
+<td>Set password, choose folder etc</td>
+<td>Working</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="development-setup">
+<h2>Development Setup<a class="headerlink" href="#development-setup" title="Permalink to this headline">¶</a></h2>
+<p>Before you begin, you should already have the Android Studio SDK
+downloaded and set up correctly. You can find a guide on how to do this
+here: <a class="reference external" href="http://developer.android.com/sdk/installing/index.html?pkg=studio">Setting up Android
+Studio</a></p>
+<div class="section" id="setting-up-the-android-project">
+<h3>Setting up the Android Project<a class="headerlink" href="#setting-up-the-android-project" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Download the <em>phimpme-android</em> project source. You can do this either
+by forking and cloning the repository (recommended if you plan on
+pushing changes) or by downloading it as a ZIP file and extracting
+it.</li>
+<li>Open Android Studio, you will see a <strong>Welcome to Android</strong> window.
+Under Quick Start, select <em>Import Project (Eclipse ADT, Gradle,
+etc.)</em></li>
+<li>Navigate to the directory where you saved the phimpme-android
+project, select the root folder of the project (the folder named
+&#8220;phimpme-android&#8221;), and hit OK. Android Studio should now begin
+building the project with Gradle.</li>
+<li>Once this process is complete and Android Studio opens, check the
+Console for any build errors.<ul>
+<li><em>Note:</em> If you recieve a Gradle sync error titled, &#8220;failed to find
+...&#8221;, you should click on the link below the error message (if
+avaliable) that says <em>Install missing platform(s) and sync
+project</em> and allow Android studio to fetch you what is missing.</li>
+</ul>
+</li>
+<li>Download this
+<a class="reference external" href="https://github.com/opencv/opencv/releases/download/3.2.0/opencv-3.2.0-android-sdk.zip">OpenCV-android-sdk</a>
+zip file and extract it.<ul>
+<li>Copy all the files from <em>&#8220;OpenCV-android-sdk/sdk/native/3rdparty&#8221;</em>
+to <em>&#8220;phimpme-android/app/src/main/3rdparty&#8221;</em> (create directory if
+it doesn&#8217;t exist)</li>
+<li>Copy all the files from <em>&#8220;OpenCV-android-sdk/sdk/native/libs&#8221;</em> to
+<em>&#8220;phimpme-android/app/src/main/jniLibs&#8221;</em> (create directory if it
+doesn&#8217;t exist)</li>
+<li>Now build your project. If your build fails then try deleting
+these build directories
+<em>&#8220;phimpme-android/app/.externalNativeBuild&#8221;</em> and
+<em>&#8220;phimpme-android/app/build&#8221;</em>, if they exist and run the build
+again.</li>
+</ul>
+</li>
+<li>Once all build errors have been resolved, you should be all set to
+build the app and test it.</li>
+<li>To Build the app, go to <em>Build&gt;Make Project</em> (or alternatively press
+the Make Project icon in the toolbar).</li>
+<li>If the app was built succesfully, you can test it by running it on
+either a real device or an emulated one by going to <em>Run&gt;Run &#8216;app&#8217;</em>
+or presing the Run icon in the toolbar.</li>
+</ol>
+</div>
+<div class="section" id="to-login-and-upload-images-to-dropbox">
+<h3>To login and upload images to Dropbox<a class="headerlink" href="#to-login-and-upload-images-to-dropbox" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>Go to the Dropbox App
+console(<a class="reference external" href="https://www.dropbox.com/developers/apps">Link</a>)</li>
+<li>Create a new application and get the APP_KEY and API_SECRET.</li>
+<li>In the AndroidManifest.xml file, in the AuthActivity section, replace
+the APPKEY with your own App key.</li>
+<li>Go to Utilities/Constants.java file and add replace the APP_KEY and
+API_SECRET with the key received from step 2.</li>
+</ol>
+</div>
+</div>
+<div class="section" id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
+<p>This project is currently licensed under the GNU General Public License
+v3. A copy of <a class="reference external" href="../LICENSE.html">LICENSE</a> is to be present along with
+the source code. To obtain the software under a different license,
+please contact FOSSASIA.</p>
+</div>
+<div class="section" id="maintainers">
+<h2>Maintainers<a class="headerlink" href="#maintainers" title="Permalink to this headline">¶</a></h2>
+<p>The project is maintained by</p>
+<ul class="simple">
+<li>Hon Nguyen (<a class="reference external" href="https://github.com/vanhonit">&#64;vanhonit</a>)</li>
+<li>Mario Behling (<a class="reference external" href="http://github.com/mariobehling">&#64;mariobehling</a>)</li>
+<li>Pawan Pal (<a class="reference external" href="http://github.com/pa1pal">&#64;pa1pal</a>)</li>
+</ul>
+</div>
+</div>
 
-			<!-- ICON, NAME AND DESCRIPTION -->
-			<div class="wow fadeInUp content-card">
-				<!-- REPLACE WITH YOUR APP URL -->
-				<a href="https://github.com/fossasia/phimpme-android">
-					<paper-fab class="mobile-fab" icon="shop"></paper-fab>
-				</a>
 
-				<div class="icon-and-title-flex">
-					<img src="img/app-icon-512.png" class="appicon"></img>
-					<div class="title-container">
-						<!-- REPLACE WITH YOUR APP NAME -->
-						<span class="text-title">Phimpme Android</span>
-						<br><div class="intertext-padding"></div>
-						<!-- REPLACE WITH YOUR DEV NAME -->
-						<span class="text-subtitle">by FOSSASIA</span>
-						<br><div class="intertext-padding"></div>
-						<!-- REPLACE WITH YOUR APP PRICE -->
-						<span class="text-subtitle">Open Source</span>
-					</div>
-				</div><br><br>
-				<!-- REPLACE WITH YOUR APP DESCRIPTION -->
-				<span class="text-description" style="font-size: 1.1em">Get all the image features right from click to edit to share to world in one place.
-					Click from inbuilt Camera. Edit images by applying different filters, enhance the image with extra tools. Share to your favourite social
-					network right from the app.
-			</div>
-
-
-			<!-- OTHER APPS BY YOU -->
-			<div class="wow fadeInUp content-works">
-			    <div class="screenshot-item">
-                    <a href="img/screenshots/screenshot_1.png" data-featherlight="image">
-                        <img src="img/screenshots/screenshot_1.png">
-                    </a>
-                </div>
-                <div class="screenshot-item">
-                    <a href="img/screenshots/screenshot_2.png" data-featherlight="image">
-                        <img src="img/screenshots/screenshot_2.png">
-                    </a>
-                </div>
-                <div class="screenshot-item">
-                    <a href="img/screenshots/screenshot_3.png" data-featherlight="image">
-                        <img src="img/screenshots/screenshot_3.png">
-                    </a>
-                </div>
-                <div class="screenshot-item">
-                    <a href="img/screenshots/screenshot_4.png" data-featherlight="image">
-                        <img src="img/screenshots/screenshot_4.png">
-                    </a>
-                </div>
-     	    </div>
-
-
-		<!-- APP DETAILS -->
-		<div class="wow fadeInUp content-card" style="margin-top: 0;">
-     		<span class="text-subtitle" style="font-size: 2em; font-weight: 300; color: #333">Details</span>
-			<br><br>
-			<div>
-				<!-- REPLACE WITH YOUR APP DETAILS ACCORDINGLY -->
-				<div class="detail-item">
-					<iron-icon class="details-icon" icon="mail"></iron-icon>
-					<span class="text-description">Photography</span>
-				</div>
-				<div class="detail-item">
-					<iron-icon class="details-icon" icon="info"></iron-icon>
-					<span class="text-description">Version 1.0.0<span>
-				</div>
-				<div class="detail-item">
-					<iron-icon class="details-icon" icon="mail"></iron-icon>
-					<span class="text-description">fossasia@googlegroups.com</span>
-				</div>
-				<div class="detail-item">
-					<iron-icon class="details-icon" icon="android"></iron-icon>
-					<span class="text-description">Android 4.0.3+</span>
-				</div>
-				<div class="detail-item">
-					<iron-icon class="details-icon" icon="assessment"></iron-icon>
-					<span class="text-description">Open Source</span>
-				</div>
-			</div>
-     	</div>
-
-		<!-- SPACE BELOW DETAILS -->
-		<div class="empty-space">
-			<div class="meta-container wow fadeInUp">
-				<div class="wow fadeInUp detail-item watermark credits">
-						<span class="text-description credits-text" style="color: #ffffff">Template by <a href="http://faizmalkani.com" style="color: #fff; font-weight: 700">Faiz Malkani</a></span>
-				</div>
-			</div>
-		</div>
-
-
-
-
-
-		<!-- ===================================================================================================== -->
-
-		<!-- JAVASCRIPT -->
-
-		<!-- Animations -->
-		<script src="js/wow.min.js"></script>
-		<script>
-			new WOW().init();
-		</script>
-
-		<!-- Scrollwheel Smoothing -->
-		<script>
-			$(function()
-			{
-				var $window = $(window);
-				var scrollTime = 0.2;
-				var scrollDistance = 270;
-				$window.on("mousewheel DOMMouseScroll", function(event)
-				{
-
-					event.preventDefault();
-					var delta = event.originalEvent.wheelDelta/120 || -event.originalEvent.detail/3;
-					var scrollTop = $window.scrollTop();
-					var finalScroll = scrollTop - parseInt(delta*scrollDistance);
-					TweenMax.to($window, scrollTime,
-					{
-						scrollTo : { y: finalScroll, autoKill:true }, ease: Power1.easeOut, overwrite: 5
-
-					});
-				});
-			});
-		</script>
-	</body>
+            </div>
+          </div> 
+        </div>
+      </div>
+      <div class="footer-container">
+        <footer role="contentinfo" class="footer">
+          <div class="container">
+            
+    <div class="row">
+      <div class="col-sm-2">
+        <ul class="menu">
+        <li><a target="_self" href="http://blog.fossasia.org">Blog</a></li>
+        <li><a target="_self" href="http://github.com/fossasia">Github</a></li>
+        <li><a target="_self" href="http://labs.fossasia.org/#projects">Projects</a></li>
+        <li><a target="_self" href="http://coc.fossasia.org/">Code of Conduct</a></li>
+        <li><a target="_self" href="./about">About</a></li>
+        <li><a target="_self" href="http://blog.fossasia.org/contact">Contact</a></li>
+        <li><a target="_self" href="./donate/">Donate</a></li>
+        <li><a class="inner-link" id="back-to-top" href="#top">Back To Top</a></li>
+      </ul>
+      </div>
+      <div class="col-sm-7">
+        <span class="lead color-heading">About FOSSASIA</span>
+      <p>
+FOSSASIA is the premier Free and Open Source technology organization in Asia for developers, designers, start-ups, and contributors. Projects at FOSSASIA range from open hardware, to design, graphics and software. FOSSASIA was established in 2009. The annual FOSSASIA Summit took place in Cambodia, Vietnam and Singapore. FOSSASIA meetup groups exist throughout Asia.</p>
+      </div>
+      <div class="col-sm-3">
+        <ul class="contact-methods">
+        <li><i class="fa fa-envelope fa-lg"></i><span><a id="mailAdd" href="mailto:fossasia@googlegroups.com" target="_self" style="color:#777777">&nbsp;fossasia@googlegroups.com</a></span></li>
+        <li><i class="fa fa-mobile fa-lg"></i><span>&nbsp;+65 83435672</span></li>
+        <li><i class="fa fa-map-marker fa-lg"></i><span>&nbsp;Ms. DANG Hong Phuc</span></li>
+        <li><span>FOSSASIA</span></li>
+        <li><span>Xoai Building, 93 Mau Than Street Xuan Khan, Ninh Kieu 9000 Can Tho, Vietnam</span></li>
+      </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 text-center">
+      <ul class="social-profiles">
+        <li><a target="_self" href="http://twitter.com/fossasia"><i class="fa fa-twitter"></i></a></li>
+        <li><a target="_self" href="http://facebook.com/fossasia"><i class="fa fa-facebook"></i></a></li>
+        <li><a target="_self" href="https://www.linkedin.com/groups/FOSSASIA-3762811"><i class="fa fa-linkedin fa-lg"></i></a></li>
+        <li><a target="_self" href="https://www.youtube.com/channel/UCQprMsG-raCIMlBudm20iLQ"><i class="fa fa-youtube icon-large"></i></a></li>
+        <li><a target="_self" href="https://www.flickr.com/photos/fossasia"><i class="fa fa-flickr fa-lg"></i></a></li>
+        <li><a target="_self" href="https://www.instagram.com/explore/tags/fossasia/"><i class="fa fa-instagram"></i></a></li>
+        <li><a target="_self" href="https://github.com/fossasia"><i class="fa fa-github fa-lg"></i></a></li>
+      </ul>
+      </div>
+    </div>
+            <hr />
+            <div class="copy">
+                  &copy; 2017, FOSSASIA. All Rights Reserved.
+                Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.5.
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </body>
 </html>
