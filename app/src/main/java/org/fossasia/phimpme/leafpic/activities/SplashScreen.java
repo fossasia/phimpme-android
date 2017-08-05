@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.SharedMediaActivity;
 import org.fossasia.phimpme.leafpic.data.Album;
@@ -21,20 +22,20 @@ import org.fossasia.phimpme.leafpic.util.PreferenceUtil;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 
-/**
- * Created by dnld on 01/04/16.
- */
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class SplashScreen extends SharedMediaActivity {
 
     private final int READ_EXTERNAL_STORAGE_ID = 12;
     private static final int PICK_MEDIA_REQUEST = 44;
 
-    final static String CONTENT = "content";
-    final static String PICK_MODE = "pick_mode";
+    public final static String CONTENT = "content";
+    public final static String PICK_MODE = "pick_mode";
 
-    final static int ALBUMS_PREFETCHED = 23;
-    final static int PHOTOS_PREFETCHED = 2;
-    final static int ALBUMS_BACKUP = 60;
+    public final static int ALBUMS_PREFETCHED = 23;
+    public final static int PHOTOS_PREFETCHED = 2;
+    public final static int ALBUMS_BACKUP = 60;
     private boolean PICK_INTENT = false;
     public final static String ACTION_OPEN_ALBUM = "vn.mbm.phimp.leafpic.OPEN_ALBUM";
 
@@ -42,6 +43,11 @@ public class SplashScreen extends SharedMediaActivity {
     private Album album;
 
     private PreferenceUtil SP;
+
+    @BindView(R.id.progress_splash)
+    ProgressBar progressBar;
+
+    @BindView(R.id.splash_bg)
     RelativeLayout parentView;
 
     @Override
@@ -49,18 +55,19 @@ public class SplashScreen extends SharedMediaActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         ActivitySwitchHelper.setContext(this);
-
+        ButterKnife.bind(this);
         SP = PreferenceUtil.getInstance(getApplicationContext());
 
-        ((ProgressBar) findViewById(R.id.progress_splash)).getIndeterminateDrawable().setColorFilter(getPrimaryColor(), PorterDuff.Mode.SRC_ATOP);
+        progressBar.getIndeterminateDrawable()
+                .setColorFilter(ColorPalette.getLighterColor(getPrimaryColor()), PorterDuff.Mode.SRC_ATOP);
 
-        parentView = (RelativeLayout) findViewById(R.id.splash_bg);
-        parentView.setBackground(getResources().getDrawable(R.drawable.bg_splash));
+        parentView.setBackgroundColor(ColorPalette.getObscuredColor(getPrimaryColor()));
 
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+
         setNavBarColor();
         setStatusBarColor();
 
