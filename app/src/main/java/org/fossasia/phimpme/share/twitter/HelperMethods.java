@@ -17,7 +17,6 @@ package org.fossasia.phimpme.share.twitter;
 
 import android.content.Context;
 import android.util.Log;
-import org.fossasia.phimpme.R;
 import java.io.File;
 import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
@@ -26,13 +25,16 @@ import twitter4j.TwitterFactory;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
+import static org.fossasia.phimpme.utilities.Constants.TWITTER_CONSUMER_KEY;
+import static org.fossasia.phimpme.utilities.Constants.TWITTER_CONSUMER_SECRET;
+
 public class HelperMethods {
 	private static final String TAG = "HelperMethods";
 
 	public static void postToTwitterWithImage(Context context, final String imageUrl, final String message, final String token, final String secret, final TwitterCallback postResponse){
 		ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-		configurationBuilder.setOAuthConsumerKey(context.getResources().getString(R.string.twitter_consumer_key));
-		configurationBuilder.setOAuthConsumerSecret(context.getResources().getString(R.string.twitter_consumer_secret));
+		configurationBuilder.setOAuthConsumerKey(TWITTER_CONSUMER_KEY);
+		configurationBuilder.setOAuthConsumerSecret(TWITTER_CONSUMER_SECRET);
 		configurationBuilder.setOAuthAccessToken(token);
 		configurationBuilder.setOAuthAccessTokenSecret(secret);
 		Configuration configuration = configurationBuilder.build();
