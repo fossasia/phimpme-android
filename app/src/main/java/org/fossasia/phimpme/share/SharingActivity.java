@@ -53,7 +53,8 @@ import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.session.AppKeyPair;
-import com.facebook.CallbackManager;
+import com.facebook.messenger.MessengerUtils;
+import com.facebook.messenger.ShareToMessengerParams;
 import com.facebook.share.ShareApi;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
@@ -127,6 +128,7 @@ import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_SECRET;
 import static org.fossasia.phimpme.utilities.Utils.checkNetwork;
 import static org.fossasia.phimpme.utilities.Utils.copyToClipBoard;
 import static org.fossasia.phimpme.utilities.Utils.getBitmapFromPath;
+import static org.fossasia.phimpme.utilities.Utils.getMimeType;
 import static org.fossasia.phimpme.utilities.Utils.getStringImage;
 import static org.fossasia.phimpme.utilities.Utils.shareMsgOnIntent;
 
@@ -186,7 +188,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     @BindView(R.id.edit_text_caption_container)
     RelativeLayout captionLayout;
 
-    private CallbackManager callbackManager;
     private Realm realm = Realm.getDefaultInstance();
     private String caption;
     private boolean atleastOneShare = false;
@@ -200,6 +201,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     String boardID, imgurAuth = null, imgurString = null;
 
     private static final int REQ_SELECT_PHOTO = 1;
+    private static final int REQUEST_CODE_SHARE_TO_MESSENGER = 2;
 
     public boolean uploadFailedBox = false;
     public String uploadName;
@@ -233,8 +235,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         BoxConfig.CLIENT_ID = BOX_CLIENT_ID;
         BoxConfig.CLIENT_SECRET = BOX_CLIENT_SECRET;
     }
-
-
 
     private void setupUI() {
         toolbar.setTitle(R.string.shareto);
@@ -351,6 +351,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 shareToNextCloudAndOwnCloud(getString(R.string.owncloud));
                 break;
 
+
             case BOX:
                 shareToBox();
                 break;
@@ -362,9 +363,11 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             case OTHERS:
                 shareToOthers();
                 break;
-
             case WHATSAPP:
                 shareToWhatsapp();
+                break;
+            case MESSENGER:
+                shareToMessenger();
                 break;
 
             default:
@@ -391,7 +394,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void shareToGoogle() {
-        Uri uri = getImageUri(context);
+        Uri uri = getImageUri(this, saveFilePath);
         PlusShare.Builder share = new PlusShare.Builder(SharingActivity.this);
         share.setText(caption);
         share.addStream(uri);
@@ -400,8 +403,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     }
 
-    public Uri getImageUri(Context inContext) {
-        Bitmap inImage = getBitmapFromPath(saveFilePath);
+    public Uri getImageUri(Context inContext, String imagePath) {
+        Bitmap inImage = getBitmapFromPath(imagePath);
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
@@ -674,7 +677,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         } else {
             SnackBarHandler.show(parent, getString(R.string.sign_from_account));
         }
-
     }
 
     private void uploadOnTwitter(String token, String secret) {
@@ -784,6 +786,13 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         });
         dialogBuilder.setNegativeButton(getString(R.string.exit).toUpperCase(), null);
         dialogBuilder.show();
+    }
+
+    private void shareToMessenger() {
+        String mimeType = getMimeType(saveFilePath);
+        ShareToMessengerParams shareToMessengerParams =
+                ShareToMessengerParams.newBuilder(getImageUri(this,saveFilePath), mimeType).build();
+        MessengerUtils.shareToMessenger(this,REQUEST_CODE_SHARE_TO_MESSENGER,shareToMessengerParams);
     }
 
     void uploadImgur() {
@@ -950,7 +959,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 return;
             }
         }
-        callbackManager.onActivityResult(requestCode, responseCode, data);
         PDKClient.getInstance().onOauthResponse(requestCode, responseCode, data);
         atleastOneShare = true;
 
@@ -1103,4 +1111,5 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 SnackBarHandler.show(parent, getString(R.string.error_on_tumblr));
         }
     }
+
 }

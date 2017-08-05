@@ -378,7 +378,8 @@
     <color name="materialcolorpicker__dialogcolor">#009688</color>
 
     <color name="share_done_button_color">#01B683</color>
-    <color name="facebook_color">#3b5998</color>
+    <color name="facebook_color">#0084ff</color>
+    <color name="messenger_color">#3b5998</color>
     <color name="twitter_color">#48A2E5</color>
     <color name="drupal_color">#21759B</color>
     <color name="nextcloud_color">#0F89CD</color>
@@ -394,7 +395,8 @@
     <color name="instagram_color">#125688</color>
     <color name="whatsapp_color">#34af23</color>
     <color name="others_color">@color/md_indigo_900</color>
-    <color name="facebook_color_darktheme">#778bca</color>
+    <color name="facebook_color_darktheme">#28acff</color>
+    <color name="messenger_color_darktheme">#778bca</color>
     <color name="twitter_color_darktheme">#7ad4ff</color>
     <color name="drupal_color_darktheme">#7ad4ff</color>
     <color name="nextcloud_color_darktheme">#2da7eb</color>
