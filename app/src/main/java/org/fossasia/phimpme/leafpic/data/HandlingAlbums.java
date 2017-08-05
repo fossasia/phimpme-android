@@ -1,17 +1,9 @@
 package org.fossasia.phimpme.leafpic.data;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.media.MediaScannerConnection;
-import android.media.ThumbnailUtils;
-import android.provider.MediaStore;
 
 import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.leafpic.activities.SplashScreen;
 import org.fossasia.phimpme.leafpic.data.base.AlbumsComparators;
 import org.fossasia.phimpme.leafpic.data.base.SortingMode;
 import org.fossasia.phimpme.leafpic.data.base.SortingOrder;
@@ -19,7 +11,6 @@ import org.fossasia.phimpme.leafpic.data.providers.MediaStoreProvider;
 import org.fossasia.phimpme.leafpic.data.providers.StorageProvider;
 import org.fossasia.phimpme.leafpic.util.ContentHelper;
 import org.fossasia.phimpme.leafpic.util.PreferenceUtil;
-import org.fossasia.phimpme.leafpic.util.StringUtils;
 
 import java.io.File;
 import java.io.FileInputStream;

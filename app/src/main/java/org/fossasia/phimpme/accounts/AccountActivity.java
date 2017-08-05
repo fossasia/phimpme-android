@@ -29,9 +29,6 @@ import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.pinterest.android.pdk.PDKCallback;
@@ -49,14 +46,12 @@ import org.fossasia.phimpme.base.RecyclerItemClickListner;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
-import org.fossasia.phimpme.share.drupal.DrupalLogin;
 import org.fossasia.phimpme.share.flickr.FlickrActivity;
 import org.fossasia.phimpme.share.imgur.ImgurAuthActivity;
 import org.fossasia.phimpme.share.nextcloud.NextCloudAuth;
 import org.fossasia.phimpme.share.owncloud.OwnCloudActivity;
 import org.fossasia.phimpme.share.tumblr.TumblrClient;
 import org.fossasia.phimpme.share.twitter.LoginActivity;
-import org.fossasia.phimpme.share.wordpress.WordpressLoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
 import org.fossasia.phimpme.utilities.Constants;
@@ -78,7 +73,6 @@ import static com.pinterest.android.pdk.PDKClient.setDebugMode;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FACEBOOK;
-import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.GOOGLEPLUS;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.IMGUR;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.NEXTCLOUD;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.OWNCLOUD;
@@ -88,6 +82,7 @@ import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTE
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_SECRET;
 import static org.fossasia.phimpme.utilities.Constants.SUCCESS;
+import static org.fossasia.phimpme.utilities.Utils.checkNetwork;
 
 /**
  * Created by pa1pal on 13/6/17.
@@ -96,6 +91,18 @@ import static org.fossasia.phimpme.utilities.Constants.SUCCESS;
 public class AccountActivity extends ThemedActivity implements AccountContract.View,
         RecyclerItemClickListner.OnItemClickListener, GoogleApiClient.OnConnectionFailedListener {
 
+    private static final int NEXTCLOUD_REQUEST_CODE = 3;
+    private static final int OWNCLOUD_REQUEST_CODE = 9;
+    private static final int RESULT_OK = 1;
+    final static private String APP_KEY = "APP_KEY";
+    final static private String APP_SECRET = "API_SECRET";
+    private static final int RC_SIGN_IN = 9001;
+    @BindView(R.id.accounts_parent)
+    RelativeLayout parentLayout;
+    @BindView(R.id.accounts_recycler_view)
+    RecyclerView accountsRecyclerView;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
     private AccountAdapter accountAdapter;
     private AccountPresenter accountPresenter;
     private Realm realm = Realm.getDefaultInstance();
@@ -109,24 +116,8 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private Context context;
     private PDKClient pdkClient;
     private GoogleApiClient mGoogleApiClient;
-    private static final int NEXTCLOUD_REQUEST_CODE = 3;
-    private static final int OWNCLOUD_REQUEST_CODE = 9;
-    private static final int RESULT_OK = 1;
-    final static private String APP_KEY = "APP_KEY";
-    final static private String APP_SECRET = "API_SECRET";
-    private static final int RC_SIGN_IN = 9001;
     private DropboxAPI<AndroidAuthSession> mDBApi;
     private BoxSession sessionBox;
-
-    @BindView(R.id.accounts_parent)
-    RelativeLayout parentLayout;
-
-    @BindView(R.id.accounts_recycler_view)
-    RecyclerView accountsRecyclerView;
-
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -153,28 +144,29 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         pdkClient.onConnect(this);
         setDebugMode(true);
         setupDropBox();
-      //  googleApiClient();
+        //  googleApiClient();
         configureBoxClient();
     }
 
-    private void setupDropBox(){
+    private void setupDropBox() {
         AppKeyPair appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
         AndroidAuthSession session = new AndroidAuthSession(appKeys);
         mDBApi = new DropboxAPI<AndroidAuthSession>(session);
     }
-/*    private void googleApiClient(){
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        // Build a GoogleApiClient with access to the Google Sign-In API and the
-        // options specified by gso.
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, AccountActivity.this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
-    }*/
+
+    /*    private void googleApiClient(){
+            // Configure sign-in to request the user's ID, email address, and basic
+            // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .build();
+            // Build a GoogleApiClient with access to the Google Sign-In API and the
+            // options specified by gso.
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .enableAutoManage(this, AccountActivity.this)
+                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                    .build();
+        }*/
     private void configureBoxClient() {
         BoxConfig.CLIENT_ID = BOX_CLIENT_ID;
         BoxConfig.CLIENT_SECRET = BOX_CLIENT_SECRET;
@@ -224,38 +216,32 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     public void onItemClick(final View childView, final int position) {
         final SwitchCompat signInSignOut = (SwitchCompat) childView.findViewById(R.id.sign_in_sign_out_switch);
         final String name = AccountDatabase.AccountName.values()[position].toString();
-       /* boolean isSignedIn = realmResult.equalTo("name"
-                , accountsList[position]).isValid();
-        boolean isChecked = signInSignOut.isChecked();*/
-        //String name = realmResult.equalTo("name", accountsList[position]).findAll().get(0).getName();
 
         if (!signInSignOut.isChecked()) {
+            if (!checkNetwork(this, parentLayout)) return;
             switch (AccountDatabase.AccountName.values()[position]) {
                 case FACEBOOK:
-                    // FacebookSdk.sdkInitialize(this);
                     signInFacebook();
-                    accountPresenter.loadFromDatabase();
                     break;
 
                 case TWITTER:
                     signInTwitter();
-                    accountPresenter.loadFromDatabase();
                     break;
 
-                case DRUPAL:
+                /*case DRUPAL:
                     Intent drupalShare = new Intent(getContext(), DrupalLogin.class);
                     startActivity(drupalShare);
-                    break;
+                    break;*/
 
                 case NEXTCLOUD:
                     Intent nextCloudShare = new Intent(getContext(), NextCloudAuth.class);
                     startActivityForResult(nextCloudShare, NEXTCLOUD_REQUEST_CODE);
                     break;
 
-                case WORDPRESS:
+                /*case WORDPRESS:
                     Intent WordpressShare = new Intent(this, WordpressLoginActivity.class);
                     startActivity(WordpressShare);
-                    break;
+                    break;*/
 
                 case PINTEREST:
                     signInPinterest();
@@ -287,7 +273,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     break;
 
                 default:
-                    SnackBarHandler.show(parentLayout,R.string.feature_not_present);
+                    SnackBarHandler.show(parentLayout, R.string.feature_not_present);
             }
         } else {
             new AlertDialog.Builder(this)
@@ -320,8 +306,8 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         BasicCallBack basicCallBack = new BasicCallBack() {
             @Override
             public void callBack(int status, Object data) {
-                if (status==SUCCESS)
-                SnackBarHandler.show(parentLayout, getString(R.string.logged_in_flickr));
+                if (status == SUCCESS)
+                    SnackBarHandler.show(parentLayout, getString(R.string.logged_in_flickr));
             }
         };
         Intent intent = new Intent(this, FlickrActivity.class);
@@ -333,7 +319,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         LoginListener loginListener = new LoginListener() {
             @Override
             public void onLoginSuccessful(com.tumblr.loglr.LoginResult loginResult) {
-                SnackBarHandler.show(parentLayout,getString(R.string.logged_in_tumblr));
+                SnackBarHandler.show(parentLayout, getString(R.string.logged_in_tumblr));
                 realm.beginTransaction();
                 account = realm.createObject(AccountDatabase.class,
                         TUMBLR.toString());
@@ -356,7 +342,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         ExceptionHandler exceptionHandler = new ExceptionHandler() {
             @Override
             public void onLoginFailed(RuntimeException e) {
-            SnackBarHandler.show(parentLayout,R.string.error_volly);
+                SnackBarHandler.show(parentLayout, R.string.error_volly);
             }
         };
 
@@ -377,73 +363,61 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
     private void signInDropbox() {
         if (accountPresenter.checkAlreadyExist(DROPBOX))
-            SnackBarHandler.show(parentLayout,R.string.already_signed_in);
+            SnackBarHandler.show(parentLayout, R.string.already_signed_in);
         else
             mDBApi.getSession().startOAuth2Authentication(this);
     }
 
     private void signInImgur() {
-        if (accountPresenter.checkAlreadyExist(IMGUR)) {
-            SnackBarHandler.show(parentLayout,R.string.already_signed_in);
-        }else {
-            BasicCallBack basicCallBack = new BasicCallBack() {
-                @Override
-                public void callBack(int status, Object data) {
-                    if (status == SUCCESS){
-                        SnackBarHandler.show(parentLayout,R.string.account_logged);
-                        if (data instanceof Bundle){
-                            Bundle bundle = (Bundle)data;
-                            realm.beginTransaction();
-                            account = realm.createObject(AccountDatabase.class,
-                                    IMGUR.toString());
-                            account.setUsername(bundle.getString(getString(R.string.auth_username)));
-                            account.setToken(bundle.getString(getString(R.string.auth_token)));
-                            realm.commitTransaction();
-                        }
+        BasicCallBack basicCallBack = new BasicCallBack() {
+            @Override
+            public void callBack(int status, Object data) {
+                if (status == SUCCESS) {
+                    SnackBarHandler.show(parentLayout, R.string.account_logged);
+                    if (data instanceof Bundle) {
+                        Bundle bundle = (Bundle) data;
+                        realm.beginTransaction();
+                        account = realm.createObject(AccountDatabase.class, IMGUR.toString());
+                        account.setUsername(bundle.getString(getString(R.string.auth_username)));
+                        account.setToken(bundle.getString(getString(R.string.auth_token)));
+                        realm.commitTransaction();
                     }
                 }
-            };
-            Intent i = new Intent(AccountActivity.this, ImgurAuthActivity.class);
-            ImgurAuthActivity.setBasicCallBack(basicCallBack);
-            startActivity(i);
-        }
+            }
+        };
+        Intent i = new Intent(AccountActivity.this, ImgurAuthActivity.class);
+        ImgurAuthActivity.setBasicCallBack(basicCallBack);
+        startActivity(i);
     }
 
     private void signInPinterest() {
+        List scopes = new ArrayList<String>();
+        scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_PUBLIC);
+        scopes.add(PDKClient.PDKCLIENT_PERMISSION_WRITE_PUBLIC);
+        scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_RELATIONSHIPS);
+        scopes.add(PDKClient.PDKCLIENT_PERMISSION_WRITE_RELATIONSHIPS);
 
-        if (accountPresenter.checkAlreadyExist(PINTEREST)) {
-            SnackBarHandler.show(parentLayout,R.string.already_signed_in);
-        } else {
+        pdkClient.login(this, scopes, new PDKCallback() {
+            @Override
+            public void onSuccess(PDKResponse response) {
+                Log.d(getClass().getName(), response.getData().toString());
+                realm.beginTransaction();
+                account = realm.createObject(AccountDatabase.class, PINTEREST.toString());
+                account.setAccountname(PINTEREST);
+                account.setUsername(response.getUser().getFirstName() + " " + response.getUser().getLastName());
+                account.setSecret(getString(R.string.pinterest_app_secret));
+                realm.commitTransaction();
+                finish();
+                startActivity(getIntent());
+                SnackBarHandler.show(parentLayout, getString(R.string.account_logged_pinterest));
+            }
 
-            List scopes = new ArrayList<String>();
-            scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_PUBLIC);
-            scopes.add(PDKClient.PDKCLIENT_PERMISSION_WRITE_PUBLIC);
-            scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_RELATIONSHIPS);
-            scopes.add(PDKClient.PDKCLIENT_PERMISSION_WRITE_RELATIONSHIPS);
-
-            pdkClient.login(this, scopes, new PDKCallback() {
-                @Override
-                public void onSuccess(PDKResponse response) {
-                    Log.d(getClass().getName(), response.getData().toString());
-
-                    realm.beginTransaction();
-                    account = realm.createObject(AccountDatabase.class, PINTEREST.toString());
-                    account.setAccountname(PINTEREST);
-                    account.setUsername(response.getUser().getFirstName() + " " + response.getUser().getLastName());
-                    account.setSecret(getString(R.string.pinterest_app_secret));
-                    realm.commitTransaction();
-                    finish();
-                    startActivity(getIntent());
-                }
-
-                @Override
-                public void onFailure(PDKException exception) {
-                    Log.e(getClass().getName(), exception.getDetailMessage());
-                    SnackBarHandler.show(parentLayout,R.string.pinterest_signIn_fail);
-                }
-            });
-            SnackBarHandler.show(parentLayout,"logged IN");
-        }
+            @Override
+            public void onFailure(PDKException exception) {
+                Log.e(getClass().getName(), exception.getDetailMessage());
+                SnackBarHandler.show(parentLayout, R.string.pinterest_signIn_fail);
+            }
+        });
     }
 
     @Override
@@ -455,33 +429,28 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
      * Create twitter login and session
      */
     public void signInTwitter() {
-        if (accountPresenter.checkAlreadyExist(TWITTER)) {
-            SnackBarHandler.show(parentLayout, getString(R.string.already_signed_in));
-        } else {
-            BasicCallBack basicCallBack = new BasicCallBack() {
-                @Override
-                public void callBack(int status, Object data) {
-                    if (status == SUCCESS){
-                        SnackBarHandler.show(parentLayout, getString(R.string.account_logged_twitter));
-                        if (data instanceof Bundle){
-                            Bundle bundle = (Bundle) data;
-                            realm.beginTransaction();
-                            account = realm.createObject(AccountDatabase.class, TWITTER.toString());
-                            account.setAccountname(TWITTER);
-                            account.setUsername(bundle.getString(getString(R.string.auth_username)));
-                            account.setToken(bundle.getString(getString(R.string.auth_token)));
-                            account.setSecret(bundle.getString(getString(R.string.auth_secret)));
-                            realm.commitTransaction();
-                        }
+        BasicCallBack basicCallBack = new BasicCallBack() {
+            @Override
+            public void callBack(int status, Object data) {
+                if (status == SUCCESS) {
+                    SnackBarHandler.show(parentLayout, getString(R.string.account_logged_twitter));
+                    if (data instanceof Bundle) {
+                        Bundle bundle = (Bundle) data;
+                        realm.beginTransaction();
+                        account = realm.createObject(AccountDatabase.class, TWITTER.toString());
+                        account.setAccountname(TWITTER);
+                        account.setUsername(bundle.getString(getString(R.string.auth_username)));
+                        account.setToken(bundle.getString(getString(R.string.auth_token)));
+                        account.setSecret(bundle.getString(getString(R.string.auth_secret)));
+                        realm.commitTransaction();
                     }
                 }
-            };
-            Intent i = new Intent(AccountActivity.this, LoginActivity.class);
-            LoginActivity.setBasicCallBack(basicCallBack);
-            startActivity(i);
-        }
+            }
+        };
+        Intent i = new Intent(AccountActivity.this, LoginActivity.class);
+        LoginActivity.setBasicCallBack(basicCallBack);
+        startActivity(i);
     }
-
 
 
     /**
@@ -489,67 +458,42 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
      */
     public void signInFacebook() {
         loginManager = LoginManager.getInstance();
-        if (accountPresenter.checkAlreadyExist(FACEBOOK)) {
-            SnackBarHandler.show(parentLayout,R.string.already_signed_in);
-        } else {
-            List<String> permissionNeeds = Arrays.asList("publish_actions");
-
-            loginManager.logInWithReadPermissions(this, Arrays.asList("email", "public_profile"));
-            //loginManager.logInWithPublishPermissions(this, permissionNeeds);
-
-            loginManager.registerCallback(callbackManager,
-                    new FacebookCallback<LoginResult>() {
-                        @Override
-                        public void onSuccess(LoginResult loginResult) {
-                            // Begin realm transaction
-                            realm.beginTransaction();
-
-                            // Creating Realm object for AccountDatabase Class
-                            account = realm.createObject(AccountDatabase.class,
-                                    FACEBOOK.toString());
-
-                            // Writing values in Realm database
-                            account.setUsername(loginResult
-                                    .getAccessToken().getUserId());
-                            //account.setToken(String.valueOf(loginResult
-                            //        .getAccessToken().getToken()));
-
-                            GraphRequest.newMeRequest(
-                                    loginResult.getAccessToken(),
-                                    new GraphRequest.GraphJSONObjectCallback() {
-                                        @Override
-                                        public void onCompleted(JSONObject jsonObject
-                                                , GraphResponse graphResponse) {
-                                            Log.v("LoginActivity", graphResponse.toString());
-                                            try {
-                                                account.setUsername(jsonObject
-                                                        .getString("email   "));
-                                            } catch (JSONException e) {
-                                                Log.e("LoginAct", e.toString());
-                                            }
+        loginManager.logInWithReadPermissions(this, Arrays.asList("email", "public_profile"));
+        loginManager.registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        realm.beginTransaction();
+                        account = realm.createObject(AccountDatabase.class, FACEBOOK.toString());
+                        account.setUsername(loginResult.getAccessToken().getUserId());
+                        GraphRequest.newMeRequest(
+                                loginResult.getAccessToken(),
+                                new GraphRequest.GraphJSONObjectCallback() {
+                                    @Override
+                                    public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
+                                        Log.v("LoginActivity", graphResponse.toString());
+                                        try {
+                                            account.setUsername(jsonObject.getString("email"));
+                                            SnackBarHandler.show(parentLayout, getString(R.string.logged_in_facebook));
+                                        } catch (JSONException e) {
+                                            Log.e("LoginAct", e.toString());
                                         }
-                                    });
+                                    }
+                                });
+                        realm.commitTransaction();
+                    }
 
-                            // Finally committing the whole data
-                            realm.commitTransaction();
+                    @Override
+                    public void onCancel() {
+                        SnackBarHandler.show(parentLayout, getString(R.string.facebook_login_cancel));
+                    }
 
-                        }
-
-                        @Override
-                        public void onCancel() {
-                            SnackBarHandler.show(parentLayout,
-                                    getString(R.string.facebook_login_cancel));
-                        }
-
-                        @Override
-                        public void onError(FacebookException e) {
-                            SnackBarHandler.show(parentLayout,
-                                    getString(R.string.facebook_login_error));
-                            Log.d("error", e.toString());
-                        }
-                    });
-            accountPresenter.loadFromDatabase();
-        }
+                    @Override
+                    public void onError(FacebookException e) {
+                        SnackBarHandler.show(parentLayout, getString(R.string.facebook_login_error));
+                        Log.d("error", e.toString());
+                    }
+                });
     }
 
     @Override
@@ -570,7 +514,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     }
 
     private void boxAuthentication() {
-        if(sessionBox != null && sessionBox.getUser()!=null){
+        if (sessionBox != null && sessionBox.getUser() != null) {
             String accessToken = sessionBox.getAuthInfo().accessToken();
 
             realm.beginTransaction();
@@ -613,8 +557,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         super.onActivityResult(requestCode, resultCode, data);
         client.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
-        pdkClient.onOauthResponse(requestCode, resultCode,
-                data);
+        pdkClient.onOauthResponse(requestCode, resultCode, data);
 
         if ((requestCode == OWNCLOUD_REQUEST_CODE && resultCode == RESULT_OK) || (requestCode == NEXTCLOUD_REQUEST_CODE && resultCode == RESULT_OK)) {
             realm.beginTransaction();
@@ -649,7 +592,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        SnackBarHandler.show(parentLayout,"Connection Failed");
+        SnackBarHandler.show(parentLayout, "Connection Failed");
     }
 
 

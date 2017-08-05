@@ -324,7 +324,7 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
                     		//String uri = sharedPreferences.getString(PreferenceKeys.getSaveLocationSAFPreferenceKey(), "");
                     		//if( uri.length() == 0 )
                     		{
-                        		CameraActivity main_activity = (CameraActivity)MyPreferenceFragment.this.getActivity();
+                        		SettingsActivity main_activity = (SettingsActivity) MyPreferenceFragment.this.getActivity();
 								SnackBarHandler.show(parent,R.string.saf_select_save_location);
                         		main_activity.openFolderChooserDialogSAF(true);
                     		}
