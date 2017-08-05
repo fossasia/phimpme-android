@@ -15,7 +15,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginRight="20dp"
-        app:srcCompat="@drawable/ic_launcher"/>
+        app:srcCompat="@drawable/ic_launcher_vector"/>
 
     <TextView
         android:id="@+id/account_name"
