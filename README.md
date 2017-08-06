@@ -14,7 +14,8 @@ Join Gitter channel: https://gitter.im/fossasia/phimpme
     <tr>
      <td><img src="/docs/_static/screenshots/screenshot_1.png"></td>
      <td><img src="/docs/_static/screenshots/screenshot_3.png"></td>
-     <td><img src="/docs/_static/screenshots/screenshot_5.png"></td>
+     <td><img src="/docs/_static/screenshots/screenshot_5.png"></td> </tr>
+     <tr> <td><img src="/docs/_static/screenshots/screenshot_6.png"></td>
      <td><img src="/docs/_static/screenshots/screenshot_2.png"></td>
      <td><img src="/docs/_static/screenshots/screenshot_4.png"></td>    
     </tr>
