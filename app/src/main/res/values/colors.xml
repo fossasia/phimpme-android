@@ -421,4 +421,7 @@
 
     <!--Wordpress Login-->
     <color name="wordpress_color_login">#48A2E5</color>
+
+    <!--Bottom Navigation Icons-->
+    <color name="bottom_navigation_tabs">#70ffffff</color>
 </resources>
