@@ -26,14 +26,15 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     };
 
     private int[] colors = new int[] {
-            Color.BLACK,
-            Color.parseColor("#70ffffff"),
+            Color.WHITE, // checked
+            0 // unchecked set default in onCreate
     };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getContentViewId());
+        colors[1] = getResources().getColor(R.color.bottom_navigation_tabs , getTheme());
         ColorStateList myList = new ColorStateList(states, colors);
         navigationView = (BottomNavigationView) findViewById(R.id.bottombar);
         navigationView.setItemIconTintList(myList);
