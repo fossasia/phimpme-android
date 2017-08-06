@@ -16,6 +16,7 @@ import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 import io.fabric.sdk.android.Fabric;
 import org.fossasia.phimpme.leafpic.data.Album;
 import org.fossasia.phimpme.leafpic.data.HandlingAlbums;
+import org.fossasia.phimpme.utilities.Constants;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -42,7 +43,7 @@ public class MyApplication extends Application {
 
         TwitterConfig config = new TwitterConfig.Builder(this)
                 .logger(new DefaultLogger(Log.DEBUG))
-                .twitterAuthConfig(new TwitterAuthConfig(getString(R.string.twitter_CONSUMER_KEY), getString(R.string.twitter_CONSUMER_SECRET)))
+                .twitterAuthConfig(new TwitterAuthConfig(Constants.TWITTER_CONSUMER_KEY, Constants.TWITTER_CONSUMER_SECRET))
                 .debug(true)
                 .build();
         Twitter.initialize(config);

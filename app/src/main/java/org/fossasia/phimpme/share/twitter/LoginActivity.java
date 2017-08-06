@@ -44,6 +44,9 @@ import twitter4j.auth.RequestToken;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
+import static org.fossasia.phimpme.utilities.Constants.TWITTER_CONSUMER_KEY;
+import static org.fossasia.phimpme.utilities.Constants.TWITTER_CONSUMER_SECRET;
+
 public class LoginActivity extends ThemedActivity {
 
 	public static final int TWITTER_LOGIN_RESULT_CODE_FAILURE = 2222;
@@ -56,8 +59,6 @@ public class LoginActivity extends ThemedActivity {
 	@BindView(R.id.login_parent)
 	View parentView;
 
-	private static String twitterConsumerKey;
-	private static String twitterConsumerSecret;
 
 	private static Twitter twitter;
 	private static RequestToken requestToken;
@@ -77,10 +78,9 @@ public class LoginActivity extends ThemedActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.account_login_activity);
 		ButterKnife.bind(this);
-		twitterConsumerKey = getResources().getString(R.string.twitter_consumer_key);
-		twitterConsumerSecret = getResources().getString(R.string.twitter_consumer_secret);
 
-		if(twitterConsumerKey == null || twitterConsumerSecret == null){
+
+		if(TWITTER_CONSUMER_KEY == null || TWITTER_CONSUMER_SECRET == null){
 			Log.e(TAG, "ERROR: Consumer Key and Consumer Secret required!");
 			LoginActivity.this.setResult(TWITTER_LOGIN_RESULT_CODE_FAILURE);
 			LoginActivity.this.finish();
@@ -185,8 +185,8 @@ public class LoginActivity extends ThemedActivity {
 
 	private void askOAuth() {
 		ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-		configurationBuilder.setOAuthConsumerKey(twitterConsumerKey);
-		configurationBuilder.setOAuthConsumerSecret(twitterConsumerSecret);
+		configurationBuilder.setOAuthConsumerKey(TWITTER_CONSUMER_KEY);
+		configurationBuilder.setOAuthConsumerSecret(TWITTER_CONSUMER_SECRET);
 		Configuration configuration = configurationBuilder.build();
 		twitter = new TwitterFactory(configuration).getInstance();
 

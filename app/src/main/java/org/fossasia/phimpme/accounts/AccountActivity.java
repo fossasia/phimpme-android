@@ -81,6 +81,9 @@ import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TUMBLR
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTER;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_SECRET;
+import static org.fossasia.phimpme.utilities.Constants.DROPBOX_APP_KEY;
+import static org.fossasia.phimpme.utilities.Constants.DROPBOX_APP_SECRET;
+import static org.fossasia.phimpme.utilities.Constants.PINTEREST_APP_ID;
 import static org.fossasia.phimpme.utilities.Constants.SUCCESS;
 import static org.fossasia.phimpme.utilities.Utils.checkNetwork;
 
@@ -94,8 +97,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private static final int NEXTCLOUD_REQUEST_CODE = 3;
     private static final int OWNCLOUD_REQUEST_CODE = 9;
     private static final int RESULT_OK = 1;
-    final static private String APP_KEY = "APP_KEY";
-    final static private String APP_SECRET = "API_SECRET";
     private static final int RC_SIGN_IN = 9001;
     @BindView(R.id.accounts_parent)
     RelativeLayout parentLayout;
@@ -140,7 +141,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         accountPresenter.loadFromDatabase();  // Calling presenter function to load data from database
         getSupportActionBar().setTitle(R.string.title_account);
         phimpmeProgressBarHandler.show();
-        pdkClient = PDKClient.configureInstance(this, getResources().getString(R.string.pinterest_app_id));
+        pdkClient = PDKClient.configureInstance(this, PINTEREST_APP_ID);
         pdkClient.onConnect(this);
         setDebugMode(true);
         setupDropBox();
@@ -149,7 +150,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     }
 
     private void setupDropBox() {
-        AppKeyPair appKeys = new AppKeyPair(APP_KEY, APP_SECRET);
+        AppKeyPair appKeys = new AppKeyPair(DROPBOX_APP_KEY, DROPBOX_APP_SECRET);
         AndroidAuthSession session = new AndroidAuthSession(appKeys);
         mDBApi = new DropboxAPI<AndroidAuthSession>(session);
     }
@@ -405,10 +406,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                 account = realm.createObject(AccountDatabase.class, PINTEREST.toString());
                 account.setAccountname(PINTEREST);
                 account.setUsername(response.getUser().getFirstName() + " " + response.getUser().getLastName());
-                account.setSecret(getString(R.string.pinterest_app_secret));
                 realm.commitTransaction();
-                finish();
-                startActivity(getIntent());
                 SnackBarHandler.show(parentLayout, getString(R.string.account_logged_pinterest));
             }
 

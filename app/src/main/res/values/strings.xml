@@ -773,8 +773,6 @@
     <!--ACCOUNTS-->
     <!--TWITTER-->
     <!--add consumer key and secret key below-->
-    <string name="twitter_CONSUMER_KEY">vKnzy2sMJ3VUFibF6HguxhDXm</string>
-    <string name="twitter_CONSUMER_SECRET">gAvGEBNPAyIsGQ3AIElHDqdCGCS7Cvp1BiM1GTH7YzLQyvMVf3</string>
     <string name="already_signed_in">Already signed In</string>
     <string name="drawable">drawable</string>
     <string name="color">color</string>
@@ -816,12 +814,9 @@
     <string name="loading_numeric">Loading</string>
     <string name="loading_numeric_all">All Photos</string>
     <!--Share to Twitter-->
-    <string name="twitter_consumer_key">I8fFsT58V2k8FsA0vPFN7fCRX</string>
-    <string name="twitter_consumer_secret">5LfshCbLn9xgnMjtL68YwPHxTN0u8qQ6DtOFrVYtYdIOshNqmh</string>
     <string name="post_image">Post Image</string>
     <string name="post_tweet">Post Tweet</string>
     <string name="twitter">Twitter</string>
-    <string name="authentication_done_now_post_tweet_or_image_text"> Your app is authenticated. Now  you can post tweet/image on twitter. </string>
 
     <!-- loading messages -->
     <string name="please_wait_title"> Please wait </string>
@@ -899,8 +894,6 @@
     <string name="sharewordpress">Wordpress Account</string>
 
     <!--Pinterest-->
-    <string name="pinterest_app_id">4910600717739247160</string>
-    <string name="pinterest_app_secret">6a3eba976f2d4ce13c1d4f0852ff17b242768b124905cc83c36faa99da3a1ad1</string>
     <string name="success">Success</string>
     <string name="Pinterest_fail">BoardID or caption cannot be empty</string>
     <string name="post_action">POST</string>
