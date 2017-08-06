@@ -12,13 +12,11 @@ Join Gitter channel: https://gitter.im/fossasia/phimpme
 
   <table>
     <tr>
-     <td><img src="/docs/screenshots/screenshot_1.png"></td>
-     <td><img src="/docs/screenshots/screenshot_3.png"></td>
-     <td><img src="/docs/screenshots/screenshot_5.png"></td>
-     </tr>
-     <tr>
-     <td><img src="/docs/screenshots/screenshot_2.png"></td>
-     <td><img src="/docs/screenshots/screenshot_4.png"></td>    
+     <td><img src="/docs/_static/screenshots/screenshot_1.png"></td>
+     <td><img src="/docs/_static/screenshots/screenshot_3.png"></td>
+     <td><img src="/docs/_static/screenshots/screenshot_5.png"></td>
+     <td><img src="/docs/_static/screenshots/screenshot_2.png"></td>
+     <td><img src="/docs/_static/screenshots/screenshot_4.png"></td>    
     </tr>
   </table>  
 
