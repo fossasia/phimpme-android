@@ -470,6 +470,7 @@
     <string name="edit_with">Edit with</string>
     <string name="open_with">Open with</string>
     <string name="upload">Upload</string>
+    <string name="are_you_sure">Are you sure you want to upload the images to</string>
     <string name="set_preview">Set as preview</string>
     <string name="clear_preview">Clear preview</string>
     <string name="new_folder">New Folder</string>

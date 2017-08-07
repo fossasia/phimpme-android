@@ -121,6 +121,7 @@ import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FACEBOOK;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FLICKR;
+import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.OTHERS;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.PINTEREST;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTER;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
@@ -300,13 +301,23 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     @Override
-    public void onItemClick(View childView, int position) {
+    public void onItemClick(View childView, final int position) {
         if (!checkNetwork(this,parent)) return;
 
-        switch (sharableAccountsList.get(position)) {
-            case FACEBOOK:
-                shareToFacebook();
-                break;
+        if(sharableAccountsList.get(position) == OTHERS){
+                shareToOthers();
+                return;
+        }
+
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
+        AlertDialogsHelper.confirmationDialog(SharingActivity.this, dialogBuilder, R.string.upload, getString(R.string.are_you_sure)+" "+ sharableAccountsList.get(position) + "?", null);
+        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                switch (sharableAccountsList.get(position)) {
+                    case FACEBOOK:
+                        shareToFacebook();
+                        break;
 
             case TWITTER:
                 shareToTwitter();
@@ -351,7 +362,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 shareToNextCloudAndOwnCloud(getString(R.string.owncloud));
                 break;
 
-
             case BOX:
                 shareToBox();
                 break;
@@ -369,10 +379,18 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             case MESSENGER:
                 shareToMessenger();
                 break;
-
             default:
                 SnackBarHandler.show(parent, R.string.feature_not_present);
-        }
+                }
+            }
+        });
+        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //Do nothing
+            }
+        });
+        dialogBuilder.show();
     }
 
     private void shareToTumblr() {
@@ -402,13 +420,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         startActivityForResult(share.getIntent(), REQ_SELECT_PHOTO);
     }
 
-    public Uri getImageUri(Context inContext, String imagePath) {
-        Bitmap inImage = getBitmapFromPath(imagePath);
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
 
     private class UploadToBox extends AsyncTask<Void, Integer, Void> {
         private FileInputStream inputStream;
