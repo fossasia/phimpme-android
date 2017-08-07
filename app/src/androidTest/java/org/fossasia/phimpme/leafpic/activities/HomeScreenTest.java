@@ -3,7 +3,6 @@ package org.fossasia.phimpme.leafpic.activities;
 
 import android.app.Activity;
 import android.app.KeyguardManager;
-import android.content.Context;
 import android.support.test.annotation.UiThreadTest;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
