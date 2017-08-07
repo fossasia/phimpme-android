@@ -461,6 +461,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
      * Create Facebook login and session
      */
     public void signInFacebook() {
+
         loginManager = LoginManager.getInstance();
         loginManager.logInWithReadPermissions(this, Arrays.asList("email", "public_profile"));
         loginManager.registerCallback(callbackManager,
