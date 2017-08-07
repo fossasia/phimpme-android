@@ -76,7 +76,7 @@ extern "C" {
         double r_val = 0.299, g_val = 0.587, b_val = 0.114;
         double r,g,b;
         for (y = 0; y < src.rows; y++) {
-            for (x = 0; x < (4*src.cols)/3; x++) {
+            for (x = 0; x < src.cols/3; x++) {
                 r = src.at<Vec3b>(y, x)[2]/255.0;
                 g = src.at<Vec3b>(y, x)[1]/255.0;
                 b = src.at<Vec3b>(y, x)[0]/255.0;
@@ -124,28 +124,28 @@ extern "C" {
         }
     }
 
-    double fastCos(double x){
+    float fastCos(float x){
         //x += 1.57079632;
         if (x >  3.14159265)
             x -= 6.28318531;
-        double sq = x * x;
+        float sq = x * x;
         if (x < 0)
-            return 1.0 + 0.5 * sq + 0.0416 * sq * sq;
+            return 1.0f + 0.5f * sq + 0.0416f * sq * sq;
         else
-            return 1.0 - 0.5 * sq + 0.0416 * sq * sq;
+            return 1.0f - 0.5f * sq + 0.0416f * sq * sq;
     }
 
-    double dist(double ax, double ay,double bx, double by){
+    float dist(float ax, float ay,float bx, float by){
         return sqrt((ax - bx)*(ax - bx) + (ay - by)*(ay - by));
     }
 
     void adjustVignette(Mat &src, Mat &dst, int val){
         cvtColor(src,src,CV_BGRA2BGR);
         dst = Mat::zeros(src.size(), src.type());
-        double radius = 1.0 - 0.5*((double)val/100);
-        double cx = (double)src.cols/2, cy = (double)src.rows/2;
-        double maxDis = radius * dist(0,0,cx,cy);
-        double temp;
+        float radius = 1.0f - 0.5f*((float)val/100);
+        float cx = (float)src.cols/2, cy = (float)src.rows/2;
+        float maxDis = radius * dist(0,0,cx,cy);
+        float temp;
         int x,y;
         for (y = 0; y < src.rows; y++) {
             for (x = 0; x < src.cols; x++) {
@@ -166,9 +166,6 @@ extern "C" {
         cvtColor(src,src,CV_BGRA2BGR);
         int i = 2*(val/5)+1;
         dst = Mat::zeros(src.size(), src.type());
-
-        //GaussianBlur( src, dst, Size( i, i ), 0, 0 );
-
         medianBlur( src, dst, i);
         addWeighted(src, 1.5, dst, -0.5, 0, dst);
     }

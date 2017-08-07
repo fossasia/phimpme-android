@@ -667,20 +667,17 @@
 
     <string-array name="filter_titles">
         <item>None</item>
+        <item>Sajuno</item>
+        <item>Manglow</item>
+        <item>Palacia</item>
+        <item>Anax</item>
+        <item>Sepia</item>
+        <item>Cyano</item>
         <item>B/W</item>
         <item>Ansel</item>
-        <item>Sepia</item>
-        <item>XPro</item>
-        <item>Threshold</item>
-        <item>Outline</item>
         <item>Grain</item>
         <item>Hist Equal</item>
-        <item>Cyano</item><!--
-        <item>B/W</item>
-        <item>Ansel</item>
-        <item>Hist Equal</item>
         <item>Threshold</item>
-        <item>Grain</item>-->
     </string-array>
 
 
