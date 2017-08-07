@@ -96,5 +96,6 @@
 
     <!--Mic-->
     <dimen name="mic_image">40dp</dimen>
+    <dimen name="exposure_margin">30dp</dimen>
 
 </resources>
