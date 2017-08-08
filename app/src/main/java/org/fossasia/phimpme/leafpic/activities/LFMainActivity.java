@@ -1070,6 +1070,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                         getAlbums().removeCurrentAlbum();
                                         albumsAdapter.notifyDataSetChanged();
                                         displayAlbums();
+                                        swipeRefreshLayout.setRefreshing(true);
                                     } else
                                         mediaAdapter.swapDataSet(getAlbum().getMedia());
                                 } else {
