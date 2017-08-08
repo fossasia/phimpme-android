@@ -162,4 +162,12 @@
             android:visibility="gone" />
     </FrameLayout>
 
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:id="@+id/progress_bar_edit"
+        android:visibility="gone"
+        />
+
 </RelativeLayout>

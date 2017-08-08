@@ -212,7 +212,7 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
         @Override
         protected void onPostExecute(Bitmap result) {
             super.onPostExecute(result);
-            if (dialog!=null)dialog.dismiss();
+            activity.hideProgressBar();
             if (result == null)
                 return;
             filterBit = result;
@@ -222,9 +222,7 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = EditImageActivity.getLoadingDialog(getActivity(),
-                    R.string.applying, false);
-            dialog.show();
+            activity.showProgressBar();
         }
 
     }

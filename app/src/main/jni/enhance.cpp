@@ -76,7 +76,7 @@ extern "C" {
         double r_val = 0.299, g_val = 0.587, b_val = 0.114;
         double r,g,b;
         for (y = 0; y < src.rows; y++) {
-            for (x = 0; x < src.cols/3; x++) {
+            for (x = 0; x < src.cols; x++) {
                 r = src.at<Vec3b>(y, x)[2]/255.0;
                 g = src.at<Vec3b>(y, x)[1]/255.0;
                 b = src.at<Vec3b>(y, x)[0]/255.0;

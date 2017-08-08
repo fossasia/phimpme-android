@@ -1,12 +1,12 @@
 package org.fossasia.phimpme.editor;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,9 +16,10 @@ import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.Toast;
+import android.widget.ProgressBar;
 
 import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.leafpic.util.ColorPalette;
 import org.fossasia.phimpme.share.SharingActivity;
 import org.fossasia.phimpme.editor.fragment.AddTextFragment;
 import org.fossasia.phimpme.editor.fragment.CropFragment;
@@ -109,6 +110,9 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     ImageButton undo;
     @Nullable @BindView(R.id.edit_redo)
     ImageButton redo;
+    @Nullable @BindView(R.id.progress_bar_edit)
+    ProgressBar progressBar;
+
 
     @Nullable @BindView(R.id.sticker_panel)
     public StickerView mStickerView;// Texture layers View
@@ -195,6 +199,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         imageHeight = metrics.heightPixels / 2;
 
         bitmapsForUndo = new ArrayList<>();
+        progressBar.getIndeterminateDrawable()
+                .setColorFilter(ColorPalette.getLighterColor(getPrimaryColor()), PorterDuff.Mode.SRC_ATOP);
 
         cancel.setOnClickListener(this);
         save.setOnClickListener(this);
@@ -444,6 +450,14 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
 
     public void resetOpTimes() {
         isBeenSaved = true;
+    }
+
+    public void showProgressBar(){
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgressBar(){
+        progressBar.setVisibility(View.GONE);
     }
 
     /**
