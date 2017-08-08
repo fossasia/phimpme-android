@@ -626,6 +626,7 @@ public class LFMainActivity extends SharedMediaActivity {
         ((TextView) findViewById(R.id.Drawer_About_Item)).setTextColor(color);
         ((TextView) findViewById(R.id.Drawer_hidden_Item)).setTextColor(color);
         ((TextView) findViewById(R.id.Drawer_share_Item)).setTextColor(color);
+        ((TextView) findViewById(R.id.Drawer_rate_Item)).setTextColor(color);
 
         /** ICONS **/
         color = getIconColor();
@@ -634,6 +635,7 @@ public class LFMainActivity extends SharedMediaActivity {
         ((IconicsImageView) findViewById(R.id.Drawer_About_Icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.Drawer_hidden_Icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.Drawer_share_Icon)).setColor(color);
+        ((IconicsImageView) findViewById(R.id.Drawer_rate_Icon)).setColor(color);
 
 
         findViewById(R.id.ll_drawer_Setting).setOnClickListener(new View.OnClickListener() {
@@ -707,6 +709,18 @@ public class LFMainActivity extends SharedMediaActivity {
             @Override
             public void onClick(View v) {
                 onInviteClicked();
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+            }
+        });
+        findViewById(R.id.ll_rate_phimpme).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final String appPackageName = getPackageName();
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                }
                 mDrawerLayout.closeDrawer(GravityCompat.START);
             }
         });

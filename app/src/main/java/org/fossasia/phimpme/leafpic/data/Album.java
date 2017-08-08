@@ -98,10 +98,6 @@ public class Album implements Serializable {
 				for (Media media1 : media)
 					if (media1.isImage()) mediaArrayList.add(media1);
 				break;
-			case VIDEO:
-				for (Media media1 : media)
-					if (media1.isVideo()) mediaArrayList.add(media1);
-				break;
 		}
 		return mediaArrayList;
 	}

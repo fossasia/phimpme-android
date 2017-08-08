@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Phimpme</string>
-    <string name="title_home">Home</string>
+    <string name="title_gallery">Gallery</string>
     <string name="title_camera">Camera</string>
     <string name="title_account">Accounts</string>
     <string name="action_settings">Settings</string>
@@ -660,7 +660,7 @@
     <string name="about_support_report_bug">Report bug</string>
     <string name="about_support_report_bug_sub">Report bug or request new features.</string>
 
-    <string name="about_support_rate">Rate</string>
+    <string name="about_support_rate">Rate Us</string>
     <string name="about_support_rate_sub">Leave us a positive rating if you like Phimpme.</string>
 
     <string name="about_support_github">GitHub</string>

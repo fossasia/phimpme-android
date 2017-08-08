@@ -94,7 +94,7 @@ public class HomeScreenTest {
         frameLayout3.check(matches(isDisplayed()));
 
         ViewInteraction frameLayout4 = onView(
-                allOf(withId(R.id.navigation_home), withContentDescription("Home"),
+                allOf(withId(R.id.navigation_home),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.bottombar),
