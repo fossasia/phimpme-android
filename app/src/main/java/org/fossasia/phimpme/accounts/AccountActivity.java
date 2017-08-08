@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
@@ -70,6 +71,7 @@ import io.realm.Realm;
 import io.realm.RealmQuery;
 
 import static com.pinterest.android.pdk.PDKClient.setDebugMode;
+import static org.fossasia.phimpme.R.string.no_account_signed_in;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FACEBOOK;
@@ -104,6 +106,8 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     RecyclerView accountsRecyclerView;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.accounts)
+    CoordinatorLayout coordinatorLayout;
     private AccountAdapter accountAdapter;
     private AccountPresenter accountPresenter;
     private Realm realm = Realm.getDefaultInstance();
@@ -195,7 +199,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
     @Override
     public void showError() {
-        SnackBarHandler.show(parentLayout, getString(R.string.no_account_signed_in));
+        SnackBarHandler.show(coordinatorLayout, getString(no_account_signed_in));
     }
 
     @Override
@@ -274,7 +278,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     break;
 
                 default:
-                    SnackBarHandler.show(parentLayout, R.string.feature_not_present);
+                    SnackBarHandler.show(coordinatorLayout, R.string.feature_not_present);
             }
         } else {
             new AlertDialog.Builder(this)
@@ -308,7 +312,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             @Override
             public void callBack(int status, Object data) {
                 if (status == SUCCESS)
-                    SnackBarHandler.show(parentLayout, getString(R.string.logged_in_flickr));
+                    SnackBarHandler.show(coordinatorLayout, getString(R.string.logged_in_flickr));
             }
         };
         Intent intent = new Intent(this, FlickrActivity.class);
@@ -320,7 +324,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         LoginListener loginListener = new LoginListener() {
             @Override
             public void onLoginSuccessful(com.tumblr.loglr.LoginResult loginResult) {
-                SnackBarHandler.show(parentLayout, getString(R.string.logged_in_tumblr));
+                SnackBarHandler.show(coordinatorLayout, getString(R.string.logged_in_tumblr));
                 realm.beginTransaction();
                 account = realm.createObject(AccountDatabase.class,
                         TUMBLR.toString());
@@ -343,7 +347,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         ExceptionHandler exceptionHandler = new ExceptionHandler() {
             @Override
             public void onLoginFailed(RuntimeException e) {
-                SnackBarHandler.show(parentLayout, R.string.error_volly);
+                SnackBarHandler.show(coordinatorLayout, R.string.error_volly);
             }
         };
 
@@ -364,7 +368,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
     private void signInDropbox() {
         if (accountPresenter.checkAlreadyExist(DROPBOX))
-            SnackBarHandler.show(parentLayout, R.string.already_signed_in);
+            SnackBarHandler.show(coordinatorLayout, R.string.already_signed_in);
         else
             mDBApi.getSession().startOAuth2Authentication(this);
     }
@@ -374,7 +378,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             @Override
             public void callBack(int status, Object data) {
                 if (status == SUCCESS) {
-                    SnackBarHandler.show(parentLayout, R.string.account_logged);
+                    SnackBarHandler.show(coordinatorLayout, R.string.account_logged);
                     if (data instanceof Bundle) {
                         Bundle bundle = (Bundle) data;
                         realm.beginTransaction();
@@ -407,13 +411,15 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                 account.setAccountname(PINTEREST);
                 account.setUsername(response.getUser().getFirstName() + " " + response.getUser().getLastName());
                 realm.commitTransaction();
-                SnackBarHandler.show(parentLayout, getString(R.string.account_logged_pinterest));
+                finish();
+                startActivity(getIntent());
+                SnackBarHandler.show(coordinatorLayout, getString(R.string.account_logged_pinterest));
             }
 
             @Override
             public void onFailure(PDKException exception) {
                 Log.e(getClass().getName(), exception.getDetailMessage());
-                SnackBarHandler.show(parentLayout, R.string.pinterest_signIn_fail);
+                SnackBarHandler.show(coordinatorLayout, R.string.pinterest_signIn_fail);
             }
         });
     }
@@ -431,7 +437,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             @Override
             public void callBack(int status, Object data) {
                 if (status == SUCCESS) {
-                    SnackBarHandler.show(parentLayout, getString(R.string.account_logged_twitter));
+                    SnackBarHandler.show(coordinatorLayout, getString(R.string.account_logged_twitter));
                     if (data instanceof Bundle) {
                         Bundle bundle = (Bundle) data;
                         realm.beginTransaction();
@@ -455,6 +461,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
      * Create Facebook login and session
      */
     public void signInFacebook() {
+
         loginManager = LoginManager.getInstance();
         loginManager.logInWithReadPermissions(this, Arrays.asList("email", "public_profile"));
         loginManager.registerCallback(callbackManager,
@@ -472,7 +479,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                                         Log.v("LoginActivity", graphResponse.toString());
                                         try {
                                             account.setUsername(jsonObject.getString("email"));
-                                            SnackBarHandler.show(parentLayout, getString(R.string.logged_in_facebook));
+                                            SnackBarHandler.show(coordinatorLayout, getString(R.string.logged_in_facebook));
                                         } catch (JSONException e) {
                                             Log.e("LoginAct", e.toString());
                                         }
@@ -483,12 +490,12 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
                     @Override
                     public void onCancel() {
-                        SnackBarHandler.show(parentLayout, getString(R.string.facebook_login_cancel));
+                        SnackBarHandler.show(coordinatorLayout, getString(R.string.facebook_login_cancel));
                     }
 
                     @Override
                     public void onError(FacebookException e) {
-                        SnackBarHandler.show(parentLayout, getString(R.string.facebook_login_error));
+                        SnackBarHandler.show(coordinatorLayout, getString(R.string.facebook_login_error));
                         Log.d("error", e.toString());
                     }
                 });
@@ -590,7 +597,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        SnackBarHandler.show(parentLayout, "Connection Failed");
+        SnackBarHandler.show(coordinatorLayout, "Connection Failed");
     }
 
 

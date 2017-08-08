@@ -96,6 +96,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
          * We are using the enum from the AccountDatabase model class, (-HIDEINACCOUNTS) from the length because
          * whatsapp, Instagram , googleplus and others option is only required in the Sharing activity.
          */
+        //return AccountDatabase.AccountName.values().length - HIDEINACCOUNTS;
         return AccountDatabase.AccountName.values().length - HIDEINACCOUNTS;
     }
 
