@@ -87,21 +87,6 @@ public class AlertDialogsHelper {
         return textDialogBuilder.create();
     }
 
-    public static AlertDialog confirmationDialog(final ThemedActivity activity, AlertDialog.Builder textDialogBuilder, @StringRes int title, String Message, String msg){
-        View dialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_text, null);
-
-        TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.text_dialog_title);
-        TextView dialogMessage = (TextView) dialogLayout.findViewById(R.id.text_dialog_message);
-
-        ((CardView) dialogLayout.findViewById(R.id.message_card)).setCardBackgroundColor(activity.getCardBackgroundColor());
-        dialogTitle.setBackgroundColor(activity.getPrimaryColor());
-        dialogTitle.setText(title);
-        if (msg != null) dialogMessage.setText(msg);
-        else dialogMessage.setText(Message);
-        dialogMessage.setTextColor(activity.getTextColor());
-        textDialogBuilder.setView(dialogLayout);
-        return textDialogBuilder.create();
-    }
 
     public static AlertDialog getProgressDialog(final ThemedActivity activity, AlertDialog.Builder progressDialog, String title, String message){
         View dialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_progress, null);
