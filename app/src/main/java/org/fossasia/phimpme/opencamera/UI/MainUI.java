@@ -19,9 +19,9 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.ZoomControls;
 
 import com.mikepenz.iconics.view.IconicsImageView;
 
@@ -294,8 +294,8 @@ public class MainUI {
 			lp.height = height_pixels;
 			view.setLayoutParams(lp);
 
-			view = main_activity.findViewById(R.id.exposure_seekbar_zoom);
-			view.setAlpha(0.5f);
+//			view = main_activity.findViewById(R.id.exposure_seekbar_zoom);
+//			view.setAlpha(0.5f);
 
 			view = main_activity.findViewById(R.id.iso_seekbar);
 			lp = (RelativeLayout.LayoutParams) view.getLayoutParams();
@@ -532,7 +532,7 @@ public class MainUI {
 			} else {
 				if (main_activity.getPreview().supportsExposures()) {
 					exposure_seek_bar.setVisibility(View.VISIBLE);
-					ZoomControls seek_bar_zoom = (ZoomControls) main_activity.findViewById(R.id.exposure_seekbar_zoom);
+					LinearLayout seek_bar_zoom = (LinearLayout) main_activity.findViewById(R.id.exposure_seekbar_zoom);
 					seek_bar_zoom.setVisibility(View.VISIBLE);
 				}
 			}
