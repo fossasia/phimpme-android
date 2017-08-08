@@ -78,7 +78,6 @@ import com.tumblr.jumblr.types.PhotoPost;
 import com.tumblr.jumblr.types.User;
 
 import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.accounts.AccountActivity;
 import org.fossasia.phimpme.base.PhimpmeProgressBarHandler;
 import org.fossasia.phimpme.base.RecyclerItemClickListner;
 import org.fossasia.phimpme.base.ThemedActivity;
@@ -332,18 +331,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                         break;
 
                     case PINTEREST:
-                        if (Utils.checkAlreadyExist(PINTEREST)) {
-                            openPinterestDialogBox();
-                        } else {
-                            Snackbar.make(parent, getResources().getString(R.string.pinterest_signIn_fail), Snackbar.LENGTH_LONG)
-                                    .setAction(R.string.sign_In, new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            Intent accounts = new Intent(SharingActivity.this, AccountActivity.class);
-                                            startActivity(accounts);
-                                        }
-                                    }).show();
-                        }
+                        shareToPinterest();
                         break;
 
                     case FLICKR:
@@ -373,11 +361,12 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                     case OTHERS:
                         shareToOthers();
                         break;
+
                     case WHATSAPP:
                         shareToWhatsapp();
                         break;
-                    case MESSENGER:
-                        shareToMessenger();
+                    case GOOGLEPLUS:
+                        shareToGoogle();
                         break;
                     default:
                         SnackBarHandler.show(parent, R.string.feature_not_present);
@@ -412,7 +401,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void shareToGoogle() {
-        Uri uri = getImageUri(this, saveFilePath);
+        Uri uri = getImageUri(SharingActivity.this, saveFilePath);
         PlusShare.Builder share = new PlusShare.Builder(SharingActivity.this);
         share.setText(caption);
         share.addStream(uri);
@@ -619,36 +608,37 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         });
     }
 
-    private void openPinterestDialogBox() {
-        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
-        final EditText captionEditText = new EditText(getApplicationContext());
+    private void shareToPinterest() {
+            final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
+            final EditText captionEditText = new EditText(getApplicationContext());
 
-        String link = "<a href=https://www.nutt.net/how-do-i-get-pinterest-board-id/> Get Board ID from the LINK";
-        AlertDialogsHelper.getInsertTextDialog(SharingActivity.this, dialogBuilder, captionEditText, R.string.Pinterest_link ,link);
-        dialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-        dialogBuilder.setPositiveButton(getString(R.string.post_action).toUpperCase(), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //This should br empty it will be overwrite later
-                //to avoid dismiss of the dialog on wrong password
-            }
-        });
+            String link = "<a href=https://www.nutt.net/how-do-i-get-pinterest-board-id/> Get Board ID from the LINK";
+            AlertDialogsHelper.getInsertTextDialog(SharingActivity.this, dialogBuilder, captionEditText, R.string.Pinterest_link, link);
+            dialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+            dialogBuilder.setPositiveButton(getString(R.string.post_action).toUpperCase(), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //This should br empty it will be overwrite later
+                    //to avoid dismiss of the dialog on wrong password
+                }
+            });
 
-        final AlertDialog passwordDialog = dialogBuilder.create();
-        passwordDialog.show();
+            final AlertDialog passwordDialog = dialogBuilder.create();
+            passwordDialog.show();
 
-        passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String captionText = captionEditText.getText().toString();
-                boardID = captionText;
-                shareToPinterest(boardID);
-                passwordDialog.dismiss();
-            }
-        });
+            passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String captionText = captionEditText.getText().toString();
+                    boardID = captionText;
+                    postToPinterest(boardID);
+                    passwordDialog.dismiss();
+                }
+            });
     }
 
-    private void shareToPinterest(final String boardID) {
+    private void postToPinterest(final String boardID) {
+        SnackBarHandler.show(parent,R.string.pinterest_image_uploading);
         NotificationHandler.make();
         Bitmap image = getBitmapFromPath(saveFilePath);
         PDKClient
@@ -689,6 +679,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void uploadOnTwitter(String token, String secret) {
+        SnackBarHandler.show(parent, getString(R.string.twitter_uploading));
         final File f3 = new File(Environment.getExternalStorageDirectory() + "/twitter_upload/");
         final File file = new File(Environment.getExternalStorageDirectory() + "/twitter_upload/" + "temp" + ".png");
         if (!f3.exists())
