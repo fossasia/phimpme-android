@@ -17,16 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_launcher_splash" />
-
-        <ProgressBar
-            android:id="@+id/progress_splash"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:paddingBottom="50dp"/>
+            android:layout_centerInParent="true"
+            />
     </RelativeLayout>
 
 

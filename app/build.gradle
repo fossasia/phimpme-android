@@ -143,6 +143,7 @@ dependencies {
     compile 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
     compile 'com.mikepenz:community-material-typeface:1.5.54.2@aar'
     compile 'com.mikepenz:fontawesome-typeface:4.6.0.1@aar'
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.7'
     compile 'com.yalantis:ucrop:1.5.0'
     compile 'com.google.android.exoplayer:exoplayer:r1.5.7'
     compile 'de.psdev.licensesdialog:licensesdialog:1.8.0'
