@@ -784,6 +784,7 @@
     <string name="toggle_info">Click to switch between colors \n Long press to switch to normal</string>
     <string name="first_click">first click</string>
     <string name="account_logged_twitter">Twitter account logged in successfully.</string>
+    <string name="twitter_uploading">Image uploading on Twitter</string>
 
 
     <!--All photos-->
@@ -910,6 +911,7 @@
     <string name="err_msg_host">Please add server address</string>
     <string name="err_msg_username">Please enter password</string>
     <string name="err_msg_password">Please enter password</string>
+    <string name="pinterest_image_uploading">Image uploading on Pinterest</string>
 
     <string name="server_url">server_url</string>
     <string name="todo_operation_finished_in_success">File uploaded successfully</string>
