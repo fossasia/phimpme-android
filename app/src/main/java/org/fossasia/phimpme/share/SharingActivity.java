@@ -8,23 +8,19 @@ import android.content.pm.ActivityInfo;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -178,9 +174,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     @BindView(R.id.share_account)
     RecyclerView shareAccountRecyclerView;
 
-    @BindView(R.id.share_done)
-    Button done;
-
     @BindView(R.id.button_text_focus)
     IconicsImageView editFocus;
 
@@ -189,7 +182,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     private Realm realm = Realm.getDefaultInstance();
     private String caption;
-    private boolean atleastOneShare = false;
     private PhimpmeProgressBarHandler phimpmeProgressBarHandler;
     private Context context;
     private DropboxAPI<AndroidAuthSession> mDBApi;
@@ -242,12 +234,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
         parent.setBackgroundColor(themeHelper.getBackgroundColor());
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-            done.getBackground().setColorFilter(getResources().getColor(R.color.share_done_button_color), PorterDuff.Mode.MULTIPLY);
-        else
-            done.setBackground(new ColorDrawable(getResources().getColor(R.color.share_done_button_color)));
-
-        done.setOnClickListener(this);
         captionLayout.setOnClickListener(this);
 
         text_caption.getBackground().mutate().setColorFilter(getTextColor(), PorterDuff.Mode.SRC_ATOP);
@@ -278,19 +264,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-
-            case R.id.share_done:
-                if (atleastOneShare) goToHome();
-                else
-                    Snackbar.make(parent, getResources().getString(R.string.share_not_completed), Snackbar.LENGTH_LONG)
-                            .setAction(R.string.exit, new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    goToHome();
-                                }
-                            }).show();
-                break;
-
 
             case R.id.edit_text_caption_container:
                 openCaptionDialogBox();
@@ -716,7 +689,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
         ShareApi.share(content, null);
             SnackBarHandler.show(parent, R.string.facebook_image_posted);
-        atleastOneShare = true;
     }else{
             SnackBarHandler.show(parent, R.string.facebook_signIn_fail);
         }
@@ -740,7 +712,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         share.setType("image/*");
         share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivity(Intent.createChooser(share, caption));
-        atleastOneShare = true;
     }
 
     private void shareToWhatsapp() {
@@ -751,7 +722,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         share.setType("image/*");
         share.putExtra(Intent.EXTRA_TEXT, caption);
         startActivity(share);
-        atleastOneShare = true;
     }
 
     private void shareToImgur() {
@@ -960,7 +930,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             }
         }
         PDKClient.getInstance().onOauthResponse(requestCode, responseCode, data);
-        atleastOneShare = true;
 
     }
 
@@ -975,19 +944,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     public void onResume() {
         ActivitySwitchHelper.setContext(this);
         super.onResume();
-    }
-
-    public EditText getCaptionDialog(final ThemedActivity activity, android.support.v7.app.AlertDialog.Builder passwordDialog) {
-
-        final View captionDialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_caption, null);
-        final CardView captionDialogCard = (CardView) captionDialogLayout.findViewById(R.id.caption_dialog_card);
-        final EditText captionEditext = (EditText) captionDialogLayout.findViewById(R.id.caption_edittxt);
-
-        captionDialogCard.setBackgroundColor(activity.getCardBackgroundColor());
-        ThemeHelper.setCursorDrawableColor(captionEditext, activity.getTextColor());
-        captionEditext.setTextColor(activity.getTextColor());
-        passwordDialog.setView(captionDialogLayout);
-        return captionEditext;
     }
 
     private void startRefresh() {
