@@ -20,7 +20,8 @@
         android:id="@+id/share_image"
         android:layout_below="@+id/toolbar"
         android:layout_weight="10"
-        android:layout_alignParentStart="true"/>
+        android:layout_alignParentStart="true"
+        android:scaleType="centerCrop"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -79,15 +80,5 @@
         </android.support.v7.widget.RecyclerView>
 
     </ScrollView>
-
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/share_done"
-        android:padding="15dp"
-        android:textColor="@color/white"
-        android:text="@string/share_done"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/share_button_margin"/>
 
 </LinearLayout>
