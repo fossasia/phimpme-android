@@ -4,6 +4,12 @@ apply plugin: 'jacoco-android'
 apply plugin: 'realm-android'
 apply plugin: 'com.google.firebase.firebase-perf'
 
+def keystorePropertiesFile = rootProject.file("sample_keystore.properties")
+
+def keystoreProperties = new Properties()
+
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
@@ -60,6 +66,15 @@ android {
     externalNativeBuild {
         ndkBuild {
             path 'src/main/jni/Android.mk'
+        }
+    }
+
+    signingConfigs {
+        config {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
         }
     }
 
