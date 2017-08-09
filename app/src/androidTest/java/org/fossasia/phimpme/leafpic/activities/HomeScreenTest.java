@@ -34,9 +34,8 @@ import static org.hamcrest.Matchers.allOf;
 @RunWith(AndroidJUnit4.class)
 public class HomeScreenTest {
 
-
     @Rule
-    public ActivityTestRule<SplashScreen> mActivityTestRule = new ActivityTestRule<>(SplashScreen.class);
+    public ActivityTestRule<LFMainActivity> mActivityTestRule = new ActivityTestRule<>(LFMainActivity.class);
 
     @UiThreadTest
     @Before
