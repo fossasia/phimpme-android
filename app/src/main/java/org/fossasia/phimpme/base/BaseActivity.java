@@ -1,9 +1,12 @@
 package org.fossasia.phimpme.base;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,11 +21,25 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
     protected BottomNavigationView navigationView;
 
+    private int[][] states = new int[][] {
+            new int[] {android.R.attr.state_checked}, // checked
+            new int[] {-android.R.attr.state_checked}, // unchecked
+    };
+
+    private int[] colors = new int[] {
+            Color.WHITE, // checked
+            0 // unchecked set default in onCreate
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getContentViewId());
+        colors[1]  = ContextCompat.getColor(this, R.color.bottom_navigation_tabs);
+        ColorStateList myList = new ColorStateList(states, colors);
         navigationView = (BottomNavigationView) findViewById(R.id.bottombar);
+        navigationView.setItemIconTintList(myList);
+        navigationView.setItemTextColor(myList);
         navigationView.setOnNavigationItemSelectedListener(this);
     }
 
@@ -74,12 +91,20 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         }
     }
 
+    void setIconColor(int color){
+        if(Color.red(color) + Color.green(color)+ Color.blue(color) < 300)
+            colors[0] = Color.WHITE;
+        else
+            colors[0] = Color.BLACK;
+    }
+
     public abstract int getContentViewId();
 
     public abstract int getNavigationMenuItemId();
 
     public void setNavigationBarColor(int color) {
         navigationView.setBackgroundColor(color);
+        setIconColor(color);
     }
     public void hideNavigationBar() {
         navigationView.setVisibility(View.GONE);
