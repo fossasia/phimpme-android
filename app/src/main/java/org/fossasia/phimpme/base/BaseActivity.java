@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -17,9 +18,17 @@ import org.fossasia.phimpme.accounts.AccountActivity;
 import org.fossasia.phimpme.leafpic.activities.LFMainActivity;
 import org.fossasia.phimpme.opencamera.Camera.CameraActivity;
 
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
+
 public abstract class BaseActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     protected BottomNavigationView navigationView;
+    private static final String SHOWCASE_ID = "1";
+    BottomNavigationItemView nav_home;
+    BottomNavigationItemView nav_cam;
+    BottomNavigationItemView nav_acc;
 
     private int[][] states = new int[][] {
             new int[] {android.R.attr.state_checked}, // checked
@@ -41,7 +50,51 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         navigationView.setItemIconTintList(myList);
         navigationView.setItemTextColor(myList);
         navigationView.setOnNavigationItemSelectedListener(this);
+
+         nav_home = (BottomNavigationItemView) findViewById(R.id.navigation_home);
+         nav_cam = (BottomNavigationItemView) findViewById(R.id.navigation_camera);
+         nav_acc = (BottomNavigationItemView) findViewById(R.id.navigation_accounts);
+
+        presentShowcaseSequence(); // one second delay
     }
+
+    private void presentShowcaseSequence() {
+
+        ShowcaseConfig config = new ShowcaseConfig();
+        config.setDelay(4000); // half second between each showcase view
+
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, SHOWCASE_ID);
+
+        sequence.setOnItemShownListener(new MaterialShowcaseSequence.OnSequenceItemShownListener() {
+            @Override
+            public void onShow(MaterialShowcaseView itemView, int position) {
+                //Toast.makeText(itemView.getContext(), "Item #" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        sequence.setConfig(config);
+
+        sequence.addSequenceItem(nav_home, getResources().getString(R.string.home_button), getResources().getString(R.string.ok_button));
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(nav_cam)
+                        .setDismissText(getResources().getString(R.string.ok_button))
+                        .setContentText(getResources().getString(R.string.camera_button))
+                        .build()
+        );
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(nav_acc)
+                        .setDismissText(getResources().getString(R.string.ok_button))
+                        .setContentText(getResources().getString(R.string.accounts_button))
+                        .build()
+        );
+
+        sequence.start();
+    }
+
 
     @Override
     protected void onStart() {
