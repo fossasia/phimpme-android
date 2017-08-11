@@ -356,7 +356,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
     @Override
     public boolean onPrepareOptionsMenu(final Menu menu) {
         if (!allPhotoMode)
-            menu.setGroupVisible(R.id.only_photos_options, !getAlbum().getCurrentMedia().isVideo());
+            menu.setGroupVisible(R.id.only_photos_options, true);
 
         if (customUri) {
             menu.setGroupVisible(R.id.on_internal_storage, false);
