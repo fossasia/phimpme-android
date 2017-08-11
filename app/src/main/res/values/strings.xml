@@ -618,7 +618,7 @@
 
     <!--Invitation-->
     <string name="install_phimpme">Download the best image application to make your moments more memorable by clicking, editing, sharing images with friends on social media, all at one place.</string>
-    <string name="invitation_deep_link">Download Now: https://x7824.app.goo.gl/zgxL</string>
+    <string name="invitation_deep_link">Download Now: https://nz2sh.app.goo.gl/jTpt</string>
 
 
     <!--ABOUT STRINGS-->
@@ -731,7 +731,7 @@
         really optimized right now
     </string>
     <string name="about_support">Support Development</string>
-    <string name="about_fossasia">Developed by <a href="http://fossasia.org/"> FOSSASIA</a> <a href="https://github.com/fossasia/phimpme-android/graphs/contributors">contributers</a>.</string>
+    <string name="about_fossasia">Developed by <a href="http://fossasia.org/"> FOSSASIA</a> <a href="https://github.com/fossasia/phimpme-android/graphs/contributors">contributors</a>.</string>
     <string name="title_activity_accounts">AccountsActivity</string>
 
     <!--EDITING IMAGE-->
