@@ -146,20 +146,6 @@ public class AboutActivity extends ThemedActivity {
             public void onClick(View v) {licenseDialog();}
         });
 
-        //rate
-        findViewById(R.id.ll_about_support_rate).setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                final String appPackageName = getPackageName();
-                try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-                } catch (android.content.ActivityNotFoundException anfe) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-                }
-            }
-        });
-
-
     }
 
     private void setThemeOnChangeListener(){
@@ -182,7 +168,6 @@ public class AboutActivity extends ThemedActivity {
         ((IconicsImageView) findViewById(R.id.about_license_icon)).setColor(color);
 
         //ABOUT SUPPORT
-        ((IconicsImageView) findViewById(R.id.about_support_rate_icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.about_support_github_icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.about_support_report_bug_icon)).setColor(color);
 
@@ -190,7 +175,6 @@ public class AboutActivity extends ThemedActivity {
         color = getTextColor();
         ((TextView) findViewById(R.id.about_libs_item)).setTextColor(color);
         ((TextView) findViewById(R.id.about_app_light_description)).setTextColor(color);
-        ((TextView) findViewById(R.id.about_support_rate_item)).setTextColor(color);
         ((TextView) findViewById(R.id.about_support_github_item)).setTextColor(color);
         ((TextView) findViewById(R.id.about_license_item)).setTextColor(color);
         ((TextView) findViewById(R.id.about_support_report_bug_item)).setTextColor(color);
@@ -203,7 +187,6 @@ public class AboutActivity extends ThemedActivity {
         ((TextView) findViewById(R.id.about_patryk_goworowski_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.about_community_members_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.about_community_you_sub)).setTextColor(color);
-        ((TextView) findViewById(R.id.about_support_rate_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.about_support_github_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.about_license_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.about_support_report_bug_sub)).setTextColor(color);

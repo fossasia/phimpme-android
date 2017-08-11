@@ -9,7 +9,7 @@
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_home_black_24dp"
-        android:title="@string/title_home" />
+        android:title="@string/title_gallery" />
 
     <item
         android:id="@+id/navigation_accounts"
