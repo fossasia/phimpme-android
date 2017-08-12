@@ -551,7 +551,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     private void openCaptionDialogBox() {
         final AlertDialog.Builder captionDialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
-        final EditText captionEditText = new EditText(getApplicationContext());
+        final EditText captionEditText = new EditText(this);
         AlertDialogsHelper.getInsertTextDialog(SharingActivity.this, captionDialogBuilder, captionEditText, R.string.caption_head ,null);
         captionDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
         captionEditText.setBackground(null);
