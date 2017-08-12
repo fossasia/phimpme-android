@@ -333,7 +333,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="pdk4910600717739247160" />
+                <data android:scheme="pdk4914573327424567067" />
             </intent-filter>
         </activity>
         <activity
