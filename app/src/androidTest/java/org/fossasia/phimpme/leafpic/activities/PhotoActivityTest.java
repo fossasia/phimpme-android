@@ -8,6 +8,7 @@ import android.test.suitebuilder.annotation.LargeTest;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.opencamera.Camera.PhotoActivity;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,6 +19,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
 
+@Ignore
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class PhotoActivityTest {
