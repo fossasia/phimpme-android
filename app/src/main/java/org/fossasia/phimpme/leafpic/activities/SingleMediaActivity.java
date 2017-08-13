@@ -643,12 +643,13 @@ public class SingleMediaActivity extends SharedMediaActivity {
                     @Override
                     public void onClick(View v) {
                         descriptionDialog.dismiss();
-
+                        voiceInput = editTextDescription.getText().toString();
                         if(temp == null) {
                             databaseHelper.addImageDesc(new ImageDescModel(pathForDescription,editTextDescription.getText().toString()));
                         } else {
                             databaseHelper.update(new ImageDescModel(pathForDescription, editTextDescription.getText().toString()));
                         }
+
                     }
                 });
                 break;
@@ -680,7 +681,6 @@ public class SingleMediaActivity extends SharedMediaActivity {
 
             }
         });
-        Toast.makeText(SingleMediaActivity.this, voiceInput, Toast.LENGTH_SHORT).show();
         DescriptionDialogTitle.setBackgroundColor(activity.getPrimaryColor());
         DescriptionDialogCard.setBackgroundColor(activity.getCardBackgroundColor());
         ThemeHelper.setCursorDrawableColor(editxtDescription, activity.getTextColor());
@@ -693,6 +693,8 @@ public class SingleMediaActivity extends SharedMediaActivity {
         if(temp != null) {
             editxtDescription.setText(temp.getTitle());
             editxtDescription.setSelection(editxtDescription.getText().length());
+            Toast.makeText(SingleMediaActivity.this, voiceInput, Toast.LENGTH_SHORT).show();
+
         }
         descriptionDialog.setView(DescriptiondDialogLayout);
         return editxtDescription;
