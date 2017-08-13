@@ -807,9 +807,6 @@ public class LFMainActivity extends SharedMediaActivity {
         getMenuInflater().inflate(R.menu.menu_albums, menu);
 
         if (albumsMode) {
-            Drawable shareIcon = getResources().getDrawable(R.drawable.ic_photo_24dp, getTheme());
-            shareIcon.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
-            menu.findItem(R.id.all_photos).setIcon(shareIcon);
             menu.findItem(R.id.select_all).setTitle(
                     getString(getAlbums().getSelectedCount() == albumsAdapter.getItemCount()
                             ? R.string.clear_selected
