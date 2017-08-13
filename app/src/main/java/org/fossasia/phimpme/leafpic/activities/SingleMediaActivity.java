@@ -509,16 +509,19 @@ public class SingleMediaActivity extends SharedMediaActivity {
                 return true;
 
             case R.id.action_edit:
-                File outputFile = FileUtils.genEditFile();
                 if (!allPhotoMode)
                     uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
                 else
                     uri = Uri.fromFile(new File(LFMainActivity.listAll.get(current_image_pos).getPath()));
-                Intent editIntent = new Intent(SingleMediaActivity.this, EditImageActivity.class);
-                editIntent.putExtra("extra_input",uri.getPath());
-                editIntent.putExtra("extra_output",outputFile.getAbsolutePath());
-                editIntent.putExtra("requestCode",ACTION_REQUEST_EDITIMAGE);
-                startActivity(editIntent);
+                String extension = uri.getPath();
+                if (extension!=null) {
+                    Intent editIntent = new Intent(SingleMediaActivity.this, EditImageActivity.class);
+                    editIntent.putExtra("extra_input", uri.getPath());
+                    editIntent.putExtra("extra_output", FileUtils.genEditFile(FileUtils.getExtension(extension)).getAbsolutePath());
+                    editIntent.putExtra("requestCode", ACTION_REQUEST_EDITIMAGE);
+                    startActivity(editIntent);
+                }else
+                    SnackBarHandler.show(parentView,R.string.image_invalid);
                 break;
 
             case R.id.action_use_as:
