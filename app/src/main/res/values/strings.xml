@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Phimpme</string>
-    <string name="title_home">Home</string>
+    <string name="title_gallery">Gallery</string>
     <string name="title_camera">Camera</string>
     <string name="title_account">Accounts</string>
     <string name="action_settings">Settings</string>
@@ -618,7 +618,7 @@
 
     <!--Invitation-->
     <string name="install_phimpme">Download the best image application to make your moments more memorable by clicking, editing, sharing images with friends on social media, all at one place.</string>
-    <string name="invitation_deep_link">Download Now: https://x7824.app.goo.gl/zgxL</string>
+    <string name="invitation_deep_link">Download Now: https://nz2sh.app.goo.gl/jTpt</string>
 
 
     <!--ABOUT STRINGS-->
@@ -660,7 +660,7 @@
     <string name="about_support_report_bug">Report bug</string>
     <string name="about_support_report_bug_sub">Report bug or request new features.</string>
 
-    <string name="about_support_rate">Rate</string>
+    <string name="about_support_rate">Rate Us</string>
     <string name="about_support_rate_sub">Leave us a positive rating if you like Phimpme.</string>
 
     <string name="about_support_github">GitHub</string>
@@ -731,7 +731,7 @@
         really optimized right now
     </string>
     <string name="about_support">Support Development</string>
-    <string name="about_fossasia">Developed by <a href="http://fossasia.org/"> FOSSASIA</a> <a href="https://github.com/fossasia/phimpme-android/graphs/contributors">contributers</a>.</string>
+    <string name="about_fossasia">Developed by <a href="http://fossasia.org/"> FOSSASIA</a> <a href="https://github.com/fossasia/phimpme-android/graphs/contributors">contributors</a>.</string>
     <string name="title_activity_accounts">AccountsActivity</string>
 
     <!--EDITING IMAGE-->
@@ -984,4 +984,10 @@
     <string name="add_action">ADD</string>
     <string name="speech_prompt">Describe the photo</string>
     <string name="caption_speak">Say Something</string>
+
+    <!--Showcase View-->
+    <string name="home_button">Find all your photos in the device</string>
+    <string name="accounts_button">Add Multiple Accounts to share amazing photos</string>
+    <string name="camera_button">Click Amazing Pictures</string>
+    <string name="ok_button">GOT IT</string>
 </resources>

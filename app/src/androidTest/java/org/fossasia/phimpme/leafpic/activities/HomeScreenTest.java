@@ -34,9 +34,8 @@ import static org.hamcrest.Matchers.allOf;
 @RunWith(AndroidJUnit4.class)
 public class HomeScreenTest {
 
-
     @Rule
-    public ActivityTestRule<SplashScreen> mActivityTestRule = new ActivityTestRule<>(SplashScreen.class);
+    public ActivityTestRule<LFMainActivity> mActivityTestRule = new ActivityTestRule<>(LFMainActivity.class);
 
     @UiThreadTest
     @Before
@@ -95,7 +94,7 @@ public class HomeScreenTest {
         frameLayout3.check(matches(isDisplayed()));
 
         ViewInteraction frameLayout4 = onView(
-                allOf(withId(R.id.navigation_home), withContentDescription("Home"),
+                allOf(withId(R.id.navigation_home),
                         childAtPosition(
                                 childAtPosition(
                                         withId(R.id.bottombar),
