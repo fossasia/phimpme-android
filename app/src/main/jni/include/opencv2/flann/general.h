@@ -31,17 +31,19 @@
 #ifndef OPENCV_FLANN_GENERAL_H_
 #define OPENCV_FLANN_GENERAL_H_
 
-#include "opencv2/core.hpp"
+#include "defines.h"
+#include <stdexcept>
+#include <cassert>
 
 namespace cvflann
 {
 
-class FLANNException : public cv::Exception
+class FLANNException : public std::runtime_error
 {
 public:
-    FLANNException(const char* message) : cv::Exception(0, message, "", __FILE__, __LINE__) { }
+    FLANNException(const char* message) : std::runtime_error(message) { }
 
-    FLANNException(const cv::String& message) : cv::Exception(0, message, "", __FILE__, __LINE__) { }
+    FLANNException(const std::string& message) : std::runtime_error(message) { }
 };
 
 }

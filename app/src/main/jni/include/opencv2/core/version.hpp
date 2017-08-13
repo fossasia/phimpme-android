@@ -10,10 +10,7 @@
 //                        Intel License Agreement
 //                For Open Source Computer Vision Library
 //
-// Copyright( C) 2000-2015, Intel Corporation, all rights reserved.
-// Copyright (C) 2011-2013, NVIDIA Corporation, all rights reserved.
-// Copyright (C) 2013, OpenCV Foundation, all rights reserved.
-// Copyright (C) 2015, Itseez Inc., all rights reserved.
+// Copyright( C) 2000, Intel Corporation, all rights reserved.
 // Third party copyrights are property of their respective owners.
 //
 // Redistribution and use in source and binary forms, with or without modification,
@@ -47,13 +44,13 @@
   Usefull to test in user programs
 */
 
-#ifndef OPENCV_VERSION_HPP
-#define OPENCV_VERSION_HPP
+#ifndef __OPENCV_VERSION_HPP__
+#define __OPENCV_VERSION_HPP__
 
-#define CV_VERSION_MAJOR    3
-#define CV_VERSION_MINOR    2
-#define CV_VERSION_REVISION 0
-#define CV_VERSION_STATUS   ""
+#define CV_VERSION_EPOCH    2
+#define CV_VERSION_MAJOR    4
+#define CV_VERSION_MINOR    13
+#define CV_VERSION_REVISION 3
 
 #define CVAUX_STR_EXP(__A)  #__A
 #define CVAUX_STR(__A)      CVAUX_STR_EXP(__A)
@@ -61,11 +58,15 @@
 #define CVAUX_STRW_EXP(__A)  L ## #__A
 #define CVAUX_STRW(__A)      CVAUX_STRW_EXP(__A)
 
-#define CV_VERSION          CVAUX_STR(CV_VERSION_MAJOR) "." CVAUX_STR(CV_VERSION_MINOR) "." CVAUX_STR(CV_VERSION_REVISION) CV_VERSION_STATUS
+#if CV_VERSION_REVISION
+#  define CV_VERSION        CVAUX_STR(CV_VERSION_EPOCH) "." CVAUX_STR(CV_VERSION_MAJOR) "." CVAUX_STR(CV_VERSION_MINOR) "." CVAUX_STR(CV_VERSION_REVISION)
+#else
+#  define CV_VERSION        CVAUX_STR(CV_VERSION_EPOCH) "." CVAUX_STR(CV_VERSION_MAJOR) "." CVAUX_STR(CV_VERSION_MINOR)
+#endif
 
 /* old  style version constants*/
-#define CV_MAJOR_VERSION    CV_VERSION_MAJOR
-#define CV_MINOR_VERSION    CV_VERSION_MINOR
-#define CV_SUBMINOR_VERSION CV_VERSION_REVISION
+#define CV_MAJOR_VERSION    CV_VERSION_EPOCH
+#define CV_MINOR_VERSION    CV_VERSION_MAJOR
+#define CV_SUBMINOR_VERSION CV_VERSION_MINOR
 
 #endif

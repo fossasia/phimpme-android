@@ -40,8 +40,8 @@
 //
 //M*/
 
-#ifndef OPENCV_PHOTO_C_H
-#define OPENCV_PHOTO_C_H
+#ifndef __OPENCV_PHOTO_C_H__
+#define __OPENCV_PHOTO_C_H__
 
 #include "opencv2/core/core_c.h"
 
@@ -49,12 +49,8 @@
 extern "C" {
 #endif
 
-/** @addtogroup photo_c
-  @{
-  */
-
 /* Inpainting algorithms */
-enum InpaintingModes
+enum
 {
     CV_INPAINT_NS      =0,
     CV_INPAINT_TELEA   =1
@@ -65,10 +61,9 @@ enum InpaintingModes
 CVAPI(void) cvInpaint( const CvArr* src, const CvArr* inpaint_mask,
                        CvArr* dst, double inpaintRange, int flags );
 
-/** @} */
 
 #ifdef __cplusplus
 } //extern "C"
 #endif
 
-#endif //OPENCV_PHOTO_C_H
+#endif //__OPENCV_PHOTO_C_H__

@@ -40,8 +40,8 @@
 //
 //M*/
 
-#ifndef OPENCV_VIDEOSTAB_FAST_MARCHING_INL_HPP
-#define OPENCV_VIDEOSTAB_FAST_MARCHING_INL_HPP
+#ifndef __OPENCV_VIDEOSTAB_FAST_MARCHING_INL_HPP__
+#define __OPENCV_VIDEOSTAB_FAST_MARCHING_INL_HPP__
 
 #include "opencv2/videostab/fast_marching.hpp"
 
@@ -53,6 +53,7 @@ namespace videostab
 template <typename Inpaint>
 Inpaint FastMarchingMethod::run(const cv::Mat &mask, Inpaint inpaint)
 {
+    using namespace std;
     using namespace cv;
 
     CV_Assert(mask.type() == CV_8U);
@@ -128,8 +129,8 @@ Inpaint FastMarchingMethod::run(const cv::Mat &mask, Inpaint inpaint)
 
             if (xn >= 0 && xn < flag_.cols && yn >= 0 && yn < flag_.rows && flag_(yn,xn) != KNOWN)
             {
-                dist_(yn,xn) = std::min(std::min(solve(xn-1, yn, xn, yn-1), solve(xn+1, yn, xn, yn-1)),
-                                        std::min(solve(xn-1, yn, xn, yn+1), solve(xn+1, yn, xn, yn+1)));
+                dist_(yn,xn) = min(min(solve(xn-1, yn, xn, yn-1), solve(xn+1, yn, xn, yn-1)),
+                                   min(solve(xn-1, yn, xn, yn+1), solve(xn+1, yn, xn, yn+1)));
 
                 if (flag_(yn,xn) == INSIDE)
                 {

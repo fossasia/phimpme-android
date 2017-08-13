@@ -40,19 +40,18 @@
 //
 //M*/
 
-#ifndef OPENCV_VIDEOSTAB_FRAME_SOURCE_HPP
-#define OPENCV_VIDEOSTAB_FRAME_SOURCE_HPP
+#ifndef __OPENCV_VIDEOSTAB_FRAME_SOURCE_HPP__
+#define __OPENCV_VIDEOSTAB_FRAME_SOURCE_HPP__
 
 #include <vector>
-#include "opencv2/core.hpp"
+#include <string>
+#include "opencv2/core/core.hpp"
+#include "opencv2/highgui/highgui.hpp"
 
 namespace cv
 {
 namespace videostab
 {
-
-//! @addtogroup videostab
-//! @{
 
 class CV_EXPORTS IFrameSource
 {
@@ -72,21 +71,19 @@ public:
 class CV_EXPORTS VideoFileSource : public IFrameSource
 {
 public:
-    VideoFileSource(const String &path, bool volatileFrame = false);
+    VideoFileSource(const std::string &path, bool volatileFrame = false);
 
     virtual void reset();
     virtual Mat nextFrame();
 
-    int width();
-    int height();
-    int count();
-    double fps();
+    int frameCount() { return static_cast<int>(reader_.get(CV_CAP_PROP_FRAME_COUNT)); }
+    double fps() { return reader_.get(CV_CAP_PROP_FPS); }
 
 private:
-    Ptr<IFrameSource> impl;
+    std::string path_;
+    bool volatileFrame_;
+    VideoCapture reader_;
 };
-
-//! @}
 
 } // namespace videostab
 } // namespace cv

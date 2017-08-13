@@ -99,7 +99,7 @@ Before you begin, you should already have the Android Studio SDK downloaded and 
 
     - *Note:* If you recieve a Gradle sync error titled, "failed to find ...", you should click on the link below the error message (if avaliable) that says *Install missing platform(s) and sync project* and allow Android studio to fetch you what is missing.
 
-6. Download this [OpenCV-android-sdk](https://github.com/opencv/opencv/releases/download/3.2.0/opencv-3.2.0-android-sdk.zip) zip file and extract it.
+6. Download this [OpenCV-android-sdk](https://github.com/opencv/opencv/releases/download/2.4.13.3/opencv-2.4.13.3-android-sdk.zip) zip file and extract it.
 
      - Copy all the files from *"OpenCV-android-sdk/sdk/native/3rdparty"* to *"phimpme-android/app/src/main/3rdparty"* (create directory if it doesn't exist)
      - Copy all the files from *"OpenCV-android-sdk/sdk/native/libs"* to *"phimpme-android/app/src/main/jniLibs"* (create directory if it doesn't exist)
