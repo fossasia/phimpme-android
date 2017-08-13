@@ -75,7 +75,11 @@ public class PhotoActivity extends ThemedActivity {
                 return;
             }
         }
-        SnackBarHandler.show(parent,R.string.image_invalid);
+        try {
+            SnackBarHandler.show(parent, R.string.image_invalid);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
     }
 
     public void deleteFile(View v){
