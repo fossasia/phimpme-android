@@ -43,12 +43,23 @@ public class FileUtils {
 		return Environment.getExternalStorageDirectory();
 	}
 
-	public static File genEditFile(){
+	public static File genEditFile(String extension){
 		return FileUtils.getEmptyFile("phimpme"
-				+ System.currentTimeMillis() + ".jpg");
+				+ System.currentTimeMillis() + extension);
 	}
 
-	public static File getEmptyFile(String name) {
+	public static String getExtension(String path){
+		String supportExt[] = {"jpg","png","jpeg","bmp","tiff"};
+		String ext = path.substring(path.lastIndexOf(".")).toLowerCase();
+
+		for (String itr : supportExt)
+			if (itr.equals(ext))
+				return ("." + itr);
+
+		return null;
+	}
+
+	private static File getEmptyFile(String name) {
 		File folder = FileUtils.createFolders();
 		if (folder != null) {
 			if (folder.exists()) {
