@@ -40,76 +40,54 @@
 //
 //M*/
 
-#ifndef OPENCV_STITCHING_SEAM_FINDERS_HPP
-#define OPENCV_STITCHING_SEAM_FINDERS_HPP
+#ifndef __OPENCV_STITCHING_SEAM_FINDERS_HPP__
+#define __OPENCV_STITCHING_SEAM_FINDERS_HPP__
 
 #include <set>
-#include "opencv2/core.hpp"
-#include "opencv2/opencv_modules.hpp"
+#include "opencv2/core/core.hpp"
+#include "opencv2/core/gpumat.hpp"
 
 namespace cv {
 namespace detail {
 
-//! @addtogroup stitching_seam
-//! @{
-
-/** @brief Base class for a seam estimator.
- */
 class CV_EXPORTS SeamFinder
 {
 public:
     virtual ~SeamFinder() {}
-    /** @brief Estimates seams.
-
-    @param src Source images
-    @param corners Source image top-left corners
-    @param masks Source image masks to update
-     */
-    virtual void find(const std::vector<UMat> &src, const std::vector<Point> &corners,
-                      std::vector<UMat> &masks) = 0;
+    virtual void find(const std::vector<Mat> &src, const std::vector<Point> &corners,
+                      std::vector<Mat> &masks) = 0;
 };
 
-/** @brief Stub seam estimator which does nothing.
- */
+
 class CV_EXPORTS NoSeamFinder : public SeamFinder
 {
 public:
-    void find(const std::vector<UMat>&, const std::vector<Point>&, std::vector<UMat>&) {}
+    void find(const std::vector<Mat>&, const std::vector<Point>&, std::vector<Mat>&) {}
 };
 
-/** @brief Base class for all pairwise seam estimators.
- */
+
 class CV_EXPORTS PairwiseSeamFinder : public SeamFinder
 {
 public:
-    virtual void find(const std::vector<UMat> &src, const std::vector<Point> &corners,
-                      std::vector<UMat> &masks);
+    virtual void find(const std::vector<Mat> &src, const std::vector<Point> &corners,
+                      std::vector<Mat> &masks);
 
 protected:
     void run();
-    /** @brief Resolves masks intersection of two specified images in the given ROI.
-
-    @param first First image index
-    @param second Second image index
-    @param roi Region of interest
-     */
     virtual void findInPair(size_t first, size_t second, Rect roi) = 0;
 
-    std::vector<UMat> images_;
+    std::vector<Mat> images_;
     std::vector<Size> sizes_;
     std::vector<Point> corners_;
-    std::vector<UMat> masks_;
+    std::vector<Mat> masks_;
 };
 
-/** @brief Voronoi diagram-based seam estimator.
- */
+
 class CV_EXPORTS VoronoiSeamFinder : public PairwiseSeamFinder
 {
 public:
-    virtual void find(const std::vector<UMat> &src, const std::vector<Point> &corners,
-                      std::vector<UMat> &masks);
     virtual void find(const std::vector<Size> &size, const std::vector<Point> &corners,
-                      std::vector<UMat> &masks);
+                      std::vector<Mat> &masks);
 private:
     void findInPair(size_t first, size_t second, Rect roi);
 };
@@ -125,8 +103,8 @@ public:
     CostFunction costFunction() const { return costFunc_; }
     void setCostFunction(CostFunction val) { costFunc_ = val; }
 
-    virtual void find(const std::vector<UMat> &src, const std::vector<Point> &corners,
-                      std::vector<UMat> &masks);
+    virtual void find(const std::vector<Mat> &src, const std::vector<Point> &corners,
+                      std::vector<Mat> &masks);
 
 private:
     enum ComponentState
@@ -176,7 +154,7 @@ private:
     };
 
     void process(
-            const Mat &image1, const Mat &image2, Point tl1, Point tl2,  Mat &mask1, Mat &mask2);
+            const Mat &image1, const Mat &image2, Point tl1, Point tl2, Mat &mask1, Mat &mask2);
 
     void findComponents();
 
@@ -223,16 +201,14 @@ private:
     std::set<std::pair<int, int> > edges_;
 };
 
-/** @brief Base class for all minimum graph-cut-based seam estimators.
- */
+
 class CV_EXPORTS GraphCutSeamFinderBase
 {
 public:
-    enum CostType { COST_COLOR, COST_COLOR_GRAD };
+    enum { COST_COLOR, COST_COLOR_GRAD };
 };
 
-/** @brief Minimum graph cut-based seam estimator. See details in @cite V03 .
- */
+
 class CV_EXPORTS GraphCutSeamFinder : public GraphCutSeamFinderBase, public SeamFinder
 {
 public:
@@ -241,8 +217,8 @@ public:
 
     ~GraphCutSeamFinder();
 
-    void find(const std::vector<UMat> &src, const std::vector<Point> &corners,
-              std::vector<UMat> &masks);
+    void find(const std::vector<Mat> &src, const std::vector<Point> &corners,
+              std::vector<Mat> &masks);
 
 private:
     // To avoid GCGraph dependency
@@ -251,17 +227,24 @@ private:
 };
 
 
-#ifdef HAVE_OPENCV_CUDALEGACY
 class CV_EXPORTS GraphCutSeamFinderGpu : public GraphCutSeamFinderBase, public PairwiseSeamFinder
 {
 public:
     GraphCutSeamFinderGpu(int cost_type = COST_COLOR_GRAD, float terminal_cost = 10000.f,
                           float bad_region_penalty = 1000.f)
-                          : cost_type_(cost_type), terminal_cost_(terminal_cost),
-                            bad_region_penalty_(bad_region_penalty) {}
+#if defined(HAVE_OPENCV_GPU) && !defined(DYNAMIC_CUDA_SUPPORT)
+                          : cost_type_(cost_type),
+                            terminal_cost_(terminal_cost),
+                            bad_region_penalty_(bad_region_penalty)
+#endif
+    {
+        (void)cost_type;
+        (void)terminal_cost;
+        (void)bad_region_penalty;
+    }
 
-    void find(const std::vector<cv::UMat> &src, const std::vector<cv::Point> &corners,
-              std::vector<cv::UMat> &masks);
+    void find(const std::vector<cv::Mat> &src, const std::vector<cv::Point> &corners,
+              std::vector<cv::Mat> &masks);
     void findInPair(size_t first, size_t second, Rect roi);
 
 private:
@@ -271,15 +254,14 @@ private:
                                   const cv::Mat &dy1, const cv::Mat &dy2, const cv::Mat &mask1, const cv::Mat &mask2,
                                   cv::Mat &terminals, cv::Mat &leftT, cv::Mat &rightT, cv::Mat &top, cv::Mat &bottom);
     std::vector<Mat> dx_, dy_;
+#if defined(HAVE_OPENCV_GPU) && !defined(DYNAMIC_CUDA_SUPPORT)
     int cost_type_;
     float terminal_cost_;
     float bad_region_penalty_;
-};
 #endif
-
-//! @}
+};
 
 } // namespace detail
 } // namespace cv
 
-#endif // OPENCV_STITCHING_SEAM_FINDERS_HPP
+#endif // __OPENCV_STITCHING_SEAM_FINDERS_HPP__

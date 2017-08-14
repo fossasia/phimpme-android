@@ -40,25 +40,16 @@
 //
 //M*/
 
-#ifndef OPENCV_STITCHING_BLENDERS_HPP
-#define OPENCV_STITCHING_BLENDERS_HPP
+#ifndef __OPENCV_STITCHING_BLENDERS_HPP__
+#define __OPENCV_STITCHING_BLENDERS_HPP__
 
-#if defined(NO)
-#  warning Detected Apple 'NO' macro definition, it can cause build conflicts. Please, include this header before any Apple headers.
-#endif
-
-#include "opencv2/core.hpp"
+#include "opencv2/core/core.hpp"
 
 namespace cv {
 namespace detail {
 
-//! @addtogroup stitching_blend
-//! @{
 
-/** @brief Base class for all blenders.
-
-Simple blender which puts one image over another
-*/
+// Simple blender which puts one image over another
 class CV_EXPORTS Blender
 {
 public:
@@ -67,35 +58,17 @@ public:
     enum { NO, FEATHER, MULTI_BAND };
     static Ptr<Blender> createDefault(int type, bool try_gpu = false);
 
-    /** @brief Prepares the blender for blending.
-
-    @param corners Source images top-left corners
-    @param sizes Source image sizes
-     */
     void prepare(const std::vector<Point> &corners, const std::vector<Size> &sizes);
-    /** @overload */
     virtual void prepare(Rect dst_roi);
-    /** @brief Processes the image.
-
-    @param img Source image
-    @param mask Source image mask
-    @param tl Source image top-left corners
-     */
-    virtual void feed(InputArray img, InputArray mask, Point tl);
-    /** @brief Blends and returns the final pano.
-
-    @param dst Final pano
-    @param dst_mask Final pano mask
-     */
-    virtual void blend(InputOutputArray dst, InputOutputArray dst_mask);
+    virtual void feed(const Mat &img, const Mat &mask, Point tl);
+    virtual void blend(Mat &dst, Mat &dst_mask);
 
 protected:
-    UMat dst_, dst_mask_;
+    Mat dst_, dst_mask_;
     Rect dst_roi_;
 };
 
-/** @brief Simple blender which mixes images at its borders.
- */
+
 class CV_EXPORTS FeatherBlender : public Blender
 {
 public:
@@ -105,24 +78,23 @@ public:
     void setSharpness(float val) { sharpness_ = val; }
 
     void prepare(Rect dst_roi);
-    void feed(InputArray img, InputArray mask, Point tl);
-    void blend(InputOutputArray dst, InputOutputArray dst_mask);
+    void feed(const Mat &img, const Mat &mask, Point tl);
+    void blend(Mat &dst, Mat &dst_mask);
 
-    //! Creates weight maps for fixed set of source images by their masks and top-left corners.
-    //! Final image can be obtained by simple weighting of the source images.
-    Rect createWeightMaps(const std::vector<UMat> &masks, const std::vector<Point> &corners,
-                          std::vector<UMat> &weight_maps);
+    // Creates weight maps for fixed set of source images by their masks and top-left corners.
+    // Final image can be obtained by simple weighting of the source images.
+    Rect createWeightMaps(const std::vector<Mat> &masks, const std::vector<Point> &corners,
+                          std::vector<Mat> &weight_maps);
 
 private:
     float sharpness_;
-    UMat weight_map_;
-    UMat dst_weight_map_;
+    Mat weight_map_;
+    Mat dst_weight_map_;
 };
 
 inline FeatherBlender::FeatherBlender(float _sharpness) { setSharpness(_sharpness); }
 
-/** @brief Blender which uses multi-band blending algorithm (see @cite BA83).
- */
+
 class CV_EXPORTS MultiBandBlender : public Blender
 {
 public:
@@ -132,13 +104,13 @@ public:
     void setNumBands(int val) { actual_num_bands_ = val; }
 
     void prepare(Rect dst_roi);
-    void feed(InputArray img, InputArray mask, Point tl);
-    void blend(InputOutputArray dst, InputOutputArray dst_mask);
+    void feed(const Mat &img, const Mat &mask, Point tl);
+    void blend(Mat &dst, Mat &dst_mask);
 
 private:
     int actual_num_bands_, num_bands_;
-    std::vector<UMat> dst_pyr_laplace_;
-    std::vector<UMat> dst_band_weights_;
+    std::vector<Mat> dst_pyr_laplace_;
+    std::vector<Mat> dst_band_weights_;
     Rect dst_roi_final_;
     bool can_use_gpu_;
     int weight_type_; //CV_32F or CV_16S
@@ -148,20 +120,18 @@ private:
 //////////////////////////////////////////////////////////////////////////////
 // Auxiliary functions
 
-void CV_EXPORTS normalizeUsingWeightMap(InputArray weight, InputOutputArray src);
+void CV_EXPORTS normalizeUsingWeightMap(const Mat& weight, Mat& src);
 
-void CV_EXPORTS createWeightMap(InputArray mask, float sharpness, InputOutputArray weight);
+void CV_EXPORTS createWeightMap(const Mat& mask, float sharpness, Mat& weight);
 
-void CV_EXPORTS createLaplacePyr(InputArray img, int num_levels, std::vector<UMat>& pyr);
-void CV_EXPORTS createLaplacePyrGpu(InputArray img, int num_levels, std::vector<UMat>& pyr);
+void CV_EXPORTS createLaplacePyr(const Mat &img, int num_levels, std::vector<Mat>& pyr);
+void CV_EXPORTS createLaplacePyrGpu(const Mat &img, int num_levels, std::vector<Mat>& pyr);
 
 // Restores source image
-void CV_EXPORTS restoreImageFromLaplacePyr(std::vector<UMat>& pyr);
-void CV_EXPORTS restoreImageFromLaplacePyrGpu(std::vector<UMat>& pyr);
-
-//! @}
+void CV_EXPORTS restoreImageFromLaplacePyr(std::vector<Mat>& pyr);
+void CV_EXPORTS restoreImageFromLaplacePyrGpu(std::vector<Mat>& pyr);
 
 } // namespace detail
 } // namespace cv
 
-#endif // OPENCV_STITCHING_BLENDERS_HPP
+#endif // __OPENCV_STITCHING_BLENDERS_HPP__

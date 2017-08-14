@@ -47,7 +47,7 @@ typedef unsigned __int64 uint64_t;
 # include <Intrin.h>
 #endif
 
-#ifdef __ARM_NEON__
+#if defined(__ARM_NEON__) || defined(__ARM_NEON)
 # include "arm_neon.h"
 #endif
 
@@ -386,6 +386,41 @@ struct HammingLUT
 
     /** this will count the bits in a ^ b
      */
+    ResultType operator()(const unsigned char* a, const unsigned char* b, int size) const
+    {
+        static const uchar popCountTable[] =
+        {
+            0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4, 1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
+            1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
+            1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
+            2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
+            1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5, 2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
+            2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
+            2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6, 3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
+            3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7, 4, 5, 5, 6, 5, 6, 6, 7, 5, 6, 6, 7, 6, 7, 7, 8
+        };
+        ResultType result = 0;
+        for (int i = 0; i < size; i++) {
+            result += popCountTable[a[i] ^ b[i]];
+        }
+        return result;
+    }
+};
+
+/**
+ * Hamming distance functor - counts the bit differences between two strings - useful for the Brief descriptor
+ * bit count of A exclusive XOR'ed with B
+ */
+struct HammingLUT2
+{
+    typedef False is_kdtree_distance;
+    typedef False is_vector_space_distance;
+
+    typedef unsigned char ElementType;
+    typedef int ResultType;
+
+    /** this will count the bits in a ^ b
+     */
     ResultType operator()(const unsigned char* a, const unsigned char* b, size_t size) const
     {
         static const uchar popCountTable[] =
@@ -425,7 +460,7 @@ struct Hamming
     ResultType operator()(Iterator1 a, Iterator2 b, size_t size, ResultType /*worst_dist*/ = -1) const
     {
         ResultType result = 0;
-#ifdef __ARM_NEON__
+#if defined(__ARM_NEON__) || defined(__ARM_NEON)
         {
             uint32x4_t bits = vmovq_n_u32(0);
             for (size_t i = 0; i < size; i += 16) {
@@ -595,7 +630,7 @@ struct HellingerDistance
     typedef typename Accumulator<T>::Type ResultType;
 
     /**
-     *  Compute the Hellinger distance
+     *  Compute the histogram intersection distance
      */
     template <typename Iterator1, typename Iterator2>
     ResultType operator()(Iterator1 a, Iterator2 b, size_t size, ResultType /*worst_dist*/ = -1) const
@@ -628,8 +663,7 @@ struct HellingerDistance
     template <typename U, typename V>
     inline ResultType accum_dist(const U& a, const V& b, int) const
     {
-        ResultType diff = sqrt(static_cast<ResultType>(a)) - sqrt(static_cast<ResultType>(b));
-        return diff * diff;
+        return sqrt(static_cast<ResultType>(a)) - sqrt(static_cast<ResultType>(b));
     }
 };
 
@@ -707,7 +741,7 @@ struct KL_Divergence
         Iterator1 last = a + size;
 
         while (a < last) {
-            if (* b != 0) {
+            if (* a != 0) {
                 ResultType ratio = (ResultType)(*a / *b);
                 if (ratio>0) {
                     result += *a * log(ratio);
@@ -730,11 +764,9 @@ struct KL_Divergence
     inline ResultType accum_dist(const U& a, const V& b, int) const
     {
         ResultType result = ResultType();
-        if( *b != 0 ) {
-            ResultType ratio = (ResultType)(a / b);
-            if (ratio>0) {
-                result = a * log(ratio);
-            }
+        ResultType ratio = (ResultType)(a / b);
+        if (ratio>0) {
+            result = a * log(ratio);
         }
         return result;
     }

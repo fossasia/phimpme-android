@@ -41,22 +41,17 @@
 //
 //M*/
 
-#ifndef OPENCV_CORE_AFFINE3_HPP
-#define OPENCV_CORE_AFFINE3_HPP
+#ifndef __OPENCV_CORE_AFFINE3_HPP__
+#define __OPENCV_CORE_AFFINE3_HPP__
 
 #ifdef __cplusplus
 
-#include <opencv2/core.hpp>
+#include <opencv2/core/core.hpp>
+
+/*! @file */
 
 namespace cv
 {
-
-//! @addtogroup core
-//! @{
-
-    /** @brief Affine transform
-      @todo document
-     */
     template<typename T>
     class Affine3
     {
@@ -68,31 +63,30 @@ namespace cv
 
         Affine3();
 
-        //! Augmented affine matrix
+        //Augmented affine matrix
         Affine3(const Mat4& affine);
 
-        //! Rotation matrix
+        //Rotation matrix
         Affine3(const Mat3& R, const Vec3& t = Vec3::all(0));
 
-        //! Rodrigues vector
+        //Rodrigues vector
         Affine3(const Vec3& rvec, const Vec3& t = Vec3::all(0));
 
-        //! Combines all contructors above. Supports 4x4, 4x3, 3x3, 1x3, 3x1 sizes of data matrix
+        //Combines all contructors above. Supports 4x4, 4x3, 3x3, 1x3, 3x1 sizes of data matrix
         explicit Affine3(const Mat& data, const Vec3& t = Vec3::all(0));
 
-        //! From 16th element array
+        //From 16th element array
         explicit Affine3(const float_type* vals);
 
-        //! Create identity transform
         static Affine3 Identity();
 
-        //! Rotation matrix
+        //Rotation matrix
         void rotation(const Mat3& R);
 
-        //! Rodrigues vector
+        //Rodrigues vector
         void rotation(const Vec3& rvec);
 
-        //! Combines rotation methods above. Suports 3x3, 1x3, 3x1 sizes of data matrix;
+        //Combines rotation methods above. Suports 3x3, 1x3, 3x1 sizes of data matrix;
         void rotation(const Mat& data);
 
         void linear(const Mat3& L);
@@ -102,21 +96,21 @@ namespace cv
         Mat3 linear() const;
         Vec3 translation() const;
 
-        //! Rodrigues vector
+        //Rodrigues vector
         Vec3 rvec() const;
 
         Affine3 inv(int method = cv::DECOMP_SVD) const;
 
-        //! a.rotate(R) is equivalent to Affine(R, 0) * a;
+        // a.rotate(R) is equivalent to Affine(R, 0) * a;
         Affine3 rotate(const Mat3& R) const;
 
-        //! a.rotate(rvec) is equivalent to Affine(rvec, 0) * a;
+        // a.rotate(R) is equivalent to Affine(rvec, 0) * a;
         Affine3 rotate(const Vec3& rvec) const;
 
-        //! a.translate(t) is equivalent to Affine(E, t) * a;
+        // a.translate(t) is equivalent to Affine(E, t) * a;
         Affine3 translate(const Vec3& t) const;
 
-        //! a.concatenate(affine) is equivalent to affine * a;
+        // a.concatenate(affine) is equivalent to affine * a;
         Affine3 concatenate(const Affine3& affine) const;
 
         template <typename Y> operator Affine3<Y>() const;
@@ -161,15 +155,11 @@ namespace cv
 
         typedef Vec<channel_type, channels> vec_type;
     };
-
-//! @} core
-
 }
 
-//! @cond IGNORED
 
 ///////////////////////////////////////////////////////////////////////////////////
-// Implementaiton
+/// Implementaiton
 
 template<typename T> inline
 cv::Affine3<T>::Affine3()
@@ -213,11 +203,13 @@ cv::Affine3<T>::Affine3(const cv::Mat& data, const Vec3& t)
     {
         rotation(data(Rect(0, 0, 3, 3)));
         translation(data(Rect(3, 0, 1, 3)));
-        return;
+    }
+    else
+    {
+        rotation(data);
+        translation(t);
     }
 
-    rotation(data);
-    translation(t);
     matrix.val[12] = matrix.val[13] = matrix.val[14] = 0;
     matrix.val[15] = 1;
 }
@@ -241,25 +233,30 @@ void cv::Affine3<T>::rotation(const Mat3& R)
 template<typename T> inline
 void cv::Affine3<T>::rotation(const Vec3& _rvec)
 {
-    double theta = norm(_rvec);
+    double rx = _rvec[0], ry = _rvec[1], rz = _rvec[2];
+    double theta = std::sqrt(rx*rx + ry*ry + rz*rz);
 
     if (theta < DBL_EPSILON)
         rotation(Mat3::eye());
     else
     {
+        const double I[] = { 1, 0, 0, 0, 1, 0, 0, 0, 1 };
+
         double c = std::cos(theta);
         double s = std::sin(theta);
         double c1 = 1. - c;
         double itheta = (theta != 0) ? 1./theta : 0.;
 
-        Point3_<T> r = _rvec*itheta;
+        rx *= itheta; ry *= itheta; rz *= itheta;
 
-        Mat3 rrt( r.x*r.x, r.x*r.y, r.x*r.z, r.x*r.y, r.y*r.y, r.y*r.z, r.x*r.z, r.y*r.z, r.z*r.z );
-        Mat3 r_x( 0, -r.z, r.y, r.z, 0, -r.x, -r.y, r.x, 0 );
+        double rrt[] = { rx*rx, rx*ry, rx*rz, rx*ry, ry*ry, ry*rz, rx*rz, ry*rz, rz*rz };
+        double _r_x_[] = { 0, -rz, ry, rz, 0, -rx, -ry, rx, 0 };
+        Mat3 R;
 
         // R = cos(theta)*I + (1 - cos(theta))*r*rT + sin(theta)*[r_x]
         // where [r_x] is [0 -rz ry; rz 0 -rx; -ry rx 0]
-        Mat3 R = c*Mat3::eye() + c1*rrt + s*r_x;
+        for(int k = 0; k < 9; ++k)
+            R.val[k] = static_cast<float_type>(c*I[k] + c1*rrt[k] + s*_r_x_[k]);
 
         rotation(R);
     }
@@ -436,6 +433,7 @@ cv::Affine3<Y> cv::Affine3<T>::cast() const
     return Affine3<Y>(matrix);
 }
 
+/** @cond IGNORED */
 template<typename T> inline
 cv::Affine3<T> cv::operator*(const cv::Affine3<T>& affine1, const cv::Affine3<T>& affine2)
 {
@@ -453,6 +451,7 @@ V cv::operator*(const cv::Affine3<T>& affine, const V& v)
     r.z = m.val[8] * v.x + m.val[9] * v.y + m.val[10] * v.z + m.val[11];
     return r;
 }
+/** @endcond */
 
 static inline
 cv::Vec3f cv::operator*(const cv::Affine3f& affine, const cv::Vec3f& v)
@@ -510,8 +509,7 @@ cv::Affine3<T>::operator Eigen::Transform<T, 3, Eigen::Affine>() const
 
 #endif /* defined EIGEN_WORLD_VERSION && defined EIGEN_GEOMETRY_MODULE_H */
 
-//! @endcond
 
 #endif /* __cplusplus */
 
-#endif /* OPENCV_CORE_AFFINE3_HPP */
+#endif /* __OPENCV_CORE_AFFINE3_HPP__ */
