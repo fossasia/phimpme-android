@@ -40,8 +40,8 @@
 //
 //M*/
 
-#ifndef OPENCV_OLD_EIGEN_HPP
-#define OPENCV_OLD_EIGEN_HPP
+#ifndef __OPENCV_OLD_EIGEN_HPP__
+#define __OPENCV_OLD_EIGEN_HPP__
 
 #include "opencv2/core/eigen.hpp"
 

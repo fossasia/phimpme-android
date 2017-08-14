@@ -40,23 +40,14 @@
 //
 //M*/
 
-#ifndef OPENCV_STITCHING_EXPOSURE_COMPENSATE_HPP
-#define OPENCV_STITCHING_EXPOSURE_COMPENSATE_HPP
+#ifndef __OPENCV_STITCHING_EXPOSURE_COMPENSATE_HPP__
+#define __OPENCV_STITCHING_EXPOSURE_COMPENSATE_HPP__
 
-#if defined(NO)
-#  warning Detected Apple 'NO' macro definition, it can cause build conflicts. Please, include this header before any Apple headers.
-#endif
-
-#include "opencv2/core.hpp"
+#include "opencv2/core/core.hpp"
 
 namespace cv {
 namespace detail {
 
-//! @addtogroup stitching_exposure
-//! @{
-
-/** @brief Base class for all exposure compensators.
- */
 class CV_EXPORTS ExposureCompensator
 {
 public:
@@ -65,72 +56,51 @@ public:
     enum { NO, GAIN, GAIN_BLOCKS };
     static Ptr<ExposureCompensator> createDefault(int type);
 
-    /**
-    @param corners Source image top-left corners
-    @param images Source images
-    @param masks Image masks to update (second value in pair specifies the value which should be used
-    to detect where image is)
-     */
-    void feed(const std::vector<Point> &corners, const std::vector<UMat> &images,
-              const std::vector<UMat> &masks);
-    /** @overload */
-    virtual void feed(const std::vector<Point> &corners, const std::vector<UMat> &images,
-                      const std::vector<std::pair<UMat,uchar> > &masks) = 0;
-    /** @brief Compensate exposure in the specified image.
-
-    @param index Image index
-    @param corner Image top-left corner
-    @param image Image to process
-    @param mask Image mask
-     */
-    virtual void apply(int index, Point corner, InputOutputArray image, InputArray mask) = 0;
+    void feed(const std::vector<Point> &corners, const std::vector<Mat> &images,
+              const std::vector<Mat> &masks);
+    virtual void feed(const std::vector<Point> &corners, const std::vector<Mat> &images,
+                      const std::vector<std::pair<Mat,uchar> > &masks) = 0;
+    virtual void apply(int index, Point corner, Mat &image, const Mat &mask) = 0;
 };
 
-/** @brief Stub exposure compensator which does nothing.
- */
+
 class CV_EXPORTS NoExposureCompensator : public ExposureCompensator
 {
 public:
-    void feed(const std::vector<Point> &/*corners*/, const std::vector<UMat> &/*images*/,
-              const std::vector<std::pair<UMat,uchar> > &/*masks*/) { }
-    void apply(int /*index*/, Point /*corner*/, InputOutputArray /*image*/, InputArray /*mask*/) { }
+    void feed(const std::vector<Point> &/*corners*/, const std::vector<Mat> &/*images*/,
+              const std::vector<std::pair<Mat,uchar> > &/*masks*/) {};
+    void apply(int /*index*/, Point /*corner*/, Mat &/*image*/, const Mat &/*mask*/) {};
 };
 
-/** @brief Exposure compensator which tries to remove exposure related artifacts by adjusting image
-intensities, see @cite BL07 and @cite WJ10 for details.
- */
+
 class CV_EXPORTS GainCompensator : public ExposureCompensator
 {
 public:
-    void feed(const std::vector<Point> &corners, const std::vector<UMat> &images,
-              const std::vector<std::pair<UMat,uchar> > &masks);
-    void apply(int index, Point corner, InputOutputArray image, InputArray mask);
+    void feed(const std::vector<Point> &corners, const std::vector<Mat> &images,
+              const std::vector<std::pair<Mat,uchar> > &masks);
+    void apply(int index, Point corner, Mat &image, const Mat &mask);
     std::vector<double> gains() const;
 
 private:
     Mat_<double> gains_;
 };
 
-/** @brief Exposure compensator which tries to remove exposure related artifacts by adjusting image block
-intensities, see @cite UES01 for details.
- */
+
 class CV_EXPORTS BlocksGainCompensator : public ExposureCompensator
 {
 public:
     BlocksGainCompensator(int bl_width = 32, int bl_height = 32)
             : bl_width_(bl_width), bl_height_(bl_height) {}
-    void feed(const std::vector<Point> &corners, const std::vector<UMat> &images,
-              const std::vector<std::pair<UMat,uchar> > &masks);
-    void apply(int index, Point corner, InputOutputArray image, InputArray mask);
+    void feed(const std::vector<Point> &corners, const std::vector<Mat> &images,
+              const std::vector<std::pair<Mat,uchar> > &masks);
+    void apply(int index, Point corner, Mat &image, const Mat &mask);
 
 private:
     int bl_width_, bl_height_;
-    std::vector<UMat> gain_maps_;
+    std::vector<Mat_<float> > gain_maps_;
 };
-
-//! @}
 
 } // namespace detail
 } // namespace cv
 
-#endif // OPENCV_STITCHING_EXPOSURE_COMPENSATE_HPP
+#endif // __OPENCV_STITCHING_EXPOSURE_COMPENSATE_HPP__

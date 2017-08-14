@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 mkdir $HOME/openCV/
 cd $HOME/openCV
-wget https://github.com/opencv/opencv/releases/download/3.2.0/opencv-3.2.0-android-sdk.zip
+wget https://github.com/opencv/opencv/releases/download/2.4.13.3/opencv-2.4.13.3-android-sdk.zip
 
 sudo apt-get -qq update
 sudo apt-get install -y unzip
-unzip opencv-3.2.0-android-sdk.zip
+unzip opencv-2.4.13.3-android-sdk.zip
 
 # Rename folder name to opencv
 mv OpenCV-android-sdk opencv

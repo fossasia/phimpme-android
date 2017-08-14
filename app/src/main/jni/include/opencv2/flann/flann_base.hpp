@@ -32,6 +32,7 @@
 #define OPENCV_FLANN_BASE_HPP_
 
 #include <vector>
+#include <string>
 #include <cassert>
 #include <cstdio>
 
@@ -61,7 +62,7 @@ inline void log_verbosity(int level)
  */
 struct SavedIndexParams : public IndexParams
 {
-    SavedIndexParams(cv::String filename)
+    SavedIndexParams(std::string filename)
     {
         (* this)["algorithm"] = FLANN_INDEX_SAVED;
         (*this)["filename"] = filename;
@@ -70,7 +71,7 @@ struct SavedIndexParams : public IndexParams
 
 
 template<typename Distance>
-NNIndex<Distance>* load_saved_index(const Matrix<typename Distance::ElementType>& dataset, const cv::String& filename, Distance distance)
+NNIndex<Distance>* load_saved_index(const Matrix<typename Distance::ElementType>& dataset, const std::string& filename, Distance distance)
 {
     typedef typename Distance::ElementType ElementType;
 
@@ -110,7 +111,7 @@ public:
         loaded_ = false;
 
         if (index_type == FLANN_INDEX_SAVED) {
-            nnIndex_ = load_saved_index<Distance>(features, get_param<cv::String>(params,"filename"), distance);
+            nnIndex_ = load_saved_index<Distance>(features, get_param<std::string>(params,"filename"), distance);
             loaded_ = true;
         }
         else {
@@ -124,6 +125,16 @@ public:
     }
 
     /**
+    * implementation for algorithms of addable indexes after that.
+    */
+    void addIndex(const Matrix<ElementType>& wholeData, const Matrix<ElementType>& additionalData)
+    {
+        if (!loaded_) {
+            nnIndex_->addIndex(wholeData, additionalData);
+        }
+    }
+
+    /**
      * Builds the index.
      */
     void buildIndex()
@@ -133,7 +144,7 @@ public:
         }
     }
 
-    void save(cv::String filename)
+    void save(std::string filename)
     {
         FILE* fout = fopen(filename.c_str(), "wb");
         if (fout == NULL) {

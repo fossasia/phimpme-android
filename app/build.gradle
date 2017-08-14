@@ -16,6 +16,9 @@ android {
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
         vectorDrawables.useSupportLibrary = true
         resConfigs "en"
+        ndk {
+            abiFilters 'armeabi-v7a','x86'
+        }
     }
 
     buildTypes {
@@ -63,36 +66,6 @@ android {
             path 'src/main/jni/Android.mk'
         }
     }
-
-    // Do not remove this commented code
-    // I(vinaysajjanapu) will remove it later
-/*    sourceSets {
-        main {
-            jni.srcDirs = []
-        }
-    }
-
-    task ndkBuild(type: Exec, description: 'Compile JNI source via NDK') {
-        def ndkDir = project.android.ndkDirectory
-        commandLine "$ndkDir/ndk-build",
-        'NDK_PROJECT_PATH=build/intermediates/ndk',
-        'APP_BUILD_SCRIPT=src/main/jni/Android.mk',
-        'NDK_APPLICATION_MK=src/main/jni/Application.mk',
-        'V=1'
-    }
-
-    tasks.withType(JavaCompile) {
-        compileTask -> compileTask.dependsOn ndkBuild
-    }
-*/
-    splits {
-        abi {
-            enable true
-            reset()
-            include "x86", "armeabi-v7a", "mips"
-            universalApk false
-        }
-    }
 }
 
 repositories {
@@ -136,7 +109,7 @@ dependencies {
     compile files('libs/twitter4j-core-3.0.5.jar')
     compile files('libs/twitter4j-media-support-3.0.5.jar')
     compile files('libs/flickrj-android-2.1.0.jar')
-    compile project(':openCVLibrary320')
+    compile project(':openCVLibrary24133')
     compile project(':pdk')
     compile 'uz.shift:colorpicker:0.5@aar'
     compile 'com.github.bumptech.glide:glide:3.7.0'
