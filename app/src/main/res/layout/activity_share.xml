@@ -40,12 +40,12 @@
             android:singleLine="true"
             android:maxLines="1"
             android:layout_marginRight="4dp"
-            android:layout_toLeftOf="@+id/button_text_focus"
+            android:layout_toLeftOf="@+id/button_mic"
             android:background="@android:color/transparent"
             android:textColorHint="@color/md_grey_600"/>
         <com.mikepenz.iconics.view.IconicsImageView
             android:layout_width="20dp"
-            android:id="@+id/button_text_focus"
+            android:id="@+id/button_mic"
             android:layout_height="20dp"
             android:background="?android:attr/selectableItemBackground"
             android:layout_centerVertical="true"
@@ -53,7 +53,7 @@
             android:layout_marginRight="10dp"
             android:layout_alignParentEnd="true"
             android:scaleType="fitCenter"
-            app:iiv_icon="faw-pencil"/>
+            app:iiv_icon="faw-microphone"/>
 
     </RelativeLayout>
 

@@ -983,6 +983,7 @@
     <string name="caption_head">Add Caption</string>
     <string name="add_action">ADD</string>
     <string name="speech_prompt">Describe the photo</string>
+    <string name="speech_prompt_caption">Say something</string>
     <string name="caption_speak">Say Something</string>
 
     <!--Showcase View-->
@@ -990,4 +991,6 @@
     <string name="accounts_button">Add Multiple Accounts to share amazing photos</string>
     <string name="camera_button">Click Amazing Pictures</string>
     <string name="ok_button">GOT IT</string>
+    <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input.</string>
+
 </resources>
