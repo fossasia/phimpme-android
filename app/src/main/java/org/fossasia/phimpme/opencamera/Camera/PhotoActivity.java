@@ -106,12 +106,16 @@ public class PhotoActivity extends ThemedActivity {
         }
 
     public void editImage(View v){
-        Intent intent = new Intent(PhotoActivity.this, EditImageActivity.class);
-        intent.putExtra("extra_input",FILE_PATH);
-        intent.putExtra("extra_output", FileUtils.genEditFile().getAbsolutePath());
-        intent.putExtra("requestCode",1);
-        startActivity(intent);
-        finish();
+        String extension = FileUtils.getExtension(FILE_PATH);
+        if (extension != null) {
+            Intent intent = new Intent(PhotoActivity.this, EditImageActivity.class);
+            intent.putExtra("extra_input", FILE_PATH);
+            intent.putExtra("extra_output", FileUtils.genEditFile(extension).getAbsolutePath());
+            intent.putExtra("requestCode", 1);
+            startActivity(intent);
+            finish();
+        }else
+            SnackBarHandler.show(parent,R.string.image_invalid);
     }
 
     public void saveOriginal(View v){
