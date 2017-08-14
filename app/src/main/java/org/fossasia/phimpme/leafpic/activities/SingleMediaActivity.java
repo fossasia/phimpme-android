@@ -375,7 +375,8 @@ public class SingleMediaActivity extends SharedMediaActivity {
             ArrayList<String> result = data
                     .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             voiceInput = result.get(0);
-            editTextDescription.setText(voiceInput);
+            editTextDescription.setText(editTextDescription.getText().toString().trim() + " "+ voiceInput);
+            editTextDescription.setSelection(editTextDescription.length());
             return;
         }
 
