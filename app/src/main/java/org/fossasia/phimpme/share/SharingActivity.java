@@ -270,7 +270,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 openCaptionDialogBox();
                 break;
             case R.id.button_mic:
-                promptSpeechInput(SharingActivity.this,REQ_CODE_SPEECH_INPUT,parent);
+                promptSpeechInput(SharingActivity.this,REQ_CODE_SPEECH_INPUT,parent,getString(R.string.speech_prompt_caption));
                 break;
 
         }
