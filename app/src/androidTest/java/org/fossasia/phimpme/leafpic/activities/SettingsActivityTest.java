@@ -12,6 +12,7 @@ import android.view.WindowManager;
 
 import org.fossasia.phimpme.R;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +24,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
+@Ignore
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class SettingsActivityTest {

@@ -749,11 +749,12 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     private void shareToWhatsapp() {
         Uri uri = Uri.fromFile(new File(saveFilePath));
         Intent share = new Intent(Intent.ACTION_SEND);
+        share.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         share.setPackage("com.whatsapp");
         share.putExtra(Intent.EXTRA_STREAM, uri);
         share.setType("image/*");
         share.putExtra(Intent.EXTRA_TEXT, caption);
-        startActivity(share);
+        startActivity(Intent.createChooser(share, "Whatsapp"));
     }
 
     private void shareToImgur() {
