@@ -1,5 +1,7 @@
 package org.fossasia.phimpme.utilities;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -11,6 +13,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.view.View;
@@ -21,6 +24,7 @@ import org.fossasia.phimpme.data.local.AccountDatabase;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import io.realm.Realm;
 import io.realm.RealmQuery;
@@ -163,4 +167,16 @@ public class Utils {
             SnackBarHandler.show(view,context.getString(R.string.not_connected));
         return false;
     }
+    public static void promptSpeechInput(Activity activity, int requestCode, View parentView) {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, activity.getString(R.string.speech_prompt));
+        try {
+            activity.startActivityForResult(intent, requestCode);
+        } catch (ActivityNotFoundException a) {
+            SnackBarHandler.show(parentView,activity.getString(R.string.speech_not_supported));
+        }
+    }
+
 }

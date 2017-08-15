@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.speech.RecognizerIntent;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
@@ -125,6 +126,7 @@ import static org.fossasia.phimpme.utilities.Utils.getBitmapFromPath;
 import static org.fossasia.phimpme.utilities.Utils.getImageUri;
 import static org.fossasia.phimpme.utilities.Utils.getMimeType;
 import static org.fossasia.phimpme.utilities.Utils.getStringImage;
+import static org.fossasia.phimpme.utilities.Utils.promptSpeechInput;
 import static org.fossasia.phimpme.utilities.Utils.shareMsgOnIntent;
 
 /**
@@ -174,7 +176,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     @BindView(R.id.share_account)
     RecyclerView shareAccountRecyclerView;
 
-    @BindView(R.id.button_text_focus)
+    @BindView(R.id.button_mic)
     IconicsImageView editFocus;
 
     @BindView(R.id.edit_text_caption_container)
@@ -193,6 +195,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     private static final int REQ_SELECT_PHOTO = 1;
     private static final int REQUEST_CODE_SHARE_TO_MESSENGER = 2;
+    private final int REQ_CODE_SPEECH_INPUT = 10;
+
 
     public boolean uploadFailedBox = false;
     public String uploadName;
@@ -235,7 +239,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
         parent.setBackgroundColor(themeHelper.getBackgroundColor());
 
-        captionLayout.setOnClickListener(this);
+        text_caption.setOnClickListener(this);
+        editFocus.setOnClickListener(this);
 
         text_caption.getBackground().mutate().setColorFilter(getTextColor(), PorterDuff.Mode.SRC_ATOP);
         text_caption.setTextColor(getTextColor());
@@ -265,12 +270,17 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-
-            case R.id.edit_text_caption_container:
+            case R.id.edittext_share_caption:
                 openCaptionDialogBox();
                 break;
+            case R.id.button_mic:
+                promptSpeechInput(SharingActivity.this,REQ_CODE_SPEECH_INPUT,parent);
+                break;
+
         }
     }
+
+
 
     @Override
     public void onItemClick(View childView, final int position) {
@@ -963,6 +973,14 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 Snackbar.make(parent, R.string.error_google, Snackbar.LENGTH_LONG).show();
                 return;
             }
+        }
+        if (requestCode == REQ_CODE_SPEECH_INPUT && data!=null){
+                ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                String voiceInput = result.get(0);
+                text_caption.setText(voiceInput);
+                caption = voiceInput;
+                return;
+
         }
         PDKClient.getInstance().onOauthResponse(requestCode, responseCode, data);
 
