@@ -977,8 +977,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 return;
 
         }
-        PDKClient.getInstance().onOauthResponse(requestCode, responseCode, data);
-
     }
 
 
