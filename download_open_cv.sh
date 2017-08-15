@@ -8,7 +8,7 @@ sudo apt-get install -y unzip
 unzip opencv-2.4.13.3-android-sdk.zip
 
 # Rename folder name to opencv
-mv OpenCV-android-sdk opencv
+mv OpenCV-android-sdk\ 2 opencv
 
 cd ..
 #ls
