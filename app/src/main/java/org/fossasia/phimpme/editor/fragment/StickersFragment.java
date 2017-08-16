@@ -88,7 +88,7 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
 
     @Override
     public void onShow() {
-        EditImageActivity.mode = EditImageActivity.MODE_STICKERS;
+        activity.changeMode(EditImageActivity.MODE_STICKERS);
         activity.stickersFragment.getmStickerView().setVisibility(View.VISIBLE);
     }
 
@@ -129,7 +129,7 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
 
     public void backToMain(){
         activity.mainImage.setImageBitmap(activity.mainBitmap);
-        EditImageActivity.mode = EditImageActivity.MODE_MAIN;
+        activity.changeMode(EditImageActivity.MODE_STICKER_TYPES);
         activity.stickersFragment.getmStickerView().clear();
         activity.stickersFragment.getmStickerView().setVisibility(View.GONE);
         activity.changeBottomFragment(EditImageActivity.MODE_MAIN);

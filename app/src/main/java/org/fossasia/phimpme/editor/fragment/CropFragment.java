@@ -150,7 +150,7 @@ public class CropFragment extends BaseEditFragment {
     @Override
     public void onShow() {
 
-        EditImageActivity.mode = EditImageActivity.MODE_CROP;
+		activity.changeMode(EditImageActivity.MODE_CROP);
         activity.mCropPanel.setVisibility(View.VISIBLE);
         activity.mainImage.setImageBitmap(activity.mainBitmap);
         activity.mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
@@ -167,7 +167,7 @@ public class CropFragment extends BaseEditFragment {
 	}
 
 	public void backToMain() {
-		EditImageActivity.mode = EditImageActivity.MODE_MAIN;
+		activity.changeMode(EditImageActivity.MODE_ADJUST);
 		activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
 		mCropPanel.setVisibility(View.GONE);
 		activity.mainImage.setScaleEnabled(true);

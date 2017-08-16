@@ -1,17 +1,24 @@
 package org.fossasia.phimpme.editor.fragment;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.EditImageActivity;
 
+import java.util.ArrayList;
+
+import butterknife.BindViews;
+
 public class MainMenuFragment extends BaseEditFragment implements View.OnClickListener{
 
-    View menu_filter,menu_enhance,menu_adjust,menu_stickers, menu_text;
+    View menu_filter,menu_enhance,menu_adjust,menu_stickers, menu_write;
 
     public MainMenuFragment() {
 
@@ -35,13 +42,13 @@ public class MainMenuFragment extends BaseEditFragment implements View.OnClickLi
         menu_enhance = view.findViewById(R.id.menu_enhance);
         menu_adjust = view.findViewById(R.id.menu_adjust);
         menu_stickers = view.findViewById(R.id.menu_sticker);
-        menu_text = view.findViewById(R.id.menu_text);
+        menu_write = view.findViewById(R.id.menu_write);
 
         menu_filter.setOnClickListener(this);
         menu_enhance.setOnClickListener(this);
         menu_adjust.setOnClickListener(this);
         menu_stickers.setOnClickListener(this);
-        menu_text.setOnClickListener(this);
+        menu_write.setOnClickListener(this);
 
         return view;
     }
@@ -65,25 +72,25 @@ public class MainMenuFragment extends BaseEditFragment implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.menu_filter:
-                EditImageActivity.mode = (EditImageActivity.MODE_FILTERS);
+                activity.changeMode(EditImageActivity.MODE_FILTERS);
                 activity.sliderFragment.resetBitmaps();
                 activity.changeMiddleFragment(EditImageActivity.MODE_FILTERS);
                 break;
             case R.id.menu_enhance:
-                EditImageActivity.mode = (EditImageActivity.MODE_ENHANCE);
+                activity.changeMode(EditImageActivity.MODE_ENHANCE);
                 activity.sliderFragment.resetBitmaps();
                 activity.changeMiddleFragment(EditImageActivity.MODE_ENHANCE);
                 break;
             case R.id.menu_adjust:
-                EditImageActivity.mode = EditImageActivity.MODE_ADJUST;
+                activity.changeMode(EditImageActivity.MODE_ADJUST);
                 activity.changeMiddleFragment(EditImageActivity.MODE_ADJUST);
                 break;
             case R.id.menu_sticker:
-                EditImageActivity.mode = (EditImageActivity.MODE_STICKER_TYPES);
+                activity.changeMode(EditImageActivity.MODE_STICKER_TYPES);
                 activity.changeMiddleFragment(EditImageActivity.MODE_STICKER_TYPES);
                 break;
-            case R.id.menu_text:
-                EditImageActivity.mode = EditImageActivity.MODE_WRITE;
+            case R.id.menu_write:
+                activity.changeMode(EditImageActivity.MODE_WRITE);
                 activity.changeMiddleFragment(EditImageActivity.MODE_WRITE);
                 break;
         }
