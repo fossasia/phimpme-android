@@ -3,7 +3,6 @@ package org.fossasia.phimpme.leafpic.activities;
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
-
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.DialogInterface;
@@ -50,13 +49,12 @@ import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.yalantis.ucrop.UCrop;
 
 import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.share.SharingActivity;
 import org.fossasia.phimpme.base.SharedMediaActivity;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
 import org.fossasia.phimpme.data.local.ImageDescModel;
-import org.fossasia.phimpme.editor.FileUtils;
 import org.fossasia.phimpme.editor.EditImageActivity;
+import org.fossasia.phimpme.editor.FileUtils;
 import org.fossasia.phimpme.editor.utils.BitmapUtils;
 import org.fossasia.phimpme.leafpic.SelectAlbumBottomSheet;
 import org.fossasia.phimpme.leafpic.adapters.MediaPagerAdapter;
@@ -71,16 +69,18 @@ import org.fossasia.phimpme.leafpic.util.SecurityHelper;
 import org.fossasia.phimpme.leafpic.util.StringUtils;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
 import org.fossasia.phimpme.leafpic.views.HackyViewPager;
+import org.fossasia.phimpme.share.SharingActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 import java.io.File;
 import java.util.ArrayList;
 
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
+
+import static org.fossasia.phimpme.utilities.Utils.promptSpeechInput;
 
 /**
  * Created by dnld on 18/02/16.
@@ -676,13 +676,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
         VoiceRecognition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // This are the intents needed to start the Voice recognizer
-                Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-                i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, "en-US");
-                i.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 15); // number of maximum results..
-                i.putExtra(RecognizerIntent.EXTRA_PROMPT, R.string.caption_speak);
-                startActivityForResult(i, REQ_CODE_SPEECH_INPUT);
-
+                promptSpeechInput(SingleMediaActivity.this, REQ_CODE_SPEECH_INPUT, parentView, getString(R.string.speech_prompt));
             }
         });
         DescriptionDialogTitle.setBackgroundColor(activity.getPrimaryColor());
