@@ -63,17 +63,18 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
      * Different edit modes.
      */
     public static final int MODE_MAIN = 0;
-    public static final int MODE_SLIDER = 1;
-    public static final int MODE_FILTERS = 2;
-    public static final int MODE_ENHANCE = 3;
+    public static final int MODE_FILTERS = 1;
+    public static final int MODE_ENHANCE = 2;
+    public static final int MODE_ADJUST = 3;
     public static final int MODE_STICKER_TYPES = 4;
-    public static final int MODE_STICKERS = 5;
-    public static final int MODE_ADJUST = 6;
+    public static final int MODE_WRITE = 5;
+
+    public static final int MODE_STICKERS = 6;
     public static final int MODE_CROP = 7;
     public static final int MODE_ROTATE = 8;
-    public static final int MODE_WRITE = 9;
-    public static final int MODE_TEXT = 10;
-    public static final int MODE_PAINT = 11;
+    public static final int MODE_TEXT = 9;
+    public static final int MODE_PAINT = 10;
+    public static final int MODE_SLIDER = 11;
 
     public String filePath;
     public String saveFilePath;
@@ -221,6 +222,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         paintFragment = PaintFragment.newInstance();
         cropFragment = CropFragment.newInstance();
         rotateFragment = RotateFragment.newInstance();
+
     }
 
 
@@ -228,8 +230,12 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
      * Get current editing mode.
      * @return the editing mode.
      */
-    public int getMode(){
+    public static int getMode(){
         return mode;
+    }
+
+    public void changeMode(int to_mode){
+        EditImageActivity.mode = to_mode;
     }
 
     /**

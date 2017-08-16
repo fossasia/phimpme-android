@@ -118,7 +118,7 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
     public void onShow() {
         if (activity!=null) {
             setDefaultSeekBarProgress();
-            EditImageActivity.mode = EditImageActivity.MODE_SLIDER;
+            activity.changeMode(EditImageActivity.MODE_SLIDER);
             currentBitmap = activity.mainBitmap;
             activity.mainImage.setImageBitmap(activity.mainBitmap);
             activity.mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
@@ -165,7 +165,7 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
         if (null != activity) {
             currentBitmap = null;
             activity.mainImage.setImageBitmap(activity.mainBitmap);
-            EditImageActivity.mode = EditImageActivity.MODE_MAIN;
+            activity.changeMode(EditImageActivity.effectType / 100);
             activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
             activity.mainImage.setScaleEnabled(true);
         }

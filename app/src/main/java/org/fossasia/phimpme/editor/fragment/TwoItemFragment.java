@@ -83,20 +83,20 @@ public class TwoItemFragment extends BaseEditFragment implements View.OnClickLis
 
     private void firstItemClicked() {
         if (mode == EditImageActivity.MODE_ADJUST){
-            EditImageActivity.mode = EditImageActivity.MODE_CROP;
+            activity.changeMode(EditImageActivity.MODE_CROP);
             activity.changeBottomFragment(EditImageActivity.MODE_CROP);
         }else if (mode == EditImageActivity.MODE_WRITE){
-            EditImageActivity.mode = EditImageActivity.MODE_TEXT;
+            activity.changeMode(EditImageActivity.MODE_TEXT);
             activity.changeBottomFragment(EditImageActivity.MODE_TEXT);
         }
     }
 
     private void secondItemClicked() {
         if (mode == EditImageActivity.MODE_ADJUST){
-            EditImageActivity.mode = EditImageActivity.MODE_ROTATE;
+            activity.changeMode(EditImageActivity.MODE_ROTATE);
             activity.changeBottomFragment(EditImageActivity.MODE_ROTATE);
         }else if (mode == EditImageActivity.MODE_WRITE){
-            EditImageActivity.mode = EditImageActivity.MODE_PAINT;
+            activity.changeMode(EditImageActivity.MODE_PAINT);
             activity.changeBottomFragment(EditImageActivity.MODE_PAINT);
         }
     }

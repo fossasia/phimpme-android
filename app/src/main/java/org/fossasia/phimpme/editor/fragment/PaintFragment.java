@@ -137,7 +137,7 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
     }
 
     public void backToMain() {
-        EditImageActivity.mode = EditImageActivity.MODE_MAIN;
+        activity.changeMode(EditImageActivity.MODE_WRITE);
         activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
         activity.mainImage.setVisibility(View.VISIBLE);
         this.mPaintView.reset();
@@ -145,7 +145,7 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
     }
 
     public void onShow() {
-        EditImageActivity.mode = EditImageActivity.MODE_PAINT;
+        activity.changeMode(EditImageActivity.MODE_PAINT);
         activity.mainImage.setImageBitmap(activity.mainBitmap);
         this.mPaintView.setVisibility(View.VISIBLE);
     }
