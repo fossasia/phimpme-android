@@ -31,6 +31,7 @@ import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.net.Uri;
+import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -752,6 +753,9 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
 
     @Override
     public void onResume() {
+        if("flash_frontscreen_on".equals(getPreview().getCurrentFlashValue())) {
+            defaultBrightness();
+        }
         ActivitySwitchHelper.setContext(this);
         if (progressDialog != null) {
             progressDialog.dismiss();
@@ -793,6 +797,12 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
             e.printStackTrace();
         }
 
+    }
+
+    private void defaultBrightness() {
+        WindowManager.LayoutParams layout = getWindow().getAttributes();
+        layout.screenBrightness = WindowManager.LayoutParams.BRIGHTNESS_OVERRIDE_NONE;
+        getWindow().setAttributes(layout);
     }
 
     private void startVoiceTrigger() {
@@ -1880,9 +1890,13 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
     }
 
     void takePicturePressed() {
+        if("flash_frontscreen_on".equals(getPreview().getCurrentFlashValue())) {
+            enableMaxBrightness();
+            if (MyDebug.LOG)
+                Log.d(TAG, "Max brightness enabled");
+        }
         if (MyDebug.LOG)
             Log.d(TAG, "takePicturePressed");
-
         closePopup();
 
         if (applicationInterface.getGyroSensor().isRecording()) {
@@ -1892,6 +1906,16 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
         }
 
         this.preview.takePicturePressed();
+    }
+
+    private void enableMaxBrightness() {
+        BatteryManager bm = (BatteryManager)getSystemService(BATTERY_SERVICE);
+        int batLevel = bm.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY);
+        if(batLevel>20) {
+            WindowManager.LayoutParams layout = getWindow().getAttributes();
+            layout.screenBrightness = 1F;
+            getWindow().setAttributes(layout);
+        }
     }
 
     /**
