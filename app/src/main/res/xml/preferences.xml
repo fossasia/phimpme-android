@@ -394,12 +394,13 @@
                 android:key="preference_gps_direction"
                 android:summary="@string/preference_gps_direction_summary"
                 android:title="@string/preference_gps_direction" />
-
+<!--
             <CheckBoxPreference
                 android:defaultValue="false"
                 android:key="preference_require_location"
                 android:summary="@string/preference_require_location_summary"
                 android:title="@string/preference_require_location" />
+-->
 
         </PreferenceScreen>
 
