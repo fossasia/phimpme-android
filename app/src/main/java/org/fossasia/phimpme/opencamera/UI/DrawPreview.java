@@ -941,36 +941,6 @@ public class DrawPreview {
 			}
 		}
 
-		boolean store_location = sharedPreferences.getBoolean(PreferenceKeys.getLocationPreferenceKey(), false);
-		if( store_location ) {
-			int location_x = (int) (20 * scale + 0.5f); // convert dps to pixels
-			int location_y = top_y;
-			if( ui_rotation == 90 || ui_rotation == 270 ) {
-				int diff = canvas.getWidth() - canvas.getHeight();
-				location_x += diff / 2;
-				location_y -= diff / 2;
-			}
-			if( ui_rotation == 90 ) {
-				location_y = canvas.getHeight() - location_y - location_size;
-			}
-			if( ui_rotation == 180 ) {
-				location_x = canvas.getWidth() - location_x - location_size;
-			}
-			location_dest.set(location_x, location_y, location_x + location_size, location_y + location_size);
-			if( applicationInterface.getLocation() != null ) {
-				canvas.drawBitmap(location_bitmap, null, location_dest, p);
-				int location_radius = location_size / 10;
-				int indicator_x = location_x + location_size;
-				int indicator_y = location_y + location_radius / 2 + 1;
-				p.setStyle(Paint.Style.FILL);
-				p.setColor(applicationInterface.getLocation().getAccuracy() < 25.01f ? Color.rgb(37, 155, 36) : Color.rgb(255, 235, 59)); // Green 500 or Yellow 500
-				canvas.drawCircle(indicator_x, indicator_y, location_radius, p);
-			}
-			else {
-				canvas.drawBitmap(location_off_bitmap, null, location_dest, p);
-			}
-		}
-
 		onDrawInfoLines(canvas, top_y, location_size, ybounds_text);
 
 		canvas.restore();
