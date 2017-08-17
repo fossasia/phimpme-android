@@ -81,6 +81,7 @@ import org.fossasia.phimpme.base.PhimpmeProgressBarHandler;
 import org.fossasia.phimpme.base.RecyclerItemClickListner;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.AccountDatabase;
+import org.fossasia.phimpme.data.local.UploadHistory;
 import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouch;
 import org.fossasia.phimpme.leafpic.activities.LFMainActivity;
 import org.fossasia.phimpme.leafpic.util.AlertDialogsHelper;
@@ -103,7 +104,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -290,8 +293,17 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         String msg = getString(R.string.are_you_sure) + " " + sharableAccountsList.get(position) + "?";
         AlertDialogsHelper.getTextDialog(SharingActivity.this, dialogBuilder, R.string.upload, 0, msg);
         dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                Realm realm = Realm.getDefaultInstance();
+                realm.beginTransaction();
+                UploadHistory uploadHistory;
+                uploadHistory = realm.createObject(UploadHistory.class);
+                uploadHistory.setName(sharableAccountsList.get(position).toString());
+                uploadHistory.setPathname(saveFilePath);
+                uploadHistory.setDatetime(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
+
                 switch (sharableAccountsList.get(position)) {
                     case FACEBOOK:
                         shareToFacebook();
