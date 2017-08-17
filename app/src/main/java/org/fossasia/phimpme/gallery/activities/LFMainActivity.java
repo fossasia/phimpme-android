@@ -626,6 +626,7 @@ public class LFMainActivity extends SharedMediaActivity {
         ((TextView) findViewById(R.id.Drawer_hidden_Item)).setTextColor(color);
         ((TextView) findViewById(R.id.Drawer_share_Item)).setTextColor(color);
         ((TextView) findViewById(R.id.Drawer_rate_Item)).setTextColor(color);
+        ((TextView) findViewById(R.id.Drawer_Upload_Item)).setTextColor(color);
 
         /** ICONS **/
         color = getIconColor();
@@ -635,6 +636,7 @@ public class LFMainActivity extends SharedMediaActivity {
         ((IconicsImageView) findViewById(R.id.Drawer_hidden_Icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.Drawer_share_Icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.Drawer_rate_Icon)).setColor(color);
+        ((IconicsImageView) findViewById(R.id.Drawer_Upload_Icon)).setColor(color);
 
 
         findViewById(R.id.ll_drawer_Setting).setOnClickListener(new View.OnClickListener() {
@@ -650,6 +652,15 @@ public class LFMainActivity extends SharedMediaActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LFMainActivity.this, AboutActivity.class);
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.ll_drawer_uploadhistory).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LFMainActivity.this, UploadHistoryRealmModel.class);
                 mDrawerLayout.closeDrawer(GravityCompat.START);
                 startActivity(intent);
             }
