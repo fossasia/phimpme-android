@@ -63,6 +63,7 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.widget.Toast;
 
 import com.mikepenz.iconics.view.IconicsImageView;
 
@@ -2712,7 +2713,12 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
             // Can go ahead and request the permission
             if (MyDebug.LOG)
                 Log.d(TAG, "requesting camera permission...");
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
+            try {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
+            } catch (SecurityException e){
+                Toast.makeText(this, "Please open camera in app once to allow permissions"
+                        , Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -2853,7 +2859,7 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // permission was granted, yay! Do the
+                    // permission ̄was granted, yay! Do the
                     // contacts-related task you need to do.
                     if (MyDebug.LOG)
                         Log.d(TAG, "location permission granted");
