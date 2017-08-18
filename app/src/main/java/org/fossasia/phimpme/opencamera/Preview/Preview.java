@@ -48,14 +48,6 @@ import android.widget.Toast;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.opencamera.Camera.CameraActivity;
 import org.fossasia.phimpme.opencamera.Camera.MyDebug;
@@ -72,6 +64,14 @@ import org.fossasia.phimpme.opencamera.Preview.CameraSurface.CameraSurface;
 import org.fossasia.phimpme.opencamera.Preview.CameraSurface.MySurfaceView;
 import org.fossasia.phimpme.opencamera.Preview.CameraSurface.MyTextureView;
 import org.fossasia.phimpme.opencamera.UI.PopupView;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 

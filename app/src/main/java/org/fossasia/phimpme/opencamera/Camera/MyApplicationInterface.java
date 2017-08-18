@@ -22,6 +22,7 @@ import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 
+import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.opencamera.CameraController.CameraController;
 import org.fossasia.phimpme.opencamera.Preview.ApplicationInterface;
 import org.fossasia.phimpme.opencamera.Preview.Preview;
@@ -32,21 +33,19 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.fossasia.phimpme.R;
-
 /** Our implementation of ApplicationInterface, see there for details.
  */
 public class MyApplicationInterface implements ApplicationInterface {
 	private static final String TAG = "MyApplicationInterface";
 
 	// note, okay to change the order of enums in future versions, as getPhotoMode() does not rely on the order for the saved photo mode
-    public enum PhotoMode {
-    	Standard,
+	public enum PhotoMode {
+		Standard,
 		DRO, // single image "fake" HDR
-    	HDR, // HDR created from multiple (expo bracketing) images
-    	ExpoBracketing // take multiple expo bracketed images, without combining to a single image
-    }
-    
+		HDR, // HDR created from multiple (expo bracketing) images
+		ExpoBracketing // take multiple expo bracketed images, without combining to a single image
+	}
+
 	private final CameraActivity main_activity;
 	private final LocationSupplier locationSupplier;
 	private final GyroSensor gyroSensor;
@@ -56,10 +55,12 @@ public class MyApplicationInterface implements ApplicationInterface {
 
 
 	private final Rect text_bounds = new Rect();
-    private boolean used_front_screen_flash ;
-	
+	private boolean used_front_screen_flash;
+
 	private boolean last_images_saf; // whether the last images array are using SAF or not
-	/** This class keeps track of the images saved in this batch, for use with Pause Preview option, so we can share or trash images.
+
+	/**
+	 * This class keeps track of the images saved in this batch, for use with Pause Preview option, so we can share or trash images.
 	 */
 	private static class LastImage {
 		public final boolean share; // one of the images in the list should have share set to true, to indicate which image to share
@@ -71,15 +72,16 @@ public class MyApplicationInterface implements ApplicationInterface {
 			this.uri = uri;
 			this.share = share;
 		}
-		
+
 		LastImage(String filename, boolean share) {
-	    	this.name = filename;
-	    	this.uri = Uri.parse("file://" + this.name);
+			this.name = filename;
+			this.uri = Uri.parse("file://" + this.name);
 			this.share = share;
 		}
 	}
+
 	private final List<LastImage> last_images = new ArrayList<>();
-	
+
 	// camera properties which are saved in bundle, but not stored in preferences (so will be remembered if the app goes into background, but not after restart)
 	private int cameraId = 0;
 	private int zoom_factor = 0;
@@ -87,36 +89,36 @@ public class MyApplicationInterface implements ApplicationInterface {
 
 	MyApplicationInterface(CameraActivity main_activity, Bundle savedInstanceState) {
 		long debug_time = 0;
-		if( MyDebug.LOG ) {
+		if (MyDebug.LOG) {
 			Log.d(TAG, "MyApplicationInterface");
 			debug_time = System.currentTimeMillis();
 		}
 		this.main_activity = main_activity;
 		this.locationSupplier = new LocationSupplier(main_activity);
-		if( MyDebug.LOG )
+		if (MyDebug.LOG)
 			Log.d(TAG, "MyApplicationInterface: time after creating location supplier: " + (System.currentTimeMillis() - debug_time));
 		this.gyroSensor = new GyroSensor(main_activity);
 		this.storageUtils = new StorageUtils(main_activity);
-		if( MyDebug.LOG )
+		if (MyDebug.LOG)
 			Log.d(TAG, "MyApplicationInterface: time after creating storage utils: " + (System.currentTimeMillis() - debug_time));
 		this.drawPreview = new DrawPreview(main_activity, this);
-		
+
 		this.imageSaver = new ImageSaver(main_activity);
 		this.imageSaver.start();
-		
-        if( savedInstanceState != null ) {
-    		cameraId = savedInstanceState.getInt("cameraId", 0);
-			if( MyDebug.LOG )
+
+		if (savedInstanceState != null) {
+			cameraId = savedInstanceState.getInt("cameraId", 0);
+			if (MyDebug.LOG)
 				Log.d(TAG, "found cameraId: " + cameraId);
-    		zoom_factor = savedInstanceState.getInt("zoom_factor", 0);
-			if( MyDebug.LOG )
+			zoom_factor = savedInstanceState.getInt("zoom_factor", 0);
+			if (MyDebug.LOG)
 				Log.d(TAG, "found zoom_factor: " + zoom_factor);
 			focus_distance = savedInstanceState.getFloat("focus_distance", 0.0f);
-			if( MyDebug.LOG )
+			if (MyDebug.LOG)
 				Log.d(TAG, "found focus_distance: " + focus_distance);
-        }
+		}
 
-		if( MyDebug.LOG )
+		if (MyDebug.LOG)
 			Log.d(TAG, "MyApplicationInterface: total time to create MyApplicationInterface: " + (System.currentTimeMillis() - debug_time));
 	}
 	
