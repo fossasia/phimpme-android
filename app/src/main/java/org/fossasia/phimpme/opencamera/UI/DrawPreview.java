@@ -18,14 +18,14 @@ import android.util.Pair;
 import android.view.Surface;
 import android.widget.ImageButton;
 
+import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.opencamera.Camera.CameraActivity;
-import org.fossasia.phimpme.opencamera.CameraController.CameraController;
 import org.fossasia.phimpme.opencamera.Camera.GyroSensor;
 import org.fossasia.phimpme.opencamera.Camera.MyApplicationInterface;
 import org.fossasia.phimpme.opencamera.Camera.MyDebug;
 import org.fossasia.phimpme.opencamera.Camera.PreferenceKeys;
+import org.fossasia.phimpme.opencamera.CameraController.CameraController;
 import org.fossasia.phimpme.opencamera.Preview.Preview;
-import org.fossasia.phimpme.R;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
