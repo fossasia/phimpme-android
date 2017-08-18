@@ -787,6 +787,13 @@
     <string name="account_logged_twitter">Twitter account logged in successfully.</string>
     <string name="twitter_uploading">Image uploading on Twitter</string>
 
+    <!--App shortcuts-->
+    <string name="camera_short">Camera</string>
+    <string name="camera_long">Opens Phimpme Camera</string>
+    <string name="home_short">Gallery</string>
+    <string name="home_long">Opens Phimpme Gallery</string>
+    <string name="account_short">Accounts</string>
+    <string name="account_long">Opens Phimpme Account</string>
 
     <!--All photos-->
     <string name="all_photos">All_photos</string>

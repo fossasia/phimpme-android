@@ -1,0 +1,45 @@
+<shortcuts xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="camera"
+        android:enabled="true"
+        android:icon="@drawable/ic_camera_alt_black_24dp"
+        android:shortcutShortLabel="@string/camera_short"
+        android:shortcutLongLabel="@string/camera_long"
+        android:shortcutDisabledMessage="@string/camera_short"
+        tools:targetApi="n_mr1">
+        <intent
+            android:action="android.media.action.IMAGE_CAPTURE_SECURE"
+            android:targetPackage="org.fossasia.phimpme"
+            android:targetClass="org.fossasia.phimpme.opencamera.Camera.CameraActivity" />
+        <categories android:name="android.intent.category.DEFAULT" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="gallery"
+        android:enabled="true"
+        android:icon="@drawable/ic_home"
+        android:shortcutShortLabel="@string/home_short"
+        android:shortcutLongLabel="@string/home_long"
+        android:shortcutDisabledMessage="@string/home_short"
+        tools:targetApi="n_mr1">
+        <intent
+            android:action="android.intent.action.albumsAct"
+            android:targetPackage="org.fossasia.phimpme"
+            android:targetClass="org.fossasia.phimpme.leafpic.activities.LFMainActivity" />
+        <categories android:name="android.intent.category.DEFAULT" />
+    </shortcut>
+    <shortcut
+        android:shortcutId="accounts"
+        android:enabled="true"
+        android:icon="@drawable/ic_account_box_black_24dp"
+        android:shortcutShortLabel="@string/account_short"
+        android:shortcutLongLabel="@string/account_long"
+        android:shortcutDisabledMessage="@string/account_short"
+        tools:targetApi="n_mr1">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="org.fossasia.phimpme"
+            android:targetClass="org.fossasia.phimpme.accounts.AccountActivity" />
+        <categories android:name="android.intent.category.DEFAULT" />
+    </shortcut>
+</shortcuts>
