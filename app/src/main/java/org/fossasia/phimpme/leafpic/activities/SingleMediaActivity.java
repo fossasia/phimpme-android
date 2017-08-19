@@ -22,14 +22,11 @@ import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -60,11 +57,8 @@ import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.FileUtils;
 import org.fossasia.phimpme.editor.utils.BitmapUtils;
 import org.fossasia.phimpme.leafpic.SelectAlbumBottomSheet;
-import org.fossasia.phimpme.leafpic.adapters.MediaPagerAdapter;
-import org.fossasia.phimpme.leafpic.animations.DepthPageTransformer;
+import org.fossasia.phimpme.leafpic.adapters.ImageAdapter;
 import org.fossasia.phimpme.leafpic.data.Album;
-import org.fossasia.phimpme.leafpic.fragments.ImageAdapter;
-import org.fossasia.phimpme.leafpic.fragments.PagerRecyclerView;
 import org.fossasia.phimpme.leafpic.util.AlertDialogsHelper;
 import org.fossasia.phimpme.leafpic.util.ColorPalette;
 import org.fossasia.phimpme.leafpic.util.ContentHelper;
@@ -73,8 +67,7 @@ import org.fossasia.phimpme.leafpic.util.PreferenceUtil;
 import org.fossasia.phimpme.leafpic.util.SecurityHelper;
 import org.fossasia.phimpme.leafpic.util.StringUtils;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
-import org.fossasia.phimpme.leafpic.views.HackyViewPager;
-import org.fossasia.phimpme.share.ShareAdapter;
+import org.fossasia.phimpme.leafpic.views.PagerRecyclerView;
 import org.fossasia.phimpme.share.SharingActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
@@ -98,7 +91,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
     private static final String ISLOCKED_ARG = "isLocked";
     static final String ACTION_OPEN_ALBUM = "android.intent.action.pagerAlbumMedia";
     private static final String ACTION_REVIEW = "com.android.camera.action.REVIEW";
-    private MediaPagerAdapter adapter;
+    private ImageAdapter adapter;
     private PreferenceUtil SP;
     private RelativeLayout ActivityBackground;
     private SelectAlbumBottomSheet bottomSheetDialogFragment;
@@ -224,18 +217,17 @@ public class SingleMediaActivity extends SharedMediaActivity {
                         else hideSystemUI();
                     }
                 });
-
+        BasicCallBack basicCallBack = new BasicCallBack() {
+            @Override
+            public void callBack(int status, Object data) {
+                toggleSystemUI();
+            }
+        };
 
         if (!allPhotoMode) {
-            adapter = new MediaPagerAdapter(getSupportFragmentManager(), getAlbum().getMedia());
-            BasicCallBack basicCallBack = new BasicCallBack() {
-                @Override
-                public void callBack(int status, Object data) {
-                    toggleSystemUI();
-                }
-            };
+            adapter = new ImageAdapter(getAlbum().getMedia(), basicCallBack);
+
             getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
-            mViewPager.setAdapter(new ImageAdapter(getAlbum().getMedia(), basicCallBack));
 //            toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
 
 
@@ -248,39 +240,28 @@ public class SingleMediaActivity extends SharedMediaActivity {
                     pathForDescription = getAlbum().getMedia().get(position).getPath();
                 }
             });
-
+            mViewPager.scrollToPosition(getAlbum().getCurrentMediaIndex());
 
 
 
         } else {
-            adapter = new MediaPagerAdapter(getSupportFragmentManager(), LFMainActivity.listAll);
+            adapter = new ImageAdapter(LFMainActivity.listAll,basicCallBack);
             getSupportActionBar().setTitle(all_photo_pos + 1 + " " + getString(R.string.of) + " " + size_all);
             current_image_pos = all_photo_pos;
-          /*  mViewPager.setAdapter(adapter);
-            mViewPager.setCurrentItem(all_photo_pos);
-            mViewPager.setPageTransformer(true, new DepthPageTransformer());
-            mViewPager.setOffscreenPageLimit(3);
-            mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                    pathForDescription = LFMainActivity.listAll.get(position).getPath();
-                }
 
+            mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
                 @Override
-                public void onPageSelected(int position) {
-                    current_image_pos = position;
+                public void onPageChanged(int oldPosition, int position) {
                     getAlbum().setCurrentPhotoIndex(position);
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
                     invalidateOptionsMenu();
-                    pathForDescription = LFMainActivity.listAll.get(current_image_pos).getPath();
+                    pathForDescription = getAlbum().getMedia().get(position).getPath();
                 }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-                }
-            });*/
+            });
+            mViewPager.scrollToPosition(all_photo_pos);
         }
         Display aa = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
+        mViewPager.setAdapter(adapter);
 
         if (aa.getRotation() == Surface.ROTATION_90) {
             Configuration configuration = new Configuration();
@@ -438,11 +419,6 @@ public class SingleMediaActivity extends SharedMediaActivity {
         Log.d("image is edit", isImageEdit + "");
         LoadImageTask loadTask = new LoadImageTask();
         loadTask.execute(newFilePath);
-    }
-
-    private void startLoadTask() {
-        LoadImageTask task = new LoadImageTask();
-        task.execute(path);
     }
 
 

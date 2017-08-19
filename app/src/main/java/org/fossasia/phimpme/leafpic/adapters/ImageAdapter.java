@@ -1,22 +1,25 @@
-package org.fossasia.phimpme.leafpic.fragments;
+package org.fossasia.phimpme.leafpic.adapters;
 
+import android.content.Context;
+import android.graphics.Point;
 import android.support.v7.widget.RecyclerView;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.leafpic.data.Media;
+import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
-import org.fossasia.phimpme.utilities.Utils;
 
 import java.util.ArrayList;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
 
@@ -45,6 +48,8 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         Glide.with(getContext())
                 .load(media.get(position).getUri())
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .thumbnail(0.5f)
                 .into(holder.imageView);
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,12 +65,26 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.unit_imageview)
         ImageView imageView;
+        LinearLayout linearLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            imageView = new ImageView(ActivitySwitchHelper.context);
+            linearLayout = (LinearLayout) itemView.findViewById(R.id.layout);
+            WindowManager wm = (WindowManager) ActivitySwitchHelper.getContext().getSystemService(Context.WINDOW_SERVICE);
+            Display display = wm.getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            int width = size.x;
+            int height = size.y;
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    width, height);
+            imageView.setLayoutParams(params);
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            linearLayout.addView(imageView);
+
+
         }
     }
 }

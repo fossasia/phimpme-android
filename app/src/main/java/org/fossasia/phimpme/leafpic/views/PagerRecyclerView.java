@@ -1,4 +1,4 @@
-package org.fossasia.phimpme.leafpic.fragments;
+package org.fossasia.phimpme.leafpic.views;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
 /**
- * Created by mayank on 30/6/17.
+ * Created by mohit on 19/8/17.
  */
 
 public class PagerRecyclerView extends RecyclerView {
