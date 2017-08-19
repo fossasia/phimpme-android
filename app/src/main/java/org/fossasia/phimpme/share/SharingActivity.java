@@ -282,7 +282,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             case R.id.button_mic:
                 promptSpeechInput(SharingActivity.this,REQ_CODE_SPEECH_INPUT,parent,getString(R.string.speech_prompt_caption));
                 break;
-
         }
     }
 
@@ -310,6 +309,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 uploadHistory.setName(sharableAccountsList.get(position).toString());
                 uploadHistory.setPathname(saveFilePath);
                 uploadHistory.setDatetime(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
+                realm.commitTransaction();
 
                 switch (sharableAccountsList.get(position)) {
                     case FACEBOOK:
