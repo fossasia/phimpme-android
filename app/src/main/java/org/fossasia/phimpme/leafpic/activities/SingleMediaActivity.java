@@ -26,7 +26,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -60,6 +63,8 @@ import org.fossasia.phimpme.leafpic.SelectAlbumBottomSheet;
 import org.fossasia.phimpme.leafpic.adapters.MediaPagerAdapter;
 import org.fossasia.phimpme.leafpic.animations.DepthPageTransformer;
 import org.fossasia.phimpme.leafpic.data.Album;
+import org.fossasia.phimpme.leafpic.fragments.ImageAdapter;
+import org.fossasia.phimpme.leafpic.fragments.PagerRecyclerView;
 import org.fossasia.phimpme.leafpic.util.AlertDialogsHelper;
 import org.fossasia.phimpme.leafpic.util.ColorPalette;
 import org.fossasia.phimpme.leafpic.util.ContentHelper;
@@ -69,8 +74,10 @@ import org.fossasia.phimpme.leafpic.util.SecurityHelper;
 import org.fossasia.phimpme.leafpic.util.StringUtils;
 import org.fossasia.phimpme.leafpic.util.ThemeHelper;
 import org.fossasia.phimpme.leafpic.views.HackyViewPager;
+import org.fossasia.phimpme.share.ShareAdapter;
 import org.fossasia.phimpme.share.SharingActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
+import org.fossasia.phimpme.utilities.BasicCallBack;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 import java.io.File;
@@ -128,7 +135,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
     ImageView imgView;
 
     @Nullable @BindView(R.id.photos_pager)
-    HackyViewPager mViewPager;
+    PagerRecyclerView mViewPager;
 
     @Nullable @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -152,8 +159,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
         String path2 = getIntent().getStringExtra("path");
         pathForDescription = path2;
 
-        if (savedInstanceState != null)
-            mViewPager.setLocked(savedInstanceState.getBoolean(ISLOCKED_ARG, false));
+//            mViewPager.setLocked(savedInstanceState.getBoolean(ISLOCKED_ARG, false));
         try
         {
             Album album;
@@ -203,6 +209,12 @@ public class SingleMediaActivity extends SharedMediaActivity {
         });
         setRecentApp(getString(R.string.app_name));
         setupSystemUI();
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ActivitySwitchHelper.getContext(),
+                LinearLayoutManager.HORIZONTAL, false);
+        mViewPager.setLayoutManager(linearLayoutManager);
+        mViewPager.setHasFixedSize(true);
+        mViewPager.setLongClickable(true);
+
 
         getWindow().getDecorView().setOnSystemUiVisibilityChangeListener
                 (new View.OnSystemUiVisibilityChangeListener() {
@@ -216,35 +228,35 @@ public class SingleMediaActivity extends SharedMediaActivity {
 
         if (!allPhotoMode) {
             adapter = new MediaPagerAdapter(getSupportFragmentManager(), getAlbum().getMedia());
-
-            getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
-            mViewPager.setAdapter(adapter);
-            mViewPager.setCurrentItem(getAlbum().getCurrentMediaIndex());
-            mViewPager.setPageTransformer(true, new DepthPageTransformer());
-            mViewPager.setOffscreenPageLimit(3);
-            mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            BasicCallBack basicCallBack = new BasicCallBack() {
                 @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                    pathForDescription = getAlbum().getMedia().get(position).getPath();
+                public void callBack(int status, Object data) {
+                    toggleSystemUI();
                 }
+            };
+            getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
+            mViewPager.setAdapter(new ImageAdapter(getAlbum().getMedia(), basicCallBack));
+//            toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
 
+
+            mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
                 @Override
-                public void onPageSelected(int position) {
+                public void onPageChanged(int oldPosition, int position) {
                     getAlbum().setCurrentPhotoIndex(position);
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
                     invalidateOptionsMenu();
                     pathForDescription = getAlbum().getMedia().get(position).getPath();
                 }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-                }
             });
+
+
+
+
         } else {
             adapter = new MediaPagerAdapter(getSupportFragmentManager(), LFMainActivity.listAll);
             getSupportActionBar().setTitle(all_photo_pos + 1 + " " + getString(R.string.of) + " " + size_all);
             current_image_pos = all_photo_pos;
-            mViewPager.setAdapter(adapter);
+          /*  mViewPager.setAdapter(adapter);
             mViewPager.setCurrentItem(all_photo_pos);
             mViewPager.setPageTransformer(true, new DepthPageTransformer());
             mViewPager.setOffscreenPageLimit(3);
@@ -266,7 +278,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
                 @Override
                 public void onPageScrollStateChanged(int state) {
                 }
-            });
+            });*/
         }
         Display aa = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
 
@@ -315,6 +327,8 @@ public class SingleMediaActivity extends SharedMediaActivity {
         if (SP.getBoolean("set_picture_orientation", false))
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
         else setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
+
+
     }
 
 
@@ -452,14 +466,13 @@ public class SingleMediaActivity extends SharedMediaActivity {
                 }
             }
             adapter.notifyDataSetChanged();
-            toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
         } else {
             deleteMedia(LFMainActivity.listAll.get(current_image_pos).getPath());
             LFMainActivity.listAll.remove(current_image_pos);
             size_all = LFMainActivity.listAll.size();
             adapter.notifyDataSetChanged();
-            mViewPager.setCurrentItem(current_image_pos);
-            toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + size_all);
+//            mViewPager.setCurrentItem(current_image_pos);
+//            toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + size_all);
         }
     }
 
@@ -599,7 +612,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
                             }
                         }
                         adapter.notifyDataSetChanged();
-                        toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + getAlbum().getCount());
+//                        toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + getAlbum().getCount());
                         bottomSheetDialogFragment.dismiss();
                     }
                 });
@@ -749,9 +762,9 @@ public class SingleMediaActivity extends SharedMediaActivity {
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        if (mViewPager != null) {
+      /*  if (mViewPager != null) {
             outState.putBoolean(ISLOCKED_ARG, mViewPager.isLocked());
-        }
+        }*/
         super.onSaveInstanceState(outState);
     }
 
