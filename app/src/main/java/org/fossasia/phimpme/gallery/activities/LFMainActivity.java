@@ -67,6 +67,7 @@ import org.fossasia.phimpme.gallery.util.PreferenceUtil;
 import org.fossasia.phimpme.gallery.util.SecurityHelper;
 import org.fossasia.phimpme.gallery.util.StringUtils;
 import org.fossasia.phimpme.gallery.views.GridSpacingItemDecoration;
+import org.fossasia.phimpme.uploadhistory.UploadHistory;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 
@@ -660,7 +661,7 @@ public class LFMainActivity extends SharedMediaActivity {
         findViewById(R.id.ll_drawer_uploadhistory).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LFMainActivity.this, UploadHistoryRealmModel.class);
+                Intent intent = new Intent(LFMainActivity.this, UploadHistory.class);
                 mDrawerLayout.closeDrawer(GravityCompat.START);
                 startActivity(intent);
             }
