@@ -147,7 +147,7 @@
         </service>
 
         <activity
-            android:name=".leafpic.activities.SplashScreen"
+            android:name=".gallery.activities.SplashScreen"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
@@ -182,7 +182,7 @@
                 android:resource="@xml/shortcuts" />
         </activity>
         <activity
-            android:name=".leafpic.activities.LFMainActivity"
+            android:name=".gallery.activities.LFMainActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
@@ -192,10 +192,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".leafpic.activities.SingleMediaActivity"
+            android:name=".gallery.activities.SingleMediaActivity"
             android:configChanges="orientation|screenSize|uiMode|touchscreen|screenLayout"
             android:label="@string/app_name"
-            android:parentActivityName=".leafpic.activities.LFMainActivity"
+            android:parentActivityName=".gallery.activities.LFMainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -203,7 +203,7 @@
             </intent-filter>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.fossasia.phimpme.leafpic.activities.LFMainActivity" />
+                android:value="org.fossasia.phimpme.gallery.activities.LFMainActivity" />
 
             <intent-filter>
                 <action android:name="android.intent.action.albumPhoto" />
@@ -227,7 +227,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".leafpic.activities.SettingsActivity"
+            android:name=".gallery.activities.SettingsActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/settings"
             android:theme="@style/Theme.AppCompat.NoActionBar">
@@ -243,7 +243,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".leafpic.activities.AboutActivity"
+            android:name=".gallery.activities.AboutActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/about"
             android:theme="@style/Theme.AppCompat.NoActionBar">
@@ -254,7 +254,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".leafpic.activities.SecurityActivity"
+            android:name=".gallery.activities.SecurityActivity"
             android:configChanges="orientation|screenSize"
             android:label="@string/security"
             android:theme="@style/Theme.AppCompat.NoActionBar">
@@ -265,7 +265,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".leafpic.activities.ExcludedAlbumsActivity"
+            android:name=".gallery.activities.ExcludedAlbumsActivity"
             android:label="@string/excluded_albums"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
@@ -289,7 +289,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
-            android:name="org.fossasia.phimpme.leafpic.CustomGlideModule"
+            android:name="org.fossasia.phimpme.gallery.CustomGlideModule"
             android:value="GlideModule" />
 
         <provider

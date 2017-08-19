@@ -5,7 +5,6 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,9 +24,9 @@ import com.mikepenz.iconics.typeface.IIcon;
 import java.util.ArrayList;
 
 import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.leafpic.util.ColorPalette;
-import org.fossasia.phimpme.leafpic.util.PreferenceUtil;
-import org.fossasia.phimpme.leafpic.util.ThemeHelper;
+import org.fossasia.phimpme.gallery.util.ColorPalette;
+import org.fossasia.phimpme.gallery.util.PreferenceUtil;
+import org.fossasia.phimpme.gallery.util.ThemeHelper;
 
 /**
  * Created by dnld on 23/02/16.

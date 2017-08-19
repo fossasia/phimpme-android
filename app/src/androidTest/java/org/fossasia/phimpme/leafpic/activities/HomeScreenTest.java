@@ -14,6 +14,7 @@ import android.view.ViewParent;
 import android.view.WindowManager;
 
 import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.gallery.activities.LFMainActivity;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;

@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.AccountDatabase;
-import org.fossasia.phimpme.leafpic.util.ThemeHelper;
+import org.fossasia.phimpme.gallery.util.ThemeHelper;
 import org.fossasia.phimpme.utilities.Utils;
 
 import java.util.ArrayList;
