@@ -3,8 +3,8 @@ package org.fossasia.phimpme.base;
 import android.os.Bundle;
 
 import org.fossasia.phimpme.MyApplication;
-import org.fossasia.phimpme.leafpic.data.Album;
-import org.fossasia.phimpme.leafpic.data.HandlingAlbums;
+import org.fossasia.phimpme.gallery.data.Album;
+import org.fossasia.phimpme.gallery.data.HandlingAlbums;
 
 /**
  * Created by dnld on 03/08/16.

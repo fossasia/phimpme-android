@@ -69,8 +69,8 @@ import com.mikepenz.iconics.view.IconicsImageView;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
-import org.fossasia.phimpme.leafpic.activities.SingleMediaActivity;
-import org.fossasia.phimpme.leafpic.util.ThemeHelper;
+import org.fossasia.phimpme.gallery.activities.SingleMediaActivity;
+import org.fossasia.phimpme.gallery.util.ThemeHelper;
 import org.fossasia.phimpme.opencamera.CameraController.CameraController;
 import org.fossasia.phimpme.opencamera.CameraController.CameraControllerManager2;
 import org.fossasia.phimpme.opencamera.Preview.Preview;

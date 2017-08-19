@@ -23,8 +23,8 @@ import com.twitter.sdk.android.core.TwitterConfig;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
 import io.fabric.sdk.android.Fabric;
-import org.fossasia.phimpme.leafpic.data.Album;
-import org.fossasia.phimpme.leafpic.data.HandlingAlbums;
+import org.fossasia.phimpme.gallery.data.Album;
+import org.fossasia.phimpme.gallery.data.HandlingAlbums;
 import org.fossasia.phimpme.utilities.Constants;
 
 import java.io.File;
