@@ -1001,5 +1001,6 @@
     <string name="ok_button">GOT IT</string>
     <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input.</string>
     <string name="paint_color_title">Paint Color</string>
+    <string name="upload_history">Upload History</string>
 
 </resources>

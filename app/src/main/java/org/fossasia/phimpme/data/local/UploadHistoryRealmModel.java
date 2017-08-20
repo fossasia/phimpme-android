@@ -6,7 +6,7 @@ import io.realm.RealmObject;
  * Created by pa1pal on 16/08/17.
  */
 
-public class UploadHistory extends RealmObject{
+public class UploadHistoryRealmModel extends RealmObject{
 
     String name;
     String pathname;
