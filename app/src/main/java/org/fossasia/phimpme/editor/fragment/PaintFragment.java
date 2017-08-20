@@ -26,7 +26,7 @@ import org.fossasia.phimpme.editor.task.StickerTask;
 import org.fossasia.phimpme.editor.ui.ColorPicker;
 import org.fossasia.phimpme.editor.view.CustomPaintView;
 import org.fossasia.phimpme.editor.view.PaintModeView;
-import org.fossasia.phimpme.leafpic.util.ColorPalette;
+import org.fossasia.phimpme.gallery.util.ColorPalette;
 
 import uz.shift.colorpicker.LineColorPicker;
 import uz.shift.colorpicker.OnColorChangedListener;

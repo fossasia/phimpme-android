@@ -29,7 +29,7 @@ import android.webkit.WebViewClient;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
-import org.fossasia.phimpme.leafpic.util.AlertDialogsHelper;
+import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 import org.fossasia.phimpme.utilities.BasicCallBack;
 import org.fossasia.phimpme.utilities.Constants;

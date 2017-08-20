@@ -22,8 +22,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import org.fossasia.phimpme.leafpic.activities.SettingsActivity;
-import org.fossasia.phimpme.leafpic.util.ThemeHelper;
+import org.fossasia.phimpme.gallery.activities.SettingsActivity;
+import org.fossasia.phimpme.gallery.util.ThemeHelper;
 import org.fossasia.phimpme.opencamera.Preview.Preview;
 import org.fossasia.phimpme.opencamera.UI.FolderChooserDialog;
 

@@ -9,7 +9,7 @@ import android.widget.EditText;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
-import org.fossasia.phimpme.leafpic.util.ThemeHelper;
+import org.fossasia.phimpme.gallery.util.ThemeHelper;
 
 import butterknife.BindView;
 
