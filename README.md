@@ -1,7 +1,14 @@
 # phimpme-android
-![Phimpme](/docs/logo.png)
 
-Phimp.me is a Photo App for Android that aims to replace proprietary photo applications. It offers features such as taking photos, adding filters, editing images and uploading them to social networks.
+![Phimpme](/docs/logo.png) 
+
+Phimp.me is a Photo App for Android that aims to replace proprietary photo applications. It offers features such as taking photos, adding filters, editing images and uploading them to social networks. 
+
+<a href="https://play.google.com/store/apps/details?id=org.fossasia.phimpme">
+    <img alt="Get it on Google Play"
+        height="80"
+        src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" />
+</a>
 
 [![Build Status](https://travis-ci.org/fossasia/phimpme-android.svg?branch=master)](https://travis-ci.org/fossasia/phimpme-android) [![codecov](https://codecov.io/gh/fossasia/phimpme-android/branch/master/graph/badge.svg)](https://codecov.io/gh/fossasia/phimpme-android) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/4584003e734343b3b8ce94bcae6e9ca4)](https://www.codacy.com/app/harshithdwivedi/phimpme-android?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fossasia/phimpme-android&amp;utm_campaign=Badge_Grade)
 
@@ -12,12 +19,15 @@ Join Gitter channel: https://gitter.im/fossasia/phimpme
 
   <table>
     <tr>
-     <td><img src="/docs/_static/screenshots/screenshot_1.png"></td>
-     <td><img src="/docs/_static/screenshots/screenshot_3.png"></td>
-     <td><img src="/docs/_static/screenshots/screenshot_5.png"></td> </tr>
-     <tr> <td><img src="/docs/_static/screenshots/screenshot_6.png"></td>
-     <td><img src="/docs/_static/screenshots/screenshot_2.png"></td>
-     <td><img src="/docs/_static/screenshots/screenshot_4.png"></td>    
+     <td><img src="/docs/_static/screenshots/ss_1.png"></td>
+     <td><img src="/docs/_static/screenshots/ss_2.png"></td>
+     <td><img src="/docs/_static/screenshots/ss_3.png"></td>
+     <td><img src="/docs/_static/screenshots/ss_4.png"></td>
+     <tr> 
+      <td><img src="/docs/_static/screenshots/ss_5.png"></td>
+      <td><img src="/docs/_static/screenshots/ss_6.png"></td>
+      <td><img src="/docs/_static/screenshots/ss_7.png"></td>
+      <td><img src="/docs/_static/screenshots/ss_8.png"></td>
     </tr>
   </table>  
 
