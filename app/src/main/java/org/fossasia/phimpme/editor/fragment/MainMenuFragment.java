@@ -7,18 +7,14 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.EditImageActivity;
 
-import java.util.ArrayList;
-
-import butterknife.BindViews;
-
 public class MainMenuFragment extends BaseEditFragment implements View.OnClickListener{
 
     View menu_filter,menu_enhance,menu_adjust,menu_stickers, menu_write;
+    Context context;
 
     public MainMenuFragment() {
 
@@ -38,6 +34,8 @@ public class MainMenuFragment extends BaseEditFragment implements View.OnClickLi
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_editor_main, container, false);
+        context = getActivity();
+
         menu_filter = view.findViewById(R.id.menu_filter);
         menu_enhance = view.findViewById(R.id.menu_enhance);
         menu_adjust = view.findViewById(R.id.menu_adjust);
@@ -49,6 +47,8 @@ public class MainMenuFragment extends BaseEditFragment implements View.OnClickLi
         menu_adjust.setOnClickListener(this);
         menu_stickers.setOnClickListener(this);
         menu_write.setOnClickListener(this);
+
+        highLightSelectedOption(EditImageActivity.getMode());
 
         return view;
     }
@@ -92,6 +92,36 @@ public class MainMenuFragment extends BaseEditFragment implements View.OnClickLi
             case R.id.menu_write:
                 activity.changeMode(EditImageActivity.MODE_WRITE);
                 activity.changeMiddleFragment(EditImageActivity.MODE_WRITE);
+                break;
+        }
+    }
+
+    public void highLightSelectedOption(int mode) {
+
+        menu_filter.setBackgroundColor(Color.TRANSPARENT);
+        menu_enhance.setBackgroundColor(Color.TRANSPARENT);
+        menu_adjust.setBackgroundColor(Color.TRANSPARENT);
+        menu_stickers.setBackgroundColor(Color.TRANSPARENT);
+        menu_write.setBackgroundColor(Color.TRANSPARENT);
+
+        int color = ContextCompat.getColor(context, R.color.md_grey_200);
+        switch (mode){
+            case 2:
+                menu_filter.setBackgroundColor(color);
+                break;
+            case 3:
+                menu_enhance.setBackgroundColor(color);
+                break;
+            case 4:
+                menu_adjust.setBackgroundColor(color);
+                break;
+            case 5:
+                menu_stickers.setBackgroundColor(color);
+                break;
+            case 6:
+                menu_write.setBackgroundColor(color);
+                break;
+            default:
                 break;
         }
     }
