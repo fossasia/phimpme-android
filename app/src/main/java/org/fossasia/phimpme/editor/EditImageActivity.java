@@ -19,7 +19,7 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.leafpic.util.ColorPalette;
+import org.fossasia.phimpme.gallery.util.ColorPalette;
 import org.fossasia.phimpme.share.SharingActivity;
 import org.fossasia.phimpme.editor.fragment.AddTextFragment;
 import org.fossasia.phimpme.editor.fragment.CropFragment;

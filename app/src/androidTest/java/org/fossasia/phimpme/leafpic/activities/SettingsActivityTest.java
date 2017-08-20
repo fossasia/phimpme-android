@@ -11,6 +11,7 @@ import android.test.suitebuilder.annotation.LargeTest;
 import android.view.WindowManager;
 
 import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.gallery.activities.SettingsActivity;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;

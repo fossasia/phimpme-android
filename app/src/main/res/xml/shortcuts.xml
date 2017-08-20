@@ -25,7 +25,7 @@
         <intent
             android:action="android.intent.action.albumsAct"
             android:targetPackage="org.fossasia.phimpme"
-            android:targetClass="org.fossasia.phimpme.leafpic.activities.LFMainActivity" />
+            android:targetClass="org.fossasia.phimpme.gallery.activities.LFMainActivity" />
         <categories android:name="android.intent.category.DEFAULT" />
     </shortcut>
     <shortcut
