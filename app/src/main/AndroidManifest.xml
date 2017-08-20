@@ -288,6 +288,10 @@
             android:label="Preview"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity android:name=".uploadhistory.UploadHistory"
+                  android:label="Upload History"
+                  android:theme="@style/AppTheme.NoActionBar" />
+
         <meta-data
             android:name="org.fossasia.phimpme.gallery.CustomGlideModule"
             android:value="GlideModule" />
@@ -347,8 +351,6 @@
 
         <activity android:name=".share.nextcloud.NextCloudAuth"
             android:theme="@style/AppTheme.NoActionBar"/>
-
-
 
         <activity
             android:name=".share.flickr.FlickrActivity"
