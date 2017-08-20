@@ -83,7 +83,7 @@ import org.fossasia.phimpme.base.PhimpmeProgressBarHandler;
 import org.fossasia.phimpme.base.RecyclerItemClickListner;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.AccountDatabase;
-import org.fossasia.phimpme.data.local.UploadHistory;
+import org.fossasia.phimpme.data.local.UploadHistoryRealmModel;
 import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouch;
 import org.fossasia.phimpme.gallery.activities.LFMainActivity;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
@@ -203,7 +203,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     private static final int REQUEST_CODE_SHARE_TO_MESSENGER = 2;
     private final int REQ_CODE_SPEECH_INPUT = 10;
 
-
     public boolean uploadFailedBox = false;
     public String uploadName;
 
@@ -283,7 +282,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             case R.id.button_mic:
                 promptSpeechInput(SharingActivity.this,REQ_CODE_SPEECH_INPUT,parent,getString(R.string.speech_prompt_caption));
                 break;
-
         }
     }
 
@@ -306,11 +304,12 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             public void onClick(DialogInterface dialogInterface, int i) {
                 Realm realm = Realm.getDefaultInstance();
                 realm.beginTransaction();
-                UploadHistory uploadHistory;
-                uploadHistory = realm.createObject(UploadHistory.class);
+                UploadHistoryRealmModel uploadHistory;
+                uploadHistory = realm.createObject(UploadHistoryRealmModel.class);
                 uploadHistory.setName(sharableAccountsList.get(position).toString());
                 uploadHistory.setPathname(saveFilePath);
                 uploadHistory.setDatetime(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
+                realm.commitTransaction();
 
                 switch (sharableAccountsList.get(position)) {
                     case FACEBOOK:

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/DrawerMain"
-    android:layout_width="300dp"
-    android:layout_height="match_parent"
-    android:layout_gravity="start"
-    android:clickable="true"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:id="@+id/DrawerMain"
+              android:layout_width="300dp"
+              android:layout_height="match_parent"
+              android:layout_gravity="start"
+              android:clickable="true"
+              android:orientation="vertical">
 
     <ScrollView
         android:id="@+id/drawer_scrollbar"
@@ -31,7 +31,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    app:srcCompat="@drawable/ic_launcher_splash" />
+                    app:srcCompat="@drawable/ic_launcher_splash"/>
             </RelativeLayout>
 
             <LinearLayout
@@ -44,12 +44,12 @@
                 <!-- DEFAULT ALBUMS -->
 
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/ll_drawer_Default"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ripple"
-                    android:clickable="true"
-                    android:orientation="horizontal">
+                              android:id="@+id/ll_drawer_Default"
+                              android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:background="@drawable/ripple"
+                              android:clickable="true"
+                              android:orientation="horizontal">
 
                     <com.mikepenz.iconics.view.IconicsImageView
                         android:id="@+id/Drawer_Default_Icon"
@@ -58,7 +58,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/big_spacing"
                         android:layout_marginRight="@dimen/big_spacing"
-                        app:iiv_icon="gmd-folder" />
+                        app:iiv_icon="gmd-folder"/>
 
                     <TextView
                         android:id="@+id/Drawer_Default_Item"
@@ -68,17 +68,17 @@
                         android:paddingTop="16dp"
                         android:text="@string/local_folder"
                         android:textColor="@color/md_dark_background"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
                 </LinearLayout>
 
                 <!-- HIDDEN ALBUMS -->
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/ll_drawer_hidden"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ripple"
-                    android:clickable="true"
-                    android:orientation="horizontal">
+                              android:id="@+id/ll_drawer_hidden"
+                              android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:background="@drawable/ripple"
+                              android:clickable="true"
+                              android:orientation="horizontal">
 
                     <com.mikepenz.iconics.view.IconicsImageView
                         android:id="@+id/Drawer_hidden_Icon"
@@ -87,7 +87,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/big_spacing"
                         android:layout_marginRight="@dimen/big_spacing"
-                        app:iiv_icon="faw-low-vision" />
+                        app:iiv_icon="faw-low-vision"/>
 
                     <TextView
                         android:id="@+id/Drawer_hidden_Item"
@@ -97,7 +97,35 @@
                         android:paddingTop="16dp"
                         android:text="@string/hidden_folder"
                         android:textColor="@color/md_dark_background"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
+                </LinearLayout>
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                              android:id="@+id/ll_drawer_uploadhistory"
+                              android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:background="@drawable/ripple"
+                              android:clickable="true"
+                              android:orientation="horizontal">
+
+                    <com.mikepenz.iconics.view.IconicsImageView
+                        android:id="@+id/Drawer_Upload_Icon"
+                        android:layout_width="@dimen/icon_width_height"
+                        android:layout_height="@dimen/icon_width_height"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/big_spacing"
+                        android:layout_marginRight="@dimen/big_spacing"
+                        app:iiv_icon="gmd-file-upload"/>
+
+                    <TextView
+                        android:id="@+id/Drawer_Upload_Item"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="16dp"
+                        android:paddingTop="16dp"
+                        android:text="@string/upload_history"
+                        android:textColor="@color/md_dark_background"
+                        android:textSize="16sp"/>
                 </LinearLayout>
 
                 <!-- TAGS ALBUMS -->
@@ -174,16 +202,16 @@
                     android:layout_height="0dp"
                     android:layout_marginBottom="0dp"
                     android:layout_marginTop="0dp"
-                    android:padding="0dp" />
+                    android:padding="0dp"/>
 
                 <!-- SETTING -->
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/ll_drawer_Setting"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ripple"
-                    android:clickable="true"
-                    android:orientation="horizontal">
+                              android:id="@+id/ll_drawer_Setting"
+                              android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:background="@drawable/ripple"
+                              android:clickable="true"
+                              android:orientation="horizontal">
 
                     <com.mikepenz.iconics.view.IconicsImageView
                         android:id="@+id/Drawer_Setting_Icon"
@@ -192,7 +220,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/big_spacing"
                         android:layout_marginRight="@dimen/big_spacing"
-                        app:iiv_icon="gmd-settings" />
+                        app:iiv_icon="gmd-settings"/>
 
                     <TextView
                         android:id="@+id/Drawer_Setting_Item"
@@ -202,18 +230,18 @@
                         android:paddingTop="16dp"
                         android:text="@string/settings"
                         android:textColor="@color/md_dark_background"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
                 </LinearLayout>
 
 
                 <!-- RATE APP -->
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/ll_rate_phimpme"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ripple"
-                    android:clickable="true"
-                    android:orientation="horizontal">
+                              android:id="@+id/ll_rate_phimpme"
+                              android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:background="@drawable/ripple"
+                              android:clickable="true"
+                              android:orientation="horizontal">
 
                     <com.mikepenz.iconics.view.IconicsImageView
                         android:id="@+id/Drawer_rate_Icon"
@@ -222,7 +250,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/big_spacing"
                         android:layout_marginRight="@dimen/big_spacing"
-                        app:iiv_icon="gmd-star" />
+                        app:iiv_icon="gmd-star"/>
 
                     <TextView
                         android:id="@+id/Drawer_rate_Item"
@@ -232,17 +260,17 @@
                         android:paddingTop="16dp"
                         android:text="@string/about_support_rate"
                         android:textColor="@color/md_dark_background"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
                 </LinearLayout>
 
                 <!-- SHARE APP -->
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/ll_share_phimpme"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ripple"
-                    android:clickable="true"
-                    android:orientation="horizontal">
+                              android:id="@+id/ll_share_phimpme"
+                              android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:background="@drawable/ripple"
+                              android:clickable="true"
+                              android:orientation="horizontal">
 
                     <com.mikepenz.iconics.view.IconicsImageView
                         android:id="@+id/Drawer_share_Icon"
@@ -251,7 +279,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/big_spacing"
                         android:layout_marginRight="@dimen/big_spacing"
-                        app:iiv_icon="gmd-share" />
+                        app:iiv_icon="gmd-share"/>
 
                     <TextView
                         android:id="@+id/Drawer_share_Item"
@@ -261,17 +289,17 @@
                         android:paddingTop="16dp"
                         android:text="@string/share_phimpme"
                         android:textColor="@color/md_dark_background"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
                 </LinearLayout>
 
                 <!-- ABOUT -->
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/ll_drawer_About"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ripple"
-                    android:clickable="true"
-                    android:orientation="horizontal">
+                              android:id="@+id/ll_drawer_About"
+                              android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:background="@drawable/ripple"
+                              android:clickable="true"
+                              android:orientation="horizontal">
 
                     <com.mikepenz.iconics.view.IconicsImageView
                         android:id="@+id/Drawer_About_Icon"
@@ -280,7 +308,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="@dimen/big_spacing"
                         android:layout_marginRight="@dimen/big_spacing"
-                        app:iiv_icon="gmd-info-outline" />
+                        app:iiv_icon="gmd-info-outline"/>
 
                     <TextView
                         android:id="@+id/Drawer_About_Item"
@@ -290,7 +318,7 @@
                         android:paddingTop="16dp"
                         android:text="@string/about"
                         android:textColor="@color/md_dark_background"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"/>
                 </LinearLayout>
 
             </LinearLayout>
