@@ -49,12 +49,12 @@ public class FileUtils {
 	}
 
 	public static String getExtension(String path){
-		String supportExt[] = {"jpg","png","jpeg","bmp","tiff"};
+		String supportExt[] = {".jpg",".png",".jpeg",".bmp",".tiff"};
 		String ext = path.substring(path.lastIndexOf(".")).toLowerCase();
 
 		for (String itr : supportExt)
 			if (itr.equals(ext))
-				return ("." + itr);
+				return (itr);
 
 		return null;
 	}
