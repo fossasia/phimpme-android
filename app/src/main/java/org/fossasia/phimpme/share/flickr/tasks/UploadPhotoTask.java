@@ -8,6 +8,7 @@ import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.uploader.UploadMetaData;
 
+import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.share.flickr.FlickrHelper;
 import org.fossasia.phimpme.utilities.NotificationHandler;
 
@@ -17,7 +18,7 @@ public class UploadPhotoTask extends AsyncTask<OAuth, Void, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        NotificationHandler.make();
+        NotificationHandler.make(R.string.flickr);
     }
 
     @Override
