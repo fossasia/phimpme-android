@@ -477,7 +477,7 @@
     <string name="create_new_folder">Create new folder</string>
 
     <!--Notification Uploads-->
-    <string name="upload_progress">Uploading</string>
+    <string name="upload_progress">Uploading to</string>
     <string name="progress">In progress</string>
     <string name="upload_done">Success</string>
     <string name="upload_complete">Uploaded</string>
