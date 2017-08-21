@@ -399,6 +399,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void shareToGoogle() {
+        NotificationHandler.make(R.string.googlePlus);
         Uri uri = getImageUri(SharingActivity.this, saveFilePath);
         PlusShare.Builder share = new PlusShare.Builder(SharingActivity.this);
         share.setText(caption);
@@ -418,7 +419,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         @Override
         protected void onPreExecute() {
             sessionBox.authenticate();
-            NotificationHandler.make();
+            NotificationHandler.make(R.string.box);
             mFileApi = new BoxApiFile(sessionBox);
             file = new File(saveFilePath);
             fileLength = (int) file.length();
@@ -533,7 +534,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
         @Override
         protected void onPreExecute() {
-            NotificationHandler.make();
+            NotificationHandler.make(R.string.dropbox_share);
         }
 
         @Override
@@ -668,7 +669,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     private void postToPinterest(final String boardID) {
         SnackBarHandler.show(parent, R.string.pinterest_image_uploading);
-        NotificationHandler.make();
+        NotificationHandler.make(R.string.pinterest);
         Bitmap image = getBitmapFromPath(saveFilePath);
         PDKClient
                 .getInstance().createPin(caption, boardID, image, null, new PDKCallback() {
@@ -981,9 +982,11 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         super.onActivityResult(requestCode, responseCode, data);
         if (requestCode == REQ_SELECT_PHOTO) {
             if (responseCode == RESULT_OK) {
+                NotificationHandler.uploadPassed();
                 Snackbar.make(parent, R.string.success_google, Snackbar.LENGTH_LONG).show();
                 return;
             } else {
+                NotificationHandler.uploadFailed();
                 Snackbar.make(parent, R.string.error_google, Snackbar.LENGTH_LONG).show();
                 return;
             }
@@ -1056,7 +1059,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
         @Override
         protected void onPreExecute() {
-            NotificationHandler.make();
+            NotificationHandler.make(R.string.twitter);
             RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
             query.equalTo("name", TWITTER.toString());
             final RealmResults<AccountDatabase> result = query.findAll();
