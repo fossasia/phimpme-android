@@ -66,12 +66,13 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     public static final int MODE_SLIDER = 1;
     public static final int MODE_FILTERS = 2;
     public static final int MODE_ENHANCE = 3;
-    public static final int MODE_STICKER_TYPES = 4;
-    public static final int MODE_STICKERS = 5;
-    public static final int MODE_ADJUST = 6;
-    public static final int MODE_CROP = 7;
-    public static final int MODE_ROTATE = 8;
-    public static final int MODE_WRITE = 9;
+    public static final int MODE_ADJUST = 4;
+    public static final int MODE_STICKER_TYPES = 5;
+    public static final int MODE_WRITE = 6;
+
+    public static final int MODE_STICKERS = 7;
+    public static final int MODE_CROP = 8;
+    public static final int MODE_ROTATE = 9;
     public static final int MODE_TEXT = 10;
     public static final int MODE_PAINT = 11;
 
@@ -221,6 +222,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         paintFragment = PaintFragment.newInstance();
         cropFragment = CropFragment.newInstance();
         rotateFragment = RotateFragment.newInstance();
+
     }
 
 
@@ -228,8 +230,31 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
      * Get current editing mode.
      * @return the editing mode.
      */
-    public int getMode(){
+    public static int getMode(){
         return mode;
+    }
+
+    public void changeMode(int to_mode){
+        EditImageActivity.mode = to_mode;
+        highLightSelectedOption(to_mode);
+    }
+
+    private void highLightSelectedOption(int mode) {
+        switch (mode){
+            case MODE_FILTERS:
+            case MODE_ENHANCE:
+            case MODE_ADJUST:
+            case MODE_STICKER_TYPES:
+            case MODE_WRITE:
+                mainMenuFragment.highLightSelectedOption(mode);
+                break;
+            case MODE_STICKERS:
+            case MODE_TEXT:
+            case MODE_PAINT:
+            case MODE_CROP:
+            case MODE_ROTATE:
+            case MODE_SLIDER:
+        }
     }
 
     /**

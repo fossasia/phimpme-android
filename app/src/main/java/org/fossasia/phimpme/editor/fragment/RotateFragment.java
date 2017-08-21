@@ -88,7 +88,7 @@ public class RotateFragment extends BaseEditFragment {
 
     @Override
     public void onShow() {
-        EditImageActivity.mode = EditImageActivity.MODE_ROTATE;
+        activity.changeMode(EditImageActivity.MODE_ROTATE);
         activity.mainImage.setImageBitmap(activity.mainBitmap);
         activity.mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
         activity.mainImage.setVisibility(View.GONE);
@@ -124,7 +124,7 @@ public class RotateFragment extends BaseEditFragment {
     }
 
     public void backToMain() {
-        EditImageActivity.mode = EditImageActivity.MODE_MAIN;
+        activity.changeMode(EditImageActivity.MODE_ADJUST);
         activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
         activity.mainImage.setVisibility(View.VISIBLE);
         this.mRotatePanel.setVisibility(View.GONE);
