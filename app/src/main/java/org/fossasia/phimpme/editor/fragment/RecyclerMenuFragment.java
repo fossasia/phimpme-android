@@ -223,20 +223,20 @@ public class RecyclerMenuFragment extends BaseEditFragment {
             switch (MODE){
                 case EditImageActivity.MODE_FILTERS:
                     activity.setEffectType(pos,MODE);
-                    EditImageActivity.mode = EditImageActivity.MODE_SLIDER;
+                    activity.changeMode(EditImageActivity.MODE_SLIDER);
                     activity.changeBottomFragment(EditImageActivity.MODE_SLIDER);
                     break;
 
                 case EditImageActivity.MODE_ENHANCE:
                     activity.setEffectType(pos,MODE);
-                    EditImageActivity.mode = EditImageActivity.MODE_SLIDER;
+                    activity.changeMode(EditImageActivity.MODE_SLIDER);
                     activity.changeBottomFragment(EditImageActivity.MODE_SLIDER);
                     break;
 
                 case EditImageActivity.MODE_STICKER_TYPES:
                     String data = (String) view.getTag();
                     activity.setStickerType(data);
-                    EditImageActivity.mode = EditImageActivity.MODE_STICKERS;
+                    activity.changeMode(EditImageActivity.MODE_STICKERS);
                     activity.changeBottomFragment(EditImageActivity.MODE_STICKERS);
                     break;
             }
