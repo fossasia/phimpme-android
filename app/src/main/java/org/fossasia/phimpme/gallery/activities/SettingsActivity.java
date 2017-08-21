@@ -85,7 +85,6 @@ public class SettingsActivity extends ThemedActivity {
     private SwitchCompat swDelayFullImage;
     private SwitchCompat swAutoUpdate;
     private SwitchCompat swSwipeDirection;
-    private SwitchCompat swSubScaling;
 
     private boolean saf_dialog_from_preferences;
 
@@ -175,18 +174,6 @@ public class SettingsActivity extends ThemedActivity {
             @Override
             public void onClick(View v) {
                 multiColumnsDialog();
-            }
-        });
-
-
-        /*** Sub-Scaling ImageView ***/
-        swSubScaling = (SwitchCompat) findViewById(R.id.sw_sub_scaling);
-        swSubScaling.setChecked(SP.getBoolean(getString(R.string.preference_sub_scaling), false));
-        swSubScaling.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                SP.putBoolean(getString(R.string.preference_sub_scaling), isChecked);
-                updateSwitchColor(swSubScaling, getAccentColor());
             }
         });
 
@@ -719,7 +706,6 @@ public class SettingsActivity extends ThemedActivity {
         updateSwitchColor(swPictureOrientation, color);
         updateSwitchColor(swAutoUpdate, color);
         updateSwitchColor(swSwipeDirection, color);
-        updateSwitchColor(swSubScaling, color);
     }
 
     @Override
@@ -779,7 +765,6 @@ public class SettingsActivity extends ThemedActivity {
         ((IconicsImageView) findViewById(R.id.auto_update_media_Icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.security_icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.camera_icon)).setColor(color);
-        ((IconicsImageView) findViewById(R.id.sub_scaling_Icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.map_provider_icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.media_viewer_swipe_direction_Icon)).setColor(color);
 
@@ -795,7 +780,6 @@ public class SettingsActivity extends ThemedActivity {
         ((TextView) findViewById(R.id.basic_theme_item)).setTextColor(color);
         ((TextView) findViewById(R.id.n_columns_Item_Title)).setTextColor(color);
         ((TextView) findViewById(R.id.NavBar_Item)).setTextColor(color);
-        ((TextView) findViewById(R.id.sub_scaling_Item)).setTextColor(color);
         ((TextView) findViewById(R.id.Excluded_Album_Item_Title)).setTextColor(color);
         ((TextView) findViewById(R.id.auto_update_media_Item)).setTextColor(color);
         ((TextView) findViewById(R.id.security_item_title)).setTextColor(color);
@@ -816,7 +800,6 @@ public class SettingsActivity extends ThemedActivity {
         ((TextView) findViewById(R.id.n_columns_Item_Title_Sub)).setTextColor(color);
         ((TextView) findViewById(R.id.NavBar_Item_Sub)).setTextColor(color);
         ((TextView) findViewById(R.id.Excluded_Album_Item_Title_Sub)).setTextColor(color);
-        ((TextView) findViewById(R.id.sub_scaling_Item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.auto_update_media_Item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.security_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.map_provider_item_sub)).setTextColor(color);
