@@ -2,6 +2,8 @@ package org.fossasia.phimpme.utilities;
 
 import android.app.NotificationManager;
 import android.content.Context;
+import android.graphics.BitmapFactory;
+import android.support.annotation.StringRes;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
 
@@ -17,10 +19,12 @@ public class NotificationHandler {
     private static Builder mBuilder;
     private static int id = 1;
 
-    public static void make(){
+    public static void make(@StringRes int title){
         mNotifyManager = (NotificationManager) ActivitySwitchHelper.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
         mBuilder = new NotificationCompat.Builder(ActivitySwitchHelper.getContext());
-        mBuilder.setContentTitle(ActivitySwitchHelper.getContext().getString(R.string.upload_progress))
+        mBuilder.setContentTitle(ActivitySwitchHelper.getContext().getString(R.string.upload_progress) + " " + ActivitySwitchHelper.getContext().getResources().getString(title))
+                .setLargeIcon(BitmapFactory.decodeResource(ActivitySwitchHelper.getContext().getResources(),
+                        R.mipmap.ic_launcher))
                 .setContentText(ActivitySwitchHelper.getContext().getString(R.string.progress))
                 .setSmallIcon(R.drawable.ic_cloud_upload_black_24dp)
                 .setOngoing(true);
