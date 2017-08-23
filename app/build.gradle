@@ -103,7 +103,6 @@ dependencies {
     compile "com.twitter.sdk.android:twitter:$rootProject.twitterVersion"
     compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
     compile "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
-    compile "com.squareup.picasso:picasso:$rootProject.picassoVersion"
     compile "com.github.amlcurran.showcaseview:library:$rootProject.showcaseVersion"
     compile "com.github.nextcloud:android-library:$rootProject.nextCloudVersion"
     compile files('libs/twitter4j-core-3.0.5.jar')
