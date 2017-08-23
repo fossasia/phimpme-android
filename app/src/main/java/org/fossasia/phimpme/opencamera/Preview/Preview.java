@@ -73,7 +73,10 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
+import static org.fossasia.phimpme.opencamera.Camera.CameraActivity.toggle;
 
 /** This class was originally named due to encapsulating the camera preview,
  *  but in practice it's grown to more than this, and includes most of the
@@ -227,6 +230,7 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 	private boolean take_photo_after_autofocus; // set to take a photo when the in-progress autofocus has completed; if setting, remember to call camera_controller.setCaptureFollowAutofocusHint()
 	private boolean successfully_focused;
 	private long successfully_focused_time = -1;
+	private static final String SHOWCASE_ID = "1";
 
 	// accelerometer and geomagnetic sensor info
 	private static final float sensor_alpha = 0.8f; // for filter
@@ -1373,18 +1377,21 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 
 			final Activity activity = (Activity)this.getContext();
 
-            CameraActivity.toggle.setOnClickListener(new View.OnClickListener() {
+            toggle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     SharedPreferences sharedPreferences = getDefaultSharedPreferences(activity);
                     Boolean firstClick = sharedPreferences.getBoolean(activity.getString(R.string.first_click),true);
-                    if(firstClick) {
-                        new ShowcaseView.Builder(activity).setTarget(new ViewTarget(R.id.toggle_button, activity))
-                                .setContentTitle(activity.getString(R.string.color_effects))
-                                .setContentText(activity.getString(R.string.toggle_info))
-                                .hideOnTouchOutside()
-                                .build();
-                    }
+					if(firstClick){
+						MaterialShowcaseView.resetSingleUse(activity, SHOWCASE_ID);
+						new MaterialShowcaseView.Builder(activity)
+								.setTarget(toggle)
+								.setTitleText(R.string.toggle_button)
+								.setDismissText(R.string.ok_button)
+								.setContentText(R.string.toggle_info)// optional but starting animations immediately in onCreate can make them choppy
+								.singleUse(SHOWCASE_ID) // provide a unique ID used to ensure it is only shown once
+								.show();
+					}
                     else {
                         final List<String> colorEffect = getSupportedColorEffects();
                         colorNum++;
@@ -1405,7 +1412,7 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
                 }
             });
 
-			CameraActivity.toggle.setOnLongClickListener(new View.OnLongClickListener() {
+			toggle.setOnLongClickListener(new View.OnLongClickListener() {
 				@Override
 				public boolean onLongClick(View v) {
 					final List<String> colorEffect = getSupportedColorEffects();
