@@ -252,10 +252,11 @@ public class SingleMediaActivity extends SharedMediaActivity {
             mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
                 @Override
                 public void onPageChanged(int oldPosition, int position) {
+                    current_image_pos = position;
                     getAlbum().setCurrentPhotoIndex(position);
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
                     invalidateOptionsMenu();
-                    pathForDescription = getAlbum().getMedia().get(position).getPath();
+                    pathForDescription = LFMainActivity.listAll.get(position).getPath();
                 }
             });
             mViewPager.scrollToPosition(all_photo_pos);
