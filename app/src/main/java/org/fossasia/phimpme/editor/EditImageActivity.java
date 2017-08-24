@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
 import org.fossasia.phimpme.gallery.util.ColorPalette;
 import org.fossasia.phimpme.share.SharingActivity;
 import org.fossasia.phimpme.editor.fragment.AddTextFragment;
@@ -500,19 +501,23 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         }else if(mOpTimes <= 0 && requestCode == 1 ){
             shareImage(filePath);
         }else {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(mContext);
-            alertDialogBuilder.setMessage(R.string.exit_without_edit)
-                    .setCancelable(false).setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    mContext.finish();
+            final AlertDialog.Builder discardChangesDialogBuilder = new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
+            AlertDialogsHelper.getTextDialog(EditImageActivity.this, discardChangesDialogBuilder, R.string.discard_changes_header, R.string.exit_without_edit, null);
+            discardChangesDialogBuilder.setPositiveButton(getString(R.string.confirm).toUpperCase(), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
                 }
-            }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
+            });
+            discardChangesDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if(dialog != null)
+                        dialog.dismiss();
                 }
             });
 
-            AlertDialog alertDialog = alertDialogBuilder.create();
+            AlertDialog alertDialog = discardChangesDialogBuilder.create();
             alertDialog.show();
         }
     }
@@ -665,19 +670,23 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         if (canAutoExit()) {
             finish();
         } else {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setMessage(R.string.exit_without_save)
-                    .setCancelable(false).setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    mContext.finish();
+            final AlertDialog.Builder discardChangesDialogBuilder = new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
+            AlertDialogsHelper.getTextDialog(EditImageActivity.this, discardChangesDialogBuilder, R.string.discard_changes_header, R.string.exit_without_save, null);
+            discardChangesDialogBuilder.setPositiveButton(getString(R.string.confirm).toUpperCase(), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
                 }
-            }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
+            });
+            discardChangesDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if(dialog != null)
+                        dialog.dismiss();
                 }
             });
 
-            AlertDialog alertDialog = alertDialogBuilder.create();
+            AlertDialog alertDialog = discardChangesDialogBuilder.create();
             alertDialog.show();
         }
     }
