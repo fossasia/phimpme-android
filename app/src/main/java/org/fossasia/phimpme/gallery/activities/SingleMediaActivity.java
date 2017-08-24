@@ -442,6 +442,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
                 }
             }
             adapter.notifyDataSetChanged();
+            getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
         } else {
             deleteMedia(LFMainActivity.listAll.get(current_image_pos).getPath());
             LFMainActivity.listAll.remove(current_image_pos);
