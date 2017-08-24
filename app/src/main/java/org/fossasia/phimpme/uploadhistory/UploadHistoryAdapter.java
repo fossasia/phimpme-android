@@ -1,18 +1,27 @@
 package org.fossasia.phimpme.uploadhistory;
 
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.UploadHistoryRealmModel;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmQuery;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Created by pa1pal on 17/08/17.
@@ -36,11 +45,16 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         realmResult = realm.where(UploadHistoryRealmModel.class);
-        // themeHelper.updateSwitchColor(holder.signInSignOutSwitch, switchBackgroundColor);
 
         if (realmResult.findAll().size() != 0) {
             holder.uploadAccountName.setText(realmResult.findAll().get(position).getName());
             holder.uploadTime.setText(realmResult.findAll().get(position).getDatetime());
+
+            Uri uri = Uri.fromFile(new File(realmResult.findAll().get(position).getPathname()));
+
+            Glide.with(getApplicationContext()).load(uri)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .into(holder.uploadImage);
         }
     }
 
@@ -60,6 +74,9 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
 
         @BindView(R.id.upload_time)
         TextView uploadTime;
+
+        @BindView(R.id.upload_image)
+        ImageView uploadImage;
 
         public ViewHolder(View itemView) {
             super(itemView);
