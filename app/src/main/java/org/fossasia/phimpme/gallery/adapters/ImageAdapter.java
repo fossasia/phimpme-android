@@ -21,6 +21,8 @@ import org.fossasia.phimpme.utilities.BasicCallBack;
 
 import java.util.ArrayList;
 
+import uk.co.senab.photoview.PhotoView;
+
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
 
 /**
@@ -29,8 +31,8 @@ import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
 
-    private ArrayList<Media> media;
     BasicCallBack basicCallBack;
+    private ArrayList<Media> media;
 
     public ImageAdapter(ArrayList<Media> media, BasicCallBack onItemClickListener) {
         this.media = media;
@@ -54,7 +56,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                basicCallBack.callBack(0,null);
+                basicCallBack.callBack(0, null);
             }
         });
     }
@@ -65,12 +67,12 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageView;
+        PhotoView imageView;
         LinearLayout linearLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            imageView = new ImageView(ActivitySwitchHelper.context);
+            imageView = new PhotoView(ActivitySwitchHelper.context);
             linearLayout = (LinearLayout) itemView.findViewById(R.id.layout);
             WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
             Display display = wm.getDefaultDisplay();
