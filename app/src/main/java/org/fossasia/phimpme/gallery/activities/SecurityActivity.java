@@ -21,8 +21,8 @@ import com.mikepenz.iconics.view.IconicsImageView;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
-import org.fossasia.phimpme.gallery.util.SecurityHelper;
 import org.fossasia.phimpme.gallery.util.PreferenceUtil;
+import org.fossasia.phimpme.gallery.util.SecurityHelper;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 
@@ -69,7 +69,7 @@ public class SecurityActivity extends ThemedActivity {
                 if (isChecked)
                     setPasswordDialog();
                 else {
-                    editor.putString(getString(R.string.preference_password_value),"");
+                    editor.putString(getString(R.string.preference_password_value), "");
                     editor.putBoolean(getString(R.string.preference_use_password), false);
                     editor.commit();
                     toggleEnabledChild(false);
@@ -101,8 +101,10 @@ public class SecurityActivity extends ThemedActivity {
                 updateSwitchColor(swApplySecurityDelete, getAccentColor());
             }
         });
+
         updateSwitchColor(swApplySecurityDelete, getAccentColor());
         setupUI();
+        toggleEnabledChild(swActiveSecurity.isChecked());
     }
 
     private void setPasswordDialog() {
@@ -148,12 +150,12 @@ public class SecurityActivity extends ThemedActivity {
                     if (editTextPassword.getText().toString().equals(editTextConfirmPassword.getText().toString())) {
                         SP.putString(getString(R.string.preference_password_value), editTextPassword.getText().toString());
                         securityObj.updateSecuritySetting();
-                        SnackBarHandler.show(llroot,R.string.remember_password_message);
+                        SnackBarHandler.show(llroot, R.string.remember_password_message);
                         changed = true;
                     } else
-                        SnackBarHandler.show(llroot,R.string.password_dont_match);
+                        SnackBarHandler.show(llroot, R.string.password_dont_match);
                 } else
-                    SnackBarHandler.show(llroot,R.string.error_password_length);
+                    SnackBarHandler.show(llroot, R.string.error_password_length);
 
                 swActiveSecurity.setChecked(changed);
                 SP.putBoolean(getString(R.string.preference_use_password), changed);
@@ -165,7 +167,11 @@ public class SecurityActivity extends ThemedActivity {
     }
 
     private void toggleEnabledChild(boolean enable) {
-       swApplySecurityDelete.setEnabled(enable);
+        if (!enable) {
+            swApplySecurityDelete.setChecked(enable);
+            swApplySecurityHidden.setChecked(enable);
+        }
+        swApplySecurityDelete.setEnabled(enable);
         swApplySecurityHidden.setEnabled(enable);
     }
 
@@ -205,7 +211,7 @@ public class SecurityActivity extends ThemedActivity {
         imgApplySecurityDelete.setColor(color);
 
         /*TEXTVIEWS*/
-        color=getTextColor();
+        color = getTextColor();
         txtActiveSecurity.setTextColor(color);
         txtApplySecurity.setTextColor(color);
         txtApplySecurityHidden.setTextColor(color);
