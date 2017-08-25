@@ -45,8 +45,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.ViewTarget;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.opencamera.Camera.CameraActivity;
