@@ -261,7 +261,6 @@ public class PhotoView extends android.support.v7.widget.AppCompatImageView impl
     @Override
     protected void onDetachedFromWindow() {
         mAttacher.cleanup();
-        mAttacher = null;
         super.onDetachedFromWindow();
     }
 
@@ -270,4 +269,5 @@ public class PhotoView extends android.support.v7.widget.AppCompatImageView impl
         init();
         super.onAttachedToWindow();
     }
+
 }
