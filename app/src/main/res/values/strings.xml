@@ -1003,5 +1003,6 @@
     <string name="paint_color_title">Paint Color</string>
     <string name="upload_history">Upload History</string>
     <string name="toggle_button">Toggle Button</string>
+    <string name="empty_upload_msg">You haven\'t shared anything.</string>
 
 </resources>

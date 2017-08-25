@@ -1,34 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/accounts_parent"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/white">
+    android:id="@+id/accounts_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <include
         android:id="@+id/toolbar"
-        layout="@layout/toolbar"/>
+        layout="@layout/toolbar" />
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/accounts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
-        android:layout_above="@+id/bottombar">
+        android:layout_above="@+id/bottombar"
+        android:layout_below="@id/toolbar">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/accounts_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/toolbar">
-        </android.support.v7.widget.RecyclerView>
+            android:layout_below="@id/toolbar"></android.support.v7.widget.RecyclerView>
     </android.support.design.widget.CoordinatorLayout>
 
     <include
+        android:id="@+id/bottombar"
         layout="@layout/element_bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/bottombar"/>
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

@@ -1,10 +1,17 @@
 package org.fossasia.phimpme.uploadhistory;
 
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
+import com.mikepenz.iconics.view.IconicsImageView;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
@@ -28,8 +35,15 @@ public class UploadHistory extends ThemedActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    @BindView(R.id.accounts)
-    CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.empty_icon)
+    IconicsImageView emptyIcon;
+
+    @BindView(R.id.emptyLayout)
+    RelativeLayout emptyLayout;
+
+    @BindView(R.id.empty_text)
+    TextView emptyText;
+
 
     Realm realm;
 
@@ -42,24 +56,50 @@ public class UploadHistory extends ThemedActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.upload_history_activity);
         ButterKnife.bind(this);
+        setupToolbar();
         uploadHistoryAdapter = new UploadHistoryAdapter();
         realm = Realm.getDefaultInstance();
         uploadResults = realm.where(UploadHistoryRealmModel.class);
-        setSupportActionBar(toolbar);
-        toolbar.setPopupTheme(getPopupToolbarStyle());
-        toolbar.setBackgroundColor(getPrimaryColor());
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         uploadHistoryRecyclerView.setLayoutManager(layoutManager);
         uploadHistoryRecyclerView.setAdapter(uploadHistoryAdapter);
-        //uploadHistoryRecyclerView.addOnItemTouchListener(new RecyclerItemClickListner(this, this));
-
         uploadHistoryAdapter.setResults(uploadResults);
+
+        //uploadHistoryRecyclerView.addOnItemTouchListener(new RecyclerItemClickListner(this, this));
+        emptyIcon.setColor(getIconColor());
+        emptyText.setTextColor(getAccentColor());
+
 
 
     }
 
     public void setUpAdapter(@NotNull RealmQuery<UploadHistoryRealmModel> accountDetails) {
-        this.uploadResults= accountDetails;
+        this.uploadResults = accountDetails;
         uploadHistoryAdapter.setResults(uploadResults);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (uploadResults.findAll().size() == 0) {
+            emptyLayout.setVisibility(View.VISIBLE);
+            uploadHistoryRecyclerView.setVisibility(View.GONE);
+        }
+    }
+    private void setupToolbar(){
+        setSupportActionBar(toolbar);
+        toolbar.setPopupTheme(getPopupToolbarStyle());
+        toolbar.setBackgroundColor(getPrimaryColor());
+        toolbar.setNavigationIcon(
+                new IconicsDrawable(this)
+                        .icon(CommunityMaterial.Icon.cmd_arrow_left)
+                        .color(Color.WHITE)
+                        .sizeDp(19));
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
 }
