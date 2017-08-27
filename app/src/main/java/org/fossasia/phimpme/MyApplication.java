@@ -23,6 +23,7 @@ import com.twitter.sdk.android.core.TwitterConfig;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
 import io.fabric.sdk.android.Fabric;
+
 import org.fossasia.phimpme.gallery.data.Album;
 import org.fossasia.phimpme.gallery.data.HandlingAlbums;
 import org.fossasia.phimpme.utilities.Constants;
@@ -40,6 +41,7 @@ public class MyApplication extends Application {
     private HandlingAlbums albums = null;
     public static Context applicationContext;
     public ImageLoader imageLoader;
+    private Boolean isPublished = false; // Set this to true at the time of release
 
     public Album getAlbum() {
         return albums.dispAlbums.size() > 0 ? albums.getCurrentAlbum() : Album.getEmptyAlbum();
@@ -71,7 +73,8 @@ public class MyApplication extends Application {
                 .build();
         Realm.setDefaultConfiguration(realmConfiguration);
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
+        if (isPublished)
+            Fabric.with(this, new Crashlytics());
 
         /**
          * Stetho initialization
@@ -106,7 +109,7 @@ public class MyApplication extends Application {
         int MAXMEMONRY = (int) (Runtime.getRuntime().maxMemory());
         // System.out.println("dsa-->"+MAXMEMONRY+"   "+(MAXMEMONRY/5));//.memoryCache(new
         // LruMemoryCache(50 * 1024 * 1024))
-        DisplayImageOptions defaultOptions = new    DisplayImageOptions.Builder()
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .build();
@@ -127,6 +130,7 @@ public class MyApplication extends Application {
         this.imageLoader = ImageLoader.getInstance();
         imageLoader.init(config);
     }
+
     protected void checkInitImageLoader() {
         if (!ImageLoader.getInstance().isInited()) {
             initImageLoader();
