@@ -139,4 +139,62 @@ This project is currently licensed under the GNU General Public License v3. A co
 The project is maintained by
 - Hon Nguyen ([@vanhonit](https://github.com/vanhonit))
 - Mario Behling ([@mariobehling](http://github.com/mariobehling))
-- Pawan Pal ([@pa1pal](http://github.com/pa1pal)), Anant Prasad ([anantprsd5](https://github.com/anantprsd5)), Mohit Manuja ([@mohitmanuja](https://github.com/mohitmanuja)), Subhankar Shah ([@Subhankar29](https://github.com/Subhankar29)), Vinay Sajjanapu ([@vinaysajjanapu](https://github.com/vinaysajjanapu))
+
+### Developers
+<table>
+<tr>
+<td>
+     <img src="https://avatars2.githubusercontent.com/u/20367966?v=4&s=150" />
+     
+     Anant Prasad
+
+<p align="center">
+<a href = "https://github.com/anantprsd5"><img src = "https://assets-cdn.github.com/favicon.ico"/></a>
+<a href = "https://twitter.com/Anantprasad3"><img src = "https://raw.githubusercontent.com/florent37/DaVinci/master/mobile/src/main/res/drawable-hdpi/twitter.png" width="32" height="32"/></a>
+</p>
+</td>
+
+<td>
+     <img src="https://avatars0.githubusercontent.com/u/9361754?v=4&s=150"/>
+     
+     Mohit Manuja
+
+<p align="center">
+<a href = "https://github.com/mohitmanuja"><img src = "https://assets-cdn.github.com/favicon.ico"/></a>
+<a href = "https://twitter.com/manuja_mohit"><img src = "https://raw.githubusercontent.com/florent37/DaVinci/master/mobile/src/main/res/drawable-hdpi/twitter.png" width="32" height="32"/></a>
+</p>
+</td>
+
+<td>
+     <img src="https://avatars1.githubusercontent.com/u/6936968?v=4&s=150" />
+     
+     Pawan Pal
+
+<p align="center">
+<a href = "https://github.com/pa1pal"><img src = "https://assets-cdn.github.com/favicon.ico"/></a>
+<a href = "https://twitter.com/pa1pal"><img src = "https://raw.githubusercontent.com/florent37/DaVinci/master/mobile/src/main/res/drawable-hdpi/twitter.png" width="32" height="32"/></a>
+</p>
+</td>
+
+<td>
+     <img src="https://avatars0.githubusercontent.com/u/17337006?v=4&s=150"/>
+     
+     Subhankar Shah
+
+<p align="center">
+<a href = "https://github.com/Subhankar29"><img src = "https://assets-cdn.github.com/favicon.ico"/></a>
+<a href = "https://twitter.com/sole_subhankar"><img src = "https://raw.githubusercontent.com/florent37/DaVinci/master/mobile/src/main/res/drawable-hdpi/twitter.png" width="32" height="32"/></a>
+</p>
+</td>
+
+<td>
+     <img src="https://avatars2.githubusercontent.com/u/15368561?v=4&s=150"/>
+     
+     Vinay Sajjanapu
+<p align="center">
+<a href = "https://github.com/vinaysajjanapu"><img src = "https://assets-cdn.github.com/favicon.ico"/></a>
+<a href = "https://twitter.com/sajjanapu_vinay"><img src = "https://raw.githubusercontent.com/florent37/DaVinci/master/mobile/src/main/res/drawable-hdpi/twitter.png" width="32" height="32"/></a>
+</p>
+</td>
+</tr> 
+  </table>
