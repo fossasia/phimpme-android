@@ -43,6 +43,7 @@ import com.box.androidsdk.content.models.BoxFile;
 import com.box.androidsdk.content.models.BoxSession;
 import com.box.androidsdk.content.requests.BoxRequestsFile;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.dropbox.client2.DropboxAPI;
@@ -57,9 +58,6 @@ import com.facebook.share.model.SharePhotoContent;
 import com.google.android.gms.plus.PlusShare;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.owncloud.android.lib.common.OwnCloudClient;
 import com.owncloud.android.lib.common.OwnCloudClientFactory;
 import com.owncloud.android.lib.common.OwnCloudCredentialsFactory;
@@ -77,7 +75,6 @@ import com.tumblr.jumblr.JumblrClient;
 import com.tumblr.jumblr.types.PhotoPost;
 import com.tumblr.jumblr.types.User;
 
-import org.fossasia.phimpme.MyApplication;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.PhimpmeProgressBarHandler;
 import org.fossasia.phimpme.base.RecyclerItemClickListner;
@@ -263,14 +260,17 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     private void initView() {
         saveFilePath = getIntent().getStringExtra(EXTRA_OUTPUT);
         Uri uri = Uri.fromFile(new File(saveFilePath));
-        ImageLoader imageLoader = ((MyApplication)getApplicationContext()).getImageLoader();
-        DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .cacheOnDisc(true)
-                .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
-                .cacheInMemory(true)
-                .bitmapConfig(Bitmap.Config.RGB_565)
-                .build();
-        imageLoader.displayImage(uri.toString(), shareImage, options);
+//        ImageLoader imageLoader = ((MyApplication)getApplicationContext()).getImageLoader();
+//        DisplayImageOptions options = new DisplayImageOptions.Builder()
+//                .cacheOnDisc(true)
+//                .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+//                .cacheInMemory(true)
+//                .bitmapConfig(Bitmap.Config.RGB_565)
+//                .build();
+//        imageLoader.displayImage(uri.toString(), shareImage, options);
+        Glide.with(getApplicationContext()).load(uri)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(shareImage);
     }
 
     @Override
