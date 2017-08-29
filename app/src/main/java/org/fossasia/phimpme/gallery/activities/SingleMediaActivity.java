@@ -581,6 +581,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
                     @Override
                     public void folderSelected(String path) {
                         getAlbum().moveCurrentMedia(getApplicationContext(), path);
+                        getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
 
                         if (getAlbum().getMedia().size() == 0) {
                             if (customUri) finish();
