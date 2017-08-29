@@ -509,48 +509,8 @@ public class SettingsActivity extends ThemedActivity {
         CardView dialogCardView = (CardView) dialogLayout.findViewById(R.id.cp_primary_card);
         dialogCardView.setCardBackgroundColor(getCardBackgroundColor());
 
-        colorPicker.setColors(ColorPalette.getBaseColors(getApplicationContext()));
-        for (int i : colorPicker.getColors())
-            for (int i2 : ColorPalette.getColors(getBaseContext(), i))
-                if (i2 == getPrimaryColor()) {
-                    colorPicker.setSelectedColor(i);
-                    colorPicker2.setColors(ColorPalette.getColors(getBaseContext(), i));
-                    colorPicker2.setSelectedColor(i2);
-                    break;}
+        setColor(colorPicker, colorPicker2, dialogTitle);
 
-        dialogTitle.setBackgroundColor(getPrimaryColor());
-
-        colorPicker.setOnColorChangedListener(new OnColorChangedListener() {
-            @Override
-            public void onColorChanged(int c) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    if (isTranslucentStatusBar()) {
-                        getWindow().setStatusBarColor(ColorPalette.getObscuredColor(getPrimaryColor()));
-                    } else getWindow().setStatusBarColor(c);
-                }
-
-                toolbar.setBackgroundColor(c);
-                dialogTitle.setBackgroundColor(c);
-                colorPicker2.setColors(ColorPalette.getColors(getApplicationContext(), colorPicker.getColor()));
-                colorPicker2.setSelectedColor(colorPicker.getColor());
-            }
-        });
-        colorPicker2.setOnColorChangedListener(new OnColorChangedListener() {
-            @Override
-            public void onColorChanged(int c) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    if (isTranslucentStatusBar()) {
-                        getWindow().setStatusBarColor(ColorPalette.getObscuredColor(c));
-                    } else getWindow().setStatusBarColor(c);
-                    if (isNavigationBarColored())
-                        getWindow().setNavigationBarColor(c);
-                    else
-                        getWindow().setNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.md_black_1000));
-                }
-                toolbar.setBackgroundColor(c);
-                dialogTitle.setBackgroundColor(c);
-            }
-        });
         dialogBuilder.setView(dialogLayout);
 
         dialogBuilder.setNeutralButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
@@ -598,6 +558,51 @@ public class SettingsActivity extends ThemedActivity {
             }
         });
         dialogBuilder.show();
+    }
+
+    private void setColor(final LineColorPicker colorPicker, final LineColorPicker colorPicker2, final TextView dialogTitle) {
+        colorPicker.setColors(ColorPalette.getBaseColors(getApplicationContext()));
+        for (int i : colorPicker.getColors())
+            for (int i2 : ColorPalette.getColors(getBaseContext(), i))
+                if (i2 == getPrimaryColor()) {
+                    colorPicker.setSelectedColor(i);
+                    colorPicker2.setColors(ColorPalette.getColors(getBaseContext(), i));
+                    colorPicker2.setSelectedColor(i2);
+                    break;}
+
+        dialogTitle.setBackgroundColor(getPrimaryColor());
+
+        colorPicker.setOnColorChangedListener(new OnColorChangedListener() {
+            @Override
+            public void onColorChanged(int c) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    if (isTranslucentStatusBar()) {
+                        getWindow().setStatusBarColor(ColorPalette.getObscuredColor(getPrimaryColor()));
+                    } else getWindow().setStatusBarColor(c);
+                }
+
+                toolbar.setBackgroundColor(c);
+                dialogTitle.setBackgroundColor(c);
+                colorPicker2.setColors(ColorPalette.getColors(getApplicationContext(), colorPicker.getColor()));
+                colorPicker2.setSelectedColor(colorPicker.getColor());
+            }
+        });
+        colorPicker2.setOnColorChangedListener(new OnColorChangedListener() {
+            @Override
+            public void onColorChanged(int c) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    if (isTranslucentStatusBar()) {
+                        getWindow().setStatusBarColor(ColorPalette.getObscuredColor(c));
+                    } else getWindow().setStatusBarColor(c);
+                    if (isNavigationBarColored())
+                        getWindow().setNavigationBarColor(c);
+                    else
+                        getWindow().setNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.md_black_1000));
+                }
+                toolbar.setBackgroundColor(c);
+                dialogTitle.setBackgroundColor(c);
+            }
+        });
     }
 
     private void accentColorPiker(){
