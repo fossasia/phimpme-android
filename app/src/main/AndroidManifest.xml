@@ -307,7 +307,7 @@
         </provider>
         <provider
             android:name="com.facebook.FacebookContentProvider"
-            android:authorities="com.facebook.app.FacebookContentProvider111535049486318"
+            android:authorities="com.facebook.app.FacebookContentProvider125766838062659"
             android:exported="true" />
 
         <activity
