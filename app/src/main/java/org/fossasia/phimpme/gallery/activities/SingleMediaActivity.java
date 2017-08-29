@@ -623,7 +623,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
                 AlertDialog.Builder descriptionDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
                 editTextDescription = getDescriptionDialog(SingleMediaActivity.this, descriptionDialogBuilder);
                 descriptionDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-                descriptionDialogBuilder.setPositiveButton(temp==null?getString(R.string.ok_action).toUpperCase():getString(R.string.update_action), new DialogInterface.OnClickListener() {
+                descriptionDialogBuilder.setPositiveButton((temp!=null && temp.getTitle().length()!=0)?getString(R.string.update_action):getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //This should br empty it will be overwrite later
@@ -679,7 +679,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
         realm = Realm.getDefaultInstance();
         databaseHelper =new DatabaseHelper(realm);
         temp= databaseHelper.getImageDesc(pathForDescription);
-        if(temp != null) {
+        if(temp != null && temp.getTitle().length()!=0) {
             editxtDescription.setText(temp.getTitle());
             editxtDescription.setSelection(editxtDescription.getText().length());
             Toast.makeText(SingleMediaActivity.this, voiceInput, Toast.LENGTH_SHORT).show();
@@ -854,4 +854,3 @@ public class SingleMediaActivity extends SharedMediaActivity {
         }
     }
 }
-
