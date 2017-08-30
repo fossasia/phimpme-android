@@ -84,7 +84,6 @@ public class MyApplication extends Application {
                         .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
                         .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
                         .build());
-        checkInitImageLoader();
     }
 
     @Override
@@ -104,40 +103,6 @@ public class MyApplication extends Application {
         albums.loadAlbums(getApplicationContext());
     }
 
-    private void initImageLoader() {
-        File cacheDir = com.nostra13.universalimageloader.utils.StorageUtils.getCacheDirectory(this);
-        int MAXMEMONRY = (int) (Runtime.getRuntime().maxMemory());
-        // System.out.println("dsa-->"+MAXMEMONRY+"   "+(MAXMEMONRY/5));//.memoryCache(new
-        // LruMemoryCache(50 * 1024 * 1024))
-        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .build();
 
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-                this).memoryCacheExtraOptions(480, 800).defaultDisplayImageOptions(defaultOptions)
-                .diskCacheExtraOptions(480, 800, null).threadPoolSize(3)
-                .threadPriority(Thread.NORM_PRIORITY - 2)
-                .tasksProcessingOrder(QueueProcessingType.FIFO)
-                .denyCacheImageMultipleSizesInMemory()
-                .memoryCache(new LruMemoryCache(MAXMEMONRY / 5))
-                .diskCache(new UnlimitedDiskCache(cacheDir))
-                .diskCacheFileNameGenerator(new HashCodeFileNameGenerator()) // default
-                .imageDownloader(new BaseImageDownloader(this)) // default
-                .imageDecoder(new BaseImageDecoder(false)) // default
-                .defaultDisplayImageOptions(DisplayImageOptions.createSimple()).build();
 
-        this.imageLoader = ImageLoader.getInstance();
-        imageLoader.init(config);
-    }
-
-    protected void checkInitImageLoader() {
-        if (!ImageLoader.getInstance().isInited()) {
-            initImageLoader();
-        }
-    }
-
-    public ImageLoader getImageLoader() {
-        return imageLoader;
-    }
 }
