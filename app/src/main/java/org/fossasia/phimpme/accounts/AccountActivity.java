@@ -462,8 +462,10 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
      */
     public void signInFacebook() {
 
+        List<String> permissionNeeds = Arrays.asList("publish_actions");
         loginManager = LoginManager.getInstance();
-        loginManager.logInWithReadPermissions(this, Arrays.asList("email", "public_profile"));
+        loginManager.logInWithPublishPermissions(this, permissionNeeds);
+        //loginManager.logInWithReadPermissions(this, Arrays.asList("email", "public_profile"));
         loginManager.registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
