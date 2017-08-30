@@ -260,14 +260,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     private void initView() {
         saveFilePath = getIntent().getStringExtra(EXTRA_OUTPUT);
         Uri uri = Uri.fromFile(new File(saveFilePath));
-//        ImageLoader imageLoader = ((MyApplication)getApplicationContext()).getImageLoader();
-//        DisplayImageOptions options = new DisplayImageOptions.Builder()
-//                .cacheOnDisc(true)
-//                .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
-//                .cacheInMemory(true)
-//                .bitmapConfig(Bitmap.Config.RGB_565)
-//                .build();
-//        imageLoader.displayImage(uri.toString(), shareImage, options);
         Glide.with(getApplicationContext()).load(uri)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(shareImage);
