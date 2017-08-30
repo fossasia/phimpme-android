@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
@@ -55,6 +56,7 @@ import com.facebook.messenger.ShareToMessengerParams;
 import com.facebook.share.ShareApi;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareDialog;
 import com.google.android.gms.plus.PlusShare;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
@@ -123,12 +125,14 @@ import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.OTHERS
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTER;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_SECRET;
+import static org.fossasia.phimpme.utilities.Constants.PACKAGE_FACEBOOK;
 import static org.fossasia.phimpme.utilities.Utils.checkNetwork;
 import static org.fossasia.phimpme.utilities.Utils.copyToClipBoard;
 import static org.fossasia.phimpme.utilities.Utils.getBitmapFromPath;
 import static org.fossasia.phimpme.utilities.Utils.getImageUri;
 import static org.fossasia.phimpme.utilities.Utils.getMimeType;
 import static org.fossasia.phimpme.utilities.Utils.getStringImage;
+import static org.fossasia.phimpme.utilities.Utils.isAppInstalled;
 import static org.fossasia.phimpme.utilities.Utils.promptSpeechInput;
 import static org.fossasia.phimpme.utilities.Utils.shareMsgOnIntent;
 
@@ -202,6 +206,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     public boolean uploadFailedBox = false;
     public String uploadName;
+    ShareDialog shareDialog;
 
     public static String getClientAuth() {
         return Constants.IMGUR_HEADER_CLIENt + " " + Constants.MY_IMGUR_CLIENT_ID;
@@ -227,6 +232,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         setStatusBarColor();
         checkNetwork(this, parent);
         configureBoxClient();
+        shareDialog = new ShareDialog(this);
     }
 
     private void configureBoxClient() {
@@ -725,7 +731,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void shareToFacebook() {
-        if (Utils.checkAlreadyExist(FACEBOOK)) {
+        PackageManager packageManager = (ActivitySwitchHelper.context).getPackageManager();
+        if (isAppInstalled(PACKAGE_FACEBOOK, packageManager)) {
             Bitmap image = getBitmapFromPath(saveFilePath);
             SharePhoto photo = new SharePhoto.Builder()
                     .setBitmap(image)
@@ -736,12 +743,11 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                     .addPhoto(photo)
                     .build();
 
-            ShareApi.share(content, null);
-            SnackBarHandler.show(parent, R.string.facebook_image_posted);
-        } else {
-            SnackBarHandler.show(parent, R.string.facebook_signIn_fail);
-        }
+            shareDialog.show(content);
+        } else
+            SnackBarHandler.show(parent, R.string.install_facebook);
     }
+
 
     private void shareToOthers() {
         Uri uri = Uri.fromFile(new File(saveFilePath));
