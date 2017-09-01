@@ -151,6 +151,7 @@ The project is maintained by
 <p align="center">
 <a href = "https://github.com/anantprsd5"><img src = "https://assets-cdn.github.com/favicon.ico"/></a>
 <a href = "https://twitter.com/Anantprasad3"><img src = "https://raw.githubusercontent.com/florent37/DaVinci/master/mobile/src/main/res/drawable-hdpi/twitter.png" width="32" height="32"/></a>
+<a href = "https://www.linkedin.com/in/anant-prasad-82b7a2119/"><img src = "/docs/linkedin.png" width="32" height="32"/></a>
 </p>
 </td>
 
@@ -162,6 +163,7 @@ The project is maintained by
 <p align="center">
 <a href = "https://github.com/mohitmanuja"><img src = "https://assets-cdn.github.com/favicon.ico"/></a>
 <a href = "https://twitter.com/manuja_mohit"><img src = "https://raw.githubusercontent.com/florent37/DaVinci/master/mobile/src/main/res/drawable-hdpi/twitter.png" width="32" height="32"/></a>
+<a href = "https://www.linkedin.com/in/mohitmanuja/"><img src = "/docs/linkedin.png" width="32" height="32"/></a>
 </p>
 </td>
 
@@ -173,6 +175,7 @@ The project is maintained by
 <p align="center">
 <a href = "https://github.com/pa1pal"><img src = "https://assets-cdn.github.com/favicon.ico"/></a>
 <a href = "https://twitter.com/pa1pal"><img src = "https://raw.githubusercontent.com/florent37/DaVinci/master/mobile/src/main/res/drawable-hdpi/twitter.png" width="32" height="32"/></a>
+<a href = "https://www.linkedin.com/in/pa1pal/"><img src = "/docs/linkedin.png" width="32" height="32"/></a>
 </p>
 </td>
 
@@ -184,6 +187,7 @@ The project is maintained by
 <p align="center">
 <a href = "https://github.com/Subhankar29"><img src = "https://assets-cdn.github.com/favicon.ico"/></a>
 <a href = "https://twitter.com/sole_subhankar"><img src = "https://raw.githubusercontent.com/florent37/DaVinci/master/mobile/src/main/res/drawable-hdpi/twitter.png" width="32" height="32"/></a>
+<a href = "https://www.linkedin.com/in/subhankar-shah-12245b130/"><img src = "/docs/linkedin.png" width="32" height="32"/></a>
 </p>
 </td>
 
@@ -194,6 +198,7 @@ The project is maintained by
 <p align="center">
 <a href = "https://github.com/vinaysajjanapu"><img src = "https://assets-cdn.github.com/favicon.ico"/></a>
 <a href = "https://twitter.com/sajjanapu_vinay"><img src = "https://raw.githubusercontent.com/florent37/DaVinci/master/mobile/src/main/res/drawable-hdpi/twitter.png" width="32" height="32"/></a>
+<a href = "https://www.linkedin.com/in/vinay-sajjanapu-a315ab21/"><img src = "/docs/linkedin.png" width="32" height="32"/></a>
 </p>
 </td>
 </tr> 
