@@ -116,7 +116,7 @@ public class AboutActivity extends ThemedActivity {
 
     private void setUpActions(){
 
-        phimpme-android/app/src/main/java/org/fossasia/phimpme/g
+
         //GitHub
         findViewById(R.id.ll_about_support_github).setOnClickListener(new View.OnClickListener() {
             @Override
