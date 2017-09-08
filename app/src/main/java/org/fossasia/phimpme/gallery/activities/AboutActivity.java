@@ -116,6 +116,7 @@ public class AboutActivity extends ThemedActivity {
 
     private void setUpActions(){
 
+
         //GitHub
         findViewById(R.id.ll_about_support_github).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,8 +131,21 @@ public class AboutActivity extends ThemedActivity {
                 cts.launchUrl("https://github.com/fossasia/phimpme-android/issues");
             }
         });
-
-
+         //openCamera
+        findViewById(R.id.about_patryk_goworowski_item_sub).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cts.launchUrl("http://opencamera.sourceforge.net/");
+            }
+        });
+        //LeafPic
+        findViewById(R.id.about_community_members_sub).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cts.launchUrl("https://github.com/HoraApps/LeafPic");
+            }
+        });
+        
         //License
         findViewById(R.id.ll_about_license).setOnClickListener(new View.OnClickListener() {
             @Override
