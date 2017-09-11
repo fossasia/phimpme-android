@@ -106,7 +106,7 @@ public class LFMainActivity extends SharedMediaActivity {
     private Toolbar toolbar;
     private SelectAlbumBottomSheet bottomSheetDialogFragment;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private boolean hidden = false, pickMode = false, editMode = false, albumsMode = true, firstLaunch = true;
+    private boolean hidden = false, pickMode = false, editMode = false, albumsMode = true, firstLaunch = true,localFolder=true;
 
     //To handle all photos/Album conditions
     public boolean all_photos = false;
@@ -368,8 +368,13 @@ public class LFMainActivity extends SharedMediaActivity {
     }
 
     private void displayAlbums(boolean reload) {
+        if(localFolder) {
+            toolbar.setTitle(getString(R.string.local_folder));
+        }
+        else{
+            toolbar.setTitle(getString(R.string.hidden_folder));
+        }
         toolbar.setNavigationIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_menu));
-        toolbar.setTitle(getString(R.string.app_name));
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         albumsAdapter.swapDataSet(getAlbums().dispAlbums);
         if (reload) new PrepareAlbumTask().execute();
@@ -587,6 +592,12 @@ public class LFMainActivity extends SharedMediaActivity {
         //TODO: MUST BE FIXED
         toolbar.setPopupTheme(getPopupToolbarStyle());
         toolbar.setBackgroundColor(getPrimaryColor());
+        if(localFolder) {
+            toolbar.setTitle(getString(R.string.local_folder));
+        }
+        else{
+            toolbar.setTitle(getString(R.string.hidden_folder));
+        }
 
         /**** SWIPE TO REFRESH ****/
         swipeRefreshLayout.setColorSchemeColors(getAccentColor());
@@ -667,6 +678,8 @@ public class LFMainActivity extends SharedMediaActivity {
         findViewById(R.id.ll_drawer_Default).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                localFolder=true;
+                toolbar.setTitle(getString(R.string.local_folder));
                 hidden = false;
                 mDrawerLayout.closeDrawer(GravityCompat.START);
                 new PrepareAlbumTask().execute();
@@ -675,8 +688,9 @@ public class LFMainActivity extends SharedMediaActivity {
         findViewById(R.id.ll_drawer_hidden).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                localFolder=false;
+                toolbar.setTitle(getString(R.string.hidden_folder));
                 if (securityObj.isActiveSecurity() && securityObj.isPasswordOnHidden()) {
-
                     AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
                     final EditText editTextPassword = securityObj.getInsertPasswordDialog(LFMainActivity.this, passwordDialogBuilder);
                     passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
@@ -748,7 +762,6 @@ public class LFMainActivity extends SharedMediaActivity {
             if (editMode)
                 toolbar.setTitle(getAlbums().getSelectedCount() + "/" + getAlbums().dispAlbums.size());
             else {
-                toolbar.setTitle(getString(R.string.app_name));
                 toolbar.setNavigationIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_menu));
                 toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                     @Override
