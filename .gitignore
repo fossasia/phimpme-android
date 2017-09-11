@@ -5,6 +5,8 @@
 .externalNativeBuild
 local.properties
 build
+.directory
+/app/.directory
 /app/src/main/3rdparty/
 /app/src/main/jniLibs/
 libopencv_*
