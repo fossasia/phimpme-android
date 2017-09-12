@@ -116,7 +116,13 @@ public class AboutActivity extends ThemedActivity {
 
     private void setUpActions(){
 
-
+        //Fossasia contributors
+        findViewById(R.id.about_fossasia).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cts.launchUrl("https://github.com/fossasia/phimpme-android/graphs/contributors");
+            }
+        });
         //GitHub
         findViewById(R.id.ll_about_support_github).setOnClickListener(new View.OnClickListener() {
             @Override
