@@ -1391,17 +1391,23 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 								.show();
 					}
                     else {
-                        final List<String> colorEffect = getSupportedColorEffects();
-                        colorNum++;
-                        if (colorNum == colorEffect.size())
-                            colorNum = 0;
-                        final String color = colorEffect.get(colorNum);
-                        CameraController.SupportedValues supported_values = camera_controller.setColorEffect(color);
-                        if (supported_values != null) {
-                            color_effects = supported_values.values;
-                            applicationInterface.setColorEffectPref(supported_values.selected_value);
-                        } else {
-                            applicationInterface.clearColorEffectPref();
+                        try {
+                            final List<String> colorEffect = getSupportedColorEffects();
+                            colorNum++;
+                            if (colorNum == colorEffect.size())
+                                colorNum = 0;
+                            final String color = colorEffect.get(colorNum);
+                            CameraController.SupportedValues supported_values = camera_controller.setColorEffect(color);
+                            if (supported_values != null) {
+                                color_effects = supported_values.values;
+                                applicationInterface.setColorEffectPref(supported_values.selected_value);
+                            } else {
+                                applicationInterface.clearColorEffectPref();
+                            }
+                        }catch (Exception e)
+                        {
+                            Toast.makeText(activity, "Your device does not support any filters", Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, "ColorEffect List Size Is Null " );
                         }
                     }
                     SharedPreferences.Editor editor = sharedPreferences.edit();
