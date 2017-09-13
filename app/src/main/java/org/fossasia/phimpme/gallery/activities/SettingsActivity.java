@@ -244,7 +244,7 @@ public class SettingsActivity extends ThemedActivity {
                 SP.putBoolean(getString(R.string.preference_translucent_status_bar), isChecked);
                 updateTheme();
                 setStatusBarColor();
-                Toast.makeText(SettingsActivity.this, "Please restart the app for better results!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingsActivity.this, getString(R.string.restart_app), Toast.LENGTH_SHORT).show();
                 updateSwitchColor(swStatusBar, getAccentColor());
             }
         });
