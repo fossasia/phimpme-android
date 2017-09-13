@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -70,6 +71,7 @@ import org.fossasia.phimpme.gallery.util.StringUtils;
 import org.fossasia.phimpme.gallery.views.GridSpacingItemDecoration;
 import org.fossasia.phimpme.uploadhistory.UploadHistory;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
+import org.fossasia.phimpme.utilities.Constants;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 import java.io.File;
@@ -651,27 +653,42 @@ public class LFMainActivity extends SharedMediaActivity {
         findViewById(R.id.ll_drawer_Setting).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LFMainActivity.this, SettingsActivity.class);
                 mDrawerLayout.closeDrawer(GravityCompat.START);
-                startActivity(intent);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(LFMainActivity.this, SettingsActivity.class);
+                        startActivity(intent);
+                    }
+                }, Constants.NAVIGATION_DRAWER_EXIT_TIME);
             }
         });
 
         findViewById(R.id.ll_drawer_About).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LFMainActivity.this, AboutActivity.class);
                 mDrawerLayout.closeDrawer(GravityCompat.START);
-                startActivity(intent);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(LFMainActivity.this, AboutActivity.class);
+                        startActivity(intent);
+                    }
+                },Constants.NAVIGATION_DRAWER_EXIT_TIME);
             }
         });
 
         findViewById(R.id.ll_drawer_uploadhistory).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LFMainActivity.this, UploadHistory.class);
                 mDrawerLayout.closeDrawer(GravityCompat.START);
-                startActivity(intent);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(LFMainActivity.this, UploadHistory.class);
+                        startActivity(intent);
+                    }
+                },Constants.NAVIGATION_DRAWER_EXIT_TIME);
             }
         });
 
@@ -685,6 +702,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 new PrepareAlbumTask().execute();
             }
         });
+
         findViewById(R.id.ll_drawer_hidden).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

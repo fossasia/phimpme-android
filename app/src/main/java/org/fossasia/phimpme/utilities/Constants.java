@@ -46,6 +46,8 @@ public class Constants {
     public final static String PACKAGE_PLAYSTORE = "com.android.vending";
     public final static String PACKAGE_TELEGRAM = "org.telegram.messenger";
 
+    public final static int NAVIGATION_DRAWER_EXIT_TIME = 260;
+
 }
 
 
