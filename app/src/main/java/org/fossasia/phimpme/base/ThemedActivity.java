@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.SwitchCompat;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -21,12 +22,12 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.context.IconicsContextWrapper;
 import com.mikepenz.iconics.typeface.IIcon;
 
-import java.util.ArrayList;
-
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.gallery.util.ColorPalette;
 import org.fossasia.phimpme.gallery.util.PreferenceUtil;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
+
+import java.util.ArrayList;
 
 /**
  * Created by dnld on 23/02/16.
@@ -82,10 +83,12 @@ public class ThemedActivity extends BaseActivity {
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     protected void setStatusBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            //if (isTranslucentStatusBar())
-            getWindow().setStatusBarColor(ColorPalette.getObscuredColor(getPrimaryColor()));
-            /*else
-                getWindow().setStatusBarColor(getPrimaryColor());*/
+            if (isTranslucentStatusBar())
+               getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            else {
+                getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                getWindow().setStatusBarColor(ColorPalette.getObscuredColor(getPrimaryColor()));
+            }
         }
     }
 

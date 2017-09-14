@@ -4,4 +4,4 @@
     style="@style/MyToolbar"
     app:layout_scrollFlags="scroll|enterAlways"
     android:layout_width="match_parent"
-    android:layout_height="?actionBarSize" />
+    android:layout_height="wrap_content" />

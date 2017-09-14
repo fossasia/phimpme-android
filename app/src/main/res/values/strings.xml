@@ -1005,5 +1005,6 @@
     <string name="toggle_button">Toggle Button</string>
     <string name="empty_upload_msg">You haven\'t shared anything.</string>
     <string name="install_facebook">Facebook not installed</string>
+    <string name="restart_app">Please restart the app for better results!</string>
 
 </resources>
