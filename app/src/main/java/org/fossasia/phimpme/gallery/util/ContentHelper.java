@@ -15,6 +15,7 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.provider.DocumentFile;
 import android.util.Log;
@@ -311,7 +312,7 @@ public class ContentHelper {
 
 	public static HashSet<File> getStorageRoots(Context context) {
 		HashSet<File> paths = new HashSet<File>();
-		for (File file : context.getExternalFilesDirs("external")) {
+		for (File file : ContextCompat.getExternalFilesDirs(context, "external")) {
 			if (file != null) {
 				int index = file.getAbsolutePath().lastIndexOf("/Android/data");
 				if (index < 0) Log.w("asd", "Unexpected external file dir: " + file.getAbsolutePath());
