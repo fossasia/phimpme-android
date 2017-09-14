@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 
 import org.fossasia.phimpme.R;
@@ -97,6 +98,8 @@ public class PhotoActivity extends ThemedActivity {
             if (!TextUtils.isEmpty(FILE_PATH)) {
                 Glide.with(this)
                         .load(new File(FILE_PATH))
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .thumbnail(0.5f)
                         .into(imageView);
                 return;
             }
