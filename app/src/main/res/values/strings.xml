@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Phimpme</string>
+    <string name="app_name">Phimp.me</string>
     <string name="title_gallery">Gallery</string>
     <string name="title_camera">Camera</string>
     <string name="title_account">Accounts</string>
@@ -418,7 +418,7 @@
     <!-- ACTIONS -->
     <string name="sort">Sort</string>
     <string name="camera">Camera</string>
-    <string name="phimpme_camera">Phimpme Camera</string>
+    <string name="phimpme_camera">Phimp.me Camera</string>
     <string name="exclude">Exclude</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
@@ -615,7 +615,7 @@
     <string name="address_copied">Address copied to clipboard</string>
     <string name="coming_soon">Coming Soon!</string>
 
-    <string name="share_phimpme">Share Phimpme</string>
+    <string name="share_phimpme">Share Phimp.me</string>
 
     <!--Invitation-->
     <string name="install_phimpme">Download the best image application to make your moments more memorable by clicking, editing, sharing images with friends on social media, all at one place.</string>
@@ -627,10 +627,10 @@
     <string name="about_version">Version</string>
 
     <string name="about_license"> License</string>
-    <string name="about_license_sub">Check GNU GENERAL PUBLIC License terms used on Phimpme.</string>
+    <string name="about_license_sub">Check GNU GENERAL PUBLIC License terms used on Phimp.me.</string>
 
     <string name="about_library_license">Library Licenses</string>
-    <string name="about_library_license_sub">Check third-party libs used on Phimpme.</string>
+    <string name="about_library_license_sub">Check third-party libs used on Phimp.me.</string>
 
     <string name="about_authors">Authors</string>
     <string name="about_author_donald_description">
@@ -662,7 +662,7 @@
     <string name="about_support_report_bug_sub">Report bug or request new features.</string>
 
     <string name="about_support_rate">Rate Us</string>
-    <string name="about_support_rate_sub">Leave us a positive rating if you like Phimpme.</string>
+    <string name="about_support_rate_sub">Leave us a positive rating if you like Phimp.me.</string>
 
     <string name="about_support_github">GitHub</string>
     <string name="about_support_github_sub">Fork the repo and push changes or submit new issues.</string>
@@ -789,11 +789,11 @@
 
     <!--App shortcuts-->
     <string name="camera_short">Camera</string>
-    <string name="camera_long">Opens Phimpme Camera</string>
+    <string name="camera_long">Opens Phimp.me Camera</string>
     <string name="home_short">Gallery</string>
-    <string name="home_long">Opens Phimpme Gallery</string>
+    <string name="home_long">Opens Phimp.me Gallery</string>
     <string name="account_short">Accounts</string>
-    <string name="account_long">Opens Phimpme Account</string>
+    <string name="account_long">Opens Phimp.me Account</string>
 
     <!--All photos-->
     <string name="all_photos">All_photos</string>
