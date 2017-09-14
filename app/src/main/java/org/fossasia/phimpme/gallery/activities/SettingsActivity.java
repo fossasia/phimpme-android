@@ -423,9 +423,19 @@ public class SettingsActivity extends ThemedActivity {
         final TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.basic_theme_title);
         final CardView dialogCardView = (CardView) dialogLayout.findViewById(R.id.basic_theme_card);
 
+        final IconicsImageView themeIconWhite = (IconicsImageView) dialogLayout.findViewById(R.id.white_basic_theme_icon);
+        final IconicsImageView themeIconDark = (IconicsImageView) dialogLayout.findViewById(R.id.dark_basic_theme_icon);
+        final IconicsImageView themeIconDarkAmoled = (IconicsImageView) dialogLayout.findViewById(R.id.dark_amoled_basic_theme_icon);
         final IconicsImageView whiteSelect = (IconicsImageView) dialogLayout.findViewById(R.id.white_basic_theme_select);
         final IconicsImageView darkSelect = (IconicsImageView) dialogLayout.findViewById(R.id.dark_basic_theme_select);
         final IconicsImageView darkAmoledSelect = (IconicsImageView) dialogLayout.findViewById(R.id.dark_amoled_basic_theme_select);
+
+        themeIconWhite.setIcon("gmd-invert-colors");
+        themeIconDark.setIcon("gmd-invert-colors");
+        themeIconDarkAmoled.setIcon("gmd-invert-colors");
+        whiteSelect.setIcon("gmd-done");
+        darkSelect.setIcon("gmd-done");
+        darkAmoledSelect.setIcon("gmd-done");
 
         switch (getBaseTheme()){
             case ThemeHelper.LIGHT_THEME:
