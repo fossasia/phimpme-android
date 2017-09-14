@@ -24,6 +24,7 @@ import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -32,21 +33,21 @@ import com.mikepenz.iconics.view.IconicsImageView;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.gallery.util.ColorPalette;
-import org.fossasia.phimpme.gallery.util.SecurityHelper;
-import org.fossasia.phimpme.gallery.util.ThemeHelper;
 import org.fossasia.phimpme.gallery.util.PreferenceUtil;
+import org.fossasia.phimpme.gallery.util.SecurityHelper;
 import org.fossasia.phimpme.gallery.util.StaticMapProvider;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import uz.shift.colorpicker.LineColorPicker;
-import uz.shift.colorpicker.OnColorChangedListener;
+import org.fossasia.phimpme.gallery.util.ThemeHelper;
 import org.fossasia.phimpme.opencamera.Camera.CameraActivity;
 import org.fossasia.phimpme.opencamera.Camera.MyPreferenceFragment;
 import org.fossasia.phimpme.opencamera.Camera.PreferenceKeys;
 import org.fossasia.phimpme.opencamera.Camera.TinyDB;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import uz.shift.colorpicker.LineColorPicker;
+import uz.shift.colorpicker.OnColorChangedListener;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
@@ -243,6 +244,7 @@ public class SettingsActivity extends ThemedActivity {
                 SP.putBoolean(getString(R.string.preference_translucent_status_bar), isChecked);
                 updateTheme();
                 setStatusBarColor();
+                Toast.makeText(SettingsActivity.this, getString(R.string.restart_app), Toast.LENGTH_SHORT).show();
                 updateSwitchColor(swStatusBar, getAccentColor());
             }
         });
@@ -423,9 +425,19 @@ public class SettingsActivity extends ThemedActivity {
         final TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.basic_theme_title);
         final CardView dialogCardView = (CardView) dialogLayout.findViewById(R.id.basic_theme_card);
 
+        final IconicsImageView themeIconWhite = (IconicsImageView) dialogLayout.findViewById(R.id.white_basic_theme_icon);
+        final IconicsImageView themeIconDark = (IconicsImageView) dialogLayout.findViewById(R.id.dark_basic_theme_icon);
+        final IconicsImageView themeIconDarkAmoled = (IconicsImageView) dialogLayout.findViewById(R.id.dark_amoled_basic_theme_icon);
         final IconicsImageView whiteSelect = (IconicsImageView) dialogLayout.findViewById(R.id.white_basic_theme_select);
         final IconicsImageView darkSelect = (IconicsImageView) dialogLayout.findViewById(R.id.dark_basic_theme_select);
         final IconicsImageView darkAmoledSelect = (IconicsImageView) dialogLayout.findViewById(R.id.dark_amoled_basic_theme_select);
+
+        themeIconWhite.setIcon("gmd-invert-colors");
+        themeIconDark.setIcon("gmd-invert-colors");
+        themeIconDarkAmoled.setIcon("gmd-invert-colors");
+        whiteSelect.setIcon("gmd-done");
+        darkSelect.setIcon("gmd-done");
+        darkAmoledSelect.setIcon("gmd-done");
 
         switch (getBaseTheme()){
             case ThemeHelper.LIGHT_THEME:
