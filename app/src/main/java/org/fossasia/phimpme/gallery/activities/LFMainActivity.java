@@ -316,7 +316,11 @@ public class LFMainActivity extends SharedMediaActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemID = item.getItemId();
                 if(itemID==R.id.navigation_home){
-                    startActivity(new Intent(LFMainActivity.this, LFMainActivity.class));
+                    if(!localFolder){
+                        hidden = false;
+                        localFolder = true;
+                    }
+                    displayAlbums();
                     return true;
                 }
                 return LFMainActivity.super.onNavigationItemSelected(item);
