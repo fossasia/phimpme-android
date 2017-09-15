@@ -1536,6 +1536,8 @@ public class LFMainActivity extends SharedMediaActivity {
                     }
                 });
                 final AlertDialog renameDialog = renameDialogBuilder.create();
+                renameDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_IS_FORWARD_NAVIGATION);
+                editTextNewName.setSelection(editTextNewName.getText().toString().length());
                 renameDialog.show();
 
                 renameDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
