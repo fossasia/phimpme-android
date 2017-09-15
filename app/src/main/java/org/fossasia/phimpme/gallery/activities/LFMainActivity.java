@@ -17,6 +17,8 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -118,6 +120,7 @@ public class LFMainActivity extends SharedMediaActivity {
     private ArrayList<Media> selectedMedias = new ArrayList<>();
     public boolean visible;
 
+
     /*
     editMode-  When true, user can select items by clicking on them one by one
      */
@@ -172,6 +175,7 @@ public class LFMainActivity extends SharedMediaActivity {
             selectedMedias.clear();
         toolbar.setTitle(getString(R.string.all));
     }
+
 
     public void selectAllPhotos() {
         for (Media m : listAll) {
@@ -292,6 +296,9 @@ public class LFMainActivity extends SharedMediaActivity {
         super.onCreate(savedInstanceState);
         Log.e("TAG", "lfmain");
 
+
+        BottomNavigationView navigationView = (BottomNavigationView)findViewById(R.id.bottombar);
+
         SP = PreferenceUtil.getInstance(getApplicationContext());
         albumsMode = true;
         editMode = false;
@@ -303,6 +310,23 @@ public class LFMainActivity extends SharedMediaActivity {
         new initAllPhotos().execute();
         displayData(getIntent().getExtras());
         checkNothing();
+
+        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemID = item.getItemId();
+                if(itemID==R.id.navigation_home){
+                    if(!localFolder){
+                        hidden = false;
+                        localFolder = true;
+                    }
+                    displayAlbums();
+                    return true;
+                }
+                return LFMainActivity.super.onNavigationItemSelected(item);
+            }
+        });
+
     }
 
     @Override
