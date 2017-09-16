@@ -15,6 +15,7 @@ public class MainMenuFragment extends BaseEditFragment implements View.OnClickLi
 
     View menu_filter,menu_enhance,menu_adjust,menu_stickers, menu_write;
     Context context;
+    float transparency=0.8f;
 
     public MainMenuFragment() {
 
@@ -99,27 +100,37 @@ public class MainMenuFragment extends BaseEditFragment implements View.OnClickLi
     public void highLightSelectedOption(int mode) {
 
         menu_filter.setBackgroundColor(Color.TRANSPARENT);
+        menu_filter.setAlpha(1f);
         menu_enhance.setBackgroundColor(Color.TRANSPARENT);
+        menu_enhance.setAlpha(1f);
         menu_adjust.setBackgroundColor(Color.TRANSPARENT);
+        menu_adjust.setAlpha(1f);
         menu_stickers.setBackgroundColor(Color.TRANSPARENT);
+        menu_stickers.setAlpha(1f);
         menu_write.setBackgroundColor(Color.TRANSPARENT);
+        menu_write.setAlpha(1f);
 
-        int color = ContextCompat.getColor(context, R.color.md_grey_200);
+        int color = ContextCompat.getColor(context, R.color.grey);
         switch (mode){
             case 2:
                 menu_filter.setBackgroundColor(color);
+                menu_filter.setAlpha(transparency);
                 break;
             case 3:
                 menu_enhance.setBackgroundColor(color);
+                menu_enhance.setAlpha(transparency);
                 break;
             case 4:
                 menu_adjust.setBackgroundColor(color);
+                menu_adjust.setAlpha(transparency);
                 break;
             case 5:
                 menu_stickers.setBackgroundColor(color);
+                menu_stickers.setAlpha(transparency);
                 break;
             case 6:
                 menu_write.setBackgroundColor(color);
+                menu_write.setAlpha(transparency);
                 break;
             default:
                 break;
