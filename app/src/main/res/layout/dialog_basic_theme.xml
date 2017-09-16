@@ -93,6 +93,7 @@
                     android:clickable="true"
                     android:background="@color/md_dark_background"
                     >
+
                     <com.mikepenz.iconics.view.IconicsImageView
                         android:id="@+id/dark_basic_theme_icon"
                         android:layout_width="0dp"
@@ -101,7 +102,7 @@
                         android:layout_weight="2"
                         app:iiv_icon="gmd-invert-colors"
                         app:iiv_color="@color/md_dark_primary_icon"
-                        />
+                        android:tint="@color/white"/>
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -125,6 +126,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_weight="2"
                         app:iiv_icon="gmd-done"
+                        android:tint="@color/white"
                         app:iiv_color="@color/md_dark_primary_icon"
                         />
                 </LinearLayout>
@@ -149,6 +151,7 @@
                         android:layout_weight="2"
                         app:iiv_icon="gmd-invert-colors"
                         app:iiv_color="@color/md_dark_primary_icon"
+                        android:tint="@color/white"
                         />
                     <LinearLayout
                         android:layout_width="0dp"
@@ -174,6 +177,7 @@
                         android:layout_weight="2"
                         app:iiv_icon="gmd-done"
                         app:iiv_color="@color/md_dark_primary_icon"
+                        android:tint="@color/white"
                         />
                 </LinearLayout>
 
