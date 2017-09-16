@@ -814,7 +814,7 @@ public class LFMainActivity extends SharedMediaActivity {
         }
 
         if (editMode) {
-            toolbar.setNavigationIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_check));
+            toolbar.setNavigationIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_clear));
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
