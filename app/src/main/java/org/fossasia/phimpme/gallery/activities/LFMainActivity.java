@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -46,6 +47,7 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
@@ -120,6 +122,8 @@ public class LFMainActivity extends SharedMediaActivity {
     private ArrayList<Media> selectedMedias = new ArrayList<>();
     public boolean visible;
 
+    // To handle back pressed
+    boolean doubleBackToExitPressedOnce = false;
 
     /*
     editMode-  When true, user can select items by clicking on them one by one
@@ -1703,7 +1707,25 @@ public class LFMainActivity extends SharedMediaActivity {
             if (albumsMode) {
                 if (mDrawerLayout.isDrawerOpen(GravityCompat.START))
                     mDrawerLayout.closeDrawer(GravityCompat.START);
-                else finish();
+                else
+                {
+                    if(doubleBackToExitPressedOnce && isTaskRoot())
+                        finish();
+                    else if(isTaskRoot())
+                    {
+                        doubleBackToExitPressedOnce = true;
+                        Toast.makeText(this, R.string.press_back_again_to_exit, Toast.LENGTH_SHORT).show();
+
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                doubleBackToExitPressedOnce = false;
+                            }
+                        }, 2000);
+                    }
+                    else
+                        super.onBackPressed();
+                }
             } else {
                 displayAlbums();
                 setRecentApp(getString(R.string.app_name));

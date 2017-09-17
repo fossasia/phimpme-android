@@ -1006,5 +1006,6 @@
     <string name="empty_upload_msg">You haven\'t shared anything.</string>
     <string name="install_facebook">Facebook not installed</string>
     <string name="restart_app">Please restart the app for better results!</string>
+    <string name="press_back_again_to_exit">Press back again to exit</string>
 
 </resources>
