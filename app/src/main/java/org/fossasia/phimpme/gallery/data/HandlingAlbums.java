@@ -97,6 +97,7 @@ public class HandlingAlbums {
     }
   }
 
+  @SuppressWarnings("unchecked")
   public static void addAlbumToBackup(final Context context, final Album album) {
     new Thread(new Runnable() {
       public void run() {
@@ -134,7 +135,7 @@ public class HandlingAlbums {
     }).start();
   }
 
-
+  @SuppressWarnings("unchecked")
   public void restoreBackup(Context context) {
     FileInputStream inStream;
     try {
