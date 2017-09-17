@@ -156,6 +156,7 @@ public class LFMainActivity extends SharedMediaActivity {
         }
     };
 
+
     private int toggleSelectPhoto(Media m) {
         if (m != null) {
             m.setSelected(!m.isSelected());
@@ -817,6 +818,9 @@ public class LFMainActivity extends SharedMediaActivity {
             if (editMode)
                 toolbar.setTitle(getAlbums().getSelectedCount() + "/" + getAlbums().dispAlbums.size());
             else {
+                if(hidden)
+                    toolbar.setTitle(getString(R.string.hidden_folder));
+                else toolbar.setTitle(getString(R.string.local_folder));
                 toolbar.setNavigationIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_menu));
                 toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                     @Override
