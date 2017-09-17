@@ -1738,6 +1738,8 @@ public class LFMainActivity extends SharedMediaActivity {
      */
     @Override
     public void onBackPressed() {
+        if(editMode && all_photos)
+            clearSelectedPhotos();
         if (editMode) finishEditMode();
         else {
             if (albumsMode) {
