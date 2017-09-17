@@ -409,7 +409,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     }
 
     private void signInPinterest() {
-        List scopes = new ArrayList<String>();
+        ArrayList<String> scopes = new ArrayList<String>();
         scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_PUBLIC);
         scopes.add(PDKClient.PDKCLIENT_PERMISSION_WRITE_PUBLIC);
         scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_RELATIONSHIPS);
