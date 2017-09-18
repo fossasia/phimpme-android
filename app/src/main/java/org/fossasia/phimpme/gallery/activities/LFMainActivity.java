@@ -16,7 +16,11 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -44,6 +48,7 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
@@ -118,6 +123,9 @@ public class LFMainActivity extends SharedMediaActivity {
     private ArrayList<Media> selectedMedias = new ArrayList<>();
     public boolean visible;
 
+    // To handle back pressed
+    boolean doubleBackToExitPressedOnce = false;
+
     /*
     editMode-  When true, user can select items by clicking on them one by one
      */
@@ -133,11 +141,11 @@ public class LFMainActivity extends SharedMediaActivity {
             Media m = (Media) v.findViewById(R.id.photo_path).getTag();
             //If first long press, turn on selection mode
             if (!all_photos) {
+                appBarOverlay();
                 if (!editMode) {
                     mediaAdapter.notifyItemChanged(getAlbum().toggleSelectPhoto(m));
                     editMode = true;
-                } else
-                    getAlbum().selectAllPhotosUpTo(getAlbum().getIndex(m), mediaAdapter);
+                } else getAlbum().selectAllPhotosUpTo(getAlbum().getIndex(m), mediaAdapter);
 
                 invalidateOptionsMenu();
             } else if (!editMode) {
@@ -147,6 +155,7 @@ public class LFMainActivity extends SharedMediaActivity {
             return true;
         }
     };
+
 
     private int toggleSelectPhoto(Media m) {
         if (m != null) {
@@ -159,8 +168,9 @@ public class LFMainActivity extends SharedMediaActivity {
         if (selectedMedias.size() == 0) {
             editMode = false;
             toolbar.setTitle(getString(R.string.all));
-        } else
+        } else {
             toolbar.setTitle(selectedMedias.size() + "/" + size);
+        }
         invalidateOptionsMenu();
         return getImagePosition(m.getPath());
     }
@@ -170,8 +180,10 @@ public class LFMainActivity extends SharedMediaActivity {
             m.setSelected(false);
         if (selectedMedias != null)
             selectedMedias.clear();
-        toolbar.setTitle(getString(R.string.all));
+        if(localFolder) toolbar.setTitle(getString(R.string.local_folder));
+        else toolbar.setTitle(getString(R.string.hidden_folder));
     }
+
 
     public void selectAllPhotos() {
         for (Media m : listAll) {
@@ -222,6 +234,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 if (!pickMode) {
                     //if in selection mode, toggle the selected/unselect state of photo
                     if (editMode) {
+                        appBarOverlay();
                         mediaAdapter.notifyItemChanged(getAlbum().toggleSelectPhoto(m));
                         invalidateOptionsMenu();
                     } else {
@@ -236,7 +249,6 @@ public class LFMainActivity extends SharedMediaActivity {
                     finish();
                 }
             } else {
-
                 if (!editMode) {
                     Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(m.getPath())));
                     intent.putExtra(getString(R.string.all_photo_mode), true);
@@ -244,7 +256,10 @@ public class LFMainActivity extends SharedMediaActivity {
                     intent.putExtra(getString(R.string.allMediaSize), size);
                     intent.setClass(getApplicationContext(), SingleMediaActivity.class);
                     startActivity(intent);
-                } else mediaAdapter.notifyItemChanged(toggleSelectPhoto(m));
+                } else {
+                    mediaAdapter.notifyItemChanged(toggleSelectPhoto(m));
+                }
+
             }
         }
     };
@@ -252,7 +267,6 @@ public class LFMainActivity extends SharedMediaActivity {
     private View.OnLongClickListener albumOnLongCLickListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
-
             albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(((Album) v.findViewById(R.id.album_name).getTag())));
             editMode = true;
             invalidateOptionsMenu();
@@ -276,6 +290,25 @@ public class LFMainActivity extends SharedMediaActivity {
         }
     };
 
+    /**
+     *  Method for clearing the scroll flags.
+     */
+    private void appBarOverlay(){
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
+        params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);  // clear all scroll flags
+    }
+
+    /**
+     * Method for adding the scroll flags.
+     */
+    private void clearOverlay(){
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
+        AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
+        params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
+                | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
+    }
+
     public int getImagePosition(String path) {
         int pos = 0;
         for (int i = 0; i < listAll.size(); i++) {
@@ -292,6 +325,9 @@ public class LFMainActivity extends SharedMediaActivity {
         super.onCreate(savedInstanceState);
         Log.e("TAG", "lfmain");
 
+
+        BottomNavigationView navigationView = (BottomNavigationView)findViewById(R.id.bottombar);
+
         SP = PreferenceUtil.getInstance(getApplicationContext());
         albumsMode = true;
         editMode = false;
@@ -303,6 +339,23 @@ public class LFMainActivity extends SharedMediaActivity {
         new initAllPhotos().execute();
         displayData(getIntent().getExtras());
         checkNothing();
+
+        navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemID = item.getItemId();
+                if(itemID==R.id.navigation_home){
+                    if(!localFolder){
+                        hidden = false;
+                        localFolder = true;
+                    }
+                    displayAlbums();
+                    return true;
+                }
+                return LFMainActivity.super.onNavigationItemSelected(item);
+            }
+        });
+
     }
 
     @Override
@@ -445,7 +498,7 @@ public class LFMainActivity extends SharedMediaActivity {
     }
 
     private void initUI() {
-
+        clearOverlay();
         /**** TOOLBAR ****/
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -759,9 +812,16 @@ public class LFMainActivity extends SharedMediaActivity {
 
     private void updateSelectedStuff() {
         if (albumsMode) {
+            if(getAlbums().getSelectedCount()==0)
+                clearOverlay();
+            else
+                appBarOverlay();
             if (editMode)
                 toolbar.setTitle(getAlbums().getSelectedCount() + "/" + getAlbums().dispAlbums.size());
             else {
+                if(hidden)
+                    toolbar.setTitle(getString(R.string.hidden_folder));
+                else toolbar.setTitle(getString(R.string.local_folder));
                 toolbar.setNavigationIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_menu));
                 toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                     @Override
@@ -771,10 +831,15 @@ public class LFMainActivity extends SharedMediaActivity {
                 });
             }
         } else {
+            if(getAlbum().getSelectedCount()==0)
+                clearOverlay();
+            else
+                appBarOverlay();
             if (editMode)
                 if (!all_photos)
                     toolbar.setTitle(getAlbum().getSelectedCount() + "/" + getAlbum().getMedia().size());
-                else toolbar.setTitle(selectedMedias.size() + "/" + size);
+                else {
+                    toolbar.setTitle(selectedMedias.size() + "/" + size);}
             else {
                 if (!all_photos)
                     toolbar.setTitle(getAlbum().getName());
@@ -790,7 +855,7 @@ public class LFMainActivity extends SharedMediaActivity {
         }
 
         if (editMode) {
-            toolbar.setNavigationIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_check));
+            toolbar.setNavigationIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_clear));
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1536,6 +1601,8 @@ public class LFMainActivity extends SharedMediaActivity {
                     }
                 });
                 final AlertDialog renameDialog = renameDialogBuilder.create();
+                renameDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_IS_FORWARD_NAVIGATION);
+                editTextNewName.setSelection(editTextNewName.getText().toString().length());
                 renameDialog.show();
 
                 renameDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
@@ -1672,12 +1739,32 @@ public class LFMainActivity extends SharedMediaActivity {
      */
     @Override
     public void onBackPressed() {
+        if(editMode && all_photos)
+            clearSelectedPhotos();
         if (editMode) finishEditMode();
         else {
             if (albumsMode) {
                 if (mDrawerLayout.isDrawerOpen(GravityCompat.START))
                     mDrawerLayout.closeDrawer(GravityCompat.START);
-                else finish();
+                else
+                {
+                    if(doubleBackToExitPressedOnce && isTaskRoot())
+                        finish();
+                    else if(isTaskRoot())
+                    {
+                        doubleBackToExitPressedOnce = true;
+                        Toast.makeText(this, R.string.press_back_again_to_exit, Toast.LENGTH_SHORT).show();
+
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                doubleBackToExitPressedOnce = false;
+                            }
+                        }, 2000);
+                    }
+                    else
+                        super.onBackPressed();
+                }
             } else {
                 displayAlbums();
                 setRecentApp(getString(R.string.app_name));
