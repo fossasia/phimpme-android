@@ -49,6 +49,7 @@ import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.yalantis.ucrop.UCrop;
 
 import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.base.RecyclerItemClickListner;
 import org.fossasia.phimpme.base.SharedMediaActivity;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
@@ -86,7 +87,7 @@ import static org.fossasia.phimpme.utilities.Utils.promptSpeechInput;
  * Created by dnld on 18/02/16.
  */
 @SuppressWarnings("ResourceAsColor")
-public class SingleMediaActivity extends SharedMediaActivity {
+public class SingleMediaActivity extends SharedMediaActivity implements RecyclerItemClickListner.OnItemClickListener {
 
     private static final String ISLOCKED_ARG = "isLocked";
     static final String ACTION_OPEN_ALBUM = "android.intent.action.pagerAlbumMedia";
@@ -207,6 +208,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
         mViewPager.setLayoutManager(linearLayoutManager);
         mViewPager.setHasFixedSize(true);
         mViewPager.setLongClickable(true);
+        mViewPager.addOnItemTouchListener(new RecyclerItemClickListner(this,this));
 
 
         getWindow().getDecorView().setOnSystemUiVisibilityChangeListener
@@ -820,6 +822,17 @@ public class SingleMediaActivity extends SharedMediaActivity {
         });
         colorAnimation.start();
     }
+
+    @Override
+    public void onItemClick(View childView, int position) {
+        toggleSystemUI();
+    }
+
+    @Override
+    public void onItemLongPress(View childView, int position) {
+        //Do Nothing
+    }
+
     private final class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
         @Override
         protected Bitmap doInBackground(String... params) {
