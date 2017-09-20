@@ -180,7 +180,8 @@ public class LFMainActivity extends SharedMediaActivity {
             m.setSelected(false);
         if (selectedMedias != null)
             selectedMedias.clear();
-        toolbar.setTitle(getString(R.string.all));
+        if(localFolder) toolbar.setTitle(getString(R.string.local_folder));
+        else toolbar.setTitle(getString(R.string.hidden_folder));
     }
 
 
