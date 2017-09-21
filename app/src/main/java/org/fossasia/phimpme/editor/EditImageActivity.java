@@ -646,24 +646,128 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     @Override
     public void onBackPressed() {
         switch (mode){
+            //Before exiting ask whether the user wants to discard changes or not
             case MODE_SLIDER:
-                sliderFragment.backToMain();
+                final AlertDialog.Builder discardChangesDialogBuilderSlider = new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
+                AlertDialogsHelper.getTextDialog(EditImageActivity.this, discardChangesDialogBuilderSlider, R.string.discard_changes_header, R.string.discard_changes_message, null);
+                discardChangesDialogBuilderSlider.setPositiveButton(getString(R.string.confirm).toUpperCase(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        sliderFragment.backToMain();
+                    }
+                });
+                discardChangesDialogBuilderSlider.setNegativeButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(dialog != null)
+                            dialog.dismiss();
+                    }
+                });
+
+                AlertDialog alertDialogSlider = discardChangesDialogBuilderSlider.create();
+                alertDialogSlider.show();
                 return;
             case MODE_STICKERS:
-                stickersFragment.backToMain();
+                final AlertDialog.Builder discardChangesDialogBuilderStickers = new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
+                AlertDialogsHelper.getTextDialog(EditImageActivity.this, discardChangesDialogBuilderStickers, R.string.discard_changes_header, R.string.discard_changes_message, null);
+                discardChangesDialogBuilderStickers.setPositiveButton(getString(R.string.confirm).toUpperCase(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        stickersFragment.backToMain();
+                    }
+                });
+                discardChangesDialogBuilderStickers.setNegativeButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(dialog != null)
+                            dialog.dismiss();
+                    }
+                });
+
+                AlertDialog alertDialogStickes = discardChangesDialogBuilderStickers.create();
+                alertDialogStickes.show();
                 return;
             case MODE_CROP:
-                cropFragment.backToMain();
+                final AlertDialog.Builder discardChangesDialogBuilderCrop = new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
+                AlertDialogsHelper.getTextDialog(EditImageActivity.this, discardChangesDialogBuilderCrop, R.string.discard_changes_header, R.string.discard_changes_message, null);
+                discardChangesDialogBuilderCrop.setPositiveButton(getString(R.string.confirm).toUpperCase(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        cropFragment.backToMain();
+                    }
+                });
+                discardChangesDialogBuilderCrop.setNegativeButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(dialog != null)
+                            dialog.dismiss();
+                    }
+                });
+
+                AlertDialog alertDialogCrop = discardChangesDialogBuilderCrop.create();
+                alertDialogCrop.show();
                 return;
             case MODE_ROTATE:
-                rotateFragment.backToMain();
+                final AlertDialog.Builder discardChangesDialogBuilderRotate = new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
+                AlertDialogsHelper.getTextDialog(EditImageActivity.this, discardChangesDialogBuilderRotate, R.string.discard_changes_header, R.string.discard_changes_message, null);
+                discardChangesDialogBuilderRotate.setPositiveButton(getString(R.string.confirm).toUpperCase(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        rotateFragment.backToMain();
+                    }
+                });
+                discardChangesDialogBuilderRotate.setNegativeButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(dialog != null)
+                            dialog.dismiss();
+                    }
+                });
+
+                AlertDialog alertDialogRotate = discardChangesDialogBuilderRotate.create();
+                alertDialogRotate.show();
                 return;
             case MODE_TEXT:
-                addTextFragment.backToMain();
+                final AlertDialog.Builder discardChangesDialogBuilderText = new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
+                AlertDialogsHelper.getTextDialog(EditImageActivity.this, discardChangesDialogBuilderText, R.string.discard_changes_header, R.string.discard_changes_message, null);
+                discardChangesDialogBuilderText.setPositiveButton(getString(R.string.confirm).toUpperCase(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        addTextFragment.backToMain();
+                    }
+                });
+                discardChangesDialogBuilderText.setNegativeButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(dialog != null)
+                            dialog.dismiss();
+                    }
+                });
+
+                AlertDialog alertDialogText = discardChangesDialogBuilderText.create();
+                alertDialogText.show();
                 return;
             case MODE_PAINT:
-                paintFragment.backToMain();
+                final AlertDialog.Builder discardChangesDialogBuilderPaint = new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
+                AlertDialogsHelper.getTextDialog(EditImageActivity.this, discardChangesDialogBuilderPaint, R.string.discard_changes_header, R.string.discard_changes_message, null);
+                discardChangesDialogBuilderPaint.setPositiveButton(getString(R.string.confirm).toUpperCase(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        paintFragment.backToMain();
+                    }
+                });
+                discardChangesDialogBuilderPaint.setNegativeButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(dialog != null)
+                            dialog.dismiss();
+                    }
+                });
+
+                AlertDialog alertDialogPaint = discardChangesDialogBuilderPaint.create();
+                alertDialogPaint.show();
                 return;
+
         }
 
         //if the image has not been edited or has been edited and saved.
