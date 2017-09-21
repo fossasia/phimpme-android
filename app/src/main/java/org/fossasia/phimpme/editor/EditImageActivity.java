@@ -703,7 +703,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                             dialog.dismiss();
                     }
                 });
-
                 AlertDialog alertDialogCrop = discardChangesDialogBuilderCrop.create();
                 alertDialogCrop.show();
                 return;
