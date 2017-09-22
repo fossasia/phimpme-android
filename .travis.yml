@@ -82,6 +82,7 @@ script:
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
+  - bash scripts/prep-key.sh
   - 'if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./upload-apk.sh; fi'
 
 notifications:
