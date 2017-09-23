@@ -749,7 +749,9 @@
     <string name="materialcolorpicker__errHex">Hex Code Format incorrect</string>
     <string name="materialcolorpicker__inputColor">Color:</string>
     <string name="materialcolorpicker__btnSelectColor">Select</string>
-    <string name="saving_image">save...</string>
+    <string name="saving_image">Saving...</string>
+    <string name="image_saved">Saved!</string>
+    <string name="share_image">Share this with others?</string>
     <string name="input_hint">input text ...</string>
 
     <string name="no_choose">please choose a image for edit</string>

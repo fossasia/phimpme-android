@@ -497,9 +497,9 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     protected void onSaveTaskDone() {
         if (mOpTimes > 0 ){
             FileUtil.albumUpdate(this, saveFilePath);
-            shareImage(saveFilePath);
+            imageSavedDialog(saveFilePath);
         }else if(mOpTimes <= 0 && requestCode == 1 ){
-            shareImage(filePath);
+            imageSavedDialog(filePath);
         }else {
             final AlertDialog.Builder discardChangesDialogBuilder = new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
             AlertDialogsHelper.getTextDialog(EditImageActivity.this, discardChangesDialogBuilder, R.string.discard_changes_header, R.string.exit_without_edit, null);
@@ -735,5 +735,32 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                 onRedoPressed();
                 break;
         }
+    }
+
+    /**
+     * Appears when user saves the image, asking him to share the image or not.
+     * @param path - path of the image
+     */
+    private  void imageSavedDialog(final String path){
+
+        final AlertDialog.Builder imageSavedDialogBuilder = new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
+        AlertDialogsHelper.getTextDialog(EditImageActivity.this, imageSavedDialogBuilder, R.string.image_saved, R.string.share_image, null);
+        imageSavedDialogBuilder.setPositiveButton(getString(R.string.share).toUpperCase(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                shareImage(path);
+            }
+        });
+        imageSavedDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(dialog != null)
+                    onBackPressed();
+
+            }
+        });
+
+        AlertDialog alertDialog = imageSavedDialogBuilder.create();
+        alertDialog.show();
     }
 }
