@@ -3,9 +3,11 @@ package org.fossasia.phimpme.editor.fragment;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -35,6 +37,7 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     int bmWidth = -1,bmHeight = -1;
     int defaulticon;
     TypedArray iconlist,titlelist;
+    static int currentSelection = -1;
 
     public RecyclerMenuFragment() {
 
@@ -46,6 +49,15 @@ public class RecyclerMenuFragment extends BaseEditFragment {
         return fragment;
     }
 
+    public void clearCurrentSelection(){
+        if(currentSelection != -1){
+            mRecyclerAdapter.mViewHolder holder = (mRecyclerAdapter.mViewHolder) recyclerView.findViewHolderForAdapterPosition(currentSelection);
+            if(holder != null){
+                holder.wrapper.setBackgroundColor(Color.TRANSPARENT);
+            }
+            currentSelection = -1;
+        }
+    }
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,12 +158,14 @@ public class RecyclerMenuFragment extends BaseEditFragment {
         class mViewHolder extends RecyclerView.ViewHolder {
             ImageView icon;
             TextView title;
+            LinearLayout wrapper;
             View view;
             mViewHolder(View itemView) {
                 super(itemView);
                 view = itemView;
                 icon = (ImageView)itemView.findViewById(R.id.editor_item_image);
                 title = (TextView)itemView.findViewById(R.id.editor_item_title);
+                wrapper = (LinearLayout)itemView.findViewById(R.id.ll_effect_wrapper);
             }
         }
 
@@ -205,13 +219,32 @@ public class RecyclerMenuFragment extends BaseEditFragment {
             layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
             holder.icon.setLayoutParams(layoutParams);
             holder.title.setText(titlelist.getString(position));
+            holder.wrapper.setBackgroundColor(Color.TRANSPARENT);
+
+            if(currentSelection == position)
+                holder.wrapper.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.md_grey_200));
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    highlightSelectedOption(position, v);
                     itemClicked(position,v);
                 }
             });
+        }
+
+        private void highlightSelectedOption(int position, View v) {
+            int color = ContextCompat.getColor(v.getContext(), R.color.md_grey_200);
+            if(currentSelection != -1)
+                ((mRecyclerAdapter.mViewHolder) recyclerView.findViewHolderForAdapterPosition(currentSelection))
+                        .wrapper
+                        .setBackgroundColor(Color.TRANSPARENT);
+
+            ((mViewHolder) recyclerView.findViewHolderForAdapterPosition(position))
+                    .wrapper
+                    .setBackgroundColor(color);
+
+            currentSelection = position;
         }
 
         @Override

@@ -126,6 +126,7 @@ public class RotateFragment extends BaseEditFragment {
     public void backToMain() {
         activity.changeMode(EditImageActivity.MODE_ADJUST);
         activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
+        activity.adjustFragment.clearSelection();
         activity.mainImage.setVisibility(View.VISIBLE);
         this.mRotatePanel.setVisibility(View.GONE);
     }

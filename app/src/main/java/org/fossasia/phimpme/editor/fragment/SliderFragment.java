@@ -168,6 +168,20 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
             activity.changeMode(EditImageActivity.effectType / 100);
             activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
             activity.mainImage.setScaleEnabled(true);
+
+            switch (activity.mode)
+            {
+                case EditImageActivity.MODE_FILTERS:
+                    activity.filterFragment.clearCurrentSelection();
+                    break;
+
+                case EditImageActivity.MODE_ENHANCE:
+                    activity.enhanceFragment.clearCurrentSelection();
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 
