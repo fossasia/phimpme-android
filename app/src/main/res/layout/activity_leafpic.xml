@@ -6,35 +6,37 @@
     android:layout_height="match_parent"
     tools:openDrawer="start">
 
-    <android.support.design.widget.CoordinatorLayout
+    <RelativeLayout
         android:id="@+id/Relative_Album_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <!---->
         <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <include
                 android:id="@+id/toolbar"
-                layout="@layout/toolbar"
-               />
+                layout="@layout/toolbar" />
         </android.support.design.widget.AppBarLayout>
+
         <LinearLayout
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_above="@+id/bottombar"
+            android:layout_below="@id/appbar_toolbar"
+            android:orientation="vertical"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <android.support.v4.widget.SwipeRefreshLayout
                 android:id="@+id/swipeRefreshLayout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="@dimen/height_bottombar" >
+                android:layout_height="match_parent">
 
-                <RelativeLayout
-                    android:id="@+id/rl_main_content"
+                <android.support.design.widget.CoordinatorLayout
+                    android:id="@+id/cl_main_content"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -53,8 +55,7 @@
                         android:id="@+id/grid_photos"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center_horizontal"
-                        />
+                        android:layout_gravity="center_horizontal" />
 
                     <TextView
                         android:id="@+id/nothing_to_show"
@@ -68,17 +69,18 @@
                         android:textSize="18sp"
                         android:visibility="invisible"
                         tools:targetApi="lollipop" />
-                </RelativeLayout>
+                </android.support.design.widget.CoordinatorLayout>
             </android.support.v4.widget.SwipeRefreshLayout>
 
         </LinearLayout>
 
         <include
+            android:id="@+id/bottombar"
             layout="@layout/element_bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom" />
-    </android.support.design.widget.CoordinatorLayout>
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
 
     <include
         android:id="@+id/drawer_items"

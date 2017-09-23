@@ -1007,5 +1007,8 @@
     <string name="install_facebook">Facebook not installed</string>
     <string name="restart_app">Please restart the app for better results!</string>
     <string name="press_back_again_to_exit">Press back again to exit</string>
+    <string name="photos_moved_successfully">Photos moved successfully</string>
+    <string name="photo_moved_successfully">Photo moved successfully</string>
+    <string name="copied_successfully">Copied successfully</string>
 
 </resources>
