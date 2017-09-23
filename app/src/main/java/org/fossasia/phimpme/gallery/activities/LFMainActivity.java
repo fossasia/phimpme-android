@@ -94,7 +94,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
     private static String TAG = "AlbumsAct";
     private int REQUEST_CODE_SD_CARD_PERMISSIONS = 42;
-
+    private boolean about=false,settings=false,uploadHistory=false;
     private CustomAlbumsHelper customAlbumsHelper = CustomAlbumsHelper.getInstance(LFMainActivity.this);
     private PreferenceUtil SP;
     private SecurityHelper securityObj;
@@ -563,6 +563,21 @@ public class LFMainActivity extends SharedMediaActivity {
             public void onDrawerClosed(View view) {
                 //Put your code here
                 // materialMenu.animateIconState(MaterialMenuDrawable.IconState.BURGER);
+                Intent intent=null;
+                if(settings){
+                    intent = new Intent(LFMainActivity.this, SettingsActivity.class);
+                    startActivity(intent);
+                    settings=false;
+                } else if(about){
+                    intent = new Intent(LFMainActivity.this, AboutActivity.class);
+                    startActivity(intent);
+                    about=false;
+                } else if(uploadHistory){
+                    intent = new Intent(LFMainActivity.this, UploadHistory.class);
+                    startActivity(intent);
+                    uploadHistory=false;
+                }
+
             }
 
             public void onDrawerOpened(View drawerView) {
@@ -704,27 +719,25 @@ public class LFMainActivity extends SharedMediaActivity {
         findViewById(R.id.ll_drawer_Setting).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LFMainActivity.this, SettingsActivity.class);
+                settings=true;
                 mDrawerLayout.closeDrawer(GravityCompat.START);
-                startActivity(intent);
             }
         });
 
         findViewById(R.id.ll_drawer_About).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LFMainActivity.this, AboutActivity.class);
+                about=true;
                 mDrawerLayout.closeDrawer(GravityCompat.START);
-                startActivity(intent);
+
             }
         });
 
         findViewById(R.id.ll_drawer_uploadhistory).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LFMainActivity.this, UploadHistory.class);
+                uploadHistory=true;
                 mDrawerLayout.closeDrawer(GravityCompat.START);
-                startActivity(intent);
             }
         });
 
