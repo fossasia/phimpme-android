@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -19,9 +20,6 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
-import org.fossasia.phimpme.gallery.util.ColorPalette;
-import org.fossasia.phimpme.share.SharingActivity;
 import org.fossasia.phimpme.editor.fragment.AddTextFragment;
 import org.fossasia.phimpme.editor.fragment.CropFragment;
 import org.fossasia.phimpme.editor.fragment.MainMenuFragment;
@@ -40,6 +38,9 @@ import org.fossasia.phimpme.editor.view.StickerView;
 import org.fossasia.phimpme.editor.view.TextStickerView;
 import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouch;
 import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouchBase;
+import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
+import org.fossasia.phimpme.gallery.util.ColorPalette;
+import org.fossasia.phimpme.share.SharingActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 
@@ -646,129 +647,28 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     @Override
     public void onBackPressed() {
         switch (mode){
-            //Before exiting ask whether the user wants to discard changes or not
+            //On pressing back, ask whether the user wants to discard changes or not
             case MODE_SLIDER:
-                final AlertDialog.Builder discardChangesDialogBuilderSlider = new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
-                AlertDialogsHelper.getTextDialog(EditImageActivity.this, discardChangesDialogBuilderSlider, R.string.discard_changes_header, R.string.discard_changes_message, null);
-                discardChangesDialogBuilderSlider.setPositiveButton(getString(R.string.confirm).toUpperCase(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        sliderFragment.backToMain();
-                    }
-                });
-                discardChangesDialogBuilderSlider.setNegativeButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(dialog != null)
-                            dialog.dismiss();
-                    }
-                });
+                showDiscardChangesDialog(0,R.string.discard_enhance_message);
 
-                AlertDialog alertDialogSlider = discardChangesDialogBuilderSlider.create();
-                alertDialogSlider.show();
                 return;
             case MODE_STICKERS:
-                final AlertDialog.Builder discardChangesDialogBuilderStickers = new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
-                AlertDialogsHelper.getTextDialog(EditImageActivity.this, discardChangesDialogBuilderStickers, R.string.discard_changes_header, R.string.discard_changes_message, null);
-                discardChangesDialogBuilderStickers.setPositiveButton(getString(R.string.confirm).toUpperCase(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        stickersFragment.backToMain();
-                    }
-                });
-                discardChangesDialogBuilderStickers.setNegativeButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(dialog != null)
-                            dialog.dismiss();
-                    }
-                });
-
-                AlertDialog alertDialogStickes = discardChangesDialogBuilderStickers.create();
-                alertDialogStickes.show();
+                showDiscardChangesDialog(1,R.string.discard_stickers_message);
                 return;
             case MODE_CROP:
-                final AlertDialog.Builder discardChangesDialogBuilderCrop = new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
-                AlertDialogsHelper.getTextDialog(EditImageActivity.this, discardChangesDialogBuilderCrop, R.string.discard_changes_header, R.string.discard_changes_message, null);
-                discardChangesDialogBuilderCrop.setPositiveButton(getString(R.string.confirm).toUpperCase(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        cropFragment.backToMain();
-                    }
-                });
-                discardChangesDialogBuilderCrop.setNegativeButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(dialog != null)
-                            dialog.dismiss();
-                    }
-                });
-                AlertDialog alertDialogCrop = discardChangesDialogBuilderCrop.create();
-                alertDialogCrop.show();
+                showDiscardChangesDialog(2,R.string.discard_crop_message);
                 return;
             case MODE_ROTATE:
-                final AlertDialog.Builder discardChangesDialogBuilderRotate = new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
-                AlertDialogsHelper.getTextDialog(EditImageActivity.this, discardChangesDialogBuilderRotate, R.string.discard_changes_header, R.string.discard_changes_message, null);
-                discardChangesDialogBuilderRotate.setPositiveButton(getString(R.string.confirm).toUpperCase(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        rotateFragment.backToMain();
-                    }
-                });
-                discardChangesDialogBuilderRotate.setNegativeButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(dialog != null)
-                            dialog.dismiss();
-                    }
-                });
-
-                AlertDialog alertDialogRotate = discardChangesDialogBuilderRotate.create();
-                alertDialogRotate.show();
+                showDiscardChangesDialog(3,R.string.discard_rotate_message);
                 return;
             case MODE_TEXT:
-                final AlertDialog.Builder discardChangesDialogBuilderText = new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
-                AlertDialogsHelper.getTextDialog(EditImageActivity.this, discardChangesDialogBuilderText, R.string.discard_changes_header, R.string.discard_changes_message, null);
-                discardChangesDialogBuilderText.setPositiveButton(getString(R.string.confirm).toUpperCase(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        addTextFragment.backToMain();
-                    }
-                });
-                discardChangesDialogBuilderText.setNegativeButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(dialog != null)
-                            dialog.dismiss();
-                    }
-                });
-
-                AlertDialog alertDialogText = discardChangesDialogBuilderText.create();
-                alertDialogText.show();
+                showDiscardChangesDialog(4,R.string.discard_text_message);
                 return;
             case MODE_PAINT:
-                final AlertDialog.Builder discardChangesDialogBuilderPaint = new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
-                AlertDialogsHelper.getTextDialog(EditImageActivity.this, discardChangesDialogBuilderPaint, R.string.discard_changes_header, R.string.discard_changes_message, null);
-                discardChangesDialogBuilderPaint.setPositiveButton(getString(R.string.confirm).toUpperCase(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        paintFragment.backToMain();
-                    }
-                });
-                discardChangesDialogBuilderPaint.setNegativeButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if(dialog != null)
-                            dialog.dismiss();
-                    }
-                });
-
-                AlertDialog alertDialogPaint = discardChangesDialogBuilderPaint.create();
-                alertDialogPaint.show();
+                showDiscardChangesDialog(5,R.string.discard_paint_message);
                 return;
 
         }
-
         //if the image has not been edited or has been edited and saved.
         if (canAutoExit()) {
             finish();
@@ -792,6 +692,71 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
             AlertDialog alertDialog = discardChangesDialogBuilder.create();
             alertDialog.show();
         }
+    }
+
+    private void showDiscardChangesDialog(int editMode, @StringRes int message){
+        AlertDialog.Builder discardChangesDialogBuilder=new AlertDialog.Builder(EditImageActivity.this,getDialogStyle());
+        AlertDialogsHelper.getTextDialog(EditImageActivity.this,discardChangesDialogBuilder,R.string.discard_changes_header,message,null);
+        discardChangesDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(dialog!=null)
+                    dialog.dismiss();
+            }
+        });
+        switch (editMode){
+            case 0: //slider fragment
+                discardChangesDialogBuilder.setPositiveButton(getString(R.string.confirm).toUpperCase(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        sliderFragment.backToMain();
+                    }
+                });
+                break;
+            case 1: //sticker fragment
+                discardChangesDialogBuilder.setPositiveButton(getString(R.string.confirm).toUpperCase(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        stickersFragment.backToMain();
+                    }
+                });
+                break;
+            case 2: //crop fragment
+                discardChangesDialogBuilder.setPositiveButton(getString(R.string.confirm).toUpperCase(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        cropFragment.backToMain();
+                    }
+                });
+                break;
+            case 3: //rotate fragment
+                discardChangesDialogBuilder.setPositiveButton(getString(R.string.confirm).toUpperCase(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        rotateFragment.backToMain();
+                        rotateFragment.mSeekBar.setProgress(0);
+                    }
+                });
+                break;
+            case 4: //text fragment
+                discardChangesDialogBuilder.setPositiveButton(getString(R.string.confirm).toUpperCase(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        addTextFragment.backToMain();
+                    }
+                });
+                break;
+            case 5: //paint fragment
+                discardChangesDialogBuilder.setPositiveButton(getString(R.string.confirm).toUpperCase(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        paintFragment.backToMain();
+                    }
+                });
+                break;
+        }
+        AlertDialog alertDialog=discardChangesDialogBuilder.create();
+        alertDialog.show();
     }
 
     @Override
