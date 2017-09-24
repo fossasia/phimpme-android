@@ -5,7 +5,8 @@
               android:gravity="center"
               android:layout_gravity="center_vertical"
               android:layout_width="@dimen/editor_mid_row_size"
-              android:layout_height="@dimen/editor_mid_row_size">
+              android:layout_height="@dimen/editor_mid_row_size"
+              android:id="@+id/ll_effect_wrapper">
     <ImageView
         android:id="@+id/editor_item_image"
         android:layout_width="@dimen/icon_item_image_size_recycler"
