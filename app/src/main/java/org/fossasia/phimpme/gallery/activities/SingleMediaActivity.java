@@ -144,6 +144,8 @@ public class SingleMediaActivity extends SharedMediaActivity implements Recycler
         imageWidth = metrics.widthPixels;
         imageHeight = metrics.heightPixels;
 
+        overridePendingTransition(R.anim.media_zoom_in,0);
+
         SP = PreferenceUtil.getInstance(getApplicationContext());
         securityObj= new SecurityHelper(SingleMediaActivity.this);
         allPhotoMode = getIntent().getBooleanExtra(getString(R.string.all_photo_mode), false);
@@ -821,6 +823,14 @@ public class SingleMediaActivity extends SharedMediaActivity implements Recycler
             }
         });
         colorAnimation.start();
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (isFinishing()){
+            overridePendingTransition(0, R.anim.media_zoom_out);
+        }
+
     }
 
     @Override
