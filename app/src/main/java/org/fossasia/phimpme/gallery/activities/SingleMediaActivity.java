@@ -49,7 +49,6 @@ import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.yalantis.ucrop.UCrop;
 
 import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.base.RecyclerItemClickListner;
 import org.fossasia.phimpme.base.SharedMediaActivity;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
@@ -59,16 +58,16 @@ import org.fossasia.phimpme.editor.FileUtils;
 import org.fossasia.phimpme.editor.utils.BitmapUtils;
 import org.fossasia.phimpme.gallery.SelectAlbumBottomSheet;
 import org.fossasia.phimpme.gallery.adapters.ImageAdapter;
-import org.fossasia.phimpme.gallery.util.ColorPalette;
-import org.fossasia.phimpme.gallery.util.SecurityHelper;
-import org.fossasia.phimpme.gallery.util.StringUtils;
-import org.fossasia.phimpme.gallery.views.PagerRecyclerView;
 import org.fossasia.phimpme.gallery.data.Album;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
+import org.fossasia.phimpme.gallery.util.ColorPalette;
 import org.fossasia.phimpme.gallery.util.ContentHelper;
 import org.fossasia.phimpme.gallery.util.Measure;
 import org.fossasia.phimpme.gallery.util.PreferenceUtil;
+import org.fossasia.phimpme.gallery.util.SecurityHelper;
+import org.fossasia.phimpme.gallery.util.StringUtils;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
+import org.fossasia.phimpme.gallery.views.PagerRecyclerView;
 import org.fossasia.phimpme.share.SharingActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
@@ -87,7 +86,7 @@ import static org.fossasia.phimpme.utilities.Utils.promptSpeechInput;
  * Created by dnld on 18/02/16.
  */
 @SuppressWarnings("ResourceAsColor")
-public class SingleMediaActivity extends SharedMediaActivity implements RecyclerItemClickListner.OnItemClickListener {
+public class SingleMediaActivity extends SharedMediaActivity implements ImageAdapter.OnSingleTap {
 
     private static final String ISLOCKED_ARG = "isLocked";
     static final String ACTION_OPEN_ALBUM = "android.intent.action.pagerAlbumMedia";
@@ -119,19 +118,24 @@ public class SingleMediaActivity extends SharedMediaActivity implements Recycler
     String voiceInput;
     EditText editTextDescription;
 
-    @Nullable @BindView(R.id.PhotoPager_Layout)
+    @Nullable
+    @BindView(R.id.PhotoPager_Layout)
     View parentView;
 
-    @Nullable @BindView(R.id.toolbar_bottom)
+    @Nullable
+    @BindView(R.id.toolbar_bottom)
     ActionMenuView bottomBar;
 
-    @Nullable @BindView(R.id.img)
+    @Nullable
+    @BindView(R.id.img)
     ImageView imgView;
 
-    @Nullable @BindView(R.id.photos_pager)
+    @Nullable
+    @BindView(R.id.photos_pager)
     PagerRecyclerView mViewPager;
 
-    @Nullable @BindView(R.id.toolbar)
+    @Nullable
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
 
     @Override
@@ -147,7 +151,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements Recycler
         overridePendingTransition(R.anim.media_zoom_in,0);
 
         SP = PreferenceUtil.getInstance(getApplicationContext());
-        securityObj= new SecurityHelper(SingleMediaActivity.this);
+        securityObj = new SecurityHelper(SingleMediaActivity.this);
         allPhotoMode = getIntent().getBooleanExtra(getString(R.string.all_photo_mode), false);
         all_photo_pos = getIntent().getIntExtra(getString(R.string.position), 0);
         size_all = getIntent().getIntExtra(getString(R.string.allMediaSize), getAlbum().getCount());
@@ -156,8 +160,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements Recycler
         pathForDescription = path2;
 
 //            mViewPager.setLocked(savedInstanceState.getBoolean(ISLOCKED_ARG, false));
-        try
-        {
+        try {
             Album album;
             if ((getIntent().getAction().equals(Intent.ACTION_VIEW) || getIntent().getAction().equals(ACTION_REVIEW)) && getIntent().getData() != null) {
 
@@ -179,15 +182,17 @@ public class SingleMediaActivity extends SharedMediaActivity implements Recycler
             }
             initUI();
             setupUI();
-        } catch (Exception e) { e.printStackTrace(); }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
     private void initUI() {
         Menu bottomMenu = bottomBar.getMenu();
         getMenuInflater().inflate(R.menu.menu_bottom_view_pager, bottomMenu);
-        for (int i = 0; i < bottomMenu.size(); i++){
-            bottomMenu.getItem(i).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener(){
+        for (int i = 0; i < bottomMenu.size(); i++) {
+            bottomMenu.getItem(i).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
                     return onOptionsItemSelected(item);
@@ -210,8 +215,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements Recycler
         mViewPager.setLayoutManager(linearLayoutManager);
         mViewPager.setHasFixedSize(true);
         mViewPager.setLongClickable(true);
-        mViewPager.addOnItemTouchListener(new RecyclerItemClickListner(this,this));
-
 
         getWindow().getDecorView().setOnSystemUiVisibilityChangeListener
                 (new View.OnSystemUiVisibilityChangeListener() {
@@ -229,7 +232,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements Recycler
         };
 
         if (!allPhotoMode) {
-            adapter = new ImageAdapter(getAlbum().getMedia(), basicCallBack);
+            adapter = new ImageAdapter(getAlbum().getMedia(), basicCallBack, this);
 
             getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
 //            toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
@@ -247,9 +250,8 @@ public class SingleMediaActivity extends SharedMediaActivity implements Recycler
             mViewPager.scrollToPosition(getAlbum().getCurrentMediaIndex());
 
 
-
         } else {
-            adapter = new ImageAdapter(LFMainActivity.listAll,basicCallBack);
+            adapter = new ImageAdapter(LFMainActivity.listAll, basicCallBack, this);
             getSupportActionBar().setTitle(all_photo_pos + 1 + " " + getString(R.string.of) + " " + size_all);
             current_image_pos = all_photo_pos;
 
@@ -283,7 +285,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements Recycler
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(
                 isApplyThemeOnImgAct()
-                        ? ColorPalette.getTransparentColor (getPrimaryColor(), getTransparency())
+                        ? ColorPalette.getTransparentColor(getPrimaryColor(), getTransparency())
                         : ColorPalette.getTransparentColor(getDefaultThemeToolbarColor3th(), 175));
 
         toolbar.setPopupTheme(getPopupToolbarStyle());
@@ -335,8 +337,8 @@ public class SingleMediaActivity extends SharedMediaActivity implements Recycler
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-            // Inflate the menu; this adds items to the action bar if it is present.
-            getMenuInflater().inflate(R.menu.menu_view_pager, menu);
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_view_pager, menu);
         return true;
     }
 
@@ -346,9 +348,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements Recycler
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE)
-            params.setMargins(0,0,Measure.getNavigationBarSize(SingleMediaActivity.this).x,0);
+            params.setMargins(0, 0, Measure.getNavigationBarSize(SingleMediaActivity.this).x, 0);
         else
-            params.setMargins(0,0,0,0);
+            params.setMargins(0, 0, 0, 0);
 
         toolbar.setLayoutParams(params);
     }
@@ -371,11 +373,11 @@ public class SingleMediaActivity extends SharedMediaActivity implements Recycler
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQ_CODE_SPEECH_INPUT && data!=null) {
+        if (requestCode == REQ_CODE_SPEECH_INPUT && data != null) {
             ArrayList<String> result = data
                     .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
             voiceInput = result.get(0);
-            editTextDescription.setText(editTextDescription.getText().toString().trim() + " "+ voiceInput);
+            editTextDescription.setText(editTextDescription.getText().toString().trim() + " " + voiceInput);
             editTextDescription.setSelection(editTextDescription.length());
             return;
         }
@@ -408,15 +410,15 @@ public class SingleMediaActivity extends SharedMediaActivity implements Recycler
     }
 
 
-
     private void handleEditorImage(Intent data) {
         String newFilePath = data.getStringExtra(EditImageActivity.EXTRA_OUTPUT);
         boolean isImageEdit = data.getBooleanExtra(EditImageActivity.IMAGE_IS_EDIT, false);
 
-        if (isImageEdit){
+        if (isImageEdit) {
 
-        }else{//Or use the original unedited pictures
-            newFilePath = data.getStringExtra(EditImageActivity.FILE_PATH);;
+        } else {//Or use the original unedited pictures
+            newFilePath = data.getStringExtra(EditImageActivity.FILE_PATH);
+            ;
         }
         //System.out.println("newFilePath---->" + newFilePath);
         //File file = new File(newFilePath);
@@ -510,14 +512,14 @@ public class SingleMediaActivity extends SharedMediaActivity implements Recycler
                 else
                     uri = Uri.fromFile(new File(LFMainActivity.listAll.get(current_image_pos).getPath()));
                 String extension = uri.getPath();
-                if (extension!=null) {
+                if (extension != null) {
                     Intent editIntent = new Intent(SingleMediaActivity.this, EditImageActivity.class);
                     editIntent.putExtra("extra_input", uri.getPath());
                     editIntent.putExtra("extra_output", FileUtils.genEditFile(FileUtils.getExtension(extension)).getAbsolutePath());
                     editIntent.putExtra("requestCode", ACTION_REQUEST_EDITIMAGE);
                     startActivity(editIntent);
-                }else
-                    SnackBarHandler.show(parentView,R.string.image_invalid);
+                } else
+                    SnackBarHandler.show(parentView, R.string.image_invalid);
                 break;
 
             case R.id.action_use_as:
@@ -533,13 +535,13 @@ public class SingleMediaActivity extends SharedMediaActivity implements Recycler
             case R.id.action_delete:
                 final AlertDialog.Builder deleteDialog = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
 
-                AlertDialogsHelper.getTextDialog(SingleMediaActivity.this,deleteDialog,
+                AlertDialogsHelper.getTextDialog(SingleMediaActivity.this, deleteDialog,
                         R.string.delete, R.string.delete_photo_message, null);
 
                 deleteDialog.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
                 deleteDialog.setPositiveButton(this.getString(R.string.delete).toUpperCase(), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if (securityObj.isActiveSecurity()&&securityObj.isPasswordOnDelete()) {
+                        if (securityObj.isActiveSecurity() && securityObj.isPasswordOnDelete()) {
 
                             final AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
                             final EditText editTextPassword = securityObj.getInsertPasswordDialog
@@ -550,7 +552,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements Recycler
                                     if (securityObj.checkPassword(editTextPassword.getText().toString())) {
                                         deleteCurrentMedia();
                                     } else
-                                        SnackBarHandler.show(parentView,R.string.wrong_password);
+                                        SnackBarHandler.show(parentView, R.string.wrong_password);
 
                                 }
                             });
@@ -561,11 +563,11 @@ public class SingleMediaActivity extends SharedMediaActivity implements Recycler
                                     .OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-                                    if (securityObj.checkPassword(editTextPassword.getText().toString())){
+                                    if (securityObj.checkPassword(editTextPassword.getText().toString())) {
                                         deleteCurrentMedia();
                                         passwordDialog.dismiss();
                                     } else {
-                                        SnackBarHandler.show(parentView,R.string.wrong_password);
+                                        SnackBarHandler.show(parentView, R.string.wrong_password);
                                         editTextPassword.getText().clear();
                                         editTextPassword.requestFocus();
                                     }
@@ -616,7 +618,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements Recycler
                 detailsDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string
                         .ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) { }});
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
                 detailsDialog.show();
                 break;
 
@@ -628,7 +632,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements Recycler
                 AlertDialog.Builder descriptionDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
                 editTextDescription = getDescriptionDialog(SingleMediaActivity.this, descriptionDialogBuilder);
                 descriptionDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-                descriptionDialogBuilder.setPositiveButton((temp!=null && temp.getTitle().length()!=0)?getString(R.string.update_action):getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+                descriptionDialogBuilder.setPositiveButton((temp != null && temp.getTitle().length() != 0) ? getString(R.string.update_action) : getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //This should br empty it will be overwrite later
@@ -644,8 +648,8 @@ public class SingleMediaActivity extends SharedMediaActivity implements Recycler
                     public void onClick(View v) {
                         descriptionDialog.dismiss();
                         voiceInput = editTextDescription.getText().toString();
-                        if(temp == null) {
-                            databaseHelper.addImageDesc(new ImageDescModel(pathForDescription,editTextDescription.getText().toString()));
+                        if (temp == null) {
+                            databaseHelper.addImageDesc(new ImageDescModel(pathForDescription, editTextDescription.getText().toString()));
                         } else {
                             databaseHelper.update(new ImageDescModel(pathForDescription, editTextDescription.getText().toString()));
                         }
@@ -662,7 +666,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements Recycler
         return super.onOptionsItemSelected(item);
     }
 
-    public EditText getDescriptionDialog(final ThemedActivity activity, AlertDialog.Builder descriptionDialog){
+    public EditText getDescriptionDialog(final ThemedActivity activity, AlertDialog.Builder descriptionDialog) {
 
         final View DescriptiondDialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_description, null);
         final TextView DescriptionDialogTitle = (TextView) DescriptiondDialogLayout.findViewById(R.id.description_dialog_title);
@@ -682,9 +686,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements Recycler
         editxtDescription.setTextColor(activity.getTextColor());
 
         realm = Realm.getDefaultInstance();
-        databaseHelper =new DatabaseHelper(realm);
-        temp= databaseHelper.getImageDesc(pathForDescription);
-        if(temp != null && temp.getTitle().length()!=0) {
+        databaseHelper = new DatabaseHelper(realm);
+        temp = databaseHelper.getImageDesc(pathForDescription);
+        if (temp != null && temp.getTitle().length() != 0) {
             editxtDescription.setText(temp.getTitle());
             editxtDescription.setSelection(editxtDescription.getText().length());
             Toast.makeText(SingleMediaActivity.this, voiceInput, Toast.LENGTH_SHORT).show();
@@ -834,13 +838,8 @@ public class SingleMediaActivity extends SharedMediaActivity implements Recycler
     }
 
     @Override
-    public void onItemClick(View childView, int position) {
+    public void singleTap() {
         toggleSystemUI();
-    }
-
-    @Override
-    public void onItemLongPress(View childView, int position) {
-        //Do Nothing
     }
 
     private final class LoadImageTask extends AsyncTask<String, Void, Bitmap> {

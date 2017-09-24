@@ -22,6 +22,7 @@ import org.fossasia.phimpme.utilities.BasicCallBack;
 import java.util.ArrayList;
 
 import uk.co.senab.photoview.PhotoView;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
 
@@ -33,9 +34,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
 
     BasicCallBack basicCallBack;
     private ArrayList<Media> media;
+    private OnSingleTap onSingleTap;
 
-    public ImageAdapter(ArrayList<Media> media, BasicCallBack onItemClickListener) {
+    public ImageAdapter(ArrayList<Media> media, BasicCallBack onItemClickListener, OnSingleTap singleTap) {
         this.media = media;
+        this.onSingleTap = singleTap;
         this.basicCallBack = onItemClickListener;
     }
 
@@ -61,18 +64,37 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         });
     }
 
+    /**
+     * Interface for calling up the toggleUI on single tap on the image.
+     */
+    public interface OnSingleTap {
+        void singleTap();
+    }
+
     @Override
     public int getItemCount() {
         return media.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         PhotoView imageView;
         LinearLayout linearLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
             imageView = new PhotoView(ActivitySwitchHelper.context);
+            imageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+                @Override
+                public void onPhotoTap(View view, float x, float y) {
+                    onSingleTap.singleTap();
+                }
+
+                @Override
+                public void onOutsidePhotoTap() {
+                    onSingleTap.singleTap();
+                }
+            });
+
             linearLayout = (LinearLayout) itemView.findViewById(R.id.layout);
             WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
             Display display = wm.getDefaultDisplay();
