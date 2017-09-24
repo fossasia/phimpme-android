@@ -749,7 +749,9 @@
     <string name="materialcolorpicker__errHex">Hex Code Format incorrect</string>
     <string name="materialcolorpicker__inputColor">Color:</string>
     <string name="materialcolorpicker__btnSelectColor">Select</string>
-    <string name="saving_image">save...</string>
+    <string name="saving_image">Saving...</string>
+    <string name="image_saved">Saved!</string>
+    <string name="share_image">Share this with others?</string>
     <string name="input_hint">input text ...</string>
 
     <string name="no_choose">please choose a image for edit</string>
@@ -1007,5 +1009,8 @@
     <string name="install_facebook">Facebook not installed</string>
     <string name="restart_app">Please restart the app for better results!</string>
     <string name="press_back_again_to_exit">Press back again to exit</string>
+    <string name="photos_moved_successfully">Photos moved successfully</string>
+    <string name="photo_moved_successfully">Photo moved successfully</string>
+    <string name="copied_successfully">Copied successfully</string>
 
 </resources>
