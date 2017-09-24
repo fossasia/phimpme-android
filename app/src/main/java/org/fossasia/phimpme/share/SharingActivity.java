@@ -53,7 +53,6 @@ import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.session.AppKeyPair;
 import com.facebook.messenger.MessengerUtils;
 import com.facebook.messenger.ShareToMessengerParams;
-import com.facebook.share.ShareApi;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
@@ -119,12 +118,12 @@ import io.realm.RealmResults;
 
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
-import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FACEBOOK;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FLICKR;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.OTHERS;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTER;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_SECRET;
+import static org.fossasia.phimpme.utilities.Constants.FAIL;
 import static org.fossasia.phimpme.utilities.Constants.PACKAGE_FACEBOOK;
 import static org.fossasia.phimpme.utilities.Utils.checkNetwork;
 import static org.fossasia.phimpme.utilities.Utils.copyToClipBoard;
@@ -267,7 +266,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         saveFilePath = getIntent().getStringExtra(EXTRA_OUTPUT);
         Uri uri = Uri.fromFile(new File(saveFilePath));
         Glide.with(getApplicationContext()).load(uri)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(shareImage);
     }
 
@@ -378,6 +377,17 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         dialogBuilder.show();
     }
 
+    /**
+     * Method to send the result of the share operation
+     * @param code - SUCCESS if user shares it FAIL otherwise.
+     */
+    private void sendResult(int code) {
+        Intent result = new Intent();
+        result.putExtra(Constants.SHARE_RESULT, code);
+        setResult(RESULT_OK, result);
+        finish();
+    }
+
     private void shareToTumblr() {
         new PostToTumblrAsync().execute();
     }
@@ -457,6 +467,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             if (success) {
                 NotificationHandler.uploadPassed();
                 SnackBarHandler.show(parent, R.string.uploaded_box);
+                sendResult(Constants.SUCCESS);
             } else {
                 NotificationHandler.uploadFailed();
                 Snackbar.make(parent, getString(R.string.upload_failed_retry_box), Snackbar.LENGTH_LONG)
@@ -564,6 +575,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             if (success) {
                 NotificationHandler.uploadPassed();
                 SnackBarHandler.show(parent, R.string.uploaded_dropbox);
+                sendResult(Constants.SUCCESS);
             } else {
                 NotificationHandler.uploadFailed();
                 SnackBarHandler.show(parent, R.string.upload_failed);
@@ -574,15 +586,14 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     @Override
     public void onBackPressed() {
         if (caption == null) {
-            super.onBackPressed();
-            return;
+            sendResult(FAIL);
         } else {
             final AlertDialog.Builder discardChangesDialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
             AlertDialogsHelper.getTextDialog(SharingActivity.this, discardChangesDialogBuilder, R.string.discard_changes_header, R.string.discard_changes_message, null);
             discardChangesDialogBuilder.setPositiveButton(getString(R.string.ok).toUpperCase(), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    finish();
+                    setResult(FAIL);
                 }
             });
             discardChangesDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
@@ -676,7 +687,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 NotificationHandler.uploadPassed();
                 Log.d(getClass().getName(), response.getData().toString());
                 SnackBarHandler.show(parent, R.string.pinterest_post);
-
+                sendResult(Constants.SUCCESS);
             }
 
             @Override
@@ -744,6 +755,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                     .build();
 
             shareDialog.show(content);
+            sendResult(Constants.SUCCESS);
         } else
             SnackBarHandler.show(parent, R.string.install_facebook);
     }
@@ -757,6 +769,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
         shareIntent.setType("image/png");
         startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_image)));
+        sendResult(Constants.SUCCESS);
     }
 
     private void shareToInstagram() {
@@ -767,6 +780,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         share.setType("image/*");
         share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivity(Intent.createChooser(share, caption));
+        sendResult(Constants.SUCCESS);
     }
 
     private void shareToWhatsapp() {
@@ -778,6 +792,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         share.setType("image/*");
         share.putExtra(Intent.EXTRA_TEXT, caption);
         startActivity(Intent.createChooser(share, "Whatsapp"));
+        sendResult(Constants.SUCCESS);
     }
 
     private void shareToImgur() {
@@ -857,6 +872,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 shareMsgOnIntent(SharingActivity.this, url);
+                                sendResult(Constants.SUCCESS);
                             }
                         });
 
@@ -864,7 +880,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 copyToClipBoard(SharingActivity.this, url);
-
+                                sendResult(Constants.SUCCESS);
                             }
                         });
                         dialogBuilder.setNegativeButton(getString(R.string.exit).toUpperCase(), null);
@@ -1079,6 +1095,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             if (isPostedOnTwitter) {
                 NotificationHandler.uploadPassed();
                 SnackBarHandler.show(parent, R.string.tweet_posted_on_twitter);
+                sendResult(Constants.SUCCESS);
             } else {
                 NotificationHandler.uploadFailed();
                 SnackBarHandler.show(parent, R.string.error_on_posting_twitter);
@@ -1128,8 +1145,10 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         @Override
         protected void onPostExecute(Void result) {
             dialog.dismiss();
-            if (success)
+            if (success) {
                 SnackBarHandler.show(parent, getString(R.string.posted_on_tumblr));
+                sendResult(Constants.SUCCESS);
+            }
             else
                 SnackBarHandler.show(parent, getString(R.string.error_on_tumblr));
         }
