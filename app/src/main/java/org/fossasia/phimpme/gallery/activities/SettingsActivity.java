@@ -251,7 +251,7 @@ public class SettingsActivity extends ThemedActivity {
 
         /*** SW COLORED NAV BAR ***/
         swNavBar = (SwitchCompat) findViewById(R.id.SetColoredNavBar);
-        swNavBar.setChecked(SP.getBoolean(getString(R.string.preference_colored_nav_bar), false));
+        swNavBar.setChecked(SP.getBoolean(getString(R.string.preference_colored_nav_bar), true));
         swNavBar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
