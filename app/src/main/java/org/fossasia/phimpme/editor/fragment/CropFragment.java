@@ -169,6 +169,7 @@ public class CropFragment extends BaseEditFragment {
 	public void backToMain() {
 		activity.changeMode(EditImageActivity.MODE_ADJUST);
 		activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
+		activity.adjustFragment.clearSelection();
 		mCropPanel.setVisibility(View.GONE);
 		activity.mainImage.setScaleEnabled(true);
 		if (selctedTextView != null) {

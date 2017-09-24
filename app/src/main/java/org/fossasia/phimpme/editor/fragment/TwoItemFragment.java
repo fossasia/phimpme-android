@@ -1,10 +1,13 @@
 package org.fossasia.phimpme.editor.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.fossasia.phimpme.R;
@@ -12,6 +15,7 @@ import org.fossasia.phimpme.editor.EditImageActivity;
 
 public class TwoItemFragment extends BaseEditFragment implements View.OnClickListener{
     View item1,item2;
+    LinearLayout ll_item1, ll_item2;
     ImageView icon1,icon2;
     TextView text1,text2;
     int mode;
@@ -36,6 +40,9 @@ public class TwoItemFragment extends BaseEditFragment implements View.OnClickLis
         View view = inflater.inflate(R.layout.fragment_editor_twoitem, container, false);
         item1 = view.findViewById(R.id.menu_item1);
         item2 = view.findViewById(R.id.menu_item2);
+
+        ll_item1 = (LinearLayout)view.findViewById(R.id.menu_item1);
+        ll_item2 = (LinearLayout)view.findViewById(R.id.menu_item2);
 
         icon1 = (ImageView) view.findViewById(R.id.item1iconimage);
         icon2 = (ImageView) view.findViewById(R.id.item2iconimage);
@@ -72,12 +79,21 @@ public class TwoItemFragment extends BaseEditFragment implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.menu_item1:
+                clearSelection();
+                ll_item1.setBackgroundColor(ContextCompat.getColor(v.getContext(), R.color.md_grey_200));
                 firstItemClicked();
                 break;
             case R.id.menu_item2:
+                clearSelection();
+                ll_item2.setBackgroundColor(ContextCompat.getColor(v.getContext(), R.color.md_grey_200));
                 secondItemClicked();
                 break;
         }
+    }
+
+    public void clearSelection() {
+        ll_item1.setBackgroundColor(Color.TRANSPARENT);
+        ll_item2.setBackgroundColor(Color.TRANSPARENT);
     }
 
 

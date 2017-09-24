@@ -21,6 +21,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -122,6 +123,8 @@ public class LFMainActivity extends SharedMediaActivity {
     private ArrayList<Media> media;
     private ArrayList<Media> selectedMedias = new ArrayList<>();
     public boolean visible;
+
+    CoordinatorLayout coordinatorLayoutMainContent;
 
     // To handle back pressed
     boolean doubleBackToExitPressedOnce = false;
@@ -325,7 +328,7 @@ public class LFMainActivity extends SharedMediaActivity {
         super.onCreate(savedInstanceState);
         Log.e("TAG", "lfmain");
 
-
+        coordinatorLayoutMainContent = (CoordinatorLayout) findViewById(R.id.cl_main_content);
         BottomNavigationView navigationView = (BottomNavigationView)findViewById(R.id.bottombar);
 
         SP = PreferenceUtil.getInstance(getApplicationContext());
@@ -1562,7 +1565,8 @@ public class LFMainActivity extends SharedMediaActivity {
                     @Override
                     public void folderSelected(String path) {
                         swipeRefreshLayout.setRefreshing(true);
-                        if (getAlbum().moveSelectedMedia(getApplicationContext(), path) > 0) {
+                        int numberOfImagesMoved;
+                        if ((numberOfImagesMoved = getAlbum().moveSelectedMedia(getApplicationContext(), path)) > 0) {
                             if (getAlbum().getMedia().size() == 0) {
                                 getAlbums().removeCurrentAlbum();
                                 albumsAdapter.notifyDataSetChanged();
@@ -1571,6 +1575,10 @@ public class LFMainActivity extends SharedMediaActivity {
                             mediaAdapter.swapDataSet(getAlbum().getMedia());
                             finishEditMode();
                             invalidateOptionsMenu();
+                            if(numberOfImagesMoved > 1)
+                                SnackBarHandler.show(coordinatorLayoutMainContent, getString(R.string.photos_moved_successfully));
+                            else
+                                SnackBarHandler.show(coordinatorLayoutMainContent, getString(R.string.photo_moved_successfully));
                         } else requestSdCardPermissions();
 
                         swipeRefreshLayout.setRefreshing(false);
@@ -1591,6 +1599,8 @@ public class LFMainActivity extends SharedMediaActivity {
                         bottomSheetDialogFragment.dismiss();
                         if (!success)
                             requestSdCardPermissions();
+                        else
+                            SnackBarHandler.show(coordinatorLayoutMainContent, getString(R.string.copied_successfully));
                     }
                 });
                 bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
