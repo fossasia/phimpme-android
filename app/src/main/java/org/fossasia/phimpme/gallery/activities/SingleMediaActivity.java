@@ -418,7 +418,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
         } else {//Or use the original unedited pictures
             newFilePath = data.getStringExtra(EditImageActivity.FILE_PATH);
-            ;
         }
         //System.out.println("newFilePath---->" + newFilePath);
         //File file = new File(newFilePath);
