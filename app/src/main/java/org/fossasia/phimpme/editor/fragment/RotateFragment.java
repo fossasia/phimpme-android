@@ -129,6 +129,7 @@ public class RotateFragment extends BaseEditFragment {
         activity.adjustFragment.clearSelection();
         activity.mainImage.setVisibility(View.VISIBLE);
         this.mRotatePanel.setVisibility(View.GONE);
+        mSeekBar.setProgress(0);
     }
 
     public void applyRotateImage() {
