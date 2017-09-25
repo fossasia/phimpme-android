@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
+
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.filter.PhotoProcessing;
@@ -31,7 +32,6 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
         SliderFragment fragment = new SliderFragment();
         return fragment;
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -240,6 +240,5 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
         }
 
     }
-
 
 }
