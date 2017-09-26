@@ -9,6 +9,8 @@ public class Constants {
 
     public static int SUCCESS = 0;
     public static int FAIL = 1;
+    public static final int REQUEST_SHARE_RESULT = 50;
+    public static final String SHARE_RESULT = "share_result";
 
     public static final String IMGUR_IMAGE_UPLOAD_URL = "https://api.imgur.com/3/image/";
     public static String IMGUR_HEADER_CLIENt = "Client-ID";
