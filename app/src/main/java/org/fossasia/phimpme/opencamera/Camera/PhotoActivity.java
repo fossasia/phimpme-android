@@ -27,6 +27,7 @@ import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.FileUtils;
 import org.fossasia.phimpme.share.SharingActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
+import org.fossasia.phimpme.utilities.Constants;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 import java.io.File;
@@ -166,8 +167,7 @@ public class PhotoActivity extends ThemedActivity {
             case R.id.menu_share:
                 Intent share = new Intent(PhotoActivity.this, SharingActivity.class);
                 share.putExtra(EXTRA_OUTPUT, FILE_PATH);
-                startActivity(share);
-                finish();
+                startActivityForResult(share, Constants.REQUEST_SHARE_RESULT);
                 return true;
 
             case R.id.delete:
@@ -192,5 +192,15 @@ public class PhotoActivity extends ThemedActivity {
     public void onResume() {
         super.onResume();
         ActivitySwitchHelper.setContext(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constants.REQUEST_SHARE_RESULT && resultCode == RESULT_OK && data != null) {
+            int result = data.getIntExtra(Constants.SHARE_RESULT, Constants.FAIL);
+            if(result == Constants.SUCCESS) {
+                finish();
+            }
+        }
     }
 }
