@@ -503,7 +503,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
             imageSavedDialog(filePath);
         }else {
             final AlertDialog.Builder discardChangesDialogBuilder = new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
-            AlertDialogsHelper.getTextDialog(EditImageActivity.this, discardChangesDialogBuilder, R.string.discard_changes_header, R.string.exit_without_edit, null);
+            AlertDialogsHelper.getTextDialog(EditImageActivity.this, discardChangesDialogBuilder, R.string.no_changes_made, R.string.exit_without_edit, null);
             discardChangesDialogBuilder.setPositiveButton(getString(R.string.confirm).toUpperCase(), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
