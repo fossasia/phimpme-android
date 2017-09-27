@@ -79,6 +79,7 @@ script:
   - ./copy_opencv.sh
   - ./gradlew build
   - ./gradlew build connectedAndroidTest --stacktrace
+  - ./gradlew assembleRelease
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
