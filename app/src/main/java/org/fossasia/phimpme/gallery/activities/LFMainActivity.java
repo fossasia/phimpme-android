@@ -770,6 +770,7 @@ public class LFMainActivity extends SharedMediaActivity {
                     passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
 
                     final AlertDialog passwordDialog = passwordDialogBuilder.create();
+                    passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
                     passwordDialog.show();
 
                     passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View
