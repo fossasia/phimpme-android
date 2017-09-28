@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
@@ -26,9 +27,10 @@ import java.io.IOException;
 public class RotateFragment extends BaseEditFragment {
     public static final String TAG = RotateFragment.class.getName();
     private View mainView;
-    private View cancel,apply;
+    private View cancel, apply;
     public SeekBar mSeekBar;
     private RotateImageView mRotatePanel;
+    private ImageButton mRotateRight;
 
     public static RotateFragment newInstance() {
         RotateFragment fragment = new RotateFragment();
@@ -53,6 +55,7 @@ public class RotateFragment extends BaseEditFragment {
 
         cancel = mainView.findViewById(R.id.rotate_cancel);
         apply = mainView.findViewById(R.id.rotate_apply);
+        mRotateRight = (ImageButton) mainView.findViewById(R.id.rotate_right);
 
         mSeekBar = (SeekBar) mainView.findViewById(R.id.rotate_bar);
         mSeekBar.setProgress(0);
@@ -63,6 +66,13 @@ public class RotateFragment extends BaseEditFragment {
             @Override
             public void onClick(View v) {
                 applyRotateImage();
+            }
+        });
+
+        mRotateRight.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RotateRight();
             }
         });
 
@@ -77,8 +87,12 @@ public class RotateFragment extends BaseEditFragment {
         resetRotateView();
     }
 
+    private void RotateRight() {
+        activity.mRotatePanel.rotateImage((mRotatePanel.getRotateAngle() + 90));
+    }
+
     private void resetRotateView() {
-        if (null != activity && null != mRotatePanel){
+        if (null != activity && null != mRotatePanel) {
             activity.mRotatePanel.rotateImage(0);
             activity.mRotatePanel.reset();
             activity.mRotatePanel.setVisibility(View.GONE);
@@ -93,7 +107,7 @@ public class RotateFragment extends BaseEditFragment {
         activity.mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
         activity.mainImage.setVisibility(View.GONE);
 
-        activity.mRotatePanel.addBit(activity.mainBitmap,activity.mainImage.getBitmapRect());
+        activity.mRotatePanel.addBit(activity.mainBitmap, activity.mainImage.getBitmapRect());
         activity.mRotatePanel.reset();
         activity.mRotatePanel.setVisibility(View.VISIBLE);
     }
@@ -174,22 +188,14 @@ public class RotateFragment extends BaseEditFragment {
             Bitmap result = Bitmap.createBitmap((int) imageRect.width(),
                     (int) imageRect.height(), Bitmap.Config.ARGB_4444);
             Canvas canvas = new Canvas(result);
-            int w = originBit.getWidth() >> 1;
-            int h = originBit.getHeight() >> 1;
-            float centerX = imageRect.width() / 2;
-            float centerY = imageRect.height() / 2;
+            RectF dst = new RectF(0, 0, imageRect.width(),
+                    imageRect.height());
 
-            float left = centerX - w;
-            float top = centerY - h;
-
-            RectF dst = new RectF(left, top, left + originBit.getWidth(), top
-                    + originBit.getHeight());
             canvas.save();
             canvas.scale(mRotatePanel.getScale(), mRotatePanel.getScale(),
                     imageRect.width() / 2, imageRect.height() / 2);
             canvas.rotate(mRotatePanel.getRotateAngle(), imageRect.width() / 2,
                     imageRect.height() / 2);
-
             canvas.drawBitmap(originBit, new Rect(0, 0, originBit.getWidth(),
                     originBit.getHeight()), dst, null);
             canvas.restore();

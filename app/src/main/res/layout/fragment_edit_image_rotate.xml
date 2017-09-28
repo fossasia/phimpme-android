@@ -25,10 +25,18 @@
         android:layout_gravity="center_vertical"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_toLeftOf="@+id/rotate_apply"
+        android:layout_toLeftOf="@+id/rotate_right"
         android:layout_toRightOf="@+id/rotate_cancel"
         android:layout_weight="1"
         android:max="360" />
+    <ImageButton
+        android:id="@+id/rotate_right"
+        android:layout_width="@dimen/icon_item_image_size_main"
+        android:layout_height="@dimen/editor_bottom_row_size"
+        app:srcCompat="@android:drawable/ic_menu_rotate"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/rotate_apply"
+        android:background="@android:color/transparent"/>
 
     <ImageButton
         android:id="@+id/rotate_apply"

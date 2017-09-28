@@ -46,7 +46,7 @@ public class RotateImageView extends View {
 		srcRect = new Rect();
 		dstRect = new RectF();
 		maxRect = new Rect();
-		bottomPaint = PaintUtil.newRotateBottomImagePaint();
+		bottomPaint = PaintUtil.newBackgroundPaint(context);
 		originImageRect = new RectF();
 	}
 
@@ -66,7 +66,7 @@ public class RotateImageView extends View {
 
 	public void reset() {
 		rotateAngle = 0;
-		scale = 1;
+        scale=1;
 		invalidate();
 	}
 
@@ -75,20 +75,22 @@ public class RotateImageView extends View {
 		super.draw(canvas);
 		if (bitmap == null)
 			return;
-		maxRect.set(0, 0, getWidth(), getHeight());// The maximum bounding rectangle
-
+		maxRect.set(0, 0, (int)originImageRect.width(), (int)originImageRect.height());// The maximum bounding rectangle
 		calculateWrapBox();
 		scale = 1;
 		if (wrapRect.width() > getWidth()) {
-			scale = getWidth() / wrapRect.width();
-		}
+            scale=getWidth()/wrapRect.width();
+        }
 
 		canvas.save();
-		canvas.scale(scale, scale, canvas.getWidth() >> 1,
-				canvas.getHeight() >> 1);
+		canvas.scale(scale, scale, getWidth()>>1,
+				getHeight()>>1);
+        calculateWrapBox();
+        scale=1;
+        canvas.save();
 		canvas.drawRect(wrapRect, bottomPaint);
-		canvas.rotate(rotateAngle, canvas.getWidth() >> 1,
-				canvas.getHeight() >> 1);
+		canvas.rotate(rotateAngle, getWidth()>>1 ,
+				getHeight()>>1);
 		canvas.drawBitmap(bitmap, srcRect, dstRect, null);
 		canvas.restore();
 	}
@@ -96,8 +98,8 @@ public class RotateImageView extends View {
 	private void calculateWrapBox() {
 		wrapRect.set(dstRect);
 		matrix.reset();// Reset matrix is ​​a unit matrix
-		int centerX = getWidth() >> 1;
-		int centerY = getHeight() >> 1;
+		int centerX = (getWidth()/2);
+		int centerY = (getHeight()/2);
 		matrix.postRotate(rotateAngle, centerX, centerY);// After the rotation angle
 		matrix.mapRect(wrapRect);
 	}
@@ -113,7 +115,6 @@ public class RotateImageView extends View {
 	public synchronized float getScale() {
 		return scale;
 	}
-
 	public synchronized int getRotateAngle() {
 		return rotateAngle;
 	}
