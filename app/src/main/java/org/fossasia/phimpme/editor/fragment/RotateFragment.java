@@ -71,7 +71,7 @@ public class RotateFragment extends BaseEditFragment {
         mRotateRight.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                RotateRight();
+                rotateRight();
             }
         });
 
@@ -86,7 +86,7 @@ public class RotateFragment extends BaseEditFragment {
         resetRotateView();
     }
 
-    private void RotateRight() {
+    private void rotateRight() {
         activity.mRotatePanel.rotateImage((mRotatePanel.getRotateAngle() + 90));
     }
 
