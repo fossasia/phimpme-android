@@ -1,5 +1,6 @@
 package org.fossasia.phimpme.gallery.activities;
 
+import android.animation.Animator;
 import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -39,6 +40,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewAnimationUtils;
 import android.view.WindowManager;
 import android.webkit.MimeTypeMap;
 import android.widget.CompoundButton;
@@ -116,6 +118,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
     //To handle all photos/Album conditions
     public boolean all_photos = false;
+    private int checkForReveal = 0;
     final String REVIEW_ACTION = "com.android.camera.action.REVIEW";
     public static ArrayList<Media> listAll;
     public int size;
@@ -141,6 +144,10 @@ public class LFMainActivity extends SharedMediaActivity {
     private View.OnLongClickListener photosOnLongClickListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
+            if(checkForReveal ==0) {
+                enterReveal();
+                checkForReveal++;
+            }
             Media m = (Media) v.findViewById(R.id.photo_path).getTag();
             //If first long press, turn on selection mode
             if (!all_photos) {
@@ -159,6 +166,26 @@ public class LFMainActivity extends SharedMediaActivity {
         }
     };
 
+    /**
+     * Helper method for making reveal animation for toolbar when any item is selected by long click.
+     */
+    private void enterReveal() {
+
+        final View toolbar = findViewById(R.id.appbar_toolbar);
+
+        // get the center for the clipping circle
+        int cx = toolbar.getMeasuredWidth() / 2;
+        int cy = toolbar.getMeasuredHeight() / 2;
+
+        // get the final radius for the clipping circle
+        int finalRadius = Math.max(toolbar.getWidth(), toolbar.getHeight()) / 2;
+
+        // create the animator for this view
+        Animator anim =
+                ViewAnimationUtils.createCircularReveal(toolbar, cx, cy, 5, finalRadius);
+
+        anim.start();
+    }
 
     private int toggleSelectPhoto(Media m) {
         if (m != null) {
@@ -270,6 +297,10 @@ public class LFMainActivity extends SharedMediaActivity {
     private View.OnLongClickListener albumOnLongCLickListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
+            if(checkForReveal ==0) {
+                enterReveal();
+                checkForReveal++;
+            }
             albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(((Album) v.findViewById(R.id.album_name).getTag())));
             editMode = true;
             invalidateOptionsMenu();
@@ -829,8 +860,10 @@ public class LFMainActivity extends SharedMediaActivity {
 
     private void updateSelectedStuff() {
         if (albumsMode) {
-            if(getAlbums().getSelectedCount()==0)
+            if(getAlbums().getSelectedCount()==0) {
                 clearOverlay();
+                checkForReveal = 0;
+            }
             else
                 appBarOverlay();
             if (editMode)
@@ -848,8 +881,10 @@ public class LFMainActivity extends SharedMediaActivity {
                 });
             }
         } else {
-            if(getAlbum().getSelectedCount()==0)
+            if(getAlbum().getSelectedCount()==0) {
                 clearOverlay();
+                checkForReveal = 0;
+            }
             else
                 appBarOverlay();
             if (editMode)
@@ -1763,6 +1798,7 @@ public class LFMainActivity extends SharedMediaActivity {
      */
     @Override
     public void onBackPressed() {
+        checkForReveal = 0;
         if(editMode && all_photos)
             clearSelectedPhotos();
         if (editMode) finishEditMode();
