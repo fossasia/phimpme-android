@@ -30,7 +30,6 @@ public class RotateFragment extends BaseEditFragment {
     private View cancel, apply;
     public SeekBar mSeekBar;
     private RotateImageView mRotatePanel;
-    private ImageButton mRotateRight;
 
     public static RotateFragment newInstance() {
         RotateFragment fragment = new RotateFragment();
@@ -55,7 +54,7 @@ public class RotateFragment extends BaseEditFragment {
 
         cancel = mainView.findViewById(R.id.rotate_cancel);
         apply = mainView.findViewById(R.id.rotate_apply);
-        mRotateRight = (ImageButton) mainView.findViewById(R.id.rotate_right);
+        ImageButton mRotateRight = (ImageButton) mainView.findViewById(R.id.rotate_right);
 
         mSeekBar = (SeekBar) mainView.findViewById(R.id.rotate_bar);
         mSeekBar.setProgress(0);
