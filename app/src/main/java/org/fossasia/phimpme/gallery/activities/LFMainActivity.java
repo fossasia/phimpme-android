@@ -112,7 +112,7 @@ public class LFMainActivity extends SharedMediaActivity {
     private Toolbar toolbar;
     private SelectAlbumBottomSheet bottomSheetDialogFragment;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private boolean hidden = false, pickMode = false, editMode = false, albumsMode = true, firstLaunch = true,localFolder=true;
+    private boolean hidden = false, pickMode = false, editMode = false, albumsMode = true, firstLaunch = true,localFolder=true,hidenav=false;
 
     //To handle all photos/Album conditions
     public boolean all_photos = false;
@@ -143,6 +143,8 @@ public class LFMainActivity extends SharedMediaActivity {
         public boolean onLongClick(View v) {
             Media m = (Media) v.findViewById(R.id.photo_path).getTag();
             //If first long press, turn on selection mode
+            hideNavigationBar();
+            hidenav=true;
             if (!all_photos) {
                 appBarOverlay();
                 if (!editMode) {
@@ -169,6 +171,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 selectedMedias.remove(m);
         }
         if (selectedMedias.size() == 0) {
+            getNavigationBar();
             editMode = false;
             toolbar.setTitle(getString(R.string.all));
         } else {
@@ -239,6 +242,9 @@ public class LFMainActivity extends SharedMediaActivity {
                     if (editMode) {
                         appBarOverlay();
                         mediaAdapter.notifyItemChanged(getAlbum().toggleSelectPhoto(m));
+                        if(selectedMedias.size()==0)
+                            getNavigationBar();
+
                         invalidateOptionsMenu();
                     } else {
                         getAlbum().setCurrentPhotoIndex(m);
@@ -273,6 +279,8 @@ public class LFMainActivity extends SharedMediaActivity {
             albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(((Album) v.findViewById(R.id.album_name).getTag())));
             editMode = true;
             invalidateOptionsMenu();
+            hideNavigationBar();
+            hidenav=true;
             return true;
         }
     };
@@ -284,6 +292,8 @@ public class LFMainActivity extends SharedMediaActivity {
             //int index = Integer.parseInt(v.findViewById(R.id.album_name).getTag().toString());
             if (editMode) {
                 albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(album));
+                if(getAlbums().getSelectedCount()==0)
+                    getNavigationBar();
                 invalidateOptionsMenu();
             } else {
                 getAlbums().setCurrentAlbum(album);
@@ -545,6 +555,7 @@ public class LFMainActivity extends SharedMediaActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                getNavigationBar();
                 if (albumsMode) {
                     getAlbums().clearSelectedAlbums();
                     new PrepareAlbumTask().execute();
@@ -876,6 +887,7 @@ public class LFMainActivity extends SharedMediaActivity {
             toolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    getNavigationBar();
                     finishEditMode();
                     clearSelectedPhotos();
                 }
@@ -1013,7 +1025,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
+        getNavigationBar();
         switch (item.getItemId()) {
 
             case R.id.all_photos:
@@ -1117,6 +1129,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 return true;
 
             case R.id.delete_action:
+                getNavigationBar();
                 class DeletePhotos extends AsyncTask<String, Integer, Boolean> {
                     @Override
                     protected void onPreExecute() {
@@ -1741,6 +1754,13 @@ public class LFMainActivity extends SharedMediaActivity {
             return null;
         }
     }
+    public void getNavigationBar() {
+        if(editMode && hidenav)
+        {
+            navigationView.setVisibility(View.VISIBLE);
+            hidenav=false;
+        }
+    }
 
     /**
      * If we are in albumsMode, make the albums recyclerView visible. If we are not, make media recyclerView visible.
@@ -1765,6 +1785,7 @@ public class LFMainActivity extends SharedMediaActivity {
     public void onBackPressed() {
         if(editMode && all_photos)
             clearSelectedPhotos();
+        getNavigationBar();
         if (editMode) finishEditMode();
         else {
             if (albumsMode) {
