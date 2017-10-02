@@ -154,7 +154,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener,
     private boolean mZoomEnabled;
     private ScaleType mScaleType = ScaleType.FIT_CENTER;
 
-    PhotoViewAttacher(ImageView imageView) {
+    public PhotoViewAttacher(ImageView imageView) {
         this(imageView, true);
     }
 
