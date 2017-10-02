@@ -9,6 +9,7 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
@@ -729,6 +730,9 @@ public class LFMainActivity extends SharedMediaActivity {
         ((IconicsImageView) findViewById(R.id.Drawer_rate_Icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.Drawer_Upload_Icon)).setColor(color);
 
+        // Default setting
+        if(localFolder)
+            findViewById(R.id.ll_drawer_Default).setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.md_grey_200));
 
         findViewById(R.id.ll_drawer_Setting).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -759,6 +763,8 @@ public class LFMainActivity extends SharedMediaActivity {
             @Override
             public void onClick(View v) {
                 localFolder=true;
+                findViewById(R.id.ll_drawer_hidden).setBackgroundColor(Color.TRANSPARENT);
+                findViewById(R.id.ll_drawer_Default).setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.md_grey_200));
                 toolbar.setTitle(getString(R.string.local_folder));
                 hidden = false;
                 mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -769,6 +775,8 @@ public class LFMainActivity extends SharedMediaActivity {
             @Override
             public void onClick(View v) {
                 localFolder=false;
+                findViewById(R.id.ll_drawer_Default).setBackgroundColor(Color.TRANSPARENT);
+                findViewById(R.id.ll_drawer_hidden).setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.md_grey_200));
                 toolbar.setTitle(getString(R.string.hidden_folder));
                 if (securityObj.isActiveSecurity() && securityObj.isPasswordOnHidden()) {
                     AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
