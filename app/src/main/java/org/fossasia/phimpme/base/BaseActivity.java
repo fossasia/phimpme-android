@@ -1,6 +1,7 @@
 package org.fossasia.phimpme.base;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -55,7 +56,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
          nav_cam = (BottomNavigationItemView) findViewById(R.id.navigation_camera);
          nav_acc = (BottomNavigationItemView) findViewById(R.id.navigation_accounts);
 
-        presentShowcaseSequence(); // one second delay
+        int checkStoragePermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if(checkStoragePermission  == PackageManager.PERMISSION_GRANTED)
+            presentShowcaseSequence(); // one second delay
     }
 
     private void presentShowcaseSequence() {
