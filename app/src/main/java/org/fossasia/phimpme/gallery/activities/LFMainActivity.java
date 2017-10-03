@@ -118,7 +118,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
     //To handle all photos/Album conditions
     public boolean all_photos = false;
-    private int checkForReveal = 0;
+    private boolean checkForReveal = true;
     final String REVIEW_ACTION = "com.android.camera.action.REVIEW";
     public static ArrayList<Media> listAll;
     public int size;
@@ -144,9 +144,9 @@ public class LFMainActivity extends SharedMediaActivity {
     private View.OnLongClickListener photosOnLongClickListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
-            if(checkForReveal ==0) {
+            if(checkForReveal) {
                 enterReveal();
-                checkForReveal++;
+                checkForReveal = false;
             }
             Media m = (Media) v.findViewById(R.id.photo_path).getTag();
             //If first long press, turn on selection mode
@@ -297,9 +297,9 @@ public class LFMainActivity extends SharedMediaActivity {
     private View.OnLongClickListener albumOnLongCLickListener = new View.OnLongClickListener() {
         @Override
         public boolean onLongClick(View v) {
-            if(checkForReveal ==0) {
+            if(checkForReveal) {
                 enterReveal();
-                checkForReveal++;
+                checkForReveal = false;
             }
             albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(((Album) v.findViewById(R.id.album_name).getTag())));
             editMode = true;
@@ -862,7 +862,7 @@ public class LFMainActivity extends SharedMediaActivity {
         if (albumsMode) {
             if(getAlbums().getSelectedCount()==0) {
                 clearOverlay();
-                checkForReveal = 0;
+                checkForReveal = true;
             }
             else
                 appBarOverlay();
@@ -883,7 +883,7 @@ public class LFMainActivity extends SharedMediaActivity {
         } else {
             if(getAlbum().getSelectedCount()==0) {
                 clearOverlay();
-                checkForReveal = 0;
+                checkForReveal = true;
             }
             else
                 appBarOverlay();
@@ -1798,7 +1798,7 @@ public class LFMainActivity extends SharedMediaActivity {
      */
     @Override
     public void onBackPressed() {
-        checkForReveal = 0;
+        checkForReveal = true;
         if(editMode && all_photos)
             clearSelectedPhotos();
         if (editMode) finishEditMode();
