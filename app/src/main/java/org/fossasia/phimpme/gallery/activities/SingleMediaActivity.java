@@ -641,7 +641,10 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
                 final AlertDialog descriptionDialog = descriptionDialogBuilder.create();
                 descriptionDialog.show();
-
+                descriptionDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager
+                        .LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+                descriptionDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                
                 descriptionDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
