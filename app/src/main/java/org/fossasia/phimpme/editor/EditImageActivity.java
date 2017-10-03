@@ -96,36 +96,49 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     private EditImageActivity mContext;
     public Bitmap mainBitmap;
     private Bitmap originalBitmap;
-    @Nullable @BindView(R.id.main_image)
+    @Nullable
+    @BindView(R.id.main_image)
     public ImageViewTouch mainImage;
 
 
-    @Nullable @BindView(R.id.parentLayout)
+    @Nullable
+    @BindView(R.id.parentLayout)
     View parentLayout;
 
-    @Nullable @BindView(R.id.edit_cancel)
+    @Nullable
+    @BindView(R.id.edit_cancel)
     ImageButton cancel;
-    @Nullable @BindView(R.id.edit_save)
+    @Nullable
+    @BindView(R.id.edit_save)
     ImageButton save;
-    @Nullable @BindView(R.id.edit_befaft)
+    @Nullable
+    @BindView(R.id.edit_befaft)
     ImageButton bef_aft;
-    @Nullable @BindView(R.id.edit_undo)
+    @Nullable
+    @BindView(R.id.edit_undo)
     ImageButton undo;
-    @Nullable @BindView(R.id.edit_redo)
+    @Nullable
+    @BindView(R.id.edit_redo)
     ImageButton redo;
-    @Nullable @BindView(R.id.progress_bar_edit)
+    @Nullable
+    @BindView(R.id.progress_bar_edit)
     ProgressBar progressBar;
 
 
-    @Nullable @BindView(R.id.sticker_panel)
+    @Nullable
+    @BindView(R.id.sticker_panel)
     public StickerView mStickerView;// Texture layers View
-    @Nullable @BindView(R.id.crop_panel)
+    @Nullable
+    @BindView(R.id.crop_panel)
     public CropImageView mCropPanel;// Cut operation control
-    @Nullable @BindView(R.id.rotate_panel)
+    @Nullable
+    @BindView(R.id.rotate_panel)
     public RotateImageView mRotatePanel;//Rotation operation controls
-    @Nullable @BindView(R.id.text_sticker_panel)
+    @Nullable
+    @BindView(R.id.text_sticker_panel)
     public TextStickerView mTextStickerView;//Text display map View
-    @Nullable @BindView(R.id.custom_paint_view)
+    @Nullable
+    @BindView(R.id.custom_paint_view)
     public CustomPaintView mPaintView;//drawing paint
 
 
@@ -135,10 +148,10 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
 
     public ArrayList<Bitmap> bitmapsForUndo;
     public MainMenuFragment mainMenuFragment;
-    public RecyclerMenuFragment filterFragment, enhanceFragment,stickerTypesFragment;
+    public RecyclerMenuFragment filterFragment, enhanceFragment, stickerTypesFragment;
     public StickersFragment stickersFragment;
     public SliderFragment sliderFragment;
-    public TwoItemFragment writeFragment,adjustFragment;
+    public TwoItemFragment writeFragment, adjustFragment;
     public AddTextFragment addTextFragment;
     public PaintFragment paintFragment;
     public CropFragment cropFragment;
@@ -180,7 +193,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
      * Gets the image to be loaded from the intent and displays this image.
      */
     private void getData() {
-        if (null != getIntent() && null != getIntent().getExtras()){
+        if (null != getIntent() && null != getIntent().getExtras()) {
             Bundle bundle = getIntent().getExtras();
             filePath = bundle.getString(FILE_PATH);
             saveFilePath = bundle.getString(EXTRA_OUTPUT);
@@ -188,7 +201,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
             loadImage(filePath);
             return;
         }
-        SnackBarHandler.show(parentLayout,R.string.image_invalid);
+        SnackBarHandler.show(parentLayout, R.string.image_invalid);
     }
 
     /**
@@ -230,19 +243,20 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
 
     /**
      * Get current editing mode.
+     *
      * @return the editing mode.
      */
-    public static int getMode(){
+    public static int getMode() {
         return mode;
     }
 
-    public void changeMode(int to_mode){
+    public void changeMode(int to_mode) {
         EditImageActivity.mode = to_mode;
         highLightSelectedOption(to_mode);
     }
 
     private void highLightSelectedOption(int mode) {
-        switch (mode){
+        switch (mode) {
             case MODE_FILTERS:
             case MODE_ENHANCE:
             case MODE_ADJUST:
@@ -261,11 +275,12 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
 
     /**
      * Get the fragment corresponding to current editing mode.
+     *
      * @param index integer corresponding to editing mode.
      * @return Fragment of current editing mode.
      */
-    public Fragment getFragment(int index){
-        switch (index){
+    public Fragment getFragment(int index) {
+        switch (index) {
             case MODE_MAIN:
                 return mainMenuFragment;
             case MODE_SLIDER:
@@ -299,9 +314,10 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     /**
      * Called when a particular option in the preview_container is selected. It reassigns
      * the controls_container. It displays options and tools for the selected editing mode.
+     *
      * @param index integer corresponding to the current editing mode.
      */
-    public void changeBottomFragment(int index){
+    public void changeBottomFragment(int index) {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.controls_container, getFragment(index))
@@ -319,20 +335,20 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         if (currentShowingIndex > 0) {
             undo.setColorFilter(Color.BLACK);
             undo.setEnabled(true);
-        }else {
+        } else {
             undo.setColorFilter(getResources().getColor(R.color.md_grey_300));
             undo.setEnabled(false);
         }
         if (currentShowingIndex + 1 < bitmapsForUndo.size()) {
             redo.setColorFilter(Color.BLACK);
             redo.setEnabled(true);
-        }else {
+        } else {
             redo.setColorFilter(getResources().getColor(R.color.md_grey_300));
             redo.setEnabled(false);
         }
 
 
-        switch (mode){
+        switch (mode) {
             case MODE_STICKERS:
             case MODE_CROP:
             case MODE_ROTATE:
@@ -347,20 +363,21 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         }
     }
 
-    public void setEffectType(int type, int mode){
+    public void setEffectType(int type, int mode) {
         effectType = 100 * mode + type;
     }
 
     /**
      * Is called when an editing mode is selected in the control_container. Reassigns the
      * preview_container according to the editing mode selected.
+     *
      * @param index integer representing selected editing mode
      */
-    public void changeMiddleFragment(int index){
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.preview_container, getFragment(index))
-                    .commit();
+    public void changeMiddleFragment(int index) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.preview_container, getFragment(index))
+                .commit();
     }
 
     public void changeMainBitmap(Bitmap newBit) {
@@ -378,30 +395,31 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     }
 
     private void addToUndoList() {
-        try{
-            TODO:// implement a more efficient way, like storing only the difference of bitmaps or
+        try {
+            TODO:
+// implement a more efficient way, like storing only the difference of bitmaps or
             // steps followed to edit
             recycleBitmapList(++currentShowingIndex);
-            bitmapsForUndo.add(mainBitmap.copy(mainBitmap.getConfig(),true));
-        }catch (OutOfMemoryError error){
+            bitmapsForUndo.add(mainBitmap.copy(mainBitmap.getConfig(), true));
+        } catch (OutOfMemoryError error) {
             /**
              * When outOfMemory exception throws then to make space, remove the last edited step
              * from list and added the new operation in the end.
              */
             bitmapsForUndo.get(1).recycle();
             bitmapsForUndo.remove(1);
-            bitmapsForUndo.add(mainBitmap.copy(mainBitmap.getConfig(),true));
+            bitmapsForUndo.add(mainBitmap.copy(mainBitmap.getConfig(), true));
         }
     }
 
-    private void recycleBitmapList(int fromIndex){
-        while (fromIndex < bitmapsForUndo.size()){
+    private void recycleBitmapList(int fromIndex) {
+        while (fromIndex < bitmapsForUndo.size()) {
             bitmapsForUndo.get(fromIndex).recycle();
             bitmapsForUndo.remove(fromIndex);
         }
     }
 
-    private Bitmap getUndoBitmap(){
+    private Bitmap getUndoBitmap() {
         if (currentShowingIndex - 1 >= 0)
             currentShowingIndex -= 1;
         else currentShowingIndex = 0;
@@ -412,7 +430,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     }
 
 
-    private Bitmap getRedoBitmap(){
+    private Bitmap getRedoBitmap() {
         if (currentShowingIndex + 1 <= bitmapsForUndo.size())
             currentShowingIndex += 1;
         else currentShowingIndex = bitmapsForUndo.size() - 1;
@@ -449,6 +467,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
 
     /**
      * Load the image from filepath into mainImage imageView.
+     *
      * @param filepath The image to be loaded.
      */
     public void loadImage(String filepath) {
@@ -479,16 +498,17 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         isBeenSaved = true;
     }
 
-    public void showProgressBar(){
+    public void showProgressBar() {
         progressBar.setVisibility(View.VISIBLE);
     }
 
-    public void hideProgressBar(){
+    public void hideProgressBar() {
         progressBar.setVisibility(View.GONE);
     }
 
     /**
      * Allow exit only if image has not been modified or has been modified and saved.
+     *
      * @return true if can exit, false if cannot.
      */
     public boolean canAutoExit() {
@@ -496,12 +516,12 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     }
 
     protected void onSaveTaskDone() {
-        if (mOpTimes > 0 ){
+        if (mOpTimes > 0) {
             FileUtil.albumUpdate(this, saveFilePath);
             imageSavedDialog(saveFilePath);
-        }else if(mOpTimes <= 0 && requestCode == 1 ){
+        } else if (mOpTimes <= 0 && requestCode == 1) {
             imageSavedDialog(filePath);
-        }else {
+        } else {
             final AlertDialog.Builder discardChangesDialogBuilder = new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
             AlertDialogsHelper.getTextDialog(EditImageActivity.this, discardChangesDialogBuilder, R.string.no_changes_made, R.string.exit_without_edit, null);
             discardChangesDialogBuilder.setPositiveButton(getString(R.string.confirm).toUpperCase(), new DialogInterface.OnClickListener() {
@@ -513,7 +533,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
             discardChangesDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    if(dialog != null)
+                    if (dialog != null)
                         dialog.dismiss();
                 }
             });
@@ -526,7 +546,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     /**
      * Called when the edit_save button is pressed. Used to share the image on social media.
      */
-    private void shareImage(String filePath){
+    private void shareImage(String filePath) {
         Intent shareIntent = new Intent(EditImageActivity.this, SharingActivity.class);
         shareIntent.putExtra(EXTRA_OUTPUT, filePath);
         startActivity(shareIntent);
@@ -553,17 +573,17 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (R.id.edit_befaft == v.getId()){
-            if (MotionEvent.ACTION_DOWN == event.getAction()){
-                switch (mode){
+        if (R.id.edit_befaft == v.getId()) {
+            if (MotionEvent.ACTION_DOWN == event.getAction()) {
+                switch (mode) {
                     case MODE_SLIDER:
                         mainImage.setImageBitmap(mainBitmap);
                         break;
                     default:
                         mainImage.setImageBitmap(originalBitmap);
                 }
-            }else if (MotionEvent.ACTION_UP == event.getAction()){
-                switch (mode){
+            } else if (MotionEvent.ACTION_UP == event.getAction()) {
+                switch (mode) {
                     case MODE_SLIDER:
                         mainImage.setImageBitmap(sliderFragment.filterBit);
                         break;
@@ -594,7 +614,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
             mainBitmap = result;
             mainImage.setImageBitmap(result);
             mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
-            originalBitmap = mainBitmap.copy(mainBitmap.getConfig(),true);
+            originalBitmap = mainBitmap.copy(mainBitmap.getConfig(), true);
             addToUndoList();
             setInitialFragments();
         }
@@ -639,32 +659,32 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                 resetOpTimes();
                 onSaveTaskDone();
             } else {
-                SnackBarHandler.show(parentLayout,R.string.save_error);
+                SnackBarHandler.show(parentLayout, R.string.save_error);
             }
         }
     }
 
     @Override
     public void onBackPressed() {
-        switch (mode){
+        switch (mode) {
             //On pressing back, ask whether the user wants to discard changes or not
             case MODE_SLIDER:
-                showDiscardChangesDialog(MODE_SLIDER,R.string.discard_enhance_message);
+                showDiscardChangesDialog(MODE_SLIDER, R.string.discard_enhance_message);
                 return;
             case MODE_STICKERS:
-                showDiscardChangesDialog(MODE_STICKERS,R.string.discard_stickers_message);
+                showDiscardChangesDialog(MODE_STICKERS, R.string.discard_stickers_message);
                 return;
             case MODE_CROP:
-                showDiscardChangesDialog(MODE_CROP,R.string.discard_crop_message);
+                showDiscardChangesDialog(MODE_CROP, R.string.discard_crop_message);
                 return;
             case MODE_ROTATE:
-                showDiscardChangesDialog(MODE_ROTATE,R.string.discard_rotate_message);
+                showDiscardChangesDialog(MODE_ROTATE, R.string.discard_rotate_message);
                 return;
             case MODE_TEXT:
-                showDiscardChangesDialog(MODE_TEXT,R.string.discard_text_message);
+                showDiscardChangesDialog(MODE_TEXT, R.string.discard_text_message);
                 return;
             case MODE_PAINT:
-                showDiscardChangesDialog(MODE_PAINT,R.string.discard_paint_message);
+                showDiscardChangesDialog(MODE_PAINT, R.string.discard_paint_message);
                 return;
 
         }
@@ -683,7 +703,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
             discardChangesDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    if(dialog != null)
+                    if (dialog != null)
                         dialog.dismiss();
                 }
             });
@@ -693,20 +713,20 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         }
     }
 
-    private void showDiscardChangesDialog(final int editMode, @StringRes int message){
-        AlertDialog.Builder discardChangesDialogBuilder=new AlertDialog.Builder(EditImageActivity.this,getDialogStyle());
-        AlertDialogsHelper.getTextDialog(EditImageActivity.this,discardChangesDialogBuilder,R.string.discard_changes_header,message,null);
+    private void showDiscardChangesDialog(final int editMode, @StringRes int message) {
+        AlertDialog.Builder discardChangesDialogBuilder = new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
+        AlertDialogsHelper.getTextDialog(EditImageActivity.this, discardChangesDialogBuilder, R.string.discard_changes_header, message, null);
         discardChangesDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(dialog!=null)
+                if (dialog != null)
                     dialog.dismiss();
             }
         });
         discardChangesDialogBuilder.setPositiveButton(getString(R.string.confirm).toUpperCase(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                switch(editMode){
+                switch (editMode) {
                     case MODE_SLIDER:
                         sliderFragment.backToMain();
                         break;
@@ -730,7 +750,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                 }
             }
         });
-        AlertDialog alertDialog=discardChangesDialogBuilder.create();
+        AlertDialog alertDialog = discardChangesDialogBuilder.create();
         alertDialog.show();
     }
 
@@ -761,7 +781,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.edit_save:
                 if (mOpTimes != 0)
                     doSaveImage();
@@ -782,9 +802,10 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
 
     /**
      * Appears when user saves the image, asking him to share the image or not.
+     *
      * @param path - path of the image
      */
-    private  void imageSavedDialog(final String path){
+    private void imageSavedDialog(final String path) {
 
         final AlertDialog.Builder imageSavedDialogBuilder = new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
         AlertDialogsHelper.getTextDialog(EditImageActivity.this, imageSavedDialogBuilder, R.string.image_saved, R.string.share_image, null);
@@ -797,7 +818,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         imageSavedDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(dialog != null)
+                if (dialog != null)
                     onBackPressed();
 
             }

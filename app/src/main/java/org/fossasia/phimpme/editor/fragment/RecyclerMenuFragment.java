@@ -33,10 +33,10 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     View fragmentView;
     private StickerView mStickerView;
     static final String[] stickerPath = {"stickers/type1", "stickers/type2", "stickers/type3", "stickers/type4", "stickers/type5", "stickers/type6", "stickers/type7"};
-    Bitmap currentBitmap,tempBitmap;
-    int bmWidth = -1,bmHeight = -1;
+    Bitmap currentBitmap, tempBitmap;
+    int bmWidth = -1, bmHeight = -1;
     int defaulticon;
-    TypedArray iconlist,titlelist;
+    TypedArray iconlist, titlelist;
     static int currentSelection = -1;
 
     public RecyclerMenuFragment() {
@@ -49,15 +49,16 @@ public class RecyclerMenuFragment extends BaseEditFragment {
         return fragment;
     }
 
-    public void clearCurrentSelection(){
-        if(currentSelection != -1){
+    public void clearCurrentSelection() {
+        if (currentSelection != -1) {
             mRecyclerAdapter.mViewHolder holder = (mRecyclerAdapter.mViewHolder) recyclerView.findViewHolderForAdapterPosition(currentSelection);
-            if(holder != null){
+            if (holder != null) {
                 holder.wrapper.setBackgroundColor(Color.TRANSPARENT);
             }
             currentSelection = -1;
         }
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +68,7 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         recyclerView = (RecyclerView) fragmentView.findViewById(R.id.editor_recyclerview);
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(new mRecyclerAdapter());
         this.mStickerView = activity.mStickerView;
@@ -99,7 +100,7 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-    //    if (filterThumbs != null)filterThumbs=null;
+        //    if (filterThumbs != null)filterThumbs=null;
     }
 
     @Override
@@ -112,30 +113,30 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     }
 
     public void getFilterThumbs() {
-        if (null!= currentBitmap) {
-                GetFilterThumbsTask getFilterThumbsTask = new GetFilterThumbsTask();
-                getFilterThumbsTask.execute();
+        if (null != currentBitmap) {
+            GetFilterThumbsTask getFilterThumbsTask = new GetFilterThumbsTask();
+            getFilterThumbsTask.execute();
         }
     }
 
     private Bitmap getResizedBitmap(Bitmap bm, int divisor) {
-        float scale = 1/(float)divisor;
+        float scale = 1 / (float) divisor;
         Matrix matrix = new Matrix();
         matrix.postScale(scale, scale);
-        if (bmWidth <= 0 ) bmWidth = bm.getWidth();
+        if (bmWidth <= 0) bmWidth = bm.getWidth();
         if (bmHeight <= 0) bmHeight = bm.getHeight();
         return Bitmap.createBitmap(bm, 0, 0, bmWidth, bmHeight, matrix, false);
     }
 
-    private class GetFilterThumbsTask extends AsyncTask<Void,Void,Void>{
+    private class GetFilterThumbsTask extends AsyncTask<Void, Void, Void> {
 
         @Override
         protected Void doInBackground(Void... params) {
-            if (filterThumbs==null) {
+            if (filterThumbs == null) {
                 filterThumbs = new ArrayList<>();
                 bmWidth = currentBitmap.getWidth();
                 bmHeight = currentBitmap.getHeight();
-                int leng = (titlelist!=null) ? titlelist.length() : 0;
+                int leng = (titlelist != null) ? titlelist.length() : 0;
                 for (int i = 0; i < leng; i++) {
                     filterThumbs.add(PhotoProcessing.processImage(getResizedBitmap(currentBitmap, 5), (i + 100 * EditImageActivity.MODE_FILTERS), 100));
                 }
@@ -153,19 +154,20 @@ public class RecyclerMenuFragment extends BaseEditFragment {
         }
     }
 
-    class mRecyclerAdapter extends RecyclerView.Adapter<mRecyclerAdapter.mViewHolder>{
+    class mRecyclerAdapter extends RecyclerView.Adapter<mRecyclerAdapter.mViewHolder> {
 
         class mViewHolder extends RecyclerView.ViewHolder {
             ImageView icon;
             TextView title;
             LinearLayout wrapper;
             View view;
+
             mViewHolder(View itemView) {
                 super(itemView);
                 view = itemView;
-                icon = (ImageView)itemView.findViewById(R.id.editor_item_image);
-                title = (TextView)itemView.findViewById(R.id.editor_item_title);
-                wrapper = (LinearLayout)itemView.findViewById(R.id.ll_effect_wrapper);
+                icon = (ImageView) itemView.findViewById(R.id.editor_item_image);
+                title = (TextView) itemView.findViewById(R.id.editor_item_title);
+                wrapper = (LinearLayout) itemView.findViewById(R.id.ll_effect_wrapper);
             }
         }
 
@@ -189,14 +191,14 @@ public class RecyclerMenuFragment extends BaseEditFragment {
         @Override
         public mRecyclerAdapter.mViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext())
-                                        .inflate(R.layout.editor_iconitem,parent,false);
+                    .inflate(R.layout.editor_iconitem, parent, false);
             return new mViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(mRecyclerAdapter.mViewHolder holder, final int position) {
 
-            if (MODE == EditImageActivity.MODE_STICKER_TYPES){
+            if (MODE == EditImageActivity.MODE_STICKER_TYPES) {
                 holder.itemView.setTag(stickerPath[position]);
             }
             int iconImageSize = (int) getActivity().getResources().getDimension(R.dimen.icon_item_image_size_recycler);
@@ -204,38 +206,38 @@ public class RecyclerMenuFragment extends BaseEditFragment {
             holder.icon.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
             if (MODE == EditImageActivity.MODE_FILTERS) {
-                if (currentBitmap!=null && filterThumbs!=null && filterThumbs.size() > position) {
+                if (currentBitmap != null && filterThumbs != null && filterThumbs.size() > position) {
                     iconImageSize = (int) getActivity().getResources().getDimension(R.dimen.icon_item_image_size_filter_preview);
                     holder.icon.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     holder.icon.setImageBitmap(filterThumbs.get(position));
-                }else {
+                } else {
                     holder.icon.setImageResource(defaulticon);
                 }
-            }else {
+            } else {
                 holder.icon.setImageResource(iconlist.getResourceId(position, defaulticon));
             }
 
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(iconImageSize,iconImageSize);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(iconImageSize, iconImageSize);
             layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
             holder.icon.setLayoutParams(layoutParams);
             holder.title.setText(titlelist.getString(position));
             holder.wrapper.setBackgroundColor(Color.TRANSPARENT);
 
-            if(currentSelection == position)
+            if (currentSelection == position)
                 holder.wrapper.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.md_grey_200));
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     highlightSelectedOption(position, v);
-                    itemClicked(position,v);
+                    itemClicked(position, v);
                 }
             });
         }
 
         private void highlightSelectedOption(int position, View v) {
             int color = ContextCompat.getColor(v.getContext(), R.color.md_grey_200);
-            if(currentSelection != -1)
+            if (currentSelection != -1)
                 ((mRecyclerAdapter.mViewHolder) recyclerView.findViewHolderForAdapterPosition(currentSelection))
                         .wrapper
                         .setBackgroundColor(Color.TRANSPARENT);
@@ -252,16 +254,16 @@ public class RecyclerMenuFragment extends BaseEditFragment {
             return titlelist.length();
         }
 
-        void itemClicked(int pos, View view){
-            switch (MODE){
+        void itemClicked(int pos, View view) {
+            switch (MODE) {
                 case EditImageActivity.MODE_FILTERS:
-                    activity.setEffectType(pos,MODE);
+                    activity.setEffectType(pos, MODE);
                     activity.changeMode(EditImageActivity.MODE_SLIDER);
                     activity.changeBottomFragment(EditImageActivity.MODE_SLIDER);
                     break;
 
                 case EditImageActivity.MODE_ENHANCE:
-                    activity.setEffectType(pos,MODE);
+                    activity.setEffectType(pos, MODE);
                     activity.changeMode(EditImageActivity.MODE_SLIDER);
                     activity.changeBottomFragment(EditImageActivity.MODE_SLIDER);
                     break;
