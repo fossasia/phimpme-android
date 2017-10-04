@@ -475,6 +475,7 @@
     <string name="clear_preview">Clear preview</string>
     <string name="new_folder">New Folder</string>
     <string name="create_new_folder">Create new folder</string>
+    <string name="slideshow">Slideshow</string>
 
     <!--Notification Uploads-->
     <string name="upload_progress">Uploading to</string>
@@ -504,6 +505,8 @@
     <string name="new_folder_message">The new folder will be created in the current path, and
         then the media will be copied or moved in the new folder.
     </string>
+    <string name="enter_time">Enter time interval</string>
+    <string name="time_interval">Time interval (seconds)</string>
     <string name="discard_changes_message">Are you sure you want to discard all changes?</string>
     <string name="discard_stickers_message">Are you sure you want to discard the stickers added?</string>
     <string name="discard_enhance_message">Are you sure you want to discard the enhancements made?</string>

@@ -22,6 +22,10 @@
     </group>
 
     <item
+        android:id="@+id/slide_show"
+        android:title="@string/slideshow"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_description"
         android:title="Description"
         app:showAsAction="never" />
