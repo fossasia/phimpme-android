@@ -612,7 +612,10 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         final EditText captionEditText = new EditText(this);
         AlertDialogsHelper.getInsertTextDialog(SharingActivity.this, captionDialogBuilder, captionEditText, R.string.caption_head ,null);
         captionDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-        captionEditText.setBackground(null);
+        captionEditText.setHint(R.string.description_hint);
+        captionEditText.setHintTextColor(getResources().getColor(R.color.grey, null));
+        captionEditText.setSelectAllOnFocus(true);
+        captionEditText.selectAll();
         captionEditText.setSingleLine(false);
         if(caption!=null) {
             captionEditText.setText(caption);
