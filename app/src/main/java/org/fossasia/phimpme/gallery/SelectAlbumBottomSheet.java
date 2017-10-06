@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
@@ -128,9 +129,24 @@ public class SelectAlbumBottomSheet extends BottomSheetDialogFragment {
 		builder.setPositiveButton(R.string.ok_action, new DialogInterface.OnClickListener() {
 		  @Override
 		  public void onClick(DialogInterface dialogInterface, int i) {
+              int folderCount=folders.size();
+              int check=1;
+              int filePosition=0;
+              while (filePosition<folderCount) {
+                  File f = folders.get(filePosition);
+                  filePosition++;
+                  if (editText.getText().toString().equals(f.getName()))
+                      check=0;
+              }
+              if(!editText.getText().toString().trim().isEmpty() && check!=0) {
 			File folderPath = new File(currentFolderPath.getText().toString() + File.separator + editText.getText().toString());
 			if (folderPath.mkdir()) displayContentFolder(folderPath);
+              }
+              else if(check==0)
+                  Toast.makeText(getContext(),R.string.folder_name_exists,Toast.LENGTH_SHORT).show();
 
+              else
+                  Toast.makeText(getContext(),R.string.empty_folder_name,Toast.LENGTH_SHORT).show();
 		  }
 		});
 		builder.show();
