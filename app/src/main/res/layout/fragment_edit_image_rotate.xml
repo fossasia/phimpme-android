@@ -7,16 +7,15 @@
 
     <ImageButton
         android:id="@+id/rotate_cancel"
-        android:layout_width="@dimen/icon_item_image_size_main"
-        android:layout_height="@dimen/editor_bottom_row_size"
+        android:layout_width="@dimen/icon_cancel"
+        android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
         android:layout_alignParentLeft="true"
         android:layout_alignBottom="@+id/rotate_bar"
         android:scaleType="fitCenter"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:background="?android:attr/selectableItemBackground"
-        app:srcCompat="@drawable/ic_no" />
+        android:background="?android:attr/selectableItemBackground" />
 
     <SeekBar
         android:id="@+id/rotate_bar"
@@ -32,7 +31,7 @@
 
     <ImageButton
         android:id="@+id/rotate_apply"
-        android:layout_width="@dimen/icon_item_image_size_main"
+        android:layout_width="@dimen/icon_apply"
         android:layout_height="@dimen/editor_bottom_row_size"
         android:layout_alignParentRight="true"
         android:layout_alignBottom="@+id/rotate_bar"
@@ -40,7 +39,6 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:background="?android:attr/selectableItemBackground"
-        android:layout_gravity="center_vertical"
-        app:srcCompat="@drawable/ic_done_black_24dp" />
+        android:layout_gravity="center_vertical"/>
 
 </RelativeLayout>
