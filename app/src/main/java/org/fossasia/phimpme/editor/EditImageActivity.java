@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -19,9 +20,6 @@ import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
 import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
-import org.fossasia.phimpme.gallery.util.ColorPalette;
-import org.fossasia.phimpme.share.SharingActivity;
 import org.fossasia.phimpme.editor.fragment.AddTextFragment;
 import org.fossasia.phimpme.editor.fragment.CropFragment;
 import org.fossasia.phimpme.editor.fragment.MainMenuFragment;
@@ -40,6 +38,9 @@ import org.fossasia.phimpme.editor.view.StickerView;
 import org.fossasia.phimpme.editor.view.TextStickerView;
 import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouch;
 import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouchBase;
+import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
+import org.fossasia.phimpme.gallery.util.ColorPalette;
+import org.fossasia.phimpme.share.SharingActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 
@@ -497,12 +498,12 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     protected void onSaveTaskDone() {
         if (mOpTimes > 0 ){
             FileUtil.albumUpdate(this, saveFilePath);
-            shareImage(saveFilePath);
+            imageSavedDialog(saveFilePath);
         }else if(mOpTimes <= 0 && requestCode == 1 ){
-            shareImage(filePath);
+            imageSavedDialog(filePath);
         }else {
             final AlertDialog.Builder discardChangesDialogBuilder = new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
-            AlertDialogsHelper.getTextDialog(EditImageActivity.this, discardChangesDialogBuilder, R.string.discard_changes_header, R.string.exit_without_edit, null);
+            AlertDialogsHelper.getTextDialog(EditImageActivity.this, discardChangesDialogBuilder, R.string.no_changes_made, R.string.exit_without_edit, null);
             discardChangesDialogBuilder.setPositiveButton(getString(R.string.confirm).toUpperCase(), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
@@ -646,26 +647,27 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     @Override
     public void onBackPressed() {
         switch (mode){
+            //On pressing back, ask whether the user wants to discard changes or not
             case MODE_SLIDER:
-                sliderFragment.backToMain();
+                showDiscardChangesDialog(MODE_SLIDER,R.string.discard_enhance_message);
                 return;
             case MODE_STICKERS:
-                stickersFragment.backToMain();
+                showDiscardChangesDialog(MODE_STICKERS,R.string.discard_stickers_message);
                 return;
             case MODE_CROP:
-                cropFragment.backToMain();
+                showDiscardChangesDialog(MODE_CROP,R.string.discard_crop_message);
                 return;
             case MODE_ROTATE:
-                rotateFragment.backToMain();
+                showDiscardChangesDialog(MODE_ROTATE,R.string.discard_rotate_message);
                 return;
             case MODE_TEXT:
-                addTextFragment.backToMain();
+                showDiscardChangesDialog(MODE_TEXT,R.string.discard_text_message);
                 return;
             case MODE_PAINT:
-                paintFragment.backToMain();
+                showDiscardChangesDialog(MODE_PAINT,R.string.discard_paint_message);
                 return;
-        }
 
+        }
         //if the image has not been edited or has been edited and saved.
         if (canAutoExit()) {
             finish();
@@ -689,6 +691,47 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
             AlertDialog alertDialog = discardChangesDialogBuilder.create();
             alertDialog.show();
         }
+    }
+
+    private void showDiscardChangesDialog(final int editMode, @StringRes int message){
+        AlertDialog.Builder discardChangesDialogBuilder=new AlertDialog.Builder(EditImageActivity.this,getDialogStyle());
+        AlertDialogsHelper.getTextDialog(EditImageActivity.this,discardChangesDialogBuilder,R.string.discard_changes_header,message,null);
+        discardChangesDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(dialog!=null)
+                    dialog.dismiss();
+            }
+        });
+        discardChangesDialogBuilder.setPositiveButton(getString(R.string.confirm).toUpperCase(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch(editMode){
+                    case MODE_SLIDER:
+                        sliderFragment.backToMain();
+                        break;
+                    case MODE_STICKERS:
+                        stickersFragment.backToMain();
+                        break;
+                    case MODE_CROP:
+                        cropFragment.backToMain();
+                        break;
+                    case MODE_ROTATE:
+                        rotateFragment.backToMain();
+                        break;
+                    case MODE_TEXT:
+                        addTextFragment.backToMain();
+                        break;
+                    case MODE_PAINT:
+                        paintFragment.backToMain();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+        AlertDialog alertDialog=discardChangesDialogBuilder.create();
+        alertDialog.show();
     }
 
     @Override
@@ -735,5 +778,32 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                 onRedoPressed();
                 break;
         }
+    }
+
+    /**
+     * Appears when user saves the image, asking him to share the image or not.
+     * @param path - path of the image
+     */
+    private  void imageSavedDialog(final String path){
+
+        final AlertDialog.Builder imageSavedDialogBuilder = new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
+        AlertDialogsHelper.getTextDialog(EditImageActivity.this, imageSavedDialogBuilder, R.string.image_saved, R.string.share_image, null);
+        imageSavedDialogBuilder.setPositiveButton(getString(R.string.share).toUpperCase(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                shareImage(path);
+            }
+        });
+        imageSavedDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if(dialog != null)
+                    onBackPressed();
+
+            }
+        });
+
+        AlertDialog alertDialog = imageSavedDialogBuilder.create();
+        alertDialog.show();
     }
 }

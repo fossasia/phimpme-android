@@ -53,7 +53,6 @@ import com.dropbox.client2.exception.DropboxException;
 import com.dropbox.client2.session.AppKeyPair;
 import com.facebook.messenger.MessengerUtils;
 import com.facebook.messenger.ShareToMessengerParams;
-import com.facebook.share.ShareApi;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
@@ -119,13 +118,14 @@ import io.realm.RealmResults;
 
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
-import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FACEBOOK;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FLICKR;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.OTHERS;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTER;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_SECRET;
+import static org.fossasia.phimpme.utilities.Constants.FAIL;
 import static org.fossasia.phimpme.utilities.Constants.PACKAGE_FACEBOOK;
+import static org.fossasia.phimpme.utilities.Constants.SUCCESS;
 import static org.fossasia.phimpme.utilities.Utils.checkNetwork;
 import static org.fossasia.phimpme.utilities.Utils.copyToClipBoard;
 import static org.fossasia.phimpme.utilities.Utils.getBitmapFromPath;
@@ -203,10 +203,14 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     private static final int REQ_SELECT_PHOTO = 1;
     private static final int REQUEST_CODE_SHARE_TO_MESSENGER = 2;
     private final int REQ_CODE_SPEECH_INPUT = 10;
+    private static final int SHARE_WHATSAPP = 200;
+
 
     public boolean uploadFailedBox = false;
     public String uploadName;
     ShareDialog shareDialog;
+    private int positionShareOption;
+    private boolean triedUploading = false;
 
     public static String getClientAuth() {
         return Constants.IMGUR_HEADER_CLIENt + " " + Constants.MY_IMGUR_CLIENT_ID;
@@ -267,7 +271,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         saveFilePath = getIntent().getStringExtra(EXTRA_OUTPUT);
         Uri uri = Uri.fromFile(new File(saveFilePath));
         Glide.with(getApplicationContext()).load(uri)
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(shareImage);
     }
 
@@ -288,7 +292,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     public void onItemClick(View childView, final int position) {
         if (!checkNetwork(this, parent)) return;
 
+        positionShareOption = position;
         if (sharableAccountsList.get(position) == OTHERS) {
+            triedUploading = true;
             shareToOthers();
             return;
         }
@@ -300,15 +306,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Realm realm = Realm.getDefaultInstance();
-                realm.beginTransaction();
-                UploadHistoryRealmModel uploadHistory;
-                uploadHistory = realm.createObject(UploadHistoryRealmModel.class);
-                uploadHistory.setName(sharableAccountsList.get(position).toString());
-                uploadHistory.setPathname(saveFilePath);
-                uploadHistory.setDatetime(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
-                realm.commitTransaction();
 
+                triedUploading = true;
                 switch (sharableAccountsList.get(position)) {
                     case FACEBOOK:
                         shareToFacebook();
@@ -376,6 +375,40 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             }
         });
         dialogBuilder.show();
+    }
+
+    /**
+     * Method to send the result of the share operation
+     * @param code - SUCCESS if user shares it FAIL otherwise.
+     */
+    private void sendResult(int code) {
+        if(triedUploading) {
+            triedUploading = false;
+            Realm realm = Realm.getDefaultInstance();
+            realm.beginTransaction();
+            UploadHistoryRealmModel uploadHistory;
+            uploadHistory = realm.createObject(UploadHistoryRealmModel.class);
+            uploadHistory.setName(sharableAccountsList.get(positionShareOption).toString());
+            uploadHistory.setPathname(saveFilePath);
+            uploadHistory.setDatetime(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
+            if (code == SUCCESS) {
+                uploadHistory.setStatus(getString(R.string.upload_done));
+                realm.commitTransaction();
+                Intent result = new Intent();
+                result.putExtra(Constants.SHARE_RESULT, code);
+                setResult(RESULT_OK, result);
+                finish();
+            } else {
+                uploadHistory.setStatus("FAIL");
+                realm.commitTransaction();
+            }
+        }
+        else {
+            Intent result = new Intent();
+            result.putExtra(Constants.SHARE_RESULT, code);
+            setResult(RESULT_OK, result);
+            finish();
+        }
     }
 
     private void shareToTumblr() {
@@ -457,6 +490,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             if (success) {
                 NotificationHandler.uploadPassed();
                 SnackBarHandler.show(parent, R.string.uploaded_box);
+                sendResult(Constants.SUCCESS);
             } else {
                 NotificationHandler.uploadFailed();
                 Snackbar.make(parent, getString(R.string.upload_failed_retry_box), Snackbar.LENGTH_LONG)
@@ -467,6 +501,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                                 renameUploadName(file.getName());
                             }
                         }).show();
+                sendResult(FAIL);
             }
         }
     }
@@ -497,6 +532,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 is = getContentResolver().openInputStream(Uri.fromFile(file));
             } catch (Exception e) {
                 e.printStackTrace();
+                sendResult(FAIL);
             }
             if (is != null) {
                 FlickrHelper f = FlickrHelper.getInstance();
@@ -506,6 +542,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 if (caption != null && !caption.isEmpty())
                     f.setDescription(caption);
                 f.uploadImage();
+
+                sendResult(SUCCESS);
             }
         }
     }
@@ -564,9 +602,11 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             if (success) {
                 NotificationHandler.uploadPassed();
                 SnackBarHandler.show(parent, R.string.uploaded_dropbox);
+                sendResult(Constants.SUCCESS);
             } else {
                 NotificationHandler.uploadFailed();
                 SnackBarHandler.show(parent, R.string.upload_failed);
+                sendResult(FAIL);
             }
         }
     }
@@ -574,15 +614,15 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     @Override
     public void onBackPressed() {
         if (caption == null) {
-            super.onBackPressed();
-            return;
+            sendResult(FAIL);
         } else {
             final AlertDialog.Builder discardChangesDialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
             AlertDialogsHelper.getTextDialog(SharingActivity.this, discardChangesDialogBuilder, R.string.discard_changes_header, R.string.discard_changes_message, null);
             discardChangesDialogBuilder.setPositiveButton(getString(R.string.ok).toUpperCase(), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    finish();
+                    caption = null;
+                    sendResult(FAIL);
                 }
             });
             discardChangesDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
@@ -601,7 +641,10 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         final EditText captionEditText = new EditText(this);
         AlertDialogsHelper.getInsertTextDialog(SharingActivity.this, captionDialogBuilder, captionEditText, R.string.caption_head ,null);
         captionDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-        captionEditText.setBackground(null);
+        captionEditText.setHint(R.string.description_hint);
+        captionEditText.setHintTextColor(getResources().getColor(R.color.grey, null));
+        captionEditText.setSelectAllOnFocus(true);
+        captionEditText.selectAll();
         captionEditText.setSingleLine(false);
         if(caption!=null) {
             captionEditText.setText(caption);
@@ -676,7 +719,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 NotificationHandler.uploadPassed();
                 Log.d(getClass().getName(), response.getData().toString());
                 SnackBarHandler.show(parent, R.string.pinterest_post);
-
+                sendResult(Constants.SUCCESS);
             }
 
             @Override
@@ -684,6 +727,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 NotificationHandler.uploadFailed();
                 Log.e(getClass().getName(), exception.getDetailMessage());
                 SnackBarHandler.show(parent, R.string.Pinterest_fail);
+                sendResult(FAIL);
             }
         });
     }
@@ -744,8 +788,11 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                     .build();
 
             shareDialog.show(content);
-        } else
+            sendResult(Constants.SUCCESS);
+        } else {
             SnackBarHandler.show(parent, R.string.install_facebook);
+            sendResult(FAIL);
+        }
     }
 
 
@@ -767,6 +814,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         share.setType("image/*");
         share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivity(Intent.createChooser(share, caption));
+        sendResult(SUCCESS);
     }
 
     private void shareToWhatsapp() {
@@ -777,7 +825,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         share.putExtra(Intent.EXTRA_STREAM, uri);
         share.setType("image/*");
         share.putExtra(Intent.EXTRA_TEXT, caption);
-        startActivity(Intent.createChooser(share, "Whatsapp"));
+        startActivityForResult(Intent.createChooser(share, "Whatsapp"), SHARE_WHATSAPP);
     }
 
     private void shareToImgur() {
@@ -857,6 +905,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 shareMsgOnIntent(SharingActivity.this, url);
+                                sendResult(Constants.SUCCESS);
                             }
                         });
 
@@ -864,13 +913,14 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 copyToClipBoard(SharingActivity.this, url);
-
+                                sendResult(Constants.SUCCESS);
                             }
                         });
                         dialogBuilder.setNegativeButton(getString(R.string.exit).toUpperCase(), null);
                         dialogBuilder.show();
                     } else {
                         SnackBarHandler.show(parent, R.string.error_on_imgur);
+                        sendResult(FAIL);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -977,15 +1027,16 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     @Override
     protected void onActivityResult(int requestCode, int responseCode, Intent data) {
-        super.onActivityResult(requestCode, responseCode, data);
         if (requestCode == REQ_SELECT_PHOTO) {
             if (responseCode == RESULT_OK) {
                 NotificationHandler.uploadPassed();
                 Snackbar.make(parent, R.string.success_google, Snackbar.LENGTH_LONG).show();
+                sendResult(SUCCESS);
                 return;
             } else {
                 NotificationHandler.uploadFailed();
                 Snackbar.make(parent, R.string.error_google, Snackbar.LENGTH_LONG).show();
+                sendResult(FAIL);
                 return;
             }
         }
@@ -995,7 +1046,12 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 text_caption.setText(voiceInput);
                 caption = voiceInput;
                 return;
-
+        }
+        if (requestCode == SHARE_WHATSAPP) {
+            if(responseCode == -1)
+                sendResult(SUCCESS);
+            else
+                sendResult(FAIL);
         }
     }
 
@@ -1079,9 +1135,11 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             if (isPostedOnTwitter) {
                 NotificationHandler.uploadPassed();
                 SnackBarHandler.show(parent, R.string.tweet_posted_on_twitter);
+                sendResult(SUCCESS);
             } else {
                 NotificationHandler.uploadFailed();
                 SnackBarHandler.show(parent, R.string.error_on_posting_twitter);
+                sendResult(FAIL);
             }
         }
     }
@@ -1128,10 +1186,14 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         @Override
         protected void onPostExecute(Void result) {
             dialog.dismiss();
-            if (success)
+            if (success) {
                 SnackBarHandler.show(parent, getString(R.string.posted_on_tumblr));
-            else
+                sendResult(Constants.SUCCESS);
+            }
+            else {
                 SnackBarHandler.show(parent, getString(R.string.error_on_tumblr));
+                sendResult(FAIL);
+            }
         }
     }
 
