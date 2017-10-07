@@ -433,6 +433,7 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="refresh">Refresh</string>
     <string name="sent_to_action">Send to</string>
+    <string name="move">Move to</string>
 
     <string name="filter_menu_title">Filter</string>
     <string name="all">All</string>
@@ -505,6 +506,7 @@
         then the media will be copied or moved in the new folder.
     </string>
     <string name="discard_changes_message">Are you sure you want to discard all changes?</string>
+    <string name="move_phots_message">Do you want to replace these files or make more copies of them?</string>
 
     <!-- ITEMS -->
     <string name="singular_photo">Photo</string>

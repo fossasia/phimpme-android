@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import org.fossasia.phimpme.gallery.data.Album;
 import org.fossasia.phimpme.gallery.data.CustomAlbumsHelper;
@@ -70,7 +71,7 @@ public class  MediaStoreProvider {
 		return false;
 	}
 
-	private static ArrayList<Album> getAlbums(Context context) {
+	public static ArrayList<Album> getAlbums(Context context) {
 		ArrayList<Album> list = new ArrayList<Album>();
 
 		String[] projection = new String[]{
@@ -165,6 +166,7 @@ public class  MediaStoreProvider {
 		};
 
 		Uri images = MediaStore.Files.getContentUri("external");
+		//Uri images = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 		String selection, selectionArgs[];
 
 			selection = MediaStore.Files.FileColumns.MEDIA_TYPE + "=?  and " + MediaStore.Files.FileColumns.PARENT + "=?";
@@ -173,6 +175,8 @@ public class  MediaStoreProvider {
 		Cursor cur = context.getContentResolver().query(
 						images, projection, selection, selectionArgs,
 						" " + MediaStore.Images.Media.DATE_TAKEN + " DESC " + limit);
+		Cursor cur2 = context.getContentResolver().query(images,projection,selection,selectionArgs,null);
+
 
 		if (cur != null) {
 			if (cur.moveToFirst()) do list.add(new Media(cur)); while (cur.moveToNext());

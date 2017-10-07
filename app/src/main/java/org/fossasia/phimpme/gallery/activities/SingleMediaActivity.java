@@ -135,6 +135,7 @@ public class SingleMediaActivity extends SharedMediaActivity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         context = this;
         setContentView(R.layout.activity_pager);
