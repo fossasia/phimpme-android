@@ -25,7 +25,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import retrofit2.http.Path;
 
 import static org.fossasia.phimpme.gallery.data.base.FilterMode.*;
 
@@ -47,8 +46,6 @@ public class Album implements Serializable {
 	private ArrayList<Media> selectedMedias;
 
     private int selectedCount;
-
-	private int n =0;
 
 	private Album() {
 		media = new ArrayList<Media>();
@@ -324,7 +321,7 @@ public class Album implements Serializable {
 	}
 
 	public int moveSelectedMedia(final Context context, final String targetDir) {
-		 n = 0;
+		int  n = 0;
 		try
 		{
 			int index=-1;
