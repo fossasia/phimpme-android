@@ -175,7 +175,6 @@ public class  MediaStoreProvider {
 		Cursor cur = context.getContentResolver().query(
 						images, projection, selection, selectionArgs,
 						" " + MediaStore.Images.Media.DATE_TAKEN + " DESC " + limit);
-		Cursor cur2 = context.getContentResolver().query(images,projection,selection,selectionArgs,null);
 
 
 		if (cur != null) {
