@@ -21,7 +21,6 @@ import android.os.Bundle;
 
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.annotation.BoolRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
