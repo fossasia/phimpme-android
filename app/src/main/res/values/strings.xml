@@ -855,6 +855,8 @@
     <string name="feature_not_present">Feature not present</string>
     <string name="sharedrupal">Drupal Account</string>
     <string name="drupal_link">Account not found</string>
+    <string name="empty_folder_name">Folder name cannot be empty</string>
+    <string name="folder_name_exists">Folder name already exists</string>
 
     <!--Imgur -->
     <string name="imgur">Imgur</string>

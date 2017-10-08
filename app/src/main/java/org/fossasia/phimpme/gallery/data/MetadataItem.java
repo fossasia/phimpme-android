@@ -165,8 +165,9 @@ class MetadataItem {
   }
 
   public String getResolution() {
+    float resolution=(float)(getWidth() *getHeight())/1000000; // 1MP is 1 million pixels
     if(width !=-1 && height != -1)
-      return String.format("%dx%d", getWidth(), getHeight());
+        return String.format("%dx%d (%.1f MP)", getWidth(), getHeight(),resolution);
     return null;
   }
 
