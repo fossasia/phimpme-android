@@ -30,6 +30,7 @@ public class RotateFragment extends BaseEditFragment {
     private View cancel, apply;
     public SeekBar mSeekBar;
     private RotateImageView mRotatePanel;
+    boolean isButtonPressed=false;
 
     public static RotateFragment newInstance() {
         RotateFragment fragment = new RotateFragment();
@@ -58,6 +59,7 @@ public class RotateFragment extends BaseEditFragment {
 
         mSeekBar = (SeekBar) mainView.findViewById(R.id.rotate_bar);
         mSeekBar.setProgress(0);
+        isButtonPressed=false;
 
         this.mRotatePanel = ensureEditActivity().mRotatePanel;
         cancel.setOnClickListener(new BackToMenuClick());
@@ -88,6 +90,7 @@ public class RotateFragment extends BaseEditFragment {
 
     private void rotateRight() {
         activity.mRotatePanel.rotateImage((mRotatePanel.getRotateAngle() + 90));
+        isButtonPressed=true;
     }
 
     private void resetRotateView() {
@@ -96,6 +99,7 @@ public class RotateFragment extends BaseEditFragment {
             activity.mRotatePanel.reset();
             activity.mRotatePanel.setVisibility(View.GONE);
             activity.mainImage.setVisibility(View.VISIBLE);
+            isButtonPressed=false;
         }
     }
 
@@ -146,7 +150,8 @@ public class RotateFragment extends BaseEditFragment {
     }
 
     public void applyRotateImage() {
-        if (mSeekBar.getProgress() == 0 || mSeekBar.getProgress() == 360) {
+        if (!isButtonPressed && (mSeekBar.getProgress() == 0 || mSeekBar.getProgress() == 360)) {
+            isButtonPressed=false;
             backToMain();
             return;
         } else {
