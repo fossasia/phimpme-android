@@ -360,9 +360,15 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                     case WHATSAPP:
                         shareToWhatsapp();
                         break;
+
                     case GOOGLEPLUS:
                         shareToGoogle();
                         break;
+
+                    case MESSENGER:
+                        shareToMessenger();
+                        break;
+
                     default:
                         SnackBarHandler.show(parent, R.string.feature_not_present);
                 }
@@ -868,6 +874,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         ShareToMessengerParams shareToMessengerParams =
                 ShareToMessengerParams.newBuilder(getImageUri(this, saveFilePath), mimeType).build();
         MessengerUtils.shareToMessenger(this, REQUEST_CODE_SHARE_TO_MESSENGER, shareToMessengerParams);
+        sendResult(SUCCESS);
     }
 
     void uploadImgur() {
