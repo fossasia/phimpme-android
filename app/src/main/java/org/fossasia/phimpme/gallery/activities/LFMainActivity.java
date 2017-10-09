@@ -882,9 +882,12 @@ public class LFMainActivity extends SharedMediaActivity {
             if(getAlbums().getSelectedCount()==0) {
                 clearOverlay();
                 checkForReveal = true;
+                swipeRefreshLayout.setEnabled(true);
             }
-            else
+            else {
                 appBarOverlay();
+                swipeRefreshLayout.setEnabled(false);
+            }
             if (editMode)
                 toolbar.setTitle(getAlbums().getSelectedCount() + "/" + getAlbums().dispAlbums.size());
             else {
@@ -903,9 +906,12 @@ public class LFMainActivity extends SharedMediaActivity {
             if(getAlbum().getSelectedCount()==0) {
                 clearOverlay();
                 checkForReveal = true;
+                swipeRefreshLayout.setEnabled(true);
             }
-            else
+            else {
                 appBarOverlay();
+                swipeRefreshLayout.setEnabled(false);
+            }
             if (editMode)
                 if (!all_photos)
                     toolbar.setTitle(getAlbum().getSelectedCount() + "/" + getAlbum().getMedia().size());
