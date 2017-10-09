@@ -84,55 +84,6 @@ public class RotateFragment extends BaseEditFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        try {
-//            cancel = mainView.findViewById(R.id.rotate_cancel);
-//            apply = mainView.findViewById(R.id.rotate_apply);
-//            horizontalWheelView = (HorizontalWheelView) mainView.findViewById(R.id.horizontalWheelView);
-//            tvAngle = (TextView) mainView.findViewById(R.id.tvAngle);
-////        mSeekBar = (SeekBar) mainView.findViewById(R.id.rotate_bar);
-////        mSeekBar.setProgress(0);
-//            this.mRotatePanel = ensureEditActivity().mRotatePanel;
-//            cancel.setOnClickListener(new BackToMenuClick());
-//            apply.setOnClickListener(new OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    applyRotateImage();
-//                }
-//            });
-//
-//            horizontalWheelView.setListener(new HorizontalWheelView.Listener() {
-//                @Override
-//                public void onRotationChanged(double radians) {
-//                    updateUi();
-//                }
-//            });
-//            updateUi();
-////        mSeekBar.setOnSeekBarChangeListener(new RotateAngleChange());
-//
-//            onShow();
-//        } catch (Exception e) {
-//            Log.d("TAG", "onActivityCreated: " + e.getLocalizedMessage());
-//        }
-
-//        mSeekBar.setOnSeekBarChangeListener(new RotateAngleChange());
-//        initViews();
-
-//        cancel.setOnClickListener(new BackToMenuClick());
-//        apply.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                applyRotateImage();
-//            }
-//        });
-//
-//        horizontalWheelView.setListener(new HorizontalWheelView.Listener() {
-//            @Override
-//            public void onRotationChanged(double radians) {
-//                updateUi();
-//            }
-//        });
-//        updateUi();
-//        onShow();
     }
 
     private void updateUi() {
