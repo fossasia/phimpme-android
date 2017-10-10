@@ -763,7 +763,9 @@ public class LFMainActivity extends SharedMediaActivity {
 
         // Default setting
         if(localFolder)
-            findViewById(R.id.ll_drawer_Default).setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.md_grey_200));
+            findViewById(R.id.ll_drawer_Default).setBackgroundColor(getHighlightedItemColor());
+        else
+            findViewById(R.id.ll_drawer_hidden).setBackgroundColor(getHighlightedItemColor());
 
         findViewById(R.id.ll_drawer_Setting).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -795,7 +797,7 @@ public class LFMainActivity extends SharedMediaActivity {
             public void onClick(View v) {
                 localFolder=true;
                 findViewById(R.id.ll_drawer_hidden).setBackgroundColor(Color.TRANSPARENT);
-                findViewById(R.id.ll_drawer_Default).setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.md_grey_200));
+                findViewById(R.id.ll_drawer_Default).setBackgroundColor(getHighlightedItemColor());
                 toolbar.setTitle(getString(R.string.local_folder));
                 hidden = false;
                 mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -807,7 +809,7 @@ public class LFMainActivity extends SharedMediaActivity {
             public void onClick(View v) {
                 localFolder=false;
                 findViewById(R.id.ll_drawer_Default).setBackgroundColor(Color.TRANSPARENT);
-                findViewById(R.id.ll_drawer_hidden).setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.md_grey_200));
+                findViewById(R.id.ll_drawer_hidden).setBackgroundColor(getHighlightedItemColor());
                 toolbar.setTitle(getString(R.string.hidden_folder));
                 if (securityObj.isActiveSecurity() && securityObj.isPasswordOnHidden()) {
                     AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
