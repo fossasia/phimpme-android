@@ -88,6 +88,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Locale;
 
+import static org.fossasia.phimpme.R.string.success;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.DATE;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.NAME;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.NUMERIC;
@@ -1657,14 +1658,31 @@ public class LFMainActivity extends SharedMediaActivity {
                 bottomSheetDialogFragment.setSelectAlbumInterface(new SelectAlbumBottomSheet.SelectAlbumInterface() {
                     @Override
                     public void folderSelected(String path) {
-                        boolean success = getAlbum().copySelectedPhotos(getApplicationContext(), path);
-                        finishEditMode();
-                        bottomSheetDialogFragment.dismiss();
-                        if (!success)
-                            requestSdCardPermissions();
-                        else
-                            SnackBarHandler.show(coordinatorLayoutMainContent, getString(R.string.copied_successfully));
+                        for(int i = 0; i < getAlbum().getSelectedMedia().size(); i++){
+
+                            File file = new File(path + "/" + getAlbum().getSelectedMedia(i).getName()+
+                                    getAlbum()
+                                            .getSelectedMedia(i).getPath().substring
+                                            (getAlbum().getSelectedMedia(i).getPath().lastIndexOf(".")));
+                            if(file.exists()){
+                                getAlbum().getSelectedMedia().remove(i);
+                            }
+                        }
+                        if(getAlbum().getSelectedMedia().size() == 0){
+                            bottomSheetDialogFragment.dismiss();
+                            SnackBarHandler.show(coordinatorLayoutMainContent, getString(R.string.photos_already_there));
+                        }
+                        else{
+                            boolean success = getAlbum().copySelectedPhotos(getApplicationContext(), path);
+                            finishEditMode();
+                            bottomSheetDialogFragment.dismiss();
+                            if (!success)
+                                requestSdCardPermissions();
+                            else
+                                SnackBarHandler.show(coordinatorLayoutMainContent, getString(R.string.copied_successfully));
+                        }
                     }
+
                 });
                 bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
                 return true;

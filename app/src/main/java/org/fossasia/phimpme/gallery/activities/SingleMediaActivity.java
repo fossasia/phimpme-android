@@ -489,8 +489,17 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 bottomSheetDialogFragment.setSelectAlbumInterface(new SelectAlbumBottomSheet.SelectAlbumInterface() {
                     @Override
                     public void folderSelected(String path) {
-                        getAlbum().copyPhoto(getApplicationContext(), getAlbum().getCurrentMedia().getPath(), path);
-                        bottomSheetDialogFragment.dismiss();
+                        File file = new File(path + "/" + getAlbum().getCurrentMedia().getName()+ getAlbum()
+                                .getCurrentMedia().getPath().substring
+                                        (getAlbum().getCurrentMedia().getPath().lastIndexOf(".")));
+                        if(file.exists()){
+
+                            bottomSheetDialogFragment.dismiss();
+                        }
+                        else{
+                            getAlbum().copyPhoto(getApplicationContext(), getAlbum().getCurrentMedia().getPath(), path);
+                            bottomSheetDialogFragment.dismiss();
+                        }
                     }
                 });
                 bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
