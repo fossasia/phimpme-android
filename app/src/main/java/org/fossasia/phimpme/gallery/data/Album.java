@@ -52,7 +52,7 @@ public class Album implements Serializable {
 
     private int selectedCount;
 
-	private int n =0;
+
 
 	private Album() {
 		media = new ArrayList<Media>();
@@ -328,7 +328,7 @@ public class Album implements Serializable {
 	}
 
 	public int moveSelectedMedia(final Context context, final String targetDir) {
-		 n = 0;
+		int n = 0;
 		try
 		{
 			int index=-1;

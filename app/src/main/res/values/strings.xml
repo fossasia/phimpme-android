@@ -506,7 +506,9 @@
         then the media will be copied or moved in the new folder.
     </string>
     <string name="discard_changes_message">Are you sure you want to discard all changes?</string>
-    <string name="move_phots_message">Do you want to replace these files or make more copies of them?</string>
+    <string name="move_photos_message">Do you want to replace these files or make more copies of them?</string>
+    <string name="photo_moved_successfully">photos have been moved successfully</string>
+    <string name="copied_successfully">photos have been copied successfully</string>
 
     <!-- ITEMS -->
     <string name="singular_photo">Photo</string>
