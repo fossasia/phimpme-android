@@ -46,11 +46,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <ImageView
+                      <!--  <ImageView
                             android:id="@+id/leafpic_header"
                             android:layout_width="match_parent"
                             android:layout_height="150dp"
-                            android:scaleType="centerCrop" />
+                            android:scaleType="centerCrop" />-->
 
                         <ImageView
                             android:layout_width="200dp"
@@ -68,7 +68,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:padding="@dimen/sub_small_spacing"
-                        android:text="Phimpme "
+                        android:text="@string/app_name"
                         android:textColor="@color/md_dark_primary_text"
                         android:textSize="@dimen/big_text"
                         android:textStyle="bold" />

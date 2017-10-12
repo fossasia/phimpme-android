@@ -16,6 +16,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.decode.BaseImageDecoder;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
+import com.squareup.leakcanary.LeakCanary;
 import com.twitter.sdk.android.core.DefaultLogger;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -23,6 +24,7 @@ import com.twitter.sdk.android.core.TwitterConfig;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
 import io.fabric.sdk.android.Fabric;
+
 import org.fossasia.phimpme.gallery.data.Album;
 import org.fossasia.phimpme.gallery.data.HandlingAlbums;
 import org.fossasia.phimpme.utilities.Constants;
@@ -40,6 +42,7 @@ public class MyApplication extends Application {
     private HandlingAlbums albums = null;
     public static Context applicationContext;
     public ImageLoader imageLoader;
+    private Boolean isPublished = false; // Set this to true at the time of release
 
     public Album getAlbum() {
         return albums.dispAlbums.size() > 0 ? albums.getCurrentAlbum() : Album.getEmptyAlbum();
@@ -47,6 +50,13 @@ public class MyApplication extends Application {
 
     @Override
     public void onCreate() {
+
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
 
         albums = new HandlingAlbums(getApplicationContext());
         applicationContext = getApplicationContext();
@@ -71,7 +81,8 @@ public class MyApplication extends Application {
                 .build();
         Realm.setDefaultConfiguration(realmConfiguration);
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
+        if (isPublished)
+            Fabric.with(this, new Crashlytics());
 
         /**
          * Stetho initialization
@@ -81,7 +92,6 @@ public class MyApplication extends Application {
                         .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
                         .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
                         .build());
-        checkInitImageLoader();
     }
 
     @Override
@@ -101,39 +111,6 @@ public class MyApplication extends Application {
         albums.loadAlbums(getApplicationContext());
     }
 
-    private void initImageLoader() {
-        File cacheDir = com.nostra13.universalimageloader.utils.StorageUtils.getCacheDirectory(this);
-        int MAXMEMONRY = (int) (Runtime.getRuntime().maxMemory());
-        // System.out.println("dsa-->"+MAXMEMONRY+"   "+(MAXMEMONRY/5));//.memoryCache(new
-        // LruMemoryCache(50 * 1024 * 1024))
-        DisplayImageOptions defaultOptions = new    DisplayImageOptions.Builder()
-                .cacheInMemory(true)
-                .cacheOnDisk(true)
-                .build();
 
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-                this).memoryCacheExtraOptions(480, 800).defaultDisplayImageOptions(defaultOptions)
-                .diskCacheExtraOptions(480, 800, null).threadPoolSize(3)
-                .threadPriority(Thread.NORM_PRIORITY - 2)
-                .tasksProcessingOrder(QueueProcessingType.FIFO)
-                .denyCacheImageMultipleSizesInMemory()
-                .memoryCache(new LruMemoryCache(MAXMEMONRY / 5))
-                .diskCache(new UnlimitedDiskCache(cacheDir))
-                .diskCacheFileNameGenerator(new HashCodeFileNameGenerator()) // default
-                .imageDownloader(new BaseImageDownloader(this)) // default
-                .imageDecoder(new BaseImageDecoder(false)) // default
-                .defaultDisplayImageOptions(DisplayImageOptions.createSimple()).build();
 
-        this.imageLoader = ImageLoader.getInstance();
-        imageLoader.init(config);
-    }
-    protected void checkInitImageLoader() {
-        if (!ImageLoader.getInstance().isInited()) {
-            initImageLoader();
-        }
-    }
-
-    public ImageLoader getImageLoader() {
-        return imageLoader;
-    }
 }

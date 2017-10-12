@@ -13,6 +13,7 @@ import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -47,6 +48,7 @@ import org.fossasia.phimpme.base.RecyclerItemClickListner;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
+import org.fossasia.phimpme.gallery.activities.SettingsActivity;
 import org.fossasia.phimpme.share.flickr.FlickrActivity;
 import org.fossasia.phimpme.share.imgur.ImgurAuthActivity;
 import org.fossasia.phimpme.share.nextcloud.NextCloudAuth;
@@ -181,6 +183,17 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_accounts_activity, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.action_account_settings:
+                startActivity(new Intent(AccountActivity.this, SettingsActivity.class));
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -396,7 +409,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     }
 
     private void signInPinterest() {
-        List scopes = new ArrayList<String>();
+        ArrayList<String> scopes = new ArrayList<String>();
         scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_PUBLIC);
         scopes.add(PDKClient.PDKCLIENT_PERMISSION_WRITE_PUBLIC);
         scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_RELATIONSHIPS);
@@ -462,8 +475,10 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
      */
     public void signInFacebook() {
 
+        List<String> permissionNeeds = Arrays.asList("publish_actions");
         loginManager = LoginManager.getInstance();
-        loginManager.logInWithReadPermissions(this, Arrays.asList("email", "public_profile"));
+        loginManager.logInWithPublishPermissions(this, permissionNeeds);
+        //loginManager.logInWithReadPermissions(this, Arrays.asList("email", "public_profile"));
         loginManager.registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override

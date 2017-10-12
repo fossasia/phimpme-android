@@ -183,9 +183,7 @@ public class Media implements Parcelable, Serializable {
 
         details.put(context.getString(R.string.size), StringUtils.humanReadableByteCount(size, true));
         details.put(context.getString(R.string.date), SimpleDateFormat.getDateTimeInstance().format(new Date(getDateModified())));
-        details.put(context.getString(R.string.orientation), getOrientation()+"");
-        if (metadata.getDateOriginal() != null)
-            details.put(context.getString(R.string.date_taken), SimpleDateFormat.getDateTimeInstance().format(metadata.getDateOriginal()));
+        details.put(context.getString(R.string.orientation), getOrientation()+""+(char) 0x00B0);
 
         if ((tmp = metadata.getCameraInfo()) != null)
             details.put(context.getString(R.string.camera), tmp);

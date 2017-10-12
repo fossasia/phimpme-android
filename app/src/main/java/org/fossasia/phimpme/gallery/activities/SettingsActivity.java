@@ -16,6 +16,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -23,6 +24,7 @@ import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -31,21 +33,21 @@ import com.mikepenz.iconics.view.IconicsImageView;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.gallery.util.ColorPalette;
-import org.fossasia.phimpme.gallery.util.SecurityHelper;
-import org.fossasia.phimpme.gallery.util.ThemeHelper;
 import org.fossasia.phimpme.gallery.util.PreferenceUtil;
+import org.fossasia.phimpme.gallery.util.SecurityHelper;
 import org.fossasia.phimpme.gallery.util.StaticMapProvider;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import uz.shift.colorpicker.LineColorPicker;
-import uz.shift.colorpicker.OnColorChangedListener;
+import org.fossasia.phimpme.gallery.util.ThemeHelper;
 import org.fossasia.phimpme.opencamera.Camera.CameraActivity;
 import org.fossasia.phimpme.opencamera.Camera.MyPreferenceFragment;
 import org.fossasia.phimpme.opencamera.Camera.PreferenceKeys;
 import org.fossasia.phimpme.opencamera.Camera.TinyDB;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import uz.shift.colorpicker.LineColorPicker;
+import uz.shift.colorpicker.OnColorChangedListener;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
@@ -242,13 +244,14 @@ public class SettingsActivity extends ThemedActivity {
                 SP.putBoolean(getString(R.string.preference_translucent_status_bar), isChecked);
                 updateTheme();
                 setStatusBarColor();
+                Toast.makeText(SettingsActivity.this, getString(R.string.restart_app), Toast.LENGTH_SHORT).show();
                 updateSwitchColor(swStatusBar, getAccentColor());
             }
         });
 
         /*** SW COLORED NAV BAR ***/
         swNavBar = (SwitchCompat) findViewById(R.id.SetColoredNavBar);
-        swNavBar.setChecked(SP.getBoolean(getString(R.string.preference_colored_nav_bar), false));
+        swNavBar.setChecked(SP.getBoolean(getString(R.string.preference_colored_nav_bar), true));
         swNavBar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -346,6 +349,8 @@ public class SettingsActivity extends ThemedActivity {
         });
 
         final AlertDialog passwordDialog = passwordDialogBuilder.create();
+        passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
         passwordDialog.show();
 
         passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
@@ -420,9 +425,19 @@ public class SettingsActivity extends ThemedActivity {
         final TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.basic_theme_title);
         final CardView dialogCardView = (CardView) dialogLayout.findViewById(R.id.basic_theme_card);
 
+        final IconicsImageView themeIconWhite = (IconicsImageView) dialogLayout.findViewById(R.id.white_basic_theme_icon);
+        final IconicsImageView themeIconDark = (IconicsImageView) dialogLayout.findViewById(R.id.dark_basic_theme_icon);
+        final IconicsImageView themeIconDarkAmoled = (IconicsImageView) dialogLayout.findViewById(R.id.dark_amoled_basic_theme_icon);
         final IconicsImageView whiteSelect = (IconicsImageView) dialogLayout.findViewById(R.id.white_basic_theme_select);
         final IconicsImageView darkSelect = (IconicsImageView) dialogLayout.findViewById(R.id.dark_basic_theme_select);
         final IconicsImageView darkAmoledSelect = (IconicsImageView) dialogLayout.findViewById(R.id.dark_amoled_basic_theme_select);
+
+        themeIconWhite.setIcon("gmd-invert-colors");
+        themeIconDark.setIcon("gmd-invert-colors");
+        themeIconDarkAmoled.setIcon("gmd-invert-colors");
+        whiteSelect.setIcon("gmd-done");
+        darkSelect.setIcon("gmd-done");
+        darkAmoledSelect.setIcon("gmd-done");
 
         switch (getBaseTheme()){
             case ThemeHelper.LIGHT_THEME:
@@ -509,48 +524,8 @@ public class SettingsActivity extends ThemedActivity {
         CardView dialogCardView = (CardView) dialogLayout.findViewById(R.id.cp_primary_card);
         dialogCardView.setCardBackgroundColor(getCardBackgroundColor());
 
-        colorPicker.setColors(ColorPalette.getBaseColors(getApplicationContext()));
-        for (int i : colorPicker.getColors())
-            for (int i2 : ColorPalette.getColors(getBaseContext(), i))
-                if (i2 == getPrimaryColor()) {
-                    colorPicker.setSelectedColor(i);
-                    colorPicker2.setColors(ColorPalette.getColors(getBaseContext(), i));
-                    colorPicker2.setSelectedColor(i2);
-                    break;}
+        setColor(colorPicker, colorPicker2, dialogTitle);
 
-        dialogTitle.setBackgroundColor(getPrimaryColor());
-
-        colorPicker.setOnColorChangedListener(new OnColorChangedListener() {
-            @Override
-            public void onColorChanged(int c) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    if (isTranslucentStatusBar()) {
-                        getWindow().setStatusBarColor(ColorPalette.getObscuredColor(getPrimaryColor()));
-                    } else getWindow().setStatusBarColor(c);
-                }
-
-                toolbar.setBackgroundColor(c);
-                dialogTitle.setBackgroundColor(c);
-                colorPicker2.setColors(ColorPalette.getColors(getApplicationContext(), colorPicker.getColor()));
-                colorPicker2.setSelectedColor(colorPicker.getColor());
-            }
-        });
-        colorPicker2.setOnColorChangedListener(new OnColorChangedListener() {
-            @Override
-            public void onColorChanged(int c) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    if (isTranslucentStatusBar()) {
-                        getWindow().setStatusBarColor(ColorPalette.getObscuredColor(c));
-                    } else getWindow().setStatusBarColor(c);
-                    if (isNavigationBarColored())
-                        getWindow().setNavigationBarColor(c);
-                    else
-                        getWindow().setNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.md_black_1000));
-                }
-                toolbar.setBackgroundColor(c);
-                dialogTitle.setBackgroundColor(c);
-            }
-        });
         dialogBuilder.setView(dialogLayout);
 
         dialogBuilder.setNeutralButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
@@ -598,6 +573,51 @@ public class SettingsActivity extends ThemedActivity {
             }
         });
         dialogBuilder.show();
+    }
+
+    private void setColor(final LineColorPicker colorPicker, final LineColorPicker colorPicker2, final TextView dialogTitle) {
+        colorPicker.setColors(ColorPalette.getBaseColors(getApplicationContext()));
+        for (int i : colorPicker.getColors())
+            for (int i2 : ColorPalette.getColors(getBaseContext(), i))
+                if (i2 == getPrimaryColor()) {
+                    colorPicker.setSelectedColor(i);
+                    colorPicker2.setColors(ColorPalette.getColors(getBaseContext(), i));
+                    colorPicker2.setSelectedColor(i2);
+                    break;}
+
+        dialogTitle.setBackgroundColor(getPrimaryColor());
+
+        colorPicker.setOnColorChangedListener(new OnColorChangedListener() {
+            @Override
+            public void onColorChanged(int c) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    if (isTranslucentStatusBar()) {
+                        getWindow().setStatusBarColor(ColorPalette.getObscuredColor(getPrimaryColor()));
+                    } else getWindow().setStatusBarColor(c);
+                }
+
+                toolbar.setBackgroundColor(c);
+                dialogTitle.setBackgroundColor(c);
+                colorPicker2.setColors(ColorPalette.getColors(getApplicationContext(), colorPicker.getColor()));
+                colorPicker2.setSelectedColor(colorPicker.getColor());
+            }
+        });
+        colorPicker2.setOnColorChangedListener(new OnColorChangedListener() {
+            @Override
+            public void onColorChanged(int c) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    if (isTranslucentStatusBar()) {
+                        getWindow().setStatusBarColor(ColorPalette.getObscuredColor(c));
+                    } else getWindow().setStatusBarColor(c);
+                    if (isNavigationBarColored())
+                        getWindow().setNavigationBarColor(c);
+                    else
+                        getWindow().setNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.md_black_1000));
+                }
+                toolbar.setBackgroundColor(c);
+                dialogTitle.setBackgroundColor(c);
+            }
+        });
     }
 
     private void accentColorPiker(){

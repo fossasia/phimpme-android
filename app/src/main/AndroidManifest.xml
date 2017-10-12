@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.fossasia.phimpme"
-    android:versionCode="1"
-    android:versionName="1.5">
+    android:versionCode="6"
+    android:versionName="1.2.0">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -307,7 +307,7 @@
         </provider>
         <provider
             android:name="com.facebook.FacebookContentProvider"
-            android:authorities="com.facebook.app.FacebookContentProvider1920575401558694"
+            android:authorities="com.facebook.app.FacebookContentProvider125766838062659"
             android:exported="true" />
 
         <activity
@@ -323,11 +323,6 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-
-        <provider
-            android:name="com.facebook.FacebookContentProvider"
-            android:authorities="com.facebook.app.FacebookContentProvider1920575401558694"
-            android:exported="true" />
 
         <activity
             android:name=".accounts.AccountActivity"
