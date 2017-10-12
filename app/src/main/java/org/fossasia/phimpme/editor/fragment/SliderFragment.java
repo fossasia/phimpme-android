@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
+
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.filter.PhotoProcessing;
@@ -31,7 +32,6 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
         SliderFragment fragment = new SliderFragment();
         return fragment;
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -165,9 +165,23 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
         if (null != activity) {
             currentBitmap = null;
             activity.mainImage.setImageBitmap(activity.mainBitmap);
-            activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
             activity.changeMode(EditImageActivity.effectType / 100);
+            activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
             activity.mainImage.setScaleEnabled(true);
+
+            switch (activity.mode)
+            {
+                case EditImageActivity.MODE_FILTERS:
+                    activity.filterFragment.clearCurrentSelection();
+                    break;
+
+                case EditImageActivity.MODE_ENHANCE:
+                    activity.enhanceFragment.clearCurrentSelection();
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 
@@ -226,6 +240,5 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
         }
 
     }
-
 
 }

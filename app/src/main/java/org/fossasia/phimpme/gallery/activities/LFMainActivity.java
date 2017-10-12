@@ -21,7 +21,6 @@ import android.os.Bundle;
 
 import android.os.Handler;
 import android.provider.MediaStore;
-import android.support.annotation.BoolRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
@@ -177,7 +176,9 @@ public class LFMainActivity extends SharedMediaActivity {
      */
     private void enterReveal() {
 
-       // final View toolbar = findViewById(R.id.appbar_toolbar);
+
+        final View toolbar = findViewById(R.id.appbar_toolbar);
+
 
         // get the center for the clipping circle
         int cx = toolbar.getMeasuredWidth() / 2;
@@ -373,7 +374,9 @@ public class LFMainActivity extends SharedMediaActivity {
         super.onCreate(savedInstanceState);
         Log.e("TAG", "lfmain");
 
-       // coordinatorLayoutMainContent = (CoordinatorLayout) findViewById(R.id.cl_main_content);
+
+        coordinatorLayoutMainContent = (CoordinatorLayout) findViewById(R.id.cl_main_content);
+
         BottomNavigationView navigationView = (BottomNavigationView)findViewById(R.id.bottombar);
 
         SP = PreferenceUtil.getInstance(getApplicationContext());
@@ -1645,7 +1648,9 @@ public class LFMainActivity extends SharedMediaActivity {
                                 finishEditMode();
                                 invalidateOptionsMenu();
 
-                            }else if(numberOfImagesMoved==-1 && getAlbum().getPath().equals(path))
+
+                            }else if(numberOfImagesMoved==-1 && getAlbum().getPath().equals(path)) //moving to the same folder
+
                             {
 
                                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(LFMainActivity.this,getDialogStyle());
@@ -1884,7 +1889,10 @@ public class LFMainActivity extends SharedMediaActivity {
                     else if(isTaskRoot())
                     {
                         doubleBackToExitPressedOnce = true;
-                      //  Toast.makeText(this, R.string.press_back_again_to_exit, Toast.LENGTH_SHORT).show();
+
+
+                        Toast.makeText(this, R.string.press_back_again_to_exit, Toast.LENGTH_SHORT).show();
+
 
                         new Handler().postDelayed(new Runnable() {
                             @Override

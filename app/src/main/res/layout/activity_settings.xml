@@ -539,7 +539,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
-                            android:paddingBottom="@dimen/medium_spacing"
+                            android:layout_marginBottom="@dimen/medium_spacing"
                             android:paddingRight="@dimen/medium_spacing"
                             android:paddingTop="@dimen/small_spacing">
 

@@ -1,17 +1,11 @@
 package org.fossasia.phimpme.gallery.data;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.widget.Toast;
 
-import org.fossasia.phimpme.gallery.activities.LFMainActivity;
 import org.fossasia.phimpme.gallery.adapters.MediaAdapter;
 import org.fossasia.phimpme.gallery.data.base.FilterMode;
 import org.fossasia.phimpme.gallery.data.base.MediaComparators;
@@ -29,7 +23,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import retrofit2.http.Path;
 
 import static org.fossasia.phimpme.gallery.data.base.FilterMode.*;
 
@@ -51,7 +44,6 @@ public class Album implements Serializable {
 	private ArrayList<Media> selectedMedias;
 
     private int selectedCount;
-
 
 
 	private Album() {
@@ -328,7 +320,9 @@ public class Album implements Serializable {
 	}
 
 	public int moveSelectedMedia(final Context context, final String targetDir) {
+
 		int n = 0;
+
 		try
 		{
 			int index=-1;

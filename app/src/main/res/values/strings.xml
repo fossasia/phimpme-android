@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Phimpme</string>
+    <string name="app_name">Phimp.me</string>
     <string name="title_gallery">Gallery</string>
     <string name="title_camera">Camera</string>
     <string name="title_account">Accounts</string>
@@ -418,7 +418,7 @@
     <!-- ACTIONS -->
     <string name="sort">Sort</string>
     <string name="camera">Camera</string>
-    <string name="phimpme_camera">Phimpme Camera</string>
+    <string name="phimpme_camera">Phimp.me Camera</string>
     <string name="exclude">Exclude</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
@@ -506,9 +506,18 @@
         then the media will be copied or moved in the new folder.
     </string>
     <string name="discard_changes_message">Are you sure you want to discard all changes?</string>
+
     <string name="move_photos_message">Do you want to replace these files or make more copies of them?</string>
-    <string name="photo_moved_successfully">photos have been moved successfully</string>
-    <string name="copied_successfully">photos have been copied successfully</string>
+
+    <string name="discard_stickers_message">Are you sure you want to discard the stickers added?</string>
+    <string name="discard_enhance_message">Are you sure you want to discard the enhancements made?</string>
+    <!--<string name="discard_filters_message">Are you sure you want to discard the filters added?</string>-->
+    <string name="discard_crop_message">Are you sure you want to discard the cropping done?</string>
+    <string name="discard_rotate_message">Are you sure you want to discard the rotation changes?</string>
+    <string name="discard_text_message">Are you sure you want to discard the added text?</string>
+    <string name="discard_paint_message">Are you sure you want to discard the added paint?</string>
+
+
 
     <!-- ITEMS -->
     <string name="singular_photo">Photo</string>
@@ -619,7 +628,7 @@
     <string name="address_copied">Address copied to clipboard</string>
     <string name="coming_soon">Coming Soon!</string>
 
-    <string name="share_phimpme">Share Phimpme</string>
+    <string name="share_phimpme">Share Phimp.me</string>
 
     <!--Invitation-->
     <string name="install_phimpme">Download the best image application to make your moments more memorable by clicking, editing, sharing images with friends on social media, all at one place.</string>
@@ -631,10 +640,10 @@
     <string name="about_version">Version</string>
 
     <string name="about_license"> License</string>
-    <string name="about_license_sub">Check GNU GENERAL PUBLIC License terms used on Phimpme.</string>
+    <string name="about_license_sub">Check GNU GENERAL PUBLIC License terms used on Phimp.me.</string>
 
     <string name="about_library_license">Library Licenses</string>
-    <string name="about_library_license_sub">Check third-party libs used on Phimpme.</string>
+    <string name="about_library_license_sub">Check third-party libs used on Phimp.me.</string>
 
     <string name="about_authors">Authors</string>
     <string name="about_author_donald_description">
@@ -666,7 +675,7 @@
     <string name="about_support_report_bug_sub">Report bug or request new features.</string>
 
     <string name="about_support_rate">Rate Us</string>
-    <string name="about_support_rate_sub">Leave us a positive rating if you like Phimpme.</string>
+    <string name="about_support_rate_sub">Leave us a positive rating if you like Phimp.me.</string>
 
     <string name="about_support_github">GitHub</string>
     <string name="about_support_github_sub">Fork the repo and push changes or submit new issues.</string>
@@ -753,7 +762,9 @@
     <string name="materialcolorpicker__errHex">Hex Code Format incorrect</string>
     <string name="materialcolorpicker__inputColor">Color:</string>
     <string name="materialcolorpicker__btnSelectColor">Select</string>
-    <string name="saving_image">save...</string>
+    <string name="saving_image">Saving...</string>
+    <string name="image_saved">Saved!</string>
+    <string name="share_image">Share this with others?</string>
     <string name="input_hint">input text ...</string>
 
     <string name="no_choose">please choose a image for edit</string>
@@ -793,11 +804,11 @@
 
     <!--App shortcuts-->
     <string name="camera_short">Camera</string>
-    <string name="camera_long">Opens Phimpme Camera</string>
+    <string name="camera_long">Opens Phimp.me Camera</string>
     <string name="home_short">Gallery</string>
-    <string name="home_long">Opens Phimpme Gallery</string>
+    <string name="home_long">Opens Phimp.me Gallery</string>
     <string name="account_short">Accounts</string>
-    <string name="account_long">Opens Phimpme Account</string>
+    <string name="account_long">Opens Phimp.me Account</string>
 
     <!--All photos-->
     <string name="all_photos">All_photos</string>
@@ -850,6 +861,8 @@
     <string name="feature_not_present">Feature not present</string>
     <string name="sharedrupal">Drupal Account</string>
     <string name="drupal_link">Account not found</string>
+    <string name="empty_folder_name">Folder name cannot be empty</string>
+    <string name="folder_name_exists">Folder name already exists</string>
 
     <!--Imgur -->
     <string name="imgur">Imgur</string>
@@ -1009,5 +1022,11 @@
     <string name="toggle_button">Toggle Button</string>
     <string name="empty_upload_msg">You haven\'t shared anything.</string>
     <string name="install_facebook">Facebook not installed</string>
+    <string name="restart_app">Please restart the app for better results!</string>
+    <string name="press_back_again_to_exit">Press back again to exit</string>
+    <string name="photos_moved_successfully">Photos moved successfully</string>
+    <string name="photo_moved_successfully">Photo moved successfully</string>
+    <string name="copied_successfully">Copied successfully</string>
+    <string name="no_changes_made">No Changes Made!</string>
 
 </resources>
