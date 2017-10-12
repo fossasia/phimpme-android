@@ -329,6 +329,12 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        SP.putBoolean("auto_update_media",true);
+    }
+
+    @Override
     public void onLowMemory() {
         super.onLowMemory();
         Glide.get(getApplicationContext()).clearMemory();
