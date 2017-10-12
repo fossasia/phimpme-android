@@ -35,6 +35,11 @@
                 android:paddingRight="@dimen/medium_spacing"
                 >
                 <!--WHITE THEME-->
+                <com.andexert.library.RippleView
+                    android:id="@+id/ripple1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    rv_centered="true">
                 <LinearLayout
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/ll_white_basic_theme"
@@ -65,6 +70,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/white_basic_theme"
+                            android:clickable="true"
                             android:textColor="@color/md_light_primary_text"
                             android:layout_gravity="center_vertical"
                             android:textSize="16sp"
@@ -80,8 +86,14 @@
                         app:iiv_color="@color/md_light_primary_icon"
                         />
                 </LinearLayout>
+            </com.andexert.library.RippleView>
 
                 <!--DARK THEME-->
+                <com.andexert.library.RippleView
+                    android:id="@+id/ripple2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    rv_centered="true">
                 <LinearLayout
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/ll_dark_basic_theme"
@@ -112,6 +124,7 @@
                             android:id="@+id/dark_basic_theme_item"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:clickable="true"
                             android:text="@string/dark_basic_theme"
                             android:textColor="@color/md_dark_primary_text"
                             android:layout_gravity="center_vertical"
@@ -128,8 +141,14 @@
                         app:iiv_color="@color/md_dark_primary_icon"
                         />
                 </LinearLayout>
+                </com.andexert.library.RippleView>
 
                 <!--DARK AMOLED THEME-->
+                <com.andexert.library.RippleView
+                    android:id="@+id/ripple3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    rv_centered="true">
                 <LinearLayout
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/ll_dark_amoled_basic_theme"
@@ -156,6 +175,8 @@
                         android:layout_weight="6"
                         android:orientation="vertical"
                         >
+
+
                         <TextView
                             android:id="@+id/dark_amoled_basic_theme_item"
                             android:layout_width="wrap_content"
@@ -165,6 +186,7 @@
                             android:layout_gravity="center_vertical"
                             android:textSize="16sp"
                             />
+
                     </LinearLayout>
                     <com.mikepenz.iconics.view.IconicsImageView
                         android:id="@+id/dark_amoled_basic_theme_select"
@@ -176,6 +198,7 @@
                         app:iiv_color="@color/md_dark_primary_icon"
                         />
                 </LinearLayout>
+                </com.andexert.library.RippleView>
 
             </LinearLayout>
         </LinearLayout>
