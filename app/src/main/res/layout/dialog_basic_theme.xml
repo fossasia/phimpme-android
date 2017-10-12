@@ -35,11 +35,6 @@
                 android:paddingRight="@dimen/medium_spacing"
                 >
                 <!--WHITE THEME-->
-                <com.andexert.library.RippleView
-                    android:id="@+id/ripple1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    rv_centered="true">
                 <LinearLayout
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/ll_white_basic_theme"
@@ -86,14 +81,8 @@
                         app:iiv_color="@color/md_light_primary_icon"
                         />
                 </LinearLayout>
-            </com.andexert.library.RippleView>
 
                 <!--DARK THEME-->
-                <com.andexert.library.RippleView
-                    android:id="@+id/ripple2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    rv_centered="true">
                 <LinearLayout
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/ll_dark_basic_theme"
@@ -143,14 +132,8 @@
                         app:iiv_color="@color/md_dark_primary_icon"
                         />
                 </LinearLayout>
-                </com.andexert.library.RippleView>
 
                 <!--DARK AMOLED THEME-->
-                <com.andexert.library.RippleView
-                    android:id="@+id/ripple3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    rv_centered="true">
                 <LinearLayout
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/ll_dark_amoled_basic_theme"
@@ -202,7 +185,7 @@
                         android:tint="@color/white"
                         />
                 </LinearLayout>
-                </com.andexert.library.RippleView>
+
 
             </LinearLayout>
         </LinearLayout>
