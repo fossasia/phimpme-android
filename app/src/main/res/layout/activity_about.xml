@@ -46,11 +46,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <ImageView
+                      <!--  <ImageView
                             android:id="@+id/leafpic_header"
                             android:layout_width="match_parent"
                             android:layout_height="150dp"
-                            android:scaleType="centerCrop" />
+                            android:scaleType="centerCrop" />-->
 
                         <ImageView
                             android:layout_width="200dp"

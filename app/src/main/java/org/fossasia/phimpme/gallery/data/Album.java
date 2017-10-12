@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
+
 import static org.fossasia.phimpme.gallery.data.base.FilterMode.*;
 
 /**
@@ -43,6 +44,7 @@ public class Album implements Serializable {
 	private ArrayList<Media> selectedMedias;
 
     private int selectedCount;
+
 
 	private Album() {
 		media = new ArrayList<Media>();
@@ -107,8 +109,10 @@ public class Album implements Serializable {
 
 	public void updatePhotos(Context context) {
 		media = getMedia(context);
+
 		sortPhotos();
 		setCount(media.size());
+
 	}
 
 	private void updatePhotos(Context context, FilterMode filterMode) {
@@ -315,27 +319,52 @@ public class Album implements Serializable {
 		return success;
 	}
 
-	public int moveSelectedMedia(Context context, String targetDir) {
+	public int moveSelectedMedia(final Context context, final String targetDir) {
+
 		int n = 0;
+
 		try
 		{
-			for (int i = 0; i < selectedMedias.size(); i++) {
+			int index=-1;
 
-				if (moveMedia(context, selectedMedias.get(i).getPath(), targetDir)) {
-					String from = selectedMedias.get(i).getPath();
-					scanFile(context, new String[]{ from, StringUtils.getPhotoPathMoved(selectedMedias.get(i).getPath(), targetDir) },
+			for(int i=0;i<selectedMedias.size();i++)
+			{
+				String s = selectedMedias.get(i).getPath();
+				int indexOfLastSlash = s.lastIndexOf("/");
+				String fileName = s.substring(indexOfLastSlash + 1);
+				if(!selectedMedias.get(i).getPath().equals(targetDir+"/"+fileName))
+				{
+					index=-1;
+				}else{
+					index=i;
+					break;
+				}
+			}
+
+			if(index!=-1) {
+				n = -1;
+
+			} else{
+					for (int i = 0; i < selectedMedias.size(); i++) {
+
+						if (moveMedia(context, selectedMedias.get(i).getPath(), targetDir)) {
+							String from = selectedMedias.get(i).getPath();
+							scanFile(context, new String[]{ from, StringUtils.getPhotoPathMoved(selectedMedias.get(i).getPath(), targetDir) },
 									new MediaScannerConnection.OnScanCompletedListener() {
 										@Override
 										public void onScanCompleted(String s, Uri uri) {
-											Log.d("scanFile", "onScanCompleted: " + s);
+											Log.d("scanFile", "onScanCompleted: " + s + "," + targetDir);
 										}
 									});
-					media.remove(selectedMedias.get(i));
-					n++;
+							media.remove(selectedMedias.get(i));
+							n++;
+						}
+					}
+					setCount(media.size());
 				}
-			}
+
 		} catch (Exception e) { e.printStackTrace(); }
-		setCount(media.size());
+
 		return n;
 	}
 

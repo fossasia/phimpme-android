@@ -140,6 +140,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         context = this;
         setContentView(R.layout.activity_pager);
@@ -325,6 +326,12 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         super.onResume();
         ActivitySwitchHelper.setContext(this);
         setupUI();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SP.putBoolean("auto_update_media",true);
     }
 
     @Override
