@@ -27,6 +27,7 @@ import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.transition.ChangeBounds;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -82,11 +83,13 @@ import io.realm.Realm;
 
 import static org.fossasia.phimpme.utilities.Utils.promptSpeechInput;
 
+
+
 /**
  * Created by dnld on 18/02/16.
  */
 @SuppressWarnings("ResourceAsColor")
-public class SingleMediaActivity extends SharedMediaActivity implements ImageAdapter.OnSingleTap {
+public class SingleMediaActivity extends SharedMediaActivity implements ImageAdapter.OnSingleTap, ImageAdapter.enterTransition{
 
     private static final String ISLOCKED_ARG = "isLocked";
     static final String ACTION_OPEN_ALBUM = "android.intent.action.pagerAlbumMedia";
@@ -141,14 +144,13 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        supportPostponeEnterTransition();
         context = this;
         setContentView(R.layout.activity_pager);
         ButterKnife.bind(this);
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         imageWidth = metrics.widthPixels;
         imageHeight = metrics.heightPixels;
-
-        overridePendingTransition(R.anim.media_zoom_in,0);
 
         SP = PreferenceUtil.getInstance(getApplicationContext());
         securityObj = new SecurityHelper(SingleMediaActivity.this);
@@ -232,7 +234,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         };
 
         if (!allPhotoMode) {
-            adapter = new ImageAdapter(getAlbum().getMedia(), basicCallBack, this);
+            adapter = new ImageAdapter(getAlbum().getMedia(), basicCallBack, this, this);
 
             getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
 //            toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
@@ -251,7 +253,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
 
         } else {
-            adapter = new ImageAdapter(LFMainActivity.listAll, basicCallBack, this);
+            adapter = new ImageAdapter(LFMainActivity.listAll, basicCallBack, this, this);
             getSupportActionBar().setTitle(all_photo_pos + 1 + " " + getString(R.string.of) + " " + size_all);
             current_image_pos = all_photo_pos;
 
@@ -483,6 +485,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
+            case android.R.id.home:
+                supportFinishAfterTransition();
+                return true;
             case R.id.action_copy:
                 bottomSheetDialogFragment = new SelectAlbumBottomSheet();
                 bottomSheetDialogFragment.setTitle(getString(R.string.copy_to));
@@ -830,18 +835,17 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         });
         colorAnimation.start();
     }
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (isFinishing()){
-            overridePendingTransition(0, R.anim.media_zoom_out);
-        }
-
-    }
 
     @Override
     public void singleTap() {
         toggleSystemUI();
+    }
+
+    @Override
+    public void startPostponedTransition() {
+        getWindow().setSharedElementEnterTransition(new ChangeBounds().setDuration(300));
+        startPostponedEnterTransition();
+
     }
 
     private final class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
