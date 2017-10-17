@@ -17,10 +17,10 @@ import org.fossasia.phimpme.editor.filter.PhotoProcessing;
 import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouchBase;
 
 public class SliderFragment extends BaseEditFragment implements View.OnClickListener,
-                                                        SeekBar.OnSeekBarChangeListener {
+        SeekBar.OnSeekBarChangeListener {
 
     SeekBar seekBar;
-    ImageButton cancel,apply;
+    ImageButton cancel, apply;
     public Bitmap filterBit;
     Bitmap currentBitmap;
     View fragmentView;
@@ -62,7 +62,7 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
 
     private void setDefaultSeekBarProgress() {
         if (null != seekBar) {
-            switch (EditImageActivity.effectType/100) {
+            switch (EditImageActivity.effectType / 100) {
                 case EditImageActivity.MODE_FILTERS:
                     seekBar.setProgress(100);
                     break;
@@ -86,6 +86,7 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
             }
         }
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -116,7 +117,7 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
 
     @Override
     public void onShow() {
-        if (activity!=null) {
+        if (activity != null) {
             setDefaultSeekBarProgress();
             activity.changeMode(EditImageActivity.MODE_SLIDER);
             currentBitmap = activity.mainBitmap;
@@ -137,23 +138,25 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
             activity.changeMainBitmap(filterBit);
     }
 
-    public void resetBitmaps(){
-        if (null != filterBit) filterBit.recycle(); filterBit = null;
-        if (null != currentBitmap) currentBitmap.recycle(); currentBitmap = null;
+    public void resetBitmaps() {
+        if (null != filterBit) filterBit.recycle();
+        filterBit = null;
+        if (null != currentBitmap) currentBitmap.recycle();
+        currentBitmap = null;
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.seekbar_cancel:
                 backToMain();
                 break;
             case R.id.seekbar_apply:
-                if (filterBit!=null) {
+                if (filterBit != null) {
                     activity.changeMainBitmap(filterBit);
                     filterBit = null;
                 }
-                if (EditImageActivity.effectType / 100 ==  EditImageActivity.MODE_FILTERS){
+                if (EditImageActivity.effectType / 100 == EditImageActivity.MODE_FILTERS) {
                     activity.filterFragment.onShow();
                 }
                 backToMain();
@@ -161,7 +164,7 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
         }
     }
 
-    public void backToMain(){
+    public void backToMain() {
         if (null != activity) {
             currentBitmap = null;
             activity.mainImage.setImageBitmap(activity.mainBitmap);
@@ -169,8 +172,7 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
             activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
             activity.mainImage.setScaleEnabled(true);
 
-            switch (activity.mode)
-            {
+            switch (activity.mode) {
                 case EditImageActivity.MODE_FILTERS:
                     activity.filterFragment.clearCurrentSelection();
                     break;
@@ -186,6 +188,7 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
     }
 
     int counter = 0;
+
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {/*
         if ((counter++) % 15 == 0) {
@@ -207,14 +210,16 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
 
 
     private final class ProcessImageTask extends AsyncTask<Integer, Void, Bitmap> {
-        private Bitmap srcBitmap;
+        private Bitmap srcBitmap, tempBitmap;
         Dialog dialog;
         int val;
 
         @Override
         protected Bitmap doInBackground(Integer... params) {
             val = params[0];
+//            tempBitmap=currentBitmap;
             if (srcBitmap != null && !srcBitmap.isRecycled()) {
+//                tempBitmap=srcBitmap;
                 srcBitmap.recycle();
             }
 

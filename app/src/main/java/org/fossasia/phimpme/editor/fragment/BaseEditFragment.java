@@ -8,9 +8,9 @@ import org.fossasia.phimpme.editor.EditImageActivity;
 public abstract class BaseEditFragment extends Fragment {
     protected EditImageActivity activity;
 
-    protected EditImageActivity ensureEditActivity(){
-        if(activity==null){
-            activity = (EditImageActivity)getActivity();
+    protected EditImageActivity ensureEditActivity() {
+        if (activity == null) {
+            activity = (EditImageActivity) getActivity();
         }
         return activity;
     }
@@ -21,5 +21,5 @@ public abstract class BaseEditFragment extends Fragment {
         ensureEditActivity();
     }
 
-     public abstract void onShow();
+    public abstract void onShow();
 }
