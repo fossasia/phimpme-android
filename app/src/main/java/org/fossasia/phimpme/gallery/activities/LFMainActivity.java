@@ -1848,8 +1848,7 @@ public class LFMainActivity extends SharedMediaActivity {
                     else if(isTaskRoot())
                     {
                         doubleBackToExitPressedOnce = true;
-                        Toast.makeText(this, R.string.press_back_again_to_exit, Toast.LENGTH_SHORT).show();
-
+                        SnackBarHandler.show(coordinatorLayoutMainContent, R.string.press_back_again_to_exit);
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
