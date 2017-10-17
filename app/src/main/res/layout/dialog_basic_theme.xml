@@ -65,6 +65,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/white_basic_theme"
+                            android:clickable="true"
                             android:textColor="@color/md_light_primary_text"
                             android:layout_gravity="center_vertical"
                             android:textSize="16sp"
@@ -113,6 +114,7 @@
                             android:id="@+id/dark_basic_theme_item"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:clickable="true"
                             android:text="@string/dark_basic_theme"
                             android:textColor="@color/md_dark_primary_text"
                             android:layout_gravity="center_vertical"
@@ -159,6 +161,8 @@
                         android:layout_weight="6"
                         android:orientation="vertical"
                         >
+
+
                         <TextView
                             android:id="@+id/dark_amoled_basic_theme_item"
                             android:layout_width="wrap_content"
@@ -168,6 +172,7 @@
                             android:layout_gravity="center_vertical"
                             android:textSize="16sp"
                             />
+
                     </LinearLayout>
                     <com.mikepenz.iconics.view.IconicsImageView
                         android:id="@+id/dark_amoled_basic_theme_select"
@@ -180,6 +185,7 @@
                         android:tint="@color/white"
                         />
                 </LinearLayout>
+
 
             </LinearLayout>
         </LinearLayout>
