@@ -11,6 +11,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -22,6 +23,7 @@ import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.print.PrintHelper;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.CardView;
@@ -529,6 +531,13 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 else
                     intent.setDataAndType(Uri.fromFile(new File(LFMainActivity.listAll.get(current_image_pos).getPath())), StringUtils.getMimeType(LFMainActivity.listAll.get(current_image_pos).getPath()));
                 startActivity(Intent.createChooser(intent, getString(R.string.use_as)));
+                return true;
+
+            case R.id.print:
+                PrintHelper photoPrinter = new PrintHelper(this);
+                photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
+                Bitmap bitmap = BitmapFactory.decodeFile(getAlbum().getCurrentMedia().getPath(), new BitmapFactory.Options());
+                photoPrinter.printBitmap(getString(R.string.print), bitmap);
                 return true;
 
             case R.id.action_delete:
