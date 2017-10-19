@@ -122,7 +122,10 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
             holder.layout.setBackgroundColor(Color.parseColor(hexPrimaryColor));
             holder.picture.setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
             holder.selectedIcon.setVisibility(View.VISIBLE);
-            if (theme.getBaseTheme() == ThemeHelper.LIGHT_THEME ) textColor = "#FAFAFA";
+            if (theme.getBaseTheme() == ThemeHelper.LIGHT_THEME ) {
+                textColor = "#FAFAFA";
+                hexAccentColor = "#FAFAFA";
+            }
         } else {
             holder.picture.clearColorFilter();
             holder.selectedIcon.setVisibility(View.GONE);
