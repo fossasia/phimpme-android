@@ -16,6 +16,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -650,6 +651,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         captionEditText.setHint(R.string.description_hint);
         captionEditText.setHintTextColor(getResources().getColor(R.color.grey, null));
         captionEditText.setSelectAllOnFocus(true);
+        captionEditText.setHighlightColor(ContextCompat.getColor(getApplicationContext(), R.color.cardview_shadow_start_color));
         captionEditText.selectAll();
         captionEditText.setSingleLine(false);
         if(caption!=null) {
