@@ -48,14 +48,15 @@
                         android:clipToPadding="false"
                         android:scrollbarThumbVertical="@drawable/ic_scrollbar"
                         android:scrollbars="vertical"
-
                         />
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/grid_photos"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center_horizontal" />
+                        android:layout_gravity="center_horizontal"
+                        android:scrollbarThumbVertical="@drawable/ic_scrollbar"
+                        android:scrollbars="vertical"/>
 
                     <TextView
                         android:id="@+id/nothing_to_show"
