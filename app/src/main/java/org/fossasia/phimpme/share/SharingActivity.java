@@ -627,7 +627,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             discardChangesDialogBuilder.setPositiveButton(getString(R.string.ok).toUpperCase(), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    caption = null;
+                
                     sendResult(FAIL);
                 }
             });
