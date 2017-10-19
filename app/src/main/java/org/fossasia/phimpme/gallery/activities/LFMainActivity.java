@@ -1034,17 +1034,21 @@ public class LFMainActivity extends SharedMediaActivity {
             menu.setGroupVisible(R.id.album_options_menu, editMode);
             menu.setGroupVisible(R.id.photos_option_men, false);
             menu.findItem(R.id.all_photos).setVisible(!editMode);
+            if(getAlbums().getSelectedCount() > 1)
+                menu.findItem(R.id.album_details).setVisible(false);
         } else {
             if (!all_photos) {
                 editMode = getAlbum().areMediaSelected();
                 menu.setGroupVisible(R.id.photos_option_men, editMode);
                 menu.setGroupVisible(R.id.album_options_menu, !editMode);
                 menu.findItem(R.id.all_photos).setVisible(false);
+                menu.findItem(R.id.album_details).setVisible(false);
             } else {
                 editMode = selectedMedias.size() != 0;
                 menu.setGroupVisible(R.id.photos_option_men, editMode);
                 menu.setGroupVisible(R.id.album_options_menu, !editMode);
                 menu.findItem(R.id.all_photos).setVisible(false);
+                menu.findItem(R.id.album_details).setVisible(false);
             }
         }
 
@@ -1087,6 +1091,21 @@ public class LFMainActivity extends SharedMediaActivity {
                 } else {
                     displayAlbums();
                 }
+                return true;
+
+            case R.id.album_details:
+                AlertDialog.Builder detailsDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
+                AlertDialog detailsDialog;
+                detailsDialog =
+                        AlertDialogsHelper.getAlbumDetailsDialog(this, detailsDialogBuilder, getAlbums().getSelectedAlbum(0));
+
+                detailsDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string
+                        .ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //empty method body
+                    }});
+                detailsDialog.show();
                 return true;
 
             case R.id.select_all:
