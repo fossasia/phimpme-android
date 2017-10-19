@@ -37,7 +37,6 @@
                     android:padding="15dp">
                     <EditText
                         android:id="@+id/description_edittxt"
-                        android:layout_weight="1"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:padding="15dp"
@@ -45,7 +44,7 @@
                         android:textColorHint="@color/grey"
                         android:layout_margin="20dp"
                         android:gravity="top|left"
-                        android:inputType="text" />
+                        android:inputType="text"/>
                     <ImageButton
                         android:layout_width="@dimen/mic_image"
                         android:layout_height="@dimen/mic_image"
