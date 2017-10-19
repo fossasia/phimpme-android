@@ -222,6 +222,7 @@ public class AboutActivity extends ThemedActivity {
         notices.addNotice(new Notice("ShiftColorPicker", "http://github.com/DASAR/ShiftColorPicker", "Copyright (c) 2015 Bogdasarov Bogdan", new MITLicense()));
         notices.addNotice(new Notice("PhotoView", "http://github.com/chrisbanes/PhotoView", "Copyright 2011, 2012 Chris Banes.", new ApacheSoftwareLicense20()));
         notices.addNotice(new Notice("CircleImageView", "https://github.com/hdodenhof/CircleImageView", "Copyright 2014 - 2015 Henning Dodenhof", new ApacheSoftwareLicense20()));
+        notices.addNotice(new Notice("HorizontalWheelView", "https://github.com/shchurov/HorizontalWheelView", "Copyright 2016 Mykhailo Shchurov", new ApacheSoftwareLicense20()));
 
         new LicensesDialog.Builder(this)
                 .setNotices(notices)
