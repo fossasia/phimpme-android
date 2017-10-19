@@ -10,12 +10,12 @@ import org.fossasia.phimpme.gallery.adapters.MediaAdapter;
 import org.fossasia.phimpme.gallery.data.base.FilterMode;
 import org.fossasia.phimpme.gallery.data.base.MediaComparators;
 import org.fossasia.phimpme.gallery.data.base.SortingMode;
-import org.fossasia.phimpme.gallery.data.providers.StorageProvider;
-import org.fossasia.phimpme.gallery.util.PreferenceUtil;
-import org.fossasia.phimpme.gallery.util.StringUtils;
 import org.fossasia.phimpme.gallery.data.base.SortingOrder;
 import org.fossasia.phimpme.gallery.data.providers.MediaStoreProvider;
+import org.fossasia.phimpme.gallery.data.providers.StorageProvider;
 import org.fossasia.phimpme.gallery.util.ContentHelper;
+import org.fossasia.phimpme.gallery.util.PreferenceUtil;
+import org.fossasia.phimpme.gallery.util.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -23,7 +23,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static org.fossasia.phimpme.gallery.data.base.FilterMode.*;
+import static org.fossasia.phimpme.gallery.data.base.FilterMode.ALL;
 
 /**
  * Created by dnld on 26/04/16.
@@ -42,7 +42,7 @@ public class Album implements Serializable {
 	private ArrayList<Media> media;
 	private ArrayList<Media> selectedMedias;
 
-    private int selectedCount;
+	private int selectedCount;
 
 	private Album() {
 		media = new ArrayList<Media>();
@@ -73,7 +73,7 @@ public class Album implements Serializable {
 	 *
 	 * @param context context
 	 * @param mediaUri uri of the media to display
-   */
+	 */
 	public Album(Context context, Uri mediaUri) {
 		super();
 		media.add(0, new Media(context, mediaUri));
@@ -142,11 +142,11 @@ public class Album implements Serializable {
 		// TODO: 18/08/16
 		if (isFromMediaStore()) {
 			mediaArrayList.addAll(
-							MediaStoreProvider.getMedia(
-											context, id));
+					MediaStoreProvider.getMedia(
+							context, id));
 		} else {
 			mediaArrayList.addAll(StorageProvider.getMedia(
-							getPath(), SP.getBoolean("set_include_video", false)));
+					getPath(), SP.getBoolean("set_include_video", false)));
 		}
 		return mediaArrayList;
 	}
@@ -264,9 +264,9 @@ public class Album implements Serializable {
 	}
 
 	public int getSelectedCount() {
-        if(selectedMedias!=null){
-            selectedCount = selectedMedias.size();
-        }
+		if(selectedMedias!=null){
+			selectedCount = selectedMedias.size();
+		}
 		return selectedCount;
 	}
 
@@ -319,23 +319,47 @@ public class Album implements Serializable {
 		int n = 0;
 		try
 		{
-			for (int i = 0; i < selectedMedias.size(); i++) {
+			int index=-1;
 
-				if (moveMedia(context, selectedMedias.get(i).getPath(), targetDir)) {
-					String from = selectedMedias.get(i).getPath();
-					scanFile(context, new String[]{ from, StringUtils.getPhotoPathMoved(selectedMedias.get(i).getPath(), targetDir) },
-									new MediaScannerConnection.OnScanCompletedListener() {
-										@Override
-										public void onScanCompleted(String s, Uri uri) {
-											Log.d("scanFile", "onScanCompleted: " + s);
-										}
-									});
-					media.remove(selectedMedias.get(i));
-					n++;
+			for(int i =0;i<selectedMedias.size();i++)
+			{
+				String s = selectedMedias.get(i).getPath();
+				int indexOfLastSlash = s.lastIndexOf("/");
+				String fileName = s.substring(indexOfLastSlash + 1);
+
+				if(!selectedMedias.get(i).getPath().equals(targetDir+"/"+fileName)){
+					index=-1;
+				}else{
+					index=i;
+					break;
 				}
 			}
+
+			if(index!=-1)
+			{
+				n = -1;
+			}else{
+
+				for (int i = 0; i < selectedMedias.size(); i++) {
+
+					if (moveMedia(context, selectedMedias.get(i).getPath(), targetDir)) {
+						String from = selectedMedias.get(i).getPath();
+						scanFile(context, new String[]{ from, StringUtils.getPhotoPathMoved(selectedMedias.get(i).getPath(), targetDir) },
+								new MediaScannerConnection.OnScanCompletedListener() {
+									@Override
+									public void onScanCompleted(String s, Uri uri) {
+										Log.d("scanFile", "onScanCompleted: " + s);
+									}
+								});
+						media.remove(selectedMedias.get(i));
+						n++;
+					}
+
+				}
+				setCount(media.size());
+			}
 		} catch (Exception e) { e.printStackTrace(); }
-		setCount(media.size());
+
 		return n;
 	}
 
@@ -387,7 +411,7 @@ public class Album implements Serializable {
 		for (Media m : media)
 			m.setSelected(false);
 		if (selectedMedias!=null)
-		selectedMedias.clear();
+			selectedMedias.clear();
 	}
 
 	public void sortPhotos() {
