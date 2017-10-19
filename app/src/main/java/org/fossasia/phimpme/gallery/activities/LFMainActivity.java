@@ -765,6 +765,7 @@ public class LFMainActivity extends SharedMediaActivity {
         if(localFolder)
             findViewById(R.id.ll_drawer_Default).setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.md_grey_200));
 
+        tint();
         findViewById(R.id.ll_drawer_Setting).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -796,6 +797,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 localFolder=true;
                 findViewById(R.id.ll_drawer_hidden).setBackgroundColor(Color.TRANSPARENT);
                 findViewById(R.id.ll_drawer_Default).setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.md_grey_200));
+                tint();
                 toolbar.setTitle(getString(R.string.local_folder));
                 hidden = false;
                 mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -808,6 +810,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 localFolder=false;
                 findViewById(R.id.ll_drawer_Default).setBackgroundColor(Color.TRANSPARENT);
                 findViewById(R.id.ll_drawer_hidden).setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.md_grey_200));
+                tint();
                 toolbar.setTitle(getString(R.string.hidden_folder));
                 if (securityObj.isActiveSecurity() && securityObj.isPasswordOnHidden()) {
                     AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
@@ -1821,6 +1824,26 @@ public class LFMainActivity extends SharedMediaActivity {
         rvMedia.setVisibility(albumsMode ? View.GONE : View.VISIBLE);
         //touchScrollBar.setScrollBarHidden(albumsMode);
 
+    }
+    private void tint()
+    {
+        IconicsImageView defaultIcon=(IconicsImageView) findViewById(R.id.Drawer_Default_Icon);
+        IconicsImageView hiddenIcon=(IconicsImageView) findViewById(R.id.Drawer_hidden_Icon);
+        TextView  defaultText=(TextView) findViewById(R.id.Drawer_Default_Item);
+        TextView  hiddenText=(TextView) findViewById(R.id.Drawer_hidden_Item);
+
+        if(localFolder) {
+        defaultIcon.setColor(getPrimaryColor());
+        defaultText.setTextColor(getPrimaryColor());
+        hiddenIcon.setColor(getIconColor());
+        hiddenText.setTextColor(getTextColor());
+    }
+    else  {
+        hiddenIcon.setColor(getPrimaryColor());
+        hiddenText.setTextColor(getPrimaryColor());
+        defaultIcon.setColor(getIconColor());
+        defaultText.setTextColor(getTextColor());
+    }
     }
 
     /**
