@@ -28,7 +28,7 @@ import java.util.ArrayList;
  */
 public class ExcludedAlbumsActivity extends ThemedActivity {
 
-    private ArrayList<File> excludedFolders = new ArrayList<File>();
+    private ArrayList<File> excludedFolders = new ArrayList<>();
     private CustomAlbumsHelper h;
 
     @Override
