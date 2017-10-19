@@ -684,6 +684,9 @@
     <string name="orientation">Orientation</string>
     <string name="location">Location</string>
 
+    <!--ALBUM DETAILS-->
+    <string name="total_photos">Total photos</string>
+
     <!--DRAWER ITEMS -->
     <string name="local_folder">Local Folders</string>
     <string name="hidden_folder">Hidden Folders</string>

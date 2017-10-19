@@ -26,6 +26,7 @@ import com.drew.lang.GeoLocation;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
+import org.fossasia.phimpme.gallery.data.Album;
 import org.fossasia.phimpme.gallery.data.Media;
 import org.fossasia.phimpme.gallery.data.base.MediaDetailsMap;
 
@@ -148,6 +149,17 @@ public class AlertDialogsHelper {
                 showMoreText.setVisibility(View.INVISIBLE);
             }
         });
+
+        detailsDialogBuilder.setView(dialogLayout);
+        loadDetails(dialogLayout,activity, mainDetails);
+        return detailsDialogBuilder.create();
+    }
+
+    public static AlertDialog getAlbumDetailsDialog(final ThemedActivity activity, AlertDialog.Builder detailsDialogBuilder, final Album f) {
+        MediaDetailsMap<String, String> mainDetails = f.getAlbumDetails(activity.getApplicationContext());
+        final View dialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_album_detail, null);
+        dialogLayout.findViewById(R.id.album_details_title).setBackgroundColor(activity.getPrimaryColor());
+        ((CardView) dialogLayout.findViewById(R.id.album_details_card)).setCardBackgroundColor(activity.getCardBackgroundColor());
 
         detailsDialogBuilder.setView(dialogLayout);
         loadDetails(dialogLayout,activity, mainDetails);

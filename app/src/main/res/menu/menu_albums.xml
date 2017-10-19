@@ -66,6 +66,10 @@
 
     <group android:id="@+id/album_options_menu">
         <item
+            android:id="@+id/album_details"
+            android:title="@string/details"
+            app:showAsAction="never" />
+        <item
             android:id="@+id/excludeAlbumButton"
             android:title="@string/exclude"
             app:showAsAction="never" />
