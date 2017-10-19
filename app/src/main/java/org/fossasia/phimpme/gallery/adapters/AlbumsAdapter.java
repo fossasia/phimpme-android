@@ -5,7 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -44,18 +46,20 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
     private View.OnClickListener mOnClickListener;
     private View.OnLongClickListener mOnLongClickListener;
     private ThemeHelper theme;
-
     private BitmapDrawable placeholder;
+    Context context;
 
     public AlbumsAdapter(ArrayList<Album> ph, Context context) {
         albums = ph;
         theme = new ThemeHelper(context);
+        this.context=context;
         updateTheme();
     }
 
     public void updateTheme() {
         theme.updateTheme();
-        placeholder = ((BitmapDrawable) theme.getPlaceHolder());
+        Drawable drawable=ContextCompat.getDrawable(context,R.drawable.placeholder);
+        placeholder = (BitmapDrawable) drawable;
     }
 
     @Override
