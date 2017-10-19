@@ -5,7 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -26,6 +28,7 @@ import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.SharedMediaActivity;
 import org.fossasia.phimpme.gallery.data.Album;
 import org.fossasia.phimpme.gallery.data.Media;
+import org.fossasia.phimpme.gallery.util.ColorPalette;
 import org.fossasia.phimpme.gallery.util.PreferenceUtil;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
 
@@ -43,18 +46,20 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
     private View.OnClickListener mOnClickListener;
     private View.OnLongClickListener mOnLongClickListener;
     private ThemeHelper theme;
-
     private BitmapDrawable placeholder;
+    Context context;
 
     public AlbumsAdapter(ArrayList<Album> ph, Context context) {
         albums = ph;
         theme = new ThemeHelper(context);
+        this.context=context;
         updateTheme();
     }
 
     public void updateTheme() {
         theme.updateTheme();
-        placeholder = ((BitmapDrawable) theme.getPlaceHolder());
+        Drawable drawable=ContextCompat.getDrawable(context,R.drawable.placeholder);
+        placeholder = (BitmapDrawable) drawable;
     }
 
     @Override
@@ -117,11 +122,14 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
             holder.layout.setBackgroundColor(Color.parseColor(hexPrimaryColor));
             holder.picture.setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
             holder.selectedIcon.setVisibility(View.VISIBLE);
-            if (theme.getBaseTheme() == ThemeHelper.LIGHT_THEME ) textColor = "#FAFAFA";
+            if (theme.getBaseTheme() == ThemeHelper.LIGHT_THEME ) {
+                textColor = "#FAFAFA";
+                hexAccentColor = "#FAFAFA";
+            }
         } else {
             holder.picture.clearColorFilter();
             holder.selectedIcon.setVisibility(View.GONE);
-            holder.layout.setBackgroundColor(theme.getCardBackgroundColor());
+            holder.layout.setBackgroundColor(ColorPalette.getTransparentColor(theme.getBackgroundColor(), 200));
         }
 
         String albumNameHtml = "<i><font color='" + textColor + "'>" + a.getName() + "</font></i>";
