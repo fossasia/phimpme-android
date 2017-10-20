@@ -14,11 +14,14 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.adapter.ColorListAdapter;
@@ -35,7 +38,7 @@ import uz.shift.colorpicker.OnColorChangedListener;
 public class PaintFragment extends BaseEditFragment implements View.OnClickListener, ColorListAdapter.IColorListAction {
 
     private View mainView;
-    private View cancel,apply;
+    private ImageButton cancel,apply;
     private PaintModeView mPaintModeView;
     private RecyclerView mColorListView;
     private ColorListAdapter mColorAdapter;
@@ -89,8 +92,11 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
 
         mPaintView = (CustomPaintView)getActivity().findViewById(R.id.custom_paint_view);
 
-        cancel = mainView.findViewById(R.id.paint_cancel);
-        apply = mainView.findViewById(R.id.paint_apply);
+        cancel = (ImageButton) mainView.findViewById(R.id.paint_cancel);
+        apply = (ImageButton) mainView.findViewById(R.id.paint_apply);
+
+        cancel.setImageDrawable(new IconicsDrawable(this.getContext()).icon(GoogleMaterial.Icon.gmd_clear).sizeDp(24));
+        apply.setImageDrawable(new IconicsDrawable(this.getContext()).icon(GoogleMaterial.Icon.gmd_done).sizeDp(24));
 
         mPaintModeView = (PaintModeView) mainView.findViewById(R.id.paint_thumb);
         mColorListView = (RecyclerView) mainView.findViewById(R.id.paint_color_list);

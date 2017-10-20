@@ -10,10 +10,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+
+import android.widget.ImageButton;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
+
 import android.widget.TextView;
 
 import com.github.shchurov.horizontalwheelview.HorizontalWheelView;
 
+
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.view.RotateImageView;
@@ -28,9 +36,11 @@ import java.util.Locale;
 public class RotateFragment extends BaseEditFragment {
     public static final String TAG = RotateFragment.class.getName();
     private View mainView;
+
+    ImageButton cancel,apply;
+    public SeekBar mSeekBar;
     private View cancel, apply;
     private RotateImageView mRotatePanel;
-
     private HorizontalWheelView horizontalWheelView;
     private TextView tvAngle;
 
@@ -56,6 +66,19 @@ public class RotateFragment extends BaseEditFragment {
 
         return mainView;
     }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        cancel = (ImageButton) mainView.findViewById(R.id.rotate_cancel);
+        apply = (ImageButton) mainView.findViewById(R.id.rotate_apply);
+
+        cancel.setImageDrawable(new IconicsDrawable(this.getContext()).icon(GoogleMaterial.Icon.gmd_clear).sizeDp(24));
+        apply.setImageDrawable(new IconicsDrawable(this.getContext()).icon(GoogleMaterial.Icon.gmd_done).sizeDp(24));
+
+        mSeekBar = (SeekBar) mainView.findViewById(R.id.rotate_bar);
+        mSeekBar.setProgress(0);
 
     private void initViews() {
         cancel = mainView.findViewById(R.id.rotate_cancel);

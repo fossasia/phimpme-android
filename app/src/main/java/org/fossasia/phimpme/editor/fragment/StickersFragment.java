@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -66,8 +68,8 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
         cancel = (ImageButton)fragmentView.findViewById(R.id.sticker_cancel);
         apply = (ImageButton)fragmentView.findViewById(R.id.sticker_apply);
 
-        cancel.setImageResource(R.drawable.ic_no);
-        apply.setImageResource(R.drawable.ic_done_black_24dp);
+        cancel.setImageDrawable(new IconicsDrawable(this.getContext()).icon(GoogleMaterial.Icon.gmd_clear).sizeDp(24));
+        apply.setImageDrawable(new IconicsDrawable(this.getContext()).icon(GoogleMaterial.Icon.gmd_done).sizeDp(24));
 
         cancel.setOnClickListener(this);
         apply.setOnClickListener(this);

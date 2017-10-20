@@ -7,16 +7,15 @@
 
     <ImageButton
         android:id="@+id/sticker_cancel"
-        android:layout_width="@dimen/icon_item_image_size"
-        android:layout_height="@dimen/icon_item_image_size"
+        android:layout_width="@dimen/icon_cancel"
+        android:layout_height="@dimen/icon_cancel"
         android:scaleType="fitCenter"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:background="?android:attr/selectableItemBackground"
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        />
+        android:layout_alignParentLeft="true"/>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="wrap_content"
@@ -30,8 +29,8 @@
 
     <ImageButton
         android:id="@+id/sticker_apply"
-        android:layout_width="@dimen/icon_item_image_size"
-        android:layout_height="@dimen/icon_item_image_size"
+        android:layout_width="@dimen/icon_apply"
+        android:layout_height="@dimen/icon_apply"
         android:layout_centerVertical="true"
         android:scaleType="fitCenter"
         android:layout_marginLeft="5dp"

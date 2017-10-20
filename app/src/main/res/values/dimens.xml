@@ -72,7 +72,8 @@
     <dimen name="icon_item_image_size_top">30dp</dimen>
     <dimen name="icon_item_image_size">30dp</dimen>
     <dimen name="icon_item_title_size">12sp</dimen>
-
+    <dimen name="icon_cancel">15dp</dimen>
+    <dimen name="icon_apply">20dp</dimen>
     <dimen name="share_button_margin">20dp</dimen>
     <dimen name="share_icon_size">30dp</dimen>
     <dimen name="share_cell_text_margin">15dp</dimen>
