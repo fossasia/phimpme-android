@@ -6,9 +6,11 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.gallery.adapters.MediaAdapter;
 import org.fossasia.phimpme.gallery.data.base.FilterMode;
 import org.fossasia.phimpme.gallery.data.base.MediaComparators;
+import org.fossasia.phimpme.gallery.data.base.MediaDetailsMap;
 import org.fossasia.phimpme.gallery.data.base.SortingMode;
 import org.fossasia.phimpme.gallery.data.providers.StorageProvider;
 import org.fossasia.phimpme.gallery.util.PreferenceUtil;
@@ -35,6 +37,7 @@ public class Album implements Serializable {
 	private long id = -1;
 	private int count = -1;
 	private int currentMediaIndex = 0;
+    MetadataItem metadata;
 
 	private boolean selected = false;
 	public AlbumSettings settings = null;
@@ -348,6 +351,15 @@ public class Album implements Serializable {
 	public void setDefaultSortingAscending(Context context, SortingOrder sortingOrder) {
 		settings.changeSortingOrder(context, sortingOrder);
 	}
+
+    public MediaDetailsMap<String, String> getAlbumDetails(Context context){
+        metadata = new MetadataItem(new File(getPath()));
+        MediaDetailsMap<String, String> details = new MediaDetailsMap<String, String>();
+        details.put(context.getString(R.string.path), getPath());
+        details.put(context.getString(R.string.name),getName());
+        details.put(context.getString(R.string.total_photos),Integer.toString(getCount()));
+        return details;
+    }
 
 
 	/**

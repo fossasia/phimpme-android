@@ -687,6 +687,12 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                         dialog.dismiss();
                 }
             });
+            discardChangesDialogBuilder.setNeutralButton(getString(R.string.save_action).toUpperCase(), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    doSaveImage();
+                }
+            });
 
             AlertDialog alertDialog = discardChangesDialogBuilder.create();
             alertDialog.show();

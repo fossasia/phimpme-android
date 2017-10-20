@@ -5,6 +5,7 @@ package org.fossasia.phimpme.gallery;
  */
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -19,9 +20,11 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
@@ -121,16 +124,33 @@ public class SelectAlbumBottomSheet extends BottomSheetDialogFragment {
 	contentView.findViewById(R.id.ll_create_new_folder).setOnClickListener(new View.OnClickListener() {
 	  @Override
 	  public void onClick(View view) {
-		final EditText editText = new EditText(getContext());
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), theme.getDialogStyle());
-		AlertDialogsHelper.getInsertTextDialog(((ThemedActivity) getActivity()), builder,
-				editText, R.string.new_folder, null);
+          final EditText editText = new EditText(getContext());
+          InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+          inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+          AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), theme.getDialogStyle());
+          AlertDialogsHelper.getInsertTextDialog(((ThemedActivity) getActivity()), builder,
+                  editText, R.string.new_folder, null);
 		builder.setPositiveButton(R.string.ok_action, new DialogInterface.OnClickListener() {
 		  @Override
 		  public void onClick(DialogInterface dialogInterface, int i) {
+              int folderCount=folders.size();
+              int check=1;
+              int filePosition=0;
+              while (filePosition<folderCount) {
+                  File f = folders.get(filePosition);
+                  filePosition++;
+                  if (editText.getText().toString().equals(f.getName()))
+                      check=0;
+              }
+              if(!editText.getText().toString().trim().isEmpty() && check!=0) {
 			File folderPath = new File(currentFolderPath.getText().toString() + File.separator + editText.getText().toString());
 			if (folderPath.mkdir()) displayContentFolder(folderPath);
+              }
+              else if(check==0)
+                  Toast.makeText(getContext(),R.string.folder_name_exists,Toast.LENGTH_SHORT).show();
 
+              else
+                  Toast.makeText(getContext(),R.string.empty_folder_name,Toast.LENGTH_SHORT).show();
 		  }
 		});
 		builder.show();

@@ -26,6 +26,10 @@
         android:title="@string/slideshow"
         app:showAsAction="never" />
     <item
+        android:id="@+id/print"
+        app:showAsAction="never"
+        android:title="@string/print"/>
+    <item
         android:id="@+id/action_description"
         android:title="Description"
         app:showAsAction="never" />
