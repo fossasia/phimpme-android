@@ -20,6 +20,7 @@ android:
     - android-$ANDROID_API_LEVEL_22
     - build-tools-$ANDROID_BUILD_TOOLS_VERSION
     - android-$ANDROID_API_LEVEL
+    - android-21
     # For Google APIs
     - addon-google_apis-google-$ANDROID_API_LEVEL
     # Google Play Services
@@ -53,6 +54,12 @@ before_install:
   - rm android-ndk-${NDK_VERSION}-linux-x86_64.bin
   - export ANDROID_NDK_HOME=`pwd`/android-ndk-${NDK_VERSION}
   - export PATH=${ANDROID_NDK_HOME}:${PATH}
+
+install:
+  # List and delete unnecessary components to free space
+  - sdkmanager --list || true
+  - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2"
+  - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
 
 
 cache:
