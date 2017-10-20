@@ -409,8 +409,6 @@ public class LFMainActivity extends SharedMediaActivity {
         ActivitySwitchHelper.setContext(this);
         securityObj.updateSecuritySetting();
         setupUI();
-       // getAlbums().clearSelectedAlbums();
-       // getAlbum().clearSelectedPhotos();
         if (all_photos)
             mediaAdapter.swapDataSet(listAll);
         if (!all_photos) {
