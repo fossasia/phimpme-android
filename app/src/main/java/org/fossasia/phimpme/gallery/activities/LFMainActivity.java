@@ -1744,7 +1744,6 @@ public class LFMainActivity extends SharedMediaActivity {
                                 invalidateOptionsMenu();
                             } else if(!rename){
                                 SnackBarHandler.show(coordinatorLayoutMainContent, getString(R.string.rename_error));
-
                                 requestSdCardPermissions();
                             }
                             swipeRefreshLayout.setRefreshing(false);
