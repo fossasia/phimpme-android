@@ -40,7 +40,7 @@ import static android.graphics.Color.WHITE;
 public class AddTextFragment extends BaseEditFragment implements TextWatcher {
     public static final int INDEX = 5;
     private View mainView;
-    ImageButton cancel,apply;
+    private View cancel,apply;
 
     private EditText mInputText;
     private ImageView mTextColorSelector;
@@ -77,11 +77,11 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher {
 
         mTextStickerView = (TextStickerView)getActivity().findViewById(R.id.text_sticker_panel);
 
-        cancel = (ImageButton) mainView.findViewById(R.id.text_cancel);
-        apply = (ImageButton) mainView.findViewById(R.id.text_apply);
+        cancel = mainView.findViewById(R.id.text_cancel);
+        apply = mainView.findViewById(R.id.text_apply);
 
-        cancel.setImageDrawable(new IconicsDrawable(this.getContext()).icon(GoogleMaterial.Icon.gmd_clear).sizeDp(24));
-        apply.setImageDrawable(new IconicsDrawable(this.getContext()).icon(GoogleMaterial.Icon.gmd_done).sizeDp(24));
+        ((ImageButton)cancel).setColorFilter(Color.BLACK);
+        ((ImageButton)apply).setColorFilter(Color.BLACK);
 
         mInputText = (EditText) mainView.findViewById(R.id.text_input);
         mTextColorSelector = (ImageView) mainView.findViewById(R.id.text_color);

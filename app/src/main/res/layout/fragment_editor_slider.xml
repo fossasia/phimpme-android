@@ -5,8 +5,8 @@
     >
     <ImageButton
         android:id="@+id/seekbar_cancel"
-        android:layout_width="@dimen/icon_cancel"
-        android:layout_height="@dimen/icon_cancel"
+        android:layout_width="@dimen/icon_item_image_size"
+        android:layout_height="@dimen/icon_item_image_size"
         android:scaleType="fitCenter"
         android:background="?android:attr/selectableItemBackground"
         android:layout_centerVertical="true"
@@ -27,12 +27,13 @@
 
     <ImageButton
         android:id="@+id/seekbar_apply"
-        android:layout_width="@dimen/icon_apply"
-        android:layout_height="@dimen/icon_apply"
+        android:layout_width="@dimen/icon_item_image_size"
+        android:layout_height="@dimen/icon_item_image_size"
         android:scaleType="fitCenter"
         android:layout_margin="5dp"
         android:layout_centerVertical="true"
         android:background="?android:attr/selectableItemBackground"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"/>
+    
 </RelativeLayout>
