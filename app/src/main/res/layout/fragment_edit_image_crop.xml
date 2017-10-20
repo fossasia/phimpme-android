@@ -6,14 +6,15 @@
 
     <ImageButton
         android:id="@+id/crop_cancel"
-        android:layout_width="@dimen/icon_cancel"
+        android:layout_width="@dimen/icon_item_image_size_main"
         android:layout_height="@dimen/editor_bottom_row_size"
         android:scaleType="fitCenter"
         android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"
         android:layout_alignBottom="@+id/crop_hsv"
         android:layout_alignParentLeft="true"
-        android:background="?android:attr/selectableItemBackground" />
+        android:background="?android:attr/selectableItemBackground"
+        app:srcCompat="@drawable/ic_no" />
 
     <HorizontalScrollView
         android:layout_width="wrap_content"
@@ -35,12 +36,13 @@
 
     <ImageButton
         android:id="@+id/crop_apply"
-        android:layout_width="@dimen/icon_apply"
+        android:layout_width="@dimen/icon_item_image_size_main"
         android:layout_height="@dimen/editor_bottom_row_size"
         android:layout_alignParentRight="true"
         android:foregroundGravity="center_vertical"
         android:scaleType="fitCenter"
         android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"
-        android:background="?android:attr/selectableItemBackground" />
+        android:background="?android:attr/selectableItemBackground"
+        app:srcCompat="@drawable/ic_done_black_24dp" />
 </RelativeLayout>
