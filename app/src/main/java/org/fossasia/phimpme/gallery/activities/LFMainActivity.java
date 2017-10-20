@@ -1699,6 +1699,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 editTextNewName.setHighlightColor(ContextCompat.getColor(getApplicationContext(), R.color.cardview_shadow_start_color));
                 editTextNewName.selectAll();
                 editTextNewName.setSingleLine(false);
+                final String albumName=albumsMode ? getAlbums().getSelectedAlbum(0).getName() : getAlbum().getName();
 
                 AlertDialogsHelper.getInsertTextDialog(LFMainActivity.this, renameDialogBuilder,
                         editTextNewName, R.string.rename_album, null);
@@ -1720,15 +1721,21 @@ public class LFMainActivity extends SharedMediaActivity {
                 renameDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View dialog) {
+                        boolean rename=false;
                         if (editTextNewName.length() != 0) {
                             swipeRefreshLayout.setRefreshing(true);
                             boolean success = false;
                             if (albumsMode) {
-                                int index = getAlbums().dispAlbums.indexOf(getAlbums().getSelectedAlbum(0));
-                                getAlbums().getAlbum(index).updatePhotos(getApplicationContext());
-                                success = getAlbums().getAlbum(index).renameAlbum(getApplicationContext(),
-                                        editTextNewName.getText().toString());
-                                albumsAdapter.notifyItemChanged(index);
+                                if (!editTextNewName.getText().toString().equals(albumName)) {
+                                    int index = getAlbums().dispAlbums.indexOf(getAlbums().getSelectedAlbum(0));
+                                    getAlbums().getAlbum(index).updatePhotos(getApplicationContext());
+                                    success = getAlbums().getAlbum(index).renameAlbum(getApplicationContext(),
+                                            editTextNewName.getText().toString());
+                                    albumsAdapter.notifyItemChanged(index);
+                                } else {
+                                    SnackBarHandler.show(mDrawerLayout, getString(R.string.rename_no_change));
+                                    rename = true;
+                                }
                             } else {
                                 success = getAlbum().renameAlbum(getApplicationContext(), editTextNewName.getText().toString());
                                 toolbar.setTitle(getAlbum().getName());
@@ -1739,7 +1746,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                 SnackBarHandler.show(getWindow().getDecorView().getRootView(), getString(R.string.rename_succes));
                                 getAlbums().clearSelectedAlbums();
                                 invalidateOptionsMenu();
-                            } else {
+                            } else if(!rename){
                                 SnackBarHandler.show(getWindow().getDecorView().getRootView(), getString(R.string.rename_error));
                                 requestSdCardPermissions();
                             }
