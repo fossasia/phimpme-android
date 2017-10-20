@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.filter.PhotoProcessing;
@@ -46,8 +48,8 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
         apply = (ImageButton) fragmentView.findViewById(R.id.seekbar_apply);
         seekBar = (SeekBar) fragmentView.findViewById(R.id.slider);
 
-        cancel.setImageResource(R.drawable.ic_no);
-        apply.setImageResource(R.drawable.ic_done_black_24dp);
+        cancel.setImageDrawable(new IconicsDrawable(this.getContext()).icon(GoogleMaterial.Icon.gmd_clear).sizeDp(24));
+        apply.setImageDrawable(new IconicsDrawable(this.getContext()).icon(GoogleMaterial.Icon.gmd_done).sizeDp(24));
 
         cancel.setOnClickListener(this);
         apply.setOnClickListener(this);
