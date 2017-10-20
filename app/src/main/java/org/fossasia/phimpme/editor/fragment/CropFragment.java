@@ -14,12 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +33,7 @@ public class CropFragment extends BaseEditFragment {
     public static final int INDEX = 3;
 	public static final String TAG = CropFragment.class.getName();
 	private View mainView;
-	ImageButton cancel,apply;
+	private View cancel,apply;
 	public CropImageView mCropPanel;
 	private LinearLayout ratioList;
 	private static List<RatioItem> dataList = new ArrayList<RatioItem>();
@@ -134,13 +131,10 @@ public class CropFragment extends BaseEditFragment {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 
-        cancel = (ImageButton) mainView.findViewById(R.id.crop_cancel);
-		apply = (ImageButton) mainView.findViewById(R.id.crop_apply);
+        cancel = mainView.findViewById(R.id.crop_cancel);
+		apply = mainView.findViewById(R.id.crop_apply);
 
-		cancel.setImageDrawable(new IconicsDrawable(this.getContext()).icon(GoogleMaterial.Icon.gmd_clear).sizeDp(24));
-		apply.setImageDrawable(new IconicsDrawable(this.getContext()).icon(GoogleMaterial.Icon.gmd_done).sizeDp(24));
-
-		ratioList = (LinearLayout) mainView.findViewById(R.id.ratio_list_group);
+        ratioList = (LinearLayout) mainView.findViewById(R.id.ratio_list_group);
         setUpRatioList();
         this.mCropPanel = ensureEditActivity().mCropPanel;
 		cancel.setOnClickListener(new BackToMenuClick());
