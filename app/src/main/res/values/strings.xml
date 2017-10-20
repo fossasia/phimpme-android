@@ -414,6 +414,7 @@
 
     <string name="rename_error">File Rename Failed</string>
     <string name="rename_succes">File renamed</string>
+    <string name="rename_no_change">No change in file name</string>
 
     <!-- ACTIONS -->
     <string name="sort">Sort</string>
