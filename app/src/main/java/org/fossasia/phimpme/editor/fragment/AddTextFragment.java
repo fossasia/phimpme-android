@@ -209,14 +209,14 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher {
             mSaveTask.cancel(true);
         }
 
-        mSaveTask = new SaveTextStickerTask(activity);
+        mSaveTask = new SaveTextStickerTask(activity,activity.mainImage.getImageViewMatrix());
         mSaveTask.execute(activity.mainBitmap);
     }
 
     private final class SaveTextStickerTask extends StickerTask {
 
-        public SaveTextStickerTask(EditImageActivity activity) {
-            super(activity);
+        public SaveTextStickerTask(EditImageActivity activity, Matrix imageViewMatrix) {
+            super(activity,imageViewMatrix);
         }
 
         @Override
