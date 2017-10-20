@@ -766,6 +766,7 @@ public class LFMainActivity extends SharedMediaActivity {
         if(localFolder)
             findViewById(R.id.ll_drawer_Default).setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.md_grey_200));
 
+        tint();
         findViewById(R.id.ll_drawer_Setting).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -797,6 +798,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 localFolder=true;
                 findViewById(R.id.ll_drawer_hidden).setBackgroundColor(Color.TRANSPARENT);
                 findViewById(R.id.ll_drawer_Default).setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.md_grey_200));
+                tint();
                 toolbar.setTitle(getString(R.string.local_folder));
                 hidden = false;
                 mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -809,6 +811,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 localFolder=false;
                 findViewById(R.id.ll_drawer_Default).setBackgroundColor(Color.TRANSPARENT);
                 findViewById(R.id.ll_drawer_hidden).setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.md_grey_200));
+                tint();
                 toolbar.setTitle(getString(R.string.hidden_folder));
                 if (securityObj.isActiveSecurity() && securityObj.isPasswordOnHidden()) {
                     AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
@@ -1032,17 +1035,21 @@ public class LFMainActivity extends SharedMediaActivity {
             menu.setGroupVisible(R.id.album_options_menu, editMode);
             menu.setGroupVisible(R.id.photos_option_men, false);
             menu.findItem(R.id.all_photos).setVisible(!editMode);
+            if(getAlbums().getSelectedCount() > 1)
+                menu.findItem(R.id.album_details).setVisible(false);
         } else {
             if (!all_photos) {
                 editMode = getAlbum().areMediaSelected();
                 menu.setGroupVisible(R.id.photos_option_men, editMode);
                 menu.setGroupVisible(R.id.album_options_menu, !editMode);
                 menu.findItem(R.id.all_photos).setVisible(false);
+                menu.findItem(R.id.album_details).setVisible(false);
             } else {
                 editMode = selectedMedias.size() != 0;
                 menu.setGroupVisible(R.id.photos_option_men, editMode);
                 menu.setGroupVisible(R.id.album_options_menu, !editMode);
                 menu.findItem(R.id.all_photos).setVisible(false);
+                menu.findItem(R.id.album_details).setVisible(false);
             }
         }
 
@@ -1085,6 +1092,21 @@ public class LFMainActivity extends SharedMediaActivity {
                 } else {
                     displayAlbums();
                 }
+                return true;
+
+            case R.id.album_details:
+                AlertDialog.Builder detailsDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
+                AlertDialog detailsDialog;
+                detailsDialog =
+                        AlertDialogsHelper.getAlbumDetailsDialog(this, detailsDialogBuilder, getAlbums().getSelectedAlbum(0));
+
+                detailsDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string
+                        .ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //empty method body
+                    }});
+                detailsDialog.show();
                 return true;
 
             case R.id.select_all:
@@ -1709,6 +1731,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 AlertDialog.Builder renameDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
                 final EditText editTextNewName = new EditText(getApplicationContext());
                 editTextNewName.setText(albumsMode ? getAlbums().getSelectedAlbum(0).getName() : getAlbum().getName());
+                final String albumName=albumsMode ? getAlbums().getSelectedAlbum(0).getName() : getAlbum().getName();
 
                 AlertDialogsHelper.getInsertTextDialog(LFMainActivity.this, renameDialogBuilder,
                         editTextNewName, R.string.rename_album, null);
@@ -1730,15 +1753,21 @@ public class LFMainActivity extends SharedMediaActivity {
                 renameDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View dialog) {
+                        boolean rename=false;
                         if (editTextNewName.length() != 0) {
                             swipeRefreshLayout.setRefreshing(true);
                             boolean success = false;
                             if (albumsMode) {
-                                int index = getAlbums().dispAlbums.indexOf(getAlbums().getSelectedAlbum(0));
-                                getAlbums().getAlbum(index).updatePhotos(getApplicationContext());
-                                success = getAlbums().getAlbum(index).renameAlbum(getApplicationContext(),
-                                        editTextNewName.getText().toString());
-                                albumsAdapter.notifyItemChanged(index);
+                                if (!editTextNewName.getText().toString().equals(albumName)) {
+                                    int index = getAlbums().dispAlbums.indexOf(getAlbums().getSelectedAlbum(0));
+                                    getAlbums().getAlbum(index).updatePhotos(getApplicationContext());
+                                    success = getAlbums().getAlbum(index).renameAlbum(getApplicationContext(),
+                                            editTextNewName.getText().toString());
+                                    albumsAdapter.notifyItemChanged(index);
+                                } else {
+                                    SnackBarHandler.show(mDrawerLayout, getString(R.string.rename_no_change));
+                                    rename = true;
+                                }
                             } else {
                                 success = getAlbum().renameAlbum(getApplicationContext(), editTextNewName.getText().toString());
                                 toolbar.setTitle(getAlbum().getName());
@@ -1749,7 +1778,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                 SnackBarHandler.show(getWindow().getDecorView().getRootView(), getString(R.string.rename_succes));
                                 getAlbums().clearSelectedAlbums();
                                 invalidateOptionsMenu();
-                            } else {
+                            } else if(!rename){
                                 SnackBarHandler.show(getWindow().getDecorView().getRootView(), getString(R.string.rename_error));
                                 requestSdCardPermissions();
                             }
@@ -1857,6 +1886,26 @@ public class LFMainActivity extends SharedMediaActivity {
         rvMedia.setVisibility(albumsMode ? View.GONE : View.VISIBLE);
         //touchScrollBar.setScrollBarHidden(albumsMode);
 
+    }
+    private void tint()
+    {
+        IconicsImageView defaultIcon=(IconicsImageView) findViewById(R.id.Drawer_Default_Icon);
+        IconicsImageView hiddenIcon=(IconicsImageView) findViewById(R.id.Drawer_hidden_Icon);
+        TextView  defaultText=(TextView) findViewById(R.id.Drawer_Default_Item);
+        TextView  hiddenText=(TextView) findViewById(R.id.Drawer_hidden_Item);
+
+        if(localFolder) {
+        defaultIcon.setColor(getPrimaryColor());
+        defaultText.setTextColor(getPrimaryColor());
+        hiddenIcon.setColor(getIconColor());
+        hiddenText.setTextColor(getTextColor());
+    }
+    else  {
+        hiddenIcon.setColor(getPrimaryColor());
+        hiddenText.setTextColor(getPrimaryColor());
+        defaultIcon.setColor(getIconColor());
+        defaultText.setTextColor(getTextColor());
+    }
     }
 
     /**
