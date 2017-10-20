@@ -1729,7 +1729,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                             editTextNewName.getText().toString());
                                     albumsAdapter.notifyItemChanged(index);
                                 } else {
-                                    SnackBarHandler.show(mDrawerLayout, getString(R.string.rename_no_change));
+                                    SnackBarHandler.show(coordinatorLayoutMainContent, getString(R.string.rename_no_change));
                                     rename = true;
                                 }
                             } else {
