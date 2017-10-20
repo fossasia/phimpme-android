@@ -5,13 +5,14 @@
               android:orientation="horizontal">
     <ImageButton
         android:id="@+id/text_cancel"
-        android:layout_width="@dimen/icon_cancel"
+        android:layout_width="@dimen/icon_item_image_size_main"
         android:layout_height="@dimen/editor_bottom_row_size"
         android:layout_gravity="center_vertical"
         android:scaleType="fitCenter"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        android:background="?android:attr/selectableItemBackground" />
+        android:background="?android:attr/selectableItemBackground"
+        app:srcCompat="@drawable/ic_no"/>
 
     <EditText
         android:id="@+id/text_input"
@@ -41,12 +42,13 @@
 
     <ImageButton
         android:id="@+id/text_apply"
-        android:layout_width="@dimen/icon_apply"
+        android:layout_width="@dimen/icon_item_image_size_main"
         android:layout_height="@dimen/editor_bottom_row_size"
         android:layout_gravity="center_vertical"
         android:scaleType="fitCenter"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
+        app:srcCompat="@drawable/ic_done_black_24dp"
         android:background="?android:attr/selectableItemBackground"/>
 
 </LinearLayout>
