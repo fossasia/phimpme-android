@@ -43,6 +43,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,6 +63,8 @@ import org.fossasia.phimpme.editor.utils.BitmapUtils;
 import org.fossasia.phimpme.gallery.SelectAlbumBottomSheet;
 import org.fossasia.phimpme.gallery.adapters.ImageAdapter;
 import org.fossasia.phimpme.gallery.data.Album;
+import org.fossasia.phimpme.gallery.data.Media;
+import org.fossasia.phimpme.gallery.data.base.MediaDetailsMap;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
 import org.fossasia.phimpme.gallery.util.ColorPalette;
 import org.fossasia.phimpme.gallery.util.ContentHelper;
@@ -620,22 +623,53 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 return true;
 
             case R.id.action_details:
-                AlertDialog.Builder detailsDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
-                AlertDialog detailsDialog;
-                if (allPhotoMode)
-                    detailsDialog =
-                            AlertDialogsHelper.getDetailsDialog(this, detailsDialogBuilder, LFMainActivity.listAll.get(current_image_pos));
-                else
-                    detailsDialog =
-                            AlertDialogsHelper.getDetailsDialog(this, detailsDialogBuilder, getAlbum().getCurrentMedia());
+                View v = getLayoutInflater().inflate(R.layout.image_description,mViewPager,false);
+                LinearLayout linearLayout = (LinearLayout)v;
+                Media media = getAlbum().getCurrentMedia();
+                MediaDetailsMap<String,String> mediaDetailsMap = media.getMainDetails(this);
 
-                detailsDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string
-                        .ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+                /* Getting all the viewgroups and views of the image description layout */
+
+                TextView  imgDate = (TextView) linearLayout.findViewById(R.id.image_desc_date);
+                TextView  imgLocation = (TextView) linearLayout.findViewById(R.id.image_desc_loc);
+                TextView  imgTitle = (TextView) linearLayout.findViewById(R.id.image_desc_title);
+                TextView  imgType = (TextView) linearLayout.findViewById(R.id.image_desc_type);
+                TextView  imgSize = (TextView) linearLayout.findViewById(R.id.image_desc_size);
+                TextView  imgResolution = (TextView) linearLayout.findViewById(R.id.image_desc_res);
+                TextView  imgPath = (TextView) linearLayout.findViewById(R.id.image_desc_path);
+                TextView  imgOrientation = (TextView) linearLayout.findViewById(R.id.image_desc_orientation);
+                TextView  imgExif = (TextView) linearLayout.findViewById(R.id.image_desc_exif);
+                TextView  imgDesc = (TextView) linearLayout.findViewById(R.id.image_desc);
+                ImageButton imgBack = (ImageButton) linearLayout.findViewById(R.id.img_desc_back_arrow);
+
+                LinearLayout linearLayoutTop = (LinearLayout) linearLayout.findViewById(R.id.image_desc_top);
+                linearLayoutTop.setBackgroundColor(this.getPrimaryColor());
+
+                imgBack.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(View v) {
+                        setContentView(parentView);
                     }
                 });
-                detailsDialog.show();
+
+                /*Setting the values to all the textViews*/
+
+                try {
+                        imgDate.setText(mediaDetailsMap.get("Date").toString());
+                        imgTitle.setText(media.getName());
+                        imgType.setText(mediaDetailsMap.get("Type").toUpperCase());
+                        imgSize.setText(StringUtils.humanReadableByteCount(media.getSize(), true));
+                        imgResolution.setText(mediaDetailsMap.get("Resolution"));
+                        imgPath.setText(mediaDetailsMap.get("Path").toString());
+                        imgOrientation.setText(mediaDetailsMap.get("Orientation"));
+                        imgDesc.setText(mediaDetailsMap.get("Description"));
+                        imgExif.setText(mediaDetailsMap.get("EXIF"));
+                        imgLocation.setText(mediaDetailsMap.get("Location").toString());
+                    }
+                    catch (Exception e){
+                        //Raised if null values is found, no need to handle
+                    }
+                setContentView(v);
                 break;
 
             case R.id.action_settings:
