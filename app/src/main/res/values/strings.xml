@@ -63,6 +63,7 @@
     <string name="color_effect">Color effect</string>
     <string name="scene_mode">Scene mode</string>
     <string name="white_balance">White balance</string>
+    <string name="title">Title</string>
 
     <string name="angle">Angle</string>
     <string name="direction">Direction</string>
