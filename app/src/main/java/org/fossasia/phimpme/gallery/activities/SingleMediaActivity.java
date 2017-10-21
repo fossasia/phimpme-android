@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.speech.RecognizerIntent;
@@ -45,7 +46,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
@@ -116,6 +116,8 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private Uri uri;
     private Realm realm;
     private DatabaseHelper databaseHelper;
+    private Handler handler;
+    private Runnable runnable;
     ImageDescModel temp;
     private final int REQ_CODE_SPEECH_INPUT = 100;
     String voiceInput;
@@ -152,6 +154,18 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         imageWidth = metrics.widthPixels;
         imageHeight = metrics.heightPixels;
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                View view = getWindow().getDecorView();
+                int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN
+                        |View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        |View.SYSTEM_UI_FLAG_IMMERSIVE;
+                view.setSystemUiVisibility(uiOptions);
+            }
+        };
+        startHandler();
 
         overridePendingTransition(R.anim.media_zoom_in,0);
 
@@ -187,6 +201,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             }
             initUI();
             setupUI();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -324,6 +339,24 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
     }
 
+    /**
+     * startHandler and stopHandler are helper methods for onUserInteraction, that auto-hides the nav-bars
+     * and switch the activity to full screen, thus giving more better UX.
+     */
+    private void startHandler(){
+        handler.postDelayed(runnable, 5000);
+    }
+
+    private void stopHandler(){
+        handler.removeCallbacks(runnable);
+    }
+
+    @Override
+    public void onUserInteraction() {
+        super.onUserInteraction();
+        stopHandler();
+        startHandler();
+    }
 
     @Override
     public void onResume() {
