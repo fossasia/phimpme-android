@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -235,14 +236,21 @@ public class RecyclerMenuFragment extends BaseEditFragment {
 
         private void highlightSelectedOption(int position, View v) {
             int color = ContextCompat.getColor(v.getContext(), R.color.md_grey_200);
-            if(currentSelection != -1)
-                ((mRecyclerAdapter.mViewHolder) recyclerView.findViewHolderForAdapterPosition(currentSelection))
-                        .wrapper
-                        .setBackgroundColor(Color.TRANSPARENT);
+
+            if(currentSelection != position){
+                notifyItemChanged(currentSelection);
+                ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+            }
+
+            if(currentSelection != -1 && recyclerView.findViewHolderForAdapterPosition(currentSelection) != null) {
+                    ((mRecyclerAdapter.mViewHolder) recyclerView.findViewHolderForAdapterPosition(currentSelection))
+                            .wrapper
+                            .setBackgroundColor(Color.TRANSPARENT);
+            }
 
             ((mViewHolder) recyclerView.findViewHolderForAdapterPosition(position))
-                    .wrapper
-                    .setBackgroundColor(color);
+                 .wrapper
+                 .setBackgroundColor(color);
 
             currentSelection = position;
         }
