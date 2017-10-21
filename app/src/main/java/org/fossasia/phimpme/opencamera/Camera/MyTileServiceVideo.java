@@ -46,6 +46,7 @@ public class MyTileServiceVideo extends TileService {
         Intent intent = new Intent(this, CameraActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setAction(TILE_ID);
-        startActivity(intent);
+        /* This collapse the navigation drawer/shade, so that user is focused on the functionality */
+        startActivityAndCollapse(intent);
     }
 }
