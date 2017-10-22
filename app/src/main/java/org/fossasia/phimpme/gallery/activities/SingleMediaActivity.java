@@ -158,11 +158,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         runnable = new Runnable() {
             @Override
             public void run() {
-                View view = getWindow().getDecorView();
-                int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN
-                        |View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                        |View.SYSTEM_UI_FLAG_IMMERSIVE;
-                view.setSystemUiVisibility(uiOptions);
+                hideSystemUI();
             }
         };
         startHandler();
