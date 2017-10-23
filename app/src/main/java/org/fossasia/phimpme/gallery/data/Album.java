@@ -43,7 +43,7 @@ public class Album implements Serializable {
 	public AlbumSettings settings = null;
 
 	private ArrayList<Media> media;
-	private ArrayList<Media> selectedMedias;
+	public ArrayList<Media> selectedMedias;
 
     private int selectedCount;
 
