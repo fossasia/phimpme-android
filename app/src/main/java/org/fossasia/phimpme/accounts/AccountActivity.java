@@ -1,12 +1,12 @@
 package org.fossasia.phimpme.accounts;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
@@ -49,6 +49,7 @@ import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
 import org.fossasia.phimpme.gallery.activities.SettingsActivity;
+import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
 import org.fossasia.phimpme.share.flickr.FlickrActivity;
 import org.fossasia.phimpme.share.imgur.ImgurAuthActivity;
 import org.fossasia.phimpme.share.nextcloud.NextCloudAuth;
@@ -294,7 +295,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     SnackBarHandler.show(coordinatorLayout, R.string.feature_not_present);
             }
         } else {
-            new AlertDialog.Builder(this)
+            AlertDialog alertDialog = new AlertDialog.Builder(this)
                     .setMessage(name)
                     .setTitle(getString(R.string.sign_out_dialog_title))
                     .setPositiveButton(R.string.yes_action,
@@ -316,7 +317,9 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                                     //TODO: Implement negative button action
                                 }
                             })
-                    .show();
+                    .create();
+            alertDialog.show();
+            AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
         }
     }
 
