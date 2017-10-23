@@ -270,7 +270,7 @@ public class LFMainActivity extends SharedMediaActivity {
                     if (editMode) {
                         appBarOverlay();
                         mediaAdapter.notifyItemChanged(getAlbum().toggleSelectPhoto(m));
-                        if(selectedMedias.size()==0)
+                        if(getAlbum().selectedMedias.size()==0)
                             getNavigationBar();
 
                         invalidateOptionsMenu();
