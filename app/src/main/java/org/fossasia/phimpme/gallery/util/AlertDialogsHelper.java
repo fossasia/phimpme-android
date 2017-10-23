@@ -88,7 +88,6 @@ public class AlertDialogsHelper {
         return textDialogBuilder.create();
     }
 
-
     public static AlertDialog getProgressDialog(final ThemedActivity activity, AlertDialog.Builder progressDialog, String title, String message){
         View dialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_progress, null);
         TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.progress_dialog_title);
@@ -199,5 +198,10 @@ public class AlertDialogsHelper {
 
         MediaDetailsMap<String, String> metadata = media.getAllDetails();
         loadDetails(dialogLayout ,activity , metadata);
+    }
+
+    public static void setButtonTextColor(int[] buttons, int color, AlertDialog alertDialog) {
+        for(int button : buttons)
+            alertDialog.getButton(button).setTextColor(color);
     }
 }
