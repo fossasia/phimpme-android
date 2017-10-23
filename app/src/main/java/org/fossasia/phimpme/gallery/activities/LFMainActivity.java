@@ -270,7 +270,7 @@ public class LFMainActivity extends SharedMediaActivity {
                     if (editMode) {
                         appBarOverlay();
                         mediaAdapter.notifyItemChanged(getAlbum().toggleSelectPhoto(m));
-                        if(selectedMedias.size()==0)
+                        if(getAlbum().selectedMedias.size()==0)
                             getNavigationBar();
 
                         invalidateOptionsMenu();
@@ -311,8 +311,13 @@ public class LFMainActivity extends SharedMediaActivity {
             albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(((Album) v.findViewById(R.id.album_name).getTag())));
             editMode = true;
             invalidateOptionsMenu();
-            hideNavigationBar();
-            hidenav=true;
+            if(getAlbums().getSelectedCount()==0)
+                getNavigationBar();
+            else
+            {
+                hideNavigationBar();
+                hidenav=true;
+            }
             return true;
         }
     };
@@ -677,7 +682,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 // Persist URI in shared preference so that you can use it later.
                 ContentHelper.saveSdCardInfo(getApplicationContext(), treeUri);
                 getContentResolver().takePersistableUriPermission(treeUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                SnackBarHandler.show(mDrawerLayout, R.string.got_permission_wr_sdcard);
+                SnackBarHandler.show(coordinatorLayoutMainContent, R.string.got_permission_wr_sdcard);
             }
         }
     }
@@ -696,7 +701,9 @@ public class LFMainActivity extends SharedMediaActivity {
                     startActivityForResult(new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE), REQUEST_CODE_SD_CARD_PERMISSIONS);
             }
         });
-        dialogBuilder.show();
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
     }
 
 
@@ -825,7 +832,7 @@ public class LFMainActivity extends SharedMediaActivity {
                     final AlertDialog passwordDialog = passwordDialogBuilder.create();
                     passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
                     passwordDialog.show();
-
+                    AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
                     passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View
                             .OnClickListener() {
                         @Override
@@ -836,7 +843,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                 new PrepareAlbumTask().execute();
                                 passwordDialog.dismiss();
                             } else {
-                                SnackBarHandler.show(mDrawerLayout, R.string.wrong_password);
+                                SnackBarHandler.show(coordinatorLayoutMainContent, R.string.wrong_password);
                                 editTextPassword.getText().clear();
                                 editTextPassword.requestFocus();
                             }
@@ -1106,6 +1113,7 @@ public class LFMainActivity extends SharedMediaActivity {
                         //empty method body
                     }});
                 detailsDialog.show();
+                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE}, getAccentColor(), detailsDialog);
                 return true;
 
             case R.id.select_all:
@@ -1196,7 +1204,9 @@ public class LFMainActivity extends SharedMediaActivity {
                     });
                 }
                 hideDialogBuilder.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
-                hideDialogBuilder.show();
+                AlertDialog alertDialog = hideDialogBuilder.create();
+                alertDialog.show();
+                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE, DialogInterface.BUTTON_NEUTRAL}, getAccentColor(), alertDialog);
                 return true;
 
             case R.id.delete_action:
@@ -1309,7 +1319,7 @@ public class LFMainActivity extends SharedMediaActivity {
                             final AlertDialog passwordDialog = passwordDialogBuilder.create();
                             passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
                             passwordDialog.show();
-
+                            AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
                             passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -1320,7 +1330,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                     }
                                     // if password is incorrect, don't delete and notify user of incorrect password
                                     else {
-                                        SnackBarHandler.show(mDrawerLayout, R.string.wrong_password);
+                                        SnackBarHandler.show(coordinatorLayoutMainContent, R.string.wrong_password);
                                         editTextPassword.getText().clear();
                                         editTextPassword.requestFocus();
                                     }
@@ -1330,6 +1340,9 @@ public class LFMainActivity extends SharedMediaActivity {
                     }
                 });
                 deleteDialog.show();
+                AlertDialog alertDialogDelete = deleteDialog.create();
+                alertDialogDelete.show();
+                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialogDelete);
 
                 return true;
             case R.id.excludeAlbumButton:
@@ -1372,7 +1385,9 @@ public class LFMainActivity extends SharedMediaActivity {
                     }
                 });
                 excludeDialogBuilder.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
-                excludeDialogBuilder.show();
+                AlertDialog alertDialogExclude = excludeDialogBuilder.create();
+                alertDialogExclude.show();
+                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialogExclude);
                 return true;
 
             case R.id.sharePhotos:
@@ -1506,7 +1521,7 @@ public class LFMainActivity extends SharedMediaActivity {
                         else runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                SnackBarHandler.show(mDrawerLayout, R.string.affix_error);
+                                SnackBarHandler.show(coordinatorLayoutMainContent, R.string.affix_error);
                             }
                         });
                         return null;
@@ -1717,7 +1732,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 renameDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_IS_FORWARD_NAVIGATION);
                 editTextNewName.setSelection(editTextNewName.getText().toString().length());
                 renameDialog.show();
-
+                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), renameDialog);
                 renameDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View dialog) {
@@ -1733,7 +1748,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                             editTextNewName.getText().toString());
                                     albumsAdapter.notifyItemChanged(index);
                                 } else {
-                                    SnackBarHandler.show(mDrawerLayout, getString(R.string.rename_no_change));
+                                    SnackBarHandler.show(coordinatorLayoutMainContent, getString(R.string.rename_no_change));
                                     rename = true;
                                 }
                             } else {
@@ -1743,16 +1758,16 @@ public class LFMainActivity extends SharedMediaActivity {
                             }
                             renameDialog.dismiss();
                             if (success) {
-                                SnackBarHandler.show(getWindow().getDecorView().getRootView(), getString(R.string.rename_succes));
+                                SnackBarHandler.show(coordinatorLayoutMainContent, getString(R.string.rename_succes));
                                 getAlbums().clearSelectedAlbums();
                                 invalidateOptionsMenu();
                             } else if(!rename){
-                                SnackBarHandler.show(getWindow().getDecorView().getRootView(), getString(R.string.rename_error));
+                                SnackBarHandler.show(coordinatorLayoutMainContent, getString(R.string.rename_error));
                                 requestSdCardPermissions();
                             }
                             swipeRefreshLayout.setRefreshing(false);
                         } else {
-                            SnackBarHandler.show(mDrawerLayout, R.string.insert_something);
+                            SnackBarHandler.show(coordinatorLayoutMainContent, R.string.insert_something);
                             editTextNewName.requestFocus();
                         }
                     }
