@@ -311,8 +311,13 @@ public class LFMainActivity extends SharedMediaActivity {
             albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(((Album) v.findViewById(R.id.album_name).getTag())));
             editMode = true;
             invalidateOptionsMenu();
-            hideNavigationBar();
-            hidenav=true;
+            if(getAlbums().getSelectedCount()==0)
+                getNavigationBar();
+            else
+            {
+                hideNavigationBar();
+                hidenav=true;
+            }
             return true;
         }
     };
