@@ -16,6 +16,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -654,7 +655,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         AlertDialogsHelper.getInsertTextDialog(SharingActivity.this, captionDialogBuilder, captionEditText, R.string.caption_head ,null);
         captionDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
         captionEditText.setHint(R.string.description_hint);
-        captionEditText.setHintTextColor(getResources().getColor(R.color.grey, null));
+        captionEditText.setHintTextColor(ContextCompat.getColor(this,R.color.grey));
         captionEditText.setSelectAllOnFocus(true);
         captionEditText.selectAll();
         captionEditText.setSingleLine(false);
