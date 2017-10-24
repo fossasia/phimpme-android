@@ -31,13 +31,14 @@ Phimp.me is a Photo App for Android that aims to replace proprietary photo appli
   
 ---
 
+Do you have many different apps in your Android Phone for the purpose of clicking, editing and sharing images? Hey guess what, now you don't need all of those because `Phimpme` is here, with all the features packaged into one. So go and clean your phone memory to save your space for other useful purposes.
+
 ## Features
-Do you also have many different apps in your Android Phone for image click, editing and sharing purpose? Now clean your phone memory. Phimpme is here, with all the features packaged into one.
 
 * Click beautiful image from Phimpme app. Use various advance scene modes, and variety of While balance modes.
 * You can use your voice actions to invoke Camera, Just say "Ok Google click a picture". You can also select front and rear camera based on voice.
-* Browse the local gallery inside the app with folder and all photos mode. Copy, move to images, add description the images.
-* Edit images with various advance filters, optimized performace using OpenCV library.
+* Browse the local gallery inside the app with folder and all photos mode. Copy, move and add description to the images.
+* Edit images with various cool filters with optimized performace using OpenCV library.
 * Enhance contrast, hue, satur, temp, tint and sharpness of the image.
 * Crop and rotate feature from Transform section.
 * Apply different stickers of facial, express, objects, comments, wishes, emojis, hashtag
@@ -89,7 +90,7 @@ We have the following branches
 
 ## Development Setup
 
-Before you begin, you should already have the Android Studio SDK downloaded and set up correctly. You can find a guide on how to do this here: [Setting up Android Studio](http://developer.android.com/sdk/installing/index.html?pkg=studio)
+Before you begin, you should have already downloaded the Android Studio SDK and set it up correctly. You can find a guide on how to do this here: [Setting up Android Studio](http://developer.android.com/sdk/installing/index.html?pkg=studio)
 
 ### Setting up the Android Project
 
