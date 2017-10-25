@@ -19,6 +19,7 @@ import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import org.fossasia.phimpme.MyApplication;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.adapter.ColorListAdapter;
@@ -288,6 +289,7 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
         if (mSavePaintImageTask != null && !mSavePaintImageTask.isCancelled()) {
             mSavePaintImageTask.cancel(true);
         }
+        MyApplication.getRefWatcher(getActivity()).watch(this);
     }
 
     private final class SaveCustomPaintTask extends StickerTask {

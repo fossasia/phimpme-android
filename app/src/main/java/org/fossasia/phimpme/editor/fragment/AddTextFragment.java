@@ -20,9 +20,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
+import org.fossasia.phimpme.MyApplication;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.task.StickerTask;
@@ -264,5 +264,6 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher {
         if (mSaveTask != null && !mSaveTask.isCancelled()) {
             mSaveTask.cancel(true);
         }
+        MyApplication.getRefWatcher(getActivity()).watch(this);
     }
 }

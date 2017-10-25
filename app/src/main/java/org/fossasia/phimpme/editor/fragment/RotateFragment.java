@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.github.shchurov.horizontalwheelview.HorizontalWheelView;
 
+import org.fossasia.phimpme.MyApplication;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.view.RotateImageView;
@@ -100,6 +101,12 @@ public class RotateFragment extends BaseEditFragment {
         int angle = (int) horizontalWheelView.getDegreesAngle();
         mRotatePanel.rotateImage(angle);
 
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        MyApplication.getRefWatcher(getActivity()).watch(this);
     }
 
     @Override
