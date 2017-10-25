@@ -1030,4 +1030,6 @@
     <string name="no_changes_made">No Changes Made!</string>
     <string name="upload_date">Date: " "</string>
     <string name="upload_time">Time: " "</string>
+    <string name="text_view">TextView</string>
+    <string name="version_one">v1.0</string>
 </resources>
