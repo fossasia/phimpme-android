@@ -270,19 +270,32 @@ public class SettingsActivity extends ThemedActivity {
         AlertDialog.Builder multiColumnDialogBuilder = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
         View dialogLayout = getLayoutInflater().inflate(R.layout.dialog_multi_column, null);
 
+        ((TextView) dialogLayout.findViewById(R.id.text_view_portrait)).setTextColor(getTextColor());
+        ((TextView) dialogLayout.findViewById(R.id.text_view_landscape)).setTextColor(getTextColor());
         ((TextView) dialogLayout.findViewById(R.id.folders_title)).setTextColor(getTextColor());
         ((TextView) dialogLayout.findViewById(R.id.media_title)).setTextColor(getTextColor());
+        ((TextView) dialogLayout.findViewById(R.id.folders_title_landscape)).setTextColor(getTextColor());
+        ((TextView) dialogLayout.findViewById(R.id.media_title_landscape)).setTextColor(getTextColor());
         ((CardView) dialogLayout.findViewById(R.id.multi_column_card)).setCardBackgroundColor(getCardBackgroundColor());
 
         dialogLayout.findViewById(R.id.multi_column_title).setBackgroundColor(getPrimaryColor());
         final TextView nColFolders = (TextView) dialogLayout.findViewById(R.id.n_columns_folders);
         final TextView nColMedia = (TextView) dialogLayout.findViewById(R.id.n_columns_media);
+        final TextView nColFoldersL = (TextView) dialogLayout.findViewById(R.id.n_columns_folders_landscape);
+        final TextView nColMediaL = (TextView) dialogLayout.findViewById(R.id.n_columns_media_landscape);
+
         nColFolders.setTextColor(getSubTextColor());
         nColMedia.setTextColor(getSubTextColor());
+        nColFoldersL.setTextColor(getSubTextColor());
+        nColMediaL.setTextColor(getSubTextColor());
+
         SeekBar barFolders = (SeekBar) dialogLayout.findViewById(R.id.seek_bar_n_columns_folders);
         SeekBar barMedia = (SeekBar) dialogLayout.findViewById(R.id.seek_bar_n_columns_media);
+        SeekBar barFoldersL = (SeekBar) dialogLayout.findViewById(R.id.seek_bar_n_columns_folders_landscape);
+        SeekBar barMediaL = (SeekBar) dialogLayout.findViewById(R.id.seek_bar_n_columns_media_landscape);
 
         themeSeekBar(barFolders); themeSeekBar(barMedia);
+        themeSeekBar(barFoldersL); themeSeekBar(barMediaL);
 
         nColFolders.setText(String.valueOf(SP.getInt("n_columns_folders", 2)));
         nColMedia.setText(String.valueOf(SP.getInt("n_columns_media", 3)));
@@ -322,13 +335,53 @@ public class SettingsActivity extends ThemedActivity {
             }
         });
 
+        ///LANDSCAPE
+        nColFoldersL.setText(String.valueOf(SP.getInt("n_columns_folders_landscape", 3)));
+        nColMediaL.setText(String.valueOf(SP.getInt("n_columns_media_landscape", 4)));
+        barFoldersL.setProgress(SP.getInt("n_columns_folders_landscape", 3) - 2);
+        barMediaL.setProgress(SP.getInt("n_columns_media_landscape", 4) - 3);
+        barFoldersL.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                nColFoldersL.setText(String.valueOf(i+2));
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+        barMediaL.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                nColMediaL.setText(String.valueOf(i+3));
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                
+            }
+        });
+
         multiColumnDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 int nFolders = Integer.parseInt(nColFolders.getText().toString());
                 int nMedia = Integer.parseInt(nColMedia.getText().toString());
+                int nFoldersL = Integer.parseInt(nColFoldersL.getText().toString());
+                int nMediaL = Integer.parseInt(nColMediaL.getText().toString());
+
                 SP.putInt("n_columns_folders", nFolders);
                 SP.putInt("n_columns_media", nMedia);
+                SP.putInt("n_columns_folders_landscape", nFoldersL);
+                SP.putInt("n_columns_media_landscape", nMediaL);
             }
         });
         multiColumnDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
