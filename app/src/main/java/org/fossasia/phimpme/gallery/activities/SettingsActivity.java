@@ -32,6 +32,7 @@ import com.mikepenz.iconics.view.IconicsImageView;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
+import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
 import org.fossasia.phimpme.gallery.util.ColorPalette;
 import org.fossasia.phimpme.gallery.util.PreferenceUtil;
 import org.fossasia.phimpme.gallery.util.SecurityHelper;
@@ -385,7 +386,9 @@ public class SettingsActivity extends ThemedActivity {
         });
         multiColumnDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
         multiColumnDialogBuilder.setView(dialogLayout);
-        multiColumnDialogBuilder.show();
+        AlertDialog alertDialog = multiColumnDialogBuilder.create();
+        alertDialog.show();
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
     }
 
     private void askPasswordDialog() {
@@ -405,7 +408,7 @@ public class SettingsActivity extends ThemedActivity {
         passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
         passwordDialog.show();
-
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
         passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -468,7 +471,9 @@ public class SettingsActivity extends ThemedActivity {
             }
         });
         dialogBuilder.setView(dialogLayout);
-        dialogBuilder.show();
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
     }
 
     private void baseThemeDialog(){
@@ -564,7 +569,9 @@ public class SettingsActivity extends ThemedActivity {
             }
         });
         dialogBuilder.setView(dialogLayout);
-        dialogBuilder.show();
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
     }
 
     private void primaryColorPiker(){
@@ -625,7 +632,9 @@ public class SettingsActivity extends ThemedActivity {
 
             }
         });
-        dialogBuilder.show();
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE, DialogInterface.BUTTON_NEUTRAL}, getAccentColor(), alertDialog);
     }
 
     private void setColor(final LineColorPicker colorPicker, final LineColorPicker colorPicker2, final TextView dialogTitle) {
@@ -716,7 +725,9 @@ public class SettingsActivity extends ThemedActivity {
                 updateViewswithAccentColor(getAccentColor());
             }
         });
-        dialogBuilder.show();
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE, DialogInterface.BUTTON_NEUTRAL}, getAccentColor(), alertDialog);
     }
 
     private void customizePictureViewer(){
@@ -763,7 +774,9 @@ public class SettingsActivity extends ThemedActivity {
             }
         });
 
-        dialogBuilder.show();
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE, DialogInterface.BUTTON_NEUTRAL}, getAccentColor(), alertDialog);
     }
 
     private void updateViewswithAccentColor(int color){
@@ -920,6 +933,7 @@ public class SettingsActivity extends ThemedActivity {
         passwordDialog.setTitle(R.string.camera_setting_title);
         passwordDialog.setMessage("Open camera to support all options.");
         passwordDialog.show();
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
 
         passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
