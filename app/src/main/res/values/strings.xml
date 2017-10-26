@@ -540,6 +540,12 @@
     <string name="quality">Quality</string>
 
 
+    <!-- MULTI COLUMN -->
+    <string name="poitrait">Portrait</string>
+    <string name="landscape">Landscape</string>
+    <string name="folder_column">Folders columns</string>
+    <string name="media_column">Media columns</string>
+
     <!-- RANDOM -->
     <string name="done">Done!</string>
     <string name="there_is_nothing_to_show">There\'s nothing to show!</string>
