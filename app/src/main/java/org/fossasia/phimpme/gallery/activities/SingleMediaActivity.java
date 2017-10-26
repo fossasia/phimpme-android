@@ -22,7 +22,6 @@ import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.print.PrintHelper;
 import android.support.v7.app.AlertDialog;
@@ -99,7 +98,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private static final String ACTION_REVIEW = "com.android.camera.action.REVIEW";
     private ImageAdapter adapter;
     private PreferenceUtil SP;
-    private CoordinatorLayout ActivityBackground;
+    private RelativeLayout ActivityBackground;
     private SelectAlbumBottomSheet bottomSheetDialogFragment;
     private SecurityHelper securityObj;
     private boolean fullScreenMode, customUri = false;
@@ -124,7 +123,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private final int REQ_CODE_SPEECH_INPUT = 100;
     String voiceInput;
     EditText editTextDescription;
-    private CoordinatorLayout coordinator;
+    private RelativeLayout relativeLayout;
 
     @Nullable
     @BindView(R.id.PhotoPager_Layout)
@@ -152,7 +151,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         context = this;
         setContentView(R.layout.activity_pager);
         ButterKnife.bind(this);
-        coordinator = (CoordinatorLayout) findViewById(R.id.PhotoPager_Layout);
+        relativeLayout = (RelativeLayout) findViewById(R.id.PhotoPager_Layout);
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         imageWidth = metrics.widthPixels;
         imageHeight = metrics.heightPixels;
@@ -299,7 +298,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
         toolbar.setPopupTheme(getPopupToolbarStyle());
 
-        ActivityBackground = (CoordinatorLayout) findViewById(R.id.PhotoPager_Layout);
+        ActivityBackground = (RelativeLayout) findViewById(R.id.PhotoPager_Layout);
         ActivityBackground.setBackgroundColor(getBackgroundColor());
 
         setStatusBarColor();
@@ -500,7 +499,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     public void folderSelected(String path) {
                         getAlbum().copyPhoto(getApplicationContext(), getAlbum().getCurrentMedia().getPath(), path);
                         bottomSheetDialogFragment.dismiss();
-                        SnackBarHandler.show(coordinator, getString(R.string.copied_successfully) + " to " + path);
+                        SnackBarHandler.show(relativeLayout, getString(R.string.copied_successfully) + " to " + path);
                     }
                 });
                 bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
@@ -618,7 +617,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         adapter.notifyDataSetChanged();
 //                        toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + getAlbum().getCount());
                         bottomSheetDialogFragment.dismiss();
-                        SnackBarHandler.show(coordinator, getString(R.string.photo_moved_successfully) + " to " +  path
+                        SnackBarHandler.show(relativeLayout, getString(R.string.photo_moved_successfully) + " to " +  path
                         );
                     }
                 });
