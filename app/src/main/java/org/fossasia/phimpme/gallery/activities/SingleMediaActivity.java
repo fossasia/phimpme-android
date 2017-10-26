@@ -119,6 +119,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private Uri uri;
     private Realm realm;
     private DatabaseHelper databaseHelper;
+    private boolean details=false;
     ImageDescModel temp;
     private final int REQ_CODE_SPEECH_INPUT = 100;
     String voiceInput;
@@ -574,6 +575,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                             passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
                             final AlertDialog passwordDialog = passwordDialogBuilder.create();
                             passwordDialog.show();
+                            AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
                             passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View
                                     .OnClickListener() {
                                 @Override
@@ -592,7 +594,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                             deleteCurrentMedia();
                     }
                 });
-                deleteDialog.show();
+                AlertDialog alertDialog = deleteDialog.create();
+                alertDialog.show();
+                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
                 return true;
 
             case R.id.action_move:
@@ -623,6 +627,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 return true;
 
             case R.id.action_details:
+                details=true;
                 View v = getLayoutInflater().inflate(R.layout.image_description,mViewPager,false);
                 LinearLayout linearLayout = (LinearLayout)v;
                 Media media = getAlbum().getCurrentMedia();
@@ -693,6 +698,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
                 final AlertDialog descriptionDialog = descriptionDialogBuilder.create();
                 descriptionDialog.show();
+                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), descriptionDialog);
                 descriptionDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager
                         .LayoutParams.FLAG_ALT_FOCUSABLE_IM);
                 descriptionDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -882,6 +888,16 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         });
         colorAnimation.start();
     }
+
+    @Override
+    public void onBackPressed() {
+        if (details) {
+            setContentView(parentView);
+            details = false;
+        } else
+            super.onBackPressed();
+    }
+
     @Override
     public void onPause() {
         super.onPause();
