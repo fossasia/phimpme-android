@@ -504,6 +504,7 @@ public class LFMainActivity extends SharedMediaActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        updateColumnsRvs();
     }
 
     private boolean displayData(Bundle data) {
@@ -579,12 +580,12 @@ public class LFMainActivity extends SharedMediaActivity {
         mediaAdapter.setOnLongClickListener(photosOnLongClickListener);
         rvMedia.setAdapter(mediaAdapter);
 
-        int spanCount = SP.getInt("n_columns_folders", 2);
+        int spanCount = columnsCount();
         rvAlbumsDecoration = new GridSpacingItemDecoration(spanCount, Measure.pxToDp(3, getApplicationContext()), true);
         rvAlbums.addItemDecoration(rvAlbumsDecoration);
         rvAlbums.setLayoutManager(new GridLayoutManager(this, spanCount));
 
-        spanCount = SP.getInt("n_columns_media", 3);
+        spanCount = mediaCount();
         rvMediaDecoration = new GridSpacingItemDecoration(spanCount, Measure.pxToDp(3, getApplicationContext()), true);
         rvMedia.setLayoutManager(new GridLayoutManager(getApplicationContext(), spanCount));
         rvMedia.addItemDecoration(rvMediaDecoration);
@@ -650,13 +651,25 @@ public class LFMainActivity extends SharedMediaActivity {
         }
     }
 
+    public int columnsCount() {
+        return getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT
+                ? SP.getInt("n_columns_folders", 2)
+                : SP.getInt("n_columns_folders_landscape", 3);
+    }
+
+    public int mediaCount() {
+        return getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT
+                ? SP.getInt("n_columns_media", 3)
+                : SP.getInt("n_columns_media_landscape", 4);
+    }
+
     private void updateColumnsRvs() {
         updateColumnsRvAlbums();
         updateColumnsRvMedia();
     }
 
     private void updateColumnsRvAlbums() {
-        int spanCount = SP.getInt("n_columns_folders", 2);
+        int spanCount =columnsCount();
         if (spanCount != ((GridLayoutManager) rvAlbums.getLayoutManager()).getSpanCount()) {
             rvAlbums.removeItemDecoration(rvAlbumsDecoration);
             rvAlbumsDecoration = new GridSpacingItemDecoration(spanCount, Measure.pxToDp(3, getApplicationContext()), true);
@@ -666,7 +679,7 @@ public class LFMainActivity extends SharedMediaActivity {
     }
 
     private void updateColumnsRvMedia() {
-        int spanCount = SP.getInt("n_columns_media", 3);
+        int spanCount = mediaCount();
         if (spanCount != ((GridLayoutManager) rvMedia.getLayoutManager()).getSpanCount()) {
             ((GridLayoutManager) rvMedia.getLayoutManager()).getSpanCount();
             rvMedia.removeItemDecoration(rvMediaDecoration);
