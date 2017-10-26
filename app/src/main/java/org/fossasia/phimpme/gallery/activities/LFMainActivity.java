@@ -1352,7 +1352,6 @@ public class LFMainActivity extends SharedMediaActivity {
                         } else new DeletePhotos().execute();
                     }
                 });
-                deleteDialog.show();
                 AlertDialog alertDialogDelete = deleteDialog.create();
                 alertDialogDelete.show();
                 AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialogDelete);
