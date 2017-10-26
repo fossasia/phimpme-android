@@ -3,6 +3,8 @@ package org.fossasia.phimpme.gallery.adapters;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,17 +32,20 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
 
     private ArrayList<Media> medias;
 
-    private BitmapDrawable drawable;
+    private BitmapDrawable placeholder;
     private View.OnClickListener mOnClickListener;
     private View.OnLongClickListener mOnLongClickListener;
+    Context context;
 
     public MediaAdapter(ArrayList<Media> ph, Context context) {
         medias = ph;
+        this.context=context;
         updatePlaceholder(context);
     }
 
     public void updatePlaceholder(Context context) {
-        drawable = (BitmapDrawable) ThemeHelper.getPlaceHolder(context);
+        Drawable drawable=ContextCompat.getDrawable(context,R.drawable.placeholder);
+        placeholder = (BitmapDrawable) drawable;
     }
 
     @Override
@@ -69,7 +74,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .thumbnail(0.5f)
-                .placeholder(drawable)
+                .placeholder(placeholder)
                 .animate(R.anim.fade_in)
                 .into(holder.imageView);
         holder.icon.setVisibility(View.GONE);
