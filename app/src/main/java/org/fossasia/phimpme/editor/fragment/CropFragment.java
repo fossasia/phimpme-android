@@ -23,6 +23,7 @@ import com.mikepenz.iconics.IconicsDrawable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.fossasia.phimpme.MyApplication;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.EditBaseActivity;
 import org.fossasia.phimpme.editor.EditImageActivity;
@@ -247,5 +248,11 @@ public class CropFragment extends BaseEditFragment {
 			activity.mCropPanel.setCropRect(activity.mainImage.getBitmapRect());
 			backToMain();
 		}
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		MyApplication.getRefWatcher(getActivity()).watch(this);
 	}
 }
