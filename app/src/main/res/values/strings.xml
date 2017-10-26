@@ -63,6 +63,7 @@
     <string name="color_effect">Color effect</string>
     <string name="scene_mode">Scene mode</string>
     <string name="white_balance">White balance</string>
+    <string name="title">Title</string>
 
     <string name="angle">Angle</string>
     <string name="direction">Direction</string>
@@ -414,6 +415,7 @@
 
     <string name="rename_error">File Rename Failed</string>
     <string name="rename_succes">File renamed</string>
+    <string name="rename_no_change">No change in file name</string>
 
     <!-- ACTIONS -->
     <string name="sort">Sort</string>
@@ -475,6 +477,7 @@
     <string name="clear_preview">Clear preview</string>
     <string name="new_folder">New Folder</string>
     <string name="create_new_folder">Create new folder</string>
+    <string name="print">Print</string>
 
     <!--Notification Uploads-->
     <string name="upload_progress">Uploading to</string>
@@ -682,6 +685,9 @@
     <string name="device">Device</string>
     <string name="orientation">Orientation</string>
     <string name="location">Location</string>
+
+    <!--ALBUM DETAILS-->
+    <string name="total_photos">Total photos</string>
 
     <!--DRAWER ITEMS -->
     <string name="local_folder">Local Folders</string>
@@ -1022,5 +1028,6 @@
     <string name="photo_moved_successfully">Photo moved successfully</string>
     <string name="copied_successfully">Copied successfully</string>
     <string name="no_changes_made">No Changes Made!</string>
-
+    <string name="upload_date">Date: " "</string>
+    <string name="upload_time">Time: " "</string>
 </resources>

@@ -26,6 +26,7 @@ import com.drew.lang.GeoLocation;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
+import org.fossasia.phimpme.gallery.data.Album;
 import org.fossasia.phimpme.gallery.data.Media;
 import org.fossasia.phimpme.gallery.data.base.MediaDetailsMap;
 
@@ -86,7 +87,6 @@ public class AlertDialogsHelper {
         textDialogBuilder.setView(dialogLayout);
         return textDialogBuilder.create();
     }
-
 
     public static AlertDialog getProgressDialog(final ThemedActivity activity, AlertDialog.Builder progressDialog, String title, String message){
         View dialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_progress, null);
@@ -154,6 +154,17 @@ public class AlertDialogsHelper {
         return detailsDialogBuilder.create();
     }
 
+    public static AlertDialog getAlbumDetailsDialog(final ThemedActivity activity, AlertDialog.Builder detailsDialogBuilder, final Album f) {
+        MediaDetailsMap<String, String> mainDetails = f.getAlbumDetails(activity.getApplicationContext());
+        final View dialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_album_detail, null);
+        dialogLayout.findViewById(R.id.album_details_title).setBackgroundColor(activity.getPrimaryColor());
+        ((CardView) dialogLayout.findViewById(R.id.album_details_card)).setCardBackgroundColor(activity.getCardBackgroundColor());
+
+        detailsDialogBuilder.setView(dialogLayout);
+        loadDetails(dialogLayout,activity, mainDetails);
+        return detailsDialogBuilder.create();
+    }
+
     private static void loadDetails(View dialogLayout, ThemedActivity activity, MediaDetailsMap<String, String> metadata) {
         LinearLayout detailsTable = (LinearLayout) dialogLayout.findViewById(R.id.ll_list_details);
 
@@ -187,5 +198,10 @@ public class AlertDialogsHelper {
 
         MediaDetailsMap<String, String> metadata = media.getAllDetails();
         loadDetails(dialogLayout ,activity , metadata);
+    }
+
+    public static void setButtonTextColor(int[] buttons, int color, AlertDialog alertDialog) {
+        for(int button : buttons)
+            alertDialog.getButton(button).setTextColor(color);
     }
 }

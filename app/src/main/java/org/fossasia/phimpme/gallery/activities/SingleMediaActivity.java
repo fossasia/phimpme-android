@@ -11,6 +11,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -21,7 +22,9 @@ import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.print.PrintHelper;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.CardView;
@@ -40,6 +43,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,6 +63,8 @@ import org.fossasia.phimpme.editor.utils.BitmapUtils;
 import org.fossasia.phimpme.gallery.SelectAlbumBottomSheet;
 import org.fossasia.phimpme.gallery.adapters.ImageAdapter;
 import org.fossasia.phimpme.gallery.data.Album;
+import org.fossasia.phimpme.gallery.data.Media;
+import org.fossasia.phimpme.gallery.data.base.MediaDetailsMap;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
 import org.fossasia.phimpme.gallery.util.ColorPalette;
 import org.fossasia.phimpme.gallery.util.ContentHelper;
@@ -93,7 +99,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private static final String ACTION_REVIEW = "com.android.camera.action.REVIEW";
     private ImageAdapter adapter;
     private PreferenceUtil SP;
-    private RelativeLayout ActivityBackground;
+    private CoordinatorLayout ActivityBackground;
     private SelectAlbumBottomSheet bottomSheetDialogFragment;
     private SecurityHelper securityObj;
     private boolean fullScreenMode, customUri = false;
@@ -113,10 +119,12 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private Uri uri;
     private Realm realm;
     private DatabaseHelper databaseHelper;
+    private boolean details=false;
     ImageDescModel temp;
     private final int REQ_CODE_SPEECH_INPUT = 100;
     String voiceInput;
     EditText editTextDescription;
+    private CoordinatorLayout coordinator;
 
     @Nullable
     @BindView(R.id.PhotoPager_Layout)
@@ -144,6 +152,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         context = this;
         setContentView(R.layout.activity_pager);
         ButterKnife.bind(this);
+        coordinator = (CoordinatorLayout) findViewById(R.id.PhotoPager_Layout);
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         imageWidth = metrics.widthPixels;
         imageHeight = metrics.heightPixels;
@@ -290,7 +299,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
         toolbar.setPopupTheme(getPopupToolbarStyle());
 
-        ActivityBackground = (RelativeLayout) findViewById(R.id.PhotoPager_Layout);
+        ActivityBackground = (CoordinatorLayout) findViewById(R.id.PhotoPager_Layout);
         ActivityBackground.setBackgroundColor(getBackgroundColor());
 
         setStatusBarColor();
@@ -491,6 +500,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     public void folderSelected(String path) {
                         getAlbum().copyPhoto(getApplicationContext(), getAlbum().getCurrentMedia().getPath(), path);
                         bottomSheetDialogFragment.dismiss();
+                        SnackBarHandler.show(coordinator, getString(R.string.copied_successfully) + " to " + path);
                     }
                 });
                 bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
@@ -531,6 +541,13 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 startActivity(Intent.createChooser(intent, getString(R.string.use_as)));
                 return true;
 
+            case R.id.print:
+                PrintHelper photoPrinter = new PrintHelper(this);
+                photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
+                Bitmap bitmap = BitmapFactory.decodeFile(getAlbum().getCurrentMedia().getPath(), new BitmapFactory.Options());
+                photoPrinter.printBitmap(getString(R.string.print), bitmap);
+                return true;
+
             case R.id.action_delete:
                 final AlertDialog.Builder deleteDialog = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
 
@@ -558,6 +575,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                             passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
                             final AlertDialog passwordDialog = passwordDialogBuilder.create();
                             passwordDialog.show();
+                            AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
                             passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View
                                     .OnClickListener() {
                                 @Override
@@ -576,7 +594,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                             deleteCurrentMedia();
                     }
                 });
-                deleteDialog.show();
+                AlertDialog alertDialog = deleteDialog.create();
+                alertDialog.show();
+                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
                 return true;
 
             case R.id.action_move:
@@ -598,6 +618,8 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         adapter.notifyDataSetChanged();
 //                        toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + getAlbum().getCount());
                         bottomSheetDialogFragment.dismiss();
+                        SnackBarHandler.show(coordinator, getString(R.string.photo_moved_successfully) + " to " +  path
+                        );
                     }
                 });
                 bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
@@ -605,22 +627,54 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 return true;
 
             case R.id.action_details:
-                AlertDialog.Builder detailsDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
-                AlertDialog detailsDialog;
-                if (allPhotoMode)
-                    detailsDialog =
-                            AlertDialogsHelper.getDetailsDialog(this, detailsDialogBuilder, LFMainActivity.listAll.get(current_image_pos));
-                else
-                    detailsDialog =
-                            AlertDialogsHelper.getDetailsDialog(this, detailsDialogBuilder, getAlbum().getCurrentMedia());
+                details=true;
+                View v = getLayoutInflater().inflate(R.layout.image_description,mViewPager,false);
+                LinearLayout linearLayout = (LinearLayout)v;
+                Media media = getAlbum().getCurrentMedia();
+                MediaDetailsMap<String,String> mediaDetailsMap = media.getMainDetails(this);
 
-                detailsDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string
-                        .ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+                /* Getting all the viewgroups and views of the image description layout */
+
+                TextView  imgDate = (TextView) linearLayout.findViewById(R.id.image_desc_date);
+                TextView  imgLocation = (TextView) linearLayout.findViewById(R.id.image_desc_loc);
+                TextView  imgTitle = (TextView) linearLayout.findViewById(R.id.image_desc_title);
+                TextView  imgType = (TextView) linearLayout.findViewById(R.id.image_desc_type);
+                TextView  imgSize = (TextView) linearLayout.findViewById(R.id.image_desc_size);
+                TextView  imgResolution = (TextView) linearLayout.findViewById(R.id.image_desc_res);
+                TextView  imgPath = (TextView) linearLayout.findViewById(R.id.image_desc_path);
+                TextView  imgOrientation = (TextView) linearLayout.findViewById(R.id.image_desc_orientation);
+                TextView  imgExif = (TextView) linearLayout.findViewById(R.id.image_desc_exif);
+                TextView  imgDesc = (TextView) linearLayout.findViewById(R.id.image_desc);
+                ImageButton imgBack = (ImageButton) linearLayout.findViewById(R.id.img_desc_back_arrow);
+
+                LinearLayout linearLayoutTop = (LinearLayout) linearLayout.findViewById(R.id.image_desc_top);
+                linearLayoutTop.setBackgroundColor(this.getPrimaryColor());
+
+                imgBack.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(View v) {
+                        setContentView(parentView);
                     }
                 });
-                detailsDialog.show();
+
+                /*Setting the values to all the textViews*/
+
+                try {
+                        imgDate.setText(mediaDetailsMap.get("Date").toString());
+                        imgTitle.setText(media.getName());
+                        imgType.setText(mediaDetailsMap.get("Type").toUpperCase());
+                        imgSize.setText(StringUtils.humanReadableByteCount(media.getSize(), true));
+                        imgResolution.setText(mediaDetailsMap.get("Resolution"));
+                        imgPath.setText(mediaDetailsMap.get("Path").toString());
+                        imgOrientation.setText(mediaDetailsMap.get("Orientation"));
+                        imgDesc.setText(mediaDetailsMap.get("Description"));
+                        imgExif.setText(mediaDetailsMap.get("EXIF"));
+                        imgLocation.setText(mediaDetailsMap.get("Location").toString());
+                    }
+                    catch (Exception e){
+                        //Raised if null values is found, no need to handle
+                    }
+                setContentView(v);
                 break;
 
             case R.id.action_settings:
@@ -630,6 +684,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             case R.id.action_description:
                 AlertDialog.Builder descriptionDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
                 editTextDescription = getDescriptionDialog(SingleMediaActivity.this, descriptionDialogBuilder);
+                editTextDescription.setHintTextColor(getResources().getColor(R.color.grey, null));
+                editTextDescription.setSelectAllOnFocus(true);
+                editTextDescription.selectAll();
                 descriptionDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
                 descriptionDialogBuilder.setPositiveButton((temp != null && temp.getTitle().length() != 0) ? getString(R.string.update_action) : getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                     @Override
@@ -641,6 +698,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
                 final AlertDialog descriptionDialog = descriptionDialogBuilder.create();
                 descriptionDialog.show();
+                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), descriptionDialog);
                 descriptionDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager
                         .LayoutParams.FLAG_ALT_FOCUSABLE_IM);
                 descriptionDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -693,7 +751,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         if (temp != null && temp.getTitle().length() != 0) {
             editxtDescription.setText(temp.getTitle());
             editxtDescription.setSelection(editxtDescription.getText().length());
-            Toast.makeText(SingleMediaActivity.this, voiceInput, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(SingleMediaActivity.this, voiceInput, Toast.LENGTH_SHORT).show();
 
         }
         descriptionDialog.setView(DescriptiondDialogLayout);
@@ -830,6 +888,16 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         });
         colorAnimation.start();
     }
+
+    @Override
+    public void onBackPressed() {
+        if (details) {
+            setContentView(parentView);
+            details = false;
+        } else
+            super.onBackPressed();
+    }
+
     @Override
     public void onPause() {
         super.onPause();
