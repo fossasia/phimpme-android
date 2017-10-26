@@ -31,25 +31,39 @@ Phimp.me is a Photo App for Android that aims to replace proprietary photo appli
   
 ---
 
+
+Do you have many different apps in your Android Phone for the purpose of clicking, editing and sharing images? Hey guess what, now you don't need all of those because `Phimp.me` is here, with all the features packaged into one. So go and clean your phone memory to save your space for other useful purposes.
+
+
 ## Features
-Do you also have many different apps in your Android Phone for image click, editing and sharing purpose? Now clean your phone memory. Phimpme is here, with all the features packaged into one.
 
 * Click beautiful image from Phimpme app. Use various advance scene modes, and variety of While balance modes.
+
 * You can use your voice actions to invoke Camera, Just say "Ok Google click a picture". You can also select front and rear camera based on voice.
-* Browse the local gallery inside the app with folder and all photos mode. Copy, move to images, add description the images.
-* Edit images with various advance filters, optimized performace using OpenCV library.
+
+* Browse the local gallery inside the app with folder and all photos mode. Copy, move and add description to the images.
+
+* Edit images with various cool filters with optimized performace, built using OpenCV library.
+
 * Enhance contrast, hue, satur, temp, tint and sharpness of the image.
+
 * Crop and rotate feature from Transform section.
+
 * Apply different stickers of facial, express, objects, comments, wishes, emojis, hashtag
+
 * You can also write anything on images in your handwriting.
+
 * To fast the process, user can use the undo and redo features present in the editor.
+
 * Finally, after all set, you can share the image to world using many connected social accounts.
+
 * Facebook, Twitter, NextCloud, OwnCloud, Imgur, Dropbox, Box, Flickr, Pinterest, Instagram, Whatsapp and tumblr are working fine.
 
 ---
 
 ## How to Contribute
-This is an Open Source project and we would be happy to see contributors who report bugs and file feature requests submitting pull requests as well.This project adheres to the Contributor Covenant [code of conduct](https://github.com/fossasia/phimpme-android/blob/development/CONTRIBUTING.md). By participating, you are expected to uphold this code style. Please report issues here https://github.com/fossasia/phimpme-android/issues
+This is an Open Source project and we would be happy to see contributors who report bugs and file feature requests by submitting pull requests as well.This project adheres to the Contributor Covenant [code of conduct](https://github.com/fossasia/phimpme-android/blob/development/CONTRIBUTING.md). By participating, you are expected to uphold this code style. Please report issues here https://github.com/fossasia/phimpme-android/issues
+
 
 ---
 
@@ -89,7 +103,7 @@ We have the following branches
 
 ## Development Setup
 
-Before you begin, you should already have the Android Studio SDK downloaded and set up correctly. You can find a guide on how to do this here: [Setting up Android Studio](http://developer.android.com/sdk/installing/index.html?pkg=studio)
+Before you begin, you should have already downloaded the Android Studio SDK and set it up correctly. You can find a guide on how to do this here: [Setting up Android Studio](http://developer.android.com/sdk/installing/index.html?pkg=studio)
 
 ### Setting up the Android Project
 
@@ -115,7 +129,7 @@ Before you begin, you should already have the Android Studio SDK downloaded and 
 
 8. To Build the app, go to *Build>Make Project* (or alternatively press the Make Project icon in the toolbar).
 
-9. If the app was built succesfully, you can test it by running it on either a real device or an emulated one by going to *Run>Run 'app'* or presing the Run icon in the toolbar.
+9. If the app was built succesfully, you can test it by running it on either a real device or an emulated one by going to *Run>Run 'app'* or pressing the Run icon in the toolbar.
 
 10. **To enable the sharing features to different account, add API_KEY/ APP_ID associated with accounts**. Add the Keys in `constant.java` and `strings.xml`. Following are the links of developer pages of account. Go there to create apps and get keys.
     * Facebook: https://developers.facebook.com
