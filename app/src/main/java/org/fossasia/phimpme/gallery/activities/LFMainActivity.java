@@ -1760,9 +1760,14 @@ public class LFMainActivity extends SharedMediaActivity {
                                     rename = true;
                                 }
                             } else {
-                                success = getAlbum().renameAlbum(getApplicationContext(), editTextNewName.getText().toString());
-                                toolbar.setTitle(getAlbum().getName());
-                                mediaAdapter.notifyDataSetChanged();
+                                if (!editTextNewName.getText().toString().equals(albumName)) {
+                                    success = getAlbum().renameAlbum(getApplicationContext(), editTextNewName.getText().toString());
+                                    toolbar.setTitle(getAlbum().getName());
+                                    mediaAdapter.notifyDataSetChanged();
+                                } else {
+                                    SnackBarHandler.show(coordinatorLayoutMainContent, getString(R.string.rename_no_change));
+                                    rename = true;
+                                }
                             }
                             renameDialog.dismiss();
                             if (success) {
