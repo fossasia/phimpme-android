@@ -520,6 +520,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
 
             AlertDialog alertDialog = discardChangesDialogBuilder.create();
             alertDialog.show();
+            AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
         }
     }
 
@@ -696,6 +697,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
 
             AlertDialog alertDialog = discardChangesDialogBuilder.create();
             alertDialog.show();
+            AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE, DialogInterface.BUTTON_NEUTRAL}, getAccentColor(), alertDialog);
         }
     }
 
@@ -738,6 +740,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         });
         AlertDialog alertDialog=discardChangesDialogBuilder.create();
         alertDialog.show();
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
     }
 
     @Override
@@ -811,5 +814,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
 
         AlertDialog alertDialog = imageSavedDialogBuilder.create();
         alertDialog.show();
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
     }
 }
