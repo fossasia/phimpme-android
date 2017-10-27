@@ -24,6 +24,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -52,7 +53,7 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
@@ -734,7 +735,6 @@ public class LFMainActivity extends SharedMediaActivity {
         else{
             toolbar.setTitle(getString(R.string.hidden_folder));
         }
-
         /**** SWIPE TO REFRESH ****/
         swipeRefreshLayout.setColorSchemeColors(getAccentColor());
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getBackgroundColor());
@@ -1706,9 +1706,9 @@ public class LFMainActivity extends SharedMediaActivity {
                             finishEditMode();
                             invalidateOptionsMenu();
                             if(numberOfImagesMoved > 1)
-                                SnackBarHandler.show(coordinatorLayoutMainContent, getString(R.string.photos_moved_successfully));
+                                SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.photos_moved_successfully), navigationView.getHeight());
                             else
-                                SnackBarHandler.show(coordinatorLayoutMainContent, getString(R.string.photo_moved_successfully));
+                                SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.photo_moved_successfully), navigationView.getHeight());
                         } else requestSdCardPermissions();
 
                         swipeRefreshLayout.setRefreshing(false);
@@ -1730,7 +1730,7 @@ public class LFMainActivity extends SharedMediaActivity {
                         if (!success)
                             requestSdCardPermissions();
                         else
-                            SnackBarHandler.show(coordinatorLayoutMainContent, getString(R.string.copied_successfully));
+                            SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.copied_successfully), navigationView.getHeight());
                     }
                 });
                 bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
@@ -1740,6 +1740,10 @@ public class LFMainActivity extends SharedMediaActivity {
                 AlertDialog.Builder renameDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
                 final EditText editTextNewName = new EditText(getApplicationContext());
                 editTextNewName.setText(albumsMode ? getAlbums().getSelectedAlbum(0).getName() : getAlbum().getName());
+                editTextNewName.setSelectAllOnFocus(true);
+                editTextNewName.setHighlightColor(ContextCompat.getColor(getApplicationContext(), R.color.cardview_shadow_start_color));
+                editTextNewName.selectAll();
+                editTextNewName.setSingleLine(false);
                 final String albumName=albumsMode ? getAlbums().getSelectedAlbum(0).getName() : getAlbum().getName();
 
                 AlertDialogsHelper.getInsertTextDialog(LFMainActivity.this, renameDialogBuilder,
@@ -1880,7 +1884,7 @@ public class LFMainActivity extends SharedMediaActivity {
     public void getNavigationBar() {
         if(editMode && hidenav)
         {
-            navigationView.setVisibility(View.VISIBLE);
+            showNavigationBar();
             hidenav=false;
         }
     }
@@ -1942,7 +1946,15 @@ public class LFMainActivity extends SharedMediaActivity {
                     else if(isTaskRoot())
                     {
                         doubleBackToExitPressedOnce = true;
-                        Toast.makeText(this, R.string.press_back_again_to_exit, Toast.LENGTH_SHORT).show();
+                        Snackbar snackbar = Snackbar
+                                .make(coordinatorLayoutMainContent, R.string.press_back_again_to_exit, Snackbar.LENGTH_LONG)
+                                .setAction(R.string.exit, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                     finishAffinity();
+                                    }
+                                });
+                        snackbar.show();
 
                         new Handler().postDelayed(new Runnable() {
                             @Override
