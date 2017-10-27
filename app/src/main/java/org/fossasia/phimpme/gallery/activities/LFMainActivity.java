@@ -59,6 +59,7 @@ import com.mikepenz.iconics.view.IconicsImageView;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.SharedMediaActivity;
+import org.fossasia.phimpme.data.local.UploadHistoryRealmModel;
 import org.fossasia.phimpme.gallery.SelectAlbumBottomSheet;
 import org.fossasia.phimpme.gallery.adapters.AlbumsAdapter;
 import org.fossasia.phimpme.gallery.adapters.MediaAdapter;
@@ -79,15 +80,19 @@ import org.fossasia.phimpme.gallery.util.StringUtils;
 import org.fossasia.phimpme.gallery.views.GridSpacingItemDecoration;
 import org.fossasia.phimpme.uploadhistory.UploadHistory;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
+import org.fossasia.phimpme.utilities.Constants;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Locale;
 
+import io.realm.Realm;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.DATE;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.NAME;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.NUMERIC;
@@ -1416,6 +1421,22 @@ public class LFMainActivity extends SharedMediaActivity {
                     for (Media f : selectedMedias)
                         files.add(f.getUri());
                 }
+                
+                for(Media f: getAlbum().getSelectedMedia()){
+                    Realm realm = Realm.getDefaultInstance();
+                    realm.beginTransaction();
+                    UploadHistoryRealmModel uploadHistory;
+                    uploadHistory = realm.createObject(UploadHistoryRealmModel.class);
+                    uploadHistory.setName("OTHERS");
+                    uploadHistory.setPathname(f.getPath());
+                    uploadHistory.setDatetime(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
+                    uploadHistory.setStatus(getString(R.string.upload_done));
+                    realm.commitTransaction();
+                    Intent result = new Intent();
+                    result.putExtra(Constants.SHARE_RESULT, 0);
+                    setResult(RESULT_OK, result);
+                }
+
                 String extension = files.get(0).getPath().substring(files.get(0).getPath().lastIndexOf('.') + 1);
                 String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
 
