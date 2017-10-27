@@ -735,7 +735,6 @@ public class LFMainActivity extends SharedMediaActivity {
         else{
             toolbar.setTitle(getString(R.string.hidden_folder));
         }
-
         /**** SWIPE TO REFRESH ****/
         swipeRefreshLayout.setColorSchemeColors(getAccentColor());
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getBackgroundColor());
@@ -1707,9 +1706,9 @@ public class LFMainActivity extends SharedMediaActivity {
                             finishEditMode();
                             invalidateOptionsMenu();
                             if(numberOfImagesMoved > 1)
-                                SnackBarHandler.show(coordinatorLayoutMainContent, getString(R.string.photos_moved_successfully));
+                                SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.photos_moved_successfully), navigationView.getHeight());
                             else
-                                SnackBarHandler.show(coordinatorLayoutMainContent, getString(R.string.photo_moved_successfully));
+                                SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.photo_moved_successfully), navigationView.getHeight());
                         } else requestSdCardPermissions();
 
                         swipeRefreshLayout.setRefreshing(false);
@@ -1731,7 +1730,7 @@ public class LFMainActivity extends SharedMediaActivity {
                         if (!success)
                             requestSdCardPermissions();
                         else
-                            SnackBarHandler.show(coordinatorLayoutMainContent, getString(R.string.copied_successfully));
+                            SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.copied_successfully), navigationView.getHeight());
                     }
                 });
                 bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
@@ -1881,7 +1880,7 @@ public class LFMainActivity extends SharedMediaActivity {
     public void getNavigationBar() {
         if(editMode && hidenav)
         {
-            navigationView.setVisibility(View.VISIBLE);
+            showNavigationBar();
             hidenav=false;
         }
     }
