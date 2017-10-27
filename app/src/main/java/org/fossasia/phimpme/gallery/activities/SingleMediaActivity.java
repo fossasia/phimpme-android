@@ -119,6 +119,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private Uri uri;
     private Realm realm;
     private DatabaseHelper databaseHelper;
+    private boolean details=false;
     ImageDescModel temp;
     private final int REQ_CODE_SPEECH_INPUT = 100;
     String voiceInput;
@@ -626,6 +627,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 return true;
 
             case R.id.action_details:
+                details=true;
                 View v = getLayoutInflater().inflate(R.layout.image_description,mViewPager,false);
                 LinearLayout linearLayout = (LinearLayout)v;
                 Media media = getAlbum().getCurrentMedia();
@@ -682,9 +684,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             case R.id.action_description:
                 AlertDialog.Builder descriptionDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
                 editTextDescription = getDescriptionDialog(SingleMediaActivity.this, descriptionDialogBuilder);
-                editTextDescription.setHintTextColor(getResources().getColor(R.color.grey, null));
-                editTextDescription.setSelectAllOnFocus(true);
-                editTextDescription.selectAll();
                 descriptionDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
                 descriptionDialogBuilder.setPositiveButton((temp != null && temp.getTitle().length() != 0) ? getString(R.string.update_action) : getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                     @Override
@@ -886,6 +885,16 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         });
         colorAnimation.start();
     }
+
+    @Override
+    public void onBackPressed() {
+        if (details) {
+            setContentView(parentView);
+            details = false;
+        } else
+            super.onBackPressed();
+    }
+
     @Override
     public void onPause() {
         super.onPause();
