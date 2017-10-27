@@ -24,6 +24,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -52,7 +53,7 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
@@ -1942,7 +1943,15 @@ public class LFMainActivity extends SharedMediaActivity {
                     else if(isTaskRoot())
                     {
                         doubleBackToExitPressedOnce = true;
-                        Toast.makeText(this, R.string.press_back_again_to_exit, Toast.LENGTH_SHORT).show();
+                        Snackbar snackbar = Snackbar
+                                .make(coordinatorLayoutMainContent, R.string.press_back_again_to_exit, Snackbar.LENGTH_LONG)
+                                .setAction(R.string.exit, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                     finishAffinity();
+                                    }
+                                });
+                        snackbar.show();
 
                         new Handler().postDelayed(new Runnable() {
                             @Override
