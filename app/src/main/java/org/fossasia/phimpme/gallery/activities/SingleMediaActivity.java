@@ -684,9 +684,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             case R.id.action_description:
                 AlertDialog.Builder descriptionDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
                 editTextDescription = getDescriptionDialog(SingleMediaActivity.this, descriptionDialogBuilder);
-                editTextDescription.setHintTextColor(getResources().getColor(R.color.grey, null));
-                editTextDescription.setSelectAllOnFocus(true);
-                editTextDescription.selectAll();
                 descriptionDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
                 descriptionDialogBuilder.setPositiveButton((temp != null && temp.getTitle().length() != 0) ? getString(R.string.update_action) : getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                     @Override
