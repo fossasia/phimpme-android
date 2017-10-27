@@ -718,6 +718,13 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 handler.removeCallbacks(slideShowRunnable);
                 AlertDialog.Builder descriptionDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
                 editTextDescription = getDescriptionDialog(SingleMediaActivity.this, descriptionDialogBuilder);
+                editTextDescription.setSelectAllOnFocus(true);
+                editTextDescription.setHighlightColor(ContextCompat.getColor(getApplicationContext(), R.color
+                        .cardview_shadow_start_color));
+                editTextDescription.selectAll();
+                editTextDescription.setSingleLine(false);
+                editTextDescription.setHintTextColor(getResources().getColor(R.color.grey, null));
+            
                 descriptionDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
                 descriptionDialogBuilder.setPositiveButton((temp != null && temp.getTitle().length() != 0) ? getString(R.string.update_action) : getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                     @Override
