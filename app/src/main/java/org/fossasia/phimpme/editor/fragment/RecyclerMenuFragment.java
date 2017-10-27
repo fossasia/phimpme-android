@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.fossasia.phimpme.MyApplication;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.filter.PhotoProcessing;
@@ -101,6 +102,7 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     public void onDestroy() {
         super.onDestroy();
     //    if (filterThumbs != null)filterThumbs=null;
+        MyApplication.getRefWatcher(getActivity()).watch(this);
     }
 
     @Override
