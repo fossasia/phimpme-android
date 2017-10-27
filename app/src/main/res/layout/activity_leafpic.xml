@@ -6,10 +6,10 @@
     android:layout_height="match_parent"
     tools:openDrawer="start">
 
-    <RelativeLayout
-        android:id="@+id/Relative_Album_layout"
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/cl_main_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <!---->
         <android.support.design.widget.AppBarLayout
@@ -22,66 +22,73 @@
                 layout="@layout/toolbar" />
         </android.support.design.widget.AppBarLayout>
 
-        <LinearLayout
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/bottombar"
-            android:layout_below="@id/appbar_toolbar"
-            android:orientation="vertical"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <android.support.v4.widget.SwipeRefreshLayout
-                android:id="@+id/swipeRefreshLayout"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <android.support.design.widget.CoordinatorLayout
-                    android:id="@+id/cl_main_content"
+                <android.support.v4.widget.SwipeRefreshLayout
+                    android:id="@+id/swipeRefreshLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/grid_albums"
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_horizontal"
                         android:clipToPadding="false"
                         android:scrollbarThumbVertical="@drawable/ic_scrollbar"
-                        android:scrollbars="vertical"
-                        />
+                        android:scrollbars="vertical">
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/grid_photos"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_horizontal"
-                        android:scrollbarThumbVertical="@drawable/ic_scrollbar"
-                        android:scrollbars="vertical"/>
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/grid_photos"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_horizontal"
+                            android:paddingBottom="@dimen/height_bottombar"
+                            android:scrollbarThumbVertical="@drawable/ic_scrollbar"
+                            android:scrollbars="vertical" />
 
-                    <TextView
-                        android:id="@+id/nothing_to_show"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:elevation="12dp"
-                        android:gravity="center"
-                        android:text="@string/there_is_nothing_to_show"
-                        android:textColor="@color/md_white_1000"
-                        android:textSize="18sp"
-                        android:visibility="invisible"
-                        tools:targetApi="lollipop" />
-                </android.support.design.widget.CoordinatorLayout>
-            </android.support.v4.widget.SwipeRefreshLayout>
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/grid_albums"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:clipToPadding="false"
+                            android:paddingBottom="@dimen/height_bottombar"
+                            android:scrollbarThumbVertical="@drawable/ic_scrollbar"
+                            android:scrollbars="vertical" />
 
-        </LinearLayout>
+                        <TextView
+                            android:id="@+id/nothing_to_show"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:elevation="12dp"
+                            android:gravity="center"
+                            android:text="@string/there_is_nothing_to_show"
+                            android:textColor="@color/md_white_1000"
+                            android:textSize="18sp"
+                            android:visibility="invisible"
+                            tools:targetApi="lollipop" />
+
+                    </RelativeLayout>
+                </android.support.v4.widget.SwipeRefreshLayout>
+            </FrameLayout>
+        </android.support.v4.widget.NestedScrollView>
 
         <include
             android:id="@+id/bottombar"
             layout="@layout/element_bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true" />
-    </RelativeLayout>
+            android:layout_gravity="bottom"
+            app:elevation="4dp" />
+    </android.support.design.widget.CoordinatorLayout>
 
     <include
         android:id="@+id/drawer_items"
