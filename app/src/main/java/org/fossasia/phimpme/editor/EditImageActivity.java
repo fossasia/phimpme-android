@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
@@ -102,6 +103,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
 
     @Nullable @BindView(R.id.parentLayout)
     View parentLayout;
+    @Nullable @BindView(R.id.preview_container)
+    View previewContainer;
 
     @Nullable @BindView(R.id.edit_cancel)
     ImageButton cancel;
@@ -272,25 +275,35 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                 sliderFragment = SliderFragment.newInstance();
                 return sliderFragment;
             case MODE_FILTERS:
+                ToggleVisibilty(previewContainer);
                 return filterFragment;
             case MODE_ENHANCE:
+                ToggleVisibilty(previewContainer);
                 return enhanceFragment;
             case MODE_STICKER_TYPES:
+                ToggleVisibilty(previewContainer);
                 return stickerTypesFragment;
             case MODE_STICKERS:
+                ToggleVisibilty(previewContainer);
                 stickersFragment = StickersFragment.newInstance(addStickerImages(stickerType));
                 return stickersFragment;
             case MODE_WRITE:
+                ToggleVisibilty(previewContainer);
                 return writeFragment;
             case MODE_ADJUST:
+                ToggleVisibilty(previewContainer);
                 return adjustFragment;
             case MODE_TEXT:
+                ToggleVisibilty(previewContainer);
                 return addTextFragment;
             case MODE_PAINT:
+                ToggleVisibilty(previewContainer);
                 return paintFragment;
             case MODE_CROP:
+                ToggleVisibilty(previewContainer);
                 return cropFragment;
             case MODE_ROTATE:
+                ToggleVisibilty(previewContainer);
                 return rotateFragment;
         }
         return mainMenuFragment;
@@ -317,17 +330,17 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         save.setVisibility(View.VISIBLE);
         bef_aft.setVisibility(View.VISIBLE);
         if (currentShowingIndex > 0) {
-            undo.setColorFilter(Color.BLACK);
+            undo.setColorFilter(Color.WHITE);
             undo.setEnabled(true);
         }else {
-            undo.setColorFilter(getResources().getColor(R.color.md_grey_300));
+            undo.setColorFilter(getResources().getColor(R.color.md_grey_600));
             undo.setEnabled(false);
         }
         if (currentShowingIndex + 1 < bitmapsForUndo.size()) {
-            redo.setColorFilter(Color.BLACK);
+            redo.setColorFilter(Color.WHITE);
             redo.setEnabled(true);
         }else {
-            redo.setColorFilter(getResources().getColor(R.color.md_grey_300));
+            redo.setColorFilter(getResources().getColor(R.color.md_grey_600));
             redo.setEnabled(false);
         }
 
@@ -552,6 +565,14 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         EditImageActivity.stickerType = stickerType;
     }
 
+    public void ToggleVisibilty(View v)
+    {
+        if(v.getVisibility()==View.GONE){
+            v.setVisibility(View.VISIBLE);
+        }else {
+            v.setVisibility(View.GONE);
+        }
+    }
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (R.id.edit_befaft == v.getId()){
