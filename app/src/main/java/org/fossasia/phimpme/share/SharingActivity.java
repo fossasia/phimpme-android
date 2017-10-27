@@ -16,6 +16,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -380,7 +381,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 //Do nothing
             }
         });
-        dialogBuilder.show();
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
     }
 
     /**
@@ -526,7 +529,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 new UploadToBox().execute();
             }
         });
-        dialogBuilder.show();
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
     }
 
     private void shareToFlickr() {
@@ -627,7 +632,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             discardChangesDialogBuilder.setPositiveButton(getString(R.string.ok).toUpperCase(), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                
+
                     sendResult(FAIL);
                 }
             });
@@ -638,7 +643,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                         dialog.dismiss();
                 }
             });
-            discardChangesDialogBuilder.create().show();
+            AlertDialog alertDialog = discardChangesDialogBuilder.create();
+            alertDialog.show();
+            AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
         }
     }
 
@@ -648,8 +655,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         AlertDialogsHelper.getInsertTextDialog(SharingActivity.this, captionDialogBuilder, captionEditText, R.string.caption_head ,null);
         captionDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
         captionEditText.setHint(R.string.description_hint);
-        captionEditText.setHintTextColor(getResources().getColor(R.color.grey, null));
+        captionEditText.setHintTextColor(ContextCompat.getColor(this,R.color.grey));
         captionEditText.setSelectAllOnFocus(true);
+        captionEditText.setHighlightColor(ContextCompat.getColor(getApplicationContext(), R.color.cardview_shadow_start_color));
         captionEditText.selectAll();
         captionEditText.setSingleLine(false);
         if(caption!=null) {
@@ -667,7 +675,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         final AlertDialog passwordDialog = captionDialogBuilder.create();
         passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         passwordDialog.show();
-
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
         passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -702,7 +710,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
         final AlertDialog passwordDialog = dialogBuilder.create();
         passwordDialog.show();
-
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
         passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -866,7 +874,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             }
         });
         dialogBuilder.setNegativeButton(getString(R.string.exit).toUpperCase(), null);
-        dialogBuilder.show();
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE, DialogInterface.BUTTON_NEUTRAL}, getAccentColor(), alertDialog);
     }
 
     private void shareToMessenger() {
@@ -924,7 +934,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                             }
                         });
                         dialogBuilder.setNegativeButton(getString(R.string.exit).toUpperCase(), null);
-                        dialogBuilder.show();
+                        AlertDialog alertDialog = dialogBuilder.create();
+                        alertDialog.show();
+                        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE, DialogInterface.BUTTON_NEUTRAL}, getAccentColor(), alertDialog);
                     } else {
                         SnackBarHandler.show(parent, R.string.error_on_imgur);
                         sendResult(FAIL);
