@@ -44,6 +44,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,6 +64,8 @@ import org.fossasia.phimpme.editor.utils.BitmapUtils;
 import org.fossasia.phimpme.gallery.SelectAlbumBottomSheet;
 import org.fossasia.phimpme.gallery.adapters.ImageAdapter;
 import org.fossasia.phimpme.gallery.data.Album;
+import org.fossasia.phimpme.gallery.data.Media;
+import org.fossasia.phimpme.gallery.data.base.MediaDetailsMap;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
 import org.fossasia.phimpme.gallery.util.ColorPalette;
 import org.fossasia.phimpme.gallery.util.ContentHelper;
@@ -118,7 +121,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private Uri uri;
     private Realm realm;
     private DatabaseHelper databaseHelper;
+
     boolean slideshow=false;
+    private boolean details=false;
 
     ImageDescModel temp;
     private final int REQ_CODE_SPEECH_INPUT = 100;
@@ -595,6 +600,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                             passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
                             final AlertDialog passwordDialog = passwordDialogBuilder.create();
                             passwordDialog.show();
+                            AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
                             passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View
                                     .OnClickListener() {
                                 @Override
@@ -613,7 +619,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                             deleteCurrentMedia();
                     }
                 });
-                deleteDialog.show();
+                AlertDialog alertDialog = deleteDialog.create();
+                alertDialog.show();
+                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
                 return true;
 
             case R.id.slide_show:
@@ -651,22 +659,54 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
             case R.id.action_details:
                 handler.removeCallbacks(slideShowRunnable);
-                AlertDialog.Builder detailsDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
-                AlertDialog detailsDialog;
-                if (allPhotoMode)
-                    detailsDialog =
-                            AlertDialogsHelper.getDetailsDialog(this, detailsDialogBuilder, LFMainActivity.listAll.get(current_image_pos));
-                else
-                    detailsDialog =
-                            AlertDialogsHelper.getDetailsDialog(this, detailsDialogBuilder, getAlbum().getCurrentMedia());
+                details=true;
+                View v = getLayoutInflater().inflate(R.layout.image_description,mViewPager,false);
+                LinearLayout linearLayout = (LinearLayout)v;
+                Media media = getAlbum().getCurrentMedia();
+                MediaDetailsMap<String,String> mediaDetailsMap = media.getMainDetails(this);
 
-                detailsDialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string
-                        .ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+                /* Getting all the viewgroups and views of the image description layout */
+
+                TextView  imgDate = (TextView) linearLayout.findViewById(R.id.image_desc_date);
+                TextView  imgLocation = (TextView) linearLayout.findViewById(R.id.image_desc_loc);
+                TextView  imgTitle = (TextView) linearLayout.findViewById(R.id.image_desc_title);
+                TextView  imgType = (TextView) linearLayout.findViewById(R.id.image_desc_type);
+                TextView  imgSize = (TextView) linearLayout.findViewById(R.id.image_desc_size);
+                TextView  imgResolution = (TextView) linearLayout.findViewById(R.id.image_desc_res);
+                TextView  imgPath = (TextView) linearLayout.findViewById(R.id.image_desc_path);
+                TextView  imgOrientation = (TextView) linearLayout.findViewById(R.id.image_desc_orientation);
+                TextView  imgExif = (TextView) linearLayout.findViewById(R.id.image_desc_exif);
+                TextView  imgDesc = (TextView) linearLayout.findViewById(R.id.image_desc);
+                ImageButton imgBack = (ImageButton) linearLayout.findViewById(R.id.img_desc_back_arrow);
+
+                LinearLayout linearLayoutTop = (LinearLayout) linearLayout.findViewById(R.id.image_desc_top);
+                linearLayoutTop.setBackgroundColor(this.getPrimaryColor());
+
+                imgBack.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(View v) {
+                        setContentView(parentView);
                     }
                 });
-                detailsDialog.show();
+
+                /*Setting the values to all the textViews*/
+
+                try {
+                        imgDate.setText(mediaDetailsMap.get("Date").toString());
+                        imgTitle.setText(media.getName());
+                        imgType.setText(mediaDetailsMap.get("Type").toUpperCase());
+                        imgSize.setText(StringUtils.humanReadableByteCount(media.getSize(), true));
+                        imgResolution.setText(mediaDetailsMap.get("Resolution"));
+                        imgPath.setText(mediaDetailsMap.get("Path").toString());
+                        imgOrientation.setText(mediaDetailsMap.get("Orientation"));
+                        imgDesc.setText(mediaDetailsMap.get("Description"));
+                        imgExif.setText(mediaDetailsMap.get("EXIF"));
+                        imgLocation.setText(mediaDetailsMap.get("Location").toString());
+                    }
+                    catch (Exception e){
+                        //Raised if null values is found, no need to handle
+                    }
+                setContentView(v);
                 break;
 
             case R.id.action_settings:
@@ -678,9 +718,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 handler.removeCallbacks(slideShowRunnable);
                 AlertDialog.Builder descriptionDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
                 editTextDescription = getDescriptionDialog(SingleMediaActivity.this, descriptionDialogBuilder);
-                editTextDescription.setHintTextColor(getResources().getColor(R.color.grey, null));
-                editTextDescription.setSelectAllOnFocus(true);
-                editTextDescription.selectAll();
                 descriptionDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
                 descriptionDialogBuilder.setPositiveButton((temp != null && temp.getTitle().length() != 0) ? getString(R.string.update_action) : getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                     @Override
@@ -692,6 +729,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
                 final AlertDialog descriptionDialog = descriptionDialogBuilder.create();
                 descriptionDialog.show();
+                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), descriptionDialog);
                 descriptionDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager
                         .LayoutParams.FLAG_ALT_FOCUSABLE_IM);
                 descriptionDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -881,6 +919,16 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         });
         colorAnimation.start();
     }
+
+    @Override
+    public void onBackPressed() {
+        if (details) {
+            setContentView(parentView);
+            details = false;
+        } else
+            super.onBackPressed();
+    }
+
     @Override
     public void onPause() {
         super.onPause();

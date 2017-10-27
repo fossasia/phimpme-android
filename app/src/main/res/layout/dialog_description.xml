@@ -44,7 +44,8 @@
                         android:textColorHint="@color/grey"
                         android:layout_margin="20dp"
                         android:gravity="top|left"
-                        android:inputType="text"/>
+                        android:inputType="text"
+                        android:selectAllOnFocus="true"/>
                     <ImageButton
                         android:layout_width="@dimen/mic_image"
                         android:layout_height="@dimen/mic_image"
