@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.speech.RecognizerIntent;
@@ -94,6 +95,7 @@ import static org.fossasia.phimpme.utilities.Utils.promptSpeechInput;
 @SuppressWarnings("ResourceAsColor")
 public class SingleMediaActivity extends SharedMediaActivity implements ImageAdapter.OnSingleTap {
 
+    private static  int SLIDE_SHOW_INTERVAL = 5000;
     private static final String ISLOCKED_ARG = "isLocked";
     static final String ACTION_OPEN_ALBUM = "android.intent.action.pagerAlbumMedia";
     private static final String ACTION_REVIEW = "com.android.camera.action.REVIEW";
@@ -119,7 +121,10 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private Uri uri;
     private Realm realm;
     private DatabaseHelper databaseHelper;
+
+    boolean slideshow=false;
     private boolean details=false;
+
     ImageDescModel temp;
     private final int REQ_CODE_SPEECH_INPUT = 100;
     String voiceInput;
@@ -146,6 +151,21 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    Handler handler = new Handler();
+    Runnable slideShowRunnable = new Runnable() {
+        @Override
+        public void run() {
+            try{
+                mViewPager.scrollToPosition((getAlbum().getCurrentMediaIndex() + 1) % getAlbum().getMedia().size());
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+            finally{
+                handler.postDelayed(this, SLIDE_SHOW_INTERVAL);
+            }
+        }
+    };
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -287,7 +307,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         }
 
     }
-
+    
     private void setupUI() {
 
         /**** Theme ****/
@@ -493,6 +513,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         switch (item.getItemId()) {
 
             case R.id.action_copy:
+                handler.removeCallbacks(slideShowRunnable);
                 bottomSheetDialogFragment = new SelectAlbumBottomSheet();
                 bottomSheetDialogFragment.setTitle(getString(R.string.copy_to));
                 bottomSheetDialogFragment.setSelectAlbumInterface(new SelectAlbumBottomSheet.SelectAlbumInterface() {
@@ -507,6 +528,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 break;
 
             case R.id.action_share:
+                handler.removeCallbacks(slideShowRunnable);
                 Intent share = new Intent(SingleMediaActivity.this, SharingActivity.class);
                 if (!allPhotoMode)
                     share.putExtra(EXTRA_OUTPUT, getAlbum().getCurrentMedia().getPath());
@@ -516,6 +538,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 return true;
 
             case R.id.action_edit:
+                handler.removeCallbacks(slideShowRunnable);
                 if (!allPhotoMode)
                     uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
                 else
@@ -532,6 +555,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 break;
 
             case R.id.action_use_as:
+                handler.removeCallbacks(slideShowRunnable);
                 Intent intent = new Intent(Intent.ACTION_ATTACH_DATA);
                 if (!allPhotoMode)
                     intent.setDataAndType(
@@ -549,6 +573,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 return true;
 
             case R.id.action_delete:
+                handler.removeCallbacks(slideShowRunnable);
                 final AlertDialog.Builder deleteDialog = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
 
                 AlertDialogsHelper.getTextDialog(SingleMediaActivity.this, deleteDialog,
@@ -599,7 +624,13 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
                 return true;
 
+            case R.id.slide_show:
+                handler.removeCallbacks(slideShowRunnable);
+                setSlideShowDialog();
+                return true;
+
             case R.id.action_move:
+                handler.removeCallbacks(slideShowRunnable);
                 bottomSheetDialogFragment = new SelectAlbumBottomSheet();
                 bottomSheetDialogFragment.setTitle(getString(R.string.move_to));
                 bottomSheetDialogFragment.setSelectAlbumInterface(new SelectAlbumBottomSheet.SelectAlbumInterface() {
@@ -627,6 +658,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 return true;
 
             case R.id.action_details:
+                handler.removeCallbacks(slideShowRunnable);
                 details=true;
                 View v = getLayoutInflater().inflate(R.layout.image_description,mViewPager,false);
                 LinearLayout linearLayout = (LinearLayout)v;
@@ -678,10 +710,12 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 break;
 
             case R.id.action_settings:
+                handler.removeCallbacks(slideShowRunnable);
                 startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
                 break;
 
             case R.id.action_description:
+                handler.removeCallbacks(slideShowRunnable);
                 AlertDialog.Builder descriptionDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
                 editTextDescription = getDescriptionDialog(SingleMediaActivity.this, descriptionDialogBuilder);
                 editTextDescription.setSelectAllOnFocus(true);
@@ -914,8 +948,53 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     @Override
     public void singleTap() {
         toggleSystemUI();
+        if(slideshow)
+        {
+            handler.removeCallbacks(slideShowRunnable);
+            slideshow=false;
+        }
     }
 
+    private void setSlideShowDialog() {
+
+        final AlertDialog.Builder slideshowDialog = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
+        final View SlideshowDialogLayout = getLayoutInflater().inflate(R.layout.dialog_slideshow, null);
+        final TextView slideshowDialogTitle = (TextView) SlideshowDialogLayout.findViewById(R.id.slideshow_dialog_title);
+        final CardView slideshowDialogCard = (CardView) SlideshowDialogLayout.findViewById(R.id.slideshow_dialog_card);
+        final EditText editTextTimeInterval = (EditText) SlideshowDialogLayout.findViewById(R.id.slideshow_edittext);
+
+        slideshowDialogTitle.setBackgroundColor(getPrimaryColor());
+        slideshowDialogCard.setBackgroundColor(getCardBackgroundColor());
+        editTextTimeInterval.getBackground().mutate().setColorFilter(getTextColor(), PorterDuff.Mode.SRC_ATOP);
+        editTextTimeInterval.setTextColor(getTextColor());
+        editTextTimeInterval.setHintTextColor(getSubTextColor());
+        setCursorDrawableColor(editTextTimeInterval, getTextColor());
+        slideshowDialog.setView(SlideshowDialogLayout);
+
+        AlertDialog dialog = slideshowDialog.create();
+
+        dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.ok).toUpperCase(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String value= editTextTimeInterval.getText().toString();
+                if(!"".equals(value))
+                {
+                    slideshow=true;
+                    int intValue = Integer.parseInt(value);
+                    SLIDE_SHOW_INTERVAL = intValue * 1000;
+                    toggleSystemUI();
+                    handler.postDelayed(slideShowRunnable, SLIDE_SHOW_INTERVAL);
+                }
+            }
+        });
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        dialog.show();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacks(slideShowRunnable);
+    }
     private final class LoadImageTask extends AsyncTask<String, Void, Bitmap> {
         @Override
         protected Bitmap doInBackground(String... params) {
