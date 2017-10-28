@@ -1796,7 +1796,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                     toolbar.setTitle(getAlbum().getName());
                                     mediaAdapter.notifyDataSetChanged();
                                 } else {
-                                    SnackBarHandler.show(coordinatorLayoutMainContent, getString(R.string.rename_no_change));
+                                    SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.rename_no_change), navigationView.getHeight());
                                     rename = true;
                                 }
                             }
