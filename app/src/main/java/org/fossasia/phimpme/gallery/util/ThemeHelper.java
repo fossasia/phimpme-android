@@ -249,6 +249,16 @@ public class ThemeHelper {
 	return color;
   }
 
+    public int getHighlightedItemColor(){
+        int color;
+        switch (baseTheme){
+            case DARK_THEME:color = getColor(R.color.md_grey_600);break;
+            case AMOLED_THEME:color = getColor(R.color.md_grey_850);break;
+            case LIGHT_THEME:default:color = getColor(R.color.md_grey_300);
+        }
+        return color;
+    }
+
   private ColorStateList getRadioButtonColor(){
 	return new ColorStateList(
 									 new int[][]{
