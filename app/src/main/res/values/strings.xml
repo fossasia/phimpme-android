@@ -1036,6 +1036,7 @@
     <string name="photos_moved_successfully">Photos moved successfully</string>
     <string name="photo_moved_successfully">Photo moved successfully</string>
     <string name="copied_successfully">Copied successfully</string>
+    <string name="photos_already_there">All photos are already there in the folder</string>
     <string name="no_changes_made">No Changes Made!</string>
     <string name="transition_photo">transition_photo</string>
     <string name="upload_date">Date: " "</string>
