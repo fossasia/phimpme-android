@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import org.fossasia.phimpme.MyApplication;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.task.StickerTask;
@@ -80,6 +81,12 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        MyApplication.getRefWatcher(getActivity()).watch(this);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_editor_stickers, container, false);
@@ -138,8 +145,8 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
     }
 
     private final class SaveStickersTask extends StickerTask {
-        SaveStickersTask(EditImageActivity activity) {
-            super(activity);
+        SaveStickersTask(EditImageActivity activity, Matrix imageViewMatrix) {
+            super(activity,imageViewMatrix);
         }
 
         @Override
@@ -164,7 +171,7 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
         if (mSaveTask != null) {
             mSaveTask.cancel(true);
         }
-        mSaveTask = new SaveStickersTask((EditImageActivity) getActivity());
+        mSaveTask = new SaveStickersTask(activity,activity.mainImage.getImageViewMatrix());
         mSaveTask.execute(activity.mainBitmap);
     }
 
