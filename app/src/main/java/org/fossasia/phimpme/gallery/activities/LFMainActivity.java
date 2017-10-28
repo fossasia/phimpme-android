@@ -24,6 +24,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -281,11 +282,14 @@ public class LFMainActivity extends SharedMediaActivity {
 
                         invalidateOptionsMenu();
                     } else {
+                        v.setTransitionName(getString(R.string.transition_photo));
                         getAlbum().setCurrentPhotoIndex(m);
                         Intent intent = new Intent(LFMainActivity.this, SingleMediaActivity.class);
                         intent.putExtra("path", Uri.fromFile(new File(m.getPath())).toString());
+                        ActivityOptionsCompat options = ActivityOptionsCompat.
+                                makeSceneTransitionAnimation(LFMainActivity.this, v, v.getTransitionName());
                         intent.setAction(SingleMediaActivity.ACTION_OPEN_ALBUM);
-                        startActivity(intent);
+                        startActivity(intent, options.toBundle());
                     }
                 } else {
                     setResult(RESULT_OK, new Intent().setData(m.getUri()));
@@ -297,8 +301,11 @@ public class LFMainActivity extends SharedMediaActivity {
                     intent.putExtra(getString(R.string.all_photo_mode), true);
                     intent.putExtra(getString(R.string.position), pos);
                     intent.putExtra(getString(R.string.allMediaSize), size);
+                    v.setTransitionName(getString(R.string.transition_photo));
+                    ActivityOptionsCompat options = ActivityOptionsCompat.
+                            makeSceneTransitionAnimation(LFMainActivity.this, v, v.getTransitionName());
                     intent.setClass(getApplicationContext(), SingleMediaActivity.class);
-                    startActivity(intent);
+                    startActivity(intent, options.toBundle());
                 } else {
                     mediaAdapter.notifyItemChanged(toggleSelectPhoto(m));
                 }
@@ -341,7 +348,6 @@ public class LFMainActivity extends SharedMediaActivity {
             } else {
                 getAlbums().setCurrentAlbum(album);
                 displayCurrentAlbumMedia(true);
-                setRecentApp(getAlbums().getCurrentAlbum().getName());
             }
         }
     };
@@ -786,7 +792,9 @@ public class LFMainActivity extends SharedMediaActivity {
 
         // Default setting
         if(localFolder)
-            findViewById(R.id.ll_drawer_Default).setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.md_grey_200));
+            findViewById(R.id.ll_drawer_Default).setBackgroundColor(getHighlightedItemColor());
+        else
+            findViewById(R.id.ll_drawer_hidden).setBackgroundColor(getHighlightedItemColor());
 
         tint();
         findViewById(R.id.ll_drawer_Setting).setOnClickListener(new View.OnClickListener() {
@@ -819,7 +827,7 @@ public class LFMainActivity extends SharedMediaActivity {
             public void onClick(View v) {
                 localFolder=true;
                 findViewById(R.id.ll_drawer_hidden).setBackgroundColor(Color.TRANSPARENT);
-                findViewById(R.id.ll_drawer_Default).setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.md_grey_200));
+                findViewById(R.id.ll_drawer_Default).setBackgroundColor(getHighlightedItemColor());
                 tint();
                 toolbar.setTitle(getString(R.string.local_folder));
                 hidden = false;
@@ -832,7 +840,7 @@ public class LFMainActivity extends SharedMediaActivity {
             public void onClick(View v) {
                 localFolder=false;
                 findViewById(R.id.ll_drawer_Default).setBackgroundColor(Color.TRANSPARENT);
-                findViewById(R.id.ll_drawer_hidden).setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.md_grey_200));
+                findViewById(R.id.ll_drawer_hidden).setBackgroundColor(getHighlightedItemColor());
                 tint();
                 toolbar.setTitle(getString(R.string.hidden_folder));
                 if (securityObj.isActiveSecurity() && securityObj.isPasswordOnHidden()) {
@@ -1986,7 +1994,6 @@ public class LFMainActivity extends SharedMediaActivity {
                 }
             } else {
                 displayAlbums();
-                setRecentApp(getString(R.string.app_name));
             }
         }
     }
