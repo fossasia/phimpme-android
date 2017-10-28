@@ -348,7 +348,6 @@ public class LFMainActivity extends SharedMediaActivity {
             } else {
                 getAlbums().setCurrentAlbum(album);
                 displayCurrentAlbumMedia(true);
-                setRecentApp(getAlbums().getCurrentAlbum().getName());
             }
         }
     };
@@ -1976,7 +1975,6 @@ public class LFMainActivity extends SharedMediaActivity {
                 }
             } else {
                 displayAlbums();
-                setRecentApp(getString(R.string.app_name));
             }
         }
     }
