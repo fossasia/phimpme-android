@@ -24,6 +24,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -281,11 +282,14 @@ public class LFMainActivity extends SharedMediaActivity {
 
                         invalidateOptionsMenu();
                     } else {
+                        v.setTransitionName(getString(R.string.transition_photo));
                         getAlbum().setCurrentPhotoIndex(m);
                         Intent intent = new Intent(LFMainActivity.this, SingleMediaActivity.class);
                         intent.putExtra("path", Uri.fromFile(new File(m.getPath())).toString());
+                        ActivityOptionsCompat options = ActivityOptionsCompat.
+                                makeSceneTransitionAnimation(LFMainActivity.this, v, v.getTransitionName());
                         intent.setAction(SingleMediaActivity.ACTION_OPEN_ALBUM);
-                        startActivity(intent);
+                        startActivity(intent, options.toBundle());
                     }
                 } else {
                     setResult(RESULT_OK, new Intent().setData(m.getUri()));
@@ -297,8 +301,11 @@ public class LFMainActivity extends SharedMediaActivity {
                     intent.putExtra(getString(R.string.all_photo_mode), true);
                     intent.putExtra(getString(R.string.position), pos);
                     intent.putExtra(getString(R.string.allMediaSize), size);
+                    v.setTransitionName(getString(R.string.transition_photo));
+                    ActivityOptionsCompat options = ActivityOptionsCompat.
+                            makeSceneTransitionAnimation(LFMainActivity.this, v, v.getTransitionName());
                     intent.setClass(getApplicationContext(), SingleMediaActivity.class);
-                    startActivity(intent);
+                    startActivity(intent, options.toBundle());
                 } else {
                     mediaAdapter.notifyItemChanged(toggleSelectPhoto(m));
                 }
