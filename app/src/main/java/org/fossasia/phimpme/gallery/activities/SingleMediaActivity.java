@@ -125,7 +125,8 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private Uri uri;
     private Realm realm;
     private DatabaseHelper databaseHelper;
-
+    private Handler handler;
+    private Runnable runnable;
     boolean slideshow=false;
     private boolean details=false;
 
@@ -155,7 +156,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    Handler handler = new Handler();
     Runnable slideShowRunnable = new Runnable() {
         @Override
         public void run() {
@@ -181,6 +181,14 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         imageWidth = metrics.widthPixels;
         imageHeight = metrics.heightPixels;
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                hideSystemUI();
+            }
+        };
+        startHandler();
 
         SP = PreferenceUtil.getInstance(getApplicationContext());
         securityObj = new SecurityHelper(SingleMediaActivity.this);
@@ -214,6 +222,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             }
             initUI();
             setupUI();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -352,6 +361,24 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
     }
 
+    /**
+     * startHandler and stopHandler are helper methods for onUserInteraction, that auto-hides the nav-bars
+     * and switch the activity to full screen, thus giving more better UX.
+     */
+    private void startHandler(){
+        handler.postDelayed(runnable, 5000);
+    }
+
+    private void stopHandler(){
+        handler.removeCallbacks(runnable);
+    }
+
+    @Override
+    public void onUserInteraction() {
+        super.onUserInteraction();
+        stopHandler();
+        startHandler();
+    }
 
     @Override
     public void onResume() {
