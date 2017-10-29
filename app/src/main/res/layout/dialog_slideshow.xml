@@ -2,7 +2,6 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/vn.mbm.phimp.me"
-    xmlns:app2="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -11,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="2dp"
-        android:id="@+id/description_dialog_card">
+        android:id="@+id/slideshow_dialog_card"
+        >
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -20,42 +20,30 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <TextView
-                    android:id="@+id/description_dialog_title"
+                    android:id="@+id/slideshow_dialog_title"
                     android:layout_width="match_parent"
                     android:textColor="@color/md_dark_primary_text"
                     android:layout_height="wrap_content"
                     android:background="@color/md_dark_appbar"
                     android:padding="24dp"
-                    android:text="@string/type_description"
+                    android:text="@string/enter_time"
                     android:textSize="18sp"
                     android:textStyle="bold" />
                 <LinearLayout
-                    android:id="@+id/rl_description_dialog"
+                    android:id="@+id/ll_slideshow_dialog"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:padding="15dp">
                     <EditText
-                        android:id="@+id/description_edittxt"
-                        android:layout_width="fill_parent"
+                        android:id="@+id/slideshow_edittext"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="15dp"
-                        android:hint="@string/description_hint"
-                        android:textColorHint="@color/grey"
-                        android:layout_margin="20dp"
-                        android:gravity="top|left"
-                        android:inputType="text"
-                        android:selectAllOnFocus="true"/>
-                    <ImageButton
-                        android:layout_width="@dimen/mic_image"
-                        android:layout_height="@dimen/mic_image"
-                        android:layout_alignRight="@+id/description_edittxt"
-                        app2:srcCompat="@drawable/ic_mic_black"
-                        android:layout_gravity="center"
-                        android:background="@color/transparent"
-                        android:paddingEnd="10dp"
-                        android:paddingTop="12dp"
-                        android:id="@+id/voice_input"/>
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:hint="@string/time_interval"
+                        android:inputType="number" />
+
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
