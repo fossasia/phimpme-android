@@ -679,6 +679,8 @@
                         android:id="@+id/ll_switch_picture_orientation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:background="@drawable/ripple"
+                        android:clickable="true"
                         android:orientation="horizontal">
 
                         <com.mikepenz.iconics.view.IconicsImageView
