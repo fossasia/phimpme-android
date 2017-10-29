@@ -1,7 +1,5 @@
 package org.fossasia.phimpme.base;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
@@ -164,38 +162,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         navigationView.setBackgroundColor(color);
         setIconColor(color);
     }
-
-    /**
-     * Animate bottom navigation bar from GONE to VISIBLE
-     */
-    public void showNavigationBar() {
-        navigationView.animate()
-                .translationY(0)
-                .alpha(1.0f)
-                .setDuration(400)
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationStart(Animator animation) {
-                        super.onAnimationStart(animation);
-                        navigationView.setVisibility(View.VISIBLE);
-                    }
-                });
-    }
-
-    /**
-     * Animate bottom navigation bar from VISIBLE to GONE
-     */
     public void hideNavigationBar() {
-        navigationView.animate()
-                .alpha(0.0f)
-                .translationYBy(navigationView.getHeight())
-                .setDuration(400)
-                .setListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                        navigationView.setVisibility(View.GONE);
-                    }
-                });
+        navigationView.setVisibility(View.GONE);
     }
+
 }

@@ -4,8 +4,7 @@
     android:id="@+id/bottombar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@null"
-    android:animateLayoutChanges="true"
+    android:background="@color/white70"
     app:menu="@menu/navigation" />
 
 

@@ -186,10 +186,6 @@ public class ThemedActivity extends BaseActivity {
         return themeHelper.getCardBackgroundColor();
     }
 
-    public int getHighlightedItemColor() {
-        return themeHelper.getHighlightedItemColor();
-    }
-
     public int getIconColor() {
         return themeHelper.getIconColor();
     }
