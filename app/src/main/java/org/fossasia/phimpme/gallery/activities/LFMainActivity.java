@@ -1690,7 +1690,10 @@ public class LFMainActivity extends SharedMediaActivity {
                     }
                 });
                 builder.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
-                builder.show();
+
+                AlertDialog affixDialog = builder.create();
+                affixDialog.show();
+                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), affixDialog);
 
 
                 return true;
