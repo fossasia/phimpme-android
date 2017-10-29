@@ -358,6 +358,13 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         setupUI();
     }
 
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SP.putBoolean("auto_update_media",true);
+    }
+
     @Override
     public void onLowMemory() {
         super.onLowMemory();
