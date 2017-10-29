@@ -87,6 +87,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 
+import static org.fossasia.phimpme.gallery.activities.LFMainActivity.listAll;
 import static org.fossasia.phimpme.utilities.Utils.promptSpeechInput;
 
 
@@ -101,6 +102,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private static final String ISLOCKED_ARG = "isLocked";
     static final String ACTION_OPEN_ALBUM = "android.intent.action.pagerAlbumMedia";
     private static final String ACTION_REVIEW = "com.android.camera.action.REVIEW";
+    private int REQUEST_CODE_SD_CARD_PERMISSIONS = 42;
     private ImageAdapter adapter;
     private PreferenceUtil SP;
     private CoordinatorLayout ActivityBackground;
@@ -290,6 +292,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
 
         } else {
+
             adapter = new ImageAdapter(LFMainActivity.listAll, basicCallBack, this, this);
             getSupportActionBar().setTitle(all_photo_pos + 1 + " " + getString(R.string.of) + " " + size_all);
             current_image_pos = all_photo_pos;
@@ -301,7 +304,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     getAlbum().setCurrentPhotoIndex(position);
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
                     invalidateOptionsMenu();
-                    pathForDescription = LFMainActivity.listAll.get(position).getPath();
+                    pathForDescription = listAll.get(position).getPath();
                 }
             });
             mViewPager.scrollToPosition(all_photo_pos);
@@ -446,6 +449,12 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             return;
         }
 
+        if (resultCode == RESULT_OK &&requestCode == REQUEST_CODE_SD_CARD_PERMISSIONS ) {
+            Uri treeUri = data.getData();
+            // Persist URI in shared preference so that you can use it later.
+            ContentHelper.saveSdCardInfo(getApplicationContext(), treeUri);
+            getContentResolver().takePersistableUriPermission(treeUri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+        }
 
         if (data != null && resultCode == RESULT_OK) {
             switch (requestCode) {
@@ -503,7 +512,23 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
     private void deleteCurrentMedia() {
         if (!allPhotoMode) {
-            getAlbum().deleteCurrentMedia(getApplicationContext());
+            boolean success = getAlbum().deleteCurrentMedia(getApplicationContext());
+            if(!success){
+
+                final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
+
+                AlertDialogsHelper.getTextDialog(SingleMediaActivity.this, dialogBuilder,
+                        R.string.sd_card_write_permission_title, R.string.sd_card_permissions_message, null);
+
+                dialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                            startActivityForResult(new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE), REQUEST_CODE_SD_CARD_PERMISSIONS);
+                    }
+                });
+                dialogBuilder.show();
+            }
             if (getAlbum().getMedia().size() == 0) {
                 if (customUri) finish();
                 else {
@@ -514,7 +539,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             adapter.notifyDataSetChanged();
             getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
         } else {
-            deleteMedia(LFMainActivity.listAll.get(current_image_pos).getPath());
+            deleteMedia(listAll.get(current_image_pos).getPath());
             LFMainActivity.listAll.remove(current_image_pos);
             size_all = LFMainActivity.listAll.size();
             adapter.notifyDataSetChanged();
@@ -581,7 +606,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 if (!allPhotoMode)
                     share.putExtra(EXTRA_OUTPUT, getAlbum().getCurrentMedia().getPath());
                 else
-                    share.putExtra(EXTRA_OUTPUT, LFMainActivity.listAll.get(current_image_pos).getPath());
+                    share.putExtra(EXTRA_OUTPUT, listAll.get(current_image_pos).getPath());
                 startActivity(share);
                 return true;
 
@@ -590,7 +615,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 if (!allPhotoMode)
                     uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
                 else
-                    uri = Uri.fromFile(new File(LFMainActivity.listAll.get(current_image_pos).getPath()));
+                    uri = Uri.fromFile(new File(listAll.get(current_image_pos).getPath()));
                 String extension = uri.getPath();
                 if (extension != null) {
                     Intent editIntent = new Intent(SingleMediaActivity.this, EditImageActivity.class);
@@ -609,7 +634,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     intent.setDataAndType(
                             getAlbum().getCurrentMedia().getUri(), getAlbum().getCurrentMedia().getMimeType());
                 else
-                    intent.setDataAndType(Uri.fromFile(new File(LFMainActivity.listAll.get(current_image_pos).getPath())), StringUtils.getMimeType(LFMainActivity.listAll.get(current_image_pos).getPath()));
+                    intent.setDataAndType(Uri.fromFile(new File(listAll.get(current_image_pos).getPath())), StringUtils.getMimeType(listAll.get(current_image_pos).getPath()));
                 startActivity(Intent.createChooser(intent, getString(R.string.use_as)));
                 return true;
 
