@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.fossasia.phimpme.MyApplication;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.filter.PhotoProcessing;
@@ -100,6 +102,7 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     public void onDestroy() {
         super.onDestroy();
     //    if (filterThumbs != null)filterThumbs=null;
+        MyApplication.getRefWatcher(getActivity()).watch(this);
     }
 
     @Override
@@ -235,14 +238,21 @@ public class RecyclerMenuFragment extends BaseEditFragment {
 
         private void highlightSelectedOption(int position, View v) {
             int color = ContextCompat.getColor(v.getContext(), R.color.md_grey_200);
-            if(currentSelection != -1)
-                ((mRecyclerAdapter.mViewHolder) recyclerView.findViewHolderForAdapterPosition(currentSelection))
-                        .wrapper
-                        .setBackgroundColor(Color.TRANSPARENT);
+
+            if(currentSelection != position){
+                notifyItemChanged(currentSelection);
+                ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+            }
+
+            if(currentSelection != -1 && recyclerView.findViewHolderForAdapterPosition(currentSelection) != null) {
+                    ((mRecyclerAdapter.mViewHolder) recyclerView.findViewHolderForAdapterPosition(currentSelection))
+                            .wrapper
+                            .setBackgroundColor(Color.TRANSPARENT);
+            }
 
             ((mViewHolder) recyclerView.findViewHolderForAdapterPosition(position))
-                    .wrapper
-                    .setBackgroundColor(color);
+                 .wrapper
+                 .setBackgroundColor(color);
 
             currentSelection = position;
         }

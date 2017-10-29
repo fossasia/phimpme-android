@@ -31,7 +31,7 @@
                         android:layout_margin="20dp"
                         android:hint="@string/hint_caption"
                         android:background="@null"
-                        android:inputType="textMultiLine" />
+                        android:inputType="textMultiLine"/>
                 </RelativeLayout>
             </LinearLayout>
         </ScrollView>

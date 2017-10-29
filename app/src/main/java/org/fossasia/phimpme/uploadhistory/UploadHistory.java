@@ -44,11 +44,9 @@ public class UploadHistory extends ThemedActivity {
     @BindView(R.id.empty_text)
     TextView emptyText;
 
-
     Realm realm;
 
     private RealmQuery<UploadHistoryRealmModel> uploadResults;
-
     private UploadHistoryAdapter uploadHistoryAdapter;
 
     @Override
@@ -57,10 +55,12 @@ public class UploadHistory extends ThemedActivity {
         setContentView(R.layout.upload_history_activity);
         ButterKnife.bind(this);
         setupToolbar();
-        uploadHistoryAdapter = new UploadHistoryAdapter();
+        uploadHistoryAdapter = new UploadHistoryAdapter(getPrimaryColor());
         realm = Realm.getDefaultInstance();
         uploadResults = realm.where(UploadHistoryRealmModel.class);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
         uploadHistoryRecyclerView.setLayoutManager(layoutManager);
         uploadHistoryRecyclerView.setAdapter(uploadHistoryAdapter);
         uploadHistoryAdapter.setResults(uploadResults);
