@@ -58,7 +58,9 @@ public class UploadHistory extends ThemedActivity {
         uploadHistoryAdapter = new UploadHistoryAdapter(getPrimaryColor());
         realm = Realm.getDefaultInstance();
         uploadResults = realm.where(UploadHistoryRealmModel.class);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
         uploadHistoryRecyclerView.setLayoutManager(layoutManager);
         uploadHistoryRecyclerView.setAdapter(uploadHistoryAdapter);
         uploadHistoryAdapter.setResults(uploadResults);
