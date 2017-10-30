@@ -31,6 +31,9 @@ import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.transition.ChangeBounds;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -809,10 +812,42 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
                 final AlertDialog descriptionDialog = descriptionDialogBuilder.create();
                 descriptionDialog.show();
-                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), descriptionDialog);
+                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface
+                        .BUTTON_NEGATIVE}, getAccentColor(), descriptionDialog);
                 descriptionDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager
                         .LayoutParams.FLAG_ALT_FOCUSABLE_IM);
                 descriptionDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                descriptionDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE},
+                        getColor(R.color.grey), descriptionDialog);
+                editTextDescription.addTextChangedListener(new TextWatcher() {
+                    @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        //empty method body
+
+                    }
+
+                    @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        //empty method body
+
+                    }
+
+                    @Override public void afterTextChanged(Editable editable) {
+                        if (TextUtils.isEmpty(editable)) {
+                            // Disable ok button
+                            descriptionDialog.getButton(
+                                    AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                            AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE},
+                                    getColor(R.color.grey), descriptionDialog);
+                        } else {
+                            // Something into edit text. Enable the button.
+                            descriptionDialog.getButton(
+                                    AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                            AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE},
+                                    getAccentColor(), descriptionDialog);
+                        }
+
+                    }
+                });
                 
                 descriptionDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
