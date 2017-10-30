@@ -1041,4 +1041,6 @@
     <string name="transition_photo">transition_photo</string>
     <string name="upload_date">Date: " "</string>
     <string name="upload_time">Time: " "</string>
+    <string name="text_view">TextView</string>
+    <string name="version_one">v1.0</string>
 </resources>
