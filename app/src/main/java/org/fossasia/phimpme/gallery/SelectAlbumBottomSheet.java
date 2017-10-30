@@ -16,10 +16,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -125,11 +129,12 @@ public class SelectAlbumBottomSheet extends BottomSheetDialogFragment {
 	  @Override
 	  public void onClick(View view) {
           final EditText editText = new EditText(getContext());
-          InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-          inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+          editText.setHint(R.string.description_hint);
+          editText.setHintTextColor(ContextCompat.getColor(getContext(), R.color.grey));
           AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), theme.getDialogStyle());
           AlertDialogsHelper.getInsertTextDialog(((ThemedActivity) getActivity()), builder,
                   editText, R.string.new_folder, null);
+          builder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
 		builder.setPositiveButton(R.string.ok_action, new DialogInterface.OnClickListener() {
 		  @Override
 		  public void onClick(DialogInterface dialogInterface, int i) {
@@ -153,7 +158,44 @@ public class SelectAlbumBottomSheet extends BottomSheetDialogFragment {
                   Toast.makeText(getContext(),R.string.empty_folder_name,Toast.LENGTH_SHORT).show();
 		  }
 		});
-		builder.show();
+          final AlertDialog dialog1 = builder.create();
+          dialog1.show();
+		  AlertDialogsHelper.setButtonTextColor(new int[]{AlertDialog.BUTTON_POSITIVE, AlertDialog.BUTTON_NEGATIVE},
+		  theme.getAccentColor(), dialog1);
+          dialog1.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager
+                  .LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+          dialog1.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+          dialog1.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+		  AlertDialogsHelper.setButtonTextColor(new int[]{AlertDialog.BUTTON_POSITIVE},
+				  getResources().getColor(R.color.grey, null), dialog1);
+          editText.addTextChangedListener(new TextWatcher() {
+              @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+				  //empty method body
+
+              }
+
+              @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+				  //empty method body
+
+              }
+
+              @Override public void afterTextChanged(Editable editable) {
+                  if (TextUtils.isEmpty(editable)) {
+                      // Disable ok button
+                      dialog1.getButton(
+                              AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+					  AlertDialogsHelper.setButtonTextColor(new int[]{AlertDialog.BUTTON_POSITIVE},
+							  getResources().getColor(R.color.grey, null), dialog1);
+                  } else {
+                      // Something into edit text. Enable the button.
+                      dialog1.getButton(
+                              AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+					  AlertDialogsHelper.setButtonTextColor(new int[]{AlertDialog.BUTTON_POSITIVE},
+							  theme.getAccentColor(), dialog1);
+                  }
+
+              }
+          });
 	  }
 	});
 
