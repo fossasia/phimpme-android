@@ -175,6 +175,7 @@ public class Media implements Parcelable, Serializable {
     public MediaDetailsMap<String, String> getMainDetails(Context context){
         metadata = new MetadataItem(new File(path));
         MediaDetailsMap<String, String> details = new MediaDetailsMap<String, String>();
+        details.put(context.getString(R.string.name), getName());
         details.put(context.getString(R.string.path), path != null ? path : getUri().getEncodedPath());
         details.put(context.getString(R.string.type), getMimeType());
         String tmp;
