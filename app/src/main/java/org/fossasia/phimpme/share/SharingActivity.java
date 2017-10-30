@@ -411,8 +411,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 uploadHistory.setStatus("FAIL");
                 realm.commitTransaction();
             }
-        }
-        else {
+        } else {
             Intent result = new Intent();
             result.putExtra(Constants.SHARE_RESULT, code);
             setResult(RESULT_OK, result);
@@ -832,6 +831,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void shareToWhatsapp() {
+        triedUploading=false;
         Uri uri = Uri.fromFile(new File(saveFilePath));
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -1067,8 +1067,10 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 return;
         }
         if (requestCode == SHARE_WHATSAPP) {
-            if(responseCode == -1)
+            if(responseCode == RESULT_OK) {
+                triedUploading=true;
                 sendResult(SUCCESS);
+            }
             else
                 sendResult(FAIL);
         }
