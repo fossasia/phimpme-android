@@ -62,7 +62,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
                 android:layout_weight="5"
-                android:text="TextView"
+                android:text="@string/text_view"
                 android:textColor="@color/black"
                 android:textSize="18sp"/>
 
