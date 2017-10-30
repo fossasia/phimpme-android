@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import org.fossasia.phimpme.gallery.util.ThemeHelper;
+
 /**
  * Created by pa1pal on 16/7/17.
  */
@@ -17,6 +19,7 @@ public class SnackBarHandler  {
 
     public static void show(View view, String text, int duration) {
         final Snackbar snackbar = Snackbar.make(view, text, duration);
+        ThemeHelper themeHelper=new ThemeHelper(ActivitySwitchHelper.getContext());
         View sbView = snackbar.getView();
         TextView textView = (TextView) sbView.findViewById(android.support.design.R.id
                 .snackbar_text);
@@ -28,10 +31,12 @@ public class SnackBarHandler  {
                 snackbar.dismiss();
             }
         });
+        snackbar.setActionTextColor(themeHelper.getAccentColor());
         snackbar.show();
     }
 
     public static void showWithBottomMargin(View view, String text,int bottomMargin, int duration) {
+        ThemeHelper themeHelper=new ThemeHelper(ActivitySwitchHelper.getContext());
         final Snackbar snackbar = Snackbar.make(view, text, duration);
         View sbView = snackbar.getView();
         final FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) sbView.getLayoutParams();
@@ -51,6 +56,7 @@ public class SnackBarHandler  {
                 snackbar.dismiss();
             }
         });
+        snackbar.setActionTextColor(themeHelper.getAccentColor());
         snackbar.show();
     }
 
