@@ -38,7 +38,10 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -1770,6 +1773,8 @@ public class LFMainActivity extends SharedMediaActivity {
                 final EditText editTextNewName = new EditText(getApplicationContext());
                 editTextNewName.setText(albumsMode ? getAlbums().getSelectedAlbum(0).getName() : getAlbum().getName());
                 editTextNewName.setSelectAllOnFocus(true);
+                editTextNewName.setHint(R.string.description_hint);
+                editTextNewName.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.grey));
                 editTextNewName.setHighlightColor(ContextCompat.getColor(getApplicationContext(), R.color.cardview_shadow_start_color));
                 editTextNewName.selectAll();
                 editTextNewName.setSingleLine(false);
@@ -1791,7 +1796,37 @@ public class LFMainActivity extends SharedMediaActivity {
                 renameDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_IS_FORWARD_NAVIGATION);
                 editTextNewName.setSelection(editTextNewName.getText().toString().length());
                 renameDialog.show();
-                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), renameDialog);
+                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface
+                        .BUTTON_NEGATIVE}, getAccentColor(), renameDialog);
+                renameDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE}, getColor(R.color.grey), renameDialog);
+                editTextNewName.addTextChangedListener(new TextWatcher() {
+                    @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        //empty method body
+                    }
+
+                    @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        //empty method body
+
+                    }
+
+                    @Override public void afterTextChanged(Editable editable) {
+                        if (TextUtils.isEmpty(editable)) {
+                            // Disable ok button
+                            renameDialog.getButton(
+                                    AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                            AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE}, getColor(R.color.grey), renameDialog);
+
+                        } else {
+                            // Something into edit text. Enable the button.
+                            renameDialog.getButton(
+                                    AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                            AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE}, getAccentColor(),
+                                    renameDialog);
+                        }
+
+                    }
+                });
                 renameDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View dialog) {
