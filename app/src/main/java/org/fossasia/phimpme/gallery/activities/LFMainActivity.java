@@ -1751,8 +1751,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
                             alertDialog.setNegativeButton("Replace", new DialogInterface.OnClickListener() {
 
-                                public void onClick(DialogInterface dialog, int id) {
-                                    //mediaAdapter.swapDataSet(getAlbum().getMedia());
+                                public void onClick(DialogInterface dialog, int id) {                                  
                                     finishEditMode();
                                     invalidateOptionsMenu();
                                     SnackBarHandler.show(coordinatorLayoutMainContent, getString(R.string.photo_moved_successfully));
@@ -2189,11 +2188,9 @@ public class LFMainActivity extends SharedMediaActivity {
         }
     }
 
-
     /*
     Async Class for coping images
      */
-
     private class CopyPhotos extends AsyncTask<String, Integer, Boolean> {
 
         private String path;
@@ -2204,12 +2201,12 @@ public class LFMainActivity extends SharedMediaActivity {
             this.moveAction = moveAction;
             this.copyAction = copyAction;
         }
+        
         @Override
         protected void onPreExecute() {
             swipeRefreshLayout.setRefreshing(true);
             super.onPreExecute();
         }
-
 
         @Override
         protected Boolean doInBackground(String... arg0) {
@@ -2234,7 +2231,6 @@ public class LFMainActivity extends SharedMediaActivity {
                   SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.copied_successfully), navigationView.getHeight());
             }else
                 requestSdCardPermissions();
-
         }
     }
 }
