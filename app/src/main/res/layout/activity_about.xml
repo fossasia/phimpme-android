@@ -89,7 +89,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:padding="@dimen/sub_small_spacing"
-                        android:text="v1.0"
+                        android:text="@string/version_one"
                         android:textColor="@color/md_grey_400"
                         android:textSize="@dimen/medium_text"/>
 
