@@ -2009,7 +2009,8 @@ public class LFMainActivity extends SharedMediaActivity {
                                     public void onClick(View view) {
                                      finishAffinity();
                                     }
-                                });
+                                })
+                                .setActionTextColor(getAccentColor());
                         snackbar.show();
 
                         new Handler().postDelayed(new Runnable() {
