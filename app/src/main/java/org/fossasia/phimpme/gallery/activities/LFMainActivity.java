@@ -1693,7 +1693,10 @@ public class LFMainActivity extends SharedMediaActivity {
                     }
                 });
                 builder.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
-                builder.show();
+
+                AlertDialog affixDialog = builder.create();
+                affixDialog.show();
+                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), affixDialog);
 
 
                 return true;
@@ -1843,9 +1846,14 @@ public class LFMainActivity extends SharedMediaActivity {
                                     rename = true;
                                 }
                             } else {
-                                success = getAlbum().renameAlbum(getApplicationContext(), editTextNewName.getText().toString());
-                                toolbar.setTitle(getAlbum().getName());
-                                mediaAdapter.notifyDataSetChanged();
+                                if (!editTextNewName.getText().toString().equals(albumName)) {
+                                    success = getAlbum().renameAlbum(getApplicationContext(), editTextNewName.getText().toString());
+                                    toolbar.setTitle(getAlbum().getName());
+                                    mediaAdapter.notifyDataSetChanged();
+                                } else {
+                                    SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.rename_no_change), navigationView.getHeight());
+                                    rename = true;
+                                }
                             }
                             renameDialog.dismiss();
                             if (success) {
@@ -2014,7 +2022,8 @@ public class LFMainActivity extends SharedMediaActivity {
                                     public void onClick(View view) {
                                      finishAffinity();
                                     }
-                                });
+                                })
+                                .setActionTextColor(getAccentColor());
                         snackbar.show();
 
                         new Handler().postDelayed(new Runnable() {
