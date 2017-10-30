@@ -6,17 +6,10 @@
     android:orientation="vertical">
 
 
-    <LinearLayout
-        android:id="@+id/control_area"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@android:color/transparent"
-        android:orientation="vertical">
-
         <RelativeLayout
             android:id="@+id/button_container"
             android:layout_width="match_parent"
+            android:background="@color/black"
             android:layout_height="@dimen/editor_top_row_size">
 
             <ImageButton
@@ -87,6 +80,14 @@
 
         </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/control_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/transparent"
+        android:orientation="vertical">
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -96,7 +97,8 @@
             android:id="@+id/preview_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp" />
+            android:layout_marginTop="5dp"
+            android:visibility="gone"/>
 
 
         <View
@@ -108,6 +110,7 @@
             android:id="@+id/controls_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@null"
             android:layout_marginTop="5dp" />
 
     </LinearLayout>
@@ -116,8 +119,8 @@
         android:id="@+id/work_space"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_below="@+id/button_container"
         android:layout_above="@+id/control_area"
-        android:layout_alignParentTop="true"
         android:background="#000000">
 
         <org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouch
