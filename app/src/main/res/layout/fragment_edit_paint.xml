@@ -7,7 +7,7 @@
 
     <ImageButton
         android:id="@+id/paint_cancel"
-        android:layout_width="@dimen/icon_cancel"
+        android:layout_width="@dimen/icon_item_image_size_main"
         android:layout_height="@dimen/editor_bottom_row_size"
         android:scaleType="fitCenter"
         android:background="?android:attr/selectableItemBackground"
@@ -15,7 +15,8 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"/>
+        android:layout_alignParentLeft="true"
+        app:srcCompat="@drawable/ic_no"/>
 
     <org.fossasia.phimpme.editor.view.PaintModeView
         android:id="@+id/paint_thumb"
@@ -53,7 +54,7 @@
 
     <ImageButton
         android:id="@+id/paint_apply"
-        android:layout_width="@dimen/icon_apply"
+        android:layout_width="@dimen/icon_item_image_size_main"
         android:layout_height="@dimen/editor_bottom_row_size"
         android:layout_centerVertical="true"
         android:scaleType="fitCenter"
@@ -61,6 +62,7 @@
         android:layout_marginRight="5dp"
         android:background="?android:attr/selectableItemBackground"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        app:srcCompat="@drawable/ic_done_black_24dp"/>
 
 </RelativeLayout>

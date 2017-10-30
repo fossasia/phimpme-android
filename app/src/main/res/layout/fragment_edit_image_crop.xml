@@ -6,18 +6,20 @@
 
     <ImageButton
         android:id="@+id/crop_cancel"
-        android:layout_width="@dimen/icon_cancel"
+        android:layout_width="@dimen/icon_item_image_size_main"
         android:layout_height="@dimen/editor_bottom_row_size"
         android:scaleType="fitCenter"
         android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"
         android:layout_alignBottom="@+id/crop_hsv"
         android:layout_alignParentLeft="true"
-        android:background="?android:attr/selectableItemBackground" />
+        android:background="?android:attr/selectableItemBackground"
+        app:srcCompat="@drawable/ic_no" />
 
-    <HorizontalScrollView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_centerVertical="true"
+        android:orientation="vertical"
         android:id="@+id/crop_hsv"
         android:layout_height="@dimen/editor_bottom_row_size"
         android:layout_toRightOf="@+id/crop_cancel"
@@ -25,22 +27,31 @@
         android:layout_weight="1" >
 
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/image_crop"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+        </LinearLayout>
+        <LinearLayout
             android:id="@+id/ratio_list_group"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="horizontal" >
         </LinearLayout>
-    </HorizontalScrollView>
+    </LinearLayout>
 
 
     <ImageButton
         android:id="@+id/crop_apply"
-        android:layout_width="@dimen/icon_apply"
+        android:layout_width="@dimen/icon_item_image_size_main"
         android:layout_height="@dimen/editor_bottom_row_size"
         android:layout_alignParentRight="true"
         android:foregroundGravity="center_vertical"
         android:scaleType="fitCenter"
         android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"
-        android:background="?android:attr/selectableItemBackground" />
+        android:background="?android:attr/selectableItemBackground"
+        app:srcCompat="@drawable/ic_done_black_24dp" />
 </RelativeLayout>
