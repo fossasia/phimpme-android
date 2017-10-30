@@ -137,6 +137,7 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher {
         colorPicker.setOnColorChangedListener(new OnColorChangedListener() {
             @Override
             public void onColorChanged(int c) {
+                mTextColorSelector.setColorFilter(c);
                 dialogTitle.setBackgroundColor(c);
                 changeTextColor(colorPicker.getColor());
 
