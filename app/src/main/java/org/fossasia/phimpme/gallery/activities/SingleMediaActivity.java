@@ -819,12 +819,13 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     public void onClick(View v) {
                         descriptionDialog.dismiss();
                         voiceInput = editTextDescription.getText().toString();
-                        if (temp == null) {
-                            databaseHelper.addImageDesc(new ImageDescModel(pathForDescription, editTextDescription.getText().toString()));
-                        } else {
-                            databaseHelper.update(new ImageDescModel(pathForDescription, editTextDescription.getText().toString()));
+                        if (!voiceInput.trim().isEmpty()) {
+                            if (temp == null) {
+                                databaseHelper.addImageDesc(new ImageDescModel(pathForDescription, editTextDescription.getText().toString()));
+                            } else {
+                                databaseHelper.update(new ImageDescModel(pathForDescription, editTextDescription.getText().toString()));
+                            }
                         }
-
                     }
                 });
                 break;
