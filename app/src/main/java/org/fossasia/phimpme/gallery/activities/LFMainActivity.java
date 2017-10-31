@@ -74,6 +74,7 @@ import org.fossasia.phimpme.gallery.data.HandlingAlbums;
 import org.fossasia.phimpme.gallery.data.Media;
 import org.fossasia.phimpme.gallery.data.base.MediaComparators;
 import org.fossasia.phimpme.gallery.data.base.SortingOrder;
+import org.fossasia.phimpme.gallery.data.providers.MediaStoreProvider;
 import org.fossasia.phimpme.gallery.data.providers.StorageProvider;
 import org.fossasia.phimpme.gallery.util.Affix;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
@@ -1708,10 +1709,12 @@ public class LFMainActivity extends SharedMediaActivity {
                 bottomSheetDialogFragment.setTitle(getString(R.string.move_to));
                 bottomSheetDialogFragment.setSelectAlbumInterface(new SelectAlbumBottomSheet.SelectAlbumInterface() {
                     @Override
-                    public void folderSelected(String path) {
+                    public void folderSelected(final String path) {
                         swipeRefreshLayout.setRefreshing(true);
                         int numberOfImagesMoved;
+
                         if ((numberOfImagesMoved = getAlbum().moveSelectedMedia(getApplicationContext(), path)) > 0) {
+
                             if (getAlbum().getMedia().size() == 0) {
                                 getAlbums().removeCurrentAlbum();
                                 albumsAdapter.notifyDataSetChanged();
@@ -1723,7 +1726,44 @@ public class LFMainActivity extends SharedMediaActivity {
                             if(numberOfImagesMoved > 1)
                                 SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.photos_moved_successfully), navigationView.getHeight());
                             else
+
                                 SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.photo_moved_successfully), navigationView.getHeight());
+                          
+                        }else if(numberOfImagesMoved==-1 && getAlbum().getPath().equals(path)) //moving to the same folder
+
+                        {
+
+                            AlertDialog.Builder alertDialog = new AlertDialog.Builder(LFMainActivity.this,getDialogStyle());
+                            alertDialog.setCancelable(false);
+                            AlertDialogsHelper.getTextDialog(LFMainActivity.this, alertDialog,R.string.move_to,R.string.move,null);
+
+                            alertDialog.setNeutralButton( "More copies", new DialogInterface.OnClickListener() {
+
+                                public void onClick(DialogInterface dialog, int id) {
+
+                                    new CopyPhotos(path,true,false).execute();
+
+                                }
+                            });
+
+                            alertDialog.setPositiveButton( "Cancel", new DialogInterface.OnClickListener() {
+
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                } });
+
+                            alertDialog.setNegativeButton("Replace", new DialogInterface.OnClickListener() {
+
+                                public void onClick(DialogInterface dialog, int id) {                                  
+                                    finishEditMode();
+                                    invalidateOptionsMenu();
+                                    SnackBarHandler.show(coordinatorLayoutMainContent, getString(R.string.photo_moved_successfully));
+                                }});
+
+                            AlertDialog alert = alertDialog.create();
+
+                            alert.show();
+
                         } else requestSdCardPermissions();
 
                         swipeRefreshLayout.setRefreshing(false);
@@ -1739,29 +1779,10 @@ public class LFMainActivity extends SharedMediaActivity {
                 bottomSheetDialogFragment.setSelectAlbumInterface(new SelectAlbumBottomSheet.SelectAlbumInterface() {
                     @Override
                     public void folderSelected(String path) {
-                        for(int i = 0; i < getAlbum().getSelectedMedia().size(); i++){
 
-                            File file = new File(path + "/" + getAlbum().getSelectedMedia(i).getName()+
-                                    getAlbum()
-                                            .getSelectedMedia(i).getPath().substring
-                                            (getAlbum().getSelectedMedia(i).getPath().lastIndexOf(".")));
-                            if(file.exists()){
-                                getAlbum().getSelectedMedia().remove(i);
-                            }
-                        }
-                        if(getAlbum().getSelectedMedia().size() == 0){
-                            bottomSheetDialogFragment.dismiss();
-                            SnackBarHandler.show(coordinatorLayoutMainContent, getString(R.string.photos_already_there));
-                        }
-                        else{
-                            boolean success = getAlbum().copySelectedPhotos(getApplicationContext(), path);
-                            finishEditMode();
-                            bottomSheetDialogFragment.dismiss();
-                            if (!success)
-                                requestSdCardPermissions();
-                            else
-                                SnackBarHandler.show(coordinatorLayoutMainContent, getString(R.string.copied_successfully));
-                        }
+                        new CopyPhotos(path,false,true).execute();
+                        bottomSheetDialogFragment.dismiss();
+
                     }
 
                 });
@@ -2199,6 +2220,52 @@ public class LFMainActivity extends SharedMediaActivity {
             swipeRefreshLayout.setRefreshing(false);
             albumsAdapter.swapDataSet(getAlbums().dispAlbums);
             new PrepareAlbumTask().execute();
+        }
+    }
+
+    /*
+    Async Class for coping images
+     */
+    private class CopyPhotos extends AsyncTask<String, Integer, Boolean> {
+
+        private String path;
+        private Boolean moveAction, copyAction;
+        CopyPhotos(String path, Boolean moveAction,Boolean copyAction)
+        {
+            this.path = path;
+            this.moveAction = moveAction;
+            this.copyAction = copyAction;
+        }
+        
+        @Override
+        protected void onPreExecute() {
+            swipeRefreshLayout.setRefreshing(true);
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... arg0) {
+            boolean success = getAlbum().copySelectedPhotos(getApplicationContext(), path);
+            MediaStoreProvider.getAlbums(LFMainActivity.this);
+            getAlbum().updatePhotos(getApplicationContext());
+            return success;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if(result)
+            {
+                mediaAdapter.swapDataSet(getAlbum().getMedia());
+                mediaAdapter.notifyDataSetChanged();
+                invalidateOptionsMenu();
+                swipeRefreshLayout.setRefreshing(false);
+                finishEditMode();
+                if(moveAction)
+                  SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.photos_moved_successfully), navigationView.getHeight()); 
+                else if(copyAction)
+                  SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.copied_successfully), navigationView.getHeight());
+            }else
+                requestSdCardPermissions();
         }
     }
 }

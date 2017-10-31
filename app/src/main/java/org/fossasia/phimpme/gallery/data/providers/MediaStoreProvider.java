@@ -70,7 +70,7 @@ public class  MediaStoreProvider {
 		return false;
 	}
 
-	private static ArrayList<Album> getAlbums(Context context) {
+	public static ArrayList<Album> getAlbums(Context context) {
 		ArrayList<Album> list = new ArrayList<Album>();
 
 		String[] projection = new String[]{
