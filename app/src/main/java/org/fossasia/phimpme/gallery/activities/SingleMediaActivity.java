@@ -1099,7 +1099,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     slideshow=true;
                     int intValue = Integer.parseInt(value);
                     SLIDE_SHOW_INTERVAL = intValue * 1000;
-                    toggleSystemUI();
+                    hideSystemUI();
                     handler.postDelayed(slideShowRunnable, SLIDE_SHOW_INTERVAL);
                 }
             }
