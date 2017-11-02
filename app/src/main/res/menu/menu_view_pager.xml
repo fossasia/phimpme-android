@@ -19,6 +19,11 @@
             android:id="@+id/action_move"
             app:showAsAction="never"
             android:title="Move"/>
+
+        <item
+            android:id="@+id/action_cover"
+            app:showAsAction="never"
+            android:title="Make Album Cover"/>
     </group>
 
     <item

@@ -430,6 +430,7 @@
     <string name="update_action">UPDATE</string>
     <string name="description_hint">Write something!</string>
     <string name="save_action">Save</string>
+    <string name="change_cover">Album cover changed..</string>
     <string name="rename_photo_action">Rename photo</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
