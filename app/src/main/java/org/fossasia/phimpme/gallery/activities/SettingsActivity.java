@@ -180,6 +180,14 @@ public class SettingsActivity extends ThemedActivity {
             }
         });
 
+        /*** RESET SETTINGS ***/
+        findViewById(R.id.ll_reset_settings).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resetSettingsDialog();
+            }
+        });
+
         /*** SW SWIPE DIRECTION ***/
         swSwipeDirection = (SwitchCompat) findViewById(R.id.Set_media_viewer_swipe_direction);
         swSwipeDirection.setChecked(SP.getBoolean(getString(R.string.preference_swipe_direction_inverted), false));
@@ -853,6 +861,8 @@ public class SettingsActivity extends ThemedActivity {
         ((IconicsImageView) findViewById(R.id.camera_icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.map_provider_icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.media_viewer_swipe_direction_Icon)).setColor(color);
+        ((IconicsImageView) findViewById(R.id.reset_settings_Icon)).setColor(color);
+
 
         /** TextViews **/
         color = getTextColor();
@@ -872,6 +882,7 @@ public class SettingsActivity extends ThemedActivity {
         ((TextView) findViewById(R.id.camera_item_title)).setTextColor(color);
         ((TextView) findViewById(R.id.map_provider_item_title)).setTextColor(color);
         ((TextView) findViewById(R.id.media_viewer_swipe_direction_Item)).setTextColor(color);
+        ((TextView) findViewById(R.id.reset_settings_Item)).setTextColor(color);
 
         /** Sub Text Views**/
         color = getSubTextColor();
@@ -891,6 +902,7 @@ public class SettingsActivity extends ThemedActivity {
         ((TextView) findViewById(R.id.map_provider_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.media_viewer_swipe_direction_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.camera_item_sub)).setTextColor(color);
+        ((TextView) findViewById(R.id.reset_settings_Item_sub)).setTextColor(color);
     }
 
 
@@ -918,6 +930,25 @@ public class SettingsActivity extends ThemedActivity {
 
     }
 
+    private void resetSettingsDialog() {
+
+        final AlertDialog.Builder resetDialog = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
+
+        AlertDialogsHelper.getTextDialog(SettingsActivity.this,resetDialog,
+                R.string.reset, R.string.reset_settings, null);
+
+        resetDialog.setNegativeButton(this.getString(R.string.no_action).toUpperCase(), null);
+        resetDialog.setPositiveButton(this.getString(R.string.yes_action).toUpperCase(), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                SP.clearPreferences();
+                recreate();
+            }
+        });
+        AlertDialog alertDialog = resetDialog.create();
+        alertDialog.show();
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
+
+    }
     private void openDialog(final Context context){
         AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
         passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
