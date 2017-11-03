@@ -699,6 +699,9 @@
     <string name="device">Device</string>
     <string name="orientation">Orientation</string>
     <string name="location">Location</string>
+    <string name="no_description">No description added.</string>
+    <string name="no_location">No location</string>
+    <string name="no_exif_data">No data found.</string>
 
     <!--ALBUM DETAILS-->
     <string name="total_photos">Total photos</string>
