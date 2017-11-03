@@ -406,23 +406,5 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory
-        android:key="preference_category_online"
-        android:title="@string/preference_category_online">
-
-        <!--  if we move this to another PreferenceGroup, we should update code for the findPreference() call -->
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="preference_use_camera2"
-            android:summary="@string/preference_use_camera2_summary"
-            android:title="@string/preference_use_camera2" />
-
-        <Preference
-            android:icon="@drawable/ic_power_settings_new_white_48dp"
-            android:key="preference_reset"
-            android:summary="@string/preference_reset_summary"
-            android:title="@string/preference_reset" />
-
-    </PreferenceCategory>
 
 </PreferenceScreen>
