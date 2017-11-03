@@ -781,9 +781,21 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         imgResolution.setText(mediaDetailsMap.get("Resolution"));
                         imgPath.setText(mediaDetailsMap.get("Path").toString());
                         imgOrientation.setText(mediaDetailsMap.get("Orientation"));
-                        imgDesc.setText(mediaDetailsMap.get("Description"));
-                        imgExif.setText(mediaDetailsMap.get("EXIF"));
-                        imgLocation.setText(mediaDetailsMap.get("Location").toString());
+                         if(mediaDetailsMap.get("Description") == null) {
+                             imgDesc.setText(R.string.no_description);
+                         } else{
+                             imgDesc.setText(mediaDetailsMap.get("Description"));
+                         }
+                         if(mediaDetailsMap.get("EXIF") == null){
+                             imgExif.setText(R.string.no_exif_data);
+                         } else {
+                             imgExif.setText(mediaDetailsMap.get("EXIF"));
+                         }
+                         if(mediaDetailsMap.get("Location") == null){
+                             imgLocation.setText(R.string.no_location);
+                         } else{
+                             imgLocation.setText(mediaDetailsMap.get("Location").toString());
+                         }
                     }
                     catch (Exception e){
                         //Raised if null values is found, no need to handle

@@ -112,9 +112,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="No Location"
-                android:id="@+id/image_desc_loc"
                 android:textColor="@color/md_grey_500"
+                android:id="@+id/image_desc_loc"
                 android:textSize="@dimen/medium_text"/>
 
         </LinearLayout>
@@ -296,6 +295,8 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textSize="@dimen/medium_text"
+                        android:textColor="@color/md_grey_500"
                         android:id="@+id/image_desc_exif"
                         android:layout_marginLeft="5dp"/>
 
@@ -318,6 +319,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/image_desc"
+                        android:textSize="@dimen/medium_text"
+                        android:textColor="@color/md_grey_500"
                         android:layout_marginLeft="5dp"/>
 
                 </LinearLayout>
