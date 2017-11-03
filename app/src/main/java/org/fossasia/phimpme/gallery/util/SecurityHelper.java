@@ -2,6 +2,7 @@ package org.fossasia.phimpme.gallery.util;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.view.View;
@@ -19,6 +20,7 @@ public class SecurityHelper {
     private boolean passwordOnDelete;
     private boolean passwordOnHidden;
     private String passwordValue;
+    private TextInputLayout passwordTextInputLayout;
 
     private Context context;
     public SecurityHelper(Context context){
@@ -48,6 +50,9 @@ public class SecurityHelper {
         final TextView passwordDialogTitle = (TextView) PasswordDialogLayout.findViewById(R.id.password_dialog_title);
         final CardView passwordDialogCard = (CardView) PasswordDialogLayout.findViewById(R.id.password_dialog_card);
         final EditText editxtPassword = (EditText) PasswordDialogLayout.findViewById(R.id.password_edittxt);
+        passwordTextInputLayout = (TextInputLayout) PasswordDialogLayout.findViewById(R.id.password_text_input_layout);
+        passwordTextInputLayout.setError(context.getString(R.string.wrong_password));
+        passwordTextInputLayout.setVisibility(View.GONE);
 
         passwordDialogTitle.setBackgroundColor(activity.getPrimaryColor());
         passwordDialogCard.setBackgroundColor(activity.getCardBackgroundColor());
@@ -56,5 +61,9 @@ public class SecurityHelper {
         editxtPassword.setTextColor(activity.getTextColor());
         passwordDialog.setView(PasswordDialogLayout);
         return editxtPassword;
+    }
+
+    public TextInputLayout getTextInputLayout(){
+        return passwordTextInputLayout;
     }
 }
