@@ -26,6 +26,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.print.PrintHelper;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -239,6 +240,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             bottomMenu.getItem(i).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
+                    stopHandler();
                     return onOptionsItemSelected(item);
                 }
             });
@@ -394,6 +396,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     @Override
     protected void onStop() {
         super.onStop();
+        stopHandler();
         SP.putBoolean("auto_update_media",true);
     }
 
@@ -403,6 +406,14 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         Glide.get(getApplicationContext()).clearMemory();
         Glide.get(getApplicationContext()).trimMemory(TRIM_MEMORY_COMPLETE);
         System.gc();
+    }
+
+    @Override
+    public boolean onMenuOpened(int featureId, Menu menu) {
+        if (featureId == AppCompatDelegate.FEATURE_SUPPORT_ACTION_BAR && menu != null)
+            stopHandler();
+
+        return super.onMenuOpened(featureId, menu);
     }
 
     @Override
