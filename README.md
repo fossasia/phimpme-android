@@ -37,7 +37,7 @@ Do you have many different apps in your Android Phone for the purpose of clickin
 
 ## Features
 
-* Click beautiful image from Phimpme app. Use various advance scene modes, and variety of While balance modes.
+* Click beautiful images using the Phimp.me app. Use various advanced scene modes, and variety of balance modes.
 
 * You can use your voice actions to invoke Camera, Just say "Ok Google click a picture". You can also select front and rear camera based on voice.
 
@@ -47,17 +47,17 @@ Do you have many different apps in your Android Phone for the purpose of clickin
 
 * Enhance contrast, hue, satur, temp, tint and sharpness of the image.
 
-* Crop and rotate feature from Transform section.
+* Use 'Crop and rotate' features from Transform section to get your perfect image.
 
-* Apply different stickers of facial, express, objects, comments, wishes, emojis, hashtag
+* Apply different stickers - facial, express, objects, comments, wishes, emojis, hashtag
 
-* You can also write anything on images in your handwriting.
+* Write anything on the images in your handwriting!!.
 
-* To fast the process, user can use the undo and redo features present in the editor.
+* Don't be afraid to experiment as you can easily go back and forth with 'redo' and 'undo'.
 
-* Finally, after all set, you can share the image to world using many connected social accounts.
+* Finally, after all this editing you can easily share the image to your favourite social media sites with our easy-to-use sharing feature.
 
-* Facebook, Twitter, NextCloud, OwnCloud, Imgur, Dropbox, Box, Flickr, Pinterest, Instagram, Whatsapp and tumblr are working fine.
+* Facebook, Twitter, NextCloud, OwnCloud, Imgur, Dropbox, Box, Flickr, Pinterest, Instagram, Whatsapp and Tumblr - You name it and we have it covered.
 
 ---
 
@@ -72,7 +72,7 @@ We have the following branches
  * **development**
 	 All development goes on in this branch. If you're making a contribution,
 	 you are supposed to make a pull request to _development_.
-	 Make sure it pass a build check on Travis
+	 Make sure it passes a build check on Travis
 
 	 It is advisable to clone only the development branch using following command:
 
@@ -127,9 +127,9 @@ Before you begin, you should have already downloaded the Android Studio SDK and 
 
 7. Once all build errors have been resolved, you should be all set to build the app and test it.
 
-8. To Build the app, go to *Build>Make Project* (or alternatively press the Make Project icon in the toolbar).
+8. To Build the app, go to *Build > Make Project* (or alternatively press the Make Project icon in the toolbar).
 
-9. If the app was built succesfully, you can test it by running it on either a real device or an emulated one by going to *Run>Run 'app'* or pressing the Run icon in the toolbar.
+9. If the app was built succesfully, you can test it by running it on either a real device or an emulated one by going to *Run > Run 'app'* or pressing the Run icon in the toolbar.
 
 10. **To enable the sharing features to different account, add API_KEY/ APP_ID associated with accounts**. Add the Keys in `constant.java` and `strings.xml`. Following are the links of developer pages of account. Go there to create apps and get keys.
     * Facebook: https://developers.facebook.com
@@ -145,7 +145,7 @@ Before you begin, you should have already downloaded the Android Studio SDK and 
 
 ## License
 
-This project is currently licensed under the GNU General Public License v3. A copy of [LICENSE](LICENSE.md) is to be present along with the source code. To obtain the software under a different license, please contact FOSSASIA.
+This project is currently licensed under the GNU General Public License v3. A copy of [LICENSE](LICENSE.md) is to be present along with the source code. To obtain the software under a different license, please contact [FOSSASIA](http://fossasia.com/).
 
 ---
 
