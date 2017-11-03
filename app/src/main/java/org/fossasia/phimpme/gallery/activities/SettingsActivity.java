@@ -424,6 +424,7 @@ public class SettingsActivity extends ThemedActivity {
                     passwordDialog.dismiss();
                     startActivity(new Intent(getApplicationContext(), SecurityActivity.class));
                 } else {
+                    securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
                     SnackBarHandler.show(parent,R.string.wrong_password);
                     editTextPassword.getText().clear();
                     editTextPassword.requestFocus();
