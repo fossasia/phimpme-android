@@ -64,6 +64,9 @@
     <string name="scene_mode">Scene mode</string>
     <string name="white_balance">White balance</string>
     <string name="title">Title</string>
+    <string name="reset">Reset Settings</string>
+    <string name="reset_sub_text">Reset all settings to default</string>
+    <string name="reset_settings">Are you sure you want to restore the default settings?</string>
 
     <string name="angle">Angle</string>
     <string name="direction">Direction</string>
@@ -430,6 +433,7 @@
     <string name="update_action">UPDATE</string>
     <string name="description_hint">Write something!</string>
     <string name="save_action">Save</string>
+    <string name="change_cover">Album cover changed..</string>
     <string name="rename_photo_action">Rename photo</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
@@ -518,6 +522,7 @@
     <string name="discard_rotate_message">Are you sure you want to discard the rotation changes?</string>
     <string name="discard_text_message">Are you sure you want to discard the added text?</string>
     <string name="discard_paint_message">Are you sure you want to discard the added paint?</string>
+    <string name="move">Do you want to replace these files or make more copies of them?</string>
 
     <!-- ITEMS -->
     <string name="singular_photo">Photo</string>

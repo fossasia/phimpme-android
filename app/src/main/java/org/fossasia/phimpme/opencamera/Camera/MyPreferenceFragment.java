@@ -276,11 +276,6 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
                 }
             });
         }
-        else {
-        	Preference pref = findPreference("preference_use_camera2");
-        	PreferenceGroup pg = (PreferenceGroup)this.findPreference("preference_category_online");
-        	pg.removePreference(pref);
-        }
         
 
         {
@@ -338,44 +333,7 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
                 }
             });
         }
-		{
-            final Preference pref = findPreference("preference_reset");
-            pref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference arg0) {
-                	if( pref.getKey().equals("preference_reset") ) {
-                		if( MyDebug.LOG )
-                			Log.d(TAG, "user clicked reset");
-    				    new AlertDialog.Builder(MyPreferenceFragment.this.getActivity())
-			        	.setIcon(android.R.drawable.ic_dialog_alert)
-			        	.setTitle(R.string.preference_reset)
-			        	.setMessage(R.string.preference_reset_question)
-			        	.setPositiveButton(R.string.answer_yes, new DialogInterface.OnClickListener() {
-			        		@Override
-					        public void onClick(DialogInterface dialog, int which) {
-		                		if( MyDebug.LOG )
-		                			Log.d(TAG, "user confirmed reset");
-		                		SharedPreferences.Editor editor = sharedPreferences.edit();
-		                		editor.clear();
-		                		editor.putBoolean(PreferenceKeys.getFirstTimePreferenceKey(), true);
-		                		editor.apply();
-								CameraActivity main_activity = new CameraActivity();
-								main_activity.setDeviceDefaults(getActivity());
-		                		if( MyDebug.LOG )
-		                			Log.d(TAG, "user clicked reset - need to restart");
-		                		Intent i = getActivity().getBaseContext().getPackageManager().getLaunchIntentForPackage(getActivity().getBaseContext().getPackageName() );
-								i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-								startActivity(i);
-					        }
-			        	})
 
-			        	.setNegativeButton(R.string.answer_no, null)
-			        	.show();
-                	}
-                	return false;
-                }
-            });
-        }
 	}
 
 	public static class SaveFolderChooserDialog extends FolderChooserDialog {
