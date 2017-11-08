@@ -1187,8 +1187,8 @@ public class LFMainActivity extends SharedMediaActivity {
                 getAlbums().getSelectedAlbum(0).settings.togglePin(getApplicationContext());
                 getAlbums().sortAlbums(getApplicationContext());
                 getAlbums().clearSelectedAlbums();
-                albumsAdapter.swapDataSet(getAlbums().dispAlbums);
                 invalidateOptionsMenu();
+                albumsAdapter.notifyDataSetChanged();
                 return true;
 
             case R.id.settings:

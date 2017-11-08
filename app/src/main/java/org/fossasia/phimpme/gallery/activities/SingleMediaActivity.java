@@ -66,6 +66,7 @@ import org.fossasia.phimpme.editor.utils.BitmapUtils;
 import org.fossasia.phimpme.gallery.SelectAlbumBottomSheet;
 import org.fossasia.phimpme.gallery.adapters.ImageAdapter;
 import org.fossasia.phimpme.gallery.data.Album;
+import org.fossasia.phimpme.gallery.data.AlbumSettings;
 import org.fossasia.phimpme.gallery.data.Media;
 import org.fossasia.phimpme.gallery.data.base.MediaDetailsMap;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
@@ -732,6 +733,12 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
                 return true;
 
+            case R.id.action_cover:
+                AlbumSettings albumSettings = AlbumSettings.getSettings(getApplicationContext(), getAlbum());
+                albumSettings.changeCoverPath(getApplicationContext(), getAlbum().getCurrentMedia().getPath());
+                SnackBarHandler.show(parentView, R.string.change_cover);
+                return true;
+
             case R.id.action_details:
                 handler.removeCallbacks(slideShowRunnable);
                 details=true;
@@ -774,9 +781,21 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         imgResolution.setText(mediaDetailsMap.get("Resolution"));
                         imgPath.setText(mediaDetailsMap.get("Path").toString());
                         imgOrientation.setText(mediaDetailsMap.get("Orientation"));
-                        imgDesc.setText(mediaDetailsMap.get("Description"));
-                        imgExif.setText(mediaDetailsMap.get("EXIF"));
-                        imgLocation.setText(mediaDetailsMap.get("Location").toString());
+                         if(mediaDetailsMap.get("Description") == null) {
+                             imgDesc.setText(R.string.no_description);
+                         } else{
+                             imgDesc.setText(mediaDetailsMap.get("Description"));
+                         }
+                         if(mediaDetailsMap.get("EXIF") == null){
+                             imgExif.setText(R.string.no_exif_data);
+                         } else {
+                             imgExif.setText(mediaDetailsMap.get("EXIF"));
+                         }
+                         if(mediaDetailsMap.get("Location") == null){
+                             imgLocation.setText(R.string.no_location);
+                         } else{
+                             imgLocation.setText(mediaDetailsMap.get("Location").toString());
+                         }
                     }
                     catch (Exception e){
                         //Raised if null values is found, no need to handle

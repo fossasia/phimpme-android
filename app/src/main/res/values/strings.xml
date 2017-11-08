@@ -64,6 +64,9 @@
     <string name="scene_mode">Scene mode</string>
     <string name="white_balance">White balance</string>
     <string name="title">Title</string>
+    <string name="reset">Reset Settings</string>
+    <string name="reset_sub_text">Reset all settings to default</string>
+    <string name="reset_settings">Are you sure you want to restore the default settings?</string>
 
     <string name="angle">Angle</string>
     <string name="direction">Direction</string>
@@ -430,6 +433,7 @@
     <string name="update_action">UPDATE</string>
     <string name="description_hint">Write something!</string>
     <string name="save_action">Save</string>
+    <string name="change_cover">Album cover changed..</string>
     <string name="rename_photo_action">Rename photo</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
@@ -695,6 +699,9 @@
     <string name="device">Device</string>
     <string name="orientation">Orientation</string>
     <string name="location">Location</string>
+    <string name="no_description">No description added.</string>
+    <string name="no_location">No location</string>
+    <string name="no_exif_data">No data found.</string>
 
     <!--ALBUM DETAILS-->
     <string name="total_photos">Total photos</string>
