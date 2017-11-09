@@ -8,6 +8,12 @@
             android:id="@+id/action_use_as"
             android:title="@string/use_as"
             app:showAsAction="never" />
+
+        <item
+            android:id="@+id/action_favourites"
+            android:title="@string/favourite"
+            app:showAsAction="never" />
+
     </group>
 
     <group android:id="@+id/on_internal_storage">
