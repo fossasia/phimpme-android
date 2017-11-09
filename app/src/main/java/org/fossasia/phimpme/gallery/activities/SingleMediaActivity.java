@@ -59,6 +59,7 @@ import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.SharedMediaActivity;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
+import org.fossasia.phimpme.data.local.FavouriteImagesModel;
 import org.fossasia.phimpme.data.local.ImageDescModel;
 import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.FileUtils;
@@ -89,6 +90,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
+import io.realm.RealmQuery;
 
 import static org.fossasia.phimpme.gallery.activities.LFMainActivity.listAll;
 import static org.fossasia.phimpme.utilities.Utils.promptSpeechInput;
@@ -127,6 +129,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     public int current_image_pos;
     private Uri uri;
     private Realm realm;
+    private FavouriteImagesModel fav;
     private DatabaseHelper databaseHelper;
     private Handler handler;
     private Runnable runnable;
@@ -192,7 +195,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             }
         };
         startHandler();
-
+        overridePendingTransition(R.anim.media_zoom_in,0);
         SP = PreferenceUtil.getInstance(getApplicationContext());
         securityObj = new SecurityHelper(SingleMediaActivity.this);
         allPhotoMode = getIntent().getBooleanExtra(getString(R.string.all_photo_mode), false);
@@ -647,6 +650,31 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 Bitmap bitmap = BitmapFactory.decodeFile(getAlbum().getCurrentMedia().getPath(), new BitmapFactory.Options());
                 photoPrinter.printBitmap(getString(R.string.print), bitmap);
                 return true;
+
+            case R.id.action_favourites:
+                realm = Realm.getDefaultInstance();
+                uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
+                String realpath = String.valueOf(uri);
+                RealmQuery<FavouriteImagesModel> query = realm.where(FavouriteImagesModel.class).equalTo("path",
+                        realpath);
+                if(query.count() == 0){
+                    realm.beginTransaction();
+                    fav = realm.createObject(FavouriteImagesModel.class,
+                            realpath);
+                    ImageDescModel q = realm.where(ImageDescModel.class).equalTo("path", realpath).findFirst();
+                    if(q != null) {
+                        fav.setDescription(q.getTitle());
+                    }
+                    else{
+                        fav.setDescription(" ");
+                    }
+                    realm.commitTransaction();
+                    SnackBarHandler.show(parentView, R.string.add_favourite );
+                }
+                else{
+                    SnackBarHandler.show(parentView, R.string.check_favourite);
+                }
+                break;
 
             case R.id.action_delete:
                 handler.removeCallbacks(slideShowRunnable);

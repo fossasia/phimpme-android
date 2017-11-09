@@ -434,6 +434,8 @@
     <string name="description_hint">Write something!</string>
     <string name="save_action">Save</string>
     <string name="change_cover">Album cover changed..</string>
+    <string name="add_favourite">Image is succesfully added to the favourites collection.</string>
+    <string name="check_favourite">Image is already present in the favourites collection.</string>
     <string name="rename_photo_action">Rename photo</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
@@ -465,6 +467,7 @@
     <string name="copy_to">Copy to</string>
     <string name="move_to">Move to</string>
     <string name="use_as">Use as</string>
+    <string name="favourite">Add to favourites</string>
     <string name="edit">Edit</string>
     <string name="fix_date">Fix date</string>
     <string name="rename">Rename</string>
