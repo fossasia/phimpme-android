@@ -13,6 +13,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -71,6 +72,7 @@ import org.fossasia.phimpme.gallery.data.AlbumSettings;
 import org.fossasia.phimpme.gallery.data.Media;
 import org.fossasia.phimpme.gallery.data.base.MediaDetailsMap;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
+import org.fossasia.phimpme.gallery.util.BlurImageUtil;
 import org.fossasia.phimpme.gallery.util.ColorPalette;
 import org.fossasia.phimpme.gallery.util.ContentHelper;
 import org.fossasia.phimpme.gallery.util.Measure;
@@ -770,10 +772,14 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             case R.id.action_details:
                 handler.removeCallbacks(slideShowRunnable);
                 details=true;
-                View v = getLayoutInflater().inflate(R.layout.image_description,mViewPager,false);
+                final View v = getLayoutInflater().inflate(R.layout.image_description,mViewPager,false);
                 LinearLayout linearLayout = (LinearLayout)v;
                 Media media = getAlbum().getCurrentMedia();
                 MediaDetailsMap<String,String> mediaDetailsMap = media.getMainDetails(this);
+
+                // Set current image as a blurred background
+                Bitmap blurBackground = BlurImageUtil.blur(context, BitmapFactory.decodeFile(media.getPath()));
+                v.setBackground(new BitmapDrawable(getResources(), blurBackground));
 
                 /* Getting all the viewgroups and views of the image description layout */
 
@@ -789,13 +795,12 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 TextView  imgDesc = (TextView) linearLayout.findViewById(R.id.image_desc);
                 ImageButton imgBack = (ImageButton) linearLayout.findViewById(R.id.img_desc_back_arrow);
 
-                LinearLayout linearLayoutTop = (LinearLayout) linearLayout.findViewById(R.id.image_desc_top);
-                linearLayoutTop.setBackgroundColor(this.getPrimaryColor());
-
                 imgBack.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         setContentView(parentView);
+                        details = false;
+                        toggleSystemUI();
                     }
                 });
 
@@ -828,6 +833,8 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     catch (Exception e){
                         //Raised if null values is found, no need to handle
                     }
+
+                toggleSystemUI();
                 setContentView(v);
                 break;
 
@@ -1085,6 +1092,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     public void onBackPressed() {
         if (details) {
             setContentView(parentView);
+            toggleSystemUI();
             details = false;
         } else
             super.onBackPressed();
