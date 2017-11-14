@@ -625,7 +625,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 else
                     uri = Uri.fromFile(new File(listAll.get(current_image_pos).getPath()));
                 String extension = uri.getPath();
-                if (extension != null) {
+                if (extension != null && !(extension.substring(extension.lastIndexOf(".")).equals(".gif"))) {
                     Intent editIntent = new Intent(SingleMediaActivity.this, EditImageActivity.class);
                     editIntent.putExtra("extra_input", uri.getPath());
                     editIntent.putExtra("extra_output", FileUtils.genEditFile(FileUtils.getExtension(extension)).getAbsolutePath());
