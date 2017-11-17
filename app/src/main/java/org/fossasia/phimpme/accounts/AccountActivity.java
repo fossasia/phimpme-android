@@ -134,7 +134,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         ButterKnife.bind(this);
         ActivitySwitchHelper.setContext(this);
         parentLayout.setBackgroundColor(getBackgroundColor());
-        accountAdapter = new AccountAdapter(getAccentColor(), getPrimaryColor());
+        accountAdapter = new AccountAdapter();
         accountPresenter = new AccountPresenter(realm);
         phimpmeProgressBarHandler = new PhimpmeProgressBarHandler(this);
         accountPresenter.attachView(this);
@@ -542,6 +542,8 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         setStatusBarColor();
         setNavBarColor();
         accountPresenter.loadFromDatabase();
+        accountAdapter.updateTheme();
+        accountAdapter.notifyDataSetChanged();
     }
 
     private void boxAuthentication() {
