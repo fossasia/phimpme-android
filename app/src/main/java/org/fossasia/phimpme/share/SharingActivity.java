@@ -81,6 +81,7 @@ import com.tumblr.jumblr.types.PhotoPost;
 import com.tumblr.jumblr.types.User;
 
 import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.accounts.CloudRailServices;
 import org.fossasia.phimpme.base.PhimpmeProgressBarHandler;
 import org.fossasia.phimpme.base.RecyclerItemClickListner;
 import org.fossasia.phimpme.base.ThemedActivity;
@@ -197,13 +198,12 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     private String caption;
     private PhimpmeProgressBarHandler phimpmeProgressBarHandler;
     private Context context;
-    private DropboxAPI<AndroidAuthSession> mDBApi;
     private BoxSession sessionBox;
     private ArrayList<AccountDatabase.AccountName> sharableAccountsList = new ArrayList<>();
     Bitmap finalBmp;
     Boolean isPostedOnTwitter = false, isPersonal = false;
     String boardID, imgurAuth = null, imgurString = null;
-
+    private  CloudRailServices cloudRailServices;
     private static final int REQ_SELECT_PHOTO = 1;
     private static final int REQUEST_CODE_SHARE_TO_MESSENGER = 2;
     private final int REQ_CODE_SPEECH_INPUT = 10;
@@ -562,16 +562,16 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void shareToDropBox() {
-        AppKeyPair appKeys = new AppKeyPair(Constants.DROPBOX_APP_KEY, Constants.DROPBOX_APP_SECRET);
-        AndroidAuthSession session = new AndroidAuthSession(appKeys);
+        cloudRailServices = CloudRailServices.getInstance();
+        cloudRailServices.prepare(this);
         RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
         // Checking if string equals to is exist or not
         query.equalTo("name", DROPBOX.toString());
         RealmResults<AccountDatabase> result = query.findAll();
         try {
-            session.setOAuth2AccessToken(result.get(0).getToken());
-            mDBApi = new DropboxAPI<AndroidAuthSession>(session);
+            cloudRailServices.loadAsString(result.first().getToken());
             new UploadToDropbox().execute();
+
         } catch (ArrayIndexOutOfBoundsException e) {
             SnackBarHandler.show(parent, R.string.login_dropbox_account);
         }
@@ -592,21 +592,16 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             FileInputStream inputStream = null;
             try {
                 inputStream = new FileInputStream(file);
-            } catch (FileNotFoundException e) {
+                    if(cloudRailServices.checkFolderExist()) {
+                        cloudRailServices.upload(cloudRailServices.getDropboxFolderPath()+"/"+file.getName(), inputStream, file.length(), true);
+                        success = true;
+                    }
+
+            } catch (Exception e) {
                 e.printStackTrace();
-            }
-            DropboxAPI.Entry response = null;
-            try {
-                File file2 = new File(saveFilePath);
-                response = mDBApi.putFile(file2.getName(), inputStream,
-                        file.length(), null, null);
-                success = true;
-            } catch (DropboxException e) {
                 success = false;
-                e.printStackTrace();
             }
-            if (response != null)
-                Log.i("Db", "The uploaded file's rev is: " + response.rev);
+
             return null;
         }
 

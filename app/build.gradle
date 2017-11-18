@@ -112,6 +112,8 @@ dependencies {
 //    compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
     compile "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
     compile "com.github.nextcloud:android-library:$rootProject.nextCloudVersion"
+    compile 'com.cloudrail:cloudrail-si-android:2.20.1'
+    compile 'com.facebook.stetho:stetho:1.5.0'
     compile files('libs/twitter4j-core-3.0.5.jar')
     compile files('libs/twitter4j-media-support-3.0.5.jar')
     compile files('libs/flickrj-android-2.1.0.jar')
@@ -153,7 +155,7 @@ dependencies {
         transitive = true;
 
     }
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
 }
 apply plugin: 'com.google.gms.google-services'
