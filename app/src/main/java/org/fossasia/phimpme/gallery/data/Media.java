@@ -175,6 +175,7 @@ public class Media implements Parcelable, Serializable {
     public MediaDetailsMap<String, String> getMainDetails(Context context){
         metadata = new MetadataItem(new File(path));
         MediaDetailsMap<String, String> details = new MediaDetailsMap<String, String>();
+        details.put(context.getString(R.string.name), getName());
         details.put(context.getString(R.string.path), path != null ? path : getUri().getEncodedPath());
         details.put(context.getString(R.string.type), getMimeType());
         String tmp;
@@ -184,8 +185,6 @@ public class Media implements Parcelable, Serializable {
         details.put(context.getString(R.string.size), StringUtils.humanReadableByteCount(size, true));
         details.put(context.getString(R.string.date), SimpleDateFormat.getDateTimeInstance().format(new Date(getDateModified())));
         details.put(context.getString(R.string.orientation), getOrientation()+""+(char) 0x00B0);
-        if (metadata.getDateOriginal() != null)
-            details.put(context.getString(R.string.date_taken), SimpleDateFormat.getDateTimeInstance().format(metadata.getDateOriginal()));
 
         if ((tmp = metadata.getCameraInfo()) != null)
             details.put(context.getString(R.string.camera), tmp);

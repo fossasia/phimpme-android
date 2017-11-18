@@ -63,6 +63,10 @@
     <string name="color_effect">Color effect</string>
     <string name="scene_mode">Scene mode</string>
     <string name="white_balance">White balance</string>
+    <string name="title">Title</string>
+    <string name="reset">Reset Settings</string>
+    <string name="reset_sub_text">Reset all settings to default</string>
+    <string name="reset_settings">Are you sure you want to restore the default settings?</string>
 
     <string name="angle">Angle</string>
     <string name="direction">Direction</string>
@@ -414,6 +418,7 @@
 
     <string name="rename_error">File Rename Failed</string>
     <string name="rename_succes">File renamed</string>
+    <string name="rename_no_change">No change in file name</string>
 
     <!-- ACTIONS -->
     <string name="sort">Sort</string>
@@ -428,6 +433,9 @@
     <string name="update_action">UPDATE</string>
     <string name="description_hint">Write something!</string>
     <string name="save_action">Save</string>
+    <string name="change_cover">Album cover changed..</string>
+    <string name="add_favourite">Image is succesfully added to the favourites collection.</string>
+    <string name="check_favourite">Image is already present in the favourites collection.</string>
     <string name="rename_photo_action">Rename photo</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
@@ -459,6 +467,7 @@
     <string name="copy_to">Copy to</string>
     <string name="move_to">Move to</string>
     <string name="use_as">Use as</string>
+    <string name="favourite">Add to favourites</string>
     <string name="edit">Edit</string>
     <string name="fix_date">Fix date</string>
     <string name="rename">Rename</string>
@@ -475,6 +484,8 @@
     <string name="clear_preview">Clear preview</string>
     <string name="new_folder">New Folder</string>
     <string name="create_new_folder">Create new folder</string>
+    <string name="slideshow">Slideshow</string>
+    <string name="print">Print</string>
 
     <!--Notification Uploads-->
     <string name="upload_progress">Uploading to</string>
@@ -504,7 +515,17 @@
     <string name="new_folder_message">The new folder will be created in the current path, and
         then the media will be copied or moved in the new folder.
     </string>
+    <string name="enter_time">Enter time interval</string>
+    <string name="time_interval">Time interval (seconds)</string>
     <string name="discard_changes_message">Are you sure you want to discard all changes?</string>
+    <string name="discard_stickers_message">Are you sure you want to discard the stickers added?</string>
+    <string name="discard_enhance_message">Are you sure you want to discard the enhancements made?</string>
+    <!--<string name="discard_filters_message">Are you sure you want to discard the filters added?</string>-->
+    <string name="discard_crop_message">Are you sure you want to discard the cropping done?</string>
+    <string name="discard_rotate_message">Are you sure you want to discard the rotation changes?</string>
+    <string name="discard_text_message">Are you sure you want to discard the added text?</string>
+    <string name="discard_paint_message">Are you sure you want to discard the added paint?</string>
+    <string name="move">Do you want to replace these files or make more copies of them?</string>
 
     <!-- ITEMS -->
     <string name="singular_photo">Photo</string>
@@ -529,6 +550,12 @@
     <string name="affix_error">Can\'t affix video, you must select at least 2 images.</string>
     <string name="quality">Quality</string>
 
+
+    <!-- MULTI COLUMN -->
+    <string name="poitrait">Portrait</string>
+    <string name="landscape">Landscape</string>
+    <string name="folder_column">Folders columns</string>
+    <string name="media_column">Media columns</string>
 
     <!-- RANDOM -->
     <string name="done">Done!</string>
@@ -675,6 +702,12 @@
     <string name="device">Device</string>
     <string name="orientation">Orientation</string>
     <string name="location">Location</string>
+    <string name="no_description">No description added.</string>
+    <string name="no_location">No location</string>
+    <string name="no_exif_data">No data found.</string>
+
+    <!--ALBUM DETAILS-->
+    <string name="total_photos">Total photos</string>
 
     <!--DRAWER ITEMS -->
     <string name="local_folder">Local Folders</string>
@@ -848,6 +881,8 @@
     <string name="feature_not_present">Feature not present</string>
     <string name="sharedrupal">Drupal Account</string>
     <string name="drupal_link">Account not found</string>
+    <string name="empty_folder_name">Folder name cannot be empty</string>
+    <string name="folder_name_exists">Folder name already exists</string>
 
     <!--Imgur -->
     <string name="imgur">Imgur</string>
@@ -1012,5 +1047,11 @@
     <string name="photos_moved_successfully">Photos moved successfully</string>
     <string name="photo_moved_successfully">Photo moved successfully</string>
     <string name="copied_successfully">Copied successfully</string>
-
+    <string name="photos_already_there">All photos are already there in the folder</string>
+    <string name="no_changes_made">No Changes Made!</string>
+    <string name="transition_photo">transition_photo</string>
+    <string name="upload_date">Date: " "</string>
+    <string name="upload_time">Time: " "</string>
+    <string name="text_view">TextView</string>
+    <string name="version_one">v1.0</string>
 </resources>

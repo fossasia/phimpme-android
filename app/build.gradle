@@ -19,6 +19,8 @@ android {
         ndk {
             abiFilters 'armeabi-v7a','x86'
         }
+        renderscriptTargetApi 19
+        renderscriptSupportModeEnabled true
     }
 
     buildTypes {
@@ -101,7 +103,7 @@ dependencies {
     compile "com.android.support:customtabs:$rootProject.supportLibraryVersion"
     compile project(':photoview')
     compile "com.twitter.sdk.android:twitter:$rootProject.twitterVersion"
-    compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
+//    compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
     compile "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
     compile "com.github.nextcloud:android-library:$rootProject.nextCloudVersion"
     compile 'com.cloudrail:cloudrail-si-android:2.20.1'
@@ -129,6 +131,7 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
     compile 'com.google.firebase:firebase-core:11.0.2'
+    compile 'com.google.firebase:firebase-messaging:11.0.2'
     compile 'com.facebook.android:facebook-android-sdk:4.23.0'
     compile 'com.uphyca:stetho_realm:2.0.0'
     compile 'com.android.support:multidex:1.0.1'
@@ -141,6 +144,7 @@ dependencies {
     compile ('com.tumblr:jumblr:0.0.11'){
         exclude module:'scribe'
     }
+    compile 'com.github.shchurov:horizontalwheelview:0.9.5'
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true;
 

@@ -17,6 +17,7 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.decode.BaseImageDecoder;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 import com.twitter.sdk.android.core.DefaultLogger;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -43,7 +44,7 @@ public class MyApplication extends Application {
     public static Context applicationContext;
     public ImageLoader imageLoader;
     private Boolean isPublished = false; // Set this to true at the time of release
-
+    private RefWatcher refWatcher;
     public Album getAlbum() {
         return albums.dispAlbums.size() > 0 ? albums.getCurrentAlbum() : Album.getEmptyAlbum();
     }
@@ -56,8 +57,7 @@ public class MyApplication extends Application {
             // You should not init your app in this process.
             return;
         }
-        LeakCanary.install(this);
-
+        refWatcher = LeakCanary.install(this);
         albums = new HandlingAlbums(getApplicationContext());
         applicationContext = getApplicationContext();
 
@@ -94,6 +94,10 @@ public class MyApplication extends Application {
                         .build());
     }
 
+    public static RefWatcher getRefWatcher(Context context){
+        MyApplication myApplication = (MyApplication) context.getApplicationContext();
+        return myApplication.refWatcher;
+    }
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
