@@ -24,6 +24,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -35,6 +36,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
@@ -140,7 +142,7 @@ public class LFMainActivity extends SharedMediaActivity {
     private ArrayList<Media> selectedMedias = new ArrayList<>();
     public boolean visible;
 
-    CoordinatorLayout coordinatorLayoutMainContent;
+    private FloatingActionButton fabScrollUp;
 
     // To handle back pressed
     boolean doubleBackToExitPressedOnce = false;
@@ -392,7 +394,6 @@ public class LFMainActivity extends SharedMediaActivity {
         super.onCreate(savedInstanceState);
         Log.e("TAG", "lfmain");
 
-        coordinatorLayoutMainContent = (CoordinatorLayout) findViewById(R.id.cl_main_content);
         BottomNavigationView navigationView = (BottomNavigationView)findViewById(R.id.bottombar);
 
         SP = PreferenceUtil.getInstance(getApplicationContext());
@@ -653,12 +654,43 @@ public class LFMainActivity extends SharedMediaActivity {
             }
         });
 
+        /**
+         * Floating Action Button to Scroll Up
+         */
+        setUpFab();
+
         setRecentApp(getString(R.string.app_name));
         setupUI();
         if (pickMode) {
             hideNavigationBar();
             swipeRefreshLayout.setPadding(0, 0, 0, 0);
         }
+    }
+
+    /**
+     * Method to set scroll listeners for recycler view
+     */
+    private void setUpFab() {
+        fabScrollUp = (FloatingActionButton) findViewById(R.id.fab_scroll_up);
+        fabScrollUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rvMedia.smoothScrollToPosition(0);
+                fabScrollUp.hide();
+            }
+        });
+        fabScrollUp.hide();
+        rvMedia.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                if(linearLayoutManager.findFirstVisibleItemPosition() > 30 && !fabScrollUp.isShown())
+                    fabScrollUp.show();
+                else if(linearLayoutManager.findFirstVisibleItemPosition() < 30 && fabScrollUp.isShown())
+                    fabScrollUp.hide();
+                fabScrollUp.setAlpha(0.7f);
+            }
+        });
     }
 
     public int columnsCount() {
@@ -766,6 +798,10 @@ public class LFMainActivity extends SharedMediaActivity {
         /**** recyclers drawable *****/
         Drawable drawableScrollBar = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_scrollbar);
         drawableScrollBar.setColorFilter(new PorterDuffColorFilter(getPrimaryColor(), PorterDuff.Mode.SRC_ATOP));
+
+        /**** FAB ****/
+        fabScrollUp.setBackgroundColor(getAccentColor());
+        fabScrollUp.setAlpha(0.7f);
     }
 
     private void setDrawerTheme() {
@@ -1990,6 +2026,8 @@ public class LFMainActivity extends SharedMediaActivity {
     private void toggleRecyclersVisibility(boolean albumsMode) {
         rvAlbums.setVisibility(albumsMode ? View.VISIBLE : View.GONE);
         rvMedia.setVisibility(albumsMode ? View.GONE : View.VISIBLE);
+        if(albumsMode)
+            fabScrollUp.hide();
         //touchScrollBar.setScrollBarHidden(albumsMode);
 
     }
