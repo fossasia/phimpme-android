@@ -55,7 +55,7 @@
                 android:title="@string/preference_touch_capture" />
 
             <SwitchPreference
-                android:defaultValue="false"
+                android:defaultValue="true"
                 android:key="preference_pause_preview"
                 android:summary="@string/preference_pause_preview_summary"
                 android:title="@string/preference_pause_preview" />

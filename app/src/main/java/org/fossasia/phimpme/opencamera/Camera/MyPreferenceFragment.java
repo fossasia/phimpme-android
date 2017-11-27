@@ -68,6 +68,7 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
 		final String camera_api = bundle.getString("camera_api");
 		
 		final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getActivity());
+		sharedPreferences.registerOnSharedPreferenceChangeListener(this);
 
 		final boolean supports_auto_stabilise = bundle.getBoolean("supports_auto_stabilise");
 		if( MyDebug.LOG )
@@ -95,6 +96,8 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
         	pg.removePreference(pref);
 		}
 
+		final boolean preference_pause_preview = bundle.getBoolean("preference_pause_preview");
+		Log.e(TAG, "onCreate: FRAGMENT" +preference_pause_preview);
 
 		final ArrayList<Integer> widths = bundle.getListInt("resolution_widths");
 		final ArrayList<Integer> heights = bundle.getListInt("resolution_heights");
@@ -387,7 +390,7 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
 	public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
 		if( MyDebug.LOG )
 			Log.d(TAG, "onSharedPreferenceChanged");
-	    Preference pref = findPreference(key);
+        Preference pref = findPreference(key);
 	    if( pref instanceof TwoStatePreference){
 	    	TwoStatePreference twoStatePref = (TwoStatePreference)pref;
 	    	twoStatePref.setChecked(prefs.getBoolean(key, true));
