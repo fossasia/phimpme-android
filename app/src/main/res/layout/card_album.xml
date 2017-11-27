@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/vn.mbn.phimp.me"
+    xmlns:app2="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/album_card"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="0dp"
     android:foreground="@drawable/ripple"
+    app:cardCornerRadius="0dp"
     app:cardElevation="@dimen/card_elevation">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
         <RelativeLayout
+            android:id="@+id/header_album_card"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            >
-        <RelativeLayout
-                android:id="@+id/header_album_card"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            android:layout_height="wrap_content">
 
             <com.mikepenz.iconics.view.IconicsImageView
                 android:id="@+id/selected_icon"
@@ -34,43 +36,62 @@
                 android:id="@+id/album_preview"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scaleType="centerCrop"
-                />
+                android:scaleType="centerCrop" />
 
         </RelativeLayout>
 
-            <LinearLayout
-                android:id="@+id/linear_card_text"
+        <LinearLayout
+            android:id="@+id/linear_card_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:orientation="vertical">
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true"
-                android:orientation="vertical"
-                android:layout_alignParentLeft="true">
+                android:layout_height="wrap_content">
 
                 <TextView
                     android:id="@+id/album_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_toLeftOf="@+id/icon_pinned"
                     android:maxLines="1"
                     android:paddingEnd="20dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="20dp"
                     android:paddingStart="10dp"
                     android:paddingTop="10dp"
                     android:textColor="@android:color/white"
-                    android:textSize="16sp"
-                    android:paddingRight="20dp"
-                    android:paddingLeft="10dp" />
-                <TextView
-                    android:id="@+id/album_photos_count"
-                    android:layout_width="match_parent"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:id="@+id/icon_pinned"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:paddingBottom="10dp"
-                    android:paddingEnd="10dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="10dp"
                     android:paddingStart="10dp"
-                    android:textColor="@android:color/white"
-                    android:textSize="14sp"
-                    />
-            </LinearLayout>
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
+                    android:paddingTop="10dp"
+                    android:visibility="invisible"
+                    app2:srcCompat="@drawable/pin" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/album_photos_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:paddingBottom="10dp"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
