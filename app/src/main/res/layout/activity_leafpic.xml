@@ -50,6 +50,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_gravity="center_horizontal"
+                            android:clipToPadding="false"
                             android:paddingBottom="@dimen/height_bottombar"
                             android:scrollbarThumbVertical="@drawable/ic_scrollbar"
                             android:scrollbars="vertical" />
