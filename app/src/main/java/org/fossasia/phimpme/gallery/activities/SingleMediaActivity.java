@@ -51,6 +51,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
@@ -1153,8 +1154,13 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     slideshow=true;
                     int intValue = Integer.parseInt(value);
                     SLIDE_SHOW_INTERVAL = intValue * 1000;
-                    hideSystemUI();
-                    handler.postDelayed(slideShowRunnable, SLIDE_SHOW_INTERVAL);
+                    if(SLIDE_SHOW_INTERVAL > 1000) {
+                        hideSystemUI();
+                        handler.postDelayed(slideShowRunnable, SLIDE_SHOW_INTERVAL);
+                    }
+                    else
+                        Toast.makeText(SingleMediaActivity.this, "Minimum duration is 2 sec", Toast.LENGTH_SHORT).show();
+
                 }
             }
         });
