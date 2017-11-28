@@ -2077,8 +2077,9 @@ public class LFMainActivity extends SharedMediaActivity {
                     else if(isTaskRoot())
                     {
                         doubleBackToExitPressedOnce = true;
+                        View rootView = LFMainActivity.this.getWindow().getDecorView().findViewById(android.R.id.content);
                         Snackbar snackbar = Snackbar
-                                .make(mDrawerLayout, R.string.press_back_again_to_exit, Snackbar.LENGTH_LONG)
+                                .make(rootView, R.string.press_back_again_to_exit, Snackbar.LENGTH_LONG)
                                 .setAction(R.string.exit, new View.OnClickListener() {
                                     @Override
                                     public void onClick(View view) {
