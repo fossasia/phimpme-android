@@ -45,6 +45,8 @@ import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -53,6 +55,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.bumptech.glide.Glide;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
@@ -147,6 +150,10 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private RelativeLayout relativeLayout;
 
     @Nullable
+    @BindView(R.id.view_switcher_single_media)
+    ViewSwitcher viewSwitcher;
+
+    @Nullable
     @BindView(R.id.PhotoPager_Layout)
     View parentView;
 
@@ -230,12 +237,21 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 }
                 getAlbums().addAlbum(0, album);
             }
+            setUpSwitcherAnimation();
             initUI();
             setupUI();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void setUpSwitcherAnimation() {
+        Animation in = AnimationUtils.loadAnimation(this, android.R.anim.fade_in);
+        Animation out = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
+
+        viewSwitcher.setInAnimation(in);
+        viewSwitcher.setOutAnimation(out);
     }
 
 
@@ -784,7 +800,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             case R.id.action_details:
                 handler.removeCallbacks(slideShowRunnable);
                 details=true;
-                final View v = getLayoutInflater().inflate(R.layout.image_description,mViewPager,false);
+                final View v = findViewById(R.id.layout_image_description);
                 LinearLayout linearLayout = (LinearLayout)v;
                 Media media = getAlbum().getCurrentMedia();
                 MediaDetailsMap<String,String> mediaDetailsMap = media.getMainDetails(this);
@@ -810,7 +826,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 imgBack.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        setContentView(parentView);
+                        viewSwitcher.showPrevious();
                         details = false;
                         toggleSystemUI();
                     }
@@ -847,7 +863,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     }
 
                 toggleSystemUI();
-                setContentView(v);
+                viewSwitcher.showNext();
                 break;
 
             case R.id.action_settings:
@@ -1103,7 +1119,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     @Override
     public void onBackPressed() {
         if (details) {
-            setContentView(parentView);
+            viewSwitcher.showPrevious();
             toggleSystemUI();
             details = false;
         } else
