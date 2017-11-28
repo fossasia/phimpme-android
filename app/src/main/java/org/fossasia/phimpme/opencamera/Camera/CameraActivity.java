@@ -82,6 +82,8 @@ import org.fossasia.phimpme.utilities.BasicCallBack;
 import org.fossasia.phimpme.utilities.Constants;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -381,7 +383,7 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
                 @Override
                 public void callBack(int status, Object path) {
                     if (status == Constants.SUCCESS) {
-                        String filepath = path.toString();
+                        final String filepath = path.toString();
                         final SharedPreferences sharedPreferences = getDefaultSharedPreferences(CameraActivity.this);
                         String mode = sharedPreferences.getString(PreferenceKeys.getPhotoModePreferenceKey(), "");
                         final String burst_mode = sharedPreferences.getString(PreferenceKeys.getBurstModePreferenceKey(), "");
@@ -395,14 +397,44 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
                                     progressDialog.show();
                                 }
                             });
+
                         }
 
                         clicks_count++; // Count till max defined image is captured and saved
                         if (!("preference_photo_mode_expo_bracketing").equals(mode) && Integer.parseInt(burst_mode) == 1) {
-                            clicks_count = 0;
-                            Intent intent = new Intent(CameraActivity.this, PhotoActivity.class);
-                            intent.putExtra("filepath", filepath);
-                            startActivity(intent);
+                            Boolean  preference_pause_preview = sharedPreferences.getBoolean("preference_pause_preview",true);
+                            if(!preference_pause_preview){
+                                CameraActivity.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        progressDialog.hide();
+                                    }
+                                });
+                                Thread t = new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        File f = new File(filepath);
+                                        FileOutputStream fileOutputStream ;
+                                        try {
+                                            fileOutputStream = openFileOutput(f.getName(),MODE_PRIVATE);
+                                            fileOutputStream.write(f.getName().getBytes());
+                                            fileOutputStream.close();
+                                        } catch (FileNotFoundException e) {
+                                            e.printStackTrace();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                });
+                                t.start();
+                            }
+                            else {
+                                clicks_count = 0;
+                                Intent intent = new Intent(CameraActivity.this, PhotoActivity.class);
+                                intent.putExtra("filepath", filepath);
+                                startActivity(intent);
+                            }
                         } else if (("preference_photo_mode_expo_bracketing").equals(mode) && clicks_count >= bundle.getInt("max_expo_bracketing_n_images")) { // Start Activity once when the third image is saved
                             clicks_count = 0; //Turn image count to zero in case user wants to click another set of photos.
                             Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(filepath)));
