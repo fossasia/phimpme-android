@@ -13,6 +13,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -50,6 +51,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
@@ -71,6 +73,7 @@ import org.fossasia.phimpme.gallery.data.AlbumSettings;
 import org.fossasia.phimpme.gallery.data.Media;
 import org.fossasia.phimpme.gallery.data.base.MediaDetailsMap;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
+import org.fossasia.phimpme.gallery.util.BlurImageUtil;
 import org.fossasia.phimpme.gallery.util.ColorPalette;
 import org.fossasia.phimpme.gallery.util.ContentHelper;
 import org.fossasia.phimpme.gallery.util.Measure;
@@ -623,7 +626,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 else
                     uri = Uri.fromFile(new File(listAll.get(current_image_pos).getPath()));
                 String extension = uri.getPath();
-                if (extension != null) {
+                if (extension != null && !(extension.substring(extension.lastIndexOf(".")).equals(".gif"))) {
                     Intent editIntent = new Intent(SingleMediaActivity.this, EditImageActivity.class);
                     editIntent.putExtra("extra_input", uri.getPath());
                     editIntent.putExtra("extra_output", FileUtils.genEditFile(FileUtils.getExtension(extension)).getAbsolutePath());
@@ -770,10 +773,14 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             case R.id.action_details:
                 handler.removeCallbacks(slideShowRunnable);
                 details=true;
-                View v = getLayoutInflater().inflate(R.layout.image_description,mViewPager,false);
+                final View v = getLayoutInflater().inflate(R.layout.image_description,mViewPager,false);
                 LinearLayout linearLayout = (LinearLayout)v;
                 Media media = getAlbum().getCurrentMedia();
                 MediaDetailsMap<String,String> mediaDetailsMap = media.getMainDetails(this);
+
+                // Set current image as a blurred background
+                Bitmap blurBackground = BlurImageUtil.blur(context, BitmapFactory.decodeFile(media.getPath()));
+                v.setBackground(new BitmapDrawable(getResources(), blurBackground));
 
                 /* Getting all the viewgroups and views of the image description layout */
 
@@ -789,13 +796,12 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 TextView  imgDesc = (TextView) linearLayout.findViewById(R.id.image_desc);
                 ImageButton imgBack = (ImageButton) linearLayout.findViewById(R.id.img_desc_back_arrow);
 
-                LinearLayout linearLayoutTop = (LinearLayout) linearLayout.findViewById(R.id.image_desc_top);
-                linearLayoutTop.setBackgroundColor(this.getPrimaryColor());
-
                 imgBack.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         setContentView(parentView);
+                        details = false;
+                        toggleSystemUI();
                     }
                 });
 
@@ -828,6 +834,8 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     catch (Exception e){
                         //Raised if null values is found, no need to handle
                     }
+
+                toggleSystemUI();
                 setContentView(v);
                 break;
 
@@ -1085,6 +1093,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     public void onBackPressed() {
         if (details) {
             setContentView(parentView);
+            toggleSystemUI();
             details = false;
         } else
             super.onBackPressed();
@@ -1145,8 +1154,13 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     slideshow=true;
                     int intValue = Integer.parseInt(value);
                     SLIDE_SHOW_INTERVAL = intValue * 1000;
-                    hideSystemUI();
-                    handler.postDelayed(slideShowRunnable, SLIDE_SHOW_INTERVAL);
+                    if(SLIDE_SHOW_INTERVAL > 1000) {
+                        hideSystemUI();
+                        handler.postDelayed(slideShowRunnable, SLIDE_SHOW_INTERVAL);
+                    }
+                    else
+                        Toast.makeText(SingleMediaActivity.this, "Minimum duration is 2 sec", Toast.LENGTH_SHORT).show();
+
                 }
             }
         });

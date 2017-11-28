@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app2="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,10 +12,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/image_desc_top"
-        android:paddingBottom="@dimen/small_spacing"
         android:paddingLeft="@dimen/sub_small_spacing"
-        android:paddingRight="@dimen/sub_small_spacing"
-        android:paddingTop="@dimen/big_spacing">
+        android:paddingRight="@dimen/sub_small_spacing">
 
         <ImageButton
             android:layout_width="48dp"
@@ -24,12 +23,10 @@
             android:background="@drawable/back_arrow"/>
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_gravity="center"
-            android:textAlignment="center"
-            android:padding="@dimen/alternate_padding"
             android:textSize="@dimen/sub_big_text"
             android:textColor="@color/white"
             android:textStyle="bold"
@@ -71,8 +68,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/image_desc_date"
-                android:text="28/September/2018"
-                android:textColor="@color/md_grey_500"
+                tools:text="28/September/2018"
+                android:textColor="@color/md_grey_400"
                 android:textSize="@dimen/medium_text"/>
 
         </LinearLayout>
@@ -112,8 +109,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textColor="@color/md_grey_500"
+                android:text="No Location"
                 android:id="@+id/image_desc_loc"
+                android:textColor="@color/md_grey_400"
                 android:textSize="@dimen/medium_text"/>
 
         </LinearLayout>
@@ -296,7 +294,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/medium_text"
-                        android:textColor="@color/md_grey_500"
+                        android:textColor="@color/md_grey_400"
                         android:id="@+id/image_desc_exif"
                         android:layout_marginLeft="5dp"/>
 
@@ -320,7 +318,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/image_desc"
                         android:textSize="@dimen/medium_text"
-                        android:textColor="@color/md_grey_500"
+                        android:textColor="@color/md_grey_400"
                         android:layout_marginLeft="5dp"/>
 
                 </LinearLayout>
