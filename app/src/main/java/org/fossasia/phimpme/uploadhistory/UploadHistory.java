@@ -44,6 +44,9 @@ public class UploadHistory extends ThemedActivity {
     @BindView(R.id.empty_text)
     TextView emptyText;
 
+    @BindView(R.id.accounts_parent)
+    RelativeLayout parentView;
+
     Realm realm;
 
     private RealmQuery<UploadHistoryRealmModel> uploadResults;
@@ -54,7 +57,6 @@ public class UploadHistory extends ThemedActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.upload_history_activity);
         ButterKnife.bind(this);
-        setupToolbar();
         uploadHistoryAdapter = new UploadHistoryAdapter(getPrimaryColor());
         realm = Realm.getDefaultInstance();
         uploadResults = realm.where(UploadHistoryRealmModel.class);
@@ -65,12 +67,15 @@ public class UploadHistory extends ThemedActivity {
         uploadHistoryRecyclerView.setAdapter(uploadHistoryAdapter);
         uploadHistoryAdapter.setResults(uploadResults);
 
+        setUpUI();
         //uploadHistoryRecyclerView.addOnItemTouchListener(new RecyclerItemClickListner(this, this));
+    }
+
+    private void setUpUI() {
         emptyIcon.setColor(getIconColor());
         emptyText.setTextColor(getAccentColor());
-
-
-
+        parentView.setBackgroundColor(getBackgroundColor());
+        setupToolbar();
     }
 
     public void setUpAdapter(@NotNull RealmQuery<UploadHistoryRealmModel> accountDetails) {
@@ -81,6 +86,7 @@ public class UploadHistory extends ThemedActivity {
     @Override
     public void onResume() {
         super.onResume();
+        setUpUI();
         if (uploadResults.findAll().size() == 0) {
             emptyLayout.setVisibility(View.VISIBLE);
             uploadHistoryRecyclerView.setVisibility(View.GONE);
