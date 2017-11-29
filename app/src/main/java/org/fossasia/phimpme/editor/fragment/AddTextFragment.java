@@ -20,7 +20,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
+import org.fossasia.phimpme.MyApplication;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.task.StickerTask;
@@ -49,7 +51,6 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher {
 
     private int mTextColor = WHITE;
     private InputMethodManager imm;
-
     private SaveTextStickerTask mSaveTask;
 
     public static AddTextFragment newInstance() {
@@ -84,6 +85,7 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher {
 
         mInputText = (EditText) mainView.findViewById(R.id.text_input);
         mTextColorSelector = (ImageView) mainView.findViewById(R.id.text_color);
+        mTextColorSelector.setImageDrawable(new IconicsDrawable(activity).icon(GoogleMaterial.Icon.gmd_format_color_fill).sizeDp(24));
         mAutoNewLineCheck = (CheckBox) mainView.findViewById(R.id.check_auto_newline);
 
         cancel.setOnClickListener(new BackToMenuClick());
@@ -119,12 +121,12 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher {
     private final class SelectColorBtnClick implements OnClickListener {
         @Override
         public void onClick(View v) {
-            textColotDialog();
+            textColorDialog();
         }
 
     }
 
-    private void textColotDialog() {
+    private void textColorDialog() {
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
         final View dialogLayout = getActivity().getLayoutInflater().inflate(R.layout.color_piker_accent, null);
         final LineColorPicker colorPicker = (LineColorPicker) dialogLayout.findViewById(R.id.color_picker_accent);
@@ -135,6 +137,7 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher {
         colorPicker.setOnColorChangedListener(new OnColorChangedListener() {
             @Override
             public void onColorChanged(int c) {
+                mTextColorSelector.setColorFilter(c);
                 dialogTitle.setBackgroundColor(c);
                 changeTextColor(colorPicker.getColor());
 
@@ -164,7 +167,6 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher {
 
     private void changeTextColor(int newColor) {
         this.mTextColor = newColor;
-        mTextColorSelector.setBackgroundColor(mTextColor);
         mTextStickerView.setTextColor(mTextColor);
     }
 
@@ -209,14 +211,14 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher {
             mSaveTask.cancel(true);
         }
 
-        mSaveTask = new SaveTextStickerTask(activity);
+        mSaveTask = new SaveTextStickerTask(activity,activity.mainImage.getImageViewMatrix());
         mSaveTask.execute(activity.mainBitmap);
     }
 
     private final class SaveTextStickerTask extends StickerTask {
 
-        public SaveTextStickerTask(EditImageActivity activity) {
-            super(activity);
+        public SaveTextStickerTask(EditImageActivity activity, Matrix imageViewMatrix) {
+            super(activity,imageViewMatrix);
         }
 
         @Override
@@ -263,5 +265,6 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher {
         if (mSaveTask != null && !mSaveTask.isCancelled()) {
             mSaveTask.cancel(true);
         }
+        MyApplication.getRefWatcher(getActivity()).watch(this);
     }
 }

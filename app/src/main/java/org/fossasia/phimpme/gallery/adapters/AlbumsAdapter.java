@@ -5,7 +5,9 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -44,18 +46,20 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
     private View.OnClickListener mOnClickListener;
     private View.OnLongClickListener mOnLongClickListener;
     private ThemeHelper theme;
-
     private BitmapDrawable placeholder;
+    Context context;
 
     public AlbumsAdapter(ArrayList<Album> ph, Context context) {
         albums = ph;
         theme = new ThemeHelper(context);
+        this.context = context;
         updateTheme();
     }
 
     public void updateTheme() {
         theme.updateTheme();
-        placeholder = ((BitmapDrawable) theme.getPlaceHolder());
+        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.placeholder);
+        placeholder = (BitmapDrawable) drawable;
     }
 
     @Override
@@ -70,6 +74,11 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
     public void onBindViewHolder(final AlbumsAdapter.ViewHolder holder, int position) {
         Album a = SharedMediaActivity.getAlbums().dispAlbums.get(position);
         Media f = a.getCoverAlbum();
+
+        if (a.isPinned())
+            holder.pin.setVisibility(View.VISIBLE);
+        else
+            holder.pin.setVisibility(View.INVISIBLE);
 
         Glide.with(holder.picture.getContext())
                 .load(f.getPath())
@@ -107,7 +116,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
             Color.colorToHSV(color, hsv);
             hsv[2] *= 0.72f; // value component
             color = Color.HSVToColor(hsv);
-            hexAccentColor= String.format("#%06X", (0xFFFFFF & color));
+            hexAccentColor = String.format("#%06X", (0xFFFFFF & color));
         }
 
         String textColor = theme.getBaseTheme() != ThemeHelper.LIGHT_THEME ? "#FAFAFA" : "#2b2b2b";
@@ -118,7 +127,10 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
             holder.layout.setBackgroundColor(Color.parseColor(hexPrimaryColor));
             holder.picture.setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
             holder.selectedIcon.setVisibility(View.VISIBLE);
-            if (theme.getBaseTheme() == ThemeHelper.LIGHT_THEME ) textColor = "#FAFAFA";
+            if (theme.getBaseTheme() == ThemeHelper.LIGHT_THEME) {
+                textColor = "#FAFAFA";
+                hexAccentColor = "#FAFAFA";
+            }
         } else {
             holder.picture.clearColorFilter();
             holder.selectedIcon.setVisibility(View.GONE);
@@ -161,10 +173,11 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView picture;
-        View  layout;
-        IconicsImageView selectedIcon;
-        TextView name, nPhotos;
+        private ImageView picture;
+        private View layout;
+        private IconicsImageView selectedIcon;
+        private TextView name, nPhotos;
+        private ImageView pin;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -173,6 +186,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
             layout = itemView.findViewById(R.id.linear_card_text);
             name = (TextView) itemView.findViewById(R.id.album_name);
             nPhotos = (TextView) itemView.findViewById(R.id.album_photos_count);
+            pin = (ImageView) itemView.findViewById(R.id.icon_pinned);
         }
     }
 }

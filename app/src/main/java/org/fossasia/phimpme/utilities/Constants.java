@@ -16,9 +16,12 @@ public class Constants {
     public static String IMGUR_HEADER_CLIENt = "Client-ID";
     public static String IMGUR_HEADER_USER = "Bearer";
 
+    //CloudRail App key
+    public final static String CLOUDRAIL_LICENSE_KEY = "";/*Add your API KEY */
+
     /*Also add dropbox api key in manifest */
-    public final static String DROPBOX_APP_KEY = "DROPBOX_APP_KEY";
-    public final static String DROPBOX_APP_SECRET = "DROPBOX_APP_SECRET";
+    public final static String DROPBOX_APP_KEY ="";/*Add Dropbox Key */
+    public final static String DROPBOX_APP_SECRET =""; /*Add Dropbox Secret Key */
 
     public final static String BOX_CLIENT_ID = "CLIENT_ID";
     public final static String BOX_CLIENT_SECRET = "CLIENT_SECRET";

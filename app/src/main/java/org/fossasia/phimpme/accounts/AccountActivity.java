@@ -1,12 +1,12 @@
 package org.fossasia.phimpme.accounts;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
@@ -22,7 +22,6 @@ import com.box.androidsdk.content.auth.BoxAuthentication;
 import com.box.androidsdk.content.models.BoxSession;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
-import com.dropbox.client2.session.AppKeyPair;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -49,6 +48,7 @@ import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
 import org.fossasia.phimpme.gallery.activities.SettingsActivity;
+import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
 import org.fossasia.phimpme.share.flickr.FlickrActivity;
 import org.fossasia.phimpme.share.imgur.ImgurAuthActivity;
 import org.fossasia.phimpme.share.nextcloud.NextCloudAuth;
@@ -102,6 +102,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private static final int OWNCLOUD_REQUEST_CODE = 9;
     private static final int RESULT_OK = 1;
     private static final int RC_SIGN_IN = 9001;
+    public final static String CLOUDRAIL_APP_KEY = "/*App Key */";
     @BindView(R.id.accounts_parent)
     RelativeLayout parentLayout;
     @BindView(R.id.accounts_recycler_view)
@@ -121,6 +122,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private AccountDatabase account;
     private DatabaseHelper databaseHelper;
     private Context context;
+    private CloudRailServices cloudRailServices;
     private PDKClient pdkClient;
     private GoogleApiClient mGoogleApiClient;
     private DropboxAPI<AndroidAuthSession> mDBApi;
@@ -132,7 +134,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         ButterKnife.bind(this);
         ActivitySwitchHelper.setContext(this);
         parentLayout.setBackgroundColor(getBackgroundColor());
-        accountAdapter = new AccountAdapter(getAccentColor(), getPrimaryColor());
+        accountAdapter = new AccountAdapter();
         accountPresenter = new AccountPresenter(realm);
         phimpmeProgressBarHandler = new PhimpmeProgressBarHandler(this);
         accountPresenter.attachView(this);
@@ -147,19 +149,14 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         accountPresenter.loadFromDatabase();  // Calling presenter function to load data from database
         getSupportActionBar().setTitle(R.string.title_account);
         phimpmeProgressBarHandler.show();
+        cloudRailServices=CloudRailServices.getInstance();
         pdkClient = PDKClient.configureInstance(this, PINTEREST_APP_ID);
         pdkClient.onConnect(this);
         setDebugMode(true);
-        setupDropBox();
         //  googleApiClient();
         configureBoxClient();
     }
 
-    private void setupDropBox() {
-        AppKeyPair appKeys = new AppKeyPair(DROPBOX_APP_KEY, DROPBOX_APP_SECRET);
-        AndroidAuthSession session = new AndroidAuthSession(appKeys);
-        mDBApi = new DropboxAPI<AndroidAuthSession>(session);
-    }
 
     /*    private void googleApiClient(){
             // Configure sign-in to request the user's ID, email address, and basic
@@ -294,7 +291,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     SnackBarHandler.show(coordinatorLayout, R.string.feature_not_present);
             }
         } else {
-            new AlertDialog.Builder(this)
+            AlertDialog alertDialog = new AlertDialog.Builder(this)
                     .setMessage(name)
                     .setTitle(getString(R.string.sign_out_dialog_title))
                     .setPositiveButton(R.string.yes_action,
@@ -316,7 +313,9 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                                     //TODO: Implement negative button action
                                 }
                             })
-                    .show();
+                    .create();
+            alertDialog.show();
+            AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
         }
     }
 
@@ -383,7 +382,19 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         if (accountPresenter.checkAlreadyExist(DROPBOX))
             SnackBarHandler.show(coordinatorLayout, R.string.already_signed_in);
         else
-            mDBApi.getSession().startOAuth2Authentication(this);
+            cloudRailServices.prepare(this);
+            cloudRailServices.login();
+            BasicCallBack basicCallBack = new BasicCallBack() {
+                @Override
+                public void callBack(int status, Object data) {
+                    if(status == 1)
+                    {
+                        dropboxAuthentication(data.toString());
+                    }
+                }
+            };
+            CloudRailServices.setCallBack(basicCallBack);
+
     }
 
     private void signInImgur() {
@@ -526,11 +537,13 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     public void onResume() {
         super.onResume();
         ActivitySwitchHelper.setContext(this);
-        dropboxAuthentication();
+        //dropboxAuthentication();
         boxAuthentication();
         setStatusBarColor();
         setNavBarColor();
         accountPresenter.loadFromDatabase();
+        accountAdapter.updateTheme();
+        accountAdapter.notifyDataSetChanged();
     }
 
     private void boxAuthentication() {
@@ -554,22 +567,24 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         }
     }
 
-    private void dropboxAuthentication() {
-        if (mDBApi.getSession().authenticationSuccessful()) {
-            try {
-                // Required to complete auth, sets the access token on the session
-                mDBApi.getSession().finishAuthentication();
-                String accessToken = mDBApi.getSession().getOAuth2AccessToken();
+    private void dropboxAuthentication(String tokens) {
+        try{
+                String result = cloudRailServices.db.saveAsString();
+                Log.d("AccountsActivity", "dropboxAuthentication: "+tokens +" "+result);
+                String accessToken = cloudRailServices.getToken();
                 realm.beginTransaction();
                 account = realm.createObject(AccountDatabase.class, DROPBOX.toString());
                 account.setUsername(DROPBOX.toString());
                 account.setToken(String.valueOf(accessToken));
                 realm.commitTransaction();
-            } catch (IllegalStateException e) {
-                Log.i("DbAuthLog", "Error authenticating", e);
-            }
-            accountPresenter.loadFromDatabase();
+
+
+
+        }catch (Exception e )
+        {
+            //catches exception dont need handling
         }
+        accountPresenter.loadFromDatabase();
     }
 
     @Override
