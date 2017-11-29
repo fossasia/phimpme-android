@@ -77,6 +77,10 @@
             android:id="@+id/hideAlbumButton"
             android:title="@string/hide"
             app:showAsAction="never" />
+        <item
+            android:id="@+id/zipAlbumButton"
+            android:title="@string/zip"
+            app:showAsAction="never" />
     </group>
 
     <item

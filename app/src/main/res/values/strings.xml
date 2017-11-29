@@ -429,7 +429,11 @@
     <string name="delete">Delete</string>
     <string name="hide">Hide</string>
     <string name="unhide">Unhide</string>
+    <string name="zip">Zip</string>
     <string name="ok_action">OK</string>
+    <string name="cancel_zip">Zip operation Canceled...</string>
+    <string name="zip_action">Zipping the folder.....</string>
+    <string name="zip_location">Zip saved to location: </string>
     <string name="update_action">UPDATE</string>
     <string name="description_hint">Write something!</string>
     <string name="save_action">Save</string>
@@ -493,6 +497,11 @@
     <string name="upload_done">Success</string>
     <string name="upload_complete">Uploaded</string>
     <string name="try_again">Please try again</string>
+
+    <!--Notification Zip-->
+    <string name="zip_operation">Zipping the Folder.</string>
+    <string name="zip_fol">Zipping the </string>
+    <string name="zip_completion">Zipped It!</string>
 
     <!--DIALOG MESSAGES-->
     <string name="hide_album_message">
