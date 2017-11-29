@@ -441,7 +441,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void shareToGoogle() {
-        NotificationHandler.make(R.string.googlePlus);
+        NotificationHandler.make(R.string.googlePlus, R.string.upload_progress, R.drawable.ic_cloud_upload_black_24dp);
         Uri uri = getImageUri(SharingActivity.this, saveFilePath);
         PlusShare.Builder share = new PlusShare.Builder(SharingActivity.this);
         share.setText(caption);
@@ -461,11 +461,11 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         @Override
         protected void onPreExecute() {
             sessionBox.authenticate();
-            NotificationHandler.make(R.string.box);
+            NotificationHandler.make(R.string.box, R.string.upload_progress, R.drawable.ic_cloud_upload_black_24dp);
             mFileApi = new BoxApiFile(sessionBox);
             file = new File(saveFilePath);
             fileLength = (int) file.length();
-            NotificationHandler.updateProgress(0, fileLength, 0);
+            NotificationHandler.actionProgress(0, fileLength, 0, R.string.progress);
             try {
                 inputStream = new FileInputStream(file);
             } catch (FileNotFoundException e) {
@@ -484,7 +484,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                     @Override
                     public void onProgressChanged(long l, long l1) {
                         int percent = ((int) l * 100) / fileLength;
-                        NotificationHandler.updateProgress((int) l, fileLength, percent);
+                        NotificationHandler.actionProgress((int) l, fileLength, percent, R.string.upload_progress);
                     }
                 }).send();
                 Log.d(LOG_TAG, uploadFileInfo.toString());
@@ -499,11 +499,11 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         @Override
         protected void onPostExecute(Void result) {
             if (success) {
-                NotificationHandler.uploadPassed();
+                NotificationHandler.actionPassed(R.string.upload_complete);
                 SnackBarHandler.show(parent, R.string.uploaded_box);
                 sendResult(Constants.SUCCESS);
             } else {
-                NotificationHandler.uploadFailed();
+                NotificationHandler.actionFailed();
                 Snackbar.make(parent, getString(R.string.upload_failed_retry_box), Snackbar.LENGTH_LONG)
                         .setAction(getString(R.string.retry_upload), new View.OnClickListener() {
                             @Override
@@ -583,7 +583,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
         @Override
         protected void onPreExecute() {
-            NotificationHandler.make(R.string.dropbox_share);
+            NotificationHandler.make(R.string.dropbox_share, R.string.upload_progress, R.drawable.ic_cloud_upload_black_24dp);
         }
 
         @Override
@@ -608,11 +608,11 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         @Override
         protected void onPostExecute(Void result) {
             if (success) {
-                NotificationHandler.uploadPassed();
+                NotificationHandler.actionPassed(R.string.upload_complete);
                 SnackBarHandler.show(parent, R.string.uploaded_dropbox);
                 sendResult(Constants.SUCCESS);
             } else {
-                NotificationHandler.uploadFailed();
+                NotificationHandler.actionFailed();
                 SnackBarHandler.show(parent, R.string.upload_failed);
                 sendResult(FAIL);
             }
@@ -775,13 +775,13 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     private void postToPinterest(final String boardID) {
         SnackBarHandler.show(parent, R.string.pinterest_image_uploading);
-        NotificationHandler.make(R.string.pinterest);
+        NotificationHandler.make(R.string.pinterest, R.string.upload_progress, R.drawable.ic_cloud_upload_black_24dp);
         Bitmap image = getBitmapFromPath(saveFilePath);
         PDKClient
                 .getInstance().createPin(caption, boardID, image, null, new PDKCallback() {
             @Override
             public void onSuccess(PDKResponse response) {
-                NotificationHandler.uploadPassed();
+                NotificationHandler.actionPassed(R.string.upload_complete);
                 Log.d(getClass().getName(), response.getData().toString());
                 SnackBarHandler.show(parent, R.string.pinterest_post);
                 sendResult(Constants.SUCCESS);
@@ -789,7 +789,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
             @Override
             public void onFailure(PDKException exception) {
-                NotificationHandler.uploadFailed();
+                NotificationHandler.actionFailed();
                 Log.e(getClass().getName(), exception.getDetailMessage());
                 SnackBarHandler.show(parent, R.string.Pinterest_fail);
                 sendResult(FAIL);
@@ -1100,12 +1100,12 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int responseCode, Intent data) {
         if (requestCode == REQ_SELECT_PHOTO) {
             if (responseCode == RESULT_OK) {
-                NotificationHandler.uploadPassed();
+                NotificationHandler.actionPassed(R.string.upload_complete);
                 Snackbar.make(parent, R.string.success_google, Snackbar.LENGTH_LONG).show();
                 sendResult(SUCCESS);
                 return;
             } else {
-                NotificationHandler.uploadFailed();
+                NotificationHandler.actionFailed();
                 Snackbar.make(parent, R.string.error_google, Snackbar.LENGTH_LONG).show();
                 sendResult(FAIL);
                 return;
@@ -1186,7 +1186,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
         @Override
         protected void onPreExecute() {
-            NotificationHandler.make(R.string.twitter);
+            NotificationHandler.make(R.string.twitter, R.string.upload_progress, R.drawable.ic_cloud_upload_black_24dp);
             RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
             query.equalTo("name", TWITTER.toString());
             final RealmResults<AccountDatabase> result = query.findAll();
@@ -1206,11 +1206,11 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         @Override
         protected void onPostExecute(Void result) {
             if (isPostedOnTwitter) {
-                NotificationHandler.uploadPassed();
+                NotificationHandler.actionPassed(R.string.upload_complete);
                 SnackBarHandler.show(parent, R.string.tweet_posted_on_twitter);
                 sendResult(SUCCESS);
             } else {
-                NotificationHandler.uploadFailed();
+                NotificationHandler.actionFailed();
                 SnackBarHandler.show(parent, R.string.error_on_posting_twitter);
                 sendResult(FAIL);
             }
