@@ -115,6 +115,8 @@ import static org.fossasia.phimpme.gallery.data.base.SortingMode.NAME;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.NUMERIC;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.SIZE;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class LFMainActivity extends SharedMediaActivity {
 
@@ -126,18 +128,13 @@ public class LFMainActivity extends SharedMediaActivity {
     private PreferenceUtil SP;
     private SecurityHelper securityObj;
 
-    private RecyclerView rvAlbums;
     private AlbumsAdapter albumsAdapter;
     private GridSpacingItemDecoration rvAlbumsDecoration;
 
-    private RecyclerView rvMedia;
     private MediaAdapter mediaAdapter;
     private GridSpacingItemDecoration rvMediaDecoration;
 
-    private DrawerLayout mDrawerLayout;
-    private Toolbar toolbar;
     private SelectAlbumBottomSheet bottomSheetDialogFragment;
-    private SwipeRefreshLayout swipeRefreshLayout;
     private boolean hidden = false, pickMode = false, editMode = false, albumsMode = true, firstLaunch = true,localFolder=true,hidenav=false;
 
     //To handle all photos/Album conditions
@@ -152,10 +149,33 @@ public class LFMainActivity extends SharedMediaActivity {
     private ArrayList<Media> selectedMedias = new ArrayList<>();
     public boolean visible;
 
-    private FloatingActionButton fabScrollUp;
-
     // To handle back pressed
     boolean doubleBackToExitPressedOnce = false;
+
+    // Binding various views with Butterknife
+    @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.grid_albums) RecyclerView rvAlbums;
+    @BindView(R.id.grid_photos) RecyclerView rvMedia;
+    @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+    @BindView(R.id.fab_scroll_up) FloatingActionButton fabScrollUp;
+    @BindView(R.id.Drawer_Setting_Item) TextView drawerSettingText;
+    @BindView(R.id.Drawer_About_Item) TextView drawerAboutText;
+    @BindView(R.id.Drawer_share_Item) TextView drawerShareText;
+    @BindView(R.id.Drawer_rate_Item) TextView drawerRateText;
+    @BindView(R.id.Drawer_Upload_Item) TextView drawerUploadText;
+    @BindView(R.id.Drawer_Setting_Icon) IconicsImageView drawerSettingIcon;
+    @BindView(R.id.Drawer_About_Icon) IconicsImageView drawerAboutIcon;
+    @BindView(R.id.Drawer_share_Icon) IconicsImageView drawerShareIcon;
+    @BindView(R.id.Drawer_rate_Icon) IconicsImageView drawerRateIcon;
+    @BindView(R.id.Drawer_Upload_Icon) IconicsImageView drawerUploadIcon;
+    @BindView(R.id.drawer_scrollbar) ScrollView scrollView;
+    @BindView(R.id.appbar_toolbar) View toolbari;
+    @BindView(R.id.nothing_to_show) TextView nothingToShow;
+    @BindView(R.id.Drawer_Default_Icon) IconicsImageView defaultIcon;
+    @BindView(R.id.Drawer_hidden_Icon) IconicsImageView hiddenIcon;
+    @BindView(R.id.Drawer_Default_Item) TextView defaultText;
+    @BindView(R.id.Drawer_hidden_Item) TextView hiddenText;
 
     /*
     editMode-  When true, user can select items by clicking on them one by one
@@ -198,18 +218,16 @@ public class LFMainActivity extends SharedMediaActivity {
      */
     private void enterReveal() {
 
-        final View toolbar = findViewById(R.id.appbar_toolbar);
-
         // get the center for the clipping circle
-        int cx = toolbar.getMeasuredWidth() / 2;
-        int cy = toolbar.getMeasuredHeight() / 2;
+        int cx = toolbari.getMeasuredWidth() / 2;
+        int cy = toolbari.getMeasuredHeight() / 2;
 
         // get the final radius for the clipping circle
-        int finalRadius = Math.max(toolbar.getWidth(), toolbar.getHeight()) / 2;
+        int finalRadius = Math.max(toolbari.getWidth(), toolbari.getHeight()) / 2;
 
         // create the animator for this view
         Animator anim =
-                ViewAnimationUtils.createCircularReveal(toolbar, cx, cy, 5, finalRadius);
+                ViewAnimationUtils.createCircularReveal(toolbari, cx, cy, 5, finalRadius);
 
         anim.start();
     }
@@ -373,7 +391,6 @@ public class LFMainActivity extends SharedMediaActivity {
      *  Method for clearing the scroll flags.
      */
     private void appBarOverlay(){
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
         params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED);  // clear all scroll flags
     }
@@ -382,7 +399,6 @@ public class LFMainActivity extends SharedMediaActivity {
      * Method for adding the scroll flags.
      */
     private void clearOverlay(){
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
         params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
                 | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
@@ -403,6 +419,8 @@ public class LFMainActivity extends SharedMediaActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.e("TAG", "lfmain");
+
+        ButterKnife.bind(this);
 
         BottomNavigationView navigationView = (BottomNavigationView)findViewById(R.id.bottombar);
 
@@ -576,13 +594,9 @@ public class LFMainActivity extends SharedMediaActivity {
 
     private void initUI() {
         clearOverlay();
-        /**** TOOLBAR ****/
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
 
-        /**** RECYCLER VIEW ****/
-        rvAlbums = (RecyclerView) findViewById(R.id.grid_albums);
-        rvMedia = ((RecyclerView) findViewById(R.id.grid_photos));
         rvAlbums.setHasFixedSize(true);
         rvAlbums.setItemAnimator(new DefaultItemAnimator());
         rvMedia.setHasFixedSize(true);
@@ -613,7 +627,6 @@ public class LFMainActivity extends SharedMediaActivity {
 
 
         /**** SWIPE TO REFRESH ****/
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setColorSchemeColors(getAccentColor());
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getBackgroundColor());
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -635,7 +648,6 @@ public class LFMainActivity extends SharedMediaActivity {
         });
 
         /**** DRAWER ****/
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerLayout.addDrawerListener(new ActionBarDrawerToggle(this,
                 mDrawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
             public void onDrawerClosed(View view) {
@@ -681,7 +693,7 @@ public class LFMainActivity extends SharedMediaActivity {
      * Method to set scroll listeners for recycler view
      */
     private void setUpFab() {
-        fabScrollUp = (FloatingActionButton) findViewById(R.id.fab_scroll_up);
+
         fabScrollUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -803,7 +815,7 @@ public class LFMainActivity extends SharedMediaActivity {
         mediaAdapter.updatePlaceholder(getApplicationContext());
         albumsAdapter.updateTheme();
         /**** DRAWER ****/
-        setScrollViewColor((ScrollView) findViewById(R.id.drawer_scrollbar));
+        setScrollViewColor(scrollView);
 
         /**** recyclers drawable *****/
         Drawable drawableScrollBar = ContextCompat.getDrawable(getApplicationContext(), R.drawable.ic_scrollbar);
@@ -823,24 +835,23 @@ public class LFMainActivity extends SharedMediaActivity {
 
         /** TEXT VIEWS **/
         int color = getTextColor();
-        ((TextView) findViewById(R.id.Drawer_Default_Item)).setTextColor(color);
-        ((TextView) findViewById(R.id.Drawer_Setting_Item)).setTextColor(color);
-
-        ((TextView) findViewById(R.id.Drawer_About_Item)).setTextColor(color);
-        ((TextView) findViewById(R.id.Drawer_hidden_Item)).setTextColor(color);
-        ((TextView) findViewById(R.id.Drawer_share_Item)).setTextColor(color);
-        ((TextView) findViewById(R.id.Drawer_rate_Item)).setTextColor(color);
-        ((TextView) findViewById(R.id.Drawer_Upload_Item)).setTextColor(color);
+        defaultText.setTextColor(color);
+        drawerSettingText.setTextColor(color);
+        drawerAboutText.setTextColor(color);
+        hiddenText.setTextColor(color);
+        drawerShareText.setTextColor(color);
+        drawerRateText.setTextColor(color);
+        drawerUploadText.setTextColor(color);
 
         /** ICONS **/
         color = getIconColor();
-        ((IconicsImageView) findViewById(R.id.Drawer_Default_Icon)).setColor(color);
-        ((IconicsImageView) findViewById(R.id.Drawer_Setting_Icon)).setColor(color);
-        ((IconicsImageView) findViewById(R.id.Drawer_About_Icon)).setColor(color);
-        ((IconicsImageView) findViewById(R.id.Drawer_hidden_Icon)).setColor(color);
-        ((IconicsImageView) findViewById(R.id.Drawer_share_Icon)).setColor(color);
-        ((IconicsImageView) findViewById(R.id.Drawer_rate_Icon)).setColor(color);
-        ((IconicsImageView) findViewById(R.id.Drawer_Upload_Icon)).setColor(color);
+        defaultIcon.setColor(color);
+        drawerSettingIcon.setColor(color);
+        drawerAboutIcon.setColor(color);
+        hiddenIcon.setColor(color);
+        drawerShareIcon.setColor(color);
+        drawerRateIcon.setColor(color);
+        drawerUploadIcon.setColor(color);
 
         // Default setting
         if(localFolder)
@@ -1044,9 +1055,8 @@ public class LFMainActivity extends SharedMediaActivity {
     }
 
     private void checkNothing() {
-        TextView a = (TextView) findViewById(R.id.nothing_to_show);
-        a.setTextColor(getTextColor());
-        a.setVisibility((albumsMode && getAlbums().dispAlbums.size() == 0) || (!albumsMode && getAlbum().getMedia().size() == 0) ? View.VISIBLE : View.GONE);
+        nothingToShow.setTextColor(getTextColor());
+        nothingToShow.setVisibility((albumsMode && getAlbums().dispAlbums.size() == 0) || (!albumsMode && getAlbum().getMedia().size() == 0) ? View.VISIBLE : View.GONE);
     }
 
     //region MENU
@@ -2058,11 +2068,6 @@ public class LFMainActivity extends SharedMediaActivity {
     }
     private void tint()
     {
-        IconicsImageView defaultIcon=(IconicsImageView) findViewById(R.id.Drawer_Default_Icon);
-        IconicsImageView hiddenIcon=(IconicsImageView) findViewById(R.id.Drawer_hidden_Icon);
-        TextView  defaultText=(TextView) findViewById(R.id.Drawer_Default_Item);
-        TextView  hiddenText=(TextView) findViewById(R.id.Drawer_hidden_Item);
-
         if(localFolder) {
         defaultIcon.setColor(getPrimaryColor());
         defaultText.setTextColor(getPrimaryColor());
