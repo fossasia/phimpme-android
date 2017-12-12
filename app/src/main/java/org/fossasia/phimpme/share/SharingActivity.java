@@ -372,6 +372,10 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                     case MESSENGER:
                         shareToMessenger();
                         break;
+                    
+                    case SNAPCHAT:
+                        shareToSnapchat();
+                        break;
 
                     default:
                         SnackBarHandler.show(parent, R.string.feature_not_present);
@@ -387,6 +391,17 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         AlertDialog alertDialog = dialogBuilder.create();
         alertDialog.show();
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
+    }
+
+    private void shareToSnapchat() {
+        Uri uri = Uri.fromFile(new File(saveFilePath));
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        share.setPackage("com.snapchat.android");
+        share.putExtra(Intent.EXTRA_STREAM, uri);
+        share.setType("image/*");
+        share.putExtra(Intent.EXTRA_TEXT, caption);
+        startActivity(Intent.createChooser(share, "Snapchat"));
     }
 
     /**
