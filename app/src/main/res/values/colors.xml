@@ -395,6 +395,7 @@
     <color name="tumblr_color">#32506d</color>
     <color name="instagram_color">#125688</color>
     <color name="whatsapp_color">#34af23</color>
+    <color name="snapchat_color">#fffc00</color>
     <color name="others_color">@color/md_indigo_900</color>
     <color name="facebook_color_darktheme">#28acff</color>
     <color name="messenger_color_darktheme">#778bca</color>
@@ -412,6 +413,7 @@
     <color name="tumblr_color_darktheme">#698dc1</color>
     <color name="instagram_color_darktheme">#ff56a5</color>
     <color name="whatsapp_color_darktheme">#5cd74b</color>
+    <color name="snapchat_color_darktheme">#faf701</color>
     <color name="others_color_darktheme">@color/md_indigo_400</color>
     <color name="card_background">#e1e0e0</color>
 
