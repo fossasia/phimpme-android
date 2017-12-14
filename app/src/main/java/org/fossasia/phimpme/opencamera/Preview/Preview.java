@@ -614,10 +614,10 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		int longSide = (widthLonger ? previewWidth : previewHeight);
 		int shortSide = (widthLonger ? previewHeight : previewWidth);
 		if( longSide > shortSide * aspect_ratio ) {
-			longSide = (int) ((double) shortSide * aspect_ratio);
+		        shortSide = (int) ((double) longSide / aspect_ratio);
 		}
 		else {
-			shortSide = (int) ((double) longSide / aspect_ratio);
+		        longSide = (int) ((double) shortSide * aspect_ratio);
 		}
 		if( widthLonger ) {
 			previewWidth = longSide;

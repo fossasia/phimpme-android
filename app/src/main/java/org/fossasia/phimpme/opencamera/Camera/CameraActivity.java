@@ -799,6 +799,10 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
             Log.d(TAG, "onResume");
             debug_time = System.currentTimeMillis();
         }
+
+        //hiding status bar
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         super.onResume();
 
         // Set black window background; also needed if we hide the virtual buttons in immersive mode
