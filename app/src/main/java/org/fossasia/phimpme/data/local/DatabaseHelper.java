@@ -60,4 +60,10 @@ public class DatabaseHelper {
         realm.copyToRealmOrUpdate(item);
         realm.commitTransaction();
     }
+
+    public void delete(ImageDescModel item){
+        realm.beginTransaction();
+        item.deleteFromRealm();
+        realm.commitTransaction();
+    }
 }

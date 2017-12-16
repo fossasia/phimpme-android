@@ -890,6 +890,12 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
                     }
                 });
+                descriptionDialogBuilder.setNeutralButton(getString(R.string.delete).toUpperCase(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //This will be overwrite later
+                    }
+                });
 
                 final AlertDialog descriptionDialog = descriptionDialogBuilder.create();
                 descriptionDialog.show();
@@ -901,6 +907,13 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 descriptionDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
                 AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE},
                         getColor(R.color.grey), descriptionDialog);
+
+                if(temp == null){
+                    descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setEnabled(false);
+                }
+                else
+                    descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setEnabled(true);
+
                 editTextDescription.addTextChangedListener(new TextWatcher() {
                     @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         //empty method body
@@ -929,7 +942,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
                     }
                 });
-                
+
                 descriptionDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -937,8 +950,22 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         voiceInput = editTextDescription.getText().toString();
                         if (temp == null) {
                             databaseHelper.addImageDesc(new ImageDescModel(pathForDescription, editTextDescription.getText().toString()));
+                            SnackBarHandler.show(parentView,getString(R.string.description_saved).toString());
                         } else {
                             databaseHelper.update(new ImageDescModel(pathForDescription, editTextDescription.getText().toString()));
+                            SnackBarHandler.show(parentView,getString(R.string.description_updated).toString());
+                        }
+
+                    }
+                });
+
+                descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        descriptionDialog.dismiss();
+                        if(temp!= null){
+                            databaseHelper.delete(temp);
+                            SnackBarHandler.show(parentView,getString(R.string.description_deleted).toString());
                         }
 
                     }
