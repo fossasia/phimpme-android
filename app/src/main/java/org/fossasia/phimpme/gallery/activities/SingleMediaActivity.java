@@ -99,6 +99,7 @@ import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 
+import static org.fossasia.phimpme.R.string.media;
 import static org.fossasia.phimpme.gallery.activities.LFMainActivity.listAll;
 import static org.fossasia.phimpme.utilities.Utils.promptSpeechInput;
 
@@ -328,7 +329,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 @Override
                 public void onPageChanged(int oldPosition, int position) {
                     current_image_pos = position;
-                    getAlbum().setCurrentPhotoIndex(position);
+                    getAlbum().setCurrentPhotoIndex(getAlbum().getCurrentMediaIndex());
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
                     invalidateOptionsMenu();
                     pathForDescription = listAll.get(position).getPath();
@@ -798,11 +799,16 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 return true;
 
             case R.id.action_details:
+                Media media = null;
                 handler.removeCallbacks(slideShowRunnable);
                 details=true;
                 final View v = findViewById(R.id.layout_image_description);
                 LinearLayout linearLayout = (LinearLayout)v;
-                Media media = getAlbum().getCurrentMedia();
+                if(!allPhotoMode){
+                    media = getAlbum().getCurrentMedia();
+                }else if(allPhotoMode){
+                    media = new Media(new File(listAll.get(current_image_pos).getPath()));
+                }
                 MediaDetailsMap<String,String> mediaDetailsMap = media.getMainDetails(this);
 
                 // Set current image as a blurred background
