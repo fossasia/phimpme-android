@@ -77,6 +77,7 @@ import org.fossasia.phimpme.gallery.data.CustomAlbumsHelper;
 import org.fossasia.phimpme.gallery.data.HandlingAlbums;
 import org.fossasia.phimpme.gallery.data.Media;
 import org.fossasia.phimpme.gallery.data.base.MediaComparators;
+import org.fossasia.phimpme.gallery.data.base.SortingMode;
 import org.fossasia.phimpme.gallery.data.base.SortingOrder;
 import org.fossasia.phimpme.gallery.data.providers.MediaStoreProvider;
 import org.fossasia.phimpme.gallery.data.providers.StorageProvider;
@@ -1561,9 +1562,11 @@ public class LFMainActivity extends SharedMediaActivity {
                     getAlbums().setDefaultSortingMode(NAME);
                     new SortingUtilsAlbums().execute();
                 } else {
-                    getAlbum().setDefaultSortingMode(getApplicationContext(), NAME);
-                    new SortingUtilsPhtots().execute();
-                    if (all_photos) {
+                    new SortModeSet().execute(NAME);
+                    if(!all_photos){
+                        new SortingUtilsPhtots().execute();
+                    }
+                    else {
                         new SortingUtilsListAll().execute();
                     }
                 }
@@ -1575,9 +1578,11 @@ public class LFMainActivity extends SharedMediaActivity {
                     getAlbums().setDefaultSortingMode(DATE);
                     new SortingUtilsAlbums().execute();
                 } else {
-                    getAlbum().setDefaultSortingMode(getApplicationContext(), DATE);
-                    new SortingUtilsPhtots().execute();
-                    if (all_photos) {
+                    new SortModeSet().execute(DATE);
+                    if(!all_photos){
+                        new SortingUtilsPhtots().execute();
+                    }
+                    else {
                         new SortingUtilsListAll().execute();
                     }
                 }
@@ -1589,9 +1594,11 @@ public class LFMainActivity extends SharedMediaActivity {
                     getAlbums().setDefaultSortingMode(SIZE);
                     new SortingUtilsAlbums().execute();
                 } else {
-                    getAlbum().setDefaultSortingMode(getApplicationContext(), SIZE);
-                    new SortingUtilsPhtots().execute();
-                    if (all_photos) {
+                    new SortModeSet().execute(SIZE);
+                    if(!all_photos){
+                        new SortingUtilsPhtots().execute();
+                    }
+                    else  {
                         new SortingUtilsListAll().execute();
                     }
                 }
@@ -1603,9 +1610,11 @@ public class LFMainActivity extends SharedMediaActivity {
                     getAlbums().setDefaultSortingMode(NUMERIC);
                     new SortingUtilsAlbums().execute();
                 } else {
-                    getAlbum().setDefaultSortingMode(getApplicationContext(), NUMERIC);
-                    new SortingUtilsPhtots().execute();
-                    if (all_photos) {
+                    new SortModeSet().execute(NUMERIC);
+                    if(!all_photos){
+                        new SortingUtilsPhtots().execute();
+                    }
+                    else {
                         new SortingUtilsListAll().execute();
                     }
                 }
@@ -1618,8 +1627,10 @@ public class LFMainActivity extends SharedMediaActivity {
                     new SortingUtilsAlbums().execute();
                 } else {
                     getAlbum().setDefaultSortingAscending(getApplicationContext(), item.isChecked() ? SortingOrder.DESCENDING : SortingOrder.ASCENDING);
-                    new SortingUtilsPhtots().execute();
-                    if (all_photos) {
+                    if(!all_photos){
+                        new SortingUtilsPhtots().execute();
+                    }
+                    else  {
                         new SortingUtilsListAll().execute();
                     }
                 }
@@ -2009,6 +2020,19 @@ public class LFMainActivity extends SharedMediaActivity {
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private class SortModeSet extends AsyncTask<SortingMode, Void, Void> {
+
+        @Override protected Void doInBackground(SortingMode... sortingModes) {
+
+            for(Album a: getAlbums().dispAlbums){
+                if(a.settings.getSortingMode().getValue()!=sortingModes[0].getValue()){
+                    a.setDefaultSortingMode(getApplicationContext(), sortingModes[0]);
+                }
+            }
+            return null;
         }
     }
 
