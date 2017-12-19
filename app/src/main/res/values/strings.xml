@@ -719,7 +719,17 @@
     <string name="no_exif_data">No data found.</string>
 
     <!--ALBUM DETAILS-->
-    <string name="total_photos">Total photos</string>
+    <string name="total_photos">Total photos: </string>
+    <string name="hidden">Hidden: </string>
+    <string name="type_content">Type: </string>
+    <string name="folder_path">Path: </string>
+    <string name="type_folder">Type: </string>
+    <string name="folder_name">Name: </string>
+    <string name="writable">Writable: </string>
+    <string name="readable">Readable: </string>
+    <string name="size_folder">Size: </string>
+    <string name="modified">Last Modified: </string>
+    <string name="parent_path">Parent: </string>
 
     <!--DRAWER ITEMS -->
     <string name="local_folder">Local Folders</string>

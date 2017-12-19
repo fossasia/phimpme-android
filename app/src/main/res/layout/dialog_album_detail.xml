@@ -3,55 +3,254 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/vn.mbm.phimp.me"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="match_parent" xmlns:src2="http://schemas.android.com/apk/res-auto"
+    xmlns:app2="http://schemas.android.com/tools"
     android:orientation="vertical">
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="2dp"
-        android:id="@+id/album_details_card">
-        <LinearLayout android:layout_width="match_parent"
+  <android.support.v7.widget.CardView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:cardCornerRadius="2dp"
+      android:id="@+id/album_details_card">
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical">
+      <TextView
+          android:id="@+id/album_details_title"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/details"
+          android:padding="24dp"
+          android:textColor="@color/md_dark_primary_text"
+          android:background="@color/md_red_500"
+          android:textSize="18sp"
+          android:textStyle="bold"
+      />
+      <ScrollView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/album_details_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/details"
-                android:padding="24dp"
-                android:textColor="@color/md_dark_primary_text"
-                android:background="@color/md_red_500"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                />
-            <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:id="@+id/ll_list_details"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingTop="@dimen/small_spacing"
-                        />
-                    <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:id="@+id/details_showmore"
-                        android:text="@string/show_more"
-                        android:textSize="16sp"
-                        android:visibility="gone"
-                        android:gravity="center"
-                        android:clickable="true"
-                        android:background="@drawable/ripple"
-                        />
-                </LinearLayout>
-            </ScrollView>
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:id="@+id/trcia"
+              android:orientation="horizontal"
+              android:layout_marginLeft="30dp"
+              android:layout_marginBottom="10dp"
+              android:layout_marginTop="10dp">
+            <ImageView android:layout_width="55dp"
+                       android:layout_height="55dp"
+                       android:background="@color/white"
+                       src2:srcCompat="@mipmap/ic_folder_icon"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/album_details_name"
+                      android:textSize="17dp"
+                      android:textColor="@color/icongrey"
+                      android:layout_marginTop="20dp"
+                      android:layout_marginLeft="10dp"/>
+          </LinearLayout>
+          <View android:layout_width="wrap_content"
+                android:background="@color/md_grey_300"
+                android:layout_height="1dp"/>
+          <View android:layout_width="wrap_content"
+                android:layout_height="10dp"/>
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:layout_marginBottom="10dp"
+              android:layout_marginLeft="30dp" >
+            <TextView android:layout_width="wrap_content"
+                      android:textAlignment="center"
+                      android:layout_height="wrap_content"
+                      android:textSize="17dp"
+                      android:textColor="@color/icongrey"
+                      android:textStyle="bold"
+                      android:text="@string/type_content"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/album_details_type"
+                      android:textColor="@color/icongrey"
+                      android:textSize="17dp"
+                      android:layout_marginLeft="72dp"/>
+          </LinearLayout>
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:layout_marginBottom="10dp"
+              android:layout_marginLeft="30dp">
+            <TextView android:layout_width="wrap_content"
+                      android:textAlignment="center"
+                      android:layout_height="wrap_content"
+                      android:textSize="17dp"
+                      android:textStyle="bold"
+                      android:textColor="@color/icongrey"
+                      android:text="@string/folder_path"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/album_details_path"
+                      android:textSize="17dp"
+                      android:layout_marginLeft="75dp"
+                      android:textColor="@color/icongrey"/>
+          </LinearLayout>
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:layout_marginBottom="10dp"
+              android:layout_marginLeft="30dp">
+            <TextView android:layout_width="wrap_content"
+                      android:textAlignment="center"
+                      android:layout_height="wrap_content"
+                      android:textSize="17dp"
+                      android:textColor="@color/icongrey"
+                      android:textStyle="bold"
+                      android:text="@string/parent_path"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/album_details_parent"
+                      android:textSize="17dp"
+                      android:textColor="@color/icongrey"
+                      android:layout_marginLeft="60dp"/>
+          </LinearLayout>
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:layout_marginBottom="10dp"
+              android:layout_marginLeft="30dp">
+            <TextView android:layout_width="wrap_content"
+                      android:textAlignment="center"
+                      android:layout_height="wrap_content"
+                      android:textSize="17dp"
+                      android:textStyle="bold"
+                      android:textColor="@color/icongrey"
+                      android:text="@string/total_photos"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/album_details_total"
+                      android:textSize="17dp"
+                      android:textColor="@color/icongrey"
+                      android:layout_marginLeft="14dp"/>
+          </LinearLayout>
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:layout_marginBottom="10dp"
+              android:layout_marginLeft="30dp">
+            <TextView android:layout_width="wrap_content"
+                      android:textAlignment="center"
+                      android:layout_height="wrap_content"
+                      android:textSize="17dp"
+                      android:textStyle="bold"
+                      android:textColor="@color/icongrey"
+                      android:text="@string/size_folder"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/album_details_size"
+                      android:textSize="17dp"
+                      android:textColor="@color/icongrey"
+                      android:layout_marginLeft="77dp"/>
+          </LinearLayout>
+          <View android:layout_width="match_parent"
+                android:background="@color/md_grey_300"
+                android:layout_height="1dp"/>
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:layout_marginBottom="17dp"
+              android:layout_marginTop="17dp"
+              android:layout_marginLeft="30dp">
+            <TextView android:layout_width="wrap_content"
+                      android:textAlignment="center"
+                      android:layout_height="wrap_content"
+                      android:textSize="17dp"
+                      android:textStyle="bold"
+                      android:textColor="@color/icongrey"
+                      android:text="@string/modified"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/album_details_last_modified"
+                      android:textSize="17dp"
+                      android:maxLines="2"
+                      android:textColor="@color/icongrey"
+                      android:layout_marginLeft="5dp"/>
+          </LinearLayout>
+          <View android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/md_grey_300"/>
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:layout_marginTop="10dp"
+              android:layout_marginBottom="10dp"
+              android:layout_marginLeft="30dp">
+            <TextView android:layout_width="wrap_content"
+                      android:textAlignment="center"
+                      android:layout_height="wrap_content"
+                      android:textSize="17dp"
+                      android:textStyle="bold"
+                      android:textColor="@color/icongrey"
+                      android:text="@string/readable"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/album_details_readable"
+                      android:textSize="17dp"
+                      android:textColor="@color/icongrey"
+                      android:layout_marginLeft="38dp"/>
+          </LinearLayout>
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:layout_marginBottom="10dp"
+              android:layout_marginLeft="30dp">
+            <TextView android:layout_width="wrap_content"
+                      android:textAlignment="center"
+                      android:layout_height="wrap_content"
+                      android:textSize="17dp"
+                      android:textColor="@color/icongrey"
+                      android:textStyle="bold"
+                      android:text="@string/writable"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/album_details_writable"
+                      android:textSize="17dp"
+                      android:textColor="@color/icongrey"
+                      android:layout_marginLeft="45dp"/>
+          </LinearLayout>
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal"
+              android:layout_marginBottom="10dp"
+              android:layout_marginLeft="30dp">
+            <TextView android:layout_width="wrap_content"
+                      android:textAlignment="center"
+                      android:layout_height="wrap_content"
+                      android:textSize="17dp"
+                      android:textStyle="bold"
+                      android:textColor="@color/icongrey"
+                      android:text="@string/hidden"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/album_details_hidden"
+                      android:textSize="17dp"
+                      android:textColor="@color/icongrey"
+                      android:layout_marginLeft="55dp"/>
+          </LinearLayout>
+          <View android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/md_grey_300"/>
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+      </ScrollView>
+    </LinearLayout>
+  </android.support.v7.widget.CardView>
 </LinearLayout>
