@@ -1048,8 +1048,14 @@ public class LFMainActivity extends SharedMediaActivity {
             getAlbums().clearSelectedAlbums();
             albumsAdapter.notifyDataSetChanged();
         } else {
-            getAlbum().clearSelectedPhotos();
-            mediaAdapter.notifyDataSetChanged();
+            if(!all_photos){
+                getAlbum().clearSelectedPhotos();
+                mediaAdapter.notifyDataSetChanged();
+            }else {
+                clearSelectedPhotos();
+                mediaAdapter.notifyDataSetChanged();
+            }
+
         }
         invalidateOptionsMenu();
     }
@@ -1504,21 +1510,39 @@ public class LFMainActivity extends SharedMediaActivity {
                     for (Media f : selectedMedias)
                         files.add(f.getUri());
                 }
-                
-                for(Media f: getAlbum().getSelectedMedia()){
+
+                if(!all_photos){
                     Realm realm = Realm.getDefaultInstance();
-                    realm.beginTransaction();
-                    UploadHistoryRealmModel uploadHistory;
-                    uploadHistory = realm.createObject(UploadHistoryRealmModel.class);
-                    uploadHistory.setName("OTHERS");
-                    uploadHistory.setPathname(f.getPath());
-                    uploadHistory.setDatetime(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
-                    uploadHistory.setStatus(getString(R.string.upload_done));
-                    realm.commitTransaction();
-                    Intent result = new Intent();
-                    result.putExtra(Constants.SHARE_RESULT, 0);
-                    setResult(RESULT_OK, result);
+                    for(Media f: getAlbum().getSelectedMedia()){
+                        realm.beginTransaction();
+                        UploadHistoryRealmModel uploadHistory;
+                        uploadHistory = realm.createObject(UploadHistoryRealmModel.class);
+                        uploadHistory.setName("OTHERS");
+                        uploadHistory.setPathname(f.getPath());
+                        uploadHistory.setDatetime(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
+                        uploadHistory.setStatus(getString(R.string.upload_done));
+                        realm.commitTransaction();
+                        Intent result = new Intent();
+                        result.putExtra(Constants.SHARE_RESULT, 0);
+                        setResult(RESULT_OK, result);
+                    }
+                }else{
+                    Realm realm = Realm.getDefaultInstance();
+                    for(Media f: selectedMedias){
+                        realm.beginTransaction();
+                        UploadHistoryRealmModel uploadHistory;
+                        uploadHistory = realm.createObject(UploadHistoryRealmModel.class);
+                        uploadHistory.setName("OTHERS");
+                        uploadHistory.setPathname(f.getPath());
+                        uploadHistory.setDatetime(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
+                        uploadHistory.setStatus(getString(R.string.upload_done));
+                        realm.commitTransaction();
+                        Intent result = new Intent();
+                        result.putExtra(Constants.SHARE_RESULT, 0);
+                        setResult(RESULT_OK, result);
+                    }
                 }
+
 
                 String extension = files.get(0).getPath().substring(files.get(0).getPath().lastIndexOf('.') + 1);
                 String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
