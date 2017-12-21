@@ -44,7 +44,9 @@
                         android:textColorHint="@color/grey"
                         android:layout_margin="20dp"
                         android:gravity="top|left"
-                        android:inputType="text"
+                        android:inputType="textCapSentences|textMultiLine"
+                        android:maxLength="2000"
+                        android:maxLines="4"
                         android:selectAllOnFocus="true"/>
                     <ImageButton
                         android:layout_width="@dimen/mic_image"
