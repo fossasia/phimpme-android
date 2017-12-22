@@ -91,7 +91,6 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
                     , getContext().getPackageName());
 
             holder.accountImageShare.setColorFilter(ContextCompat.getColor(getContext(), id));
-            holder.uploadHistoryTitle.setBackgroundColor(color);
         }
     }
 
@@ -118,9 +117,6 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
 
         @BindView(R.id.account_image_share)
         ImageView accountImageShare;
-
-        @BindView(R.id.upload_history_title)
-        LinearLayout uploadHistoryTitle;
 
         public ViewHolder(View itemView) {
             super(itemView);

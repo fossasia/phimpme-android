@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 
 import static org.fossasia.phimpme.gallery.data.base.FilterMode.ALL;
 
@@ -264,6 +265,56 @@ public class Album implements Serializable {
 		return new File(getPath(), ".nomedia").exists();
 	}
 
+	public boolean isWritable(){
+		File file = new File(getPath());
+		return file.canWrite();
+	}
+
+	public boolean isReadable(){
+		File file = new File(getPath());
+		return file.canRead();
+	}
+
+	public String lastmodified(){
+		File file = new File(getPath());
+		Date date = new Date(file.lastModified());
+		return String.valueOf(date);
+	}
+
+	public String getParentPath(){
+		File file = new File(getPath());
+		return file.getParent();
+	}
+
+	public String size(){
+		File file = new File(getPath());
+		long size = 0;
+		size = getFileFolderSize(file);
+		double sizeMB = (double) size / 1024 / 1024;
+		String s = " MB";
+		if (sizeMB < 1) {
+			sizeMB = (double) size / 1024;
+			s = " KB";
+		}
+		sizeMB = (double) Math.round(sizeMB * 100) / 100;
+		return String.valueOf(sizeMB) + s;
+	}
+
+	public static long getFileFolderSize(File dir) {
+		long size = 0;
+		if (dir.isDirectory()) {
+			for (File file : dir.listFiles()) {
+				if (file.isFile()) {
+					size += file.length();
+				} else
+					size += getFileFolderSize(file);
+			}
+		} else if (dir.isFile()) {
+			size += dir.length();
+		}
+		return size;
+	}
+
 	public Media getCoverAlbum() {
 		if (hasCustomCover())
 			return new Media(settings.getCoverPath());
@@ -416,9 +467,30 @@ public class Album implements Serializable {
     public MediaDetailsMap<String, String> getAlbumDetails(Context context){
         metadata = new MetadataItem(new File(getPath()));
         MediaDetailsMap<String, String> details = new MediaDetailsMap<String, String>();
-        details.put(context.getString(R.string.path), getPath());
-        details.put(context.getString(R.string.name),getName());
+        details.put(context.getString(R.string.folder_path), getPath());
+        details.put(context.getString(R.string.folder_name),getName());
         details.put(context.getString(R.string.total_photos),Integer.toString(getCount()));
+		details.put(context.getString(R.string.parent_path), getParentPath());
+		details.put(context.getString(R.string.modified), lastmodified());
+		details.put(context.getString(R.string.size_folder), size());
+		if(isHidden()){
+			details.put(context.getString(R.string.hidden), "Yes");
+		}
+		else{
+			details.put(context.getString(R.string.hidden), "No");
+		}
+		if(isReadable()){
+			details.put(context.getString(R.string.readable), "Yes");
+		}
+		else{
+			details.put(context.getString(R.string.readable), "No");
+		}
+		if(isWritable()){
+			details.put(context.getString(R.string.writable), "Yes");
+		}
+		else{
+			details.put(context.getString(R.string.writable), "No");
+		}
         return details;
     }
 
