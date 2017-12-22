@@ -168,6 +168,8 @@ The project is maintained by
 <a href = "https://github.com/anantprsd5"><img src = "http://www.iconninja.com/files/241/825/211/round-collaboration-social-github-code-circle-network-icon.svg" width="36" height = "36"/></a>
 <a href = "https://twitter.com/Anantprasad3"><img src = "https://www.shareicon.net/download/2016/07/06/107115_media.svg" width="36" height="36"/></a>
 <a href = "https://www.linkedin.com/in/anant-prasad-82b7a2119/"><img src = "http://www.iconninja.com/files/863/607/751/network-linkedin-social-connection-circular-circle-media-icon.svg" width="36" height="36"/></a>
+<a href = "https://www.facebook.com/anant.prasad.180"><img src = "http://www.iconninja.com/files/665/552/9/facebook-circle-social-share-circular-media-icon.png" width="36" height="36"/></a>
+
 </p>
 </td>
 
@@ -180,6 +182,7 @@ The project is maintained by
 <a href = "https://github.com/mohitmanuja"><img src = "http://www.iconninja.com/files/241/825/211/round-collaboration-social-github-code-circle-network-icon.svg" width="36" height = "36"/></a>
 <a href = "https://twitter.com/manuja_mohit"><img src = "https://www.shareicon.net/download/2016/07/06/107115_media.svg" width="36" height="36"/></a>
 <a href = "https://www.linkedin.com/in/mohitmanuja/"><img src = "http://www.iconninja.com/files/863/607/751/network-linkedin-social-connection-circular-circle-media-icon.svg" width="36" height="36"/></a>
+<a href = "https://www.facebook.com/manuja.mohit"><img src = "http://www.iconninja.com/files/665/552/9/facebook-circle-social-share-circular-media-icon.png" width="36" height="36"/></a>
 </p>
 </td>
 
@@ -192,6 +195,7 @@ The project is maintained by
 <a href = "https://github.com/pa1pal"><img src = "http://www.iconninja.com/files/241/825/211/round-collaboration-social-github-code-circle-network-icon.svg" width="36" height = "36"/></a>
 <a href = "https://twitter.com/pa1pal"><img src = "https://www.shareicon.net/download/2016/07/06/107115_media.svg" width="36" height="36"/></a>
 <a href = "https://www.linkedin.com/in/pa1pal/"><img src = "http://www.iconninja.com/files/863/607/751/network-linkedin-social-connection-circular-circle-media-icon.svg" width="36" height="36"/></a>
+<a href = "https://www.facebook.com/pa1.pal?fref=nf"><img src = "http://www.iconninja.com/files/665/552/9/facebook-circle-social-share-circular-media-icon.png" width="36" height="36"/></a>
 </p>
 </td>
 
@@ -204,6 +208,7 @@ The project is maintained by
 <a href = "https://github.com/Subhankar29"><img src = "http://www.iconninja.com/files/241/825/211/round-collaboration-social-github-code-circle-network-icon.svg" width="36" height = "36"/></a>
 <a href = "https://twitter.com/sole_subhankar"><img src = "https://www.shareicon.net/download/2016/07/06/107115_media.svg" width="36" height="36"/></a>
 <a href = "https://www.linkedin.com/in/subhankar-shah-12245b130/"><img src = "http://www.iconninja.com/files/863/607/751/network-linkedin-social-connection-circular-circle-media-icon.svg" width="36" height="36"/></a>
+<a href = "https://www.facebook.com/subhankar.shah"><img src = "http://www.iconninja.com/files/665/552/9/facebook-circle-social-share-circular-media-icon.png" width="36" height="36"/></a>
 </p>
 </td>
 
@@ -215,6 +220,7 @@ The project is maintained by
 <a href = "https://github.com/vinaysajjanapu"><img src = "http://www.iconninja.com/files/241/825/211/round-collaboration-social-github-code-circle-network-icon.svg" width="36" height = "36"/></a>
 <a href = "https://twitter.com/sajjanapu_vinay"><img src = "https://www.shareicon.net/download/2016/07/06/107115_media.svg" width="36" height="36"/></a>
 <a href = "https://www.linkedin.com/in/vinay-sajjanapu-a315ab21/"><img src = "http://www.iconninja.com/files/863/607/751/network-linkedin-social-connection-circular-circle-media-icon.svg" width="36" height="36"/></a>
+<a href = "https://www.facebook.com/vinay.sajjanapu"><img src = "http://www.iconninja.com/files/665/552/9/facebook-circle-social-share-circular-media-icon.png" width="36" height="36"/></a>
 </p>
 </td>
 </tr> 
