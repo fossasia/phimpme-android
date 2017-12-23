@@ -184,7 +184,14 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 e.printStackTrace();
             }
             finally{
-                handler.postDelayed(this, SLIDE_SHOW_INTERVAL);
+                if(getAlbum().getCurrentMediaIndex()+1 == getAlbum().getMedia().size() - 1){
+                    handler.removeCallbacks(slideShowRunnable);
+                    slideshow=false;
+                    toggleSystemUI();
+                }
+                else{
+                    handler.postDelayed(this, SLIDE_SHOW_INTERVAL);
+                }
             }
         }
     };
@@ -306,7 +313,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
 //            toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
 
-
             mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
                 @Override
                 public void onPageChanged(int oldPosition, int position) {
@@ -317,10 +323,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 }
             });
             mViewPager.scrollToPosition(getAlbum().getCurrentMediaIndex());
-
-
         } else {
-
             adapter = new ImageAdapter(LFMainActivity.listAll, basicCallBack, this, this);
             getSupportActionBar().setTitle(all_photo_pos + 1 + " " + getString(R.string.of) + " " + size_all);
             current_image_pos = all_photo_pos;
