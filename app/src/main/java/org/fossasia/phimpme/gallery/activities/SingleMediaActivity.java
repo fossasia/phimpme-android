@@ -178,7 +178,12 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         @Override
         public void run() {
             try{
-                mViewPager.scrollToPosition((getAlbum().getCurrentMediaIndex() + 1) % getAlbum().getMedia().size());
+                if(!allPhotoMode){
+                    mViewPager.scrollToPosition((getAlbum().getCurrentMediaIndex() + 1) % getAlbum().getMedia().size());
+                }
+                else{
+                    mViewPager.scrollToPosition((current_image_pos + 1) % listAll.size());
+                }
             }
             catch (Exception e) {
                 e.printStackTrace();
