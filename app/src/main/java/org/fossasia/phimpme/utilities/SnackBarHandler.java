@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
 
 /**
@@ -25,7 +26,7 @@ public class SnackBarHandler  {
                 .snackbar_text);
         textView.setTextColor(Color.WHITE);
         textView.setTextSize(12);
-        snackbar.setAction("OK", new View.OnClickListener() {
+        snackbar.setAction(R.string.ok_action, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 snackbar.dismiss();
@@ -50,7 +51,7 @@ public class SnackBarHandler  {
                 .snackbar_text);
         textView.setTextColor(Color.WHITE);
         textView.setTextSize(12);
-        snackbar.setAction("OK", new View.OnClickListener() {
+        snackbar.setAction(R.string.ok_action, new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 snackbar.dismiss();

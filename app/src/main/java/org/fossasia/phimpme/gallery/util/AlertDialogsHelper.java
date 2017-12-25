@@ -168,7 +168,7 @@ public class AlertDialogsHelper {
         TextView name = (TextView) dialogLayout.findViewById(R.id.album_details_name);
         name.setText(metadata.get(activity.getString(R.string.folder_name)));
         TextView type = (TextView) dialogLayout.findViewById(R.id.album_details_type);
-        type.setText("Folder");
+        type.setText(R.string.folder);
         TextView path = (TextView) dialogLayout.findViewById(R.id.album_details_path);
         path.setText(metadata.get(activity.getString(R.string.folder_path)));
         TextView parent = (TextView) dialogLayout.findViewById(R.id.album_details_parent);

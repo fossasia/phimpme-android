@@ -474,22 +474,22 @@ public class Album implements Serializable {
 		details.put(context.getString(R.string.modified), lastmodified());
 		details.put(context.getString(R.string.size_folder), size());
 		if(isHidden()){
-			details.put(context.getString(R.string.hidden), "Yes");
+			details.put(context.getString(R.string.hidden), context.getString(R.string.answer_yes));
 		}
 		else{
-			details.put(context.getString(R.string.hidden), "No");
+			details.put(context.getString(R.string.hidden), context.getString(R.string.answer_no));
 		}
 		if(isReadable()){
-			details.put(context.getString(R.string.readable), "Yes");
+			details.put(context.getString(R.string.readable),  context.getString(R.string.answer_yes));
 		}
 		else{
-			details.put(context.getString(R.string.readable), "No");
+			details.put(context.getString(R.string.readable), context.getString(R.string.answer_no));
 		}
 		if(isWritable()){
-			details.put(context.getString(R.string.writable), "Yes");
+			details.put(context.getString(R.string.writable),  context.getString(R.string.answer_yes));
 		}
 		else{
-			details.put(context.getString(R.string.writable), "No");
+			details.put(context.getString(R.string.writable), context.getString(R.string.answer_no));
 		}
         return details;
     }

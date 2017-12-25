@@ -59,6 +59,7 @@ import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
 import org.fossasia.phimpme.utilities.Constants;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
+import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -501,7 +502,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                                 loginResult.getAccessToken(),
                                 new GraphRequest.GraphJSONObjectCallback() {
                                     @Override
-                                    public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
+                                    public void onCompleted(@NonNls JSONObject jsonObject, GraphResponse graphResponse) {
                                         Log.v("LoginActivity", graphResponse.toString());
                                         try {
                                             account.setUsername(jsonObject.getString("email"));
@@ -627,7 +628,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        SnackBarHandler.show(coordinatorLayout, "Connection Failed");
+        SnackBarHandler.show(coordinatorLayout, getApplicationContext().getString(R.string.connection_failed));
     }
 
 
