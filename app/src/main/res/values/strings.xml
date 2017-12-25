@@ -472,6 +472,7 @@
     <string name="move_to">Move to</string>
     <string name="use_as">Use as</string>
     <string name="favourite">Add to favourites</string>
+    <string name="favourite_title">Favourite Photos</string>
     <string name="edit">Edit</string>
     <string name="fix_date">Fix date</string>
     <string name="rename">Rename</string>
@@ -734,6 +735,7 @@
     <!--DRAWER ITEMS -->
     <string name="local_folder">Local Folders</string>
     <string name="hidden_folder">Hidden Folders</string>
+    <string name="favourite_folder">Favourites</string>
     <string name="tags">Tags</string>
     <string name="timeline">Timeline</string>
     <string name="wallpapers">Wallpapers</string>
