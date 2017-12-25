@@ -98,6 +98,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmQuery;
+import io.realm.RealmResults;
 
 import static org.fossasia.phimpme.R.string.media;
 import static org.fossasia.phimpme.gallery.activities.LFMainActivity.listAll;
@@ -132,6 +133,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     public static final String EXTRA_OUTPUT = "extra_output";
     public static String pathForDescription;
     public Boolean allPhotoMode;
+    public Boolean favphotomode;
     public int all_photo_pos;
     public int size_all;
     public int current_image_pos;
@@ -143,6 +145,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private Runnable runnable;
     boolean slideshow=false;
     private boolean details=false;
+    private ArrayList<Media> favouriteslist;
 
     ImageDescModel temp;
     private final int REQ_CODE_SPEECH_INPUT = 100;
@@ -178,11 +181,13 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         @Override
         public void run() {
             try{
-                if(!allPhotoMode){
+                if(!allPhotoMode && !favphotomode){
                     mViewPager.scrollToPosition((getAlbum().getCurrentMediaIndex() + 1) % getAlbum().getMedia().size());
                 }
-                else{
+                else if(allPhotoMode && !favphotomode) {
                     mViewPager.scrollToPosition((current_image_pos + 1) % listAll.size());
+                }else if(favphotomode && !allPhotoMode){
+                    mViewPager.scrollToPosition((current_image_pos + 1) % favouriteslist.size());
                 }
             }
             catch (Exception e) {
@@ -215,9 +220,13 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         overridePendingTransition(R.anim.media_zoom_in,0);
         SP = PreferenceUtil.getInstance(getApplicationContext());
         securityObj = new SecurityHelper(SingleMediaActivity.this);
+        favphotomode = getIntent().getBooleanExtra("fav_photos", false);
         allPhotoMode = getIntent().getBooleanExtra(getString(R.string.all_photo_mode), false);
         all_photo_pos = getIntent().getIntExtra(getString(R.string.position), 0);
         size_all = getIntent().getIntExtra(getString(R.string.allMediaSize), getAlbum().getCount());
+        if(getIntent().hasExtra("favouriteslist")){
+            favouriteslist = getIntent().getParcelableArrayListExtra("favouriteslist");
+        }
 
         String path2 = getIntent().getStringExtra("path");
         pathForDescription = path2;
@@ -233,9 +242,11 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 if (path != null)
                     file = new File(path);
 
-                if (file != null && file.isFile())
+                if (file != null && file.isFile()){
                     //the image is stored in the storage
                     album = new Album(getApplicationContext(), file);
+                }
+
                 else {
                     //try to show with Uri
                     album = new Album(getApplicationContext(), getIntent().getData());
@@ -305,13 +316,10 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             }
         };
 
-        if (!allPhotoMode) {
+        if (!allPhotoMode && !favphotomode) {
             adapter = new ImageAdapter(getAlbum().getMedia(), basicCallBack, this, this);
-
             getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
 //            toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
-
-
             mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
                 @Override
                 public void onPageChanged(int oldPosition, int position) {
@@ -322,14 +330,10 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 }
             });
             mViewPager.scrollToPosition(getAlbum().getCurrentMediaIndex());
-
-
-        } else {
-
+        } else if(allPhotoMode && !favphotomode){
             adapter = new ImageAdapter(LFMainActivity.listAll, basicCallBack, this, this);
             getSupportActionBar().setTitle(all_photo_pos + 1 + " " + getString(R.string.of) + " " + size_all);
             current_image_pos = all_photo_pos;
-
             mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
                 @Override
                 public void onPageChanged(int oldPosition, int position) {
@@ -338,6 +342,21 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
                     invalidateOptionsMenu();
                     pathForDescription = listAll.get(position).getPath();
+                }
+            });
+            mViewPager.scrollToPosition(all_photo_pos);
+        } else if(!allPhotoMode && favphotomode){
+            adapter = new ImageAdapter(favouriteslist, basicCallBack, this, this);
+            getSupportActionBar().setTitle(all_photo_pos + 1 + " " + getString(R.string.of) + " " + size_all);
+            current_image_pos = all_photo_pos;
+            mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
+                @Override
+                public void onPageChanged(int oldPosition, int position) {
+                    current_image_pos = position;
+                    getAlbum().setCurrentPhotoIndex(getAlbum().getCurrentMediaIndex());
+                    toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
+                    invalidateOptionsMenu();
+                    pathForDescription = favouriteslist.get(position).getPath();
                 }
             });
             mViewPager.scrollToPosition(all_photo_pos);
@@ -466,8 +485,16 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
     @Override
     public boolean onPrepareOptionsMenu(final Menu menu) {
-        if (!allPhotoMode)
+        if (!allPhotoMode && !favphotomode){
             menu.setGroupVisible(R.id.only_photos_options, true);
+        }
+        else if(!allPhotoMode && favphotomode){
+            menu.findItem(R.id.action_favourites).setVisible(false);
+            menu.findItem(R.id.action_cover).setVisible(false);
+            menu.findItem(R.id.action_description).setVisible(false);
+            menu.findItem(R.id.action_copy).setVisible(false);
+            menu.findItem(R.id.action_move).setVisible(false);
+        }
 
         if (customUri) {
             menu.setGroupVisible(R.id.on_internal_storage, false);
@@ -553,7 +580,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     }
 
     private void deleteCurrentMedia() {
-        if (!allPhotoMode) {
+        if (!allPhotoMode && !favphotomode) {
             boolean success = getAlbum().deleteCurrentMedia(getApplicationContext());
             if(!success){
 
@@ -580,13 +607,37 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             }
             adapter.notifyDataSetChanged();
             getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
-        } else {
+        } else if(allPhotoMode && !favphotomode) {
             deleteMedia(listAll.get(current_image_pos).getPath());
             LFMainActivity.listAll.remove(current_image_pos);
             size_all = LFMainActivity.listAll.size();
             adapter.notifyDataSetChanged();
 //            mViewPager.setCurrentItem(current_image_pos);
 //            toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + size_all);
+        } else if(favphotomode && !allPhotoMode){
+            int c = current_image_pos;
+            //deleteMedia(favouriteslist.get(current_image_pos).getPath());
+            realm = Realm.getDefaultInstance();
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override public void execute(Realm realm) {
+                    RealmResults<FavouriteImagesModel> favouriteImagesModels = realm.where(FavouriteImagesModel
+                            .class).equalTo("path", favouriteslist.get(current_image_pos).getPath()).findAll();
+                    favouriteImagesModels.deleteAllFromRealm();
+                }
+            });
+            deletefromfavouriteslist(favouriteslist.get(current_image_pos).getPath());
+            size_all = favouriteslist.size();
+            adapter.notifyDataSetChanged();
+            getSupportActionBar().setTitle((c + 1) + " " + getString(R.string.of) + " " + size_all);
+        }
+    }
+
+    private void deletefromfavouriteslist(String path){
+        for (int i = 0; i < favouriteslist.size(); i++){
+            if(favouriteslist.get(i).getPath().equals(path)){
+                favouriteslist.remove(i);
+                break;
+            }
         }
     }
 
@@ -612,8 +663,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
 
+
+        switch (item.getItemId()) {
             case android.R.id.home:
                 supportFinishAfterTransition();
                 return true;
@@ -689,8 +741,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
             case R.id.action_favourites:
                 realm = Realm.getDefaultInstance();
-                uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
-                String realpath = String.valueOf(uri);
+                String realpath = getAlbum().getCurrentMedia().getPath();
                 RealmQuery<FavouriteImagesModel> query = realm.where(FavouriteImagesModel.class).equalTo("path",
                         realpath);
                 if(query.count() == 0){
@@ -809,10 +860,12 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 details=true;
                 final View v = findViewById(R.id.layout_image_description);
                 LinearLayout linearLayout = (LinearLayout)v;
-                if(!allPhotoMode){
+                if(!allPhotoMode && !favphotomode){
                     media = getAlbum().getCurrentMedia();
-                }else if(allPhotoMode){
+                }else if(allPhotoMode && !favphotomode){
                     media = new Media(new File(listAll.get(current_image_pos).getPath()));
+                }else if(!allPhotoMode && favphotomode){
+                    media = new Media(new File(favouriteslist.get(current_image_pos).getPath()));
                 }
                 MediaDetailsMap<String,String> mediaDetailsMap = media.getMainDetails(this);
 
@@ -1182,15 +1235,12 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             slideshow=false;
         }
     }
-
-
+    
     @Override
     public void startPostponedTransition() {
         getWindow().setSharedElementEnterTransition(new ChangeBounds().setDuration(300));
         startPostponedEnterTransition();
-
     }
-
 
     private void setSlideShowDialog() {
 
