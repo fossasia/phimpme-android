@@ -865,9 +865,11 @@
     <string name="facebook">Facebook</string>
     <string name="instagram">Instagram</string>
     <string name="wordpress">Wordpress</string>
+    <string name="snapchat">Snapchat</string>
     <string name="flickr">Flickr</string>
     <string name="pinterest">Pinterest</string>
     <string name="nextcloud">NextCloud</string>
+    <string name="whatsapp">Whatsapp</string>
     <string name="other">Other</string>
     <string name="box">Box</string>
     <string name="exit">Exit</string>
@@ -878,6 +880,8 @@
     <string name="no_action">No</string>
     <string name="sign_out_dialog_message">Do you want to sign out from </string>
     <string name="no_account_signed_in">No account signed in</string>
+    <string name="please_sign_into">Please sign in to</string>
+    <string name="from_account_manager">from account manager</string>
     <string name="loading_numeric">Loading</string>
     <string name="loading_numeric_all">All Photos</string>
     <!--Share to Twitter-->
@@ -1076,4 +1080,45 @@
     <string name="upload_time">Time: " "</string>
     <string name="text_view">TextView</string>
     <string name="version_one">v1.0</string>
+
+    <!-- Links -->
+    <string name="contributors_link">https://github.com/fossasia/phimpme-android/graphs/contributors</string>
+    <string name="phimpme_github">https://github.com/fossasia/phimpme-android</string>
+    <string name="phimpme_github_issues">https://github.com/fossasia/phimpme-android/issues</string>
+    <string name="opencamera_sourceforge">http://opencamera.sourceforge.net/</string>
+    <string name="leafpic_github">https://github.com/HoraApps/LeafPic</string>
+    <string name="phimpme_license">https://github.com/fossasia/phimpme-android/blob/master/LICENSE.md</string>
+    <string name="glide_github">http://github.com/bumptech/glide</string>
+    <string name="ion_github">http://github.com/koush/ion</string>
+    <string name="android_iconics_github">http://github.com/mikepenz/Android-Iconics</string>
+    <string name="appintro_github">http://github.com/PaoloRotolo/AppIntro</string>
+    <string name="ucrop_github">http://github.com/Yalantis/uCrop</string>
+    <string name="shiftcolorpicker_github">http://github.com/DASAR/ShiftColorPicker</string>
+    <string name="photoview_github">http://github.com/chrisbanes/PhotoView</string>
+    <string name="circleimageview_github">https://github.com/hdodenhof/CircleImageView</string>
+    <string name="horizontalwheelview_github">https://github.com/shchurov/HorizontalWheelView</string>
+
+    <string name="version_title">Version: </string>
+    <string name="error_title">Error: </string>
+    <string name="glide">Glide</string>
+    <string name="ion">Ion</string>
+    <string name="android_iconics">Android-Iconics</string>
+    <string name="appintro">AppIntro</string>
+    <string name="ucrop">uCrop</string>
+    <string name="shiftcolorpicker">ShiftColorPicker</string>
+    <string name="photoview">PhotoView</string>
+    <string name="circleimageview">CircleImageView</string>
+    <string name="horizontalwheelview">HorizontalWheelView</string>
+
+    <!-- Copyright notices -->
+    <string name="copyright_2014_google">Copyright 2014 Google, Inc. All rights reserved.</string>
+    <string name="copyright_2013_koushik_dutta">Copyright 2013 Koushik Dutta (2013)</string>
+    <string name="copyright_2016_mike_penz">Copyright 2016 Mike Penz</string>
+    <string name="copyright_2015_paolo_rotolo">Copyright 2015 Paolo Rotolo</string>
+    <string name="copyright_2016_maximilian_narr">Copyright 2016 Maximilian Narr</string>
+    <string name="copyright_2016_yolantis">Copyright 2016, Yalantis</string>
+    <string name="copyright_2015_bogdasarov_bogdan">Copyright (c) 2015 Bogdasarov Bogdan</string>
+    <string name="copyright_2011_2012_chris_banes">Copyright 2011, 2012 Chris Banes</string>
+    <string name="copyright_2014_2015_henning_dodenhof">Copyright 2014 - 2015 Henning Dodenhof</string>
+    <string name="copyright_2016_mykhailo_schurov">Copyright 2016 Mykhailo Shchurov</string>
 </resources>
