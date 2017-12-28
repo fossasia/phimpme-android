@@ -1,0 +1,50 @@
+[
+    {
+        "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/res/merged/release/layout-v21/notification_action_tombstone.xml",
+        "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/layout-v21/notification_action_tombstone.xml"
+    },
+    {
+        "merged": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/res/merged/release/layout-v21/notification_action.xml",
+        "source": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/layout-v21/notification_action.xml"
+    },
+    {
+        "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/PhotoView/photoview/build/intermediates/res/merged/release/layout-v21/notification_action.xml",
+        "source": "/Users/mohitkumar/.android/build-cache/794b6aa6df3a22da28bacb5352c177d6699aab43/output/res/layout-v21/notification_action.xml"
+    },
+    {
+        "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/PhotoView/photoview/build/intermediates/res/merged/release/layout-v21/notification_template_icon_group.xml",
+        "source": "/Users/mohitkumar/.android/build-cache/794b6aa6df3a22da28bacb5352c177d6699aab43/output/res/layout-v21/notification_template_icon_group.xml"
+    },
+    {
+        "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/res/merged/release/layout-v21/notification_template_icon_group.xml",
+        "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/layout-v21/notification_template_icon_group.xml"
+    },
+    {
+        "merged": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/res/merged/release/layout-v21/notification_template_icon_group.xml",
+        "source": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/layout-v21/notification_template_icon_group.xml"
+    },
+    {
+        "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/PhotoView/photoview/build/intermediates/res/merged/release/layout-v21/notification_action_tombstone.xml",
+        "source": "/Users/mohitkumar/.android/build-cache/794b6aa6df3a22da28bacb5352c177d6699aab43/output/res/layout-v21/notification_action_tombstone.xml"
+    },
+    {
+        "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/PhotoView/photoview/build/intermediates/res/merged/release/layout-v21/notification_template_custom_big.xml",
+        "source": "/Users/mohitkumar/.android/build-cache/794b6aa6df3a22da28bacb5352c177d6699aab43/output/res/layout-v21/notification_template_custom_big.xml"
+    },
+    {
+        "merged": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/res/merged/release/layout-v21/notification_template_custom_big.xml",
+        "source": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/layout-v21/notification_template_custom_big.xml"
+    },
+    {
+        "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/res/merged/release/layout-v21/notification_template_custom_big.xml",
+        "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/layout-v21/notification_template_custom_big.xml"
+    },
+    {
+        "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/res/merged/release/layout-v21/notification_action.xml",
+        "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/layout-v21/notification_action.xml"
+    },
+    {
+        "merged": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/res/merged/release/layout-v21/notification_action_tombstone.xml",
+        "source": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/layout-v21/notification_action_tombstone.xml"
+    }
+]
