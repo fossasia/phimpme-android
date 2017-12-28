@@ -439,7 +439,9 @@
     <string name="save_action">Save</string>
     <string name="change_cover">Album cover changed..</string>
     <string name="add_favourite">Image is succesfully added to the favourites collection.</string>
+  <string name="add_favourite_multiple">Images are succesfully added to the favourites collection.</string>
     <string name="check_favourite">Image is already present in the favourites collection.</string>
+    <string name="check_favourite_multipleitems">All the images are already present in the favourite collection.</string>
     <string name="rename_photo_action">Rename photo</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>

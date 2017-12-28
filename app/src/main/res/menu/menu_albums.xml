@@ -62,6 +62,11 @@
             android:title="@string/move_to"
             app:showAsAction="never" />
 
+        <item
+            android:id="@+id/action_add_favourites"
+            android:title="@string/favourite"
+            app:showAsAction="never"/>
+
     </group>
 
     <group android:id="@+id/album_options_menu">
