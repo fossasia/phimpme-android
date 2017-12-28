@@ -37,7 +37,7 @@ import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import uk.co.senab.photoview.PhotoView;
+import com.github.chrisbanes.photoview.PhotoView;
 
 import static org.fossasia.phimpme.share.SharingActivity.EXTRA_OUTPUT;
 

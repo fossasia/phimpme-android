@@ -40,20 +40,20 @@
         "source": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable-hdpi-v4/notification_bg_low_pressed.9.png"
     },
     {
-        "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/res/merged/release/drawable-hdpi-v4/abc_ic_menu_paste_mtrl_am_alpha.png",
-        "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable-hdpi-v4/abc_ic_menu_paste_mtrl_am_alpha.png"
-    },
-    {
-        "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/res/merged/release/drawable-hdpi-v4/abc_list_longpressed_holo.9.png",
-        "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable-hdpi-v4/abc_list_longpressed_holo.9.png"
+        "merged": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/res/merged/release/drawable-hdpi-v4/abc_list_longpressed_holo.9.png",
+        "source": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable-hdpi-v4/abc_list_longpressed_holo.9.png"
     },
     {
         "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/res/merged/release/drawable-hdpi-v4/abc_ic_menu_copy_mtrl_am_alpha.png",
         "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable-hdpi-v4/abc_ic_menu_copy_mtrl_am_alpha.png"
     },
     {
-        "merged": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/res/merged/release/drawable-hdpi-v4/abc_list_longpressed_holo.9.png",
-        "source": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable-hdpi-v4/abc_list_longpressed_holo.9.png"
+        "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/res/merged/release/drawable-hdpi-v4/abc_list_longpressed_holo.9.png",
+        "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable-hdpi-v4/abc_list_longpressed_holo.9.png"
+    },
+    {
+        "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/res/merged/release/drawable-hdpi-v4/abc_ic_menu_paste_mtrl_am_alpha.png",
+        "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable-hdpi-v4/abc_ic_menu_paste_mtrl_am_alpha.png"
     },
     {
         "merged": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/res/merged/release/drawable-hdpi-v4/abc_menu_hardkey_panel_mtrl_mult.9.png",

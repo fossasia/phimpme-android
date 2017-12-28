@@ -4,12 +4,12 @@
         "source": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable/abc_ic_arrow_drop_right_black_24dp.xml"
     },
     {
-        "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/res/merged/release/drawable/abc_ic_menu_overflow_material.xml",
-        "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable/abc_ic_menu_overflow_material.xml"
-    },
-    {
         "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/res/merged/release/drawable/abc_item_background_holo_light.xml",
         "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable/abc_item_background_holo_light.xml"
+    },
+    {
+        "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/res/merged/release/drawable/abc_ic_menu_overflow_material.xml",
+        "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable/abc_ic_menu_overflow_material.xml"
     },
     {
         "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/PhotoView/photoview/build/intermediates/res/merged/release/drawable/notification_bg.xml",
@@ -20,16 +20,16 @@
         "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable/abc_btn_borderless_material.xml"
     },
     {
-        "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/res/merged/release/drawable/abc_list_selector_background_transition_holo_light.xml",
-        "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable/abc_list_selector_background_transition_holo_light.xml"
+        "merged": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/res/merged/release/drawable/abc_list_selector_background_transition_holo_dark.xml",
+        "source": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable/abc_list_selector_background_transition_holo_dark.xml"
     },
     {
         "merged": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/res/merged/release/drawable/abc_dialog_material_background.xml",
         "source": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable/abc_dialog_material_background.xml"
     },
     {
-        "merged": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/res/merged/release/drawable/abc_list_selector_background_transition_holo_dark.xml",
-        "source": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable/abc_list_selector_background_transition_holo_dark.xml"
+        "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/res/merged/release/drawable/abc_list_selector_background_transition_holo_light.xml",
+        "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable/abc_list_selector_background_transition_holo_light.xml"
     },
     {
         "merged": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/res/merged/release/drawable/abc_seekbar_tick_mark_material.xml",

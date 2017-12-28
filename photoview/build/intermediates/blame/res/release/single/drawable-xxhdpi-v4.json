@@ -8,12 +8,12 @@
         "source": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable-xxhdpi-v4/abc_ic_star_half_black_16dp.png"
     },
     {
-        "merged": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/res/merged/release/drawable-xxhdpi-v4/abc_scrubber_track_mtrl_alpha.9.png",
-        "source": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable-xxhdpi-v4/abc_scrubber_track_mtrl_alpha.9.png"
-    },
-    {
         "merged": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/res/merged/release/drawable-xxhdpi-v4/abc_btn_check_to_on_mtrl_015.png",
         "source": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable-xxhdpi-v4/abc_btn_check_to_on_mtrl_015.png"
+    },
+    {
+        "merged": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/res/merged/release/drawable-xxhdpi-v4/abc_scrubber_track_mtrl_alpha.9.png",
+        "source": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable-xxhdpi-v4/abc_scrubber_track_mtrl_alpha.9.png"
     },
     {
         "merged": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/res/merged/release/drawable-xxhdpi-v4/abc_ic_star_black_48dp.png",
