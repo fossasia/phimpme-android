@@ -7,6 +7,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Environment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -74,6 +75,12 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
     public void onBindViewHolder(final AlbumsAdapter.ViewHolder holder, int position) {
         Album a = SharedMediaActivity.getAlbums().dispAlbums.get(position);
         Media f = a.getCoverAlbum();
+
+        if(a.getPath().contains(Environment.getExternalStorageDirectory().getPath())){
+            holder.storage.setVisibility(View.INVISIBLE);
+        }else{
+            holder.storage.setVisibility(View.VISIBLE);
+        }
 
         if (a.isPinned())
             holder.pin.setVisibility(View.VISIBLE);
@@ -178,6 +185,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
         private IconicsImageView selectedIcon;
         private TextView name, nPhotos;
         private ImageView pin;
+        private ImageView storage;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -187,6 +195,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
             name = (TextView) itemView.findViewById(R.id.album_name);
             nPhotos = (TextView) itemView.findViewById(R.id.album_photos_count);
             pin = (ImageView) itemView.findViewById(R.id.icon_pinned);
+            storage = (ImageView) itemView.findViewById(R.id.storage_icon);
         }
     }
 }
