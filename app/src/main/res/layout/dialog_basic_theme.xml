@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/vn.mbm.phimp.me"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,12 +9,13 @@
         android:id="@+id/basic_theme_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="2dp"
-        >
+        app:cardCornerRadius="2dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/basic_theme_title"
                 android:layout_width="match_parent"
@@ -26,159 +26,154 @@
                 android:textColor="@color/md_dark_primary_text"
                 android:textSize="@dimen/sub_big_text"
                 android:textStyle="bold" />
+
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingTop="@dimen/medium_spacing"
+                android:layout_height="159dp"
                 android:paddingLeft="@dimen/medium_spacing"
                 android:paddingRight="@dimen/medium_spacing"
-                >
+                android:paddingTop="@dimen/medium_spacing">
                 <!--WHITE THEME-->
-                <LinearLayout
-                    xmlns:android="http://schemas.android.com/apk/res/android"
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/ll_white_basic_theme"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
+                    android:layout_width="95dp"
+                    android:layout_height="130dp"
+                    android:orientation="vertical"
                     android:padding="10dp"
-                    android:weightSum="10"
-                    android:background="@color/md_light_background"
-                    >
+                    android:weightSum="10">
+
                     <com.mikepenz.iconics.view.IconicsImageView
                         android:id="@+id/white_basic_theme_icon"
-                        android:layout_width="0dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center_vertical"
+                        android:layout_width="59dp"
+                        android:layout_height="46dp"
+                        android:layout_gravity="center"
                         android:layout_weight="2"
-                        app:iiv_icon="gmd-invert-colors"
-                        app:iiv_color="@color/md_light_primary_icon"
-                        />
+                        android:background="@color/md_light_background" />
+
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="80dp"
+                        android:layout_height="19dp"
                         android:layout_weight="6"
-                        android:orientation="vertical"
-                        >
+                        android:orientation="vertical">
+
                         <TextView
                             android:id="@+id/white_basic_theme_item"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="10dp"
                             android:text="@string/white_basic_theme"
+                            android:textAlignment="center"
                             android:textColor="@color/md_light_primary_text"
-                            android:layout_gravity="center_vertical"
-                            android:textSize="16sp"
-                            />
+                            android:textSize="16sp" />
                     </LinearLayout>
+
                     <com.mikepenz.iconics.view.IconicsImageView
                         android:id="@+id/white_basic_theme_select"
-                        android:layout_width="0dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center_vertical"
+                        android:layout_width="25dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="-90dp"
                         android:layout_weight="2"
-                        app:iiv_icon="gmd-done"
-                        app:iiv_color="@color/md_light_primary_icon"
-                        />
+                        android:background="@drawable/theme_check"
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <!--DARK THEME-->
-                <LinearLayout
-                    xmlns:android="http://schemas.android.com/apk/res/android"
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/ll_dark_basic_theme"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="10dp"
-                    android:weightSum="10"
+                    android:layout_width="95dp"
+                    android:layout_height="130dp"
                     android:clickable="true"
-                    android:background="@color/md_dark_background"
-                    >
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:weightSum="10">
 
                     <com.mikepenz.iconics.view.IconicsImageView
                         android:id="@+id/dark_basic_theme_icon"
-                        android:layout_width="0dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center_vertical"
+                        android:layout_width="59dp"
+                        android:layout_height="46dp"
+                        android:layout_gravity="center"
                         android:layout_weight="2"
-                        app:iiv_icon="gmd-invert-colors"
-                        app:iiv_color="@color/md_dark_primary_icon"
-                        android:tint="@color/white"/>
+                        android:background="@color/md_dark_background"
+                        android:tint="@color/white" />
+
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="80dp"
+                        android:layout_height="22dp"
                         android:layout_weight="6"
-                        android:orientation="vertical"
-                        >
+                        android:orientation="vertical">
+
                         <TextView
                             android:id="@+id/dark_basic_theme_item"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/dark_basic_theme"
-                            android:textColor="@color/md_dark_primary_text"
                             android:layout_gravity="center_vertical"
-                            android:textSize="16sp"
-                            />
+                            android:layout_marginTop="10dp"
+                            android:text="@string/dark_basic_theme"
+                            android:textAlignment="center"
+                            android:textColor="@color/md_light_primary_text"
+                            android:textSize="16sp" />
                     </LinearLayout>
+
                     <com.mikepenz.iconics.view.IconicsImageView
                         android:id="@+id/dark_basic_theme_select"
-                        android:layout_width="0dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center_vertical"
+                        android:layout_width="25dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="-90dp"
                         android:layout_weight="2"
-                        app:iiv_icon="gmd-done"
-                        android:tint="@color/white"
-                        app:iiv_color="@color/md_dark_primary_icon"
-                        />
+                        android:background="@drawable/theme_check"
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <!--DARK AMOLED THEME-->
-                <LinearLayout
-                    xmlns:android="http://schemas.android.com/apk/res/android"
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/ll_dark_amoled_basic_theme"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="10dp"
-                    android:weightSum="10"
+                    android:layout_width="106dp"
+                    android:layout_height="131dp"
                     android:clickable="true"
-                    android:background="@color/md_black_1000"
-                    >
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:weightSum="10">
+
                     <com.mikepenz.iconics.view.IconicsImageView
                         android:id="@+id/dark_amoled_basic_theme_icon"
-                        android:layout_width="0dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center_vertical"
+                        android:layout_width="59dp"
+                        android:layout_height="49dp"
+                        android:layout_gravity="center"
                         android:layout_weight="2"
-                        app:iiv_icon="gmd-invert-colors"
-                        app:iiv_color="@color/md_dark_primary_icon"
                         android:tint="@color/white"
+                        android:background="@color/md_black_1000"
                         />
+
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
                         android:layout_weight="6"
-                        android:orientation="vertical"
-                        >
+                        android:orientation="vertical">
+
                         <TextView
                             android:id="@+id/dark_amoled_basic_theme_item"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="@string/dark_amoled_basic_theme"
-                            android:textColor="@color/md_dark_primary_text"
                             android:layout_gravity="center_vertical"
-                            android:textSize="16sp"
-                            />
+                            android:layout_marginTop="10dp"
+                            android:text="@string/dark_amoled_basic_theme"
+                            android:textAlignment="center"
+                            android:textColor="@color/md_light_primary_text"
+                            android:textSize="14sp" />
                     </LinearLayout>
+
                     <com.mikepenz.iconics.view.IconicsImageView
                         android:id="@+id/dark_amoled_basic_theme_select"
-                        android:layout_width="0dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center_vertical"
+                        android:layout_width="25dp"
+                        android:layout_height="15dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="-90dp"
                         android:layout_weight="2"
-                        app:iiv_icon="gmd-done"
-                        app:iiv_color="@color/md_dark_primary_icon"
-                        android:tint="@color/white"
-                        />
+                        android:background="@drawable/theme_check"
+                        android:visibility="gone" />
                 </LinearLayout>
 
             </LinearLayout>
