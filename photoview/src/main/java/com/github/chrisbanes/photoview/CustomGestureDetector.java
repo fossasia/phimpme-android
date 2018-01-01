@@ -28,7 +28,7 @@ class CustomGestureDetector {
 
     private static final int INVALID_POINTER_ID = -1;
 
-    private int mActivePointerId = INVALID_POINTER_ID;
+ //   private int mActivePointerId = INVALID_POINTER_ID;
     private int mActivePointerIndex = 0;
     private final ScaleGestureDetector mDetector;
 
@@ -109,6 +109,7 @@ class CustomGestureDetector {
     }
 
     private boolean processTouchEvent(MotionEvent ev) {
+        int mActivePointerId = INVALID_POINTER_ID;
         final int action = ev.getAction();
         switch (action & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
@@ -192,6 +193,8 @@ class CustomGestureDetector {
                     mLastTouchX = ev.getX(newPointerIndex);
                     mLastTouchY = ev.getY(newPointerIndex);
                 }
+                break;
+            default:
                 break;
         }
 

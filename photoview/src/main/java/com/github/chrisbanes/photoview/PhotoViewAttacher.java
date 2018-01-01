@@ -202,7 +202,8 @@ public class PhotoViewAttacher implements View.OnTouchListener,
                 }
                 final RectF displayRect = getDisplayRect();
 
-                final float x = e.getX(), y = e.getY();
+                final float x = e.getX();
+                final float y = e.getY();
 
                 if (mViewTapListener != null) {
                     mViewTapListener.onViewTap(mImageView, x, y);
@@ -381,6 +382,8 @@ public class PhotoViewAttacher implements View.OnTouchListener,
                         }
                     }
                     break;
+                default:
+                    break;
             }
 
             // Try the Scale/Drag detector
@@ -497,7 +500,7 @@ public class PhotoViewAttacher implements View.OnTouchListener,
     }
 
     public void setScaleType(ScaleType scaleType) {
-        if (Util.isSupportedScaleType(scaleType) && scaleType != mScaleType) {
+        if (Util.isSupportedScaleType(scaleType) && !scaleType.equals(mScaleType)) {
             mScaleType = scaleType;
             update();
         }
@@ -688,8 +691,10 @@ public class PhotoViewAttacher implements View.OnTouchListener,
             return false;
         }
 
-        final float height = rect.height(), width = rect.width();
-        float deltaX = 0, deltaY = 0;
+        final float height = rect.height();
+        final float width = rect.width();
+        float deltaX = 0;
+        float deltaY = 0;
 
         final int viewHeight = getImageViewHeight(mImageView);
         if (height <= viewHeight) {
@@ -813,7 +818,10 @@ public class PhotoViewAttacher implements View.OnTouchListener,
             }
 
             final int startX = Math.round(-rect.left);
-            final int minX, maxX, minY, maxY;
+            final int minX;
+            final int maxX;
+            final int minY;
+            final int maxY;
 
             if (viewWidth < rect.width()) {
                 minX = 0;
