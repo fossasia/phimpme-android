@@ -26,9 +26,10 @@ import org.fossasia.phimpme.utilities.BasicCallBack;
 
 import java.util.ArrayList;
 
-import com.github.chrisbanes.photoview.OnPhotoTapListener;
-import com.github.chrisbanes.photoview.PhotoView;
-import com.github.chrisbanes.photoview.PhotoViewAttacher;
+import uk.co.senab.photoview.PhotoView;
+import uk.co.senab.photoview.PhotoViewAttacher;
+import uk.co.senab.photoview.OnPhotoTapListener;
+
 
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;

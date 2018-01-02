@@ -2,9 +2,5 @@
     {
         "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/res/merged/androidTest/debug/drawable-v23/abc_control_background_material.xml",
         "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable-v23/abc_control_background_material.xml"
-    },
-    {
-        "merged": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/res/merged/androidTest/debug/drawable-v23/abc_control_background_material.xml",
-        "source": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable-v23/abc_control_background_material.xml"
     }
 ]

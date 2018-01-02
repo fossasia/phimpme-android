@@ -4,16 +4,8 @@
         "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/color-v23/abc_tint_spinner.xml"
     },
     {
-        "merged": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/res/merged/debug/color-v23/abc_tint_seek_thumb.xml",
-        "source": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/color-v23/abc_tint_seek_thumb.xml"
-    },
-    {
         "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/res/merged/debug/color-v23/abc_color_highlight_material.xml",
         "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/color-v23/abc_color_highlight_material.xml"
-    },
-    {
-        "merged": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/res/merged/debug/color-v23/abc_tint_edittext.xml",
-        "source": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/color-v23/abc_tint_edittext.xml"
     },
     {
         "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/res/merged/debug/color-v23/abc_tint_edittext.xml",
@@ -28,22 +20,6 @@
         "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/color-v23/abc_btn_colored_text_material.xml"
     },
     {
-        "merged": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/res/merged/debug/color-v23/abc_tint_switch_track.xml",
-        "source": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/color-v23/abc_tint_switch_track.xml"
-    },
-    {
-        "merged": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/res/merged/debug/color-v23/abc_btn_colored_text_material.xml",
-        "source": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/color-v23/abc_btn_colored_text_material.xml"
-    },
-    {
-        "merged": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/res/merged/debug/color-v23/abc_tint_switch_thumb.xml",
-        "source": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/color-v23/abc_tint_switch_thumb.xml"
-    },
-    {
-        "merged": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/res/merged/debug/color-v23/abc_color_highlight_material.xml",
-        "source": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/color-v23/abc_color_highlight_material.xml"
-    },
-    {
         "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/res/merged/debug/color-v23/abc_btn_colored_borderless_text_material.xml",
         "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/color-v23/abc_btn_colored_borderless_text_material.xml"
     },
@@ -56,27 +32,11 @@
         "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/color-v23/abc_tint_default.xml"
     },
     {
-        "merged": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/res/merged/debug/color-v23/abc_tint_btn_checkable.xml",
-        "source": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/color-v23/abc_tint_btn_checkable.xml"
-    },
-    {
-        "merged": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/res/merged/debug/color-v23/abc_tint_default.xml",
-        "source": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/color-v23/abc_tint_default.xml"
-    },
-    {
         "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/res/merged/debug/color-v23/abc_tint_seek_thumb.xml",
         "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/color-v23/abc_tint_seek_thumb.xml"
     },
     {
         "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/res/merged/debug/color-v23/abc_tint_switch_track.xml",
         "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/color-v23/abc_tint_switch_track.xml"
-    },
-    {
-        "merged": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/res/merged/debug/color-v23/abc_tint_spinner.xml",
-        "source": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/color-v23/abc_tint_spinner.xml"
-    },
-    {
-        "merged": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/res/merged/debug/color-v23/abc_btn_colored_borderless_text_material.xml",
-        "source": "/Users/mohitkumar/Desktop/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/color-v23/abc_btn_colored_borderless_text_material.xml"
     }
 ]
