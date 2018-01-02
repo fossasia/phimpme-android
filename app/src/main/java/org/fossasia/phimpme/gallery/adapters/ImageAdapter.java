@@ -27,7 +27,6 @@ import org.fossasia.phimpme.utilities.BasicCallBack;
 import java.util.ArrayList;
 
 import uk.co.senab.photoview.PhotoView;
-import uk.co.senab.photoview.PhotoViewAttacher;
 import uk.co.senab.photoview.OnPhotoTapListener;
 
 
