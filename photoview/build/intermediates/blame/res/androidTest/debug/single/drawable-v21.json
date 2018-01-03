@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/res/merged/androidTest/debug/drawable-v21/abc_btn_colored_material.xml",
+        "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable-v21/abc_btn_colored_material.xml"
+    },
+    {
+        "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/res/merged/androidTest/debug/drawable-v21/notification_action_background.xml",
+        "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable-v21/notification_action_background.xml"
+    },
+    {
+        "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/res/merged/androidTest/debug/drawable-v21/abc_action_bar_item_background_material.xml",
+        "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable-v21/abc_action_bar_item_background_material.xml"
+    },
+    {
+        "merged": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/res/merged/androidTest/debug/drawable-v21/abc_edit_text_material.xml",
+        "source": "/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable-v21/abc_edit_text_material.xml"
+    }
+]

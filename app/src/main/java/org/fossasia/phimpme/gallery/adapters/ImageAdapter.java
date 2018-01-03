@@ -27,7 +27,8 @@ import org.fossasia.phimpme.utilities.BasicCallBack;
 import java.util.ArrayList;
 
 import uk.co.senab.photoview.PhotoView;
-import uk.co.senab.photoview.PhotoViewAttacher;
+import uk.co.senab.photoview.OnPhotoTapListener;
+
 
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
@@ -120,9 +121,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         public ViewHolder(View itemView) {
             super(itemView);
             imageView = new PhotoView(ActivitySwitchHelper.context);
-            imageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+            imageView.setOnPhotoTapListener(new OnPhotoTapListener() {
                 @Override
-                public void onPhotoTap(View view, float x, float y) {
+                public void onPhotoTap(ImageView view, float x, float y) {
                     onSingleTap.singleTap();
                 }
 

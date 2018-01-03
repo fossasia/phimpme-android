@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/src/main/assets"/><source path="/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/build/generated/assets/shaders/release"/></dataSet><dataSet config="release"><source path="/Users/mohitkumar/Documents/AndroidStudioProjects/phimpme-android/photoview/src/release/assets"/></dataSet></merger>
