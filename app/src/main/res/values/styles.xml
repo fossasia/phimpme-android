@@ -70,6 +70,10 @@
         <item name="colorControlHighlight">#FFF</item>
     </style>
 
+    <style name="ToolbarTitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">20sp</item>
+    </style>
+
     <style name="fab_camera">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
