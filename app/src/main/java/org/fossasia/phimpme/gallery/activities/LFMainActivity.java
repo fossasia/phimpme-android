@@ -1315,7 +1315,7 @@ public class LFMainActivity extends SharedMediaActivity {
         menu.findItem(R.id.hideAlbumButton).setVisible(!all_photos && !fav_photos && getAlbums().getSelectedCount() >
                 0);
 
-        menu.findItem(R.id.clear_album_preview).setVisible(!albumsMode && getAlbum().hasCustomCover() && !fav_photos);
+        menu.findItem(R.id.clear_album_preview).setVisible(!albumsMode && getAlbum().hasCustomCover() && !fav_photos && !all_photos);
         menu.findItem(R.id.renameAlbum).setVisible(((albumsMode && getAlbums().getSelectedCount() == 1) ||
                 (!albumsMode && !editMode)) && (!all_photos && !fav_photos));
         if (getAlbums().getSelectedCount() == 1)
