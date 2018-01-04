@@ -194,7 +194,14 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 e.printStackTrace();
             }
             finally{
-                handler.postDelayed(this, SLIDE_SHOW_INTERVAL);
+                if(getAlbum().getCurrentMediaIndex()+1 == getAlbum().getMedia().size() - 1){
+                    handler.removeCallbacks(slideShowRunnable);
+                    slideshow=false;
+                    toggleSystemUI();
+                }
+                else{
+                    handler.postDelayed(this, SLIDE_SHOW_INTERVAL);
+                }
             }
         }
     };
