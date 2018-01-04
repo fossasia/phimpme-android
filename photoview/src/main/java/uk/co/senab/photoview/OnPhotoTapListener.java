@@ -19,4 +19,6 @@ public interface OnPhotoTapListener {
      *             Drawable height.
      */
     void onPhotoTap(ImageView view, float x, float y);
+
+    void onOutsidePhotoTap();
 }
