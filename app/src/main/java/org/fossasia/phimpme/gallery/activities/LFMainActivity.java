@@ -2134,7 +2134,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface
                         .BUTTON_NEGATIVE}, getAccentColor(), renameDialog);
                 renameDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE}, getColor(R.color.grey), renameDialog);
+                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE}, ContextCompat.getColor(LFMainActivity.this,R.color.grey), renameDialog);
                 editTextNewName.addTextChangedListener(new TextWatcher() {
                     @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         //empty method body
@@ -2150,7 +2150,7 @@ public class LFMainActivity extends SharedMediaActivity {
                             // Disable ok button
                             renameDialog.getButton(
                                     AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-                            AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE}, getColor(R.color.grey), renameDialog);
+                            AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE},ContextCompat.getColor(LFMainActivity.this,R.color.grey), renameDialog);
 
                         } else {
                             // Something into edit text. Enable the button.
