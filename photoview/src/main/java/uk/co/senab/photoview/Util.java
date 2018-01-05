@@ -27,6 +27,7 @@ class Util {
         switch (scaleType) {
             case MATRIX:
                 throw new IllegalStateException("Matrix scale type is not supported");
+            default:break;
         }
         return true;
     }

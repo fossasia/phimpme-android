@@ -200,7 +200,8 @@ public class PhotoViewAttacher implements View.OnTouchListener,
                 }
                 final RectF displayRect = getDisplayRect();
 
-                final float x = e.getX(), y = e.getY();
+                final float x = e.getX();
+                final float y = e.getY();
 
                 if (mViewTapListener != null) {
                     mViewTapListener.onViewTap(mImageView, x, y);
@@ -495,7 +496,7 @@ public class PhotoViewAttacher implements View.OnTouchListener,
     }
 
     public void setScaleType(ScaleType scaleType) {
-        if (Util.isSupportedScaleType(scaleType) && scaleType != mScaleType) {
+        if (Util.isSupportedScaleType(scaleType) && !scaleType.equals(mScaleType)) {
             mScaleType = scaleType;
             update();
         }
