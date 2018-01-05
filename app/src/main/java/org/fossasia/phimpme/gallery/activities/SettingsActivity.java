@@ -524,7 +524,7 @@ public class SettingsActivity extends ThemedActivity {
                 darkAmoledSelect.setVisibility(View.GONE);
                 themeTextWhite.setTextColor(ContextCompat.getColor(SettingsActivity.this,R.color.white));
                 themeTextDark.setTextColor(ContextCompat.getColor(SettingsActivity.this,R.color.white));
-                themeTextDarkAmoled.setTextColor(ContextCompat.getColor(SettingsActivity.this,R.color.white));
+                themeTextDarkAmoled.setTextColor(ContextCompat.getColor(SettingsActivity.this,R.color.white)); 
                 break;
             case ThemeHelper.AMOLED_THEME:
                 whiteSelect.setVisibility(View.GONE);
