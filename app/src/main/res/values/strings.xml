@@ -1011,6 +1011,11 @@
 
     <string name="image_type">image/*</string>
 
+    <!--OneDrive-->
+    <string name="uploaded_onedrive">Uploaded to One Drive</string>
+    <string name="login_onedrive_from_accounts">Login to OneDrive from Accounts Manager</string>
+    <string name="onedrive_share">OneDrive</string>
+
     <!--Google+-->
     <string name="success_google">Image uploaded successfully on Google+</string>
     <string name="error_google">An error occurred while uploading</string>
