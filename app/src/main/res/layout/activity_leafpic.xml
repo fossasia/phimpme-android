@@ -95,7 +95,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="70dp"
-            android:alpha="0.7"
             app:layout_anchor="@id/bottombar"
             app:layout_anchorGravity="top|center"
             app:srcCompat="@drawable/ic_keyboard_arrow_up_black_24dp" />
