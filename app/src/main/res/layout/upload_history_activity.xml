@@ -14,6 +14,7 @@
         android:id="@+id/upload_history_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/md_grey_200"
         android:layout_below="@id/toolbar"
         android:visibility="visible" />
 

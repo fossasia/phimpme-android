@@ -307,7 +307,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
         String msg = getString(R.string.are_you_sure) + " " + sharableAccountsList.get(position) + "?";
         AlertDialogsHelper.getTextDialog(SharingActivity.this, dialogBuilder, R.string.upload, 0, msg);
-        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        dialogBuilder.setPositiveButton(R.string.ok_action, new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -377,13 +377,17 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                     case MESSENGER:
                         shareToMessenger();
                         break;
+                    
+                    case SNAPCHAT:
+                        shareToSnapchat();
+                        break;
 
                     default:
                         SnackBarHandler.show(parent, R.string.feature_not_present);
                 }
             }
         });
-        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        dialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 //Do nothing
@@ -392,6 +396,17 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         AlertDialog alertDialog = dialogBuilder.create();
         alertDialog.show();
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
+    }
+
+    private void shareToSnapchat() {
+        Uri uri = Uri.fromFile(new File(saveFilePath));
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        share.setPackage("com.snapchat.android");
+        share.putExtra(Intent.EXTRA_STREAM, uri);
+        share.setType("image/*");
+        share.putExtra(Intent.EXTRA_TEXT, caption);
+        startActivity(Intent.createChooser(share, context.getString(R.string.snapchat)));
     }
 
     /**
@@ -811,7 +826,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
         final EditText captionEditText = new EditText(getApplicationContext());
 
-        String link = "<a href=https://www.nutt.net/how-do-i-get-pinterest-board-id/> Get Board ID from the LINK";
+        String link = context.getString(R.string.Pinterest_link);
         AlertDialogsHelper.getInsertTextDialog(SharingActivity.this, dialogBuilder, captionEditText, R.string.Pinterest_link, link);
         dialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
         dialogBuilder.setPositiveButton(getString(R.string.post_action).toUpperCase(), new DialogInterface.OnClickListener() {
@@ -954,7 +969,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         share.putExtra(Intent.EXTRA_STREAM, uri);
         share.setType("image/*");
         share.putExtra(Intent.EXTRA_TEXT, caption);
-        startActivityForResult(Intent.createChooser(share, "Whatsapp"), SHARE_WHATSAPP);
+        startActivityForResult(Intent.createChooser(share, context.getString(R.string.whatsapp)), SHARE_WHATSAPP);
     }
 
     private void shareToImgur() {
@@ -1155,7 +1170,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             phimpmeProgressBarHandler.show();
 
         } else {
-            SnackBarHandler.show(parent, "Please sign in to " + str + " from account manager");
+            SnackBarHandler.show(parent, context.getString(R.string.please_sign_into)
+                    + str + context.getString(R.string.from_account_manager));
         }
     }
 
