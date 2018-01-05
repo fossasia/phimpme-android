@@ -28,14 +28,10 @@ class CustomGestureDetector {
 
     private static final int INVALID_POINTER_ID = -1;
 
-    private int mActivePointerId = INVALID_POINTER_ID;
     private int mActivePointerIndex = 0;
     private final ScaleGestureDetector mDetector;
 
-    private VelocityTracker mVelocityTracker;
     private boolean mIsDragging;
-    private float mLastTouchX;
-    private float mLastTouchY;
     private final float mTouchSlop;
     private final float mMinimumVelocity;
     private OnGestureListener mListener;
@@ -110,6 +106,10 @@ class CustomGestureDetector {
 
     private boolean processTouchEvent(MotionEvent ev) {
         final int action = ev.getAction();
+        VelocityTracker mVelocityTracker = null;
+        int mActivePointerId = INVALID_POINTER_ID;
+        float mLastTouchX = 0;
+        float mLastTouchY = 0;
         switch (action & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_DOWN:
                 mActivePointerId = ev.getPointerId(0);
