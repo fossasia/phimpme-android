@@ -126,7 +126,8 @@ class CustomGestureDetector {
             case MotionEvent.ACTION_MOVE:
                 final float x = getActiveX(ev);
                 final float y = getActiveY(ev);
-                final float dx = x - mLastTouchX, dy = y - mLastTouchY;
+                final float dx = x - mLastTouchX;
+                final float dy = y - mLastTouchY;
 
                 if (!mIsDragging) {
                     // Use Pythagoras to see if drag length is larger than
@@ -154,8 +155,7 @@ class CustomGestureDetector {
                 break;
             case MotionEvent.ACTION_UP:
                 mActivePointerId = INVALID_POINTER_ID;
-                if (mIsDragging) {
-                    if (null != mVelocityTracker) {
+                if (mIsDragging && null != mVelocityTracker) {
                         mLastTouchX = getActiveX(ev);
                         mLastTouchY = getActiveY(ev);
 
@@ -163,7 +163,8 @@ class CustomGestureDetector {
                         mVelocityTracker.addMovement(ev);
                         mVelocityTracker.computeCurrentVelocity(1000);
 
-                        final float vX = mVelocityTracker.getXVelocity(), vY = mVelocityTracker
+                        final float vX = mVelocityTracker.getXVelocity();
+                        final float vY = mVelocityTracker
                                 .getYVelocity();
 
                         // If the velocity is greater than minVelocity, call
@@ -172,7 +173,6 @@ class CustomGestureDetector {
                             mListener.onFling(mLastTouchX, mLastTouchY, -vX,
                                     -vY);
                         }
-                    }
                 }
 
                 // Recycle Velocity Tracker
