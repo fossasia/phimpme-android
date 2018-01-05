@@ -514,25 +514,25 @@ public class SettingsActivity extends ThemedActivity {
                 whiteSelect.setVisibility(View.VISIBLE);
                 darkSelect.setVisibility(View.GONE);
                 darkAmoledSelect.setVisibility(View.GONE);
-                themeTextWhite.setTextColor(R.color.md_light_primary_text);
-                themeTextDark.setTextColor(R.color.md_light_primary_text);
-                themeTextDarkAmoled.setTextColor(R.color.md_light_primary_text);
+                themeTextWhite.setTextColor(ContextCompat.getColor(SettingsActivity.this,R.color.md_light_primary_text));
+                themeTextDark.setTextColor(ContextCompat.getColor(SettingsActivity.this,Rxdddx.color.md_light_primary_text));
+                themeTextDarkAmoled.setTextColor(ContextCompat.getColor(SettingsActivity.this,R.color.md_light_primary_text));
                 break;
             case ThemeHelper.DARK_THEME:
                 whiteSelect.setVisibility(View.GONE);
                 darkSelect.setVisibility(View.VISIBLE);
                 darkAmoledSelect.setVisibility(View.GONE);
-                themeTextWhite.setTextColor(getResources().getColor(R.color.white));
-                themeTextDark.setTextColor(getResources().getColor(R.color.white));
-                themeTextDarkAmoled.setTextColor(getResources().getColor(R.color.white));
+                themeTextWhite.setTextColor(ContextCompat.getColor(SettingsActivity.this,R.color.white));
+                themeTextDark.setTextColor(ContextCompat.getColor(SettingsActivity.this,R.color.white));
+                themeTextDarkAmoled.setTextColor(ContextCompat.getColor(SettingsActivity.this,R.color.white));
                 break;
             case ThemeHelper.AMOLED_THEME:
                 whiteSelect.setVisibility(View.GONE);
                 darkSelect.setVisibility(View.GONE);
                 darkAmoledSelect.setVisibility(View.VISIBLE);
-                themeTextWhite.setTextColor(getResources().getColor(R.color.white));
-                themeTextDark.setTextColor(getResources().getColor(R.color.white));
-                themeTextDarkAmoled.setTextColor(getResources().getColor(R.color.white));
+                themeTextWhite.setTextColor(ContextCompat.getColor(SettingsActivity.this,R.color.white));
+                themeTextDark.setTextColor(ContextCompat.getColor(SettingsActivity.this,R.color.white));
+                themeTextDarkAmoled.setTextColor(ContextCompat.getColor(SettingsActivity.this,R.color.white));
                 break;
         }
 
