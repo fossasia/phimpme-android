@@ -1288,6 +1288,8 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         });
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         dialog.show();
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE}, getAccentColor(), dialog);
+
     }
     @Override
     protected void onDestroy() {
