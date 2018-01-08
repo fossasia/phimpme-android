@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -71,7 +72,16 @@ public class UploadHistory extends ThemedActivity {
         //uploadHistoryRecyclerView.addOnItemTouchListener(new RecyclerItemClickListner(this, this));
     }
 
+    private View.OnClickListener uploadPhotoClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(getApplicationContext(),"open photo",Toast.LENGTH_SHORT).show();
+            //open photo in singleMediaActivity
+        }
+    };
+
     private void setUpUI() {
+        uploadHistoryAdapter.setOnClickListener(uploadPhotoClickListener);
         emptyIcon.setColor(getIconColor());
         emptyText.setTextColor(getAccentColor());
         parentView.setBackgroundColor(getBackgroundColor());
