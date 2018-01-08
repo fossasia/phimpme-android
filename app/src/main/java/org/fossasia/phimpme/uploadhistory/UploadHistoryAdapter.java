@@ -40,6 +40,7 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
     private Realm realm = Realm.getDefaultInstance();
     private RealmQuery<UploadHistoryRealmModel> realmResult = realm.where(UploadHistoryRealmModel.class);
     private int color;
+    private View.OnClickListener mOnClickListener;
 
     public UploadHistoryAdapter(int color) {
         this.color=color;
@@ -49,9 +50,14 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
     public UploadHistoryAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.upload_history_item_view, null, false);
+        view.setOnClickListener(mOnClickListener);
         view.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,
                 RecyclerView.LayoutParams.WRAP_CONTENT));
         return new ViewHolder(view);
+    }
+
+    public void setOnClickListener(View.OnClickListener lis) {
+        mOnClickListener = lis;
     }
 
     @Override
