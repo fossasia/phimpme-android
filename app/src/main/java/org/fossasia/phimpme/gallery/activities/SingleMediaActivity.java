@@ -1346,7 +1346,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         if (!allPhotoMode && !favphotomode) {
             adapter = new ImageAdapter(getAlbum().getMedia(), basicCallBack, this, this);
             getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
-//            toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
             mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
                 @Override
                 public void onPageChanged(int oldPosition, int position) {
@@ -1360,7 +1359,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         } else if(allPhotoMode && !favphotomode){
             adapter = new ImageAdapter(LFMainActivity.listAll, basicCallBack, this, this);
             getSupportActionBar().setTitle(current_image_pos + 1 + " " + getString(R.string.of) + " " + size_all);
-            //current_image_pos = all_photo_pos;
             mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
                 @Override
                 public void onPageChanged(int oldPosition, int position) {
@@ -1375,7 +1373,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         } else if(!allPhotoMode && favphotomode){
             adapter = new ImageAdapter(favouriteslist, basicCallBack, this, this);
             getSupportActionBar().setTitle(current_image_pos + 1 + " " + getString(R.string.of) + " " + size_all);
-           // current_image_pos = all_photo_pos;
             mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
                 @Override
                 public void onPageChanged(int oldPosition, int position) {
