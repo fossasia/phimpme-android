@@ -40,7 +40,7 @@
         android:layout_margin="@dimen/medium_spacing">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <com.mikepenz.iconics.view.IconicsImageView
@@ -52,7 +52,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginLeft="10dp">
             <TextView
@@ -82,7 +82,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <com.mikepenz.iconics.view.IconicsImageView
@@ -94,7 +94,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_marginLeft="10dp">
             <TextView
@@ -108,7 +108,7 @@
                 android:layout_height="1dp"/>
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:text="No Location"
                 android:id="@+id/image_desc_loc"
                 android:textColor="@color/md_grey_400"

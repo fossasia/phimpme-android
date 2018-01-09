@@ -1,5 +1,7 @@
 package org.fossasia.phimpme.gallery.data;
 
+import java.util.HashSet;
+import java.util.Set;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
@@ -18,8 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.TimeZone;
 
 
