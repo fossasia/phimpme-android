@@ -316,13 +316,15 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         else hideSystemUI();
                     }
                 });
+
+//        setUpViewPager();
+
         BasicCallBack basicCallBack = new BasicCallBack() {
             @Override
             public void callBack(int status, Object data) {
                 toggleSystemUI();
             }
         };
-
         if (!allPhotoMode && !favphotomode) {
             adapter = new ImageAdapter(getAlbum().getMedia(), basicCallBack, this, this);
             getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
@@ -368,9 +370,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             });
             mViewPager.scrollToPosition(all_photo_pos);
         }
-        Display aa = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
         mViewPager.setAdapter(adapter);
 
+        Display aa = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
         if (aa.getRotation() == Surface.ROTATION_90) {
             Configuration configuration = new Configuration();
             configuration.orientation = Configuration.ORIENTATION_LANDSCAPE;
@@ -488,6 +490,8 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             params.setMargins(0, 0, 0, 0);
 
         toolbar.setLayoutParams(params);
+
+        setUpViewPager();
     }
 
     @Override
@@ -1329,4 +1333,62 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             imgView.setImageBitmap(mainBitmap);
         }
     }
+
+    private void setUpViewPager()
+    {
+
+        BasicCallBack basicCallBack = new BasicCallBack() {
+            @Override
+            public void callBack(int status, Object data) {
+                toggleSystemUI();
+            }
+        };
+        if (!allPhotoMode && !favphotomode) {
+            adapter = new ImageAdapter(getAlbum().getMedia(), basicCallBack, this, this);
+            getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
+//            toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
+            mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
+                @Override
+                public void onPageChanged(int oldPosition, int position) {
+                    getAlbum().setCurrentPhotoIndex(position);
+                    toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
+                    invalidateOptionsMenu();
+                    pathForDescription = getAlbum().getMedia().get(position).getPath();
+                }
+            });
+            mViewPager.scrollToPosition(getAlbum().getCurrentMediaIndex());
+        } else if(allPhotoMode && !favphotomode){
+            adapter = new ImageAdapter(LFMainActivity.listAll, basicCallBack, this, this);
+            getSupportActionBar().setTitle(current_image_pos + 1 + " " + getString(R.string.of) + " " + size_all);
+            //current_image_pos = all_photo_pos;
+            mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
+                @Override
+                public void onPageChanged(int oldPosition, int position) {
+                    current_image_pos = position;
+                    getAlbum().setCurrentPhotoIndex(getAlbum().getCurrentMediaIndex());
+                    toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
+                    invalidateOptionsMenu();
+                    pathForDescription = listAll.get(position).getPath();
+                }
+            });
+            mViewPager.scrollToPosition(current_image_pos);
+        } else if(!allPhotoMode && favphotomode){
+            adapter = new ImageAdapter(favouriteslist, basicCallBack, this, this);
+            getSupportActionBar().setTitle(current_image_pos + 1 + " " + getString(R.string.of) + " " + size_all);
+           // current_image_pos = all_photo_pos;
+            mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
+                @Override
+                public void onPageChanged(int oldPosition, int position) {
+                    current_image_pos = position;
+                    getAlbum().setCurrentPhotoIndex(getAlbum().getCurrentMediaIndex());
+                    toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
+                    invalidateOptionsMenu();
+                    pathForDescription = favouriteslist.get(position).getPath();
+                }
+            });
+            mViewPager.scrollToPosition(current_image_pos);
+        }
+        mViewPager.setAdapter(adapter);
+    }
 }
+
