@@ -15,6 +15,7 @@ import org.fossasia.phimpme.base.ThemedActivity;
 /**
  * Created by Jibo on 06/05/2016.
  */
+
 public class SecurityHelper {
     private boolean activeSecurity;
     private boolean passwordOnDelete;

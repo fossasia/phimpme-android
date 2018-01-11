@@ -8,7 +8,6 @@ import android.support.customtabs.CustomTabsIntent;
 import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
 import android.widget.Toast;
-
 import org.fossasia.phimpme.R;
 
 
@@ -17,7 +16,6 @@ public class CustomTabService {
     private CustomTabsSession mCustomTabsSession;
     private CustomTabsServiceConnection mCustomTabsServiceConnection;
     private CustomTabsIntent mCustomTabsIntent;
-
     private Activity activity;
     private int color;
 
