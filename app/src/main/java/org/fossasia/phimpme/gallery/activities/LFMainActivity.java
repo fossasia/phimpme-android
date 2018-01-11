@@ -698,7 +698,6 @@ public class LFMainActivity extends SharedMediaActivity {
         }
     }
 
-
     private void initUI() {
         clearOverlay();
 
@@ -2527,7 +2526,6 @@ public class LFMainActivity extends SharedMediaActivity {
             finishEditMode();
         }
     }
-
 
     private class PrepareAllPhotos extends AsyncTask<Void, Void, Void> {
 
