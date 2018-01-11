@@ -152,18 +152,6 @@ dependencies {
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
 }
-apply plugin: 'com.google.gms.google-services'
-
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
-    }
-}
-
-apply plugin: 'com.android.application'
-apply plugin: 'jacoco-android'
+apply plugin: 'com.google.gms.google-services
 
 
