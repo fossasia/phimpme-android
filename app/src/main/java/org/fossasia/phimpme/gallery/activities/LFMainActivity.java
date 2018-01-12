@@ -1132,6 +1132,7 @@ public class LFMainActivity extends SharedMediaActivity {
         } else {
             if(getAlbum().getSelectedCount()==0) {
                 clearOverlay();
+                if(!all_photos)
                 checkForReveal = true;
                 swipeRefreshLayout.setEnabled(true);
             }
