@@ -76,7 +76,6 @@ before_script:
 script:
   - ./scripts/copy_opencv.sh
   - ./scripts/main_script.sh
-  - ./gradlew build jacocoTestReport
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
