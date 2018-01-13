@@ -32,6 +32,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -41,6 +42,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -156,6 +158,8 @@ public class LFMainActivity extends SharedMediaActivity {
     private ArrayList<Media> media;
     private ArrayList<Media> selectedMedias = new ArrayList<>();
     public boolean visible;
+    private ArrayList<Album> albList;
+
 
     //To handle favourite collection
     private Realm realm;
@@ -166,6 +170,7 @@ public class LFMainActivity extends SharedMediaActivity {
     // To handle back pressed
     boolean doubleBackToExitPressedOnce = false;
 
+    private boolean fromOnClick=false;
     // Binding various views with Butterknife
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.grid_albums) RecyclerView rvAlbums;
@@ -325,6 +330,12 @@ public class LFMainActivity extends SharedMediaActivity {
         toolbar.setTitle(selectedMedias.size() + "/" + size);
     }
 
+    public void populateAlbum(){
+        albList = new ArrayList<>();
+        for (Album album : getAlbums().dispAlbums) {
+            albList.add(album);
+        }
+    }
     /**
      * Handles short clicks on photos.
      * If in selection mode (editMode = true) , select the photo if it is unselected and unselect it if it's selected.
@@ -421,6 +432,7 @@ public class LFMainActivity extends SharedMediaActivity {
     private View.OnClickListener albumOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            fromOnClick=true;
             Album album = (Album) v.findViewById(R.id.album_name).getTag();
             //int index = Integer.parseInt(v.findViewById(R.id.album_name).getTag().toString());
             if (editMode) {
@@ -496,7 +508,7 @@ public class LFMainActivity extends SharedMediaActivity {
         new SortModeSet().execute(DATE);
         displayData(getIntent().getExtras());
         checkNothing();
-
+        populateAlbum();
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -915,6 +927,7 @@ public class LFMainActivity extends SharedMediaActivity {
         else{
             toolbar.setTitle(getString(R.string.hidden_folder));
         }
+
         /**** SWIPE TO REFRESH ****/
         swipeRefreshLayout.setColorSchemeColors(getAccentColor());
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getBackgroundColor());
@@ -1218,6 +1231,20 @@ public class LFMainActivity extends SharedMediaActivity {
         getMenuInflater().inflate(R.menu.menu_albums, menu);
 
         if (albumsMode) {
+            MenuItem menuitem = menu.findItem(R.id.search_action);
+            final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuitem);
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    return searchTitle(newText);
+                }
+            });
+
             menu.findItem(R.id.select_all).setTitle(
                     getString(getAlbums().getSelectedCount() == albumsAdapter.getItemCount() ? R.string.clear_selected : R.string.select_all));
             menu.findItem(R.id.ascending_sort_action).setChecked(getAlbums().getSortingOrder() == SortingOrder.ASCENDING);
@@ -1267,7 +1294,24 @@ public class LFMainActivity extends SharedMediaActivity {
         menu.findItem(R.id.delete_action).setIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_delete));
         menu.findItem(R.id.sort_action).setIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_sort));
         menu.findItem(R.id.sharePhotos).setIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_share));
+        return true;
+    }
 
+    public boolean searchTitle(String newText){
+        if(!fromOnClick){
+            String queryText = newText;
+            queryText = queryText.toLowerCase();
+            final ArrayList<Album> newList = new ArrayList<>();
+            for (Album album : albList) {
+                String name = album.getName().toLowerCase();
+                if (name.contains(queryText)) {
+                    newList.add(album);
+                }
+            }
+            albumsAdapter.swapDataSet(newList);
+        } else {
+            fromOnClick=false;
+        }
         return true;
     }
 
@@ -1278,22 +1322,32 @@ public class LFMainActivity extends SharedMediaActivity {
             menu.setGroupVisible(R.id.album_options_menu, editMode);
             menu.setGroupVisible(R.id.photos_option_men, false);
             menu.findItem(R.id.all_photos).setVisible(!editMode);
-            if(getAlbums().getSelectedCount() > 1)
-                menu.findItem(R.id.album_details).setVisible(false);
+            menu.findItem(R.id.search_action).setVisible(true);
+
+            if (getAlbums().getSelectedCount() >= 1) {
+                if (getAlbums().getSelectedCount() > 1) {
+                    menu.findItem(R.id.album_details).setVisible(false);
+                }
+                if (getAlbums().getSelectedCount() == 1) {
+                    menu.findItem(R.id.search_action).setVisible(false);
+                }
+            }
+
         } else {
+            menu.findItem(R.id.search_action).setVisible(false);
             if (!all_photos && !fav_photos) {
                 editMode = getAlbum().areMediaSelected();
                 menu.setGroupVisible(R.id.photos_option_men, editMode);
                 menu.setGroupVisible(R.id.album_options_menu, !editMode);
                 menu.findItem(R.id.all_photos).setVisible(false);
                 menu.findItem(R.id.album_details).setVisible(false);
-            } else if(all_photos && !fav_photos){
+            } else if (all_photos && !fav_photos) {
                 editMode = selectedMedias.size() != 0;
                 menu.setGroupVisible(R.id.photos_option_men, editMode);
                 menu.setGroupVisible(R.id.album_options_menu, !editMode);
                 menu.findItem(R.id.all_photos).setVisible(false);
                 menu.findItem(R.id.album_details).setVisible(false);
-            } else if(!all_photos && fav_photos){
+            } else if (!all_photos && fav_photos) {
                 editMode = selectedMedias.size() != 0;
                 menu.setGroupVisible(R.id.photos_option_men, editMode);
                 menu.setGroupVisible(R.id.album_options_menu, !editMode);
@@ -2492,6 +2546,8 @@ public class LFMainActivity extends SharedMediaActivity {
         @Override
         protected void onPostExecute(Void result) {
             albumsAdapter.swapDataSet(getAlbums().dispAlbums);
+            albList = new ArrayList<>();
+            populateAlbum();
             checkNothing();
             swipeRefreshLayout.setRefreshing(false);
             getAlbums().saveBackup(getApplicationContext());

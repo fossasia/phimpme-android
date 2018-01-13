@@ -123,4 +123,13 @@
         android:id="@+id/settings"
         android:title="@string/settings"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/search_action"
+        android:title="@string/search_menu"
+        android:visible="true"
+        android:tint="@color/white"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="never|collapseActionView" />
+
 </menu>
