@@ -42,7 +42,7 @@ public class Utils {
         } catch (IOException e) {
             e.printStackTrace();
             throw new CvException("Failed to export resource " + resName
-                    + ". Exception thrown: " + e);
+                + ". Exception thrown: " + e);
         }
     }
 

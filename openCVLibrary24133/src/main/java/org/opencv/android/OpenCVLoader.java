@@ -97,7 +97,7 @@ public class OpenCVLoader
      * @return Returns true if initialization of OpenCV is successful.
      */
     public static boolean initAsync(String Version, Context AppContext,
-            LoaderCallbackInterface Callback)
+        LoaderCallbackInterface Callback)
     {
         if (initDebug()) {
             Callback.onManagerConnected(LoaderCallbackInterface.SUCCESS);

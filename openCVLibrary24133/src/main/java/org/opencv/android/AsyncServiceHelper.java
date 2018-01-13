@@ -18,7 +18,7 @@ import android.util.Log;
 class AsyncServiceHelper
 {
     public static boolean initOpenCV(String Version, final Context AppContext,
-            final LoaderCallbackInterface Callback)
+        final LoaderCallbackInterface Callback)
     {
         AsyncServiceHelper helper = new AsyncServiceHelper(Version, AppContext, Callback);
         Intent intent = new Intent("org.opencv.engine.BIND");
@@ -72,8 +72,8 @@ class AsyncServiceHelper
     {
         if (!mServiceInstallationProgress)
         {
-                Log.d(TAG, "Request new service installation");
-                InstallCallbackInterface InstallQuery = new InstallCallbackInterface() {
+            Log.d(TAG, "Request new service installation");
+            InstallCallbackInterface InstallQuery = new InstallCallbackInterface() {
                 private LoaderCallbackInterface mUserAppCallback = Callback;
                 public String getPackageName()
                 {
@@ -140,13 +140,13 @@ class AsyncServiceHelper
                 }
                 public void wait_install()
                 {
-                     InstallServiceQuiet(AppContext);
-                }
-            };
+                   InstallServiceQuiet(AppContext);
+               }
+           };
 
-            Callback.onPackageInstall(InstallCallbackInterface.INSTALLATION_PROGRESS, WaitQuery);
-        }
-    }
+           Callback.onPackageInstall(InstallCallbackInterface.INSTALLATION_PROGRESS, WaitQuery);
+       }
+   }
 
     /**
      *  URL of OpenCV Manager page on Google Play Market.
@@ -253,7 +253,7 @@ class AsyncServiceHelper
                                     Log.d(TAG, "Unbind from service");
                                     mAppContext.unbindService(mServiceConnection);
                                     Log.d(TAG, "Calling using callback");
-                                        mUserAppCallback.onManagerConnected(LoaderCallbackInterface.INSTALL_CANCELED);
+                                    mUserAppCallback.onManagerConnected(LoaderCallbackInterface.INSTALL_CANCELED);
                                 }
                                 public void wait_install() {
                                     Log.d(TAG, "Waiting for current installation");
@@ -282,7 +282,7 @@ class AsyncServiceHelper
                                         Log.d(TAG, "Calling using callback");
                                         mUserAppCallback.onManagerConnected(LoaderCallbackInterface.INIT_FAILED);
                                     }
-                               }
+                                }
                             };
 
                             mUserAppCallback.onPackageInstall(InstallCallbackInterface.INSTALLATION_PROGRESS, WaitQuery);
