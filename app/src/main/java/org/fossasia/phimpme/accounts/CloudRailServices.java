@@ -10,6 +10,8 @@ import com.cloudrail.si.interfaces.CloudStorage;
 import com.cloudrail.si.services.Dropbox;
 import com.cloudrail.si.services.OneDrive;
 
+import com.cloudrail.si.services.GoogleDrive;
+
 import org.fossasia.phimpme.utilities.BasicCallBack;
 import org.fossasia.phimpme.utilities.Constants;
 
@@ -29,6 +31,7 @@ public class CloudRailServices {
     private final AtomicReference<CloudStorage> dropbox = new AtomicReference<>();
     private Activity context = null;
     DropboxLogin dropboxLogin;
+    public GoogleDrive googleDrive;
     public static BasicCallBack basicCallBack;
     public Dropbox db;
     public OneDrive oneDrive;
@@ -43,6 +46,7 @@ public class CloudRailServices {
     public static void setCallBack(BasicCallBack basicCallBack){
         CloudRailServices.basicCallBack=basicCallBack;
     }
+
 
     private void initDropbox(){
         db = new Dropbox(context, Constants.DROPBOX_APP_KEY,
@@ -61,9 +65,13 @@ public class CloudRailServices {
         this.initOneDrive();
     }
 
-    public String getToken()
-    {
+    private void initGoogleDrive(){
+      
+        googleDrive = new GoogleDrive(context,Constants.GOOGLEDRIVE_APP_KEY,Constants.GOOGLEDRIVE_SECRET_KEY
+        ,"org.fossasia.phimpme:/oauth2redirect","login-googledrive");
+    }
 
+    public String getToken() {
         return dropbox.get().saveAsString();
     }
 
@@ -72,8 +80,12 @@ public class CloudRailServices {
         return oneDrive.saveAsString();
     }
 
-    public void login() {
+    public String getGoogleDriveToken(){
+        return googleDrive.saveAsString();
+    }
 
+    public void login()
+    {
         dropboxLogin = new DropboxLogin();
         dropboxLogin.execute();
 
@@ -84,7 +96,11 @@ public class CloudRailServices {
         driveLoginTask.execute();
     }
 
-
+    public void googleDriveLogin(){
+            DriveLogin driveLogin = new DriveLogin();
+            driveLogin.execute();
+    }
+  
     public void upload(String path, InputStream inputStream, Long size , Boolean overwrite)
     {
         dropbox.get().upload(path,inputStream,size,overwrite);
@@ -120,13 +136,32 @@ public class CloudRailServices {
                oneDrive.createFolder(FOLDER);
            }
            return null;
-       }
 
        @Override
        protected void onPostExecute(Void aVoid) {
            Log.e(TAG, "One Drive Login TOken "+oneDrive.saveAsString());
            basicCallBack.callBack(3,oneDrive.saveAsString());
        }
+   }
+     
+   public class DriveLogin extends AsyncTask<Void,Void,Void>{
+
+       @Override
+       protected void onPostExecute(Void aVoid) {
+           Log.e(TAG, "GoogleDriveLogin "+googleDrive.saveAsString() );
+           basicCallBack.callBack(2,googleDrive.saveAsString());
+       }
+
+       @Override
+       protected Void doInBackground(Void... voids) {
+           googleDrive.useAdvancedAuthentication();
+           googleDrive.login();
+           if(!(googleDrive.exists("/phimpme_uploads"))){
+               googleDrive.createFolder("/phimpme_uploads");
+           }
+           return null;
+       }
+
    }
 
    public int loadAsString(){
@@ -142,6 +177,14 @@ public class CloudRailServices {
        }
    }
 
+   public void driveLoadAsString(String s){
+       try{
+           Log.e(TAG,"GOOGLE DRIVE"+s);
+           googleDrive.loadAsString(s);
+       } catch (ParseException e) {
+           e.printStackTrace();
+       }
+   }
    public void loadAsString(String s){
        try {
            Log.e(TAG, "loadAsString:Dropbox Token "+s );
@@ -164,6 +207,10 @@ public class CloudRailServices {
        return (FOLDER);
    }
 
+   public String getGoogleDriveFolderPath(){return ("/phimpme_uploads");}
+
+   public boolean checkDriveFolderExist(){ return googleDrive.exists(("/phimpme_uploads"));}
+
    public boolean checkFolderExist(){
        return db.exists(FOLDER);
    }
@@ -173,5 +220,10 @@ public class CloudRailServices {
    public String getOneDriveFolderPath() { return (FOLDER);}
 
    public OneDrive getOneDrive(){ return  oneDrive;}
+     
+   public GoogleDrive getGoogleDrive(){
+       return googleDrive;
+   }
+
 
 }
