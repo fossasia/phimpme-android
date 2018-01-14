@@ -17,7 +17,6 @@ public class CustomTabService {
     private CustomTabsSession mCustomTabsSession;
     private CustomTabsServiceConnection mCustomTabsServiceConnection;
     private CustomTabsIntent mCustomTabsIntent;
-
     private Activity activity;
     private int color;
 

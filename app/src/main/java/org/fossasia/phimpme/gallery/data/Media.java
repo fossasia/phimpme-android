@@ -43,6 +43,7 @@ import io.realm.Realm;
 /**
  * Created by dnld on 26/04/16.
  */
+
 public class Media implements Parcelable, Serializable {
 
     private String path = null;

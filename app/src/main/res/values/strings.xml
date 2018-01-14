@@ -184,8 +184,7 @@
     <string name="preference_take_photo_border_summary">Display a border on the display to indicate taking a photo</string>
     <string name="preference_keep_display_on">Keep display on</string>
     <string name="preference_keep_display_on_summary">If enabled, the screen won\'t switch off while the main Open Camera UI is active</string>
-    <!--<string name="preference_max_brightness">Force maximum brightness</string>
-    -->
+    <!--<string name="preference_max_brightness">Force maximum brightness</string>-->
     <string name="preference_max_brightness_summary">Force screen display to be at maximum brightness, rather than device default</string>
 
     <string name="preference_category_camera_quality">Photo Settings</string>
@@ -295,9 +294,10 @@
     <string name="start_video">Start recording video</string>
     <string name="stop_video">Stop recording video</string>
 
+    <!-- symbol short for megabytes/gigabytes -->
     <string name="max_filesize">Max file size</string>
-    <string name="mb_abbreviation">MB</string> <!-- symbol short for megabytes -->
-    <string name="gb_abbreviation">GB</string> <!-- symbol short for gigabytes -->
+    <string name="mb_abbreviation">MB</string>
+    <string name="gb_abbreviation">GB</string>
 
     <string name="audio_control_start">Start audio listening</string>
     <string name="audio_control_stop">Stop audio listening</string>
@@ -343,8 +343,9 @@
     <string name="preference_video_low_power_check">Critical battery check</string>
     <string name="preference_video_low_power_check_summary">Stop video recording if battery level is critically low. This helps reduce the risk of videos being corrupted if your device suddenly switches off due to running out of power.</string>
 
-    <string name="dark">Dark</string> <!-- exposure compensation dark -->
-    <string name="bright">Bright</string> <!-- exposure compensation bright -->
+    <!-- Exposure compensation Dark/Bright -->
+    <string name="dark">Dark</string>
+    <string name="bright">Bright</string>
     <string name="exposure_shutter_speed">Shutter speed</string>
 
     <string name="camera_error">Serious camera error</string>
@@ -375,6 +376,7 @@
     <string name="preference_video_subtitle">Video subtitles</string>
     <string name="preference_video_subtitle_summary">Create a subtitles (.SRT) file storing date and time; and also GPS info if location/direction data is enabled</string>
 
+    <!--Durations-->
     <string name="duration_unlimited">Unlimited</string>
     <string name="duration_3s">3 seconds</string>
     <string name="duration_5s">5 seconds</string>
@@ -790,8 +792,7 @@
     <string name="new_file_created">new file created</string>
     <string name="sub_scaling_image_view">Sub-Scaling Image View</string>
     <string name="sub_scaling_image_view_sub">
-        (TESTING) It allows you to have a better zoom management and a clear image but it isn\'t
-        really optimized right now
+        (TESTING) It allows you to have a better zoom management and a clear image but it isn\'t really optimized right now.
     </string>
     <string name="about_support">Support Development</string>
     <string name="about_fossasia">Developed by <a href="http://fossasia.org/"> FOSSASIA</a> <a href="https://github.com/fossasia/phimpme-android/graphs/contributors">contributors</a>.</string>
@@ -838,7 +839,6 @@
 
     <!--ACCOUNTS-->
     <!--TWITTER-->
-    <!--add consumer key and secret key below-->
     <string name="already_signed_in">Already signed In</string>
     <string name="drawable">drawable</string>
     <string name="color">color</string>
@@ -891,6 +891,7 @@
     <string name="from_account_manager">from account manager</string>
     <string name="loading_numeric">Loading</string>
     <string name="loading_numeric_all">All Photos</string>
+
     <!--Share to Twitter-->
     <string name="post_image">Post Image</string>
     <string name="post_tweet">Post Tweet</string>
@@ -951,6 +952,7 @@
     <string name="say_cheese">say cheese</string>
     <string name="camera_rear">Rear Camera</string>
     <string name="camera_front">Front Camera</string>
+
     <!--NEXTCLOUD-->
     <string name="auth_check_server">Check server</string>
     <string name="auth_host_url">Server address https://…</string>
@@ -970,6 +972,7 @@
     <string name="auth_unauthorized">Wrong username or password</string>
     <string name="auth_oauth_error">Unsuccessful authorization</string>
     <string name="auth_host_address">Server address</string>
+
     <!--Wordpress-->
     <string name="sharewordpress">Wordpress Account</string>
 
@@ -982,7 +985,7 @@
     <string name="pinterest_signIn_fail">Failed to sign in Pinterest</string>
     <string name="sign_In">SIGN IN</string>
     <string name="pinterest_board_message">Get your Pinterest Board ID from the LINK</string>
-    <string name="Pinterest_link">&lt;a href=https://www.nutt.net/how-do-i-get-pinterest-board-id/> Get Board ID from the LINK</string>
+    <string name="Pinterest_link">&lt;a href=https://www.nutt.net/how-do-i-get-pinterest-board-id/ &lt; Get Board ID from the LINK</string>
     <string name="placeholder_sentence">This is a placeholder</string>
     <string name="auth_trying_to_login"><![CDATA[Trying to log in &#8230;]]></string>
     <string name="welcome_link_url">https://nextcloud.com/providers</string>
@@ -1032,7 +1035,7 @@
     <string name="upload_failed">Upload failed</string>
     <string name="login_box">Login to Box from Account Manager</string>
 
-    <!--TUmblr-->
+    <!--Tumblr-->
     <string name="logged_in_tumblr">Tumblr account logged in successfully.</string>
     <string name="tumblr">Tumblr</string>
     <string name="posting_tumblr">Posting to Tumblr</string>
@@ -1048,10 +1051,10 @@
     <string name="facebook_image_posted">Image posted on Facbook</string>
     <string name="logged_in_facebook">Facebook account logged in successfully.</string>
 
+    <!--Connection Alerts-->
     <string name="retry_upload">Retry</string>
     <string name="upload_failed_retry_box">Upload failed! Rename and try again</string>
     <string name="text_color_title">Text Color</string>
-
     <string name="connection_failed">Connection Failed</string>
     <string name="authorization_failed">Authorization Failed</string>
     <string name="account_logged_pinterest">Pinterest account Logged in Successfully</string>
@@ -1063,6 +1066,7 @@
     <string name="auth_failed">Authorization failed</string>
     <string name="image_invalid">Invalid Image</string>
 
+    <!--Captioning-->
     <string name="caption_head">Add Caption</string>
     <string name="add_action">ADD</string>
     <string name="speech_prompt">Describe the photo</string>
