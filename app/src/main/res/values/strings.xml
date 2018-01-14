@@ -546,7 +546,7 @@
     <string name="video_player">Video Player</string>
     <string name="media">Media</string>
     <string name="send_to">Send to</string>
-    <string name="search_menu">search</string>
+    <string name="search_menu">Search</string>
     <string name="full_resolution">Full resolution</string>
     <string name="of">of</string>
 
@@ -1010,6 +1010,11 @@
     <string name="title_activity_own_cloud">OwnCloudActivity</string>
 
     <string name="image_type">image/*</string>
+
+    <!--GoogleDrive-->
+    <string name="uploaded_googledrive">Uploaded to Google Drive</string>
+    <string name="login_googledrive_account">Login to Google Drive From Accounts</string>
+    <string name="googledrive_share">Google Drive</string>
 
     <!--Google+-->
     <string name="success_google">Image uploaded successfully on Google+</string>
