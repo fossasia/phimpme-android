@@ -5,7 +5,11 @@ import android.graphics.PorterDuff;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -52,6 +56,18 @@ public class SecurityHelper {
         final EditText editxtPassword = (EditText) PasswordDialogLayout.findViewById(R.id.password_edittxt);
         passwordTextInputLayout = (TextInputLayout) PasswordDialogLayout.findViewById(R.id.password_text_input_layout);
         passwordTextInputLayout.setError(context.getString(R.string.wrong_password));
+        CheckBox checkBox = (CheckBox) PasswordDialogLayout.findViewById(R.id.show_password_checkbox);
+        checkBox.setText(context.getResources().getString(R.string.show_password));
+        checkBox.setTextColor(activity.getTextColor());
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(!b){
+                    editxtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }else{
+                    editxtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                }
+            }
+        });
         passwordTextInputLayout.setVisibility(View.GONE);
 
         passwordDialogTitle.setBackgroundColor(activity.getPrimaryColor());

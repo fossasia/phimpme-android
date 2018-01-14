@@ -6,7 +6,7 @@ set -e
 if [ "$COMPONENT" == "BUILD" ]; then
     ./gradlew build
 elif [ "$COMPONENT" == "CONNECTED_TEST" ]; then
-    ./gradlew build connectedAndroidTest --stacktrace
+    ./gradlew build connectedAndroidTest jacocoTestReport --stacktrace
 elif [ "$COMPONENT" == "ASSEMBLE_RELEASE" ]; then
     ./gradlew assembleRelease
 fi
