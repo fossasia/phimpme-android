@@ -1143,15 +1143,27 @@ public class LFMainActivity extends SharedMediaActivity {
                 });
             }
         } else {
-            if(getAlbum().getSelectedCount()==0) {
-                clearOverlay();
-                checkForReveal = true;
-                swipeRefreshLayout.setEnabled(true);
+            if(!all_photos)
+            {
+                if(getAlbum().getSelectedCount()==0) {
+                    clearOverlay();
+                    checkForReveal = true;
+                    swipeRefreshLayout.setEnabled(true);
+                } else {
+                    appBarOverlay();
+                    swipeRefreshLayout.setEnabled(false);
+                }
+            }else {
+                if(selectedMedias.size()==0)
+                {
+                    clearOverlay();
+                    swipeRefreshLayout.setEnabled(true);
+                } else {
+                    appBarOverlay();
+                    swipeRefreshLayout.setEnabled(false);
+                }
             }
-            else {
-                appBarOverlay();
-                swipeRefreshLayout.setEnabled(false);
-            }
+
             if (editMode){
                 if (!all_photos && !fav_photos)
                     toolbar.setTitle(getAlbum().getSelectedCount() + "/" + getAlbum().getMedia().size());
