@@ -194,7 +194,14 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 e.printStackTrace();
             }
             finally{
-                handler.postDelayed(this, SLIDE_SHOW_INTERVAL);
+                if(getAlbum().getCurrentMediaIndex()+1 == getAlbum().getMedia().size() - 1){
+                    handler.removeCallbacks(slideShowRunnable);
+                    slideshow=false;
+                    toggleSystemUI();
+                }
+                else{
+                    handler.postDelayed(this, SLIDE_SHOW_INTERVAL);
+                }
             }
         }
     };
@@ -867,7 +874,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 }else if(!allPhotoMode && favphotomode){
                     media = new Media(new File(favouriteslist.get(current_image_pos).getPath()));
                 }
-                MediaDetailsMap<String,String> mediaDetailsMap = media.getMainDetails(this);
+                final MediaDetailsMap<String,String> mediaDetailsMap = media.getMainDetails(this);
 
                 // Set current image as a blurred background
                 Bitmap blurBackground = BlurImageUtil.blur(context, BitmapFactory.decodeFile(media.getPath()));
@@ -920,11 +927,22 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                              imgLocation.setText(R.string.no_location);
                          } else{
                              imgLocation.setText(mediaDetailsMap.get("Location").toString());
+                             imgLocation.setTextColor(getResources().getColor(R.color.accent_orange, null));
                          }
                     }
                     catch (Exception e){
                         //Raised if null values is found, no need to handle
                     }
+                    imgLocation.setOnClickListener(new View.OnClickListener() {
+                        @Override public void onClick(View view) {
+                            if(mediaDetailsMap.get("Location")!=null){
+                                Uri gmmIntentUri = Uri.parse("geo:0,0?q="+ mediaDetailsMap.get("Location"));
+                                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                                mapIntent.setPackage("com.google.android.apps.maps");
+                                startActivity(mapIntent);
+                            }
+                        }
+                    });
 
                 toggleSystemUI();
                 viewSwitcher.showNext();
@@ -945,7 +963,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 editTextDescription.selectAll();
                 editTextDescription.setSingleLine(false);
                 editTextDescription.setHintTextColor(getResources().getColor(R.color.grey, null));
-            
                 descriptionDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
                 descriptionDialogBuilder.setPositiveButton((temp != null && temp.getTitle().length() != 0) ? getString(R.string.update_action) : getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                     @Override
