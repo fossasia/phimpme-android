@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import com.box.androidsdk.content.BoxConfig;
 import com.box.androidsdk.content.auth.BoxAuthentication;
 import com.box.androidsdk.content.models.BoxSession;
+import com.cloudrail.si.CloudRail;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
 import com.facebook.CallbackManager;
@@ -78,6 +79,7 @@ import static org.fossasia.phimpme.R.string.no_account_signed_in;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FACEBOOK;
+import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.GOOGLEDRIVE;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.IMGUR;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.NEXTCLOUD;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.OWNCLOUD;
@@ -103,7 +105,8 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private static final int OWNCLOUD_REQUEST_CODE = 9;
     private static final int RESULT_OK = 1;
     private static final int RC_SIGN_IN = 9001;
-    public final static String CLOUDRAIL_APP_KEY = "/*App Key */";
+    public static final String BROWSABLE = "android.intent.category.BROWSABLE";
+    public final static String CLOUDRAIL_APP_KEY = Constants.CLOUDRAIL_LICENSE_KEY;//CloudRail_App-Key
     @BindView(R.id.accounts_parent)
     RelativeLayout parentLayout;
     @BindView(R.id.accounts_recycler_view)
@@ -258,6 +261,9 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     Intent WordpressShare = new Intent(this, WordpressLoginActivity.class);
                     startActivity(WordpressShare);
                     break;*/
+                case GOOGLEDRIVE:
+                    signInGoogleDrive();
+                    break;
 
                 case PINTEREST:
                     signInPinterest();
@@ -396,6 +402,41 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             };
             CloudRailServices.setCallBack(basicCallBack);
 
+    }
+    /*
+    Catching the intent of the external browser login and getting that data
+     */
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        try{
+
+            if(intent.getCategories().contains(BROWSABLE)){
+                CloudRail.setAuthenticationResponse(intent);
+            }
+        }catch (Exception e)
+        {
+            //Nothing is to be done when the BROWSABLE Intent is null
+        }
+        super.onNewIntent(intent);
+    }
+
+    private void signInGoogleDrive() {
+        if(accountPresenter.checkAlreadyExist(GOOGLEDRIVE))
+            SnackBarHandler.show(coordinatorLayout,"Already Signed In");
+        else
+            cloudRailServices.prepare(this);
+            cloudRailServices.googleDriveLogin();
+            BasicCallBack basicCallBack = new BasicCallBack() {
+                @Override
+                public void callBack(int status, Object data) {
+                    if(status == 2){
+                        Log.e("TAG", "callBack: GOOGLE DRIVE"+data.toString() );
+                        googleDriveAuthentication(data.toString());
+                    }
+                }
+            };
+            CloudRailServices.setCallBack(basicCallBack);
     }
 
     private void signInImgur() {
@@ -584,6 +625,23 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         }catch (Exception e )
         {
             //catches exception dont need handling
+        }
+        accountPresenter.loadFromDatabase();
+    }
+
+    private void googleDriveAuthentication(String tokens) {
+        try{
+            String token = cloudRailServices.googleDrive.saveAsString();
+            Log.e("AccountsActivity", "googleDriveAuthentication: "+token + "Matching Token "+tokens);
+            String accessToken = cloudRailServices.getGoogleDriveToken();
+            realm.beginTransaction();
+            account = realm.createObject(AccountDatabase.class,GOOGLEDRIVE.toString());
+            account.setUsername(GOOGLEDRIVE.toString());
+            account.setToken(String.valueOf(accessToken));
+            realm.commitTransaction();
+        }catch (Exception e)
+        {
+            //No need for handling
         }
         accountPresenter.loadFromDatabase();
     }

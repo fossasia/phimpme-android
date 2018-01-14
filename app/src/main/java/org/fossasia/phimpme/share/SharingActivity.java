@@ -124,6 +124,7 @@ import io.realm.RealmResults;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FLICKR;
+import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.GOOGLEDRIVE;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.OTHERS;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTER;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
@@ -343,6 +344,10 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
                     case DROPBOX:
                         shareToDropBox();
+                        break;
+
+                    case GOOGLEDRIVE:
+                        shareToGoogleDrive();
                         break;
 
                     case OWNCLOUD:
@@ -625,6 +630,64 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             if (success) {
                 NotificationHandler.actionPassed(R.string.upload_complete);
                 SnackBarHandler.show(parent, R.string.uploaded_dropbox);
+                sendResult(Constants.SUCCESS);
+            } else {
+                NotificationHandler.actionFailed();
+                SnackBarHandler.show(parent, R.string.upload_failed);
+                sendResult(FAIL);
+            }
+        }
+    }
+
+    private void shareToGoogleDrive(){
+        cloudRailServices = CloudRailServices.getInstance();
+        cloudRailServices.prepare(this);
+        RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
+        //Checking if string is equal or not
+        query.equalTo("name",GOOGLEDRIVE.toString());
+        RealmResults<AccountDatabase> results = query.findAll();
+        try{
+            cloudRailServices.driveLoadAsString(results.first().getToken());
+            new UploadToGoogleDrive().execute();
+        }
+        catch (Exception e){
+            SnackBarHandler.show(parent,R.string.login_googledrive_account);
+        }
+
+    }
+
+    private class UploadToGoogleDrive extends AsyncTask<Void,Void,Void>{
+        Boolean success;
+
+        @Override
+        protected void onPreExecute() {
+            NotificationHandler.make(R.string.googledrive_share,R.string.uploading,R.drawable.ic_cloud_upload_black_24dp);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            File file = new File(saveFilePath);
+            FileInputStream inputStream = null;
+            try {
+                inputStream = new FileInputStream(file);
+                if(cloudRailServices.checkDriveFolderExist()) {
+                    cloudRailServices.getGoogleDrive().upload(cloudRailServices.getGoogleDriveFolderPath()+"/"+file.getName(), inputStream, file.length(), true);
+                    success = true;
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                success = false;
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            if (success) {
+                NotificationHandler.actionPassed(R.string.upload_complete);
+                SnackBarHandler.show(parent, R.string.uploaded_googledrive);
                 sendResult(Constants.SUCCESS);
             } else {
                 NotificationHandler.actionFailed();

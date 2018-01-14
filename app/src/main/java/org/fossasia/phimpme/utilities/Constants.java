@@ -26,6 +26,9 @@ public class Constants {
     public final static String BOX_CLIENT_ID = "tkriyn4662erwjil5e55yq6tcs9hgxjs";
     public final static String BOX_CLIENT_SECRET = "TQuwEKGLbK1YRLT4vmVrtu3RVzNSDZwF";
 
+    public final static String GOOGLEDRIVE_APP_KEY="";/*Add your google drive api key */
+    public final static String GOOGLEDRIVE_SECRET_KEY="";//Always has to be null
+
     public final static String FLICKR_API_KEY = "108a1496fb4f27a1fe310bd399f9c900";
     public final static String FLICKR_TOKEN_SECRET = "a3134b9731947689";
 

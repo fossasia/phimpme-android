@@ -326,6 +326,7 @@
         <activity
             android:name=".accounts.AccountActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -333,7 +334,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="pdk4914573327424567067" />
+                <data android:scheme="org.fossasia.phimpme"/>
+                <data android:scheme="pdk4910600717739247160" />
             </intent-filter>
         </activity>
         <activity
