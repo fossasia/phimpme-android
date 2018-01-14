@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -15,6 +16,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -30,6 +32,7 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -39,6 +42,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -154,6 +158,8 @@ public class LFMainActivity extends SharedMediaActivity {
     private ArrayList<Media> media;
     private ArrayList<Media> selectedMedias = new ArrayList<>();
     public boolean visible;
+    private ArrayList<Album> albList;
+
 
     //To handle favourite collection
     private Realm realm;
@@ -164,6 +170,7 @@ public class LFMainActivity extends SharedMediaActivity {
     // To handle back pressed
     boolean doubleBackToExitPressedOnce = false;
 
+    private boolean fromOnClick=false;
     // Binding various views with Butterknife
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.grid_albums) RecyclerView rvAlbums;
@@ -323,6 +330,12 @@ public class LFMainActivity extends SharedMediaActivity {
         toolbar.setTitle(selectedMedias.size() + "/" + size);
     }
 
+    public void populateAlbum(){
+        albList = new ArrayList<>();
+        for (Album album : getAlbums().dispAlbums) {
+            albList.add(album);
+        }
+    }
     /**
      * Handles short clicks on photos.
      * If in selection mode (editMode = true) , select the photo if it is unselected and unselect it if it's selected.
@@ -419,6 +432,7 @@ public class LFMainActivity extends SharedMediaActivity {
     private View.OnClickListener albumOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            fromOnClick=true;
             Album album = (Album) v.findViewById(R.id.album_name).getTag();
             //int index = Integer.parseInt(v.findViewById(R.id.album_name).getTag().toString());
             if (editMode) {
@@ -494,7 +508,7 @@ public class LFMainActivity extends SharedMediaActivity {
         new SortModeSet().execute(DATE);
         displayData(getIntent().getExtras());
         checkNothing();
-
+        populateAlbum();
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -913,6 +927,7 @@ public class LFMainActivity extends SharedMediaActivity {
         else{
             toolbar.setTitle(getString(R.string.hidden_folder));
         }
+
         /**** SWIPE TO REFRESH ****/
         swipeRefreshLayout.setColorSchemeColors(getAccentColor());
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getBackgroundColor());
@@ -1216,6 +1231,20 @@ public class LFMainActivity extends SharedMediaActivity {
         getMenuInflater().inflate(R.menu.menu_albums, menu);
 
         if (albumsMode) {
+            MenuItem menuitem = menu.findItem(R.id.search_action);
+            final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuitem);
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    return searchTitle(newText);
+                }
+            });
+
             menu.findItem(R.id.select_all).setTitle(
                     getString(getAlbums().getSelectedCount() == albumsAdapter.getItemCount() ? R.string.clear_selected : R.string.select_all));
             menu.findItem(R.id.ascending_sort_action).setChecked(getAlbums().getSortingOrder() == SortingOrder.ASCENDING);
@@ -1265,7 +1294,24 @@ public class LFMainActivity extends SharedMediaActivity {
         menu.findItem(R.id.delete_action).setIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_delete));
         menu.findItem(R.id.sort_action).setIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_sort));
         menu.findItem(R.id.sharePhotos).setIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_share));
+        return true;
+    }
 
+    public boolean searchTitle(String newText){
+        if(!fromOnClick){
+            String queryText = newText;
+            queryText = queryText.toLowerCase();
+            final ArrayList<Album> newList = new ArrayList<>();
+            for (Album album : albList) {
+                String name = album.getName().toLowerCase();
+                if (name.contains(queryText)) {
+                    newList.add(album);
+                }
+            }
+            albumsAdapter.swapDataSet(newList);
+        } else {
+            fromOnClick=false;
+        }
         return true;
     }
 
@@ -1276,22 +1322,32 @@ public class LFMainActivity extends SharedMediaActivity {
             menu.setGroupVisible(R.id.album_options_menu, editMode);
             menu.setGroupVisible(R.id.photos_option_men, false);
             menu.findItem(R.id.all_photos).setVisible(!editMode);
-            if(getAlbums().getSelectedCount() > 1)
-                menu.findItem(R.id.album_details).setVisible(false);
+            menu.findItem(R.id.search_action).setVisible(true);
+
+            if (getAlbums().getSelectedCount() >= 1) {
+                if (getAlbums().getSelectedCount() > 1) {
+                    menu.findItem(R.id.album_details).setVisible(false);
+                }
+                if (getAlbums().getSelectedCount() == 1) {
+                    menu.findItem(R.id.search_action).setVisible(false);
+                }
+            }
+
         } else {
+            menu.findItem(R.id.search_action).setVisible(false);
             if (!all_photos && !fav_photos) {
                 editMode = getAlbum().areMediaSelected();
                 menu.setGroupVisible(R.id.photos_option_men, editMode);
                 menu.setGroupVisible(R.id.album_options_menu, !editMode);
                 menu.findItem(R.id.all_photos).setVisible(false);
                 menu.findItem(R.id.album_details).setVisible(false);
-            } else if(all_photos && !fav_photos){
+            } else if (all_photos && !fav_photos) {
                 editMode = selectedMedias.size() != 0;
                 menu.setGroupVisible(R.id.photos_option_men, editMode);
                 menu.setGroupVisible(R.id.album_options_menu, !editMode);
                 menu.findItem(R.id.all_photos).setVisible(false);
                 menu.findItem(R.id.album_details).setVisible(false);
-            } else if(!all_photos && fav_photos){
+            } else if (!all_photos && fav_photos) {
                 editMode = selectedMedias.size() != 0;
                 menu.setGroupVisible(R.id.photos_option_men, editMode);
                 menu.setGroupVisible(R.id.album_options_menu, !editMode);
@@ -1303,7 +1359,7 @@ public class LFMainActivity extends SharedMediaActivity {
         togglePrimaryToolbarOptions(menu);
         updateSelectedStuff();
         visible = getAlbum().getSelectedCount() > 0;
-        menu.findItem(R.id.action_copy).setVisible(visible);
+        menu.findItem(R.id.action_copy).setVisible(visible || (editMode && all_photos));
         menu.findItem(R.id.action_move).setVisible((visible || editMode));
         menu.findItem(R.id.excludeAlbumButton).setVisible(editMode && !all_photos && albumsMode && !fav_photos);
         menu.findItem(R.id.zipAlbumButton).setVisible(editMode && !all_photos&&albumsMode &&!fav_photos);
@@ -1313,7 +1369,7 @@ public class LFMainActivity extends SharedMediaActivity {
         menu.findItem(R.id.hideAlbumButton).setVisible(!all_photos && !fav_photos && getAlbums().getSelectedCount() >
                 0);
 
-        menu.findItem(R.id.clear_album_preview).setVisible(!albumsMode && getAlbum().hasCustomCover() && !fav_photos);
+        menu.findItem(R.id.clear_album_preview).setVisible(!albumsMode && getAlbum().hasCustomCover() && !fav_photos && !all_photos);
         menu.findItem(R.id.renameAlbum).setVisible(((albumsMode && getAlbums().getSelectedCount() == 1) ||
                 (!albumsMode && !editMode)) && (!all_photos && !fav_photos));
         if (getAlbums().getSelectedCount() == 1)
@@ -2132,7 +2188,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface
                         .BUTTON_NEGATIVE}, getAccentColor(), renameDialog);
                 renameDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE}, getColor(R.color.grey), renameDialog);
+                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE}, ContextCompat.getColor(LFMainActivity.this,R.color.grey), renameDialog);
                 editTextNewName.addTextChangedListener(new TextWatcher() {
                     @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         //empty method body
@@ -2148,7 +2204,7 @@ public class LFMainActivity extends SharedMediaActivity {
                             // Disable ok button
                             renameDialog.getButton(
                                     AlertDialog.BUTTON_POSITIVE).setEnabled(false);
-                            AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE}, getColor(R.color.grey), renameDialog);
+                            AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE},ContextCompat.getColor(LFMainActivity.this,R.color.grey), renameDialog);
 
                         } else {
                             // Something into edit text. Enable the button.
@@ -2302,6 +2358,22 @@ public class LFMainActivity extends SharedMediaActivity {
             hidenav=false;
         }
     }
+
+    //to copy from all photos.
+    private boolean copyfromallphotos(Context context, String folderPath){
+        boolean success = false;
+        for(Media m: selectedMedias){
+            try {
+                File from = new File(m.getPath());
+                File to = new File(folderPath);
+                if (success = ContentHelper.copyFile(context, from, to))
+                    scanFile(context, new String[]{ StringUtils.getPhotoPathMoved(m.getPath(), folderPath) });
+            } catch (Exception e) { e.printStackTrace(); }
+        }
+        return success;
+    }
+
+    public void scanFile(Context context, String[] path) { MediaScannerConnection.scanFile(context, path, null, null); }
 
     /**
      * If we are in albumsMode, make the albums recyclerView visible. If we are not, make media recyclerView visible.
@@ -2474,6 +2546,8 @@ public class LFMainActivity extends SharedMediaActivity {
         @Override
         protected void onPostExecute(Void result) {
             albumsAdapter.swapDataSet(getAlbums().dispAlbums);
+            albList = new ArrayList<>();
+            populateAlbum();
             checkNothing();
             swipeRefreshLayout.setRefreshing(false);
             getAlbums().saveBackup(getApplicationContext());
@@ -2677,7 +2751,7 @@ public class LFMainActivity extends SharedMediaActivity {
     private class CopyPhotos extends AsyncTask<String, Integer, Boolean> {
 
         private String path;
-        private Boolean moveAction, copyAction;
+        private Boolean moveAction, copyAction, success;
         CopyPhotos(String path, Boolean moveAction,Boolean copyAction)
         {
             this.path = path;
@@ -2693,9 +2767,14 @@ public class LFMainActivity extends SharedMediaActivity {
 
         @Override
         protected Boolean doInBackground(String... arg0) {
-            boolean success = getAlbum().copySelectedPhotos(getApplicationContext(), path);
-            MediaStoreProvider.getAlbums(LFMainActivity.this);
-            getAlbum().updatePhotos(getApplicationContext());
+            if(!all_photos){
+                success = getAlbum().copySelectedPhotos(getApplicationContext(), path);
+                MediaStoreProvider.getAlbums(LFMainActivity.this);
+                getAlbum().updatePhotos(getApplicationContext());
+            }
+            else{
+                success = copyfromallphotos(getApplicationContext(), path);
+            }
             return success;
         }
 
@@ -2703,7 +2782,11 @@ public class LFMainActivity extends SharedMediaActivity {
         protected void onPostExecute(Boolean result) {
             if(result)
             {
-                mediaAdapter.swapDataSet(getAlbum().getMedia());
+                if(!all_photos){
+                    mediaAdapter.swapDataSet(getAlbum().getMedia());
+                }else {
+                    mediaAdapter.swapDataSet(listAll);
+                }
                 mediaAdapter.notifyDataSetChanged();
                 invalidateOptionsMenu();
                 swipeRefreshLayout.setRefreshing(false);
