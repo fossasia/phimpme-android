@@ -1,5 +1,8 @@
 package org.fossasia.phimpme.gallery.activities;
 
+import org.fossasia.phimpme.base.ThemedActivity;
+import org.fossasia.phimpme.gallery.util.PreferenceUtil;
+
 import android.annotation.TargetApi;
 import android.app.FragmentManager;
 import android.content.Context;
@@ -15,6 +18,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
@@ -31,10 +37,8 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.view.IconicsImageView;
 
 import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
 import org.fossasia.phimpme.gallery.util.ColorPalette;
-import org.fossasia.phimpme.gallery.util.PreferenceUtil;
 import org.fossasia.phimpme.gallery.util.SecurityHelper;
 import org.fossasia.phimpme.gallery.util.StaticMapProvider;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
@@ -403,7 +407,27 @@ public class SettingsActivity extends ThemedActivity {
         AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
         final EditText editTextPassword  = securityObj.getInsertPasswordDialog(SettingsActivity.this,passwordDialogBuilder);
         passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+        editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        editTextPassword.setHint(getResources().getString(R.string.enter_password));
+        editTextPassword.setHintTextColor(getSubTextColor());
+        editTextPassword.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //empty method
+            }
 
+            @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editTextPassword.setSelection(editTextPassword.getText().toString().length());
+            }
+
+            @Override public void afterTextChanged(Editable editable) {
+                if(editable.length() == 11) {
+                    editTextPassword.setText(editable.toString().substring(0, 10));
+                    editTextPassword.setSelection(10);
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.max_password_length), Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }
+        });
         passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -414,12 +438,13 @@ public class SettingsActivity extends ThemedActivity {
 
         final AlertDialog passwordDialog = passwordDialogBuilder.create();
         passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
         passwordDialog.show();
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
         passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+
                 if (securityObj.checkPassword(editTextPassword.getText().toString())) {
                     passwordDialog.dismiss();
                     startActivity(new Intent(getApplicationContext(), SecurityActivity.class));
