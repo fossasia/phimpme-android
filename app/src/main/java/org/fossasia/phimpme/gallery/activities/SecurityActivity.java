@@ -9,12 +9,19 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.TextWatcher;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -114,13 +121,64 @@ public class SecurityActivity extends ThemedActivity {
         final AlertDialog.Builder passwordDialog = new AlertDialog.Builder(SecurityActivity.this, getDialogStyle());
         final View PasswordDialogLayout = getLayoutInflater().inflate(R.layout.dialog_set_password, null);
         final TextView passwordDialogTitle = (TextView) PasswordDialogLayout.findViewById(R.id.password_dialog_title);
+        CheckBox checkBox = (CheckBox) PasswordDialogLayout.findViewById(R.id.set_password_checkbox);
+        checkBox.setText(getResources().getString(R.string.show_password));
+        checkBox.setTextColor(getTextColor());
         final CardView passwordDialogCard = (CardView) PasswordDialogLayout.findViewById(R.id.password_dialog_card);
         final EditText editTextPassword = (EditText) PasswordDialogLayout.findViewById(R.id.password_edittxt);
+        editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         final EditText editTextConfirmPassword = (EditText) PasswordDialogLayout.findViewById(R.id.confirm_password_edittxt);
+        editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(!b){
+                    editTextPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    editTextConfirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }else{
+                    editTextPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    editTextConfirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                }
+            }
+        });
+        editTextConfirmPassword.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //empty method body
+            }
+
+            @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editTextConfirmPassword.setSelection(editTextConfirmPassword.getText().toString().length());
+            }
+
+            @Override public void afterTextChanged(Editable editable) {
+                if(editable.length() == 11) {
+                    editTextConfirmPassword.setText(editable.toString().substring(0, 10));
+                    editTextConfirmPassword.setSelection(10);
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.max_password_length), Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }
+        });
+        editTextPassword.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //empty method body
+            }
+
+            @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editTextPassword.setSelection(editTextPassword.getText().toString().length());
+            }
+
+            @Override public void afterTextChanged(Editable editable) {
+                if(editable.length() == 11) {
+                    editTextPassword.setText(editable.toString().substring(0, 10));
+                    editTextPassword.setSelection(10);
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.max_password_length), Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }
+        });
 
         passwordDialogTitle.setBackgroundColor(getPrimaryColor());
         passwordDialogCard.setBackgroundColor(getCardBackgroundColor());
-
 
         editTextPassword.getBackground().mutate().setColorFilter(getTextColor(), PorterDuff.Mode.SRC_ATOP);
         editTextPassword.setTextColor(getTextColor());
