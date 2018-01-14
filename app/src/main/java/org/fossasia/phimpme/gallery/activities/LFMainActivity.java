@@ -1415,7 +1415,7 @@ public class LFMainActivity extends SharedMediaActivity {
                         .ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //empty method body
+                        finishEditMode();
                     }});
                 detailsDialog.show();
                 AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE}, getAccentColor(), detailsDialog);
@@ -1620,6 +1620,8 @@ public class LFMainActivity extends SharedMediaActivity {
                                     listAll = StorageProvider.getAllShownImages(LFMainActivity.this);
                                     media = listAll;
                                     size = listAll.size();
+                                    Collections.sort(listAll, MediaComparators.getComparator(getAlbum().settings
+                                            .getSortingMode(), getAlbum().settings.getSortingOrder()));
                                     mediaAdapter.swapDataSet(listAll);
                                 }
                                 else if(fav_photos && !all_photos){
