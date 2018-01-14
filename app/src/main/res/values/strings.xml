@@ -587,8 +587,10 @@
     <string name="security">Security</string>
     <string name="active_security">Access by password</string>
     <string name="password">Password</string>
+    <string name="enter_password">Enter your password</string>
     <string name="confirm_password">Confirm password</string>
     <string name="wrong_password">Wrong password</string>
+    <string name="show_password">Show Password</string>
 
     <string name="type_password">Insert password</string>
     <string name="type_description">Description</string>
@@ -604,6 +606,7 @@
     <string name="fingerprint">Fingerprint</string>
     <string name="clear_password">Clear Password</string>
     <string name="error_password_length">The minimum password length is 4 character</string>
+    <string name="max_password_length">The password length cannot be more than 10 characters</string>
 
     <!-- SETTINGS -->
     <string name="settings">Settings</string>
