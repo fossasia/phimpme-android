@@ -244,7 +244,7 @@
                       android:id="@+id/album_details_hidden"
                       android:textSize="17dp"
                       android:textColor="@color/icongrey"
-                      android:layout_marginLeft="55dp"/>
+                      android:layout_marginLeft="56dp"/>
           </LinearLayout>
           <View android:layout_width="match_parent"
                 android:layout_height="1dp"

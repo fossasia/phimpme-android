@@ -2,12 +2,12 @@ package org.fossasia.phimpme.gallery.activities;
 
 import android.animation.Animator;
 import android.annotation.TargetApi;
-import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -26,7 +26,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.design.widget.Snackbar;
@@ -73,6 +72,7 @@ import com.mikepenz.iconics.view.IconicsImageView;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.SharedMediaActivity;
 import org.fossasia.phimpme.data.local.FavouriteImagesModel;
+import org.fossasia.phimpme.data.local.ImageDescModel;
 import org.fossasia.phimpme.data.local.UploadHistoryRealmModel;
 import org.fossasia.phimpme.gallery.SelectAlbumBottomSheet;
 import org.fossasia.phimpme.gallery.adapters.AlbumsAdapter;
@@ -967,7 +967,7 @@ public class LFMainActivity extends SharedMediaActivity {
         drawableScrollBar.setColorFilter(new PorterDuffColorFilter(getPrimaryColor(), PorterDuff.Mode.SRC_ATOP));
 
         /**** FAB ****/
-        fabScrollUp.setBackgroundColor(getAccentColor());
+        fabScrollUp.setBackgroundTintList(ColorStateList.valueOf(getAccentColor()));
         fabScrollUp.setAlpha(0.7f);
     }
 
@@ -1342,7 +1342,7 @@ public class LFMainActivity extends SharedMediaActivity {
             editMode = getAlbums().getSelectedCount() != 0;
             menu.setGroupVisible(R.id.album_options_menu, editMode);
             menu.setGroupVisible(R.id.photos_option_men, false);
-            menu.findItem(R.id.all_photos).setVisible(!editMode);
+            menu.findItem(R.id.all_photos).setVisible(!editMode && !hidden);
             menu.findItem(R.id.search_action).setVisible(true);
 
             if (getAlbums().getSelectedCount() >= 1) {
@@ -1353,7 +1353,6 @@ public class LFMainActivity extends SharedMediaActivity {
                     menu.findItem(R.id.search_action).setVisible(false);
                 }
             }
-
         } else {
             menu.findItem(R.id.search_action).setVisible(false);
             if (!all_photos && !fav_photos) {
@@ -1380,10 +1379,11 @@ public class LFMainActivity extends SharedMediaActivity {
         togglePrimaryToolbarOptions(menu);
         updateSelectedStuff();
         visible = getAlbum().getSelectedCount() > 0;
-        menu.findItem(R.id.action_copy).setVisible(visible || (editMode && all_photos));
-        menu.findItem(R.id.action_move).setVisible((visible || editMode));
+        menu.findItem(R.id.action_copy).setVisible(visible);
+        menu.findItem(R.id.action_move).setVisible((visible || editMode)&&!fav_photos);
+        menu.findItem(R.id.action_add_favourites).setVisible((visible || editMode)&&(!albumsMode&&!fav_photos));
         menu.findItem(R.id.excludeAlbumButton).setVisible(editMode && !all_photos && albumsMode && !fav_photos);
-        menu.findItem(R.id.zipAlbumButton).setVisible(editMode && !all_photos&&albumsMode &&!fav_photos);
+        menu.findItem(R.id.zipAlbumButton).setVisible(editMode && !all_photos&&albumsMode &&!fav_photos && !hidden);
         menu.findItem(R.id.select_all).setVisible(editMode);
         menu.findItem(R.id.delete_action).setVisible((!albumsMode || editMode) && (!all_photos || editMode) &&
                 (!fav_photos || editMode));
@@ -1434,7 +1434,7 @@ public class LFMainActivity extends SharedMediaActivity {
                         .ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //empty method body
+                        finishEditMode();
                     }});
                 detailsDialog.show();
                 AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE}, getAccentColor(), detailsDialog);
@@ -1639,6 +1639,8 @@ public class LFMainActivity extends SharedMediaActivity {
                                     listAll = StorageProvider.getAllShownImages(LFMainActivity.this);
                                     media = listAll;
                                     size = listAll.size();
+                                    Collections.sort(listAll, MediaComparators.getComparator(getAlbum().settings
+                                            .getSortingMode(), getAlbum().settings.getSortingOrder()));
                                     mediaAdapter.swapDataSet(listAll);
                                 }
                                 else if(fav_photos && !all_photos){
@@ -2161,6 +2163,44 @@ public class LFMainActivity extends SharedMediaActivity {
                     }
                 });
                 bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
+                return true;
+
+            case R.id.action_add_favourites:
+                int count = 0;
+                ArrayList<Media> favadd;
+                if(!all_photos){
+                    favadd = getAlbum().getSelectedMedia();
+                }else{
+                    favadd = selectedMedias;
+                }
+                for(int i = 0; i < favadd.size(); i++){
+                    String realpath = favadd.get(i).getPath();
+                    RealmQuery<FavouriteImagesModel> query = realm.where(FavouriteImagesModel.class).equalTo("path",
+                            realpath);
+                    if(query.count() == 0){
+                        count++;
+                        realm.beginTransaction();
+                        FavouriteImagesModel fav = realm.createObject(FavouriteImagesModel.class,
+                                realpath);
+                        ImageDescModel q = realm.where(ImageDescModel.class).equalTo("path", realpath).findFirst();
+                        if(q != null) {
+                            fav.setDescription(q.getTitle());
+                        }
+                        else{
+                            fav.setDescription(" ");
+                        }
+                        realm.commitTransaction();
+                    }
+                }
+                finishEditMode();
+                if(count == 0){
+                    SnackBarHandler.show(mDrawerLayout, getResources().getString(R.string.check_favourite_multipleitems));
+                }else if(count == 1){
+                    SnackBarHandler.show(mDrawerLayout, getResources().getString(R.string.add_favourite));
+                }else{
+                    SnackBarHandler.show(mDrawerLayout, count+ " " + getResources().getString(R.string
+                            .add_favourite_multiple));
+                }
                 return true;
 
             case R.id.action_copy:
