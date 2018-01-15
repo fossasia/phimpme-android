@@ -67,6 +67,7 @@ import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
 import org.fossasia.phimpme.data.local.FavouriteImagesModel;
 import org.fossasia.phimpme.data.local.ImageDescModel;
+import org.fossasia.phimpme.editor.CompressImageActivity;
 import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.FileUtils;
 import org.fossasia.phimpme.editor.utils.BitmapUtils;
@@ -100,7 +101,6 @@ import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
-import static org.fossasia.phimpme.R.string.media;
 import static org.fossasia.phimpme.gallery.activities.LFMainActivity.listAll;
 import static org.fossasia.phimpme.utilities.Utils.promptSpeechInput;
 
@@ -125,6 +125,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private boolean fullScreenMode, customUri = false;
     public static final int TAKE_PHOTO_CODE = 8;
     public static final int ACTION_REQUEST_EDITIMAGE = 9;
+    public static final int ACTION_REQUEST_COMPRESSIMAGE = 13;
     public static final int ACTION_STICKERS_IMAGE = 10;
     private Bitmap mainBitmap;
     private int imageWidth, imageHeight;
@@ -146,7 +147,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     boolean slideshow=false;
     private boolean details=false;
     private ArrayList<Media> favouriteslist;
-
+    public static  Media mediacompress = null;
     ImageDescModel temp;
     private final int REQ_CODE_SPEECH_INPUT = 100;
     String voiceInput;
@@ -194,7 +195,14 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 e.printStackTrace();
             }
             finally{
-                handler.postDelayed(this, SLIDE_SHOW_INTERVAL);
+                if(getAlbum().getCurrentMediaIndex()+1 == getAlbum().getMedia().size() - 1){
+                    handler.removeCallbacks(slideShowRunnable);
+                    slideshow=false;
+                    toggleSystemUI();
+                }
+                else{
+                    handler.postDelayed(this, SLIDE_SHOW_INTERVAL);
+                }
             }
         }
     };
@@ -763,6 +771,35 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 }
                 break;
 
+
+            case R.id.action_compress:
+                handler.removeCallbacks(slideShowRunnable);
+                if (!allPhotoMode)
+                    uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
+                else
+                    uri = Uri.fromFile(new File(listAll.get(current_image_pos).getPath()));
+                String extension1 = uri.getPath();
+                if (extension1 != null && !(extension1.substring(extension1.lastIndexOf(".")).equals(".gif"))) {
+                    Intent compressIntent = new Intent(SingleMediaActivity.this, CompressImageActivity.class);
+                    if (!allPhotoMode)
+                        compressIntent.putExtra(EXTRA_OUTPUT, getAlbum().getCurrentMedia().getPath());
+                    else
+                        compressIntent.putExtra(EXTRA_OUTPUT, listAll.get(current_image_pos).getPath());
+                        startActivity(compressIntent);
+
+
+                //to send the resolution of image
+                    handler.removeCallbacks(slideShowRunnable);
+                    if(!allPhotoMode && !favphotomode){
+                        mediacompress = getAlbum().getCurrentMedia();
+                    }else if(allPhotoMode && !favphotomode){
+                        mediacompress = new Media(new File(listAll.get(current_image_pos).getPath()));}
+                        else if(!allPhotoMode && favphotomode){
+                        mediacompress = new Media(new File(favouriteslist.get(current_image_pos).getPath()));}
+                }else
+                    SnackBarHandler.show(parentView, R.string.image_invalid);
+                break;
+
             case R.id.action_delete:
                 handler.removeCallbacks(slideShowRunnable);
                 final AlertDialog.Builder deleteDialog = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
@@ -867,7 +904,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 }else if(!allPhotoMode && favphotomode){
                     media = new Media(new File(favouriteslist.get(current_image_pos).getPath()));
                 }
-                MediaDetailsMap<String,String> mediaDetailsMap = media.getMainDetails(this);
+                final MediaDetailsMap<String,String> mediaDetailsMap = media.getMainDetails(this);
 
                 // Set current image as a blurred background
                 Bitmap blurBackground = BlurImageUtil.blur(context, BitmapFactory.decodeFile(media.getPath()));
@@ -920,11 +957,22 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                              imgLocation.setText(R.string.no_location);
                          } else{
                              imgLocation.setText(mediaDetailsMap.get("Location").toString());
+                             imgLocation.setTextColor(getResources().getColor(R.color.accent_orange, null));
                          }
                     }
                     catch (Exception e){
                         //Raised if null values is found, no need to handle
                     }
+                    imgLocation.setOnClickListener(new View.OnClickListener() {
+                        @Override public void onClick(View view) {
+                            if(mediaDetailsMap.get("Location")!=null){
+                                Uri gmmIntentUri = Uri.parse("geo:0,0?q="+ mediaDetailsMap.get("Location"));
+                                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                                mapIntent.setPackage("com.google.android.apps.maps");
+                                startActivity(mapIntent);
+                            }
+                        }
+                    });
 
                 toggleSystemUI();
                 viewSwitcher.showNext();
@@ -945,7 +993,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 editTextDescription.selectAll();
                 editTextDescription.setSingleLine(false);
                 editTextDescription.setHintTextColor(getResources().getColor(R.color.grey, null));
-            
                 descriptionDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
                 descriptionDialogBuilder.setPositiveButton((temp != null && temp.getTitle().length() != 0) ? getString(R.string.update_action) : getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                     @Override
