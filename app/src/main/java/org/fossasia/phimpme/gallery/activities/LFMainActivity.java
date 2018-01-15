@@ -1206,7 +1206,6 @@ public class LFMainActivity extends SharedMediaActivity {
                 clearSelectedPhotos();
                 mediaAdapter.notifyDataSetChanged();
             }
-
         }
         invalidateOptionsMenu();
     }
