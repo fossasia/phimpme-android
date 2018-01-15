@@ -2,12 +2,12 @@ package org.fossasia.phimpme.gallery.activities;
 
 import android.animation.Animator;
 import android.annotation.TargetApi;
-import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -26,7 +26,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.design.widget.Snackbar;
@@ -949,7 +948,7 @@ public class LFMainActivity extends SharedMediaActivity {
         drawableScrollBar.setColorFilter(new PorterDuffColorFilter(getPrimaryColor(), PorterDuff.Mode.SRC_ATOP));
 
         /**** FAB ****/
-        fabScrollUp.setBackgroundColor(getAccentColor());
+        fabScrollUp.setBackgroundTintList(ColorStateList.valueOf(getAccentColor()));
         fabScrollUp.setAlpha(0.7f);
     }
 
