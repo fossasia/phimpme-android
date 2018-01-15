@@ -1,5 +1,6 @@
 package org.fossasia.phimpme.uploadhistory;
 
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -61,7 +62,7 @@ public class UploadHistory extends ThemedActivity {
         uploadHistoryAdapter = new UploadHistoryAdapter(getPrimaryColor());
         realm = Realm.getDefaultInstance();
         uploadResults = realm.where(UploadHistoryRealmModel.class);
-        GridLayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 2);
+        GridLayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), columnsCount());
         layoutManager.setReverseLayout(false);
         uploadHistoryRecyclerView.setLayoutManager(layoutManager);
         uploadHistoryRecyclerView.setAdapter(uploadHistoryAdapter);
@@ -69,6 +70,12 @@ public class UploadHistory extends ThemedActivity {
 
         setUpUI();
         //uploadHistoryRecyclerView.addOnItemTouchListener(new RecyclerItemClickListner(this, this));
+    }
+
+    private int columnsCount() {
+        return getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT
+                ? 2
+                : 3;
     }
 
     private void setUpUI() {
