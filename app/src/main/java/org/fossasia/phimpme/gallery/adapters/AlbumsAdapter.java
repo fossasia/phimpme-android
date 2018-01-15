@@ -82,8 +82,11 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
             holder.storage.setVisibility(View.VISIBLE);
         }
 
-        if (a.isPinned())
+        if (a.isPinned()){
+            holder.pin.setImageResource(theme.getBaseTheme() == ThemeHelper.LIGHT_THEME ? R.drawable.pin : R.drawable
+                    .pin_white);
             holder.pin.setVisibility(View.VISIBLE);
+        }
         else
             holder.pin.setVisibility(View.INVISIBLE);
 
