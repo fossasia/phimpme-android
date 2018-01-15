@@ -63,6 +63,7 @@ public class CloudRailServices {
         CloudRail.setAppKey(CLOUDRAIL_LICENSE_KEY);
         this.initDropbox();
         this.initOneDrive();
+        this.initGoogleDrive();
     }
 
     private void initGoogleDrive(){
@@ -132,10 +133,11 @@ public class CloudRailServices {
        @Override
        protected Void doInBackground(Void... voids) {
            oneDrive.login();
-           if(!oneDrive.exists(FOLDER)){
+           if (!oneDrive.exists(FOLDER)) {
                oneDrive.createFolder(FOLDER);
            }
            return null;
+       }
 
        @Override
        protected void onPostExecute(Void aVoid) {
