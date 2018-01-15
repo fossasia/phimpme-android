@@ -1170,6 +1170,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                                 | View.SYSTEM_UI_FLAG_IMMERSIVE);
                 fullScreenMode = true;
                 changeBackGroundColor();
+                stopHandler(); //removing any runnable from the message queue
             }
         });
     }
