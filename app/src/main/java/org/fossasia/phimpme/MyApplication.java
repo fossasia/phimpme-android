@@ -39,6 +39,7 @@ import io.realm.RealmConfiguration;
 /**
  * Created by dnld on 28/04/16.
  */
+
 public class MyApplication extends Application {
 
     private HandlingAlbums albums = null;
