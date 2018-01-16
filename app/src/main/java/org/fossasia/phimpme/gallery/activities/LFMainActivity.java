@@ -1322,7 +1322,7 @@ public class LFMainActivity extends SharedMediaActivity {
             menu.setGroupVisible(R.id.album_options_menu, editMode);
             menu.setGroupVisible(R.id.photos_option_men, false);
             menu.findItem(R.id.all_photos).setVisible(!editMode && !hidden);
-            menu.findItem(R.id.search_action).setVisible(true);
+            menu.findItem(R.id.search_action).setVisible(!editMode);
 
             if (getAlbums().getSelectedCount() >= 1) {
                 if (getAlbums().getSelectedCount() > 1) {
@@ -1362,7 +1362,8 @@ public class LFMainActivity extends SharedMediaActivity {
         menu.findItem(R.id.action_move).setVisible((visible || editMode)&&!fav_photos);
         menu.findItem(R.id.action_add_favourites).setVisible((visible || editMode)&&(!albumsMode&&!fav_photos));
         menu.findItem(R.id.excludeAlbumButton).setVisible(editMode && !all_photos && albumsMode && !fav_photos);
-        menu.findItem(R.id.zipAlbumButton).setVisible(editMode && !all_photos&&albumsMode &&!fav_photos && !hidden);
+        menu.findItem(R.id.zipAlbumButton).setVisible(editMode && !all_photos&&albumsMode &&!fav_photos && !hidden &&
+                getAlbums().getSelectedCount() == 1);
         menu.findItem(R.id.select_all).setVisible(editMode);
         menu.findItem(R.id.delete_action).setVisible((!albumsMode || editMode) && (!all_photos || editMode) &&
                 (!fav_photos || editMode));
@@ -1377,6 +1378,7 @@ public class LFMainActivity extends SharedMediaActivity {
         menu.findItem(R.id.set_pin_album).setVisible(albumsMode && getAlbums().getSelectedCount() == 1);
         menu.findItem(R.id.setAsAlbumPreview).setVisible(!albumsMode && !all_photos && getAlbum()
                 .getSelectedCount() == 1);
+
         menu.findItem(R.id.affixPhoto).setVisible((!albumsMode && (getAlbum().getSelectedCount() > 1) ||
                 selectedMedias.size() > 1) && !fav_photos);
         return super.onPrepareOptionsMenu(menu);
