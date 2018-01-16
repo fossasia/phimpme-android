@@ -202,7 +202,7 @@ public class AboutActivity extends ThemedActivity {
         /** Sub Text Views**/
         color = getSubTextColor();
         ((TextView) findViewById(R.id.about_version_item_sub)).setTextColor(color);
-        ((TextView) findViewById(R.id.about_version_item_sub)).setText(R.string.version_title+BuildConfig.VERSION_NAME);
+        ((TextView) findViewById(R.id.about_version_item_sub)).setText(getApplicationContext().getString(R.string.version_title)+" "+BuildConfig.VERSION_NAME);
         ((TextView) findViewById(R.id.about_libs_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.about_patryk_goworowski_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.about_community_members_sub)).setTextColor(color);
