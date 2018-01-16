@@ -130,7 +130,7 @@ public class CompressImageActivity extends AppCompatActivity {
         public void onClick(DialogInterface dialog, int which) {
 
             try {
-                File a=  new Compressor(getApplicationContext())
+                  new Compressor(getApplicationContext())
                           .setQuality(percentagecompress)
                           .setCompressFormat(Bitmap.CompressFormat.JPEG)
                           .setDestinationDirectoryPath(FileUtilscompress.createFolders().getPath())

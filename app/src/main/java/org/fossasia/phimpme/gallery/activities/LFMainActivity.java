@@ -1357,7 +1357,7 @@ public class LFMainActivity extends SharedMediaActivity {
         visible = getAlbum().getSelectedCount() > 0;
         menu.findItem(R.id.action_copy).setVisible(visible);
         menu.findItem(R.id.action_move).setVisible((visible || editMode)&&!fav_photos);
-        
+
         menu.findItem(R.id.excludeAlbumButton).setVisible(editMode && !all_photos && albumsMode && !fav_photos);
         menu.findItem(R.id.zipAlbumButton).setVisible(editMode && !all_photos&&albumsMode &&!fav_photos);
         menu.findItem(R.id.select_all).setVisible(editMode);
