@@ -75,15 +75,21 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
     public void onBindViewHolder(final AlbumsAdapter.ViewHolder holder, int position) {
         Album a = SharedMediaActivity.getAlbums().dispAlbums.get(position);
         Media f = a.getCoverAlbum();
-
+      
         if(a.getPath().contains(Environment.getExternalStorageDirectory().getPath())){
             holder.storage.setVisibility(View.INVISIBLE);
-        }else{
+        } else {
             holder.storage.setVisibility(View.VISIBLE);
         }
 
-        if (a.isPinned())
+        if (a.isPinned() && (theme.getBaseTheme() == ThemeHelper.LIGHT_THEME)){
             holder.pin.setVisibility(View.VISIBLE);
+            holder.pin.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.pin_black));
+        }
+        else if( a.isPinned() && (theme.getBaseTheme() == ThemeHelper.AMOLED_THEME || theme.getBaseTheme() == ThemeHelper.DARK_THEME)) {
+            holder.pin.setVisibility(View.VISIBLE);
+            holder.pin.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.pin_white));
+        }
         else
             holder.pin.setVisibility(View.INVISIBLE);
 
