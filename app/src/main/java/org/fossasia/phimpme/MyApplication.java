@@ -2,6 +2,7 @@ package org.fossasia.phimpme;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
@@ -38,6 +39,7 @@ import io.realm.RealmConfiguration;
 /**
  * Created by dnld on 28/04/16.
  */
+
 public class MyApplication extends Application {
 
     private HandlingAlbums albums = null;
@@ -51,6 +53,9 @@ public class MyApplication extends Application {
 
     @Override
     public void onCreate() {
+
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
 
         if (LeakCanary.isInAnalyzerProcess(this)) {
             // This process is dedicated to LeakCanary for heap analysis.
