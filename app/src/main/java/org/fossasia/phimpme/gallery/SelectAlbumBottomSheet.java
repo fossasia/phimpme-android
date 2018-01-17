@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -297,6 +298,12 @@ public class SelectAlbumBottomSheet extends BottomSheetDialogFragment {
 	  holder.folderName.setText(f.getName());
 	  holder.folderName.setTag(f.getPath());
 
+		if(f.getPath().contains(Environment.getExternalStorageDirectory().getPath())){
+			holder.sdfolder.setVisibility(View.INVISIBLE);
+		} else {
+			holder.sdfolder.setVisibility(View.VISIBLE);
+		}
+
 	  /** SET UP THEME**/
 	  holder.folderName.setTextColor(theme.getTextColor());
 	  String hexAccentColor = String.format("#%06X", (0xFFFFFF & theme.getAccentColor()));
@@ -316,12 +323,14 @@ public class SelectAlbumBottomSheet extends BottomSheetDialogFragment {
 	}
 
 	class ViewHolder extends RecyclerView.ViewHolder {
-	  TextView folderName;
-	  TextView folderCount;
-	  IconicsImageView imgFolder;
-	  ViewHolder(View itemView) {
+	  private TextView folderName;
+	  private TextView folderCount;
+		private ImageView sdfolder;
+	  private IconicsImageView imgFolder;
+	  private ViewHolder(View itemView) {
 		super(itemView);
 		folderName = (TextView) itemView.findViewById(R.id.name_folder);
+		sdfolder = (ImageView) itemView.findViewById(R.id.sd_card_folder);
 		folderCount = (TextView) itemView.findViewById(R.id.count_folder);
 		imgFolder = (IconicsImageView) itemView.findViewById(R.id.folder_icon_bottom_sheet_item);
 	  }
