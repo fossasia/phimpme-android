@@ -115,6 +115,9 @@ extern "C" {
             case 7:
                 adjustSharpness(src, dst, val);
                 break;
+            case 8:
+                adjustBlur(src, dst, val);
+                break;
             default:
                 break;
         }

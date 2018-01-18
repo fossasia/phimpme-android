@@ -169,4 +169,11 @@ extern "C" {
         medianBlur( src, dst, i);
         addWeighted(src, 1.5, dst, -0.5, 0, dst);
     }
+
+    void adjustBlur(Mat &src, Mat &dst, int val) {
+        cvtColor(src,src,CV_BGRA2BGR);
+        int i = 2*(val/5)+1;
+        dst = Mat::zeros(src.size(), src.type());
+        medianBlur( src, dst, i);
+    }
 }
