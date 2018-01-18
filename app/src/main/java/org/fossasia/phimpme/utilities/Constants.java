@@ -26,6 +26,9 @@ public class Constants {
     public final static String BOX_CLIENT_ID = "tkriyn4662erwjil5e55yq6tcs9hgxjs";
     public final static String BOX_CLIENT_SECRET = "TQuwEKGLbK1YRLT4vmVrtu3RVzNSDZwF";
 
+    public final static String ONE_DRIVE_APP_ID="";/*Add your One Drive App Key*/
+    public final static String ONE_DRIVE_SECRET="";/*Add your OneDrive Secret Key*/
+
     public final static String GOOGLEDRIVE_APP_KEY="";/*Add your google drive api key */
     public final static String GOOGLEDRIVE_SECRET_KEY="";//Always has to be null
 

@@ -390,6 +390,7 @@
     <color name="flickr_color">#FC329B</color>
     <color name="imgur_color">#000000</color>
     <color name="dropbox_color">#007ee5</color>
+    <color name="onedrive_color">#124EAC</color>
     <color name="owncloud_color">#1D2D44</color>s
     <color name="googleplus_color">#d34836</color>
     <color name="box_color">#0080C5</color>
@@ -409,6 +410,7 @@
     <color name="flickr_color_darktheme">#ff5ac3</color>
     <color name="imgur_color_darktheme">#fcfcfcfc</color>
     <color name="dropbox_color_darktheme">#778bca</color>
+    <color name="onedrive_color_darktheme">#1668e9</color>
     <color name="owncloud_color_darktheme">#a1b8d9</color>
     <color name="googleplus_color_darktheme">#45556c</color>
     <color name="box_color_darktheme">#e60080c5</color>
