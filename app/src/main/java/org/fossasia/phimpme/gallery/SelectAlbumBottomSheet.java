@@ -14,6 +14,7 @@ import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -213,7 +214,7 @@ public class SelectAlbumBottomSheet extends BottomSheetDialogFragment {
   private void displayContentFolder(File dir) {
 	canGoBack = false;
 	if(dir.canRead()) {
-	  folders = new ArrayList<File>();
+	  folders = new ArrayList<>();
 	  File parent = dir.getParentFile();
 	  if (parent.canRead()) {
 		canGoBack = true;
@@ -221,7 +222,7 @@ public class SelectAlbumBottomSheet extends BottomSheetDialogFragment {
 	  }
 	  File[] files = dir.listFiles(new FoldersFileFilter());
 	  if (files != null && files.length > 0) {
-		folders.addAll(new ArrayList<File>(Arrays.asList(files)));
+		folders.addAll(new ArrayList<>(Arrays.asList(files)));
 		currentFolderPath.setText(dir.getAbsolutePath());
 	  }
 	  currentFolderPath.setText(dir.getAbsolutePath());
@@ -298,6 +299,7 @@ public class SelectAlbumBottomSheet extends BottomSheetDialogFragment {
 	  holder.folderName.setTag(f.getPath());
 
 	  /** SET UP THEME**/
+	  holder.cardViewParent.setCardBackgroundColor(theme.getCardBackgroundColor());
 	  holder.folderName.setTextColor(theme.getTextColor());
 	  String hexAccentColor = String.format("#%06X", (0xFFFFFF & theme.getAccentColor()));
 	  holder.folderCount.setText(Html.fromHtml("<b><font color='" + hexAccentColor + "'>" + count + "</font></b>" + "<font " + "color='" + theme.getSubTextColor() + "'> Media</font>"));
@@ -316,14 +318,16 @@ public class SelectAlbumBottomSheet extends BottomSheetDialogFragment {
 	}
 
 	class ViewHolder extends RecyclerView.ViewHolder {
-	  TextView folderName;
-	  TextView folderCount;
-	  IconicsImageView imgFolder;
+	  private TextView folderName;
+	  private TextView folderCount;
+	  private IconicsImageView imgFolder;
+	  private CardView cardViewParent;
 	  ViewHolder(View itemView) {
 		super(itemView);
 		folderName = (TextView) itemView.findViewById(R.id.name_folder);
 		folderCount = (TextView) itemView.findViewById(R.id.count_folder);
 		imgFolder = (IconicsImageView) itemView.findViewById(R.id.folder_icon_bottom_sheet_item);
+		cardViewParent = (CardView) itemView.findViewById(R.id.card_view);
 	  }
 	}
   }
