@@ -1,256 +1,329 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/vn.mbm.phimp.me"
+    xmlns:app2="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" xmlns:src2="http://schemas.android.com/apk/res-auto"
-    xmlns:app2="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
     android:orientation="vertical">
-  <android.support.v7.widget.CardView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      app:cardCornerRadius="2dp"
-      android:id="@+id/album_details_card">
-    <LinearLayout android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:orientation="vertical">
-      <TextView
-          android:id="@+id/album_details_title"
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          android:text="@string/details"
-          android:padding="24dp"
-          android:textColor="@color/md_dark_primary_text"
-          android:background="@color/md_red_500"
-          android:textSize="18sp"
-          android:textStyle="bold"
-      />
-      <ScrollView
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/album_details_card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="2dp">
+
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-          <LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:id="@+id/trcia"
-              android:orientation="horizontal"
-              android:layout_marginLeft="30dp"
-              android:layout_marginBottom="10dp"
-              android:layout_marginTop="10dp">
-            <ImageView android:layout_width="55dp"
-                       android:layout_height="55dp"
-                       android:background="@color/white"
-                       src2:srcCompat="@mipmap/ic_folder_icon"/>
-            <TextView android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:id="@+id/album_details_name"
-                      android:textSize="17dp"
-                      android:textColor="@color/icongrey"
-                      android:layout_marginTop="20dp"
-                      android:layout_marginLeft="10dp"/>
-          </LinearLayout>
-          <View android:layout_width="wrap_content"
-                android:background="@color/md_grey_300"
-                android:layout_height="1dp"/>
-          <View android:layout_width="wrap_content"
-                android:layout_height="10dp"/>
-          <LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="horizontal"
-              android:layout_marginBottom="10dp"
-              android:layout_marginLeft="30dp" >
-            <TextView android:layout_width="wrap_content"
-                      android:textAlignment="center"
-                      android:layout_height="wrap_content"
-                      android:textSize="17dp"
-                      android:textColor="@color/icongrey"
-                      android:textStyle="bold"
-                      android:text="@string/type_content"/>
-            <TextView android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:id="@+id/album_details_type"
-                      android:textColor="@color/icongrey"
-                      android:textSize="17dp"
-                      android:layout_marginLeft="72dp"/>
-          </LinearLayout>
-          <LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="horizontal"
-              android:layout_marginBottom="10dp"
-              android:layout_marginLeft="30dp">
-            <TextView android:layout_width="wrap_content"
-                      android:textAlignment="center"
-                      android:layout_height="wrap_content"
-                      android:textSize="17dp"
-                      android:textStyle="bold"
-                      android:textColor="@color/icongrey"
-                      android:text="@string/folder_path"/>
-            <TextView android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:id="@+id/album_details_path"
-                      android:textSize="17dp"
-                      android:layout_marginLeft="75dp"
-                      android:textColor="@color/icongrey"/>
-          </LinearLayout>
-          <LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="horizontal"
-              android:layout_marginBottom="10dp"
-              android:layout_marginLeft="30dp">
-            <TextView android:layout_width="wrap_content"
-                      android:textAlignment="center"
-                      android:layout_height="wrap_content"
-                      android:textSize="17dp"
-                      android:textColor="@color/icongrey"
-                      android:textStyle="bold"
-                      android:text="@string/parent_path"/>
-            <TextView android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:id="@+id/album_details_parent"
-                      android:textSize="17dp"
-                      android:textColor="@color/icongrey"
-                      android:layout_marginLeft="60dp"/>
-          </LinearLayout>
-          <LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="horizontal"
-              android:layout_marginBottom="10dp"
-              android:layout_marginLeft="30dp">
-            <TextView android:layout_width="wrap_content"
-                      android:textAlignment="center"
-                      android:layout_height="wrap_content"
-                      android:textSize="17dp"
-                      android:textStyle="bold"
-                      android:textColor="@color/icongrey"
-                      android:text="@string/total_photos"/>
-            <TextView android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:id="@+id/album_details_total"
-                      android:textSize="17dp"
-                      android:textColor="@color/icongrey"
-                      android:layout_marginLeft="14dp"/>
-          </LinearLayout>
-          <LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="horizontal"
-              android:layout_marginBottom="10dp"
-              android:layout_marginLeft="30dp">
-            <TextView android:layout_width="wrap_content"
-                      android:textAlignment="center"
-                      android:layout_height="wrap_content"
-                      android:textSize="17dp"
-                      android:textStyle="bold"
-                      android:textColor="@color/icongrey"
-                      android:text="@string/size_folder"/>
-            <TextView android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:id="@+id/album_details_size"
-                      android:textSize="17dp"
-                      android:textColor="@color/icongrey"
-                      android:layout_marginLeft="77dp"/>
-          </LinearLayout>
-          <View android:layout_width="match_parent"
-                android:background="@color/md_grey_300"
-                android:layout_height="1dp"/>
-          <LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="horizontal"
-              android:layout_marginBottom="17dp"
-              android:layout_marginTop="17dp"
-              android:layout_marginLeft="30dp">
-            <TextView android:layout_width="wrap_content"
-                      android:textAlignment="center"
-                      android:layout_height="wrap_content"
-                      android:textSize="17dp"
-                      android:textStyle="bold"
-                      android:textColor="@color/icongrey"
-                      android:text="@string/modified"/>
-            <TextView android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:id="@+id/album_details_last_modified"
-                      android:textSize="17dp"
-                      android:maxLines="2"
-                      android:textColor="@color/icongrey"
-                      android:layout_marginLeft="5dp"/>
-          </LinearLayout>
-          <View android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/md_grey_300"/>
-          <LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="horizontal"
-              android:layout_marginTop="10dp"
-              android:layout_marginBottom="10dp"
-              android:layout_marginLeft="30dp">
-            <TextView android:layout_width="wrap_content"
-                      android:textAlignment="center"
-                      android:layout_height="wrap_content"
-                      android:textSize="17dp"
-                      android:textStyle="bold"
-                      android:textColor="@color/icongrey"
-                      android:text="@string/readable"/>
-            <TextView android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:id="@+id/album_details_readable"
-                      android:textSize="17dp"
-                      android:textColor="@color/icongrey"
-                      android:layout_marginLeft="38dp"/>
-          </LinearLayout>
-          <LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="horizontal"
-              android:layout_marginBottom="10dp"
-              android:layout_marginLeft="30dp">
-            <TextView android:layout_width="wrap_content"
-                      android:textAlignment="center"
-                      android:layout_height="wrap_content"
-                      android:textSize="17dp"
-                      android:textColor="@color/icongrey"
-                      android:textStyle="bold"
-                      android:text="@string/writable"/>
-            <TextView android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:id="@+id/album_details_writable"
-                      android:textSize="17dp"
-                      android:textColor="@color/icongrey"
-                      android:layout_marginLeft="45dp"/>
-          </LinearLayout>
-          <LinearLayout
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="horizontal"
-              android:layout_marginBottom="10dp"
-              android:layout_marginLeft="30dp">
-            <TextView android:layout_width="wrap_content"
-                      android:textAlignment="center"
-                      android:layout_height="wrap_content"
-                      android:textSize="17dp"
-                      android:textStyle="bold"
-                      android:textColor="@color/icongrey"
-                      android:text="@string/hidden"/>
-            <TextView android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:id="@+id/album_details_hidden"
-                      android:textSize="17dp"
-                      android:textColor="@color/icongrey"
-                      android:layout_marginLeft="56dp"/>
-          </LinearLayout>
-          <View android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/md_grey_300"/>
+
+            <TextView
+                android:id="@+id/album_details_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/md_red_500"
+                android:padding="24dp"
+                android:text="@string/details"
+                android:textColor="@color/md_dark_primary_text"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:id="@+id/trcia"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/icon_folder"
+                            android:layout_width="55dp"
+                            android:layout_height="55dp"
+                            app2:srcCompat="@drawable/ic_folder_white_24dp" />
+
+                        <TextView
+                            android:id="@+id/album_details_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginTop="20dp"
+                            android:textColor="@color/icongrey"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="1dp"
+                        android:background="@color/md_grey_300" />
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="10dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginStart="30dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/label_type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/type_content"
+                            android:textAlignment="center"
+                            android:textColor="@color/icongrey"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/album_details_type"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="72dp"
+                            android:textColor="@color/icongrey"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginStart="30dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/label_path"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/folder_path"
+                            android:textAlignment="center"
+                            android:textColor="@color/icongrey"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/album_details_path"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="75dp"
+                            android:textColor="@color/icongrey"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginStart="30dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/label_parent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/parent_path"
+                            android:textAlignment="center"
+                            android:textColor="@color/icongrey"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/album_details_parent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="60dp"
+                            android:textColor="@color/icongrey"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginStart="30dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/label_total_photos"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/total_photos"
+                            android:textAlignment="center"
+                            android:textColor="@color/icongrey"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/album_details_total"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="14dp"
+                            android:textColor="@color/icongrey"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginStart="30dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/label_size"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/size_folder"
+                            android:textAlignment="center"
+                            android:textColor="@color/icongrey"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/album_details_size"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="77dp"
+                            android:textColor="@color/icongrey"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/md_grey_300" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="17dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="17dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/label_last_modified"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/modified"
+                            android:textAlignment="center"
+                            android:textColor="@color/icongrey"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/album_details_last_modified"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="5dp"
+                            android:maxLines="2"
+                            android:textColor="@color/icongrey"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/md_grey_300" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/label_readable"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/readable"
+                            android:textAlignment="center"
+                            android:textColor="@color/icongrey"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/album_details_readable"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="38dp"
+                            android:textColor="@color/icongrey"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginStart="30dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/label_writable"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/writable"
+                            android:textAlignment="center"
+                            android:textColor="@color/icongrey"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/album_details_writable"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="45dp"
+                            android:textColor="@color/icongrey"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginStart="30dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/label_hidden"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/hidden"
+                            android:textAlignment="center"
+                            android:textColor="@color/icongrey"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/album_details_hidden"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="55dp"
+                            android:textColor="@color/icongrey"
+                            android:textSize="17sp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/md_grey_300" />
+                </LinearLayout>
+            </ScrollView>
         </LinearLayout>
-      </ScrollView>
-    </LinearLayout>
-  </android.support.v7.widget.CardView>
+    </android.support.v7.widget.CardView>
 </LinearLayout>
