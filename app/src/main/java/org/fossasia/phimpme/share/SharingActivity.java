@@ -51,10 +51,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.dropbox.client2.DropboxAPI;
-import com.dropbox.client2.android.AndroidAuthSession;
-import com.dropbox.client2.exception.DropboxException;
-import com.dropbox.client2.session.AppKeyPair;
 import com.facebook.messenger.MessengerUtils;
 import com.facebook.messenger.ShareToMessengerParams;
 import com.facebook.share.model.SharePhoto;
@@ -124,7 +120,14 @@ import io.realm.RealmResults;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FLICKR;
+<<<<<<< HEAD
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.GOOGLEDRIVE;
+=======
+
+import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.ONEDRIVE;
+import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.GOOGLEDRIVE;
+
+>>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.OTHERS;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTER;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
@@ -360,6 +363,10 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
                     case TUMBLR:
                         shareToTumblr();
+                        break;
+
+                    case ONEDRIVE:
+                        shareToOneDrive();
                         break;
 
                     case OTHERS:
@@ -639,6 +646,25 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         }
     }
 
+<<<<<<< HEAD
+=======
+
+    private void shareToOneDrive(){
+        cloudRailServices = CloudRailServices.getInstance();
+        cloudRailServices.prepare(this);
+        RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
+        query.equalTo("name",ONEDRIVE.toString());
+        RealmResults<AccountDatabase> results = query.findAll();
+        try{
+            cloudRailServices.oneDriveLoadAsString(results.first().getToken());
+            new UploadToOneDrive().execute();
+        }
+        catch (Exception e){
+            SnackBarHandler.show(parent,R.string.login_onedrive_from_accounts);
+        }
+    }
+
+>>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
     private void shareToGoogleDrive(){
         cloudRailServices = CloudRailServices.getInstance();
         cloudRailServices.prepare(this);
@@ -679,12 +705,21 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 e.printStackTrace();
                 success = false;
             }
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
+<<<<<<< HEAD
+=======
+            super.onPostExecute(aVoid);
+      
+>>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
             if (success) {
                 NotificationHandler.actionPassed(R.string.upload_complete);
                 SnackBarHandler.show(parent, R.string.uploaded_googledrive);
@@ -696,6 +731,53 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             }
         }
     }
+<<<<<<< HEAD
+=======
+    
+    private class UploadToOneDrive extends AsyncTask<Void,Void,Void>{
+        Boolean success;
+
+        @Override
+        protected void onPreExecute() {
+            NotificationHandler.make(R.string.onedrive_share,R.string.uploading,R.drawable.ic_onedrive_black);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            File file = new File(saveFilePath);
+            FileInputStream fileInputStream = null;
+            try{
+                fileInputStream = new FileInputStream(file);
+                if(cloudRailServices.checkOneDriveFolderExist()){
+                    cloudRailServices.getOneDrive().upload(cloudRailServices.getOneDriveFolderPath()+"/"+file.getName(),fileInputStream
+                    ,file.length(),true);
+                    success = true;
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                success = false;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if(success) {
+                NotificationHandler.actionPassed(R.string.upload_complete);
+                SnackBarHandler.show(parent, R.string.uploaded_onedrive);
+                sendResult(Constants.SUCCESS);
+            }
+            else{
+                NotificationHandler.actionFailed();
+                SnackBarHandler.show(parent,R.string.upload_failed);
+                sendResult(FAIL);
+            }
+
+        }
+    }
+
+>>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
 
     @Override
     public void onBackPressed() {

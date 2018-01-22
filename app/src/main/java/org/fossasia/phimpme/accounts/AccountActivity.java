@@ -82,6 +82,7 @@ import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FACEBO
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.GOOGLEDRIVE;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.IMGUR;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.NEXTCLOUD;
+import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.ONEDRIVE;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.OWNCLOUD;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.PINTEREST;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TUMBLR;
@@ -290,8 +291,13 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     sessionBox = new BoxSession(AccountActivity.this);
                     sessionBox.authenticate();
                     break;
+
                 case TUMBLR:
                     signInTumblr();
+                    break;
+
+                case ONEDRIVE:
+                    signInOneDrive();
                     break;
 
                 default:
@@ -438,6 +444,26 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             };
             CloudRailServices.setCallBack(basicCallBack);
     }
+<<<<<<< HEAD
+=======
+
+    private void signInOneDrive(){
+        if(accountPresenter.checkAlreadyExist(ONEDRIVE))
+            SnackBarHandler.show(coordinatorLayout,"Already Signed In");
+        else
+            cloudRailServices.prepare(this);
+            cloudRailServices.oneDriveLogin();
+            BasicCallBack  basicCallBack = new BasicCallBack() {
+                @Override
+                public void callBack(int status, Object data) {
+                    if(status==3){
+                        oneDriveAuthentication(data.toString());
+                    }
+                }
+            };
+            CloudRailServices.setCallBack(basicCallBack);
+    }
+>>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
 
     private void signInImgur() {
         BasicCallBack basicCallBack = new BasicCallBack() {
@@ -629,6 +655,27 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         accountPresenter.loadFromDatabase();
     }
 
+<<<<<<< HEAD
+=======
+
+    private void oneDriveAuthentication(String tokens){
+        try {
+            String result = cloudRailServices.oneDrive.saveAsString();
+            Log.d("AccountsActivity", "oneDriveAuthentication: "+tokens+" "+result );
+            String accessToken = cloudRailServices.getOneDriveToken();
+            realm.beginTransaction();
+            account = realm.createObject(AccountDatabase.class,ONEDRIVE.toString());
+            account.setUsername(ONEDRIVE.toString());
+            account.setToken(String.valueOf(accessToken));
+            realm.commitTransaction();
+        }
+        catch (Exception e){
+            //No need of handling it
+        }
+        accountPresenter.loadFromDatabase();
+    }
+          
+>>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
     private void googleDriveAuthentication(String tokens) {
         try{
             String token = cloudRailServices.googleDrive.saveAsString();

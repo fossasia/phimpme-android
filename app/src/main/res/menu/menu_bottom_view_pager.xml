@@ -18,7 +18,7 @@
         android:orderInCategory="3"
         app:showAsAction="always"
         android:icon="@drawable/ic_info_white"
-        android:title="Move"/>
+        android:title="@string/details"/>
 
     <item
         android:id="@+id/action_share"
