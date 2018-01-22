@@ -1170,6 +1170,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                                 | View.SYSTEM_UI_FLAG_IMMERSIVE);
                 fullScreenMode = true;
                 changeBackGroundColor();
+                stopHandler(); //removing any runnable from the message queue
             }
         });
     }
@@ -1295,6 +1296,8 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         });
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         dialog.show();
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE}, getAccentColor(), dialog);
+
     }
     @Override
     protected void onDestroy() {

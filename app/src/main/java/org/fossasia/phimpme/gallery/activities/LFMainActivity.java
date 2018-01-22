@@ -2,12 +2,12 @@ package org.fossasia.phimpme.gallery.activities;
 
 import android.animation.Animator;
 import android.annotation.TargetApi;
-import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -26,7 +26,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.design.widget.Snackbar;
@@ -949,7 +948,7 @@ public class LFMainActivity extends SharedMediaActivity {
         drawableScrollBar.setColorFilter(new PorterDuffColorFilter(getPrimaryColor(), PorterDuff.Mode.SRC_ATOP));
 
         /**** FAB ****/
-        fabScrollUp.setBackgroundColor(getAccentColor());
+        fabScrollUp.setBackgroundTintList(ColorStateList.valueOf(getAccentColor()));
         fabScrollUp.setAlpha(0.7f);
     }
 
@@ -1334,8 +1333,8 @@ public class LFMainActivity extends SharedMediaActivity {
             editMode = getAlbums().getSelectedCount() != 0;
             menu.setGroupVisible(R.id.album_options_menu, editMode);
             menu.setGroupVisible(R.id.photos_option_men, false);
-            menu.findItem(R.id.all_photos).setVisible(!editMode);
-            menu.findItem(R.id.search_action).setVisible(true);
+            menu.findItem(R.id.all_photos).setVisible(!editMode && !hidden);
+            menu.findItem(R.id.search_action).setVisible(!editMode);
 
             if (getAlbums().getSelectedCount() >= 1) {
                 if (getAlbums().getSelectedCount() > 1) {
@@ -1345,7 +1344,6 @@ public class LFMainActivity extends SharedMediaActivity {
                     menu.findItem(R.id.search_action).setVisible(false);
                 }
             }
-
         } else {
             menu.findItem(R.id.search_action).setVisible(false);
             if (!all_photos && !fav_photos) {
@@ -1376,7 +1374,8 @@ public class LFMainActivity extends SharedMediaActivity {
         menu.findItem(R.id.action_move).setVisible((visible || editMode)&&!fav_photos);
         menu.findItem(R.id.action_add_favourites).setVisible((visible || editMode)&&(!albumsMode&&!fav_photos));
         menu.findItem(R.id.excludeAlbumButton).setVisible(editMode && !all_photos && albumsMode && !fav_photos);
-        menu.findItem(R.id.zipAlbumButton).setVisible(editMode && !all_photos&&albumsMode &&!fav_photos);
+        menu.findItem(R.id.zipAlbumButton).setVisible(editMode && !all_photos&&albumsMode &&!fav_photos && !hidden &&
+                getAlbums().getSelectedCount() == 1);
         menu.findItem(R.id.select_all).setVisible(editMode);
         menu.findItem(R.id.delete_action).setVisible((!albumsMode || editMode) && (!all_photos || editMode) &&
                 (!fav_photos || editMode));
@@ -1391,6 +1390,7 @@ public class LFMainActivity extends SharedMediaActivity {
         menu.findItem(R.id.set_pin_album).setVisible(albumsMode && getAlbums().getSelectedCount() == 1);
         menu.findItem(R.id.setAsAlbumPreview).setVisible(!albumsMode && !all_photos && getAlbum()
                 .getSelectedCount() == 1);
+
         menu.findItem(R.id.affixPhoto).setVisible((!albumsMode && (getAlbum().getSelectedCount() > 1) ||
                 selectedMedias.size() > 1) && !fav_photos);
         return super.onPrepareOptionsMenu(menu);

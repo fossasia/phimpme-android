@@ -23,8 +23,12 @@ public class Constants {
     public final static String DROPBOX_APP_KEY ="";/*Add Dropbox Key */
     public final static String DROPBOX_APP_SECRET =""; /*Add Dropbox Secret Key */
 
+    public final static String ONE_DRIVE_APP_ID="";/*Add your One Drive App Key*/
+    public final static String ONE_DRIVE_SECRET="";/*Add your OneDrive Secret Key*/
+
     public final static String GOOGLEDRIVE_APP_KEY="";/*Add your google drive api key */
     public final static String GOOGLEDRIVE_SECRET_KEY="";//Always has to be null
+
     public final static String BOX_CLIENT_ID = "CLIENT_ID";
     public final static String BOX_CLIENT_SECRET = "CLIENT_SECRET";
 
