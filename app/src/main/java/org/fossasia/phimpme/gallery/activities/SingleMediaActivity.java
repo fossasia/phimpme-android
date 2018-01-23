@@ -1384,7 +1384,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             });
             mViewPager.scrollToPosition(all_photo_pos);
         }
-        Display aa = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
         mViewPager.setAdapter(adapter);
     }
 }
