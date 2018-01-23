@@ -64,6 +64,7 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -1618,6 +1619,11 @@ public class LFMainActivity extends SharedMediaActivity {
                                 albumsAdapter.notifyDataSetChanged();
                             } else {
                                 if (!all_photos && !fav_photos) {
+                                    if(succ)
+                                        Toast.makeText(getApplicationContext(),getString(R.string.photo_deleted_msg),Toast.LENGTH_SHORT).show();
+                                    else
+                                        Toast.makeText(getApplicationContext(),getString(R.string.photo_deletion_failed),Toast.LENGTH_SHORT).show();
+
                                     //if all media in current album have been deleted, delete current album too.
                                     if (getAlbum().getMedia().size() == 0) {
                                         getAlbums().removeCurrentAlbum();
@@ -1627,6 +1633,11 @@ public class LFMainActivity extends SharedMediaActivity {
                                     } else
                                         mediaAdapter.swapDataSet(getAlbum().getMedia());
                                 } else if(all_photos && !fav_photos){
+                                    if(succ)
+                                        Toast.makeText(getApplicationContext(),getString(R.string.photo_deleted_msg),Toast.LENGTH_SHORT).show();
+                                    else
+                                        Toast.makeText(getApplicationContext(),getString(R.string.photo_deletion_failed),Toast.LENGTH_SHORT).show();
+
                                     clearSelectedPhotos();
                                     listAll = StorageProvider.getAllShownImages(LFMainActivity.this);
                                     media = listAll;
@@ -1639,6 +1650,11 @@ public class LFMainActivity extends SharedMediaActivity {
                                     clearSelectedPhotos();
                                     getfavouriteslist();
                                     new FavouritePhotos().execute();
+
+                                    if(succ)
+                                        Toast.makeText(getApplicationContext(),getString(R.string.photo_deleted_from_fav_msg),Toast.LENGTH_SHORT).show();
+                                    else
+                                        Toast.makeText(getApplicationContext(),getString(R.string.photo_deletion_failed),Toast.LENGTH_SHORT).show();
                                 }
                             }
                         } else requestSdCardPermissions();

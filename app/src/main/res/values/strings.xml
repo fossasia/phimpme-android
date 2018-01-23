@@ -1142,4 +1142,9 @@
     <string name="copyright_2011_2012_chris_banes">Copyright 2011, 2012 Chris Banes</string>
     <string name="copyright_2014_2015_henning_dodenhof">Copyright 2014 - 2015 Henning Dodenhof</string>
     <string name="copyright_2016_mykhailo_schurov">Copyright 2016 Mykhailo Shchurov</string>
+
+    <!-- Photo deletion toast messages -->
+    <string name="photo_deleted_msg">Photo deleted</string>
+    <string name="photo_deleted_from_fav_msg">Photo deleted from favourites</string>
+    <string name="photo_deletion_failed">Photo deletion failed</string>
 </resources>
