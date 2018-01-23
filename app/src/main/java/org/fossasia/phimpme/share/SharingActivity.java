@@ -120,14 +120,10 @@ import io.realm.RealmResults;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FLICKR;
-<<<<<<< HEAD
-import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.GOOGLEDRIVE;
-=======
 
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.ONEDRIVE;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.GOOGLEDRIVE;
 
->>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.OTHERS;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTER;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
@@ -384,7 +380,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                     case MESSENGER:
                         shareToMessenger();
                         break;
-                    
+
                     case SNAPCHAT:
                         shareToSnapchat();
                         break;
@@ -619,10 +615,10 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             FileInputStream inputStream = null;
             try {
                 inputStream = new FileInputStream(file);
-                    if(cloudRailServices.checkFolderExist()) {
-                        cloudRailServices.upload(cloudRailServices.getDropboxFolderPath()+"/"+file.getName(), inputStream, file.length(), true);
-                        success = true;
-                    }
+                if(cloudRailServices.checkFolderExist()) {
+                    cloudRailServices.upload(cloudRailServices.getDropboxFolderPath()+"/"+file.getName(), inputStream, file.length(), true);
+                    success = true;
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -646,8 +642,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         }
     }
 
-<<<<<<< HEAD
-=======
 
     private void shareToOneDrive(){
         cloudRailServices = CloudRailServices.getInstance();
@@ -664,7 +658,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         }
     }
 
->>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
     private void shareToGoogleDrive(){
         cloudRailServices = CloudRailServices.getInstance();
         cloudRailServices.prepare(this);
@@ -705,21 +698,14 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 e.printStackTrace();
                 success = false;
             }
-<<<<<<< HEAD
 
-=======
-            
->>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
-<<<<<<< HEAD
-=======
             super.onPostExecute(aVoid);
-      
->>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
+
             if (success) {
                 NotificationHandler.actionPassed(R.string.upload_complete);
                 SnackBarHandler.show(parent, R.string.uploaded_googledrive);
@@ -731,9 +717,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             }
         }
     }
-<<<<<<< HEAD
-=======
-    
+
     private class UploadToOneDrive extends AsyncTask<Void,Void,Void>{
         Boolean success;
 
@@ -750,7 +734,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 fileInputStream = new FileInputStream(file);
                 if(cloudRailServices.checkOneDriveFolderExist()){
                     cloudRailServices.getOneDrive().upload(cloudRailServices.getOneDriveFolderPath()+"/"+file.getName(),fileInputStream
-                    ,file.length(),true);
+                            ,file.length(),true);
                     success = true;
                 }
             } catch (FileNotFoundException e) {
@@ -777,7 +761,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         }
     }
 
->>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
 
     @Override
     public void onBackPressed() {
@@ -1273,11 +1256,11 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             }
         }
         if (requestCode == REQ_CODE_SPEECH_INPUT && data!=null){
-                ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                String voiceInput = result.get(0);
-                text_caption.setText(voiceInput);
-                caption = voiceInput;
-                return;
+            ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            String voiceInput = result.get(0);
+            text_caption.setText(voiceInput);
+            caption = voiceInput;
+            return;
         }
         if (requestCode == SHARE_WHATSAPP) {
             if(responseCode == RESULT_OK) {

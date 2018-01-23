@@ -1320,11 +1320,9 @@ public class LFMainActivity extends SharedMediaActivity {
             menu.setGroupVisible(R.id.album_options_menu, editMode);
             menu.setGroupVisible(R.id.photos_option_men, false);
             menu.findItem(R.id.all_photos).setVisible(!editMode && !hidden);
-<<<<<<< HEAD
-            menu.findItem(R.id.search_action).setVisible(true);
-=======
+
             menu.findItem(R.id.search_action).setVisible(!editMode);
->>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
+
 
             if (getAlbums().getSelectedCount() >= 1) {
                 if (getAlbums().getSelectedCount() > 1) {
@@ -1334,10 +1332,7 @@ public class LFMainActivity extends SharedMediaActivity {
                     menu.findItem(R.id.search_action).setVisible(false);
                 }
             }
-<<<<<<< HEAD
 
-=======
->>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
         } else {
             menu.findItem(R.id.search_action).setVisible(false);
             if (!all_photos && !fav_photos) {
@@ -1366,11 +1361,9 @@ public class LFMainActivity extends SharedMediaActivity {
         visible = getAlbum().getSelectedCount() > 0;
         menu.findItem(R.id.action_copy).setVisible(visible);
         menu.findItem(R.id.action_move).setVisible((visible || editMode)&&!fav_photos);
-<<<<<<< HEAD
 
-=======
         menu.findItem(R.id.action_add_favourites).setVisible((visible || editMode)&&(!albumsMode&&!fav_photos));
->>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
+
         menu.findItem(R.id.excludeAlbumButton).setVisible(editMode && !all_photos && albumsMode && !fav_photos);
         menu.findItem(R.id.zipAlbumButton).setVisible(editMode && !all_photos&&albumsMode &&!fav_photos && !hidden &&
                 getAlbums().getSelectedCount() == 1);
@@ -1379,10 +1372,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 (!fav_photos || editMode));
         menu.findItem(R.id.hideAlbumButton).setVisible(!all_photos && !fav_photos && getAlbums().getSelectedCount() >
                 0);
-<<<<<<< HEAD
-=======
 
->>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
         menu.findItem(R.id.clear_album_preview).setVisible(!albumsMode && getAlbum().hasCustomCover() && !fav_photos && !all_photos);
         menu.findItem(R.id.renameAlbum).setVisible(((albumsMode && getAlbums().getSelectedCount() == 1) ||
                 (!albumsMode && !editMode)) && (!all_photos && !fav_photos));

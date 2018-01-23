@@ -8,11 +8,8 @@ import com.cloudrail.si.CloudRail;
 import com.cloudrail.si.exceptions.ParseException;
 import com.cloudrail.si.interfaces.CloudStorage;
 import com.cloudrail.si.services.Dropbox;
-<<<<<<< HEAD
-=======
 import com.cloudrail.si.services.OneDrive;
 
->>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
 import com.cloudrail.si.services.GoogleDrive;
 
 import org.fossasia.phimpme.utilities.BasicCallBack;
@@ -49,11 +46,6 @@ public class CloudRailServices {
     public static void setCallBack(BasicCallBack basicCallBack){
         CloudRailServices.basicCallBack=basicCallBack;
     }
-<<<<<<< HEAD
-
-    private void initDropbox(){
-=======
->>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
 
 
     private void initDropbox(){
@@ -62,23 +54,6 @@ public class CloudRailServices {
         dropbox.set(db);
     }
 
-<<<<<<< HEAD
-    private void initGoogleDrive(){
-
-        googleDrive = new GoogleDrive(context,Constants.GOOGLEDRIVE_APP_KEY,Constants.GOOGLEDRIVE_SECRET_KEY
-        ,"org.fossasia.phimpme:/oauth2redirect","login-googledrive");
-    }
-
-    public void prepare(Activity context)
-    {
-
-        this.context= context;
-        CloudRail.setAppKey(CLOUDRAIL_LICENSE_KEY);
-        this.initDropbox();
-        this.initGoogleDrive();
-    }
-
-=======
     private void initOneDrive(){
         oneDrive = new OneDrive(context,Constants.ONE_DRIVE_APP_ID,Constants.ONE_DRIVE_SECRET);
     }
@@ -92,24 +67,20 @@ public class CloudRailServices {
     }
 
     private void initGoogleDrive(){
-      
+
         googleDrive = new GoogleDrive(context,Constants.GOOGLEDRIVE_APP_KEY,Constants.GOOGLEDRIVE_SECRET_KEY
-        ,"org.fossasia.phimpme:/oauth2redirect","login-googledrive");
+                ,"org.fossasia.phimpme:/oauth2redirect","login-googledrive");
     }
 
->>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
     public String getToken() {
         return dropbox.get().saveAsString();
     }
 
-<<<<<<< HEAD
-=======
     public String getOneDriveToken(){
 
         return oneDrive.saveAsString();
     }
 
->>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
     public String getGoogleDriveToken(){
         return googleDrive.saveAsString();
     }
@@ -121,172 +92,140 @@ public class CloudRailServices {
 
     }
 
-<<<<<<< HEAD
-=======
     public void oneDriveLogin(){
         OneDriveLoginTask  driveLoginTask = new OneDriveLoginTask();
         driveLoginTask.execute();
     }
 
->>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
     public void googleDriveLogin(){
-            DriveLogin driveLogin = new DriveLogin();
-            driveLogin.execute();
+        DriveLogin driveLogin = new DriveLogin();
+        driveLogin.execute();
     }
-<<<<<<< HEAD
 
-=======
-  
->>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
     public void upload(String path, InputStream inputStream, Long size , Boolean overwrite)
     {
         dropbox.get().upload(path,inputStream,size,overwrite);
     }
 
-   public class DropboxLogin extends AsyncTask<Void,Void,Void>{
+    public class DropboxLogin extends AsyncTask<Void,Void,Void>{
 
 
-       @Override
-       protected void onPostExecute(Void aVoid) {
-           Log.e(TAG, "Dropbox Login token "+db.saveAsString());
-           basicCallBack.callBack(1,db.saveAsString());
-       }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            Log.e(TAG, "Dropbox Login token "+db.saveAsString());
+            basicCallBack.callBack(1,db.saveAsString());
+        }
 
-       @Override
-       protected Void doInBackground(Void... params) {
-           db.login();
-           if(!(db.exists(FOLDER))) {
-               db.createFolder(FOLDER);
-           }
-           return null;
+        @Override
+        protected Void doInBackground(Void... params) {
+            db.login();
+            if(!(db.exists(FOLDER))) {
+                db.createFolder(FOLDER);
+            }
+            return null;
 
-       }
-   }
+        }
+    }
 
-   public class OneDriveLoginTask extends AsyncTask<Void,Void,Void>{
+    public class OneDriveLoginTask extends AsyncTask<Void,Void,Void>{
 
 
-       @Override
-       protected Void doInBackground(Void... voids) {
-           oneDrive.login();
-           if (!oneDrive.exists(FOLDER)) {
-               oneDrive.createFolder(FOLDER);
-           }
-           return null;
-       }
+        @Override
+        protected Void doInBackground(Void... voids) {
+            oneDrive.login();
+            if (!oneDrive.exists(FOLDER)) {
+                oneDrive.createFolder(FOLDER);
+            }
+            return null;
+        }
 
-       @Override
-       protected void onPostExecute(Void aVoid) {
-           Log.e(TAG, "One Drive Login TOken "+oneDrive.saveAsString());
-           basicCallBack.callBack(3,oneDrive.saveAsString());
-       }
-   }
-     
-   public class DriveLogin extends AsyncTask<Void,Void,Void>{
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            Log.e(TAG, "One Drive Login TOken "+oneDrive.saveAsString());
+            basicCallBack.callBack(3,oneDrive.saveAsString());
+        }
+    }
 
-       @Override
-       protected void onPostExecute(Void aVoid) {
-           Log.e(TAG, "GoogleDriveLogin "+googleDrive.saveAsString() );
-           basicCallBack.callBack(2,googleDrive.saveAsString());
-       }
+    public class DriveLogin extends AsyncTask<Void,Void,Void>{
 
-       @Override
-       protected Void doInBackground(Void... voids) {
-           googleDrive.useAdvancedAuthentication();
-           googleDrive.login();
-           if(!(googleDrive.exists("/phimpme_uploads"))){
-               googleDrive.createFolder("/phimpme_uploads");
-           }
-           return null;
-       }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            Log.e(TAG, "GoogleDriveLogin "+googleDrive.saveAsString() );
+            basicCallBack.callBack(2,googleDrive.saveAsString());
+        }
 
-   }
+        @Override
+        protected Void doInBackground(Void... voids) {
+            googleDrive.useAdvancedAuthentication();
+            googleDrive.login();
+            if(!(googleDrive.exists("/phimpme_uploads"))){
+                googleDrive.createFolder("/phimpme_uploads");
+            }
+            return null;
+        }
 
-   public class DriveLogin extends AsyncTask<Void,Void,Void>{
+    }
 
-       @Override
-       protected void onPostExecute(Void aVoid) {
-           Log.e(TAG, "GoogleDriveLogin "+googleDrive.saveAsString() );
-           basicCallBack.callBack(2,googleDrive.saveAsString());
-       }
-
-       @Override
-       protected Void doInBackground(Void... voids) {
-           googleDrive.useAdvancedAuthentication();
-           googleDrive.login();
-           if(!(googleDrive.exists("/phimpme_uploads"))){
-               googleDrive.createFolder("/phimpme_uploads");
-           }
-           return null;
-       }
-   }
-
-   public int loadAsString(){
+    public int loadAsString(){
        /*if the data is present for login then returns 1
        else 0
         */
-       try {
-           db.loadAsString(db.saveAsString().toString());
-           return 1;
-       } catch (ParseException e) {
-           e.printStackTrace();
-           return 0;
-       }
-   }
+        try {
+            db.loadAsString(db.saveAsString().toString());
+            return 1;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 
-   public void driveLoadAsString(String s){
-       try{
-           Log.e(TAG,"GOOGLE DRIVE"+s);
-           googleDrive.loadAsString(s);
-       } catch (ParseException e) {
-           e.printStackTrace();
-       }
-   }
-   public void loadAsString(String s){
-       try {
-           Log.e(TAG, "loadAsString:Dropbox Token "+s );
-           db.loadAsString(s);
-       } catch (ParseException e) {
-           e.printStackTrace();
-       }
-   }
+    public void driveLoadAsString(String s){
+        try{
+            Log.e(TAG,"GOOGLE DRIVE"+s);
+            googleDrive.loadAsString(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+    public void loadAsString(String s){
+        try {
+            Log.e(TAG, "loadAsString:Dropbox Token "+s );
+            db.loadAsString(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 
-   public void oneDriveLoadAsString(String s){
-       try{
-           Log.e(TAG, "oneDriveLoadAsString: "+s );
-           oneDrive.loadAsString(s);
-       } catch (ParseException e) {
-           e.printStackTrace();
-       }
-   }
+    public void oneDriveLoadAsString(String s){
+        try{
+            Log.e(TAG, "oneDriveLoadAsString: "+s );
+            oneDrive.loadAsString(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 
-   public String getDropboxFolderPath(){
-       return (FOLDER);
-   }
+    public String getDropboxFolderPath(){
+        return (FOLDER);
+    }
 
-   public String getGoogleDriveFolderPath(){return ("/phimpme_uploads");}
+    public String getGoogleDriveFolderPath(){return ("/phimpme_uploads");}
 
-   public boolean checkDriveFolderExist(){ return googleDrive.exists(("/phimpme_uploads"));}
+    public boolean checkDriveFolderExist(){ return googleDrive.exists(("/phimpme_uploads"));}
 
-   public boolean checkFolderExist(){
-       return db.exists(FOLDER);
-   }
+    public boolean checkFolderExist(){
+        return db.exists(FOLDER);
+    }
 
-<<<<<<< HEAD
-=======
-   public boolean checkOneDriveFolderExist(){ return oneDrive.exists(FOLDER);}
+    public boolean checkOneDriveFolderExist(){ return oneDrive.exists(FOLDER);}
 
-   public String getOneDriveFolderPath() { return (FOLDER);}
+    public String getOneDriveFolderPath() { return (FOLDER);}
 
-   public OneDrive getOneDrive(){ return  oneDrive;}
-     
->>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
-   public GoogleDrive getGoogleDrive(){
-       return googleDrive;
-   }
+    public OneDrive getOneDrive(){ return  oneDrive;}
 
-<<<<<<< HEAD
-=======
+    public GoogleDrive getGoogleDrive(){
+        return googleDrive;
+    }
 
->>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
+
 }

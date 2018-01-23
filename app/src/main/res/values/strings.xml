@@ -441,7 +441,7 @@
     <string name="save_action">Save</string>
     <string name="change_cover">Album cover changed..</string>
     <string name="add_favourite">Image is succesfully added to the favourites collection.</string>
-  <string name="add_favourite_multiple">Images are succesfully added to the favourites collection.</string>
+    <string name="add_favourite_multiple">Images are succesfully added to the favourites collection.</string>
     <string name="check_favourite">Image is already present in the favourites collection.</string>
     <string name="check_favourite_multipleitems">All the images are already present in the favourite collection.</string>
     <string name="rename_photo_action">Rename photo</string>
@@ -1019,14 +1019,11 @@
 
     <string name="image_type">image/*</string>
 
-<<<<<<< HEAD
-=======
     <!--OneDrive-->
     <string name="uploaded_onedrive">Uploaded to One Drive</string>
     <string name="login_onedrive_from_accounts">Login to OneDrive from Accounts Manager</string>
     <string name="onedrive_share">OneDrive</string>
-  
->>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
+
     <!--GoogleDrive-->
     <string name="uploaded_googledrive">Uploaded to Google Drive</string>
     <string name="login_googledrive_account">Login to Google Drive From Accounts</string>

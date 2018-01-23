@@ -89,8 +89,6 @@ import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TUMBLR
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTER;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_SECRET;
-import static org.fossasia.phimpme.utilities.Constants.DROPBOX_APP_KEY;
-import static org.fossasia.phimpme.utilities.Constants.DROPBOX_APP_SECRET;
 import static org.fossasia.phimpme.utilities.Constants.PINTEREST_APP_ID;
 import static org.fossasia.phimpme.utilities.Constants.SUCCESS;
 import static org.fossasia.phimpme.utilities.Utils.checkNetwork;
@@ -396,17 +394,17 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             SnackBarHandler.show(coordinatorLayout, R.string.already_signed_in);
         else
             cloudRailServices.prepare(this);
-            cloudRailServices.login();
-            BasicCallBack basicCallBack = new BasicCallBack() {
-                @Override
-                public void callBack(int status, Object data) {
-                    if(status == 1)
-                    {
-                        dropboxAuthentication(data.toString());
-                    }
+        cloudRailServices.login();
+        BasicCallBack basicCallBack = new BasicCallBack() {
+            @Override
+            public void callBack(int status, Object data) {
+                if(status == 1)
+                {
+                    dropboxAuthentication(data.toString());
                 }
-            };
-            CloudRailServices.setCallBack(basicCallBack);
+            }
+        };
+        CloudRailServices.setCallBack(basicCallBack);
 
     }
     /*
@@ -432,38 +430,35 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             SnackBarHandler.show(coordinatorLayout,"Already Signed In");
         else
             cloudRailServices.prepare(this);
-            cloudRailServices.googleDriveLogin();
-            BasicCallBack basicCallBack = new BasicCallBack() {
-                @Override
-                public void callBack(int status, Object data) {
-                    if(status == 2){
-                        Log.e("TAG", "callBack: GOOGLE DRIVE"+data.toString() );
-                        googleDriveAuthentication(data.toString());
-                    }
+        cloudRailServices.googleDriveLogin();
+        BasicCallBack basicCallBack = new BasicCallBack() {
+            @Override
+            public void callBack(int status, Object data) {
+                if(status == 2){
+                    Log.e("TAG", "callBack: GOOGLE DRIVE"+data.toString() );
+                    googleDriveAuthentication(data.toString());
                 }
-            };
-            CloudRailServices.setCallBack(basicCallBack);
+            }
+        };
+        CloudRailServices.setCallBack(basicCallBack);
     }
-<<<<<<< HEAD
-=======
 
     private void signInOneDrive(){
         if(accountPresenter.checkAlreadyExist(ONEDRIVE))
             SnackBarHandler.show(coordinatorLayout,"Already Signed In");
         else
             cloudRailServices.prepare(this);
-            cloudRailServices.oneDriveLogin();
-            BasicCallBack  basicCallBack = new BasicCallBack() {
-                @Override
-                public void callBack(int status, Object data) {
-                    if(status==3){
-                        oneDriveAuthentication(data.toString());
-                    }
+        cloudRailServices.oneDriveLogin();
+        BasicCallBack  basicCallBack = new BasicCallBack() {
+            @Override
+            public void callBack(int status, Object data) {
+                if(status==3){
+                    oneDriveAuthentication(data.toString());
                 }
-            };
-            CloudRailServices.setCallBack(basicCallBack);
+            }
+        };
+        CloudRailServices.setCallBack(basicCallBack);
     }
->>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
 
     private void signInImgur() {
         BasicCallBack basicCallBack = new BasicCallBack() {
@@ -637,14 +632,14 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
     private void dropboxAuthentication(String tokens) {
         try{
-                String result = cloudRailServices.db.saveAsString();
-                Log.d("AccountsActivity", "dropboxAuthentication: "+tokens +" "+result);
-                String accessToken = cloudRailServices.getToken();
-                realm.beginTransaction();
-                account = realm.createObject(AccountDatabase.class, DROPBOX.toString());
-                account.setUsername(DROPBOX.toString());
-                account.setToken(String.valueOf(accessToken));
-                realm.commitTransaction();
+            String result = cloudRailServices.db.saveAsString();
+            Log.d("AccountsActivity", "dropboxAuthentication: "+tokens +" "+result);
+            String accessToken = cloudRailServices.getToken();
+            realm.beginTransaction();
+            account = realm.createObject(AccountDatabase.class, DROPBOX.toString());
+            account.setUsername(DROPBOX.toString());
+            account.setToken(String.valueOf(accessToken));
+            realm.commitTransaction();
 
 
 
@@ -655,8 +650,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         accountPresenter.loadFromDatabase();
     }
 
-<<<<<<< HEAD
-=======
 
     private void oneDriveAuthentication(String tokens){
         try {
@@ -674,8 +667,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         }
         accountPresenter.loadFromDatabase();
     }
-          
->>>>>>> da7a71f195b178034171af86d147eb2cc5378fed
+
     private void googleDriveAuthentication(String tokens) {
         try{
             String token = cloudRailServices.googleDrive.saveAsString();
