@@ -26,8 +26,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.annotation.Nullable;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import id.zelory.compressor.Compressor;
@@ -37,13 +35,13 @@ public class CompressImageActivity extends AppCompatActivity {
     public static final String EXTRA_OUTPUT = "extra_output";
     public int percentagecompress=0;
 
-    @Nullable @BindView(R.id.size)
+    @BindView(R.id.size)
     Button size;
-    @Nullable @BindView(R.id.bypixel)
+    @BindView(R.id.bypixel)
     Button dimension;
-    @Nullable @BindView(R.id.edit_cancel)
+    @BindView(R.id.edit_cancel)
     ImageButton cancel;
-    @Nullable @BindView(R.id.main_image)
+    @BindView(R.id.main_image)
     ImageViewTouch imageViewToucher;
 
     @Override
