@@ -42,7 +42,6 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
     List<String> pathList = new ArrayList<>();
     mRecyclerAdapter adapter;
     ImageButton cancel,apply;
-    RecyclerView.LayoutManager manager;
 
     public StickersFragment() {
 
@@ -64,6 +63,7 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
         super.onActivityCreated(savedInstanceState);
 
         int orientation = getActivity().getResources().getConfiguration().orientation;
+        RecyclerView.LayoutManager manager = null;
         if(orientation == Configuration.ORIENTATION_PORTRAIT) {
             manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         } else if(orientation == Configuration.ORIENTATION_LANDSCAPE) {

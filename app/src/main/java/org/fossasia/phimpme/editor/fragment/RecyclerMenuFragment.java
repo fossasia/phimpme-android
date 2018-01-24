@@ -40,7 +40,6 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     int bmWidth = -1,bmHeight = -1;
     int defaulticon;
     TypedArray iconlist,titlelist;
-    RecyclerView.LayoutManager layoutManager;
     static int currentSelection = -1;
 
     public RecyclerMenuFragment() {
@@ -72,6 +71,7 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         int orientation = getActivity().getResources().getConfiguration().orientation;
+        RecyclerView.LayoutManager layoutManager = null;
         if(orientation == Configuration.ORIENTATION_PORTRAIT) {
             layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         } else if(orientation == Configuration.ORIENTATION_LANDSCAPE) {
