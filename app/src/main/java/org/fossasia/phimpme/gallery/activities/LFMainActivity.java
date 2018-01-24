@@ -93,6 +93,7 @@ import org.fossasia.phimpme.gallery.util.Measure;
 import org.fossasia.phimpme.gallery.util.PreferenceUtil;
 import org.fossasia.phimpme.gallery.util.SecurityHelper;
 import org.fossasia.phimpme.gallery.util.StringUtils;
+import org.fossasia.phimpme.gallery.views.CustomScrollBarRecyclerView;
 import org.fossasia.phimpme.gallery.views.GridSpacingItemDecoration;
 import org.fossasia.phimpme.uploadhistory.UploadHistory;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
@@ -173,8 +174,8 @@ public class LFMainActivity extends SharedMediaActivity {
     private boolean fromOnClick=false;
     // Binding various views with Butterknife
     @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.grid_albums) RecyclerView rvAlbums;
-    @BindView(R.id.grid_photos) RecyclerView rvMedia;
+    @BindView(R.id.grid_albums) CustomScrollBarRecyclerView rvAlbums;
+    @BindView(R.id.grid_photos) CustomScrollBarRecyclerView rvMedia;
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @BindView(R.id.fab_scroll_up) FloatingActionButton fabScrollUp;
@@ -938,6 +939,8 @@ public class LFMainActivity extends SharedMediaActivity {
         setDrawerTheme();
         rvAlbums.setBackgroundColor(getBackgroundColor());
         rvMedia.setBackgroundColor(getBackgroundColor());
+        rvAlbums.setScrollBarColor(getPrimaryColor());
+        rvMedia.setScrollBarColor(getPrimaryColor());
         mediaAdapter.updatePlaceholder(getApplicationContext());
         albumsAdapter.updateTheme();
         /**** DRAWER ****/
