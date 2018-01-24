@@ -533,7 +533,7 @@ public class LFMainActivity extends SharedMediaActivity {
         securityObj.updateSecuritySetting();
         setupUI();
         if (all_photos && !fav_photos){
-            mediaAdapter.swapDataSet(listAll);
+            new PrepareAllPhotos().execute();
         }
         if(!all_photos && fav_photos){
             new FavouritePhotos().execute();
@@ -2654,6 +2654,7 @@ public class LFMainActivity extends SharedMediaActivity {
         @Override
         protected void onPostExecute(Void result) {
             listAll = StorageProvider.getAllShownImages(LFMainActivity.this);
+            size = listAll.size();
             Collections.sort(listAll, MediaComparators.getComparator(getAlbum().settings.getSortingMode(), getAlbum().settings.getSortingOrder()));
             mediaAdapter.swapDataSet(listAll);
             if (!hidden)
