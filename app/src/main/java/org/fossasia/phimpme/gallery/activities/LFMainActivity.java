@@ -257,6 +257,25 @@ public class LFMainActivity extends SharedMediaActivity {
         anim.start();
     }
 
+    /**
+     * Helper method for making reveal animation for toolbar when back is presses in edit mode.
+     */
+    private void exitReveal() {
+
+        // get the center for the clipping circle
+        int cx = toolbari.getMeasuredWidth() / 2;
+        int cy = toolbari.getMeasuredHeight() / 2;
+
+        // get the final radius for the clipping circle
+        int finalRadius = 0;
+
+        // create the animator for this view
+        Animator anim =
+                ViewAnimationUtils.createCircularReveal(toolbari, cx, cy, cx, finalRadius);
+
+        anim.start();
+    }
+
     private int toggleSelectPhoto(Media m) {
         if (m != null) {
             m.setSelected(!m.isSelected());
@@ -1206,6 +1225,8 @@ public class LFMainActivity extends SharedMediaActivity {
 
     //called from onBackPressed()
     private void finishEditMode() {
+        if(editMode)
+            exitReveal();
         editMode = false;
         if (albumsMode) {
             getAlbums().clearSelectedAlbums();
