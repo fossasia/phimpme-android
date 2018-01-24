@@ -257,6 +257,25 @@ public class LFMainActivity extends SharedMediaActivity {
         anim.start();
     }
 
+    /**
+     * Helper method for making reveal animation for toolbar when back is presses in edit mode.
+     */
+    private void exitReveal() {
+
+        // get the center for the clipping circle
+        int cx = toolbari.getMeasuredWidth() / 2;
+        int cy = toolbari.getMeasuredHeight() / 2;
+
+        // get the final radius for the clipping circle
+        int finalRadius = 0;
+
+        // create the animator for this view
+        Animator anim =
+                ViewAnimationUtils.createCircularReveal(toolbari, cx, cy, cx, finalRadius);
+
+        anim.start();
+    }
+
     private int toggleSelectPhoto(Media m) {
         if (m != null) {
             m.setSelected(!m.isSelected());
@@ -533,7 +552,7 @@ public class LFMainActivity extends SharedMediaActivity {
         securityObj.updateSecuritySetting();
         setupUI();
         if (all_photos && !fav_photos){
-            mediaAdapter.swapDataSet(listAll);
+            new PrepareAllPhotos().execute();
         }
         if(!all_photos && fav_photos){
             new FavouritePhotos().execute();
@@ -1143,15 +1162,27 @@ public class LFMainActivity extends SharedMediaActivity {
                 });
             }
         } else {
-            if(getAlbum().getSelectedCount()==0) {
-                clearOverlay();
-                checkForReveal = true;
-                swipeRefreshLayout.setEnabled(true);
+            if(!all_photos)
+            {
+                if(getAlbum().getSelectedCount()==0) {
+                    clearOverlay();
+                    checkForReveal = true;
+                    swipeRefreshLayout.setEnabled(true);
+                } else {
+                    appBarOverlay();
+                    swipeRefreshLayout.setEnabled(false);
+                }
+            }else {
+                if(selectedMedias.size()==0)
+                {
+                    clearOverlay();
+                    swipeRefreshLayout.setEnabled(true);
+                } else {
+                    appBarOverlay();
+                    swipeRefreshLayout.setEnabled(false);
+                }
             }
-            else {
-                appBarOverlay();
-                swipeRefreshLayout.setEnabled(false);
-            }
+
             if (editMode){
                 if (!all_photos && !fav_photos)
                     toolbar.setTitle(getAlbum().getSelectedCount() + "/" + getAlbum().getMedia().size());
@@ -1194,6 +1225,8 @@ public class LFMainActivity extends SharedMediaActivity {
 
     //called from onBackPressed()
     private void finishEditMode() {
+        if(editMode)
+            exitReveal();
         editMode = false;
         if (albumsMode) {
             getAlbums().clearSelectedAlbums();
@@ -1206,7 +1239,6 @@ public class LFMainActivity extends SharedMediaActivity {
                 clearSelectedPhotos();
                 mediaAdapter.notifyDataSetChanged();
             }
-
         }
         invalidateOptionsMenu();
     }
@@ -2643,6 +2675,7 @@ public class LFMainActivity extends SharedMediaActivity {
         @Override
         protected void onPostExecute(Void result) {
             listAll = StorageProvider.getAllShownImages(LFMainActivity.this);
+            size = listAll.size();
             Collections.sort(listAll, MediaComparators.getComparator(getAlbum().settings.getSortingMode(), getAlbum().settings.getSortingOrder()));
             mediaAdapter.swapDataSet(listAll);
             if (!hidden)
