@@ -50,6 +50,7 @@ import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
 import org.fossasia.phimpme.gallery.activities.SettingsActivity;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
+import org.fossasia.phimpme.gallery.util.ThemeHelper;
 import org.fossasia.phimpme.share.flickr.FlickrActivity;
 import org.fossasia.phimpme.share.imgur.ImgurAuthActivity;
 import org.fossasia.phimpme.share.nextcloud.NextCloudAuth;
@@ -602,6 +603,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     public void onResume() {
         super.onResume();
         ActivitySwitchHelper.setContext(this);
+        setNavigationBarColor(ThemeHelper.getPrimaryColor(this));
         //dropboxAuthentication();
         boxAuthentication();
         setStatusBarColor();
