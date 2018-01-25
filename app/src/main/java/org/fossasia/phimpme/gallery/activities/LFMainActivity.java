@@ -167,6 +167,9 @@ public class LFMainActivity extends SharedMediaActivity {
     private ArrayList<Media> favouriteslist;
     public boolean fav_photos=false;
     private IconicsImageView favicon;
+    
+    private CustomScrollBarRecyclerView rvAlbums;
+    private CustomScrollBarRecyclerView rvMedia;
 
     // To handle back pressed
     boolean doubleBackToExitPressedOnce = false;
@@ -174,8 +177,6 @@ public class LFMainActivity extends SharedMediaActivity {
     private boolean fromOnClick=false;
     // Binding various views with Butterknife
     @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.grid_albums) CustomScrollBarRecyclerView rvAlbums;
-    @BindView(R.id.grid_photos) CustomScrollBarRecyclerView rvMedia;
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @BindView(R.id.fab_scroll_up) FloatingActionButton fabScrollUp;
@@ -515,6 +516,9 @@ public class LFMainActivity extends SharedMediaActivity {
 
         BottomNavigationView navigationView = (BottomNavigationView)findViewById(R.id.bottombar);
         favicon = (IconicsImageView) findViewById(R.id.Drawer_favourite_Icon);
+        
+        rvAlbums = (CustomScrollBarRecyclerView) findViewById(R.id.grid_albums);
+        rvMedia  = (CustomScrollBarRecyclerView) findViewById(R.id.grid_photos);
 
         SP = PreferenceUtil.getInstance(getApplicationContext());
         albumsMode = true;
