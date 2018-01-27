@@ -32,20 +32,20 @@ Phimp.me is a Photo App for Android that aims to replace proprietary photo appli
 ---
 
 
-Do you have many different apps in your Android Phone for the purpose of clicking, editing and sharing images? Hey guess what, now you don't need all of those because `Phimp.me` is here, with all the features packaged into one. So go and clean your phone memory to save your space for other useful purposes.
+Do you have many different apps on your Android Phone for the purpose of clicking, editing and sharing images? Hey, guess what, now you don't need all of those because `Phimp.me` is here, with all the features packaged into one. So go and clean your phone memory to save your space for other useful purposes.
 
 
 ## Features
 
-* Click beautiful images using the Phimp.me app. Use various advanced scene modes, and variety of balance modes.
+* Click beautiful images using the Phimp.me app. Use various advanced scene modes and variety of balance modes.
 
 * You can use your voice actions to invoke Camera, Just say "Ok Google click a picture". You can also select front and rear camera based on voice.
 
-* Browse the local gallery inside the app with folder and all photos mode. Copy, move and add description to the images.
+* Browse the local gallery inside the app with folder and all photos mode. Copy, move and add a description to the images.
 
-* Edit images with various cool filters with optimized performace, built using OpenCV library.
+* Edit images with various cool filters with optimized performance, built using OpenCV library.
 
-* Enhance contrast, hue, satur, temp, tint and sharpness of the image.
+* Enhance contrast, hue, satur, temp, tint, and sharpness of the image.
 
 * Use 'Crop and rotate' features from Transform section to get your perfect image.
 
@@ -57,7 +57,7 @@ Do you have many different apps in your Android Phone for the purpose of clickin
 
 * Finally, after all this editing you can easily share the image to your favourite social media sites with our easy-to-use sharing feature.
 
-* Facebook, Twitter, NextCloud, OwnCloud, Imgur, Dropbox, Box, Flickr, Pinterest, Instagram, Whatsapp and Tumblr - You name it and we have it covered.
+* Facebook, Twitter, NextCloud, OwnCloud, Imgur, Dropbox, Box, Flickr, Pinterest, Instagram, Whatsapp, and Tumblr - You name it and we have it covered.
 
 ---
 
@@ -74,7 +74,7 @@ We have the following branches
 	 you are supposed to make a pull request to _development_.
 	 Make sure it passes a build check on Travis
 
-	 It is advisable to clone only the development branch using following command:
+	 It is advisable to clone only the development branch using the following command:
 
 	`git clone -b <branch> <remote_repo>`
 
@@ -117,7 +117,7 @@ Before you begin, you should have already downloaded the Android Studio SDK and 
 
 5. Once this process is complete and Android Studio opens, check the Console for any build errors.
 
-    - *Note:* If you recieve a Gradle sync error titled, "failed to find ...", you should click on the link below the error message (if avaliable) that says *Install missing platform(s) and sync project* and allow Android studio to fetch you what is missing.
+    - *Note:* If you receive a Gradle sync error titled, "failed to find ...", you should click on the link below the error message (if available) that says *Install missing platform(s) and sync project* and allow Android studio to fetch you what is missing.
 
 6. Download this [OpenCV-android-sdk](https://github.com/opencv/opencv/releases/download/2.4.13.3/opencv-2.4.13.3-android-sdk.zip) zip file and extract it.
 
@@ -129,9 +129,9 @@ Before you begin, you should have already downloaded the Android Studio SDK and 
 
 8. To Build the app, go to *Build > Make Project* (or alternatively press the Make Project icon in the toolbar).
 
-9. If the app was built succesfully, you can test it by running it on either a real device or an emulated one by going to *Run > Run 'app'* or pressing the Run icon in the toolbar.
+9. If the app was built successfully, you can test it by running it on either a real device or an emulated one by going to *Run > Run 'app'* or pressing the Run icon in the toolbar.
 
-10. **To enable the sharing features to different account, add API_KEY/ APP_ID associated with accounts**. Add the Keys in `constant.java` and `strings.xml`. Following are the links of developer pages of account. Go there to create apps and get keys.
+10. **To enable the sharing features to a different account, add API_KEY/ APP_ID associated with accounts**. Add the Keys in `constant.java` and `strings.xml`. Following are the links to developer pages of account. Go there to create apps and get keys.
     * Facebook: https://developers.facebook.com
     * Twitter: https://dev.twitter.com
     * Flickr: https://www.flickr.com/services/developer
