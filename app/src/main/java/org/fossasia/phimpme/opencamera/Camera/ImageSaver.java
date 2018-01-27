@@ -1428,6 +1428,13 @@ public class ImageSaver extends Thread {
 		}
 		final SharedPreferences sharedPreferences = getDefaultSharedPreferences(main_activity);
 		String burst_mode = sharedPreferences.getString(PreferenceKeys.getBurstModePreferenceKey(), "");
+		if(burst_mode.isEmpty())
+		{
+			burst_mode = "1";
+			SharedPreferences.Editor editor = sharedPreferences.edit();
+			editor.putString(PreferenceKeys.getBurstModePreferenceKey(), "1");
+			editor.apply();
+		}
 		burst_mode_value = Integer.parseInt(burst_mode);
 		click_count++;
 		if (basicCallBack != null && burst_mode_value == click_count) {
