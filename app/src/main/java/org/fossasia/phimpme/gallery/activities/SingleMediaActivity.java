@@ -542,14 +542,14 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                             handleEditorImage(data);
                             if (ContentHelper.copyFile(getApplicationContext(), new File(imageUri.getPath()), new File(getAlbum().getPath()))) {
                                 //((ImageFragment) adapter.getRegisteredFragment(getAlbum().getCurrentMediaIndex())).displayMedia(true);
-                                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.new_file_created), bottomBar.getHeight());
+                                SnackBarHandler.show(parentView, getString(R.string.new_file_created));
                             }
                             //adapter.notifyDataSetChanged();
                         } catch (Exception e) {
                             Log.e("ERROS - uCrop", imageUri.toString(), e);
                         }
                     } else
-                        SnackBarHandler.showWithBottomMargin(parentView, "errori random", bottomBar.getHeight());
+                        SnackBarHandler.show(parentView, "errori random");
                     break;
                 default:
                     break;
@@ -696,7 +696,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         else{
                             getAlbum().copyPhoto(getApplicationContext(), getAlbum().getCurrentMedia().getPath(), path);
                             bottomSheetDialogFragment.dismiss();
-                            SnackBarHandler.showWithBottomMargin(relativeLayout, getString(R.string.copied_successfully) + " to " + path, bottomBar.getHeight());
+                            SnackBarHandler.show(relativeLayout, getString(R.string.copied_successfully));
                         }
                     }
                 });
@@ -727,7 +727,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     editIntent.putExtra("requestCode", ACTION_REQUEST_EDITIMAGE);
                     startActivity(editIntent);
                 } else
-                    SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.image_invalid), bottomBar.getHeight());
+                    SnackBarHandler.show(parentView, getString(R.string.image_invalid));
                 break;
 
             case R.id.action_use_as:
@@ -765,9 +765,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         fav.setDescription(" ");
                     }
                     realm.commitTransaction();
-                    SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.add_favourite), bottomBar.getHeight());
+                    SnackBarHandler.show(parentView, getString(R.string.add_favourite));
                 } else {
-                    SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.check_favourite), bottomBar.getHeight());
+                    SnackBarHandler.show(parentView, getString(R.string.check_favourite));
                 }
                 break;
 
@@ -792,7 +792,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                                     if (securityObj.checkPassword(editTextPassword.getText().toString())) {
                                         deleteCurrentMedia();
                                     } else
-                                        SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), bottomBar.getHeight());
+                                        SnackBarHandler.show(parentView, getString(R.string.wrong_password));
 
                                 }
                             });
@@ -808,7 +808,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                                         deleteCurrentMedia();
                                         passwordDialog.dismiss();
                                     } else {
-                                        SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), bottomBar.getHeight());
+                                        SnackBarHandler.show(parentView, getString(R.string.wrong_password));
                                         editTextPassword.getText().clear();
                                         editTextPassword.requestFocus();
                                     }
@@ -848,7 +848,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         adapter.notifyDataSetChanged();
 //                        toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + getAlbum().getCount());
                         bottomSheetDialogFragment.dismiss();
-                        SnackBarHandler.showWithBottomMargin(relativeLayout, getString(R.string.photo_moved_successfully) + " to " + path, bottomBar.getHeight());
+                        SnackBarHandler.show(relativeLayout, getString(R.string.photo_moved_successfully));
                     }
                 });
                 bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
@@ -858,7 +858,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             case R.id.action_cover:
                 AlbumSettings albumSettings = AlbumSettings.getSettings(getApplicationContext(), getAlbum());
                 albumSettings.changeCoverPath(getApplicationContext(), getAlbum().getCurrentMedia().getPath());
-                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.change_cover), bottomBar.getHeight());
+                SnackBarHandler.show(parentView, getString(R.string.change_cover));
                 return true;
 
             case R.id.action_details:
@@ -1031,10 +1031,10 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         voiceInput = editTextDescription.getText().toString();
                         if (temp == null) {
                             databaseHelper.addImageDesc(new ImageDescModel(pathForDescription, editTextDescription.getText().toString()));
-                            SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.description_saved), bottomBar.getHeight());
+                            SnackBarHandler.show(parentView, getString(R.string.description_saved));
                         } else {
                             databaseHelper.update(new ImageDescModel(pathForDescription, editTextDescription.getText().toString()));
-                            SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.description_updated), bottomBar.getHeight());
+                            SnackBarHandler.show(parentView, getString(R.string.description_updated));
                         }
 
                     }
@@ -1046,7 +1046,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         descriptionDialog.dismiss();
                         if(temp!= null){
                             databaseHelper.delete(temp);
-                            SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.description_deleted), bottomBar.getHeight());
+                            SnackBarHandler.show(parentView, getString(R.string.description_deleted));
                         }
 
                     }

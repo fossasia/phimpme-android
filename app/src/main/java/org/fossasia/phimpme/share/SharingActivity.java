@@ -1245,12 +1245,12 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         if (requestCode == REQ_SELECT_PHOTO) {
             if (responseCode == RESULT_OK) {
                 NotificationHandler.actionPassed(R.string.upload_complete);
-                Snackbar.make(parent, R.string.success_google, Snackbar.LENGTH_LONG).show();
+                SnackBarHandler.show(parent, R.string.success_google);
                 sendResult(SUCCESS);
                 return;
             } else {
                 NotificationHandler.actionFailed();
-                Snackbar.make(parent, R.string.error_google, Snackbar.LENGTH_LONG).show();
+                SnackBarHandler.show(parent, R.string.error_google);
                 sendResult(FAIL);
                 return;
             }
@@ -1308,7 +1308,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                         }
                     }).show();
         } else if (result.isSuccess()) {
-            Snackbar.make(parent, R.string.todo_operation_finished_in_success, Snackbar.LENGTH_LONG).show();
+            SnackBarHandler.show(parent, R.string.todo_operation_finished_in_success);
         } else if (operation instanceof UploadRemoteFileOperation) {
             onSuccessfulUpload();
         }
