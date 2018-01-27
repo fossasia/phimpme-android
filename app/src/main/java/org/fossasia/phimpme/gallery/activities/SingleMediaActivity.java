@@ -614,10 +614,13 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             adapter.notifyDataSetChanged();
             getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
         } else if(allPhotoMode && !favphotomode) {
+            int c = current_image_pos;
             deleteMedia(listAll.get(current_image_pos).getPath());
             LFMainActivity.listAll.remove(current_image_pos);
             size_all = LFMainActivity.listAll.size();
             adapter.notifyDataSetChanged();
+            if(current_image_pos!=size_all)
+                getSupportActionBar().setTitle((c + 1) + " " + getString(R.string.of) + " " + size_all);
 //            mViewPager.setCurrentItem(current_image_pos);
 //            toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + size_all);
         } else if(favphotomode && !allPhotoMode){
@@ -1296,6 +1299,8 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         });
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         dialog.show();
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE}, getAccentColor(), dialog);
+
     }
     @Override
     protected void onDestroy() {
