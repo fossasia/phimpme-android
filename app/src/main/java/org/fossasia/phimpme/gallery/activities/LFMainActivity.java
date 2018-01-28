@@ -54,6 +54,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -1265,6 +1266,21 @@ public class LFMainActivity extends SharedMediaActivity {
         if (albumsMode) {
             MenuItem menuitem = menu.findItem(R.id.search_action);
             final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuitem);
+            searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override public void onFocusChange(final View view, boolean b) {
+                    if (b) {
+                        view.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                InputMethodManager imm = (InputMethodManager) getSystemService(Context
+                                        .INPUT_METHOD_SERVICE);
+                                imm.showSoftInput(view.findFocus(), 0);
+                            }
+                        }, 200);
+
+                    }
+                }
+            });
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
