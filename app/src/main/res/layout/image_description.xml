@@ -12,8 +12,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/image_desc_top"
-        android:paddingLeft="@dimen/sub_small_spacing"
-        android:paddingRight="@dimen/sub_small_spacing">
+        android:padding="13dp">
 
         <ImageButton
             android:layout_width="48dp"
@@ -46,9 +45,9 @@
         <com.mikepenz.iconics.view.IconicsImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:id="@+id/date_icon"
             app2:iiv_icon="gmd-access-time"
-            android:layout_gravity="center"
-            app2:iiv_color="@color/white"/>
+            android:layout_gravity="center"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -59,6 +58,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/date"
+                android:id="@+id/date_label"
+                android:textStyle="bold"
                 android:textColor="@color/md_grey_200"
                 android:textSize="@dimen/sub_big_text" />
             <View
@@ -71,14 +72,13 @@
                 tools:text="28/September/2018"
                 android:textColor="@color/md_grey_400"
                 android:textSize="@dimen/medium_text"/>
+          <View
+              android:layout_width="match_parent"
+              android:layout_height="20dp"/>
 
         </LinearLayout>
 
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="20dp"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -88,7 +88,7 @@
         <com.mikepenz.iconics.view.IconicsImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
-            app2:iiv_color="@color/white"
+            android:id="@+id/loca_icon"
             android:layout_gravity="center"
             app2:iiv_icon="gmd-location-on"/>
 
@@ -101,6 +101,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/location"
+                android:id="@+id/location_label"
+                android:textStyle="bold"
                 android:textColor="@color/md_grey_200"
                 android:textSize="@dimen/sub_big_text" />
             <View
@@ -130,7 +132,7 @@
         <com.mikepenz.iconics.view.IconicsImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
-            app2:iiv_color="@color/white"
+            android:id="@+id/detail_icon"
             android:layout_gravity="fill"
             app2:iiv_icon="gmd-camera-roll"/>
 
@@ -144,6 +146,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Details"
+                android:id="@+id/details_label"
+                android:textStyle="bold"
                 android:textColor="@color/md_grey_200"
                 android:textSize="@dimen/sub_big_text" />
             <View
@@ -163,6 +167,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="Title"
+                        android:id="@+id/title_label"
+                        android:textStyle="bold"
                         android:textSize="@dimen/sub_big_text"/>
                     <TextView
                         android:layout_width="match_parent"
@@ -184,6 +190,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/type"
+                        android:id="@+id/type_label"
+                        android:textStyle="bold"
                         android:textSize="@dimen/sub_big_text"/>
                     <TextView
                         android:layout_width="match_parent"
@@ -205,6 +213,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/size"
+                        android:id="@+id/size_label"
+                        android:textStyle="bold"
                         android:textSize="@dimen/sub_big_text"/>
                     <TextView
                         android:layout_width="match_parent"
@@ -226,6 +236,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/resolution"
+                        android:id="@+id/resolution_label"
+                        android:textStyle="bold"
                         android:textSize="@dimen/sub_big_text"/>
                     <TextView
                         android:layout_width="match_parent"
@@ -247,6 +259,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/path"
+                        android:id="@+id/path_label"
+                        android:textStyle="bold"
                         android:layout_gravity="center"
                         android:textSize="@dimen/sub_big_text"/>
                     <TextView
@@ -269,6 +283,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/orientation"
+                        android:id="@+id/orientation_label"
+                        android:textStyle="bold"
                         android:textSize="@dimen/sub_big_text"/>
                     <TextView
                         android:layout_width="match_parent"
@@ -290,6 +306,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/exif"
+                        android:id="@+id/exif_label"
+                        android:textStyle="bold"
                         android:textSize="@dimen/sub_big_text"/>
                     <TextView
                         android:layout_width="match_parent"
@@ -313,6 +331,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/type_description"
+                        android:id="@+id/description_label"
+                        android:textStyle="bold"
                         android:textSize="@dimen/sub_big_text"/>
                     <TextView
                         android:layout_width="match_parent"
