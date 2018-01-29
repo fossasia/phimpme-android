@@ -1,5 +1,7 @@
 package org.fossasia.phimpme.gallery.activities;
 
+import java.util.ArrayList;
+
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -7,6 +9,8 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -14,7 +18,9 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -23,12 +29,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.view.IconicsImageView;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
+import org.fossasia.phimpme.gallery.data.Album;
+import org.fossasia.phimpme.gallery.data.providers.MediaStoreProvider;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
 import org.fossasia.phimpme.gallery.util.PreferenceUtil;
 import org.fossasia.phimpme.gallery.util.SecurityHelper;
@@ -48,6 +57,10 @@ public class SecurityActivity extends ThemedActivity {
     private SwitchCompat swActiveSecurity;
     private SwitchCompat swApplySecurityDelete;
     private SwitchCompat swApplySecurityHidden;
+    private SwitchCompat swApplySecurityFolder;
+    public ArrayList<Album> albums;
+    public ArrayList<String> securedfol = new ArrayList<>();
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,12 +70,15 @@ public class SecurityActivity extends ThemedActivity {
         SP = PreferenceUtil.getInstance(getApplicationContext());
         securityObj = new SecurityHelper(SecurityActivity.this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        albums = new ArrayList<>();
+        albums = MediaStoreProvider.getAlbums(getApplicationContext());
         llbody = (LinearLayout) findViewById(R.id.ll_security_dialog_body);
         llroot = (LinearLayout) findViewById(R.id.root);
 
         swApplySecurityDelete = (SwitchCompat) findViewById(R.id.security_body_apply_delete_switch);
         swActiveSecurity = (SwitchCompat) findViewById(R.id.active_security_switch);
         swApplySecurityHidden = (SwitchCompat) findViewById(R.id.security_body_apply_hidden_switch);
+        swApplySecurityFolder = (SwitchCompat) findViewById(R.id.security_body_apply_folder_switch);
 
         /** - SWITCHES - **/
         /** - ACTIVE SECURITY - **/
@@ -71,7 +87,6 @@ public class SecurityActivity extends ThemedActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 SharedPreferences.Editor editor = SP.getEditor();
-
                 securityObj.updateSecuritySetting();
                 updateSwitchColor(swActiveSecurity, getAccentColor());
                 llbody.setEnabled(swActiveSecurity.isChecked());
@@ -99,6 +114,53 @@ public class SecurityActivity extends ThemedActivity {
             }
         });
         updateSwitchColor(swApplySecurityHidden, getAccentColor());
+
+        /**ACTIVE SECURITY ON LOCAL FOLDERS**/
+        swApplySecurityFolder.setChecked(securityObj.isPasswordOnfolder());
+        swApplySecurityFolder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SP.putBoolean(getString(R.string.preference_use_password_on_folder), isChecked);
+                securityObj.updateSecuritySetting();
+                updateSwitchColor(swApplySecurityFolder, getAccentColor());
+                if(isChecked) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SecurityActivity.this, getDialogStyle());
+                    View view = getLayoutInflater().inflate(R.layout.dialog_security_folder, null);
+                    TextView title = (TextView) view.findViewById(R.id.titlesecure);
+                    title.setText("Choose folders to secure");
+                    RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.secure_folder_recyclerview);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    SecureDialogAdapter s = new SecureDialogAdapter();
+                    recyclerView.setAdapter(s);
+                    builder.setView(view);
+                    AlertDialog ad = builder.create();
+                    ad.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string
+                            .ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            if(securedfol.size()>0){
+                                SharedPreferences.Editor editor = SP.getEditor();
+                                Gson gson = new Gson();
+                                String securedfolders = gson.toJson(securedfol);
+                                editor.putString("SecuredLocalFolders", securedfolders);
+                                editor.commit();
+                            }else{
+                                SP.putBoolean(getString(R.string.preference_use_password_on_folder), false);
+                                securityObj.updateSecuritySetting();
+                                swApplySecurityFolder.setChecked(false);
+                                updateSwitchColor(swApplySecurityFolder, getAccentColor());
+                            }
+                        }});
+                    ad.show();
+                }else{
+                    SP.putBoolean(getString(R.string.preference_use_password_on_folder), false);
+                    securityObj.updateSecuritySetting();
+                    updateSwitchColor(swApplySecurityFolder, getAccentColor());
+                }
+            }
+        });
+        updateSwitchColor(swApplySecurityFolder, getAccentColor());
 
         /**ACTIVE SECURITY ON DELETE ACTION**/
         swApplySecurityDelete.setChecked(securityObj.isPasswordOnDelete());
@@ -228,13 +290,16 @@ public class SecurityActivity extends ThemedActivity {
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), dialog);
     }
 
+
     private void toggleEnabledChild(boolean enable) {
         if (!enable) {
             swApplySecurityDelete.setChecked(enable);
             swApplySecurityHidden.setChecked(enable);
+            swApplySecurityFolder.setChecked(enable);
         }
         swApplySecurityDelete.setEnabled(enable);
         swApplySecurityHidden.setEnabled(enable);
+        swApplySecurityFolder.setEnabled(enable);
     }
 
     private void setupUI() {
@@ -262,6 +327,8 @@ public class SecurityActivity extends ThemedActivity {
         TextView txtApplySecurityHidden = (TextView) findViewById(R.id.security_body_apply_hidden_title);
         IconicsImageView imgApplySecurityDelete = (IconicsImageView) findViewById(R.id.security_body_apply_delete_icon);
         TextView txtApplySecurityDelete = (TextView) findViewById(R.id.security_body_apply_delete_title);
+        IconicsImageView folderActiveSecurity = (IconicsImageView) findViewById(R.id.security_body_apply_folder_icon);
+        TextView folActiveSecurity = (TextView) findViewById(R.id.security_body_apply_folders_title);
         CardView securityDialogCard = (CardView) findViewById(R.id.security_dialog_card);
         llroot.setBackgroundColor(getBackgroundColor());
         securityDialogCard.setCardBackgroundColor(getCardBackgroundColor());
@@ -271,6 +338,7 @@ public class SecurityActivity extends ThemedActivity {
         imgActiveSecurity.setColor(color);
         imgApplySecurityHidden.setColor(color);
         imgApplySecurityDelete.setColor(color);
+        folderActiveSecurity.setColor(color);
 
         /*TEXTVIEWS*/
         color = getTextColor();
@@ -278,5 +346,53 @@ public class SecurityActivity extends ThemedActivity {
         txtApplySecurity.setTextColor(color);
         txtApplySecurityHidden.setTextColor(color);
         txtApplySecurityDelete.setTextColor(color);
+        folActiveSecurity.setTextColor(color);
+    }
+
+    class SecureDialogAdapter extends RecyclerView.Adapter<SecureDialogAdapter.ViewHolder>{
+
+        SecureDialogAdapter(){}
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View v = LayoutInflater
+                    .from(parent.getContext()).inflate(R.layout.secure_folder_dialog_item_view, parent, false);
+            return new ViewHolder(v);
+        }
+
+        @Override public void onBindViewHolder(ViewHolder holder, int position) {
+            final Album a = albums.get(position);
+            holder.foldername.setText(a.getName());
+            holder.foldername.setTextColor(getTextColor());
+            holder.foldercheckbox.setOnCheckedChangeListener(null);
+            holder.foldercheckbox.setChecked(a.getsecured());
+            holder.foldercheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if(b){
+                        securedfol.add(a.getPath());
+                        a.setsecured(true);
+                    }else{
+                        securedfol.remove(a.getPath());
+                        a.setsecured(false);
+                    }
+                }
+            });
+        }
+
+        @Override public int getItemCount() {
+            return albums.size();
+        }
+
+        class ViewHolder extends RecyclerView.ViewHolder{
+
+            private TextView foldername;
+            private CheckBox foldercheckbox;
+
+            public ViewHolder(View itemView) {
+                super(itemView);
+                foldername = (TextView) itemView.findViewById(R.id.foldername);
+                foldercheckbox = (CheckBox) itemView.findViewById(R.id.secure_folder_checkbox);
+            }
+        }
     }
 }

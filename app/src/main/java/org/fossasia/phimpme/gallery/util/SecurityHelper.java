@@ -16,6 +16,8 @@ import android.widget.TextView;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
 
+import com.google.gson.Gson;
+
 /**
  * Created by Jibo on 06/05/2016.
  */
@@ -24,7 +26,9 @@ public class SecurityHelper {
     private boolean activeSecurity;
     private boolean passwordOnDelete;
     private boolean passwordOnHidden;
+    private boolean passwordOnfolder;
     private String passwordValue;
+    private String[] securedfolders;
     private TextInputLayout passwordTextInputLayout;
 
     private Context context;
@@ -36,6 +40,7 @@ public class SecurityHelper {
     public boolean isActiveSecurity(){return activeSecurity;}
     public boolean isPasswordOnHidden(){return passwordOnHidden;}
     public boolean isPasswordOnDelete(){return passwordOnDelete;}
+    public boolean isPasswordOnfolder(){return passwordOnfolder;}
 
     public boolean checkPassword(String pass){
         return (isActiveSecurity() && pass.equals(passwordValue));
@@ -43,10 +48,18 @@ public class SecurityHelper {
 
     public void updateSecuritySetting(){
         PreferenceUtil SP = PreferenceUtil.getInstance(context);
+        String secur = SP.getString("SecuredLocalFolders", "");
+        Gson gson = new Gson();
+        String[] secfo = gson.fromJson(secur, String[].class);
+        if(secfo.length!=0){
+            this.securedfolders = secfo;
+        }
         this.activeSecurity = SP.getBoolean(context.getString(R.string.preference_use_password), false);
         this.passwordOnDelete = SP.getBoolean(context.getString(R.string.preference_use_password_on_delete), false);
         this.passwordOnHidden = SP.getBoolean(context.getString(R.string.preference_use_password_on_hidden), true);
         this.passwordValue = SP.getString(context.getString(R.string.preference_password_value), "");
+       // this.securedfolders = SP.get
+        this.passwordOnfolder = SP.getBoolean(context.getString(R.string.preference_use_password_on_folder), false);
     }
 
     public EditText getInsertPasswordDialog(final ThemedActivity activity, AlertDialog.Builder passwordDialog){
@@ -78,6 +91,10 @@ public class SecurityHelper {
         editxtPassword.setTextColor(activity.getTextColor());
         passwordDialog.setView(PasswordDialogLayout);
         return editxtPassword;
+    }
+
+    public String[] getSecuredfolders(){
+        return securedfolders;
     }
 
     public TextInputLayout getTextInputLayout(){
