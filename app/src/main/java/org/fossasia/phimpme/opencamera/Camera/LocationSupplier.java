@@ -1,9 +1,15 @@
 package org.fossasia.phimpme.opencamera.Camera;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -217,6 +223,18 @@ public class LocationSupplier {
 				return false;
 		}
 		return true;
+	}
+
+	public static Address locationToAddress(Location location, Context context){
+		Address address = null;
+		Geocoder geocoder = new Geocoder(context, Locale.getDefault());
+		try {
+			List<Address> addressList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+			address = addressList.get(0);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return address;
 	}
 
 	public static String locationToDMS(double coord) {
