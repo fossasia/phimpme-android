@@ -51,6 +51,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.WindowManager;
@@ -147,6 +149,9 @@ public class LFMainActivity extends SharedMediaActivity {
 
     private SelectAlbumBottomSheet bottomSheetDialogFragment;
     private boolean hidden = false, pickMode = false, editMode = false, albumsMode = true, firstLaunch = true,localFolder=true,hidenav=false;
+
+    //to handle pinch gesture
+    private ScaleGestureDetector mScaleGestureDetector;
 
     //To handle all photos/Album conditions
     public boolean all_photos = false;
@@ -745,6 +750,39 @@ public class LFMainActivity extends SharedMediaActivity {
         albumsAdapter.setOnClickListener(albumOnClickListener);
         albumsAdapter.setOnLongClickListener(albumOnLongCLickListener);
         rvAlbums.setAdapter(albumsAdapter);
+
+        //set scale gesture detector for resizing the gridItem
+        mScaleGestureDetector = new ScaleGestureDetector(this, new ScaleGestureDetector.SimpleOnScaleGestureListener() {
+            @Override
+            public boolean onScale(ScaleGestureDetector detector) {
+
+                if(detector.getCurrentSpan() > 200 && detector.getTimeDelta() > 200) {
+                    int spanCount = columnsCount();
+
+                    //zooming out
+                    if ((detector.getCurrentSpan() - detector.getPreviousSpan() < -300) && spanCount<6) {
+                        SP.putInt("n_columns_folders", spanCount + 1);
+                        updateColumnsRvAlbums();
+                    }
+                    //zooming in
+                    else if((detector.getCurrentSpan() - detector.getPreviousSpan() > 300) && spanCount>1){
+                        SP.putInt("n_columns_folders", spanCount - 1);
+                        updateColumnsRvAlbums();
+                    }
+                }
+                return false;
+
+            }
+        });
+
+        //set touch listener on recycler view
+        rvAlbums.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mScaleGestureDetector.onTouchEvent(event);
+                return false;
+            }
+        });
 
         mediaAdapter = new MediaAdapter(getAlbum().getMedia(), LFMainActivity.this);
 
