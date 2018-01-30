@@ -51,7 +51,7 @@ public class SecurityHelper {
         String secur = SP.getString("SecuredLocalFolders", "");
         Gson gson = new Gson();
         String[] secfo = gson.fromJson(secur, String[].class);
-        if(secfo.length!=0){
+        if(secfo!=null){
             this.securedfolders = secfo;
         }
         this.activeSecurity = SP.getBoolean(context.getString(R.string.preference_use_password), false);
