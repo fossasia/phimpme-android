@@ -530,7 +530,7 @@
         then the media will be copied or moved in the new folder.
     </string>
     <string name="enter_time">Enter time interval</string>
-    <string name="time_interval">Time interval (seconds)</string>
+    <string name="time_interval">Time interval (seconds) (>1sec)</string>
     <string name="discard_changes_message">Are you sure you want to discard all changes?</string>
     <string name="discard_stickers_message">Are you sure you want to discard the stickers added?</string>
     <string name="discard_enhance_message">Are you sure you want to discard the enhancements made?</string>
