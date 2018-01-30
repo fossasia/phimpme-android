@@ -639,7 +639,10 @@ public class SettingsActivity extends ThemedActivity {
             public void onClick(DialogInterface dialog, int which) {
                 SP.putInt(getString(R.string.preference_primary_color), colorPicker2.getColor());
                 updateTheme();
+
+                if(swNavBar.isChecked())
                 setNavBarColor();
+
                 setScrollViewColor(scr);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     if (isTranslucentStatusBar()) {
@@ -658,7 +661,7 @@ public class SettingsActivity extends ThemedActivity {
                     if (isTranslucentStatusBar()) {
                         getWindow().setStatusBarColor(ColorPalette.getObscuredColor(getPrimaryColor()));
                     } else getWindow().setStatusBarColor(getPrimaryColor());
-                    if (isNavigationBarColored())
+                    if (isNavigationBarColored() && swNavBar.isChecked())
                         getWindow().setNavigationBarColor(getPrimaryColor());
                     else getWindow().setNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.md_black_1000));
                 }
