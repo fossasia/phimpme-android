@@ -86,6 +86,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                         .setTarget(nav_cam)
                         .setDismissText(getResources().getString(R.string.ok_button))
                         .setContentText(getResources().getString(R.string.camera_button))
+                        .setDismissOnTouch(true)
                         .build()
         );
 
@@ -94,6 +95,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                         .setTarget(nav_acc)
                         .setDismissText(getResources().getString(R.string.ok_button))
                         .setContentText(getResources().getString(R.string.accounts_button))
+                        .setDismissOnTouch(true)
                         .build()
         );
 

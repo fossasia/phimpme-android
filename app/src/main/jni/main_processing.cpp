@@ -55,6 +55,9 @@ extern "C" {
             case 11:
                 applyThreshold(src, dst, val);
                 break;
+            case 12:
+                applyNegative(src,dst,val);
+                break;
 
             default:
                 int lowThreshold = val;
@@ -114,6 +117,9 @@ extern "C" {
                 break;
             case 7:
                 adjustSharpness(src, dst, val);
+                break;
+            case 8:
+                adjustBlur(src, dst, val);
                 break;
             default:
                 break;
