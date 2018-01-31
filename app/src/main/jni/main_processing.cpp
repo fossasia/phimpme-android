@@ -56,6 +56,9 @@ extern "C" {
                 applyThreshold(src, dst, val);
                 break;
             case 12:
+                applyNegative(src,dst,val);
+                break;
+          case 13:
                 applyBoostRedEffect(src,dst,val);
                 break;
             default:

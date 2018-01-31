@@ -678,9 +678,9 @@
         <item>Grain</item>
         <item>Hist Equal</item>
         <item>Threshold</item>
+        <item>Negative</item>
         <item>Boost Red Effect</item>
     </string-array>
-
 
     <integer-array name="enhance_icons">
         <item>@drawable/ic_bright</item>
