@@ -97,17 +97,16 @@
                     android:textColor="@android:color/white"
                     android:textSize="14sp" />
 
-                <ImageView android:layout_width="wrap_content"
-                           android:layout_height="wrap_content"
-                           android:id="@+id/storage_icon"
-                           android:layout_centerVertical="true"
-                           android:paddingLeft="10dp"
-                           android:paddingStart="10dp"
-                           android:paddingTop="10dp"
-                           android:paddingRight="10dp"
-                           android:visibility="visible"
-                           android:layout_alignParentRight="true"
-                           app2:srcCompat="@drawable/ic_sd_storage_black_24dp"/>
+                <ImageView
+                    android:id="@+id/storage_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingStart="10dp"
+                    android:paddingTop="10dp" />
 
             </RelativeLayout>
         </LinearLayout>
