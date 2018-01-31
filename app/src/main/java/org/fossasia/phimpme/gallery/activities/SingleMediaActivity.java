@@ -489,6 +489,8 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             params.setMargins(0, 0, 0, 0);
 
         toolbar.setLayoutParams(params);
+
+        setUpViewPager();
     }
 
     @Override
@@ -1384,5 +1386,59 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             mainBitmap = result;
             imgView.setImageBitmap(mainBitmap);
         }
+    }
+
+    private void setUpViewPager()
+    {
+
+        BasicCallBack basicCallBack = new BasicCallBack() {
+            @Override
+            public void callBack(int status, Object data) {
+                toggleSystemUI();
+            }
+        };
+        if (!allPhotoMode && !favphotomode) {
+            adapter = new ImageAdapter(getAlbum().getMedia(), basicCallBack, this, this);
+            getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
+            mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
+                @Override
+                public void onPageChanged(int oldPosition, int position) {
+                    getAlbum().setCurrentPhotoIndex(position);
+                    toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
+                    invalidateOptionsMenu();
+                    pathForDescription = getAlbum().getMedia().get(position).getPath();
+                }
+            });
+            mViewPager.scrollToPosition(getAlbum().getCurrentMediaIndex());
+        } else if(allPhotoMode && !favphotomode){
+            adapter = new ImageAdapter(LFMainActivity.listAll, basicCallBack, this, this);
+            getSupportActionBar().setTitle(current_image_pos + 1 + " " + getString(R.string.of) + " " + size_all);
+            mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
+                @Override
+                public void onPageChanged(int oldPosition, int position) {
+                    current_image_pos = position;
+                    getAlbum().setCurrentPhotoIndex(getAlbum().getCurrentMediaIndex());
+                    toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
+                    invalidateOptionsMenu();
+                    pathForDescription = listAll.get(position).getPath();
+                }
+            });
+            mViewPager.scrollToPosition(current_image_pos);
+        } else if(!allPhotoMode && favphotomode){
+            adapter = new ImageAdapter(favouriteslist, basicCallBack, this, this);
+            getSupportActionBar().setTitle(current_image_pos + 1 + " " + getString(R.string.of) + " " + size_all);
+            mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
+                @Override
+                public void onPageChanged(int oldPosition, int position) {
+                    current_image_pos = position;
+                    getAlbum().setCurrentPhotoIndex(getAlbum().getCurrentMediaIndex());
+                    toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
+                    invalidateOptionsMenu();
+                    pathForDescription = favouriteslist.get(position).getPath();
+                }
+            });
+            mViewPager.scrollToPosition(current_image_pos);
+        }
+        mViewPager.setAdapter(adapter);
     }
 }
