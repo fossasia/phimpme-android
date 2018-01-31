@@ -678,6 +678,7 @@
         <item>Grain</item>
         <item>Hist Equal</item>
         <item>Threshold</item>
+        <item>Negative</item>
     </string-array>
 
 

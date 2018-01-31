@@ -119,5 +119,5 @@ void applyThreshold(cv::Mat &inp, cv::Mat &out, int val);
 void applyGrain(cv::Mat &inp, cv::Mat &out, int val);
 void applyHistEq(cv::Mat &inp, cv::Mat &out, int val);
 void applyCyano(cv::Mat &inp, cv::Mat &out, int val);
-
+void applyNegative(cv::Mat &src, cv::Mat &dst, int val);
 }

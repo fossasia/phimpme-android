@@ -74,6 +74,28 @@ void applyBW(cv::Mat &src, cv::Mat &dst, int val) {
     }
 }
 
+void applyNegative(cv::Mat &src, cv::Mat &dst, int val) {
+    register int x, y;
+    float opacity = val * 0.01f;
+    cvtColor(src, src, CV_BGRA2BGR);
+    dst = Mat::zeros(src.size(), src.type());
+    uchar r, g, b;
+
+    for (y = 0; y < src.rows; y++) {
+        for (x = 0; x < src.cols; x++) {
+            r = src.at<Vec3b>(y, x)[0];
+            g = src.at<Vec3b>(y, x)[1];
+            b = src.at<Vec3b>(y, x)[2];
+            dst.at<Vec3b>(y, x)[0] =
+                    saturate_cast<uchar>(opacity * (255 - r));
+            dst.at<Vec3b>(y, x)[1] =
+                    saturate_cast<uchar>(opacity * (255 - g));
+            dst.at<Vec3b>(y, x)[2] =
+                    saturate_cast<uchar>(opacity * (255 - b));
+        }
+    }
+}
+
 void applySajuno(cv::Mat &src, cv::Mat &dst, int val) {
     register int x, y;
     double op = 0.5 + 0.35 * val / 100.0;
