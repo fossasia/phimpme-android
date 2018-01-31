@@ -30,6 +30,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.print.PrintHelper;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -51,9 +52,12 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -124,6 +128,8 @@ import static org.fossasia.phimpme.gallery.data.base.SortingMode.NAME;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.NUMERIC;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.SIZE;
 
+import static android.R.attr.bitmap;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -146,6 +152,9 @@ public class LFMainActivity extends SharedMediaActivity {
 
     private SelectAlbumBottomSheet bottomSheetDialogFragment;
     private boolean hidden = false, pickMode = false, editMode = false, albumsMode = true, firstLaunch = true,localFolder=true,hidenav=false;
+
+    //to handle pinch gesture
+    private ScaleGestureDetector mScaleGestureDetector;
 
     //To handle all photos/Album conditions
     public boolean all_photos = false;
@@ -428,38 +437,171 @@ public class LFMainActivity extends SharedMediaActivity {
     };
 
     private View.OnLongClickListener albumOnLongCLickListener = new View.OnLongClickListener() {
+
         @Override
         public boolean onLongClick(View v) {
-            if(checkForReveal) {
-                enterReveal();
-                checkForReveal = false;
-            }
-            albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(((Album) v.findViewById(R.id.album_name).getTag())));
-            editMode = true;
-            invalidateOptionsMenu();
-            if(getAlbums().getSelectedCount()==0)
-                getNavigationBar();
-            else
-            {
-                hideNavigationBar();
-                hidenav=true;
+            final Album album = (Album) v.findViewById(R.id.album_name).getTag();
+            if(securityObj.isActiveSecurity() && securityObj.isPasswordOnfolder()) {
+                if (check(album.getPath())) {
+                    AlertDialog.Builder passwordDialogBuilder =
+                            new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
+                    final EditText editTextPassword =
+                            securityObj.getInsertPasswordDialog(LFMainActivity.this, passwordDialogBuilder);
+                    passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+
+                    passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(),
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //This should br empty it will be overwrite later
+                                    //to avoid dismiss of the dialog on wrong password
+                                }
+                            });
+
+                    final AlertDialog passwordDialog = passwordDialogBuilder.create();
+                    passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+                    passwordDialog.show();
+                    AlertDialogsHelper.setButtonTextColor(
+                            new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE},
+                            getAccentColor(), passwordDialog);
+                    passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                            .setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (securityObj.checkPassword(editTextPassword.getText().toString())) {
+                                        passwordDialog.dismiss();
+                                        if(checkForReveal) {
+                                            enterReveal();
+                                            checkForReveal = false;
+                                        }
+                                        albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(album));
+                                        editMode = true;
+                                        invalidateOptionsMenu();
+                                        if(getAlbums().getSelectedCount()==0)
+                                            getNavigationBar();
+                                        else
+                                        {
+                                            hideNavigationBar();
+                                            hidenav=true;
+                                        }
+                                    }
+                                    // if password is incorrect, notify user of incorrect password
+                                    else {
+                                        SnackBarHandler
+                                                .showWithBottomMargin(mDrawerLayout, getString(R.string.wrong_password),
+                                                        navigationView.getHeight());
+                                        editTextPassword.getText().clear();
+                                        editTextPassword.requestFocus();
+                                    }
+                                }
+                            });
+                } else {
+                    if(checkForReveal) {
+                        enterReveal();
+                        checkForReveal = false;
+                    }
+                    albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(album));
+                    editMode = true;
+                    invalidateOptionsMenu();
+                    if(getAlbums().getSelectedCount()==0)
+                        getNavigationBar();
+                    else
+                    {
+                        hideNavigationBar();
+                        hidenav=true;
+                    }
+                }
+            }else{
+                if(checkForReveal) {
+                    enterReveal();
+                    checkForReveal = false;
+                }
+                albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(album));
+                editMode = true;
+                invalidateOptionsMenu();
+                if(getAlbums().getSelectedCount()==0)
+                    getNavigationBar();
+                else
+                {
+                    hideNavigationBar();
+                    hidenav=true;
+                }
             }
             return true;
         }
     };
 
+    private boolean check(String path){
+        boolean dr=false;
+        for(String s: securityObj.getSecuredfolders()){
+            if(s.equals(path)){
+                dr=true;
+                break;
+            }
+        }
+        return dr;
+    }
+
     private View.OnClickListener albumOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             fromOnClick=true;
-            Album album = (Album) v.findViewById(R.id.album_name).getTag();
+            final Album album = (Album) v.findViewById(R.id.album_name).getTag();
             //int index = Integer.parseInt(v.findViewById(R.id.album_name).getTag().toString());
             if (editMode) {
                 albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(album));
                 if(getAlbums().getSelectedCount()==0)
                     getNavigationBar();
                 invalidateOptionsMenu();
-            } else {
+            } else if(securityObj.isActiveSecurity() && securityObj.isPasswordOnfolder()){
+                if (check(album.getPath())) {
+                    AlertDialog.Builder passwordDialogBuilder =
+                            new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
+                    final EditText editTextPassword =
+                            securityObj.getInsertPasswordDialog(LFMainActivity.this, passwordDialogBuilder);
+                    passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+
+                    passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(),
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //This should br empty it will be overwrite later
+                                    //to avoid dismiss of the dialog on wrong password
+                                }
+                            });
+
+                    final AlertDialog passwordDialog = passwordDialogBuilder.create();
+                    passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+                    passwordDialog.show();
+                    AlertDialogsHelper.setButtonTextColor(
+                            new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE},
+                            getAccentColor(), passwordDialog);
+                    passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                            .setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (securityObj.checkPassword(editTextPassword.getText().toString())) {
+                                        passwordDialog.dismiss();
+                                        getAlbums().setCurrentAlbum(album);
+                                        displayCurrentAlbumMedia(true);
+                                    }
+                                    // if password is incorrect, notify user of incorrect password
+                                    else {
+                                        SnackBarHandler
+                                                .showWithBottomMargin(mDrawerLayout, getString(R.string.wrong_password),
+                                                        navigationView.getHeight());
+                                        editTextPassword.getText().clear();
+                                        editTextPassword.requestFocus();
+                                    }
+                                }
+                            });
+                }
+                else{
+                    getAlbums().setCurrentAlbum(album);
+                    displayCurrentAlbumMedia(true);
+                }
+
+            }else {
                 getAlbums().setCurrentAlbum(album);
                 displayCurrentAlbumMedia(true);
             }
@@ -744,6 +886,39 @@ public class LFMainActivity extends SharedMediaActivity {
         albumsAdapter.setOnClickListener(albumOnClickListener);
         albumsAdapter.setOnLongClickListener(albumOnLongCLickListener);
         rvAlbums.setAdapter(albumsAdapter);
+
+        //set scale gesture detector for resizing the gridItem
+        mScaleGestureDetector = new ScaleGestureDetector(this, new ScaleGestureDetector.SimpleOnScaleGestureListener() {
+            @Override
+            public boolean onScale(ScaleGestureDetector detector) {
+
+                if(detector.getCurrentSpan() > 200 && detector.getTimeDelta() > 200) {
+                    int spanCount = columnsCount();
+
+                    //zooming out
+                    if ((detector.getCurrentSpan() - detector.getPreviousSpan() < -300) && spanCount<6) {
+                        SP.putInt("n_columns_folders", spanCount + 1);
+                        updateColumnsRvAlbums();
+                    }
+                    //zooming in
+                    else if((detector.getCurrentSpan() - detector.getPreviousSpan() > 300) && spanCount>1){
+                        SP.putInt("n_columns_folders", spanCount - 1);
+                        updateColumnsRvAlbums();
+                    }
+                }
+                return false;
+
+            }
+        });
+
+        //set touch listener on recycler view
+        rvAlbums.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mScaleGestureDetector.onTouchEvent(event);
+                return false;
+            }
+        });
 
         mediaAdapter = new MediaAdapter(getAlbum().getMedia(), LFMainActivity.this);
 
@@ -1265,6 +1440,21 @@ public class LFMainActivity extends SharedMediaActivity {
         if (albumsMode) {
             MenuItem menuitem = menu.findItem(R.id.search_action);
             final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuitem);
+            searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override public void onFocusChange(final View view, boolean b) {
+                    if (b) {
+                        view.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                InputMethodManager imm = (InputMethodManager) getSystemService(Context
+                                        .INPUT_METHOD_SERVICE);
+                                imm.showSoftInput(view.findFocus(), 0);
+                            }
+                        }, 200);
+
+                    }
+                }
+            });
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
@@ -1410,7 +1600,6 @@ public class LFMainActivity extends SharedMediaActivity {
         menu.findItem(R.id.set_pin_album).setVisible(albumsMode && getAlbums().getSelectedCount() == 1);
         menu.findItem(R.id.setAsAlbumPreview).setVisible(!albumsMode && !all_photos && getAlbum()
                 .getSelectedCount() == 1);
-
         menu.findItem(R.id.affixPhoto).setVisible((!albumsMode && (getAlbum().getSelectedCount() > 1) ||
                 selectedMedias.size() > 1) && !fav_photos);
         return super.onPrepareOptionsMenu(menu);
@@ -1617,7 +1806,6 @@ public class LFMainActivity extends SharedMediaActivity {
                                         }
                                     }
                                 });
-
                                succ=true;
                             }
 
