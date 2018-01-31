@@ -597,6 +597,8 @@
     <string name="show_password">Show Password</string>
 
     <string name="type_password">Insert password</string>
+    <string name="change_password">Change password</string>
+    <string name="set_passowrd">There is no password set. Please set a password first.</string>
     <string name="type_description">Description</string>
     <string name="Rename">Rename</string>
     <string name="type_caption">Write something</string>
@@ -610,6 +612,7 @@
     <string name="fingerprint">Fingerprint</string>
     <string name="clear_password">Clear Password</string>
     <string name="error_password_length">The minimum password length is 4 character</string>
+    <string name="error_password_match">New password matches to the previous password. Please set another password.</string>
     <string name="max_password_length">The password length cannot be more than 10 characters</string>
 
     <!-- SETTINGS -->
