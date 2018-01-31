@@ -79,6 +79,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
         if(a.getPath().contains(Environment.getExternalStorageDirectory().getPath())){
             holder.storage.setVisibility(View.INVISIBLE);
         } else {
+            holder.storage.setImageResource(theme.getBaseTheme() == ThemeHelper.LIGHT_THEME ? R.drawable.ic_sd_storage_black_24dp : R.drawable.ic_sd_storage_white_24dp);
             holder.storage.setVisibility(View.VISIBLE);
         }
 
