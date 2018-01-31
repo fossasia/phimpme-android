@@ -1583,7 +1583,6 @@ public class LFMainActivity extends SharedMediaActivity {
         menu.findItem(R.id.action_copy).setVisible(visible);
         menu.findItem(R.id.action_move).setVisible((visible || editMode)&&!fav_photos);
         menu.findItem(R.id.action_add_favourites).setVisible((visible || editMode)&&(!albumsMode&&!fav_photos));
-        menu.findItem(R.id.print).setVisible(visible);
         menu.findItem(R.id.excludeAlbumButton).setVisible(editMode && !all_photos && albumsMode && !fav_photos);
         menu.findItem(R.id.zipAlbumButton).setVisible(editMode && !all_photos&&albumsMode &&!fav_photos && !hidden &&
                 getAlbums().getSelectedCount() == 1);
@@ -1641,19 +1640,6 @@ public class LFMainActivity extends SharedMediaActivity {
                     }});
                 detailsDialog.show();
                 AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE}, getAccentColor(), detailsDialog);
-                return true;
-
-            case R.id.print:
-                if(!all_photos){
-                    for(int i = 0; i < getAlbum().getSelectedMedia().size(); i++){
-                        PrintHelper photoPrinter = new PrintHelper(this);
-                        photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
-                        Bitmap bitmap = BitmapFactory.decodeFile(getAlbum().getSelectedMedia(i).getPath(), new
-                                BitmapFactory.Options
-                                ());
-                        photoPrinter.printBitmap(getString(R.string.print), bitmap);
-                    }
-                }
                 return true;
 
             case R.id.select_all:
