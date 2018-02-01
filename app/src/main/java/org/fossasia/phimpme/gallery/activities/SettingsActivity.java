@@ -966,8 +966,27 @@ public class SettingsActivity extends ThemedActivity {
         resetDialog.setNegativeButton(this.getString(R.string.no_action).toUpperCase(), null);
         resetDialog.setPositiveButton(this.getString(R.string.yes_action).toUpperCase(), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                SP.clearPreferences();
-                recreate();
+                if(!securityObj.isActiveSecurity()) {
+                    SP.clearPreferences();
+                    recreate();
+                } else {
+                    String password =  SP.getString(getString(R.string.preference_password_value),"");
+                    boolean activeSecurity = SP.getBoolean(getString(R.string.preference_use_password), false);
+                    boolean hiddenFolders =  SP.getBoolean(getString(R.string.preference_use_password_on_hidden), false);
+                    boolean localFolders =  SP.getBoolean(getString(R.string.preference_use_password_on_folder), false);
+                    boolean deleteAction = SP.getBoolean(getString(R.string.preference_use_password_on_delete), false);
+
+                    SP.clearPreferences();
+                    recreate();
+
+                    SP.putString(getString(R.string.preference_password_value),password);
+                    SP.putBoolean(getString(R.string.preference_use_password), activeSecurity);
+                    SP.putBoolean(getString(R.string.preference_use_password_on_hidden), hiddenFolders);
+                    SP.putBoolean(getString(R.string.preference_use_password_on_folder), localFolders);
+                    SP.putBoolean(getString(R.string.preference_use_password_on_delete), deleteAction);
+                    securityObj.updateSecuritySetting();
+
+                }
             }
         });
         AlertDialog alertDialog = resetDialog.create();
