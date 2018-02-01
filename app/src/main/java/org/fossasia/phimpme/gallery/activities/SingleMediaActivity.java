@@ -12,6 +12,7 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -59,6 +60,7 @@ import android.widget.ViewSwitcher;
 
 import com.bumptech.glide.Glide;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.iconics.view.IconicsImageView;
 import com.yalantis.ucrop.UCrop;
 
 import org.fossasia.phimpme.R;
@@ -487,6 +489,8 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             params.setMargins(0, 0, 0, 0);
 
         toolbar.setLayoutParams(params);
+
+        setUpViewPager();
     }
 
     @Override
@@ -614,10 +618,13 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             adapter.notifyDataSetChanged();
             getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
         } else if(allPhotoMode && !favphotomode) {
+            int c = current_image_pos;
             deleteMedia(listAll.get(current_image_pos).getPath());
             LFMainActivity.listAll.remove(current_image_pos);
             size_all = LFMainActivity.listAll.size();
             adapter.notifyDataSetChanged();
+            if(current_image_pos!=size_all)
+                getSupportActionBar().setTitle((c + 1) + " " + getString(R.string.of) + " " + size_all);
 //            mViewPager.setCurrentItem(current_image_pos);
 //            toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + size_all);
         } else if(favphotomode && !allPhotoMode){
@@ -872,23 +879,40 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     media = new Media(new File(favouriteslist.get(current_image_pos).getPath()));
                 }
                 final MediaDetailsMap<String,String> mediaDetailsMap = media.getMainDetails(this);
-
-                // Set current image as a blurred background
-                Bitmap blurBackground = BlurImageUtil.blur(context, BitmapFactory.decodeFile(media.getPath()));
-                v.setBackground(new BitmapDrawable(getResources(), blurBackground));
+                LinearLayout linearLayout1 = (LinearLayout) findViewById(R.id.image_desc_top);
+                linearLayout1.setBackgroundColor(getPrimaryColor());
+                v.setBackgroundColor(getBackgroundColor());
+                int textColor = getBaseTheme() != ThemeHelper.LIGHT_THEME ? Color.parseColor("#FAFAFA" ): Color
+                        .parseColor("#455A64");
 
                 /* Getting all the viewgroups and views of the image description layout */
 
                 TextView  imgDate = (TextView) linearLayout.findViewById(R.id.image_desc_date);
+                imgDate.setTextColor(textColor);
                 TextView  imgLocation = (TextView) linearLayout.findViewById(R.id.image_desc_loc);
+                imgLocation.setTextColor(textColor);
                 TextView  imgTitle = (TextView) linearLayout.findViewById(R.id.image_desc_title);
+                imgTitle.setTextColor(textColor);
                 TextView  imgType = (TextView) linearLayout.findViewById(R.id.image_desc_type);
+                imgType.setTextColor(textColor);
                 TextView  imgSize = (TextView) linearLayout.findViewById(R.id.image_desc_size);
+                imgSize.setTextColor(textColor);
                 TextView  imgResolution = (TextView) linearLayout.findViewById(R.id.image_desc_res);
+                imgResolution.setTextColor(textColor);
                 TextView  imgPath = (TextView) linearLayout.findViewById(R.id.image_desc_path);
+                imgPath.setTextColor(textColor);
                 TextView  imgOrientation = (TextView) linearLayout.findViewById(R.id.image_desc_orientation);
+                imgOrientation.setTextColor(textColor);
                 TextView  imgExif = (TextView) linearLayout.findViewById(R.id.image_desc_exif);
+                imgExif.setTextColor(textColor);
                 TextView  imgDesc = (TextView) linearLayout.findViewById(R.id.image_desc);
+                imgDesc.setTextColor(textColor);
+                IconicsImageView iconicsImageView = (IconicsImageView) linearLayout.findViewById(R.id.date_icon);
+                iconicsImageView.setColor(textColor);
+                IconicsImageView locationicon = (IconicsImageView) linearLayout.findViewById(R.id.loca_icon);
+                locationicon.setColor(textColor);
+                IconicsImageView detailsicon = (IconicsImageView) linearLayout.findViewById(R.id.detail_icon);
+                detailsicon.setColor(textColor);
                 ImageButton imgBack = (ImageButton) linearLayout.findViewById(R.id.img_desc_back_arrow);
 
                 imgBack.setOnClickListener(new View.OnClickListener() {
@@ -899,6 +923,30 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         toggleSystemUI();
                     }
                 });
+
+                /*Setting the label text colours*/
+                TextView datelabel = (TextView) linearLayout.findViewById(R.id.date_label);
+                datelabel.setTextColor(textColor);
+                TextView locationlabel = (TextView) linearLayout.findViewById(R.id.location_label);
+                locationlabel.setTextColor(textColor);
+                TextView detaillabel = (TextView) linearLayout.findViewById(R.id.details_label);
+                detaillabel.setTextColor(textColor);
+                TextView titlelabel = (TextView) linearLayout.findViewById(R.id.title_label);
+                titlelabel.setTextColor(textColor);
+                TextView typelabel = (TextView) linearLayout.findViewById(R.id.type_label);
+                typelabel.setTextColor(textColor);
+                TextView sizelabel = (TextView) linearLayout.findViewById(R.id.size_label);
+                sizelabel.setTextColor(textColor);
+                TextView reslabel = (TextView) linearLayout.findViewById(R.id.resolution_label);
+                reslabel.setTextColor(textColor);
+                TextView pathlabel = (TextView) linearLayout.findViewById(R.id.path_label);
+                pathlabel.setTextColor(textColor);
+                TextView orientationlabel = (TextView) linearLayout.findViewById(R.id.orientation_label);
+                orientationlabel.setTextColor(textColor);
+                TextView exiflabel = (TextView) linearLayout.findViewById(R.id.exif_label);
+                exiflabel.setTextColor(textColor);
+                TextView desclabel = (TextView) linearLayout.findViewById(R.id.description_label);
+                desclabel.setTextColor(textColor);
 
                 /*Setting the values to all the textViews*/
 
@@ -1338,5 +1386,59 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             mainBitmap = result;
             imgView.setImageBitmap(mainBitmap);
         }
+    }
+
+    private void setUpViewPager()
+    {
+
+        BasicCallBack basicCallBack = new BasicCallBack() {
+            @Override
+            public void callBack(int status, Object data) {
+                toggleSystemUI();
+            }
+        };
+        if (!allPhotoMode && !favphotomode) {
+            adapter = new ImageAdapter(getAlbum().getMedia(), basicCallBack, this, this);
+            getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
+            mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
+                @Override
+                public void onPageChanged(int oldPosition, int position) {
+                    getAlbum().setCurrentPhotoIndex(position);
+                    toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
+                    invalidateOptionsMenu();
+                    pathForDescription = getAlbum().getMedia().get(position).getPath();
+                }
+            });
+            mViewPager.scrollToPosition(getAlbum().getCurrentMediaIndex());
+        } else if(allPhotoMode && !favphotomode){
+            adapter = new ImageAdapter(LFMainActivity.listAll, basicCallBack, this, this);
+            getSupportActionBar().setTitle(current_image_pos + 1 + " " + getString(R.string.of) + " " + size_all);
+            mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
+                @Override
+                public void onPageChanged(int oldPosition, int position) {
+                    current_image_pos = position;
+                    getAlbum().setCurrentPhotoIndex(getAlbum().getCurrentMediaIndex());
+                    toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
+                    invalidateOptionsMenu();
+                    pathForDescription = listAll.get(position).getPath();
+                }
+            });
+            mViewPager.scrollToPosition(current_image_pos);
+        } else if(!allPhotoMode && favphotomode){
+            adapter = new ImageAdapter(favouriteslist, basicCallBack, this, this);
+            getSupportActionBar().setTitle(current_image_pos + 1 + " " + getString(R.string.of) + " " + size_all);
+            mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
+                @Override
+                public void onPageChanged(int oldPosition, int position) {
+                    current_image_pos = position;
+                    getAlbum().setCurrentPhotoIndex(getAlbum().getCurrentMediaIndex());
+                    toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
+                    invalidateOptionsMenu();
+                    pathForDescription = favouriteslist.get(position).getPath();
+                }
+            });
+            mViewPager.scrollToPosition(current_image_pos);
+        }
+        mViewPager.setAdapter(adapter);
     }
 }

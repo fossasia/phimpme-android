@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Locale;
 
 import android.text.TextUtils;
+
 import io.realm.Realm;
 
 /**
@@ -208,12 +209,16 @@ public class Media implements Parcelable, Serializable {
                 e.printStackTrace();
             }
             ArrayList<String> addresslines = new ArrayList<String>();
-            Address address = addressList.get(0);
-            for(int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
-                addresslines.add(address.getAddressLine(i));
+            if(addressList!=null)
+            {
+                Address address = addressList.get(0);
+                for(int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
+                    addresslines.add(address.getAddressLine(i));
+                }
+                details.put(context.getString(R.string.location), TextUtils.join(System.getProperty("line.separator"),
+                        addresslines));
             }
-            details.put(context.getString(R.string.location), TextUtils.join(System.getProperty("line.separator"),
-                    addresslines));
+
         }
 
         Realm realm;
