@@ -83,7 +83,7 @@
                            app:srcCompat="@drawable/ic_sd_storage_icon_color_24dp"
                            android:visibility="visible"/>
             </LinearLayout>
-
+      
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
