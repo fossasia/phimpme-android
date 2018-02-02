@@ -98,6 +98,10 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher {
         mColorPicker = new ColorPicker(getActivity(), 255, 0, 0);
         mTextColorSelector.setOnClickListener(new SelectColorBtnClick());
         mInputText.addTextChangedListener(this);
+        boolean focus = mInputText.requestFocus();
+        if(focus){
+            imm.showSoftInput(mInputText, InputMethodManager.SHOW_IMPLICIT);
+        }
         mTextStickerView.setEditText(mInputText);
         onShow();
     }
