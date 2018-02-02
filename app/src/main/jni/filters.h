@@ -121,4 +121,5 @@ void applyHistEq(cv::Mat &inp, cv::Mat &out, int val);
 void applyCyano(cv::Mat &inp, cv::Mat &out, int val);
 void applyBoostRedEffect(cv::Mat &inp, cv::Mat &out, int val);
 void applyNegative(cv::Mat &src, cv::Mat &dst, int val);
+void applyGreenBoostEffect(cv::Mat &src, cv::Mat &dst, int val);
 }
