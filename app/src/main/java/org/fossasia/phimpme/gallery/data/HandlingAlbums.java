@@ -257,6 +257,14 @@ public class HandlingAlbums {
     return ContentHelper.deleteFilesInFolder(context, new File(album.getPath()));
   }
 
+  public boolean moveSelectedAlbum(Context context, String targetDir) {
+    Album current = selectedAlbums.get(0);
+    current.updatePhotos(context);
+    current.selectAllPhotos();
+    int ans = current.moveSelectedMedia(context, targetDir);
+    return ans != -1;
+  }
+
   public void excludeSelectedAlbums(Context context) {
     for (Album selectedAlbum : selectedAlbums)
       excludeAlbum(context, selectedAlbum);
