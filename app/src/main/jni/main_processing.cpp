@@ -61,6 +61,9 @@ extern "C" {
             case 13:
                 applyGreenBoostEffect(src,dst,val);
                 break;
+            case 14:
+                applyBlueBoostEffect(src,dst,val);
+                break;
 
             default:
                 int lowThreshold = val;
