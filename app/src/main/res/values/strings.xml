@@ -530,7 +530,7 @@
         then the media will be copied or moved in the new folder.
     </string>
     <string name="enter_time">Enter time interval</string>
-    <string name="time_interval">Time interval (seconds)</string>
+    <string name="time_interval">Time interval (seconds) (>1sec)</string>
     <string name="discard_changes_message">Are you sure you want to discard all changes?</string>
     <string name="discard_stickers_message">Are you sure you want to discard the stickers added?</string>
     <string name="discard_enhance_message">Are you sure you want to discard the enhancements made?</string>
@@ -1019,6 +1019,11 @@
 
     <string name="image_type">image/*</string>
 
+    <!--OneDrive-->
+    <string name="uploaded_onedrive">Uploaded to One Drive</string>
+    <string name="login_onedrive_from_accounts">Login to OneDrive from Accounts Manager</string>
+    <string name="onedrive_share">OneDrive</string>
+  
     <!--GoogleDrive-->
     <string name="uploaded_googledrive">Uploaded to Google Drive</string>
     <string name="login_googledrive_account">Login to Google Drive From Accounts</string>
@@ -1137,4 +1142,6 @@
     <string name="copyright_2011_2012_chris_banes">Copyright 2011, 2012 Chris Banes</string>
     <string name="copyright_2014_2015_henning_dodenhof">Copyright 2014 - 2015 Henning Dodenhof</string>
     <string name="copyright_2016_mykhailo_schurov">Copyright 2016 Mykhailo Shchurov</string>
+    <string name="move_all_photos">All the photos will be moved to the selected folder. Do you wish to continue?</string>
+    <string name="moved_target_folder_success">Moved to target folder successfully.</string>
 </resources>
