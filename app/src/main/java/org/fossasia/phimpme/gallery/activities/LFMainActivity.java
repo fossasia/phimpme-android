@@ -657,6 +657,8 @@ public class LFMainActivity extends SharedMediaActivity {
         BottomNavigationView navigationView = (BottomNavigationView)findViewById(R.id.bottombar);
         favicon = (IconicsImageView) findViewById(R.id.Drawer_favourite_Icon);
 
+        this.overridePendingTransition(R.anim.left_to_right,
+                                R.anim.right_to_left);
         SP = PreferenceUtil.getInstance(getApplicationContext());
         albumsMode = true;
         editMode = false;
