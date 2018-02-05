@@ -1144,4 +1144,6 @@
     <string name="copyright_2016_mykhailo_schurov">Copyright 2016 Mykhailo Shchurov</string>
     <string name="move_all_photos">All the photos will be moved to the selected folder. Do you wish to continue?</string>
     <string name="moved_target_folder_success">Moved to target folder successfully.</string>
+
+    <string name="no_favourites_text">There are no favourites presently. To mark a picture as favourite, select the picture and tap on \"Add to Favourites\" from the overflow menu.</string>
 </resources>
