@@ -77,6 +77,15 @@
                             android:visibility="invisible"
                             tools:targetApi="lollipop" />
 
+                        <ImageView
+                            android:id="@+id/star_image_view"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:layout_above="@id/nothing_to_show"
+                            android:layout_centerInParent="true"
+                            android:visibility="gone"
+                            app:srcCompat="@drawable/ic_star_black_24dp" />
+
                     </RelativeLayout>
                 </android.support.v4.widget.SwipeRefreshLayout>
             </FrameLayout>
