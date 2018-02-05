@@ -97,67 +97,104 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.github.deano2390:MaterialShowcaseView:1.1.0'
+
+    //google and support
     compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:design:$rootProject.supportLibraryVersion"
     compile "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
-    testCompile "junit:junit:$rootProject.junitVersion"
-    compile "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
-    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
     compile "com.android.support:palette-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:customtabs:$rootProject.supportLibraryVersion"
-    compile project(':photoview')
-    compile "com.twitter.sdk.android:twitter:$rootProject.twitterVersion"
-//    compile "com.android.support:support-v4:$rootProject.supportLibraryVersion"
-    compile "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
-    compile "com.github.nextcloud:android-library:$rootProject.nextCloudVersion"
-    compile 'com.cloudrail:cloudrail-si-android:2.20.1'
-    compile 'com.facebook.stetho:stetho:1.5.0'
-    compile files('libs/twitter4j-core-3.0.5.jar')
-    compile files('libs/twitter4j-media-support-3.0.5.jar')
-    compile files('libs/flickrj-android-2.1.0.jar')
-    compile project(':openCVLibrary24133')
-    compile project(':pdk')
-    compile 'uz.shift:colorpicker:0.5@aar'
+    compile 'com.google.firebase:firebase-core:11.0.2'
+    compile 'com.google.firebase:firebase-messaging:11.0.2'
+    compile "com.google.android.gms:play-services-auth:$rootProject.gmsVersion"
+    compile "com.google.android.gms:play-services-plus:$rootProject.gmsVersion"
+    compile "com.google.firebase:firebase-perf:$rootProject.gmsVersion"
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+    //exoplayer
+    compile 'com.google.android.exoplayer:exoplayer:r1.5.7'
+
+    //utils
+    compile 'com.github.deano2390:MaterialShowcaseView:1.1.0'
+    compile "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
     compile 'com.github.bumptech.glide:glide:3.7.0'
+    compile 'com.yalantis:ucrop:1.5.0'
+    compile 'de.psdev.licensesdialog:licensesdialog:1.8.0'
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+        transitive = true;
+    }
+    compile 'com.daksh:loglr:1.2.1'
     compile 'com.koushikdutta.ion:ion:2.1.7'
+    compile 'org.jetbrains:annotations-java5:15.0'
+    compile 'com.android.support:multidex:1.0.1'
+    compile group: 'com.box', name: 'box-android-sdk', version: '4.0.8'
+
+    //icons
     compile 'com.mikepenz:iconics-core:2.8.4@aar'
     compile 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
     compile 'com.mikepenz:community-material-typeface:1.5.54.2@aar'
     compile 'com.mikepenz:fontawesome-typeface:4.6.0.1@aar'
-    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.7'
-    compile 'com.yalantis:ucrop:1.5.0'
-    compile 'com.google.android.exoplayer:exoplayer:r1.5.7'
-    compile 'de.psdev.licensesdialog:licensesdialog:1.8.0'
+
+    //ui
     compile 'de.hdodenhof:circleimageview:2.0.0'
-    compile 'com.drewnoakes:metadata-extractor:2.9.1'
-    compile 'org.jetbrains:annotations-java5:15.0'
+    compile 'uz.shift:colorpicker:0.5@aar'
     compile 'com.turingtechnologies.materialscrollbar:lib:10.0.3'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.7'
+    compile 'com.github.shchurov:horizontalwheelview:0.9.5'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
-    compile 'com.google.firebase:firebase-core:11.0.2'
-    compile 'com.google.firebase:firebase-messaging:11.0.2'
+
+    //twitter
+    compile "com.twitter.sdk.android:twitter:$rootProject.twitterVersion"
+    compile files('libs/twitter4j-core-3.0.5.jar')
+    compile files('libs/twitter4j-media-support-3.0.5.jar')
+
+    //facebook
+    compile "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
     compile 'com.facebook.android:facebook-android-sdk:4.23.0'
-    compile 'com.uphyca:stetho_realm:2.0.0'
-    compile 'com.android.support:multidex:1.0.1'
-    compile group: 'com.box', name: 'box-android-sdk', version: '4.0.8'
-    androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
-    compile "com.google.android.gms:play-services-auth:$rootProject.gmsVersion"
-    compile "com.google.android.gms:play-services-plus:$rootProject.gmsVersion"
-    compile "com.google.firebase:firebase-perf:$rootProject.gmsVersion"
-    compile 'com.daksh:loglr:1.2.1'
+    compile 'com.facebook.stetho:stetho:1.5.0'
+
+    //cloud rail
+    compile 'com.cloudrail:cloudrail-si-android:2.20.1'
+
+    //next cloud
+    compile "com.github.nextcloud:android-library:$rootProject.nextCloudVersion"
+
+    //leak canary
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+
+    //flickr
+    compile files('libs/flickrj-android-2.1.0.jar')
+
+    //tumblr
     compile ('com.tumblr:jumblr:0.0.11'){
         exclude module:'scribe'
     }
-    compile 'com.github.shchurov:horizontalwheelview:0.9.5'
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
-        transitive = true;
 
     }
     debugCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
-}
+    //realm
+    compile 'com.uphyca:stetho_realm:2.0.0'
+
+    //metadataextractor
+    compile 'com.drewnoakes:metadata-extractor:2.9.1'
+
+    //tests
+    testCompile "junit:junit:$rootProject.junitVersion"
+    androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
+
+    //opencv
+    compile project(':openCVLibrary24133')
+
+    //pdk
+    compile project(':pdk')
+
+    //photoview
+    compile project(':photoview')
+
 apply plugin: 'com.google.gms.google-services'
 
 buildscript {
