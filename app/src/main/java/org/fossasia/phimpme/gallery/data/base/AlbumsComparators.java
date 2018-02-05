@@ -18,8 +18,6 @@ public class AlbumsComparators {
                 return getSizeComparator(sortingOrder);
             case DATE: default:
                 return getDateComparator(sortingOrder);
-            case NUMERIC:
-                return getNumericComparator(sortingOrder);
         }
     }
 
