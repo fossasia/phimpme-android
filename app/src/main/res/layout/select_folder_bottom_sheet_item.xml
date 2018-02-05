@@ -69,6 +69,7 @@
                     android:textSize="14sp"
                 />
             </LinearLayout>
+
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
