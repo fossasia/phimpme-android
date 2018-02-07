@@ -1143,4 +1143,8 @@
     <string name="copyright_2011_2012_chris_banes">Copyright 2011, 2012 Chris Banes</string>
     <string name="copyright_2014_2015_henning_dodenhof">Copyright 2014 - 2015 Henning Dodenhof</string>
     <string name="copyright_2016_mykhailo_schurov">Copyright 2016 Mykhailo Shchurov</string>
+    <string name="move_all_photos">All the photos will be moved to the selected folder. Do you wish to continue?</string>
+    <string name="moved_target_folder_success">Moved to target folder successfully.</string>
+
+    <string name="no_favourites_text">There are no favourites presently. To mark a picture as favourite, select the picture and tap on \"Add to Favourites\" from the overflow menu.</string>
 </resources>

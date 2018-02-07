@@ -999,6 +999,7 @@ public class SettingsActivity extends ThemedActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(context, CameraActivity.class));
+                finish();
             }
         });
 
