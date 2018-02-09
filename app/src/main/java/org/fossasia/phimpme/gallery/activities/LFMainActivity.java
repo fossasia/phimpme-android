@@ -126,7 +126,6 @@ import io.realm.RealmResults;
 
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.DATE;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.NAME;
-import static org.fossasia.phimpme.gallery.data.base.SortingMode.NUMERIC;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.SIZE;
 import static org.fossasia.phimpme.gallery.util.ThemeHelper.LIGHT_THEME;
 
@@ -1498,9 +1497,6 @@ public class LFMainActivity extends SharedMediaActivity {
                 default:
                     menu.findItem(R.id.date_taken_sort_action).setChecked(true);
                     break;
-                case NUMERIC:
-                    menu.findItem(R.id.numeric_sort_action).setChecked(true);
-                    break;
             }
 
         } else {
@@ -1522,9 +1518,6 @@ public class LFMainActivity extends SharedMediaActivity {
                 case DATE:
                 default:
                     menu.findItem(R.id.date_taken_sort_action).setChecked(true);
-                    break;
-                case NUMERIC:
-                    menu.findItem(R.id.numeric_sort_action).setChecked(true);
                     break;
             }
         }
@@ -2091,24 +2084,6 @@ public class LFMainActivity extends SharedMediaActivity {
                     new SortingUtilsAlbums().execute();
                 } else {
                     new SortModeSet().execute(SIZE);
-                    if(!all_photos && !fav_photos){
-                        new SortingUtilsPhtots().execute();
-                    }
-                    else if (all_photos && !fav_photos) {
-                        new SortingUtilsListAll().execute();
-                    }else if(fav_photos && !all_photos){
-                        new SortingUtilsFavouritelist().execute();
-                    }
-                }
-                item.setChecked(true);
-                return true;
-
-            case R.id.numeric_sort_action:
-                if (albumsMode) {
-                    getAlbums().setDefaultSortingMode(NUMERIC);
-                    new SortingUtilsAlbums().execute();
-                } else {
-                    new SortModeSet().execute(NUMERIC);
                     if(!all_photos && !fav_photos){
                         new SortingUtilsPhtots().execute();
                     }

@@ -28,10 +28,6 @@
                         android:id="@+id/size_sort_action"
                         android:title="@string/size"
                         app:showAsAction="never" />
-                    <item
-                        android:id="@+id/numeric_sort_action"
-                        android:title="@string/numeric"
-                        app:showAsAction="never" />
                 </group>
                 <group android:checkableBehavior="all">
                     <item

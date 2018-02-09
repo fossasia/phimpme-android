@@ -19,8 +19,6 @@ public class MediaComparators {
                 return getDateComparator(sortingOrder);
             case SIZE:
                 return getSizeComparator(sortingOrder);
-            case NUMERIC:
-                return getNumericComparator(sortingOrder);
         }
     }
 

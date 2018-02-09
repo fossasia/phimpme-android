@@ -5,7 +5,7 @@ package org.fossasia.phimpme.gallery.data.base;
  */
 
 public enum SortingMode {
-  NAME (0), DATE (1), SIZE(2), NUMERIC(3);
+  NAME (0), DATE (1), SIZE(2);
 
   int value;
 
@@ -22,7 +22,6 @@ public enum SortingMode {
       case 0: return NAME;
       case 1: default: return DATE;
       case 2: return SIZE;
-      case 3: return NUMERIC;
     }
   }
 }
