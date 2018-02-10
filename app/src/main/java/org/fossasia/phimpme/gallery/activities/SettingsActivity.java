@@ -517,6 +517,9 @@ public class SettingsActivity extends ThemedActivity {
         final TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.basic_theme_title);
         final CardView dialogCardView = (CardView) dialogLayout.findViewById(R.id.basic_theme_card);
 
+        final TextView themeTextWhite = (TextView)dialogLayout.findViewById(R.id.white_basic_theme_item);
+        final TextView themeTextDark = (TextView)dialogLayout.findViewById(R.id.dark_basic_theme_item);
+        final TextView themeTextDarkAmoled = (TextView)dialogLayout.findViewById(R.id.dark_amoled_basic_theme_item);
         final IconicsImageView themeIconWhite = (IconicsImageView) dialogLayout.findViewById(R.id.white_basic_theme_icon);
         final IconicsImageView themeIconDark = (IconicsImageView) dialogLayout.findViewById(R.id.dark_basic_theme_icon);
         final IconicsImageView themeIconDarkAmoled = (IconicsImageView) dialogLayout.findViewById(R.id.dark_amoled_basic_theme_icon);
@@ -524,28 +527,37 @@ public class SettingsActivity extends ThemedActivity {
         final IconicsImageView darkSelect = (IconicsImageView) dialogLayout.findViewById(R.id.dark_basic_theme_select);
         final IconicsImageView darkAmoledSelect = (IconicsImageView) dialogLayout.findViewById(R.id.dark_amoled_basic_theme_select);
 
-        themeIconWhite.setIcon("gmd-invert-colors");
+        /*themeIconWhite.setIcon("gmd-invert-colors");
         themeIconDark.setIcon("gmd-invert-colors");
         themeIconDarkAmoled.setIcon("gmd-invert-colors");
         whiteSelect.setIcon("gmd-done");
         darkSelect.setIcon("gmd-done");
-        darkAmoledSelect.setIcon("gmd-done");
+        darkAmoledSelect.setIcon("gmd-done");*/
 
         switch (getBaseTheme()){
             case ThemeHelper.LIGHT_THEME:
                 whiteSelect.setVisibility(View.VISIBLE);
                 darkSelect.setVisibility(View.GONE);
                 darkAmoledSelect.setVisibility(View.GONE);
+                themeTextWhite.setTextColor(ContextCompat.getColor(SettingsActivity.this,R.color.md_light_primary_text));
+                themeTextDark.setTextColor(ContextCompat.getColor(SettingsActivity.this,Rxdddx.color.md_light_primary_text));
+                themeTextDarkAmoled.setTextColor(ContextCompat.getColor(SettingsActivity.this,R.color.md_light_primary_text));
                 break;
             case ThemeHelper.DARK_THEME:
                 whiteSelect.setVisibility(View.GONE);
                 darkSelect.setVisibility(View.VISIBLE);
                 darkAmoledSelect.setVisibility(View.GONE);
+                themeTextWhite.setTextColor(ContextCompat.getColor(SettingsActivity.this,R.color.white));
+                themeTextDark.setTextColor(ContextCompat.getColor(SettingsActivity.this,R.color.white));
+                themeTextDarkAmoled.setTextColor(ContextCompat.getColor(SettingsActivity.this,R.color.white)); 
                 break;
             case ThemeHelper.AMOLED_THEME:
                 whiteSelect.setVisibility(View.GONE);
                 darkSelect.setVisibility(View.GONE);
                 darkAmoledSelect.setVisibility(View.VISIBLE);
+                themeTextWhite.setTextColor(ContextCompat.getColor(SettingsActivity.this,R.color.white));
+                themeTextDark.setTextColor(ContextCompat.getColor(SettingsActivity.this,R.color.white));
+                themeTextDarkAmoled.setTextColor(ContextCompat.getColor(SettingsActivity.this,R.color.white));
                 break;
         }
 

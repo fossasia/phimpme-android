@@ -66,6 +66,7 @@ public class SettingsActivityTest {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         ViewInteraction linearLayout1 = onView(
                 withId(R.id.ll_camera));
         linearLayout1.perform(scrollTo());
