@@ -1012,6 +1012,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
         shareIntent.setType("image/png");
         startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_image)));
+        triedUploading = true;
+        sendResult(SUCCESS);
     }
 
     private void shareToInstagram() {
@@ -1022,11 +1024,11 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         share.setType("image/*");
         share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivity(Intent.createChooser(share, caption));
+        triedUploading = true;
         sendResult(SUCCESS);
     }
 
     private void shareToWhatsapp() {
-        triedUploading=false;
         Uri uri = Uri.fromFile(new File(saveFilePath));
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -1035,6 +1037,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         share.setType("image/*");
         share.putExtra(Intent.EXTRA_TEXT, caption);
         startActivityForResult(Intent.createChooser(share, context.getString(R.string.whatsapp)), SHARE_WHATSAPP);
+        triedUploading = true;
+        sendResult(SUCCESS);
     }
 
     private void shareToImgur() {
