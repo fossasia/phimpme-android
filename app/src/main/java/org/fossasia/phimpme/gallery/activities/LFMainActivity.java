@@ -126,6 +126,8 @@ import static org.fossasia.phimpme.gallery.data.base.SortingMode.NUMERIC;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.SIZE;
 
 
+
+
 public class LFMainActivity extends SharedMediaActivity {
 
     private static String TAG = "AlbumsAct";
@@ -2103,7 +2105,7 @@ public class LFMainActivity extends SharedMediaActivity {
                             else
 
                                 SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.photo_moved_successfully), navigationView.getHeight());
-                          
+
                         }else if(numberOfImagesMoved==-1 && getAlbum().getPath().equals(path)) //moving to the same folder
 
                         {
@@ -2129,7 +2131,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
                             alertDialog.setNegativeButton("Replace", new DialogInterface.OnClickListener() {
 
-                                public void onClick(DialogInterface dialog, int id) {                                  
+                                public void onClick(DialogInterface dialog, int id) {
                                     finishEditMode();
                                     invalidateOptionsMenu();
                                     SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.photo_moved_successfully), navigationView.getHeight());
@@ -2338,7 +2340,7 @@ public class LFMainActivity extends SharedMediaActivity {
             return null;
         }
     }
-    
+
     private Bitmap getBitmap(String path) {
 
         Uri uri = Uri.fromFile(new File(path));
@@ -2803,7 +2805,7 @@ public class LFMainActivity extends SharedMediaActivity {
             this.moveAction = moveAction;
             this.copyAction = copyAction;
         }
-        
+
         @Override
         protected void onPreExecute() {
             swipeRefreshLayout.setRefreshing(true);
@@ -2837,7 +2839,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 swipeRefreshLayout.setRefreshing(false);
                 finishEditMode();
                 if(moveAction)
-                  SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.photos_moved_successfully), navigationView.getHeight()); 
+                  SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.photos_moved_successfully), navigationView.getHeight());
                 else if(copyAction)
                   SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.copied_successfully), navigationView.getHeight());
             }else

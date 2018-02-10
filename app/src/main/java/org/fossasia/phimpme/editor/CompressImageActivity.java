@@ -14,14 +14,17 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.adapter.ListCompressAdapter;
 import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouch;
 import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouchBase;
 import org.fossasia.phimpme.gallery.activities.SingleMediaActivity;
 import org.fossasia.phimpme.gallery.data.base.MediaDetailsMap;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
