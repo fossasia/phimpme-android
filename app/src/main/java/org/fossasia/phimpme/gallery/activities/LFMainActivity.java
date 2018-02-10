@@ -1337,8 +1337,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 });
             }
         } else {
-            if(!all_photos)
-            {
+            if(!all_photos && !fav_photos) {
                 if(getAlbum().getSelectedCount()==0) {
                     clearOverlay();
                     checkForReveal = true;
@@ -1347,9 +1346,8 @@ public class LFMainActivity extends SharedMediaActivity {
                     appBarOverlay();
                     swipeRefreshLayout.setEnabled(false);
                 }
-            }else {
-                if(selectedMedias.size()==0)
-                {
+            }else if((all_photos && !fav_photos) || (!all_photos && fav_photos)) {
+                if(selectedMedias.size()==0) {
                     clearOverlay();
                     swipeRefreshLayout.setEnabled(true);
                 } else {
