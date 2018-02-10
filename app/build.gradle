@@ -118,6 +118,8 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
         transitive = true;
     }
+    //compressor
+    compile 'id.zelory:compressor:2.1.0'
     compile 'com.daksh:loglr:1.2.1'
     compile 'com.koushikdutta.ion:ion:2.1.7'
     compile 'org.jetbrains:annotations-java5:15.0'
@@ -185,8 +187,6 @@ dependencies {
     //photoview
     compile project(':photoview')
 
-    //compressor
-    compile 'id.zelory:compressor:2.1.0'
 
 }
 apply plugin: 'com.google.gms.google-services'
