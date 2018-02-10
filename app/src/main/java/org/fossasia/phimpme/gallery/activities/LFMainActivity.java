@@ -125,9 +125,6 @@ import static org.fossasia.phimpme.gallery.data.base.SortingMode.NAME;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.NUMERIC;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.SIZE;
 
-
-
-
 public class LFMainActivity extends SharedMediaActivity {
 
     private static String TAG = "AlbumsAct";
