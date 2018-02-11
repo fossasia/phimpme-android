@@ -130,7 +130,6 @@ import static org.fossasia.phimpme.gallery.data.base.SortingMode.NUMERIC;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.SIZE;
 import static org.fossasia.phimpme.gallery.util.ThemeHelper.LIGHT_THEME;
 
-
 public class LFMainActivity extends SharedMediaActivity {
 
     private static String TAG = "AlbumsAct";
@@ -2427,39 +2426,40 @@ public class LFMainActivity extends SharedMediaActivity {
             case R.id.action_add_favourites:
                 int count = 0;
                 ArrayList<Media> favadd;
-                if(!all_photos){
+                if (!all_photos)
                     favadd = getAlbum().getSelectedMedia();
-                }else{
+                else
                     favadd = selectedMedias;
-                }
-                for(int i = 0; i < favadd.size(); i++){
+                for (int i = 0; i < favadd.size(); i++) {
                     String realpath = favadd.get(i).getPath();
                     RealmQuery<FavouriteImagesModel> query = realm.where(FavouriteImagesModel.class).equalTo("path",
                             realpath);
-                    if(query.count() == 0){
+                    if (query.count() == 0) {
                         count++;
                         realm.beginTransaction();
                         FavouriteImagesModel fav = realm.createObject(FavouriteImagesModel.class,
                                 realpath);
                         ImageDescModel q = realm.where(ImageDescModel.class).equalTo("path", realpath).findFirst();
-                        if(q != null) {
+                        if (q != null) {
                             fav.setDescription(q.getTitle());
-                        }
-                        else{
+                        } else {
                             fav.setDescription(" ");
                         }
+
                         realm.commitTransaction();
                     }
                 }
                 finishEditMode();
-                if(count == 0){
+                if (count == 0) {
                     SnackBarHandler.show(mDrawerLayout, getResources().getString(R.string.check_favourite_multipleitems));
-                }else if(count == 1){
+                } else if (count == 1) {
                     SnackBarHandler.show(mDrawerLayout, getResources().getString(R.string.add_favourite));
-                }else{
-                    SnackBarHandler.show(mDrawerLayout, count+ " " + getResources().getString(R.string
+                } else {
+                    SnackBarHandler.show(mDrawerLayout, count + " " + getResources().getString(R.string
                             .add_favourite_multiple));
                 }
+
+                mediaAdapter.notifyDataSetChanged();
                 return true;
 
             case R.id.action_copy:
