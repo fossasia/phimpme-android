@@ -1446,16 +1446,29 @@ public class LFMainActivity extends SharedMediaActivity {
             starImageView.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_ATOP);
     }
 
+    private void setItemsVisibility(Menu menu, MenuItem exception, boolean visible) {
+        for (int i=0; i<menu.size(); ++i) {
+            MenuItem item = menu.getItem(i);
+            if (!item.equals(exception)) item.setVisible(visible);
+        }
+    }
+
     //region MENU
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
 
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_albums, menu);
 
         if (albumsMode) {
-            MenuItem menuitem = menu.findItem(R.id.search_action);
+            final MenuItem menuitem = menu.findItem(R.id.search_action);
             final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuitem);
+            searchView.setOnSearchClickListener(new View.OnClickListener() {
+                @Override public void onClick(View view) {
+                    setItemsVisibility(menu, menuitem,false);
+
+                }
+            });
             searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override public void onFocusChange(final View view, boolean b) {
                     if (b) {
@@ -1467,8 +1480,17 @@ public class LFMainActivity extends SharedMediaActivity {
                                 imm.showSoftInput(view.findFocus(), 0);
                             }
                         }, 200);
-
                     }
+                }
+            });
+            MenuItemCompat.setOnActionExpandListener(menuitem, new MenuItemCompat.OnActionExpandListener() {
+                @Override public boolean onMenuItemActionExpand(MenuItem item) {
+                    return true;
+                }
+
+                @Override public boolean onMenuItemActionCollapse(MenuItem item) {
+                    invalidateOptionsMenu();
+                    return true;
                 }
             });
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -1501,7 +1523,6 @@ public class LFMainActivity extends SharedMediaActivity {
                     menu.findItem(R.id.numeric_sort_action).setChecked(true);
                     break;
             }
-
         } else {
             getfavouriteslist();
             menu.findItem(R.id.select_all).setTitle(getString(getAlbum().getSelectedCount() == mediaAdapter

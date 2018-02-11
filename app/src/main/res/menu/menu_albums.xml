@@ -129,10 +129,9 @@
         android:id="@+id/search_action"
         android:title="@string/search_menu"
         android:visible="true"
-        android:icon="@drawable/ic_search_black_24dp"
-        android:tint="@color/white"
+        android:icon="@drawable/ic_search_white_24dp"
         app:actionViewClass="android.support.v7.widget.SearchView"
-        app:showAsAction="always" />
+        app:showAsAction="always|collapseActionView" />
     <item
         android:id="@+id/all_photos"
         android:title="@string/all_photos"
