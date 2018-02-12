@@ -680,8 +680,8 @@
         <item>Threshold</item>
         <item>Negative</item>
         <item>Green Boost</item>
-    </string-array>
-
+        <item>Boost Red</item>
+  </string-array>
 
     <integer-array name="enhance_icons">
         <item>@drawable/ic_bright</item>
