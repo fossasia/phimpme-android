@@ -444,8 +444,8 @@ public class LFMainActivity extends SharedMediaActivity {
                             new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
                     final EditText editTextPassword =
                             securityObj.getInsertPasswordDialog(LFMainActivity.this, passwordDialogBuilder);
+                    editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
                     passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-
                     passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(),
                             new DialogInterface.OnClickListener() {
                                 @Override
@@ -556,8 +556,8 @@ public class LFMainActivity extends SharedMediaActivity {
                             new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
                     final EditText editTextPassword =
                             securityObj.getInsertPasswordDialog(LFMainActivity.this, passwordDialogBuilder);
+                    editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
                     passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-
                     passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(),
                             new DialogInterface.OnClickListener() {
                                 @Override
@@ -1245,13 +1245,12 @@ public class LFMainActivity extends SharedMediaActivity {
                 if (securityObj.isActiveSecurity() && securityObj.isPasswordOnHidden()) {
                     AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
                     final EditText editTextPassword = securityObj.getInsertPasswordDialog(LFMainActivity.this, passwordDialogBuilder);
+                    editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
                     passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                         }
                     });
-
                     passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-
                     final AlertDialog passwordDialog = passwordDialogBuilder.create();
                     passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
                     passwordDialog.show();
@@ -1885,8 +1884,8 @@ public class LFMainActivity extends SharedMediaActivity {
                         if (securityObj.isActiveSecurity() && securityObj.isPasswordOnDelete()) {
                             AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
                             final EditText editTextPassword = securityObj.getInsertPasswordDialog(LFMainActivity.this, passwordDialogBuilder);
+                            editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
                             passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-
                             passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
