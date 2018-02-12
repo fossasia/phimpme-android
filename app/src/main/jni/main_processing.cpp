@@ -62,11 +62,13 @@ extern "C" {
                 applyGreenBoostEffect(src,dst,val);
                 break;
             case 14:
-                applyColorBoostEffect(src,dst,val);
+                applyBoostRedEffect(src,dst,val);
+                break;
+            case 15:
+                 applyColorBoostEffect(src,dst,val);
                 break;
 
-
-            default:
+          default:
                 int lowThreshold = val;
                 int ratio = 3;
                 int kernel_size = 3;
