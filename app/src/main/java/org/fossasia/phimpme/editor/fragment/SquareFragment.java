@@ -1,6 +1,9 @@
 package org.fossasia.phimpme.editor.fragment;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,9 +12,12 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 
+import com.github.shchurov.horizontalwheelview.HorizontalWheelView;
+
 import org.fossasia.phimpme.MyApplication;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.EditImageActivity;
+import org.fossasia.phimpme.editor.view.SquareImageView;
 import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouchBase;
 
 import java.io.File;
@@ -23,7 +29,7 @@ public class SquareFragment extends BaseEditFragment {
     public static final String TAG = SquareFragment.class.getName();
     private View mainView;
     private View cancel, apply;
-//    private RotateImageView mRotatePanel;
+    private SquareImageView mSquarePanel;
 
 //    private HorizontalWheelView horizontalWheelView;
 //    private TextView tvAngle;
@@ -56,7 +62,7 @@ public class SquareFragment extends BaseEditFragment {
         apply = mainView.findViewById(R.id.square_apply);
 //        horizontalWheelView = (HorizontalWheelView) mainView.findViewById(R.id.horizontalWheelView);
 //        tvAngle = (TextView) mainView.findViewById(R.id.tvAngle);
-//        this.mRotatePanel = ensureEditActivity().mRotatePanel;
+        this.mSquarePanel = ensureEditActivity().mSquarePanel;
     }
 
     private void setupListeners() {
@@ -92,7 +98,7 @@ public class SquareFragment extends BaseEditFragment {
 
     private void updateImage() {
 //        int angle = (int) horizontalWheelView.getDegreesAngle();
-//        mRotatePanel.rotateImage(angle);
+        mSquarePanel.squareImage();
 
     }
 
@@ -105,21 +111,29 @@ public class SquareFragment extends BaseEditFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-//        resetRotateView();
+        resetRotateView();
     }
 
+    private void resetRotateView() {
+        if (null != activity && null != mSquarePanel) {
+            activity.mSquarePanel.squareImage();
+            activity.mSquarePanel.reset();
+            activity.mSquarePanel.setVisibility(View.GONE);
+            activity.mainImage.setVisibility(View.VISIBLE);
+        }
+    }
 
 
     @Override
     public void onShow() {
-        activity.changeMode(EditImageActivity.MODE_ROTATE);
+        activity.changeMode(EditImageActivity.MODE_SQUARE);
         activity.mainImage.setImageBitmap(activity.mainBitmap);
         activity.mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
         activity.mainImage.setVisibility(View.GONE);
 
-        activity.mRotatePanel.addBit(activity.mainBitmap, activity.mainImage.getBitmapRect());
-        activity.mRotatePanel.reset();
-        activity.mRotatePanel.setVisibility(View.VISIBLE);
+        activity.mSquarePanel.addBit(activity.mainBitmap, activity.mainImage.getBitmapRect());
+        activity.mSquarePanel.reset();
+        activity.mSquarePanel.setVisibility(View.VISIBLE);
     }
 
     private final class BackToMenuClick implements OnClickListener {
@@ -134,7 +148,7 @@ public class SquareFragment extends BaseEditFragment {
         activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
         activity.adjustFragment.clearSelection();
         activity.mainImage.setVisibility(View.VISIBLE);
-//        this.mRotatePanel.setVisibility(View.GONE);
+        this.mSquarePanel.setVisibility(View.GONE);
     }
 
     public void applySquareImage() {
@@ -169,34 +183,35 @@ public class SquareFragment extends BaseEditFragment {
         @SuppressWarnings("WrongThread")
         @Override
         protected Bitmap doInBackground(Bitmap... params) {
-//            RectF imageRect = mRotatePanel.getImageNewRect();
-//            Bitmap originBit = params[0];
-//            Bitmap result = Bitmap.createBitmap((int) imageRect.width(),
-//                    (int) imageRect.height(), Bitmap.Config.ARGB_4444);
-//            Canvas canvas = new Canvas(result);
-//            int w = originBit.getWidth() >> 1;
-//            int h = originBit.getHeight() >> 1;
-//            float centerX = imageRect.width() / 2;
-//            float centerY = imageRect.height() / 2;
-//
-//            float left = centerX - w;
-//            float top = centerY - h;
-//
-//            RectF dst = new RectF(left, top, left + originBit.getWidth(), top
-//                    + originBit.getHeight());
-//            canvas.save();
-//            canvas.scale(mRotatePanel.getScale(), mRotatePanel.getScale(),
-//                    imageRect.width() / 2, imageRect.height() / 2);
-//            canvas.rotate(mRotatePanel.getRotateAngle(), imageRect.width() / 2,
-//                    imageRect.height() / 2);
-//
-//            canvas.drawBitmap(originBit, new Rect(0, 0, originBit.getWidth(),
-//                    originBit.getHeight()), dst, null);
-//            canvas.restore();
+            RectF imageRect = mSquarePanel.getImageNewRect();
+            Bitmap originBit = params[0];
+            int square_size = Math.max((int) imageRect.width(),(int) imageRect.height());
+            Bitmap result = Bitmap.createBitmap(square_size,
+                    square_size, Bitmap.Config.ARGB_4444);
+            Canvas canvas = new Canvas(result);
+            int w = originBit.getWidth() >> 1;
+            int h = originBit.getHeight() >> 1;
+            float centerX = imageRect.width() / 2;
+            float centerY = imageRect.height() / 2;
 
-            //saveBitmap(result, activity.saveFilePath);// 保存图片
-//            return result;
-            return null;
+            float left = centerX - w;
+            float top = centerY - h;
+
+            RectF dst = new RectF(left, top, left + originBit.getWidth(), top
+                    + originBit.getHeight());
+            canvas.save();
+            canvas.scale(mSquarePanel.getScale(), mSquarePanel.getScale(),
+                    imageRect.width() / 2, imageRect.height() / 2);
+            canvas.rotate(mSquarePanel.getRotateAngle(), imageRect.width() / 2,
+                    imageRect.height() / 2);
+
+            canvas.drawBitmap(originBit, new Rect(0, 0, originBit.getWidth(),
+                    originBit.getHeight()), dst, null);
+            canvas.restore();
+
+//            saveBitmap(result, activity.saveFilePath);// 保存图片
+            return result;
+//            return null;
         }
 
         @Override

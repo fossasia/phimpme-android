@@ -147,6 +147,13 @@
             android:layout_gravity="center"
             android:visibility="gone" />
 
+        <org.fossasia.phimpme.editor.view.SquareImageView
+            android:id="@+id/square_panel"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
         <org.fossasia.phimpme.editor.view.TextStickerView
             android:id="@+id/text_sticker_panel"
             android:layout_width="fill_parent"

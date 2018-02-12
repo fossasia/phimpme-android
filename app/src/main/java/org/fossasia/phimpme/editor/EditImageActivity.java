@@ -36,6 +36,7 @@ import org.fossasia.phimpme.editor.utils.FileUtil;
 import org.fossasia.phimpme.editor.view.CropImageView;
 import org.fossasia.phimpme.editor.view.CustomPaintView;
 import org.fossasia.phimpme.editor.view.RotateImageView;
+import org.fossasia.phimpme.editor.view.SquareImageView;
 import org.fossasia.phimpme.editor.view.StickerView;
 import org.fossasia.phimpme.editor.view.TextStickerView;
 import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouch;
@@ -127,6 +128,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     public CropImageView mCropPanel;// Cut operation control
     @Nullable @BindView(R.id.rotate_panel)
     public RotateImageView mRotatePanel;//Rotation operation controls
+    @Nullable @BindView(R.id.square_panel)
+    public SquareImageView mSquarePanel;//Square operation controls
     @Nullable @BindView(R.id.text_sticker_panel)
     public TextStickerView mTextStickerView;//Text display map View
     @Nullable @BindView(R.id.custom_paint_view)
@@ -674,7 +677,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                 showDiscardChangesDialog(MODE_ROTATE,R.string.discard_rotate_message);
                 return;
             case MODE_SQUARE:
-                showDiscardChangesDialog(MODE_ROTATE,R.string.discard_square_message);
+                showDiscardChangesDialog(MODE_SQUARE,R.string.discard_square_message);
                 return;
             case MODE_TEXT:
                 showDiscardChangesDialog(MODE_TEXT,R.string.discard_text_message);

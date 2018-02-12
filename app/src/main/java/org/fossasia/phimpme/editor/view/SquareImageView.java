@@ -21,7 +21,7 @@ public class SquareImageView extends View {
 	private Matrix matrix = new Matrix();// Aiding rectangular
 
 	private float scale;//scaling ratio
-	private int rotateAngle;
+	private int rotateAngle = 0;
 
 	private RectF wrapRect = new RectF();// Picture surrounded by rectangles
 	private Paint bottomPaint;
@@ -59,8 +59,8 @@ public class SquareImageView extends View {
 		this.invalidate();
 	}
 
-	public void rotateImage(int angle) {
-		rotateAngle = angle;
+	public void squareImage() {
+		rotateAngle = 0;
 		this.invalidate();
 	}
 
