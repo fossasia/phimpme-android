@@ -235,7 +235,7 @@ public class LFMainActivity extends SharedMediaActivity {
                     mediaAdapter.notifyItemChanged(toggleSelectPhoto(m));
                     editMode = true;
                 }
-            }else if(fav_photos && !all_photos){
+            } else if(fav_photos && !all_photos){
                 if(!editMode){
                     mediaAdapter.notifyItemChanged(toggleSelectPhoto(m));
                     editMode = true;
@@ -513,6 +513,11 @@ public class LFMainActivity extends SharedMediaActivity {
                 if(checkForReveal) {
                     enterReveal();
                     checkForReveal = false;
+                }
+                //for selecting albums upto a particular range
+                if(editMode) {
+                    int currentAlbum = getAlbums().getCurrentAlbumIndex(album);
+                    getAlbums().selectAllPhotosUpToAlbums(currentAlbum, albumsAdapter);
                 }
                 albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(album));
                 editMode = true;
