@@ -327,6 +327,32 @@ void applySepia(cv::Mat &src, cv::Mat &dst, int val) {
     }
 }
 
+void applyBlueBoostEffect(cv::Mat &src, cv::Mat &dst, int val) {
+    register int x, y;
+    float opacity = val * 0.01f;
+    cvtColor(src, src, CV_BGRA2BGR);
+    dst = Mat::zeros(src.size(), src.type());
+    uchar r, g, b,val1;
+
+    for (y = 0; y < src.rows; y++) {
+        for (x = 0; x < src.cols; x++) {
+            r = src.at<Vec3b>(y, x)[0];
+            g = src.at<Vec3b>(y, x)[1];
+            b = src.at<Vec3b>(y, x)[2];
+            val1 = saturate_cast<uchar>(b*(1+opacity));
+            if(val1 > 255) {
+                val1 = 255;
+            }
+            dst.at<Vec3b>(y, x)[0] =
+                    saturate_cast<uchar>(r);
+            dst.at<Vec3b>(y, x)[1] =
+                    saturate_cast<uchar>(g);
+            dst.at<Vec3b>(y, x)[2] =
+                    saturate_cast<uchar>(val1);
+        }
+    }
+}
+
 void applyAnsel(cv::Mat &src, cv::Mat &dst, int val) {
     register int x, y;
     double opacity = val / 100.0;
