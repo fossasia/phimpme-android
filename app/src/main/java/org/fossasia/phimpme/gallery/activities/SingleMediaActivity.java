@@ -501,7 +501,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         else if(!allPhotoMode && favphotomode){
             menu.findItem(R.id.action_favourites).setVisible(false);
             menu.findItem(R.id.action_cover).setVisible(false);
-            menu.findItem(R.id.action_description).setVisible(false);
             menu.findItem(R.id.action_copy).setVisible(false);
             menu.findItem(R.id.action_move).setVisible(false);
         }
@@ -561,7 +560,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         }
     }
 
-
     private void handleEditorImage(Intent data) {
         String newFilePath = data.getStringExtra(EditImageActivity.EXTRA_OUTPUT);
         boolean isImageEdit = data.getBooleanExtra(EditImageActivity.IMAGE_IS_EDIT, false);
@@ -578,7 +576,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         LoadImageTask loadTask = new LoadImageTask();
         loadTask.execute(newFilePath);
     }
-
 
     private void displayAlbums(boolean reload) {
         Intent i = new Intent(SingleMediaActivity.this, LFMainActivity.class);
@@ -676,7 +673,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
 
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -856,7 +852,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     }
                 });
                 bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
-
                 return true;
 
             case R.id.action_cover:
@@ -1022,7 +1017,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         //This will be overwrite later
                     }
                 });
-
                 final AlertDialog descriptionDialog = descriptionDialogBuilder.create();
                 descriptionDialog.show();
                 AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface
