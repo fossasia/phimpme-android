@@ -677,6 +677,9 @@ public class LFMainActivity extends SharedMediaActivity {
                     if(!localFolder){
                         hidden = false;
                         localFolder = true;
+                        findViewById(R.id.ll_drawer_hidden).setBackgroundColor(Color.TRANSPARENT);
+                        findViewById(R.id.ll_drawer_Default).setBackgroundColor(getHighlightedItemColor());
+                        tint();
                     }
                     displayAlbums();
                     return true;
