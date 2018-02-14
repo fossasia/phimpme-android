@@ -380,7 +380,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                     case MESSENGER:
                         shareToMessenger();
                         break;
-                    
+
                     case SNAPCHAT:
                         shareToSnapchat();
                         break;
@@ -615,10 +615,10 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             FileInputStream inputStream = null;
             try {
                 inputStream = new FileInputStream(file);
-                    if(cloudRailServices.checkFolderExist()) {
-                        cloudRailServices.upload(cloudRailServices.getDropboxFolderPath()+"/"+file.getName(), inputStream, file.length(), true);
-                        success = true;
-                    }
+                if(cloudRailServices.checkFolderExist()) {
+                    cloudRailServices.upload(cloudRailServices.getDropboxFolderPath()+"/"+file.getName(), inputStream, file.length(), true);
+                    success = true;
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -698,14 +698,14 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 e.printStackTrace();
                 success = false;
             }
-            
+
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-      
+
             if (success) {
                 NotificationHandler.actionPassed(R.string.upload_complete);
                 SnackBarHandler.show(parent, R.string.uploaded_googledrive);
@@ -717,7 +717,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             }
         }
     }
-    
+
     private class UploadToOneDrive extends AsyncTask<Void,Void,Void>{
         Boolean success;
 
@@ -734,7 +734,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 fileInputStream = new FileInputStream(file);
                 if(cloudRailServices.checkOneDriveFolderExist()){
                     cloudRailServices.getOneDrive().upload(cloudRailServices.getOneDriveFolderPath()+"/"+file.getName(),fileInputStream
-                    ,file.length(),true);
+                            ,file.length(),true);
                     success = true;
                 }
             } catch (FileNotFoundException e) {
@@ -1260,11 +1260,11 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             }
         }
         if (requestCode == REQ_CODE_SPEECH_INPUT && data!=null){
-                ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                String voiceInput = result.get(0);
-                text_caption.setText(voiceInput);
-                caption = voiceInput;
-                return;
+            ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            String voiceInput = result.get(0);
+            text_caption.setText(voiceInput);
+            caption = voiceInput;
+            return;
         }
         if (requestCode == SHARE_WHATSAPP) {
             if(responseCode == RESULT_OK) {

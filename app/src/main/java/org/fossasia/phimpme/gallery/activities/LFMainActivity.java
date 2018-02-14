@@ -124,6 +124,7 @@ import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
+
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.DATE;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.NAME;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.NUMERIC;
@@ -1563,7 +1564,9 @@ public class LFMainActivity extends SharedMediaActivity {
             menu.setGroupVisible(R.id.album_options_menu, editMode);
             menu.setGroupVisible(R.id.photos_option_men, false);
             menu.findItem(R.id.all_photos).setVisible(!editMode && !hidden);
+
             menu.findItem(R.id.search_action).setVisible(!editMode);
+
 
             if (getAlbums().getSelectedCount() >= 1) {
                 if (getAlbums().getSelectedCount() > 1) {
@@ -1573,6 +1576,7 @@ public class LFMainActivity extends SharedMediaActivity {
                     menu.findItem(R.id.search_action).setVisible(false);
                 }
             }
+
         } else {
             menu.findItem(R.id.search_action).setVisible(false);
             if (!all_photos && !fav_photos) {
@@ -1601,7 +1605,9 @@ public class LFMainActivity extends SharedMediaActivity {
         visible = getAlbum().getSelectedCount() > 0;
         menu.findItem(R.id.action_copy).setVisible(visible);
         menu.findItem(R.id.action_move).setVisible((visible || editMode)&&!fav_photos);
+
         menu.findItem(R.id.action_add_favourites).setVisible((visible || editMode)&&(!albumsMode&&!fav_photos));
+
         menu.findItem(R.id.excludeAlbumButton).setVisible(editMode && !all_photos && albumsMode && !fav_photos);
         menu.findItem(R.id.zipAlbumButton).setVisible(editMode && !all_photos&&albumsMode &&!fav_photos && !hidden &&
                 getAlbums().getSelectedCount() == 1);
@@ -2341,8 +2347,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                 else
 
                                     SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.photo_moved_successfully), navigationView.getHeight());
-
-                            } else if (numberOfImagesMoved == -1 && getAlbum().getPath().equals(path)) //moving to the same folder
+      } else if (numberOfImagesMoved == -1 && getAlbum().getPath().equals(path)) //moving to the same folder
                             {
                                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
                                 alertDialog.setCancelable(false);
@@ -2371,8 +2376,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                         invalidateOptionsMenu();
                                         SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.photo_moved_successfully), navigationView.getHeight());
 
-                                    }
-                                });
+                                    }                                });
 
                                 AlertDialog alert = alertDialog.create();
 

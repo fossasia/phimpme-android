@@ -67,9 +67,9 @@ public class CloudRailServices {
     }
 
     private void initGoogleDrive(){
-      
+
         googleDrive = new GoogleDrive(context,Constants.GOOGLEDRIVE_APP_KEY,Constants.GOOGLEDRIVE_SECRET_KEY
-        ,"org.fossasia.phimpme:/oauth2redirect","login-googledrive");
+                ,"org.fossasia.phimpme:/oauth2redirect","login-googledrive");
     }
 
     public String getToken() {
@@ -98,134 +98,134 @@ public class CloudRailServices {
     }
 
     public void googleDriveLogin(){
-            DriveLogin driveLogin = new DriveLogin();
-            driveLogin.execute();
+        DriveLogin driveLogin = new DriveLogin();
+        driveLogin.execute();
     }
-  
+
     public void upload(String path, InputStream inputStream, Long size , Boolean overwrite)
     {
         dropbox.get().upload(path,inputStream,size,overwrite);
     }
 
-   public class DropboxLogin extends AsyncTask<Void,Void,Void>{
+    public class DropboxLogin extends AsyncTask<Void,Void,Void>{
 
 
-       @Override
-       protected void onPostExecute(Void aVoid) {
-           Log.e(TAG, "Dropbox Login token "+db.saveAsString());
-           basicCallBack.callBack(1,db.saveAsString());
-       }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            Log.e(TAG, "Dropbox Login token "+db.saveAsString());
+            basicCallBack.callBack(1,db.saveAsString());
+        }
 
-       @Override
-       protected Void doInBackground(Void... params) {
-           db.login();
-           if(!(db.exists(FOLDER))) {
-               db.createFolder(FOLDER);
-           }
-           return null;
+        @Override
+        protected Void doInBackground(Void... params) {
+            db.login();
+            if(!(db.exists(FOLDER))) {
+                db.createFolder(FOLDER);
+            }
+            return null;
 
-       }
-   }
+        }
+    }
 
-   public class OneDriveLoginTask extends AsyncTask<Void,Void,Void>{
+    public class OneDriveLoginTask extends AsyncTask<Void,Void,Void>{
 
 
-       @Override
-       protected Void doInBackground(Void... voids) {
-           oneDrive.login();
-           if (!oneDrive.exists(FOLDER)) {
-               oneDrive.createFolder(FOLDER);
-           }
-           return null;
-       }
+        @Override
+        protected Void doInBackground(Void... voids) {
+            oneDrive.login();
+            if (!oneDrive.exists(FOLDER)) {
+                oneDrive.createFolder(FOLDER);
+            }
+            return null;
+        }
 
-       @Override
-       protected void onPostExecute(Void aVoid) {
-           Log.e(TAG, "One Drive Login TOken "+oneDrive.saveAsString());
-           basicCallBack.callBack(3,oneDrive.saveAsString());
-       }
-   }
-     
-   public class DriveLogin extends AsyncTask<Void,Void,Void>{
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            Log.e(TAG, "One Drive Login TOken "+oneDrive.saveAsString());
+            basicCallBack.callBack(3,oneDrive.saveAsString());
+        }
+    }
 
-       @Override
-       protected void onPostExecute(Void aVoid) {
-           Log.e(TAG, "GoogleDriveLogin "+googleDrive.saveAsString() );
-           basicCallBack.callBack(2,googleDrive.saveAsString());
-       }
+    public class DriveLogin extends AsyncTask<Void,Void,Void>{
 
-       @Override
-       protected Void doInBackground(Void... voids) {
-           googleDrive.useAdvancedAuthentication();
-           googleDrive.login();
-           if(!(googleDrive.exists("/phimpme_uploads"))){
-               googleDrive.createFolder("/phimpme_uploads");
-           }
-           return null;
-       }
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            Log.e(TAG, "GoogleDriveLogin "+googleDrive.saveAsString() );
+            basicCallBack.callBack(2,googleDrive.saveAsString());
+        }
 
-   }
+        @Override
+        protected Void doInBackground(Void... voids) {
+            googleDrive.useAdvancedAuthentication();
+            googleDrive.login();
+            if(!(googleDrive.exists("/phimpme_uploads"))){
+                googleDrive.createFolder("/phimpme_uploads");
+            }
+            return null;
+        }
 
-   public int loadAsString(){
+    }
+
+    public int loadAsString(){
        /*if the data is present for login then returns 1
        else 0
         */
-       try {
-           db.loadAsString(db.saveAsString().toString());
-           return 1;
-       } catch (ParseException e) {
-           e.printStackTrace();
-           return 0;
-       }
-   }
+        try {
+            db.loadAsString(db.saveAsString().toString());
+            return 1;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 
-   public void driveLoadAsString(String s){
-       try{
-           Log.e(TAG,"GOOGLE DRIVE"+s);
-           googleDrive.loadAsString(s);
-       } catch (ParseException e) {
-           e.printStackTrace();
-       }
-   }
-   public void loadAsString(String s){
-       try {
-           Log.e(TAG, "loadAsString:Dropbox Token "+s );
-           db.loadAsString(s);
-       } catch (ParseException e) {
-           e.printStackTrace();
-       }
-   }
+    public void driveLoadAsString(String s){
+        try{
+            Log.e(TAG,"GOOGLE DRIVE"+s);
+            googleDrive.loadAsString(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+    public void loadAsString(String s){
+        try {
+            Log.e(TAG, "loadAsString:Dropbox Token "+s );
+            db.loadAsString(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 
-   public void oneDriveLoadAsString(String s){
-       try{
-           Log.e(TAG, "oneDriveLoadAsString: "+s );
-           oneDrive.loadAsString(s);
-       } catch (ParseException e) {
-           e.printStackTrace();
-       }
-   }
+    public void oneDriveLoadAsString(String s){
+        try{
+            Log.e(TAG, "oneDriveLoadAsString: "+s );
+            oneDrive.loadAsString(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 
-   public String getDropboxFolderPath(){
-       return (FOLDER);
-   }
+    public String getDropboxFolderPath(){
+        return (FOLDER);
+    }
 
-   public String getGoogleDriveFolderPath(){return ("/phimpme_uploads");}
+    public String getGoogleDriveFolderPath(){return ("/phimpme_uploads");}
 
-   public boolean checkDriveFolderExist(){ return googleDrive.exists(("/phimpme_uploads"));}
+    public boolean checkDriveFolderExist(){ return googleDrive.exists(("/phimpme_uploads"));}
 
-   public boolean checkFolderExist(){
-       return db.exists(FOLDER);
-   }
+    public boolean checkFolderExist(){
+        return db.exists(FOLDER);
+    }
 
-   public boolean checkOneDriveFolderExist(){ return oneDrive.exists(FOLDER);}
+    public boolean checkOneDriveFolderExist(){ return oneDrive.exists(FOLDER);}
 
-   public String getOneDriveFolderPath() { return (FOLDER);}
+    public String getOneDriveFolderPath() { return (FOLDER);}
 
-   public OneDrive getOneDrive(){ return  oneDrive;}
-     
-   public GoogleDrive getGoogleDrive(){
-       return googleDrive;
-   }
+    public OneDrive getOneDrive(){ return  oneDrive;}
+
+    public GoogleDrive getGoogleDrive(){
+        return googleDrive;
+    }
 
 
 }

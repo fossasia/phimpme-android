@@ -69,6 +69,7 @@ import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
 import org.fossasia.phimpme.data.local.FavouriteImagesModel;
 import org.fossasia.phimpme.data.local.ImageDescModel;
+import org.fossasia.phimpme.editor.CompressImageActivity;
 import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.FileUtils;
 import org.fossasia.phimpme.editor.utils.BitmapUtils;
@@ -126,6 +127,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private boolean fullScreenMode, customUri = false;
     public static final int TAKE_PHOTO_CODE = 8;
     public static final int ACTION_REQUEST_EDITIMAGE = 9;
+    public static final int ACTION_REQUEST_COMPRESSIMAGE = 13;
     public static final int ACTION_STICKERS_IMAGE = 10;
     private Bitmap mainBitmap;
     private int imageWidth, imageHeight;
@@ -147,7 +149,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     boolean slideshow=false;
     private boolean details=false;
     private ArrayList<Media> favouriteslist;
-
+    public static  Media mediacompress = null;
     ImageDescModel temp;
     private final int REQ_CODE_SPEECH_INPUT = 100;
     String voiceInput;
@@ -773,6 +775,35 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 } else {
                     SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.check_favourite), bottomBar.getHeight());
                 }
+                break;
+
+
+            case R.id.action_compress:
+                handler.removeCallbacks(slideShowRunnable);
+                if (!allPhotoMode)
+                    uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
+                else
+                    uri = Uri.fromFile(new File(listAll.get(current_image_pos).getPath()));
+                String extension1 = uri.getPath();
+                if (extension1 != null && !(extension1.substring(extension1.lastIndexOf(".")).equals(".gif"))) {
+                    Intent compressIntent = new Intent(SingleMediaActivity.this, CompressImageActivity.class);
+                    if (!allPhotoMode)
+                        compressIntent.putExtra(EXTRA_OUTPUT, getAlbum().getCurrentMedia().getPath());
+                    else
+                        compressIntent.putExtra(EXTRA_OUTPUT, listAll.get(current_image_pos).getPath());
+                        startActivity(compressIntent);
+
+
+                //to send the resolution of image
+                    handler.removeCallbacks(slideShowRunnable);
+                    if(!allPhotoMode && !favphotomode){
+                        mediacompress = getAlbum().getCurrentMedia();
+                    }else if(allPhotoMode && !favphotomode){
+                        mediacompress = new Media(new File(listAll.get(current_image_pos).getPath()));}
+                        else if(!allPhotoMode && favphotomode){
+                        mediacompress = new Media(new File(favouriteslist.get(current_image_pos).getPath()));}
+                }else
+                    SnackBarHandler.show(parentView, R.string.image_invalid);
                 break;
 
             case R.id.action_delete:
