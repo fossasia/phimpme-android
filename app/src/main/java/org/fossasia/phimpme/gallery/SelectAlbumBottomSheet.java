@@ -5,6 +5,7 @@ package org.fossasia.phimpme.gallery;
  */
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -13,15 +14,23 @@ import android.support.design.widget.BottomSheetDialogFragment;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.Html;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
@@ -121,19 +130,74 @@ public class SelectAlbumBottomSheet extends BottomSheetDialogFragment {
 	contentView.findViewById(R.id.ll_create_new_folder).setOnClickListener(new View.OnClickListener() {
 	  @Override
 	  public void onClick(View view) {
-		final EditText editText = new EditText(getContext());
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), theme.getDialogStyle());
-		AlertDialogsHelper.getInsertTextDialog(((ThemedActivity) getActivity()), builder,
-				editText, R.string.new_folder, null);
+          final EditText editText = new EditText(getContext());
+          editText.setHint(R.string.description_hint);
+          editText.setHintTextColor(ContextCompat.getColor(getContext(), R.color.grey));
+          AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), theme.getDialogStyle());
+          AlertDialogsHelper.getInsertTextDialog(((ThemedActivity) getActivity()), builder,
+                  editText, R.string.new_folder, null);
+          builder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
 		builder.setPositiveButton(R.string.ok_action, new DialogInterface.OnClickListener() {
 		  @Override
 		  public void onClick(DialogInterface dialogInterface, int i) {
+              int folderCount=folders.size();
+              int check=1;
+              int filePosition=0;
+              while (filePosition<folderCount) {
+                  File f = folders.get(filePosition);
+                  filePosition++;
+                  if (editText.getText().toString().equals(f.getName()))
+                      check=0;
+              }
+              if(!editText.getText().toString().trim().isEmpty() && check!=0) {
 			File folderPath = new File(currentFolderPath.getText().toString() + File.separator + editText.getText().toString());
 			if (folderPath.mkdir()) displayContentFolder(folderPath);
+              }
+              else if(check==0)
+                  Toast.makeText(getContext(),R.string.folder_name_exists,Toast.LENGTH_SHORT).show();
 
+              else
+                  Toast.makeText(getContext(),R.string.empty_folder_name,Toast.LENGTH_SHORT).show();
 		  }
 		});
-		builder.show();
+          final AlertDialog dialog1 = builder.create();
+          dialog1.show();
+		  AlertDialogsHelper.setButtonTextColor(new int[]{AlertDialog.BUTTON_POSITIVE, AlertDialog.BUTTON_NEGATIVE},
+		  theme.getAccentColor(), dialog1);
+          dialog1.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager
+                  .LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+          dialog1.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+          dialog1.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+		  AlertDialogsHelper.setButtonTextColor(new int[]{AlertDialog.BUTTON_POSITIVE},
+				  getResources().getColor(R.color.grey, null), dialog1);
+          editText.addTextChangedListener(new TextWatcher() {
+              @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+				  //empty method body
+
+              }
+
+              @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+				  //empty method body
+
+              }
+
+              @Override public void afterTextChanged(Editable editable) {
+                  if (TextUtils.isEmpty(editable)) {
+                      // Disable ok button
+                      dialog1.getButton(
+                              AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+					  AlertDialogsHelper.setButtonTextColor(new int[]{AlertDialog.BUTTON_POSITIVE},
+							  getResources().getColor(R.color.grey, null), dialog1);
+                  } else {
+                      // Something into edit text. Enable the button.
+                      dialog1.getButton(
+                              AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+					  AlertDialogsHelper.setButtonTextColor(new int[]{AlertDialog.BUTTON_POSITIVE},
+							  theme.getAccentColor(), dialog1);
+                  }
+
+              }
+          });
 	  }
 	});
 
@@ -151,7 +215,7 @@ public class SelectAlbumBottomSheet extends BottomSheetDialogFragment {
   private void displayContentFolder(File dir) {
 	canGoBack = false;
 	if(dir.canRead()) {
-	  folders = new ArrayList<File>();
+	  folders = new ArrayList<>();
 	  File parent = dir.getParentFile();
 	  if (parent.canRead()) {
 		canGoBack = true;
@@ -159,7 +223,7 @@ public class SelectAlbumBottomSheet extends BottomSheetDialogFragment {
 	  }
 	  File[] files = dir.listFiles(new FoldersFileFilter());
 	  if (files != null && files.length > 0) {
-		folders.addAll(new ArrayList<File>(Arrays.asList(files)));
+		folders.addAll(new ArrayList<>(Arrays.asList(files)));
 		currentFolderPath.setText(dir.getAbsolutePath());
 	  }
 	  currentFolderPath.setText(dir.getAbsolutePath());
@@ -235,7 +299,14 @@ public class SelectAlbumBottomSheet extends BottomSheetDialogFragment {
 	  holder.folderName.setText(f.getName());
 	  holder.folderName.setTag(f.getPath());
 
+		if(f.getPath().contains(Environment.getExternalStorageDirectory().getPath())){
+			holder.sdfolder.setVisibility(View.INVISIBLE);
+		} else {
+			holder.sdfolder.setVisibility(View.VISIBLE);
+		}
+
 	  /** SET UP THEME**/
+	  holder.cardViewParent.setCardBackgroundColor(theme.getCardBackgroundColor());
 	  holder.folderName.setTextColor(theme.getTextColor());
 	  String hexAccentColor = String.format("#%06X", (0xFFFFFF & theme.getAccentColor()));
 	  holder.folderCount.setText(Html.fromHtml("<b><font color='" + hexAccentColor + "'>" + count + "</font></b>" + "<font " + "color='" + theme.getSubTextColor() + "'> Media</font>"));
@@ -254,14 +325,18 @@ public class SelectAlbumBottomSheet extends BottomSheetDialogFragment {
 	}
 
 	class ViewHolder extends RecyclerView.ViewHolder {
-	  TextView folderName;
-	  TextView folderCount;
-	  IconicsImageView imgFolder;
-	  ViewHolder(View itemView) {
+	  private TextView folderName;
+	  private TextView folderCount;
+		private ImageView sdfolder;
+    private CardView cardViewParent;
+	  private IconicsImageView imgFolder;
+	  private ViewHolder(View itemView) {
 		super(itemView);
 		folderName = (TextView) itemView.findViewById(R.id.name_folder);
+		sdfolder = (ImageView) itemView.findViewById(R.id.sd_card_folder);
 		folderCount = (TextView) itemView.findViewById(R.id.count_folder);
 		imgFolder = (IconicsImageView) itemView.findViewById(R.id.folder_icon_bottom_sheet_item);
+		cardViewParent = (CardView) itemView.findViewById(R.id.card_view);
 	  }
 	}
   }

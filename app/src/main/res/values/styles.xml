@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowContentTransitions">true</item>
     </style>
 
     <!--LIGHT MENU THEME-->
@@ -67,6 +68,10 @@
         <item name="android:textColorPrimary">#FFF</item>
         <item name="colorControlNormal">#FFF</item>
         <item name="colorControlHighlight">#FFF</item>
+    </style>
+
+    <style name="ToolbarTitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="fab_camera">

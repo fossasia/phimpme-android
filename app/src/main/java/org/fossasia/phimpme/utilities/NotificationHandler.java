@@ -3,6 +3,7 @@ package org.fossasia.phimpme.utilities;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.StringRes;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
@@ -19,38 +20,39 @@ public class NotificationHandler {
     private static Builder mBuilder;
     private static int id = 1;
 
-    public static void make(@StringRes int title){
+    public static void make(@StringRes int title, @StringRes int action, @DrawableRes int iconid){
         mNotifyManager = (NotificationManager) ActivitySwitchHelper.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
         mBuilder = new NotificationCompat.Builder(ActivitySwitchHelper.getContext());
-        mBuilder.setContentTitle(ActivitySwitchHelper.getContext().getString(R.string.upload_progress) + " " + ActivitySwitchHelper.getContext().getResources().getString(title))
+        mBuilder.setContentTitle(ActivitySwitchHelper.getContext().getString(action) + " " + ActivitySwitchHelper
+                .getContext().getResources().getString(title))
                 .setLargeIcon(BitmapFactory.decodeResource(ActivitySwitchHelper.getContext().getResources(),
                         R.mipmap.ic_launcher))
                 .setContentText(ActivitySwitchHelper.getContext().getString(R.string.progress))
-                .setSmallIcon(R.drawable.ic_cloud_upload_black_24dp)
+                .setSmallIcon(iconid)
                 .setOngoing(true);
         mBuilder.setProgress(0, 0, true);
         // Issues the notification
         mNotifyManager.notify(id, mBuilder.build());
     }
 
-    public static void updateProgress(int uploaded, int total, int percent){
+    public static void actionProgress(int uploaded, int total, int percent, @StringRes int action){
         mBuilder.setProgress(total, uploaded, false);
-        mBuilder.setContentTitle(ActivitySwitchHelper.getContext().getString(R.string.upload_progress)+" ("+Integer.toString(percent)+"%)");
+        mBuilder.setContentTitle(ActivitySwitchHelper.getContext().getString(action)+" ("+Integer.toString(percent)+"%)");
         // Issues the notification
         mNotifyManager.notify(id, mBuilder.build());
     }
 
-    public static void uploadPassed(){
+    public static void actionPassed(@StringRes int actionsuccess){
         mBuilder.setContentText(ActivitySwitchHelper.getContext().getString(R.string.upload_done))
                 // Removes the progress bar
                 .setProgress(0,0,false)
-                .setContentTitle(ActivitySwitchHelper.getContext().getString(R.string.upload_complete))
+                .setContentTitle(ActivitySwitchHelper.getContext().getString(actionsuccess))
                 .setOngoing(false);
         mNotifyManager.notify(0, mBuilder.build());
         mNotifyManager.cancel(id);
     }
 
-    public static void uploadFailed(){
+    public static void actionFailed(){
         mBuilder.setContentText(ActivitySwitchHelper.getContext().getString(R.string.try_again))
                 // Removes the progress bar
                 .setProgress(0,0,false)

@@ -678,8 +678,11 @@
         <item>Grain</item>
         <item>Hist Equal</item>
         <item>Threshold</item>
-    </string-array>
-
+        <item>Negative</item>
+        <item>Green Boost</item>
+        <item>Boost Red</item>
+        <item>Blue Boost</item>
+  </string-array>
 
     <integer-array name="enhance_icons">
         <item>@drawable/ic_bright</item>
@@ -689,8 +692,8 @@
         <item>@drawable/ic_temp</item>
         <item>@drawable/ic_tint</item>
         <item>@drawable/ic_vignette</item>
-        <item>@drawable/ic_sharp</item><!--
-        <item>@drawable/ic_blur</item>-->
+        <item>@drawable/ic_sharp</item>
+        <item>@drawable/ic_blur</item>
     </integer-array>
 
     <string-array name="enhance_titles">
@@ -702,6 +705,7 @@
         <item>tint</item>
         <item>vignette</item>
         <item>sharp</item>
+        <item>blur</item>
     </string-array>
 
 

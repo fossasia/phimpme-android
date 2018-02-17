@@ -2,6 +2,7 @@ package org.fossasia.phimpme.opencamera.Camera;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -10,6 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -25,8 +27,10 @@ import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.FileUtils;
+import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
 import org.fossasia.phimpme.share.SharingActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
+import org.fossasia.phimpme.utilities.Constants;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 import java.io.File;
@@ -63,13 +67,28 @@ public class PhotoActivity extends ThemedActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteFile();
+                final AlertDialog.Builder deleteDialog = new AlertDialog.Builder(PhotoActivity.this, getDialogStyle());
+                AlertDialogsHelper.getTextDialog(PhotoActivity.this, deleteDialog,
+                        R.string.delete, R.string.delete_photo_message, null);
+                deleteDialog.setNegativeButton(getApplicationContext().getString(R.string.cancel).toUpperCase(), null);
+                deleteDialog.setPositiveButton(getApplicationContext().getString(R.string.delete).toUpperCase(),
+                        new DialogInterface.OnClickListener() {
+                            @Override public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                                deleteFile();
+                            }
+                        });
+                AlertDialog dialog = deleteDialog.create();
+                dialog.show();
+                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface
+                        .BUTTON_NEGATIVE}, getAccentColor(), dialog);
             }
         });
     }
 
     private void setUI() {
         Menu bottomMenu = preview_toolbar.getMenu();
+        parent.setBackgroundColor(getBackgroundColor());
         int colorBottomIcons = setIconColor(getPrimaryColor());
         getMenuInflater().inflate(R.menu.menu_preview, bottomMenu);
         for (int i = 0; i < bottomMenu.size(); i++) {
@@ -166,12 +185,25 @@ public class PhotoActivity extends ThemedActivity {
             case R.id.menu_share:
                 Intent share = new Intent(PhotoActivity.this, SharingActivity.class);
                 share.putExtra(EXTRA_OUTPUT, FILE_PATH);
-                startActivity(share);
-                finish();
+                startActivityForResult(share, Constants.REQUEST_SHARE_RESULT);
                 return true;
 
             case R.id.delete:
-                deleteFile();
+                final AlertDialog.Builder deleteDialog = new AlertDialog.Builder(PhotoActivity.this, getDialogStyle());
+                AlertDialogsHelper.getTextDialog(PhotoActivity.this, deleteDialog,
+                        R.string.delete, R.string.delete_photo_message, null);
+                deleteDialog.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
+                deleteDialog.setPositiveButton(this.getString(R.string.delete).toUpperCase(),
+                        new DialogInterface.OnClickListener() {
+                            @Override public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                                deleteFile();
+                            }
+                        });
+                final AlertDialog dialog = deleteDialog.create();
+                dialog.show();
+                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface
+                        .BUTTON_NEGATIVE}, getAccentColor(), dialog);
                 return true;
 
             case R.id.save:
@@ -192,5 +224,15 @@ public class PhotoActivity extends ThemedActivity {
     public void onResume() {
         super.onResume();
         ActivitySwitchHelper.setContext(this);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == Constants.REQUEST_SHARE_RESULT && resultCode == RESULT_OK && data != null) {
+            int result = data.getIntExtra(Constants.SHARE_RESULT, Constants.FAIL);
+            if(result == Constants.SUCCESS) {
+                finish();
+            }
+        }
     }
 }

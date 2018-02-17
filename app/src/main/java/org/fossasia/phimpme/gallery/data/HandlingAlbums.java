@@ -97,6 +97,7 @@ public class HandlingAlbums {
     }
   }
 
+  @SuppressWarnings("unchecked")
   public static void addAlbumToBackup(final Context context, final Album album) {
     new Thread(new Runnable() {
       public void run() {
@@ -134,7 +135,7 @@ public class HandlingAlbums {
     }).start();
   }
 
-
+  @SuppressWarnings("unchecked")
   public void restoreBackup(Context context) {
     FileInputStream inStream;
     try {
@@ -254,6 +255,14 @@ public class HandlingAlbums {
 
   public boolean deleteAlbum(Album album, Context context) {
     return ContentHelper.deleteFilesInFolder(context, new File(album.getPath()));
+  }
+
+  public boolean moveSelectedAlbum(Context context, String targetDir) {
+    Album current = selectedAlbums.get(0);
+    current.updatePhotos(context);
+    current.selectAllPhotos();
+    int ans = current.moveSelectedMedia(context, targetDir);
+    return ans != -1;
   }
 
   public void excludeSelectedAlbums(Context context) {

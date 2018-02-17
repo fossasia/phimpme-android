@@ -2,6 +2,7 @@ package org.fossasia.phimpme;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
@@ -16,6 +17,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.decode.BaseImageDecoder;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
+import com.squareup.leakcanary.LeakCanary;
+import com.squareup.leakcanary.RefWatcher;
 import com.twitter.sdk.android.core.DefaultLogger;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
@@ -36,13 +39,14 @@ import io.realm.RealmConfiguration;
 /**
  * Created by dnld on 28/04/16.
  */
+
 public class MyApplication extends Application {
 
     private HandlingAlbums albums = null;
     public static Context applicationContext;
     public ImageLoader imageLoader;
     private Boolean isPublished = false; // Set this to true at the time of release
-
+    private RefWatcher refWatcher;
     public Album getAlbum() {
         return albums.dispAlbums.size() > 0 ? albums.getCurrentAlbum() : Album.getEmptyAlbum();
     }
@@ -50,6 +54,15 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
 
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        refWatcher = LeakCanary.install(this);
         albums = new HandlingAlbums(getApplicationContext());
         applicationContext = getApplicationContext();
 
@@ -86,6 +99,10 @@ public class MyApplication extends Application {
                         .build());
     }
 
+    public static RefWatcher getRefWatcher(Context context){
+        MyApplication myApplication = (MyApplication) context.getApplicationContext();
+        return myApplication.refWatcher;
+    }
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
