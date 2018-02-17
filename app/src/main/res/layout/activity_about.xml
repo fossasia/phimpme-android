@@ -50,7 +50,7 @@
                             android:id="@+id/leafpic_header"
                             android:layout_width="match_parent"
                             android:layout_height="150dp"
-                            android:scaleType="centerCrop" />
+                            android:scaleType="centerCrop"/>
 
                         <ImageView
                             android:layout_width="200dp"
@@ -59,7 +59,7 @@
                             android:layout_centerHorizontal="true"
                             android:padding="@dimen/sub_medium_spacing"
                             android:scaleType="fitXY"
-                            app:srcCompat="@drawable/ic_launcher_vector" />
+                            app:srcCompat="@drawable/ic_launcher_vector"/>
                     </RelativeLayout>
 
                     <TextView
@@ -71,17 +71,20 @@
                         android:text="@string/app_name"
                         android:textColor="@color/md_dark_primary_text"
                         android:textSize="@dimen/big_text"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/about_app_light_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:gravity="center"
                         android:padding="@dimen/sub_small_spacing"
+                        android:layout_marginLeft="@dimen/medium_spacing"
+                        android:layout_marginRight="@dimen/medium_spacing"
                         android:text="@string/app_light_description"
                         android:textColor="@color/md_dark_primary_text"
-                        android:textSize="@dimen/medium_text" />
+                        android:textSize="@dimen/medium_text"/>
 
                     <TextView
                         android:id="@+id/about_version_item_sub"
@@ -89,9 +92,9 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:padding="@dimen/sub_small_spacing"
-                        android:text="v1.0"
+                        android:text="@string/version_one"
                         android:textColor="@color/md_grey_400"
-                        android:textSize="@dimen/medium_text" />
+                        android:textSize="@dimen/medium_text"/>
 
                     <TextView
                         android:id="@+id/about_fossasia"
@@ -101,7 +104,7 @@
                         android:padding="@dimen/sub_small_spacing"
                         android:text="@string/about_fossasia"
                         android:textColor="@color/md_grey_400"
-                        android:textSize="@dimen/medium_text" />
+                        android:textSize="@dimen/medium_text"/>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 

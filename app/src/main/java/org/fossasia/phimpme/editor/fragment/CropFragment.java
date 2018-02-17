@@ -14,12 +14,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.fossasia.phimpme.MyApplication;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.EditBaseActivity;
 import org.fossasia.phimpme.editor.EditImageActivity;
@@ -35,23 +39,11 @@ public class CropFragment extends BaseEditFragment {
 	private View mainView;
 	private View cancel,apply;
 	public CropImageView mCropPanel;
-	private LinearLayout ratioList;
+	private LinearLayout ratioList,imageList;
 	private static List<RatioItem> dataList = new ArrayList<RatioItem>();
-	static {
-		dataList.add(new RatioItem("free", -1f));
-		dataList.add(new RatioItem("1:1", 1f));
-		dataList.add(new RatioItem("1:2", 1 / 2f));
-		dataList.add(new RatioItem("1:3", 1 / 3f));
-		dataList.add(new RatioItem("2:3", 2 / 3f));
-		dataList.add(new RatioItem("3:4", 3 / 4f));
-		dataList.add(new RatioItem("2:1", 2f));
-		dataList.add(new RatioItem("3:1", 3f));
-		dataList.add(new RatioItem("3:2", 3 / 2f));
-		dataList.add(new RatioItem("4:3", 4 / 3f));
-	}
 	private List<TextView> textViewList = new ArrayList<TextView>();
 
-	public static int SELECTED_COLOR = Color.GREEN;
+	public static int SELECTED_COLOR = Color.BLUE;
 	public static int UNSELECTED_COLOR = Color.BLACK;
 	private CropRationClick mCropRationClick = new CropRationClick();
 	public TextView selctedTextView;
@@ -64,6 +56,11 @@ public class CropFragment extends BaseEditFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		dataList.add(new RatioItem("1:1", 1f,new IconicsDrawable(this.getContext()).icon(GoogleMaterial.Icon.gmd_crop_square).sizeDp(18)));
+		dataList.add(new RatioItem("3:2", 3 / 2f,new IconicsDrawable(this.getContext()).icon(GoogleMaterial.Icon.gmd_crop_3_2).sizeDp(18)));
+		dataList.add(new RatioItem("Free", -1f,new IconicsDrawable(this.getContext()).icon(GoogleMaterial.Icon.gmd_crop_free).sizeDp(18)));
+		dataList.add(new RatioItem("7:5",7/5f,new IconicsDrawable(this.getContext()).icon(GoogleMaterial.Icon.gmd_crop_7_5).sizeDp(18)));
+		dataList.add(new RatioItem("16:9",16/9f,new IconicsDrawable(this.getContext()).icon(GoogleMaterial.Icon.gmd_crop_16_9).sizeDp(18)));
 	}
 
 	@Override
@@ -89,20 +86,31 @@ public class CropFragment extends BaseEditFragment {
 
 	private void setUpRatioList() {
 		ratioList.removeAllViews();
+        imageList.removeAllViews();
+
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
 				LinearLayout.LayoutParams.WRAP_CONTENT,
 				LinearLayout.LayoutParams.WRAP_CONTENT);
-		params.gravity = Gravity.CENTER_VERTICAL;
-		params.leftMargin = 20;
-		params.rightMargin = 20;
-		for (int i = 0, len = dataList.size(); i < len; i++) {
-			TextView text = new TextView(activity);
-			text.setTextColor(UNSELECTED_COLOR);
-			text.setTextSize(20);
+
+        LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        params.gravity = Gravity.CENTER_VERTICAL;
+        params1.leftMargin = 50;
+        params.weight= (float) 0.2;
+        params1.weight= (float) 0.2;
+        for (int i = 0, len = 5; i < len; i++) {
+            ImageView image = new ImageView(activity);
+            TextView text = new TextView(activity);
+            image.setImageDrawable(dataList.get(i).getImage());
+            text.setTextColor(UNSELECTED_COLOR);
+			text.setTextSize(18);
 			text.setText(dataList.get(i).getText());
 			textViewList.add(text);
-			ratioList.addView(text, params);
-			text.setTag(i);
+			ratioList.addView(text, params1);
+            imageList.addView(image,params);
+            text.setTag(i);
 			if (i == 0) {
 				selctedTextView = text;
 			}
@@ -135,6 +143,7 @@ public class CropFragment extends BaseEditFragment {
 		apply = mainView.findViewById(R.id.crop_apply);
 
         ratioList = (LinearLayout) mainView.findViewById(R.id.ratio_list_group);
+        imageList=(LinearLayout) mainView.findViewById(R.id.image_crop);
         setUpRatioList();
         this.mCropPanel = ensureEditActivity().mCropPanel;
 		cancel.setOnClickListener(new BackToMenuClick());
@@ -169,6 +178,7 @@ public class CropFragment extends BaseEditFragment {
 	public void backToMain() {
 		activity.changeMode(EditImageActivity.MODE_ADJUST);
 		activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
+		activity.adjustFragment.clearSelection();
 		mCropPanel.setVisibility(View.GONE);
 		activity.mainImage.setScaleEnabled(true);
 		if (selctedTextView != null) {
@@ -238,5 +248,11 @@ public class CropFragment extends BaseEditFragment {
 			activity.mCropPanel.setCropRect(activity.mainImage.getBitmapRect());
 			backToMain();
 		}
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		MyApplication.getRefWatcher(getActivity()).watch(this);
 	}
 }

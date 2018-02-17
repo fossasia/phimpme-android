@@ -26,6 +26,7 @@ import com.drew.lang.GeoLocation;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
+import org.fossasia.phimpme.gallery.data.Album;
 import org.fossasia.phimpme.gallery.data.Media;
 import org.fossasia.phimpme.gallery.data.base.MediaDetailsMap;
 
@@ -86,7 +87,6 @@ public class AlertDialogsHelper {
         textDialogBuilder.setView(dialogLayout);
         return textDialogBuilder.create();
     }
-
 
     public static AlertDialog getProgressDialog(final ThemedActivity activity, AlertDialog.Builder progressDialog, String title, String message){
         View dialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_progress, null);
@@ -154,38 +154,70 @@ public class AlertDialogsHelper {
         return detailsDialogBuilder.create();
     }
 
+    public static AlertDialog getAlbumDetailsDialog(final ThemedActivity activity, AlertDialog.Builder detailsDialogBuilder, final Album f) {
+        MediaDetailsMap<String, String> mainDetails = f.getAlbumDetails(activity.getApplicationContext());
+        final View dialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_album_detail, null);
+        dialogLayout.findViewById(R.id.album_details_title).setBackgroundColor(activity.getPrimaryColor());
+        ((CardView) dialogLayout.findViewById(R.id.album_details_card)).setCardBackgroundColor(activity.getCardBackgroundColor());
+        detailsDialogBuilder.setView(dialogLayout);
+        loadDetails(dialogLayout,activity, mainDetails);
+        return detailsDialogBuilder.create();
+    }
+
     private static void loadDetails(View dialogLayout, ThemedActivity activity, MediaDetailsMap<String, String> metadata) {
-        LinearLayout detailsTable = (LinearLayout) dialogLayout.findViewById(R.id.ll_list_details);
+        int textColor = activity.getBaseTheme() != ThemeHelper.LIGHT_THEME ? Color.parseColor("#FAFAFA" ): Color.parseColor("#2b2b2b");
+        ((ImageView)dialogLayout.findViewById(R.id.icon_folder)).setColorFilter(activity.getAccentColor());
+        TextView name = (TextView) dialogLayout.findViewById(R.id.album_details_name);
+        name.setText(metadata.get(activity.getString(R.string.folder_name)));
+        name.setTextColor(textColor);
+        TextView type = (TextView) dialogLayout.findViewById(R.id.album_details_type);
+        type.setText(R.string.folder);
+        type.setTextColor(textColor);
+        TextView path = (TextView) dialogLayout.findViewById(R.id.album_details_path);
+        path.setText(metadata.get(activity.getString(R.string.folder_path)));
+        path.setTextColor(textColor);
+        TextView parent = (TextView) dialogLayout.findViewById(R.id.album_details_parent);
+        parent.setText(metadata.get(activity.getString(R.string.parent_path)));
+        parent.setTextColor(textColor);
+        TextView total = (TextView) dialogLayout.findViewById(R.id.album_details_total);
+        total.setText(metadata.get(activity.getString(R.string.total_photos)));
+        total.setTextColor(textColor);
+        TextView size = (TextView) dialogLayout.findViewById(R.id.album_details_size);
+        size.setText(metadata.get(activity.getString(R.string.size_folder)));
+        size.setTextColor(textColor);
+        TextView modified = (TextView) dialogLayout.findViewById(R.id.album_details_last_modified);
+        modified.setText(metadata.get(activity.getString(R.string.modified)));
+        modified.setTextColor(textColor);
+        TextView readable = (TextView) dialogLayout.findViewById(R.id.album_details_readable);
+        readable.setText(metadata.get(activity.getString(R.string.readable)));
+        readable.setTextColor(textColor);
+        TextView writable = (TextView) dialogLayout.findViewById(R.id.album_details_writable);
+        writable.setText(metadata.get(activity.getString(R.string.writable)));
+        writable.setTextColor(textColor);
+        TextView hidden = (TextView) dialogLayout.findViewById(R.id.album_details_hidden);
+        hidden.setText(metadata.get(activity.getString(R.string.hidden)));
+        hidden.setTextColor(textColor);
 
-        int tenPxInDp = Measure.pxToDp (10, activity);
-
-        for (int index : metadata.getKeySet()) {
-            LinearLayout row = new LinearLayout(activity.getApplicationContext());
-            row.setOrientation(LinearLayout.HORIZONTAL);
-            row.setWeightSum(10);
-
-            TextView label = new TextView(activity.getApplicationContext());
-            TextView value = new TextView(activity.getApplicationContext());
-            label.setText(metadata.getLabel(index));
-            label.setLayoutParams((new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 3f)));
-            value.setText(metadata.getValue(index));
-            value.setLayoutParams((new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 7f)));
-            label.setTextColor(activity.getTextColor());
-            label.setTypeface(null, Typeface.BOLD);
-            label.setGravity(Gravity.END);
-            label.setTextSize(16);
-            value.setTextColor(activity.getTextColor());
-            value.setTextSize(16);
-            value.setPaddingRelative(tenPxInDp, 0, 0, 0);
-            row.addView(label);
-            row.addView(value);
-            detailsTable.addView(row, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        }
+        // Setting the Label text colors
+        ((TextView)dialogLayout.findViewById(R.id.label_type)).setTextColor(textColor);
+        ((TextView)dialogLayout.findViewById(R.id.label_path)).setTextColor(textColor);
+        ((TextView)dialogLayout.findViewById(R.id.label_parent)).setTextColor(textColor);
+        ((TextView)dialogLayout.findViewById(R.id.label_total_photos)).setTextColor(textColor);
+        ((TextView)dialogLayout.findViewById(R.id.label_size)).setTextColor(textColor);
+        ((TextView)dialogLayout.findViewById(R.id.label_last_modified)).setTextColor(textColor);
+        ((TextView)dialogLayout.findViewById(R.id.label_readable)).setTextColor(textColor);
+        ((TextView)dialogLayout.findViewById(R.id.label_writable)).setTextColor(textColor);
+        ((TextView)dialogLayout.findViewById(R.id.label_hidden)).setTextColor(textColor);
     }
 
     private static void showMoreDetails(View dialogLayout, ThemedActivity activity, Media media) {
 
         MediaDetailsMap<String, String> metadata = media.getAllDetails();
         loadDetails(dialogLayout ,activity , metadata);
+    }
+
+    public static void setButtonTextColor(int[] buttons, int color, AlertDialog alertDialog) {
+        for(int button : buttons)
+            alertDialog.getButton(button).setTextColor(color);
     }
 }

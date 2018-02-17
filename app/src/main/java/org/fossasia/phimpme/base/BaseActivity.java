@@ -1,6 +1,9 @@
 package org.fossasia.phimpme.base;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -55,7 +58,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
          nav_cam = (BottomNavigationItemView) findViewById(R.id.navigation_camera);
          nav_acc = (BottomNavigationItemView) findViewById(R.id.navigation_accounts);
 
-        presentShowcaseSequence(); // one second delay
+        int checkStoragePermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if(checkStoragePermission  == PackageManager.PERMISSION_GRANTED)
+            presentShowcaseSequence(); // one second delay
     }
 
     private void presentShowcaseSequence() {
@@ -81,6 +86,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                         .setTarget(nav_cam)
                         .setDismissText(getResources().getString(R.string.ok_button))
                         .setContentText(getResources().getString(R.string.camera_button))
+                        .setDismissOnTouch(true)
                         .build()
         );
 
@@ -89,6 +95,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                         .setTarget(nav_acc)
                         .setDismissText(getResources().getString(R.string.ok_button))
                         .setContentText(getResources().getString(R.string.accounts_button))
+                        .setDismissOnTouch(true)
                         .build()
         );
 
@@ -159,8 +166,38 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         navigationView.setBackgroundColor(color);
         setIconColor(color);
     }
-    public void hideNavigationBar() {
-        navigationView.setVisibility(View.GONE);
+
+    /**
+     * Animate bottom navigation bar from GONE to VISIBLE
+     */
+    public void showNavigationBar() {
+        navigationView.animate()
+                .translationY(0)
+                .alpha(1.0f)
+                .setDuration(400)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        super.onAnimationStart(animation);
+                        navigationView.setVisibility(View.VISIBLE);
+                    }
+                });
     }
 
+    /**
+     * Animate bottom navigation bar from VISIBLE to GONE
+     */
+    public void hideNavigationBar() {
+        navigationView.animate()
+                .alpha(0.0f)
+                .translationYBy(navigationView.getHeight())
+                .setDuration(400)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        navigationView.setVisibility(View.GONE);
+                    }
+                });
+    }
 }

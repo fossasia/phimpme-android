@@ -55,7 +55,18 @@ extern "C" {
             case 11:
                 applyThreshold(src, dst, val);
                 break;
-
+            case 12:
+                applyNegative(src,dst,val);
+                break;
+            case 13:
+                applyGreenBoostEffect(src,dst,val);
+                break;
+            case 14:
+                applyBoostRedEffect(src,dst,val);
+                break;
+            case 15:
+                applyBlueBoostEffect(src,dst,val);
+                break;
             default:
                 int lowThreshold = val;
                 int ratio = 3;
@@ -114,6 +125,9 @@ extern "C" {
                 break;
             case 7:
                 adjustSharpness(src, dst, val);
+                break;
+            case 8:
+                adjustBlur(src, dst, val);
                 break;
             default:
                 break;

@@ -1,7 +1,9 @@
 package org.fossasia.phimpme.uploadhistory;
 
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -44,11 +46,12 @@ public class UploadHistory extends ThemedActivity {
     @BindView(R.id.empty_text)
     TextView emptyText;
 
+    @BindView(R.id.accounts_parent)
+    RelativeLayout parentView;
 
     Realm realm;
 
     private RealmQuery<UploadHistoryRealmModel> uploadResults;
-
     private UploadHistoryAdapter uploadHistoryAdapter;
 
     @Override
@@ -56,21 +59,30 @@ public class UploadHistory extends ThemedActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.upload_history_activity);
         ButterKnife.bind(this);
-        setupToolbar();
-        uploadHistoryAdapter = new UploadHistoryAdapter();
+        uploadHistoryAdapter = new UploadHistoryAdapter(getPrimaryColor());
         realm = Realm.getDefaultInstance();
         uploadResults = realm.where(UploadHistoryRealmModel.class);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        GridLayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), columnsCount());
+        layoutManager.setReverseLayout(false);
         uploadHistoryRecyclerView.setLayoutManager(layoutManager);
         uploadHistoryRecyclerView.setAdapter(uploadHistoryAdapter);
         uploadHistoryAdapter.setResults(uploadResults);
 
+        setUpUI();
         //uploadHistoryRecyclerView.addOnItemTouchListener(new RecyclerItemClickListner(this, this));
+    }
+
+    private int columnsCount() {
+        return getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT
+                ? 2
+                : 3;
+    }
+
+    private void setUpUI() {
         emptyIcon.setColor(getIconColor());
         emptyText.setTextColor(getAccentColor());
-
-
-
+        parentView.setBackgroundColor(getBackgroundColor());
+        setupToolbar();
     }
 
     public void setUpAdapter(@NotNull RealmQuery<UploadHistoryRealmModel> accountDetails) {
@@ -81,6 +93,7 @@ public class UploadHistory extends ThemedActivity {
     @Override
     public void onResume() {
         super.onResume();
+        setUpUI();
         if (uploadResults.findAll().size() == 0) {
             emptyLayout.setVisibility(View.VISIBLE);
             uploadHistoryRecyclerView.setVisibility(View.GONE);

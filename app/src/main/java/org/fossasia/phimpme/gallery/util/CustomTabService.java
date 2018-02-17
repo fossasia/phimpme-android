@@ -9,13 +9,14 @@ import android.support.customtabs.CustomTabsServiceConnection;
 import android.support.customtabs.CustomTabsSession;
 import android.widget.Toast;
 
+import org.fossasia.phimpme.R;
+
 
 public class CustomTabService {
     private CustomTabsClient mCustomTabsClient;
     private CustomTabsSession mCustomTabsSession;
     private CustomTabsServiceConnection mCustomTabsServiceConnection;
     private CustomTabsIntent mCustomTabsIntent;
-
     private Activity activity;
     private int color;
 
@@ -49,7 +50,7 @@ public class CustomTabService {
         try{
             mCustomTabsIntent.launchUrl(activity, Uri.parse(Url));
         }catch (Exception e){
-            Toast.makeText(activity.getApplication(), "Error: "+e.toString(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity.getApplication(), R.string.error_title+e.toString(), Toast.LENGTH_SHORT).show();
         }
     }
 }
