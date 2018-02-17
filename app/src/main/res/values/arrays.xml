@@ -678,8 +678,11 @@
         <item>Grain</item>
         <item>Hist Equal</item>
         <item>Threshold</item>
-    </string-array>
-
+        <item>Negative</item>
+        <item>Green Boost</item>
+        <item>Boost Red</item>
+        <item>Blue Boost</item>
+  </string-array>
 
     <integer-array name="enhance_icons">
         <item>@drawable/ic_bright</item>
