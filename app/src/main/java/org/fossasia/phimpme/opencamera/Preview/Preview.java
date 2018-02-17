@@ -45,7 +45,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.opencamera.Camera.CameraActivity;
 import org.fossasia.phimpme.opencamera.Camera.MyDebug;
@@ -62,6 +61,7 @@ import org.fossasia.phimpme.opencamera.Preview.CameraSurface.CameraSurface;
 import org.fossasia.phimpme.opencamera.Preview.CameraSurface.MySurfaceView;
 import org.fossasia.phimpme.opencamera.Preview.CameraSurface.MyTextureView;
 import org.fossasia.phimpme.opencamera.UI.PopupView;
+import org.fossasia.phimpme.utilities.Utils;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -1401,6 +1401,8 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
                             if (supported_values != null) {
                                 color_effects = supported_values.values;
                                 applicationInterface.setColorEffectPref(supported_values.selected_value);
+			Utils.showShortToast(getContext(),supported_values.selected_value,500);
+
                             } else {
                                 applicationInterface.clearColorEffectPref();
                             }
@@ -1408,7 +1410,8 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
                         {
                             Toast.makeText(activity, "Your device does not support any filters", Toast.LENGTH_SHORT).show();
                             Log.e(TAG, "ColorEffect List Size Is Null " );
-                        }
+							Log.e(TAG, "onClick:"+e.getMessage());
+						}
                     }
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putBoolean(activity.getString(R.string.first_click), false);
