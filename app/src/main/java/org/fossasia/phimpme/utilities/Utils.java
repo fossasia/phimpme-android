@@ -197,17 +197,13 @@ public class Utils {
         final Toast toast = new Toast(context).makeText(context, toastText, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
-
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 toast.cancel();
-
-            }
-        }, duration);
-
-
+               }
+          }, duration);
     }
 
 }
