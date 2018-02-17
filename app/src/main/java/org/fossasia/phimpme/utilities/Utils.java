@@ -192,8 +192,9 @@ public class Utils {
 
     //util to make a custom toast for short time
     public static void showShortToast(Context context, String msg, long duration) {
-        msg = Character.toUpperCase(msg.charAt(0)) + msg.substring(1);
-        final Toast toast = new Toast(context).makeText(context, msg, Toast.LENGTH_SHORT);
+      String toastText=msg;  
+      toastText= Character.toUpperCase(toastText.charAt(0)) + toastText.substring(1);
+        final Toast toast = new Toast(context).makeText(context, toastText, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
 
