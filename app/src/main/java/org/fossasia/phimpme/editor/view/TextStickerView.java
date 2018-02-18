@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -20,6 +21,7 @@ import org.fossasia.phimpme.editor.utils.ListUtil;
 import org.fossasia.phimpme.editor.utils.RectUtil;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -74,7 +76,7 @@ public class TextStickerView extends View {
     private boolean isShowHelpBox = true;
 
     private boolean mAutoNewLine = false;//The need to wrap
-    private List<String> mTextContents = new ArrayList<String>(2);//Storing text written
+    private List<String> mTextContents = new ArrayList<>(2);//Storing text written
     private String mText;
 
     public TextStickerView(Context context) {
@@ -132,6 +134,11 @@ public class TextStickerView extends View {
         invalidate();
     }
 
+    public void setTextTypeFace(Typeface typeFace) {
+        mPaint.setTypeface(typeFace);
+        invalidate();
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
@@ -159,9 +166,7 @@ public class TextStickerView extends View {
         mTextContents.clear();
 
         String[] splits = mText.split("\n");
-        for (String text : splits) {
-            mTextContents.add(text);
-        }
+        Collections.addAll(mTextContents, splits);
     }
 
     private void drawContent(Canvas canvas) {
@@ -303,6 +308,8 @@ public class TextStickerView extends View {
                 ret = false;
                 mCurrentMode = IDLE_MODE;
                 break;
+
+            default:// Do nothing
         }
 
         return ret;
@@ -318,6 +325,7 @@ public class TextStickerView extends View {
 
     /**
      * Rotating zoom Updates
+     *
      * @param dx
      * @param dy
      */

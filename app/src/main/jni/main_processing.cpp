@@ -58,7 +58,15 @@ extern "C" {
             case 12:
                 applyNegative(src,dst,val);
                 break;
-
+            case 13:
+                applyGreenBoostEffect(src,dst,val);
+                break;
+            case 14:
+                applyBoostRedEffect(src,dst,val);
+                break;
+            case 15:
+                applyBlueBoostEffect(src,dst,val);
+                break;
             default:
                 int lowThreshold = val;
                 int ratio = 3;
