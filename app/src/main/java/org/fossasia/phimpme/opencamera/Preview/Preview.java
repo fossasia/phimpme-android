@@ -1401,7 +1401,7 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
                             if (supported_values != null) {
                                 color_effects = supported_values.values;
                                 applicationInterface.setColorEffectPref(supported_values.selected_value);
-			Utils.showShortToast(getContext(),supported_values.selected_value,500);
+			        Utils.showShortToast(getContext(),supported_values.selected_value,500);
 
                             } else {
                                 applicationInterface.clearColorEffectPref();
@@ -1410,7 +1410,7 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
                         {
                             Toast.makeText(activity, "Your device does not support any filters", Toast.LENGTH_SHORT).show();
                             Log.e(TAG, "ColorEffect List Size Is Null " );
-							Log.e(TAG, "onClick:"+e.getMessage());
+			    Log.e(TAG, "onClick:"+e.getMessage());
 						}
                     }
                     SharedPreferences.Editor editor = sharedPreferences.edit();
