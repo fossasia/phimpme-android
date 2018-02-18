@@ -46,7 +46,7 @@ import static org.fossasia.phimpme.utilities.Constants.PACKAGE_WHATSAPP;
 
 public class Utils {
 
-  //  private static final String TAG = "Utils";
+  
 
 
     public static Bitmap getBitmapFromPath(String path) {
