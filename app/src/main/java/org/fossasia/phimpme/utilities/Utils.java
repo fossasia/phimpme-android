@@ -46,11 +46,7 @@ import static org.fossasia.phimpme.utilities.Constants.PACKAGE_WHATSAPP;
 
 public class Utils {
 
-  
-
-
-    public static Bitmap getBitmapFromPath(String path) {
-
+        public static Bitmap getBitmapFromPath(String path) {
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         return BitmapFactory.decodeFile(path, bmOptions);
     }
@@ -190,7 +186,7 @@ public class Utils {
         }
     }
 
-    //util to make a custom toast for short time
+    //Util to make a custom toast for short time
     public static void showShortToast(Context context, String msg, long duration) {
       String toastText=msg;  
       toastText= Character.toUpperCase(toastText.charAt(0)) + toastText.substring(1);
