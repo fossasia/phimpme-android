@@ -18,6 +18,7 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,7 +75,6 @@ public class SecurityActivity extends ThemedActivity {
         albums = MediaStoreProvider.getAlbums(getApplicationContext());
         llbody = (LinearLayout) findViewById(R.id.ll_security_dialog_body);
         llroot = (LinearLayout) findViewById(R.id.root);
-
         swApplySecurityDelete = (SwitchCompat) findViewById(R.id.security_body_apply_delete_switch);
         swActiveSecurity = (SwitchCompat) findViewById(R.id.active_security_switch);
         swApplySecurityHidden = (SwitchCompat) findViewById(R.id.security_body_apply_hidden_switch);
@@ -130,8 +130,8 @@ public class SecurityActivity extends ThemedActivity {
                     title.setText("Choose folders to secure");
                     RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.secure_folder_recyclerview);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                    SecureDialogAdapter s = new SecureDialogAdapter();
-                    recyclerView.setAdapter(s);
+                    SecureDialogAdapter securedLocalFolders = new SecureDialogAdapter();
+                    recyclerView.setAdapter(securedLocalFolders);
                     builder.setView(view);
                     AlertDialog ad = builder.create();
                     ad.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string
@@ -152,6 +152,19 @@ public class SecurityActivity extends ThemedActivity {
                                 updateSwitchColor(swApplySecurityFolder, getAccentColor());
                             }
                         }});
+                    ad.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                        @Override
+                        public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                            if(keyCode ==  KeyEvent.KEYCODE_BACK){
+                                dialog.dismiss();
+                                SP.putBoolean(getString(R.string.preference_use_password_on_folder), false);
+                                securityObj.updateSecuritySetting();
+                                swApplySecurityFolder.setChecked(false);
+                                updateSwitchColor(swApplySecurityFolder, getAccentColor());
+                            }
+                            return true;
+                        }
+                    });
                     ad.show();
                 }else{
                     SP.putBoolean(getString(R.string.preference_use_password_on_folder), false);
@@ -349,7 +362,7 @@ public class SecurityActivity extends ThemedActivity {
         folActiveSecurity.setTextColor(color);
     }
 
-    class SecureDialogAdapter extends RecyclerView.Adapter<SecureDialogAdapter.ViewHolder>{
+    private class SecureDialogAdapter extends RecyclerView.Adapter<SecureDialogAdapter.ViewHolder>{
 
         SecureDialogAdapter(){}
 
