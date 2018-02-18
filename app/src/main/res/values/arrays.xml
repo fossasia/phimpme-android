@@ -100,21 +100,19 @@
     </string-array>
     <string-array name="preference_burst_mode_entries">
         <item>Off</item>
-        <item>2x</item>
-        <item>3x</item>
-        <item>4x</item>
         <item>5x</item>
         <item>10x</item>
+        <item>25x</item>
+        <item>40x</item>
         <item>Unlimited</item>
     </string-array>
     <string-array name="preference_burst_mode_values">
         <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
         <item>5</item>
         <item>10</item>
-        <item>unlimited</item>
+        <item>25</item>
+        <item>40</item>
+        <item>99</item>
     </string-array>
     <string-array name="preference_burst_interval_entries">
         <item>No delay</item>
