@@ -1,0 +1,62 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="@dimen/editor_bottom_row_size"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical"
+              android:layout_height="match_parent">
+
+    <ImageButton
+        android:id="@+id/paint_cancel"
+        android:layout_width="@dimen/icon_item_image_size_main"
+        android:layout_height="@dimen/editor_bottom_row_size"
+        android:scaleType="fitCenter"
+        android:background="?android:attr/selectableItemBackground"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/ic_no"/>
+
+    <org.fossasia.phimpme.editor.view.PaintModeView
+        android:id="@+id/paint_thumb"
+        android:layout_width="@dimen/icon_item_image_size_main"
+        android:layout_height="@dimen/editor_bottom_row_size"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="3dp"
+        android:layout_gravity="center"
+        android:layout_marginRight="3dp"
+        android:layout_toEndOf="@+id/paint_cancel"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_centerVertical="true"
+        android:id="@+id/paint_color_list"
+        android:layout_width="@dimen/editor_bottom_row_size"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:overScrollMode="never"
+        android:layout_margin="2dp"
+        android:layout_gravity="center"
+        android:scrollbars="none"/>
+
+    <ImageView
+        android:id="@+id/paint_eraser"
+        android:layout_centerVertical="true"
+        android:layout_width="@dimen/icon_item_image_size_main"
+        android:layout_height="@dimen/editor_bottom_row_size"
+        android:layout_marginLeft="5dp"
+        android:layout_gravity="center"
+        android:layout_marginRight="5dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/eraser_normal"/>
+
+    <ImageButton
+        android:id="@+id/paint_apply"
+        android:layout_width="@dimen/icon_item_image_size_main"
+        android:layout_height="@dimen/editor_bottom_row_size"
+        android:layout_centerVertical="true"
+        android:scaleType="fitCenter"
+        android:layout_gravity="center"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="?android:attr/selectableItemBackground"
+        app:srcCompat="@drawable/ic_done_black_24dp"/>
+
+</LinearLayout>

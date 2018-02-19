@@ -1,6 +1,7 @@
 package org.fossasia.phimpme.editor.fragment;
 
 import android.content.res.AssetManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -60,8 +61,15 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        int orientation = getActivity().getResources().getConfiguration().orientation;
+        RecyclerView.LayoutManager manager = null;
+        if(orientation == Configuration.ORIENTATION_PORTRAIT) {
+            manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        } else if(orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            manager = new LinearLayoutManager(getActivity());
+        }
         recyclerView = (RecyclerView) fragmentView.findViewById(R.id.editor_recyclerview);
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(manager);
 
         cancel = (ImageButton)fragmentView.findViewById(R.id.sticker_cancel);
