@@ -42,7 +42,6 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     TypedArray iconlist,titlelist;
     static int currentSelection = -1;
 
-    RecyclerView.LayoutManager layoutManager;
 
     public RecyclerMenuFragment() {
 
@@ -72,6 +71,7 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        RecyclerView.LayoutManager layoutManager = null;
         int orientation = getActivity().getResources().getConfiguration().orientation;
         if(orientation == Configuration.ORIENTATION_PORTRAIT) {
             layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
