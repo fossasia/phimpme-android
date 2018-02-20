@@ -262,7 +262,7 @@ public class Album implements Serializable {
 		return path;
 	}
 
-	private void setCount(int count) {
+	public void setCount(int count) {
 		this.count = count;
 	}
 

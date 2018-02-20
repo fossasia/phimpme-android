@@ -283,6 +283,10 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private void initUI() {
         Menu bottomMenu = bottomBar.getMenu();
         getMenuInflater().inflate(R.menu.menu_bottom_view_pager, bottomMenu);
+
+        if(!allPhotoMode && favphotomode)
+            bottomBar.getMenu().getItem(4).setVisible(false);
+
         for (int i = 0; i < bottomMenu.size(); i++) {
             bottomMenu.getItem(i).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
@@ -489,6 +493,8 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             params.setMargins(0, 0, 0, 0);
 
         toolbar.setLayoutParams(params);
+
+        setUpViewPager();
     }
 
     @Override
@@ -497,9 +503,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             menu.setGroupVisible(R.id.only_photos_options, true);
         }
         else if(!allPhotoMode && favphotomode){
-            menu.findItem(R.id.action_favourites).setVisible(false);
             menu.findItem(R.id.action_cover).setVisible(false);
-            menu.findItem(R.id.action_description).setVisible(false);
             menu.findItem(R.id.action_copy).setVisible(false);
             menu.findItem(R.id.action_move).setVisible(false);
         }
@@ -559,7 +563,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         }
     }
 
-
     private void handleEditorImage(Intent data) {
         String newFilePath = data.getStringExtra(EditImageActivity.EXTRA_OUTPUT);
         boolean isImageEdit = data.getBooleanExtra(EditImageActivity.IMAGE_IS_EDIT, false);
@@ -576,7 +579,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         LoadImageTask loadTask = new LoadImageTask();
         loadTask.execute(newFilePath);
     }
-
 
     private void displayAlbums(boolean reload) {
         Intent i = new Intent(SingleMediaActivity.this, LFMainActivity.class);
@@ -674,7 +676,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
 
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -854,7 +855,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     }
                 });
                 bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
-
                 return true;
 
             case R.id.action_cover:
@@ -1020,7 +1020,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         //This will be overwrite later
                     }
                 });
-
                 final AlertDialog descriptionDialog = descriptionDialogBuilder.create();
                 descriptionDialog.show();
                 AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface
@@ -1031,39 +1030,42 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 descriptionDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
                 AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE},
                         getColor(R.color.grey), descriptionDialog);
-
+                descriptionDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setEnabled(false);
                 if(temp == null){
+                    descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(getColor(R.color.grey));
                     descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setEnabled(false);
                 }
                 else
+                    descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(getAccentColor());
                     descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setEnabled(true);
-
                 editTextDescription.addTextChangedListener(new TextWatcher() {
                     @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         //empty method body
-
                     }
 
                     @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         //empty method body
-
                     }
 
                     @Override public void afterTextChanged(Editable editable) {
                         if (TextUtils.isEmpty(editable)) {
+                            descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL
+                            ).setEnabled(false);
+                            descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(getColor(R.color
+                                    .grey));
                             // Disable ok button
                             descriptionDialog.getButton(
                                     AlertDialog.BUTTON_POSITIVE).setEnabled(false);
                             AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE},
                                     getColor(R.color.grey), descriptionDialog);
                         } else {
+                            descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setEnabled(false);
                             // Something into edit text. Enable the button.
                             descriptionDialog.getButton(
                                     AlertDialog.BUTTON_POSITIVE).setEnabled(true);
                             AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE},
                                     getAccentColor(), descriptionDialog);
                         }
-
                     }
                 });
 
@@ -1086,12 +1088,14 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        descriptionDialog.dismiss();
-                        if(temp!= null){
+                        if (temp == null){
+                            descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setEnabled(false);
+                        }
+                        else{
+                            descriptionDialog.dismiss();
                             databaseHelper.delete(temp);
                             SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.description_deleted), bottomBar.getHeight());
                         }
-
                     }
                 });
                 break;
@@ -1384,5 +1388,59 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             mainBitmap = result;
             imgView.setImageBitmap(mainBitmap);
         }
+    }
+
+    private void setUpViewPager()
+    {
+
+        BasicCallBack basicCallBack = new BasicCallBack() {
+            @Override
+            public void callBack(int status, Object data) {
+                toggleSystemUI();
+            }
+        };
+        if (!allPhotoMode && !favphotomode) {
+            adapter = new ImageAdapter(getAlbum().getMedia(), basicCallBack, this, this);
+            getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
+            mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
+                @Override
+                public void onPageChanged(int oldPosition, int position) {
+                    getAlbum().setCurrentPhotoIndex(position);
+                    toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
+                    invalidateOptionsMenu();
+                    pathForDescription = getAlbum().getMedia().get(position).getPath();
+                }
+            });
+            mViewPager.scrollToPosition(getAlbum().getCurrentMediaIndex());
+        } else if(allPhotoMode && !favphotomode){
+            adapter = new ImageAdapter(LFMainActivity.listAll, basicCallBack, this, this);
+            getSupportActionBar().setTitle(current_image_pos + 1 + " " + getString(R.string.of) + " " + size_all);
+            mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
+                @Override
+                public void onPageChanged(int oldPosition, int position) {
+                    current_image_pos = position;
+                    getAlbum().setCurrentPhotoIndex(getAlbum().getCurrentMediaIndex());
+                    toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
+                    invalidateOptionsMenu();
+                    pathForDescription = listAll.get(position).getPath();
+                }
+            });
+            mViewPager.scrollToPosition(current_image_pos);
+        } else if(!allPhotoMode && favphotomode){
+            adapter = new ImageAdapter(favouriteslist, basicCallBack, this, this);
+            getSupportActionBar().setTitle(current_image_pos + 1 + " " + getString(R.string.of) + " " + size_all);
+            mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
+                @Override
+                public void onPageChanged(int oldPosition, int position) {
+                    current_image_pos = position;
+                    getAlbum().setCurrentPhotoIndex(getAlbum().getCurrentMediaIndex());
+                    toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
+                    invalidateOptionsMenu();
+                    pathForDescription = favouriteslist.get(position).getPath();
+                }
+            });
+            mViewPager.scrollToPosition(current_image_pos);
+        }
+        mViewPager.setAdapter(adapter);
     }
 }
