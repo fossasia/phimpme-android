@@ -9,10 +9,14 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.text.Editable;
 import android.text.InputFilter;
 import android.text.Spanned;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -285,54 +289,90 @@ public class FolderChooserDialog extends DialogFragment {
 			return;
 		if( canWrite() ) {
 			final EditText edit_text = new EditText(getActivity());
+			AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+			builder.setPositiveButton("lklklklk", new DialogInterface.OnClickListener() {
+				@Override public void onClick(DialogInterface dialogInterface, int i) {
+					//empty method body
+				}
+			});
 			edit_text.setSingleLine();
+			edit_text.setHint(getResources().getString(R.string.type_caption));
         	InputFilter filter = new NewFolderInputFilter();
         	edit_text.setFilters(new InputFilter[]{filter});
-
-			Dialog dialog = new AlertDialog.Builder(getActivity())
-		        //.setIcon(R.drawable.alert_dialog_icon)
-				.setTitle(R.string.enter_new_folder)
-		        .setView(edit_text)
-		        .setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						if( edit_text.getText().length() == 0 ) {
-							// do nothing
-						}
-						else {
-							try {
-								String new_folder_name = current_folder.getAbsolutePath() + File.separator + edit_text.getText().toString();
+			AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+			builder1.setTitle(R.string.enter_new_folder);
+			builder1.setView(edit_text);
+			builder1.setPositiveButton(android.R.string.ok, new Dialog.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					if( edit_text.getText().length() == 0 ) {
+						// do nothing
+					}
+					else {
+						try {
+							String new_folder_name = current_folder.getAbsolutePath() + File.separator + edit_text.getText().toString();
+							if( MyDebug.LOG )
+								Log.d(TAG, "create new folder: " + new_folder_name);
+							File new_folder = new File(new_folder_name);
+							if( new_folder.exists() ) {
 								if( MyDebug.LOG )
-									Log.d(TAG, "create new folder: " + new_folder_name);
-								File new_folder = new File(new_folder_name);
-								if( new_folder.exists() ) {
-									if( MyDebug.LOG )
-										Log.d(TAG, "folder already exists");
-									Toast.makeText(getActivity(), R.string.folder_exists, Toast.LENGTH_SHORT).show();
-								}
-								else if( new_folder.mkdirs() ) {
-									if( MyDebug.LOG )
-										Log.d(TAG, "created new folder");
-							    	refreshList(current_folder);
-								}
-								else {
-									if( MyDebug.LOG )
-										Log.d(TAG, "failed to create new folder");
-									Toast.makeText(getActivity(), R.string.failed_create_folder, Toast.LENGTH_SHORT).show();
-								}
+									Log.d(TAG, "folder already exists");
+								Toast.makeText(getActivity(), R.string.folder_exists, Toast.LENGTH_SHORT).show();
 							}
-							catch(Exception e) {
+							else if( new_folder.mkdirs() ) {
 								if( MyDebug.LOG )
-									Log.d(TAG, "exception trying to create new folder");
-								e.printStackTrace();
+									Log.d(TAG, "created new folder");
+								refreshList(current_folder);
+							}
+							else {
+								if( MyDebug.LOG )
+									Log.d(TAG, "failed to create new folder");
 								Toast.makeText(getActivity(), R.string.failed_create_folder, Toast.LENGTH_SHORT).show();
 							}
 						}
+						catch(Exception e) {
+							if( MyDebug.LOG )
+								Log.d(TAG, "exception trying to create new folder");
+							e.printStackTrace();
+							Toast.makeText(getActivity(), R.string.failed_create_folder, Toast.LENGTH_SHORT).show();
+						}
 					}
-		        })
-		        .setNegativeButton(android.R.string.cancel, null)
-		        .create();
+				}
+			});
+			builder1.setNegativeButton(android.R.string.cancel, null);
+			final AlertDialog dialog = builder1.create();
 			dialog.show();
+			dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.md_grey_50, null));
+			dialog.getButton(
+					AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+			edit_text.addTextChangedListener(new TextWatcher() {
+				@Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+					//empty method
+				}
+
+				@Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+					//empty
+				}
+
+				@Override public void afterTextChanged(Editable editable) {
+					if (TextUtils.isEmpty(editable)) {
+						// Disable ok button
+						dialog.getButton(
+								AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+						dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color
+								.grey, null));
+					} else {
+						// Something into edit text. Enable the button.
+						dialog.getButton(
+								AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+						dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(dialog.getButton(AlertDialog
+								.BUTTON_NEGATIVE).getCurrentTextColor());
+					}
+				}
+			});
+			dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager
+					.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+			dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
 		}
 		else {
 			Toast.makeText(getActivity(), R.string.cant_write_folder, Toast.LENGTH_SHORT).show();

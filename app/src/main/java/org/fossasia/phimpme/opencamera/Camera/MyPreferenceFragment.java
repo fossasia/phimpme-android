@@ -53,9 +53,8 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.preferences);
 		parent = getActivity().getWindow().getDecorView();
-
 		themeHelper = new ThemeHelper(getActivity());
-
+		
 //		final Bundle bundle = getArguments();
 		bundle = new TinyDB(getActivity());
 		final int cameraId = bundle.getInt("cameraId");
