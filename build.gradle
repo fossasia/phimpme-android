@@ -27,6 +27,7 @@ allprojects {
         mavenCentral()
         maven { url "http://repo1.maven.org/maven2" }
         maven { url  "http://dl.bintray.com/dasar/maven" }
+        maven { url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo' }
     }
 }
 
