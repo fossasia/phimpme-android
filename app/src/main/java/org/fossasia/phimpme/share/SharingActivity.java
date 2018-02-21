@@ -105,6 +105,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -135,7 +136,6 @@ import static org.fossasia.phimpme.utilities.Utils.checkNetwork;
 import static org.fossasia.phimpme.utilities.Utils.copyToClipBoard;
 import static org.fossasia.phimpme.utilities.Utils.getBitmapFromPath;
 import static org.fossasia.phimpme.utilities.Utils.getImageUri;
-import static org.fossasia.phimpme.utilities.Utils.getMimeType;
 import static org.fossasia.phimpme.utilities.Utils.getStringImage;
 import static org.fossasia.phimpme.utilities.Utils.isAppInstalled;
 import static org.fossasia.phimpme.utilities.Utils.promptSpeechInput;
@@ -1079,7 +1079,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void shareToMessenger() {
-        String mimeType = getMimeType(saveFilePath);
+        String mimeType = URLConnection.guessContentTypeFromName(saveFilePath);
         ShareToMessengerParams shareToMessengerParams =
                 ShareToMessengerParams.newBuilder(getImageUri(this, saveFilePath), mimeType).build();
         MessengerUtils.shareToMessenger(this, REQUEST_CODE_SHARE_TO_MESSENGER, shareToMessengerParams);
