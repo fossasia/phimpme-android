@@ -1421,8 +1421,10 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 				public boolean onLongClick(View v) {
 					final List<String> colorEffect = getSupportedColorEffects();
 					colorNum = 0;
-					CameraController.SupportedValues supported_values = camera_controller.setColorEffect(colorEffect.get(0));
-					applicationInterface.setColorEffectPref(supported_values.selected_value);
+					if (colorEffect != null) {
+						CameraController.SupportedValues supported_values = camera_controller.setColorEffect(colorEffect.get(0));
+						applicationInterface.setColorEffectPref(supported_values.selected_value);
+					}
 					return true;
 				}
 			});
