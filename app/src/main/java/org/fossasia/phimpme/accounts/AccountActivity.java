@@ -553,7 +553,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
      * Create Facebook login and session
      */
     public void signInFacebook() {
-
         List<String> permissionNeeds = Arrays.asList("publish_actions");
         loginManager = LoginManager.getInstance();
         loginManager.logInWithPublishPermissions(this, permissionNeeds);
@@ -565,21 +564,26 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                         realm.beginTransaction();
                         account = realm.createObject(AccountDatabase.class, FACEBOOK.toString());
                         account.setUsername(loginResult.getAccessToken().getUserId());
-                        GraphRequest.newMeRequest(
+
+                        GraphRequest request = GraphRequest.newMeRequest(
                                 loginResult.getAccessToken(),
                                 new GraphRequest.GraphJSONObjectCallback() {
                                     @Override
                                     public void onCompleted(@NonNls JSONObject jsonObject, GraphResponse graphResponse) {
                                         Log.v("LoginActivity", graphResponse.toString());
                                         try {
-                                            account.setUsername(jsonObject.getString("email"));
+                                            account.setUsername(jsonObject.getString("name"));
+                                            realm.commitTransaction();
                                             SnackBarHandler.show(coordinatorLayout, getString(R.string.logged_in_facebook));
                                         } catch (JSONException e) {
                                             Log.e("LoginAct", e.toString());
                                         }
                                     }
                                 });
-                        realm.commitTransaction();
+                        Bundle parameters = new Bundle();
+                        parameters.putString("fields", "id,name");
+                        request.setParameters(parameters);
+                        request.executeAsync();
                     }
 
                     @Override
