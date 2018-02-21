@@ -304,6 +304,10 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private void initUI() {
         Menu bottomMenu = bottomBar.getMenu();
         getMenuInflater().inflate(R.menu.menu_bottom_view_pager, bottomMenu);
+
+        if(!allPhotoMode && favphotomode)
+            bottomBar.getMenu().getItem(4).setVisible(false);
+
         for (int i = 0; i < bottomMenu.size(); i++) {
             bottomMenu.getItem(i).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
@@ -516,13 +520,14 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
     @Override
     public boolean onPrepareOptionsMenu(final Menu menu) {
+        if(allPhotoMode || favphotomode){
+            menu.findItem(R.id.action_cover).setVisible(false);
+        }
         if (!allPhotoMode && !favphotomode){
             menu.setGroupVisible(R.id.only_photos_options, true);
         }
         else if(!allPhotoMode && favphotomode){
             menu.findItem(R.id.action_favourites).setVisible(false);
-            menu.findItem(R.id.action_cover).setVisible(false);
-            menu.findItem(R.id.action_description).setVisible(false);
             menu.findItem(R.id.action_copy).setVisible(false);
             menu.findItem(R.id.action_move).setVisible(false);
         }
@@ -582,7 +587,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         }
     }
 
-
     private void handleEditorImage(Intent data) {
         String newFilePath = data.getStringExtra(EditImageActivity.EXTRA_OUTPUT);
         boolean isImageEdit = data.getBooleanExtra(EditImageActivity.IMAGE_IS_EDIT, false);
@@ -599,7 +603,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         LoadImageTask loadTask = new LoadImageTask();
         loadTask.execute(newFilePath);
     }
-
 
     private void displayAlbums(boolean reload) {
         Intent i = new Intent(SingleMediaActivity.this, LFMainActivity.class);
@@ -697,7 +700,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
 
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -877,7 +879,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     }
                 });
                 bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
-
                 return true;
 
             case R.id.action_cover:
@@ -1043,7 +1044,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         //This will be overwrite later
                     }
                 });
-
                 final AlertDialog descriptionDialog = descriptionDialogBuilder.create();
                 descriptionDialog.show();
                 AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface
