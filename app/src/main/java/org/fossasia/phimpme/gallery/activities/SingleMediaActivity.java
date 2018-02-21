@@ -499,11 +499,14 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
     @Override
     public boolean onPrepareOptionsMenu(final Menu menu) {
+        if(allPhotoMode || favphotomode){
+            menu.findItem(R.id.action_cover).setVisible(false);
+        }
         if (!allPhotoMode && !favphotomode){
             menu.setGroupVisible(R.id.only_photos_options, true);
         }
         else if(!allPhotoMode && favphotomode){
-            menu.findItem(R.id.action_cover).setVisible(false);
+            menu.findItem(R.id.action_favourites).setVisible(false);
             menu.findItem(R.id.action_copy).setVisible(false);
             menu.findItem(R.id.action_move).setVisible(false);
         }
