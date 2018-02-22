@@ -499,11 +499,14 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
     @Override
     public boolean onPrepareOptionsMenu(final Menu menu) {
+        if(allPhotoMode || favphotomode){
+            menu.findItem(R.id.action_cover).setVisible(false);
+        }
         if (!allPhotoMode && !favphotomode){
             menu.setGroupVisible(R.id.only_photos_options, true);
         }
         else if(!allPhotoMode && favphotomode){
-            menu.findItem(R.id.action_cover).setVisible(false);
+            menu.findItem(R.id.action_favourites).setVisible(false);
             menu.findItem(R.id.action_copy).setVisible(false);
             menu.findItem(R.id.action_move).setVisible(false);
         }
@@ -785,7 +788,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 deleteDialog.setPositiveButton(this.getString(R.string.delete).toUpperCase(), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (securityObj.isActiveSecurity() && securityObj.isPasswordOnDelete()) {
-
+                            final boolean passco[] = {false};
                             final AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
                             final EditText editTextPassword = securityObj.getInsertPasswordDialog
                                     (SingleMediaActivity.this, passwordDialogBuilder);
@@ -796,6 +799,26 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                                         deleteCurrentMedia();
                                     } else
                                         SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), bottomBar.getHeight());
+
+                                }
+                            });
+                            editTextPassword.addTextChangedListener(new TextWatcher() {
+                                @Override
+                                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                    //empty method body
+                                }
+
+                                @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                    //empty method body
+                                }
+
+                                @Override public void afterTextChanged(Editable editable) {
+                                    if(securityObj.getTextInputLayout().getVisibility() == View.VISIBLE && !passco[0]){
+                                        securityObj.getTextInputLayout().setVisibility(View.INVISIBLE);
+                                    }
+                                    else{
+                                        passco[0]=false;
+                                    }
 
                                 }
                             });
@@ -811,6 +834,8 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                                         deleteCurrentMedia();
                                         passwordDialog.dismiss();
                                     } else {
+                                        passco[0] = true;
+                                        securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
                                         SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), bottomBar.getHeight());
                                         editTextPassword.getText().clear();
                                         editTextPassword.requestFocus();
