@@ -129,6 +129,9 @@ extern "C" {
             case 8:
                 adjustBlur(src, dst, val);
                 break;
+            case 9:
+                applyGammaEffect(src, dst, val);
+                break;
             default:
                 break;
         }
