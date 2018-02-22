@@ -719,6 +719,7 @@
 
     <!--PHOTO DETAILS-->
     <string name="path">Path</string>
+    <string name="details_title">Title</string>
     <string name="type">Type</string>
     <string name="resolution">Resolution</string>
     <string name="exif">EXIF</string>
