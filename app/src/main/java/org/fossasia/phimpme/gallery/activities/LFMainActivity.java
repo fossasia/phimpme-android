@@ -1727,6 +1727,8 @@ public class LFMainActivity extends SharedMediaActivity {
                             clearSelectedPhotos();
                             selectAllPhotos();
                         }
+                        Collections.sort(favouriteslist, MediaComparators.getComparator(getAlbum().settings.getSortingMode(),
+                                getAlbum().settings.getSortingOrder()));
                         mediaAdapter.swapDataSet(favouriteslist);
                     }
                 }
