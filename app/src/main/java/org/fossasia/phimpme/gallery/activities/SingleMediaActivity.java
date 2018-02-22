@@ -313,14 +313,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         mViewPager.setHasFixedSize(true);
         mViewPager.setLongClickable(true);
 
-        getWindow().getDecorView().setOnSystemUiVisibilityChangeListener
-                (new View.OnSystemUiVisibilityChangeListener() {
-                    @Override
-                    public void onSystemUiVisibilityChange(int visibility) {
-                        if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) showSystemUI();
-                        else hideSystemUI();
-                    }
-                });
         BasicCallBack basicCallBack = new BasicCallBack() {
             @Override
             public void callBack(int status, Object data) {
