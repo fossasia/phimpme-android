@@ -694,6 +694,7 @@
         <item>@drawable/ic_vignette</item>
         <item>@drawable/ic_sharp</item>
         <item>@drawable/ic_blur</item>
+        <item>@drawable/ic_gradient_black_24dp</item>
     </integer-array>
 
     <string-array name="enhance_titles">
@@ -706,6 +707,7 @@
         <item>vignette</item>
         <item>sharp</item>
         <item>blur</item>
+        <item>gamma</item>
     </string-array>
 
 
