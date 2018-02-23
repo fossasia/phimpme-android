@@ -73,7 +73,7 @@ extern "C" {
             
             default:
 
-            int lowThreshold = val;
+                int lowThreshold = val;
                 int ratio = 3;
                 int kernel_size = 3;
 
