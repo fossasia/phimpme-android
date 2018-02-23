@@ -68,7 +68,7 @@ extern "C" {
                 applyBlueBoostEffect(src,dst,val);
                 break;
             case 16:
-            applyColorBoostEffect(src,dst,val);
+                applyColorBoostEffect(src,dst,val);
                 break;
             
             default:
