@@ -784,7 +784,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                             final AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
                             final EditText editTextPassword = securityObj.getInsertPasswordDialog
                                     (SingleMediaActivity.this, passwordDialogBuilder);
-
+                            editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
                             passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     if (securityObj.checkPassword(editTextPassword.getText().toString())) {
@@ -817,6 +817,10 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                             passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
                             final AlertDialog passwordDialog = passwordDialogBuilder.create();
                             passwordDialog.show();
+                            passwordDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager
+                                    .LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+                            passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams
+                                    .SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                             AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
                             passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View
                                     .OnClickListener() {
