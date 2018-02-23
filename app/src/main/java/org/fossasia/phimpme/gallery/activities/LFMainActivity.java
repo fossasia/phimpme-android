@@ -463,14 +463,15 @@ public class LFMainActivity extends SharedMediaActivity {
         @Override
         public boolean onLongClick(View v) {
             final Album album = (Album) v.findViewById(R.id.album_name).getTag();
-            if (securityObj.isActiveSecurity() && securityObj.isPasswordOnfolder()) {
+            if(securityObj.isActiveSecurity() && securityObj.isPasswordOnfolder()) {
+                final boolean passco[] = {false};
                 if (check(album.getPath())) {
                     AlertDialog.Builder passwordDialogBuilder =
                             new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
                     final EditText editTextPassword =
                             securityObj.getInsertPasswordDialog(LFMainActivity.this, passwordDialogBuilder);
+                    editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
                     passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-
                     passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(),
                             new DialogInterface.OnClickListener() {
                                 @Override
@@ -479,6 +480,25 @@ public class LFMainActivity extends SharedMediaActivity {
                                     //to avoid dismiss of the dialog on wrong password
                                 }
                             });
+                    editTextPassword.addTextChangedListener(new TextWatcher() {
+                        @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                            //empty method body
+                        }
+
+                        @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                            //empty method body
+                        }
+
+                        @Override public void afterTextChanged(Editable editable) {
+                            if(securityObj.getTextInputLayout().getVisibility() == View.VISIBLE && !passco[0]){
+                                securityObj.getTextInputLayout().setVisibility(View.INVISIBLE);
+                            }
+                            else{
+                                passco[0]=false;
+                            }
+
+                        }
+                    });
 
                     final AlertDialog passwordDialog = passwordDialogBuilder.create();
                     passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
@@ -508,6 +528,8 @@ public class LFMainActivity extends SharedMediaActivity {
                                     }
                                     // if password is incorrect, notify user of incorrect password
                                     else {
+                                        passco[0] = true;
+                                        securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
                                         SnackBarHandler
                                                 .showWithBottomMargin(mDrawerLayout, getString(R.string.wrong_password),
                                                         navigationView.getHeight());
@@ -572,14 +594,33 @@ public class LFMainActivity extends SharedMediaActivity {
                 if (getAlbums().getSelectedCount() == 0)
                     getNavigationBar();
                 invalidateOptionsMenu();
-            } else if (securityObj.isActiveSecurity() && securityObj.isPasswordOnfolder()) {
+            } else if(securityObj.isActiveSecurity() && securityObj.isPasswordOnfolder()){
+                final boolean[] passco = {false};
                 if (check(album.getPath())) {
                     AlertDialog.Builder passwordDialogBuilder =
                             new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
                     final EditText editTextPassword =
                             securityObj.getInsertPasswordDialog(LFMainActivity.this, passwordDialogBuilder);
-                    passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+                    editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
+                    editTextPassword.addTextChangedListener(new TextWatcher() {
+                        @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                            //empty method body
+                        }
 
+                        @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                            //empty method body
+                        }
+
+                        @Override public void afterTextChanged(Editable editable) {
+                            if(securityObj.getTextInputLayout().getVisibility() == View.VISIBLE && !passco[0]){
+                                securityObj.getTextInputLayout().setVisibility(View.INVISIBLE);
+                            }
+                            else{
+                                passco[0]=false;
+                            }
+                        }
+                    });
+                    passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
                     passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(),
                             new DialogInterface.OnClickListener() {
                                 @Override
@@ -606,6 +647,8 @@ public class LFMainActivity extends SharedMediaActivity {
                                     }
                                     // if password is incorrect, notify user of incorrect password
                                     else {
+                                        passco[0] =true;
+                                        securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
                                         SnackBarHandler
                                                 .showWithBottomMargin(mDrawerLayout, getString(R.string.wrong_password),
                                                         navigationView.getHeight());
@@ -1263,15 +1306,34 @@ public class LFMainActivity extends SharedMediaActivity {
                 tint();
                 toolbar.setTitle(getString(R.string.hidden_folder));
                 if (securityObj.isActiveSecurity() && securityObj.isPasswordOnHidden()) {
+                    final boolean[] passco = {false};
                     AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
                     final EditText editTextPassword = securityObj.getInsertPasswordDialog(LFMainActivity.this, passwordDialogBuilder);
+                    editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
                     passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                         }
                     });
-
                     passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+                    editTextPassword.addTextChangedListener(new TextWatcher() {
+                        @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                            //empty method body
+                        }
 
+                        @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                            //empty method body
+                        }
+
+                        @Override public void afterTextChanged(Editable editable) {
+                            if(securityObj.getTextInputLayout().getVisibility() == View.VISIBLE && !passco[0]){
+                                securityObj.getTextInputLayout().setVisibility(View.INVISIBLE);
+                            }
+                            else{
+                                passco[0]=false;
+                            }
+
+                        }
+                    });
                     final AlertDialog passwordDialog = passwordDialogBuilder.create();
                     passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
                     passwordDialog.show();
@@ -1286,6 +1348,8 @@ public class LFMainActivity extends SharedMediaActivity {
                                 new PrepareAlbumTask().execute();
                                 passwordDialog.dismiss();
                             } else {
+                                passco[0] = true;
+                                securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
                                 SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.wrong_password), 0);
                                 editTextPassword.getText().clear();
                                 editTextPassword.requestFocus();
@@ -1583,6 +1647,7 @@ public class LFMainActivity extends SharedMediaActivity {
             menu.setGroupVisible(R.id.photos_option_men, false);
             menu.findItem(R.id.all_photos).setVisible(!editMode && !hidden);
             menu.findItem(R.id.search_action).setVisible(!editMode);
+            menu.findItem(R.id.settings).setVisible(false);
 
             if (getAlbums().getSelectedCount() >= 1) {
                 if (getAlbums().getSelectedCount() > 1) {
@@ -1725,6 +1790,8 @@ public class LFMainActivity extends SharedMediaActivity {
                             clearSelectedPhotos();
                             selectAllPhotos();
                         }
+                        Collections.sort(favouriteslist, MediaComparators.getComparator(getAlbum().settings.getSortingMode(),
+                                getAlbum().settings.getSortingOrder()));
                         mediaAdapter.swapDataSet(favouriteslist);
                     }
                 }
@@ -1906,15 +1973,35 @@ public class LFMainActivity extends SharedMediaActivity {
                 deleteDialog.setPositiveButton(this.getString(R.string.delete).toUpperCase(), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (securityObj.isActiveSecurity() && securityObj.isPasswordOnDelete()) {
+                            final boolean passco[] = {false};
                             AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
                             final EditText editTextPassword = securityObj.getInsertPasswordDialog(LFMainActivity.this, passwordDialogBuilder);
+                            editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
                             passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-
                             passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     //This should br empty it will be overwrite later
                                     //to avoid dismiss of the dialog on wrong password
+                                }
+                            });
+                            editTextPassword.addTextChangedListener(new TextWatcher() {
+                                @Override
+                                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                    //empty method body
+                                }
+
+                                @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                    //empty method body
+                                }
+
+                                @Override public void afterTextChanged(Editable editable) {
+                                    if(securityObj.getTextInputLayout().getVisibility() == View.VISIBLE && !passco[0]){
+                                        securityObj.getTextInputLayout().setVisibility(View.INVISIBLE);
+                                    }
+                                    else{
+                                        passco[0]=false;
+                                    }
                                 }
                             });
 
@@ -1932,6 +2019,8 @@ public class LFMainActivity extends SharedMediaActivity {
                                     }
                                     // if password is incorrect, don't delete and notify user of incorrect password
                                     else {
+                                        passco[0] = true;
+                                        securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
                                         SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.wrong_password), navigationView.getHeight());
                                         editTextPassword.getText().clear();
                                         editTextPassword.requestFocus();
