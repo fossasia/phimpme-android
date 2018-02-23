@@ -1663,6 +1663,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 editMode = getAlbum().areMediaSelected();
                 menu.setGroupVisible(R.id.photos_option_men, editMode);
                 menu.setGroupVisible(R.id.album_options_menu, !editMode);
+                menu.findItem(R.id.settings).setVisible(!editMode);
                 menu.findItem(R.id.all_photos).setVisible(false);
                 menu.findItem(R.id.album_details).setVisible(false);
             } else if (all_photos && !fav_photos) {
@@ -1670,11 +1671,13 @@ public class LFMainActivity extends SharedMediaActivity {
                 menu.setGroupVisible(R.id.photos_option_men, editMode);
                 menu.setGroupVisible(R.id.album_options_menu, !editMode);
                 menu.findItem(R.id.all_photos).setVisible(false);
+                menu.findItem(R.id.settings).setVisible(!editMode);
                 menu.findItem(R.id.album_details).setVisible(false);
             } else if (!all_photos && fav_photos) {
                 editMode = selectedMedias.size() != 0;
                 menu.setGroupVisible(R.id.photos_option_men, editMode);
                 menu.setGroupVisible(R.id.album_options_menu, !editMode);
+                menu.findItem(R.id.settings).setVisible(!editMode);
                 menu.findItem(R.id.album_details).setVisible(false);
                 menu.findItem(R.id.all_photos).setVisible(false);
             }
