@@ -404,6 +404,7 @@ public class SettingsActivity extends ThemedActivity {
     }
 
     private void askPasswordDialog() {
+        final boolean[] passco = {false};
         AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
         final EditText editTextPassword  = securityObj.getInsertPasswordDialog(SettingsActivity.this,passwordDialogBuilder);
         passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
@@ -420,6 +421,12 @@ public class SettingsActivity extends ThemedActivity {
             }
 
             @Override public void afterTextChanged(Editable editable) {
+                if(securityObj.getTextInputLayout().getVisibility() == View.VISIBLE && !passco[0]){
+                    securityObj.getTextInputLayout().setVisibility(View.INVISIBLE);
+                }
+                else{
+                    passco[0]=false;
+                }
                 if(editable.length() == 11) {
                     editTextPassword.setText(editable.toString().substring(0, 10));
                     editTextPassword.setSelection(10);
@@ -449,6 +456,7 @@ public class SettingsActivity extends ThemedActivity {
                     passwordDialog.dismiss();
                     startActivity(new Intent(getApplicationContext(), SecurityActivity.class));
                 } else {
+                    passco[0] = true;
                     securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
                     SnackBarHandler.show(parent,R.string.wrong_password);
                     editTextPassword.getText().clear();
