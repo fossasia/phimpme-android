@@ -15,6 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.UploadHistoryRealmModel;
+import org.fossasia.phimpme.share.SharingActivity;
 import org.fossasia.phimpme.gallery.activities.SingleMediaActivity;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 
@@ -61,6 +62,7 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
     public void onBindViewHolder(ViewHolder holder, int position) {
         Integer id;
         realmResult = realm.where(UploadHistoryRealmModel.class);
+        path = realmResult.findAll().get(position).getPathname();
 
         if (realmResult.findAll().size() != 0) {
 
@@ -125,6 +127,7 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            accountImageShare.setOnClickListener(this);
             uploadImage.setOnClickListener(this);
         }
 
@@ -141,6 +144,13 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
                     SnackBarHandler.show(v, "No Media Availaible",SnackBarHandler.SHORT);
                 }
             }
+          
+           if(v.getId() == accountImageShare.getId()){
+             Intent intent = new Intent(context,SharingActivity.class);
+                    intent.putExtra("extra_output", path);
+                    context.startActivity(intent);
+           }
+            
         }
     }
 }
