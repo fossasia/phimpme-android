@@ -957,17 +957,49 @@ public class LFMainActivity extends SharedMediaActivity {
             public boolean onScale(ScaleGestureDetector detector) {
 
                 if (detector.getCurrentSpan() > 200 && detector.getTimeDelta() > 200) {
-                    int spanCount = columnsCount();
+                    int spanCount;
+                    if (albumsMode)
+                        spanCount = columnsCount();
+                    else
+                        spanCount = mediaCount();
 
                     //zooming out
                     if ((detector.getCurrentSpan() - detector.getPreviousSpan() < -300) && spanCount < 6) {
-                        SP.putInt("n_columns_folders", spanCount + 1);
-                        updateColumnsRvAlbums();
+                        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                            if (albumsMode)
+                                SP.putInt("n_columns_folders", spanCount + 1);
+                            else
+                                SP.putInt("n_columns_media", spanCount + 1);
+                        } else {
+                            if (albumsMode)
+                                SP.putInt("n_columns_folders_landscape", spanCount + 1);
+                            else
+                                SP.putInt("n_columns_media_landscape", spanCount + 1);
+                        }
+
+                        if (albumsMode)
+                            updateColumnsRvAlbums();
+                        else
+                            updateColumnsRvMedia();
                     }
                     //zooming in
                     else if ((detector.getCurrentSpan() - detector.getPreviousSpan() > 300) && spanCount > 1) {
-                        SP.putInt("n_columns_folders", spanCount - 1);
-                        updateColumnsRvAlbums();
+                        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                            if (albumsMode)
+                                SP.putInt("n_columns_folders", spanCount - 1);
+                            else
+                                SP.putInt("n_columns_media", spanCount - 1);
+                        } else {
+                            if (albumsMode)
+                                SP.putInt("n_columns_folders_landscape", spanCount - 1);
+                            else
+                                SP.putInt("n_columns_media_landscape", spanCount - 1);
+                        }
+
+                        if (albumsMode)
+                            updateColumnsRvAlbums();
+                        else
+                            updateColumnsRvMedia();
                     }
                 }
                 return false;
@@ -977,6 +1009,14 @@ public class LFMainActivity extends SharedMediaActivity {
 
         //set touch listener on recycler view
         rvAlbums.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mScaleGestureDetector.onTouchEvent(event);
+                return false;
+            }
+        });
+
+        rvMedia.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 mScaleGestureDetector.onTouchEvent(event);
