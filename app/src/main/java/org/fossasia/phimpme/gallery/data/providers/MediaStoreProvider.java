@@ -54,7 +54,7 @@ public class  MediaStoreProvider {
 							lastMod = file.lastModified();
 						}
 					}
-					if (f != null && !isExcluded(f.getPath())) {
+					if (f != null && !isExcluded(f.getPath(), context)) {
 						album.addMedia(new Media(f.getPath(), f.lastModified()));
 						list.add(album);
 					}
@@ -65,7 +65,10 @@ public class  MediaStoreProvider {
 		return list;
 	}
 
-	private static boolean isExcluded(String path) {
+	private static boolean isExcluded(String path, Context context) {
+		if(excludedAlbums == null){
+			excludedAlbums = getExcludedFolders(context);
+		}
 		for(String s : excludedAlbums) if (path.startsWith(s)) return true;
 		return false;
 	}
@@ -94,7 +97,7 @@ public class  MediaStoreProvider {
 					Media media = getLastMedia(context, cur.getLong(idColumn));
 					if (media != null && media.getPath() != null) {
 						String path = StringUtils.getBucketPathByImagePath(media.getPath());
-						boolean excluded = isExcluded( path);
+						boolean excluded = isExcluded( path, context);
 						if (!excluded) {
 							Album album = new Album(context, path, cur.getLong(idColumn), cur.getString(nameColumn), getAlbumCount(context, cur.getLong(idColumn)));
 							if (album.addMedia(getLastMedia(context, album.getId()))) list.add(album);
