@@ -105,6 +105,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -135,7 +136,6 @@ import static org.fossasia.phimpme.utilities.Utils.checkNetwork;
 import static org.fossasia.phimpme.utilities.Utils.copyToClipBoard;
 import static org.fossasia.phimpme.utilities.Utils.getBitmapFromPath;
 import static org.fossasia.phimpme.utilities.Utils.getImageUri;
-import static org.fossasia.phimpme.utilities.Utils.getMimeType;
 import static org.fossasia.phimpme.utilities.Utils.getStringImage;
 import static org.fossasia.phimpme.utilities.Utils.isAppInstalled;
 import static org.fossasia.phimpme.utilities.Utils.promptSpeechInput;
@@ -1012,6 +1012,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
         shareIntent.setType("image/png");
         startActivity(Intent.createChooser(shareIntent, getResources().getText(R.string.send_image)));
+        triedUploading = true;
+        sendResult(SUCCESS);
     }
 
     private void shareToInstagram() {
@@ -1022,11 +1024,11 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         share.setType("image/*");
         share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         startActivity(Intent.createChooser(share, caption));
+        triedUploading = true;
         sendResult(SUCCESS);
     }
 
     private void shareToWhatsapp() {
-        triedUploading=false;
         Uri uri = Uri.fromFile(new File(saveFilePath));
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
@@ -1035,6 +1037,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         share.setType("image/*");
         share.putExtra(Intent.EXTRA_TEXT, caption);
         startActivityForResult(Intent.createChooser(share, context.getString(R.string.whatsapp)), SHARE_WHATSAPP);
+        triedUploading = true;
+        sendResult(SUCCESS);
     }
 
     private void shareToImgur() {
@@ -1075,7 +1079,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void shareToMessenger() {
-        String mimeType = getMimeType(saveFilePath);
+        String mimeType = URLConnection.guessContentTypeFromName(saveFilePath);
         ShareToMessengerParams shareToMessengerParams =
                 ShareToMessengerParams.newBuilder(getImageUri(this, saveFilePath), mimeType).build();
         MessengerUtils.shareToMessenger(this, REQUEST_CODE_SHARE_TO_MESSENGER, shareToMessengerParams);
