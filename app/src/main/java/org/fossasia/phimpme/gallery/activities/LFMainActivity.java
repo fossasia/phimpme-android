@@ -184,10 +184,6 @@ public class LFMainActivity extends SharedMediaActivity {
 
     @BindView(R.id.toolbar)
     protected Toolbar toolbar;
-    @BindView(R.id.grid_albums)
-    protected RecyclerView rvAlbums;
-    @BindView(R.id.grid_photos)
-    protected RecyclerView rvMedia;
     @BindView(R.id.swipeRefreshLayout)
     protected SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.drawer_layout)
