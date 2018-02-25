@@ -175,6 +175,8 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
         }
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        this.overridePendingTransition(R.anim.left_to_right,
+                               R.anim.right_to_left);ButterKnife.bind(this);
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false); // initialise any unset preferences to their default values
         if (MyDebug.LOG)
             Log.d(TAG, "onCreate: time after setting default preference values: " + (System.currentTimeMillis() - debug_time));

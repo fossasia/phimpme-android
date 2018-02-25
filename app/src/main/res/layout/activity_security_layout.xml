@@ -68,6 +68,43 @@
                         android:hapticFeedbackEnabled="true" />
                 </RelativeLayout>
             </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/ll_change_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.mikepenz.iconics.view.IconicsImageView
+                    android:id="@+id/security_change_password"
+                    android:layout_width="@dimen/icon_width_height"
+                    android:layout_height="@dimen/icon_width_height"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/big_spacing"
+                    android:layout_marginRight="@dimen/big_spacing"
+                    app:iiv_icon="gmd-lock-open" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/medium_spacing"
+                    android:paddingRight="@dimen/medium_spacing"
+                    android:paddingTop="@dimen/medium_spacing">
+
+                    <TextView
+                        android:id="@+id/active_security_change_password_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center_vertical"
+                        android:text="@string/change_password"
+                        android:textColor="@color/md_dark_background"
+                        android:textSize="@dimen/medium_text" />
+
+                </RelativeLayout>
+            </LinearLayout>
             <!--USE FINGERPRINT-->
             <!--
             <LinearLayout
@@ -216,6 +253,52 @@
 
                         <android.support.v7.widget.SwitchCompat
                             android:id="@+id/security_body_apply_delete_switch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center_vertical"
+                            android:button="@null"
+                            android:hapticFeedbackEnabled="true" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <!--FOLDER ACTION-->
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                              android:id="@+id/ll_security_body_apply_delete"
+                              android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:orientation="horizontal">
+
+                    <com.mikepenz.iconics.view.IconicsImageView
+                        android:id="@+id/security_body_apply_folder_icon"
+                        android:layout_width="@dimen/icon_width_height"
+                        android:layout_height="@dimen/icon_width_height"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/big_spacing"
+                        android:layout_marginRight="@dimen/big_spacing"
+                        android:gravity="center_vertical"
+                        app:iiv_icon="gmd-folder" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/medium_spacing"
+                        android:paddingRight="@dimen/medium_spacing"
+                        android:paddingTop="@dimen/medium_spacing">
+
+                        <TextView
+                            android:id="@+id/security_body_apply_folders_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/local_folder"
+                            android:textColor="@color/md_dark_background"
+                            android:textSize="@dimen/medium_text" />
+
+                        <android.support.v7.widget.SwitchCompat
+                            android:id="@+id/security_body_apply_folder_switch"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
