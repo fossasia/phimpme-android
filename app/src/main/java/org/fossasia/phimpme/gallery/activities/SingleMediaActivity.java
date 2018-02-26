@@ -195,13 +195,34 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 e.printStackTrace();
             }
             finally{
-                if(getAlbum().getCurrentMediaIndex()+1 == getAlbum().getMedia().size() - 1){
-                    handler.removeCallbacks(slideShowRunnable);
-                    slideshow=false;
-                    toggleSystemUI();
+                if(!favphotomode && !allPhotoMode){
+                    if(getAlbum().getCurrentMediaIndex()+1 == getAlbum().getMedia().size() - 1){
+                        handler.removeCallbacks(slideShowRunnable);
+                        slideshow=false;
+                        toggleSystemUI();
+                    }
+                    else{
+                        handler.postDelayed(this, SLIDE_SHOW_INTERVAL);
+                    }
                 }
-                else{
-                    handler.postDelayed(this, SLIDE_SHOW_INTERVAL);
+                else {
+                    if(!favphotomode && allPhotoMode){
+                        if(current_image_pos + 1 == listAll.size()-1) {
+                            handler.removeCallbacks(slideShowRunnable);
+                            slideshow = false;
+                            toggleSystemUI();
+                        }else{
+                            handler.postDelayed(this, SLIDE_SHOW_INTERVAL);
+                        }
+                    }else if(favphotomode && !allPhotoMode){
+                        if(current_image_pos + 1 == favouriteslist.size()-1){
+                            handler.removeCallbacks(slideShowRunnable);
+                            slideshow = false;
+                            toggleSystemUI();
+                        }else{
+                            handler.postDelayed(this, SLIDE_SHOW_INTERVAL);
+                        }
+                    }
                 }
             }
         }
