@@ -131,7 +131,7 @@ public class SecurityActivity extends ThemedActivity {
                     title.setText("Choose folders to secure");
                     RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.secure_folder_recyclerview);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                    SecureDialogAdapter securedLocalFolders = new SecureDialogAdapter();
+                    final SecureDialogAdapter securedLocalFolders = new SecureDialogAdapter();
                     recyclerView.setAdapter(securedLocalFolders);
                     builder.setView(view);
                     AlertDialog ad = builder.create();
