@@ -13,6 +13,8 @@ import android.text.method.LinkMovementMethod;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -37,6 +39,8 @@ import java.util.Locale;
  * Created by dnld on 19/05/16.
  */
 public class AlertDialogsHelper {
+
+    public static boolean check=false;
 
     public static AlertDialog getInsertTextDialog(final ThemedActivity activity, AlertDialog.Builder dialogBuilder , EditText editText, @StringRes int title, String link) {
 
@@ -81,6 +85,34 @@ public class AlertDialogsHelper {
         ((CardView) dialogLayout.findViewById(R.id.message_card)).setCardBackgroundColor(activity.getCardBackgroundColor());
         dialogTitle.setBackgroundColor(activity.getPrimaryColor());
         dialogTitle.setText(title);
+        if (msg != null) dialogMessage.setText(msg);
+        else dialogMessage.setText(Message);
+        dialogMessage.setTextColor(activity.getTextColor());
+        textDialogBuilder.setView(dialogLayout);
+        return textDialogBuilder.create();
+    }
+
+    public static AlertDialog getTextCheckboxDialog(final ThemedActivity activity, AlertDialog.Builder
+            textDialogBuilder, @StringRes int title, @StringRes int Message, String msg, String checkboxmessage){
+        View dialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_checkbox, null);
+        TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.text_dialog_title);
+        TextView dialogMessage = (TextView) dialogLayout.findViewById(R.id.text_dialog_message);
+        TextView checkboxmessg = (TextView) dialogLayout.findViewById(R.id.checkbox_text_dialog);
+        CheckBox checkBox = (CheckBox) dialogLayout.findViewById(R.id.checkbox_text_dialog_cb);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    check=true;
+                }else{
+                    check=false;
+                }
+            }
+        });
+        ((CardView) dialogLayout.findViewById(R.id.message_card)).setCardBackgroundColor(activity.getCardBackgroundColor());
+        dialogTitle.setBackgroundColor(activity.getPrimaryColor());
+        dialogTitle.setText(title);
+        checkboxmessg.setText(checkboxmessage);
+        checkboxmessg.setTextColor(activity.getTextColor());
         if (msg != null) dialogMessage.setText(msg);
         else dialogMessage.setText(Message);
         dialogMessage.setTextColor(activity.getTextColor());
