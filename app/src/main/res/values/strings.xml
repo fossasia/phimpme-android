@@ -590,6 +590,7 @@
     <string name="folder">Folder</string>
     <string name="color_palette">Color Palette</string>
     <string name="app_intro_skip">Introduction Skipped!</string>
+    <string name="preference_BottomNavColor">Get Bottom Navigation Bar Color</string>
 
     <!-- SECURITY-->
     <string name="security">Security</string>
@@ -723,6 +724,7 @@
 
     <!--PHOTO DETAILS-->
     <string name="path">Path</string>
+    <string name="details_title">Title</string>
     <string name="type">Type</string>
     <string name="resolution">Resolution</string>
     <string name="exif">EXIF</string>

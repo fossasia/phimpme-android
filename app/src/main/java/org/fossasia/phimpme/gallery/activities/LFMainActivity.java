@@ -96,6 +96,7 @@ import org.fossasia.phimpme.gallery.util.Measure;
 import org.fossasia.phimpme.gallery.util.PreferenceUtil;
 import org.fossasia.phimpme.gallery.util.SecurityHelper;
 import org.fossasia.phimpme.gallery.util.StringUtils;
+import org.fossasia.phimpme.gallery.views.CustomScrollBarRecyclerView;
 import org.fossasia.phimpme.gallery.views.GridSpacingItemDecoration;
 import org.fossasia.phimpme.uploadhistory.UploadHistory;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
@@ -171,6 +172,9 @@ public class LFMainActivity extends SharedMediaActivity {
     private ArrayList<Media> favouriteslist;
     public boolean fav_photos = false;
     private IconicsImageView favicon;
+    
+    private CustomScrollBarRecyclerView rvAlbums;
+    private CustomScrollBarRecyclerView rvMedia;
 
     // To handle back pressed
     boolean doubleBackToExitPressedOnce = false;
@@ -181,12 +185,9 @@ public class LFMainActivity extends SharedMediaActivity {
 
     private boolean fromOnClick = false;
     // Binding various views with Butterknife
+
     @BindView(R.id.toolbar)
     protected Toolbar toolbar;
-    @BindView(R.id.grid_albums)
-    protected RecyclerView rvAlbums;
-    @BindView(R.id.grid_photos)
-    protected RecyclerView rvMedia;
     @BindView(R.id.swipeRefreshLayout)
     protected SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.drawer_layout)
@@ -474,8 +475,8 @@ public class LFMainActivity extends SharedMediaActivity {
                             new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
                     final EditText editTextPassword =
                             securityObj.getInsertPasswordDialog(LFMainActivity.this, passwordDialogBuilder);
+                    editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
                     passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-
                     passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(),
                             new DialogInterface.OnClickListener() {
                                 @Override
@@ -605,6 +606,7 @@ public class LFMainActivity extends SharedMediaActivity {
                             new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
                     final EditText editTextPassword =
                             securityObj.getInsertPasswordDialog(LFMainActivity.this, passwordDialogBuilder);
+                    editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
                     editTextPassword.addTextChangedListener(new TextWatcher() {
                         @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                             //empty method body
@@ -624,7 +626,6 @@ public class LFMainActivity extends SharedMediaActivity {
                         }
                     });
                     passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-
                     passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(),
                             new DialogInterface.OnClickListener() {
                                 @Override
@@ -720,6 +721,9 @@ public class LFMainActivity extends SharedMediaActivity {
 
         BottomNavigationView navigationView = (BottomNavigationView) findViewById(R.id.bottombar);
         favicon = (IconicsImageView) findViewById(R.id.Drawer_favourite_Icon);
+        
+        rvAlbums = (CustomScrollBarRecyclerView) findViewById(R.id.grid_albums);
+        rvMedia  = (CustomScrollBarRecyclerView) findViewById(R.id.grid_photos);
 
         this.overridePendingTransition(R.anim.left_to_right,
                 R.anim.right_to_left);
@@ -961,17 +965,49 @@ public class LFMainActivity extends SharedMediaActivity {
             public boolean onScale(ScaleGestureDetector detector) {
 
                 if (detector.getCurrentSpan() > 200 && detector.getTimeDelta() > 200) {
-                    int spanCount = columnsCount();
+                    int spanCount;
+                    if (albumsMode)
+                        spanCount = columnsCount();
+                    else
+                        spanCount = mediaCount();
 
                     //zooming out
                     if ((detector.getCurrentSpan() - detector.getPreviousSpan() < -300) && spanCount < 6) {
-                        SP.putInt("n_columns_folders", spanCount + 1);
-                        updateColumnsRvAlbums();
+                        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                            if (albumsMode)
+                                SP.putInt("n_columns_folders", spanCount + 1);
+                            else
+                                SP.putInt("n_columns_media", spanCount + 1);
+                        } else {
+                            if (albumsMode)
+                                SP.putInt("n_columns_folders_landscape", spanCount + 1);
+                            else
+                                SP.putInt("n_columns_media_landscape", spanCount + 1);
+                        }
+
+                        if (albumsMode)
+                            updateColumnsRvAlbums();
+                        else
+                            updateColumnsRvMedia();
                     }
                     //zooming in
                     else if ((detector.getCurrentSpan() - detector.getPreviousSpan() > 300) && spanCount > 1) {
-                        SP.putInt("n_columns_folders", spanCount - 1);
-                        updateColumnsRvAlbums();
+                        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                            if (albumsMode)
+                                SP.putInt("n_columns_folders", spanCount - 1);
+                            else
+                                SP.putInt("n_columns_media", spanCount - 1);
+                        } else {
+                            if (albumsMode)
+                                SP.putInt("n_columns_folders_landscape", spanCount - 1);
+                            else
+                                SP.putInt("n_columns_media_landscape", spanCount - 1);
+                        }
+
+                        if (albumsMode)
+                            updateColumnsRvAlbums();
+                        else
+                            updateColumnsRvMedia();
                     }
                 }
                 return false;
@@ -981,6 +1017,14 @@ public class LFMainActivity extends SharedMediaActivity {
 
         //set touch listener on recycler view
         rvAlbums.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mScaleGestureDetector.onTouchEvent(event);
+                return false;
+            }
+        });
+
+        rvMedia.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 mScaleGestureDetector.onTouchEvent(event);
@@ -1198,6 +1242,8 @@ public class LFMainActivity extends SharedMediaActivity {
         setDrawerTheme();
         rvAlbums.setBackgroundColor(getBackgroundColor());
         rvMedia.setBackgroundColor(getBackgroundColor());
+        rvAlbums.setScrollBarColor(getPrimaryColor());
+        rvMedia.setScrollBarColor(getPrimaryColor());
         mediaAdapter.updatePlaceholder(getApplicationContext());
         albumsAdapter.updateTheme();
         /**** DRAWER ****/
@@ -1313,11 +1359,11 @@ public class LFMainActivity extends SharedMediaActivity {
                     final boolean[] passco = {false};
                     AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
                     final EditText editTextPassword = securityObj.getInsertPasswordDialog(LFMainActivity.this, passwordDialogBuilder);
+                    editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
                     passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                         }
                     });
-
                     passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
                     editTextPassword.addTextChangedListener(new TextWatcher() {
                         @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -1338,7 +1384,6 @@ public class LFMainActivity extends SharedMediaActivity {
 
                         }
                     });
-
                     final AlertDialog passwordDialog = passwordDialogBuilder.create();
                     passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
                     passwordDialog.show();
@@ -1668,6 +1713,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 editMode = getAlbum().areMediaSelected();
                 menu.setGroupVisible(R.id.photos_option_men, editMode);
                 menu.setGroupVisible(R.id.album_options_menu, !editMode);
+                menu.findItem(R.id.settings).setVisible(!editMode);
                 menu.findItem(R.id.all_photos).setVisible(false);
                 menu.findItem(R.id.album_details).setVisible(false);
             } else if (all_photos && !fav_photos) {
@@ -1675,11 +1721,13 @@ public class LFMainActivity extends SharedMediaActivity {
                 menu.setGroupVisible(R.id.photos_option_men, editMode);
                 menu.setGroupVisible(R.id.album_options_menu, !editMode);
                 menu.findItem(R.id.all_photos).setVisible(false);
+                menu.findItem(R.id.settings).setVisible(!editMode);
                 menu.findItem(R.id.album_details).setVisible(false);
             } else if (!all_photos && fav_photos) {
                 editMode = selectedMedias.size() != 0;
                 menu.setGroupVisible(R.id.photos_option_men, editMode);
                 menu.setGroupVisible(R.id.album_options_menu, !editMode);
+                menu.findItem(R.id.settings).setVisible(!editMode);
                 menu.findItem(R.id.album_details).setVisible(false);
                 menu.findItem(R.id.all_photos).setVisible(false);
             }
@@ -2039,8 +2087,8 @@ public class LFMainActivity extends SharedMediaActivity {
                             final boolean passco[] = {false};
                             AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
                             final EditText editTextPassword = securityObj.getInsertPasswordDialog(LFMainActivity.this, passwordDialogBuilder);
+                            editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
                             passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-
                             passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {

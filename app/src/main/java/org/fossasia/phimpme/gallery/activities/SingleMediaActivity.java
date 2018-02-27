@@ -195,13 +195,34 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 e.printStackTrace();
             }
             finally{
-                if(getAlbum().getCurrentMediaIndex()+1 == getAlbum().getMedia().size() - 1){
-                    handler.removeCallbacks(slideShowRunnable);
-                    slideshow=false;
-                    toggleSystemUI();
+                if(!favphotomode && !allPhotoMode){
+                    if(getAlbum().getCurrentMediaIndex()+1 == getAlbum().getMedia().size() - 1){
+                        handler.removeCallbacks(slideShowRunnable);
+                        slideshow=false;
+                        toggleSystemUI();
+                    }
+                    else{
+                        handler.postDelayed(this, SLIDE_SHOW_INTERVAL);
+                    }
                 }
-                else{
-                    handler.postDelayed(this, SLIDE_SHOW_INTERVAL);
+                else {
+                    if(!favphotomode && allPhotoMode){
+                        if(current_image_pos + 1 == listAll.size()-1) {
+                            handler.removeCallbacks(slideShowRunnable);
+                            slideshow = false;
+                            toggleSystemUI();
+                        }else{
+                            handler.postDelayed(this, SLIDE_SHOW_INTERVAL);
+                        }
+                    }else if(favphotomode && !allPhotoMode){
+                        if(current_image_pos + 1 == favouriteslist.size()-1){
+                            handler.removeCallbacks(slideShowRunnable);
+                            slideshow = false;
+                            toggleSystemUI();
+                        }else{
+                            handler.postDelayed(this, SLIDE_SHOW_INTERVAL);
+                        }
+                    }
                 }
             }
         }
@@ -498,7 +519,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             menu.setGroupVisible(R.id.only_photos_options, true);
         }
         else if(!allPhotoMode && favphotomode){
-            menu.findItem(R.id.action_favourites).setVisible(false);
             menu.findItem(R.id.action_copy).setVisible(false);
             menu.findItem(R.id.action_move).setVisible(false);
         }
@@ -784,7 +804,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                             final AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
                             final EditText editTextPassword = securityObj.getInsertPasswordDialog
                                     (SingleMediaActivity.this, passwordDialogBuilder);
-
+                            editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
                             passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     if (securityObj.checkPassword(editTextPassword.getText().toString())) {
@@ -817,6 +837,10 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                             passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
                             final AlertDialog passwordDialog = passwordDialogBuilder.create();
                             passwordDialog.show();
+                            passwordDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager
+                                    .LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+                            passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams
+                                    .SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                             AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
                             passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View
                                     .OnClickListener() {
