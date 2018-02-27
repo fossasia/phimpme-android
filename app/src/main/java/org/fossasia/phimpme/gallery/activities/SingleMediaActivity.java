@@ -195,13 +195,34 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 e.printStackTrace();
             }
             finally{
-                if(getAlbum().getCurrentMediaIndex()+1 == getAlbum().getMedia().size() - 1){
-                    handler.removeCallbacks(slideShowRunnable);
-                    slideshow=false;
-                    toggleSystemUI();
+                if(!favphotomode && !allPhotoMode){
+                    if(getAlbum().getCurrentMediaIndex()+1 == getAlbum().getMedia().size() - 1){
+                        handler.removeCallbacks(slideShowRunnable);
+                        slideshow=false;
+                        toggleSystemUI();
+                    }
+                    else{
+                        handler.postDelayed(this, SLIDE_SHOW_INTERVAL);
+                    }
                 }
-                else{
-                    handler.postDelayed(this, SLIDE_SHOW_INTERVAL);
+                else {
+                    if(!favphotomode && allPhotoMode){
+                        if(current_image_pos + 1 == listAll.size()-1) {
+                            handler.removeCallbacks(slideShowRunnable);
+                            slideshow = false;
+                            toggleSystemUI();
+                        }else{
+                            handler.postDelayed(this, SLIDE_SHOW_INTERVAL);
+                        }
+                    }else if(favphotomode && !allPhotoMode){
+                        if(current_image_pos + 1 == favouriteslist.size()-1){
+                            handler.removeCallbacks(slideShowRunnable);
+                            slideshow = false;
+                            toggleSystemUI();
+                        }else{
+                            handler.postDelayed(this, SLIDE_SHOW_INTERVAL);
+                        }
+                    }
                 }
             }
         }
@@ -498,7 +519,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             menu.setGroupVisible(R.id.only_photos_options, true);
         }
         else if(!allPhotoMode && favphotomode){
-            menu.findItem(R.id.action_favourites).setVisible(false);
             menu.findItem(R.id.action_copy).setVisible(false);
             menu.findItem(R.id.action_move).setVisible(false);
         }
