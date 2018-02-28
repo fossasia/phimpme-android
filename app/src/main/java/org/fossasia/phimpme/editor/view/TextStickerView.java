@@ -19,6 +19,7 @@ import android.widget.EditText;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.utils.ListUtil;
 import org.fossasia.phimpme.editor.utils.RectUtil;
+import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouch;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -78,6 +79,10 @@ public class TextStickerView extends View {
     private boolean mAutoNewLine = false;//The need to wrap
     private List<String> mTextContents = new ArrayList<>(2);//Storing text written
     private String mText;
+
+    public Bitmap mainBitmap;
+    public ImageViewTouch mainImage;
+    private float leftX, rightX, topY, bottomY;
 
     public TextStickerView(Context context) {
         super(context);
@@ -142,11 +147,18 @@ public class TextStickerView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int displayW = mainBitmap.getWidth() * getMeasuredHeight() / mainBitmap.getHeight();
+        int displayH = mainBitmap.getHeight() * getMeasuredWidth() / mainBitmap.getWidth();
+        leftX = (mainImage.getMeasuredWidth() - displayW) >> 1;
+        rightX = leftX + displayW;
+        topY = (mainImage.getMeasuredHeight() - displayH) >> 1;
+        bottomY = topY + displayH;
         if (isInitLayout) {
             isInitLayout = false;
             resetView();
         }
     }
+
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -171,7 +183,6 @@ public class TextStickerView extends View {
 
     private void drawContent(Canvas canvas) {
         drawText(canvas);
-
         int offsetValue = ((int) mDeleteDstRect.width()) >> 1;
         mDeleteDstRect.offsetTo(mHelpBoxRect.left - offsetValue, mHelpBoxRect.top - offsetValue);
         mRotateDstRect.offsetTo(mHelpBoxRect.right - offsetValue, mHelpBoxRect.bottom - offsetValue);
@@ -215,6 +226,7 @@ public class TextStickerView extends View {
             String text = mTextContents.get(i);
             mPaint.getTextBounds(text, 0, text.length(), tempRect);
             //System.out.println(i + " ---> " + tempRect.height());
+            canvas.clipRect(leftX, topY, rightX, bottomY);
             text_height = Math.max(CHAR_MIN_HEIGHT, tempRect.height());
             if (tempRect.height() <= 0) {//Handling of this line of text is empty
                 tempRect.set(0, 0, 0, text_height);
