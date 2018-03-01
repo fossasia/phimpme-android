@@ -134,6 +134,8 @@
                 android:dialogMessage="@string/preference_save_photo_prefix_summary"
                 android:dialogTitle="@string/preference_save_photo_prefix"
                 android:inputType="text"
+                android:hint="@string/description_hint"
+                android:selectAllOnFocus="true"
                 android:key="preference_save_photo_prefix"
                 android:summary="@string/preference_save_photo_prefix_summary"
                 android:title="@string/preference_save_photo_prefix" />
@@ -325,6 +327,8 @@
                     android:dialogMessage="@string/preference_textstamp_summary"
                     android:dialogTitle="@string/preference_textstamp"
                     android:inputType="text"
+                    android:hint="@string/description_hint"
+                    android:selectAllOnFocus="true"
                     android:key="preference_textstamp"
                     android:summary="@string/preference_textstamp_summary"
                     android:title="@string/preference_textstamp" />
