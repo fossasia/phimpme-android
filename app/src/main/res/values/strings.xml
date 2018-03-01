@@ -586,6 +586,7 @@
     <string name="folder">Folder</string>
     <string name="color_palette">Color Palette</string>
     <string name="app_intro_skip">Introduction Skipped!</string>
+    <string name="preference_BottomNavColor">Get Bottom Navigation Bar Color</string>
 
     <!-- SECURITY-->
     <string name="security">Security</string>
