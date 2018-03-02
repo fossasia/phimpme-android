@@ -2035,10 +2035,14 @@ public class LFMainActivity extends SharedMediaActivity {
                 }
 
                 AlertDialog.Builder deleteDialog = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
-                AlertDialogsHelper.getTextDialog(this, deleteDialog, R.string.delete, albumsMode || !editMode ? R.string.delete_album_message : R.string.delete_photos_message, null);
 
-                deleteDialog.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
-                deleteDialog.setPositiveButton(this.getString(R.string.delete).toUpperCase(), new DialogInterface.OnClickListener() {
+                if(fav_photos && !all_photos)
+                    AlertDialogsHelper.getTextDialog(this, deleteDialog, R.string.remove_from_favourites, R.string.remove_favourites_body, null);
+                else
+                    AlertDialogsHelper.getTextDialog(this, deleteDialog, R.string.delete, albumsMode || !editMode ? R.string.delete_album_message : R.string.delete_photos_message, null);
+
+                deleteDialog.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+                deleteDialog.setPositiveButton(fav_photos && !all_photos ? getString(R.string.remove).toUpperCase() : getString(R.string.delete).toUpperCase(), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (securityObj.isActiveSecurity() && securityObj.isPasswordOnDelete()) {
                             final boolean passco[] = {false};
@@ -2049,7 +2053,7 @@ public class LFMainActivity extends SharedMediaActivity {
                             passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    //This should br empty it will be overwrite later
+                                    //This should be empty. It will be overwritten later
                                     //to avoid dismiss of the dialog on wrong password
                                 }
                             });
