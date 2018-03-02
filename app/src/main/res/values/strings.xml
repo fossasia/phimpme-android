@@ -440,8 +440,8 @@
     <string name="description_hint">Write something!</string>
     <string name="save_action">Save</string>
     <string name="change_cover">Album cover changed..</string>
-    <string name="add_favourite">Image is succesfully added to the favourites collection.</string>
-  <string name="add_favourite_multiple">Images are succesfully added to the favourites collection.</string>
+    <string name="add_favourite">Image is successfully added to the favourites collection.</string>
+    <string name="add_favourite_multiple">Images are successfully added to the favourites collection.</string>
     <string name="check_favourite">Image is already present in the favourites collection.</string>
     <string name="check_favourite_multipleitems">All the images are already present in the favourite collection.</string>
     <string name="rename_photo_action">Rename photo</string>
@@ -586,6 +586,7 @@
     <string name="folder">Folder</string>
     <string name="color_palette">Color Palette</string>
     <string name="app_intro_skip">Introduction Skipped!</string>
+    <string name="preference_BottomNavColor">Get Bottom Navigation Bar Color</string>
 
     <!-- SECURITY-->
     <string name="security">Security</string>
@@ -597,6 +598,8 @@
     <string name="show_password">Show Password</string>
 
     <string name="type_password">Insert password</string>
+    <string name="change_password">Change password</string>
+    <string name="set_passowrd">There is no password set. Please set a password first.</string>
     <string name="type_description">Description</string>
     <string name="Rename">Rename</string>
     <string name="type_caption">Write something</string>
@@ -610,6 +613,7 @@
     <string name="fingerprint">Fingerprint</string>
     <string name="clear_password">Clear Password</string>
     <string name="error_password_length">The minimum password length is 4 character</string>
+    <string name="error_password_match">New password matches to the previous password. Please set another password.</string>
     <string name="max_password_length">The password length cannot be more than 10 characters</string>
 
     <!-- SETTINGS -->
@@ -716,6 +720,7 @@
 
     <!--PHOTO DETAILS-->
     <string name="path">Path</string>
+    <string name="details_title">Title</string>
     <string name="type">Type</string>
     <string name="resolution">Resolution</string>
     <string name="exif">EXIF</string>
@@ -947,7 +952,7 @@
     <string name="ready">ready</string>
     <string name="go">go</string>
     <string name="take">take it</string>
-    <string name="ok">ok</string>
+    <string name="ok">OK</string>
     <string name="cheese">cheese</string>
     <string name="say_cheese">say cheese</string>
     <string name="camera_rear">Rear Camera</string>
@@ -1023,7 +1028,7 @@
     <string name="uploaded_onedrive">Uploaded to One Drive</string>
     <string name="login_onedrive_from_accounts">Login to OneDrive from Accounts Manager</string>
     <string name="onedrive_share">OneDrive</string>
-  
+
     <!--GoogleDrive-->
     <string name="uploaded_googledrive">Uploaded to Google Drive</string>
     <string name="login_googledrive_account">Login to Google Drive From Accounts</string>
@@ -1142,8 +1147,18 @@
     <string name="copyright_2011_2012_chris_banes">Copyright 2011, 2012 Chris Banes</string>
     <string name="copyright_2014_2015_henning_dodenhof">Copyright 2014 - 2015 Henning Dodenhof</string>
     <string name="copyright_2016_mykhailo_schurov">Copyright 2016 Mykhailo Shchurov</string>
+
     <string name="move_all_photos">All the photos will be moved to the selected folder. Do you wish to continue?</string>
     <string name="moved_target_folder_success">Moved to target folder successfully.</string>
 
     <string name="no_favourites_text">There are no favourites presently. To mark a picture as favourite, select the picture and tap on \"Add to Favourites\" from the overflow menu.</string>
+
+    <string name="make_copies">Make copies</string>
+    <string name="replace">Replace</string>
+
+    <string name="select_a_font">Select a Font</string>
+
+    <string name="remove">Remove</string>
+    <string name="remove_from_favourites">Remove From Favourites</string>
+    <string name="remove_favourites_body">Are you sure you want to remove the selected media from the favourites folder? This will not delete the photos.</string>
 </resources>

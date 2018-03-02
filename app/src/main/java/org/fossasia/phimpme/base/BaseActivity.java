@@ -19,6 +19,7 @@ import android.view.View;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.accounts.AccountActivity;
 import org.fossasia.phimpme.gallery.activities.LFMainActivity;
+import org.fossasia.phimpme.gallery.util.PreferenceUtil;
 import org.fossasia.phimpme.opencamera.Camera.CameraActivity;
 
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
@@ -32,6 +33,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     BottomNavigationItemView nav_home;
     BottomNavigationItemView nav_cam;
     BottomNavigationItemView nav_acc;
+    private PreferenceUtil SP;
+    private boolean isSWNavBarChecked;
 
     private int[][] states = new int[][] {
             new int[] {android.R.attr.state_checked}, // checked
@@ -61,6 +64,14 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         int checkStoragePermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if(checkStoragePermission  == PackageManager.PERMISSION_GRANTED)
             presentShowcaseSequence(); // one second delay
+
+        SP = PreferenceUtil.getInstance(getApplicationContext());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isSWNavBarChecked = SP.getBoolean(getString(R.string.preference_colored_nav_bar),true);
     }
 
     private void presentShowcaseSequence() {
@@ -163,7 +174,14 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     public abstract int getNavigationMenuItemId();
 
     public void setNavigationBarColor(int color) {
-        navigationView.setBackgroundColor(color);
+        if(isSWNavBarChecked)
+        {
+            navigationView.setBackgroundColor(color);
+            SP.putInt(getString(R.string.preference_BottomNavColor),color);
+        }else
+        {
+            navigationView.setBackgroundColor(SP.getInt(getString(R.string.preference_BottomNavColor),color));
+        }
         setIconColor(color);
     }
 
