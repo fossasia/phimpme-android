@@ -5,6 +5,9 @@ import android.graphics.PorterDuff;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
+import android.text.Editable;
+import android.text.InputType;
+import android.text.Selection;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
@@ -73,12 +76,19 @@ public class SecurityHelper {
         CheckBox checkBox = (CheckBox) PasswordDialogLayout.findViewById(R.id.show_password_checkbox);
         checkBox.setText(context.getResources().getString(R.string.show_password));
         checkBox.setTextColor(activity.getTextColor());
+        editxtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(!b){
                     editxtPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    int position = editxtPassword.getText().length();
+                    Editable editObj= editxtPassword.getText();
+                    Selection.setSelection(editObj, position);
                 }else{
                     editxtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    int position = editxtPassword.getText().length();
+                    Editable editObj= editxtPassword.getText();
+                    Selection.setSelection(editObj, position);
                 }
             }
         });
