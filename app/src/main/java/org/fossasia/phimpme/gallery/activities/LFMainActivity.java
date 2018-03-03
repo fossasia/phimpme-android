@@ -220,6 +220,8 @@ public class LFMainActivity extends SharedMediaActivity {
     protected View toolbari;
     @BindView(R.id.nothing_to_show)
     protected TextView nothingToShow;
+    @BindView(R.id.no_search_results)
+    protected TextView textView;
     @BindView(R.id.Drawer_Default_Icon)
     protected IconicsImageView defaultIcon;
     @BindView(R.id.Drawer_hidden_Icon)
@@ -725,8 +727,8 @@ public class LFMainActivity extends SharedMediaActivity {
         rvAlbums = (CustomScrollBarRecyclerView) findViewById(R.id.grid_albums);
         rvMedia  = (CustomScrollBarRecyclerView) findViewById(R.id.grid_photos);
 
-        this.overridePendingTransition(R.anim.left_to_right,
-                R.anim.right_to_left);
+        overridePendingTransition(R.anim.right_to_left,
+                R.anim.left_to_right);
         SP = PreferenceUtil.getInstance(getApplicationContext());
         albumsMode = true;
         editMode = false;
@@ -745,6 +747,9 @@ public class LFMainActivity extends SharedMediaActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemID = item.getItemId();
                 if (itemID == R.id.navigation_home) {
+                    if(textView.getVisibility() == View.VISIBLE){
+                        textView.setVisibility(View.GONE);
+                    }
                     if (!localFolder) {
                         hidden = false;
                         localFolder = true;
@@ -1581,6 +1586,12 @@ public class LFMainActivity extends SharedMediaActivity {
             starImageView.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_ATOP);
     }
 
+    private void checkNoSearchResults(String result){
+        textView.setText(getString(R.string.null_search_result) + " " + '"' + result + '"' );
+        textView.setTextColor(getTextColor());
+        textView.setVisibility(View.VISIBLE);
+    }
+
     //region MENU
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -1680,6 +1691,14 @@ public class LFMainActivity extends SharedMediaActivity {
                 String name = album.getName().toLowerCase();
                 if (name.contains(queryText)) {
                     newList.add(album);
+                }
+            }
+            if(newList.isEmpty()){
+                checkNoSearchResults(newText);
+            }
+            else{
+                if(textView.getVisibility() == View.VISIBLE){
+                    textView.setVisibility(View.INVISIBLE);
                 }
             }
             albumsAdapter.swapDataSet(newList);
@@ -2078,10 +2097,14 @@ public class LFMainActivity extends SharedMediaActivity {
                 }
 
                 AlertDialog.Builder deleteDialog = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
-                AlertDialogsHelper.getTextDialog(this, deleteDialog, R.string.delete, albumsMode || !editMode ? R.string.delete_album_message : R.string.delete_photos_message, null);
 
-                deleteDialog.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
-                deleteDialog.setPositiveButton(this.getString(R.string.delete).toUpperCase(), new DialogInterface.OnClickListener() {
+                if(fav_photos && !all_photos)
+                    AlertDialogsHelper.getTextDialog(this, deleteDialog, R.string.remove_from_favourites, R.string.remove_favourites_body, null);
+                else
+                    AlertDialogsHelper.getTextDialog(this, deleteDialog, R.string.delete, albumsMode || !editMode ? R.string.delete_album_message : R.string.delete_photos_message, null);
+
+                deleteDialog.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+                deleteDialog.setPositiveButton(fav_photos && !all_photos ? getString(R.string.remove).toUpperCase() : getString(R.string.delete).toUpperCase(), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (securityObj.isActiveSecurity() && securityObj.isPasswordOnDelete()) {
                             final boolean passco[] = {false};
@@ -2092,7 +2115,7 @@ public class LFMainActivity extends SharedMediaActivity {
                             passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    //This should br empty it will be overwrite later
+                                    //This should be empty. It will be overwritten later
                                     //to avoid dismiss of the dialog on wrong password
                                 }
                             });
