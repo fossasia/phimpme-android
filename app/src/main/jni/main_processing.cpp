@@ -70,7 +70,10 @@ extern "C" {
             case 16:
                 applyColorBoostEffect(src,dst,val);
                 break;
-            
+            case 17:
+                applyRedBlueEffect(src,dst,val);
+                break;
+
             default:
 
                 int lowThreshold = val;
