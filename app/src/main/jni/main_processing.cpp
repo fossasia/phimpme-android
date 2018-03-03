@@ -55,7 +55,9 @@ extern "C" {
             case 11:
                 applyThreshold(src, dst, val);
                 break;
-
+            case 12:
+                fade(src, dst, val);
+                break;
             default:
                 int lowThreshold = val;
                 int ratio = 3;
@@ -117,6 +119,9 @@ extern "C" {
                 break;
             case 8:
                 adjustBlur(src, dst, val);
+                break;
+            case 9:
+                fade(src, dst, val);
                 break;
             default:
                 break;

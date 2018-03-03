@@ -1,5 +1,6 @@
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/highgui/highgui.hpp>
 #include <colour_space.h>
 #include <cmath>
 #include <enhance.h>
@@ -107,7 +108,6 @@ static double applyContrastToPixelComponent(float pixelComponent, float contrast
     return min(1.0f, ((pixelComponent - 0.5f) * (tan ((contrast + 1) * PI/4) ) + 0.5f));
 }
 
-
 void applySajuno(cv::Mat &inp, cv::Mat &out, int val);
 void applyManglow(cv::Mat &inp, cv::Mat &out, int val);
 void applyPalacia(cv::Mat &inp, cv::Mat &out, int val);
@@ -119,5 +119,5 @@ void applyThreshold(cv::Mat &inp, cv::Mat &out, int val);
 void applyGrain(cv::Mat &inp, cv::Mat &out, int val);
 void applyHistEq(cv::Mat &inp, cv::Mat &out, int val);
 void applyCyano(cv::Mat &inp, cv::Mat &out, int val);
-
+void fade(cv::Mat &src, cv::Mat &dst, int val);
 }
