@@ -165,7 +165,6 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
     TinyDB bundle;
     final String REVIEW_ACTION = "com.android.camera.action.REVIEW";
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         long debug_time = 0;
@@ -175,8 +174,8 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
         }
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        this.overridePendingTransition(R.anim.left_to_right,
-                               R.anim.right_to_left);ButterKnife.bind(this);
+        overridePendingTransition(R.anim.right_to_left,
+                R.anim.left_to_right);ButterKnife.bind(this);
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false); // initialise any unset preferences to their default values
         if (MyDebug.LOG)
             Log.d(TAG, "onCreate: time after setting default preference values: " + (System.currentTimeMillis() - debug_time));

@@ -723,8 +723,8 @@ public class LFMainActivity extends SharedMediaActivity {
         rvAlbums = (CustomScrollBarRecyclerView) findViewById(R.id.grid_albums);
         rvMedia  = (CustomScrollBarRecyclerView) findViewById(R.id.grid_photos);
 
-        this.overridePendingTransition(R.anim.left_to_right,
-                R.anim.right_to_left);
+        overridePendingTransition(R.anim.right_to_left,
+                R.anim.left_to_right);
         SP = PreferenceUtil.getInstance(getApplicationContext());
         albumsMode = true;
         editMode = false;
