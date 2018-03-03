@@ -577,6 +577,7 @@
     <!-- RANDOM -->
     <string name="done">Done!</string>
     <string name="there_is_nothing_to_show">There\'s nothing to show!</string>
+    <string name="null_search_result">No search result found for</string>
     <string name="insert_a_name">Insert something</string>
     <string name="nothing_changed">Nothing changed!</string>
     <string name="install_shortcut">Install shortcut</string>

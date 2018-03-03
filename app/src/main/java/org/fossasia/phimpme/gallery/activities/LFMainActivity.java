@@ -216,6 +216,8 @@ public class LFMainActivity extends SharedMediaActivity {
     protected View toolbari;
     @BindView(R.id.nothing_to_show)
     protected TextView nothingToShow;
+    @BindView(R.id.no_search_results)
+    protected TextView textView;
     @BindView(R.id.Drawer_Default_Icon)
     protected IconicsImageView defaultIcon;
     @BindView(R.id.Drawer_hidden_Icon)
@@ -741,6 +743,9 @@ public class LFMainActivity extends SharedMediaActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemID = item.getItemId();
                 if (itemID == R.id.navigation_home) {
+                    if(textView.getVisibility() == View.VISIBLE){
+                        textView.setVisibility(View.GONE);
+                    }
                     if (!localFolder) {
                         hidden = false;
                         localFolder = true;
@@ -1577,6 +1582,12 @@ public class LFMainActivity extends SharedMediaActivity {
             starImageView.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_ATOP);
     }
 
+    private void checkNoSearchResults(String result){
+        textView.setText(getString(R.string.null_search_result) + " " + '"' + result + '"' );
+        textView.setTextColor(getTextColor());
+        textView.setVisibility(View.VISIBLE);
+    }
+
     //region MENU
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -1676,6 +1687,14 @@ public class LFMainActivity extends SharedMediaActivity {
                 String name = album.getName().toLowerCase();
                 if (name.contains(queryText)) {
                     newList.add(album);
+                }
+            }
+            if(newList.isEmpty()){
+                checkNoSearchResults(newText);
+            }
+            else{
+                if(textView.getVisibility() == View.VISIBLE){
+                    textView.setVisibility(View.INVISIBLE);
                 }
             }
             albumsAdapter.swapDataSet(newList);
