@@ -61,8 +61,10 @@ public class ThemedActivity extends BaseActivity {
         coloredNavBar = SP.getBoolean(getString(R.string.preference_colored_nav_bar), true);
         obscuredStatusBar = SP.getBoolean(getString(R.string.preference_translucent_status_bar), true);
         applyThemeImgAct = SP.getBoolean(getString(R.string.preference_apply_theme_pager), true);
-        setNavigationBarColor(getPrimaryColor());
-        setNavBarColor();
+        if(coloredNavBar) {
+            setNavigationBarColor(getPrimaryColor());
+            setNavBarColor();
+        }
     }
 
     @Override

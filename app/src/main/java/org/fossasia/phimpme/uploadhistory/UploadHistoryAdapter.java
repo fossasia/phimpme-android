@@ -1,5 +1,6 @@
 package org.fossasia.phimpme.uploadhistory;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -7,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -15,6 +15,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.UploadHistoryRealmModel;
+import org.fossasia.phimpme.gallery.activities.SingleMediaActivity;
+import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -40,6 +42,7 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
     private Realm realm = Realm.getDefaultInstance();
     private RealmQuery<UploadHistoryRealmModel> realmResult = realm.where(UploadHistoryRealmModel.class);
     private int color;
+    public static String imagePath;
 
     public UploadHistoryAdapter(int color) {
         this.color=color;
@@ -75,6 +78,7 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
             }
 
             Uri uri = Uri.fromFile(new File(realmResult.findAll().get(position).getPathname()));
+            imagePath = uri.getPath();
 
             Glide.with(getApplicationContext()).load(uri)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -104,7 +108,7 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
         notifyDataSetChanged();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.upload_time)
         TextView uploadTime;
@@ -121,6 +125,22 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            uploadImage.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            if(v.getId() == uploadImage.getId()){
+                if(new File(imagePath).exists()){
+                    Intent intent = new Intent(context, SingleMediaActivity.class);
+                    intent.setAction("com.android.camera.action.REVIEW");
+                    intent.putExtra("path",Uri.fromFile(new File(imagePath)));
+                    context.startActivity(intent);
+                }
+                else{
+                    SnackBarHandler.show(v, "No Media Availaible",SnackBarHandler.SHORT);
+                }
+            }
         }
     }
 }
