@@ -88,6 +88,7 @@ public class PhotoActivity extends ThemedActivity {
 
     private void setUI() {
         Menu bottomMenu = preview_toolbar.getMenu();
+        parent.setBackgroundColor(getBackgroundColor());
         int colorBottomIcons = setIconColor(getPrimaryColor());
         getMenuInflater().inflate(R.menu.menu_preview, bottomMenu);
         for (int i = 0; i < bottomMenu.size(); i++) {
