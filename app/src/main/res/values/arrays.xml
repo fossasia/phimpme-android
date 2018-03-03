@@ -680,6 +680,8 @@
         <item>Green Boost</item>
         <item>Boost Red</item>
         <item>Blue Boost</item>
+        <item>Colour Enhance</item>
+
   </string-array>
 
     <integer-array name="enhance_icons">

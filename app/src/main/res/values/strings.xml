@@ -577,6 +577,7 @@
     <!-- RANDOM -->
     <string name="done">Done!</string>
     <string name="there_is_nothing_to_show">There\'s nothing to show!</string>
+    <string name="null_search_result">No search result found for</string>
     <string name="insert_a_name">Insert something</string>
     <string name="nothing_changed">Nothing changed!</string>
     <string name="install_shortcut">Install shortcut</string>
@@ -586,6 +587,7 @@
     <string name="folder">Folder</string>
     <string name="color_palette">Color Palette</string>
     <string name="app_intro_skip">Introduction Skipped!</string>
+    <string name="preference_BottomNavColor">Get Bottom Navigation Bar Color</string>
 
     <!-- SECURITY-->
     <string name="security">Security</string>
@@ -1156,4 +1158,8 @@
     <string name="replace">Replace</string>
 
     <string name="select_a_font">Select a Font</string>
+
+    <string name="remove">Remove</string>
+    <string name="remove_from_favourites">Remove From Favourites</string>
+    <string name="remove_favourites_body">Are you sure you want to remove the selected media from the favourites folder? This will not delete the photos.</string>
 </resources>
