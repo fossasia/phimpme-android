@@ -71,9 +71,12 @@ extern "C" {
                 applyColorBoostEffect(src,dst,val);
                 break;
             case 17:
-                applyRedGreenFilter(src,dst,val);
+                applyCyanise(src,dst,val);
                 break;
-
+            case 18:
+                applyRedGreenFilter(src,dst,val);
+                break;  
+            
             default:
 
                 int lowThreshold = val;
