@@ -816,11 +816,15 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         final AlertDialog passwordDialog = captionDialogBuilder.create();
         passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         passwordDialog.show();
-        passwordDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setEnabled(false);
+
         if(caption!=null) {
             captionEditText.setText(caption);
             captionEditText.setSelection(caption.length());
             passwordDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setEnabled(true);
+            passwordDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(getAccentColor());
+        } else {
+            passwordDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setEnabled(false);
+            passwordDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(getColor(R.color.grey));
         }
 
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface
@@ -860,14 +864,11 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         passwordDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String captionText = captionEditText.getText().toString();
-                if(!captionText.isEmpty()){
                     caption = null;
                     text_caption.setText(caption);
                     captionEditText.setText(text_caption.toString());
                     passwordDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setEnabled(false);
-                }
-                passwordDialog.dismiss();
+                    passwordDialog.dismiss();
             }
         });
         passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {

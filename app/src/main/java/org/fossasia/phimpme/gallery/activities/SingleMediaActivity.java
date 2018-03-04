@@ -1071,14 +1071,14 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 descriptionDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
                 AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE},
                         getColor(R.color.grey), descriptionDialog);
-                descriptionDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setEnabled(false);
                 if(temp == null){
                     descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(getColor(R.color.grey));
                     descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setEnabled(false);
                 }
-                else
+                else {
                     descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(getAccentColor());
                     descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setEnabled(true);
+                }
                 editTextDescription.addTextChangedListener(new TextWatcher() {
                     @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         //empty method body
@@ -1090,17 +1090,12 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
                     @Override public void afterTextChanged(Editable editable) {
                         if (TextUtils.isEmpty(editable)) {
-                            descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL
-                            ).setEnabled(false);
-                            descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(getColor(R.color
-                                    .grey));
                             // Disable ok button
                             descriptionDialog.getButton(
                                     AlertDialog.BUTTON_POSITIVE).setEnabled(false);
                             AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE},
                                     getColor(R.color.grey), descriptionDialog);
                         } else {
-                            descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setEnabled(false);
                             // Something into edit text. Enable the button.
                             descriptionDialog.getButton(
                                     AlertDialog.BUTTON_POSITIVE).setEnabled(true);
