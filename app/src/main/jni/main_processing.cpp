@@ -79,27 +79,10 @@ extern "C" {
             case 19:
                 applyCartoon(src, dst, val);
                 break;
-
-            default:
-
-                int lowThreshold = val;
-                int ratio = 3;
-                int kernel_size = 3;
-
-                Mat grey, detected_edges;
-
-                cvtColor(src, grey, CV_BGR2GRAY);
-
-                blur(grey, detected_edges, Size(3, 3));
-                dst.create(grey.size(), grey.type());
-
-                Canny(detected_edges, detected_edges, lowThreshold, lowThreshold * ratio,
-                      kernel_size);
-
-                dst = Scalar::all(0);
-
-                detected_edges.copyTo(dst, detected_edges);
+            case 20:
+                applyEdgify(src, dst, val);
                 break;
+            default:;
         }
     }
 
