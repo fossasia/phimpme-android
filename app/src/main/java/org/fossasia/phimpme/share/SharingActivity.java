@@ -864,11 +864,11 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         passwordDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    caption = null;
-                    text_caption.setText(caption);
-                    captionEditText.setText(text_caption.toString());
-                    passwordDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setEnabled(false);
-                    passwordDialog.dismiss();
+                caption = null;
+                text_caption.setText(caption);
+                captionEditText.setText(text_caption.toString());
+                passwordDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setEnabled(false);
+                passwordDialog.dismiss();
             }
         });
         passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
