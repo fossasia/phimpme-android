@@ -442,6 +442,9 @@
     <string name="change_cover">Album cover changed..</string>
     <string name="add_favourite">Image is successfully added to the favourites collection.</string>
     <string name="add_favourite_multiple">Images are successfully added to the favourites collection.</string>
+    <string name="remove_from_favourite"> images removed from favourites section</string>
+    <string name="invalid_selection">Invalid Selection</string>
+    <string name="single_image_removed">Image removed from favourites section</string>
     <string name="check_favourite">Image is already present in the favourites collection.</string>
     <string name="check_favourite_multipleitems">All the images are already present in the favourite collection.</string>
     <string name="rename_photo_action">Rename photo</string>
@@ -477,6 +480,7 @@
     <string name="use_as">Use as</string>
     <string name="favourite">Add to favourites</string>
     <string name="favourite_title">Favourite Photos</string>
+    <string name="unfavourite">Unfavourite</string>
     <string name="edit">Edit</string>
     <string name="fix_date">Fix date</string>
     <string name="rename">Rename</string>
@@ -577,6 +581,7 @@
     <!-- RANDOM -->
     <string name="done">Done!</string>
     <string name="there_is_nothing_to_show">There\'s nothing to show!</string>
+    <string name="null_search_result">No search result found for</string>
     <string name="insert_a_name">Insert something</string>
     <string name="nothing_changed">Nothing changed!</string>
     <string name="install_shortcut">Install shortcut</string>
@@ -1157,4 +1162,8 @@
     <string name="replace">Replace</string>
 
     <string name="select_a_font">Select a Font</string>
+
+    <string name="remove">Remove</string>
+    <string name="remove_from_favourites">Remove From Favourites</string>
+    <string name="remove_favourites_body">Are you sure you want to remove the selected media from the favourites folder? This will not delete the photos.</string>
 </resources>
