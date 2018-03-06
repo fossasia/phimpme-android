@@ -74,6 +74,7 @@ public class SecurityActivity extends ThemedActivity {
         albums = MediaStoreProvider.getAlbums(getApplicationContext());
         llbody = (LinearLayout) findViewById(R.id.ll_security_dialog_body);
         llroot = (LinearLayout) findViewById(R.id.root);
+        LinearLayout llchangepassword = (LinearLayout) findViewById(R.id.ll_change_password);
 
         swApplySecurityDelete = (SwitchCompat) findViewById(R.id.security_body_apply_delete_switch);
         swActiveSecurity = (SwitchCompat) findViewById(R.id.active_security_switch);
@@ -162,6 +163,16 @@ public class SecurityActivity extends ThemedActivity {
         });
         updateSwitchColor(swApplySecurityFolder, getAccentColor());
 
+        llchangepassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(swActiveSecurity.isChecked())
+                    changePasswordDialog();
+                else
+                    SnackBarHandler.show(llroot, R.string.set_passowrd);
+            }
+        });
+
         /**ACTIVE SECURITY ON DELETE ACTION**/
         swApplySecurityDelete.setChecked(securityObj.isPasswordOnDelete());
         swApplySecurityDelete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -239,6 +250,7 @@ public class SecurityActivity extends ThemedActivity {
             }
         });
 
+        passwordDialogTitle.setText(R.string.type_password);
         passwordDialogTitle.setBackgroundColor(getPrimaryColor());
         passwordDialogCard.setBackgroundColor(getCardBackgroundColor());
 
@@ -290,7 +302,103 @@ public class SecurityActivity extends ThemedActivity {
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), dialog);
     }
 
+     private void changePasswordDialog() {
+        final AlertDialog.Builder passwordDialog = new AlertDialog.Builder(SecurityActivity.this, getDialogStyle());
+        final View PasswordDialogLayout = getLayoutInflater().inflate(R.layout.dialog_set_password, null);
+        final TextView passwordDialogTitle = (TextView) PasswordDialogLayout.findViewById(R.id.password_dialog_title);
+        CheckBox checkBox = (CheckBox) PasswordDialogLayout.findViewById(R.id.set_password_checkbox);
+        checkBox.setText(getResources().getString(R.string.show_password));
+        checkBox.setTextColor(getTextColor());
+        final CardView passwordDialogCard = (CardView) PasswordDialogLayout.findViewById(R.id.password_dialog_card);
+        final EditText editTextPassword = (EditText) PasswordDialogLayout.findViewById(R.id.password_edittxt);
+        editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        final EditText editTextConfirmPassword = (EditText) PasswordDialogLayout.findViewById(R.id.confirm_password_edittxt);
+        editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(!b){
+                    editTextPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    editTextConfirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }else{
+                    editTextPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    editTextConfirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                }
+            }
+        });
+        editTextConfirmPassword.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //empty method body
+            }
+            @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editTextConfirmPassword.setSelection(editTextConfirmPassword.getText().toString().length());
+            }
+            @Override public void afterTextChanged(Editable editable) {
+                if(editable.length() == 11) {
+                    editTextConfirmPassword.setText(editable.toString().substring(0, 10));
+                    editTextConfirmPassword.setSelection(10);
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.max_password_length), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+        editTextPassword.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //empty method body
+            }
 
+            @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                editTextPassword.setSelection(editTextPassword.getText().toString().length());
+            }
+            @Override public void afterTextChanged(Editable editable) {
+                if(editable.length() == 11) {
+                    editTextPassword.setText(editable.toString().substring(0, 10));
+                    editTextPassword.setSelection(10);
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.max_password_length), Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }
+        });
+        passwordDialogTitle.setText(R.string.change_password);
+        passwordDialogTitle.setBackgroundColor(getPrimaryColor());
+        passwordDialogCard.setBackgroundColor(getCardBackgroundColor());
+        editTextPassword.getBackground().mutate().setColorFilter(getTextColor(), PorterDuff.Mode.SRC_ATOP);
+        editTextPassword.setTextColor(getTextColor());
+        editTextPassword.setHintTextColor(getSubTextColor());
+        setCursorDrawableColor(editTextPassword, getTextColor());
+        editTextConfirmPassword.getBackground().mutate().setColorFilter(getTextColor(), PorterDuff.Mode.SRC_ATOP);
+        editTextConfirmPassword.setTextColor(getTextColor());
+        editTextConfirmPassword.setHintTextColor(getSubTextColor());
+        setCursorDrawableColor(editTextConfirmPassword, getTextColor());
+        passwordDialog.setView(PasswordDialogLayout);
+        AlertDialog dialog = passwordDialog.create();
+        dialog.setCancelable(false);
+        dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+             // nothing is done.
+            }
+        });
+        dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (editTextPassword.length() > 3) {
+                   if (editTextPassword.getText().toString().equals(editTextConfirmPassword.getText().toString())) {
+                       if (!editTextPassword.getText().toString().equals(SP.getString(getString(R.string.preference_password_value),"")))   {
+                            SP.putString(getString(R.string.preference_password_value), editTextPassword.getText().toString());
+                            securityObj.updateSecuritySetting();
+                            SnackBarHandler.show(llroot, R.string.remember_password_message);
+                        } else
+                           SnackBarHandler.show(llroot, R.string.error_password_match);
+                    } else
+                       SnackBarHandler.show(llroot, R.string.password_dont_match);
+                } else
+                    SnackBarHandler.show(llroot, R.string.error_password_length);
+            }
+        });
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        dialog.show();
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), dialog);
+    }
+    
     private void toggleEnabledChild(boolean enable) {
         if (!enable) {
             swApplySecurityDelete.setChecked(enable);
@@ -327,6 +435,8 @@ public class SecurityActivity extends ThemedActivity {
 
         IconicsImageView imgActiveSecurity = (IconicsImageView) findViewById(R.id.active_security_icon);
         TextView txtActiveSecurity = (TextView) findViewById(R.id.active_security_item_title);
+        IconicsImageView imgActiveSecurityChangePassword = (IconicsImageView) findViewById(R.id.security_change_password);
+        TextView txtChangePassword = (TextView) findViewById(R.id.active_security_change_password_title);
         TextView txtApplySecurity = (TextView) findViewById(R.id.security_body_apply_on);
         IconicsImageView imgApplySecurityHidden = (IconicsImageView) findViewById(R.id.security_body_apply_hidden_icon);
         TextView txtApplySecurityHidden = (TextView) findViewById(R.id.security_body_apply_hidden_title);
@@ -341,6 +451,7 @@ public class SecurityActivity extends ThemedActivity {
         /*ICONS*/
         int color = getIconColor();
         imgActiveSecurity.setColor(color);
+        imgActiveSecurityChangePassword.setColor(color);
         imgApplySecurityHidden.setColor(color);
         imgApplySecurityDelete.setColor(color);
         folderActiveSecurity.setColor(color);
@@ -348,6 +459,7 @@ public class SecurityActivity extends ThemedActivity {
         /*TEXTVIEWS*/
         color = getTextColor();
         txtActiveSecurity.setTextColor(color);
+        txtChangePassword.setTextColor(color);
         txtApplySecurity.setTextColor(color);
         txtApplySecurityHidden.setTextColor(color);
         txtApplySecurityDelete.setTextColor(color);

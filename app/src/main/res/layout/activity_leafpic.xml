@@ -45,7 +45,7 @@
                         android:scrollbarThumbVertical="@drawable/ic_scrollbar"
                         android:scrollbars="vertical">
 
-                        <android.support.v7.widget.RecyclerView
+                        <org.fossasia.phimpme.gallery.views.CustomScrollBarRecyclerView
                             android:id="@+id/grid_photos"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -55,7 +55,7 @@
                             android:scrollbarThumbVertical="@drawable/ic_scrollbar"
                             android:scrollbars="vertical" />
 
-                        <android.support.v7.widget.RecyclerView
+                        <org.fossasia.phimpme.gallery.views.CustomScrollBarRecyclerView
                             android:id="@+id/grid_albums"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -63,6 +63,14 @@
                             android:paddingBottom="@dimen/height_bottombar"
                             android:scrollbarThumbVertical="@drawable/ic_scrollbar"
                             android:scrollbars="vertical" />
+
+                        <TextView android:layout_width="match_parent"
+                                  android:layout_height="wrap_content"
+                                  android:id="@+id/no_search_results"
+                                  android:gravity="center_horizontal"
+                                  android:textSize="18sp"
+                                  android:layout_marginTop="150dp"
+                                  android:visibility="invisible"/>
 
                         <TextView
                             android:id="@+id/nothing_to_show"
@@ -76,6 +84,15 @@
                             android:textSize="18sp"
                             android:visibility="invisible"
                             tools:targetApi="lollipop" />
+
+                        <ImageView
+                            android:id="@+id/star_image_view"
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:layout_above="@id/nothing_to_show"
+                            android:layout_centerInParent="true"
+                            android:visibility="gone"
+                            app:srcCompat="@drawable/ic_star_black_24dp" />
 
                     </RelativeLayout>
                 </android.support.v4.widget.SwipeRefreshLayout>
