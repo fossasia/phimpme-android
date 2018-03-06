@@ -50,6 +50,7 @@ import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
 import org.fossasia.phimpme.gallery.activities.SettingsActivity;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
+import org.fossasia.phimpme.gallery.util.ThemeHelper;
 import org.fossasia.phimpme.share.flickr.FlickrActivity;
 import org.fossasia.phimpme.share.imgur.ImgurAuthActivity;
 import org.fossasia.phimpme.share.nextcloud.NextCloudAuth;
@@ -138,6 +139,9 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         ActivitySwitchHelper.setContext(this);
+        parentLayout.setBackgroundColor(getBackgroundColor());
+        overridePendingTransition(R.anim.right_to_left,
+                R.anim.left_to_right);
         parentLayout.setBackgroundColor(getBackgroundColor());
         accountAdapter = new AccountAdapter();
         accountPresenter = new AccountPresenter(realm);
@@ -550,7 +554,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
      * Create Facebook login and session
      */
     public void signInFacebook() {
-
         List<String> permissionNeeds = Arrays.asList("publish_actions");
         loginManager = LoginManager.getInstance();
         loginManager.logInWithPublishPermissions(this, permissionNeeds);
@@ -562,21 +565,26 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                         realm.beginTransaction();
                         account = realm.createObject(AccountDatabase.class, FACEBOOK.toString());
                         account.setUsername(loginResult.getAccessToken().getUserId());
-                        GraphRequest.newMeRequest(
+
+                        GraphRequest request = GraphRequest.newMeRequest(
                                 loginResult.getAccessToken(),
                                 new GraphRequest.GraphJSONObjectCallback() {
                                     @Override
                                     public void onCompleted(@NonNls JSONObject jsonObject, GraphResponse graphResponse) {
                                         Log.v("LoginActivity", graphResponse.toString());
                                         try {
-                                            account.setUsername(jsonObject.getString("email"));
+                                            account.setUsername(jsonObject.getString("name"));
+                                            realm.commitTransaction();
                                             SnackBarHandler.show(coordinatorLayout, getString(R.string.logged_in_facebook));
                                         } catch (JSONException e) {
                                             Log.e("LoginAct", e.toString());
                                         }
                                     }
                                 });
-                        realm.commitTransaction();
+                        Bundle parameters = new Bundle();
+                        parameters.putString("fields", "id,name");
+                        request.setParameters(parameters);
+                        request.executeAsync();
                     }
 
                     @Override
@@ -602,6 +610,8 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     public void onResume() {
         super.onResume();
         ActivitySwitchHelper.setContext(this);
+        setNavigationBarColor(ThemeHelper.getPrimaryColor(this));
+        toolbar.setBackgroundColor(getPrimaryColor());
         //dropboxAuthentication();
         boxAuthentication();
         setStatusBarColor();
