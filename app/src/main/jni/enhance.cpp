@@ -176,4 +176,43 @@ extern "C" {
         dst = Mat::zeros(src.size(), src.type());
         medianBlur( src, dst, i);
     }
+
+    void applyGammaEffect(Mat &src, Mat &dst, int val) {
+        int x,y;
+        cvtColor(src,src,CV_BGRA2BGR);
+        dst = Mat::zeros( src.size(), src.type());
+        int MAX_S = 256;
+        double MAX_VALUE_DBL = 255.0;
+        int MAX_VALUE_INT = 255;
+        double REVERSE = 1.0;
+
+        double des = val*1.8/100.0;
+
+        int gammaR[MAX_S];
+        int gammaG[MAX_S];
+        int gammaB[MAX_S];
+
+        for (int i = 0; i < MAX_S; ++i) {
+            gammaR[i] = (int) min(MAX_VALUE_INT,
+                                       (int) ((MAX_VALUE_DBL * pow(i / MAX_VALUE_DBL, REVERSE / 1.8*des)) + 0.5));
+            gammaG[i] = (int) min(MAX_VALUE_INT,
+                                       (int) ((MAX_VALUE_DBL * pow(i / MAX_VALUE_DBL, REVERSE / 1.8*des)) + 0.5));
+            gammaB[i] = (int) min(MAX_VALUE_INT,
+                                       (int) ((MAX_VALUE_DBL * pow(i / MAX_VALUE_DBL, REVERSE / 1.8*des)) + 0.5));
+        }
+
+        int r,g,b;
+        for (y = 0; y < src.rows; y++) {
+            for (x = 0; x < src.cols; x++) {
+                r = src.at<Vec3b>(y, x)[2];
+                g = src.at<Vec3b>(y, x)[1];
+                b = src.at<Vec3b>(y, x)[0];
+
+                dst.at<Vec3b>(y, x)[2] = saturate_cast<uchar>((gammaR[r]));
+                dst.at<Vec3b>(y, x)[1] = saturate_cast<uchar>(gammaG[g]);
+                dst.at<Vec3b>(y, x)[0] = saturate_cast<uchar>(gammaB[b]);
+            }
+        }
+    }
+
 }
