@@ -71,6 +71,7 @@
     <dimen name="icon_item_image_size_main">30dp</dimen>
     <dimen name="icon_item_image_size_recycler">30dp</dimen>
     <dimen name="icon_item_image_size_filter_preview">130dp</dimen>
+    <dimen name="icon_item_image_size_sticker">50dp</dimen>
     <dimen name="icon_item_image_size_top">30dp</dimen>
     <dimen name="icon_item_image_size">30dp</dimen>
     <dimen name="icon_item_title_size">12sp</dimen>
