@@ -683,6 +683,7 @@
         <item>Colour Enhance</item>
         <item>Cyanisation</item>
         <item>Fade</item>
+        <item>Cartoonify</item>
   </string-array>
 
     <integer-array name="enhance_icons">
