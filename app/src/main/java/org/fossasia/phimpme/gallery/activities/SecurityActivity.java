@@ -423,8 +423,13 @@ public class SecurityActivity extends ThemedActivity {
         swApplySecurityFolder.setEnabled(enable);
     }
 
-    private void setupUI() {
+    @Override
+    public void onResume() {
+        super.onResume();
         setStatusBarColor();
+    }
+
+    private void setupUI() {
         setNavBarColor();
         toolbar.setBackgroundColor(getPrimaryColor());
         setSupportActionBar(toolbar);
