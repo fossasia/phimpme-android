@@ -71,9 +71,12 @@ extern "C" {
                 applyColorBoostEffect(src,dst,val);
                 break;
             case 17:
+                applyCyanise(src,dst,val);
+                break;
+          case 18:
                 applyRedBlueEffect(src,dst,val);
                 break;
-
+            
             default:
 
                 int lowThreshold = val;
