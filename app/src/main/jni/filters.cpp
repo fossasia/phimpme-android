@@ -157,38 +157,6 @@ void applyColorBoostEffect(cv::Mat &src, cv::Mat &dst, int val) {
     }
 }
 
-void applyRedBlueEffect(cv::Mat &src, cv::Mat &dst, int val) {
-    register int x, y;
-    float opacity = val * 0.01f;
-    cvtColor(src, src, CV_BGRA2BGR);
-    dst = Mat::zeros(src.size(), src.type());
-    uchar r, g, b;
-    uchar val1,val3;
-
-    for (y = 0; y < src.rows; y++) {
-        for (x = 0; x < src.cols; x++) {
-            r = src.at<Vec3b>(y, x)[0];
-            g = src.at<Vec3b>(y, x)[1];
-            b = src.at<Vec3b>(y, x)[2];
-            val1 = saturate_cast<uchar>(r*(1+opacity));
-            if(val1 > 255) {
-                val1 = 255;
-            }
-
-            val3 = saturate_cast<uchar>(b*(1+opacity));
-            if(val3 > 255) {
-                val3 = 255;
-            }
-            dst.at<Vec3b>(y, x)[0] =
-                    saturate_cast<uchar>(val1);
-            dst.at<Vec3b>(y, x)[1] =
-                    saturate_cast<uchar>(g);
-            dst.at<Vec3b>(y, x)[2] =
-                    saturate_cast<uchar>(val3);
-        }
-    }
-}
-
 void applySajuno(cv::Mat &src, cv::Mat &dst, int val) {
     register int x, y;
     double op = 0.5 + 0.35 * val / 100.0;
@@ -527,6 +495,38 @@ void applyCyano(cv::Mat &src, cv::Mat &dst, int val) {
             dst.at<Vec3b>(y, x)[0] =
                     saturate_cast<uchar>((1 - opacity) * (src.at<Vec3b>(y, x)[0]) +
                                          opacity * overlayComponents(grey, r, 0.9));
+        }
+    }
+}
+
+void applyRedBlueEffect(cv::Mat &src, cv::Mat &dst, int val) {
+    register int x, y;
+    float opacity = val * 0.01f;
+    cvtColor(src, src, CV_BGRA2BGR);
+    dst = Mat::zeros(src.size(), src.type());
+    uchar r, g, b;
+    uchar val1,val3;
+
+    for (y = 0; y < src.rows; y++) {
+        for (x = 0; x < src.cols; x++) {
+            r = src.at<Vec3b>(y, x)[0];
+            g = src.at<Vec3b>(y, x)[1];
+            b = src.at<Vec3b>(y, x)[2];
+            val1 = saturate_cast<uchar>(r*(1+opacity));
+            if(val1 > 255) {
+                val1 = 255;
+            }
+
+            val3 = saturate_cast<uchar>(b*(1+opacity));
+            if(val3 > 255) {
+                val3 = 255;
+            }
+            dst.at<Vec3b>(y, x)[0] =
+                    saturate_cast<uchar>(val1);
+            dst.at<Vec3b>(y, x)[1] =
+                    saturate_cast<uchar>(g);
+            dst.at<Vec3b>(y, x)[2] =
+                    saturate_cast<uchar>(val3);
         }
     }
 }
