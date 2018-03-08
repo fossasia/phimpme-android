@@ -12,8 +12,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 
-import com.github.shchurov.horizontalwheelview.HorizontalWheelView;
-
 import org.fossasia.phimpme.MyApplication;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.EditImageActivity;
