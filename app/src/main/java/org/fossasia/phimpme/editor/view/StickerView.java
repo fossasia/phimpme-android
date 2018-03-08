@@ -10,6 +10,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouch;
+
 import java.util.LinkedHashMap;
 
 /**
@@ -32,6 +34,10 @@ public class StickerView extends View {
     private Paint rectPaint = new Paint();
     private Paint boxPaint = new Paint();
 
+    public Bitmap mainBitmap;
+    public ImageViewTouch mainImage;
+    private float leftX, rightX, topY, bottomY;
+
     private LinkedHashMap<Integer, StickerItem> bank = new LinkedHashMap<Integer, StickerItem>();//Storing each data map
 
     public StickerView(Context context) {
@@ -42,6 +48,17 @@ public class StickerView extends View {
     public StickerView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int displayW = mainBitmap.getWidth() * getMeasuredHeight() / mainBitmap.getHeight();
+        int displayH = mainBitmap.getHeight() * getMeasuredWidth() / mainBitmap.getWidth();
+        leftX = (mainImage.getMeasuredWidth() - displayW) >> 1;
+        rightX = leftX + displayW;
+        topY = (mainImage.getMeasuredHeight() - displayH) >> 1;
+        bottomY = topY + displayH;
     }
 
     public StickerView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -77,6 +94,7 @@ public class StickerView extends View {
         // System.out.println("on draw!!~");
         for (Integer id : bank.keySet()) {
             StickerItem item = bank.get(id);
+            canvas.clipRect(leftX, topY, rightX, bottomY);
             item.draw(canvas);
         }// end for each
     }

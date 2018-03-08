@@ -338,11 +338,13 @@
     </string-array>
     <string-array name="preference_stamp_gpsformat_entries">
         <item>Default</item>
+        <item>Address</item>
         <item>Degrees/minutes/seconds</item>
         <item>None</item>
     </string-array>
     <string-array name="preference_stamp_gpsformat_values">
         <item>preference_stamp_gpsformat_default</item>
+        <item>preference_stamp_gpsformat_address</item>
         <item>preference_stamp_gpsformat_dms</item>
         <item>preference_stamp_gpsformat_none</item>
     </string-array>
@@ -680,6 +682,9 @@
         <item>Green Boost</item>
         <item>Boost Red</item>
         <item>Blue Boost</item>
+        <item>Colour Enhance</item>
+        <item>Cyanisation</item>
+
   </string-array>
 
     <integer-array name="enhance_icons">
@@ -692,6 +697,7 @@
         <item>@drawable/ic_vignette</item>
         <item>@drawable/ic_sharp</item>
         <item>@drawable/ic_blur</item>
+        <item>@drawable/ic_gradient_black_24dp</item>
     </integer-array>
 
     <string-array name="enhance_titles">
@@ -704,6 +710,7 @@
         <item>vignette</item>
         <item>sharp</item>
         <item>blur</item>
+        <item>gamma</item>
     </string-array>
 
 
