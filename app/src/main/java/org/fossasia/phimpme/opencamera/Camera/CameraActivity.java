@@ -610,13 +610,6 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
         super.onDestroy();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
     private void setFirstTimeFlag() {
         if (MyDebug.LOG)
             Log.d(TAG, "setFirstTimeFlag");
