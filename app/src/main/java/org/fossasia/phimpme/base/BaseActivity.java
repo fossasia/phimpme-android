@@ -77,7 +77,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     private void presentShowcaseSequence() {
 
         ShowcaseConfig config = new ShowcaseConfig();
-        config.setDelay(4000); // half second between each showcase view
+        config.setDelay(500); // half second between each showcase view
 
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, SHOWCASE_ID);
 
