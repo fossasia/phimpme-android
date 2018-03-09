@@ -33,9 +33,15 @@ public class ThreeItemFragment extends BaseEditFragment implements View.OnClickL
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_editor_threeitem, container, false);
 
-        ImageView icon1,icon2,icon3;
-        TextView text1,text2,text3;
-        View item1,item2,item3;
+        ImageView icon1;
+        ImageView icon2;
+        ImageView icon3;
+        TextView text1;
+        TextView text2;
+        TextView text3;
+        View item1;
+        View item2;
+        View item3;
 
         item1 = view.findViewById(R.id.menu_item3);
         item2 = view.findViewById(R.id.menu_item4);
