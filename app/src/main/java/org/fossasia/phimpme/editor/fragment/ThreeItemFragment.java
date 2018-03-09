@@ -16,10 +16,7 @@ import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.EditImageActivity;
 
 public class ThreeItemFragment extends BaseEditFragment implements View.OnClickListener{
-    View item1,item2,item3;
-    LinearLayout ll_item1, ll_item2, ll_item3;
-    ImageView icon1,icon2,icon3;
-    TextView text1,text2,text3;
+    private LinearLayout ll_item1, ll_item2, ll_item3;
 
     public static ThreeItemFragment newInstance(int mode) {
         ThreeItemFragment fragment = new ThreeItemFragment();
@@ -35,6 +32,11 @@ public class ThreeItemFragment extends BaseEditFragment implements View.OnClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_editor_threeitem, container, false);
+
+        ImageView icon1,icon2,icon3;
+        TextView text1,text2,text3;
+        View item1,item2,item3;
+
         item1 = view.findViewById(R.id.menu_item3);
         item2 = view.findViewById(R.id.menu_item4);
         item3 = view.findViewById(R.id.menu_item5);
