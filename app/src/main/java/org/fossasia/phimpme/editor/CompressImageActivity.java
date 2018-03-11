@@ -29,8 +29,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import id.zelory.compressor.Compressor;
 
 public class CompressImageActivity extends AppCompatActivity {
@@ -38,21 +36,20 @@ public class CompressImageActivity extends AppCompatActivity {
     public static final String EXTRA_OUTPUT = "extra_output";
     public int percentagecompress=0;
 
-    @BindView(R.id.size)
-    Button size;
-    @BindView(R.id.bypixel)
-    Button dimension;
-    @BindView(R.id.edit_cancel)
-    ImageButton cancel;
-    @BindView(R.id.main_image)
-    ImageViewTouch imageViewToucher;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compress_image);
-        ButterKnife.bind(this);
+
         initView();
+        
+        Button size=(Button)findViewById(R.id.size);
+        Button dimension=(Button)findViewById(R.id.bypixel);
+        ImageButton cancel=(ImageButton)findViewById(R.id.edit_cancel);
+
         size.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,6 +73,7 @@ public class CompressImageActivity extends AppCompatActivity {
 
     private void initView() {
 
+        ImageViewTouch imageViewToucher=(ImageViewTouch)findViewById(R.id.main_image);
         saveFilePath = getIntent().getStringExtra(EXTRA_OUTPUT);
         Uri uri = Uri.fromFile(new File(saveFilePath));
         Glide.with(this).load(uri).diskCacheStrategy(DiskCacheStrategy.SOURCE)
