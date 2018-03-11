@@ -186,6 +186,9 @@ dependencies {
     //photoview
     compile project(':photoview')
 
+    //compressor
+    compile 'id.zelory:compressor:2.1.0'
+
 }
 apply plugin: 'com.google.gms.google-services'
 
