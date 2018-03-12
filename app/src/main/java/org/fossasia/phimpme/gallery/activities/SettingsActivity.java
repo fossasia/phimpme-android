@@ -647,7 +647,10 @@ public class SettingsActivity extends ThemedActivity {
             public void onClick(DialogInterface dialog, int which) {
                 SP.putInt(getString(R.string.preference_primary_color), colorPicker2.getColor());
                 updateTheme();
+
+                if(swNavBar.isChecked())
                 setNavBarColor();
+
                 setScrollViewColor(scr);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     if (isTranslucentStatusBar()) {
@@ -666,7 +669,7 @@ public class SettingsActivity extends ThemedActivity {
                     if (isTranslucentStatusBar()) {
                         getWindow().setStatusBarColor(ColorPalette.getObscuredColor(getPrimaryColor()));
                     } else getWindow().setStatusBarColor(getPrimaryColor());
-                    if (isNavigationBarColored())
+                    if (isNavigationBarColored() && swNavBar.isChecked())
                         getWindow().setNavigationBarColor(getPrimaryColor());
                     else getWindow().setNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.md_black_1000));
                 }
@@ -974,8 +977,29 @@ public class SettingsActivity extends ThemedActivity {
         resetDialog.setNegativeButton(this.getString(R.string.no_action).toUpperCase(), null);
         resetDialog.setPositiveButton(this.getString(R.string.yes_action).toUpperCase(), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                SP.clearPreferences();
-                recreate();
+                if(!securityObj.isActiveSecurity()) {
+                    SP.clearPreferences();
+                    recreate();
+                } else {
+                    String password =  SP.getString(getString(R.string.preference_password_value),"");
+                    String securedLocalFolders = SP.getString(getString(R.string.preference_use_password_secured_local_folders),"");
+                    boolean activeSecurity = SP.getBoolean(getString(R.string.preference_use_password), false);
+                    boolean hiddenFolders =  SP.getBoolean(getString(R.string.preference_use_password_on_hidden), false);
+                    boolean localFolders =  SP.getBoolean(getString(R.string.preference_use_password_on_folder), false);
+                    boolean deleteAction = SP.getBoolean(getString(R.string.preference_use_password_on_delete), false);
+
+                    SP.clearPreferences();
+                    recreate();
+
+                    SP.putString(getString(R.string.preference_password_value),password);
+                    SP.putString(getString(R.string.preference_use_password_secured_local_folders),securedLocalFolders);
+                    SP.putBoolean(getString(R.string.preference_use_password), activeSecurity);
+                    SP.putBoolean(getString(R.string.preference_use_password_on_hidden), hiddenFolders);
+                    SP.putBoolean(getString(R.string.preference_use_password_on_folder), localFolders);
+                    SP.putBoolean(getString(R.string.preference_use_password_on_delete), deleteAction);
+                    securityObj.updateSecuritySetting();
+
+                }
             }
         });
         AlertDialog alertDialog = resetDialog.create();

@@ -179,6 +179,10 @@ public class LFMainActivity extends SharedMediaActivity {
     // To handle back pressed
     boolean doubleBackToExitPressedOnce = false;
 
+    //used for unfavourite image
+    private boolean favouriteImagePresent = false;
+    private int imagesUnfavourited=0;
+
     private boolean fromOnClick = false;
     // Binding various views with Butterknife
 
@@ -216,6 +220,8 @@ public class LFMainActivity extends SharedMediaActivity {
     protected View toolbari;
     @BindView(R.id.nothing_to_show)
     protected TextView nothingToShow;
+    @BindView(R.id.no_search_results)
+    protected TextView textView;
     @BindView(R.id.Drawer_Default_Icon)
     protected IconicsImageView defaultIcon;
     @BindView(R.id.Drawer_hidden_Icon)
@@ -726,8 +732,8 @@ public class LFMainActivity extends SharedMediaActivity {
         rvAlbums = (CustomScrollBarRecyclerView) findViewById(R.id.grid_albums);
         rvMedia  = (CustomScrollBarRecyclerView) findViewById(R.id.grid_photos);
 
-        this.overridePendingTransition(R.anim.left_to_right,
-                R.anim.right_to_left);
+        overridePendingTransition(R.anim.right_to_left,
+                R.anim.left_to_right);
         SP = PreferenceUtil.getInstance(getApplicationContext());
         albumsMode = true;
         editMode = false;
@@ -746,6 +752,9 @@ public class LFMainActivity extends SharedMediaActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int itemID = item.getItemId();
                 if (itemID == R.id.navigation_home) {
+                    if(textView.getVisibility() == View.VISIBLE){
+                        textView.setVisibility(View.GONE);
+                    }
                     if (!localFolder) {
                         hidden = false;
                         localFolder = true;
@@ -1582,6 +1591,12 @@ public class LFMainActivity extends SharedMediaActivity {
             starImageView.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_ATOP);
     }
 
+    private void checkNoSearchResults(String result){
+        textView.setText(getString(R.string.null_search_result) + " " + '"' + result + '"' );
+        textView.setTextColor(getTextColor());
+        textView.setVisibility(View.VISIBLE);
+    }
+
     //region MENU
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -1683,6 +1698,14 @@ public class LFMainActivity extends SharedMediaActivity {
                     newList.add(album);
                 }
             }
+            if(newList.isEmpty()){
+                checkNoSearchResults(newText);
+            }
+            else{
+                if(textView.getVisibility() == View.VISIBLE){
+                    textView.setVisibility(View.INVISIBLE);
+                }
+            }
             albumsAdapter.swapDataSet(newList);
         } else {
             fromOnClick = false;
@@ -1736,16 +1759,20 @@ public class LFMainActivity extends SharedMediaActivity {
 
         togglePrimaryToolbarOptions(menu);
         updateSelectedStuff();
-        visible = getAlbum().getSelectedCount() > 0;
+        if(!albumsMode)
+            visible = getAlbum().getSelectedCount() > 0;
+        else
+            visible = false;
         menu.findItem(R.id.action_copy).setVisible(visible);
         menu.findItem(R.id.action_move).setVisible((visible || editMode) && !fav_photos);
+        menu.findItem(R.id.unfavourite_image).setVisible((!albumsMode) && (editMode || visible));
         menu.findItem(R.id.action_add_favourites).setVisible((visible || editMode) && (!albumsMode && !fav_photos));
         menu.findItem(R.id.excludeAlbumButton).setVisible(editMode && !all_photos && albumsMode && !fav_photos);
         menu.findItem(R.id.zipAlbumButton).setVisible(editMode && !all_photos && albumsMode && !fav_photos && !hidden &&
                 getAlbums().getSelectedCount() == 1);
         menu.findItem(R.id.select_all).setVisible(editMode);
         menu.findItem(R.id.delete_action).setVisible((!albumsMode || editMode) && (!all_photos || editMode) &&
-                (!fav_photos || editMode));
+                (!fav_photos));
         menu.findItem(R.id.hideAlbumButton).setVisible(!all_photos && !fav_photos && getAlbums().getSelectedCount() >
                 0);
 
@@ -1908,6 +1935,83 @@ public class LFMainActivity extends SharedMediaActivity {
                 AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE, DialogInterface.BUTTON_NEUTRAL}, getAccentColor(), alertDialog);
                 return true;
 
+            case R.id.unfavourite_image:
+                class UnfavouritePhotos extends AsyncTask<String, Integer, Boolean> {
+
+                    @Override
+                    protected void onPreExecute() {
+                        getNavigationBar();
+                        swipeRefreshLayout.setRefreshing(true);
+                        super.onPreExecute();
+                    }
+
+                    @Override
+                    protected Boolean doInBackground(String... arg0) {
+                        if (all_photos || fav_photos) {
+                            realm = Realm.getDefaultInstance();
+                            realm.executeTransaction(new Realm.Transaction() {
+                                @Override
+                                public void execute(Realm realm) {
+                                    for (int i = 0; i < selectedMedias.size(); i++) {
+                                        RealmResults<FavouriteImagesModel> favouriteImagesModels = realm.where
+                                                (FavouriteImagesModel.class).equalTo("path", selectedMedias.get(i).getPath()).findAll();
+                                        if(favouriteImagesModels.size()==1){
+                                            favouriteImagePresent=true;
+                                            imagesUnfavourited++;
+                                        }
+                                        favouriteImagesModels.deleteAllFromRealm();
+                                    }
+                                }
+                            });
+                        } else if (!fav_photos && !albumsMode) {
+                            realm = Realm.getDefaultInstance();
+                            realm.executeTransaction(new Realm.Transaction() {
+                                @Override
+                                public void execute(Realm realm) {
+                                    for (int i = 0; i < getAlbum().getSelectedCount(); i++) {
+                                        RealmResults<FavouriteImagesModel> favouriteImagesModels = realm.where
+                                                (FavouriteImagesModel.class).equalTo("path", getAlbum().getSelectedMedia(i).getPath()).findAll();
+                                        if(favouriteImagesModels.size()==1){
+                                            favouriteImagePresent=true;
+                                            imagesUnfavourited++;
+                                        }
+                                        favouriteImagesModels.deleteAllFromRealm();
+                                    }
+                                }
+                            });
+                        }
+                       return true;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Boolean result) {
+                        if (result) {
+                            if (!favouriteImagePresent) {
+                                SnackBarHandler.show(mDrawerLayout, getResources().getString(R.string.invalid_selection));
+                            } else {
+                                if (imagesUnfavourited >= 2)
+                                    SnackBarHandler.show(mDrawerLayout, imagesUnfavourited + " " + getResources().getString(R.string.remove_from_favourite));
+                                else
+                                    SnackBarHandler.show(mDrawerLayout, getResources().getString(R.string.single_image_removed));
+                            }
+                            if (fav_photos) {
+                                clearSelectedPhotos();
+                                getfavouriteslist();
+                                new FavouritePhotos().execute();
+                            } else {
+                                invalidateOptionsMenu();
+                                mediaAdapter.notifyDataSetChanged();
+                                finishEditMode();
+                                swipeRefreshLayout.setRefreshing(false);
+                            }
+                            favouriteImagePresent = false;
+                            imagesUnfavourited = 0;
+                        }
+                    }
+                }
+                new UnfavouritePhotos().execute();
+                return true;
+
             case R.id.delete_action:
                 getNavigationBar();
                 class DeletePhotos extends AsyncTask<String, Integer, Boolean> {
@@ -1919,7 +2023,6 @@ public class LFMainActivity extends SharedMediaActivity {
                         swipeRefreshLayout.setRefreshing(true);
                         super.onPreExecute();
                     }
-
 
                     @Override
                     protected Boolean doInBackground(String... arg0) {
@@ -1956,22 +2059,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                     }
                                     c.close();
                                 }
-                            } else if (fav_photos && !all_photos) {
-                                realm = Realm.getDefaultInstance();
-                                realm.executeTransaction(new Realm.Transaction() {
-                                    @Override
-                                    public void execute(Realm realm) {
-                                        for (int i = 0; i < selectedMedias.size(); i++) {
-                                            RealmResults<FavouriteImagesModel> favouriteImagesModels = realm.where
-                                                    (FavouriteImagesModel.class).equalTo("path", selectedMedias.get
-                                                    (i).getPath()).findAll();
-                                            favouriteImagesModels.deleteAllFromRealm();
-                                        }
-                                    }
-                                });
-                                succ = true;
                             }
-
                             // if not in selection mode, delete current album entirely
                             else if (!editMode) {
                                 succ = getAlbums().deleteAlbum(getAlbum(), getApplicationContext());
@@ -2006,10 +2094,6 @@ public class LFMainActivity extends SharedMediaActivity {
                                     Collections.sort(listAll, MediaComparators.getComparator(getAlbum().settings
                                             .getSortingMode(), getAlbum().settings.getSortingOrder()));
                                     mediaAdapter.swapDataSet(listAll);
-                                } else if (fav_photos && !all_photos) {
-                                    clearSelectedPhotos();
-                                    getfavouriteslist();
-                                    new FavouritePhotos().execute();
                                 }
                             }
                         } else requestSdCardPermissions();
@@ -2021,10 +2105,14 @@ public class LFMainActivity extends SharedMediaActivity {
                 }
 
                 AlertDialog.Builder deleteDialog = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
-                AlertDialogsHelper.getTextDialog(this, deleteDialog, R.string.delete, albumsMode || !editMode ? R.string.delete_album_message : R.string.delete_photos_message, null);
 
-                deleteDialog.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
-                deleteDialog.setPositiveButton(this.getString(R.string.delete).toUpperCase(), new DialogInterface.OnClickListener() {
+                if(fav_photos && !all_photos)
+                    AlertDialogsHelper.getTextDialog(this, deleteDialog, R.string.remove_from_favourites, R.string.remove_favourites_body, null);
+                else
+                    AlertDialogsHelper.getTextDialog(this, deleteDialog, R.string.delete, albumsMode || !editMode ? R.string.delete_album_message : R.string.delete_photos_message, null);
+
+                deleteDialog.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+                deleteDialog.setPositiveButton(fav_photos && !all_photos ? getString(R.string.remove).toUpperCase() : getString(R.string.delete).toUpperCase(), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (securityObj.isActiveSecurity() && securityObj.isPasswordOnDelete()) {
                             final boolean passco[] = {false};
@@ -2035,7 +2123,7 @@ public class LFMainActivity extends SharedMediaActivity {
                             passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    //This should br empty it will be overwrite later
+                                    //This should be empty. It will be overwritten later
                                     //to avoid dismiss of the dialog on wrong password
                                 }
                             });
@@ -2616,7 +2704,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 if (count == 0) {
                     SnackBarHandler.show(mDrawerLayout, getResources().getString(R.string.check_favourite_multipleitems));
                 } else if (count == 1) {
-                    SnackBarHandler.show(mDrawerLayout, getResources().getString(R.string.add_favourite));
+                    SnackBarHandler.show(mDrawerLayout,getResources().getString(R.string.add_favourite) );
                 } else {
                     SnackBarHandler.show(mDrawerLayout, count + " " + getResources().getString(R.string
                             .add_favourite_multiple));

@@ -51,7 +51,7 @@ public class SecurityHelper {
 
     public void updateSecuritySetting(){
         PreferenceUtil SP = PreferenceUtil.getInstance(context);
-        String secur = SP.getString("SecuredLocalFolders", "");
+        String secur = SP.getString(context.getString(R.string.preference_use_password_secured_local_folders), "");
         Gson gson = new Gson();
         String[] secfo = gson.fromJson(secur, String[].class);
         if(secfo!=null){
