@@ -534,5 +534,25 @@ void applyCyano(cv::Mat &src, cv::Mat &dst, int val) {
     }
 }
 
+void fade(cv::Mat &src, cv::Mat &dst, int val)
+{
+    cvtColor(src,src,COLOR_RGB2GRAY);
+    dst = src.clone();
+    for(int y=0 ;y < src.rows ; y++)
+    {
+        for(int x=0 ;x < src.rows ; x++) {
+            Vec3b intensity = src.at<Vec3b>(y, x);
+            uchar blue = intensity.val[0];
+            uchar green = intensity.val[1];
+            uchar red = intensity.val[2];
+
+            dst.at<Vec3b>(y, x)[0] = saturate_cast<uchar> (blue + 0.5 *val );
+            dst.at<Vec3b>(y, x)[1] = saturate_cast<uchar> (green + 0.5 *val);
+            dst.at<Vec3b>(y, x)[2] = saturate_cast<uchar> (red + 0.5 *val) ;
+
+        }
+    }
+}
+
 
 }

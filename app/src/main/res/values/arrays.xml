@@ -631,6 +631,7 @@
         <item>@string/duration_45m</item>
         <item>@string/duration_1h</item>
     </string-array>
+  
     <string-array name="preference_video_max_duration_values">
         <item>0</item>
         <item>3</item>
@@ -684,7 +685,7 @@
         <item>Blue Boost</item>
         <item>Colour Enhance</item>
         <item>Cyanisation</item>
-
+        <item>Fade</item>
   </string-array>
 
     <integer-array name="enhance_icons">
