@@ -682,8 +682,7 @@
         <item>Blue Boost</item>
         <item>Colour Enhance</item>
         <item>Cyanisation</item>
-        <item>Fade</item> 
-        <item>Mirror</item>
+        <item>Fade</item>
   </string-array>
 
     <integer-array name="enhance_icons">

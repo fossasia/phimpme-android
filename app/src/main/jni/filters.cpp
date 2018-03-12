@@ -554,8 +554,4 @@ void applyFade(cv::Mat &src, cv::Mat &dst, int val)
     }
 }
 
-void applyMirror(cv::Mat &src, cv::Mat &dst)
-{
-}
-
 }
