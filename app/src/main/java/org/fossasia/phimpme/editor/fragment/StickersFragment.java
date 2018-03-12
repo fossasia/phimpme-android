@@ -96,6 +96,8 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
     @Override
     public void onShow() {
         activity.changeMode(EditImageActivity.MODE_STICKERS);
+        activity.stickersFragment.getmStickerView().mainImage = activity.mainImage;
+        activity.stickersFragment.getmStickerView().mainBitmap = activity.mainBitmap;
         activity.stickersFragment.getmStickerView().setVisibility(View.VISIBLE);
     }
 
@@ -217,7 +219,7 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
                 holder.itemView.setTag(path);
                 holder.title.setText("");
 
-            int size = (int) getActivity().getResources().getDimension(R.dimen.icon_item_image_size_filter_preview);
+            int size = (int) getActivity().getResources().getDimension(R.dimen.icon_item_image_size_sticker);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(size,size);
             holder.icon.setLayoutParams(layoutParams);
 

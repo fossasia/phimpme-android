@@ -3,11 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.fossasia.phimpme.gallery.activities.LFMainActivity">
 
-    <item
-        android:id="@+id/all_photos"
-        android:title="@string/all_photos"
-        android:icon="@drawable/ic_photo_24dp"
-        app:showAsAction="always" />
+
 
     <group android:id="@+id/general_action">
 
@@ -67,6 +63,10 @@
             android:title="@string/favourite"
             app:showAsAction="never"/>
 
+        <item
+            android:id="@+id/unfavourite_image"
+            android:title="@string/unfavourite"
+            app:showAsAction="never"/>
     </group>
 
     <group android:id="@+id/album_options_menu">
@@ -87,7 +87,7 @@
             android:title="@string/zip"
             app:showAsAction="never" />
     </group>
-
+`
     <item
         android:id="@+id/renameAlbum"
         android:title="@string/rename"
@@ -133,8 +133,14 @@
         android:id="@+id/search_action"
         android:title="@string/search_menu"
         android:visible="true"
+        android:icon="@drawable/ic_search_black_24dp"
         android:tint="@color/white"
         app:actionViewClass="android.support.v7.widget.SearchView"
-        app:showAsAction="never|collapseActionView" />
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/all_photos"
+        android:title="@string/all_photos"
+        android:icon="@drawable/ic_photo_24dp"
+        app:showAsAction="always" />
 
 </menu>

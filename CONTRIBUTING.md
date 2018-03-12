@@ -9,7 +9,7 @@ Please note we have a code of conduct, please follow it in all your interactions
 
 1. Ensure any install or build dependencies are removed before the end of the layer when doing a 
    build.
-2. Check the that there are no conflicts and your request passes Travis build. Check the log of the pass test if it fails the build.
+2. Check that there are no conflicts and your request passes Travis build. Check the log of the pass test if it fails the build.
 3. Give the description of the issue that you want to resolve in the pull request message. The format of the commit message to be fixed    - Fixes #[issue number] [Description of the issue]
 4. Wait for the maintainers to review your pull request and do the changes if requested.
 5. *We use danger, so update go to https://travis-ci.org and login with github. Next you will see a `+` near my repositories. Click on it and select your fork enabling it for Travis. Then go the dashboard and add two environment varibales which two wont get displayed in the terminal(There's an option). The first one must be named `USERNAME` and should contain your github username. The second one should be named `API_TOKEN` and should contain a github personal token with atleast scope to public repos. It enables fast and easy moderation adequate testing.*

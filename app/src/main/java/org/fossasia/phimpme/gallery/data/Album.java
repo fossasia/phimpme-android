@@ -47,6 +47,7 @@ public class Album implements Serializable {
 
 	public ArrayList<Media> selectedMedias;
 	private boolean isPreviewSelected;
+	private boolean issecured=false;
 	private String previewPath;
     private int selectedCount;
 
@@ -61,6 +62,14 @@ public class Album implements Serializable {
 
 	public boolean isPreviewSelected() {
 		return isPreviewSelected;
+	}
+
+	public void setsecured(boolean set){
+		this.issecured=set;
+	}
+
+	public boolean getsecured(){
+		return issecured;
 	}
 
 	public void setPreviewSelected(boolean previewSelected) {
@@ -253,7 +262,7 @@ public class Album implements Serializable {
 		return path;
 	}
 
-	private void setCount(int count) {
+	public void setCount(int count) {
 		this.count = count;
 	}
 
