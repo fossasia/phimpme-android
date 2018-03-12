@@ -73,6 +73,12 @@ extern "C" {
             case 17:
                 applyCyanise(src,dst,val);
                 break;
+            case 18:
+                applyFade(src,dst,val);
+                break;
+            case 19:
+                applyMirror(src,dst);
+                break;
 
             default:
 
