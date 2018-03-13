@@ -160,20 +160,20 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
         protected FilterResults performFiltering(CharSequence constraint) {
             FilterResults results=new FilterResults();
             String  query =constraint.toString().toUpperCase();
-            ArrayList<AccountDatabase> filteredPlayers=new ArrayList<>();
+            ArrayList<AccountDatabase> filtered=new ArrayList<>();
 
             for (int i=0;i<adapter.list.size();i++)
             {
                 //CHECK
                 if(adapter.list.get(i).getName().toUpperCase().contains(query))
                 {
-                    //ADD PLAYER TO  NEW LIST
-                    filteredPlayers.add(adapter.list.get(i));
+                    //ADD FILTERED DATA TO  NEW LIST
+                    filtered.add(adapter.list.get(i));
                 }
             }
-            results.values=filteredPlayers;
-            results.count=filteredPlayers.size();
-            adapter.list=filteredPlayers;
+            results.values=filtered;
+            results.count=filtered.size();
+            adapter.list=filtered;
             return results;
         }
 
