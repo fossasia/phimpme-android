@@ -553,5 +553,4 @@ void applyFade(cv::Mat &src, cv::Mat &dst, int val)
         }
     }
 }
-
 }
