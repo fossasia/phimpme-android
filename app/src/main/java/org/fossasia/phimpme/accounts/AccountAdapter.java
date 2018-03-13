@@ -37,10 +37,10 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
     private ThemeHelper themeHelper;
     private CustomFilter filter;
 
-    public AccountAdapter(ArrayList<AccountDatabase> d) {
+    public AccountAdapter(ArrayList<AccountDatabase> newlist) {
         themeHelper = new ThemeHelper(getContext());
         updateTheme();
-        this.list=d;
+        this.list=newlist;
         this.switchAccentColor = themeHelper.getAccentColor();
         this.switchBackgroundColor = themeHelper.getPrimaryColor();
     }
