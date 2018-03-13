@@ -125,18 +125,24 @@ public class FlickrActivity extends ThemedActivity {
         RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
         query.equalTo("name", FLICKR.toString());
         RealmResults<AccountDatabase> result = query.findAll();
-        AccountDatabase account;
+        AccountDatabase account = new AccountDatabase();
         realm.beginTransaction();
         if (result.size() == 0)
-            account = realm.createObject(AccountDatabase.class, FLICKR.toString());
-        else
-            account = result.first();
-
-        account.setToken(token);
-        account.setTokenSecret(tokenSecret);
-        account.setUsername(userName);
-        account.setUserId(userId);
-        realm.commitTransaction();
+        {    account = realm.createObject(AccountDatabase.class, FLICKR.toString());
+            account.setToken(token);
+            account.setTokenSecret(tokenSecret);
+            account.setUsername(userName);
+            account.setUserId(userId);
+            realm.commitTransaction();}
+        else{
+            account.setName(FLICKR.toString());
+            account.setToken(token);
+            account.setTokenSecret(tokenSecret);
+            account.setUsername(userName);
+            account.setUserId(userId);
+            realm.copyToRealmOrUpdate(account);
+            realm.commitTransaction();
+        }
     }
 
     private Context getContext() {

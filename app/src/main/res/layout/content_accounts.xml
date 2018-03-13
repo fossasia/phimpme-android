@@ -1,26 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/accounts_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
-
     <include
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbars"
         layout="@layout/toolbar" />
 
+    <android.support.v7.widget.SearchView
+        android:id="@+id/accountsearch"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:fitsSystemWindows="true"
+        app:searchIcon="@drawable/ic_search_black_24dp"
+        app:defaultQueryHint="Search Settings"
+        android:layout_below="@id/toolbars"/>
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/accounts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottombar"
-        android:layout_below="@id/toolbar">
-
+        android:layout_below="@id/accountsearch">
         <android.support.v7.widget.RecyclerView
             android:id="@+id/accounts_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/toolbar"></android.support.v7.widget.RecyclerView>
+            android:layout_below="@id/accountsearch" />
     </android.support.design.widget.CoordinatorLayout>
 
     <include
