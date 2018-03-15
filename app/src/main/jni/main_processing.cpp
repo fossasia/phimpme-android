@@ -70,7 +70,13 @@ extern "C" {
             case 16:
                 applyColorBoostEffect(src,dst,val);
                 break;
-            
+            case 17:
+                applyCyanise(src,dst,val);
+                break;
+            case 18:
+                applyFade(src,dst,val);
+                break;
+
             default:
 
                 int lowThreshold = val;

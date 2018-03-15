@@ -203,12 +203,15 @@ public class RecyclerMenuFragment extends BaseEditFragment {
                 holder.itemView.setTag(stickerPath[position]);
             }
             int iconImageSize = (int) getActivity().getResources().getDimension(R.dimen.icon_item_image_size_recycler);
+            int midRowSize = (int) getActivity().getResources().getDimension(R.dimen.editor_mid_row_size);
+
 
             holder.icon.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
             if (MODE == EditImageActivity.MODE_FILTERS) {
                 if (currentBitmap!=null && filterThumbs!=null && filterThumbs.size() > position) {
                     iconImageSize = (int) getActivity().getResources().getDimension(R.dimen.icon_item_image_size_filter_preview);
+                    midRowSize = (int) getActivity().getResources().getDimension(R.dimen.editor_filter_mid_row_size);
                     holder.icon.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     holder.icon.setImageBitmap(filterThumbs.get(position));
                 }else {
@@ -222,7 +225,11 @@ public class RecyclerMenuFragment extends BaseEditFragment {
             layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
             holder.icon.setLayoutParams(layoutParams);
             holder.title.setText(titlelist.getString(position));
+            LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(midRowSize,midRowSize);
+            layoutParams.gravity = Gravity.CENTER;
+            holder.wrapper.setLayoutParams(layoutParams2);
             holder.wrapper.setBackgroundColor(Color.TRANSPARENT);
+
 
             if(currentSelection == position)
                 holder.wrapper.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.md_grey_200));
