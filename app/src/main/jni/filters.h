@@ -124,4 +124,7 @@ void applyNegative(cv::Mat &src, cv::Mat &dst, int val);
 void applyGreenBoostEffect(cv::Mat &src, cv::Mat &dst, int val);
 void applyColorBoostEffect(cv::Mat &src, cv::Mat &dst, int val);
 void applyBlueBoostEffect(cv::Mat &src, cv::Mat &dst, int val);
+void applyCyanise(cv::Mat &src, cv::Mat &dst, int val);
+void applyFade(cv::Mat &src, cv::Mat &dst, int val);
+
 }
