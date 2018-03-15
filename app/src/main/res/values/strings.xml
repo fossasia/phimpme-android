@@ -540,6 +540,7 @@
     <string name="discard_text_message">Are you sure you want to discard the added text?</string>
     <string name="discard_paint_message">Are you sure you want to discard the added paint?</string>
     <string name="move">Do you want to replace these files or make more copies of them?</string>
+    <string name="discard_frame_mode_message">Are you sure you want to discard the added frame?</string>
     <string name="description_deleted">Description Deleted</string>
     <string name="description_updated">Description Updated</string>
     <string name="description_saved">Description Saved</string>
@@ -838,6 +839,7 @@
     <string name="sticker">Stickers</string>
     <string name="enhance">Enhance</string>
     <string name="transform">Transform</string>
+    <string name="frame">Frame</string>
     <string name="write">Write</string>
     <string name="share">share</string>
 
