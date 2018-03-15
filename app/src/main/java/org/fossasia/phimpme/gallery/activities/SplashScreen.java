@@ -1,6 +1,7 @@
 package org.fossasia.phimpme.gallery.activities;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
@@ -8,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -40,13 +42,13 @@ public class SplashScreen extends SharedMediaActivity {
     public final static int ALBUMS_PREFETCHED = 23;
     public final static int PHOTOS_PREFETCHED = 2;
     public final static int ALBUMS_BACKUP = 60;
-    private boolean PICK_INTENT = false;
+    private static boolean PICK_INTENT = false;
     public final static String ACTION_OPEN_ALBUM = "vn.mbm.phimp.leafpic.OPEN_ALBUM";
 
     //private HandlingAlbums albums;
-    private Album album;
-    private boolean can_be_finished = false;
-    private Intent nextIntent = null;
+    private static Album album;
+    private static boolean can_be_finished = false;
+    private static Intent nextIntent = null;
     private PreferenceUtil SP;
 
     @BindView(R.id.splash_bg)
@@ -103,12 +105,12 @@ public class SplashScreen extends SharedMediaActivity {
                 if (data != null) {
                     String ab = data.getString("albumPath");
                     if (ab != null) {
-                        new PrefetchPhotosData().execute();
+                        new PrefetchPhotosData(getApplicationContext(), new SplashScreen()).execute();
                     }
                 } else
                     SnackBarHandler.show(parentView,R.string.album_not_found);
             } else  // default intent
-                new PrefetchAlbumsData().execute();
+                new PrefetchAlbumsData(getApplicationContext(),new SplashScreen()).execute();
         } else {
             String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
             PermissionUtils.requestPermissions(this, READ_EXTERNAL_STORAGE_ID, permissions);
@@ -147,7 +149,7 @@ public class SplashScreen extends SharedMediaActivity {
             case READ_EXTERNAL_STORAGE_ID:
                 boolean granted = grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
                 if (granted)
-                    new PrefetchAlbumsData().execute(SP.getBoolean(getString(R.string.preference_auto_update_media), false));
+                    new PrefetchAlbumsData(getApplicationContext(),new SplashScreen()).execute(SP.getBoolean(getString(R.string.preference_auto_update_media), false));
                 else
                     SnackBarHandler.show(parentView,R.string.storage_permission_denied);
                 break;
@@ -156,61 +158,77 @@ public class SplashScreen extends SharedMediaActivity {
         }
     }
 
-    private class PrefetchAlbumsData extends AsyncTask<Boolean, Boolean, Boolean> {
+    private static class PrefetchAlbumsData extends AsyncTask<Boolean, Boolean, Boolean> {
+
+        Context context;
+        AppCompatActivity activity;
 
         @Override
         protected Boolean doInBackground(Boolean... arg0) {
-            getAlbums().restoreBackup(getApplicationContext());
+            getAlbums().restoreBackup(context);
             if(getAlbums().dispAlbums.size() == 0) {
-                getAlbums().loadAlbums(getApplicationContext(), false);
+                getAlbums().loadAlbums(context, false);
                 return true;
             }
             return false;
         }
 
+        PrefetchAlbumsData(Context _context, AppCompatActivity _activity) {
+            context = _context;
+            activity = _activity;
+        }
 
         @Override
         protected void onPostExecute(Boolean result) {
             super.onPostExecute(result);
 
-            nextIntent = new Intent(SplashScreen.this, LFMainActivity.class);
+            nextIntent = new Intent(context, LFMainActivity.class);
             Bundle b = new Bundle();
             b.putInt(CONTENT, result ? ALBUMS_PREFETCHED : ALBUMS_BACKUP);
             b.putBoolean(PICK_MODE, PICK_INTENT);
             nextIntent.putExtras(b);
             if (PICK_INTENT)
-                startActivityForResult(nextIntent, PICK_MEDIA_REQUEST);
+                activity.startActivityForResult(nextIntent, PICK_MEDIA_REQUEST);
             else {
                 if (can_be_finished){
-                    startActivity(nextIntent);
-                    finish();
+                    activity.startActivity(nextIntent);
+                    activity.finish();
                 }else {
                     can_be_finished = true;
                 }
             }
             if(result)
-                getAlbums().saveBackup(getApplicationContext());
+                getAlbums().saveBackup(context);
         }
     }
 
-    private class PrefetchPhotosData extends AsyncTask<Void, Void, Void> {
+    private static class PrefetchPhotosData extends AsyncTask<Void, Void, Void> {
+
+        Context context;
+        AppCompatActivity activity;
+
+        PrefetchPhotosData(Context _context, AppCompatActivity _activity) {
+            context = _context;
+            activity = _activity;
+        }
+
         @Override
         protected Void doInBackground(Void... arg0) {
-            album.updatePhotos(getApplicationContext());
+            album.updatePhotos(context);
             return null;
         }
 
         @Override
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
-            nextIntent = new Intent(SplashScreen.this, LFMainActivity.class);
+            nextIntent = new Intent(context, LFMainActivity.class);
             Bundle b = new Bundle();
             getAlbums().addAlbum(0, album);
             b.putInt(CONTENT, PHOTOS_PREFETCHED);
             nextIntent.putExtras(b);
             if (can_be_finished){
-                startActivity(nextIntent);
-                finish();
+                activity.startActivity(nextIntent);
+                activity.finish();
             }else {
                 can_be_finished = true;
             }
