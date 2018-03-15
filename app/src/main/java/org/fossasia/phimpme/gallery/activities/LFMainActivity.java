@@ -304,11 +304,11 @@ public class LFMainActivity extends SharedMediaActivity {
         int cy = toolbari.getMeasuredHeight() / 2;
 
         // get the final radius for the clipping circle
-        int finalRadius = 0;
+        int finalRadius = Math.max(toolbari.getWidth(), toolbari.getHeight()) / 2;
 
         // create the animator for this view
         Animator anim =
-                ViewAnimationUtils.createCircularReveal(toolbari, cx, cy, cx, finalRadius);
+                ViewAnimationUtils.createCircularReveal(toolbari, cx, cy, finalRadius, 5);
 
         anim.start();
     }
@@ -1538,7 +1538,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
     private void finishEditMode() {
         if (editMode)
-            exitReveal();
+            enterReveal();
         editMode = false;
         if (albumsMode) {
             getAlbums().clearSelectedAlbums();
