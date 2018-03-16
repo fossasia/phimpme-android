@@ -12,7 +12,7 @@ import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.EditImageActivity;
 public class MainMenuFragment extends BaseEditFragment implements View.OnClickListener {
 
-    View menu_filter, menu_enhance, menu_adjust, menu_stickers, menu_write, menu_frame;
+ private   View menu_filter, menu_enhance, menu_adjust, menu_stickers, menu_write, menu_frame;
     Context context;
     public MainMenuFragment() {
     }
@@ -88,6 +88,7 @@ public class MainMenuFragment extends BaseEditFragment implements View.OnClickLi
             case R.id.menu_frame:
                 activity.changeMode(EditImageActivity.MODE_FRAME);
                 activity.changeMiddleFragment(EditImageActivity.MODE_FRAME);
+                break;
 
         }
     }
@@ -118,7 +119,6 @@ public class MainMenuFragment extends BaseEditFragment implements View.OnClickLi
             case 12:
                 menu_frame.setBackgroundColor(color);
                 break;
-
             default:
                 break;
         }
