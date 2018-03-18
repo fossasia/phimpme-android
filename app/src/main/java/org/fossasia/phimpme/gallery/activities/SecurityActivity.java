@@ -144,7 +144,7 @@ public class SecurityActivity extends ThemedActivity {
                                 SharedPreferences.Editor editor = SP.getEditor();
                                 Gson gson = new Gson();
                                 String securedfolders = gson.toJson(securedfol);
-                                editor.putString("SecuredLocalFolders", securedfolders);
+                                editor.putString(getString(R.string.preference_use_password_secured_local_folders), securedfolders);
                                 editor.commit();
                             }else{
                                 SP.putBoolean(getString(R.string.preference_use_password_on_folder), false);
@@ -423,8 +423,13 @@ public class SecurityActivity extends ThemedActivity {
         swApplySecurityFolder.setEnabled(enable);
     }
 
-    private void setupUI() {
+    @Override
+    public void onResume() {
+        super.onResume();
         setStatusBarColor();
+    }
+
+    private void setupUI() {
         setNavBarColor();
         toolbar.setBackgroundColor(getPrimaryColor());
         setSupportActionBar(toolbar);

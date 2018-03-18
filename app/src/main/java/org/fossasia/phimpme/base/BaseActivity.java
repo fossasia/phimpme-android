@@ -77,7 +77,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     private void presentShowcaseSequence() {
 
         ShowcaseConfig config = new ShowcaseConfig();
-        config.setDelay(4000); // half second between each showcase view
+        config.setDelay(500); // half second between each showcase view
 
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, SHOWCASE_ID);
 
@@ -132,15 +132,21 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         if (item.getItemId() != getNavigationMenuItemId()) {
             switch (item.getItemId()) {
                 case R.id.navigation_camera:
-                    startActivity(new Intent(this, CameraActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    Intent cameraIntent = new Intent(this, CameraActivity.class);
+                    startActivity(cameraIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                     break;
                 case R.id.navigation_home:
-                    startActivity(new Intent(this, LFMainActivity.class));
+                    Intent homeIntent = new Intent(this, LFMainActivity.class);
+                    startActivity(homeIntent);
                     break;
                 case R.id.navigation_accounts:
-                    startActivity(new Intent(this, AccountActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    Intent accountIntent = new Intent(this, AccountActivity.class);
+                    startActivity(accountIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                     break;
             }
+            finish();
+            overridePendingTransition(R.anim.left_to_right,
+                    R.anim.right_to_left);
         }
         return true;
     }
