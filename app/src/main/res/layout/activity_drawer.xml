@@ -23,9 +23,7 @@
                 android:id="@+id/Drawer_Header"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
-                android:clickable="true"
                 android:elevation="@dimen/card_elevation"
-                android:foreground="@drawable/ripple"
                 android:orientation="vertical">
 
                 <ImageView
