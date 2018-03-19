@@ -1,5 +1,7 @@
 package org.fossasia.phimpme.share;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,6 +33,7 @@ import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -322,7 +325,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                         break;
 
                     case INSTAGRAM:
-                        shareToInstagram();
+                        copyCaption();
                         break;
 
                     case NEXTCLOUD:
@@ -1016,7 +1019,38 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         sendResult(SUCCESS);
     }
 
-    private void shareToInstagram() {
+    private void copyCaption() {
+
+        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
+        String msg = getString(R.string.copy_caption);
+        AlertDialogsHelper.getTextDialog(SharingActivity.this, dialogBuilder, R.string.caption, 0, msg);
+        dialogBuilder.setPositiveButton(R.string.answer_yes, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //copied caption to clipboard
+                ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clip = ClipData.newPlainText("caption", caption);
+                clipboard.setPrimaryClip(clip);
+                Toast.makeText(SharingActivity.this, R.string.caption_copied,
+                        Toast.LENGTH_LONG).show();
+
+                shareToInstagram();
+            }
+        });
+        dialogBuilder.setNegativeButton(R.string.answer_no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                shareToInstagram();
+            }
+        });
+        AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
+    }
+
+
+    private void shareToInstagram(){
         Uri uri = Uri.fromFile(new File(saveFilePath));
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setPackage("com.instagram.android");
