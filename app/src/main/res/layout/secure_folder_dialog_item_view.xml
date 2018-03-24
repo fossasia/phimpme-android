@@ -1,44 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:orientation="vertical"
-              android:background="@color/accent_white"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/accent_white"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-  <android.support.v7.widget.CardView
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      app:cardCornerRadius="2dp"
-      android:layout_marginLeft="3dp"
-      android:layout_marginTop="2dp"
-      android:background="@color/accent_white"
-      android:layout_marginRight="3dp"
-      android:id="@+id/folder_security_dialog_card">
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/accent_white"
+        app:cardCornerRadius="2dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginRight="3dp"
+        android:id="@+id/folder_security_dialog_card">
 
-    <LinearLayout android:layout_width="match_parent"
-                  android:layout_height="wrap_content"
-                  android:background="@color/accent_white"
-                  android:weightSum="10"
-                  android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/accent_white"
+            android:weightSum="1"
+            android:orientation="horizontal">
 
-      <TextView android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:textStyle="italic"
+                android:layout_margin="5dp"
                 android:textSize="18dp"
-                android:layout_weight="10"
+                android:layout_weight="0.9"
                 android:textColor="@color/md_blue_grey_500"
-                android:id="@+id/foldername"
-                android:text=""/>
+                android:id="@+id/foldername" />
 
-      <CheckBox android:layout_width="wrap_content"
+            <CheckBox
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
-                android:layout_weight="0"
+                android:layout_weight="0.1"
                 android:buttonTint="@color/accent_black"
                 android:id="@+id/secure_folder_checkbox"/>
 
-    </LinearLayout>
-  </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 </LinearLayout>

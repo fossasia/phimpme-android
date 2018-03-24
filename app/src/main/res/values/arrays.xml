@@ -663,8 +663,6 @@
         <item>Wordpress</item>
     </string-array>
 
-
-
     <string-array name="filter_titles">
         <item>None</item>
         <item>Sajuno</item>
@@ -684,7 +682,7 @@
         <item>Blue Boost</item>
         <item>Colour Enhance</item>
         <item>Cyanisation</item>
-
+        <item>Fade</item>
   </string-array>
 
     <integer-array name="enhance_icons">
