@@ -1761,7 +1761,7 @@ public class LFMainActivity extends SharedMediaActivity {
             visible = false;
         menu.findItem(R.id.action_copy).setVisible(visible);
         menu.findItem(R.id.action_move).setVisible((visible || editMode) && !fav_photos);
-        menu.findItem(R.id.unfavourite_image).setVisible((!albumsMode) && (editMode || visible));
+        menu.findItem(R.id.unfavourite_image).setVisible((!albumsMode) && (editMode || visible) && (fav_photos));
         menu.findItem(R.id.action_add_favourites).setVisible((visible || editMode) && (!albumsMode && !fav_photos));
         menu.findItem(R.id.excludeAlbumButton).setVisible(editMode && !all_photos && albumsMode && !fav_photos);
         menu.findItem(R.id.zipAlbumButton).setVisible(editMode && !all_photos && albumsMode && !fav_photos && !hidden &&
@@ -1949,7 +1949,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                 }
                             });
                         }
-                       return true;
+                        return true;
                     }
 
                     @Override
@@ -1978,7 +1978,24 @@ public class LFMainActivity extends SharedMediaActivity {
                         }
                     }
                 }
-                new UnfavouritePhotos().execute();
+
+                final AlertDialog.Builder deletefavDialog = new AlertDialog.Builder(LFMainActivity.this,
+                        getDialogStyle());
+
+                AlertDialogsHelper.getTextDialog(LFMainActivity.this, deletefavDialog,
+                        R.string.remove_from_favourites, R.string.remove_favourites_body, null);
+                deletefavDialog.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
+                deletefavDialog.setPositiveButton(this.getString(R.string.remove).toUpperCase(),
+                        new DialogInterface.OnClickListener() {
+                            @Override public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                                new UnfavouritePhotos().execute();
+                            }
+                        });
+                AlertDialog alertDialog1 = deletefavDialog.create();
+                alertDialog1.show();
+                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface
+                        .BUTTON_NEGATIVE}, getAccentColor(), alertDialog1);
                 return true;
 
             case R.id.delete_action:
