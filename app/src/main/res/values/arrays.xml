@@ -338,11 +338,13 @@
     </string-array>
     <string-array name="preference_stamp_gpsformat_entries">
         <item>Default</item>
+        <item>Address</item>
         <item>Degrees/minutes/seconds</item>
         <item>None</item>
     </string-array>
     <string-array name="preference_stamp_gpsformat_values">
         <item>preference_stamp_gpsformat_default</item>
+        <item>preference_stamp_gpsformat_address</item>
         <item>preference_stamp_gpsformat_dms</item>
         <item>preference_stamp_gpsformat_none</item>
     </string-array>
@@ -661,8 +663,6 @@
         <item>Wordpress</item>
     </string-array>
 
-
-
     <string-array name="filter_titles">
         <item>None</item>
         <item>Sajuno</item>
@@ -682,7 +682,7 @@
         <item>Blue Boost</item>
         <item>Colour Enhance</item>
         <item>Cyanisation</item>
-
+        <item>Fade</item>
   </string-array>
 
     <integer-array name="enhance_icons">
