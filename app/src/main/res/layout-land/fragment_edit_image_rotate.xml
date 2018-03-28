@@ -1,0 +1,68 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/editor_bottom_row_size"
+    android:layout_height="match_parent"
+    android:layout_alignParentBottom="true"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <ImageButton
+        android:id="@+id/rotate_cancel"
+        android:layout_width="@dimen/editor_bottom_row_size"
+        android:layout_height="0dp"
+        android:layout_alignBottom="@+id/rotate_bar"
+        android:layout_alignParentLeft="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_weight="1"
+        android:background="?android:attr/selectableItemBackground"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/ic_no" />
+
+    <LinearLayout
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/rotate_cancel"
+        android:layout_weight="8"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvAngle"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:hint="123"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+
+            <com.github.shchurov.horizontalwheelview.HorizontalWheelView
+                android:id="@+id/horizontalWheelView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="50dp"
+                android:rotation="270"
+                app:activeColor="@color/accent_green"
+                app:normalColor="@color/black" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/rotate_apply"
+        android:layout_width="60dp"
+        android:layout_height="0dp"
+        android:layout_alignBottom="@+id/rotate_bar"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_weight="1"
+        android:background="?android:attr/selectableItemBackground"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/ic_done_black_24dp" />
+
+</LinearLayout>
