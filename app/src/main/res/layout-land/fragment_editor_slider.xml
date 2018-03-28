@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="@dimen/editor_bottom_row_size"
+              android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    <ImageButton
+        android:id="@+id/seekbar_cancel"
+        android:layout_width="@dimen/icon_item_image_size"
+        android:layout_height="@dimen/icon_item_image_size"
+        android:layout_gravity="center"
+        android:scaleType="fitCenter"
+        android:background="?android:attr/selectableItemBackground"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="5dp"
+        />
+
+    <SeekBar
+        android:id="@+id/slider"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:rotation="270"
+        />
+
+    <ImageButton
+        android:id="@+id/seekbar_apply"
+        android:layout_width="@dimen/icon_item_image_size"
+        android:layout_height="@dimen/icon_item_image_size"
+        android:scaleType="fitCenter"
+        android:layout_margin="5dp"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:background="?android:attr/selectableItemBackground"
+        android:layout_alignParentEnd="true"
+       />
+    
+</LinearLayout>
