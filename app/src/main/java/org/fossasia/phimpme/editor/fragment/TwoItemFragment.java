@@ -39,8 +39,7 @@ public class TwoItemFragment extends BaseEditFragment implements View.OnClickLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_editor_twoitem, container, false);
-        item1 = view.findViewById(R.id.menu_item1);
-        item2 = view.findViewById(R.id.menu_item2);
+
 
         ll_item1 = (LinearLayout)view.findViewById(R.id.menu_item1);
         ll_item2 = (LinearLayout)view.findViewById(R.id.menu_item2);
@@ -51,8 +50,8 @@ public class TwoItemFragment extends BaseEditFragment implements View.OnClickLis
         text1 = (TextView) view.findViewById(R.id.item1text);
         text2 = (TextView) view.findViewById(R.id.item2text);
 
-        item1.setOnClickListener(this);
-        item2.setOnClickListener(this);
+        ll_item1.setOnClickListener(this);
+        ll_item2.setOnClickListener(this);
 
         if (mode == EditImageActivity.MODE_WRITE) {
             icon1.setImageResource(R.drawable.ic_text);
