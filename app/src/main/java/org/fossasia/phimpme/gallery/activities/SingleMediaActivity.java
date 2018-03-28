@@ -195,13 +195,34 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 e.printStackTrace();
             }
             finally{
-                if(getAlbum().getCurrentMediaIndex()+1 == getAlbum().getMedia().size() - 1){
-                    handler.removeCallbacks(slideShowRunnable);
-                    slideshow=false;
-                    toggleSystemUI();
+                if(!favphotomode && !allPhotoMode){
+                    if(getAlbum().getCurrentMediaIndex()+1 == getAlbum().getMedia().size() - 1){
+                        handler.removeCallbacks(slideShowRunnable);
+                        slideshow=false;
+                        toggleSystemUI();
+                    }
+                    else{
+                        handler.postDelayed(this, SLIDE_SHOW_INTERVAL);
+                    }
                 }
-                else{
-                    handler.postDelayed(this, SLIDE_SHOW_INTERVAL);
+                else {
+                    if(!favphotomode && allPhotoMode){
+                        if(current_image_pos + 1 == listAll.size()-1) {
+                            handler.removeCallbacks(slideShowRunnable);
+                            slideshow = false;
+                            toggleSystemUI();
+                        }else{
+                            handler.postDelayed(this, SLIDE_SHOW_INTERVAL);
+                        }
+                    }else if(favphotomode && !allPhotoMode){
+                        if(current_image_pos + 1 == favouriteslist.size()-1){
+                            handler.removeCallbacks(slideShowRunnable);
+                            slideshow = false;
+                            toggleSystemUI();
+                        }else{
+                            handler.postDelayed(this, SLIDE_SHOW_INTERVAL);
+                        }
+                    }
                 }
             }
         }
@@ -283,6 +304,10 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private void initUI() {
         Menu bottomMenu = bottomBar.getMenu();
         getMenuInflater().inflate(R.menu.menu_bottom_view_pager, bottomMenu);
+
+        if(!allPhotoMode && favphotomode)
+            bottomBar.getMenu().getItem(4).setVisible(false);
+
         for (int i = 0; i < bottomMenu.size(); i++) {
             bottomMenu.getItem(i).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
@@ -309,14 +334,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         mViewPager.setHasFixedSize(true);
         mViewPager.setLongClickable(true);
 
-        getWindow().getDecorView().setOnSystemUiVisibilityChangeListener
-                (new View.OnSystemUiVisibilityChangeListener() {
-                    @Override
-                    public void onSystemUiVisibilityChange(int visibility) {
-                        if ((visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) showSystemUI();
-                        else hideSystemUI();
-                    }
-                });
         BasicCallBack basicCallBack = new BasicCallBack() {
             @Override
             public void callBack(int status, Object data) {
@@ -495,13 +512,13 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
     @Override
     public boolean onPrepareOptionsMenu(final Menu menu) {
+        if(allPhotoMode || favphotomode){
+            menu.findItem(R.id.action_cover).setVisible(false);
+        }
         if (!allPhotoMode && !favphotomode){
             menu.setGroupVisible(R.id.only_photos_options, true);
         }
         else if(!allPhotoMode && favphotomode){
-            menu.findItem(R.id.action_favourites).setVisible(false);
-            menu.findItem(R.id.action_cover).setVisible(false);
-            menu.findItem(R.id.action_description).setVisible(false);
             menu.findItem(R.id.action_copy).setVisible(false);
             menu.findItem(R.id.action_move).setVisible(false);
         }
@@ -561,7 +578,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         }
     }
 
-
     private void handleEditorImage(Intent data) {
         String newFilePath = data.getStringExtra(EditImageActivity.EXTRA_OUTPUT);
         boolean isImageEdit = data.getBooleanExtra(EditImageActivity.IMAGE_IS_EDIT, false);
@@ -578,7 +594,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         LoadImageTask loadTask = new LoadImageTask();
         loadTask.execute(newFilePath);
     }
-
 
     private void displayAlbums(boolean reload) {
         Intent i = new Intent(SingleMediaActivity.this, LFMainActivity.class);
@@ -676,7 +691,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
 
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -776,21 +790,27 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 break;
 
             case R.id.action_delete:
+                String ButtonDelete = "";
                 handler.removeCallbacks(slideShowRunnable);
                 final AlertDialog.Builder deleteDialog = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
-
-                AlertDialogsHelper.getTextDialog(SingleMediaActivity.this, deleteDialog,
-                        R.string.delete, R.string.delete_photo_message, null);
-
+                if(favphotomode){
+                    AlertDialogsHelper.getTextDialog(SingleMediaActivity.this, deleteDialog,
+                            R.string.remove_from_favourites, R.string.delete_from_favourites_message, null);
+                    ButtonDelete = this.getString(R.string.remove);
+                }else {
+                    AlertDialogsHelper.getTextDialog(SingleMediaActivity.this, deleteDialog,
+                            R.string.delete, R.string.delete_photo_message, null);
+                    ButtonDelete = this.getString(R.string.delete);
+                }
                 deleteDialog.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
-                deleteDialog.setPositiveButton(this.getString(R.string.delete).toUpperCase(), new DialogInterface.OnClickListener() {
+                deleteDialog.setPositiveButton(ButtonDelete.toUpperCase(), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (securityObj.isActiveSecurity() && securityObj.isPasswordOnDelete()) {
-
+                            final boolean passco[] = {false};
                             final AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
                             final EditText editTextPassword = securityObj.getInsertPasswordDialog
                                     (SingleMediaActivity.this, passwordDialogBuilder);
-
+                            editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
                             passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     if (securityObj.checkPassword(editTextPassword.getText().toString())) {
@@ -800,9 +820,33 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
                                 }
                             });
+                            editTextPassword.addTextChangedListener(new TextWatcher() {
+                                @Override
+                                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                    //empty method body
+                                }
+
+                                @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                    //empty method body
+                                }
+
+                                @Override public void afterTextChanged(Editable editable) {
+                                    if(securityObj.getTextInputLayout().getVisibility() == View.VISIBLE && !passco[0]){
+                                        securityObj.getTextInputLayout().setVisibility(View.INVISIBLE);
+                                    }
+                                    else{
+                                        passco[0]=false;
+                                    }
+
+                                }
+                            });
                             passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
                             final AlertDialog passwordDialog = passwordDialogBuilder.create();
                             passwordDialog.show();
+                            passwordDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager
+                                    .LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+                            passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams
+                                    .SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                             AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
                             passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View
                                     .OnClickListener() {
@@ -812,6 +856,8 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                                         deleteCurrentMedia();
                                         passwordDialog.dismiss();
                                     } else {
+                                        passco[0] = true;
+                                        securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
                                         SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), bottomBar.getHeight());
                                         editTextPassword.getText().clear();
                                         editTextPassword.requestFocus();
@@ -856,7 +902,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     }
                 });
                 bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
-
                 return true;
 
             case R.id.action_cover:
@@ -1022,7 +1067,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         //This will be overwrite later
                     }
                 });
-
                 final AlertDialog descriptionDialog = descriptionDialogBuilder.create();
                 descriptionDialog.show();
                 AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface
@@ -1033,39 +1077,42 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 descriptionDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
                 AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE},
                         getColor(R.color.grey), descriptionDialog);
-
+                descriptionDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setEnabled(false);
                 if(temp == null){
+                    descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(getColor(R.color.grey));
                     descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setEnabled(false);
                 }
                 else
+                    descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(getAccentColor());
                     descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setEnabled(true);
-
                 editTextDescription.addTextChangedListener(new TextWatcher() {
                     @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         //empty method body
-
                     }
 
                     @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         //empty method body
-
                     }
 
                     @Override public void afterTextChanged(Editable editable) {
                         if (TextUtils.isEmpty(editable)) {
+                            descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL
+                            ).setEnabled(false);
+                            descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(getColor(R.color
+                                    .grey));
                             // Disable ok button
                             descriptionDialog.getButton(
                                     AlertDialog.BUTTON_POSITIVE).setEnabled(false);
                             AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE},
                                     getColor(R.color.grey), descriptionDialog);
                         } else {
+                            descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setEnabled(false);
                             // Something into edit text. Enable the button.
                             descriptionDialog.getButton(
                                     AlertDialog.BUTTON_POSITIVE).setEnabled(true);
                             AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE},
                                     getAccentColor(), descriptionDialog);
                         }
-
                     }
                 });
 
@@ -1088,12 +1135,14 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        descriptionDialog.dismiss();
-                        if(temp!= null){
+                        if (temp == null){
+                            descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setEnabled(false);
+                        }
+                        else{
+                            descriptionDialog.dismiss();
                             databaseHelper.delete(temp);
                             SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.description_deleted), bottomBar.getHeight());
                         }
-
                     }
                 });
                 break;

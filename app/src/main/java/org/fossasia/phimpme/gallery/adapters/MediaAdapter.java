@@ -18,10 +18,15 @@ import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 
 import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.data.local.FavouriteImagesModel;
+import org.fossasia.phimpme.gallery.activities.LFMainActivity;
 import org.fossasia.phimpme.gallery.data.Media;
-import org.fossasia.phimpme.gallery.util.ThemeHelper;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import io.realm.Realm;
 
 
 /**
@@ -31,6 +36,7 @@ import java.util.ArrayList;
 public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> {
 
     private ArrayList<Media> medias;
+    private boolean fav = false;
 
     private BitmapDrawable placeholder;
     private View.OnClickListener mOnClickListener;
@@ -39,12 +45,12 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
 
     public MediaAdapter(ArrayList<Media> ph, Context context) {
         medias = ph;
-        this.context=context;
+        this.context = context;
         updatePlaceholder(context);
     }
 
     public void updatePlaceholder(Context context) {
-        Drawable drawable=ContextCompat.getDrawable(context,R.drawable.placeholder);
+        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.placeholder);
         placeholder = (BitmapDrawable) drawable;
     }
 
@@ -89,6 +95,12 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
             holder.imageView.clearColorFilter();
             holder.layout.setPadding(0, 0, 0, 0);
         }
+
+        if (!Realm.getDefaultInstance().where(FavouriteImagesModel.class).equalTo("path", f.getPath()).findAll()
+                .isEmpty() && !fav)
+            holder.favourite.setVisibility(View.VISIBLE);
+        else
+            holder.favourite.setVisibility(View.GONE);
     }
 
     @Override
@@ -104,23 +116,27 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
         mOnLongClickListener = lis;
     }
 
-    public void swapDataSet(ArrayList<Media> asd) {
+    public void swapDataSet(ArrayList<Media> asd, boolean fav) {
         medias = asd;
+        this.fav = fav;
         notifyDataSetChanged();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageView;
-        View layout;
-        TextView path;
-        IconicsImageView icon;
+        @BindView(R.id.photo_preview)
+        protected ImageView imageView;
+        @BindView(R.id.media_card_layout)
+        protected View layout;
+        @BindView(R.id.photo_path)
+        protected TextView path;
+        @BindView(R.id.icon)
+        protected IconicsImageView icon;
+        @BindView(R.id.favourite)
+        protected ImageView favourite;
 
         ViewHolder(View itemView) {
             super(itemView);
-            layout = itemView.findViewById(R.id.media_card_layout);
-            imageView = (ImageView) itemView.findViewById(R.id.photo_preview);
-            icon = (IconicsImageView) itemView.findViewById(R.id.icon);
-            path = (TextView) itemView.findViewById(R.id.photo_path);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

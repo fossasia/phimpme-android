@@ -61,8 +61,24 @@ extern "C" {
             case 13:
                 applyGreenBoostEffect(src,dst,val);
                 break;
+            case 14:
+                applyBoostRedEffect(src,dst,val);
+                break;
+            case 15:
+                applyBlueBoostEffect(src,dst,val);
+                break;
+            case 16:
+                applyColorBoostEffect(src,dst,val);
+                break;
+            case 17:
+                applyCyanise(src,dst,val);
+                break;
+            case 18:
+                applyFade(src,dst,val);
+                break;
 
             default:
+
                 int lowThreshold = val;
                 int ratio = 3;
                 int kernel_size = 3;
@@ -123,6 +139,9 @@ extern "C" {
                 break;
             case 8:
                 adjustBlur(src, dst, val);
+                break;
+            case 9:
+                applyGammaEffect(src, dst, val);
                 break;
             default:
                 break;
