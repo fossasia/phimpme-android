@@ -160,7 +160,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         if (getSupportActionBar() != null)
             getSupportActionBar().hide();
 
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         checkInitImageLoader();
         setContentView(R.layout.activity_image_edit);
         ButterKnife.bind(this);
