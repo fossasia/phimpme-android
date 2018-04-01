@@ -1,4 +1,5 @@
 #include <filters.h>
+#include <opencv2/contrib/contrib.hpp>
 
 using namespace std;
 using namespace cv;
@@ -584,6 +585,12 @@ void applyCartoon(cv::Mat &src, cv::Mat &dst, int val) {
     resize(smallImg, src, size, 0, 0, CV_INTER_LINEAR);
     dst = Mat::zeros(src.size(), src.type());
     src.copyTo(dst, mask);
+}
+
+
+void applyBone(cv::Mat &src, cv::Mat &dst, int val) {
+    cvtColor(src, src, CV_BGRA2BGR);
+    cv::applyColorMap(src, dst, COLORMAP_BONE);
 }
 
 }
