@@ -19,6 +19,7 @@ import com.mikepenz.iconics.view.IconicsImageView;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.FavouriteImagesModel;
+import org.fossasia.phimpme.gallery.activities.LFMainActivity;
 import org.fossasia.phimpme.gallery.data.Media;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ import io.realm.Realm;
 public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> {
 
     private ArrayList<Media> medias;
+    private boolean fav = false;
 
     private BitmapDrawable placeholder;
     private View.OnClickListener mOnClickListener;
@@ -94,7 +96,8 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
             holder.layout.setPadding(0, 0, 0, 0);
         }
 
-        if (!Realm.getDefaultInstance().where(FavouriteImagesModel.class).equalTo("path", f.getPath()).findAll().isEmpty())
+        if (!Realm.getDefaultInstance().where(FavouriteImagesModel.class).equalTo("path", f.getPath()).findAll()
+                .isEmpty() && !fav)
             holder.favourite.setVisibility(View.VISIBLE);
         else
             holder.favourite.setVisibility(View.GONE);
@@ -113,8 +116,9 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
         mOnLongClickListener = lis;
     }
 
-    public void swapDataSet(ArrayList<Media> asd) {
+    public void swapDataSet(ArrayList<Media> asd, boolean fav) {
         medias = asd;
+        this.fav = fav;
         notifyDataSetChanged();
     }
 

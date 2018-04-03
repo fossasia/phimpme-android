@@ -51,7 +51,7 @@ Do you have many different apps on your Android Phone for the purpose of clickin
 
 * Apply different stickers - facial, express, objects, comments, wishes, emojis, hashtag
 
-* Write anything on the images in your handwriting!!.
+* Write anything on the images in your handwriting!
 
 * Don't be afraid to experiment as you can easily go back and forth with 'redo' and 'undo'.
 
