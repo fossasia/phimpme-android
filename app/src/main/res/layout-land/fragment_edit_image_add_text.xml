@@ -1,0 +1,54 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/editor_bottom_row_size"
+              android:orientation="horizontal">
+    <ImageButton
+        android:id="@+id/text_cancel"
+        android:layout_width="@dimen/icon_item_image_size_main"
+        android:layout_height="@dimen/editor_bottom_row_size"
+        android:layout_gravity="center_vertical"
+        android:scaleType="fitCenter"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="?android:attr/selectableItemBackground"
+        app:srcCompat="@drawable/ic_no"/>
+
+    <EditText
+        android:id="@+id/text_input"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/editor_bottom_row_size"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:hint="@string/input_hint"
+        android:paddingLeft="8dp"/>
+
+    <CheckBox
+        android:id="@+id/check_auto_newline"
+        android:layout_width="@dimen/icon_item_image_size_main"
+        android:layout_height="@dimen/editor_bottom_row_size"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="3dp"
+        android:text="@string/auto_newline"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/text_color"
+        android:layout_width="@dimen/icon_item_image_size_main"
+        android:layout_height="@dimen/editor_bottom_row_size"
+        android:layout_gravity="center_vertical"
+        android:background="@android:color/transparent"/>
+
+
+    <ImageButton
+        android:id="@+id/text_apply"
+        android:layout_width="@dimen/icon_item_image_size_main"
+        android:layout_height="@dimen/editor_bottom_row_size"
+        android:layout_gravity="center_vertical"
+        android:scaleType="fitCenter"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        app:srcCompat="@drawable/ic_done_black_24dp"
+        android:background="?android:attr/selectableItemBackground"/>
+
+</LinearLayout>
