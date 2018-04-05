@@ -55,7 +55,7 @@ Do you have many different apps on your Android Phone for the purpose of clickin
 
 * Don't be afraid to experiment as you can easily go back and forth with 'redo' and 'undo'.
 
-* Finally, after all this editing you can easily share the image to your favorite social media sites with our easy-to-use sharing feature.
+* Finally, after all this editing you can easily share the image to your favourite social media sites with our easy-to-use sharing feature.
 
 * Facebook, Twitter, NextCloud, OwnCloud, Imgur, Dropbox, Box, Flickr, Pinterest, Instagram, Whatsapp, and Tumblr - You name it and we have it covered.
 
