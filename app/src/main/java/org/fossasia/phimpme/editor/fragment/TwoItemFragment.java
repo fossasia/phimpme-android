@@ -15,7 +15,6 @@ import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.EditImageActivity;
 
 public class TwoItemFragment extends BaseEditFragment implements View.OnClickListener{
-    View item1,item2;
     LinearLayout ll_item1, ll_item2;
     ImageView icon1,icon2;
     TextView text1,text2;
