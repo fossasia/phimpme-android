@@ -1,6 +1,7 @@
 package org.fossasia.phimpme.editor.fragment;
 
 import android.content.res.AssetManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -42,6 +43,7 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
     mRecyclerAdapter adapter;
     ImageButton cancel,apply;
 
+
     public StickersFragment() {
 
     }
@@ -60,8 +62,15 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        RecyclerView.LayoutManager manager = null;
+
+        int orientation = getActivity().getResources().getConfiguration().orientation;
+        if(orientation == Configuration.ORIENTATION_PORTRAIT) {
+            manager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        } else if(orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            manager = new LinearLayoutManager(getActivity());
+        }
         recyclerView = (RecyclerView) fragmentView.findViewById(R.id.editor_recyclerview);
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
         recyclerView.setLayoutManager(manager);
 
         cancel = (ImageButton)fragmentView.findViewById(R.id.sticker_cancel);
@@ -219,7 +228,7 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
                 holder.itemView.setTag(path);
                 holder.title.setText("");
 
-            int size = (int) getActivity().getResources().getDimension(R.dimen.icon_item_image_size_filter_preview);
+            int size = (int) getActivity().getResources().getDimension(R.dimen.icon_item_image_size_sticker);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(size,size);
             holder.icon.setLayoutParams(layoutParams);
 
