@@ -1,6 +1,7 @@
 package org.fossasia.phimpme.editor.fragment;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -41,6 +42,7 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     TypedArray iconlist,titlelist;
     static int currentSelection = -1;
 
+
     public RecyclerMenuFragment() {
 
     }
@@ -63,14 +65,22 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        RecyclerView.LayoutManager layoutManager = null;
+        int orientation = getActivity().getResources().getConfiguration().orientation;
+        if(orientation == Configuration.ORIENTATION_PORTRAIT) {
+            layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        } else if(orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            layoutManager = new LinearLayoutManager(getActivity());
+        }
         recyclerView = (RecyclerView) fragmentView.findViewById(R.id.editor_recyclerview);
-        RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false);
-        recyclerView.setLayoutManager(manager);
+
+        recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(new mRecyclerAdapter());
         this.mStickerView = activity.mStickerView;
         onShow();
@@ -203,12 +213,15 @@ public class RecyclerMenuFragment extends BaseEditFragment {
                 holder.itemView.setTag(stickerPath[position]);
             }
             int iconImageSize = (int) getActivity().getResources().getDimension(R.dimen.icon_item_image_size_recycler);
+            int midRowSize = (int) getActivity().getResources().getDimension(R.dimen.editor_mid_row_size);
+
 
             holder.icon.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
             if (MODE == EditImageActivity.MODE_FILTERS) {
                 if (currentBitmap!=null && filterThumbs!=null && filterThumbs.size() > position) {
                     iconImageSize = (int) getActivity().getResources().getDimension(R.dimen.icon_item_image_size_filter_preview);
+                    midRowSize = (int) getActivity().getResources().getDimension(R.dimen.editor_filter_mid_row_size);
                     holder.icon.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     holder.icon.setImageBitmap(filterThumbs.get(position));
                 }else {
@@ -222,7 +235,11 @@ public class RecyclerMenuFragment extends BaseEditFragment {
             layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
             holder.icon.setLayoutParams(layoutParams);
             holder.title.setText(titlelist.getString(position));
+            LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(midRowSize,midRowSize);
+            layoutParams.gravity = Gravity.CENTER;
+            holder.wrapper.setLayoutParams(layoutParams2);
             holder.wrapper.setBackgroundColor(Color.TRANSPARENT);
+
 
             if(currentSelection == position)
                 holder.wrapper.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.md_grey_200));

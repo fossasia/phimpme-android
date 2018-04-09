@@ -74,9 +74,14 @@ extern "C" {
                 applyCyanise(src,dst,val);
                 break;
             case 18:
+                applyFade(src,dst,val);
+                break;
+            case 19:
+                applyCartoon(src, dst, val);
+                break;
+            case 20:
                 applyRedGreenFilter(src,dst,val);
                 break;  
-            
             default:
 
                 int lowThreshold = val;
