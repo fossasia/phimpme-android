@@ -73,10 +73,15 @@ extern "C" {
             case 17:
                 applyCyanise(src,dst,val);
                 break;
-          case 18:
+            case 18:
+                applyFade(src,dst,val);
+                break;
+            case 19:
+                applyCartoon(src, dst, val);
+                break;
+            case 20:
                 applyRedBlueEffect(src,dst,val);
                 break;
-            
             default:
 
                 int lowThreshold = val;

@@ -790,14 +790,20 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 break;
 
             case R.id.action_delete:
+                String ButtonDelete = "";
                 handler.removeCallbacks(slideShowRunnable);
                 final AlertDialog.Builder deleteDialog = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
-
-                AlertDialogsHelper.getTextDialog(SingleMediaActivity.this, deleteDialog,
-                        R.string.delete, R.string.delete_photo_message, null);
-
+                if(favphotomode){
+                    AlertDialogsHelper.getTextDialog(SingleMediaActivity.this, deleteDialog,
+                            R.string.remove_from_favourites, R.string.delete_from_favourites_message, null);
+                    ButtonDelete = this.getString(R.string.remove);
+                }else {
+                    AlertDialogsHelper.getTextDialog(SingleMediaActivity.this, deleteDialog,
+                            R.string.delete, R.string.delete_photo_message, null);
+                    ButtonDelete = this.getString(R.string.delete);
+                }
                 deleteDialog.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
-                deleteDialog.setPositiveButton(this.getString(R.string.delete).toUpperCase(), new DialogInterface.OnClickListener() {
+                deleteDialog.setPositiveButton(ButtonDelete.toUpperCase(), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (securityObj.isActiveSecurity() && securityObj.isPasswordOnDelete()) {
                             final boolean passco[] = {false};
