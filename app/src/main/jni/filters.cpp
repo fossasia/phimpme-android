@@ -586,4 +586,10 @@ void applyCartoon(cv::Mat &src, cv::Mat &dst, int val) {
     src.copyTo(dst, mask);
 }
 
+void applyPencilSketch(cv::Mat &src, cv::Mat &dst, int val) {
+    cvtColor(src, src, COLOR_BGRA2GRAY);
+    dst = Mat::zeros(src.size(), src.type());
+    adaptiveThreshold(src, dst, 255, CV_ADAPTIVE_THRESH_MEAN_C, CV_THRESH_BINARY, 9, 2);
+}
+
 }
