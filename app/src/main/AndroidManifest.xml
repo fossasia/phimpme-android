@@ -192,7 +192,7 @@
         </activity>
         <activity
             android:name=".gallery.activities.SingleMediaActivity"
-            android:configChanges="uiMode|touchscreen|screenLayout"
+            android:configChanges="orientation|screenSize|uiMode|touchscreen|screenLayout"
             android:label="@string/app_name"
             android:parentActivityName=".gallery.activities.LFMainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
