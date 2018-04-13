@@ -22,7 +22,7 @@
 
         <TextView android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:textSize="18dp"
+                  android:textSize="18sp"
                   android:id="@+id/titlesecure"
                   android:textStyle="bold"
                   android:textColor="@color/accent_white"
