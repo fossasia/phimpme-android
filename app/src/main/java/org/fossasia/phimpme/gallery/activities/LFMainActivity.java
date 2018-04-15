@@ -1850,7 +1850,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
             case R.id.set_pin_album:
                 getAlbums().getSelectedAlbum(0).settings.togglePin(getApplicationContext());
-                getAlbums().sortAlbums(getApplicationContext());
+                getAlbums().sortAlbums();
                 getAlbums().clearSelectedAlbums();
                 invalidateOptionsMenu();
                 albumsAdapter.notifyDataSetChanged();
@@ -3302,7 +3302,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
         @Override
         protected Void doInBackground(Void... aVoid) {
-            getAlbums().sortAlbums(getApplicationContext());
+            getAlbums().sortAlbums();
             return null;
         }
 
