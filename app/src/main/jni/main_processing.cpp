@@ -76,7 +76,12 @@ extern "C" {
             case 18:
                 applyFade(src,dst,val);
                 break;
-
+            case 19:
+                applyCartoon(src, dst, val);
+                break;
+            case 20:
+                applyPencilSketch(src, dst, val);
+                break;
             default:
 
                 int lowThreshold = val;

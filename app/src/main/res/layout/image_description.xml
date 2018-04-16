@@ -32,131 +32,134 @@
             android:text="@string/details"/>
 
     </LinearLayout>
-    <LinearLayout
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="@dimen/medium_spacing">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <com.mikepenz.iconics.view.IconicsImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:id="@+id/date_icon"
-            app2:iiv_icon="gmd-access-time"
-            android:layout_gravity="center"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="10dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/date"
-                android:id="@+id/date_label"
-                android:textStyle="bold"
-                android:textColor="@color/md_grey_200"
-                android:textSize="@dimen/sub_big_text" />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/image_desc_date"
-                tools:text="28/September/2018"
-                android:textColor="@color/md_grey_400"
-                android:textSize="@dimen/medium_text"/>
-          <View
-              android:layout_width="match_parent"
-              android:layout_height="20dp"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <com.mikepenz.iconics.view.IconicsImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:id="@+id/loca_icon"
-            android:layout_gravity="center"
-            app2:iiv_icon="gmd-location-on"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginLeft="10dp">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/location"
-                android:id="@+id/location_label"
-                android:textStyle="bold"
-                android:textColor="@color/md_grey_200"
-                android:textSize="@dimen/sub_big_text" />
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="No Location"
-                android:id="@+id/image_desc_loc"
-                android:textColor="@color/md_grey_400"
-                android:textSize="@dimen/medium_text"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="20dp"/>
-
+        android:scrollbarSize="4dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <com.mikepenz.iconics.view.IconicsImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:id="@+id/detail_icon"
-                android:layout_gravity="fill"
-                app2:iiv_icon="gmd-camera-roll"/>
+            android:orientation="vertical"
+            android:layout_margin="@dimen/medium_spacing">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_marginLeft="10dp">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Details"
-                    android:id="@+id/details_label"
-                    android:textStyle="bold"
-                    android:textColor="@color/md_grey_200"
-                    android:textSize="@dimen/sub_big_text" />
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/fab_margin"/>
+                <com.mikepenz.iconics.view.IconicsImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/date_icon"
+                    app2:iiv_icon="gmd-access-time"
+                    android:layout_gravity="center"/>
+
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="10dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/date"
+                        android:id="@+id/date_label"
+                        android:textStyle="bold"
+                        android:textColor="@color/md_grey_200"
+                        android:textSize="@dimen/sub_big_text" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/image_desc_date"
+                        tools:text="28/September/2018"
+                        android:textColor="@color/md_grey_400"
+                        android:textSize="@dimen/medium_text"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.mikepenz.iconics.view.IconicsImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/loca_icon"
+                    android:layout_gravity="center"
+                    app2:iiv_icon="gmd-location-on"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="10dp">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/location"
+                        android:id="@+id/location_label"
+                        android:textStyle="bold"
+                        android:textColor="@color/md_grey_200"
+                        android:textSize="@dimen/sub_big_text" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="No Location"
+                        android:id="@+id/image_desc_loc"
+                        android:textColor="@color/md_grey_400"
+                        android:textSize="@dimen/medium_text"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="20dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.mikepenz.iconics.view.IconicsImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:id="@+id/detail_icon"
+                    android:layout_gravity="fill"
+                    app2:iiv_icon="gmd-camera-roll"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Details"
+                        android:id="@+id/details_label"
+                        android:textStyle="bold"
+                        android:textColor="@color/md_grey_200"
+                        android:textSize="@dimen/sub_big_text" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/fab_margin"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -182,8 +185,7 @@
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="8dp"
-                        />
+                        android:layout_height="8dp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -355,11 +357,10 @@
                             android:textColor="@color/md_grey_400"
                             android:layout_marginLeft="5dp"
                             android:layout_marginBottom="2dp"/>
-
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </ScrollView>
 </LinearLayout>
 

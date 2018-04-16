@@ -551,5 +551,45 @@ void applyFade(cv::Mat &src, cv::Mat &dst, int val){
         }
     }
 }
-    
+
+void applyCartoon(cv::Mat &src, cv::Mat &dst, int val) {
+    double opacity = val / 100.0;
+    Mat srcGray;
+    cvtColor(src, src, CV_BGRA2BGR);
+    cvtColor(src, srcGray, CV_BGR2GRAY);
+
+    medianBlur(srcGray, srcGray, 7);
+    Size size = src.size();
+    Mat mask = Mat(size, CV_8U);
+    Mat edges = Mat(size, CV_8U);
+    Laplacian(srcGray, edges, CV_8U, 5);
+    threshold(edges, mask, 80, (int) 255 * opacity, CV_THRESH_BINARY_INV);
+
+    Size smallSize;
+    smallSize.width = size.width / 4;
+    smallSize.height = size.height / 4;
+    Mat smallImg = Mat(smallSize, CV_8UC3);
+    resize(src, smallImg, smallSize, 0, 0, CV_INTER_LINEAR);
+
+    Mat tmp = Mat(smallSize, CV_8UC3);
+    int repetitions = 7;
+    for (int i = 0; i < repetitions; i++) {
+        int sizeInt = 9;
+        double sigmaColor = 9;
+        double sigmaSpace = 7;
+        bilateralFilter(smallImg, tmp, sizeInt, sigmaColor, sigmaSpace);
+        bilateralFilter(tmp, smallImg, sizeInt, sigmaColor, sigmaSpace);
+    }
+
+    resize(smallImg, src, size, 0, 0, CV_INTER_LINEAR);
+    dst = Mat::zeros(src.size(), src.type());
+    src.copyTo(dst, mask);
+}
+
+void applyPencilSketch(cv::Mat &src, cv::Mat &dst, int val) {
+    cvtColor(src, src, COLOR_BGRA2GRAY);
+    dst = Mat::zeros(src.size(), src.type());
+    adaptiveThreshold(src, dst, 255, CV_ADAPTIVE_THRESH_MEAN_C, CV_THRESH_BINARY, 9, 2);
+}
+
 }
