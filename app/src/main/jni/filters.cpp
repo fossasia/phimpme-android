@@ -584,6 +584,12 @@ void applyCartoon(cv::Mat &src, cv::Mat &dst, int val) {
     resize(smallImg, src, size, 0, 0, CV_INTER_LINEAR);
     dst = Mat::zeros(src.size(), src.type());
     src.copyTo(dst, mask);
+} 
+  
+void applyPencilSketch(cv::Mat &src, cv::Mat &dst, int val) {
+    cvtColor(src, src, COLOR_BGRA2GRAY);
+    dst = Mat::zeros(src.size(), src.type());
+    adaptiveThreshold(src, dst, 255, CV_ADAPTIVE_THRESH_MEAN_C, CV_THRESH_BINARY, 9, 2);
 }
 
 void applyRedBlueEffect(cv::Mat &src, cv::Mat &dst, int val) {
@@ -616,6 +622,6 @@ void applyRedBlueEffect(cv::Mat &src, cv::Mat &dst, int val) {
                     saturate_cast<uchar>(val3);
         }
     }
-}  
+}   
   
 }

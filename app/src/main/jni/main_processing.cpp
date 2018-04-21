@@ -80,8 +80,11 @@ extern "C" {
                 applyCartoon(src, dst, val);
                 break;
             case 20:
-                applyRedBlueEffect(src,dst,val);
+                applyPencilSketch(src, dst, val);
                 break;
+          case 21:
+                applyRedBlueEffect(src,dst,val);
+                 break;
             default:
 
                 int lowThreshold = val;
