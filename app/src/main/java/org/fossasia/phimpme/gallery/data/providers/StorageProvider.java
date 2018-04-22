@@ -143,6 +143,7 @@ public class StorageProvider {
         for (String path : listOfAllImages) {
             list.add(new Media(new File(path)));
         }
+        cursor.close();
         return list;
     }
 
