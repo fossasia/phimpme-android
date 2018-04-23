@@ -79,7 +79,9 @@ extern "C" {
             case 19:
                 applyCartoon(src, dst, val);
                 break;
-
+            case 20:
+                applyPencilSketch(src, dst, val);
+                break;
             default:
 
                 int lowThreshold = val;
