@@ -82,6 +82,9 @@ extern "C" {
             case 20:
                 applyPencilSketch(src, dst, val);
                 break;
+          case 21:
+                applyRedBlueEffect(src,dst,val);
+                 break;
             default:
 
                 int lowThreshold = val;
