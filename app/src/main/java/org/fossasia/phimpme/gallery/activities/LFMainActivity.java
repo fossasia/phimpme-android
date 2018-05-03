@@ -2671,44 +2671,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 return true;
 
             case R.id.action_add_favourites:
-                int count = 0;
-                ArrayList<Media> favadd;
-                if (!all_photos) {
-                    favadd = getAlbum().getSelectedMedia();
-                } else {
-                    favadd = selectedMedias;
-                }
-
-                for (int i = 0; i < favadd.size(); i++) {
-                    String realpath = favadd.get(i).getPath();
-                    RealmQuery<FavouriteImagesModel> query = realm.where(FavouriteImagesModel.class).equalTo("path",
-                            realpath);
-                    if (query.count() == 0) {
-                        count++;
-                        realm.beginTransaction();
-                        FavouriteImagesModel fav = realm.createObject(FavouriteImagesModel.class,
-                                realpath);
-                        ImageDescModel q = realm.where(ImageDescModel.class).equalTo("path", realpath).findFirst();
-                        if (q != null) {
-                            fav.setDescription(q.getTitle());
-                        } else {
-                            fav.setDescription(" ");
-                        }
-
-                        realm.commitTransaction();
-                    }
-                }
-                finishEditMode();
-                if (count == 0) {
-                    SnackBarHandler.show(mDrawerLayout, getResources().getString(R.string.check_favourite_multipleitems));
-                } else if (count == 1) {
-                    SnackBarHandler.show(mDrawerLayout,getResources().getString(R.string.add_favourite) );
-                } else {
-                    SnackBarHandler.show(mDrawerLayout, count + " " + getResources().getString(R.string
-                            .add_favourite_multiple));
-                }
-
-                mediaAdapter.notifyDataSetChanged();
+                new AddToFavourites().execute();
                 return true;
 
             case R.id.action_copy:
@@ -3217,6 +3180,64 @@ public class LFMainActivity extends SharedMediaActivity {
             finishEditMode();
             toolbar.setTitle(getResources().getString(R.string.favourite_title));
             clearSelectedPhotos();
+        }
+    }
+
+    /* AsyncTask for Add to favourites operation */
+    private class AddToFavourites extends AsyncTask<Void, Integer, Integer>{
+
+        @Override
+        protected void onPreExecute() {
+            getNavigationBar();
+            swipeRefreshLayout.setRefreshing(true);
+            super.onPreExecute();
+        }
+
+        @Override protected Integer doInBackground(Void... voids) {
+            int count = 0;
+            realm = Realm.getDefaultInstance();
+            ArrayList<Media> favadd;
+            if (!all_photos) {
+                favadd = getAlbum().getSelectedMedia();
+            } else {
+                favadd = selectedMedias;
+            }
+
+            for (int i = 0; i < favadd.size(); i++) {
+                String realpath = favadd.get(i).getPath();
+                RealmQuery<FavouriteImagesModel> query = realm.where(FavouriteImagesModel.class).equalTo("path",
+                        realpath);
+                if (query.count() == 0) {
+                    count++;
+                    realm.beginTransaction();
+                    FavouriteImagesModel fav = realm.createObject(FavouriteImagesModel.class,
+                            realpath);
+                    ImageDescModel q = realm.where(ImageDescModel.class).equalTo("path", realpath).findFirst();
+                    if (q != null) {
+                        fav.setDescription(q.getTitle());
+                    } else {
+                        fav.setDescription(" ");
+                    }
+
+                    realm.commitTransaction();
+                }
+            }
+            return count;
+        }
+
+        @Override protected void onPostExecute(Integer count) {
+            super.onPostExecute(count);
+            swipeRefreshLayout.setRefreshing(false);
+            finishEditMode();
+            if (count == 0) {
+                SnackBarHandler.show(mDrawerLayout, getResources().getString(R.string.check_favourite_multipleitems));
+            } else if (count == 1) {
+                SnackBarHandler.show(mDrawerLayout,getResources().getString(R.string.add_favourite) );
+            } else {
+                SnackBarHandler.show(mDrawerLayout, count + " " + getResources().getString(R.string
+                        .add_favourite_multiple));
+            }
+            mediaAdapter.notifyDataSetChanged();
         }
     }
 
