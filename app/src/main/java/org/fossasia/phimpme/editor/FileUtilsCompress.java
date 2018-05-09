@@ -8,7 +8,7 @@ import java.io.File;
  * Created by JASPREET SINGH on 31-12-2017.
  */
 
-public class FileUtilscompress {
+public class FileUtilsCompress {
 
         public static final String FOLDER_NAME = "phimpme-compress";
 

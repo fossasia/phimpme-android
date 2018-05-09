@@ -35,31 +35,24 @@ public class CompressImageActivity extends AppCompatActivity {
     public String saveFilePath;
     public static final String EXTRA_OUTPUT = "extra_output";
     public int percentagecompress=0;
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compress_image);
-
         initView();
-        
         Button size=(Button)findViewById(R.id.size);
         Button dimension=(Button)findViewById(R.id.bypixel);
         ImageButton cancel=(ImageButton)findViewById(R.id.edit_cancel);
-
         size.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                compressbysize();
+                compressSize();
             }
         });
         dimension.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                compressbydim();
+                compressDim();
             }
         });
         cancel.setOnClickListener(new View.OnClickListener() {
@@ -68,7 +61,6 @@ public class CompressImageActivity extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 
     private void initView() {
@@ -78,10 +70,11 @@ public class CompressImageActivity extends AppCompatActivity {
         Uri uri = Uri.fromFile(new File(saveFilePath));
         Glide.with(this).load(uri).diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(imageViewToucher);
-        imageViewToucher.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);}
+        imageViewToucher.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
+    }
 
+    private void compressSize() {
 
-    private void compressbysize() {
         LayoutInflater inflater = getLayoutInflater();
         View dialogLayout = inflater.inflate(R.layout.dialog_compresssize, null);
         SeekBar percentsize = (SeekBar) dialogLayout.findViewById(R.id.seekBar);
@@ -106,9 +99,7 @@ public class CompressImageActivity extends AppCompatActivity {
                 //do nothing
             }
 
-
         });
-
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         // this is set the view from XML inside AlertDialog
@@ -119,25 +110,20 @@ public class CompressImageActivity extends AppCompatActivity {
                 dialog.cancel();
             }
         });
-
-
         alert.setPositiveButton("Set", new DialogInterface.OnClickListener() {
-
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
                 try {
                     new Compressor(getApplicationContext())
                             .setQuality(percentagecompress)
                             .setCompressFormat(Bitmap.CompressFormat.JPEG)
-                            .setDestinationDirectoryPath(FileUtilscompress.createFolders().getPath())
+                            .setDestinationDirectoryPath(FileUtilsCompress.createFolders().getPath())
                             .compressToFile(new File(saveFilePath));
                 } catch (IOException e) {
                     e.printStackTrace();}
 
                 finish();
-
             }
         });
         AlertDialog dialog = alert.create();
@@ -145,7 +131,7 @@ public class CompressImageActivity extends AppCompatActivity {
     }
 
     //compress  image by dimensions
-    private void compressbydim() {
+    private void compressDim() {
         ListCompressAdapter lviewAdapter;
         ArrayList<String> compress_option= new ArrayList<String>();
         MediaDetailsMap<String,String> mediaDetailsMap = SingleMediaActivity.mediacompress.getMainDetails(this);
@@ -188,7 +174,7 @@ public class CompressImageActivity extends AppCompatActivity {
                             .setMaxWidth(cwidth[0])
                             .setMaxHeight(cheight[0])
                             .setCompressFormat(Bitmap.CompressFormat.JPEG)
-                            .setDestinationDirectoryPath( FileUtilscompress.createFolders().getPath())
+                            .setDestinationDirectoryPath( FileUtilsCompress.createFolders().getPath())
                             .compressToFile(new File(saveFilePath));
 
                 } catch (IOException e) {
@@ -197,7 +183,6 @@ public class CompressImageActivity extends AppCompatActivity {
                 finish();
             }
         });
-
 
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setView(dialogLayout);
@@ -208,7 +193,6 @@ public class CompressImageActivity extends AppCompatActivity {
             }
         });
         AlertDialog dialog = alert.create();
-        dialog.show();}
-
-
+        dialog.show();
+    }
 }
