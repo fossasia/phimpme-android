@@ -3227,10 +3227,29 @@ public class LFMainActivity extends SharedMediaActivity {
             if (count == 0) {
                 SnackBarHandler.show(mDrawerLayout, getResources().getString(R.string.check_favourite_multipleitems));
             } else if (count == 1) {
-                SnackBarHandler.show(mDrawerLayout,getResources().getString(R.string.add_favourite) );
+                final Snackbar snackbar = SnackBarHandler.show(mDrawerLayout,
+                        getResources().getString(R.string.add_favourite) );
+                snackbar.setAction(R.string.openfav, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        displayfavourites();
+                        favourites = false;
+                    }
+                });
+                snackbar.show();
             } else {
                 SnackBarHandler.show(mDrawerLayout, count + " " + getResources().getString(R.string
                         .add_favourite_multiple));
+                final Snackbar snackbar = SnackBarHandler.show(mDrawerLayout,
+                        getResources().getString(R.string.add_favourite) );
+                snackbar.setAction(R.string.openfav, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        displayfavourites();
+                        favourites = false;
+                    }
+                });
+                snackbar.show();
             }
             mediaAdapter.notifyDataSetChanged();
         }
