@@ -1598,26 +1598,28 @@ public class LFMainActivity extends SharedMediaActivity {
 
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_albums, menu);
+        MenuItem menuitem = menu.findItem(R.id.search_action);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuitem);
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override public void onFocusChange(final View view, boolean b) {
+                if (b) {
+                    view.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            InputMethodManager imm = (InputMethodManager) getSystemService(Context
+                                    .INPUT_METHOD_SERVICE);
+                            imm.showSoftInput(view.findFocus(), 0);
+                        }
+                    }, 200);
+                } else {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context
+                            .INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+            }
+        });
 
         if (albumsMode) {
-            MenuItem menuitem = menu.findItem(R.id.search_action);
-            final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuitem);
-            searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(final View view, boolean b) {
-                    if (b) {
-                        view.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                InputMethodManager imm = (InputMethodManager) getSystemService(Context
-                                        .INPUT_METHOD_SERVICE);
-                                imm.showSoftInput(view.findFocus(), 0);
-                            }
-                        }, 200);
-
-                    }
-                }
-            });
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
@@ -1850,7 +1852,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
             case R.id.set_pin_album:
                 getAlbums().getSelectedAlbum(0).settings.togglePin(getApplicationContext());
-                getAlbums().sortAlbums(getApplicationContext());
+                getAlbums().sortAlbums();
                 getAlbums().clearSelectedAlbums();
                 invalidateOptionsMenu();
                 albumsAdapter.notifyDataSetChanged();
@@ -2664,44 +2666,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 return true;
 
             case R.id.action_add_favourites:
-                int count = 0;
-                ArrayList<Media> favadd;
-                if (!all_photos) {
-                    favadd = getAlbum().getSelectedMedia();
-                } else {
-                    favadd = selectedMedias;
-                }
-
-                for (int i = 0; i < favadd.size(); i++) {
-                    String realpath = favadd.get(i).getPath();
-                    RealmQuery<FavouriteImagesModel> query = realm.where(FavouriteImagesModel.class).equalTo("path",
-                            realpath);
-                    if (query.count() == 0) {
-                        count++;
-                        realm.beginTransaction();
-                        FavouriteImagesModel fav = realm.createObject(FavouriteImagesModel.class,
-                                realpath);
-                        ImageDescModel q = realm.where(ImageDescModel.class).equalTo("path", realpath).findFirst();
-                        if (q != null) {
-                            fav.setDescription(q.getTitle());
-                        } else {
-                            fav.setDescription(" ");
-                        }
-
-                        realm.commitTransaction();
-                    }
-                }
-                finishEditMode();
-                if (count == 0) {
-                    SnackBarHandler.show(mDrawerLayout, getResources().getString(R.string.check_favourite_multipleitems));
-                } else if (count == 1) {
-                    SnackBarHandler.show(mDrawerLayout,getResources().getString(R.string.add_favourite) );
-                } else {
-                    SnackBarHandler.show(mDrawerLayout, count + " " + getResources().getString(R.string
-                            .add_favourite_multiple));
-                }
-
-                mediaAdapter.notifyDataSetChanged();
+                new AddToFavourites().execute();
                 return true;
 
             case R.id.action_copy:
@@ -3213,6 +3178,83 @@ public class LFMainActivity extends SharedMediaActivity {
         }
     }
 
+    /* AsyncTask for Add to favourites operation */
+    private class AddToFavourites extends AsyncTask<Void, Integer, Integer>{
+
+        @Override
+        protected void onPreExecute() {
+            getNavigationBar();
+            swipeRefreshLayout.setRefreshing(true);
+            super.onPreExecute();
+        }
+
+        @Override protected Integer doInBackground(Void... voids) {
+            int count = 0;
+            realm = Realm.getDefaultInstance();
+            ArrayList<Media> favadd;
+            if (!all_photos) {
+                favadd = getAlbum().getSelectedMedia();
+            } else {
+                favadd = selectedMedias;
+            }
+
+            for (int i = 0; i < favadd.size(); i++) {
+                String realpath = favadd.get(i).getPath();
+                RealmQuery<FavouriteImagesModel> query = realm.where(FavouriteImagesModel.class).equalTo("path",
+                        realpath);
+                if (query.count() == 0) {
+                    count++;
+                    realm.beginTransaction();
+                    FavouriteImagesModel fav = realm.createObject(FavouriteImagesModel.class,
+                            realpath);
+                    ImageDescModel q = realm.where(ImageDescModel.class).equalTo("path", realpath).findFirst();
+                    if (q != null) {
+                        fav.setDescription(q.getTitle());
+                    } else {
+                        fav.setDescription(" ");
+                    }
+
+                    realm.commitTransaction();
+                }
+            }
+            return count;
+        }
+
+        @Override protected void onPostExecute(Integer count) {
+            super.onPostExecute(count);
+            swipeRefreshLayout.setRefreshing(false);
+            finishEditMode();
+            if (count == 0) {
+                SnackBarHandler.show(mDrawerLayout, getResources().getString(R.string.check_favourite_multipleitems));
+            } else if (count == 1) {
+                final Snackbar snackbar = SnackBarHandler.show(mDrawerLayout,
+                        getResources().getString(R.string.add_favourite) );
+                snackbar.setAction(R.string.openfav, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        displayfavourites();
+                        favourites = false;
+                    }
+                });
+                snackbar.show();
+            } else {
+                SnackBarHandler.show(mDrawerLayout, count + " " + getResources().getString(R.string
+                        .add_favourite_multiple));
+                final Snackbar snackbar = SnackBarHandler.show(mDrawerLayout,
+                        getResources().getString(R.string.add_favourite) );
+                snackbar.setAction(R.string.openfav, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        displayfavourites();
+                        favourites = false;
+                    }
+                });
+                snackbar.show();
+            }
+            mediaAdapter.notifyDataSetChanged();
+        }
+    }
+
     /*
     Async Class for Sorting Photos - NOT listAll
      */
@@ -3302,7 +3344,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
         @Override
         protected Void doInBackground(Void... aVoid) {
-            getAlbums().sortAlbums(getApplicationContext());
+            getAlbums().sortAlbums();
             return null;
         }
 
