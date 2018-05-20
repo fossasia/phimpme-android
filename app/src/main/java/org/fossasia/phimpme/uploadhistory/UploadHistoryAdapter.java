@@ -15,6 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.UploadHistoryRealmModel;
+import org.fossasia.phimpme.share.SharingActivity;
 import org.fossasia.phimpme.gallery.activities.SingleMediaActivity;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 
@@ -44,6 +45,7 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
     private int color;
     private View.OnClickListener onClickListener;
     public String imagePath;
+
 
     public UploadHistoryAdapter(int color) {
         this.color=color;

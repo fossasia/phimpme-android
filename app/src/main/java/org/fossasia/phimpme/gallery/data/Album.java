@@ -38,7 +38,6 @@ public class Album implements Serializable {
 	private long id = -1;
 	private int count = -1;
 	private int currentMediaIndex = 0;
-    MetadataItem metadata;
 
 	private boolean selected = false;
 	public AlbumSettings settings = null;
@@ -50,31 +49,6 @@ public class Album implements Serializable {
 	private boolean issecured=false;
 	private String previewPath;
     private int selectedCount;
-
-
-	public void setPreviewPath(String previewPath) {
-		this.previewPath = previewPath;
-	}
-
-	public String getPreviewPath() {
-		return previewPath;
-	}
-
-	public boolean isPreviewSelected() {
-		return isPreviewSelected;
-	}
-
-	public void setsecured(boolean set){
-		this.issecured=set;
-	}
-
-	public boolean getsecured(){
-		return issecured;
-	}
-
-	public void setPreviewSelected(boolean previewSelected) {
-		isPreviewSelected = previewSelected;
-	}
 
 	private Album() {
 		media = new ArrayList<Media>();
@@ -113,75 +87,28 @@ public class Album implements Serializable {
 		setCurrentPhotoIndex(0);
 	}
 
-	public static Album getEmptyAlbum() {
-		Album album = new Album();
-		album.settings = AlbumSettings.getDefaults();
-		return album;
+	public void setPreviewPath(String previewPath) {
+		this.previewPath = previewPath;
 	}
 
-	public ArrayList<Media> getMedia() {
-		ArrayList<Media> mediaArrayList = new ArrayList<Media>();
-		switch (getFilterMode()) {
-			case ALL:
-				mediaArrayList = media;
-			default:
-				break;
-			case GIF:
-				for (Media media1 : media)
-					if (media1.isGif()) mediaArrayList.add(media1);
-				break;
-			case IMAGES:
-				for (Media media1 : media)
-					if (media1.isImage()) mediaArrayList.add(media1);
-				break;
-		}
-		return mediaArrayList;
+	public String getPreviewPath() {
+		return previewPath;
 	}
 
-	public void updatePhotos(Context context) {
-		media = getMedia(context);
-		sortPhotos();
-		setCount(media.size());
+	public boolean isPreviewSelected() {
+		return isPreviewSelected;
 	}
 
-	private void updatePhotos(Context context, FilterMode filterMode) {
-
-		ArrayList<Media> media = getMedia(context), mediaArrayList = new ArrayList<Media>();
-
-		switch (filterMode) {
-			case ALL:
-				mediaArrayList = media;
-			default:
-				break;
-			case GIF:
-				for (Media media1 : media)
-					if (media1.isGif()) mediaArrayList.add(media1);
-				break;
-			case IMAGES:
-				for (Media media1 : media)
-					if (media1.isImage() && !media1.isGif()) mediaArrayList.add(media1);
-				break;
-
-		}
-
-		this.media = mediaArrayList;
-		sortPhotos();
-		setCount(this.media.size());
+	public void setsecured(boolean set){
+		this.issecured=set;
 	}
 
-	private ArrayList<Media> getMedia(Context context) {
-		PreferenceUtil SP = PreferenceUtil.getInstance(context);
-		ArrayList<Media> mediaArrayList = new ArrayList<Media>();
-		// TODO: 18/08/16
-		if (isFromMediaStore()) {
-			mediaArrayList.addAll(
-					MediaStoreProvider.getMedia(
-							context, id));
-		} else {
-			mediaArrayList.addAll(StorageProvider.getMedia(
-					getPath(), SP.getBoolean("set_include_video", false)));
-		}
-		return mediaArrayList;
+	public boolean getsecured(){
+		return issecured;
+	}
+
+	public void setPreviewSelected(boolean previewSelected) {
+		isPreviewSelected = previewSelected;
 	}
 
 	public ArrayList<Media> getSelectedMedia() {
@@ -221,22 +148,11 @@ public class Album implements Serializable {
 
 	public boolean isPinned(){ return settings.isPinned(); }
 
-	public void filterMedias(Context context, FilterMode filter) {
-		settings.setFilterMode(filter);
-		updatePhotos(context, filter);
-	}
-
-	public boolean addMedia(@Nullable Media media) {
-		if(media == null) return false;
-		this.media.add(media);
-		return true;
-	}
-
 	public boolean hasCustomCover() {
 		return settings.getCoverPath() != null;
 	}
 
-	void setSelected(boolean selected) {
+	public void setSelected(boolean selected) {
 		this.selected = selected;
 	}
 
@@ -268,6 +184,10 @@ public class Album implements Serializable {
 
 	public int getCount() {
 		return count;
+	}
+
+	public String getCoverPath() {
+		return settings.getCoverPath();
 	}
 
 	public boolean isHidden() {
@@ -332,6 +252,87 @@ public class Album implements Serializable {
 		return new Media();
 	}
 
+	public static Album getEmptyAlbum() {
+		Album album = new Album();
+		album.settings = AlbumSettings.getDefaults();
+		return album;
+	}
+
+	public ArrayList<Media> getMedia() {
+		ArrayList<Media> mediaArrayList = new ArrayList<Media>();
+		switch (getFilterMode()) {
+			case ALL:
+				mediaArrayList = media;
+				break;
+			case GIF:
+				for (Media media1 : media)
+					if (media1.isGif()) mediaArrayList.add(media1);
+				break;
+			case IMAGES:
+				for (Media media1 : media)
+					if (media1.isImage()) mediaArrayList.add(media1);
+				break;
+			default:
+				break;
+		}
+		return mediaArrayList;
+	}
+
+	public void updatePhotos(Context context) {
+		media = getMedia(context);
+		sortPhotos();
+		setCount(media.size());
+	}
+
+	private void updatePhotos(Context context, FilterMode filterMode) {
+		ArrayList<Media> media = getMedia(context);
+		ArrayList<Media> mediaArrayList = new ArrayList<Media>();
+		switch (filterMode) {
+			case ALL:
+				mediaArrayList = media;
+			default:
+				break;
+			case GIF:
+				for (Media media1 : media)
+					if (media1.isGif()) mediaArrayList.add(media1);
+				break;
+			case IMAGES:
+				for (Media media1 : media)
+					if (media1.isImage() && !media1.isGif()) mediaArrayList.add(media1);
+				break;
+
+		}
+		this.media = mediaArrayList;
+		sortPhotos();
+		setCount(this.media.size());
+	}
+
+	private ArrayList<Media> getMedia(Context context) {
+		PreferenceUtil SP = PreferenceUtil.getInstance(context);
+		ArrayList<Media> mediaArrayList = new ArrayList<Media>();
+		// TODO: 18/08/16
+		if (isFromMediaStore()) {
+			mediaArrayList.addAll(
+					MediaStoreProvider.getMedia(
+							context, id));
+		} else {
+			mediaArrayList.addAll(StorageProvider.getMedia(
+					getPath(), SP.getBoolean("set_include_video", false)));
+		}
+		return mediaArrayList;
+	}
+
+	public void filterMedias(Context context, FilterMode filter) {
+		settings.setFilterMode(filter);
+		updatePhotos(context, filter);
+	}
+
+	public boolean addMedia(@Nullable Media media) {
+		if(media == null) return false;
+		this.media.add(media);
+		return true;
+	}
+
 	public void removeCoverAlbum(Context context) {
 		settings.changeCoverPath(context, null);
 		setPreviewSelected(false);
@@ -342,10 +343,6 @@ public class Album implements Serializable {
 		if (selectedMedias.size() > 0)
 			settings.changeCoverPath(context, selectedMedias.get(0).getPath());
 		setPreviewPath(getCoverPath());
-	}
-
-	public String getCoverPath() {
-		return settings.getCoverPath();
 	}
 
 	private void setCurrentPhoto(String path) {
@@ -396,8 +393,6 @@ public class Album implements Serializable {
 		settings.changeSortingMode(context, column);
 	}
 
-
-
 	public boolean moveCurrentMedia(Context context, String targetDir) {
 		boolean success = false;
 		try {
@@ -417,9 +412,7 @@ public class Album implements Serializable {
 		int n = 0;
 		try
 		{
-
 			int index=-1;
-
 			for(int i =0;i<selectedMedias.size();i++)
 			{
 				String s = selectedMedias.get(i).getPath();
@@ -434,12 +427,10 @@ public class Album implements Serializable {
 
 				}
 			}
-
 			if(index!=-1)
 			{
 				n = -1;
 			}else{
-
 				for (int i = 0; i < selectedMedias.size(); i++) {
 
 					if (moveMedia(context, selectedMedias.get(i).getPath(), targetDir)) {
@@ -454,12 +445,10 @@ public class Album implements Serializable {
 						media.remove(selectedMedias.get(i));
 						n++;
 					}
-
 				}
 				setCount(media.size());
 			}
 		} catch (Exception e) { e.printStackTrace(); }
-
 		return n;
 	}
 
@@ -474,7 +463,6 @@ public class Album implements Serializable {
 	}
 
     public MediaDetailsMap<String, String> getAlbumDetails(Context context){
-        metadata = new MetadataItem(new File(getPath()));
         MediaDetailsMap<String, String> details = new MediaDetailsMap<String, String>();
         details.put(context.getString(R.string.folder_path), getPath());
         details.put(context.getString(R.string.folder_name),getName());
@@ -503,7 +491,6 @@ public class Album implements Serializable {
         return details;
     }
 
-
 	/**
 	 * On longpress, it finds the last or the first selected image before or after the targetIndex
 	 * and selects them all.
@@ -521,7 +508,6 @@ public class Album implements Serializable {
 			if (indexNow > targetIndex) break;
 			indexRightBeforeOrAfter = indexNow;
 		}
-
 		if (indexRightBeforeOrAfter != -1) {
 			for (int index = Math.min(targetIndex, indexRightBeforeOrAfter); index <= Math.max(targetIndex, indexRightBeforeOrAfter); index++) {
 				if (media.get(index) != null) {
@@ -543,10 +529,8 @@ public class Album implements Serializable {
 		for (Media m : media)
 			m.setSelected(false);
 		if (selectedMedias!=null)
-
 		selectedMedias.clear();
 		setPreviewSelected(false);
-
 	}
 
 	public void sortPhotos() {
@@ -626,7 +610,6 @@ public class Album implements Serializable {
 		File newDir = new File(StringUtils.getAlbumPathRenamed(getPath(), newName));
 		File oldDir = new File(getPath());
 		success = oldDir.renameTo(newDir);
-
 		if(success) {
 			for (final Media m : media) {
 				File from = new File(m.getPath());
@@ -644,7 +627,6 @@ public class Album implements Serializable {
 					}
 				});
 			}
-
 			path = newDir.getAbsolutePath();
 			name = newName;
 		}
