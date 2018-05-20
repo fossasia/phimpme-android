@@ -83,7 +83,7 @@
             android:title="@string/zip"
             app:showAsAction="never" />
     </group>
-
+`
     <item
         android:id="@+id/renameAlbum"
         android:title="@string/rename"
