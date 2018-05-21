@@ -308,6 +308,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private void initUI() {
         Menu bottomMenu = bottomBar.getMenu();
         getMenuInflater().inflate(R.menu.menu_bottom_view_pager, bottomMenu);
+        if(!favphotomode && favsearch(getAlbum().getCurrentMedia().getPath())){
+            bottomMenu.findItem(R.id.action_favourites2).getIcon().setTint(getAccentColor());
+        }
 
         if(!allPhotoMode && favphotomode)
             bottomBar.getMenu().getItem(4).setVisible(false);
@@ -530,8 +533,22 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         setUpViewPager();
     }
 
-    @Override
+    private boolean favsearch(String path){
+        boolean favis = false;
+        realm = Realm.getDefaultInstance();
+        RealmResults<FavouriteImagesModel> realmQuery = realm.where(FavouriteImagesModel.class).findAll();
+        for(int i = 0; i < realmQuery.size(); i++){
+            if(realmQuery.get(i).getPath().equals(path)){
+                favis = true;
+                break;
+            }
+        }
+        return favis;
+    }
+
+        @Override
     public boolean onPrepareOptionsMenu(final Menu menu) {
+        
         if(allPhotoMode || favphotomode){
             menu.findItem(R.id.action_cover).setVisible(false);
         }
@@ -539,7 +556,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             menu.setGroupVisible(R.id.only_photos_options, true);
         }
         else if(!allPhotoMode && favphotomode && !upoadhis){
-            menu.findItem(R.id.action_favourites).setVisible(false);
+            menu.findItem(R.id.action_favourites2).setVisible(false);
             menu.findItem(R.id.action_copy).setVisible(false);
             menu.findItem(R.id.action_move).setVisible(false);
         } else if(!allPhotoMode && !favphotomode && upoadhis){
@@ -557,7 +574,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             menu.findItem(R.id.sort_action).setVisible(false);
         }
         return true;
-
     }
 
     @Override
@@ -794,7 +810,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 photoPrinter.printBitmap(getString(R.string.print), bitmap);
                 return true;
 
-            case R.id.action_favourites:
+            case R.id.action_favourites2:
                 realm = Realm.getDefaultInstance();
                 String realpath = getAlbum().getCurrentMedia().getPath();
                 RealmQuery<FavouriteImagesModel> query = realm.where(FavouriteImagesModel.class).equalTo("path",
@@ -810,6 +826,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     else{
                         fav.setDescription(" ");
                     }
+                    item.getIcon().setTint(getAccentColor());
                     realm.commitTransaction();
                     SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.add_favourite), bottomBar.getHeight());
                 } else {
