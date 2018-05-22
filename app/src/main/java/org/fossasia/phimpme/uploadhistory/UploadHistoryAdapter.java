@@ -43,7 +43,8 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
     private Realm realm = Realm.getDefaultInstance();
     private RealmQuery<UploadHistoryRealmModel> realmResult = realm.where(UploadHistoryRealmModel.class);
     private int color;
-    public static String imagePath;
+    private View.OnClickListener onClickListener;
+    public String imagePath;
 
 
     public UploadHistoryAdapter(int color) {
@@ -56,6 +57,7 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
                 .inflate(R.layout.upload_history_item_view, null, false);
         view.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,
                 RecyclerView.LayoutParams.WRAP_CONTENT));
+        view.setOnClickListener(onClickListener);
         return new ViewHolder(view);
     }
 
@@ -63,12 +65,10 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
     public void onBindViewHolder(ViewHolder holder, int position) {
         Integer id;
         realmResult = realm.where(UploadHistoryRealmModel.class);
-        imagePath = realmResult.findAll().get(position).getPathname();
-
         if (realmResult.findAll().size() != 0) {
-
-            String date = realmResult.findAll().get(position).getDatetime();
-            String name=realmResult.findAll().get(position).getName();
+            UploadHistoryRealmModel uploadHistoryRealmModel = realmResult.findAll().get(position);
+            String date = uploadHistoryRealmModel.getDatetime();
+            String name=uploadHistoryRealmModel.getName();
             try {
                 DateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
                 Date parsedDate = format.parse(date);
@@ -80,8 +80,9 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
                 e.printStackTrace();
             }
 
-            Uri uri = Uri.fromFile(new File(realmResult.findAll().get(position).getPathname()));
-            imagePath = uri.getPath();
+            Uri uri = Uri.fromFile(new File(uploadHistoryRealmModel.getPathname()));
+            imagePath = uploadHistoryRealmModel.getPathname();
+            holder.uploadTime.setTag(uploadHistoryRealmModel);
 
             Glide.with(getApplicationContext()).load(uri)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -111,7 +112,11 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
         notifyDataSetChanged();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public void setOnClickListener(View.OnClickListener lis) {
+        onClickListener = lis;
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.upload_time)
         TextView uploadTime;
@@ -128,29 +133,6 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            accountImageShare.setOnClickListener(this);
-            uploadImage.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            if(v.getId() == uploadImage.getId()){
-                if(new File(imagePath).exists()){
-                    Intent intent = new Intent(context, SingleMediaActivity.class);
-                    intent.setAction("com.android.camera.action.REVIEW");
-                    intent.putExtra("path",Uri.fromFile(new File(imagePath)));
-                    context.startActivity(intent);
-                }
-                else{
-                    SnackBarHandler.show(v, "No Media Availaible",SnackBarHandler.SHORT);
-                }
-            }
-
-            if(v.getId() == accountImageShare.getId()){
-                Intent intent = new Intent(context,SharingActivity.class);
-                intent.putExtra("extra_output", imagePath);
-                context.startActivity(intent);
-            }
         }
     }
 }
