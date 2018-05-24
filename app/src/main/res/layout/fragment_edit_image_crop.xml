@@ -14,7 +14,7 @@
         android:layout_alignBottom="@+id/crop_hsv"
         android:layout_alignParentLeft="true"
         android:background="?android:attr/selectableItemBackground"
-        app:srcCompat="@drawable/ic_no" />
+        app:srcCompat="@drawable/ic_close_black_24dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
