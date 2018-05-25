@@ -30,7 +30,7 @@
         android:title="@string/details"/>
 
     <item
-        android:id="@+id/action_favourites"
+        android:id="@+id/action_favourites2"
         android:orderInCategory="4"
         android:icon="@drawable/ic_favourite_white_24dp"
         android:title="@string/favourite"
