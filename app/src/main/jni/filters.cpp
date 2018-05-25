@@ -584,6 +584,12 @@ void applyCartoon(cv::Mat &src, cv::Mat &dst, int val) {
     resize(smallImg, src, size, 0, 0, CV_INTER_LINEAR);
     dst = Mat::zeros(src.size(), src.type());
     src.copyTo(dst, mask);
+} 
+  
+void applyPencilSketch(cv::Mat &src, cv::Mat &dst, int val) {
+    cvtColor(src, src, COLOR_BGRA2GRAY);
+    dst = Mat::zeros(src.size(), src.type());
+    adaptiveThreshold(src, dst, 255, CV_ADAPTIVE_THRESH_MEAN_C, CV_THRESH_BINARY, 9, 2);
 }
     
 void applyEdgify(cv::Mat &src, cv::Mat &dst, int val) {
@@ -606,4 +612,36 @@ void applyEdgify(cv::Mat &src, cv::Mat &dst, int val) {
     detected_edges.copyTo(dst, detected_edges);
 }
 
+void applyRedBlueEffect(cv::Mat &src, cv::Mat &dst, int val) {
+    register int x, y;
+    float opacity = val * 0.01f;
+    cvtColor(src, src, CV_BGRA2BGR);
+    dst = Mat::zeros(src.size(), src.type());
+    uchar r, g, b;
+    uchar val1,val3;
+
+    for (y = 0; y < src.rows; y++) {
+        for (x = 0; x < src.cols; x++) {
+            r = src.at<Vec3b>(y, x)[0];
+            g = src.at<Vec3b>(y, x)[1];
+            b = src.at<Vec3b>(y, x)[2];
+            val1 = saturate_cast<uchar>(r*(1+opacity));
+            if(val1 > 255) {
+                val1 = 255;
+            }
+
+            val3 = saturate_cast<uchar>(b*(1+opacity));
+            if(val3 > 255) {
+                val3 = 255;
+            }
+            dst.at<Vec3b>(y, x)[0] =
+                    saturate_cast<uchar>(val1);
+            dst.at<Vec3b>(y, x)[1] =
+                    saturate_cast<uchar>(g);
+            dst.at<Vec3b>(y, x)[2] =
+                    saturate_cast<uchar>(val3);
+        }
+    }
+}   
+  
 }

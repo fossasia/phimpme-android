@@ -16,7 +16,7 @@
         android:layout_marginRight="5dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
-        app:srcCompat="@drawable/ic_no"/>
+        app:srcCompat="@drawable/ic_close_black_24dp"/>
 
     <org.fossasia.phimpme.editor.view.PaintModeView
         android:id="@+id/paint_thumb"
