@@ -13,7 +13,7 @@
         android:background="?android:attr/selectableItemBackground"
         android:layout_centerVertical="true"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/ic_no"/>
+        app:srcCompat="@drawable/ic_close_black_24dp"/>
 
     <org.fossasia.phimpme.editor.view.PaintModeView
         android:id="@+id/paint_thumb"

@@ -18,7 +18,7 @@ public class SnackBarHandler  {
     public static final int LONG = Snackbar.LENGTH_LONG;
     public static final int SHORT = Snackbar.LENGTH_SHORT;
 
-    public static void show(View view, String text, int duration) {
+    public static Snackbar show(View view, String text, int duration) {
         final Snackbar snackbar = Snackbar.make(view, text, duration);
         ThemeHelper themeHelper=new ThemeHelper(ActivitySwitchHelper.getContext());
         View sbView = snackbar.getView();
@@ -26,14 +26,8 @@ public class SnackBarHandler  {
                 .snackbar_text);
         textView.setTextColor(Color.WHITE);
         textView.setTextSize(12);
-        snackbar.setAction(R.string.ok_action, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                snackbar.dismiss();
-            }
-        });
         snackbar.setActionTextColor(themeHelper.getAccentColor());
-        snackbar.show();
+        return snackbar;
     }
 
     public static void showWithBottomMargin(View view, String text,int bottomMargin, int duration) {
@@ -65,8 +59,8 @@ public class SnackBarHandler  {
         show(view, ActivitySwitchHelper.getContext().getResources().getString(res), duration);
     }
 
-    public static void show(View view, String text) {
-        show(view, text, Snackbar.LENGTH_LONG);
+    public static Snackbar show(View view, String text) {
+        return show(view, text, Snackbar.LENGTH_LONG);
     }
 
     public static void show(View view, int res) {
