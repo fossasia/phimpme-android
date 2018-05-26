@@ -42,11 +42,9 @@ public class AboutActivity extends ThemedActivity {
         super.onPostCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         setNavBarColor();
         cts = new CustomTabService(AboutActivity.this,getPrimaryColor());
         scr = (ScrollView)findViewById(R.id.aboutAct_scrollView);
-
     }
 
     @Override
