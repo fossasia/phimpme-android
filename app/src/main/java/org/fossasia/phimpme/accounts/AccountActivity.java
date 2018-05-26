@@ -611,7 +611,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         super.onResume();
         ActivitySwitchHelper.setContext(this);
         setNavigationBarColor(ThemeHelper.getPrimaryColor(this));
-        toolbar.setBackgroundColor(getPrimaryColor());
+        toolbar.setBackgroundColor(ThemeHelper.getPrimaryColor(this));
         //dropboxAuthentication();
         boxAuthentication();
         setStatusBarColor();
