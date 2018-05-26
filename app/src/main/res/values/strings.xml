@@ -433,6 +433,7 @@
     <string name="unhide">Unhide</string>
     <string name="zip">Zip</string>
     <string name="ok_action">OK</string>
+    <string name="openfav">Open</string>
     <string name="cancel_zip">Zip operation Canceled...</string>
     <string name="zip_action">Zipping the folder.....</string>
     <string name="zip_location">Zip saved to location: </string>
