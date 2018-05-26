@@ -63,10 +63,6 @@
             android:title="@string/favourite"
             app:showAsAction="never"/>
 
-        <item
-            android:id="@+id/unfavourite_image"
-            android:title="@string/unfavourite"
-            app:showAsAction="never"/>
     </group>
 
     <group android:id="@+id/album_options_menu">

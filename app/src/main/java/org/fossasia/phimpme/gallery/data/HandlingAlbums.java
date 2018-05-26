@@ -58,7 +58,7 @@ public class HandlingAlbums {
       list.addAll(MediaStoreProvider.getAlbums(context, hidden));
     }
     dispAlbums = list;
-    sortAlbums(context);
+    sortAlbums();
   }
 
   public void addAlbum(int position, Album album) {
@@ -294,22 +294,8 @@ public class HandlingAlbums {
     SP.putInt("albums_sorting_order", sortingOrder.getValue());
   }
 
-  public void sortAlbums(final Context context) {
-
-    Album camera = null;
-
-    for(Album album : dispAlbums)
-      if (album.getName().equals("Phimpme Camera") && dispAlbums.remove(album)) {
-        camera = album;
-        break;
-      }
-
+  public void sortAlbums() {
     Collections.sort(dispAlbums, AlbumsComparators.getComparator(getSortingMode(), getSortingOrder()));
-
-    if (camera != null) {
-      camera.setName(context.getString(R.string.phimpme_camera));
-      dispAlbums.add(0, camera);
-    }
   }
 
   public Album getSelectedAlbum(int index) { return selectedAlbums.get(index); }
