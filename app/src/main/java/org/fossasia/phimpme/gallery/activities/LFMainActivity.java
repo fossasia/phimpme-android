@@ -561,6 +561,11 @@ public class LFMainActivity extends SharedMediaActivity {
                     enterReveal();
                     checkForReveal = false;
                 }
+                //for selecting albums upto a particular range
+                if(editMode) {
+                    int currentAlbum = getAlbums().getCurrentAlbumIndex(album);
+                    getAlbums().selectAllPhotosUpToAlbums(currentAlbum, albumsAdapter);
+                }
                 albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(album));
                 editMode = true;
                 invalidateOptionsMenu();
