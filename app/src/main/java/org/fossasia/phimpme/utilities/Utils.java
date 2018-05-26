@@ -12,12 +12,15 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.util.Base64;
+import android.view.Gravity;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.Toast;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.AccountDatabase;
@@ -89,8 +92,8 @@ public class Utils {
                 NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
                 return activeNetworkInfo != null && activeNetworkInfo.isConnected();
             }
-        }catch (Exception ex){
-          ex.printStackTrace();
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
         return false;
     }
@@ -114,31 +117,31 @@ public class Utils {
         return (result1.size() > 0);
     }
 
-    public static ArrayList<AccountDatabase.AccountName> getLoggedInAccountsList(){
+    public static ArrayList<AccountDatabase.AccountName> getLoggedInAccountsList() {
         ArrayList<AccountDatabase.AccountName> list = new ArrayList<>();
-        for (AccountDatabase.AccountName account : AccountDatabase.AccountName.values()){
+        for (AccountDatabase.AccountName account : AccountDatabase.AccountName.values()) {
             if (checkAlreadyExist(account))
                 list.add(account);
         }
         return list;
     }
 
-    public static ArrayList<AccountDatabase.AccountName> getSharableAccountsList(){
+    public static ArrayList<AccountDatabase.AccountName> getSharableAccountsList() {
         ArrayList<AccountDatabase.AccountName> list = new ArrayList<>();
         PackageManager packageManager = (ActivitySwitchHelper.context).getPackageManager();
-        if (isAppInstalled(PACKAGE_INSTAGRAM,packageManager))
+        if (isAppInstalled(PACKAGE_INSTAGRAM, packageManager))
             list.add(AccountDatabase.AccountName.INSTAGRAM);
 
-        if (isAppInstalled(PACKAGE_WHATSAPP,packageManager))
+        if (isAppInstalled(PACKAGE_WHATSAPP, packageManager))
             list.add(AccountDatabase.AccountName.WHATSAPP);
 
-        if (isAppInstalled(PACKAGE_GOOGLEPLUS,packageManager))
+        if (isAppInstalled(PACKAGE_GOOGLEPLUS, packageManager))
             list.add(AccountDatabase.AccountName.GOOGLEPLUS);
 
-        if (isAppInstalled(PACKAGE_MESSENGER,packageManager))
+        if (isAppInstalled(PACKAGE_MESSENGER, packageManager))
             list.add(AccountDatabase.AccountName.MESSENGER);
 
-        if (isAppInstalled(PACKAGE_SNAPCHAT,packageManager))
+        if (isAppInstalled(PACKAGE_SNAPCHAT, packageManager))
             list.add(AccountDatabase.AccountName.SNAPCHAT);
 
         list.addAll(getLoggedInAccountsList());
@@ -156,6 +159,7 @@ public class Utils {
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
+
     public static String getMimeType(String url) {
         String type = null;
         String extension = MimeTypeMap.getFileExtensionFromUrl(url);
@@ -164,13 +168,15 @@ public class Utils {
         }
         return type;
     }
+
     public static boolean checkNetwork(Context context, @NonNull View view) {
         if (isInternetOn(context)) {
             return true;
         } else
-            SnackBarHandler.show(view,context.getString(R.string.not_connected));
+            SnackBarHandler.show(view, context.getString(R.string.not_connected));
         return false;
     }
+
     public static void promptSpeechInput(Activity activity, int requestCode, View parentView, String promtMsg) {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -179,8 +185,24 @@ public class Utils {
         try {
             activity.startActivityForResult(intent, requestCode);
         } catch (ActivityNotFoundException a) {
-            SnackBarHandler.show(parentView,activity.getString(R.string.speech_not_supported));
+            SnackBarHandler.show(parentView, activity.getString(R.string.speech_not_supported));
         }
+    }
+
+    //Util to make a short toast
+    public static void showShortToast(Context context, CharSequence msg, long duration) {
+        CharSequence toast_msg = msg;
+        final Toast toast = Toast.makeText(context, toast_msg, Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                toast.cancel();
+            }
+        }, duration);
+
     }
 
 }
