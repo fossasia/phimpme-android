@@ -1,8 +1,9 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
+                android:layout_width="@dimen/editor_bottom_row_size"
                 android:gravity="center_vertical"
-    android:layout_height="@dimen/editor_bottom_row_size" >
+                android:orientation="vertical"
+    android:layout_height="match_parent" >
 
     <ImageButton
         android:id="@+id/crop_cancel"
@@ -17,13 +18,11 @@
         app:srcCompat="@drawable/ic_close_black_24dp" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/editor_bottom_row_size"
         android:layout_centerVertical="true"
         android:orientation="vertical"
         android:id="@+id/crop_hsv"
-        android:layout_height="@dimen/editor_bottom_row_size"
-        android:layout_toRightOf="@+id/crop_cancel"
-        android:layout_toLeftOf="@+id/crop_apply"
+        android:layout_height="wrap_content"
         android:layout_weight="1" >
 
         <LinearLayout
@@ -47,11 +46,10 @@
         android:id="@+id/crop_apply"
         android:layout_width="@dimen/icon_item_image_size_main"
         android:layout_height="@dimen/editor_bottom_row_size"
-        android:layout_alignParentRight="true"
         android:foregroundGravity="center_vertical"
         android:scaleType="fitCenter"
         android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"
         android:background="?android:attr/selectableItemBackground"
         app:srcCompat="@drawable/ic_done_black_24dp" />
-</RelativeLayout>
+</LinearLayout>
