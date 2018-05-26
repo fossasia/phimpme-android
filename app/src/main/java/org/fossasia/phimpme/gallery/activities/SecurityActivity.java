@@ -128,6 +128,9 @@ public class SecurityActivity extends ThemedActivity {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SecurityActivity.this, getDialogStyle());
                     View view = getLayoutInflater().inflate(R.layout.dialog_security_folder, null);
                     TextView title = (TextView) view.findViewById(R.id.titlesecure);
+                    LinearLayout linearLayout = (LinearLayout)view.findViewById(R.id.titlelayout);
+                    linearLayout.setBackgroundColor(getAccentColor());
+                    title.setBackgroundColor(getAccentColor());
                     title.setText("Choose folders to secure");
                     RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.secure_folder_recyclerview);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -167,6 +170,7 @@ public class SecurityActivity extends ThemedActivity {
                         }
                     });
                     ad.show();
+                    ad.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getAccentColor());
                 }else{
                     SP.putBoolean(getString(R.string.preference_use_password_on_folder), false);
                     securityObj.updateSecuritySetting();

@@ -535,19 +535,19 @@ void applyCyano(cv::Mat &src, cv::Mat &dst, int val) {
     }
 }
 
-void applyFade(cv::Mat &src, cv::Mat &dst, int val){
-    cvtColor(src,src,COLOR_RGB2GRAY);
+void applyFade(cv::Mat &src, cv::Mat &dst, int val) {
+    cvtColor(src, src, COLOR_RGB2GRAY);
     dst = src.clone();
-    for(int y=0 ;y < src.rows ; y++){
-        for(int x=0 ;x < src.rows ; x++) {
+    for (int y = 0; y < src.rows; y++) {
+        for (int x = 0; x < src.rows; x++) {
             Vec3b intensity = src.at<Vec3b>(y, x);
             uchar blue = intensity.val[0];
             uchar green = intensity.val[1];
             uchar red = intensity.val[2];
 
-            dst.at<Vec3b>(y, x)[0] = saturate_cast<uchar> (blue + 0.5 *val );
-            dst.at<Vec3b>(y, x)[1] = saturate_cast<uchar> (green + 0.5 *val);
-            dst.at<Vec3b>(y, x)[2] = saturate_cast<uchar> (red + 0.5 *val);
+            dst.at<Vec3b>(y, x)[0] = saturate_cast<uchar>(blue + 0.5 * val);
+            dst.at<Vec3b>(y, x)[1] = saturate_cast<uchar>(green + 0.5 * val);
+            dst.at<Vec3b>(y, x)[2] = saturate_cast<uchar>(red + 0.5 * val);
         }
     }
 }
@@ -584,6 +584,64 @@ void applyCartoon(cv::Mat &src, cv::Mat &dst, int val) {
     resize(smallImg, src, size, 0, 0, CV_INTER_LINEAR);
     dst = Mat::zeros(src.size(), src.type());
     src.copyTo(dst, mask);
+} 
+  
+void applyPencilSketch(cv::Mat &src, cv::Mat &dst, int val) {
+    cvtColor(src, src, COLOR_BGRA2GRAY);
+    dst = Mat::zeros(src.size(), src.type());
+    adaptiveThreshold(src, dst, 255, CV_ADAPTIVE_THRESH_MEAN_C, CV_THRESH_BINARY, 9, 2);
+}
+    
+void applyEdgify(cv::Mat &src, cv::Mat &dst, int val) {
+    int lowThreshold = val;
+    int ratio = 3;
+    int kernel_size = 3;
+
+    Mat grey, detected_edges;
+
+    cvtColor(src, grey, CV_BGR2GRAY);
+
+    blur(grey, detected_edges, Size(3, 3));
+    dst.create(grey.size(), grey.type());
+
+    Canny(detected_edges, detected_edges, lowThreshold, lowThreshold * ratio,
+          kernel_size);
+
+    dst = Scalar::all(0);
+
+    detected_edges.copyTo(dst, detected_edges);
 }
 
+void applyRedBlueEffect(cv::Mat &src, cv::Mat &dst, int val) {
+    register int x, y;
+    float opacity = val * 0.01f;
+    cvtColor(src, src, CV_BGRA2BGR);
+    dst = Mat::zeros(src.size(), src.type());
+    uchar r, g, b;
+    uchar val1,val3;
+
+    for (y = 0; y < src.rows; y++) {
+        for (x = 0; x < src.cols; x++) {
+            r = src.at<Vec3b>(y, x)[0];
+            g = src.at<Vec3b>(y, x)[1];
+            b = src.at<Vec3b>(y, x)[2];
+            val1 = saturate_cast<uchar>(r*(1+opacity));
+            if(val1 > 255) {
+                val1 = 255;
+            }
+
+            val3 = saturate_cast<uchar>(b*(1+opacity));
+            if(val3 > 255) {
+                val3 = 255;
+            }
+            dst.at<Vec3b>(y, x)[0] =
+                    saturate_cast<uchar>(val1);
+            dst.at<Vec3b>(y, x)[1] =
+                    saturate_cast<uchar>(g);
+            dst.at<Vec3b>(y, x)[2] =
+                    saturate_cast<uchar>(val3);
+        }
+    }
+}   
+  
 }
