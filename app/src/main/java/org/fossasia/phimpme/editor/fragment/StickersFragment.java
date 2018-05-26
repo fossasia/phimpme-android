@@ -76,7 +76,7 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
         cancel = (ImageButton)fragmentView.findViewById(R.id.sticker_cancel);
         apply = (ImageButton)fragmentView.findViewById(R.id.sticker_apply);
 
-        cancel.setImageResource(R.drawable.ic_no);
+        cancel.setImageResource(R.drawable.ic_close_black_24dp);
         apply.setImageResource(R.drawable.ic_done_black_24dp);
 
         cancel.setOnClickListener(this);

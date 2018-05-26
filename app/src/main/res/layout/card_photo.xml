@@ -37,15 +37,4 @@
         app:iiv_icon="gmd-play-circle-filled"
         tools:targetApi="lollipop" />
 
-    <ImageView
-        android:id="@+id/favourite"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="4dp"
-        android:layout_marginTop="4dp"
-        android:elevation="10dp"
-        android:visibility="gone"
-        app:srcCompat="@drawable/ic_star_black_24dp"
-        tools:targetApi="lollipop" />
 </org.fossasia.phimpme.gallery.views.SquareRelativeLayout>
