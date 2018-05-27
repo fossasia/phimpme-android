@@ -1,27 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_vertical"
-                android:layout_height="@dimen/editor_bottom_row_size">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="@dimen/editor_bottom_row_size"
+                android:layout_gravity="center"
+    android:orientation="vertical"
+              android:layout_height="match_parent">
 
     <ImageButton
         android:id="@+id/sticker_cancel"
         android:layout_width="@dimen/icon_item_image_size"
         android:layout_height="@dimen/icon_item_image_size"
         android:scaleType="fitCenter"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:background="?android:attr/selectableItemBackground"
-        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"/>
+        android:layout_alignParentTop="true"
+        />
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="wrap_content"
         android:layout_centerVertical="true"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:layout_weight="1"
         android:layout_toRightOf="@+id/sticker_cancel"
         android:layout_toLeftOf="@+id/sticker_apply"
         android:id="@+id/editor_recyclerview"/>
@@ -31,11 +33,11 @@
         android:id="@+id/sticker_apply"
         android:layout_width="@dimen/icon_item_image_size"
         android:layout_height="@dimen/icon_item_image_size"
-        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
         android:scaleType="fitCenter"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:background="?android:attr/selectableItemBackground"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"/>
-</RelativeLayout>
+</LinearLayout>

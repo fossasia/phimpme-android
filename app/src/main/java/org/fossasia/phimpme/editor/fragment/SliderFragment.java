@@ -47,7 +47,7 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
         apply = (ImageButton) fragmentView.findViewById(R.id.seekbar_apply);
         seekBar = (SeekBar) fragmentView.findViewById(R.id.slider);
 
-        cancel.setImageResource(R.drawable.ic_no);
+        cancel.setImageResource(R.drawable.ic_close_black_24dp);
         apply.setImageResource(R.drawable.ic_done_black_24dp);
 
         cancel.setOnClickListener(this);
