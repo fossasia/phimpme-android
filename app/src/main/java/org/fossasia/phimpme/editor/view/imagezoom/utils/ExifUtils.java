@@ -202,6 +202,7 @@ public class ExifUtils {
 					}
 				} finally {
 					result.close();
+					provider.release();
 				}
 			}
 		}
