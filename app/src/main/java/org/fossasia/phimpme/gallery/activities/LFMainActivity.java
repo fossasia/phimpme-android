@@ -179,10 +179,6 @@ public class LFMainActivity extends SharedMediaActivity {
     // To handle back pressed
     boolean doubleBackToExitPressedOnce = false;
 
-    //used for unfavourite image
-    private boolean favouriteImagePresent = false;
-    private int imagesUnfavourited=0;
-
     private boolean fromOnClick = false;
     // Binding various views with Butterknife
 
@@ -564,6 +560,11 @@ public class LFMainActivity extends SharedMediaActivity {
                 if (checkForReveal) {
                     enterReveal();
                     checkForReveal = false;
+                }
+                //for selecting albums upto a particular range
+                if(editMode) {
+                    int currentAlbum = getAlbums().getCurrentAlbumIndex(album);
+                    getAlbums().selectAllPhotosUpToAlbums(currentAlbum, albumsAdapter);
                 }
                 albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(album));
                 editMode = true;
@@ -1598,26 +1599,28 @@ public class LFMainActivity extends SharedMediaActivity {
 
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_albums, menu);
+        MenuItem menuitem = menu.findItem(R.id.search_action);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuitem);
+        searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override public void onFocusChange(final View view, boolean b) {
+                if (b) {
+                    view.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            InputMethodManager imm = (InputMethodManager) getSystemService(Context
+                                    .INPUT_METHOD_SERVICE);
+                            imm.showSoftInput(view.findFocus(), 0);
+                        }
+                    }, 200);
+                } else {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context
+                            .INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+            }
+        });
 
         if (albumsMode) {
-            MenuItem menuitem = menu.findItem(R.id.search_action);
-            final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuitem);
-            searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
-                @Override
-                public void onFocusChange(final View view, boolean b) {
-                    if (b) {
-                        view.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                InputMethodManager imm = (InputMethodManager) getSystemService(Context
-                                        .INPUT_METHOD_SERVICE);
-                                imm.showSoftInput(view.findFocus(), 0);
-                            }
-                        }, 200);
-
-                    }
-                }
-            });
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String query) {
@@ -1761,13 +1764,11 @@ public class LFMainActivity extends SharedMediaActivity {
             visible = false;
         menu.findItem(R.id.action_copy).setVisible(visible);
         menu.findItem(R.id.action_move).setVisible((visible || editMode) && !fav_photos);
-        menu.findItem(R.id.unfavourite_image).setVisible((!albumsMode) && (editMode || visible) && (fav_photos));
         menu.findItem(R.id.action_add_favourites).setVisible((visible || editMode) && (!albumsMode && !fav_photos));
         menu.findItem(R.id.excludeAlbumButton).setVisible(editMode && !all_photos && albumsMode && !fav_photos);
         menu.findItem(R.id.zipAlbumButton).setVisible(editMode && !all_photos && albumsMode && !fav_photos && !hidden &&
                 getAlbums().getSelectedCount() == 1);
-        menu.findItem(R.id.delete_action).setVisible((!albumsMode || editMode) && (!all_photos || editMode) &&
-                (!fav_photos));
+        menu.findItem(R.id.delete_action).setVisible((!albumsMode || editMode) && (!all_photos || editMode) );
         menu.findItem(R.id.hideAlbumButton).setVisible(!all_photos && !fav_photos && getAlbums().getSelectedCount() >
                 0);
 
@@ -1850,7 +1851,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
             case R.id.set_pin_album:
                 getAlbums().getSelectedAlbum(0).settings.togglePin(getApplicationContext());
-                getAlbums().sortAlbums(getApplicationContext());
+                getAlbums().sortAlbums();
                 getAlbums().clearSelectedAlbums();
                 invalidateOptionsMenu();
                 albumsAdapter.notifyDataSetChanged();
@@ -1904,105 +1905,12 @@ public class LFMainActivity extends SharedMediaActivity {
                 AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE, DialogInterface.BUTTON_NEUTRAL}, getAccentColor(), alertDialog);
                 return true;
 
-            case R.id.unfavourite_image:
-                class UnfavouritePhotos extends AsyncTask<String, Integer, Boolean> {
-
-                    @Override
-                    protected void onPreExecute() {
-                        getNavigationBar();
-                        swipeRefreshLayout.setRefreshing(true);
-                        super.onPreExecute();
-                    }
-
-                    @Override
-                    protected Boolean doInBackground(String... arg0) {
-                        if (all_photos || fav_photos) {
-                            realm = Realm.getDefaultInstance();
-                            realm.executeTransaction(new Realm.Transaction() {
-                                @Override
-                                public void execute(Realm realm) {
-                                    for (int i = 0; i < selectedMedias.size(); i++) {
-                                        RealmResults<FavouriteImagesModel> favouriteImagesModels = realm.where
-                                                (FavouriteImagesModel.class).equalTo("path", selectedMedias.get(i).getPath()).findAll();
-                                        if(favouriteImagesModels.size()==1){
-                                            favouriteImagePresent=true;
-                                            imagesUnfavourited++;
-                                        }
-                                        favouriteImagesModels.deleteAllFromRealm();
-                                    }
-                                }
-                            });
-                        } else if (!fav_photos && !albumsMode) {
-                            realm = Realm.getDefaultInstance();
-                            realm.executeTransaction(new Realm.Transaction() {
-                                @Override
-                                public void execute(Realm realm) {
-                                    for (int i = 0; i < getAlbum().getSelectedCount(); i++) {
-                                        RealmResults<FavouriteImagesModel> favouriteImagesModels = realm.where
-                                                (FavouriteImagesModel.class).equalTo("path", getAlbum().getSelectedMedia(i).getPath()).findAll();
-                                        if(favouriteImagesModels.size()==1){
-                                            favouriteImagePresent=true;
-                                            imagesUnfavourited++;
-                                        }
-                                        favouriteImagesModels.deleteAllFromRealm();
-                                    }
-                                }
-                            });
-                        }
-                        return true;
-                    }
-
-                    @Override
-                    protected void onPostExecute(Boolean result) {
-                        if (result) {
-                            if (!favouriteImagePresent) {
-                                SnackBarHandler.show(mDrawerLayout, getResources().getString(R.string.invalid_selection));
-                            } else {
-                                if (imagesUnfavourited >= 2)
-                                    SnackBarHandler.show(mDrawerLayout, imagesUnfavourited + " " + getResources().getString(R.string.remove_from_favourite));
-                                else
-                                    SnackBarHandler.show(mDrawerLayout, getResources().getString(R.string.single_image_removed));
-                            }
-                            if (fav_photos) {
-                                clearSelectedPhotos();
-                                getfavouriteslist();
-                                new FavouritePhotos().execute();
-                            } else {
-                                invalidateOptionsMenu();
-                                mediaAdapter.notifyDataSetChanged();
-                                finishEditMode();
-                                swipeRefreshLayout.setRefreshing(false);
-                            }
-                            favouriteImagePresent = false;
-                            imagesUnfavourited = 0;
-                        }
-                    }
-                }
-
-                final AlertDialog.Builder deletefavDialog = new AlertDialog.Builder(LFMainActivity.this,
-                        getDialogStyle());
-
-                AlertDialogsHelper.getTextDialog(LFMainActivity.this, deletefavDialog,
-                        R.string.remove_from_favourites, R.string.remove_favourites_body, null);
-                deletefavDialog.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
-                deletefavDialog.setPositiveButton(this.getString(R.string.remove).toUpperCase(),
-                        new DialogInterface.OnClickListener() {
-                            @Override public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                                new UnfavouritePhotos().execute();
-                            }
-                        });
-                AlertDialog alertDialog1 = deletefavDialog.create();
-                alertDialog1.show();
-                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface
-                        .BUTTON_NEGATIVE}, getAccentColor(), alertDialog1);
-                return true;
-
             case R.id.delete_action:
                 getNavigationBar();
                 class DeletePhotos extends AsyncTask<String, Integer, Boolean> {
 
                     private boolean succ = false;
+                    private int imagesUnfav = 0;
 
                     @Override
                     protected void onPreExecute() {
@@ -2017,33 +1925,51 @@ public class LFMainActivity extends SharedMediaActivity {
                             succ = getAlbums().deleteSelectedAlbums(LFMainActivity.this);
                         else {
                             // if in selection mode, delete selected media
-                            if (editMode && !all_photos && !fav_photos)
-                                succ = getAlbum().deleteSelectedMedia(getApplicationContext());
-                            else if (all_photos && !fav_photos) {
-                                for (Media media : selectedMedias) {
-                                    String[] projection = {MediaStore.Images.Media._ID};
+                            if (editMode) {
+                                if (!all_photos && !fav_photos) {
+                                    succ = getAlbum().deleteSelectedMedia(getApplicationContext());
+                                } else if (all_photos && !fav_photos) {
+                                    for (Media media : selectedMedias) {
+                                        String[] projection = {MediaStore.Images.Media._ID};
 
-                                    // Match on the file path
-                                    String selection = MediaStore.Images.Media.DATA + " = ?";
-                                    String[] selectionArgs = new String[]{media.getPath()};
+                                        // Match on the file path
+                                        String selection = MediaStore.Images.Media.DATA + " = ?";
+                                        String[] selectionArgs = new String[]{media.getPath()};
 
-                                    // Query for the ID of the media matching the file path
-                                    Uri queryUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                                    ContentResolver contentResolver = getContentResolver();
-                                    Cursor c =
-                                            contentResolver.query(queryUri, projection, selection, selectionArgs, null);
-                                    if (c.moveToFirst()) {
-                                        // We found the ID. Deleting the item via the content provider will also remove the file
-                                        long id = c.getLong(c.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
-                                        Uri deleteUri = ContentUris
-                                                .withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
-                                        contentResolver.delete(deleteUri, null, null);
-                                        succ = true;
-                                    } else {
-                                        succ = false;
-                                        // File not found in media store DB
+                                        // Query for the ID of the media matching the file path
+                                        Uri queryUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                                        ContentResolver contentResolver = getContentResolver();
+                                        Cursor c =
+                                                contentResolver
+                                                        .query(queryUri, projection, selection, selectionArgs, null);
+                                        if (c.moveToFirst()) {
+                                            // We found the ID. Deleting the item via the content provider will also remove the file
+                                            long id = c.getLong(c.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
+                                            Uri deleteUri = ContentUris
+                                                    .withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
+                                            contentResolver.delete(deleteUri, null, null);
+                                            succ = true;
+                                        } else {
+                                            succ = false;
+                                            // File not found in media store DB
+                                        }
+                                        c.close();
                                     }
-                                    c.close();
+                                } else if (!all_photos && fav_photos) {
+                                    realm = Realm.getDefaultInstance();
+                                    realm.executeTransaction(new Realm.Transaction() {
+                                        @Override
+                                        public void execute(Realm realm) {
+                                            for (int i = 0; i < selectedMedias.size(); i++) {
+                                                RealmResults<FavouriteImagesModel> favouriteImagesModels = realm.where
+                                                        (FavouriteImagesModel.class)
+                                                        .equalTo("path", selectedMedias.get(i).getPath()).findAll();
+                                                imagesUnfav++;
+                                                favouriteImagesModels.deleteAllFromRealm();
+                                            }
+                                        }
+                                    });
+                                    succ = true;
                                 }
                             }
                             // if not in selection mode, delete current album entirely
@@ -2082,6 +2008,10 @@ public class LFMainActivity extends SharedMediaActivity {
                                     mediaAdapter.swapDataSet(listAll, false);
                                 }
                                 else if(fav_photos && !all_photos){
+                                    if (imagesUnfav >= 2)
+                                        SnackBarHandler.show(mDrawerLayout, imagesUnfav + " " + getResources().getString(R.string.remove_from_favourite));
+                                    else
+                                        SnackBarHandler.show(mDrawerLayout, getResources().getString(R.string.single_image_removed));
                                     clearSelectedPhotos();
                                     getfavouriteslist();
                                     new FavouritePhotos().execute();
@@ -2664,44 +2594,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 return true;
 
             case R.id.action_add_favourites:
-                int count = 0;
-                ArrayList<Media> favadd;
-                if (!all_photos) {
-                    favadd = getAlbum().getSelectedMedia();
-                } else {
-                    favadd = selectedMedias;
-                }
-
-                for (int i = 0; i < favadd.size(); i++) {
-                    String realpath = favadd.get(i).getPath();
-                    RealmQuery<FavouriteImagesModel> query = realm.where(FavouriteImagesModel.class).equalTo("path",
-                            realpath);
-                    if (query.count() == 0) {
-                        count++;
-                        realm.beginTransaction();
-                        FavouriteImagesModel fav = realm.createObject(FavouriteImagesModel.class,
-                                realpath);
-                        ImageDescModel q = realm.where(ImageDescModel.class).equalTo("path", realpath).findFirst();
-                        if (q != null) {
-                            fav.setDescription(q.getTitle());
-                        } else {
-                            fav.setDescription(" ");
-                        }
-
-                        realm.commitTransaction();
-                    }
-                }
-                finishEditMode();
-                if (count == 0) {
-                    SnackBarHandler.show(mDrawerLayout, getResources().getString(R.string.check_favourite_multipleitems));
-                } else if (count == 1) {
-                    SnackBarHandler.show(mDrawerLayout,getResources().getString(R.string.add_favourite) );
-                } else {
-                    SnackBarHandler.show(mDrawerLayout, count + " " + getResources().getString(R.string
-                            .add_favourite_multiple));
-                }
-
-                mediaAdapter.notifyDataSetChanged();
+                new AddToFavourites().execute();
                 return true;
 
             case R.id.action_copy:
@@ -3213,6 +3106,83 @@ public class LFMainActivity extends SharedMediaActivity {
         }
     }
 
+    /* AsyncTask for Add to favourites operation */
+    private class AddToFavourites extends AsyncTask<Void, Integer, Integer>{
+
+        @Override
+        protected void onPreExecute() {
+            getNavigationBar();
+            swipeRefreshLayout.setRefreshing(true);
+            super.onPreExecute();
+        }
+
+        @Override protected Integer doInBackground(Void... voids) {
+            int count = 0;
+            realm = Realm.getDefaultInstance();
+            ArrayList<Media> favadd;
+            if (!all_photos) {
+                favadd = getAlbum().getSelectedMedia();
+            } else {
+                favadd = selectedMedias;
+            }
+
+            for (int i = 0; i < favadd.size(); i++) {
+                String realpath = favadd.get(i).getPath();
+                RealmQuery<FavouriteImagesModel> query = realm.where(FavouriteImagesModel.class).equalTo("path",
+                        realpath);
+                if (query.count() == 0) {
+                    count++;
+                    realm.beginTransaction();
+                    FavouriteImagesModel fav = realm.createObject(FavouriteImagesModel.class,
+                            realpath);
+                    ImageDescModel q = realm.where(ImageDescModel.class).equalTo("path", realpath).findFirst();
+                    if (q != null) {
+                        fav.setDescription(q.getTitle());
+                    } else {
+                        fav.setDescription(" ");
+                    }
+
+                    realm.commitTransaction();
+                }
+            }
+            return count;
+        }
+
+        @Override protected void onPostExecute(Integer count) {
+            super.onPostExecute(count);
+            swipeRefreshLayout.setRefreshing(false);
+            finishEditMode();
+            if (count == 0) {
+                SnackBarHandler.show(mDrawerLayout, getResources().getString(R.string.check_favourite_multipleitems));
+            } else if (count == 1) {
+                final Snackbar snackbar = SnackBarHandler.show(mDrawerLayout,
+                        getResources().getString(R.string.add_favourite) );
+                snackbar.setAction(R.string.openfav, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        displayfavourites();
+                        favourites = false;
+                    }
+                });
+                snackbar.show();
+            } else {
+                SnackBarHandler.show(mDrawerLayout, count + " " + getResources().getString(R.string
+                        .add_favourite_multiple));
+                final Snackbar snackbar = SnackBarHandler.show(mDrawerLayout,
+                        getResources().getString(R.string.add_favourite) );
+                snackbar.setAction(R.string.openfav, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        displayfavourites();
+                        favourites = false;
+                    }
+                });
+                snackbar.show();
+            }
+            mediaAdapter.notifyDataSetChanged();
+        }
+    }
+
     /*
     Async Class for Sorting Photos - NOT listAll
      */
@@ -3302,7 +3272,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
         @Override
         protected Void doInBackground(Void... aVoid) {
-            getAlbums().sortAlbums(getApplicationContext());
+            getAlbums().sortAlbums();
             return null;
         }
 
