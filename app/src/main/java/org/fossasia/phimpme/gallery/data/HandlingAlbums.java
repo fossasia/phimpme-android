@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.MediaScannerConnection;
 
 import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.gallery.adapters.AlbumsAdapter;
 import org.fossasia.phimpme.gallery.data.providers.StorageProvider;
 import org.fossasia.phimpme.gallery.data.base.AlbumsComparators;
 import org.fossasia.phimpme.gallery.data.base.SortingMode;
@@ -75,6 +76,10 @@ public class HandlingAlbums {
   public Album getCurrentAlbum() {
     return dispAlbums.get(current);
   }
+
+    public int getCurrentAlbumIndex(Album album) {
+        return dispAlbums.indexOf(album);
+    }
 
   public void saveBackup(final Context context) {
     if (!hidden) {
@@ -296,6 +301,31 @@ public class HandlingAlbums {
 
   public void sortAlbums() {
     Collections.sort(dispAlbums, AlbumsComparators.getComparator(getSortingMode(), getSortingOrder()));
+  }
+
+  public void selectAllPhotosUpToAlbums(int targetIndex, AlbumsAdapter adapter) {
+      int indexRightBeforeOrAfter = -1;
+      int indexNow;
+      for (Album selectedAlbum : selectedAlbums) {
+          indexNow = dispAlbums.indexOf(selectedAlbum);
+
+          if (indexRightBeforeOrAfter == -1)
+              indexRightBeforeOrAfter = indexNow;
+
+          if (indexNow > targetIndex)
+              break;
+          indexRightBeforeOrAfter = indexNow;
+      }
+
+      if (indexRightBeforeOrAfter != -1) {
+          for (int index = Math.min(targetIndex, indexRightBeforeOrAfter); index < Math.max(targetIndex, indexRightBeforeOrAfter); index++) {
+              if (dispAlbums.get(index) != null && !dispAlbums.get(index).isSelected()) {
+                  dispAlbums.get(index).setSelected(true);
+                  selectedAlbums.add(dispAlbums.get(index));
+                  adapter.notifyItemChanged(index);
+              }
+          }
+      }
   }
 
   public Album getSelectedAlbum(int index) { return selectedAlbums.get(index); }

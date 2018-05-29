@@ -561,6 +561,11 @@ public class LFMainActivity extends SharedMediaActivity {
                     enterReveal();
                     checkForReveal = false;
                 }
+                //for selecting albums upto a particular range
+                if(editMode) {
+                    int currentAlbum = getAlbums().getCurrentAlbumIndex(album);
+                    getAlbums().selectAllPhotosUpToAlbums(currentAlbum, albumsAdapter);
+                }
                 albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(album));
                 editMode = true;
                 invalidateOptionsMenu();
@@ -2602,7 +2607,6 @@ public class LFMainActivity extends SharedMediaActivity {
                         new CopyPhotos(path, false, true).execute();
                         bottomSheetDialogFragment.dismiss();
                     }
-
                 });
                 bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
                 return true;
