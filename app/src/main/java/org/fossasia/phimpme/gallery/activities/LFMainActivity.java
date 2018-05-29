@@ -2607,7 +2607,6 @@ public class LFMainActivity extends SharedMediaActivity {
                         new CopyPhotos(path, false, true).execute();
                         bottomSheetDialogFragment.dismiss();
                     }
-
                 });
                 bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
                 return true;
