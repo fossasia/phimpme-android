@@ -309,7 +309,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         Menu bottomMenu = bottomBar.getMenu();
         getMenuInflater().inflate(R.menu.menu_bottom_view_pager, bottomMenu);
         if(!favphotomode && favsearch(getAlbum().getCurrentMedia().getPath())){
-            bottomMenu.findItem(R.id.action_favourites2).getIcon().setTint(getAccentColor());
+            bottomMenu.findItem(R.id.action_favourites).getIcon().setTint(getAccentColor());
         }
 
         if(!allPhotoMode && favphotomode)
@@ -556,7 +556,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             menu.setGroupVisible(R.id.only_photos_options, true);
         }
         else if(!allPhotoMode && favphotomode && !upoadhis){
-            menu.findItem(R.id.action_favourites2).setVisible(false);
             menu.findItem(R.id.action_copy).setVisible(false);
             menu.findItem(R.id.action_move).setVisible(false);
         } else if(!allPhotoMode && !favphotomode && upoadhis){
@@ -810,7 +809,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 photoPrinter.printBitmap(getString(R.string.print), bitmap);
                 return true;
 
-            case R.id.action_favourites2:
+            case R.id.action_favourites:
                 realm = Realm.getDefaultInstance();
                 String realpath = getAlbum().getCurrentMedia().getPath();
                 RealmQuery<FavouriteImagesModel> query = realm.where(FavouriteImagesModel.class).equalTo("path",
