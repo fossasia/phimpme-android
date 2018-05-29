@@ -527,7 +527,7 @@ public class PDKClient {
         SharedPreferences sharedPref = _context.getSharedPreferences(PDK_SHARED_PREF_FILE_KEY, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(PDK_SHARED_PREF_TOKEN_KEY, accessToken);
-        editor.commit();
+        editor.apply();
     }
 
     private static String restoreAccessToken() {
@@ -539,7 +539,7 @@ public class PDKClient {
         SharedPreferences sharedPref = _context.getSharedPreferences(PDK_SHARED_PREF_FILE_KEY, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putStringSet(PDK_SHARED_PREF_SCOPES_KEY, perms);
-        editor.commit();
+        editor.apply();
     }
 
     private static Set<String> restoreScopes() {
