@@ -312,6 +312,11 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             bottomMenu.findItem(R.id.action_favourites).getIcon().setTint(getAccentColor());
         }
 
+        if(upoadhis){
+            bottomMenu.findItem(R.id.action_favourites).setVisible(false);
+            bottomMenu.findItem(R.id.action_edit).setVisible(false);
+        }
+
         if(!allPhotoMode && favphotomode)
             bottomBar.getMenu().getItem(4).setVisible(false);
 
