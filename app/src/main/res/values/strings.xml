@@ -1086,11 +1086,14 @@
     <string name="image_invalid">Invalid Image</string>
 
     <!--Captioning-->
+    <string name="caption">Caption</string>
     <string name="caption_head">Add Caption</string>
     <string name="add_action">ADD</string>
     <string name="speech_prompt">Describe the photo</string>
     <string name="speech_prompt_caption">Say something</string>
     <string name="discard_changes_header">Discard Changes</string>
+    <string name="copy_caption">Do you want to copy caption?</string>
+    <string name="caption_copied">Caption copied!</string>
 
     <!--Showcase View-->
     <string name="home_button">Find all your photos in the device</string>
