@@ -831,6 +831,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
     private void getfavouriteslist() {
         favouriteslist = new ArrayList<Media>();
+        ArrayList<String> todelete = new ArrayList<>();
         realm = Realm.getDefaultInstance();
         RealmQuery<FavouriteImagesModel> favouriteImagesModelRealmQuery = realm.where(FavouriteImagesModel.class);
         int count = Integer.parseInt(String.valueOf(favouriteImagesModelRealmQuery.count()));
@@ -839,15 +840,19 @@ public class LFMainActivity extends SharedMediaActivity {
             if (new File(favouriteImagesModelRealmQuery.findAll().get(i).getPath()).exists()) {
                 favouriteslist.add(new Media(new File(favouriteImagesModelRealmQuery.findAll().get(i).getPath())));
             } else {
-                realm.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-                        RealmResults<FavouriteImagesModel> result = realm.where(FavouriteImagesModel.class).equalTo
-                                ("path", path).findAll();
-                        result.deleteAllFromRealm();
-                    }
-                });
+                todelete.add(path);
             }
+        }
+        for(int i = 0; i < todelete.size(); i++){
+            final String path = todelete.get(i);
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    RealmResults<FavouriteImagesModel> result = realm.where(FavouriteImagesModel.class).equalTo
+                            ("path", path).findAll();
+                    result.deleteAllFromRealm();
+                }
+            });
         }
     }
 
@@ -2615,7 +2620,6 @@ public class LFMainActivity extends SharedMediaActivity {
                 bottomSheetDialogFragment.setSelectAlbumInterface(new SelectAlbumBottomSheet.SelectAlbumInterface() {
                     @Override
                     public void folderSelected(String path) {
-
                         new CopyPhotos(path, false, true, activityContext).execute();
                         bottomSheetDialogFragment.dismiss();
                     }
