@@ -2376,7 +2376,6 @@ public class LFMainActivity extends SharedMediaActivity {
                         if (!all_photos)
                             new PreparePhotosTask(activityContext).execute();
                         else clearSelectedPhotos();
-
                     }
                 }
                 //endregion
@@ -3362,8 +3361,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
         @Override
         protected Void doInBackground(Void... aVoid) {
-            LFMainActivity asyncActivityRef = reference.get();
-            getAlbums().sortAlbums(asyncActivityRef);
+            getAlbums().sortAlbums();
             return null;
         }
 
