@@ -9,6 +9,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -74,6 +75,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmQuery;
+import io.realm.RealmResults;
 
 import static com.pinterest.android.pdk.PDKClient.setDebugMode;
 import static org.fossasia.phimpme.R.string.no_account_signed_in;
@@ -88,6 +90,7 @@ import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.OWNCLO
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.PINTEREST;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TUMBLR;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTER;
+import static org.fossasia.phimpme.data.local.AccountDatabase.HIDEINACCOUNTS;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_SECRET;
 import static org.fossasia.phimpme.utilities.Constants.DROPBOX_APP_KEY;
@@ -113,10 +116,10 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     RelativeLayout parentLayout;
     @BindView(R.id.accounts_recycler_view)
     RecyclerView accountsRecyclerView;
-    @BindView(R.id.toolbar)
+    @BindView(R.id.toolbars)
     Toolbar toolbar;
-    @BindView(R.id.accounts)
-    CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.accountsearch)
+    SearchView search;
     private AccountAdapter accountAdapter;
     private AccountPresenter accountPresenter;
     private Realm realm = Realm.getDefaultInstance();
@@ -143,7 +146,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         overridePendingTransition(R.anim.right_to_left,
                 R.anim.left_to_right);
         parentLayout.setBackgroundColor(getBackgroundColor());
-        accountAdapter = new AccountAdapter();
         accountPresenter = new AccountPresenter(realm);
         phimpmeProgressBarHandler = new PhimpmeProgressBarHandler(this);
         accountPresenter.attachView(this);
@@ -154,6 +156,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         loginManager = LoginManager.getInstance();
         toolbar.setPopupTheme(getPopupToolbarStyle());
         toolbar.setBackgroundColor(getPrimaryColor());
+        createaccoutlist();
         setUpRecyclerView();
         accountPresenter.loadFromDatabase();  // Calling presenter function to load data from database
         getSupportActionBar().setTitle(R.string.title_account);
@@ -164,6 +167,29 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         setDebugMode(true);
         //  googleApiClient();
         configureBoxClient();
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                accountAdapter.getFilter().filter(query);
+                return false;
+
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                //FILTER AS YOU TYPE
+                accountAdapter.getFilter().filter(query);
+                return false;
+            }
+
+        });
+        search.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                createaccoutlist();
+                return false;
+            }
+        });
     }
 
 
@@ -180,6 +206,29 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                     .build();
         }*/
+    private void createaccoutlist() {
+        for(int i=0;i<AccountDatabase.AccountName.values().length - HIDEINACCOUNTS;i++) {
+            RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
+            query.equalTo("name", AccountDatabase.AccountName.values()[i].toString());
+            RealmResults<AccountDatabase> result = query.findAll();
+            if (result.size() == 0) {
+                addaccount(AccountDatabase.AccountName.values()[i].toString());
+            }
+        }
+        RealmResults<AccountDatabase> realmResult=realm.where(AccountDatabase.class).findAll();
+        ArrayList<AccountDatabase> list = new ArrayList<>();
+        list.addAll(realm.copyFromRealm(realmResult));
+        accountAdapter = new AccountAdapter(list);
+        accountAdapter.notifyDataSetChanged();
+
+    }
+    private void addaccount(String account){
+        realm.beginTransaction();
+        AccountDatabase newaccount;
+        newaccount=realm.createObject(AccountDatabase.class, account);
+        newaccount.setUsername("Nouser");
+        realm.commitTransaction();
+    }
     private void configureBoxClient() {
         BoxConfig.CLIENT_ID = BOX_CLIENT_ID;
         BoxConfig.CLIENT_SECRET = BOX_CLIENT_SECRET;
@@ -213,12 +262,11 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     @Override
     public void setUpAdapter(@NotNull RealmQuery<AccountDatabase> accountDetails) {
         this.realmResult = accountDetails;
-        accountAdapter.setResults(realmResult);
     }
 
     @Override
     public void showError() {
-        SnackBarHandler.show(coordinatorLayout, getString(no_account_signed_in));
+        SnackBarHandler.show(parentLayout, getString(no_account_signed_in));
     }
 
     @Override
@@ -305,7 +353,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     break;
 
                 default:
-                    SnackBarHandler.show(coordinatorLayout, R.string.feature_not_present);
+                    SnackBarHandler.show(parentLayout, R.string.feature_not_present);
             }
         } else {
             AlertDialog alertDialog = new AlertDialog.Builder(this)
@@ -341,7 +389,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             @Override
             public void callBack(int status, Object data) {
                 if (status == SUCCESS)
-                    SnackBarHandler.show(coordinatorLayout, getString(R.string.logged_in_flickr));
+                    SnackBarHandler.show(parentLayout, getString(R.string.logged_in_flickr));
             }
         };
         Intent intent = new Intent(this, FlickrActivity.class);
@@ -353,7 +401,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         LoginListener loginListener = new LoginListener() {
             @Override
             public void onLoginSuccessful(com.tumblr.loglr.LoginResult loginResult) {
-                SnackBarHandler.show(coordinatorLayout, getString(R.string.logged_in_tumblr));
+                SnackBarHandler.show(parentLayout, getString(R.string.logged_in_tumblr));
                 realm.beginTransaction();
                 account = realm.createObject(AccountDatabase.class,
                         TUMBLR.toString());
@@ -376,7 +424,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         ExceptionHandler exceptionHandler = new ExceptionHandler() {
             @Override
             public void onLoginFailed(RuntimeException e) {
-                SnackBarHandler.show(coordinatorLayout, R.string.error_volly);
+                SnackBarHandler.show(parentLayout, R.string.error_volly);
             }
         };
 
@@ -397,7 +445,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
     private void signInDropbox() {
         if (accountPresenter.checkAlreadyExist(DROPBOX))
-            SnackBarHandler.show(coordinatorLayout, R.string.already_signed_in);
+            SnackBarHandler.show(parentLayout, R.string.already_signed_in);
         else
             cloudRailServices.prepare(this);
             cloudRailServices.login();
@@ -433,7 +481,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
     private void signInGoogleDrive() {
         if(accountPresenter.checkAlreadyExist(GOOGLEDRIVE))
-            SnackBarHandler.show(coordinatorLayout,"Already Signed In");
+            SnackBarHandler.show(parentLayout,"Already Signed In");
         else
             cloudRailServices.prepare(this);
             cloudRailServices.googleDriveLogin();
@@ -451,7 +499,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
     private void signInOneDrive(){
         if(accountPresenter.checkAlreadyExist(ONEDRIVE))
-            SnackBarHandler.show(coordinatorLayout,"Already Signed In");
+            SnackBarHandler.show(parentLayout,"Already Signed In");
         else
             cloudRailServices.prepare(this);
             cloudRailServices.oneDriveLogin();
@@ -471,7 +519,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             @Override
             public void callBack(int status, Object data) {
                 if (status == SUCCESS) {
-                    SnackBarHandler.show(coordinatorLayout, R.string.account_logged);
+                    SnackBarHandler.show(parentLayout, R.string.account_logged);
                     if (data instanceof Bundle) {
                         Bundle bundle = (Bundle) data;
                         realm.beginTransaction();
@@ -506,13 +554,13 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                 realm.commitTransaction();
                 finish();
                 startActivity(getIntent());
-                SnackBarHandler.show(coordinatorLayout, getString(R.string.account_logged_pinterest));
+                SnackBarHandler.show(parentLayout, getString(R.string.account_logged_pinterest));
             }
 
             @Override
             public void onFailure(PDKException exception) {
                 Log.e(getClass().getName(), exception.getDetailMessage());
-                SnackBarHandler.show(coordinatorLayout, R.string.pinterest_signIn_fail);
+                SnackBarHandler.show(parentLayout, R.string.pinterest_signIn_fail);
             }
         });
     }
@@ -530,7 +578,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             @Override
             public void callBack(int status, Object data) {
                 if (status == SUCCESS) {
-                    SnackBarHandler.show(coordinatorLayout, getString(R.string.account_logged_twitter));
+                    SnackBarHandler.show(parentLayout, getString(R.string.account_logged_twitter));
                     if (data instanceof Bundle) {
                         Bundle bundle = (Bundle) data;
                         realm.beginTransaction();
@@ -575,7 +623,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                                         try {
                                             account.setUsername(jsonObject.getString("name"));
                                             realm.commitTransaction();
-                                            SnackBarHandler.show(coordinatorLayout, getString(R.string.logged_in_facebook));
+                                            SnackBarHandler.show(parentLayout, getString(R.string.logged_in_facebook));
                                         } catch (JSONException e) {
                                             Log.e("LoginAct", e.toString());
                                         }
@@ -589,12 +637,12 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
                     @Override
                     public void onCancel() {
-                        SnackBarHandler.show(coordinatorLayout, getString(R.string.facebook_login_cancel));
+                        SnackBarHandler.show(parentLayout, getString(R.string.facebook_login_cancel));
                     }
 
                     @Override
                     public void onError(FacebookException e) {
-                        SnackBarHandler.show(coordinatorLayout, getString(R.string.facebook_login_error));
+                        SnackBarHandler.show(parentLayout, getString(R.string.facebook_login_error));
                         Log.d("error", e.toString());
                     }
                 });
@@ -737,7 +785,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        SnackBarHandler.show(coordinatorLayout, getApplicationContext().getString(R.string.connection_failed));
+        SnackBarHandler.show(parentLayout, getApplicationContext().getString(R.string.connection_failed));
     }
 
 

@@ -7,6 +7,8 @@ import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,12 +16,13 @@ import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
 
+import java.util.ArrayList;
+import java.util.Objects;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.realm.Realm;
-import io.realm.RealmQuery;
 
-import static org.fossasia.phimpme.data.local.AccountDatabase.HIDEINACCOUNTS;
+
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
 
@@ -27,16 +30,17 @@ import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
  * Created by pa1pal on 7/7/17.
  */
 
-public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHolder> {
-    private Realm realm = Realm.getDefaultInstance();
-    private RealmQuery<AccountDatabase> realmResult = realm.where(AccountDatabase.class);
+public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHolder> implements Filterable {
     public int switchAccentColor;
+    public ArrayList<AccountDatabase>list;
     public int switchBackgroundColor;
     private ThemeHelper themeHelper;
+    private CustomFilter filter;
 
-    public AccountAdapter() {
+    public AccountAdapter(ArrayList<AccountDatabase> newlist) {
         themeHelper = new ThemeHelper(getContext());
         updateTheme();
+        this.list=newlist;
         this.switchAccentColor = themeHelper.getAccentColor();
         this.switchBackgroundColor = themeHelper.getPrimaryColor();
     }
@@ -56,18 +60,18 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        realmResult = realm.where(AccountDatabase.class);
-       // themeHelper.updateSwitchColor(holder.signInSignOutSwitch, switchBackgroundColor);
-        String name = AccountDatabase.AccountName.values()[position].toString();
-        if (realmResult.equalTo("name", name).count() > 0){
-            holder.accountName.setText(realmResult
-                    .equalTo("name", name).findAll()
-                    .first().getUsername());
+        // themeHelper.updateSwitchColor(holder.signInSignOutSwitch, switchBackgroundColor);
+        String name = list.get(position).getName();
+
+        if (Objects.equals(list.get(position).getUsername(), "Nouser")){
+            holder.accountName.setText(name);
+        } else {
+            holder.accountName.setText(list.get(position).getUsername());
             holder.signInSignOutSwitch.setChecked(true);
             themeHelper.updateSwitchColor(holder.signInSignOutSwitch, switchAccentColor);
-        } else {
-            holder.accountName.setText(name);
         }
+
+
 
         Integer id = getContext().getResources().getIdentifier(context.getString(R.string.ic_) +
                         (name.toLowerCase()) + "_black"
@@ -105,12 +109,19 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
          * whatsapp, Instagram , googleplus and others option is only required in the Sharing activity.
          */
         //return AccountDatabase.AccountName.values().length - HIDEINACCOUNTS;
-        return AccountDatabase.AccountName.values().length - HIDEINACCOUNTS;
+        return list.size();
     }
 
-    public void setResults(RealmQuery<AccountDatabase> results) {
-        realmResult = results;
-        notifyDataSetChanged();
+
+
+    @Override
+    public Filter getFilter() {
+        if(filter==null)
+        {
+            filter=new CustomFilter(this);
+        }
+
+        return filter;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
@@ -132,6 +143,45 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+    }
+    public class CustomFilter extends Filter{
+        AccountAdapter adapter;
+
+
+        public CustomFilter( AccountAdapter adapter)
+        {
+            this.adapter=adapter;
+
+        }
+
+        //FILTERING OCURS
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            FilterResults results=new FilterResults();
+            String  query =constraint.toString().toUpperCase();
+            ArrayList<AccountDatabase> filtered=new ArrayList<>();
+
+            for (int i=0;i<adapter.list.size();i++)
+            {
+                //CHECK
+                if(adapter.list.get(i).getName().toUpperCase().contains(query))
+                {
+                    //ADD FILTERED DATA TO  NEW LIST
+                    filtered.add(adapter.list.get(i));
+                }
+            }
+            results.values=filtered;
+            results.count=filtered.size();
+            adapter.list=filtered;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+
+            //REFRESH
+            adapter.notifyDataSetChanged();
         }
     }
 }
