@@ -95,12 +95,6 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
             holder.imageView.clearColorFilter();
             holder.layout.setPadding(0, 0, 0, 0);
         }
-
-        if (!Realm.getDefaultInstance().where(FavouriteImagesModel.class).equalTo("path", f.getPath()).findAll()
-                .isEmpty() && !fav)
-            holder.favourite.setVisibility(View.VISIBLE);
-        else
-            holder.favourite.setVisibility(View.GONE);
     }
 
     @Override
@@ -131,8 +125,6 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
         protected TextView path;
         @BindView(R.id.icon)
         protected IconicsImageView icon;
-        @BindView(R.id.favourite)
-        protected ImageView favourite;
 
         ViewHolder(View itemView) {
             super(itemView);
