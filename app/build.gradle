@@ -130,6 +130,7 @@ dependencies {
     compile 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
     compile 'com.mikepenz:community-material-typeface:1.5.54.2@aar'
     compile 'com.mikepenz:fontawesome-typeface:4.6.0.1@aar'
+    compile 'com.mikepenz:ionicons-typeface:+@aar'
 
     //ui
     compile 'de.hdodenhof:circleimageview:2.0.0'
