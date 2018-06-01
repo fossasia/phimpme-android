@@ -687,6 +687,7 @@
         <item>Edgify</item>
         <item>Pencil Sketch</item>
         <item>Violet Tone</item>
+        <item>Yellow Enhance</item>
     </string-array>
 
     <integer-array name="enhance_icons">
