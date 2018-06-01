@@ -130,4 +130,5 @@ void applyCartoon(cv::Mat &src, cv::Mat &dst, int val);
 void applyEdgify(cv::Mat &src, cv::Mat &dst, int val);
 void applyPencilSketch(cv::Mat &src, cv::Mat &dst, int val);
 void applyRedBlueEffect(cv::Mat &src, cv::Mat &dst, int val);
+void applyRedGreenFilter(cv::Mat &src, cv::Mat &dst, int val);
 }
