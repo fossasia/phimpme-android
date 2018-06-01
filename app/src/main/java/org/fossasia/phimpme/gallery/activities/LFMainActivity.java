@@ -1586,6 +1586,13 @@ public class LFMainActivity extends SharedMediaActivity {
         else
             starImageView.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_ATOP);
     }
+    private void showsnackbar(Boolean result) {
+        if(result) {
+            SnackBarHandler.show(mDrawerLayout,getApplicationContext().getString(R.string.photo_deleted_msg), navigationView.getHeight());
+        } else {
+            SnackBarHandler.show(mDrawerLayout,getApplicationContext().getString(R.string.photo_deletion_failed), navigationView.getHeight());
+        }
+    }
 
     private void checkNoSearchResults(String result){
         textView.setText(getString(R.string.null_search_result) + " " + '"' + result + '"' );
@@ -1995,6 +2002,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                         getAlbums().removeCurrentAlbum();
                                         albumsAdapter.notifyDataSetChanged();
                                         displayAlbums();
+                                        showsnackbar(succ);
                                         swipeRefreshLayout.setRefreshing(true);
                                     } else
                                         mediaAdapter.swapDataSet(getAlbum().getMedia(), false);
@@ -2003,6 +2011,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                     listAll = StorageProvider.getAllShownImages(LFMainActivity.this);
                                     media = listAll;
                                     size = listAll.size();
+                                    showsnackbar(succ);
                                     Collections.sort(listAll, MediaComparators.getComparator(getAlbum().settings
                                             .getSortingMode(), getAlbum().settings.getSortingOrder()));
                                     mediaAdapter.swapDataSet(listAll, false);

@@ -88,6 +88,9 @@ extern "C" {
             case 22:
                 applyRedBlueEffect(src,dst,val);
                 break;
+            case 23:
+                applyRedGreenFilter(src,dst,val);
+                break; 
             default:
 
                 int lowThreshold = val;
