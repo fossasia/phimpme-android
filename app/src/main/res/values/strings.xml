@@ -684,6 +684,7 @@
     <!--ABOUT STRINGS-->
     <string name="about">About</string>
     <string name="about_version">Version</string>
+    <string name="connect_to_us">Connect to us</string>
 
     <string name="about_license"> License</string>
     <string name="about_license_sub">Check GNU GENERAL PUBLIC License terms used on Phimp.me.</string>
@@ -715,6 +716,15 @@
     <string name="about_special_thanks_you_sub">
 
     </string>
+
+    <string name="about_fb_connect">Facebook</string>
+    <string name="about_fb_connect_sub">Connect to us on Facebook.</string>
+    <string name="about_twitter_connect">Twitter</string>
+    <string name="about_twitter_connect_sub">Follow us on Twitter.</string>
+    <string name="about_website_connect">Phimp.me</string>
+    <string name="about_website_connect_sub">Visit our website here.</string>
+
+
 
 
     <string name="about_support_report_bug">Report bug</string>
@@ -1170,6 +1180,10 @@
 
     <string name="select_a_font">Select a Font</string>
 
+    <!-- Photo deletion toast messages -->
+    <string name="photo_deleted_msg">Photo deleted</string>
+    <string name="photo_deleted_from_fav_msg">Photo deleted from favourites</string>
+    <string name="photo_deletion_failed">Photo deletion failed</string>
     <string name="remove">Remove</string>
     <string name="remove_from_favourites">Remove From Favourites</string>
     <string name="remove_favourites_body">Are you sure you want to remove the selected media from the favourites folder? </string>
