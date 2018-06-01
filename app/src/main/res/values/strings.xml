@@ -683,6 +683,7 @@
     <!--ABOUT STRINGS-->
     <string name="about">About</string>
     <string name="about_version">Version</string>
+    <string name="connect_to_us">Connect to us</string>
 
     <string name="about_license"> License</string>
     <string name="about_license_sub">Check GNU GENERAL PUBLIC License terms used on Phimp.me.</string>
@@ -714,6 +715,15 @@
     <string name="about_special_thanks_you_sub">
 
     </string>
+
+    <string name="about_fb_connect">Facebook</string>
+    <string name="about_fb_connect_sub">Connect to us on Facebook.</string>
+    <string name="about_twitter_connect">Twitter</string>
+    <string name="about_twitter_connect_sub">Follow us on Twitter.</string>
+    <string name="about_website_connect">Phimp.me</string>
+    <string name="about_website_connect_sub">Visit our website here.</string>
+
+
 
 
     <string name="about_support_report_bug">Report bug</string>

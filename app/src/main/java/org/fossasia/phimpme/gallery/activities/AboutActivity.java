@@ -1,6 +1,10 @@
 package org.fossasia.phimpme.gallery.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -30,7 +34,7 @@ import de.psdev.licensesdialog.model.Notices;
 public class AboutActivity extends ThemedActivity {
 
     private Toolbar toolbar;
-
+    
     /**** CustomTabService*/
     private CustomTabService cts;
 
@@ -87,6 +91,7 @@ public class AboutActivity extends ThemedActivity {
         ((TextView) findViewById(R.id.about_support_title)).setTextColor(color);
         ((TextView) findViewById(R.id.about_license_title)).setTextColor(color);
         ((TextView) findViewById(R.id.about_special_thanks_title)).setTextColor(color);
+        ((TextView) findViewById(R.id.connect_to_us_title)).setTextColor(color);
 
         /***** LeafPic Header *****/
         /*
@@ -164,6 +169,55 @@ public class AboutActivity extends ThemedActivity {
             public void onClick(View v) {licenseDialog();}
         });
 
+        //Website
+        findViewById(R.id.ll_about_website).setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("http://phimp.me/"));
+                startActivity(intent);
+            }
+        });
+
+        //Facebook page
+        findViewById(R.id.ll_about_Facebook).setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View view) {
+                Intent facebookIntent = new Intent(Intent.ACTION_VIEW);
+                String facebookUrl = getFacebookPageURL(getApplicationContext());
+                facebookIntent.setData(Uri.parse(facebookUrl));
+                startActivity(facebookIntent);
+            }
+        });
+
+        //Twitter page
+        findViewById(R.id.ll_about_twitter_connect).setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View view) {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("twitter://user?screen_name=[phimpme]"));
+                    startActivity(intent);
+                } catch (Exception e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("https://twitter.com/#!/[phimpme]")));
+                }
+            }
+        });
+
+    }
+
+    public String getFacebookPageURL(Context context) {
+
+        PackageManager packageManager = context.getPackageManager();
+        try {
+            int versionCode = packageManager.getPackageInfo("com.facebook.katana", 0).versionCode;
+            if (versionCode >= 3002850) { //newer versions of fb app
+                return "fb://facewebmodal/f?href=" + "https://www.facebook.com/phimpmeapp";
+            } else { //older versions of fb app
+                return "fb://page/" + "phimpmeapp";
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            return "https://www.facebook.com/phimpmeapp"; //normal web url
+        }
     }
 
     private void setThemeOnChangeListener(){
@@ -177,6 +231,8 @@ public class AboutActivity extends ThemedActivity {
         ((CardView) findViewById(R.id.about_special_thanks_card)).setCardBackgroundColor(color);
         ((CardView) findViewById(R.id.about_support_card)).setCardBackgroundColor(color);
         ((CardView) findViewById(R.id.about_license_card)).setCardBackgroundColor(color);
+        ((CardView) findViewById(R.id.connect_card)).setCardBackgroundColor(color);
+
         //cvSpecialThanks.setBackgroundColor(color);
 
         /** Icons **/
@@ -189,6 +245,12 @@ public class AboutActivity extends ThemedActivity {
         ((IconicsImageView) findViewById(R.id.about_support_github_icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.about_support_report_bug_icon)).setColor(color);
 
+        //CONNECT ICONS
+        ((IconicsImageView) findViewById(R.id.about_website_icon)).setColor(color);
+        ((IconicsImageView) findViewById(R.id.about_fb_page_icon)).setColor(color);
+        ((IconicsImageView) findViewById(R.id.about_twitter_connect_icon)).setColor(color);
+
+
         /** TextViews **/
         color = getTextColor();
         ((TextView) findViewById(R.id.about_libs_item)).setTextColor(color);
@@ -196,6 +258,9 @@ public class AboutActivity extends ThemedActivity {
         ((TextView) findViewById(R.id.about_support_github_item)).setTextColor(color);
         ((TextView) findViewById(R.id.about_license_item)).setTextColor(color);
         ((TextView) findViewById(R.id.about_support_report_bug_item)).setTextColor(color);
+        ((TextView) findViewById(R.id.Website_tv)).setTextColor(color);
+        ((TextView) findViewById(R.id.about_fb_item)).setTextColor(color);
+        ((TextView) findViewById(R.id.about_twitter_tv_item)).setTextColor(color);
 
         /** Sub Text Views**/
         color = getSubTextColor();
@@ -208,6 +273,9 @@ public class AboutActivity extends ThemedActivity {
         ((TextView) findViewById(R.id.about_support_github_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.about_license_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.about_support_report_bug_sub)).setTextColor(color);
+        ((TextView) findViewById(R.id.about_website_item_sub)).setTextColor(color);
+        ((TextView) findViewById(R.id.about_fb_item_sub)).setTextColor(color);
+        ((TextView) findViewById(R.id.about_twitter_tv_item_sub)).setTextColor(color);
     }
 
     private void licenseDialog() {
