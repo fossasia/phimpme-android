@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.MediaScannerConnection;
 
 import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.gallery.adapters.AlbumsAdapter;
 import org.fossasia.phimpme.gallery.data.providers.StorageProvider;
 import org.fossasia.phimpme.gallery.data.base.AlbumsComparators;
 import org.fossasia.phimpme.gallery.data.base.SortingMode;
@@ -58,7 +59,7 @@ public class HandlingAlbums {
       list.addAll(MediaStoreProvider.getAlbums(context, hidden));
     }
     dispAlbums = list;
-    sortAlbums(context);
+    sortAlbums();
   }
 
   public void addAlbum(int position, Album album) {
@@ -75,6 +76,10 @@ public class HandlingAlbums {
   public Album getCurrentAlbum() {
     return dispAlbums.get(current);
   }
+
+    public int getCurrentAlbumIndex(Album album) {
+        return dispAlbums.indexOf(album);
+    }
 
   public void saveBackup(final Context context) {
     if (!hidden) {
@@ -294,22 +299,33 @@ public class HandlingAlbums {
     SP.putInt("albums_sorting_order", sortingOrder.getValue());
   }
 
-  public void sortAlbums(final Context context) {
+  public void sortAlbums() {
+    Collections.sort(dispAlbums, AlbumsComparators.getComparator(getSortingMode(), getSortingOrder()));
+  }
 
-    Album camera = null;
+  public void selectAllPhotosUpToAlbums(int targetIndex, AlbumsAdapter adapter) {
+      int indexRightBeforeOrAfter = -1;
+      int indexNow;
+      for (Album selectedAlbum : selectedAlbums) {
+          indexNow = dispAlbums.indexOf(selectedAlbum);
 
-    for(Album album : dispAlbums)
-      if (album.getName().equals("Phimpme Camera") && dispAlbums.remove(album)) {
-        camera = album;
-        break;
+          if (indexRightBeforeOrAfter == -1)
+              indexRightBeforeOrAfter = indexNow;
+
+          if (indexNow > targetIndex)
+              break;
+          indexRightBeforeOrAfter = indexNow;
       }
 
-    Collections.sort(dispAlbums, AlbumsComparators.getComparator(getSortingMode(), getSortingOrder()));
-
-    if (camera != null) {
-      camera.setName(context.getString(R.string.phimpme_camera));
-      dispAlbums.add(0, camera);
-    }
+      if (indexRightBeforeOrAfter != -1) {
+          for (int index = Math.min(targetIndex, indexRightBeforeOrAfter); index < Math.max(targetIndex, indexRightBeforeOrAfter); index++) {
+              if (dispAlbums.get(index) != null && !dispAlbums.get(index).isSelected()) {
+                  dispAlbums.get(index).setSelected(true);
+                  selectedAlbums.add(dispAlbums.get(index));
+                  adapter.notifyItemChanged(index);
+              }
+          }
+      }
   }
 
   public Album getSelectedAlbum(int index) { return selectedAlbums.get(index); }

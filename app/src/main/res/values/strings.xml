@@ -433,6 +433,7 @@
     <string name="unhide">Unhide</string>
     <string name="zip">Zip</string>
     <string name="ok_action">OK</string>
+    <string name="openfav">Open</string>
     <string name="cancel_zip">Zip operation Canceled...</string>
     <string name="zip_action">Zipping the folder.....</string>
     <string name="zip_location">Zip saved to location: </string>
@@ -1083,11 +1084,14 @@
     <string name="image_invalid">Invalid Image</string>
 
     <!--Captioning-->
+    <string name="caption">Caption</string>
     <string name="caption_head">Add Caption</string>
     <string name="add_action">ADD</string>
     <string name="speech_prompt">Describe the photo</string>
     <string name="speech_prompt_caption">Say something</string>
     <string name="discard_changes_header">Discard Changes</string>
+    <string name="copy_caption">Do you want to copy caption?</string>
+    <string name="caption_copied">Caption copied!</string>
 
     <!--Showcase View-->
     <string name="home_button">Find all your photos in the device</string>
@@ -1164,6 +1168,10 @@
 
     <string name="select_a_font">Select a Font</string>
 
+    <!-- Photo deletion toast messages -->
+    <string name="photo_deleted_msg">Photo deleted</string>
+    <string name="photo_deleted_from_fav_msg">Photo deleted from favourites</string>
+    <string name="photo_deletion_failed">Photo deletion failed</string>
     <string name="remove">Remove</string>
     <string name="remove_from_favourites">Remove From Favourites</string>
     <string name="remove_favourites_body">Are you sure you want to remove the selected media from the favourites folder? </string>

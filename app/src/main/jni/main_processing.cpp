@@ -80,6 +80,18 @@ extern "C" {
                 applyCartoon(src, dst, val);
                 break;
             case 20:
+                applyEdgify(src, dst, val);
+                break;
+            case 21:
+                applyPencilSketch(src, dst, val);
+                break;
+            case 22:
+                applyRedBlueEffect(src,dst,val);
+                break;
+            case 23:
+                applyRedGreenFilter(src,dst,val);
+                break; 
+            case 24:
                 applyCoolMap(src, dst, val);
                 break;
             default:

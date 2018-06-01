@@ -684,8 +684,12 @@
         <item>Cyanisation</item>
         <item>Fade</item>
         <item>Cartoonify</item>
+        <item>Edgify</item>
+        <item>Pencil Sketch</item>
+        <item>Violet Tone</item>
+        <item>Yellow Enhance</item>
         <item>CoolMap</item>
-  </string-array>
+    </string-array>
 
     <integer-array name="enhance_icons">
         <item>@drawable/ic_bright</item>
