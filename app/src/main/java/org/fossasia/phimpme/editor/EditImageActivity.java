@@ -27,13 +27,16 @@ import org.fossasia.phimpme.editor.fragment.PaintFragment;
 import org.fossasia.phimpme.editor.fragment.RecyclerMenuFragment;
 import org.fossasia.phimpme.editor.fragment.RotateFragment;
 import org.fossasia.phimpme.editor.fragment.SliderFragment;
+import org.fossasia.phimpme.editor.fragment.SquareFragment;
 import org.fossasia.phimpme.editor.fragment.StickersFragment;
+import org.fossasia.phimpme.editor.fragment.ThreeItemFragment;
 import org.fossasia.phimpme.editor.fragment.TwoItemFragment;
 import org.fossasia.phimpme.editor.utils.BitmapUtils;
 import org.fossasia.phimpme.editor.utils.FileUtil;
 import org.fossasia.phimpme.editor.view.CropImageView;
 import org.fossasia.phimpme.editor.view.CustomPaintView;
 import org.fossasia.phimpme.editor.view.RotateImageView;
+import org.fossasia.phimpme.editor.view.SquareImageView;
 import org.fossasia.phimpme.editor.view.StickerView;
 import org.fossasia.phimpme.editor.view.TextStickerView;
 import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouch;
@@ -77,6 +80,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     public static final int MODE_ROTATE = 9;
     public static final int MODE_TEXT = 10;
     public static final int MODE_PAINT = 11;
+    public static final int MODE_SQUARE = 12;
+
 
     public String filePath;
     public String saveFilePath;
@@ -123,6 +128,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     public CropImageView mCropPanel;// Cut operation control
     @Nullable @BindView(R.id.rotate_panel)
     public RotateImageView mRotatePanel;//Rotation operation controls
+    @Nullable @BindView(R.id.square_panel)
+    public SquareImageView mSquarePanel;//Square operation controls
     @Nullable @BindView(R.id.text_sticker_panel)
     public TextStickerView mTextStickerView;//Text display map View
     @Nullable @BindView(R.id.custom_paint_view)
@@ -138,11 +145,13 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     public RecyclerMenuFragment filterFragment, enhanceFragment,stickerTypesFragment;
     public StickersFragment stickersFragment;
     public SliderFragment sliderFragment;
-    public TwoItemFragment writeFragment,adjustFragment;
+    public TwoItemFragment writeFragment;
+    public ThreeItemFragment adjustFragment;
     public AddTextFragment addTextFragment;
     public PaintFragment paintFragment;
     public CropFragment cropFragment;
     public RotateFragment rotateFragment;
+    public SquareFragment squareFragment;
     private static String stickerType;
 
     @Override
@@ -217,12 +226,14 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         filterFragment = RecyclerMenuFragment.newInstance(MODE_FILTERS);
         enhanceFragment = RecyclerMenuFragment.newInstance(MODE_ENHANCE);
         stickerTypesFragment = RecyclerMenuFragment.newInstance(MODE_STICKER_TYPES);
-        adjustFragment = TwoItemFragment.newInstance(MODE_ADJUST);
+//        adjustFragment = RecyclerMenuFragment.newInstance(MODE_ADJUST);
+        adjustFragment = ThreeItemFragment.newInstance(MODE_ADJUST);
         writeFragment = TwoItemFragment.newInstance(MODE_WRITE);
         addTextFragment = AddTextFragment.newInstance();
         paintFragment = PaintFragment.newInstance();
         cropFragment = CropFragment.newInstance();
         rotateFragment = RotateFragment.newInstance();
+        squareFragment = SquareFragment.newInstance();
 
     }
 
@@ -255,6 +266,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
             case MODE_CROP:
             case MODE_ROTATE:
             case MODE_SLIDER:
+            case MODE_SQUARE:
         }
     }
 
@@ -291,6 +303,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                 return cropFragment;
             case MODE_ROTATE:
                 return rotateFragment;
+            case MODE_SQUARE:
+                return squareFragment;
         }
         return mainMenuFragment;
     }
@@ -335,6 +349,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
             case MODE_STICKERS:
             case MODE_CROP:
             case MODE_ROTATE:
+            case MODE_SQUARE:
             case MODE_TEXT:
             case MODE_PAINT:
                 save.setVisibility(View.INVISIBLE);
@@ -660,6 +675,9 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
             case MODE_ROTATE:
                 showDiscardChangesDialog(MODE_ROTATE,R.string.discard_rotate_message);
                 return;
+            case MODE_SQUARE:
+                showDiscardChangesDialog(MODE_SQUARE,R.string.discard_square_message);
+                return;
             case MODE_TEXT:
                 showDiscardChangesDialog(MODE_TEXT,R.string.discard_text_message);
                 return;
@@ -725,6 +743,9 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                         break;
                     case MODE_ROTATE:
                         rotateFragment.backToMain();
+                        break;
+                    case MODE_SQUARE:
+                        squareFragment.backToMain();
                         break;
                     case MODE_TEXT:
                         addTextFragment.backToMain();

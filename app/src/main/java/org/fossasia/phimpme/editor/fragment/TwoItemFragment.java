@@ -52,19 +52,12 @@ public class TwoItemFragment extends BaseEditFragment implements View.OnClickLis
         ll_item1.setOnClickListener(this);
         ll_item2.setOnClickListener(this);
 
-        if (mode == EditImageActivity.MODE_WRITE) {
-            icon1.setImageResource(R.drawable.ic_text);
-            icon2.setImageResource(R.drawable.ic_paint);
+        icon1.setImageResource(R.drawable.ic_text);
+        icon2.setImageResource(R.drawable.ic_paint);
 
-            text1.setText(getString(R.string.text));
-            text2.setText(getString(R.string.paint));
-        }else {
-            icon1.setImageResource(R.drawable.ic_crop);
-            icon2.setImageResource(R.drawable.ic_rotate);
+        text1.setText(getString(R.string.text));
+        text2.setText(getString(R.string.paint));
 
-            text1.setText(getString(R.string.crop));
-            text2.setText(getString(R.string.rotate));
-        }
 
         return view;
     }
@@ -103,23 +96,13 @@ public class TwoItemFragment extends BaseEditFragment implements View.OnClickLis
 
 
     private void firstItemClicked() {
-        if (mode == EditImageActivity.MODE_ADJUST){
-            activity.changeMode(EditImageActivity.MODE_CROP);
-            activity.changeBottomFragment(EditImageActivity.MODE_CROP);
-        }else if (mode == EditImageActivity.MODE_WRITE){
-            activity.changeMode(EditImageActivity.MODE_TEXT);
-            activity.changeBottomFragment(EditImageActivity.MODE_TEXT);
-        }
+        activity.changeMode(EditImageActivity.MODE_TEXT);
+        activity.changeBottomFragment(EditImageActivity.MODE_TEXT);
     }
 
     private void secondItemClicked() {
-        if (mode == EditImageActivity.MODE_ADJUST){
-            activity.changeMode(EditImageActivity.MODE_ROTATE);
-            activity.changeBottomFragment(EditImageActivity.MODE_ROTATE);
-        }else if (mode == EditImageActivity.MODE_WRITE){
-            activity.changeMode(EditImageActivity.MODE_PAINT);
-            activity.changeBottomFragment(EditImageActivity.MODE_PAINT);
-        }
+        activity.changeMode(EditImageActivity.MODE_PAINT);
+        activity.changeBottomFragment(EditImageActivity.MODE_PAINT);
     }
 
 }
