@@ -126,5 +126,9 @@ void applyColorBoostEffect(cv::Mat &src, cv::Mat &dst, int val);
 void applyBlueBoostEffect(cv::Mat &src, cv::Mat &dst, int val);
 void applyCyanise(cv::Mat &src, cv::Mat &dst, int val);
 void applyFade(cv::Mat &src, cv::Mat &dst, int val);
-
+void applyCartoon(cv::Mat &src, cv::Mat &dst, int val);
+void applyEdgify(cv::Mat &src, cv::Mat &dst, int val);
+void applyPencilSketch(cv::Mat &src, cv::Mat &dst, int val);
+void applyRedBlueEffect(cv::Mat &src, cv::Mat &dst, int val);
+void applyRedGreenFilter(cv::Mat &src, cv::Mat &dst, int val);
 }
