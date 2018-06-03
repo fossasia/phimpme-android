@@ -45,7 +45,7 @@ public class MyApplication extends Application {
     private HandlingAlbums albums = null;
     public static Context applicationContext;
     public ImageLoader imageLoader;
-    private Boolean isPublished = false; // Set this to true at the time of release
+    private Boolean isPublished = true; // Set this to true at the time of release
     private RefWatcher refWatcher;
     public Album getAlbum() {
         return albums.dispAlbums.size() > 0 ? albums.getCurrentAlbum() : Album.getEmptyAlbum();
