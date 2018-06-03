@@ -33,7 +33,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-
         }
         debug {
             testCoverageEnabled false
@@ -163,20 +162,17 @@ dependencies {
     compile "com.github.nextcloud:android-library:$rootProject.nextCloudVersion"
 
     //leak canary
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
 
     //flickr
     compile files('libs/flickrj-android-2.1.0.jar')
 
     //tumblr
-    compile ('com.tumblr:jumblr:0.0.11'){
-        exclude module:'scribe'
+    compile('com.tumblr:jumblr:0.0.11') {
+        exclude module: 'scribe'
     }
 
-    }
-    debugCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     //realm
     compile 'com.uphyca:stetho_realm:2.0.0'
 
@@ -195,6 +191,7 @@ dependencies {
 
     //photoview
     compile project(':photoview')
+}
 
 apply plugin: 'com.google.gms.google-services'
 

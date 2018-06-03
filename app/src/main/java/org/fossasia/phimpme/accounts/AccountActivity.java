@@ -153,7 +153,8 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         setSupportActionBar(toolbar);
         loginManager = LoginManager.getInstance();
         toolbar.setPopupTheme(getPopupToolbarStyle());
-        toolbar.setBackgroundColor(getPrimaryColor());
+        ThemeHelper themeHelper = new ThemeHelper(getContext());
+        toolbar.setBackgroundColor(themeHelper.getPrimaryColor());
         setUpRecyclerView();
         accountPresenter.loadFromDatabase();  // Calling presenter function to load data from database
         getSupportActionBar().setTitle(R.string.title_account);
