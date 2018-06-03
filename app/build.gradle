@@ -1,8 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
 apply plugin: 'jacoco-android'
 apply plugin: 'realm-android'
-apply plugin: 'com.google.firebase.firebase-perf'
 
 def keystorePropertiesFile = rootProject.file("sample_keystore.properties")
 
@@ -32,9 +30,8 @@ android {
     buildTypes {
         release {
             minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-
-
         }
         debug {
             testCoverageEnabled false
@@ -117,9 +114,6 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.yalantis:ucrop:1.5.0'
     compile 'de.psdev.licensesdialog:licensesdialog:1.8.0'
-    compile('com.crashlytics.sdk.android:crashlytics:2.9.3@aar') {
-        transitive = true;
-    }
     compile 'com.daksh:loglr:1.2.1'
     compile 'com.koushikdutta.ion:ion:2.1.7'
     compile 'org.jetbrains:annotations-java5:15.0'
@@ -158,15 +152,15 @@ dependencies {
     compile "com.github.nextcloud:android-library:$rootProject.nextCloudVersion"
 
     //leak canary
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
 
     //flickr
     compile files('libs/flickrj-android-2.1.0.jar')
 
     //tumblr
-    compile ('com.tumblr:jumblr:0.0.11'){
-        exclude module:'scribe'
+    compile('com.tumblr:jumblr:0.0.11') {
+        exclude module: 'scribe'
     }
 
     //realm
@@ -187,7 +181,6 @@ dependencies {
 
     //photoview
     compile project(':photoview')
-
 }
 
 buildscript {

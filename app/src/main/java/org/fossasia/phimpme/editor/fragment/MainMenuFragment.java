@@ -55,7 +55,9 @@ public class MainMenuFragment extends BaseEditFragment implements View.OnClickLi
     @Override
     public void onDestroy() {
         super.onDestroy();
-        MyApplication.getRefWatcher(getActivity()).watch(this);
+        if(MyApplication.isLeakCanaryInstalled){
+            MyApplication.getRefWatcher(getActivity()).watch(this);
+        }
     }
     @Override
     public void onShow() {

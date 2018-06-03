@@ -390,6 +390,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 }
             });
             mViewPager.scrollToPosition(all_photo_pos);
+
         } else if(!allPhotoMode && favphotomode && !upoadhis){
             adapter = new ImageAdapter(favouriteslist, basicCallBack, this, this);
             getSupportActionBar().setTitle(all_photo_pos + 1 + " " + getString(R.string.of) + " " + size_all);

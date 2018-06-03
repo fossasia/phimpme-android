@@ -106,7 +106,9 @@ public class RotateFragment extends BaseEditFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        MyApplication.getRefWatcher(getActivity()).watch(this);
+        if(MyApplication.isLeakCanaryInstalled){
+            MyApplication.getRefWatcher(getActivity()).watch(this);
+        }
     }
 
     @Override
