@@ -59,7 +59,6 @@ import com.facebook.messenger.ShareToMessengerParams;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
-import com.google.android.gms.plus.PlusShare;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.owncloud.android.lib.common.OwnCloudClient;
@@ -376,10 +375,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                         shareToWhatsapp();
                         break;
 
-                    case GOOGLEPLUS:
-                        shareToGoogle();
-                        break;
-
                     case MESSENGER:
                         shareToMessenger();
                         break;
@@ -465,17 +460,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             SnackBarHandler.show(parent, R.string.login_box);
         }
     }
-
-    private void shareToGoogle() {
-        NotificationHandler.make(R.string.googlePlus, R.string.upload_progress, R.drawable.ic_cloud_upload_black_24dp);
-        Uri uri = getImageUri(SharingActivity.this, saveFilePath);
-        PlusShare.Builder share = new PlusShare.Builder(SharingActivity.this);
-        share.setText(caption);
-        share.addStream(uri);
-        share.setType(getResources().getString(R.string.image_type));
-        startActivityForResult(share.getIntent(), REQ_SELECT_PHOTO);
-    }
-
 
     private class UploadToBox extends AsyncTask<Void, Integer, Void> {
         private FileInputStream inputStream;
