@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'jacoco-android'
 apply plugin: 'realm-android'
-apply plugin: 'com.google.firebase.firebase-perf'
 
 def keystorePropertiesFile = rootProject.file("sample_keystore.properties")
 
@@ -104,11 +103,6 @@ dependencies {
     compile "com.android.support:palette-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:customtabs:$rootProject.supportLibraryVersion"
-    compile 'com.google.firebase:firebase-core:11.0.2'
-    compile 'com.google.firebase:firebase-messaging:11.0.2'
-    compile "com.google.android.gms:play-services-auth:$rootProject.gmsVersion"
-    compile "com.google.android.gms:play-services-plus:$rootProject.gmsVersion"
-    compile "com.google.firebase:firebase-perf:$rootProject.gmsVersion"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     //exoplayer
@@ -192,8 +186,6 @@ dependencies {
     //photoview
     compile project(':photoview')
 }
-
-apply plugin: 'com.google.gms.google-services'
 
 buildscript {
     repositories {

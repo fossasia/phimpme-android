@@ -30,9 +30,6 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.pinterest.android.pdk.PDKCallback;
 import com.pinterest.android.pdk.PDKClient;
 import com.pinterest.android.pdk.PDKException;
@@ -101,7 +98,7 @@ import static org.fossasia.phimpme.utilities.Utils.checkNetwork;
  */
 
 public class AccountActivity extends ThemedActivity implements AccountContract.View,
-        RecyclerItemClickListner.OnItemClickListener, GoogleApiClient.OnConnectionFailedListener {
+        RecyclerItemClickListner.OnItemClickListener {
 
     private static final int NEXTCLOUD_REQUEST_CODE = 3;
     private static final int OWNCLOUD_REQUEST_CODE = 9;
@@ -130,7 +127,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private Context context;
     private CloudRailServices cloudRailServices;
     private PDKClient pdkClient;
-    private GoogleApiClient mGoogleApiClient;
     private DropboxAPI<AndroidAuthSession> mDBApi;
     private BoxSession sessionBox;
 
@@ -389,11 +385,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                 .enable2FA(true)
                 .setUrlCallBack(Constants.CALL_BACK_TUMBLR)
                 .initiateInActivity(AccountActivity.this);
-    }
-
-    private void signInGooglePlus() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     private void signInDropbox() {
@@ -735,11 +726,5 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             SnackBarHandler.show(parentLayout,R.string.google_auth_fail);
         }
     }*/
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        SnackBarHandler.show(coordinatorLayout, getApplicationContext().getString(R.string.connection_failed));
-    }
-
 
 }
