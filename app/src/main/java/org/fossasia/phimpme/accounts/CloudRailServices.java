@@ -5,12 +5,12 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.cloudrail.si.CloudRail;
+import com.cloudrail.si.exceptions.AuthenticationException;
 import com.cloudrail.si.exceptions.ParseException;
 import com.cloudrail.si.interfaces.CloudStorage;
 import com.cloudrail.si.services.Dropbox;
-import com.cloudrail.si.services.OneDrive;
-
 import com.cloudrail.si.services.GoogleDrive;
+import com.cloudrail.si.services.OneDrive;
 
 import org.fossasia.phimpme.utilities.BasicCallBack;
 import org.fossasia.phimpme.utilities.Constants;
@@ -33,6 +33,7 @@ public class CloudRailServices {
     DropboxLogin dropboxLogin;
     public GoogleDrive googleDrive;
     public static BasicCallBack basicCallBack;
+    private boolean isisignedcancel = false;
     public Dropbox db;
     public OneDrive oneDrive;
 
@@ -76,30 +77,11 @@ public class CloudRailServices {
         return dropbox.get().saveAsString();
     }
 
-    public String getOneDriveToken(){
-
-        return oneDrive.saveAsString();
-    }
-
-    public String getGoogleDriveToken(){
-        return googleDrive.saveAsString();
-    }
-
     public void login()
     {
         dropboxLogin = new DropboxLogin();
         dropboxLogin.execute();
 
-    }
-
-    public void oneDriveLogin(){
-        OneDriveLoginTask  driveLoginTask = new OneDriveLoginTask();
-        driveLoginTask.execute();
-    }
-
-    public void googleDriveLogin(){
-            DriveLogin driveLogin = new DriveLogin();
-            driveLogin.execute();
     }
   
     public void upload(String path, InputStream inputStream, Long size , Boolean overwrite)
@@ -113,57 +95,28 @@ public class CloudRailServices {
        @Override
        protected void onPostExecute(Void aVoid) {
            Log.e(TAG, "Dropbox Login token "+db.saveAsString());
-           basicCallBack.callBack(1,db.saveAsString());
+           if(isisignedcancel){
+               basicCallBack.callBack(0,db.saveAsString());
+           }
+           else{
+               basicCallBack.callBack(1,db.saveAsString());
+           }
        }
 
        @Override
        protected Void doInBackground(Void... params) {
-           db.login();
-           if(!(db.exists(FOLDER))) {
-               db.createFolder(FOLDER);
+           try{
+               db.login();
+               if(!(db.exists(FOLDER))) {
+                   db.createFolder(FOLDER);
+               }
+           }catch(AuthenticationException e){
+               isisignedcancel = true;
+
            }
            return null;
 
        }
-   }
-
-   public class OneDriveLoginTask extends AsyncTask<Void,Void,Void>{
-
-
-       @Override
-       protected Void doInBackground(Void... voids) {
-           oneDrive.login();
-           if (!oneDrive.exists(FOLDER)) {
-               oneDrive.createFolder(FOLDER);
-           }
-           return null;
-       }
-
-       @Override
-       protected void onPostExecute(Void aVoid) {
-           Log.e(TAG, "One Drive Login TOken "+oneDrive.saveAsString());
-           basicCallBack.callBack(3,oneDrive.saveAsString());
-       }
-   }
-     
-   public class DriveLogin extends AsyncTask<Void,Void,Void>{
-
-       @Override
-       protected void onPostExecute(Void aVoid) {
-           Log.e(TAG, "GoogleDriveLogin "+googleDrive.saveAsString() );
-           basicCallBack.callBack(2,googleDrive.saveAsString());
-       }
-
-       @Override
-       protected Void doInBackground(Void... voids) {
-           googleDrive.useAdvancedAuthentication();
-           googleDrive.login();
-           if(!(googleDrive.exists("/phimpme_uploads"))){
-               googleDrive.createFolder("/phimpme_uploads");
-           }
-           return null;
-       }
-
    }
 
    public int loadAsString(){
@@ -179,14 +132,6 @@ public class CloudRailServices {
        }
    }
 
-   public void driveLoadAsString(String s){
-       try{
-           Log.e(TAG,"GOOGLE DRIVE"+s);
-           googleDrive.loadAsString(s);
-       } catch (ParseException e) {
-           e.printStackTrace();
-       }
-   }
    public void loadAsString(String s){
        try {
            Log.e(TAG, "loadAsString:Dropbox Token "+s );
@@ -196,22 +141,9 @@ public class CloudRailServices {
        }
    }
 
-   public void oneDriveLoadAsString(String s){
-       try{
-           Log.e(TAG, "oneDriveLoadAsString: "+s );
-           oneDrive.loadAsString(s);
-       } catch (ParseException e) {
-           e.printStackTrace();
-       }
-   }
-
    public String getDropboxFolderPath(){
        return (FOLDER);
    }
-
-   public String getGoogleDriveFolderPath(){return ("/phimpme_uploads");}
-
-   public boolean checkDriveFolderExist(){ return googleDrive.exists(("/phimpme_uploads"));}
 
    public boolean checkFolderExist(){
        return db.exists(FOLDER);
@@ -222,10 +154,6 @@ public class CloudRailServices {
    public String getOneDriveFolderPath() { return (FOLDER);}
 
    public OneDrive getOneDrive(){ return  oneDrive;}
-     
-   public GoogleDrive getGoogleDrive(){
-       return googleDrive;
-   }
-
 
 }
+

@@ -124,15 +124,11 @@ import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FLICKR;
 
-import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.ONEDRIVE;
-import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.GOOGLEDRIVE;
-
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.OTHERS;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTER;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_SECRET;
 import static org.fossasia.phimpme.utilities.Constants.FAIL;
-import static org.fossasia.phimpme.utilities.Constants.PACKAGE_FACEBOOK;
 import static org.fossasia.phimpme.utilities.Constants.SUCCESS;
 import static org.fossasia.phimpme.utilities.Utils.checkNetwork;
 import static org.fossasia.phimpme.utilities.Utils.copyToClipBoard;
@@ -315,10 +311,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
                 triedUploading = true;
                 switch (sharableAccountsList.get(position)) {
-                    case FACEBOOK:
-                        shareToFacebook();
-                        break;
-
                     case TWITTER:
                         shareToTwitter();
                         break;
@@ -347,10 +339,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                         shareToDropBox();
                         break;
 
-                    case GOOGLEDRIVE:
-                        shareToGoogleDrive();
-                        break;
-
                     case OWNCLOUD:
                         shareToNextCloudAndOwnCloud(getString(R.string.owncloud));
                         break;
@@ -361,10 +349,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
                     case TUMBLR:
                         shareToTumblr();
-                        break;
-
-                    case ONEDRIVE:
-                        shareToOneDrive();
                         break;
 
                     case OTHERS:
@@ -620,82 +604,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             if (success) {
                 NotificationHandler.actionPassed(R.string.upload_complete);
                 SnackBarHandler.show(parent, R.string.uploaded_dropbox);
-                sendResult(Constants.SUCCESS);
-            } else {
-                NotificationHandler.actionFailed();
-                SnackBarHandler.show(parent, R.string.upload_failed);
-                sendResult(FAIL);
-            }
-        }
-    }
-
-
-    private void shareToOneDrive(){
-        cloudRailServices = CloudRailServices.getInstance();
-        cloudRailServices.prepare(this);
-        RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
-        query.equalTo("name",ONEDRIVE.toString());
-        RealmResults<AccountDatabase> results = query.findAll();
-        try{
-            cloudRailServices.oneDriveLoadAsString(results.first().getToken());
-            new UploadToOneDrive().execute();
-        }
-        catch (Exception e){
-            SnackBarHandler.show(parent,R.string.login_onedrive_from_accounts);
-        }
-    }
-
-    private void shareToGoogleDrive(){
-        cloudRailServices = CloudRailServices.getInstance();
-        cloudRailServices.prepare(this);
-        RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
-        //Checking if string is equal or not
-        query.equalTo("name",GOOGLEDRIVE.toString());
-        RealmResults<AccountDatabase> results = query.findAll();
-        try{
-            cloudRailServices.driveLoadAsString(results.first().getToken());
-            new UploadToGoogleDrive().execute();
-        }
-        catch (Exception e){
-            SnackBarHandler.show(parent,R.string.login_googledrive_account);
-        }
-
-    }
-
-    private class UploadToGoogleDrive extends AsyncTask<Void,Void,Void>{
-        Boolean success;
-
-        @Override
-        protected void onPreExecute() {
-            NotificationHandler.make(R.string.googledrive_share,R.string.uploading,R.drawable.ic_cloud_upload_black_24dp);
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            File file = new File(saveFilePath);
-            FileInputStream inputStream = null;
-            try {
-                inputStream = new FileInputStream(file);
-                if(cloudRailServices.checkDriveFolderExist()) {
-                    cloudRailServices.getGoogleDrive().upload(cloudRailServices.getGoogleDriveFolderPath()+"/"+file.getName(), inputStream, file.length(), true);
-                    success = true;
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                success = false;
-            }
-            
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-      
-            if (success) {
-                NotificationHandler.actionPassed(R.string.upload_complete);
-                SnackBarHandler.show(parent, R.string.uploaded_googledrive);
                 sendResult(Constants.SUCCESS);
             } else {
                 NotificationHandler.actionFailed();
@@ -969,28 +877,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             }
         });
     }
-
-    private void shareToFacebook() {
-        PackageManager packageManager = (ActivitySwitchHelper.context).getPackageManager();
-        if (isAppInstalled(PACKAGE_FACEBOOK, packageManager)) {
-            Bitmap image = getBitmapFromPath(saveFilePath);
-            SharePhoto photo = new SharePhoto.Builder()
-                    .setBitmap(image)
-                    .setCaption(caption)
-                    .build();
-
-            SharePhotoContent content = new SharePhotoContent.Builder()
-                    .addPhoto(photo)
-                    .build();
-
-            shareDialog.show(content);
-            sendResult(Constants.SUCCESS);
-        } else {
-            SnackBarHandler.show(parent, R.string.install_facebook);
-            sendResult(FAIL);
-        }
-    }
-
 
     private void shareToOthers() {
         Uri uri = Uri.fromFile(new File(saveFilePath));

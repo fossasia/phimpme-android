@@ -17,7 +17,7 @@ public class Constants {
     public static String IMGUR_HEADER_USER = "Bearer";
 
     //CloudRail App key
-    public final static String CLOUDRAIL_LICENSE_KEY = "";/*Add your API KEY */
+    public final static String CLOUDRAIL_LICENSE_KEY = "5b1704f91a59b150ae1f4650";/*Add your API KEY */
 
     /*Also add dropbox api key in manifest */
     public final static String DROPBOX_APP_KEY = "7fhwc9meece1m9g";
