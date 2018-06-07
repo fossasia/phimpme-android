@@ -68,6 +68,7 @@ import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
 import org.fossasia.phimpme.data.local.FavouriteImagesModel;
 import org.fossasia.phimpme.data.local.ImageDescModel;
+import org.fossasia.phimpme.data.local.UploadHistoryRealmModel;
 import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.FileUtils;
 import org.fossasia.phimpme.editor.utils.BitmapUtils;
@@ -653,7 +654,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     }
 
     private void deleteCurrentMedia() {
-        if (!allPhotoMode && !favphotomode) {
+        if (!allPhotoMode && !favphotomode && !upoadhis) {
             boolean success = getAlbum().deleteCurrentMedia(getApplicationContext());
             if(!success){
 
@@ -682,7 +683,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             }
             adapter.notifyDataSetChanged();
             getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
-        } else if(allPhotoMode && !favphotomode) {
+        } else if(allPhotoMode && !favphotomode && !upoadhis) {
             int c = current_image_pos;
             deleteMedia(listAll.get(current_image_pos).getPath());
             LFMainActivity.listAll.remove(current_image_pos);
@@ -693,7 +694,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 getSupportActionBar().setTitle((c + 1) + " " + getString(R.string.of) + " " + size_all);
 //            mViewPager.setCurrentItem(current_image_pos);
 //            toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + size_all);
-        } else if(favphotomode && !allPhotoMode){
+        } else if(favphotomode && !allPhotoMode && !upoadhis){
             int c = current_image_pos;
             //deleteMedia(favouriteslist.get(current_image_pos).getPath());
             realm = Realm.getDefaultInstance();
@@ -709,6 +710,22 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             adapter.notifyDataSetChanged();
             getSupportActionBar().setTitle((c + 1) + " " + getString(R.string.of) + " " + size_all);
             SnackBarHandler.show(parentView, getApplicationContext().getString(R.string.photo_deleted_from_fav_msg));
+        } else if(!favphotomode && !allPhotoMode && upoadhis){
+            int c = current_image_pos;
+            //deleteMedia(favouriteslist.get(current_image_pos).getPath());
+            realm = Realm.getDefaultInstance();
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override public void execute(Realm realm) {
+                    RealmResults<UploadHistoryRealmModel> uploadHistoryImagesModels = realm.where(UploadHistoryRealmModel
+                            .class).equalTo("pathname", uploadhistory.get(current_image_pos).getPath()).findAll();
+                    uploadHistoryImagesModels.deleteAllFromRealm();
+                }
+            });
+            deletefromuploadhistorylist(uploadhistory.get(current_image_pos).getPath());
+            size_all = uploadhistory.size();
+            adapter.notifyDataSetChanged();
+            getSupportActionBar().setTitle((c + 1) + " " + getString(R.string.of) + " " + size_all);
+            SnackBarHandler.show(parentView, getApplicationContext().getString(R.string.photo_deleted_from_fav_msg));
         }
     }
 
@@ -716,6 +733,16 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         for (int i = 0; i < favouriteslist.size(); i++){
             if(favouriteslist.get(i).getPath().equals(path)){
                 favouriteslist.remove(i);
+                break;
+            }
+        }
+    }
+
+
+    private void deletefromuploadhistorylist(String path){
+        for (int i = 0; i < uploadhistory.size(); i++){
+            if(uploadhistory.get(i).getPath().equals(path)){
+                uploadhistory.remove(i);
                 break;
             }
         }

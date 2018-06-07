@@ -1,5 +1,4 @@
 package org.fossasia.phimpme.editor;
-
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,6 +21,7 @@ import android.widget.ProgressBar;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.fragment.AddTextFragment;
 import org.fossasia.phimpme.editor.fragment.CropFragment;
+import org.fossasia.phimpme.editor.fragment.FrameFragment;
 import org.fossasia.phimpme.editor.fragment.MainMenuFragment;
 import org.fossasia.phimpme.editor.fragment.PaintFragment;
 import org.fossasia.phimpme.editor.fragment.RecyclerMenuFragment;
@@ -61,6 +61,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     public static final String EXTRA_OUTPUT = "extra_output";
     public static final String IMAGE_IS_EDIT = "image_is_edit";
 
+
     /**
      * Different edit modes.
      */
@@ -74,9 +75,11 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
 
     public static final int MODE_STICKERS = 7;
     public static final int MODE_CROP = 8;
+
     public static final int MODE_ROTATE = 9;
     public static final int MODE_TEXT = 10;
     public static final int MODE_PAINT = 11;
+    public static final int MODE_FRAME= 12;
 
     public String filePath;
     public String saveFilePath;
@@ -143,6 +146,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     public PaintFragment paintFragment;
     public CropFragment cropFragment;
     public RotateFragment rotateFragment;
+    public FrameFragment frameFragment;
     private static String stickerType;
 
     @Override
@@ -158,8 +162,9 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         getData();
     }
 
+
     /**
-     * Called after onCreate() when the activity is first started. Loads the initial default fragments.
+     * Calleter onCreate() when the activity is first started. Loads the initial default fragments.
      */
     private void setInitialFragments() {
         getSupportFragmentManager()
@@ -224,6 +229,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         cropFragment = CropFragment.newInstance();
         rotateFragment = RotateFragment.newInstance();
 
+
+
     }
 
 
@@ -246,6 +253,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
             case MODE_ENHANCE:
             case MODE_ADJUST:
             case MODE_STICKER_TYPES:
+            case MODE_FRAME:
             case MODE_WRITE:
                 mainMenuFragment.highLightSelectedOption(mode);
                 break;
@@ -255,6 +263,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
             case MODE_CROP:
             case MODE_ROTATE:
             case MODE_SLIDER:
+
+
         }
     }
 
@@ -291,6 +301,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                 return cropFragment;
             case MODE_ROTATE:
                 return rotateFragment;
+            case MODE_FRAME:
+                return frameFragment=FrameFragment.newInstance(mainBitmap);
         }
         return mainMenuFragment;
     }
@@ -665,6 +677,11 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                 return;
             case MODE_PAINT:
                 showDiscardChangesDialog(MODE_PAINT,R.string.discard_paint_message);
+            case MODE_FRAME:
+                if(canAutoExit())
+                {finish();}
+                else{
+                showDiscardChangesDialog(MODE_FRAME,R.string.discard_frame_mode_message);}
                 return;
 
         }
@@ -732,6 +749,9 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                     case MODE_PAINT:
                         paintFragment.backToMain();
                         break;
+                    case MODE_FRAME:
+                        frameFragment.backToMain();
+                        break;
                     default:
                         break;
                 }
@@ -787,6 +807,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                 break;
         }
     }
+
+
 
     /**
      * Appears when user saves the image, asking him to share the image or not.
