@@ -68,6 +68,7 @@ import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
 import org.fossasia.phimpme.data.local.FavouriteImagesModel;
 import org.fossasia.phimpme.data.local.ImageDescModel;
+import org.fossasia.phimpme.data.local.UploadHistoryRealmModel;
 import org.fossasia.phimpme.editor.CompressImageActivity;
 import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.FileUtils;

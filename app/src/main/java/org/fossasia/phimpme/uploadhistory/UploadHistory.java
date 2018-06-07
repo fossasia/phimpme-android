@@ -1,10 +1,5 @@
 package org.fossasia.phimpme.uploadhistory;
 
-import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
-
-import java.io.File;
-import java.util.ArrayList;
-
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -28,10 +23,15 @@ import org.fossasia.phimpme.gallery.activities.SingleMediaActivity;
 import org.fossasia.phimpme.gallery.data.Media;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmQuery;
+
+import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 
 /**
  * Created by pa1pal on 17/08/17.
@@ -66,6 +66,7 @@ public class UploadHistory extends ThemedActivity {
         @Override public void onClick(View view) {
             UploadHistoryRealmModel uploadHistoryRealmModel = (UploadHistoryRealmModel) view.findViewById(R.id
                     .upload_time).getTag();
+            view.setTransitionName(getString(R.string.transition_photo));
             Intent intent = new Intent("com.android.camera.action.REVIEW", Uri.fromFile(new File(uploadHistoryRealmModel.getPathname())));
             intent.putExtra("path", uploadHistoryRealmModel.getPathname());
             intent.putExtra("position", checkpos(uploadHistoryRealmModel.getPathname()));
