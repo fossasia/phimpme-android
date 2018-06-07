@@ -12,7 +12,7 @@
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:background="?android:attr/selectableItemBackground"
-        app:srcCompat="@drawable/ic_no"/>
+        app:srcCompat="@drawable/ic_close_black_24dp"/>
 
     <EditText
         android:id="@+id/text_input"
