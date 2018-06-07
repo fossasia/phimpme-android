@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.cloudrail.si.CloudRail;
+import com.cloudrail.si.exceptions.AuthenticationException;
 import com.cloudrail.si.exceptions.ParseException;
 import com.cloudrail.si.interfaces.CloudStorage;
 import com.cloudrail.si.services.Dropbox;
@@ -108,19 +109,28 @@ public class CloudRailServices {
     }
 
    public class DropboxLogin extends AsyncTask<Void,Void,Void>{
-
+        private boolean isauthcancelled = false;
 
        @Override
        protected void onPostExecute(Void aVoid) {
            Log.e(TAG, "Dropbox Login token "+db.saveAsString());
-           basicCallBack.callBack(1,db.saveAsString());
+
+           if(isauthcancelled){
+               basicCallBack.callBack(0,db.saveAsString());
+           }else{
+               basicCallBack.callBack(1,db.saveAsString());
+           }
        }
 
        @Override
        protected Void doInBackground(Void... params) {
-           db.login();
-           if(!(db.exists(FOLDER))) {
-               db.createFolder(FOLDER);
+           try{
+               db.login();
+               if(!(db.exists(FOLDER))) {
+                   db.createFolder(FOLDER);
+               }
+           }catch (AuthenticationException e){
+               isauthcancelled = true;
            }
            return null;
 
@@ -226,6 +236,4 @@ public class CloudRailServices {
    public GoogleDrive getGoogleDrive(){
        return googleDrive;
    }
-
-
 }
