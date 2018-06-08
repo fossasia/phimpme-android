@@ -778,8 +778,114 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         c.close();
     }
 
+    private void deletefav(final String path){
+        realm = Realm.getDefaultInstance();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override public void execute(Realm realm) {
+                RealmResults<FavouriteImagesModel> favouriteImagesModels = realm.where(FavouriteImagesModel
+                        .class).equalTo("path", path).findAll();
+                favouriteImagesModels.deleteAllFromRealm();
+            }
+        });
+    }
+
+    private void deletefromfav(final MenuItem item){
+        String ButtonDelete = "";
+        final AlertDialog.Builder deleteDialog = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
+        AlertDialogsHelper.getTextDialog(SingleMediaActivity.this, deleteDialog,
+                R.string.remove_from_favourites, R.string.delete_from_favourites_message, null);
+        ButtonDelete = this.getString(R.string.remove);
+        //SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.check_favourite), bottomBar
+        // .getHeight());
+        deleteDialog.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
+        deleteDialog.setPositiveButton(ButtonDelete.toUpperCase(), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (securityObj.isActiveSecurity() && securityObj.isPasswordOnDelete()) {
+                    final boolean passco[] = {false};
+                    final AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
+                    final EditText editTextPassword = securityObj.getInsertPasswordDialog
+                            (SingleMediaActivity.this, passwordDialogBuilder);
+                    editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
+                    passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (securityObj.checkPassword(editTextPassword.getText().toString())) {
+                                //int c = current_image_pos;
+                                //deleteMedia(favouriteslist.get(current_image_pos).getPath());
+                                item.getIcon().clearColorFilter();
+                                deletefav(getAlbum().getCurrentMedia().getPath());
+                            } else
+                                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), bottomBar.getHeight());
+
+                        }
+                    });
+                    editTextPassword.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                            //empty method body
+                        }
+
+                        @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                            //empty method body
+                        }
+
+                        @Override public void afterTextChanged(Editable editable) {
+                            if(securityObj.getTextInputLayout().getVisibility() == View.VISIBLE && !passco[0]){
+                                securityObj.getTextInputLayout().setVisibility(View.INVISIBLE);
+                            }
+                            else{
+                                passco[0]=false;
+                            }
+                        }
+                    });
+                    passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+                    final AlertDialog passwordDialog = passwordDialogBuilder.create();
+                    passwordDialog.show();
+                    passwordDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager
+                            .LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+                    passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams
+                            .SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                    AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
+                    passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View
+                            .OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (securityObj.checkPassword(editTextPassword.getText().toString())) {
+                                // int c = current_image_pos;
+                                //deleteMedia(favouriteslist.get(current_image_pos).getPath());
+
+                                passwordDialog.dismiss();
+                                item.getIcon().clearColorFilter();
+                                SnackBarHandler.show(parentView, getApplicationContext().getString(R
+                                        .string.photo_deleted_from_fav_msg));
+                                deletefav(getAlbum().getCurrentMedia().getPath());
+                            } else {
+                                passco[0] = true;
+                                securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
+                                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), bottomBar.getHeight());
+                                editTextPassword.getText().clear();
+                                editTextPassword.requestFocus();
+                            }
+                        }
+                    });
+                } else{
+                    item.getIcon().clearColorFilter();
+                    SnackBarHandler.show(parentView, getApplicationContext().getString(R.string.photo_deleted_from_fav_msg));
+                    //deleteMedia(favouriteslist.get(current_image_pos).getPath());
+                    deletefav(getAlbum().getCurrentMedia().getPath());
+                }
+
+            }
+        });
+        AlertDialog alertDialog = deleteDialog.create();
+        alertDialog.show();
+        SnackBarHandler.show(parentView, getApplicationContext().getString(R.string.photo_deleted_from_fav_msg));
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
+    }
+
+
+
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
 
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -875,91 +981,14 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     realm.commitTransaction();
                     SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.add_favourite), bottomBar.getHeight());
                 } else {
-                    SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.check_favourite), bottomBar.getHeight());
+                    deletefromfav(item);
                 }
                 break;
 
             case R.id.action_delete:
                 String ButtonDelete = "";
                 handler.removeCallbacks(slideShowRunnable);
-                final AlertDialog.Builder deleteDialog = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
-                if(favphotomode){
-                    AlertDialogsHelper.getTextDialog(SingleMediaActivity.this, deleteDialog,
-                            R.string.remove_from_favourites, R.string.delete_from_favourites_message, null);
-                    ButtonDelete = this.getString(R.string.remove);
-                }else {
-                    AlertDialogsHelper.getTextDialog(SingleMediaActivity.this, deleteDialog,
-                            R.string.delete, R.string.delete_photo_message, null);
-                    ButtonDelete = this.getString(R.string.delete);
-                }
-                deleteDialog.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
-                deleteDialog.setPositiveButton(ButtonDelete.toUpperCase(), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        if (securityObj.isActiveSecurity() && securityObj.isPasswordOnDelete()) {
-                            final boolean passco[] = {false};
-                            final AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
-                            final EditText editTextPassword = securityObj.getInsertPasswordDialog
-                                    (SingleMediaActivity.this, passwordDialogBuilder);
-                            editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
-                            passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if (securityObj.checkPassword(editTextPassword.getText().toString())) {
-                                        deleteCurrentMedia();
-                                    } else
-                                        SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), bottomBar.getHeight());
-
-                                }
-                            });
-                            editTextPassword.addTextChangedListener(new TextWatcher() {
-                                @Override
-                                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                                    //empty method body
-                                }
-
-                                @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                                    //empty method body
-                                }
-
-                                @Override public void afterTextChanged(Editable editable) {
-                                    if(securityObj.getTextInputLayout().getVisibility() == View.VISIBLE && !passco[0]){
-                                        securityObj.getTextInputLayout().setVisibility(View.INVISIBLE);
-                                    }
-                                    else{
-                                        passco[0]=false;
-                                    }
-                                }
-                            });
-                            passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-                            final AlertDialog passwordDialog = passwordDialogBuilder.create();
-                            passwordDialog.show();
-                            passwordDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager
-                                    .LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-                            passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams
-                                    .SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                            AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
-                            passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View
-                                    .OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if (securityObj.checkPassword(editTextPassword.getText().toString())) {
-                                        deleteCurrentMedia();
-                                        passwordDialog.dismiss();
-                                    } else {
-                                        passco[0] = true;
-                                        securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
-                                        SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), bottomBar.getHeight());
-                                        editTextPassword.getText().clear();
-                                        editTextPassword.requestFocus();
-                                    }
-                                }
-                            });
-                        } else
-                            deleteCurrentMedia();
-                    }
-                });
-                AlertDialog alertDialog = deleteDialog.create();
-                alertDialog.show();
-                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
+               deleteaction(ButtonDelete);
                 return true;
 
             case R.id.slide_show:
@@ -1003,128 +1032,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 Media media = null;
                 handler.removeCallbacks(slideShowRunnable);
                 details=true;
-                final View v = findViewById(R.id.layout_image_description);
-                LinearLayout linearLayout = (LinearLayout)v;
-                if(!allPhotoMode && !favphotomode && !upoadhis){
-                    media = getAlbum().getCurrentMedia();
-                }else if(allPhotoMode && !favphotomode && !upoadhis){
-                    media = new Media(new File(listAll.get(current_image_pos).getPath()));
-                }else if(!allPhotoMode && favphotomode && !upoadhis){
-                    media = new Media(new File(favouriteslist.get(current_image_pos).getPath()));
-                }else if(!favphotomode && !allPhotoMode && upoadhis){
-                    media = new Media(new File(uploadhistory.get(current_image_pos).getPath()));
-                }
-                final MediaDetailsMap<String,String> mediaDetailsMap = media.getMainDetails(this);
-                LinearLayout linearLayout1 = (LinearLayout) findViewById(R.id.image_desc_top);
-                linearLayout1.setBackgroundColor(getPrimaryColor());
-                v.setBackgroundColor(getBackgroundColor());
-                int textColor = getBaseTheme() != ThemeHelper.LIGHT_THEME ? Color.parseColor("#FAFAFA" ): Color
-                        .parseColor("#455A64");
-
-                /* Getting all the viewgroups and views of the image description layout */
-
-                TextView  imgDate = (TextView) linearLayout.findViewById(R.id.image_desc_date);
-                imgDate.setTextColor(textColor);
-                TextView  imgLocation = (TextView) linearLayout.findViewById(R.id.image_desc_loc);
-                imgLocation.setTextColor(textColor);
-                TextView  imgTitle = (TextView) linearLayout.findViewById(R.id.image_desc_title);
-                imgTitle.setTextColor(textColor);
-                TextView  imgType = (TextView) linearLayout.findViewById(R.id.image_desc_type);
-                imgType.setTextColor(textColor);
-                TextView  imgSize = (TextView) linearLayout.findViewById(R.id.image_desc_size);
-                imgSize.setTextColor(textColor);
-                TextView  imgResolution = (TextView) linearLayout.findViewById(R.id.image_desc_res);
-                imgResolution.setTextColor(textColor);
-                TextView  imgPath = (TextView) linearLayout.findViewById(R.id.image_desc_path);
-                imgPath.setTextColor(textColor);
-                TextView  imgOrientation = (TextView) linearLayout.findViewById(R.id.image_desc_orientation);
-                imgOrientation.setTextColor(textColor);
-                TextView  imgExif = (TextView) linearLayout.findViewById(R.id.image_desc_exif);
-                imgExif.setTextColor(textColor);
-                TextView  imgDesc = (TextView) linearLayout.findViewById(R.id.image_desc);
-                imgDesc.setTextColor(textColor);
-                IconicsImageView iconicsImageView = (IconicsImageView) linearLayout.findViewById(R.id.date_icon);
-                iconicsImageView.setColor(textColor);
-                IconicsImageView locationicon = (IconicsImageView) linearLayout.findViewById(R.id.loca_icon);
-                locationicon.setColor(textColor);
-                IconicsImageView detailsicon = (IconicsImageView) linearLayout.findViewById(R.id.detail_icon);
-                detailsicon.setColor(textColor);
-                ImageButton imgBack = (ImageButton) linearLayout.findViewById(R.id.img_desc_back_arrow);
-
-                imgBack.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        viewSwitcher.showPrevious();
-                        details = false;
-                        toggleSystemUI();
-                    }
-                });
-
-                /*Setting the label text colours*/
-                TextView datelabel = (TextView) linearLayout.findViewById(R.id.date_label);
-                datelabel.setTextColor(textColor);
-                TextView locationlabel = (TextView) linearLayout.findViewById(R.id.location_label);
-                locationlabel.setTextColor(textColor);
-                TextView detaillabel = (TextView) linearLayout.findViewById(R.id.details_label);
-                detaillabel.setTextColor(textColor);
-                TextView titlelabel = (TextView) linearLayout.findViewById(R.id.title_label);
-                titlelabel.setTextColor(textColor);
-                TextView typelabel = (TextView) linearLayout.findViewById(R.id.type_label);
-                typelabel.setTextColor(textColor);
-                TextView sizelabel = (TextView) linearLayout.findViewById(R.id.size_label);
-                sizelabel.setTextColor(textColor);
-                TextView reslabel = (TextView) linearLayout.findViewById(R.id.resolution_label);
-                reslabel.setTextColor(textColor);
-                TextView pathlabel = (TextView) linearLayout.findViewById(R.id.path_label);
-                pathlabel.setTextColor(textColor);
-                TextView orientationlabel = (TextView) linearLayout.findViewById(R.id.orientation_label);
-                orientationlabel.setTextColor(textColor);
-                TextView exiflabel = (TextView) linearLayout.findViewById(R.id.exif_label);
-                exiflabel.setTextColor(textColor);
-                TextView desclabel = (TextView) linearLayout.findViewById(R.id.description_label);
-                desclabel.setTextColor(textColor);
-
-                /*Setting the values to all the textViews*/
-
-                try {
-                        imgDate.setText(mediaDetailsMap.get("Date").toString());
-                        imgTitle.setText(media.getName());
-                        imgType.setText(mediaDetailsMap.get("Type").toUpperCase());
-                        imgSize.setText(StringUtils.humanReadableByteCount(media.getSize(), true));
-                        imgResolution.setText(mediaDetailsMap.get("Resolution"));
-                        imgPath.setText(mediaDetailsMap.get("Path").toString());
-                        imgOrientation.setText(mediaDetailsMap.get("Orientation"));
-                         if(mediaDetailsMap.get("Description") == null) {
-                             imgDesc.setText(R.string.no_description);
-                         } else{
-                             imgDesc.setText(mediaDetailsMap.get("Description"));
-                         }
-                         if(mediaDetailsMap.get("EXIF") == null){
-                             imgExif.setText(R.string.no_exif_data);
-                         } else {
-                             imgExif.setText(mediaDetailsMap.get("EXIF"));
-                         }
-                         if(mediaDetailsMap.get("Location") == null){
-                             imgLocation.setText(R.string.no_location);
-                         } else{
-                             imgLocation.setText(mediaDetailsMap.get("Location").toString());
-                             imgLocation.setTextColor(getResources().getColor(R.color.accent_orange, null));
-                         }
-                    }
-                    catch (Exception e){
-                        //Raised if null values is found, no need to handle
-                    }
-                    imgLocation.setOnClickListener(new View.OnClickListener() {
-                        @Override public void onClick(View view) {
-                            if(mediaDetailsMap.get("Location")!=null){
-                                Uri gmmIntentUri = Uri.parse("geo:0,0?q="+ mediaDetailsMap.get("Location"));
-                                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                                mapIntent.setPackage("com.google.android.apps.maps");
-                                startActivity(mapIntent);
-                            }
-                        }
-                    });
-
+                displaydetails(media);
                 toggleSystemUI();
                 viewSwitcher.showNext();
                 break;
@@ -1380,6 +1288,211 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
                 fullScreenMode = false;
                 changeBackGroundColor();
+            }
+        });
+    }
+
+    private void deleteaction(String ButtonDelete){
+        final AlertDialog.Builder deleteDialog = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
+        if(favphotomode){
+            AlertDialogsHelper.getTextDialog(SingleMediaActivity.this, deleteDialog,
+                    R.string.remove_from_favourites, R.string.delete_from_favourites_message, null);
+            ButtonDelete = this.getString(R.string.remove);
+        }else {
+            AlertDialogsHelper.getTextDialog(SingleMediaActivity.this, deleteDialog,
+                    R.string.delete, R.string.delete_photo_message, null);
+            ButtonDelete = this.getString(R.string.delete);
+        }
+        deleteDialog.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
+        deleteDialog.setPositiveButton(ButtonDelete.toUpperCase(), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (securityObj.isActiveSecurity() && securityObj.isPasswordOnDelete()) {
+                    final boolean passco[] = {false};
+                    final AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
+                    final EditText editTextPassword = securityObj.getInsertPasswordDialog
+                            (SingleMediaActivity.this, passwordDialogBuilder);
+                    editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
+                    passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (securityObj.checkPassword(editTextPassword.getText().toString())) {
+                                deleteCurrentMedia();
+                            } else
+                                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), bottomBar.getHeight());
+
+                        }
+                    });
+                    editTextPassword.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                            //empty method body
+                        }
+
+                        @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                            //empty method body
+                        }
+
+                        @Override public void afterTextChanged(Editable editable) {
+                            if(securityObj.getTextInputLayout().getVisibility() == View.VISIBLE && !passco[0]){
+                                securityObj.getTextInputLayout().setVisibility(View.INVISIBLE);
+                            }
+                            else{
+                                passco[0]=false;
+                            }
+                        }
+                    });
+                    passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+                    final AlertDialog passwordDialog = passwordDialogBuilder.create();
+                    passwordDialog.show();
+                    passwordDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager
+                            .LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+                    passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams
+                            .SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                    AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
+                    passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View
+                            .OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (securityObj.checkPassword(editTextPassword.getText().toString())) {
+                                deleteCurrentMedia();
+                                passwordDialog.dismiss();
+                            } else {
+                                passco[0] = true;
+                                securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
+                                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), bottomBar.getHeight());
+                                editTextPassword.getText().clear();
+                                editTextPassword.requestFocus();
+                            }
+                        }
+                    });
+                } else
+                    deleteCurrentMedia();
+            }
+        });
+        AlertDialog alertDialog = deleteDialog.create();
+        alertDialog.show();
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
+    }
+
+    private void displaydetails(Media media){
+        final View v = findViewById(R.id.layout_image_description);
+        LinearLayout linearLayout = (LinearLayout)v;
+        if(!allPhotoMode && !favphotomode && !upoadhis){
+            media = getAlbum().getCurrentMedia();
+        }else if(allPhotoMode && !favphotomode && !upoadhis){
+            media = new Media(new File(listAll.get(current_image_pos).getPath()));
+        }else if(!allPhotoMode && favphotomode && !upoadhis){
+            media = new Media(new File(favouriteslist.get(current_image_pos).getPath()));
+        }else if(!favphotomode && !allPhotoMode && upoadhis){
+            media = new Media(new File(uploadhistory.get(current_image_pos).getPath()));
+        }
+        final MediaDetailsMap<String,String> mediaDetailsMap = media.getMainDetails(this);
+        LinearLayout linearLayout1 = (LinearLayout) findViewById(R.id.image_desc_top);
+        linearLayout1.setBackgroundColor(getPrimaryColor());
+        v.setBackgroundColor(getBackgroundColor());
+        int textColor = getBaseTheme() != ThemeHelper.LIGHT_THEME ? Color.parseColor("#FAFAFA" ): Color
+                .parseColor("#455A64");
+
+                /* Getting all the viewgroups and views of the image description layout */
+
+        TextView  imgDate = (TextView) linearLayout.findViewById(R.id.image_desc_date);
+        imgDate.setTextColor(textColor);
+        TextView  imgLocation = (TextView) linearLayout.findViewById(R.id.image_desc_loc);
+        imgLocation.setTextColor(textColor);
+        TextView  imgTitle = (TextView) linearLayout.findViewById(R.id.image_desc_title);
+        imgTitle.setTextColor(textColor);
+        TextView  imgType = (TextView) linearLayout.findViewById(R.id.image_desc_type);
+        imgType.setTextColor(textColor);
+        TextView  imgSize = (TextView) linearLayout.findViewById(R.id.image_desc_size);
+        imgSize.setTextColor(textColor);
+        TextView  imgResolution = (TextView) linearLayout.findViewById(R.id.image_desc_res);
+        imgResolution.setTextColor(textColor);
+        TextView  imgPath = (TextView) linearLayout.findViewById(R.id.image_desc_path);
+        imgPath.setTextColor(textColor);
+        TextView  imgOrientation = (TextView) linearLayout.findViewById(R.id.image_desc_orientation);
+        imgOrientation.setTextColor(textColor);
+        TextView  imgExif = (TextView) linearLayout.findViewById(R.id.image_desc_exif);
+        imgExif.setTextColor(textColor);
+        TextView  imgDesc = (TextView) linearLayout.findViewById(R.id.image_desc);
+        imgDesc.setTextColor(textColor);
+        IconicsImageView iconicsImageView = (IconicsImageView) linearLayout.findViewById(R.id.date_icon);
+        iconicsImageView.setColor(textColor);
+        IconicsImageView locationicon = (IconicsImageView) linearLayout.findViewById(R.id.loca_icon);
+        locationicon.setColor(textColor);
+        IconicsImageView detailsicon = (IconicsImageView) linearLayout.findViewById(R.id.detail_icon);
+        detailsicon.setColor(textColor);
+        ImageButton imgBack = (ImageButton) linearLayout.findViewById(R.id.img_desc_back_arrow);
+
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewSwitcher.showPrevious();
+                details = false;
+                toggleSystemUI();
+            }
+        });
+
+                /*Setting the label text colours*/
+        TextView datelabel = (TextView) linearLayout.findViewById(R.id.date_label);
+        datelabel.setTextColor(textColor);
+        TextView locationlabel = (TextView) linearLayout.findViewById(R.id.location_label);
+        locationlabel.setTextColor(textColor);
+        TextView detaillabel = (TextView) linearLayout.findViewById(R.id.details_label);
+        detaillabel.setTextColor(textColor);
+        TextView titlelabel = (TextView) linearLayout.findViewById(R.id.title_label);
+        titlelabel.setTextColor(textColor);
+        TextView typelabel = (TextView) linearLayout.findViewById(R.id.type_label);
+        typelabel.setTextColor(textColor);
+        TextView sizelabel = (TextView) linearLayout.findViewById(R.id.size_label);
+        sizelabel.setTextColor(textColor);
+        TextView reslabel = (TextView) linearLayout.findViewById(R.id.resolution_label);
+        reslabel.setTextColor(textColor);
+        TextView pathlabel = (TextView) linearLayout.findViewById(R.id.path_label);
+        pathlabel.setTextColor(textColor);
+        TextView orientationlabel = (TextView) linearLayout.findViewById(R.id.orientation_label);
+        orientationlabel.setTextColor(textColor);
+        TextView exiflabel = (TextView) linearLayout.findViewById(R.id.exif_label);
+        exiflabel.setTextColor(textColor);
+        TextView desclabel = (TextView) linearLayout.findViewById(R.id.description_label);
+        desclabel.setTextColor(textColor);
+
+                /*Setting the values to all the textViews*/
+
+        try {
+            imgDate.setText(mediaDetailsMap.get("Date").toString());
+            imgTitle.setText(media.getName());
+            imgType.setText(mediaDetailsMap.get("Type").toUpperCase());
+            imgSize.setText(StringUtils.humanReadableByteCount(media.getSize(), true));
+            imgResolution.setText(mediaDetailsMap.get("Resolution"));
+            imgPath.setText(mediaDetailsMap.get("Path").toString());
+            imgOrientation.setText(mediaDetailsMap.get("Orientation"));
+            if(mediaDetailsMap.get("Description") == null) {
+                imgDesc.setText(R.string.no_description);
+            } else{
+                imgDesc.setText(mediaDetailsMap.get("Description"));
+            }
+            if(mediaDetailsMap.get("EXIF") == null){
+                imgExif.setText(R.string.no_exif_data);
+            } else {
+                imgExif.setText(mediaDetailsMap.get("EXIF"));
+            }
+            if(mediaDetailsMap.get("Location") == null){
+                imgLocation.setText(R.string.no_location);
+            } else{
+                imgLocation.setText(mediaDetailsMap.get("Location").toString());
+                imgLocation.setTextColor(getResources().getColor(R.color.accent_orange, null));
+            }
+        }
+        catch (Exception e){
+            //Raised if null values is found, no need to handle
+        }
+        imgLocation.setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View view) {
+                if(mediaDetailsMap.get("Location")!=null){
+                    Uri gmmIntentUri = Uri.parse("geo:0,0?q="+ mediaDetailsMap.get("Location"));
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    mapIntent.setPackage("com.google.android.apps.maps");
+                    startActivity(mapIntent);
+                }
             }
         });
     }
