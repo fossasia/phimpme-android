@@ -316,10 +316,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
                 triedUploading = true;
                 switch (sharableAccountsList.get(position)) {
-                    case FACEBOOK:
-                        shareToFacebook();
-                        break;
-
                     case TWITTER:
                         shareToTwitter();
                         break;
