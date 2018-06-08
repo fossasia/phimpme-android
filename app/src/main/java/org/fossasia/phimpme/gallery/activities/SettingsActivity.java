@@ -647,7 +647,7 @@ public class SettingsActivity extends ThemedActivity {
             public void onClick(DialogInterface dialog, int which) {
                 SP.putInt(getString(R.string.preference_primary_color), colorPicker2.getColor());
                 updateTheme();
-
+                accentcolourchange(colorPicker2.getColor());
                 if(swNavBar.isChecked())
                 setNavBarColor();
 
@@ -678,6 +678,23 @@ public class SettingsActivity extends ThemedActivity {
             }
         });
         AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE, DialogInterface.BUTTON_NEUTRAL}, getAccentColor(), alertDialog);
+    }
+
+    private void accentcolourchange(final int color) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
+        AlertDialogsHelper.getTextDialog(SettingsActivity.this, builder,
+                R.string.accent_color, R.string.accent_primary_same_mssg, null);
+        builder.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
+        builder.setPositiveButton(this.getString(R.string.ok).toUpperCase(), new DialogInterface.OnClickListener() {
+            @Override public void onClick(DialogInterface dialogInterface, int i) {
+                SP.putInt(getString(R.string.preference_accent_color), color);
+                updateTheme();
+                updateViewswithAccentColor(getAccentColor());
+            }
+        });
+        AlertDialog alertDialog = builder.create();
         alertDialog.show();
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE, DialogInterface.BUTTON_NEUTRAL}, getAccentColor(), alertDialog);
     }
