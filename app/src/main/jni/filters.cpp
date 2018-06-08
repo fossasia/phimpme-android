@@ -1,4 +1,7 @@
 #include <filters.h>
+#include <opencv2/contrib/contrib.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
 
 using namespace std;
 using namespace cv;
@@ -675,6 +678,11 @@ void applyRedGreenFilter(cv::Mat &src, cv::Mat &dst, int val) {
                     saturate_cast<uchar>(b);
         }
     }
+}
+
+void applyCoolMap(cv::Mat &src, cv::Mat &dst, int val) {
+    cvtColor(src, src, CV_BGRA2BGR);
+    cv::applyColorMap(src, dst, COLORMAP_COOL);
 }
 
 }

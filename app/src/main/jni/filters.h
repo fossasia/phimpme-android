@@ -6,8 +6,8 @@
 #undef PI
 #define PI 3.1415926535897932f
 
-#define min(x,y)  (x <= y) ? x : y
-#define max(x,y)  (x >= y) ? x : y
+#define min_(x,y)  (x <= y) ? x : y
+#define max_(x,y)  (x >= y) ? x : y
 
 #define ceilComponent(x) ((x > 255) ? 255 : x)
 
@@ -91,7 +91,7 @@ static uchar multiplyPixelComponents(unsigned char overlayComponent, uchar under
 }
 
 static unsigned char darkenPixelsComponent(unsigned char overlay, unsigned char underlay) {
-    return min(underlay, overlay);
+    return min_(underlay, overlay);
 }
 
 static float applyBrightnessToPixelComponent(float colourComponent, float brightness) {
@@ -104,7 +104,7 @@ static float applyBrightnessToPixelComponent(float colourComponent, float bright
 }
 
 static double applyContrastToPixelComponent(float pixelComponent, float contrast) {
-    return min(1.0f, ((pixelComponent - 0.5f) * (tan ((contrast + 1) * PI/4) ) + 0.5f));
+    return min_(1.0f, ((pixelComponent - 0.5f) * (tan ((contrast + 1) * PI/4) ) + 0.5f));
 }
 
 
@@ -131,4 +131,5 @@ void applyEdgify(cv::Mat &src, cv::Mat &dst, int val);
 void applyPencilSketch(cv::Mat &src, cv::Mat &dst, int val);
 void applyRedBlueEffect(cv::Mat &src, cv::Mat &dst, int val);
 void applyRedGreenFilter(cv::Mat &src, cv::Mat &dst, int val);
+void applyCoolMap(cv::Mat &src, cv::Mat &dst, int val);
 }

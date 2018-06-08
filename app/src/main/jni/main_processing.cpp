@@ -91,6 +91,9 @@ extern "C" {
             case 23:
                 applyRedGreenFilter(src,dst,val);
                 break; 
+            case 24:
+                applyCoolMap(src, dst, val);
+                break;
             default:
 
                 int lowThreshold = val;
