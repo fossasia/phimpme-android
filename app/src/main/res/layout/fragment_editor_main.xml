@@ -113,13 +113,39 @@
             android:text="@string/sticker"/>
 
     </LinearLayout>
+        <LinearLayout
+            android:orientation="vertical"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_width="@dimen/editor_bottom_row_size"
+            android:id="@+id/menu_frame"
+            android:layout_column="4"
+            android:layout_height="@dimen/editor_bottom_row_size">
+
+            <ImageView
+                android:id="@+id/frameiconimage"
+                android:layout_width="@dimen/icon_item_image_size_main"
+                android:layout_height="@dimen/icon_item_image_size_main"
+                android:scaleType="fitCenter"
+                android:background="@android:color/transparent"
+                app:srcCompat="@drawable/ic_frame"
+                android:layout_gravity="center_horizontal"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/icon_item_title_size"
+                android:textAlignment="center"
+                android:text="@string/frame"/>
+
+        </LinearLayout>
 
     <LinearLayout
         android:orientation="vertical"
         android:background="?android:attr/selectableItemBackground"
         android:layout_width="@dimen/editor_bottom_row_size"
         android:id="@+id/menu_write"
-        android:layout_column="4"
+        android:layout_column="5"
         android:layout_height="@dimen/editor_bottom_row_size">
 
         <ImageView
