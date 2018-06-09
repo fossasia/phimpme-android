@@ -44,6 +44,7 @@ public class MyApplication extends Application {
     public ImageLoader imageLoader;
     private Boolean isPublished = true; // Set this to true at the time of release
     private RefWatcher refWatcher;
+    public static boolean isLeakCanaryInstalled = false;
     public Album getAlbum() {
         return albums.dispAlbums.size() > 0 ? albums.getCurrentAlbum() : Album.getEmptyAlbum();
     }
@@ -61,6 +62,7 @@ public class MyApplication extends Application {
         }
         if(!isPublished){
             refWatcher = LeakCanary.install(this);
+            isLeakCanaryInstalled = true;
         }
         albums = new HandlingAlbums(getApplicationContext());
         applicationContext = getApplicationContext();

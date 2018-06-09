@@ -289,7 +289,9 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
         if (mSavePaintImageTask != null && !mSavePaintImageTask.isCancelled()) {
             mSavePaintImageTask.cancel(true);
         }
-        MyApplication.getRefWatcher(getActivity()).watch(this);
+        if(MyApplication.isLeakCanaryInstalled){
+            MyApplication.getRefWatcher(getActivity()).watch(this);
+        }
     }
 
     private final class SaveCustomPaintTask extends StickerTask {
