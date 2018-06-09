@@ -72,7 +72,7 @@ public class ThemeHelper {
   public static int getPrimaryColor(Context context) {
 	PreferenceUtil SP = PreferenceUtil.getInstance(context);
 	return SP.getInt(context.getString(R.string.preference_primary_color),
-			ContextCompat.getColor(context, R.color.md_indigo_500));
+			ContextCompat.getColor(context, R.color.md_light_blue_500));
   }
 
   public void setBaseTheme(int baseTheme, boolean permanent) {

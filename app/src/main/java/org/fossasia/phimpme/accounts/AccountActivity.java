@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
@@ -79,7 +80,6 @@ import static com.pinterest.android.pdk.PDKClient.setDebugMode;
 import static org.fossasia.phimpme.R.string.no_account_signed_in;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
-import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FACEBOOK;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.GOOGLEDRIVE;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.IMGUR;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.NEXTCLOUD;
@@ -115,6 +115,8 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     RecyclerView accountsRecyclerView;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.bottombar)
+    BottomNavigationView bottomNavigationView;
     @BindView(R.id.accounts)
     CoordinatorLayout coordinatorLayout;
     private AccountAdapter accountAdapter;
@@ -152,8 +154,10 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         callbackManager = CallbackManager.Factory.create();
         setSupportActionBar(toolbar);
         loginManager = LoginManager.getInstance();
+        ThemeHelper themeHelper = new ThemeHelper(getContext());
         toolbar.setPopupTheme(getPopupToolbarStyle());
-        toolbar.setBackgroundColor(getPrimaryColor());
+        toolbar.setBackgroundColor(themeHelper.getPrimaryColor());
+        bottomNavigationView.setBackgroundColor(themeHelper.getPrimaryColor());
         setUpRecyclerView();
         accountPresenter.loadFromDatabase();  // Calling presenter function to load data from database
         getSupportActionBar().setTitle(R.string.title_account);
@@ -244,10 +248,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         if (!signInSignOut.isChecked()) {
             if (!checkNetwork(this, parentLayout)) return;
             switch (AccountDatabase.AccountName.values()[position]) {
-                case FACEBOOK:
-                    signInFacebook();
-                    break;
-
                 case TWITTER:
                     signInTwitter();
                     break;
@@ -553,7 +553,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     /**
      * Create Facebook login and session
      */
-    public void signInFacebook() {
+   /* public void signInFacebook() {
         List<String> permissionNeeds = Arrays.asList("publish_actions");
         loginManager = LoginManager.getInstance();
         loginManager.logInWithPublishPermissions(this, permissionNeeds);
@@ -598,7 +598,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                         Log.d("error", e.toString());
                     }
                 });
-    }
+    }*/
 
     @Override
     public Context getContext() {
@@ -739,6 +739,4 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         SnackBarHandler.show(coordinatorLayout, getApplicationContext().getString(R.string.connection_failed));
     }
-
-
 }
