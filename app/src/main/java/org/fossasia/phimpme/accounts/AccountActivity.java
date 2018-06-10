@@ -31,9 +31,6 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.pinterest.android.pdk.PDKCallback;
 import com.pinterest.android.pdk.PDKClient;
 import com.pinterest.android.pdk.PDKException;
@@ -80,10 +77,8 @@ import static com.pinterest.android.pdk.PDKClient.setDebugMode;
 import static org.fossasia.phimpme.R.string.no_account_signed_in;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
-import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.GOOGLEDRIVE;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.IMGUR;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.NEXTCLOUD;
-import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.ONEDRIVE;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.OWNCLOUD;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.PINTEREST;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TUMBLR;
@@ -101,7 +96,7 @@ import static org.fossasia.phimpme.utilities.Utils.checkNetwork;
  */
 
 public class AccountActivity extends ThemedActivity implements AccountContract.View,
-        RecyclerItemClickListner.OnItemClickListener, GoogleApiClient.OnConnectionFailedListener {
+        RecyclerItemClickListner.OnItemClickListener {
 
     private static final int NEXTCLOUD_REQUEST_CODE = 3;
     private static final int OWNCLOUD_REQUEST_CODE = 9;
@@ -132,7 +127,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private Context context;
     private CloudRailServices cloudRailServices;
     private PDKClient pdkClient;
-    private GoogleApiClient mGoogleApiClient;
     private DropboxAPI<AndroidAuthSession> mDBApi;
     private BoxSession sessionBox;
 
@@ -266,10 +260,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     Intent WordpressShare = new Intent(this, WordpressLoginActivity.class);
                     startActivity(WordpressShare);
                     break;*/
-                case GOOGLEDRIVE:
-                    signInGoogleDrive();
-                    break;
-
                 case PINTEREST:
                     signInPinterest();
                     break;
@@ -298,10 +288,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
                 case TUMBLR:
                     signInTumblr();
-                    break;
-
-                case ONEDRIVE:
-                    signInOneDrive();
                     break;
 
                 default:
@@ -390,11 +376,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                 .initiateInActivity(AccountActivity.this);
     }
 
-    private void signInGooglePlus() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-
     private void signInDropbox() {
         if (accountPresenter.checkAlreadyExist(DROPBOX))
             SnackBarHandler.show(coordinatorLayout, R.string.already_signed_in);
@@ -429,41 +410,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             //Nothing is to be done when the BROWSABLE Intent is null
         }
         super.onNewIntent(intent);
-    }
-
-    private void signInGoogleDrive() {
-        if(accountPresenter.checkAlreadyExist(GOOGLEDRIVE))
-            SnackBarHandler.show(coordinatorLayout,"Already Signed In");
-        else
-            cloudRailServices.prepare(this);
-            cloudRailServices.googleDriveLogin();
-            BasicCallBack basicCallBack = new BasicCallBack() {
-                @Override
-                public void callBack(int status, Object data) {
-                    if(status == 2){
-                        Log.e("TAG", "callBack: GOOGLE DRIVE"+data.toString() );
-                        googleDriveAuthentication(data.toString());
-                    }
-                }
-            };
-            CloudRailServices.setCallBack(basicCallBack);
-    }
-
-    private void signInOneDrive(){
-        if(accountPresenter.checkAlreadyExist(ONEDRIVE))
-            SnackBarHandler.show(coordinatorLayout,"Already Signed In");
-        else
-            cloudRailServices.prepare(this);
-            cloudRailServices.oneDriveLogin();
-            BasicCallBack  basicCallBack = new BasicCallBack() {
-                @Override
-                public void callBack(int status, Object data) {
-                    if(status==3){
-                        oneDriveAuthentication(data.toString());
-                    }
-                }
-            };
-            CloudRailServices.setCallBack(basicCallBack);
     }
 
     private void signInImgur() {
@@ -662,41 +608,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         accountPresenter.loadFromDatabase();
     }
 
-
-    private void oneDriveAuthentication(String tokens){
-        try {
-            String result = cloudRailServices.oneDrive.saveAsString();
-            Log.d("AccountsActivity", "oneDriveAuthentication: "+tokens+" "+result );
-            String accessToken = cloudRailServices.getOneDriveToken();
-            realm.beginTransaction();
-            account = realm.createObject(AccountDatabase.class,ONEDRIVE.toString());
-            account.setUsername(ONEDRIVE.toString());
-            account.setToken(String.valueOf(accessToken));
-            realm.commitTransaction();
-        }
-        catch (Exception e){
-            //No need of handling it
-        }
-        accountPresenter.loadFromDatabase();
-    }
-          
-    private void googleDriveAuthentication(String tokens) {
-        try{
-            String token = cloudRailServices.googleDrive.saveAsString();
-            Log.e("AccountsActivity", "googleDriveAuthentication: "+token + "Matching Token "+tokens);
-            String accessToken = cloudRailServices.getGoogleDriveToken();
-            realm.beginTransaction();
-            account = realm.createObject(AccountDatabase.class,GOOGLEDRIVE.toString());
-            account.setUsername(GOOGLEDRIVE.toString());
-            account.setToken(String.valueOf(accessToken));
-            realm.commitTransaction();
-        }catch (Exception e)
-        {
-            //No need for handling
-        }
-        accountPresenter.loadFromDatabase();
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -734,9 +645,4 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             SnackBarHandler.show(parentLayout,R.string.google_auth_fail);
         }
     }*/
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        SnackBarHandler.show(coordinatorLayout, getApplicationContext().getString(R.string.connection_failed));
-    }
 }

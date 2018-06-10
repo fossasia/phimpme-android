@@ -363,6 +363,10 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     invalidateOptionsMenu();
                     if(!favsearch(getAlbum().getMedia(position).getPath())){
                         bottomMenu.findItem(R.id.action_favourites).getIcon().clearColorFilter();
+<<<<<<< HEAD
+=======
+                        //bottomMenu.findItem(R.id.action_favourites).setIcon(R.drawable.ic_favourite_white_24dp);
+>>>>>>> 5473139... App crash fixed for editactivity, favourite icon issue resolved for SingleMediaActivity
                     }else{
                         bottomMenu.findItem(R.id.action_favourites).getIcon().setColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN);
                     }
@@ -383,6 +387,10 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     invalidateOptionsMenu();
                     if(!favsearch(getAlbum().getMedia(position).getPath())){
                         bottomMenu.findItem(R.id.action_favourites).getIcon().clearColorFilter();
+<<<<<<< HEAD
+=======
+                        //bottomMenu.findItem(R.id.action_favourites).setIcon(R.drawable.ic_favourite_white_24dp);
+>>>>>>> 5473139... App crash fixed for editactivity, favourite icon issue resolved for SingleMediaActivity
                     }else{
                         bottomMenu.findItem(R.id.action_favourites).getIcon().setColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN);
                     }
@@ -390,6 +398,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 }
             });
             mViewPager.scrollToPosition(all_photo_pos);
+
         } else if(!allPhotoMode && favphotomode && !upoadhis){
             adapter = new ImageAdapter(favouriteslist, basicCallBack, this, this);
             getSupportActionBar().setTitle(all_photo_pos + 1 + " " + getString(R.string.of) + " " + size_all);

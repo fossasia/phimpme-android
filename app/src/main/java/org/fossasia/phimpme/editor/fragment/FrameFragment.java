@@ -84,7 +84,9 @@ public class FrameFragment extends BaseEditFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        MyApplication.getRefWatcher(getContext()).watch(this);
+        if(MyApplication.isLeakCanaryInstalled){
+            MyApplication.getRefWatcher(getContext()).watch(this);
+        }
         lastBitmap = null;
         System.gc();
 
