@@ -194,11 +194,11 @@ public class AboutActivity extends ThemedActivity {
             @Override public void onClick(View view) {
                 try {
                     Intent intent = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("twitter://user?screen_name=[phimpme]"));
+                            Uri.parse("twitter://user?screen_name=phimpme"));
                     startActivity(intent);
                 } catch (Exception e) {
                     startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("https://twitter.com/#!/[phimpme]")));
+                            Uri.parse("https://twitter.com/phimpme")));
                 }
             }
         });
