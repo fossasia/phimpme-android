@@ -12,6 +12,7 @@ import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouch;
 
 /**
  * Created by panyi on 17/2/11.
@@ -30,6 +31,9 @@ public class CustomPaintView extends View {
 
     private int mColor;
 
+    public Bitmap mainBitmap;
+    public ImageViewTouch mainImage;
+    private float leftX,rightX,topY,bottomY;
     public CustomPaintView(Context context) {
         super(context);
         init(context);
@@ -54,7 +58,12 @@ public class CustomPaintView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        //System.out.println("width = "+getMeasuredWidth()+"     height = "+getMeasuredHeight());
+        int displayW=mainBitmap.getWidth()*getMeasuredHeight()/mainBitmap.getHeight();
+        int displayH=mainBitmap.getHeight()*getMeasuredWidth()/mainBitmap.getWidth();
+        leftX=(mainImage.getMeasuredWidth()-displayW)>>1;
+        rightX=leftX+displayW;
+        topY=(mainImage.getMeasuredHeight()-displayH)>>1;
+        bottomY=topY+displayH;
         if (mDrawBit == null) {
             generatorBit();
         }
@@ -98,6 +107,7 @@ public class CustomPaintView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (mDrawBit != null) {
+            canvas.clipRect(leftX,topY,rightX,bottomY);
             canvas.drawBitmap(mDrawBit, 0, 0, null);
         }
     }

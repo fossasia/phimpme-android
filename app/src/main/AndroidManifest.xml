@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.fossasia.phimpme"
-    android:versionCode="6"
-    android:versionName="1.2.0">
+    android:versionCode="7"
+    android:versionName="1.4.0">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -38,19 +38,17 @@
             </intent-filter>
         </activity>
 
-        <activity
+       <!-- <activity
             android:name="com.dropbox.client2.android.AuthActivity"
             android:launchMode="singleTask"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:configChanges="orientation|keyboard">
             <intent-filter>
-                <!-- Change this to be db- followed by your app key -->
-                <data android:scheme="db-7fhwc9meece1m9g" />
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </activity>
+        </activity>-->
 
         <activity
             android:name=".opencamera.Camera.CameraActivity"
@@ -184,7 +182,8 @@
         <activity
             android:name=".gallery.activities.LFMainActivity"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.albumsAct" />
 
@@ -224,6 +223,13 @@
 
                 <data android:mimeType="image/*" />
                 <data android:mimeType="video/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
         <activity
@@ -276,7 +282,6 @@
         </activity>
         <activity
             android:name=".editor.EditImageActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -316,8 +321,6 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing"
             android:largeHeap="true"/>
-        <meta-data android:name="com.google.android.gms.version"
-                   android:value="@integer/google_play_services_version" />
 
 
         <meta-data
@@ -327,6 +330,7 @@
         <activity
             android:name=".accounts.AccountActivity"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -334,7 +338,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="pdk4914573327424567067" />
+                <data android:scheme="org.fossasia.phimpme"/>
+                <data android:scheme="pdk4910600717739247160" />
             </intent-filter>
         </activity>
         <activity

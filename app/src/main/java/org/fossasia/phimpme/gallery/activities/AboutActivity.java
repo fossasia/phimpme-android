@@ -1,6 +1,10 @@
 package org.fossasia.phimpme.gallery.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -30,7 +34,7 @@ import de.psdev.licensesdialog.model.Notices;
 public class AboutActivity extends ThemedActivity {
 
     private Toolbar toolbar;
-
+    
     /**** CustomTabService*/
     private CustomTabService cts;
 
@@ -42,11 +46,9 @@ public class AboutActivity extends ThemedActivity {
         super.onPostCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         setNavBarColor();
         cts = new CustomTabService(AboutActivity.this,getPrimaryColor());
         scr = (ScrollView)findViewById(R.id.aboutAct_scrollView);
-
     }
 
     @Override
@@ -89,6 +91,7 @@ public class AboutActivity extends ThemedActivity {
         ((TextView) findViewById(R.id.about_support_title)).setTextColor(color);
         ((TextView) findViewById(R.id.about_license_title)).setTextColor(color);
         ((TextView) findViewById(R.id.about_special_thanks_title)).setTextColor(color);
+        ((TextView) findViewById(R.id.connect_to_us_title)).setTextColor(color);
 
         /***** LeafPic Header *****/
         /*
@@ -116,26 +119,48 @@ public class AboutActivity extends ThemedActivity {
 
     private void setUpActions(){
 
+        //Fossasia contributors
+        findViewById(R.id.about_fossasia).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cts.launchUrl(getApplicationContext().getString(R.string.contributors_link));
+            }
+        });
         //GitHub
         findViewById(R.id.ll_about_support_github).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cts.launchUrl("https://github.com/fossasia/phimpme-android");
+                cts.launchUrl(getApplicationContext().getString(R.string.phimpme_github));
             }
         });
         ///Report bug
         findViewById(R.id.ll_about_report_bug).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cts.launchUrl("https://github.com/fossasia/phimpme-android/issues");
+                cts.launchUrl(getApplicationContext().getString(R.string.phimpme_github_issues));
             }
         });
-
-
+         //openCamera
+        findViewById(R.id.about_patryk_goworowski_item_sub).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cts.launchUrl(getApplicationContext().getString(R.string.opencamera_sourceforge));
+            }
+        });
+        //LeafPic
+        findViewById(R.id.about_community_members_sub).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cts.launchUrl(getApplicationContext().getString(R.string.leafpic_github));
+            }
+        });
+        
         //License
         findViewById(R.id.ll_about_license).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) { cts.launchUrl("https://github.com/fossasia/phimpme-android/blob/master/LICENSE.md");}
+            public void onClick(View v) {
+                cts.launchUrl(getApplicationContext().getString(R.string.phimpme_license));
+            }
         });
 
         //Libs
@@ -144,6 +169,55 @@ public class AboutActivity extends ThemedActivity {
             public void onClick(View v) {licenseDialog();}
         });
 
+        //Website
+        findViewById(R.id.ll_about_website).setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("http://phimp.me/"));
+                startActivity(intent);
+            }
+        });
+
+        //Facebook page
+        findViewById(R.id.ll_about_Facebook).setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View view) {
+                Intent facebookIntent = new Intent(Intent.ACTION_VIEW);
+                String facebookUrl = getFacebookPageURL(getApplicationContext());
+                facebookIntent.setData(Uri.parse(facebookUrl));
+                startActivity(facebookIntent);
+            }
+        });
+
+        //Twitter page
+        findViewById(R.id.ll_about_twitter_connect).setOnClickListener(new View.OnClickListener() {
+            @Override public void onClick(View view) {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("twitter://user?screen_name=phimpme"));
+                    startActivity(intent);
+                } catch (Exception e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("https://twitter.com/phimpme")));
+                }
+            }
+        });
+
+    }
+
+    public String getFacebookPageURL(Context context) {
+
+        PackageManager packageManager = context.getPackageManager();
+        try {
+            int versionCode = packageManager.getPackageInfo("com.facebook.katana", 0).versionCode;
+            if (versionCode >= 3002850) { //newer versions of fb app
+                return "fb://facewebmodal/f?href=" + "https://www.facebook.com/phimpmeapp";
+            } else { //older versions of fb app
+                return "fb://page/" + "phimpmeapp";
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            return "https://www.facebook.com/phimpmeapp"; //normal web url
+        }
     }
 
     private void setThemeOnChangeListener(){
@@ -157,6 +231,8 @@ public class AboutActivity extends ThemedActivity {
         ((CardView) findViewById(R.id.about_special_thanks_card)).setCardBackgroundColor(color);
         ((CardView) findViewById(R.id.about_support_card)).setCardBackgroundColor(color);
         ((CardView) findViewById(R.id.about_license_card)).setCardBackgroundColor(color);
+        ((CardView) findViewById(R.id.connect_card)).setCardBackgroundColor(color);
+
         //cvSpecialThanks.setBackgroundColor(color);
 
         /** Icons **/
@@ -169,6 +245,12 @@ public class AboutActivity extends ThemedActivity {
         ((IconicsImageView) findViewById(R.id.about_support_github_icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.about_support_report_bug_icon)).setColor(color);
 
+        //CONNECT ICONS
+        ((IconicsImageView) findViewById(R.id.about_website_icon)).setColor(color);
+        ((IconicsImageView) findViewById(R.id.about_fb_page_icon)).setColor(color);
+        ((IconicsImageView) findViewById(R.id.about_twitter_connect_icon)).setColor(color);
+
+
         /** TextViews **/
         color = getTextColor();
         ((TextView) findViewById(R.id.about_libs_item)).setTextColor(color);
@@ -176,11 +258,14 @@ public class AboutActivity extends ThemedActivity {
         ((TextView) findViewById(R.id.about_support_github_item)).setTextColor(color);
         ((TextView) findViewById(R.id.about_license_item)).setTextColor(color);
         ((TextView) findViewById(R.id.about_support_report_bug_item)).setTextColor(color);
+        ((TextView) findViewById(R.id.Website_tv)).setTextColor(color);
+        ((TextView) findViewById(R.id.about_fb_item)).setTextColor(color);
+        ((TextView) findViewById(R.id.about_twitter_tv_item)).setTextColor(color);
 
         /** Sub Text Views**/
         color = getSubTextColor();
         ((TextView) findViewById(R.id.about_version_item_sub)).setTextColor(color);
-        ((TextView) findViewById(R.id.about_version_item_sub)).setText("Version: "+BuildConfig.VERSION_NAME);
+        ((TextView) findViewById(R.id.about_version_item_sub)).setText(getApplicationContext().getString(R.string.version_title)+" "+BuildConfig.VERSION_NAME);
         ((TextView) findViewById(R.id.about_libs_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.about_patryk_goworowski_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.about_community_members_sub)).setTextColor(color);
@@ -188,20 +273,87 @@ public class AboutActivity extends ThemedActivity {
         ((TextView) findViewById(R.id.about_support_github_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.about_license_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.about_support_report_bug_sub)).setTextColor(color);
+        ((TextView) findViewById(R.id.about_website_item_sub)).setTextColor(color);
+        ((TextView) findViewById(R.id.about_fb_item_sub)).setTextColor(color);
+        ((TextView) findViewById(R.id.about_twitter_tv_item_sub)).setTextColor(color);
     }
 
     private void licenseDialog() {
         // TODO: 10/07/16 ~Jibe rifai sta roba please!
         final Notices notices = new Notices();
-        notices.addNotice(new Notice("Glide", "http://github.com/bumptech/glide", "Copyright 2014 Google, Inc. All rights reserved.", new ApacheSoftwareLicense20()));
-        notices.addNotice(new Notice("Ion", "http://github.com/koush/ion", "Copyright 2013 Koushik Dutta (2013)", new ApacheSoftwareLicense20()));
-        notices.addNotice(new Notice("Android-Iconics", "http://github.com/mikepenz/Android-Iconics", "Copyright 2016 Mike Penz", new ApacheSoftwareLicense20()));
-        notices.addNotice(new Notice("AppIntro", "http://github.com/PaoloRotolo/AppIntro", "Copyright 2015 Paolo Rotolo\n"
-                + "Copyright 2016 Maximilian Narr", new ApacheSoftwareLicense20()));
-        notices.addNotice(new Notice("uCrop", "http://github.com/Yalantis/uCrop", "Copyright 2016, Yalantis", new ApacheSoftwareLicense20()));
-        notices.addNotice(new Notice("ShiftColorPicker", "http://github.com/DASAR/ShiftColorPicker", "Copyright (c) 2015 Bogdasarov Bogdan", new MITLicense()));
-        notices.addNotice(new Notice("PhotoView", "http://github.com/chrisbanes/PhotoView", "Copyright 2011, 2012 Chris Banes.", new ApacheSoftwareLicense20()));
-        notices.addNotice(new Notice("CircleImageView", "https://github.com/hdodenhof/CircleImageView", "Copyright 2014 - 2015 Henning Dodenhof", new ApacheSoftwareLicense20()));
+        notices.addNotice(
+                new Notice(
+                        getApplicationContext().getString(R.string.glide),
+                        getApplicationContext().getString(R.string.glide_github),
+                        getApplicationContext().getString(R.string.copyright_2014_google),
+                        new ApacheSoftwareLicense20()
+                )
+        );
+        notices.addNotice(
+                new Notice(
+                        getApplicationContext().getString(R.string.ion),
+                        getApplicationContext().getString(R.string.ion_github),
+                        getApplicationContext().getString(R.string.copyright_2013_koushik_dutta),
+                        new ApacheSoftwareLicense20()
+                )
+        );
+        notices.addNotice(
+                new Notice(
+                        getApplicationContext().getString(R.string.android_iconics),
+                        getApplicationContext().getString(R.string.android_iconics_github),
+                        getApplicationContext().getString(R.string.copyright_2016_mike_penz),
+                        new ApacheSoftwareLicense20()
+                )
+        );
+        notices.addNotice(
+                new Notice(
+                        getApplicationContext().getString(R.string.appintro),
+                        getApplicationContext().getString(R.string.appintro_github),
+                        getApplicationContext().getString(R.string.copyright_2015_paolo_rotolo)
+                                + getApplicationContext().getString(R.string.copyright_2016_maximilian_narr),
+                        new ApacheSoftwareLicense20()
+                )
+        );
+        notices.addNotice(
+                new Notice(
+                        getApplicationContext().getString(R.string.ucrop),
+                        getApplicationContext().getString(R.string.ucrop_github),
+                        getApplicationContext().getString(R.string.copyright_2016_yolantis),
+                        new ApacheSoftwareLicense20()
+                )
+        );
+        notices.addNotice(
+                new Notice(
+                        getApplicationContext().getString(R.string.shiftcolorpicker),
+                        getApplicationContext().getString(R.string.shiftcolorpicker),
+                        getApplicationContext().getString(R.string.copyright_2015_bogdasarov_bogdan),
+                        new MITLicense()
+                )
+        );
+        notices.addNotice(
+                new Notice(
+                        getApplicationContext().getString(R.string.photoview),
+                        getApplicationContext().getString(R.string.photoview_github),
+                        getApplicationContext().getString(R.string.copyright_2011_2012_chris_banes),
+                        new ApacheSoftwareLicense20()
+                )
+        );
+        notices.addNotice(
+                new Notice(
+                        getApplicationContext().getString(R.string.circleimageview),
+                        getApplicationContext().getString(R.string.circleimageview_github),
+                        getApplicationContext().getString(R.string.copyright_2014_2015_henning_dodenhof),
+                        new ApacheSoftwareLicense20()
+                )
+        );
+        notices.addNotice(
+                new Notice(
+                        getApplicationContext().getString(R.string.horizontalwheelview),
+                        getApplicationContext().getString(R.string.horizontalwheelview_github),
+                        getApplicationContext().getString(R.string.copyright_2016_mykhailo_schurov),
+                        new ApacheSoftwareLicense20()
+                )
+        );
 
         new LicensesDialog.Builder(this)
                 .setNotices(notices)
