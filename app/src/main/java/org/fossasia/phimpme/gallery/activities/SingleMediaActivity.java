@@ -150,7 +150,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private boolean details=false;
     private ArrayList<Media> favouriteslist;
     public static  Media mediacompress = null;
+
     private ArrayList<Media> uploadhistory;
+
     ImageDescModel temp;
     private final int REQ_CODE_SPEECH_INPUT = 100;
     String voiceInput;
@@ -542,7 +544,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
         @Override
     public boolean onPrepareOptionsMenu(final Menu menu) {
-      
+
         if(allPhotoMode || favphotomode){
             menu.findItem(R.id.action_cover).setVisible(false);
         }
@@ -643,7 +645,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     }
 
     private void deleteCurrentMedia() {
-        if (!allPhotoMode && !favphotomode) {
+        if (!allPhotoMode && !favphotomode && !upoadhis) {
             boolean success = getAlbum().deleteCurrentMedia(getApplicationContext());
             if(!success){
 
@@ -672,7 +674,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             }
             adapter.notifyDataSetChanged();
             getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
-        } else if(allPhotoMode && !favphotomode) {
+        } else if(allPhotoMode && !favphotomode && !upoadhis) {
             int c = current_image_pos;
             deleteMedia(listAll.get(current_image_pos).getPath());
             LFMainActivity.listAll.remove(current_image_pos);
@@ -683,7 +685,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 getSupportActionBar().setTitle((c + 1) + " " + getString(R.string.of) + " " + size_all);
 //            mViewPager.setCurrentItem(current_image_pos);
 //            toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + size_all);
-        } else if(favphotomode && !allPhotoMode){
+        } else if(favphotomode && !allPhotoMode && !upoadhis){
             int c = current_image_pos;
             //deleteMedia(favouriteslist.get(current_image_pos).getPath());
             realm = Realm.getDefaultInstance();
@@ -699,6 +701,23 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             adapter.notifyDataSetChanged();
             getSupportActionBar().setTitle((c + 1) + " " + getString(R.string.of) + " " + size_all);
             SnackBarHandler.show(parentView, getApplicationContext().getString(R.string.photo_deleted_from_fav_msg));
+
+        } else if(!favphotomode && !allPhotoMode && upoadhis){
+            int c = current_image_pos;
+            //deleteMedia(favouriteslist.get(current_image_pos).getPath());
+            realm = Realm.getDefaultInstance();
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override public void execute(Realm realm) {
+                    RealmResults<UploadHistoryRealmModel> uploadHistoryImagesModels = realm.where(UploadHistoryRealmModel
+                            .class).equalTo("pathname", uploadhistory.get(current_image_pos).getPath()).findAll();
+                    uploadHistoryImagesModels.deleteAllFromRealm();
+                }
+            });
+            deletefromuploadhistorylist(uploadhistory.get(current_image_pos).getPath());
+            size_all = uploadhistory.size();
+            adapter.notifyDataSetChanged();
+            getSupportActionBar().setTitle((c + 1) + " " + getString(R.string.of) + " " + size_all);
+            SnackBarHandler.show(parentView, getApplicationContext().getString(R.string.photo_deleted_from_fav_msg));
         }
     }
 
@@ -706,6 +725,16 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         for (int i = 0; i < favouriteslist.size(); i++){
             if(favouriteslist.get(i).getPath().equals(path)){
                 favouriteslist.remove(i);
+                break;
+            }
+        }
+    }
+
+
+    private void deletefromuploadhistorylist(String path){
+        for (int i = 0; i < uploadhistory.size(); i++){
+            if(uploadhistory.get(i).getPath().equals(path)){
+                uploadhistory.remove(i);
                 break;
             }
         }
@@ -879,11 +908,11 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 deleteDialog.setPositiveButton(ButtonDelete.toUpperCase(), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (securityObj.isActiveSecurity() && securityObj.isPasswordOnDelete()) {
-
+                            final boolean passco[] = {false};
                             final AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
                             final EditText editTextPassword = securityObj.getInsertPasswordDialog
                                     (SingleMediaActivity.this, passwordDialogBuilder);
-
+                            editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
                             passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     if (securityObj.checkPassword(editTextPassword.getText().toString())) {
@@ -915,6 +944,10 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                             passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
                             final AlertDialog passwordDialog = passwordDialogBuilder.create();
                             passwordDialog.show();
+                            passwordDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager
+                                    .LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+                            passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams
+                                    .SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                             AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
                             passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View
                                     .OnClickListener() {
@@ -924,6 +957,8 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                                         deleteCurrentMedia();
                                         passwordDialog.dismiss();
                                     } else {
+                                        passco[0] = true;
+                                        securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
                                         SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), bottomBar.getHeight());
                                         editTextPassword.getText().clear();
                                         editTextPassword.requestFocus();
@@ -938,7 +973,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 alertDialog.show();
                 AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
                 return true;
-
             case R.id.slide_show:
                 handler.removeCallbacks(slideShowRunnable);
                 setSlideShowDialog();

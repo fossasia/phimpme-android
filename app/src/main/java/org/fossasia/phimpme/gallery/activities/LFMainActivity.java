@@ -1593,8 +1593,10 @@ public class LFMainActivity extends SharedMediaActivity {
         if (getBaseTheme() != LIGHT_THEME)
             starImageView.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_ATOP);
         else
-            starImageView.setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_ATOP);
+            starImageView.setColorFilter(ContextCompat.getColor(this, R.color.accent_grey), PorterDuff.Mode.SRC_ATOP);
     }
+
+
     private void showsnackbar(Boolean result) {
         if(result) {
             SnackBarHandler.show(mDrawerLayout,getApplicationContext().getString(R.string.photo_deleted_msg), navigationView.getHeight());

@@ -1,5 +1,11 @@
 package org.fossasia.phimpme.uploadhistory;
 
+
+import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
+
+import java.io.File;
+import java.util.ArrayList;
+
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -30,6 +36,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmQuery;
+import io.realm.RealmResults;
 
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 
@@ -87,6 +94,7 @@ public class UploadHistory extends ThemedActivity {
         uploadHistoryAdapter = new UploadHistoryAdapter(getPrimaryColor());
         uploadHistoryAdapter.setOnClickListener(onClickListener);
         realm = Realm.getDefaultInstance();
+        removedeletedphotos();
         uploadResults = realm.where(UploadHistoryRealmModel.class);
         GridLayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), columnsCount());
         layoutManager.setReverseLayout(false);
@@ -96,6 +104,28 @@ public class UploadHistory extends ThemedActivity {
 
         setUpUI();
         //uploadHistoryRecyclerView.addOnItemTouchListener(new RecyclerItemClickListner(this, this));
+    }
+
+
+    private void removedeletedphotos(){
+        RealmQuery<UploadHistoryRealmModel> uploadHistoryRealmModelRealmQuery = realm.where(UploadHistoryRealmModel.class);
+        ArrayList<String> todel = new ArrayList<>();
+        for(int i = 0; i < uploadHistoryRealmModelRealmQuery.count(); i++){
+            if(!new File(uploadHistoryRealmModelRealmQuery.findAll().get(i).getPathname()).exists()){
+                todel.add(uploadHistoryRealmModelRealmQuery.findAll().get(i).getPathname());
+            }
+        }
+        for(int i = 0; i < todel.size(); i++){
+            final String path = todel.get(i);
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    RealmResults<UploadHistoryRealmModel> result = realm.where(UploadHistoryRealmModel.class).equalTo
+                            ("pathname", path).findAll();
+                    result.deleteAllFromRealm();
+                }
+            });
+        }
     }
 
     private ArrayList<Media> loaduploaddata(){
