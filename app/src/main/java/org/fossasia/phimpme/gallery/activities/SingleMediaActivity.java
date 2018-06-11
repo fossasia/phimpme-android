@@ -363,10 +363,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     invalidateOptionsMenu();
                     if(!favsearch(getAlbum().getMedia(position).getPath())){
                         bottomMenu.findItem(R.id.action_favourites).getIcon().clearColorFilter();
-<<<<<<< HEAD
-=======
-                        //bottomMenu.findItem(R.id.action_favourites).setIcon(R.drawable.ic_favourite_white_24dp);
->>>>>>> 5473139... App crash fixed for editactivity, favourite icon issue resolved for SingleMediaActivity
                     }else{
                         bottomMenu.findItem(R.id.action_favourites).getIcon().setColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN);
                     }
@@ -387,10 +383,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     invalidateOptionsMenu();
                     if(!favsearch(getAlbum().getMedia(position).getPath())){
                         bottomMenu.findItem(R.id.action_favourites).getIcon().clearColorFilter();
-<<<<<<< HEAD
-=======
-                        //bottomMenu.findItem(R.id.action_favourites).setIcon(R.drawable.ic_favourite_white_24dp);
->>>>>>> 5473139... App crash fixed for editactivity, favourite icon issue resolved for SingleMediaActivity
                     }else{
                         bottomMenu.findItem(R.id.action_favourites).getIcon().setColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN);
                     }
