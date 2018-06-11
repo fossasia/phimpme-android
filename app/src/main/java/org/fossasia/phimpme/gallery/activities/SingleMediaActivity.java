@@ -290,12 +290,8 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
 
     private void initUI() {
-        Menu bottomMenu = bottomBar.getMenu();
+        final Menu bottomMenu = bottomBar.getMenu();
         getMenuInflater().inflate(R.menu.menu_bottom_view_pager, bottomMenu);
-        if(!favphotomode && favsearch(getAlbum().getCurrentMedia().getPath())){
-            bottomMenu.findItem(R.id.action_favourites).getIcon().setTint(getAccentColor());
-        }
-
         if(upoadhis){
             bottomMenu.findItem(R.id.action_favourites).setVisible(false);
             bottomMenu.findItem(R.id.action_edit).setVisible(false);
@@ -355,6 +351,11 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     getAlbum().setCurrentPhotoIndex(position);
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
                     invalidateOptionsMenu();
+                    if(!favsearch(getAlbum().getMedia(position).getPath())){
+                        bottomMenu.findItem(R.id.action_favourites).getIcon().clearColorFilter();
+                    }else{
+                        bottomMenu.findItem(R.id.action_favourites).getIcon().setColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN);
+                    }
                     pathForDescription = getAlbum().getMedia().get(position).getPath();
                 }
             });
@@ -370,6 +371,11 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     getAlbum().setCurrentPhotoIndex(getAlbum().getCurrentMediaIndex());
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
                     invalidateOptionsMenu();
+                    if(!favsearch(getAlbum().getMedia(position).getPath())){
+                        bottomMenu.findItem(R.id.action_favourites).getIcon().clearColorFilter();
+                    }else{
+                        bottomMenu.findItem(R.id.action_favourites).getIcon().setColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN);
+                    }
                     pathForDescription = listAll.get(position).getPath();
                 }
             });
@@ -857,7 +863,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     else{
                         fav.setDescription(" ");
                     }
-                    item.getIcon().setTint(getAccentColor());
+                    item.getIcon().setColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN);
                     realm.commitTransaction();
                     SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.add_favourite), bottomBar.getHeight());
                 } else {

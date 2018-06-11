@@ -646,6 +646,7 @@
     <string name="picture_orientation">Force use of accelerometer</string>
     <string name="picture_orientation_sub">Rotate even when auto rotate is locked</string>
     <string name="apply_theme">Apply Theme</string>
+    <string name="accent_primary_same_mssg">Do you want to set accent color same as the primary color?</string>
     <string name="apply_theme_sub">Apply custom color on the picture viewer.</string>
     <string name="transparency">Transparency</string>
     <string name="transparency_sub">Set the grade of transparency</string>
