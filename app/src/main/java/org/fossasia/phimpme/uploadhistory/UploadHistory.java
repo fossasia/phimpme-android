@@ -1,8 +1,16 @@
 package org.fossasia.phimpme.uploadhistory;
 
+import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
+
+import java.io.File;
+import java.util.ArrayList;
+
+import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -16,12 +24,15 @@ import com.mikepenz.iconics.view.IconicsImageView;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.UploadHistoryRealmModel;
+import org.fossasia.phimpme.gallery.activities.SingleMediaActivity;
+import org.fossasia.phimpme.gallery.data.Media;
 import org.jetbrains.annotations.NotNull;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmQuery;
+import io.realm.RealmResults;
 
 /**
  * Created by pa1pal on 17/08/17.
@@ -44,33 +55,102 @@ public class UploadHistory extends ThemedActivity {
     @BindView(R.id.empty_text)
     TextView emptyText;
 
+    @BindView(R.id.accounts_parent)
+    RelativeLayout parentView;
 
     Realm realm;
 
     private RealmQuery<UploadHistoryRealmModel> uploadResults;
-
     private UploadHistoryAdapter uploadHistoryAdapter;
+
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override public void onClick(View view) {
+            UploadHistoryRealmModel uploadHistoryRealmModel = (UploadHistoryRealmModel) view.findViewById(R.id
+                    .upload_time).getTag();
+            view.setTransitionName(getString(R.string.transition_photo));
+            Intent intent = new Intent("com.android.camera.action.REVIEW", Uri.fromFile(new File(uploadHistoryRealmModel.getPathname())));
+            intent.putExtra("path", uploadHistoryRealmModel.getPathname());
+            intent.putExtra("position", checkpos(uploadHistoryRealmModel.getPathname()));
+            intent.putExtra("size", uploadResults.findAll().size());
+            intent.putExtra("uploadhistory", true);
+            ArrayList<Media> u = loaduploaddata();
+            intent.putParcelableArrayListExtra("datalist", u);
+            intent.setClass(getApplicationContext(), SingleMediaActivity.class);
+            context.startActivity(intent);
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.upload_history_activity);
         ButterKnife.bind(this);
-        setupToolbar();
-        uploadHistoryAdapter = new UploadHistoryAdapter();
+        uploadHistoryAdapter = new UploadHistoryAdapter(getPrimaryColor());
+        uploadHistoryAdapter.setOnClickListener(onClickListener);
         realm = Realm.getDefaultInstance();
+        removedeletedphotos();
         uploadResults = realm.where(UploadHistoryRealmModel.class);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        GridLayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), columnsCount());
+        layoutManager.setReverseLayout(false);
         uploadHistoryRecyclerView.setLayoutManager(layoutManager);
         uploadHistoryRecyclerView.setAdapter(uploadHistoryAdapter);
         uploadHistoryAdapter.setResults(uploadResults);
 
+        setUpUI();
         //uploadHistoryRecyclerView.addOnItemTouchListener(new RecyclerItemClickListner(this, this));
+    }
+
+    private void removedeletedphotos(){
+        RealmQuery<UploadHistoryRealmModel> uploadHistoryRealmModelRealmQuery = realm.where(UploadHistoryRealmModel.class);
+        ArrayList<String> todel = new ArrayList<>();
+        for(int i = 0; i < uploadHistoryRealmModelRealmQuery.count(); i++){
+            if(!new File(uploadHistoryRealmModelRealmQuery.findAll().get(i).getPathname()).exists()){
+                todel.add(uploadHistoryRealmModelRealmQuery.findAll().get(i).getPathname());
+            }
+        }
+        for(int i = 0; i < todel.size(); i++){
+            final String path = todel.get(i);
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    RealmResults<UploadHistoryRealmModel> result = realm.where(UploadHistoryRealmModel.class).equalTo
+                            ("pathname", path).findAll();
+                    result.deleteAllFromRealm();
+                }
+            });
+        }
+    }
+
+    private ArrayList<Media> loaduploaddata(){
+        ArrayList<Media> data = new ArrayList<>();
+        for(int i = 0; i < uploadResults.findAll().size(); i++){
+            data.add(new Media(new File(uploadResults.findAll().get(i).getPathname())));
+        }
+        return data;
+    }
+
+    private int checkpos(String path){
+        int pos = 0;
+        for(int i = 0; i < uploadResults.findAll().size(); i++){
+            if(path.equals(uploadResults.findAll().get(i).getPathname())){
+                pos = i;
+                break;
+            }
+        }
+        return pos;
+    }
+
+    private int columnsCount() {
+        return getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT
+                ? 2
+                : 3;
+    }
+
+    private void setUpUI() {
         emptyIcon.setColor(getIconColor());
         emptyText.setTextColor(getAccentColor());
-
-
-
+        parentView.setBackgroundColor(getBackgroundColor());
+        setupToolbar();
     }
 
     public void setUpAdapter(@NotNull RealmQuery<UploadHistoryRealmModel> accountDetails) {
@@ -81,6 +161,7 @@ public class UploadHistory extends ThemedActivity {
     @Override
     public void onResume() {
         super.onResume();
+        setUpUI();
         if (uploadResults.findAll().size() == 0) {
             emptyLayout.setVisibility(View.VISIBLE);
             uploadHistoryRecyclerView.setVisibility(View.GONE);
