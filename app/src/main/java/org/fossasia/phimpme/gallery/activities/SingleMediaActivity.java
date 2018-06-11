@@ -698,10 +698,13 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             });
             deletefromfavouriteslist(favouriteslist.get(current_image_pos).getPath());
             size_all = favouriteslist.size();
-            adapter.notifyDataSetChanged();
-            getSupportActionBar().setTitle((c + 1) + " " + getString(R.string.of) + " " + size_all);
-            SnackBarHandler.show(parentView, getApplicationContext().getString(R.string.photo_deleted_from_fav_msg));
-
+            if(size_all > 0){
+                adapter.notifyDataSetChanged();
+                getSupportActionBar().setTitle((c + 1) + " " + getString(R.string.of) + " " + size_all);
+                SnackBarHandler.show(parentView, getApplicationContext().getString(R.string.photo_deleted_from_fav_msg));
+            }else{
+                onBackPressed();
+            }
         } else if(!favphotomode && !allPhotoMode && upoadhis){
             int c = current_image_pos;
             //deleteMedia(favouriteslist.get(current_image_pos).getPath());
