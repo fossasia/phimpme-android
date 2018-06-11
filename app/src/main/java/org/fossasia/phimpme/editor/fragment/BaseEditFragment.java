@@ -25,7 +25,9 @@ public abstract class BaseEditFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        MyApplication.getRefWatcher(getActivity()).watch(this);
+        if(MyApplication.isLeakCanaryInstalled){
+            MyApplication.getRefWatcher(getActivity()).watch(this);
+        }
     }
 
     public abstract void onShow();

@@ -6,7 +6,6 @@ import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.Stetho;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
@@ -24,8 +23,6 @@ import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterConfig;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
-
-import io.fabric.sdk.android.Fabric;
 
 import org.fossasia.phimpme.gallery.data.Album;
 import org.fossasia.phimpme.gallery.data.HandlingAlbums;
@@ -45,8 +42,9 @@ public class MyApplication extends Application {
     private HandlingAlbums albums = null;
     public static Context applicationContext;
     public ImageLoader imageLoader;
-    private Boolean isPublished = false; // Set this to true at the time of release
+    private Boolean isPublished = true; // Set this to true at the time of release
     private RefWatcher refWatcher;
+    public static boolean isLeakCanaryInstalled = false;
     public Album getAlbum() {
         return albums.dispAlbums.size() > 0 ? albums.getCurrentAlbum() : Album.getEmptyAlbum();
     }
@@ -62,7 +60,10 @@ public class MyApplication extends Application {
             // You should not init your app in this process.
             return;
         }
-        refWatcher = LeakCanary.install(this);
+        if(!isPublished){
+            refWatcher = LeakCanary.install(this);
+            isLeakCanaryInstalled = true;
+        }
         albums = new HandlingAlbums(getApplicationContext());
         applicationContext = getApplicationContext();
 
@@ -86,9 +87,6 @@ public class MyApplication extends Application {
                 .build();
         Realm.setDefaultConfiguration(realmConfiguration);
         super.onCreate();
-        if (isPublished)
-            Fabric.with(this, new Crashlytics());
-
         /**
          * Stetho initialization
          */
