@@ -17,7 +17,7 @@ android {
         vectorDrawables.useSupportLibrary = true
         resConfigs "en"
         ndk {
-            abiFilters 'armeabi-v7a','x86'
+            abiFilters 'armeabi-v7a', 'x86'
         }
         renderscriptTargetApi 19
         renderscriptSupportModeEnabled true
@@ -84,7 +84,7 @@ repositories {
 
     maven { url 'https://maven.fabric.io/public' }
 
-    maven{ url "https://mvnrepository.com/artifact/com.box/box-android-sdk" }
+    maven { url "https://mvnrepository.com/artifact/com.box/box-android-sdk" }
 }
 
 
@@ -166,8 +166,8 @@ dependencies {
     compile files('libs/flickrj-android-2.1.0.jar')
 
     //tumblr
-    compile ('com.tumblr:jumblr:0.0.11'){
-        exclude module:'scribe'
+    compile('com.tumblr:jumblr:0.0.11') {
+        exclude module: 'scribe'
     }
 
     //realm
@@ -188,6 +188,9 @@ dependencies {
 
     //photoview
     compile project(':photoview')
+
+    //compressor
+    compile 'id.zelory:compressor:2.1.0'
 
 }
 apply plugin: 'com.google.gms.google-services'
