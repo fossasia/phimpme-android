@@ -1595,6 +1595,8 @@ public class LFMainActivity extends SharedMediaActivity {
         else
             starImageView.setColorFilter(ContextCompat.getColor(this, R.color.accent_grey), PorterDuff.Mode.SRC_ATOP);
     }
+
+
     private void showsnackbar(Boolean result) {
         if(result) {
             SnackBarHandler.show(mDrawerLayout,getApplicationContext().getString(R.string.photo_deleted_msg), navigationView.getHeight());
