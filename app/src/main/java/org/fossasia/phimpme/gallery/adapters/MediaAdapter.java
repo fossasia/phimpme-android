@@ -3,8 +3,6 @@ package org.fossasia.phimpme.gallery.adapters;
 import android.content.Context;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,15 +16,10 @@ import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 
 import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.data.local.FavouriteImagesModel;
-import org.fossasia.phimpme.gallery.activities.LFMainActivity;
 import org.fossasia.phimpme.gallery.data.Media;
+import org.fossasia.phimpme.gallery.util.ThemeHelper;
 
 import java.util.ArrayList;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import io.realm.Realm;
 
 
 /**
@@ -36,22 +29,18 @@ import io.realm.Realm;
 public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> {
 
     private ArrayList<Media> medias;
-    private boolean fav = false;
 
-    private BitmapDrawable placeholder;
+    private BitmapDrawable drawable;
     private View.OnClickListener mOnClickListener;
     private View.OnLongClickListener mOnLongClickListener;
-    Context context;
 
     public MediaAdapter(ArrayList<Media> ph, Context context) {
         medias = ph;
-        this.context = context;
         updatePlaceholder(context);
     }
 
     public void updatePlaceholder(Context context) {
-        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.placeholder);
-        placeholder = (BitmapDrawable) drawable;
+        drawable = (BitmapDrawable) ThemeHelper.getPlaceHolder(context);
     }
 
     @Override
@@ -80,7 +69,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
                 .centerCrop()
                 .diskCacheStrategy(DiskCacheStrategy.RESULT)
                 .thumbnail(0.5f)
-                .placeholder(placeholder)
+                .placeholder(drawable)
                 .animate(R.anim.fade_in)
                 .into(holder.imageView);
         holder.icon.setVisibility(View.GONE);
@@ -110,25 +99,23 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
         mOnLongClickListener = lis;
     }
 
-    public void swapDataSet(ArrayList<Media> asd, boolean fav) {
+    public void swapDataSet(ArrayList<Media> asd) {
         medias = asd;
-        this.fav = fav;
         notifyDataSetChanged();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.photo_preview)
-        protected ImageView imageView;
-        @BindView(R.id.media_card_layout)
-        protected View layout;
-        @BindView(R.id.photo_path)
-        protected TextView path;
-        @BindView(R.id.icon)
-        protected IconicsImageView icon;
+        ImageView imageView;
+        View layout;
+        TextView path;
+        IconicsImageView icon;
 
         ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this, itemView);
+            layout = itemView.findViewById(R.id.media_card_layout);
+            imageView = (ImageView) itemView.findViewById(R.id.photo_preview);
+            icon = (IconicsImageView) itemView.findViewById(R.id.icon);
+            path = (TextView) itemView.findViewById(R.id.photo_path);
         }
     }
 }

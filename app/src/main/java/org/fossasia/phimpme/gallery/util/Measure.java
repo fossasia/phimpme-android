@@ -10,7 +10,6 @@ import android.view.WindowManager;
 /**
  * Created by dnld on 11/03/16.
  */
-
 public class Measure {
 
     public static final String TAG = "Measure";
@@ -67,7 +66,7 @@ public class Measure {
     }
 
     public static int rotateBy(int current, int degrees) {
-    // TODO: 21/08/16 a better way should exist
+        // TODO: 21/08/16 a better way should exist
     /*int rotation = current + degrees;
     if (rotation > 359) rotation -=360;
     if (rotation < 0) rotation +=360;*/

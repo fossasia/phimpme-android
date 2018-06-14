@@ -4,7 +4,6 @@ import android.content.Context;
 import android.media.MediaScannerConnection;
 
 import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.gallery.adapters.AlbumsAdapter;
 import org.fossasia.phimpme.gallery.data.providers.StorageProvider;
 import org.fossasia.phimpme.gallery.data.base.AlbumsComparators;
 import org.fossasia.phimpme.gallery.data.base.SortingMode;
@@ -59,7 +58,7 @@ public class HandlingAlbums {
       list.addAll(MediaStoreProvider.getAlbums(context, hidden));
     }
     dispAlbums = list;
-    sortAlbums();
+    sortAlbums(context);
   }
 
   public void addAlbum(int position, Album album) {
@@ -76,10 +75,6 @@ public class HandlingAlbums {
   public Album getCurrentAlbum() {
     return dispAlbums.get(current);
   }
-
-    public int getCurrentAlbumIndex(Album album) {
-        return dispAlbums.indexOf(album);
-    }
 
   public void saveBackup(final Context context) {
     if (!hidden) {
@@ -102,7 +97,6 @@ public class HandlingAlbums {
     }
   }
 
-  @SuppressWarnings("unchecked")
   public static void addAlbumToBackup(final Context context, final Album album) {
     new Thread(new Runnable() {
       public void run() {
@@ -140,7 +134,7 @@ public class HandlingAlbums {
     }).start();
   }
 
-  @SuppressWarnings("unchecked")
+
   public void restoreBackup(Context context) {
     FileInputStream inStream;
     try {
@@ -262,14 +256,6 @@ public class HandlingAlbums {
     return ContentHelper.deleteFilesInFolder(context, new File(album.getPath()));
   }
 
-  public boolean moveSelectedAlbum(Context context, String targetDir) {
-    Album current = selectedAlbums.get(0);
-    current.updatePhotos(context);
-    current.selectAllPhotos();
-    int ans = current.moveSelectedMedia(context, targetDir);
-    return ans != -1;
-  }
-
   public void excludeSelectedAlbums(Context context) {
     for (Album selectedAlbum : selectedAlbums)
       excludeAlbum(context, selectedAlbum);
@@ -299,33 +285,22 @@ public class HandlingAlbums {
     SP.putInt("albums_sorting_order", sortingOrder.getValue());
   }
 
-  public void sortAlbums() {
+  public void sortAlbums(final Context context) {
+
+    Album camera = null;
+
+    for(Album album : dispAlbums)
+      if (album.getName().equals("Phimpme Camera") && dispAlbums.remove(album)) {
+        camera = album;
+        break;
+      }
+
     Collections.sort(dispAlbums, AlbumsComparators.getComparator(getSortingMode(), getSortingOrder()));
-  }
 
-  public void selectAllPhotosUpToAlbums(int targetIndex, AlbumsAdapter adapter) {
-      int indexRightBeforeOrAfter = -1;
-      int indexNow;
-      for (Album selectedAlbum : selectedAlbums) {
-          indexNow = dispAlbums.indexOf(selectedAlbum);
-
-          if (indexRightBeforeOrAfter == -1)
-              indexRightBeforeOrAfter = indexNow;
-
-          if (indexNow > targetIndex)
-              break;
-          indexRightBeforeOrAfter = indexNow;
-      }
-
-      if (indexRightBeforeOrAfter != -1) {
-          for (int index = Math.min(targetIndex, indexRightBeforeOrAfter); index < Math.max(targetIndex, indexRightBeforeOrAfter); index++) {
-              if (dispAlbums.get(index) != null && !dispAlbums.get(index).isSelected()) {
-                  dispAlbums.get(index).setSelected(true);
-                  selectedAlbums.add(dispAlbums.get(index));
-                  adapter.notifyItemChanged(index);
-              }
-          }
-      }
+    if (camera != null) {
+      camera.setName(context.getString(R.string.phimpme_camera));
+      dispAlbums.add(0, camera);
+    }
   }
 
   public Album getSelectedAlbum(int index) { return selectedAlbums.get(index); }

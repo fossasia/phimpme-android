@@ -3,8 +3,4 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.fossasia.phimpme.accounts.AccountAct">
 
-    <item
-        android:id="@+id/action_account_settings"
-        android:title="@string/settings"
-        app:showAsAction="never"/>
 </menu>

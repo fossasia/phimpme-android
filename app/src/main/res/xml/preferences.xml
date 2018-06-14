@@ -55,7 +55,7 @@
                 android:title="@string/preference_touch_capture" />
 
             <SwitchPreference
-                android:defaultValue="true"
+                android:defaultValue="false"
                 android:key="preference_pause_preview"
                 android:summary="@string/preference_pause_preview_summary"
                 android:title="@string/preference_pause_preview" />
@@ -134,8 +134,6 @@
                 android:dialogMessage="@string/preference_save_photo_prefix_summary"
                 android:dialogTitle="@string/preference_save_photo_prefix"
                 android:inputType="text"
-                android:hint="@string/description_hint"
-                android:selectAllOnFocus="true"
                 android:key="preference_save_photo_prefix"
                 android:summary="@string/preference_save_photo_prefix_summary"
                 android:title="@string/preference_save_photo_prefix" />
@@ -211,13 +209,6 @@
                 android:title="@string/preference_keep_display_on" />
 
         </PreferenceScreen>
-
-        <SwitchPreference
-            android:defaultValue="false"
-            android:key="preference_use_camera2"
-            android:summary="@string/preference_use_camera2_summary"
-            android:title="@string/preference_use_camera2" />
-        
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -327,8 +318,6 @@
                     android:dialogMessage="@string/preference_textstamp_summary"
                     android:dialogTitle="@string/preference_textstamp"
                     android:inputType="text"
-                    android:hint="@string/description_hint"
-                    android:selectAllOnFocus="true"
                     android:key="preference_textstamp"
                     android:summary="@string/preference_textstamp_summary"
                     android:title="@string/preference_textstamp" />
@@ -417,5 +406,23 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory
+        android:key="preference_category_online"
+        android:title="@string/preference_category_online">
+
+        <!--  if we move this to another PreferenceGroup, we should update code for the findPreference() call -->
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="preference_use_camera2"
+            android:summary="@string/preference_use_camera2_summary"
+            android:title="@string/preference_use_camera2" />
+
+        <Preference
+            android:icon="@drawable/ic_power_settings_new_white_48dp"
+            android:key="preference_reset"
+            android:summary="@string/preference_reset_summary"
+            android:title="@string/preference_reset" />
+
+    </PreferenceCategory>
 
 </PreferenceScreen>

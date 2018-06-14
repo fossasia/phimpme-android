@@ -18,7 +18,7 @@ public class UploadPhotoTask extends AsyncTask<OAuth, Void, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        NotificationHandler.make(R.string.flickr, R.string.upload_progress, R.drawable.ic_cloud_upload_black_24dp);
+        NotificationHandler.make(R.string.flickr);
     }
 
     @Override
@@ -47,11 +47,11 @@ public class UploadPhotoTask extends AsyncTask<OAuth, Void, String> {
         if (response != null) {
             Log.e("Flickr response", "" + response);
         } else {
-            NotificationHandler.actionFailed();
+            NotificationHandler.uploadFailed();
             Log.e("Flickr response", "Error");
         }
         if (monUploadDone != null) {
-            NotificationHandler.actionPassed(R.string.upload_complete);
+            NotificationHandler.uploadPassed();
             monUploadDone.onComplete();
         }
 

@@ -19,21 +19,8 @@
             android:id="@+id/action_move"
             app:showAsAction="never"
             android:title="Move"/>
-
-        <item
-            android:id="@+id/action_cover"
-            app:showAsAction="never"
-            android:title="Make Album Cover"/>
     </group>
 
-    <item
-        android:id="@+id/slide_show"
-        android:title="@string/slideshow"
-        app:showAsAction="never" />
-    <item
-        android:id="@+id/print"
-        app:showAsAction="never"
-        android:title="@string/print"/>
     <item
         android:id="@+id/action_description"
         android:title="Description"

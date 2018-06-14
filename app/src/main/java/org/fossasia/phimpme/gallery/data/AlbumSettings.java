@@ -22,7 +22,7 @@ public class AlbumSettings implements Serializable {
 
     private FilterMode filterMode = FilterMode.ALL;
 
-    public static AlbumSettings getSettings(Context context, Album album) {
+    static AlbumSettings getSettings(Context context, Album album) {
         CustomAlbumsHelper h = CustomAlbumsHelper.getInstance(context);
         return h.getSettings(album.getPath());
     }
@@ -72,7 +72,7 @@ public class AlbumSettings implements Serializable {
         h.setAlbumSortingOrder(path, sortingOrder.getValue());
     }
 
-    public void changeCoverPath(Context context, @Nullable String coverPath) {
+    void changeCoverPath(Context context, @Nullable String coverPath) {
         this.coverPath = coverPath;
         CustomAlbumsHelper h = CustomAlbumsHelper.getInstance(context);
         h.setAlbumPhotoPreview(path, coverPath);

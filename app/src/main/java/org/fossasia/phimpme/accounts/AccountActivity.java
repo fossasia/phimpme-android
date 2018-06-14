@@ -1,28 +1,27 @@
 package org.fossasia.phimpme.accounts;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 
 import com.box.androidsdk.content.BoxConfig;
 import com.box.androidsdk.content.auth.BoxAuthentication;
 import com.box.androidsdk.content.models.BoxSession;
-import com.cloudrail.si.CloudRail;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
+import com.dropbox.client2.session.AppKeyPair;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -30,6 +29,9 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.pinterest.android.pdk.PDKCallback;
 import com.pinterest.android.pdk.PDKClient;
 import com.pinterest.android.pdk.PDKException;
@@ -45,9 +47,6 @@ import org.fossasia.phimpme.base.RecyclerItemClickListner;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
-import org.fossasia.phimpme.gallery.activities.SettingsActivity;
-import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
-import org.fossasia.phimpme.gallery.util.ThemeHelper;
 import org.fossasia.phimpme.share.flickr.FlickrActivity;
 import org.fossasia.phimpme.share.imgur.ImgurAuthActivity;
 import org.fossasia.phimpme.share.nextcloud.NextCloudAuth;
@@ -58,7 +57,6 @@ import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
 import org.fossasia.phimpme.utilities.Constants;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -76,6 +74,7 @@ import static com.pinterest.android.pdk.PDKClient.setDebugMode;
 import static org.fossasia.phimpme.R.string.no_account_signed_in;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
+import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FACEBOOK;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.IMGUR;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.NEXTCLOUD;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.OWNCLOUD;
@@ -95,14 +94,12 @@ import static org.fossasia.phimpme.utilities.Utils.checkNetwork;
  */
 
 public class AccountActivity extends ThemedActivity implements AccountContract.View,
-        RecyclerItemClickListner.OnItemClickListener {
+        RecyclerItemClickListner.OnItemClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     private static final int NEXTCLOUD_REQUEST_CODE = 3;
     private static final int OWNCLOUD_REQUEST_CODE = 9;
     private static final int RESULT_OK = 1;
     private static final int RC_SIGN_IN = 9001;
-    public static final String BROWSABLE = "android.intent.category.BROWSABLE";
-    public final static String CLOUDRAIL_APP_KEY = Constants.CLOUDRAIL_LICENSE_KEY;//CloudRail_App-Key
     @BindView(R.id.accounts_parent)
     RelativeLayout parentLayout;
     @BindView(R.id.accounts_recycler_view)
@@ -122,8 +119,8 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private AccountDatabase account;
     private DatabaseHelper databaseHelper;
     private Context context;
-    private CloudRailServices cloudRailServices;
     private PDKClient pdkClient;
+    private GoogleApiClient mGoogleApiClient;
     private DropboxAPI<AndroidAuthSession> mDBApi;
     private BoxSession sessionBox;
 
@@ -133,10 +130,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         ButterKnife.bind(this);
         ActivitySwitchHelper.setContext(this);
         parentLayout.setBackgroundColor(getBackgroundColor());
-        overridePendingTransition(R.anim.right_to_left,
-                R.anim.left_to_right);
-        parentLayout.setBackgroundColor(getBackgroundColor());
-        accountAdapter = new AccountAdapter();
+        accountAdapter = new AccountAdapter(getAccentColor(), getPrimaryColor());
         accountPresenter = new AccountPresenter(realm);
         phimpmeProgressBarHandler = new PhimpmeProgressBarHandler(this);
         accountPresenter.attachView(this);
@@ -146,20 +140,24 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         setSupportActionBar(toolbar);
         loginManager = LoginManager.getInstance();
         toolbar.setPopupTheme(getPopupToolbarStyle());
-        ThemeHelper themeHelper = new ThemeHelper(getContext());
-        toolbar.setBackgroundColor(themeHelper.getPrimaryColor());
+        toolbar.setBackgroundColor(getPrimaryColor());
         setUpRecyclerView();
         accountPresenter.loadFromDatabase();  // Calling presenter function to load data from database
         getSupportActionBar().setTitle(R.string.title_account);
         phimpmeProgressBarHandler.show();
-        cloudRailServices=CloudRailServices.getInstance();
         pdkClient = PDKClient.configureInstance(this, PINTEREST_APP_ID);
         pdkClient.onConnect(this);
         setDebugMode(true);
+        setupDropBox();
         //  googleApiClient();
         configureBoxClient();
     }
 
+    private void setupDropBox() {
+        AppKeyPair appKeys = new AppKeyPair(DROPBOX_APP_KEY, DROPBOX_APP_SECRET);
+        AndroidAuthSession session = new AndroidAuthSession(appKeys);
+        mDBApi = new DropboxAPI<AndroidAuthSession>(session);
+    }
 
     /*    private void googleApiClient(){
             // Configure sign-in to request the user's ID, email address, and basic
@@ -183,17 +181,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_accounts_activity, menu);
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId())
-        {
-            case R.id.action_account_settings:
-                startActivity(new Intent(AccountActivity.this, SettingsActivity.class));
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -238,6 +225,9 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         if (!signInSignOut.isChecked()) {
             if (!checkNetwork(this, parentLayout)) return;
             switch (AccountDatabase.AccountName.values()[position]) {
+                case FACEBOOK:
+                    signInFacebook();
+                    break;
 
                 case TWITTER:
                     signInTwitter();
@@ -257,6 +247,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     Intent WordpressShare = new Intent(this, WordpressLoginActivity.class);
                     startActivity(WordpressShare);
                     break;*/
+
                 case PINTEREST:
                     signInPinterest();
                     break;
@@ -282,7 +273,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     sessionBox = new BoxSession(AccountActivity.this);
                     sessionBox.authenticate();
                     break;
-
                 case TUMBLR:
                     signInTumblr();
                     break;
@@ -291,7 +281,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     SnackBarHandler.show(coordinatorLayout, R.string.feature_not_present);
             }
         } else {
-            AlertDialog alertDialog = new AlertDialog.Builder(this)
+            new AlertDialog.Builder(this)
                     .setMessage(name)
                     .setTitle(getString(R.string.sign_out_dialog_title))
                     .setPositiveButton(R.string.yes_action,
@@ -313,9 +303,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                                     //TODO: Implement negative button action
                                 }
                             })
-                    .create();
-            alertDialog.show();
-            AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
+                    .show();
         }
     }
 
@@ -373,40 +361,16 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                 .initiateInActivity(AccountActivity.this);
     }
 
+    private void signInGooglePlus() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
     private void signInDropbox() {
         if (accountPresenter.checkAlreadyExist(DROPBOX))
             SnackBarHandler.show(coordinatorLayout, R.string.already_signed_in);
         else
-            cloudRailServices.prepare(this);
-            cloudRailServices.login();
-            BasicCallBack basicCallBack = new BasicCallBack() {
-                @Override
-                public void callBack(int status, Object data) {
-                    if(status == 1)
-                    {
-                        dropboxAuthentication(data.toString());
-                    }
-                }
-            };
-            CloudRailServices.setCallBack(basicCallBack);
-
-    }
-    /*
-    Catching the intent of the external browser login and getting that data
-     */
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        try{
-
-            if(intent.getCategories().contains(BROWSABLE)){
-                CloudRail.setAuthenticationResponse(intent);
-            }
-        }catch (Exception e)
-        {
-            //Nothing is to be done when the BROWSABLE Intent is null
-        }
-        super.onNewIntent(intent);
+            mDBApi.getSession().startOAuth2Authentication(this);
     }
 
     private void signInImgur() {
@@ -432,7 +396,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     }
 
     private void signInPinterest() {
-        ArrayList<String> scopes = new ArrayList<String>();
+        List scopes = new ArrayList<String>();
         scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_PUBLIC);
         scopes.add(PDKClient.PDKCLIENT_PERMISSION_WRITE_PUBLIC);
         scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_RELATIONSHIPS);
@@ -492,6 +456,53 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         startActivity(i);
     }
 
+
+    /**
+     * Create Facebook login and session
+     */
+    public void signInFacebook() {
+
+        List<String> permissionNeeds = Arrays.asList("publish_actions");
+        loginManager = LoginManager.getInstance();
+        loginManager.logInWithPublishPermissions(this, permissionNeeds);
+        //loginManager.logInWithReadPermissions(this, Arrays.asList("email", "public_profile"));
+        loginManager.registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        realm.beginTransaction();
+                        account = realm.createObject(AccountDatabase.class, FACEBOOK.toString());
+                        account.setUsername(loginResult.getAccessToken().getUserId());
+                        GraphRequest.newMeRequest(
+                                loginResult.getAccessToken(),
+                                new GraphRequest.GraphJSONObjectCallback() {
+                                    @Override
+                                    public void onCompleted(JSONObject jsonObject, GraphResponse graphResponse) {
+                                        Log.v("LoginActivity", graphResponse.toString());
+                                        try {
+                                            account.setUsername(jsonObject.getString("email"));
+                                            SnackBarHandler.show(coordinatorLayout, getString(R.string.logged_in_facebook));
+                                        } catch (JSONException e) {
+                                            Log.e("LoginAct", e.toString());
+                                        }
+                                    }
+                                });
+                        realm.commitTransaction();
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        SnackBarHandler.show(coordinatorLayout, getString(R.string.facebook_login_cancel));
+                    }
+
+                    @Override
+                    public void onError(FacebookException e) {
+                        SnackBarHandler.show(coordinatorLayout, getString(R.string.facebook_login_error));
+                        Log.d("error", e.toString());
+                    }
+                });
+    }
+
     @Override
     public Context getContext() {
         this.context = this;
@@ -502,15 +513,11 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     public void onResume() {
         super.onResume();
         ActivitySwitchHelper.setContext(this);
-        setNavigationBarColor(ThemeHelper.getPrimaryColor(this));
-        toolbar.setBackgroundColor(ThemeHelper.getPrimaryColor(this));
-        //dropboxAuthentication();
+        dropboxAuthentication();
         boxAuthentication();
         setStatusBarColor();
         setNavBarColor();
         accountPresenter.loadFromDatabase();
-        accountAdapter.updateTheme();
-        accountAdapter.notifyDataSetChanged();
     }
 
     private void boxAuthentication() {
@@ -534,24 +541,22 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         }
     }
 
-    private void dropboxAuthentication(String tokens) {
-        try{
-                String result = cloudRailServices.db.saveAsString();
-                Log.d("AccountsActivity", "dropboxAuthentication: "+tokens +" "+result);
-                String accessToken = cloudRailServices.getToken();
+    private void dropboxAuthentication() {
+        if (mDBApi.getSession().authenticationSuccessful()) {
+            try {
+                // Required to complete auth, sets the access token on the session
+                mDBApi.getSession().finishAuthentication();
+                String accessToken = mDBApi.getSession().getOAuth2AccessToken();
                 realm.beginTransaction();
                 account = realm.createObject(AccountDatabase.class, DROPBOX.toString());
                 account.setUsername(DROPBOX.toString());
                 account.setToken(String.valueOf(accessToken));
                 realm.commitTransaction();
-
-
-
-        }catch (Exception e )
-        {
-            //catches exception dont need handling
+            } catch (IllegalStateException e) {
+                Log.i("DbAuthLog", "Error authenticating", e);
+            }
+            accountPresenter.loadFromDatabase();
         }
-        accountPresenter.loadFromDatabase();
     }
 
     @Override
@@ -591,5 +596,11 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             SnackBarHandler.show(parentLayout,R.string.google_auth_fail);
         }
     }*/
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        SnackBarHandler.show(coordinatorLayout, "Connection Failed");
+    }
+
 
 }
