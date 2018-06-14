@@ -82,8 +82,6 @@ import org.fossasia.phimpme.utilities.BasicCallBack;
 import org.fossasia.phimpme.utilities.Constants;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -165,6 +163,7 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
     TinyDB bundle;
     final String REVIEW_ACTION = "com.android.camera.action.REVIEW";
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         long debug_time = 0;
@@ -174,8 +173,6 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
         }
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        overridePendingTransition(R.anim.right_to_left,
-                R.anim.left_to_right);ButterKnife.bind(this);
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false); // initialise any unset preferences to their default values
         if (MyDebug.LOG)
             Log.d(TAG, "onCreate: time after setting default preference values: " + (System.currentTimeMillis() - debug_time));
@@ -384,7 +381,7 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
                 @Override
                 public void callBack(int status, Object path) {
                     if (status == Constants.SUCCESS) {
-                        final String filepath = path.toString();
+                        String filepath = path.toString();
                         final SharedPreferences sharedPreferences = getDefaultSharedPreferences(CameraActivity.this);
                         String mode = sharedPreferences.getString(PreferenceKeys.getPhotoModePreferenceKey(), "");
                         final String burst_mode = sharedPreferences.getString(PreferenceKeys.getBurstModePreferenceKey(), "");
@@ -398,44 +395,14 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
                                     progressDialog.show();
                                 }
                             });
-
                         }
 
                         clicks_count++; // Count till max defined image is captured and saved
                         if (!("preference_photo_mode_expo_bracketing").equals(mode) && Integer.parseInt(burst_mode) == 1) {
-                            Boolean  preference_pause_preview = sharedPreferences.getBoolean("preference_pause_preview",true);
-                            if(!preference_pause_preview){
-                                CameraActivity.this.runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        progressDialog.hide();
-                                    }
-                                });
-                                Thread t = new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        File f = new File(filepath);
-                                        FileOutputStream fileOutputStream ;
-                                        try {
-                                            fileOutputStream = openFileOutput(f.getName(),MODE_PRIVATE);
-                                            fileOutputStream.write(f.getName().getBytes());
-                                            fileOutputStream.close();
-                                        } catch (FileNotFoundException e) {
-                                            e.printStackTrace();
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-
-                                    }
-                                });
-                                t.start();
-                            }
-                            else {
-                                clicks_count = 0;
-                                Intent intent = new Intent(CameraActivity.this, PhotoActivity.class);
-                                intent.putExtra("filepath", filepath);
-                                startActivity(intent);
-                            }
+                            clicks_count = 0;
+                            Intent intent = new Intent(CameraActivity.this, PhotoActivity.class);
+                            intent.putExtra("filepath", filepath);
+                            startActivity(intent);
                         } else if (("preference_photo_mode_expo_bracketing").equals(mode) && clicks_count >= bundle.getInt("max_expo_bracketing_n_images")) { // Start Activity once when the third image is saved
                             clicks_count = 0; //Turn image count to zero in case user wants to click another set of photos.
                             Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(filepath)));
@@ -800,10 +767,6 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
             Log.d(TAG, "onResume");
             debug_time = System.currentTimeMillis();
         }
-
-        //hiding status bar
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         super.onResume();
 
         // Set black window background; also needed if we hide the virtual buttons in immersive mode

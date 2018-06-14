@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 /**
  * Created by dnld on 1/3/16.
  */
-
 public class StringUtils {
 
     public static String getMimeType(String path) {
@@ -30,6 +29,7 @@ public class StringUtils {
 
     static String incrementFileNameSuffix(String name) {
         StringBuilder builder = new StringBuilder();
+
         int dot = name.lastIndexOf('.');
         String baseName = dot != -1 ? name.subSequence(0, dot).toString() : name;
         String nameWoSuffix = baseName;

@@ -19,7 +19,6 @@ import android.widget.PopupWindow;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import org.fossasia.phimpme.MyApplication;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.adapter.ColorListAdapter;
@@ -140,7 +139,6 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
     public void backToMain() {
         activity.changeMode(EditImageActivity.MODE_WRITE);
         activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
-        activity.writeFragment.clearSelection();
         activity.mainImage.setVisibility(View.VISIBLE);
         this.mPaintView.reset();
         this.mPaintView.setVisibility(View.GONE);
@@ -149,8 +147,6 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
     public void onShow() {
         activity.changeMode(EditImageActivity.MODE_PAINT);
         activity.mainImage.setImageBitmap(activity.mainBitmap);
-        activity.mPaintView.mainBitmap=activity.mainBitmap;
-        activity.mPaintView.mainImage=activity.mainImage;
         this.mPaintView.setVisibility(View.VISIBLE);
     }
 
@@ -279,7 +275,7 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
             mSavePaintImageTask.cancel(true);
         }
 
-        mSavePaintImageTask = new SaveCustomPaintTask(activity,activity.mainImage.getImageViewMatrix());
+        mSavePaintImageTask = new SaveCustomPaintTask(activity);
         mSavePaintImageTask.execute(activity.mainBitmap);
     }
 
@@ -289,15 +285,12 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
         if (mSavePaintImageTask != null && !mSavePaintImageTask.isCancelled()) {
             mSavePaintImageTask.cancel(true);
         }
-        if(MyApplication.isLeakCanaryInstalled){
-            MyApplication.getRefWatcher(getActivity()).watch(this);
-        }
     }
 
     private final class SaveCustomPaintTask extends StickerTask {
 
-        public SaveCustomPaintTask(EditImageActivity activity,Matrix imageViewMatrix) {
-            super(activity,imageViewMatrix);
+        public SaveCustomPaintTask(EditImageActivity activity) {
+            super(activity);
         }
 
         @Override

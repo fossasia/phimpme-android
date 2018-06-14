@@ -13,7 +13,6 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-
 package org.fossasia.phimpme.share.twitter;
 
 import android.content.Intent;
@@ -71,6 +70,7 @@ public class LoginActivity extends ThemedActivity {
 	public static void setBasicCallBack(BasicCallBack basicCallBack){
 		twitterCallBack = basicCallBack;
 	}
+
 
 
 	@Override

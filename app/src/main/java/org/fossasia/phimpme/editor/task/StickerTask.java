@@ -20,11 +20,9 @@ public abstract class StickerTask extends AsyncTask<Bitmap, Void, Bitmap> {
     private Dialog dialog;
 
     private EditImageActivity mContext;
-    private Matrix imageViewMatrix;
 
-    public StickerTask(EditImageActivity activity,Matrix imageViewMatrix) {
+    public StickerTask(EditImageActivity activity) {
         this.mContext = activity;
-        this.imageViewMatrix=imageViewMatrix;
     }
 
     @Override
@@ -42,7 +40,7 @@ public abstract class StickerTask extends AsyncTask<Bitmap, Void, Bitmap> {
     @Override
     protected Bitmap doInBackground(Bitmap... params) {
         // System.out.println("保存贴图!");
-        Matrix touchMatrix = imageViewMatrix;
+        Matrix touchMatrix = mContext.mainImage.getImageViewMatrix();
 
         Bitmap resultBit = Bitmap.createBitmap(params[0]).copy(
                 Bitmap.Config.RGB_565, true);

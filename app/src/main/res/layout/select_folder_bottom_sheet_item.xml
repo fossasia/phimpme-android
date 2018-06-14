@@ -2,89 +2,47 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/tools"
     android:id="@+id/ll_album_bottom_sheet_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:foreground="@drawable/ripple"
     android:orientation="horizontal"
     android:clickable="true"
-    android:background="@color/white70"
->
+    android:background="@drawable/ripple"
+    >
+    <com.mikepenz.iconics.view.IconicsImageView
+        android:id="@+id/folder_icon_bottom_sheet_item"
+        android:layout_height="@dimen/icon_width_height"
+        android:layout_width="@dimen/icon_width_height"
+        android:layout_gravity="center_vertical"
+        app:iiv_icon="gmd-folder"
+        android:layout_marginLeft="@dimen/big_spacing"
+        android:layout_marginRight="@dimen/big_spacing"
+    />
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/card_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
-        app:cardBackgroundColor="@color/white"
-        android:theme="@style/CardView.Light"
-        android:layout_marginTop="3dp"
-        android:elevation="3dp"
-        card_view:cardCornerRadius="5dp">
-
-        <LinearLayout android:layout_width="match_parent"
-                      android:layout_height="match_parent"
-                      android:layout_marginBottom="8dp"
-                      android:layout_marginEnd="8dp"
-                      android:layout_marginStart="8dp"
-                      android:layout_marginTop="8dp"
-                      android:orientation="horizontal"
-                      app:srcCompat="@drawable/ic_launcher_vector">
-
-            <com.mikepenz.iconics.view.IconicsImageView
-                android:id="@+id/folder_icon_bottom_sheet_item"
-                android:layout_height="@dimen/folder_icon"
-                android:layout_width="@dimen/folder_icon"
-                android:layout_gravity="center_vertical"
-                app:iiv_icon="gmd-folder"
-                android:layout_marginLeft="@dimen/big_spacing"
-                android:layout_marginRight="@dimen/big_spacing"
-            />
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="@dimen/small_spacing"
-                android:layout_marginBottom="@dimen/small_spacing"
-                android:layout_marginRight="@dimen/big_spacing"
-            >
-                <TextView
-                    android:id="@+id/name_folder"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="WhatsApp"
-                    android:textColor="@color/md_dark_background"
-                    android:textSize="16sp"
-                />
-                <TextView
-                    android:id="@+id/count_folder"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="fgfgfgfgfgfgf"
-                    android:textColor="@color/md_grey_400"
-                    android:textSize="14sp"
-                />
-            </LinearLayout>
-
-            <LinearLayout android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:gravity="end"
-                          android:layout_weight="2"
-                          android:layout_gravity="center_vertical">
-
-                <ImageView android:layout_width="15dp"
-                           android:layout_height="15dp"
-                           android:id="@+id/sd_card_folder"
-                           android:layout_margin="10dp"
-                           app:srcCompat="@drawable/ic_sd_storage_icon_color_24dp"
-                           android:visibility="visible"/>
-            </LinearLayout>
-      
-        </LinearLayout>
-
-    </android.support.v7.widget.CardView>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/small_spacing"
+        android:layout_marginBottom="@dimen/small_spacing"
+        android:layout_marginRight="@dimen/big_spacing"
+        >
+        <TextView
+            android:id="@+id/name_folder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/md_dark_background"
+            android:textSize="16sp"
+        />
+        <TextView
+            android:id="@+id/count_folder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="@color/md_grey_400"
+            android:textSize="14sp"
+        />
+    </LinearLayout>
 </LinearLayout>
