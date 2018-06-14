@@ -10,8 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
-
-import org.fossasia.phimpme.MyApplication;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.filter.PhotoProcessing;
@@ -34,6 +32,7 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
         return fragment;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +46,7 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
         apply = (ImageButton) fragmentView.findViewById(R.id.seekbar_apply);
         seekBar = (SeekBar) fragmentView.findViewById(R.id.slider);
 
-        cancel.setImageResource(R.drawable.ic_close_black_24dp);
+        cancel.setImageResource(R.drawable.ic_no);
         apply.setImageResource(R.drawable.ic_done_black_24dp);
 
         cancel.setOnClickListener(this);
@@ -111,14 +110,6 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if(MyApplication.isLeakCanaryInstalled){
-            MyApplication.getRefWatcher(getActivity()).watch(this);
-        }
-    }
-
-    @Override
     public void onDetach() {
         super.onDetach();
     }
@@ -174,23 +165,9 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
         if (null != activity) {
             currentBitmap = null;
             activity.mainImage.setImageBitmap(activity.mainBitmap);
-            activity.changeMode(EditImageActivity.effectType / 100);
             activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
+            activity.changeMode(EditImageActivity.effectType / 100);
             activity.mainImage.setScaleEnabled(true);
-
-            switch (activity.mode)
-            {
-                case EditImageActivity.MODE_FILTERS:
-                    activity.filterFragment.clearCurrentSelection();
-                    break;
-
-                case EditImageActivity.MODE_ENHANCE:
-                    activity.enhanceFragment.clearCurrentSelection();
-                    break;
-
-                default:
-                    break;
-            }
         }
     }
 
@@ -249,5 +226,6 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
         }
 
     }
+
 
 }

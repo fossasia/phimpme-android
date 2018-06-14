@@ -160,8 +160,8 @@ public class MainUI {
 		main_activity.getPreview().setUIRotation(ui_rotation);
 		int align_left = RelativeLayout.ALIGN_LEFT;
 		int align_right = RelativeLayout.ALIGN_RIGHT;
-		int align_top = RelativeLayout.ALIGN_TOP;
-		int align_bottom = RelativeLayout.ALIGN_BOTTOM;
+		//int align_top = RelativeLayout.ALIGN_TOP;
+		//int align_bottom = RelativeLayout.ALIGN_BOTTOM;
 		int left_of = RelativeLayout.LEFT_OF;
 		int right_of = RelativeLayout.RIGHT_OF;
 		int above = RelativeLayout.ABOVE;
@@ -189,8 +189,8 @@ public class MainUI {
 			View view = main_activity.findViewById(R.id.gui_anchor);
 			RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
 			layoutParams.addRule(align_parent_left, 0);
-			layoutParams.addRule(align_right, R.id.preview);
-			layoutParams.addRule(align_top,R.id.preview);
+			layoutParams.addRule(align_parent_right, RelativeLayout.TRUE);
+			layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
 			layoutParams.addRule(align_parent_bottom, 0);
 			layoutParams.addRule(left_of, 0);
 			layoutParams.addRule(right_of, 0);
@@ -200,7 +200,7 @@ public class MainUI {
 
 			view = main_activity.findViewById(R.id.popup);
 			layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
-			layoutParams.addRule(align_top, R.id.preview);
+			layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
 			layoutParams.addRule(align_parent_bottom, 0);
 			layoutParams.addRule(left_of, R.id.gui_anchor);
 			layoutParams.addRule(right_of, 0);
@@ -214,9 +214,9 @@ public class MainUI {
 			view = main_activity.findViewById(R.id.exposure);
 			layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
 			layoutParams.addRule(align_parent_top, 0);
-			layoutParams.addRule(align_bottom, R.id.preview);
-			layoutParams.addRule(left_of, R.id.popup);
-			layoutParams.addRule(align_right, R.id.preview);
+			layoutParams.addRule(align_parent_bottom, RelativeLayout.TRUE);
+			//layoutParams.addRule(left_of, R.id.popup);
+			layoutParams.addRule(align_parent_right, RelativeLayout.TRUE);
 			layoutParams.addRule(right_of, 0);
 			view.setLayoutParams(layoutParams);
 			layoutParams.setMargins(icon_margin, icon_margin, icon_margin, icon_margin);
@@ -226,10 +226,10 @@ public class MainUI {
 
 			view = main_activity.findViewById(R.id.switch_camera);
 			layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
-			layoutParams.addRule(align_left, R.id.preview);
+			layoutParams.addRule(align_parent_left, RelativeLayout.TRUE);
 			layoutParams.addRule(align_parent_right, 0);
 			layoutParams.addRule(align_parent_top, 0);
-			layoutParams.addRule(align_bottom, R.id.preview);
+			layoutParams.addRule(align_parent_bottom, RelativeLayout.TRUE);
 			layoutParams.addRule(left_of, 0);
 			layoutParams.addRule(right_of, 0);
 			view.setLayoutParams(layoutParams);
@@ -242,7 +242,7 @@ public class MainUI {
 			layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
 			layoutParams.addRule(align_parent_left, 0);
 			layoutParams.addRule(align_parent_right, 0);
-			layoutParams.addRule(align_top, R.id.preview);
+			layoutParams.addRule(align_parent_top, RelativeLayout.TRUE);
 			layoutParams.addRule(align_parent_bottom, 0);
 			layoutParams.addRule(left_of, R.id.switch_camera);
 			layoutParams.addRule(right_of, 0);
@@ -253,8 +253,6 @@ public class MainUI {
 			view = main_activity.findViewById(R.id.take_photo);
 			((ImageButton) view).setImageResource(R.drawable.ic_capture);
 			((ImageButton) view).setColorFilter(Color.WHITE);
-			layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
-			layoutParams.addRule(align_bottom, R.id.preview);
 			view.setBackgroundResource(bgresourceId);
 			setViewRotation(view, ui_rotation);
 
@@ -269,7 +267,7 @@ public class MainUI {
 			layoutParams.addRule(align_right, 0);
 			layoutParams.addRule(right_of, 0);
 			layoutParams.addRule(align_parent_top, 0);
-			layoutParams.addRule(align_bottom,R.id.preview);
+			layoutParams.addRule(align_parent_bottom, RelativeLayout.TRUE);
 			view.setLayoutParams(layoutParams);
 		}
 
@@ -324,7 +322,7 @@ public class MainUI {
 			//layoutParams.addRule(left_of, R.id.popup);
 			layoutParams.addRule(align_right, R.id.popup);
 			layoutParams.addRule(below, R.id.popup);
-			layoutParams.addRule(align_bottom, R.id.preview);
+			layoutParams.addRule(align_parent_bottom, RelativeLayout.TRUE);
 			layoutParams.addRule(above, 0);
 			layoutParams.addRule(align_parent_top, 0);
 			view.setLayoutParams(layoutParams);
@@ -362,6 +360,7 @@ public class MainUI {
 			Log.d(TAG, "layoutUI: total time: " + (System.currentTimeMillis() - debug_time));
 		}
 	}
+
 
 	/**
 	 * Set content description for switch camera button.

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Address;
-import android.location.Geocoder;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Parcel;
@@ -32,19 +30,13 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-import android.text.TextUtils;
 
 import io.realm.Realm;
 
 /**
  * Created by dnld on 26/04/16.
  */
-
 public class Media implements Parcelable, Serializable {
 
     private String path = null;
@@ -183,7 +175,6 @@ public class Media implements Parcelable, Serializable {
     public MediaDetailsMap<String, String> getMainDetails(Context context){
         metadata = new MetadataItem(new File(path));
         MediaDetailsMap<String, String> details = new MediaDetailsMap<String, String>();
-        details.put(context.getString(R.string.name), getName());
         details.put(context.getString(R.string.path), path != null ? path : getUri().getEncodedPath());
         details.put(context.getString(R.string.type), getMimeType());
         String tmp;
@@ -193,33 +184,16 @@ public class Media implements Parcelable, Serializable {
         details.put(context.getString(R.string.size), StringUtils.humanReadableByteCount(size, true));
         details.put(context.getString(R.string.date), SimpleDateFormat.getDateTimeInstance().format(new Date(getDateModified())));
         details.put(context.getString(R.string.orientation), getOrientation()+""+(char) 0x00B0);
+        if (metadata.getDateOriginal() != null)
+            details.put(context.getString(R.string.date_taken), SimpleDateFormat.getDateTimeInstance().format(metadata.getDateOriginal()));
 
         if ((tmp = metadata.getCameraInfo()) != null)
             details.put(context.getString(R.string.camera), tmp);
         if ((tmp = metadata.getExifInfo()) != null)
             details.put(context.getString(R.string.exif), tmp);
         GeoLocation location;
-        List<Address> addressList = null;
-        Geocoder geocoder;
-        if ((location = metadata.getLocation()) != null){
-            geocoder = new Geocoder(context, Locale.getDefault());
-            try {
-                addressList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            ArrayList<String> addresslines = new ArrayList<String>();
-            if(addressList!=null)
-            {
-                Address address = addressList.get(0);
-                for(int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
-                    addresslines.add(address.getAddressLine(i));
-                }
-                details.put(context.getString(R.string.location), TextUtils.join(System.getProperty("line.separator"),
-                        addresslines));
-            }
-
-        }
+        if ((location = metadata.getLocation()) != null)
+            details.put(context.getString(R.string.location), location.toDMSString());
 
         Realm realm;
         DatabaseHelper databaseHelper;

@@ -1,8 +1,5 @@
 package org.fossasia.phimpme.gallery.activities;
 
-import org.fossasia.phimpme.base.ThemedActivity;
-import org.fossasia.phimpme.gallery.util.PreferenceUtil;
-
 import android.annotation.TargetApi;
 import android.app.FragmentManager;
 import android.content.Context;
@@ -18,11 +15,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.InputType;
-import android.text.TextWatcher;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -30,29 +23,29 @@ import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.view.IconicsImageView;
 
 import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
+import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.gallery.util.ColorPalette;
 import org.fossasia.phimpme.gallery.util.SecurityHelper;
-import org.fossasia.phimpme.gallery.util.StaticMapProvider;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
+import org.fossasia.phimpme.gallery.util.PreferenceUtil;
+import org.fossasia.phimpme.gallery.util.StaticMapProvider;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import uz.shift.colorpicker.LineColorPicker;
+import uz.shift.colorpicker.OnColorChangedListener;
 import org.fossasia.phimpme.opencamera.Camera.CameraActivity;
 import org.fossasia.phimpme.opencamera.Camera.MyPreferenceFragment;
 import org.fossasia.phimpme.opencamera.Camera.PreferenceKeys;
 import org.fossasia.phimpme.opencamera.Camera.TinyDB;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import uz.shift.colorpicker.LineColorPicker;
-import uz.shift.colorpicker.OnColorChangedListener;
 
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
@@ -184,14 +177,6 @@ public class SettingsActivity extends ThemedActivity {
             }
         });
 
-        /*** RESET SETTINGS ***/
-        findViewById(R.id.ll_reset_settings).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                resetSettingsDialog();
-            }
-        });
-
         /*** SW SWIPE DIRECTION ***/
         swSwipeDirection = (SwitchCompat) findViewById(R.id.Set_media_viewer_swipe_direction);
         swSwipeDirection.setChecked(SP.getBoolean(getString(R.string.preference_swipe_direction_inverted), false));
@@ -257,14 +242,13 @@ public class SettingsActivity extends ThemedActivity {
                 SP.putBoolean(getString(R.string.preference_translucent_status_bar), isChecked);
                 updateTheme();
                 setStatusBarColor();
-                Toast.makeText(SettingsActivity.this, getString(R.string.restart_app), Toast.LENGTH_SHORT).show();
                 updateSwitchColor(swStatusBar, getAccentColor());
             }
         });
 
         /*** SW COLORED NAV BAR ***/
         swNavBar = (SwitchCompat) findViewById(R.id.SetColoredNavBar);
-        swNavBar.setChecked(SP.getBoolean(getString(R.string.preference_colored_nav_bar), true));
+        swNavBar.setChecked(SP.getBoolean(getString(R.string.preference_colored_nav_bar), false));
         swNavBar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -282,32 +266,19 @@ public class SettingsActivity extends ThemedActivity {
         AlertDialog.Builder multiColumnDialogBuilder = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
         View dialogLayout = getLayoutInflater().inflate(R.layout.dialog_multi_column, null);
 
-        ((TextView) dialogLayout.findViewById(R.id.text_view_portrait)).setTextColor(getTextColor());
-        ((TextView) dialogLayout.findViewById(R.id.text_view_landscape)).setTextColor(getTextColor());
         ((TextView) dialogLayout.findViewById(R.id.folders_title)).setTextColor(getTextColor());
         ((TextView) dialogLayout.findViewById(R.id.media_title)).setTextColor(getTextColor());
-        ((TextView) dialogLayout.findViewById(R.id.folders_title_landscape)).setTextColor(getTextColor());
-        ((TextView) dialogLayout.findViewById(R.id.media_title_landscape)).setTextColor(getTextColor());
         ((CardView) dialogLayout.findViewById(R.id.multi_column_card)).setCardBackgroundColor(getCardBackgroundColor());
 
         dialogLayout.findViewById(R.id.multi_column_title).setBackgroundColor(getPrimaryColor());
         final TextView nColFolders = (TextView) dialogLayout.findViewById(R.id.n_columns_folders);
         final TextView nColMedia = (TextView) dialogLayout.findViewById(R.id.n_columns_media);
-        final TextView nColFoldersL = (TextView) dialogLayout.findViewById(R.id.n_columns_folders_landscape);
-        final TextView nColMediaL = (TextView) dialogLayout.findViewById(R.id.n_columns_media_landscape);
-
         nColFolders.setTextColor(getSubTextColor());
         nColMedia.setTextColor(getSubTextColor());
-        nColFoldersL.setTextColor(getSubTextColor());
-        nColMediaL.setTextColor(getSubTextColor());
-
         SeekBar barFolders = (SeekBar) dialogLayout.findViewById(R.id.seek_bar_n_columns_folders);
         SeekBar barMedia = (SeekBar) dialogLayout.findViewById(R.id.seek_bar_n_columns_media);
-        SeekBar barFoldersL = (SeekBar) dialogLayout.findViewById(R.id.seek_bar_n_columns_folders_landscape);
-        SeekBar barMediaL = (SeekBar) dialogLayout.findViewById(R.id.seek_bar_n_columns_media_landscape);
 
         themeSeekBar(barFolders); themeSeekBar(barMedia);
-        themeSeekBar(barFoldersL); themeSeekBar(barMediaL);
 
         nColFolders.setText(String.valueOf(SP.getInt("n_columns_folders", 2)));
         nColMedia.setText(String.valueOf(SP.getInt("n_columns_media", 3)));
@@ -347,94 +318,25 @@ public class SettingsActivity extends ThemedActivity {
             }
         });
 
-        ///LANDSCAPE
-        nColFoldersL.setText(String.valueOf(SP.getInt("n_columns_folders_landscape", 3)));
-        nColMediaL.setText(String.valueOf(SP.getInt("n_columns_media_landscape", 4)));
-        barFoldersL.setProgress(SP.getInt("n_columns_folders_landscape", 3) - 2);
-        barMediaL.setProgress(SP.getInt("n_columns_media_landscape", 4) - 3);
-        barFoldersL.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                nColFoldersL.setText(String.valueOf(i+2));
-            }
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
-        barMediaL.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                nColMediaL.setText(String.valueOf(i+3));
-            }
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                
-            }
-        });
-
         multiColumnDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 int nFolders = Integer.parseInt(nColFolders.getText().toString());
                 int nMedia = Integer.parseInt(nColMedia.getText().toString());
-                int nFoldersL = Integer.parseInt(nColFoldersL.getText().toString());
-                int nMediaL = Integer.parseInt(nColMediaL.getText().toString());
-
                 SP.putInt("n_columns_folders", nFolders);
                 SP.putInt("n_columns_media", nMedia);
-                SP.putInt("n_columns_folders_landscape", nFoldersL);
-                SP.putInt("n_columns_media_landscape", nMediaL);
             }
         });
         multiColumnDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
         multiColumnDialogBuilder.setView(dialogLayout);
-        AlertDialog alertDialog = multiColumnDialogBuilder.create();
-        alertDialog.show();
-        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
+        multiColumnDialogBuilder.show();
     }
 
     private void askPasswordDialog() {
-        final boolean[] passco = {false};
         AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
         final EditText editTextPassword  = securityObj.getInsertPasswordDialog(SettingsActivity.this,passwordDialogBuilder);
         passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-        editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        editTextPassword.setHint(getResources().getString(R.string.enter_password));
-        editTextPassword.setHintTextColor(getSubTextColor());
-        editTextPassword.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                //empty method
-            }
 
-            @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                editTextPassword.setSelection(editTextPassword.getText().toString().length());
-            }
-
-            @Override public void afterTextChanged(Editable editable) {
-                if(securityObj.getTextInputLayout().getVisibility() == View.VISIBLE && !passco[0]){
-                    securityObj.getTextInputLayout().setVisibility(View.INVISIBLE);
-                }
-                else{
-                    passco[0]=false;
-                }
-                if(editable.length() == 11) {
-                    editTextPassword.setText(editable.toString().substring(0, 10));
-                    editTextPassword.setSelection(10);
-                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.max_password_length), Toast.LENGTH_SHORT)
-                            .show();
-                }
-            }
-        });
         passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -444,20 +346,15 @@ public class SettingsActivity extends ThemedActivity {
         });
 
         final AlertDialog passwordDialog = passwordDialogBuilder.create();
-        passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         passwordDialog.show();
-        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
-        passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
 
+        passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (securityObj.checkPassword(editTextPassword.getText().toString())) {
                     passwordDialog.dismiss();
                     startActivity(new Intent(getApplicationContext(), SecurityActivity.class));
                 } else {
-                    passco[0] = true;
-                    securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
                     SnackBarHandler.show(parent,R.string.wrong_password);
                     editTextPassword.getText().clear();
                     editTextPassword.requestFocus();
@@ -513,9 +410,7 @@ public class SettingsActivity extends ThemedActivity {
             }
         });
         dialogBuilder.setView(dialogLayout);
-        AlertDialog alertDialog = dialogBuilder.create();
-        alertDialog.show();
-        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
+        dialogBuilder.show();
     }
 
     private void baseThemeDialog(){
@@ -525,19 +420,9 @@ public class SettingsActivity extends ThemedActivity {
         final TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.basic_theme_title);
         final CardView dialogCardView = (CardView) dialogLayout.findViewById(R.id.basic_theme_card);
 
-        final IconicsImageView themeIconWhite = (IconicsImageView) dialogLayout.findViewById(R.id.white_basic_theme_icon);
-        final IconicsImageView themeIconDark = (IconicsImageView) dialogLayout.findViewById(R.id.dark_basic_theme_icon);
-        final IconicsImageView themeIconDarkAmoled = (IconicsImageView) dialogLayout.findViewById(R.id.dark_amoled_basic_theme_icon);
         final IconicsImageView whiteSelect = (IconicsImageView) dialogLayout.findViewById(R.id.white_basic_theme_select);
         final IconicsImageView darkSelect = (IconicsImageView) dialogLayout.findViewById(R.id.dark_basic_theme_select);
         final IconicsImageView darkAmoledSelect = (IconicsImageView) dialogLayout.findViewById(R.id.dark_amoled_basic_theme_select);
-
-        themeIconWhite.setIcon("gmd-invert-colors");
-        themeIconDark.setIcon("gmd-invert-colors");
-        themeIconDarkAmoled.setIcon("gmd-invert-colors");
-        whiteSelect.setIcon("gmd-done");
-        darkSelect.setIcon("gmd-done");
-        darkAmoledSelect.setIcon("gmd-done");
 
         switch (getBaseTheme()){
             case ThemeHelper.LIGHT_THEME:
@@ -611,9 +496,7 @@ public class SettingsActivity extends ThemedActivity {
             }
         });
         dialogBuilder.setView(dialogLayout);
-        AlertDialog alertDialog = dialogBuilder.create();
-        alertDialog.show();
-        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
+        dialogBuilder.show();
     }
 
     private void primaryColorPiker(){
@@ -647,10 +530,7 @@ public class SettingsActivity extends ThemedActivity {
             public void onClick(DialogInterface dialog, int which) {
                 SP.putInt(getString(R.string.preference_primary_color), colorPicker2.getColor());
                 updateTheme();
-
-                if(swNavBar.isChecked())
                 setNavBarColor();
-
                 setScrollViewColor(scr);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     if (isTranslucentStatusBar()) {
@@ -669,7 +549,7 @@ public class SettingsActivity extends ThemedActivity {
                     if (isTranslucentStatusBar()) {
                         getWindow().setStatusBarColor(ColorPalette.getObscuredColor(getPrimaryColor()));
                     } else getWindow().setStatusBarColor(getPrimaryColor());
-                    if (isNavigationBarColored() && swNavBar.isChecked())
+                    if (isNavigationBarColored())
                         getWindow().setNavigationBarColor(getPrimaryColor());
                     else getWindow().setNavigationBarColor(ContextCompat.getColor(getApplicationContext(), R.color.md_black_1000));
                 }
@@ -677,9 +557,7 @@ public class SettingsActivity extends ThemedActivity {
 
             }
         });
-        AlertDialog alertDialog = dialogBuilder.create();
-        alertDialog.show();
-        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE, DialogInterface.BUTTON_NEUTRAL}, getAccentColor(), alertDialog);
+        dialogBuilder.show();
     }
 
     private void setColor(final LineColorPicker colorPicker, final LineColorPicker colorPicker2, final TextView dialogTitle) {
@@ -770,9 +648,7 @@ public class SettingsActivity extends ThemedActivity {
                 updateViewswithAccentColor(getAccentColor());
             }
         });
-        AlertDialog alertDialog = dialogBuilder.create();
-        alertDialog.show();
-        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE, DialogInterface.BUTTON_NEUTRAL}, getAccentColor(), alertDialog);
+        dialogBuilder.show();
     }
 
     private void customizePictureViewer(){
@@ -819,9 +695,7 @@ public class SettingsActivity extends ThemedActivity {
             }
         });
 
-        AlertDialog alertDialog = dialogBuilder.create();
-        alertDialog.show();
-        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE, DialogInterface.BUTTON_NEUTRAL}, getAccentColor(), alertDialog);
+        dialogBuilder.show();
     }
 
     private void updateViewswithAccentColor(int color){
@@ -898,8 +772,6 @@ public class SettingsActivity extends ThemedActivity {
         ((IconicsImageView) findViewById(R.id.camera_icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.map_provider_icon)).setColor(color);
         ((IconicsImageView) findViewById(R.id.media_viewer_swipe_direction_Icon)).setColor(color);
-        ((IconicsImageView) findViewById(R.id.reset_settings_Icon)).setColor(color);
-
 
         /** TextViews **/
         color = getTextColor();
@@ -919,7 +791,6 @@ public class SettingsActivity extends ThemedActivity {
         ((TextView) findViewById(R.id.camera_item_title)).setTextColor(color);
         ((TextView) findViewById(R.id.map_provider_item_title)).setTextColor(color);
         ((TextView) findViewById(R.id.media_viewer_swipe_direction_Item)).setTextColor(color);
-        ((TextView) findViewById(R.id.reset_settings_Item)).setTextColor(color);
 
         /** Sub Text Views**/
         color = getSubTextColor();
@@ -939,7 +810,6 @@ public class SettingsActivity extends ThemedActivity {
         ((TextView) findViewById(R.id.map_provider_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.media_viewer_swipe_direction_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.camera_item_sub)).setTextColor(color);
-        ((TextView) findViewById(R.id.reset_settings_Item_sub)).setTextColor(color);
     }
 
 
@@ -967,46 +837,6 @@ public class SettingsActivity extends ThemedActivity {
 
     }
 
-    private void resetSettingsDialog() {
-
-        final AlertDialog.Builder resetDialog = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
-
-        AlertDialogsHelper.getTextDialog(SettingsActivity.this,resetDialog,
-                R.string.reset, R.string.reset_settings, null);
-
-        resetDialog.setNegativeButton(this.getString(R.string.no_action).toUpperCase(), null);
-        resetDialog.setPositiveButton(this.getString(R.string.yes_action).toUpperCase(), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                if(!securityObj.isActiveSecurity()) {
-                    SP.clearPreferences();
-                    recreate();
-                } else {
-                    String password =  SP.getString(getString(R.string.preference_password_value),"");
-                    String securedLocalFolders = SP.getString(getString(R.string.preference_use_password_secured_local_folders),"");
-                    boolean activeSecurity = SP.getBoolean(getString(R.string.preference_use_password), false);
-                    boolean hiddenFolders =  SP.getBoolean(getString(R.string.preference_use_password_on_hidden), false);
-                    boolean localFolders =  SP.getBoolean(getString(R.string.preference_use_password_on_folder), false);
-                    boolean deleteAction = SP.getBoolean(getString(R.string.preference_use_password_on_delete), false);
-
-                    SP.clearPreferences();
-                    recreate();
-
-                    SP.putString(getString(R.string.preference_password_value),password);
-                    SP.putString(getString(R.string.preference_use_password_secured_local_folders),securedLocalFolders);
-                    SP.putBoolean(getString(R.string.preference_use_password), activeSecurity);
-                    SP.putBoolean(getString(R.string.preference_use_password_on_hidden), hiddenFolders);
-                    SP.putBoolean(getString(R.string.preference_use_password_on_folder), localFolders);
-                    SP.putBoolean(getString(R.string.preference_use_password_on_delete), deleteAction);
-                    securityObj.updateSecuritySetting();
-
-                }
-            }
-        });
-        AlertDialog alertDialog = resetDialog.create();
-        alertDialog.show();
-        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
-
-    }
     private void openDialog(final Context context){
         AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
         passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
@@ -1022,13 +852,11 @@ public class SettingsActivity extends ThemedActivity {
         passwordDialog.setTitle(R.string.camera_setting_title);
         passwordDialog.setMessage("Open camera to support all options.");
         passwordDialog.show();
-        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
 
         passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(context, CameraActivity.class));
-                finish();
             }
         });
 
