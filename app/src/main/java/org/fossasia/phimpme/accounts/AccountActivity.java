@@ -98,7 +98,6 @@ import static org.fossasia.phimpme.utilities.Utils.checkNetwork;
 public class AccountActivity extends ThemedActivity implements AccountContract.View,
         RecyclerItemClickListner.OnItemClickListener{
 
-
     private static final int NEXTCLOUD_REQUEST_CODE = 3;
     private static final int OWNCLOUD_REQUEST_CODE = 9;
     private static final int RESULT_OK = 1;
@@ -493,7 +492,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         startActivity(i);
     }
 
-
     /**
      * Create Facebook login and session
      */
@@ -543,7 +541,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     }
                 });
     }*/
-
 
     @Override
     public Context getContext() {
