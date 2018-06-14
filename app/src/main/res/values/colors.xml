@@ -113,7 +113,7 @@
     <color name="md_blue_A200">#448AFF</color>
     <color name="md_blue_A400">#2979FF</color>
     <color name="md_blue_A700">#2962FF</color>
-
+    <color name="transparent_md_amber_500">#99FFC107</color>
     <color name="md_blue_grey_100">#CFD8DC</color>
     <color name="md_blue_grey_200">#B0BEC5</color>
     <color name="md_blue_grey_300">#90A4AE</color>
@@ -124,6 +124,7 @@
     <color name="md_blue_grey_700">#455A64</color>
     <color name="md_blue_grey_800">#37474F</color>
     <color name="md_blue_grey_900">#263238</color>
+   
 
     <color name="md_brown_100">#D7CCC8</color>
     <color name="md_brown_200">#BCAAA4</color>
@@ -384,16 +385,19 @@
     <color name="drupal_color">#21759B</color>
     <color name="nextcloud_color">#0F89CD</color>
     <color name="wordpress_color">#278BB8</color>
+    <color name="googledrive_color">#f2db5c</color>
     <color name="pinterest_color">#C92228</color>
     <color name="flickr_color">#FC329B</color>
     <color name="imgur_color">#000000</color>
     <color name="dropbox_color">#007ee5</color>
+    <color name="onedrive_color">#124EAC</color>
     <color name="owncloud_color">#1D2D44</color>s
     <color name="googleplus_color">#d34836</color>
     <color name="box_color">#0080C5</color>
     <color name="tumblr_color">#32506d</color>
     <color name="instagram_color">#125688</color>
     <color name="whatsapp_color">#34af23</color>
+    <color name="snapchat_color">#fffc00</color>
     <color name="others_color">@color/md_indigo_900</color>
     <color name="facebook_color_darktheme">#28acff</color>
     <color name="messenger_color_darktheme">#778bca</color>
@@ -401,16 +405,19 @@
     <color name="drupal_color_darktheme">#7ad4ff</color>
     <color name="nextcloud_color_darktheme">#2da7eb</color>
     <color name="wordpress_color_darktheme">#53a7cd</color>
+    <color name="googledrive_color_darktheme">#edce47</color>
     <color name="pinterest_color_darktheme">#ff5e64</color>
     <color name="flickr_color_darktheme">#ff5ac3</color>
     <color name="imgur_color_darktheme">#fcfcfcfc</color>
     <color name="dropbox_color_darktheme">#778bca</color>
+    <color name="onedrive_color_darktheme">#1668e9</color>
     <color name="owncloud_color_darktheme">#a1b8d9</color>
     <color name="googleplus_color_darktheme">#45556c</color>
     <color name="box_color_darktheme">#e60080c5</color>
     <color name="tumblr_color_darktheme">#698dc1</color>
     <color name="instagram_color_darktheme">#ff56a5</color>
     <color name="whatsapp_color_darktheme">#5cd74b</color>
+    <color name="snapchat_color_darktheme">#faf701</color>
     <color name="others_color_darktheme">@color/md_indigo_400</color>
     <color name="card_background">#e1e0e0</color>
 

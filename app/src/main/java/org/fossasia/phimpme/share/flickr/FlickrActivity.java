@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 
 import com.googlecode.flickrjandroid.Flickr;
@@ -170,17 +171,22 @@ public class FlickrActivity extends ThemedActivity {
                 Flickr f = FlickrHelper.getInstance().getFlickr();
                 OAuthToken oauthToken = f.getOAuthInterface().getRequestToken(
                         OAUTH_CALLBACK_URI.toString());
-                saveTokenSecrent(oauthToken.getOauthToken(), oauthToken.getOauthTokenSecret());
+                Log.i("kakakakakaka", oauthToken.getOauthToken().toString());
+                //saveTokenSecrent(oauthToken.getOauthToken(), oauthToken.getOauthTokenSecret());
                 URL oauthUrl = f.getOAuthInterface().buildAuthenticationUrl(
                         Permission.WRITE, oauthToken);
                 return oauthUrl.toString();
             } catch (Exception e) {
+                Log.e("lllllllllllllll", "moo");
                 return "error:" + e.getMessage(); //$NON-NLS-1$
+
+
             }
         }
 
         private void saveTokenSecrent(String token, String tokenSecret) {
             FlickrActivity act = (FlickrActivity) mContext;
+
             act.saveOAuthToken(null, null, token, tokenSecret);
         }
 
