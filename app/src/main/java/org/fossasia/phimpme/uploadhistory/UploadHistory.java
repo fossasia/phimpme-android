@@ -1,5 +1,6 @@
 package org.fossasia.phimpme.uploadhistory;
 
+
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 
 import java.io.File;
@@ -28,11 +29,16 @@ import org.fossasia.phimpme.gallery.activities.SingleMediaActivity;
 import org.fossasia.phimpme.gallery.data.Media;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
+
+import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 
 /**
  * Created by pa1pal on 17/08/17.
@@ -99,6 +105,7 @@ public class UploadHistory extends ThemedActivity {
         setUpUI();
         //uploadHistoryRecyclerView.addOnItemTouchListener(new RecyclerItemClickListner(this, this));
     }
+
 
     private void removedeletedphotos(){
         RealmQuery<UploadHistoryRealmModel> uploadHistoryRealmModelRealmQuery = realm.where(UploadHistoryRealmModel.class);
