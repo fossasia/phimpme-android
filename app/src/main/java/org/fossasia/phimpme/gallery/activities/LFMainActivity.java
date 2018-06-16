@@ -906,6 +906,14 @@ public class LFMainActivity extends SharedMediaActivity {
         rvMedia.scrollToPosition(0);
     }
 
+    private ArrayList<Media> getselecteditems(){
+        ArrayList<Media> storeselmedia = new ArrayList<>();
+        for(Media m: getAlbum().getSelectedMedia()){
+            storeselmedia.add(m);
+        }
+        return storeselmedia;
+    }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -2504,12 +2512,15 @@ public class LFMainActivity extends SharedMediaActivity {
             //endregion
 
             case R.id.action_move:
+                final ArrayList<Media> dr = getselecteditems();
+                final String[] pathofalbum = {null};
                 bottomSheetDialogFragment = new SelectAlbumBottomSheet();
                 bottomSheetDialogFragment.setTitle(getString(R.string.move_to));
                 if (!albumsMode) {
                     bottomSheetDialogFragment.setSelectAlbumInterface(new SelectAlbumBottomSheet.SelectAlbumInterface() {
                         @Override
                         public void folderSelected(final String path) {
+                            pathofalbum[0] = path;
                             swipeRefreshLayout.setRefreshing(true);
                             int numberOfImagesMoved;
 
@@ -2523,6 +2534,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                 mediaAdapter.swapDataSet(getAlbum().getMedia(), false);
                                 finishEditMode();
                                 invalidateOptionsMenu();
+                                checkdescription(path, dr);
                                 if (numberOfImagesMoved > 1)
                                     SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.photos_moved_successfully), navigationView.getHeight());
                                 else
@@ -2754,6 +2766,41 @@ public class LFMainActivity extends SharedMediaActivity {
                 // If we got here, the user's action was not recognized.
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void checkdescription(String newpath, ArrayList<Media> selecteditems){
+        for(int i = 0; i < selecteditems.size(); i++){
+            getdescriptionpaths(selecteditems.get(i).getPath(), newpath);
+        }
+    }
+
+    private void performrealmaction(final ImageDescModel descModel, String newpath){
+        realm = Realm.getDefaultInstance();
+        int index = descModel.getId().lastIndexOf("/");
+        String name = descModel.getId().substring(index + 1);
+        String newpathy = newpath + "/" + name;
+        realm.beginTransaction();
+        ImageDescModel imageDescModel = realm.createObject(ImageDescModel.class, newpathy);
+        imageDescModel.setTitle(descModel.getTitle());
+        realm.commitTransaction();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override public void execute(Realm realm) {
+                RealmResults<ImageDescModel> result = realm.where(ImageDescModel.class).equalTo
+                        ("path", descModel.getId()).findAll();
+                result.deleteAllFromRealm();
+            }
+        });
+    }
+
+    private void getdescriptionpaths(String patjs, String newpth){
+        realm = Realm.getDefaultInstance();
+        RealmQuery<ImageDescModel> realmQuery = realm.where(ImageDescModel.class);
+        for(int i = 0; i < realmQuery.count(); i++) {
+            if (realmQuery.findAll().get(i).getId().equals(patjs)) {
+                performrealmaction(realmQuery.findAll().get(i), newpth);
+                break;
+            }
         }
     }
 
