@@ -548,6 +548,35 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         return favis;
     }
 
+    private void performrealmaction(final ImageDescModel descModel, String newpath){
+        realm = Realm.getDefaultInstance();
+        int index = descModel.getId().lastIndexOf("/");
+        String name = descModel.getId().substring(index + 1);
+        String newpathy = newpath + "/" + name;
+        realm.beginTransaction();
+        ImageDescModel imageDescModel = realm.createObject(ImageDescModel.class, newpathy);
+        imageDescModel.setTitle(descModel.getTitle());
+        realm.commitTransaction();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override public void execute(Realm realm) {
+                RealmResults<ImageDescModel> result = realm.where(ImageDescModel.class).equalTo
+                        ("path", descModel.getId()).findAll();
+                result.deleteAllFromRealm();
+            }
+        });
+    }
+
+    private void getdescriptionpaths(String patjs, String newpth){
+        realm = Realm.getDefaultInstance();
+        RealmQuery<ImageDescModel> realmQuery = realm.where(ImageDescModel.class);
+        for(int i = 0; i < realmQuery.count(); i++) {
+            if (realmQuery.findAll().get(i).getId().equals(patjs)) {
+                performrealmaction(realmQuery.findAll().get(i), newpth);
+                break;
+            }
+        }
+    }
+
         @Override
     public boolean onPrepareOptionsMenu(final Menu menu) {
 
@@ -988,6 +1017,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 return true;
 
             case R.id.action_move:
+                final String pathcurrent = getAlbum().getCurrentMedia().getPath();
                 handler.removeCallbacks(slideShowRunnable);
                 bottomSheetDialogFragment = new SelectAlbumBottomSheet();
                 bottomSheetDialogFragment.setTitle(getString(R.string.move_to));
@@ -1005,6 +1035,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                             }
                         }
                         adapter.notifyDataSetChanged();
+                        getdescriptionpaths(pathcurrent, path);
 //                        toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + getAlbum().getCount());
                         bottomSheetDialogFragment.dismiss();
                         SnackBarHandler.showWithBottomMargin(relativeLayout, getString(R.string.photo_moved_successfully) + " to " + path, bottomBar.getHeight());
