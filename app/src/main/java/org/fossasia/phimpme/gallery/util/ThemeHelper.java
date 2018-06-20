@@ -53,7 +53,7 @@ public class ThemeHelper {
 
   public void updateTheme(){
 	this.primaryColor = SP.getInt(context.getString(R.string.preference_primary_color),
-			getColor(R.color.md_light_blue_300));
+			getColor(R.color.md_light_blue_500));
 	this.accentColor = SP.getInt(context.getString(R.string.preference_accent_color),
 			getColor(R.color.md_light_blue_500));
 	baseTheme = SP.getInt(context.getString(R.string.preference_base_theme), LIGHT_THEME);
@@ -72,7 +72,7 @@ public class ThemeHelper {
   public static int getPrimaryColor(Context context) {
 	PreferenceUtil SP = PreferenceUtil.getInstance(context);
 	return SP.getInt(context.getString(R.string.preference_primary_color),
-			ContextCompat.getColor(context, R.color.md_indigo_500));
+			ContextCompat.getColor(context, R.color.md_light_blue_500));
   }
 
   public void setBaseTheme(int baseTheme, boolean permanent) {
@@ -248,6 +248,16 @@ public class ThemeHelper {
 	}
 	return color;
   }
+
+    public int getHighlightedItemColor(){
+        int color;
+        switch (baseTheme){
+            case DARK_THEME:color = getColor(R.color.md_grey_600);break;
+            case AMOLED_THEME:color = getColor(R.color.md_grey_850);break;
+            case LIGHT_THEME:default:color = getColor(R.color.md_grey_300);
+        }
+        return color;
+    }
 
   private ColorStateList getRadioButtonColor(){
 	return new ColorStateList(
