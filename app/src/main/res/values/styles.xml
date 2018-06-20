@@ -6,6 +6,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowContentTransitions">true</item>
     </style>
 
     <!--LIGHT MENU THEME-->
@@ -56,6 +57,8 @@
     <style name="MyToolbar" parent="Widget.AppCompat.Toolbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <!-- android:fitSystemWindows=true, so that transclucent status bar fits perfectly to the screen-->
+        <item name="android:fitsSystemWindows">true</item>
         <item name="android:elevation" tools:ignore="NewApi">5dp</item>
         <item name="theme">@style/MyToolbarTheme</item>
 
@@ -65,6 +68,10 @@
         <item name="android:textColorPrimary">#FFF</item>
         <item name="colorControlNormal">#FFF</item>
         <item name="colorControlHighlight">#FFF</item>
+    </style>
+
+    <style name="ToolbarTitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">20sp</item>
     </style>
 
     <style name="fab_camera">

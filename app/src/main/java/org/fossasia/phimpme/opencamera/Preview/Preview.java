@@ -614,10 +614,10 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		int longSide = (widthLonger ? previewWidth : previewHeight);
 		int shortSide = (widthLonger ? previewHeight : previewWidth);
 		if( longSide > shortSide * aspect_ratio ) {
-			longSide = (int) ((double) shortSide * aspect_ratio);
+		        shortSide = (int) ((double) longSide / aspect_ratio);
 		}
 		else {
-			shortSide = (int) ((double) longSide / aspect_ratio);
+		        longSide = (int) ((double) shortSide * aspect_ratio);
 		}
 		if( widthLonger ) {
 			previewWidth = longSide;
@@ -1391,17 +1391,23 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 								.show();
 					}
                     else {
-                        final List<String> colorEffect = getSupportedColorEffects();
-                        colorNum++;
-                        if (colorNum == colorEffect.size())
-                            colorNum = 0;
-                        final String color = colorEffect.get(colorNum);
-                        CameraController.SupportedValues supported_values = camera_controller.setColorEffect(color);
-                        if (supported_values != null) {
-                            color_effects = supported_values.values;
-                            applicationInterface.setColorEffectPref(supported_values.selected_value);
-                        } else {
-                            applicationInterface.clearColorEffectPref();
+                        try {
+                            final List<String> colorEffect = getSupportedColorEffects();
+                            colorNum++;
+                            if (colorNum == colorEffect.size())
+                                colorNum = 0;
+                            final String color = colorEffect.get(colorNum);
+                            CameraController.SupportedValues supported_values = camera_controller.setColorEffect(color);
+                            if (supported_values != null) {
+                                color_effects = supported_values.values;
+                                applicationInterface.setColorEffectPref(supported_values.selected_value);
+                            } else {
+                                applicationInterface.clearColorEffectPref();
+                            }
+                        }catch (Exception e)
+                        {
+                            Toast.makeText(activity, "Your device does not support any filters", Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, "ColorEffect List Size Is Null " );
                         }
                     }
                     SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -1415,8 +1421,10 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 				public boolean onLongClick(View v) {
 					final List<String> colorEffect = getSupportedColorEffects();
 					colorNum = 0;
-					CameraController.SupportedValues supported_values = camera_controller.setColorEffect(colorEffect.get(0));
-					applicationInterface.setColorEffectPref(supported_values.selected_value);
+					if (colorEffect != null) {
+						CameraController.SupportedValues supported_values = camera_controller.setColorEffect(colorEffect.get(0));
+						applicationInterface.setColorEffectPref(supported_values.selected_value);
+					}
 					return true;
 				}
 			});
@@ -2730,7 +2738,20 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 				// now save
 				applicationInterface.setFlashPref(flash_value);
 			}
-		}
+ 		} else if (supported_flash_values != null && current_flash_index != -1 &&
+                current_flash_index != supported_flash_values.indexOf("flash_off")) {
+                        //called when the user clicks on the same flash button again to disable it
+                        current_flash_index = supported_flash_values.indexOf("flash_off");
+                        if (MyDebug.LOG)
+                            Log.d(TAG, "    current_flash_index is now " + current_flash_index);
+                        String[] flash_entries = getResources().getStringArray(R.array.flash_entries);
+                        showToast(flash_toast, flash_entries[0]);
+                        this.setFlash("flash_off");
+                        if (save) {
+                            // now save
+                            applicationInterface.setFlashPref("flash_off");
+                        }
+        }
 	}
 
 	private void setFlash(String flash_value) {
@@ -2844,7 +2865,27 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 				// now save
 				applicationInterface.setFocusPref(focus_value, is_video);
 			}
-		}
+		} else if ( this.supported_focus_values != null && current_focus_index != 0){
+                //called when the user tries to deselect an selected focus value.
+                        current_focus_index = 0;
+                        if (MyDebug.LOG)
+                            Log.d(TAG, "    current_focus_index is now " + current_focus_index);
+                        String focus_value = supported_focus_values.get(current_focus_index);
+                        if (MyDebug.LOG)
+                            Log.d(TAG, "    focus_value: " + focus_value);
+                        if (!quiet) {
+                            String focus_entry = findFocusEntryForValue(focus_value);
+                            if (focus_entry != null) {
+                                showToast(focus_toast, focus_entry);
+                            }
+                        }
+                        this.setFocusValue(focus_value, auto_focus);
+
+                        if (save) {
+                            // now save
+                            applicationInterface.setFocusPref(focus_value, is_video);
+                        }
+        }
 	}
 
 	/** This returns the flash mode indicated by the UI, rather than from the camera parameters.

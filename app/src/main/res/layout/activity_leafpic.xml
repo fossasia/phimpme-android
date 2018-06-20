@@ -7,72 +7,114 @@
     tools:openDrawer="start">
 
     <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/Relative_Album_layout"
+        android:id="@+id/cl_main_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="match_parent"
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <!---->
-        <LinearLayout
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
             <include
                 android:id="@+id/toolbar"
                 layout="@layout/toolbar" />
+        </android.support.design.widget.AppBarLayout>
 
-            <android.support.v4.widget.SwipeRefreshLayout
-                android:id="@+id/swipeRefreshLayout"
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingBottom="@dimen/height_bottombar" >
+                android:layout_height="match_parent">
 
-                <RelativeLayout
-                    android:id="@+id/rl_main_content"
+                <android.support.v4.widget.SwipeRefreshLayout
+                    android:id="@+id/swipeRefreshLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/grid_albums"
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_gravity="center_horizontal"
                         android:clipToPadding="false"
                         android:scrollbarThumbVertical="@drawable/ic_scrollbar"
-                        android:scrollbars="vertical"
+                        android:scrollbars="vertical">
 
-                        />
+                        <org.fossasia.phimpme.gallery.views.CustomScrollBarRecyclerView
+                            android:id="@+id/grid_photos"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_horizontal"
+                            android:clipToPadding="false"
+                            android:paddingBottom="@dimen/height_bottombar"
+                            android:scrollbarThumbVertical="@drawable/ic_scrollbar"
+                            android:scrollbars="vertical" />
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/grid_photos"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_horizontal"
-                        />
+                        <org.fossasia.phimpme.gallery.views.CustomScrollBarRecyclerView
+                            android:id="@+id/grid_albums"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:clipToPadding="false"
+                            android:paddingBottom="@dimen/height_bottombar"
+                            android:scrollbarThumbVertical="@drawable/ic_scrollbar"
+                            android:scrollbars="vertical" />
 
-                    <TextView
-                        android:id="@+id/nothing_to_show"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:elevation="12dp"
-                        android:gravity="center"
-                        android:text="@string/there_is_nothing_to_show"
-                        android:textColor="@color/md_white_1000"
-                        android:textSize="18sp"
-                        android:visibility="invisible"
-                        tools:targetApi="lollipop" />
-                </RelativeLayout>
-            </android.support.v4.widget.SwipeRefreshLayout>
+                        <TextView android:layout_width="match_parent"
+                                  android:layout_height="wrap_content"
+                                  android:id="@+id/no_search_results"
+                                  android:gravity="center_horizontal"
+                                  android:textSize="18sp"
+                                  android:layout_marginTop="150dp"
+                                  android:visibility="invisible"/>
 
-        </LinearLayout>
+                        <TextView
+                            android:id="@+id/nothing_to_show"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:elevation="12dp"
+                            android:gravity="center"
+                            android:text="@string/there_is_nothing_to_show"
+                            android:textColor="@color/md_white_1000"
+                            android:textSize="16sp"
+                            android:visibility="invisible"
+                            tools:targetApi="lollipop" />
+
+                        <ImageView
+                            android:id="@+id/star_image_view"
+                            android:layout_width="90dp"
+                            android:layout_height="90dp"
+                            android:layout_above="@id/nothing_to_show"
+                            android:layout_centerInParent="true"
+                            android:visibility="gone"
+                            app:srcCompat="@drawable/ic_star_black_24dp" />
+
+                    </RelativeLayout>
+                </android.support.v4.widget.SwipeRefreshLayout>
+            </FrameLayout>
+        </android.support.v4.widget.NestedScrollView>
 
         <include
+            android:id="@+id/bottombar"
             layout="@layout/element_bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom" />
+            android:layout_gravity="bottom"
+            app:elevation="4dp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab_scroll_up"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="70dp"
+            app:layout_anchor="@id/bottombar"
+            app:layout_anchorGravity="top|center"
+            app:srcCompat="@drawable/ic_keyboard_arrow_up_black_24dp" />
     </android.support.design.widget.CoordinatorLayout>
 
     <include
