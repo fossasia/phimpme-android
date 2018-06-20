@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:id="@+id/parentLayout"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    >
 
 
     <LinearLayout
@@ -160,6 +160,8 @@
             android:layout_height="fill_parent"
             android:layout_gravity="center"
             android:visibility="gone" />
+
+
     </FrameLayout>
 
     <ProgressBar
@@ -168,6 +170,7 @@
         android:layout_centerInParent="true"
         android:id="@+id/progress_bar_edit"
         android:visibility="gone"
+
         />
 
 </RelativeLayout>

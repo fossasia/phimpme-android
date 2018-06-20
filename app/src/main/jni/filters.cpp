@@ -74,6 +74,124 @@ void applyBW(cv::Mat &src, cv::Mat &dst, int val) {
     }
 }
 
+void applyNegative(cv::Mat &src, cv::Mat &dst, int val) {
+    register int x, y;
+    float opacity = val * 0.01f;
+    cvtColor(src, src, CV_BGRA2BGR);
+    dst = Mat::zeros(src.size(), src.type());
+    uchar r, g, b;
+
+    for (y = 0; y < src.rows; y++) {
+        for (x = 0; x < src.cols; x++) {
+            r = src.at<Vec3b>(y, x)[0];
+            g = src.at<Vec3b>(y, x)[1];
+            b = src.at<Vec3b>(y, x)[2];
+            dst.at<Vec3b>(y, x)[0] =
+                    saturate_cast<uchar>(opacity * (255 - r));
+            dst.at<Vec3b>(y, x)[1] =
+                    saturate_cast<uchar>(opacity * (255 - g));
+            dst.at<Vec3b>(y, x)[2] =
+                    saturate_cast<uchar>(opacity * (255 - b));
+        }
+    }
+}
+
+void applyGreenBoostEffect(cv::Mat &src, cv::Mat &dst, int val) {
+    register int x, y;
+    float opacity = val * 0.01f;
+    cvtColor(src, src, CV_BGRA2BGR);
+    dst = Mat::zeros(src.size(), src.type());
+    uchar r, g, b,val1;
+
+    for (y = 0; y < src.rows; y++) {
+        for (x = 0; x < src.cols; x++) {
+            r = src.at<Vec3b>(y, x)[0];
+            g = src.at<Vec3b>(y, x)[1];
+            b = src.at<Vec3b>(y, x)[2];
+            val1 = saturate_cast<uchar>(g*(1+opacity));
+            if(val1 > 255) {
+                val1 = 255;
+            }
+            dst.at<Vec3b>(y, x)[0] =
+                    saturate_cast<uchar>(r);
+            dst.at<Vec3b>(y, x)[1] =
+                    saturate_cast<uchar>(val1);
+            dst.at<Vec3b>(y, x)[2] =
+                    saturate_cast<uchar>(b);
+        }
+    }
+}
+
+void applyColorBoostEffect(cv::Mat &src, cv::Mat &dst, int val) {
+    register int x, y;
+    float opacity = val * 0.01f;
+    cvtColor(src, src, CV_BGRA2BGR);
+    dst = Mat::zeros(src.size(), src.type());
+    uchar r, g, b;
+    uchar val1,val2,val3;
+
+    for (y = 0; y < src.rows; y++) {
+        for (x = 0; x < src.cols; x++) {
+            r = src.at<Vec3b>(y, x)[0];
+            g = src.at<Vec3b>(y, x)[1];
+            b = src.at<Vec3b>(y, x)[2];
+            val1 = saturate_cast<uchar>(r*(1+opacity));
+            if(val1 > 255) {
+                val1 = 255;
+            }
+            val2 = saturate_cast<uchar>(g*(1+opacity));
+            if(val2 > 255) {
+                val2 = 255;
+            }
+            val3 = saturate_cast<uchar>(b*(1+opacity));
+            if(val3 > 255) {
+                val3 = 255;
+            }
+            dst.at<Vec3b>(y, x)[0] =
+                    saturate_cast<uchar>(val1);
+            dst.at<Vec3b>(y, x)[1] =
+                    saturate_cast<uchar>(val2);
+            dst.at<Vec3b>(y, x)[2] =
+                    saturate_cast<uchar>(val3);
+        }
+    }
+}
+
+void applyCyanise(cv::Mat &src, cv::Mat &dst, int val) {
+    register int x, y;
+    float opacity = val * 0.01f;
+    cvtColor(src, src, CV_BGRA2BGR);
+    dst = Mat::zeros(src.size(), src.type());
+    uchar r, g, b;
+    uchar val2;
+    uchar val3;
+
+    for (y = 0; y < src.rows; y++) {
+        for (x = 0; x < src.cols; x++) {
+            r = src.at<Vec3b>(y, x)[0];
+            g = src.at<Vec3b>(y, x)[1];
+            b = src.at<Vec3b>(y, x)[2];
+
+            val2 = saturate_cast<uchar>(g*(1+opacity));
+            if(val2 > 255) {
+                val2 = 255;
+            }
+
+            val3 = saturate_cast<uchar>(b*(1+opacity));
+            if(val3 > 255) {
+                val3 = 255;
+            }
+
+            dst.at<Vec3b>(y, x)[0] =
+                    saturate_cast<uchar>(r);
+            dst.at<Vec3b>(y, x)[1] =
+                    saturate_cast<uchar>(val2);
+            dst.at<Vec3b>(y, x)[2] =
+                    saturate_cast<uchar>(val3);
+        }
+    }
+}
+
 void applySajuno(cv::Mat &src, cv::Mat &dst, int val) {
     register int x, y;
     double op = 0.5 + 0.35 * val / 100.0;
@@ -95,6 +213,32 @@ void applySajuno(cv::Mat &src, cv::Mat &dst, int val) {
                     saturate_cast<uchar>(g + val1);
             dst.at<Vec3b>(y, x)[2] =
                     saturate_cast<uchar>(b + val1);
+        }
+    }
+}
+
+void applyBoostRedEffect(cv::Mat &src, cv::Mat &dst, int val) {
+    register int x, y;
+    float opacity = val * 0.01f;
+    cvtColor(src, src, CV_BGRA2BGR);
+    dst = Mat::zeros(src.size(), src.type());
+    uchar r, g, b,val1;
+
+    for (y = 0; y < src.rows; y++) {
+        for (x = 0; x < src.cols; x++) {
+            r = src.at<Vec3b>(y, x)[0];
+            g = src.at<Vec3b>(y, x)[1];
+            b = src.at<Vec3b>(y, x)[2];
+            val1 = saturate_cast<uchar>(r*(1+opacity));
+            if(val1 > 255) {
+                val1 = 255;
+            }
+            dst.at<Vec3b>(y, x)[0] =
+                    saturate_cast<uchar>(val1);
+            dst.at<Vec3b>(y, x)[1] =
+                    saturate_cast<uchar>(g);
+            dst.at<Vec3b>(y, x)[2] =
+                    saturate_cast<uchar>(b);
         }
     }
 }
@@ -253,6 +397,32 @@ void applySepia(cv::Mat &src, cv::Mat &dst, int val) {
     }
 }
 
+void applyBlueBoostEffect(cv::Mat &src, cv::Mat &dst, int val) {
+    register int x, y;
+    float opacity = val * 0.01f;
+    cvtColor(src, src, CV_BGRA2BGR);
+    dst = Mat::zeros(src.size(), src.type());
+    uchar r, g, b,val1;
+
+    for (y = 0; y < src.rows; y++) {
+        for (x = 0; x < src.cols; x++) {
+            r = src.at<Vec3b>(y, x)[0];
+            g = src.at<Vec3b>(y, x)[1];
+            b = src.at<Vec3b>(y, x)[2];
+            val1 = saturate_cast<uchar>(b*(1+opacity));
+            if(val1 > 255) {
+                val1 = 255;
+            }
+            dst.at<Vec3b>(y, x)[0] =
+                    saturate_cast<uchar>(r);
+            dst.at<Vec3b>(y, x)[1] =
+                    saturate_cast<uchar>(g);
+            dst.at<Vec3b>(y, x)[2] =
+                    saturate_cast<uchar>(val1);
+        }
+    }
+}
+
 void applyAnsel(cv::Mat &src, cv::Mat &dst, int val) {
     register int x, y;
     double opacity = val / 100.0;
@@ -319,6 +489,7 @@ void applyGrain(cv::Mat &src, cv::Mat &dst, int val) {
     dst = src.clone();
     time_t t;
     srand((unsigned) time(&t));
+
     for (y = 0; y < src.rows; y++) {
         for (x = 0; x < src.cols; x++) {
             int rval = rand() % 255;
@@ -364,5 +535,146 @@ void applyCyano(cv::Mat &src, cv::Mat &dst, int val) {
     }
 }
 
+void applyFade(cv::Mat &src, cv::Mat &dst, int val) {
+    cvtColor(src, src, COLOR_RGB2GRAY);
+    dst = src.clone();
+    for (int y = 0; y < src.rows; y++) {
+        for (int x = 0; x < src.rows; x++) {
+            Vec3b intensity = src.at<Vec3b>(y, x);
+            uchar blue = intensity.val[0];
+            uchar green = intensity.val[1];
+            uchar red = intensity.val[2];
+
+            dst.at<Vec3b>(y, x)[0] = saturate_cast<uchar>(blue + 0.5 * val);
+            dst.at<Vec3b>(y, x)[1] = saturate_cast<uchar>(green + 0.5 * val);
+            dst.at<Vec3b>(y, x)[2] = saturate_cast<uchar>(red + 0.5 * val);
+        }
+    }
+}
+
+void applyCartoon(cv::Mat &src, cv::Mat &dst, int val) {
+    double opacity = val / 100.0;
+    Mat srcGray;
+    cvtColor(src, src, CV_BGRA2BGR);
+    cvtColor(src, srcGray, CV_BGR2GRAY);
+
+    medianBlur(srcGray, srcGray, 7);
+    Size size = src.size();
+    Mat mask = Mat(size, CV_8U);
+    Mat edges = Mat(size, CV_8U);
+    Laplacian(srcGray, edges, CV_8U, 5);
+    threshold(edges, mask, 80, (int) 255 * opacity, CV_THRESH_BINARY_INV);
+
+    Size smallSize;
+    smallSize.width = size.width / 4;
+    smallSize.height = size.height / 4;
+    Mat smallImg = Mat(smallSize, CV_8UC3);
+    resize(src, smallImg, smallSize, 0, 0, CV_INTER_LINEAR);
+
+    Mat tmp = Mat(smallSize, CV_8UC3);
+    int repetitions = 7;
+    for (int i = 0; i < repetitions; i++) {
+        int sizeInt = 9;
+        double sigmaColor = 9;
+        double sigmaSpace = 7;
+        bilateralFilter(smallImg, tmp, sizeInt, sigmaColor, sigmaSpace);
+        bilateralFilter(tmp, smallImg, sizeInt, sigmaColor, sigmaSpace);
+    }
+
+    resize(smallImg, src, size, 0, 0, CV_INTER_LINEAR);
+    dst = Mat::zeros(src.size(), src.type());
+    src.copyTo(dst, mask);
+} 
+  
+void applyPencilSketch(cv::Mat &src, cv::Mat &dst, int val) {
+    cvtColor(src, src, COLOR_BGRA2GRAY);
+    dst = Mat::zeros(src.size(), src.type());
+    adaptiveThreshold(src, dst, 255, CV_ADAPTIVE_THRESH_MEAN_C, CV_THRESH_BINARY, 9, 2);
+}
+    
+void applyEdgify(cv::Mat &src, cv::Mat &dst, int val) {
+    int lowThreshold = val;
+    int ratio = 3;
+    int kernel_size = 3;
+
+    Mat grey, detected_edges;
+
+    cvtColor(src, grey, CV_BGR2GRAY);
+
+    blur(grey, detected_edges, Size(3, 3));
+    dst.create(grey.size(), grey.type());
+
+    Canny(detected_edges, detected_edges, lowThreshold, lowThreshold * ratio,
+          kernel_size);
+
+    dst = Scalar::all(0);
+
+    detected_edges.copyTo(dst, detected_edges);
+}
+
+void applyRedBlueEffect(cv::Mat &src, cv::Mat &dst, int val) {
+    register int x, y;
+    float opacity = val * 0.01f;
+    cvtColor(src, src, CV_BGRA2BGR);
+    dst = Mat::zeros(src.size(), src.type());
+    uchar r, g, b;
+    uchar val1,val3;
+
+    for (y = 0; y < src.rows; y++) {
+        for (x = 0; x < src.cols; x++) {
+            r = src.at<Vec3b>(y, x)[0];
+            g = src.at<Vec3b>(y, x)[1];
+            b = src.at<Vec3b>(y, x)[2];
+            val1 = saturate_cast<uchar>(r*(1+opacity));
+            if(val1 > 255) {
+                val1 = 255;
+            }
+          val3 = saturate_cast<uchar>(b*(1+opacity));
+            if(val3 > 255) {
+                val3 = 255;
+            }
+            dst.at<Vec3b>(y, x)[0] =
+                    saturate_cast<uchar>(val1);
+            dst.at<Vec3b>(y, x)[1] =
+                    saturate_cast<uchar>(g);
+            dst.at<Vec3b>(y, x)[2] =
+                    saturate_cast<uchar>(val3);
+        }
+    }
+}   
+  
+void applyRedGreenFilter(cv::Mat &src, cv::Mat &dst, int val) {
+    register int x, y;
+    float opacity = val * 0.01f;
+    cvtColor(src, src, CV_BGRA2BGR);
+    dst = Mat::zeros(src.size(), src.type());
+    uchar r, g, b;
+    uchar val1,val2;
+
+    for (y = 0; y < src.rows; y++) {
+        for (x = 0; x < src.cols; x++) {
+            r = src.at<Vec3b>(y, x)[0];
+            g = src.at<Vec3b>(y, x)[1];
+            b = src.at<Vec3b>(y, x)[2];
+
+            val1 = saturate_cast<uchar>(r*(1+opacity));
+            if(val1 > 255) {
+                val1 = 255;
+            }
+
+            val2 = saturate_cast<uchar>(g*(1+opacity));
+            if(val2 > 255) {
+                val2 = 255;
+            }
+
+            dst.at<Vec3b>(y, x)[0] =
+                    saturate_cast<uchar>(val1);
+            dst.at<Vec3b>(y, x)[1] =
+                    saturate_cast<uchar>(val2);
+            dst.at<Vec3b>(y, x)[2] =
+                    saturate_cast<uchar>(b);
+        }
+    }
+}
 
 }

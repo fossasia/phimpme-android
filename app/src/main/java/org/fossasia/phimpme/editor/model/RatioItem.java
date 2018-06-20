@@ -1,14 +1,18 @@
 package org.fossasia.phimpme.editor.model;
 
+import com.mikepenz.iconics.IconicsDrawable;
+
 public class RatioItem {
 	private String text;
 	private Float ratio;
 	private int index;
+    private IconicsDrawable iconicsDrawable;
 
-	public RatioItem(String text, Float ratio) {
+	public RatioItem(String text, Float ratio, IconicsDrawable iconicsDrawable) {
 		super();
 		this.text = text;
 		this.ratio = ratio;
+        this.iconicsDrawable=iconicsDrawable;
 	}
 
 	public String getText() {
@@ -36,4 +40,11 @@ public class RatioItem {
 		this.index = index;
 	}
 
+	public void setImage(IconicsDrawable iconicsDrawable){
+        this.iconicsDrawable=iconicsDrawable;
+    }
+
+    public IconicsDrawable getImage(){
+        return iconicsDrawable;
+    }
 }
