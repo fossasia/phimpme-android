@@ -132,8 +132,8 @@ public class Utils {
         if (isAppInstalled(PACKAGE_WHATSAPP,packageManager))
             list.add(AccountDatabase.AccountName.WHATSAPP);
 
-        if (isAppInstalled(PACKAGE_GOOGLEPLUS,packageManager))
-            list.add(AccountDatabase.AccountName.GOOGLEPLUS);
+        /*if (isAppInstalled(PACKAGE_GOOGLEPLUS,packageManager))
+            list.add(AccountDatabase.AccountName.GOOGLEPLUS);*/
 
         if (isAppInstalled(PACKAGE_MESSENGER,packageManager))
             list.add(AccountDatabase.AccountName.MESSENGER);

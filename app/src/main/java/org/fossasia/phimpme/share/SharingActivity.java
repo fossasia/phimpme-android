@@ -59,7 +59,6 @@ import com.facebook.messenger.ShareToMessengerParams;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
-import com.google.android.gms.plus.PlusShare;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.owncloud.android.lib.common.OwnCloudClient;
@@ -125,8 +124,8 @@ import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FLICKR;
 
-import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.ONEDRIVE;
-import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.GOOGLEDRIVE;
+//import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.ONEDRIVE;
+//import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.GOOGLEDRIVE;
 
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.OTHERS;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTER;
@@ -344,9 +343,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                         shareToDropBox();
                         break;
 
-                    case GOOGLEDRIVE:
+                   /* case GOOGLEDRIVE:
                         shareToGoogleDrive();
-                        break;
+                        break;*/
 
                     case OWNCLOUD:
                         shareToNextCloudAndOwnCloud(getString(R.string.owncloud));
@@ -360,9 +359,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                         shareToTumblr();
                         break;
 
-                    case ONEDRIVE:
+                   /* case ONEDRIVE:
                         shareToOneDrive();
-                        break;
+                        break;*/
 
                     case OTHERS:
                         shareToOthers();
@@ -372,9 +371,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                         shareToWhatsapp();
                         break;
 
-                    case GOOGLEPLUS:
+                   /* case GOOGLEPLUS:
                         shareToGoogle();
-                        break;
+                        break;*/
 
                     case MESSENGER:
                         shareToMessenger();
@@ -461,17 +460,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             SnackBarHandler.show(parent, R.string.login_box);
         }
     }
-
-    private void shareToGoogle() {
-        NotificationHandler.make(R.string.googlePlus, R.string.upload_progress, R.drawable.ic_cloud_upload_black_24dp);
-        Uri uri = getImageUri(SharingActivity.this, saveFilePath);
-        PlusShare.Builder share = new PlusShare.Builder(SharingActivity.this);
-        share.setText(caption);
-        share.addStream(uri);
-        share.setType(getResources().getString(R.string.image_type));
-        startActivityForResult(share.getIntent(), REQ_SELECT_PHOTO);
-    }
-
 
     private class UploadToBox extends AsyncTask<Void, Integer, Void> {
         private FileInputStream inputStream;
@@ -642,7 +630,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
 
-    private void shareToOneDrive(){
+   /* private void shareToOneDrive(){
         cloudRailServices = CloudRailServices.getInstance();
         cloudRailServices.prepare(this);
         RealmQuery<AccountDatabase> query = realm.where(AccountDatabase.class);
@@ -672,7 +660,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             SnackBarHandler.show(parent,R.string.login_googledrive_account);
         }
 
-    }
+    }*/
 
     private class UploadToGoogleDrive extends AsyncTask<Void,Void,Void>{
         Boolean success;
