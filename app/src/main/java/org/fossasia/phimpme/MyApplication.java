@@ -6,7 +6,7 @@ import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
+//import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.Stetho;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
@@ -25,7 +25,7 @@ import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterConfig;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
-import io.fabric.sdk.android.Fabric;
+//import io.fabric.sdk.android.Fabric;
 
 import org.fossasia.phimpme.gallery.data.Album;
 import org.fossasia.phimpme.gallery.data.HandlingAlbums;
@@ -86,8 +86,8 @@ public class MyApplication extends Application {
                 .build();
         Realm.setDefaultConfiguration(realmConfiguration);
         super.onCreate();
-        if (isPublished)
-            Fabric.with(this, new Crashlytics());
+       // if (isPublished)
+         //   Fabric.with(this, new Crashlytics());
 
         /**
          * Stetho initialization
