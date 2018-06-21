@@ -31,9 +31,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.pinterest.android.pdk.PDKCallback;
 import com.pinterest.android.pdk.PDKClient;
 import com.pinterest.android.pdk.PDKException;
@@ -80,10 +78,10 @@ import static com.pinterest.android.pdk.PDKClient.setDebugMode;
 import static org.fossasia.phimpme.R.string.no_account_signed_in;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
-import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.GOOGLEDRIVE;
+//import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.GOOGLEDRIVE;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.IMGUR;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.NEXTCLOUD;
-import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.ONEDRIVE;
+//import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.ONEDRIVE;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.OWNCLOUD;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.PINTEREST;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TUMBLR;
@@ -101,7 +99,7 @@ import static org.fossasia.phimpme.utilities.Utils.checkNetwork;
  */
 
 public class AccountActivity extends ThemedActivity implements AccountContract.View,
-        RecyclerItemClickListner.OnItemClickListener, GoogleApiClient.OnConnectionFailedListener {
+        RecyclerItemClickListner.OnItemClickListener{
 
     private static final int NEXTCLOUD_REQUEST_CODE = 3;
     private static final int OWNCLOUD_REQUEST_CODE = 9;
@@ -132,7 +130,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private Context context;
     private CloudRailServices cloudRailServices;
     private PDKClient pdkClient;
-    private GoogleApiClient mGoogleApiClient;
+   // private GoogleApiClient mGoogleApiClient;
     private DropboxAPI<AndroidAuthSession> mDBApi;
     private BoxSession sessionBox;
 
@@ -266,9 +264,9 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     Intent WordpressShare = new Intent(this, WordpressLoginActivity.class);
                     startActivity(WordpressShare);
                     break;*/
-                case GOOGLEDRIVE:
+               /* case GOOGLEDRIVE:
                     signInGoogleDrive();
-                    break;
+                    break;*/
 
                 case PINTEREST:
                     signInPinterest();
@@ -300,9 +298,9 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     signInTumblr();
                     break;
 
-                case ONEDRIVE:
+                /*case ONEDRIVE:
                     signInOneDrive();
-                    break;
+                    break;*/
 
                 default:
                     SnackBarHandler.show(coordinatorLayout, R.string.feature_not_present);
@@ -390,11 +388,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                 .initiateInActivity(AccountActivity.this);
     }
 
-    private void signInGooglePlus() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
-    }
-
     private void signInDropbox() {
         if (accountPresenter.checkAlreadyExist(DROPBOX))
             SnackBarHandler.show(coordinatorLayout, R.string.already_signed_in);
@@ -431,7 +424,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         super.onNewIntent(intent);
     }
 
-    private void signInGoogleDrive() {
+   /* private void signInGoogleDrive() {
         if(accountPresenter.checkAlreadyExist(GOOGLEDRIVE))
             SnackBarHandler.show(coordinatorLayout,"Already Signed In");
         else
@@ -447,9 +440,9 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                 }
             };
             CloudRailServices.setCallBack(basicCallBack);
-    }
+    }*/
 
-    private void signInOneDrive(){
+   /* private void signInOneDrive(){
         if(accountPresenter.checkAlreadyExist(ONEDRIVE))
             SnackBarHandler.show(coordinatorLayout,"Already Signed In");
         else
@@ -464,7 +457,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                 }
             };
             CloudRailServices.setCallBack(basicCallBack);
-    }
+    }*/
 
     private void signInImgur() {
         BasicCallBack basicCallBack = new BasicCallBack() {
@@ -663,7 +656,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     }
 
 
-    private void oneDriveAuthentication(String tokens){
+   /* private void oneDriveAuthentication(String tokens){
         try {
             String result = cloudRailServices.oneDrive.saveAsString();
             Log.d("AccountsActivity", "oneDriveAuthentication: "+tokens+" "+result );
@@ -678,9 +671,9 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             //No need of handling it
         }
         accountPresenter.loadFromDatabase();
-    }
+    }*/
           
-    private void googleDriveAuthentication(String tokens) {
+   /* private void googleDriveAuthentication(String tokens) {
         try{
             String token = cloudRailServices.googleDrive.saveAsString();
             Log.e("AccountsActivity", "googleDriveAuthentication: "+token + "Matching Token "+tokens);
@@ -695,7 +688,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             //No need for handling
         }
         accountPresenter.loadFromDatabase();
-    }
+    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -734,9 +727,4 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             SnackBarHandler.show(parentLayout,R.string.google_auth_fail);
         }
     }*/
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        SnackBarHandler.show(coordinatorLayout, getApplicationContext().getString(R.string.connection_failed));
-    }
 }
