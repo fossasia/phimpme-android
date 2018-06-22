@@ -582,6 +582,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
         if(allPhotoMode || favphotomode){
             menu.findItem(R.id.action_cover).setVisible(false);
+            menu.findItem(R.id.action_move).setVisible(false);
         }
         if (!allPhotoMode && !favphotomode && !upoadhis){
             menu.setGroupVisible(R.id.only_photos_options, true);
