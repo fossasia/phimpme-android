@@ -1,8 +1,6 @@
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
 apply plugin: 'jacoco-android'
 apply plugin: 'realm-android'
-apply plugin: 'com.google.firebase.firebase-perf'
 
 android {
     compileSdkVersion 25
@@ -101,11 +99,6 @@ dependencies {
     compile "com.android.support:palette-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
     compile "com.android.support:customtabs:$rootProject.supportLibraryVersion"
-    compile 'com.google.firebase:firebase-core:11.0.2'
-    compile 'com.google.firebase:firebase-messaging:11.0.2'
-    compile "com.google.android.gms:play-services-auth:$rootProject.gmsVersion"
-    compile "com.google.android.gms:play-services-plus:$rootProject.gmsVersion"
-    compile "com.google.firebase:firebase-perf:$rootProject.gmsVersion"
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     //exoplayer
@@ -118,9 +111,9 @@ dependencies {
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.yalantis:ucrop:1.5.0'
     compile 'de.psdev.licensesdialog:licensesdialog:1.8.0'
-    compile('com.crashlytics.sdk.android:crashlytics:2.9.3@aar') {
+    /*compile('com.crashlytics.sdk.android:crashlytics:2.9.3@aar') {
         transitive = true;
-    }
+    }*/
     compile 'com.daksh:loglr:1.2.1'
     compile 'com.koushikdutta.ion:ion:2.1.7'
     compile 'org.jetbrains:annotations-java5:15.0'
@@ -159,7 +152,7 @@ dependencies {
     compile "com.github.nextcloud:android-library:$rootProject.nextCloudVersion"
 
     //leak canary
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
 
     //flickr
@@ -193,7 +186,6 @@ dependencies {
     compile 'id.zelory:compressor:2.1.0'
 
 }
-apply plugin: 'com.google.gms.google-services'
 
 buildscript {
     repositories {
