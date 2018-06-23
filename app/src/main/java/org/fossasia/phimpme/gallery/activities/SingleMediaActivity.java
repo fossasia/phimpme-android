@@ -295,6 +295,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         if(upoadhis){
             bottomMenu.findItem(R.id.action_favourites).setVisible(false);
             bottomMenu.findItem(R.id.action_edit).setVisible(false);
+            bottomMenu.findItem(R.id.action_compress).setVisible(false);
         }
 
         if(!allPhotoMode && favphotomode)
