@@ -35,6 +35,10 @@
         app:showAsAction="never"
         android:title="@string/print"/>
     <item
+        android:id="@+id/rename_photo"
+        app:showAsAction="never"
+        android:title="@string/Rename"/>
+    <item
         android:id="@+id/action_description"
         android:title="Description"
         app:showAsAction="never" />
