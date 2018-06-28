@@ -7,13 +7,18 @@ import java.io.File;
 import java.util.ArrayList;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,10 +32,8 @@ import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.UploadHistoryRealmModel;
 import org.fossasia.phimpme.gallery.activities.SingleMediaActivity;
 import org.fossasia.phimpme.gallery.data.Media;
+import org.fossasia.phimpme.gallery.util.PreferenceUtil;
 import org.jetbrains.annotations.NotNull;
-
-import java.io.File;
-import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,7 +41,7 @@ import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
-import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
+import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
 
 /**
  * Created by pa1pal on 17/08/17.
@@ -51,6 +54,9 @@ public class UploadHistory extends ThemedActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+
+    @BindView(R.id.swipeRefreshLayout_uploadhis)
+    protected SwipeRefreshLayout swipeRefreshLayout;
 
     @BindView(R.id.empty_icon)
     IconicsImageView emptyIcon;
@@ -66,8 +72,10 @@ public class UploadHistory extends ThemedActivity {
 
     Realm realm;
 
-    private RealmQuery<UploadHistoryRealmModel> uploadResults;
+    private ArrayList<UploadHistoryRealmModel> uploadResults;
+    private RealmQuery<UploadHistoryRealmModel> uploadHistoryRealmModelRealmQuery;
     private UploadHistoryAdapter uploadHistoryAdapter;
+    private PreferenceUtil preferenceUtil;
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override public void onClick(View view) {
@@ -77,7 +85,7 @@ public class UploadHistory extends ThemedActivity {
             Intent intent = new Intent("com.android.camera.action.REVIEW", Uri.fromFile(new File(uploadHistoryRealmModel.getPathname())));
             intent.putExtra("path", uploadHistoryRealmModel.getPathname());
             intent.putExtra("position", checkpos(uploadHistoryRealmModel.getPathname()));
-            intent.putExtra("size", uploadResults.findAll().size());
+            intent.putExtra("size", uploadResults.size());
             intent.putExtra("uploadhistory", true);
             ArrayList<Media> u = loaduploaddata();
             intent.putParcelableArrayListExtra("datalist", u);
@@ -91,17 +99,23 @@ public class UploadHistory extends ThemedActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.upload_history_activity);
         ButterKnife.bind(this);
+        preferenceUtil = PreferenceUtil.getInstance(getContext());
         uploadHistoryAdapter = new UploadHistoryAdapter(getPrimaryColor());
         uploadHistoryAdapter.setOnClickListener(onClickListener);
         realm = Realm.getDefaultInstance();
         removedeletedphotos();
-        uploadResults = realm.where(UploadHistoryRealmModel.class);
+        uploadHistoryRealmModelRealmQuery = realm.where(UploadHistoryRealmModel.class);
         GridLayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), columnsCount());
         layoutManager.setReverseLayout(false);
         uploadHistoryRecyclerView.setLayoutManager(layoutManager);
         uploadHistoryRecyclerView.setAdapter(uploadHistoryAdapter);
-        uploadHistoryAdapter.setResults(uploadResults);
-
+        String choiceofdisply = preferenceUtil.getString(getString(R.string.upload_view_choice), getString(R.string
+                .last_first));
+        if(choiceofdisply.equals(getString(R.string.last_first))){
+            uploadHistoryAdapter.setResults(loadData(getString(R.string.last_first)));
+        }else if(choiceofdisply.equals(getString(R.string.latest_first))){
+            uploadHistoryAdapter.setResults(loadData(getString(R.string.latest_first)));
+        }
         setUpUI();
         //uploadHistoryRecyclerView.addOnItemTouchListener(new RecyclerItemClickListner(this, this));
     }
@@ -130,16 +144,33 @@ public class UploadHistory extends ThemedActivity {
 
     private ArrayList<Media> loaduploaddata(){
         ArrayList<Media> data = new ArrayList<>();
-        for(int i = 0; i < uploadResults.findAll().size(); i++){
-            data.add(new Media(new File(uploadResults.findAll().get(i).getPathname())));
+        for(int i = 0; i < uploadResults.size(); i++){
+            data.add(new Media(new File(uploadResults.get(i).getPathname())));
         }
         return data;
     }
 
+    private ArrayList<UploadHistoryRealmModel> loadData(String displaychoice){
+       // ArrayList<UploadHistoryRealmModel> ki = new ArrayList<>();
+       // String s = preferenceUtil.getString("upload_view_choice", "Last first");
+        uploadResults = new ArrayList<>();
+        if(displaychoice.equals(getString(R.string.last_first))){
+            for(int i = 0; i < uploadHistoryRealmModelRealmQuery.findAll().size(); i++){
+                uploadResults.add(uploadHistoryRealmModelRealmQuery.findAll().get(i));
+            }
+        }else if(displaychoice.equals(getString(R.string.latest_first))){
+            for(int i = 0; i < uploadHistoryRealmModelRealmQuery.findAll().size(); i++){
+                uploadResults.add(uploadHistoryRealmModelRealmQuery.findAll().get(uploadHistoryRealmModelRealmQuery
+                        .findAll().size() - i - 1));
+            }
+        }
+        return uploadResults;
+    }
+
     private int checkpos(String path){
         int pos = 0;
-        for(int i = 0; i < uploadResults.findAll().size(); i++){
-            if(path.equals(uploadResults.findAll().get(i).getPathname())){
+        for(int i = 0; i < uploadResults.size(); i++){
+            if(path.equals(uploadResults.get(i).getPathname())){
                 pos = i;
                 break;
             }
@@ -158,18 +189,72 @@ public class UploadHistory extends ThemedActivity {
         emptyText.setTextColor(getAccentColor());
         parentView.setBackgroundColor(getBackgroundColor());
         setupToolbar();
+        swipeRefreshLayout.setColorSchemeColors(getAccentColor());
+        swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getBackgroundColor());
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override public void onRefresh() {
+                String choiceofdisply = preferenceUtil.getString(getString(R.string.upload_view_choice), getString(R.string
+                        .last_first));
+                if(choiceofdisply.equals(getString(R.string.last_first))){
+                    uploadHistoryAdapter.setResults(loadData(getString(R.string.last_first)));
+                }else if(choiceofdisply.equals(getString(R.string.latest_first))){
+                    uploadHistoryAdapter.setResults(loadData(getString(R.string.latest_first)));
+                }
+                if(swipeRefreshLayout.isRefreshing()){
+                    swipeRefreshLayout.setRefreshing(false
+                    );
+                }
+            }
+        });
     }
 
-    public void setUpAdapter(@NotNull RealmQuery<UploadHistoryRealmModel> accountDetails) {
+    public void setUpAdapter(@NotNull ArrayList<UploadHistoryRealmModel> accountDetails) {
         this.uploadResults = accountDetails;
         uploadHistoryAdapter.setResults(uploadResults);
+    }
+
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_uploadhistoryactivity, menu);
+        return true;
+    }
+
+    @Override public boolean onPrepareOptionsMenu(Menu menu) {
+
+       if(preferenceUtil.getString(getString(R.string.upload_view_choice), getString(R.string.last_first)).equals
+               (getString(R.string.last_first))){
+           menu.findItem(R.id.upload_history_sort).setTitle(getString(R.string.latest_first));
+       }else if(preferenceUtil.getString(getString(R.string.upload_view_choice), getString(R.string.last_first)).equals
+               (getString(R.string.latest_first))){
+           menu.findItem(R.id.upload_history_sort).setTitle(getString(R.string.last_first));
+       }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+
+            case R.id.upload_history_sort:
+                if(item.getTitle().equals(getString(R.string.latest_first))){
+                    item.setTitle(getString(R.string.last_first));
+                    new SortTask().execute(getString(R.string.latest_first));
+                }else{
+                    item.setTitle(getString(R.string.latest_first));
+                    new SortTask().execute(getString(R.string.last_first));
+                }
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         setUpUI();
-        if (uploadResults.findAll().size() == 0) {
+        if (uploadResults.size() == 0) {
             emptyLayout.setVisibility(View.VISIBLE);
             uploadHistoryRecyclerView.setVisibility(View.GONE);
         }
@@ -189,5 +274,42 @@ public class UploadHistory extends ThemedActivity {
                 onBackPressed();
             }
         });
+    }
+
+    private class SortTask extends AsyncTask<String, Void, Void> {
+        Realm realm;
+
+        @Override protected void onPreExecute() {
+            swipeRefreshLayout.setRefreshing(true);
+            super.onPreExecute();
+        }
+
+        @Override protected Void doInBackground(String... strings) {
+            realm = Realm.getDefaultInstance();
+            if(strings[0].equals(getString(R.string.latest_first))){
+                SharedPreferences.Editor s = preferenceUtil.getEditor();
+                s.putString(getString(R.string.upload_view_choice), getString(R.string.latest_first));
+                s.commit();
+                runOnUiThread(new Runnable() {
+                    @Override public void run() {
+                        uploadHistoryAdapter.setResults(loadData(getString(R.string.latest_first)));
+                    }
+                });
+            }else if(strings[0].equals(getString(R.string.last_first))){
+                SharedPreferences.Editor s = preferenceUtil.getEditor();
+                s.putString(getString(R.string.upload_view_choice), getString(R.string.last_first));
+                s.commit();
+                runOnUiThread(new Runnable() {
+                    @Override public void run() {
+                        uploadHistoryAdapter.setResults(loadData(getString(R.string.last_first)));
+                    }
+                });
+            }
+            return null;
+        }
+
+        @Override protected void onPostExecute(Void aVoid) {
+            swipeRefreshLayout.setRefreshing(false);
+        }
     }
 }

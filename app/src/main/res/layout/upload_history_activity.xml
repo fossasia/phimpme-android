@@ -9,42 +9,47 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/upload_history_recycler_view"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout_uploadhis"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
-        android:visibility="visible" />
+        android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:id="@+id/emptyLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"
-        android:layout_below="@+id/toolbar">
-
-        <com.mikepenz.iconics.view.IconicsImageView
-            android:id="@+id/empty_icon"
-            android:layout_width="@dimen/dimens_100dp"
-            android:layout_height="@dimen/dimens_100dp"
-            android:layout_centerInParent="true"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="@dimen/big_spacing"
-            android:layout_marginRight="@dimen/big_spacing"
-            app:iiv_icon="faw-frown-o" />
-
-        <TextView
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/upload_history_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/empty_icon"
-            android:layout_marginTop="@dimen/share_button_margin"
-            android:gravity="center"
-            android:id="@+id/empty_text"
-            android:text="@string/empty_upload_msg"
-            android:textSize="@dimen/sub_big_text" />
+            android:layout_height="match_parent"
+            android:visibility="visible" />
 
+        <RelativeLayout
+            android:id="@+id/emptyLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:layout_below="@+id/toolbar">
 
-    </RelativeLayout>
+            <com.mikepenz.iconics.view.IconicsImageView
+                android:id="@+id/empty_icon"
+                android:layout_width="@dimen/dimens_100dp"
+                android:layout_height="@dimen/dimens_100dp"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/big_spacing"
+                android:layout_marginRight="@dimen/big_spacing"
+                app:iiv_icon="faw-frown-o" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/empty_icon"
+                android:layout_marginTop="@dimen/share_button_margin"
+                android:gravity="center"
+                android:id="@+id/empty_text"
+                android:text="@string/empty_upload_msg"
+                android:textSize="@dimen/sub_big_text" />
+
+        </RelativeLayout>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </RelativeLayout>
