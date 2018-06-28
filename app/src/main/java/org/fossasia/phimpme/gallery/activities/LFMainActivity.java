@@ -2535,7 +2535,8 @@ public class LFMainActivity extends SharedMediaActivity {
                                 mediaAdapter.swapDataSet(getAlbum().getMedia(), false);
                                 finishEditMode();
                                 invalidateOptionsMenu();
-                                checkdescription(path, dr);
+                                checkForFavourites(path, dr);
+                                checkDescription(path, dr);
                                 if (numberOfImagesMoved > 1)
                                     SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.photos_moved_successfully), navigationView.getHeight());
                                 else
@@ -2770,13 +2771,13 @@ public class LFMainActivity extends SharedMediaActivity {
         }
     }
 
-    private void checkdescription(String newpath, ArrayList<Media> selecteditems){
+    private void checkDescription(String newpath, ArrayList<Media> selecteditems){
         for(int i = 0; i < selecteditems.size(); i++){
-            getdescriptionpaths(selecteditems.get(i).getPath(), newpath);
+            getDescriptionPaths(selecteditems.get(i).getPath(), newpath);
         }
     }
 
-    private void performrealmaction(final ImageDescModel descModel, String newpath){
+    private void performRealmAction(final ImageDescModel descModel, String newpath){
         realm = Realm.getDefaultInstance();
         int index = descModel.getId().lastIndexOf("/");
         String name = descModel.getId().substring(index + 1);
@@ -2794,15 +2795,55 @@ public class LFMainActivity extends SharedMediaActivity {
         });
     }
 
-    private void getdescriptionpaths(String patjs, String newpth){
+    private void getDescriptionPaths(String patjs, String newpth){
         realm = Realm.getDefaultInstance();
         RealmQuery<ImageDescModel> realmQuery = realm.where(ImageDescModel.class);
         for(int i = 0; i < realmQuery.count(); i++) {
             if (realmQuery.findAll().get(i).getId().equals(patjs)) {
-                performrealmaction(realmQuery.findAll().get(i), newpth);
+                performRealmAction(realmQuery.findAll().get(i), newpth);
                 break;
             }
         }
+    }
+
+    private void checkForFavourites(String path, ArrayList<Media> selectedphotos){
+        for(Media m: selectedphotos){
+            checkIfFav(m.getPath(), path);
+        }
+    }
+
+    private void checkIfFav(String currentpath, String newpath){
+        realm = Realm.getDefaultInstance();
+        RealmQuery<FavouriteImagesModel> favouriteImagesModelRealmQuery = realm.where(FavouriteImagesModel.class);
+        for(int i = 0; i < favouriteImagesModelRealmQuery.count(); i++){
+            if(favouriteImagesModelRealmQuery.findAll().get(i).getPath().equals(currentpath)){
+                performAddToFavOp(favouriteImagesModelRealmQuery.findAll().get(i), newpath);
+                break;
+            }
+        }
+    }
+
+    private void performAddToFavOp(final FavouriteImagesModel favouriteImagesModel, String newpath){
+        realm = Realm.getDefaultInstance();
+        int index = favouriteImagesModel.getPath().lastIndexOf("/");
+        String name = favouriteImagesModel.getPath().substring(index + 1);
+        String newpathy = newpath + "/" + name;
+        realm.beginTransaction();
+        FavouriteImagesModel favouriteImagesModel1 = realm.createObject(FavouriteImagesModel.class, newpathy);
+        ImageDescModel q = realm.where(ImageDescModel.class).equalTo("path", favouriteImagesModel.getPath()).findFirst();
+        if (q != null) {
+            favouriteImagesModel1.setDescription(q.getTitle());
+        } else {
+            favouriteImagesModel1.setDescription(" ");
+        }
+        realm.commitTransaction();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override public void execute(Realm realm) {
+                RealmResults<FavouriteImagesModel> result = realm.where(FavouriteImagesModel.class).equalTo
+                        ("path", favouriteImagesModel.getPath()).findAll();
+                result.deleteAllFromRealm();
+            }
+        });
     }
 
     private static class SortModeSet extends AsyncTask<SortingMode, Void, Void> {
