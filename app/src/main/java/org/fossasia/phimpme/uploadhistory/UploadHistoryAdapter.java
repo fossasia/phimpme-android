@@ -23,6 +23,7 @@ import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -41,7 +42,7 @@ import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
 public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdapter.ViewHolder> {
 
     private Realm realm = Realm.getDefaultInstance();
-    private RealmQuery<UploadHistoryRealmModel> realmResult = realm.where(UploadHistoryRealmModel.class);
+    private ArrayList<UploadHistoryRealmModel> realmResult = null;
     private int color;
     private View.OnClickListener onClickListener;
     public String imagePath;
@@ -64,9 +65,8 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Integer id;
-        realmResult = realm.where(UploadHistoryRealmModel.class);
-        if (realmResult.findAll().size() != 0) {
-            UploadHistoryRealmModel uploadHistoryRealmModel = realmResult.findAll().get(position);
+        if (realmResult.size() != 0) {
+            UploadHistoryRealmModel uploadHistoryRealmModel = realmResult.get(position);
             String date = uploadHistoryRealmModel.getDatetime();
             String name=uploadHistoryRealmModel.getName();
             try {
@@ -104,10 +104,10 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
 
     @Override
     public int getItemCount() {
-        return (int) realmResult.count();
+        return realmResult.size();
     }
 
-    public void setResults(RealmQuery<UploadHistoryRealmModel> results) {
+    public void setResults(ArrayList<UploadHistoryRealmModel> results) {
         realmResult = results;
         notifyDataSetChanged();
     }
