@@ -758,9 +758,13 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             });
             deletefromuploadhistorylist(uploadhistory.get(current_image_pos).getPath());
             size_all = uploadhistory.size();
-            adapter.notifyDataSetChanged();
-            getSupportActionBar().setTitle((c + 1) + " " + getString(R.string.of) + " " + size_all);
-            SnackBarHandler.show(parentView, getApplicationContext().getString(R.string.photo_deleted_from_fav_msg));
+            if(size_all > 0){
+                adapter.notifyDataSetChanged();
+                getSupportActionBar().setTitle((c + 1) + " " + getString(R.string.of) + " " + size_all);
+                SnackBarHandler.show(parentView, getApplicationContext().getString(R.string.photo_deleted_from_fav_msg));
+            }else{
+                onBackPressed();
+            }
         }
     }
 

@@ -361,6 +361,14 @@ public class UploadHistory extends ThemedActivity {
     public void onResume() {
         super.onResume();
         setUpUI();
+        uploadHistoryRealmModelRealmQuery = realm.where(UploadHistoryRealmModel.class);
+        String choiceofdisply = preferenceUtil.getString(getString(R.string.upload_view_choice), getString(R.string
+                .last_first));
+        if(choiceofdisply.equals(getString(R.string.last_first))){
+            uploadHistoryAdapter.setResults(loadData(getString(R.string.last_first)));
+        }else if(choiceofdisply.equals(getString(R.string.latest_first))){
+            uploadHistoryAdapter.setResults(loadData(getString(R.string.latest_first)));
+        }
         if (uploadHistoryRealmModelRealmQuery.count() == 0) {
             emptyLayout.setVisibility(View.VISIBLE);
             uploadHistoryRecyclerView.setVisibility(View.GONE);
