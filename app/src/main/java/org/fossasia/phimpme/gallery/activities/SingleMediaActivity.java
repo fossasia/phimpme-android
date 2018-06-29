@@ -297,8 +297,10 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             bottomMenu.findItem(R.id.action_edit).setVisible(false);
         }
 
-        if(!allPhotoMode && favphotomode)
-            bottomBar.getMenu().getItem(4).setVisible(false);
+        if(!allPhotoMode && favphotomode){
+            bottomBar.getMenu().getItem(5).setVisible(false);
+        }
+
         for (int i = 0; i < bottomMenu.size(); i++) {
             bottomMenu.getItem(i).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
