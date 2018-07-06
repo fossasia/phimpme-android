@@ -534,6 +534,7 @@
     <string name="phimpme_camera">Phimp.me Camera</string>
     <string name="exclude">Exclude</string>
     <string name="cancel">Cancel</string>
+    <string name="set">Set</string>
     <string name="delete">Delete</string>
     <string name="hide">Hide</string>
     <string name="unhide">Unhide</string>
@@ -544,6 +545,10 @@
     <string name="zip_action">Zipping the folder.....</string>
     <string name="zip_location">Zip saved to location:</string>
     <string name="update_action">UPDATE</string>
+    <string name="by_dimensions">By dimension</string>
+    <string name="by_size">By Size</string>
+    <string name="compress_by_dimension">Compress by dimension</string>
+    <string name="compress_by_size">Compress by size</string>
     <string name="description_hint">Write something!</string>
     <string name="save_action">Save</string>
     <string name="restore_photo">Restore photo</string>
