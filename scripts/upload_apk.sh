@@ -5,8 +5,8 @@ if [ "$COMPONENT" == "ASSEMBLE_RELEASE" ]; then
   mkdir $HOME/buildApk/
 
   # Copy generated apk from build folder and README.md to the folder just created
-  cp -R app/build/outputs/apk/app-debug.apk $HOME/buildApk/
-  cp -R README.md $HOME/buildApk/
+  \cp -r ../app/build/outputs/apk/app-debug.apk $HOME/buildApk/
+  \cp -r ../README.md $HOME/buildApk/
 
   # Setup git
   cd $HOME
