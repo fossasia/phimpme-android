@@ -2,13 +2,9 @@
 
 if [ "$COMPONENT" == "ASSEMBLE_RELEASE" ]; then
   
-  set -e
 
   git config --global user.name "Travis CI"
   git config --global user.email "noreply@travis.com"
-
-  export DEPLOY_BRANCH=${DEPLOY_BRANCH:-development}
-  export PUBLISH_BRANCH=${PUBLISH_BRANCH:-master}
 
 
   git clone --quiet --branch=apk https://fossasia:$GITHUB_API_KEY@github.com/fossasia/phimpme-android apk > /dev/null
