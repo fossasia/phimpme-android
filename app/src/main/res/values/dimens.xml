@@ -103,4 +103,9 @@
 
     <dimen name="dimens_100dp">200dp</dimen>
 
+    <!-- Icon sizes-->
+    <dimen name="size_50dp">50dp</dimen>
+    <dimen name="size_100dp">100dp</dimen>
+    <dimen name="size_200dp">200dp</dimen>
+
 </resources>
