@@ -21,6 +21,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -69,6 +70,7 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.bumptech.glide.gifencoder.AnimatedGifEncoder;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 
@@ -106,6 +108,7 @@ import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -1741,6 +1744,7 @@ public class LFMainActivity extends SharedMediaActivity {
             menu.setGroupVisible(R.id.photos_option_men, false);
             menu.findItem(R.id.all_photos).setVisible(!editMode && !hidden);
             menu.findItem(R.id.search_action).setVisible(!editMode);
+            menu.findItem(R.id.create_gif).setVisible(false);
             menu.findItem(R.id.select_all).setVisible(getAlbums().getSelectedCount() != albumsAdapter.getItemCount() ? true : false);
             menu.findItem(R.id.settings).setVisible(false);
 
@@ -1775,6 +1779,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 menu.setGroupVisible(R.id.photos_option_men, editMode);
                 menu.setGroupVisible(R.id.album_options_menu, !editMode);
                 menu.findItem(R.id.settings).setVisible(!editMode);
+                menu.findItem(R.id.create_gif).setVisible(false);
                 menu.findItem(R.id.album_details).setVisible(false);
                 menu.findItem(R.id.all_photos).setVisible(false);
             }
@@ -1875,6 +1880,11 @@ public class LFMainActivity extends SharedMediaActivity {
                 }
                 invalidateOptionsMenu();
                 return true;
+
+            case R.id.create_gif:
+                new CreateGIFTask().execute();
+                return true;
+
 
             case R.id.set_pin_album:
                 getAlbums().getSelectedAlbum(0).settings.togglePin(getApplicationContext());
@@ -3035,6 +3045,73 @@ public class LFMainActivity extends SharedMediaActivity {
                 displayAlbums();
             }
         }
+    }
+
+    private class CreateGIFTask extends AsyncTask<Void, Void, Void>{
+        private ArrayList<Bitmap> bitmaps = new ArrayList<>();
+
+        @Override protected void onPreExecute() {
+            super.onPreExecute();
+            swipeRefreshLayout.setRefreshing(true);
+        }
+
+        @Override protected Void doInBackground(Void... voids) {
+
+            if(!albumsMode && !all_photos && !fav_photos){
+                for(Media m: getAlbum().getSelectedMedia()){
+                    bitmaps.add(getBitmap(m.getPath()));
+                }
+            }else if(!albumsMode && all_photos && !fav_photos){
+                for(Media m: selectedMedias){
+                    bitmaps.add(getBitmap(m.getPath()));
+                }
+            }
+            byte[] bytes = createGIFFromImages(bitmaps);
+            File file = new File(Environment.getExternalStorageDirectory() + "/" + "Phimpme_gifs");
+            if(file.exists() && file.isDirectory()){
+                FileOutputStream outStream = null;
+                try{
+                    outStream = new FileOutputStream(file.getPath() + "/" + "GIF.gif");
+                    outStream.write(bytes);
+                    outStream.close();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }else {
+                if (file.mkdir()) {
+                    FileOutputStream outStream = null;
+                    try {
+                        outStream = new FileOutputStream(file.getPath() + "/" + "GIF.gif");
+                        outStream.write(bytes);
+                        outStream.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return null;
+        }
+
+        @Override protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if(!albumsMode && !all_photos && !fav_photos){
+                getAlbum().clearSelectedPhotos();
+            }else if(!albumsMode && all_photos && !fav_photos){
+                clearSelectedPhotos();
+            }
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    }
+
+    private byte[] createGIFFromImages(ArrayList<Bitmap> bitmaps){
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        AnimatedGifEncoder encoder = new AnimatedGifEncoder();
+        encoder.start(bos);
+        for (Bitmap bitmap : bitmaps) {
+            encoder.addFrame(bitmap);
+        }
+        encoder.finish();
+        return bos.toByteArray();
     }
 
     private class ZipAlbumTask extends AsyncTask<Void, Integer, Void> {
