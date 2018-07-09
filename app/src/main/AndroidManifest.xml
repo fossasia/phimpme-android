@@ -33,8 +33,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="demotwitterlogin"
-                    android:scheme="x-demo-twitter" />
+                    android:host="http"
+                    android:scheme="phimp.me" />
             </intent-filter>
         </activity>
 
