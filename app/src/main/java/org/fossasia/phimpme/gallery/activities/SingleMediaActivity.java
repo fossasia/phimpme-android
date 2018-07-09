@@ -373,7 +373,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     getAlbum().setCurrentPhotoIndex(getAlbum().getCurrentMediaIndex());
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
                     invalidateOptionsMenu();
-                    if(!favsearch(getAlbum().getMedia(position).getPath())){
+                    if(!favsearch(listAll.get(current_image_pos).getPath())){
                         bottomMenu.findItem(R.id.action_favourites).getIcon().clearColorFilter();
                     }else{
                         bottomMenu.findItem(R.id.action_favourites).getIcon().setColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN);
@@ -420,9 +420,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             Configuration configuration = new Configuration();
             configuration.orientation = Configuration.ORIENTATION_LANDSCAPE;
             onConfigurationChanged(configuration);
-
         }
-
     }
 
     private void setupUI() {
@@ -1027,8 +1025,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     else
                         compressIntent.putExtra(EXTRA_OUTPUT, listAll.get(current_image_pos).getPath());
                     startActivity(compressIntent);
-
-
+                    
                     //to send the resolution of image
                     handler.removeCallbacks(slideShowRunnable);
                     if(!allPhotoMode && !favphotomode){
