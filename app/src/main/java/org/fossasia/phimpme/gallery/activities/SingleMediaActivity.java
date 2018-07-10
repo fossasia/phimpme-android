@@ -297,8 +297,10 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             bottomMenu.findItem(R.id.action_edit).setVisible(false);
         }
 
-        if(!allPhotoMode && favphotomode)
-            bottomBar.getMenu().getItem(4).setVisible(false);
+        if(!allPhotoMode && favphotomode){
+            bottomBar.getMenu().getItem(5).setVisible(false);
+        }
+
         for (int i = 0; i < bottomMenu.size(); i++) {
             bottomMenu.getItem(i).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
@@ -582,16 +584,19 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
         if(allPhotoMode || favphotomode){
             menu.findItem(R.id.action_cover).setVisible(false);
+            menu.findItem(R.id.action_move).setVisible(false);
         }
         if (!allPhotoMode && !favphotomode && !upoadhis){
             menu.setGroupVisible(R.id.only_photos_options, true);
         }
         else if(!allPhotoMode && favphotomode && !upoadhis){
             menu.findItem(R.id.action_copy).setVisible(false);
+            menu.findItem(R.id.rename_photo).setVisible(false);
             menu.findItem(R.id.action_move).setVisible(false);
         } else if(!allPhotoMode && !favphotomode && upoadhis){
             menu.findItem(R.id.action_copy).setVisible(false);
             menu.findItem(R.id.action_move).setVisible(false);
+            menu.findItem(R.id.rename_photo).setVisible(false);
             menu.findItem(R.id.slide_show).setVisible(false);
             menu.findItem(R.id.action_use_as).setVisible(false);
             menu.findItem(R.id.action_cover).setVisible(false);
@@ -753,9 +758,13 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             });
             deletefromuploadhistorylist(uploadhistory.get(current_image_pos).getPath());
             size_all = uploadhistory.size();
-            adapter.notifyDataSetChanged();
-            getSupportActionBar().setTitle((c + 1) + " " + getString(R.string.of) + " " + size_all);
-            SnackBarHandler.show(parentView, getApplicationContext().getString(R.string.photo_deleted_from_fav_msg));
+            if(size_all > 0){
+                adapter.notifyDataSetChanged();
+                getSupportActionBar().setTitle((c + 1) + " " + getString(R.string.of) + " " + size_all);
+                SnackBarHandler.show(parentView, getApplicationContext().getString(R.string.photo_deleted_from_fav_msg));
+            }else{
+                onBackPressed();
+            }
         }
     }
 
@@ -953,7 +962,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
                 else
                     uri = Uri.fromFile(new File(listAll.get(current_image_pos).getPath()));
-                String extension = uri.getPath();
+                final String extension = uri.getPath();
                 if (extension != null && !(extension.substring(extension.lastIndexOf(".")).equals(".gif"))) {
                     Intent editIntent = new Intent(SingleMediaActivity.this, EditImageActivity.class);
                     editIntent.putExtra("extra_input", uri.getPath());
@@ -980,6 +989,109 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 photoPrinter.setScaleMode(PrintHelper.SCALE_MODE_FIT);
                 Bitmap bitmap = BitmapFactory.decodeFile(getAlbum().getCurrentMedia().getPath(), new BitmapFactory.Options());
                 photoPrinter.printBitmap(getString(R.string.print), bitmap);
+                return true;
+
+            case R.id.rename_photo:
+                String currentpath = null;
+                if(!allPhotoMode){
+                    currentpath = getAlbum().getCurrentMedia().getPath();
+                }else {
+                    currentpath = listAll.get(current_image_pos).getPath();
+                }
+                final File file = new File(currentpath);
+                int indexofdot = file.getPath().lastIndexOf(".");
+                int indert = file.getPath().lastIndexOf("/");
+                String namefile = file.getPath().substring(indert + 1, indexofdot);
+                final String imageextension = file.getPath().substring(indexofdot + 1);
+                AlertDialog.Builder renameDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
+                final EditText editTextNewName = new EditText(getApplicationContext());
+                editTextNewName.setText(namefile);
+                editTextNewName.setSelectAllOnFocus(true);
+                editTextNewName.setHint(R.string.description_hint);
+                editTextNewName.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.grey));
+                editTextNewName.setHighlightColor(ContextCompat.getColor(getApplicationContext(), R.color.cardview_shadow_start_color));
+                editTextNewName.selectAll();
+                editTextNewName.setSingleLine(false);
+                AlertDialogsHelper.getInsertTextDialog(SingleMediaActivity.this, renameDialogBuilder,
+                        editTextNewName, R.string.rename_album, null);
+                renameDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+                renameDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //This should br empty it will be overwrite later
+                        //to avoid dismiss of the dialog
+                    }
+                });
+                final AlertDialog renameDialog = renameDialogBuilder.create();
+                renameDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_IS_FORWARD_NAVIGATION);
+                editTextNewName.setSelection(editTextNewName.getText().toString().length());
+                renameDialog.show();
+                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface
+                        .BUTTON_NEGATIVE}, getAccentColor(), renameDialog);
+                renameDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE}, ContextCompat
+                        .getColor(SingleMediaActivity.this, R.color.grey), renameDialog);
+                editTextNewName.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        //empty method body
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        //empty method body
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        if (TextUtils.isEmpty(editable)) {
+                            // Disable ok button
+                            renameDialog.getButton(
+                                    AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+                            AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE},
+                                    ContextCompat.getColor(SingleMediaActivity.this, R.color.grey), renameDialog);
+                        } else {
+                            // Something into edit text. Enable the button.
+                            renameDialog.getButton(
+                                    AlertDialog.BUTTON_POSITIVE).setEnabled(true);
+                            AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE}, getAccentColor(),
+                                    renameDialog);
+                        }
+                    }
+                });
+                renameDialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View dialog) {
+                        if (editTextNewName.length() != 0) {
+                            int index = file.getPath().lastIndexOf("/");
+                            String path = file.getPath().substring(0, index);
+                            File newname = new File(path + "/" + editTextNewName.getText().toString() + "." +
+                                    imageextension);
+                            if(file.renameTo(newname)){
+                                ContentResolver resolver = getApplicationContext().getContentResolver();
+                                resolver.delete(
+                                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, MediaStore.Images.Media.DATA +
+                                                "=?", new String[] { file.getAbsolutePath() });
+                                Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                                intent.setData(Uri.fromFile(newname));
+                                getApplicationContext().sendBroadcast(intent);
+                            }
+                            if(!allPhotoMode){
+                                int a = getAlbum().getCurrentMediaIndex();
+                                getAlbum().getMedia(a).setPath(newname.getPath());
+                            }else {
+                                listAll.get(current_image_pos).setPath(newname.getPath());
+                            }
+                            renameDialog.dismiss();
+                            SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.rename_succes), navigationView
+                                    .getHeight());
+                        } else {
+                            SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.insert_something),
+                                    navigationView.getHeight());
+                            editTextNewName.requestFocus();
+                        }
+                    }
+                });
                 return true;
 
             case R.id.action_favourites:

@@ -9,12 +9,19 @@
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/upload_history_recycler_view"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout_uploadhis"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
-        android:visibility="visible" />
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/upload_history_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <RelativeLayout
         android:id="@+id/emptyLayout"
@@ -25,8 +32,8 @@
 
         <com.mikepenz.iconics.view.IconicsImageView
             android:id="@+id/empty_icon"
-            android:layout_width="@dimen/dimens_100dp"
-            android:layout_height="@dimen/dimens_100dp"
+            android:layout_width="@dimen/size_100dp"
+            android:layout_height="@dimen/size_100dp"
             android:layout_centerInParent="true"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="@dimen/big_spacing"
@@ -43,8 +50,6 @@
             android:text="@string/empty_upload_msg"
             android:textSize="@dimen/sub_big_text" />
 
-
     </RelativeLayout>
-
 
 </RelativeLayout>
