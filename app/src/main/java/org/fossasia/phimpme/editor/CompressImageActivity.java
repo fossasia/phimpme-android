@@ -1,8 +1,12 @@
 package org.fossasia.phimpme.editor;
 
+import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
+
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +24,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.adapter.ListCompressAdapter;
+import org.fossasia.phimpme.editor.utils.FileUtil;
 import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouch;
 import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouchBase;
 import org.fossasia.phimpme.gallery.activities.SingleMediaActivity;
@@ -32,9 +37,13 @@ import java.util.ArrayList;
 import id.zelory.compressor.Compressor;
 
 public class CompressImageActivity extends AppCompatActivity {
+
     public String saveFilePath;
     public static final String EXTRA_OUTPUT = "extra_output";
     public int percentagecompress=0;
+    public final int[] cwidth = new int[1];
+    public final int[] cheight = new int[1];
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,6 +123,27 @@ public class CompressImageActivity extends AppCompatActivity {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                new SaveCompressedImage().execute("Size");
+                finish();
+            }
+        });
+        AlertDialog dialog = alert.create();
+        dialog.show();
+    }
+
+    private class SaveCompressedImage extends AsyncTask<String, Void, Void>{
+       private ProgressDialog dialog;
+
+        @Override protected void onPreExecute() {
+            super.onPreExecute();
+            dialog = new ProgressDialog(context);
+            dialog.setCancelable(false);
+            dialog.setMessage("Saving");
+            dialog.show();
+        }
+
+        @Override protected Void doInBackground(String... strings) {
+            if(strings[0].equals("Size")){
                 try {
                     new Compressor(getApplicationContext())
                             .setQuality(percentagecompress)
@@ -122,12 +152,28 @@ public class CompressImageActivity extends AppCompatActivity {
                             .compressToFile(new File(saveFilePath));
                 } catch (IOException e) {
                     e.printStackTrace();}
+            }else if(strings[0].equals("Resolution")){
+                try {
+                    new Compressor(getApplicationContext())
+                            .setMaxWidth(cwidth[0])
+                            .setMaxHeight(cheight[0])
+                            .setCompressFormat(Bitmap.CompressFormat.JPEG)
+                            .setDestinationDirectoryPath( FileUtilsCompress.createFolders().getPath())
+                            .compressToFile(new File(saveFilePath));
 
-                finish();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-        });
-        AlertDialog dialog = alert.create();
-        dialog.show();
+            return null;
+        }
+
+        @Override protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            String name = saveFilePath.substring(saveFilePath.lastIndexOf("/") + 1);
+            FileUtil.albumUpdate(context, FileUtilsCompress.createFolders().getPath() + "/" + name);
+            dialog.dismiss();
+        }
     }
 
     //compress  image by dimensions
@@ -152,8 +198,6 @@ public class CompressImageActivity extends AppCompatActivity {
             height=height/2;
         }
 
-        final int[] cwidth = new int[1];
-        final int[] cheight = new int[1];
         lviewAdapter = new ListCompressAdapter(this, compress_option);
         listView.setAdapter(lviewAdapter);
         final int finalWidth = awidth;
@@ -168,18 +212,7 @@ public class CompressImageActivity extends AppCompatActivity {
                     cwidth[0] = finalWidth /(position*2);
                     cheight[0] = finalHeight /(position*2);}
                 view.setBackgroundColor(R.color.md_light_blue_A400);
-
-                try {
-                    new Compressor(getApplicationContext())
-                            .setMaxWidth(cwidth[0])
-                            .setMaxHeight(cheight[0])
-                            .setCompressFormat(Bitmap.CompressFormat.JPEG)
-                            .setDestinationDirectoryPath( FileUtilsCompress.createFolders().getPath())
-                            .compressToFile(new File(saveFilePath));
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                new SaveCompressedImage().execute("Resolution");
                 finish();
             }
         });
