@@ -80,7 +80,7 @@ script:
 after_success:
   - bash <(curl -s https://codecov.io/bash)
   - bash scripts/prep-key.sh
-  - 'if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./scripts/upload_apk.sh; fi'
+  - 'if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./scripts/uploadapk_updated_script.sh; fi'
 
 notifications:
   slack: fossasia:JgzycrBUs0nKnmJhsAxCB4bL
