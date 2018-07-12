@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/view_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+  <include
+      android:id="@+id/toolbar"
+      layout="@layout/toolbar" />
+
+  <android.support.v4.widget.SwipeRefreshLayout
+      android:id="@+id/swipeRefreshLayout_trashbin"
+      android:layout_width="match_parent"
+      android:layout_below="@id/toolbar"
+      android:layout_height="match_parent">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/trashbin_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible" />
+
+  </android.support.v4.widget.SwipeRefreshLayout>
+
+  <RelativeLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:visibility="gone"
+                  android:id="@+id/empty_trash">
+
+    <ImageView android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:id="@+id/image_trash"
+               app:srcCompat="@drawable/ic_delete_sweep_black_24dp"
+               android:layout_centerInParent="true"/>
+
+    <TextView android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:id="@+id/trash_text"
+              android:layout_below="@id/image_trash"
+              android:layout_marginLeft="20dp"
+              android:layout_marginRight="20dp"
+              android:gravity="center"
+              android:textSize="23dp"
+              android:text="No Items present currently"/>
+
+    <TextView android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginLeft="20dp"
+              android:layout_marginRight="20dp"
+              android:layout_marginTop="10dp"
+              android:textSize="20dp"
+              android:layout_below="@id/trash_text"
+              android:text="Only images deleted in the Phimpme Android app are present here."/>
+
+
+
+  </RelativeLayout>
+
+</RelativeLayout>

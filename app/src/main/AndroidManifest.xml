@@ -391,6 +391,8 @@
             android:value="78c6ec5c18fcd10ffbfd28ae038f3311f2763889" />
 
         <activity android:name=".editor.CompressImageActivity"></activity>
+        <activity android:name=".TrashBin.TrashBinActivity">
+        </activity>
     </application>
 
 </manifest>

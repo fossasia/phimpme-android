@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:card_view="http://schemas.android.com/apk/res-auto"
+              xmlns:app="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+  <android.support.v7.widget.CardView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:cardCornerRadius="7dp"
+      app:cardElevation="3dp"
+      app:cardMaxElevation="3dp"
+      android:layout_gravity="center"
+      android:foreground="@drawable/ripple"
+      android:layout_margin="3dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/md_grey_300">
+
+      <ImageView
+          android:id="@+id/trashbin_image"
+          android:layout_width="match_parent"
+          android:layout_height="160dp"
+          android:layout_gravity="center"
+          android:scaleType="centerCrop"/>
+
+      <LinearLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@+id/trashbin_image"
+          android:orientation="vertical">
+
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_marginTop="5dp"
+                      android:layout_marginRight="5dp"
+                      android:layout_marginLeft="5dp"
+                      android:orientation="horizontal"
+                      android:layout_height="wrap_content">
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/date_text"
+              android:textSize="14sp"
+              android:textStyle="bold"/>
+
+          <TextView
+              android:id="@+id/delete_date"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textSize="14sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_marginTop="5dp"
+                      android:layout_marginLeft="5dp"
+                      android:layout_marginRight="5dp"
+                      android:layout_marginBottom="5dp"
+                      android:orientation="horizontal"
+                      android:layout_height="wrap_content">
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:text="@string/time_text"
+              android:textSize="14sp"
+              android:textStyle="bold"/>
+
+          <TextView
+              android:id="@+id/delete_time"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:textSize="14sp"/>
+
+        </LinearLayout>
+
+      </LinearLayout>
+
+      <TextView
+          android:id="@+id/textViewOptions"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentRight="true"
+          android:layout_gravity="center"
+          android:layout_marginTop="10dp"
+          android:layout_marginRight="10dp"
+          android:layout_below="@+id/trashbin_image"
+          android:paddingLeft="@dimen/activity_horizontal_margin"
+          android:text="&#8942;"
+          android:layout_alignParentEnd="true"
+          android:textAppearance="?android:textAppearanceLarge" />
+
+    </RelativeLayout>
+
+  </android.support.v7.widget.CardView>
+
+</LinearLayout>
