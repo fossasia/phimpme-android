@@ -69,6 +69,7 @@ import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
 import org.fossasia.phimpme.data.local.FavouriteImagesModel;
 import org.fossasia.phimpme.data.local.ImageDescModel;
+import org.fossasia.phimpme.data.local.TrashBinRealmModel;
 import org.fossasia.phimpme.data.local.UploadHistoryRealmModel;
 import org.fossasia.phimpme.editor.CompressImageActivity;
 import org.fossasia.phimpme.editor.EditImageActivity;
@@ -95,7 +96,9 @@ import org.fossasia.phimpme.utilities.BasicCallBack;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -687,8 +690,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private void deleteCurrentMedia() {
         if (!allPhotoMode && !favphotomode && !upoadhis) {
             boolean success = addToTrash();
-            if(!success){
-
+            if (!success) {
                 final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
 
                 AlertDialogsHelper.getTextDialog(SingleMediaActivity.this, dialogBuilder,
@@ -702,8 +704,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     }
                 });
                 dialogBuilder.show();
-            }else{
-                SnackBarHandler.show(parentView, getApplicationContext().getString(R.string.photo_deleted_msg));
             }
             if (getAlbum().getMedia().size() == 0) {
                 if (customUri) finish();
@@ -714,18 +714,20 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             }
             adapter.notifyDataSetChanged();
             getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
-        } else if(allPhotoMode && !favphotomode && !upoadhis) {
+        } else if (allPhotoMode && !favphotomode && !upoadhis) {
             int c = current_image_pos;
-            addToTrash();
-            LFMainActivity.listAll.remove(current_image_pos);
-            size_all = LFMainActivity.listAll.size();
-            adapter.notifyDataSetChanged();
-            SnackBarHandler.show(parentView, getApplicationContext().getString(R.string.photo_deleted_msg));
-            if(current_image_pos!=size_all)
+            boolean success = addToTrash();
+            if (success) {
+                LFMainActivity.listAll.remove(current_image_pos);
+                size_all = LFMainActivity.listAll.size();
+                adapter.notifyDataSetChanged();
+                //SnackBarHandler.show(parentView, getApplicationContext().getString(R.string.photo_deleted_msg));
+            }
+            if (current_image_pos!=size_all)
                 getSupportActionBar().setTitle((c + 1) + " " + getString(R.string.of) + " " + size_all);
 //            mViewPager.setCurrentItem(current_image_pos);
 //            toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + size_all);
-        } else if(favphotomode && !allPhotoMode && !upoadhis){
+        } else if (favphotomode && !allPhotoMode && !upoadhis){
             int c = current_image_pos;
             //deleteMedia(favouriteslist.get(current_image_pos).getPath());
             realm = Realm.getDefaultInstance();
@@ -738,14 +740,14 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             });
             deletefromfavouriteslist(favouriteslist.get(current_image_pos).getPath());
             size_all = favouriteslist.size();
-            if(size_all > 0){
+            if (size_all > 0) {
                 adapter.notifyDataSetChanged();
                 getSupportActionBar().setTitle((c + 1) + " " + getString(R.string.of) + " " + size_all);
                 SnackBarHandler.show(parentView, getApplicationContext().getString(R.string.photo_deleted_from_fav_msg));
-            }else{
+            } else {
                 onBackPressed();
             }
-        } else if(!favphotomode && !allPhotoMode && upoadhis){
+        } else if (!favphotomode && !allPhotoMode && upoadhis) {
             int c = current_image_pos;
             //deleteMedia(favouriteslist.get(current_image_pos).getPath());
             realm = Realm.getDefaultInstance();
@@ -758,14 +760,27 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             });
             deletefromuploadhistorylist(uploadhistory.get(current_image_pos).getPath());
             size_all = uploadhistory.size();
-            if(size_all > 0){
+            if (size_all > 0) {
                 adapter.notifyDataSetChanged();
                 getSupportActionBar().setTitle((c + 1) + " " + getString(R.string.of) + " " + size_all);
                 SnackBarHandler.show(parentView, getApplicationContext().getString(R.string.photo_deleted_from_fav_msg));
-            }else{
+            } else {
                 onBackPressed();
             }
         }
+    }
+
+    private void addTrashObjectsToRealm(String mediaPath){
+        String trashbinpath = Environment.getExternalStorageDirectory() + "/" + ".nomedia";
+        realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        String name = mediaPath.substring(mediaPath.lastIndexOf("/") + 1);
+        String trashpath = trashbinpath + "/" + name;
+        TrashBinRealmModel trashBinRealmModel = realm.createObject(TrashBinRealmModel.class, trashpath);
+        trashBinRealmModel.setOldpath(mediaPath);
+        trashBinRealmModel.setDatetime(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
+        trashBinRealmModel.setTimeperiod("null");
+        realm.commitTransaction();
     }
 
     private void deletefromfavouriteslist(String path){
@@ -788,41 +803,46 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     }
 
     private boolean addToTrash(){
+        String pathOld = null;
         int no = 0;
         boolean succ = false;
         File file = new File(Environment.getExternalStorageDirectory() + "/" + ".nomedia");
-        if(file.exists() && file.isDirectory()){
-            if(!allPhotoMode && !favphotomode){
+        if (file.exists() && file.isDirectory()) {
+            if (!allPhotoMode && !favphotomode) {
+                pathOld = getAlbum().getCurrentMedia().getPath();
                 succ = getAlbum().moveCurrentMedia(getApplicationContext(), file.getAbsolutePath());
-            }else if(allPhotoMode && !favphotomode){
+            } else if (allPhotoMode && !favphotomode){
+                pathOld = listAll.get(current_image_pos).getPath();
                 succ = getAlbum().moveAnyMedia(getApplicationContext(), file.getAbsolutePath(), listAll.get
                         (current_image_pos).getPath());
             }
-            if(succ){
-                SnackBarHandler.showWithBottomMargin(parentView, String.valueOf(no) + " " + getString(R.string
+            if (succ) {
+                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string
                                 .trashbin_move_onefile),
                         navigationView.getHeight
                                 ());
-            }else{
+            } else {
                 SnackBarHandler.showWithBottomMargin(parentView, String.valueOf(no) + " " + getString(R.string
                                 .trashbin_move_error),
                         navigationView.getHeight
                                 ());
             }
-        }else{
-            if(file.mkdir()){
-                if(!allPhotoMode && !favphotomode){
+        } else {
+            if (file.mkdir()) {
+                if (!allPhotoMode && !favphotomode) {
+                    pathOld = getAlbum().getCurrentMedia().getPath();
                     succ = getAlbum().moveCurrentMedia(getApplicationContext(), file.getAbsolutePath());
-                }else if(allPhotoMode && !favphotomode){
+                } else if (allPhotoMode && !favphotomode) {
+                    pathOld = getAlbum().getCurrentMedia().getPath();
                     succ = getAlbum().moveAnyMedia(getApplicationContext(), file.getAbsolutePath(), listAll.get
                             (current_image_pos).getPath());
                 }
-                if(succ){
+                if (succ) {
                     SnackBarHandler.showWithBottomMargin(parentView, String.valueOf(no) + " " + getString(R.string
                                     .trashbin_move_onefile),
                             navigationView.getHeight
                                     ());
-                }else{
+                } else {
                     SnackBarHandler.showWithBottomMargin(parentView, String.valueOf(no) + " " + getString(R.string
                                     .trashbin_move_error),
                             navigationView.getHeight
@@ -830,6 +850,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 }
             }
         }
+        addTrashObjectsToRealm(pathOld);
         return succ;
     }
 

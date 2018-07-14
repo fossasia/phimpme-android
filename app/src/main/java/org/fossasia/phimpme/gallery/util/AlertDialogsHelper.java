@@ -1,6 +1,7 @@
 package org.fossasia.phimpme.gallery.util;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
@@ -93,16 +94,22 @@ public class AlertDialogsHelper {
     }
 
     public static AlertDialog getTextCheckboxDialog(final ThemedActivity activity, AlertDialog.Builder
-            textDialogBuilder, @StringRes int title, @StringRes int Message, String msg, String checkboxmessage){
+            textDialogBuilder, @StringRes int title, @StringRes int Message, String msg, String checkboxmessage,
+                                                    final int colorId){
         View dialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_checkbox, null);
         TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.text_dialog_title);
         TextView dialogMessage = (TextView) dialogLayout.findViewById(R.id.text_dialog_message);
         TextView checkboxmessg = (TextView) dialogLayout.findViewById(R.id.checkbox_text_dialog);
-        CheckBox checkBox = (CheckBox) dialogLayout.findViewById(R.id.checkbox_text_dialog_cb);
+        final CheckBox checkBox = (CheckBox) dialogLayout.findViewById(R.id.checkbox_text_dialog_cb);
+        if(checkBox.isChecked()){
+           check = true;
+        }
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b){
+                    checkBox.setButtonTintList(ColorStateList.valueOf(colorId));
                     check=true;
+
                 }else{
                     check=false;
                 }
