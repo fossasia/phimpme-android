@@ -440,6 +440,9 @@
     <string name="update_action">UPDATE</string>
     <string name="description_hint">Write something!</string>
     <string name="save_action">Save</string>
+    <string name="trashbin_move">images moved to the TrashBin</string>
+    <string name="trashbin_move_onefile">Image moved to the TrashBin</string>
+    <string name="trashbin_move_error">Error! Images cannot be moved to the TrashBin</string>
     <string name="change_cover">Album cover changed..</string>
     <string name="add_favourite">Image is successfully added to the favourites collection.</string>
     <string name="add_favourite_multiple">Images are successfully added to the favourites collection.</string>
