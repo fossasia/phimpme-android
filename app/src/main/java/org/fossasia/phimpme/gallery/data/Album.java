@@ -408,6 +408,63 @@ public class Album implements Serializable {
 		return success;
 	}
 
+	public boolean moveAnyMedia(Context context, String targetDir, String pathofmed){
+		boolean success = false;
+		try {
+			String from = pathofmed;
+			if (success = moveMedia(context, from, targetDir)) {
+				scanFile(context, new String[]{ from, StringUtils.getPhotoPathMoved(pathofmed, targetDir) });
+			}
+		} catch (Exception e) { e.printStackTrace(); }
+		return success;
+	}
+
+	public int moveAllMedia(Context context, String targetDir, ArrayList<Media> albummedia){
+		int n = 0;
+		try
+		{
+			int index=-1;
+			for(int i =0;i<albummedia.size(); i++)
+			{
+				String s = albummedia.get(i).getPath();
+				int indexOfLastSlash = s.lastIndexOf("/");
+				String fileName = s.substring(indexOfLastSlash + 1);
+
+				if(!albummedia.get(i).getPath().equals(targetDir+"/"+fileName)){
+					index=-1;
+				}else{
+					index=i;
+					break;
+
+				}
+			}
+			if(index!=-1)
+			{
+				n = -1;
+			}else{
+				for (int i = 0; i < albummedia.size(); i++) {
+
+					if (moveMedia(context, albummedia.get(i).getPath(), targetDir)) {
+						String from = albummedia.get(i).getPath();
+						scanFile(context, new String[]{ from, StringUtils.getPhotoPathMoved(albummedia.get(i).getPath(),
+								targetDir) },
+								new MediaScannerConnection.OnScanCompletedListener() {
+									@Override
+									public void onScanCompleted(String s, Uri uri) {
+										Log.d("scanFile", "onScanCompleted: " + s);
+									}
+								});
+						media.remove(albummedia.get(i));
+						n++;
+					}
+				}
+				setCount(media.size());
+			}
+		} catch (Exception e) { e.printStackTrace(); }
+		return n;
+
+	}
+
 	public int moveSelectedMedia(Context context, String targetDir) {
 		int n = 0;
 		try
