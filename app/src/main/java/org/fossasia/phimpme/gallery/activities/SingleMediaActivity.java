@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -686,7 +687,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
     private void deleteCurrentMedia() {
         if (!allPhotoMode && !favphotomode && !upoadhis) {
-            boolean success = getAlbum().deleteCurrentMedia(getApplicationContext());
+            boolean success = addToTrash();
             if(!success){
 
                 final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
@@ -716,7 +717,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
         } else if(allPhotoMode && !favphotomode && !upoadhis) {
             int c = current_image_pos;
-            deleteMedia(listAll.get(current_image_pos).getPath());
+            addToTrash();
             LFMainActivity.listAll.remove(current_image_pos);
             size_all = LFMainActivity.listAll.size();
             adapter.notifyDataSetChanged();
@@ -785,6 +786,52 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 break;
             }
         }
+    }
+
+    private boolean addToTrash(){
+        int no = 0;
+        boolean succ = false;
+        File file = new File(Environment.getExternalStorageDirectory() + "/" + ".nomedia");
+        if(file.exists() && file.isDirectory()){
+            if(!allPhotoMode && !favphotomode){
+                succ = getAlbum().moveCurrentMedia(getApplicationContext(), file.getAbsolutePath());
+            }else if(allPhotoMode && !favphotomode){
+                succ = getAlbum().moveAnyMedia(getApplicationContext(), file.getAbsolutePath(), listAll.get
+                        (current_image_pos).getPath());
+            }
+            if(succ){
+                SnackBarHandler.showWithBottomMargin(parentView, String.valueOf(no) + " " + getString(R.string
+                                .trashbin_move_onefile),
+                        navigationView.getHeight
+                                ());
+            }else{
+                SnackBarHandler.showWithBottomMargin(parentView, String.valueOf(no) + " " + getString(R.string
+                                .trashbin_move_error),
+                        navigationView.getHeight
+                                ());
+            }
+        }else{
+            if(file.mkdir()){
+                if(!allPhotoMode && !favphotomode){
+                    succ = getAlbum().moveCurrentMedia(getApplicationContext(), file.getAbsolutePath());
+                }else if(allPhotoMode && !favphotomode){
+                    succ = getAlbum().moveAnyMedia(getApplicationContext(), file.getAbsolutePath(), listAll.get
+                            (current_image_pos).getPath());
+                }
+                if(succ){
+                    SnackBarHandler.showWithBottomMargin(parentView, String.valueOf(no) + " " + getString(R.string
+                                    .trashbin_move_onefile),
+                            navigationView.getHeight
+                                    ());
+                }else{
+                    SnackBarHandler.showWithBottomMargin(parentView, String.valueOf(no) + " " + getString(R.string
+                                    .trashbin_move_error),
+                            navigationView.getHeight
+                                    ());
+                }
+            }
+        }
+        return succ;
     }
 
     private void deleteMedia(String path) {
