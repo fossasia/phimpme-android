@@ -328,7 +328,9 @@ public class HandlingAlbums {
       }
   }
 
-  public Album getSelectedAlbum(int index) { return selectedAlbums.get(index); }
+  public Album getSelectedAlbum(int index) {
+    return selectedAlbums.get(index);
+  }
 
   public void loadAlbums(Context applicationContext) {
     loadAlbums(applicationContext, hidden);

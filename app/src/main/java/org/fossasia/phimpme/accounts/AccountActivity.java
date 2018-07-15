@@ -519,26 +519,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
      * Create twitter login and session
      */
     public void signInTwitter() {
-        BasicCallBack basicCallBack = new BasicCallBack() {
-            @Override
-            public void callBack(int status, Object data) {
-                if (status == SUCCESS) {
-                    SnackBarHandler.show(coordinatorLayout, getString(R.string.account_logged_twitter));
-                    if (data instanceof Bundle) {
-                        Bundle bundle = (Bundle) data;
-                        realm.beginTransaction();
-                        account = realm.createObject(AccountDatabase.class, TWITTER.toString());
-                        account.setAccountname(TWITTER);
-                        account.setUsername(bundle.getString(getString(R.string.auth_username)));
-                        account.setToken(bundle.getString(getString(R.string.auth_token)));
-                        account.setSecret(bundle.getString(getString(R.string.auth_secret)));
-                        realm.commitTransaction();
-                    }
-                }
-            }
-        };
         Intent i = new Intent(AccountActivity.this, LoginActivity.class);
-        LoginActivity.setBasicCallBack(basicCallBack);
         startActivity(i);
     }
 
