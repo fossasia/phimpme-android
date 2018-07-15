@@ -440,6 +440,11 @@
     <string name="update_action">UPDATE</string>
     <string name="description_hint">Write something!</string>
     <string name="save_action">Save</string>
+    <string name="restore_photo">Restore photo</string>
+    <string name="delete_permanently">Delete Permanently</string>
+    <string name="trashbin_move">images moved to the TrashBin</string>
+    <string name="trashbin_move_onefile">Image moved to the TrashBin</string>
+    <string name="trashbin_move_error">Error! Images cannot be moved to the TrashBin</string>
     <string name="change_cover">Album cover changed..</string>
     <string name="add_favourite">Image is successfully added to the favourites collection.</string>
     <string name="add_favourite_multiple">Images are successfully added to the favourites collection.</string>
@@ -1133,8 +1138,8 @@
     <string name="photos_already_there">All photos are already there in the folder</string>
     <string name="no_changes_made">No Changes Made!</string>
     <string name="transition_photo">transition_photo</string>
-    <string name="upload_date">Date: " "</string>
-    <string name="upload_time">Time: " "</string>
+    <string name="date_text">Date: " "</string>
+    <string name="time_text">Time: " "</string>
     <string name="text_view">TextView</string>
     <string name="version_one">v1.0</string>
 
