@@ -1798,7 +1798,11 @@ public class LFMainActivity extends SharedMediaActivity {
         menu.findItem(R.id.excludeAlbumButton).setVisible(editMode && !all_photos && albumsMode && !fav_photos);
         menu.findItem(R.id.zipAlbumButton).setVisible(editMode && !all_photos && albumsMode && !fav_photos && !hidden &&
                 getAlbums().getSelectedCount() == 1);
-        menu.findItem(R.id.delete_action).setVisible((!albumsMode || editMode) && (!all_photos || editMode) );
+        menu.findItem(R.id.delete_action).setVisible((!albumsMode || editMode) && (!all_photos || editMode));
+        if(fav_photos && favouriteslist.size() == 0 ){
+            menu.findItem(R.id.delete_action).setVisible(false);
+            menu.findItem(R.id.sort_action).setVisible(false);
+        }
         menu.findItem(R.id.hideAlbumButton).setVisible(!all_photos && !fav_photos && getAlbums().getSelectedCount() >
                 0);
 
@@ -2016,6 +2020,20 @@ public class LFMainActivity extends SharedMediaActivity {
                             }
                             // if not in selection mode, delete current album entirely
                             else if (!editMode) {
+                                if(!fav_photos){
+                                    succ = getAlbums().deleteAlbum(getAlbum(), getApplicationContext());
+                                    getAlbum().getMedia().clear();
+                                }else{
+                                    Realm realm = Realm.getDefaultInstance();
+                                    realm.executeTransaction(new Realm.Transaction() {
+                                        @Override public void execute(Realm realm) {
+                                            RealmQuery<FavouriteImagesModel> favouriteImagesModelRealmQuery = realm
+                                                    .where(FavouriteImagesModel.class);
+                                            succ = favouriteImagesModelRealmQuery.findAll().deleteAllFromRealm();
+                                            favouriteslist.clear();
+                                        }
+                                    });
+                                }
                                 succ = addToTrash();
                                 if(succ){
                                     addTrashObjectsToRealm(getAlbum().getMedia());
