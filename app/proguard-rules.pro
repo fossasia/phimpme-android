@@ -34,6 +34,12 @@
 
 -dontwarn okio.**
 
+#Twitter
+
+-dontwarn twitter4j.**
+-keep  class twitter4j.conf.PropertyConfigurationFactory
+-keep class twitter4j.** { *; }
+
 #Butterknife
 
 # Retain generated class which implement Unbinder.
