@@ -155,6 +155,36 @@
                         android:textSize="16sp"/>
                 </LinearLayout>
 
+                <!-- Trash Bin -->
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                              android:id="@+id/ll_drawer_trashbin"
+                              android:layout_width="match_parent"
+                              android:layout_height="wrap_content"
+                              android:background="@drawable/ripple"
+                              android:clickable="true"
+                              android:orientation="horizontal">
+
+                    <com.mikepenz.iconics.view.IconicsImageView
+                        android:id="@+id/Drawer_trashbin_Icon"
+                        android:layout_width="@dimen/icon_width_height"
+                        android:layout_height="@dimen/icon_width_height"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="@dimen/big_spacing"
+                        android:layout_marginRight="@dimen/big_spacing"
+                        app:iiv_icon="faw_trash_o"/>
+
+                    <TextView
+                        android:id="@+id/Drawer_TrashBin_Item"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="16dp"
+                        android:paddingTop="16dp"
+                        android:text="@string/trash_bin"
+                        android:textColor="@color/md_dark_background"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+
+
                 <!-- TAGS ALBUMS -->
                 <!--
                     <LinearLayout
@@ -166,7 +196,6 @@
                         android:background="@drawable/ripple"
                         android:clickable="true"
                         >
-
                         <com.mikepenz.iconics.view.IconicsImageView
                             android:id="@+id/Drawer_Tags_Icon"
                             android:layout_width="20dp"
@@ -175,7 +204,6 @@
                             android:layout_marginStart="20dp"
                             app:iiv_icon="faw-tag"
                             />
-
                         <TextView
                             android:id="@+id/Drawer_Tags_Item"
                             android:layout_width="wrap_content"
@@ -199,7 +227,6 @@
                         android:background="@drawable/ripple"
                         android:clickable="true"
                         >
-
                         <com.mikepenz.iconics.view.IconicsImageView
                             android:id="@+id/Drawer_Moments_Icon"
                             android:layout_width="20dp"
