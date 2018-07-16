@@ -677,4 +677,43 @@ void applyRedGreenFilter(cv::Mat &src, cv::Mat &dst, int val) {
     }
 }
 
+void applyWhiteYellowTint(cv::Mat &src, cv::Mat &dst, int val) {
+    register int x, y;
+    double op = 0.5 + 0.1 * val / 100.0;
+    cvtColor(src, src, CV_BGRA2BGR);
+    dst = Mat::zeros(src.size(), src.type());
+    uchar r, g, b;
+    uchar val1, val2, val3;
+
+    for (y = 0; y < src.rows; y++) {
+        for (x = 0; x < src.cols; x++) {
+            r = src.at<Vec3b>(y, x)[0];
+            g = src.at<Vec3b>(y, x)[1];
+            b = src.at<Vec3b>(y, x)[2];
+
+            val1 = saturate_cast<uchar>(r * 1.5 + op);
+            if (val1 > 255) {
+                val1 = 255;
+            }
+
+            val2 = saturate_cast<uchar>(b * 1.5 + op);
+            if (val2 > 255) {
+                val2 = 255;
+            }
+
+            val3 = saturate_cast<uchar>(g * 1.5 + op);
+            if (val2 > 255) {
+                val2 = 255;
+            }
+
+            dst.at<Vec3b>(y, x)[0] =
+                    saturate_cast<uchar>(val1);
+            dst.at<Vec3b>(y, x)[1] =
+                    saturate_cast<uchar>(val3);
+            dst.at<Vec3b>(y, x)[2] =
+                    saturate_cast<uchar>(val2);
+        }
+    }
+}
+
 }
