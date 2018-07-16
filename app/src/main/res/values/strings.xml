@@ -758,6 +758,9 @@
     <!-- UPLOAD HISTORY STRINGS-->
     <string name="last_first">Last first</string>
     <string name="latest_first">Latest first</string>
+    <string name="delete_all_title">Clear Upload History</string>
+    <string name="delete_all_message">Are you sure you want to delete all the items from the upload history
+        section?</string>
     <string name="upload_view_choice">UploadViewDisplay</string>
 
     <!--ALBUM DETAILS-->
