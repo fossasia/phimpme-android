@@ -90,7 +90,10 @@ extern "C" {
                 break;
             case 23:
                 applyRedGreenFilter(src,dst,val);
-                break; 
+                break;
+            case 24:
+                applyWhiteYellowTint(src, dst, val);
+                break;
             default:
 
                 int lowThreshold = val;
