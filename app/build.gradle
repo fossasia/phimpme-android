@@ -2,6 +2,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'jacoco-android'
 apply plugin: 'realm-android'
 
+def keystorePropertiesFile = rootProject.file("sample_keystore.properties")
+
+def keystoreProperties = new Properties()
+
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.3"
