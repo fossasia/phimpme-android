@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.fossasia.phimpme"
-    android:versionCode="6"
-    android:versionName="1.2.0">
+          package="org.fossasia.phimpme"
+          android:versionCode="6"
+          android:versionName="1.2.0">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -375,6 +375,8 @@
             android:value="78c6ec5c18fcd10ffbfd28ae038f3311f2763889" />
 
         <activity android:name=".editor.CompressImageActivity"></activity>
+        <activity android:name=".trashbin.TrashBinActivity">
+        </activity>
     </application>
 
 </manifest>
