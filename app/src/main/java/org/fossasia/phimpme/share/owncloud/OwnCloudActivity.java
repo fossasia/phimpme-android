@@ -84,12 +84,12 @@ public class OwnCloudActivity extends AppCompatActivity implements Button.OnClic
     }
 
     private boolean validateHosturl() {
-        String email = hostUrlInput.getText().toString().trim();
+        String hosturl = hostUrlInput.getText().toString().trim();
 
-        if (email.isEmpty()) {
+        if (hosturl.isEmpty()) {
             hostUrlLayout.setError(getString(R.string.err_msg_host));
             return false;
-        } else if (!(email.contains("http://") || email.contains("https://"))){
+        } else if (!(hosturl.contains("http://") || hosturl.contains("https://"))){
             hostUrlLayout.setError("Please add the protocol http/ https");
             return false;
         } else {
