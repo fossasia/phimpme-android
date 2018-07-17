@@ -6,9 +6,11 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -34,8 +36,11 @@ import org.fossasia.phimpme.gallery.data.base.MediaDetailsMap;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Random;
 
 import id.zelory.compressor.Compressor;
 
@@ -151,6 +156,12 @@ public class CompressImageActivity extends ThemedActivity {
 
         @Override protected Void doInBackground(String... strings) {
             if(strings[0].equals("Size")){
+                String path = null;
+                if(checkCompressFolder(saveFilePath)){
+                    Bitmap bitmap = getBitmap(saveFilePath);
+                    path = checkforanao(bitmap);
+                    saveFilePath = path;
+                }
                 try {
                     new Compressor(getApplicationContext())
                             .setQuality(percentagecompress)
@@ -171,6 +182,11 @@ public class CompressImageActivity extends ThemedActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                File file = new File(saveFilePath);
+                if(file.exists()){
+                    file.delete();
+                }
+                finish();
             }
             return null;
         }
@@ -181,6 +197,95 @@ public class CompressImageActivity extends ThemedActivity {
             FileUtil.albumUpdate(context, FileUtilsCompress.createFolders().getPath() + "/" + name);
             dialog1.dismiss();
         }
+    }
+
+    private String checkforanao(Bitmap bitmap){
+        String root = Environment.getExternalStorageDirectory().toString();
+        File myDir = new File(root + "/saved_images");
+        myDir.mkdirs();
+        Random generator = new Random();
+        int n = 10000;
+        n = generator.nextInt(n);
+        String fname = "Image-"+ n +".jpg";
+        File file = new File (myDir, fname);
+        if (file.exists ()) file.delete ();
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return file.getPath();
+    }
+
+    public Bitmap getBitmap(String path) {
+
+        Uri uri = Uri.fromFile(new File(path));
+        InputStream in = null;
+        try {
+            final int IMAGE_MAX_SIZE = 1200000; // 1.2MP
+            in = getContentResolver().openInputStream(uri);
+
+            // Decode image size
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+            BitmapFactory.decodeStream(in, null, o);
+            in.close();
+
+            int scale = 1;
+            while ((o.outWidth * o.outHeight) * (1 / Math.pow(scale, 2)) >
+                    IMAGE_MAX_SIZE) {
+                scale++;
+            }
+
+            Bitmap bitmap = null;
+            in = getContentResolver().openInputStream(uri);
+            if (scale > 1) {
+                scale--;
+                // scale to max possible inSampleSize that still yields an image
+                // larger than target
+                o = new BitmapFactory.Options();
+                o.inSampleSize = scale;
+                bitmap = BitmapFactory.decodeStream(in, null, o);
+
+                // resize to desired dimensions
+                int height = bitmap.getHeight();
+                int width = bitmap.getWidth();
+
+                double y = Math.sqrt(IMAGE_MAX_SIZE
+                        / (((double) width) / height));
+                double x = (y / height) * width;
+
+                Bitmap scaledBitmap = Bitmap.createScaledBitmap(bitmap, (int) x,
+                        (int) y, true);
+                bitmap.recycle();
+                bitmap = scaledBitmap;
+
+                System.gc();
+            } else {
+                bitmap = BitmapFactory.decodeStream(in);
+            }
+            in.close();
+
+            return bitmap;
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    private boolean checkCompressFolder(String path){
+        boolean result = false;
+        File file = new File(FileUtilsCompress.createFolders().getPath());
+        for(int i = 0; i < file.listFiles().length; i++){
+            if(file.listFiles()[i].getPath().equals(path)){
+                result = true;
+                break;
+            }
+        }
+        return result;
     }
 
     //compress  image by dimensions
