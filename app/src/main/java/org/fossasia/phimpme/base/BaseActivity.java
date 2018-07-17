@@ -1,6 +1,9 @@
 package org.fossasia.phimpme.base;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -16,6 +19,7 @@ import android.view.View;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.accounts.AccountActivity;
 import org.fossasia.phimpme.gallery.activities.LFMainActivity;
+import org.fossasia.phimpme.gallery.util.PreferenceUtil;
 import org.fossasia.phimpme.opencamera.Camera.CameraActivity;
 
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
@@ -29,6 +33,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     BottomNavigationItemView nav_home;
     BottomNavigationItemView nav_cam;
     BottomNavigationItemView nav_acc;
+    private PreferenceUtil SP;
+    private boolean isSWNavBarChecked;
 
     private int[][] states = new int[][] {
             new int[] {android.R.attr.state_checked}, // checked
@@ -55,13 +61,23 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
          nav_cam = (BottomNavigationItemView) findViewById(R.id.navigation_camera);
          nav_acc = (BottomNavigationItemView) findViewById(R.id.navigation_accounts);
 
-        presentShowcaseSequence(); // one second delay
+        int checkStoragePermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if(checkStoragePermission  == PackageManager.PERMISSION_GRANTED)
+            presentShowcaseSequence(); // one second delay
+
+        SP = PreferenceUtil.getInstance(getApplicationContext());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isSWNavBarChecked = SP.getBoolean(getString(R.string.preference_colored_nav_bar),true);
     }
 
     private void presentShowcaseSequence() {
 
         ShowcaseConfig config = new ShowcaseConfig();
-        config.setDelay(4000); // half second between each showcase view
+        config.setDelay(500); // half second between each showcase view
 
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, SHOWCASE_ID);
 
@@ -81,6 +97,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                         .setTarget(nav_cam)
                         .setDismissText(getResources().getString(R.string.ok_button))
                         .setContentText(getResources().getString(R.string.camera_button))
+                        .setDismissOnTouch(true)
                         .build()
         );
 
@@ -89,6 +106,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
                         .setTarget(nav_acc)
                         .setDismissText(getResources().getString(R.string.ok_button))
                         .setContentText(getResources().getString(R.string.accounts_button))
+                        .setDismissOnTouch(true)
                         .build()
         );
 
@@ -114,15 +132,21 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         if (item.getItemId() != getNavigationMenuItemId()) {
             switch (item.getItemId()) {
                 case R.id.navigation_camera:
-                    startActivity(new Intent(this, CameraActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    Intent cameraIntent = new Intent(this, CameraActivity.class);
+                    startActivity(cameraIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                     break;
                 case R.id.navigation_home:
-                    startActivity(new Intent(this, LFMainActivity.class));
+                    Intent homeIntent = new Intent(this, LFMainActivity.class);
+                    startActivity(homeIntent);
                     break;
                 case R.id.navigation_accounts:
-                    startActivity(new Intent(this, AccountActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    Intent accountIntent = new Intent(this, AccountActivity.class);
+                    startActivity(accountIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
                     break;
             }
+            finish();
+            overridePendingTransition(R.anim.left_to_right,
+                    R.anim.right_to_left);
         }
         return true;
     }
@@ -156,11 +180,48 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
     public abstract int getNavigationMenuItemId();
 
     public void setNavigationBarColor(int color) {
-        navigationView.setBackgroundColor(color);
+        if(isSWNavBarChecked)
+        {
+            navigationView.setBackgroundColor(color);
+            SP.putInt(getString(R.string.preference_BottomNavColor),color);
+        }else
+        {
+            navigationView.setBackgroundColor(SP.getInt(getString(R.string.preference_BottomNavColor),color));
+        }
         setIconColor(color);
     }
-    public void hideNavigationBar() {
-        navigationView.setVisibility(View.GONE);
+
+    /**
+     * Animate bottom navigation bar from GONE to VISIBLE
+     */
+    public void showNavigationBar() {
+        navigationView.animate()
+                .translationY(0)
+                .alpha(1.0f)
+                .setDuration(400)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationStart(Animator animation) {
+                        super.onAnimationStart(animation);
+                        navigationView.setVisibility(View.VISIBLE);
+                    }
+                });
     }
 
+    /**
+     * Animate bottom navigation bar from VISIBLE to GONE
+     */
+    public void hideNavigationBar() {
+        navigationView.animate()
+                .alpha(0.0f)
+                .translationYBy(navigationView.getHeight())
+                .setDuration(400)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        navigationView.setVisibility(View.GONE);
+                    }
+                });
+    }
 }

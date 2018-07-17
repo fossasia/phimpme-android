@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Phimpme</string>
+    <string name="app_name">Phimp.me</string>
     <string name="title_gallery">Gallery</string>
     <string name="title_camera">Camera</string>
     <string name="title_account">Accounts</string>
     <string name="action_settings">Settings</string>
     <string name="action_popup">Popup settings</string>
-    <string name="intro_text">Touch to focus, and press the blue camera button to take photos. For more help, click Online help from Settings. Open Camera is completely free. If you like this app, please consider buying my donate app :) (see link in Settings, or Online help).\n\nPrivacy Policy: Location permission is required for geotagging, but this is disabled by default. If enabled, your location is encoded in the saved files (and it is only used for this purpose).</string>
+    <string name="intro_text">Touch to focus, and press the blue camera button to take photos. For more help, click Online
+        help from Settings. Open Camera is completely free. If you like this app, please consider buying my donate app :)
+        (see link in Settings, or Online help).\n\nPrivacy Policy: Location permission is required for geotagging, but this
+        is disabled by default. If enabled, your location is encoded in the saved files (and it is only used for this
+        purpose).
+    </string>
     <string name="intro_ok">OK (This message won\'t show again)</string>
     <string name="facebook_app_id">125766838062659</string>
     <string name="answer_yes">Yes</string>
@@ -63,6 +68,10 @@
     <string name="color_effect">Color effect</string>
     <string name="scene_mode">Scene mode</string>
     <string name="white_balance">White balance</string>
+    <string name="title">Title</string>
+    <string name="reset">Reset Settings</string>
+    <string name="reset_sub_text">Reset all settings to default</string>
+    <string name="reset_settings">Are you sure you want to restore the default settings?</string>
 
     <string name="angle">Angle</string>
     <string name="direction">Direction</string>
@@ -80,7 +89,9 @@
 
     <string name="preference_category_camera_effects">Camera Effects</string>
     <string name="preference_auto_stabilise">Auto-level</string>
-    <string name="preference_auto_stabilise_summary">Images will be rotated so they are automatically level (photos only) (slower to take photos, and may fail on devices with too low memory)</string>
+    <string name="preference_auto_stabilise_summary">Images will be rotated so they are automatically level (photos only)
+        (slower to take photos, and may fail on devices with too low memory)
+    </string>
     <string name="preference_color_effect">Apply a color effect</string>
     <string name="preference_color_effect_summary">Applies the selected color effect to the photo</string>
     <string name="preference_scene_mode">Apply a scene mode</string>
@@ -88,11 +99,14 @@
     <string name="preference_white_balance">Set the white balance</string>
     <string name="preference_white_balance_summary">Choose a setting to adjust the white balance</string>
     <string name="preference_iso">Set the ISO</string>
-    <string name="preference_iso_summary">A higher value means more sensitive to light (may not work on some devices)</string>
+    <string name="preference_iso_summary">A higher value means more sensitive to light (may not work on some devices)
+    </string>
     <string name="preference_exposure">Set the exposure compensation</string>
     <string name="preference_exposure_summary">Set to 0 for the default exposure compensation</string>
     <string name="preference_lock_orientation">Lock photo/video orientation</string>
-    <string name="preference_lock_orientation_summary">If set, the orientation of the device will be ignored, and the orientation of the photo/video will be with respect to the specified orientation</string>
+    <string name="preference_lock_orientation_summary">If set, the orientation of the device will be ignored, and the
+        orientation of the photo/video will be with respect to the specified orientation
+    </string>
     <string name="preference_face_detection">Face detection</string>
     <string name="preference_face_detection_summary">Use face detection instead of focus areas</string>
 
@@ -102,7 +116,8 @@
     <string name="preference_timer_beep">Timer beep</string>
     <string name="preference_timer_beep_summary">Beep when timer is counting down or for burst mode delay</string>
     <string name="preference_timer_speak">Voice timer countdown</string>
-    <string name="preference_timer_speak_summary">Speak the countdown for timer or burst mode delay (from 60 seconds)</string>
+    <string name="preference_timer_speak_summary">Speak the countdown for timer or burst mode delay (from 60 seconds)
+    </string>
     <string name="preference_burst_mode">Burst</string>
     <string name="preference_burst_mode_summary">Take multiple photos in succession</string>
     <string name="preference_burst_interval">Burst mode interval</string>
@@ -111,33 +126,52 @@
     <string name="preference_touch_capture">Touch to capture</string>
     <string name="preference_touch_capture_summary">Take a photo just by touching or double-tapping the preview</string>
     <string name="preference_pause_preview">Pause after taking photo</string>
-    <string name="preference_pause_preview_summary">Pause the screen after taking a photo, with the option to share or delete the photo</string>
+    <string name="preference_pause_preview_summary">Pause the screen after taking a photo, with the option to share or
+        delete the photo
+    </string>
     <string name="preference_shutter_sound">Shutter sound</string>
     <string name="preference_shutter_sound_summary">Play a sound when taking a photo</string>
     <string name="preference_volume_keys">Volume keys</string>
     <string name="preference_volume_keys_summary">Set behaviour for when volume keys are pressed</string>
     <string name="preference_audio_control">Audio control options</string>
-    <string name="preference_audio_control_summary">Take photo or record video when a noise is detected, or on a voice command (\"cheese\"). When enabled, use the on-screen microphone button to start and stop listening.</string>
+    <string name="preference_audio_control_summary">Take photo or record video when a noise is detected, or on a voice
+        command (\"cheese\"). When enabled, use the on-screen microphone button to start and stop listening.
+    </string>
     <string name="preference_audio_noise_control_sensitivity">Audio control sensitivity</string>
-    <string name="preference_audio_noise_control_sensitivity_summary">Noise level sensitivity for audio (loud noise) option</string>
+    <string name="preference_audio_noise_control_sensitivity_summary">Noise level sensitivity for audio (loud noise)
+        option
+    </string>
     <string name="preference_save_location">Save location</string>
     <string name="preference_save_location_summary">Folder to save the photo/video files in</string>
     <string name="preference_using_saf">Use Storage Access Framework</string>
-    <string name="preference_using_saf_summary">Whether to use Android 5\'s Storage Access Framework for saving photos and videos</string>
+    <string name="preference_using_saf_summary">Whether to use Android 5\'s Storage Access Framework for saving photos and
+        videos
+    </string>
     <string name="preference_save_photo_prefix">Save photo prefix</string>
     <string name="preference_save_photo_prefix_summary">The prefix to use for the save filenames for photos</string>
     <string name="preference_save_video_prefix">Save video prefix</string>
     <string name="preference_save_video_prefix_summary">The prefix to use for the save filenames for videos</string>
     <string name="preference_save_zulu_time">Time format for filename</string>
-    <string name="preference_save_zulu_time_summary">Whether to use local or UTC (Coordinated Universal Time) time for naming photos and videos</string>
+    <string name="preference_save_zulu_time_summary">Whether to use local or UTC (Coordinated Universal Time) time for
+        naming photos and videos
+    </string>
     <string name="preference_show_when_locked">Show camera when locked</string>
-    <string name="preference_show_when_locked_summary">If enabled, Open Camera will still show above any lockscreen (you\'ll still have to unlock to access Settings, Gallery etc)</string>
+    <string name="preference_show_when_locked_summary">If enabled, Open Camera will still show above any lockscreen
+        (you\'ll still have to unlock to access Settings, Gallery etc)
+    </string>
     <string name="preference_startup_focus">Perform auto-focus on startup</string>
-    <string name="preference_startup_focus_summary">Whether to auto-focus when Open Camera is started. If you have the problem of flash turning on when starting, disable this option</string>
+    <string name="preference_startup_focus_summary">Whether to auto-focus when Open Camera is started. If you have the
+        problem of flash turning on when starting, disable this option
+    </string>
     <string name="preference_lock_video">Lock screen when recording video</string>
-    <string name="preference_lock_video_summary">When recording video, the GUI will be locked to prevent accidentally stopping recording. Swipe the screen to unlock. Note that video recording will always stop if the app goes into background or the screen is blanked.</string>
+    <string name="preference_lock_video_summary">When recording video, the GUI will be locked to prevent accidentally
+        stopping recording. Swipe the screen to unlock. Note that video recording will always stop if the app goes into
+        background or the screen is blanked.
+    </string>
     <string name="preference_rotate_preview">Rotate preview</string>
-    <string name="preference_rotate_preview_summary">Option to rotate the preview (won\'t affect resultant photos/videos)</string>
+    <string name="preference_rotate_preview_summary">Option to rotate the preview (won\'t affect resultant
+        photos/videos)
+    </string>
     <string name="preference_screen_gui">On screen GUI…</string>
     <string name="preference_preview_size">Preview size</string>
     <string name="preference_preview_size_summary">How to choose the preview size</string>
@@ -152,7 +186,9 @@
     <string name="preference_show_zoom_slider_controls">Show zoom slider control</string>
     <string name="preference_show_zoom_slider_controls_summary">Show the slider for zoom control</string>
     <string name="preference_show_iso">Show ISO</string>
-    <string name="preference_show_iso_summary">Display the current ISO level. In flash auto mode, a flash symbol will also indicate when flash will fire. (Requires Camera2 API.)</string>
+    <string name="preference_show_iso_summary">Display the current ISO level. In flash auto mode, a flash symbol will also
+        indicate when flash will fire. (Requires Camera2 API.)
+    </string>
     <string name="preference_free_memory">Show free memory</string>
     <string name="preference_free_memory_summary">Display the remaining device storage space on screen</string>
     <string name="preference_show_angle">Show angle</string>
@@ -171,18 +207,25 @@
     <string name="preference_grid_summary">Display one of various grids</string>
     <string name="grid">Grid</string> <!-- short form of Show a grid -->
     <string name="preference_crop_guide">Show a crop guide</string>
-    <string name="preference_crop_guide_summary">A crop guide displays a rectangle showing what the specified aspect ratio looks like - useful if you plan to crop the photo/video afterwards to a different aspect ratio. Requires WYSIWYG photo mode, or being in video mode.</string>
+    <string name="preference_crop_guide_summary">A crop guide displays a rectangle showing what the specified aspect ratio
+        looks like - useful if you plan to crop the photo/video afterwards to a different aspect ratio. Requires WYSIWYG
+        photo mode, or being in video mode.
+    </string>
     <string name="preference_show_toasts">Show \"toast\" messages</string>
     <string name="preference_show_toasts_summary">Whether to display the popup \"toast\" messages</string>
     <string name="preference_thumbnail_animation">Show thumbnail animation</string>
     <string name="preference_thumbnail_animation_summary">Display moving thumbnail animation when taking a photo</string>
     <string name="preference_take_photo_border">Show border when taking photo</string>
-    <string name="preference_take_photo_border_summary">Display a border on the display to indicate taking a photo</string>
+    <string name="preference_take_photo_border_summary">Display a border on the display to indicate taking a photo
+    </string>
     <string name="preference_keep_display_on">Keep display on</string>
-    <string name="preference_keep_display_on_summary">If enabled, the screen won\'t switch off while the main Open Camera UI is active</string>
-    <!--<string name="preference_max_brightness">Force maximum brightness</string>
-    -->
-    <string name="preference_max_brightness_summary">Force screen display to be at maximum brightness, rather than device default</string>
+    <string name="preference_keep_display_on_summary">If enabled, the screen won\'t switch off while the main Open Camera
+        UI is active
+    </string>
+    <!--<string name="preference_max_brightness">Force maximum brightness</string>-->
+    <string name="preference_max_brightness_summary">Force screen display to be at maximum brightness, rather than device
+        default
+    </string>
 
     <string name="preference_category_camera_quality">Photo Settings</string>
     <string name="preference_screen_photo_settings">Photo settings…</string>
@@ -190,7 +233,8 @@
     <string name="preference_resolution">Camera resolution</string>
     <string name="preference_resolution_summary">Set the resolution of photos taken by the camera</string>
     <string name="preference_quality">Image quality</string>
-    <string name="preference_quality_summary">Set the image JPEG quality of saved photo images (default value is 90%%)</string> <!-- '%' is encoded as '%%' - a single % can crash devices, and this isn't picked up by Android Lint! -->
+    <string name="preference_quality_summary">Set the image JPEG quality of saved photo images (default value is 90%%)
+    </string> <!-- '%' is encoded as '%%' - a single % can crash devices, and this isn't picked up by Android Lint! -->
     <string name="preference_raw">RAW</string>
     <string name="preference_raw_summary">Whether to save in RAW (DNG) format</string>
     <string name="preference_location">Store location data (Geotagging)</string>
@@ -198,9 +242,13 @@
     <string name="preference_gps_direction">Store compass direction</string>
     <string name="preference_gps_direction_summary">Store GPS compass direction in the photos</string>
     <string name="preference_require_location">Require location data</string>
-    <string name="preference_require_location_summary">If location data is enabled, only take photo/video if location data is available</string>
+    <string name="preference_require_location_summary">If location data is enabled, only take photo/video if location data
+        is available
+    </string>
     <string name="preference_stamp">Stamp photos</string>
-    <string name="preference_stamp_summary">Stamp photos with date and time; and also GPS info if location/direction data is enabled</string>
+    <string name="preference_stamp_summary">Stamp photos with date and time; and also GPS info if location/direction data
+        is enabled
+    </string>
     <string name="preference_stamp_dateformat">Datestamp format</string>
     <string name="preference_stamp_dateformat_summary">Specify the format of the datestamp (if enabled)</string>
     <string name="preference_stamp_timeformat">Timestamp format</string>
@@ -216,41 +264,69 @@
     <string name="preference_stamp_style">Text style</string>
     <string name="preference_stamp_style_summary">Style to use when stamping text onto photos</string>
     <string name="preference_background_photo_saving">Use background thread</string>
-    <string name="preference_background_photo_saving_summary">Whether to save photos on a background thread (for faster operation)</string>
+    <string name="preference_background_photo_saving_summary">Whether to save photos on a background thread (for faster
+        operation)
+    </string>
     <string name="video_quality">Video resolution</string>
     <string name="video_quality_summary">Set the resolution of videos</string>
     <string name="preference_force_video_4k">Force 4K UHD video (only works on some devices)</string>
-    <string name="preference_force_video_4k_summary">Enable 3840x2160 resolution for video recording on back camera - this option is a hack that may allow 4K devices on 4K cameras that don\'t expose the option to 3rd party camera apps. This isn\'t guaranteed to work, please test before working.</string>
+    <string name="preference_force_video_4k_summary">Enable 3840x2160 resolution for video recording on back camera - this
+        option is a hack that may allow 4K devices on 4K cameras that don\'t expose the option to 3rd party camera apps.
+        This isn\'t guaranteed to work, please test before working.
+    </string>
     <string name="preference_video_stabilization">Enable video stabilization</string>
-    <string name="preference_video_stabilization_summary">Video stabilization reduces the shaking due to the motion of the camera in both the preview and in recorded videos</string>
+    <string name="preference_video_stabilization_summary">Video stabilization reduces the shaking due to the motion of the
+        camera in both the preview and in recorded videos
+    </string>
     <string name="preference_video_bitrate">Video bitrate (approx)</string>
-    <string name="preference_video_bitrate_summary">Set the approximate bitrate of videos (higher means better quality, but takes up more disk space; may cause video recording to fail if bitrate not supported)</string>
+    <string name="preference_video_bitrate_summary">Set the approximate bitrate of videos (higher means better quality,
+        but takes up more disk space; may cause video recording to fail if bitrate not supported)
+    </string>
     <string name="preference_video_fps">Video frame rate (approx)</string>
-    <string name="preference_video_fps_summary">Set the frame rate (FPS) of videos (may be approx, not guaranteed to be achieved, and may cause video recording to fail if frame rate not supported)</string>
+    <string name="preference_video_fps_summary">Set the frame rate (FPS) of videos (may be approx, not guaranteed to be
+        achieved, and may cause video recording to fail if frame rate not supported)
+    </string>
     <string name="preference_video_max_duration">Maximum duration of video</string>
-    <string name="preference_video_max_duration_summary">The video recording will stop after the specified duration</string>
+    <string name="preference_video_max_duration_summary">The video recording will stop after the specified duration
+    </string>
     <string name="preference_video_restart">Restart video after max duration</string>
-    <string name="preference_video_restart_summary">If the video has stopped after hitting the maximum duration (if set), this option will make the video restart, up to the specified number of times</string>
+    <string name="preference_video_restart_summary">If the video has stopped after hitting the maximum duration (if set),
+        this option will make the video restart, up to the specified number of times
+    </string>
     <string name="preference_video_max_filesize">Maximum file size of video</string>
-    <string name="preference_video_max_filesize_summary">The video recording will stop and/or restart (see option below) when the (approximate) maximum file size is reached. Note that almost all Android devices have a maximum file size for videos (typically around 2GB or 4GB), but this option allows setting a specific value</string>
+    <string name="preference_video_max_filesize_summary">The video recording will stop and/or restart (see option below)
+        when the (approximate) maximum file size is reached. Note that almost all Android devices have a maximum file size
+        for videos (typically around 2GB or 4GB), but this option allows setting a specific value
+    </string>
     <string name="preference_video_restart_max_filesize">Restart on maximum file size</string>
-    <string name="preference_video_restart_max_filesize_summary">Whether to automatically restart when the maximum file size is reached (whether the device default max file size, or user specified)</string>
+    <string name="preference_video_restart_max_filesize_summary">Whether to automatically restart when the maximum file
+        size is reached (whether the device default max file size, or user specified)
+    </string>
     <string name="preference_record_audio">Record audio</string>
     <string name="preference_record_audio_summary">Record audio when recording video</string>
     <string name="preference_record_audio_src">Audio source</string>
     <string name="preference_record_audio_src_summary">Microphone to use for recording audio</string>
     <string name="preference_record_audio_channels">Audio channels</string>
-    <string name="preference_record_audio_channels_summary">Specify mono or stereo for recording audio (stereo only supported on some devices)</string>
+    <string name="preference_record_audio_channels_summary">Specify mono or stereo for recording audio (stereo only
+        supported on some devices)
+    </string>
     <string name="preference_video_flash">Flash while recording video</string>
-    <string name="preference_video_flash_summary">If enabled, flash will switch on/off when recording video (can be used to tell camera is still recording at a distance)</string>
+    <string name="preference_video_flash_summary">If enabled, flash will switch on/off when recording video (can be used
+        to tell camera is still recording at a distance)
+    </string>
 
     <string name="preference_category_online">Misc</string>
     <string name="preference_online_help">Online help</string>
     <string name="preference_online_help_summary">Launch the Open Camera website in your browser</string>
     <string name="preference_donate">Donate to support development</string>
-    <string name="preference_donate_summary">If you like this app, please consider making a donation to support development. You can do this by purchasing my "donation app" - click this option to open up the page for my donation app. Thanks!</string>
+    <string name="preference_donate_summary">If you like this app, please consider making a donation to support
+        development. You can do this by purchasing my "donation app" - click this option to open up the page for my donation
+        app. Thanks!
+    </string>
     <string name="preference_use_camera2">Use Camera2 API</string>
-    <string name="preference_use_camera2_summary">Enables Android 5\'s Camera2 API - offers extra features, but may not work properly on all devices (will cause a restart)</string>
+    <string name="preference_use_camera2_summary">Enables Android 5\'s Camera2 API - offers extra features, but may not
+        work properly on all devices (will cause a restart)
+    </string>
     <string name="preference_about">About</string>
     <string name="preference_about_summary">App and debug information</string>
     <string name="preference_reset">Reset settings</string>
@@ -291,18 +367,30 @@
     <string name="start_video">Start recording video</string>
     <string name="stop_video">Stop recording video</string>
 
+    <!-- symbol short for megabytes/gigabytes -->
     <string name="max_filesize">Max file size</string>
-    <string name="mb_abbreviation">MB</string> <!-- symbol short for megabytes -->
-    <string name="gb_abbreviation">GB</string> <!-- symbol short for gigabytes -->
+    <string name="mb_abbreviation">MB</string>
+    <string name="gb_abbreviation">GB</string>
 
     <string name="audio_control_start">Start audio listening</string>
     <string name="audio_control_stop">Stop audio listening</string>
     <string name="speech_recognizer_started">Say \"cheese\"</string>
     <string name="audio_listener_started">Make a loud noise</string>
 
-    <string name="auto_stabilise_info">Auto-level will automatically rotate photos so that they appear level.\n\nNote that this means images will come out a slightly lower resolution (due to the rotation and cropping that\'s required).</string>
-    <string name="raw_info">DNG files contain the full uncompressed and unprocessed information from your camera.\n\nMost gallery apps won\'t recognise DNG, instead they should be used with specialised apps like Snapseed or Lightroom.\n\nNote that various processing options such as "Stamp photos" and "Auto-level" will only apply to the JPEG images, and not the DNG images.\n\nDNG files take up a lot of space; a file explorer app may be useful for transferring or deleting them.\n\nDNG files are only saved in Standard or DRO photo modes.</string>
-    <string name="hdr_info">HDR mode is useful for shots with a large variation in brightness. It works by taking multiple shots at different exposures, and combining them to create the final image.\n\nNote that HDR is not suitable for scenes with fast movement, and may result in less accurate colour reproduction.\n\nTaking photos in HDR mode will be slower.</string>
+    <string name="auto_stabilise_info">Auto-level will automatically rotate photos so that they appear level.\n\nNote that
+        this means images will come out a slightly lower resolution (due to the rotation and cropping that\'s required).
+    </string>
+    <string name="raw_info">DNG files contain the full uncompressed and unprocessed information from your camera.\n\nMost
+        gallery apps won\'t recognise DNG, instead they should be used with specialised apps like Snapseed or
+        Lightroom.\n\nNote that various processing options such as "Stamp photos" and "Auto-level" will only apply to the
+        JPEG images, and not the DNG images.\n\nDNG files take up a lot of space; a file explorer app may be useful for
+        transferring or deleting them.\n\nDNG files are only saved in Standard or DRO photo modes.
+    </string>
+    <string name="hdr_info">HDR mode is useful for shots with a large variation in brightness. It works by taking multiple
+        shots at different exposures, and combining them to create the final image.\n\nNote that HDR is not suitable for
+        scenes with fast movement, and may result in less accurate colour reproduction.\n\nTaking photos in HDR mode will be
+        slower.
+    </string>
 
     <string name="dont_show_again">Don\'t show again</string>
 
@@ -313,7 +401,10 @@
     <string name="photo_mode_expo_bracketing_full">Exposure Bracketing</string>
     <string name="preference_category_stamp">Photo Stamp</string>
     <string name="preference_hdr_save_expo">Save all images for HDR mode</string>
-    <string name="preference_hdr_save_expo_summary">If enabled, when using HDR photo mode, the three base exposure images will be saved as well as the final HDR photo. Note this will make saving slower, especially if options like \"Stamp photos\" or Auto-level are also used.</string>
+    <string name="preference_hdr_save_expo_summary">If enabled, when using HDR photo mode, the three base exposure images
+        will be saved as well as the final HDR photo. Note this will make saving slower, especially if options like \"Stamp
+        photos\" or Auto-level are also used.
+    </string>
 
     <string name="no_permission">PERMISSIONS NOT AVAILABLE</string>
     <string name="permission_rationale_title">Permission required</string>
@@ -325,28 +416,37 @@
     <string name="preference_category_photo_debugging">Debugging options</string>
     <string name="preference_category_video_debugging">Debugging options</string>
     <string name="preference_camera2_fake_flash">Use alternative flash method</string>
-    <string name="preference_camera2_fake_flash_summary">Enable this if your device has buggy flash behaviour with Camera2 API</string>
+    <string name="preference_camera2_fake_flash_summary">Enable this if your device has buggy flash behaviour with Camera2
+        API
+    </string>
 
     <string name="preference_expo_bracketing_n_images">Exposure Bracketing</string>
     <string name="preference_expo_bracketing_n_images_summary">Number of images for exposure bracketing mode</string>
     <string name="preference_expo_bracketing_stops">Exposure Bracketing Stops</string>
-    <string name="preference_expo_bracketing_stops_summary">How many stops to subtract/add for the darkest/brightest image</string>
+    <string name="preference_expo_bracketing_stops_summary">How many stops to subtract/add for the darkest/brightest
+        image
+    </string>
 
     <string name="seconds_abbreviation">s</string> <!-- short for seconds -->
 
     <string name="video_no_free_space">Not enough free space to record video</string>
     <string name="video_power_critical">Video stopped\nBattery level critically low</string>
     <string name="preference_video_low_power_check">Critical battery check</string>
-    <string name="preference_video_low_power_check_summary">Stop video recording if battery level is critically low. This helps reduce the risk of videos being corrupted if your device suddenly switches off due to running out of power.</string>
+    <string name="preference_video_low_power_check_summary">Stop video recording if battery level is critically low. This
+        helps reduce the risk of videos being corrupted if your device suddenly switches off due to running out of power.
+    </string>
 
-    <string name="dark">Dark</string> <!-- exposure compensation dark -->
-    <string name="bright">Bright</string> <!-- exposure compensation bright -->
+    <!-- Exposure compensation Dark/Bright -->
+    <string name="dark">Dark</string>
+    <string name="bright">Bright</string>
     <string name="exposure_shutter_speed">Shutter speed</string>
 
     <string name="camera_error">Serious camera error</string>
 
     <string name="preference_camera2_fast_burst">Enable fast HDR/expo burst</string>
-    <string name="preference_camera2_fast_burst_summary">Allows faster capture of the HDR/expo shots. Disable this if your device has problems when taking photos with HDR or Expo photo modes.</string>
+    <string name="preference_camera2_fast_burst_summary">Allows faster capture of the HDR/expo shots. Disable this if your
+        device has problems when taking photos with HDR or Expo photo modes.
+    </string>
 
     <string name="record_video">Record video</string>
     <string name="selfie">Selfie</string>
@@ -355,8 +455,13 @@
     <string name="preference_front_camera_mirror_summary">Whether to mirror images when using the front camera.</string>
 
     <string name="preference_calibrate_level">Calibrate level angle</string>
-    <string name="preference_calibrate_level_summary">This option calibrates your device\'s accelerometer, so the auto-level and on-screen level/angle options work correctly.</string>
-    <string name="preference_calibrate_level_dialog">Please place your device on a flat horizontal surface so that it is level (either in portrait or landscape orientation), and then select Calibrate.\n\nPress Reset to remove the calibration from your device.\n\nPress back button to cancel.</string>
+    <string name="preference_calibrate_level_summary">This option calibrates your device\'s accelerometer, so the
+        auto-level and on-screen level/angle options work correctly.
+    </string>
+    <string name="preference_calibrate_level_dialog">Please place your device on a flat horizontal surface so that it is
+        level (either in portrait or landscape orientation), and then select Calibrate.\n\nPress Reset to remove the
+        calibration from your device.\n\nPress back button to cancel.
+    </string>
     <string name="preference_calibrate_level_calibrate">Calibrate</string>
     <string name="preference_calibrate_level_reset">Reset</string>
     <string name="preference_calibrate_level_calibrated">Level calibrated</string>
@@ -369,8 +474,11 @@
     <string name="preference_show_geo_direction_lines">Show compass direction lines</string>
     <string name="preference_show_geo_direction_lines_summary">Display compass direction lines</string>
     <string name="preference_video_subtitle">Video subtitles</string>
-    <string name="preference_video_subtitle_summary">Create a subtitles (.SRT) file storing date and time; and also GPS info if location/direction data is enabled</string>
+    <string name="preference_video_subtitle_summary">Create a subtitles (.SRT) file storing date and time; and also GPS
+        info if location/direction data is enabled
+    </string>
 
+    <!--Durations-->
     <string name="duration_unlimited">Unlimited</string>
     <string name="duration_3s">3 seconds</string>
     <string name="duration_5s">5 seconds</string>
@@ -397,7 +505,9 @@
     <string name="duration_1h">1 hour</string>
 
     <string name="preference_show_take_photo">Show take photo icon</string>
-    <string name="preference_show_take_photo_summary">Show the icon for taking photos and recording videos. Useful if your device has a hardware shutter button and you\'d rather use that.</string>
+    <string name="preference_show_take_photo_summary">Show the icon for taking photos and recording videos. Useful if your
+        device has a hardware shutter button and you\'d rather use that.
+    </string>
 
     <string name="video_pause">Video paused</string>
     <string name="video_resume">Video resumed</string>
@@ -410,24 +520,45 @@
     <string name="failed_to_process_hdr">Failed to create HDR image</string>
 
     <!--LEAF PIC STRING'S-->
-    <string name="app_light_description">An awesome Image app that offers features such as taking photos, adding filters, editing images and uploading them to social networks.</string>
+    <string name="app_light_description">An awesome Image app that offers features such as taking photos, adding filters,
+        editing images and uploading them to social networks.
+    </string>
 
     <string name="rename_error">File Rename Failed</string>
     <string name="rename_succes">File renamed</string>
+    <string name="rename_no_change">No change in file name</string>
 
     <!-- ACTIONS -->
     <string name="sort">Sort</string>
     <string name="camera">Camera</string>
-    <string name="phimpme_camera">Phimpme Camera</string>
+    <string name="phimpme_camera">Phimp.me Camera</string>
     <string name="exclude">Exclude</string>
     <string name="cancel">Cancel</string>
     <string name="delete">Delete</string>
     <string name="hide">Hide</string>
     <string name="unhide">Unhide</string>
+    <string name="zip">Zip</string>
     <string name="ok_action">OK</string>
+    <string name="openfav">Open</string>
+    <string name="cancel_zip">Zip operation Canceled...</string>
+    <string name="zip_action">Zipping the folder.....</string>
+    <string name="zip_location">Zip saved to location:</string>
     <string name="update_action">UPDATE</string>
     <string name="description_hint">Write something!</string>
     <string name="save_action">Save</string>
+    <string name="restore_photo">Restore photo</string>
+    <string name="delete_permanently">Delete Permanently</string>
+    <string name="trashbin_move">images moved to the TrashBin</string>
+    <string name="trashbin_move_onefile">Image moved to the TrashBin</string>
+    <string name="trashbin_move_error">Error! Images cannot be moved to the TrashBin</string>
+    <string name="change_cover">Album cover changed..</string>
+    <string name="add_favourite">Image is successfully added to the favourites collection.</string>
+    <string name="add_favourite_multiple">Images are successfully added to the favourites collection.</string>
+    <string name="remove_from_favourite">images removed from favourites section</string>
+    <string name="invalid_selection">Invalid Selection</string>
+    <string name="single_image_removed">Image removed from favourites section</string>
+    <string name="check_favourite">Image is already present in the favourites collection.</string>
+    <string name="check_favourite_multipleitems">All the images are already present in the favourite collection.</string>
     <string name="rename_photo_action">Rename photo</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
@@ -459,6 +590,9 @@
     <string name="copy_to">Copy to</string>
     <string name="move_to">Move to</string>
     <string name="use_as">Use as</string>
+    <string name="favourite">Add to favourites</string>
+    <string name="favourite_title">Favourite Photos</string>
+    <string name="unfavourite">Unfavourite</string>
     <string name="edit">Edit</string>
     <string name="fix_date">Fix date</string>
     <string name="rename">Rename</string>
@@ -475,6 +609,8 @@
     <string name="clear_preview">Clear preview</string>
     <string name="new_folder">New Folder</string>
     <string name="create_new_folder">Create new folder</string>
+    <string name="slideshow">Slideshow</string>
+    <string name="print">Print</string>
 
     <!--Notification Uploads-->
     <string name="upload_progress">Uploading to</string>
@@ -482,6 +618,11 @@
     <string name="upload_done">Success</string>
     <string name="upload_complete">Uploaded</string>
     <string name="try_again">Please try again</string>
+
+    <!--Notification Zip-->
+    <string name="zip_operation">Zipping the Folder.</string>
+    <string name="zip_fol">Zipping the</string>
+    <string name="zip_completion">Zipped It!</string>
 
     <!--DIALOG MESSAGES-->
     <string name="hide_album_message">
@@ -491,12 +632,15 @@
     <string name="delete_album_message">Are you sure you want to delete this album?</string>
     <string name="delete_albums_message">Are you sure you want to delete the selected albums?</string>
     <string name="delete_photo_message">Are you sure you want to delete this media?</string>
+    <string name="delete_from_favourites_message">Are you sure you want to remove this media from Favourites?</string>
     <string name="delete_photos_message">Are you sure you want to delete the selected media?</string>
     <string name="hide_albums_message">Are you sure you want to hide the selected albums?</string>
-    <string name="unhide_album_message">Un-hiding this album you will also make the media available for other apps.</string>
+    <string name="unhide_album_message">Un-hiding this album you will also make the media available for other apps.
+    </string>
     <string name="exclude_albums_message">Are you sure you want to exclude the selected
         albums? \n If you want to exclude the parent of these albums, try excluding only
-    one album. A dropdown there will allow you to select the parent of the folder.</string>
+    one album. A dropdown there will allow you to select the parent of the folder.
+    </string>
     <string name="exclude_album_message">
         By excluding this folder you will also exclude all sub-folders. Below you can find a list
         that allows you to choose a parent, if you have to exclude more folders which are on the same level.
@@ -504,7 +648,21 @@
     <string name="new_folder_message">The new folder will be created in the current path, and
         then the media will be copied or moved in the new folder.
     </string>
+    <string name="enter_time">Enter time interval</string>
+    <string name="time_interval">Time interval (seconds) (>1sec)</string>
     <string name="discard_changes_message">Are you sure you want to discard all changes?</string>
+    <string name="discard_stickers_message">Are you sure you want to discard the stickers added?</string>
+    <string name="discard_enhance_message">Are you sure you want to discard the enhancements made?</string>
+    <!--<string name="discard_filters_message">Are you sure you want to discard the filters added?</string>-->
+    <string name="discard_crop_message">Are you sure you want to discard the cropping done?</string>
+    <string name="discard_rotate_message">Are you sure you want to discard the rotation changes?</string>
+    <string name="discard_text_message">Are you sure you want to discard the added text?</string>
+    <string name="discard_paint_message">Are you sure you want to discard the added paint?</string>
+    <string name="move">Do you want to replace these files or make more copies of them?</string>
+    <string name="discard_frame_mode_message">Are you sure you want to discard the added frame?</string>
+    <string name="description_deleted">Description Deleted</string>
+    <string name="description_updated">Description Updated</string>
+    <string name="description_saved">Description Saved</string>
 
     <!-- ITEMS -->
     <string name="singular_photo">Photo</string>
@@ -512,7 +670,7 @@
     <string name="video_player">Video Player</string>
     <string name="media">Media</string>
     <string name="send_to">Send to</string>
-    <string name="search_menu">search</string>
+    <string name="search_menu">Search</string>
     <string name="full_resolution">Full resolution</string>
     <string name="of">of</string>
 
@@ -530,9 +688,16 @@
     <string name="quality">Quality</string>
 
 
+    <!-- MULTI COLUMN -->
+    <string name="poitrait">Portrait</string>
+    <string name="landscape">Landscape</string>
+    <string name="folder_column">Folders columns</string>
+    <string name="media_column">Media columns</string>
+
     <!-- RANDOM -->
     <string name="done">Done!</string>
     <string name="there_is_nothing_to_show">There\'s nothing to show!</string>
+    <string name="null_search_result">No search result found for</string>
     <string name="insert_a_name">Insert something</string>
     <string name="nothing_changed">Nothing changed!</string>
     <string name="install_shortcut">Install shortcut</string>
@@ -542,28 +707,38 @@
     <string name="folder">Folder</string>
     <string name="color_palette">Color Palette</string>
     <string name="app_intro_skip">Introduction Skipped!</string>
+    <string name="preference_BottomNavColor">Get Bottom Navigation Bar Color</string>
 
     <!-- SECURITY-->
     <string name="security">Security</string>
     <string name="active_security">Access by password</string>
     <string name="password">Password</string>
+    <string name="enter_password">Enter your password</string>
     <string name="confirm_password">Confirm password</string>
     <string name="wrong_password">Wrong password</string>
+    <string name="show_password">Show Password</string>
 
     <string name="type_password">Insert password</string>
+    <string name="change_password">Change password</string>
+    <string name="set_passowrd">There is no password set. Please set a password first.</string>
     <string name="type_description">Description</string>
     <string name="Rename">Rename</string>
     <string name="type_caption">Write something</string>
     <string name="hint_caption">Add caption</string>
     <string name="security_sub">Set up a password to protect your media.</string>
     <string name="camera_sub">Manage camera settings.</string>
-    <string name="remember_password_message">Note: password changed, if you forget it you will have to clear application data.</string>
+    <string name="remember_password_message">Note: password changed, if you forget it you will have to clear application
+        data.
+    </string>
 
     <string name="apply_password_on">Use password for</string>
 
     <string name="fingerprint">Fingerprint</string>
     <string name="clear_password">Clear Password</string>
     <string name="error_password_length">The minimum password length is 4 character</string>
+    <string name="error_password_match">New password matches to the previous password. Please set another password.
+    </string>
+    <string name="max_password_length">The password length cannot be more than 10 characters</string>
 
     <!-- SETTINGS -->
     <string name="settings">Settings</string>
@@ -587,13 +762,16 @@
     <string name="picture_orientation">Force use of accelerometer</string>
     <string name="picture_orientation_sub">Rotate even when auto rotate is locked</string>
     <string name="apply_theme">Apply Theme</string>
+    <string name="accent_primary_same_mssg">Do you want to set accent color same as the primary color?</string>
     <string name="apply_theme_sub">Apply custom color on the picture viewer.</string>
     <string name="transparency">Transparency</string>
     <string name="transparency_sub">Set the grade of transparency</string>
     <string name="delay_load_full_size_image">Delay loading of full-size images</string>
     <string name="load_full_image_when_zoom_in">Load full image when zoomed in</string>
     <string name="media_viewer_swipe_direction">Swipe Direction</string>
-    <string name="media_viewer_swipe_direction_sub">Change the swipe direction of the media viewer.(Default: Left to Right)</string>
+    <string name="media_viewer_swipe_direction_sub">Change the swipe direction of the media viewer.(Default: Left to
+        Right)
+    </string>
 
     <string name="theme">Theme</string>
     <string name="primary_color">Primary Color</string>
@@ -615,22 +793,25 @@
     <string name="address_copied">Address copied to clipboard</string>
     <string name="coming_soon">Coming Soon!</string>
 
-    <string name="share_phimpme">Share Phimpme</string>
+    <string name="share_phimpme">Share Phimp.me</string>
 
     <!--Invitation-->
-    <string name="install_phimpme">Download the best image application to make your moments more memorable by clicking, editing, sharing images with friends on social media, all at one place.</string>
+    <string name="install_phimpme">Download the best image application to make your moments more memorable by clicking,
+        editing, sharing images with friends on social media, all at one place.
+    </string>
     <string name="invitation_deep_link">Download Now: https://nz2sh.app.goo.gl/jTpt</string>
 
 
     <!--ABOUT STRINGS-->
     <string name="about">About</string>
     <string name="about_version">Version</string>
+    <string name="connect_to_us">Connect to us</string>
 
-    <string name="about_license"> License</string>
-    <string name="about_license_sub">Check GNU GENERAL PUBLIC License terms used on Phimpme.</string>
+    <string name="about_license">License</string>
+    <string name="about_license_sub">Check GNU GENERAL PUBLIC License terms used on Phimp.me.</string>
 
     <string name="about_library_license">Library Licenses</string>
-    <string name="about_library_license_sub">Check third-party libs used on Phimpme.</string>
+    <string name="about_library_license_sub">Check third-party libs used on Phimp.me.</string>
 
     <string name="about_authors">Authors</string>
     <string name="about_author_donald_description">
@@ -657,28 +838,61 @@
 
     </string>
 
+    <string name="about_fb_connect">Facebook</string>
+    <string name="about_fb_connect_sub">Connect to us on Facebook.</string>
+    <string name="about_twitter_connect">Twitter</string>
+    <string name="about_twitter_connect_sub">Follow us on Twitter.</string>
+    <string name="about_website_connect">Phimp.me</string>
+    <string name="about_website_connect_sub">Visit our website here.</string>
+
 
     <string name="about_support_report_bug">Report bug</string>
     <string name="about_support_report_bug_sub">Report bug or request new features.</string>
 
     <string name="about_support_rate">Rate Us</string>
-    <string name="about_support_rate_sub">Leave us a positive rating if you like Phimpme.</string>
+    <string name="about_support_rate_sub">Leave us a positive rating if you like Phimp.me.</string>
 
     <string name="about_support_github">GitHub</string>
     <string name="about_support_github_sub">Fork the repo and push changes or submit new issues.</string>
 
     <!--PHOTO DETAILS-->
     <string name="path">Path</string>
+    <string name="details_title">Title</string>
     <string name="type">Type</string>
     <string name="resolution">Resolution</string>
     <string name="exif">EXIF</string>
     <string name="device">Device</string>
     <string name="orientation">Orientation</string>
     <string name="location">Location</string>
+    <string name="no_description">No description added.</string>
+    <string name="no_location">No location</string>
+    <string name="no_exif_data">No data found.</string>
+
+    <!-- UPLOAD HISTORY STRINGS-->
+    <string name="last_first">Last first</string>
+    <string name="latest_first">Latest first</string>
+    <string name="delete_all_title">Clear Upload History</string>
+    <string name="delete_all_message">Are you sure you want to delete all the items from the upload history
+        section?</string>
+    <string name="upload_view_choice">UploadViewDisplay</string>
+
+    <!--ALBUM DETAILS-->
+    <string name="total_photos">Total photos:</string>
+    <string name="hidden">Hidden:</string>
+    <string name="type_content">Type:</string>
+    <string name="folder_path">Path:</string>
+    <string name="type_folder">Type:</string>
+    <string name="folder_name">Name:</string>
+    <string name="writable">Writable:</string>
+    <string name="readable">Readable:</string>
+    <string name="size_folder">Size:</string>
+    <string name="modified">Last Modified:</string>
+    <string name="parent_path">Parent:</string>
 
     <!--DRAWER ITEMS -->
     <string name="local_folder">Local Folders</string>
     <string name="hidden_folder">Hidden Folders</string>
+    <string name="favourite_folder">Favourites</string>
     <string name="tags">Tags</string>
     <string name="timeline">Timeline</string>
     <string name="wallpapers">Wallpapers</string>
@@ -695,7 +909,9 @@
     <string name="error_drm_not_supported">Protected content is supported on Android 4.3 or later</string>
     <string name="error_drm_unsupported_scheme">This device does not support the required DRM scheme</string>
     <string name="error_drm_unknown">An unknown DRM error occurred</string>
-    <string name="storage_permission_denied">Permission to access storage was denied!\n I\'m not able to get your images!</string>
+    <string name="storage_permission_denied">Permission to access storage was denied!\n I\'m not able to get your
+        images!
+    </string>
     <string name="error_querying_decoders">Unable to query device decoders</string>
     <string name="unable_to_fix_date">Unable to fix date</string>
     <string name="compression_settings">Compression settings</string>
@@ -717,7 +933,8 @@
     <string name="got_permission_wr_sdcard">Obtained permission to write on the SD-Card.</string>
     <string name="use_mediastore_provider">Alternative media provider</string>
     <string name="use_media_store_sub">If you miss some folders or if you have any issue
-        with the albums enable this option</string>
+        with the albums enable this option
+    </string>
     <string name="multi_column">Multi column</string>
     <string name="multi_column_sub">Chose how many columns you want for your folders and media
     </string>
@@ -728,11 +945,12 @@
     <string name="new_file_created">new file created</string>
     <string name="sub_scaling_image_view">Sub-Scaling Image View</string>
     <string name="sub_scaling_image_view_sub">
-        (TESTING) It allows you to have a better zoom management and a clear image but it isn\'t
-        really optimized right now
+        (TESTING) It allows you to have a better zoom management and a clear image but it isn\'t really optimized right now.
     </string>
     <string name="about_support">Support Development</string>
-    <string name="about_fossasia">Developed by <a href="http://fossasia.org/"> FOSSASIA</a> <a href="https://github.com/fossasia/phimpme-android/graphs/contributors">contributors</a>.</string>
+    <string name="about_fossasia">Developed by <a href="http://fossasia.org/">FOSSASIA</a>
+        <a href="https://github.com/fossasia/phimpme-android/graphs/contributors">contributors</a>.
+    </string>
     <string name="title_activity_accounts">AccountsActivity</string>
 
     <!--EDITING IMAGE-->
@@ -749,7 +967,9 @@
     <string name="materialcolorpicker__errHex">Hex Code Format incorrect</string>
     <string name="materialcolorpicker__inputColor">Color:</string>
     <string name="materialcolorpicker__btnSelectColor">Select</string>
-    <string name="saving_image">save...</string>
+    <string name="saving_image">Saving...</string>
+    <string name="image_saved">Saved!</string>
+    <string name="share_image">Share this with others?</string>
     <string name="input_hint">input text ...</string>
 
     <string name="no_choose">please choose a image for edit</string>
@@ -757,8 +977,8 @@
     <string name="save_error">Save error!</string>
 
     <string name="tune">Tune</string>
-    <string name="exit_without_save">The edited image is not saved. Do you want to exit? </string>
-    <string name="exit_without_edit">Do you want to exit without Editing? </string>
+    <string name="exit_without_save">The edited image is not saved. Do you want to exit?</string>
+    <string name="exit_without_edit">Do you want to exit without Editing?</string>
     <string name="confirm">confirm</string>
     <string name="applying">applying</string>
     <string name="action_add_account">Add Account</string>
@@ -769,12 +989,12 @@
     <string name="sticker">Stickers</string>
     <string name="enhance">Enhance</string>
     <string name="transform">Transform</string>
+    <string name="frame">Frame</string>
     <string name="write">Write</string>
     <string name="share">share</string>
 
     <!--ACCOUNTS-->
     <!--TWITTER-->
-    <!--add consumer key and secret key below-->
     <string name="already_signed_in">Already signed In</string>
     <string name="drawable">drawable</string>
     <string name="color">color</string>
@@ -789,11 +1009,11 @@
 
     <!--App shortcuts-->
     <string name="camera_short">Camera</string>
-    <string name="camera_long">Opens Phimpme Camera</string>
+    <string name="camera_long">Opens Phimp.me Camera</string>
     <string name="home_short">Gallery</string>
-    <string name="home_long">Opens Phimpme Gallery</string>
+    <string name="home_long">Opens Phimp.me Gallery</string>
     <string name="account_short">Accounts</string>
-    <string name="account_long">Opens Phimpme Account</string>
+    <string name="account_long">Opens Phimp.me Account</string>
 
     <!--All photos-->
     <string name="all_photos">All_photos</string>
@@ -808,9 +1028,11 @@
     <string name="facebook">Facebook</string>
     <string name="instagram">Instagram</string>
     <string name="wordpress">Wordpress</string>
+    <string name="snapchat">Snapchat</string>
     <string name="flickr">Flickr</string>
     <string name="pinterest">Pinterest</string>
     <string name="nextcloud">NextCloud</string>
+    <string name="whatsapp">Whatsapp</string>
     <string name="other">Other</string>
     <string name="box">Box</string>
     <string name="exit">Exit</string>
@@ -819,23 +1041,26 @@
     <string name="sign_out_dialog_title">Sign Out !</string>
     <string name="yes_action">Yes</string>
     <string name="no_action">No</string>
-    <string name="sign_out_dialog_message">Do you want to sign out from </string>
+    <string name="sign_out_dialog_message">Do you want to sign out from</string>
     <string name="no_account_signed_in">No account signed in</string>
+    <string name="please_sign_into">Please sign in to</string>
+    <string name="from_account_manager">from account manager</string>
     <string name="loading_numeric">Loading</string>
     <string name="loading_numeric_all">All Photos</string>
+
     <!--Share to Twitter-->
     <string name="post_image">Post Image</string>
     <string name="post_tweet">Post Tweet</string>
     <string name="twitter">Twitter</string>
 
     <!-- loading messages -->
-    <string name="please_wait_title"> Please wait </string>
-    <string name="authenticating_your_app_message"> Authenticating your app... </string>
-    <string name="posting_image_message"> Uploading image on twitter... </string>
-    <string name="posting_tweet_message"> Posting tweet on twitter... </string>
+    <string name="please_wait_title">Please wait</string>
+    <string name="authenticating_your_app_message">Authenticating your app...</string>
+    <string name="posting_image_message">Uploading image on twitter...</string>
+    <string name="posting_tweet_message">Posting tweet on twitter...</string>
 
     <!-- toast -->
-    <string name="tweet_posted_on_twitter"> Image posted on twitter successfully. </string>
+    <string name="tweet_posted_on_twitter">Image posted on twitter successfully.</string>
     <string name="error_on_posting_twitter">Some error occur while posting on twitter.</string>
     <string name="instagram_not_installed">Instagram is not installed</string>
     <string name="whatsapp_not_installed">Whatsapp is not installed</string>
@@ -846,6 +1071,8 @@
     <string name="feature_not_present">Feature not present</string>
     <string name="sharedrupal">Drupal Account</string>
     <string name="drupal_link">Account not found</string>
+    <string name="empty_folder_name">Folder name cannot be empty</string>
+    <string name="folder_name_exists">Folder name already exists</string>
 
     <!--Imgur -->
     <string name="imgur">Imgur</string>
@@ -876,11 +1103,12 @@
     <string name="ready">ready</string>
     <string name="go">go</string>
     <string name="take">take it</string>
-    <string name="ok">ok</string>
+    <string name="ok">OK</string>
     <string name="cheese">cheese</string>
     <string name="say_cheese">say cheese</string>
     <string name="camera_rear">Rear Camera</string>
     <string name="camera_front">Front Camera</string>
+
     <!--NEXTCLOUD-->
     <string name="auth_check_server">Check server</string>
     <string name="auth_host_url">Server address https://…</string>
@@ -900,6 +1128,7 @@
     <string name="auth_unauthorized">Wrong username or password</string>
     <string name="auth_oauth_error">Unsuccessful authorization</string>
     <string name="auth_host_address">Server address</string>
+
     <!--Wordpress-->
     <string name="sharewordpress">Wordpress Account</string>
 
@@ -912,7 +1141,9 @@
     <string name="pinterest_signIn_fail">Failed to sign in Pinterest</string>
     <string name="sign_In">SIGN IN</string>
     <string name="pinterest_board_message">Get your Pinterest Board ID from the LINK</string>
-    <string name="Pinterest_link">&lt;a href=https://www.nutt.net/how-do-i-get-pinterest-board-id/> Get Board ID from the LINK</string>
+    <string name="Pinterest_link">&lt;a href=https://www.nutt.net/how-do-i-get-pinterest-board-id/ &lt; Get Board ID from
+        the LINK
+    </string>
     <string name="placeholder_sentence">This is a placeholder</string>
     <string name="auth_trying_to_login"><![CDATA[Trying to log in &#8230;]]></string>
     <string name="welcome_link_url">https://nextcloud.com/providers</string>
@@ -925,7 +1156,8 @@
     <string name="todo_operation_finished_in_success">File uploaded successfully</string>
     <string name="todo_operation_finished_in_fail">TODO: operation finished in fail</string>
 
-    <string name="error_copying_sample_file">Sample file could not be saved in temporal folder; upload will not work</string>
+    <string name="error_copying_sample_file">Sample file could not be saved in temporal folder; upload will not work
+    </string>
     <string name="sample_file_name">oc_sample.png</string>
     <string name="sample_file_mimetype">image/png</string>
     <string name="error_deleting_local_file">Downloaded file could not be deleted</string>
@@ -946,6 +1178,16 @@
 
     <string name="image_type">image/*</string>
 
+    <!--OneDrive-->
+    <string name="uploaded_onedrive">Uploaded to One Drive</string>
+    <string name="login_onedrive_from_accounts">Login to OneDrive from Accounts Manager</string>
+    <string name="onedrive_share">OneDrive</string>
+
+    <!--GoogleDrive-->
+    <string name="uploaded_googledrive">Uploaded to Google Drive</string>
+    <string name="login_googledrive_account">Login to Google Drive From Accounts</string>
+    <string name="googledrive_share">Google Drive</string>
+
     <!--Google+-->
     <string name="success_google">Image uploaded successfully on Google+</string>
     <string name="error_google">An error occurred while uploading</string>
@@ -957,11 +1199,11 @@
     <string name="upload_failed">Upload failed</string>
     <string name="login_box">Login to Box from Account Manager</string>
 
-    <!--TUmblr-->
+    <!--Tumblr-->
     <string name="logged_in_tumblr">Tumblr account logged in successfully.</string>
     <string name="tumblr">Tumblr</string>
     <string name="posting_tumblr">Posting to Tumblr</string>
-    <string name="posted_on_tumblr"> Image posted on Tumblr successfully. </string>
+    <string name="posted_on_tumblr">Image posted on Tumblr successfully.</string>
     <string name="error_on_tumblr">Error on uploading on Tumblr</string>
 
 
@@ -973,10 +1215,10 @@
     <string name="facebook_image_posted">Image posted on Facbook</string>
     <string name="logged_in_facebook">Facebook account logged in successfully.</string>
 
+    <!--Connection Alerts-->
     <string name="retry_upload">Retry</string>
     <string name="upload_failed_retry_box">Upload failed! Rename and try again</string>
     <string name="text_color_title">Text Color</string>
-
     <string name="connection_failed">Connection Failed</string>
     <string name="authorization_failed">Authorization Failed</string>
     <string name="account_logged_pinterest">Pinterest account Logged in Successfully</string>
@@ -988,11 +1230,15 @@
     <string name="auth_failed">Authorization failed</string>
     <string name="image_invalid">Invalid Image</string>
 
+    <!--Captioning-->
+    <string name="caption">Caption</string>
     <string name="caption_head">Add Caption</string>
     <string name="add_action">ADD</string>
     <string name="speech_prompt">Describe the photo</string>
     <string name="speech_prompt_caption">Say something</string>
     <string name="discard_changes_header">Discard Changes</string>
+    <string name="copy_caption">Do you want to copy caption?</string>
+    <string name="caption_copied">Caption copied!</string>
 
     <!--Showcase View-->
     <string name="home_button">Find all your photos in the device</string>
@@ -1002,8 +1248,84 @@
     <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input.</string>
     <string name="paint_color_title">Paint Color</string>
     <string name="upload_history">Upload History</string>
+    <string name="trash_bin">Trash Bin</string>
     <string name="toggle_button">Toggle Button</string>
     <string name="empty_upload_msg">You haven\'t shared anything.</string>
+    <string name="empty_trashbin_mssg">No Items present currently</string>
+    <string name="trashbin_mssg">Only images deleted in the Phimpme Android app are present here.</string>
     <string name="install_facebook">Facebook not installed</string>
+    <string name="restart_app">Please restart the app for better results!</string>
+    <string name="press_back_again_to_exit">Press back again to exit</string>
+    <string name="photos_moved_successfully">Photos moved successfully</string>
+    <string name="photo_moved_successfully">Photo moved successfully</string>
+    <string name="copied_successfully">Copied successfully</string>
+    <string name="photos_already_there">All photos are already there in the folder</string>
+    <string name="no_changes_made">No Changes Made!</string>
+    <string name="transition_photo">transition_photo</string>
+    <string name="date_text">Date: " "</string>
+    <string name="time_text">Time: " "</string>
+    <string name="text_view">TextView</string>
+    <string name="version_one">v1.0</string>
 
+    <!-- Links -->
+    <string name="contributors_link">https://github.com/fossasia/phimpme-android/graphs/contributors</string>
+    <string name="phimpme_github">https://github.com/fossasia/phimpme-android</string>
+    <string name="phimpme_github_issues">https://github.com/fossasia/phimpme-android/issues</string>
+    <string name="opencamera_sourceforge">http://opencamera.sourceforge.net/</string>
+    <string name="leafpic_github">https://github.com/HoraApps/LeafPic</string>
+    <string name="phimpme_license">https://github.com/fossasia/phimpme-android/blob/master/LICENSE.md</string>
+    <string name="glide_github">http://github.com/bumptech/glide</string>
+    <string name="ion_github">http://github.com/koush/ion</string>
+    <string name="android_iconics_github">http://github.com/mikepenz/Android-Iconics</string>
+    <string name="appintro_github">http://github.com/PaoloRotolo/AppIntro</string>
+    <string name="ucrop_github">http://github.com/Yalantis/uCrop</string>
+    <string name="shiftcolorpicker_github">http://github.com/DASAR/ShiftColorPicker</string>
+    <string name="photoview_github">http://github.com/chrisbanes/PhotoView</string>
+    <string name="circleimageview_github">https://github.com/hdodenhof/CircleImageView</string>
+    <string name="horizontalwheelview_github">https://github.com/shchurov/HorizontalWheelView</string>
+
+    <string name="version_title">Version:</string>
+    <string name="error_title">Error:</string>
+    <string name="glide">Glide</string>
+    <string name="ion">Ion</string>
+    <string name="android_iconics">Android-Iconics</string>
+    <string name="appintro">AppIntro</string>
+    <string name="ucrop">uCrop</string>
+    <string name="shiftcolorpicker">ShiftColorPicker</string>
+    <string name="photoview">PhotoView</string>
+    <string name="circleimageview">CircleImageView</string>
+    <string name="horizontalwheelview">HorizontalWheelView</string>
+
+    <!-- Copyright notices -->
+    <string name="copyright_2014_google">Copyright 2014 Google, Inc. All rights reserved.</string>
+    <string name="copyright_2013_koushik_dutta">Copyright 2013 Koushik Dutta (2013)</string>
+    <string name="copyright_2016_mike_penz">Copyright 2016 Mike Penz</string>
+    <string name="copyright_2015_paolo_rotolo">Copyright 2015 Paolo Rotolo</string>
+    <string name="copyright_2016_maximilian_narr">Copyright 2016 Maximilian Narr</string>
+    <string name="copyright_2016_yolantis">Copyright 2016, Yalantis</string>
+    <string name="copyright_2015_bogdasarov_bogdan">Copyright (c) 2015 Bogdasarov Bogdan</string>
+    <string name="copyright_2011_2012_chris_banes">Copyright 2011, 2012 Chris Banes</string>
+    <string name="copyright_2014_2015_henning_dodenhof">Copyright 2014 - 2015 Henning Dodenhof</string>
+    <string name="copyright_2016_mykhailo_schurov">Copyright 2016 Mykhailo Shchurov</string>
+
+    <string name="move_all_photos">All the photos will be moved to the selected folder. Do you wish to continue?</string>
+    <string name="moved_target_folder_success">Moved to target folder successfully.</string>
+
+    <string name="no_favourites_text">There are no favourites presently. To mark a picture as favourite, select the
+        picture and tap on \"Add to Favourites\" from the overflow menu.
+    </string>
+
+    <string name="make_copies">Make copies</string>
+    <string name="replace">Replace</string>
+
+    <string name="select_a_font">Select a Font</string>
+
+    <!-- Photo deletion toast messages -->
+    <string name="photo_deleted_msg">Photo deleted</string>
+    <string name="photo_deleted_from_fav_msg">Photo deleted from favourites</string>
+    <string name="photo_deletion_failed">Photo deletion failed</string>
+    <string name="remove">Remove</string>
+    <string name="remove_from_favourites">Remove From Favourites</string>
+    <string name="remove_favourites_body">Are you sure you want to remove the selected media from the favourites folder?
+    </string>
 </resources>
