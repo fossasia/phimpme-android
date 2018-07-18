@@ -52,7 +52,7 @@
                     android:layout_height="35dp"
                     android:background="@color/colorPrimary"
                     android:padding="5dp"
-                    android:text="by size"
+                    android:text="@string/by_size"
                     android:textColor="@color/accent_white" />
 
                 <Button
@@ -62,7 +62,7 @@
                     android:layout_marginLeft="15dp"
                     android:background="@color/colorPrimary"
                     android:padding="5dp"
-                    android:text="by dimensions"
+                    android:text="@string/by_dimensions"
                     android:textColor="@color/accent_white" />
 
             </LinearLayout>
