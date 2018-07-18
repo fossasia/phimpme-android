@@ -15,7 +15,7 @@
         <FrameLayout
             android:id="@+id/preview"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:layout_centerInParent="true"/>
 
@@ -23,7 +23,6 @@
             android:id="@+id/take_photo"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:contentDescription="@string/take_photo"
             android:onClick="clickedTakePhoto"
@@ -37,7 +36,7 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="15dp"
             android:padding="10dp"
-            app:iiv_icon="faw-filter"/>
+            app:iiv_icon="gmd_photo_filter"/>
 
 
         <SeekBar
@@ -90,7 +89,8 @@
             android:onClick="clickedSwitchCamera"
             android:padding="10dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/switch_camera"/>
+            android:background="@color/black"
+            app:srcCompat="@drawable/ic_switch_camera_white_48dp"/>
 
         <ImageButton
             android:id="@+id/audio_control"
@@ -245,27 +245,30 @@
             android:id="@+id/prefs_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true"
+            android:layout_alignBottom="@+id/preview"/>
 
         <FrameLayout
             android:id="@+id/locker"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/preview"/>
 
         <ScrollView
             android:id="@+id/popup_container"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
         <ScrollView
             android:id="@+id/hide_container"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_alignBottom="@+id/preview"/>
     </RelativeLayout>
 
     <include
         layout="@layout/element_bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp"/>
+        android:layout_marginBottom="0dp" />
 </LinearLayout>

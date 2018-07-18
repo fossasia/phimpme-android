@@ -1,5 +1,5 @@
-Fix #[Add issue number here. If you do not solve the issue entirely, please change the message e.g. "First steps for issues #IssueNumber]
+Fixed #[Add issue number here. If you do not solve the issue entirely, please change the message e.g. "First steps for issues #IssueNumber]
 
-Changes: [Add here what changes were made in this issue and if possible provide links.]
+Changes: [Mention the files changed in the PR. Add here what changes were made in this issue and if possible provide links(Deploy/Preview Link).]
 
-Screenshots for the change: 
+Screenshots of the change: 

@@ -55,8 +55,47 @@ extern "C" {
             case 11:
                 applyThreshold(src, dst, val);
                 break;
-
+            case 12:
+                applyNegative(src,dst,val);
+                break;
+            case 13:
+                applyGreenBoostEffect(src,dst,val);
+                break;
+            case 14:
+                applyBoostRedEffect(src,dst,val);
+                break;
+            case 15:
+                applyBlueBoostEffect(src,dst,val);
+                break;
+            case 16:
+                applyColorBoostEffect(src,dst,val);
+                break;
+            case 17:
+                applyCyanise(src,dst,val);
+                break;
+            case 18:
+                applyFade(src,dst,val);
+                break;
+            case 19:
+                applyCartoon(src, dst, val);
+                break;
+            case 20:
+                applyEdgify(src, dst, val);
+                break;
+            case 21:
+                applyPencilSketch(src, dst, val);
+                break;
+            case 22:
+                applyRedBlueEffect(src,dst,val);
+                break;
+            case 23:
+                applyRedGreenFilter(src,dst,val);
+                break;
+            case 24:
+                applyWhiteYellowTint(src, dst, val);
+                break;
             default:
+
                 int lowThreshold = val;
                 int ratio = 3;
                 int kernel_size = 3;
@@ -114,6 +153,12 @@ extern "C" {
                 break;
             case 7:
                 adjustSharpness(src, dst, val);
+                break;
+            case 8:
+                adjustBlur(src, dst, val);
+                break;
+            case 9:
+                applyGammaEffect(src, dst, val);
                 break;
             default:
                 break;
