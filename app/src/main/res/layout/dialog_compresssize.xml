@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     app:cardCornerRadius="2dp"
     android:id="@+id/dialog_chose_provider_title">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,9 +16,8 @@
             android:id="@+id/compress_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
             android:padding="24dp"
-            android:text="Compress to Size"
+            android:text="@string/compress_by_size"
             android:textColor="@color/md_dark_primary_text"
             android:textSize="18sp"
             android:textStyle="bold" />
