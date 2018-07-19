@@ -100,6 +100,7 @@ import org.fossasia.phimpme.gallery.util.SecurityHelper;
 import org.fossasia.phimpme.gallery.util.StringUtils;
 import org.fossasia.phimpme.gallery.views.CustomScrollBarRecyclerView;
 import org.fossasia.phimpme.gallery.views.GridSpacingItemDecoration;
+import org.fossasia.phimpme.trashbin.TrashBinActivity;
 import org.fossasia.phimpme.uploadhistory.UploadHistory;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.Constants;
@@ -141,7 +142,7 @@ public class LFMainActivity extends SharedMediaActivity {
     private LFMainActivity activityContext;
     private int REQUEST_CODE_SD_CARD_PERMISSIONS = 42;
     private static final int BUFFER = 80000;
-    private boolean about = false, settings = false, uploadHistory = false, favourites = false;
+    private boolean about = false, settings = false, uploadHistory = false, favourites = false, trashbin = false;
     private CustomAlbumsHelper customAlbumsHelper = CustomAlbumsHelper.getInstance(LFMainActivity.this);
     private PreferenceUtil SP;
     private SecurityHelper securityObj;
@@ -205,6 +206,8 @@ public class LFMainActivity extends SharedMediaActivity {
     protected TextView drawerRateText;
     @BindView(R.id.Drawer_Upload_Item)
     protected TextView drawerUploadText;
+    @BindView(R.id.Drawer_TrashBin_Item)
+    protected TextView drawerTrashText;
     @BindView(R.id.Drawer_Setting_Icon)
     protected IconicsImageView drawerSettingIcon;
     @BindView(R.id.Drawer_About_Icon)
@@ -215,6 +218,8 @@ public class LFMainActivity extends SharedMediaActivity {
     protected IconicsImageView drawerRateIcon;
     @BindView(R.id.Drawer_Upload_Icon)
     protected IconicsImageView drawerUploadIcon;
+    @BindView(R.id.Drawer_trashbin_Icon)
+    protected IconicsImageView drawerTrashIcon;
     @BindView(R.id.drawer_scrollbar)
     protected ScrollView scrollView;
     @BindView(R.id.appbar_toolbar)
@@ -1123,6 +1128,10 @@ public class LFMainActivity extends SharedMediaActivity {
                 } else if (favourites) {
                     displayfavourites();
                     favourites = false;
+                } else if (trashbin) {
+                    Intent intent1 = new Intent(LFMainActivity.this, TrashBinActivity.class);
+                    startActivity(intent1);
+                    trashbin = false;
                 }
             }
 
@@ -1290,8 +1299,7 @@ public class LFMainActivity extends SharedMediaActivity {
         findViewById(R.id.Drawer_Body).setBackgroundColor(getDrawerBackground());
         findViewById(R.id.drawer_scrollbar).setBackgroundColor(getDrawerBackground());
         findViewById(R.id.Drawer_Body_Divider).setBackgroundColor(getIconColor());
-
-        /** TEXT VIEWS **/
+/** TEXT VIEWS **/
         int color = getTextColor();
         defaultText.setTextColor(color);
         drawerSettingText.setTextColor(color);
@@ -1300,17 +1308,17 @@ public class LFMainActivity extends SharedMediaActivity {
         drawerShareText.setTextColor(color);
         drawerRateText.setTextColor(color);
         drawerUploadText.setTextColor(color);
+        drawerTrashText.setTextColor(color);
         ((TextView) findViewById(R.id.Drawer_Default_Item)).setTextColor(color);
         ((TextView) findViewById(R.id.Drawer_Setting_Item)).setTextColor(color);
-
         ((TextView) findViewById(R.id.Drawer_About_Item)).setTextColor(color);
         ((TextView) findViewById(R.id.Drawer_hidden_Item)).setTextColor(color);
         ((TextView) findViewById(R.id.Drawer_share_Item)).setTextColor(color);
         ((TextView) findViewById(R.id.Drawer_rate_Item)).setTextColor(color);
         ((TextView) findViewById(R.id.Drawer_Upload_Item)).setTextColor(color);
+        ((TextView) findViewById(R.id.Drawer_TrashBin_Item)).setTextColor(color);
         ((TextView) findViewById(R.id.Drawer_favourite_Item)).setTextColor(color);
-
-        /** ICONS **/
+/** ICONS **/
         color = getIconColor();
         defaultIcon.setColor(color);
         drawerSettingIcon.setColor(color);
@@ -1319,15 +1327,15 @@ public class LFMainActivity extends SharedMediaActivity {
         drawerShareIcon.setColor(color);
         drawerRateIcon.setColor(color);
         drawerUploadIcon.setColor(color);
+        drawerTrashIcon.setColor(color);
         favicon.setColor(color);
-
-        // Default setting
+// Default setting
         if (localFolder)
             findViewById(R.id.ll_drawer_Default).setBackgroundColor(getHighlightedItemColor());
         else
             findViewById(R.id.ll_drawer_hidden).setBackgroundColor(getHighlightedItemColor());
-
         tint();
+
         findViewById(R.id.ll_drawer_Setting).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1360,6 +1368,15 @@ public class LFMainActivity extends SharedMediaActivity {
             }
         });
 
+        findViewById(R.id.ll_drawer_trashbin).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                trashbin = true;
+                mDrawerLayout.closeDrawer(GravityCompat.START);
+                //toolbar.setTitle("Trash Bin");
+            }
+        });
+
         findViewById(R.id.ll_drawer_Default).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1373,6 +1390,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 new PrepareAlbumTask(activityContext).execute();
             }
         });
+
         findViewById(R.id.ll_drawer_hidden).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1447,6 +1465,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 mDrawerLayout.closeDrawer(GravityCompat.START);
             }
         });
+
         findViewById(R.id.ll_rate_phimpme).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -2103,7 +2122,9 @@ public class LFMainActivity extends SharedMediaActivity {
                 if(fav_photos && !all_photos)
                     AlertDialogsHelper.getTextDialog(this, deleteDialog, R.string.remove_from_favourites, R.string.remove_favourites_body, null);
                 else
-                    AlertDialogsHelper.getTextDialog(this, deleteDialog, R.string.delete, albumsMode || !editMode ? R.string.delete_album_message : R.string.delete_photos_message, null);
+                    AlertDialogsHelper.getTextCheckboxDialog(this, deleteDialog, R.string.delete, albumsMode || !editMode ?
+                    R.string.delete_album_message :
+                    R.string.delete_photos_message, null, "Move to Trashbin", getAccentColor());
 
                 deleteDialog.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
                 deleteDialog.setPositiveButton(fav_photos && !all_photos ? getString(R.string.remove).toUpperCase() : getString(R.string.delete).toUpperCase(), new DialogInterface.OnClickListener() {
@@ -2163,7 +2184,13 @@ public class LFMainActivity extends SharedMediaActivity {
                                     }
                                 }
                             });
-                        } else new DeletePhotos().execute();
+                        } else {
+                            if(AlertDialogsHelper.check){
+                                Log.i("lalalalala", "lkl");
+                            }else{
+                                new DeletePhotos().execute();
+                            }
+                        }
                     }
                 });
                 AlertDialog alertDialogDelete = deleteDialog.create();
@@ -3036,7 +3063,7 @@ public class LFMainActivity extends SharedMediaActivity {
         }
     }
 
-    private Bitmap getBitmap(String path) {
+    public Bitmap getBitmap(String path) {
 
         Uri uri = Uri.fromFile(new File(path));
         InputStream in = null;
