@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.fossasia.phimpme"
-    android:versionCode="6"
-    android:versionName="1.2.0">
+          package="org.fossasia.phimpme"
+          android:versionCode="6"
+          android:versionName="1.2.0">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -33,26 +33,10 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="demotwitterlogin"
-                    android:scheme="x-demo-twitter" />
+                    android:host="http"
+                    android:scheme="phimp.me" />
             </intent-filter>
         </activity>
-
-        <!--
-        <activity
-            android:name="com.dropbox.client2.android.AuthActivity"
-            android:launchMode="singleTask"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:configChanges="orientation|keyboard">
-            <intent-filter>
-                &lt;!&ndash; Change this to be db- followed by your app key &ndash;&gt;
-                <data android:scheme="db-APP_KEY" />
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        -->
 
         <activity
             android:name=".opencamera.Camera.CameraActivity"
@@ -391,6 +375,8 @@
             android:value="78c6ec5c18fcd10ffbfd28ae038f3311f2763889" />
 
         <activity android:name=".editor.CompressImageActivity"></activity>
+        <activity android:name=".trashbin.TrashBinActivity">
+        </activity>
     </application>
 
 </manifest>

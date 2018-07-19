@@ -6,4 +6,10 @@
       android:title="Latest first"
       app:showAsAction="never" />
 
+  <item
+      android:id="@+id/delete_action"
+      android:title="@string/delete"
+      android:icon="@drawable/ic_delete_white_24dp"
+      app:showAsAction="ifRoom" />
+
 </menu>

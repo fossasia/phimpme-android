@@ -688,6 +688,7 @@
         <item>Pencil Sketch</item>
         <item>Violet Tone</item>
         <item>Yellow Enhance</item>
+        <item>Navajo Enhance</item>
     </string-array>
 
     <integer-array name="enhance_icons">
