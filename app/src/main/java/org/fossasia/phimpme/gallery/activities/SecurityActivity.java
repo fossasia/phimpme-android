@@ -42,6 +42,7 @@ import org.fossasia.phimpme.gallery.data.providers.MediaStoreProvider;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
 import org.fossasia.phimpme.gallery.util.PreferenceUtil;
 import org.fossasia.phimpme.gallery.util.SecurityHelper;
+import org.fossasia.phimpme.gallery.util.ThemeHelper;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 
@@ -127,6 +128,7 @@ public class SecurityActivity extends ThemedActivity {
                 if(isChecked) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SecurityActivity.this, getDialogStyle());
                     View view = getLayoutInflater().inflate(R.layout.dialog_security_folder, null);
+                    view.setBackgroundColor(getBackgroundColor());
                     TextView title = (TextView) view.findViewById(R.id.titlesecure);
                     LinearLayout linearLayout = (LinearLayout)view.findViewById(R.id.titlelayout);
                     linearLayout.setBackgroundColor(getAccentColor());
@@ -500,6 +502,7 @@ public class SecurityActivity extends ThemedActivity {
             holder.foldername.setTextColor(getTextColor());
             holder.foldercheckbox.setOnCheckedChangeListener(null);
             holder.foldercheckbox.setChecked(a.getsecured());
+            //holder.foldercheckbox.setButtonTintList();
             holder.foldercheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     if(b){
@@ -525,7 +528,15 @@ public class SecurityActivity extends ThemedActivity {
             public ViewHolder(View itemView) {
                 super(itemView);
                 foldername = (TextView) itemView.findViewById(R.id.foldername);
-                foldercheckbox = (CheckBox) itemView.findViewById(R.id.secure_folder_checkbox);
+                if (getBaseTheme() == ThemeHelper.LIGHT_THEME) {
+                    CheckBox checkBox = (CheckBox) itemView.findViewById(R.id.secure_folder_checkbox_black);
+                    checkBox.setVisibility(View.VISIBLE);
+                    foldercheckbox = (CheckBox) itemView.findViewById(R.id.secure_folder_checkbox_black);
+                } else if (getBaseTheme() == ThemeHelper.DARK_THEME || getBaseTheme() == ThemeHelper.AMOLED_THEME) {
+                    CheckBox checkBox = (CheckBox) itemView.findViewById(R.id.secure_folder_checkbox_white);
+                    checkBox.setVisibility(View.VISIBLE);
+                    foldercheckbox = (CheckBox) itemView.findViewById(R.id.secure_folder_checkbox_white);
+                }
             }
         }
     }
