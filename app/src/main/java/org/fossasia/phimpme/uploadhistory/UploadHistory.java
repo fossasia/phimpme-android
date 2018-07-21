@@ -123,9 +123,9 @@ public class UploadHistory extends ThemedActivity {
         String choiceofdisply = preferenceUtil.getString(getString(R.string.upload_view_choice), getString(R.string
                 .last_first));
         if(choiceofdisply.equals(getString(R.string.last_first))){
-            uploadHistoryAdapter.setResults(loadData(getString(R.string.last_first)));
+            uploadHistoryAdapter.updateUploadListItems(loadData(getString(R.string.last_first)));
         }else if(choiceofdisply.equals(getString(R.string.latest_first))){
-            uploadHistoryAdapter.setResults(loadData(getString(R.string.latest_first)));
+            uploadHistoryAdapter.updateUploadListItems(loadData(getString(R.string.latest_first)));
         }
         setUpUI();
         //uploadHistoryRecyclerView.addOnItemTouchListener(new RecyclerItemClickListner(this, this));
@@ -208,9 +208,9 @@ public class UploadHistory extends ThemedActivity {
                         .last_first));
                 if(uploadHistoryRealmModelRealmQuery.count() != 0){
                     if(choiceofdisply.equals(getString(R.string.last_first))){
-                        uploadHistoryAdapter.setResults(loadData(getString(R.string.last_first)));
+                        uploadHistoryAdapter.updateUploadListItems(loadData(getString(R.string.last_first)));
                     }else if(choiceofdisply.equals(getString(R.string.latest_first))){
-                        uploadHistoryAdapter.setResults(loadData(getString(R.string.latest_first)));
+                        uploadHistoryAdapter.updateUploadListItems(loadData(getString(R.string.latest_first)));
                     }
                 }else {
                     emptyLayout.setVisibility(View.VISIBLE);
@@ -225,7 +225,7 @@ public class UploadHistory extends ThemedActivity {
 
     public void setUpAdapter(@NotNull ArrayList<UploadHistoryRealmModel> accountDetails) {
         this.uploadResults = accountDetails;
-        uploadHistoryAdapter.setResults(uploadResults);
+        uploadHistoryAdapter.updateUploadListItems(uploadResults);
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -365,9 +365,9 @@ public class UploadHistory extends ThemedActivity {
         String choiceofdisply = preferenceUtil.getString(getString(R.string.upload_view_choice), getString(R.string
                 .last_first));
         if(choiceofdisply.equals(getString(R.string.last_first))){
-            uploadHistoryAdapter.setResults(loadData(getString(R.string.last_first)));
+            uploadHistoryAdapter.updateUploadListItems(loadData(getString(R.string.last_first)));
         }else if(choiceofdisply.equals(getString(R.string.latest_first))){
-            uploadHistoryAdapter.setResults(loadData(getString(R.string.latest_first)));
+            uploadHistoryAdapter.updateUploadListItems(loadData(getString(R.string.latest_first)));
         }
         if (uploadHistoryRealmModelRealmQuery.count() == 0) {
             emptyLayout.setVisibility(View.VISIBLE);
@@ -407,7 +407,7 @@ public class UploadHistory extends ThemedActivity {
                 s.commit();
                 runOnUiThread(new Runnable() {
                     @Override public void run() {
-                        uploadHistoryAdapter.setResults(loadData(getString(R.string.latest_first)));
+                        uploadHistoryAdapter.updateUploadListItems(loadData(getString(R.string.latest_first)));
                     }
                 });
             }else if(strings[0].equals(getString(R.string.last_first))){
@@ -416,7 +416,7 @@ public class UploadHistory extends ThemedActivity {
                 s.commit();
                 runOnUiThread(new Runnable() {
                     @Override public void run() {
-                        uploadHistoryAdapter.setResults(loadData(getString(R.string.last_first)));
+                        uploadHistoryAdapter.updateUploadListItems(loadData(getString(R.string.last_first)));
                     }
                 });
             }
