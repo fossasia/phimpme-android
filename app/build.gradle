@@ -78,7 +78,7 @@ android {
 
 repositories {
     maven {
-        url "http://dl.bintray.com/dasar/maven"
+        url "https://dl.bintray.com/dasar/maven"
     }
     mavenCentral()
     maven {
