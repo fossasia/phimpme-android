@@ -17,7 +17,7 @@ public class Constants {
     public static String IMGUR_HEADER_USER = "Bearer";
 
     //CloudRail App key
-    public final static String CLOUDRAIL_LICENSE_KEY = "";/*Add your API KEY */
+    public final static String CLOUDRAIL_LICENSE_KEY = "5b1704f91a59b150ae1f4650";/*Add your API KEY */
 
     /*Also add dropbox api key in manifest */
     public final static String DROPBOX_APP_KEY = "7fhwc9meece1m9g";
@@ -26,11 +26,17 @@ public class Constants {
     public final static String BOX_CLIENT_ID = "tkriyn4662erwjil5e55yq6tcs9hgxjs";
     public final static String BOX_CLIENT_SECRET = "TQuwEKGLbK1YRLT4vmVrtu3RVzNSDZwF";
 
+    public final static String ONE_DRIVE_APP_ID="";/*Add your One Drive App Key*/
+    public final static String ONE_DRIVE_SECRET="";/*Add your OneDrive Secret Key*/
+
+    public final static String GOOGLEDRIVE_APP_KEY="";/*Add your google drive api key */
+    public final static String GOOGLEDRIVE_SECRET_KEY="";//Always has to be null
+
     public final static String FLICKR_API_KEY = "108a1496fb4f27a1fe310bd399f9c900";
     public final static String FLICKR_TOKEN_SECRET = "a3134b9731947689";
 
-    public final static String TWITTER_CONSUMER_KEY = "ewQd2iJOgSHDVJDHzVgt9aYix";
-    public final static String TWITTER_CONSUMER_SECRET = "QkIKAxZI4PZmcOHbEReOe91sFJkJLNF9XchdtAej1xi2OimyZP";
+    public final static String TWITTER_CONSUMER_KEY = "PsV8i6cb56uVGVXUnVemiZHZw";
+    public final static String TWITTER_CONSUMER_SECRET = "Yc61IKtthoPMWq2SX0jReVnjGS7CkqOeYMJNPvAwKRmLL6tjPU";
 
     public final static String TUMBLR_CONSUMER_KEY = "gOrriv5kT1wOSnZg0u66vXwmo9phPgeXqBlFKOgVQshS4Xe9qh";
     public final static String TUMBLR_CONSUMER_SECRET = "kQFgrWbIsJK3WEabkUPBOR9zZwSZuM3ikOgCpAk4bYs8HqsBTQ";
