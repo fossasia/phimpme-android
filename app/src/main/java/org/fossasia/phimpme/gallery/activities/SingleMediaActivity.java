@@ -1080,7 +1080,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 editTextNewName.selectAll();
                 editTextNewName.setSingleLine(false);
                 AlertDialogsHelper.getInsertTextDialog(SingleMediaActivity.this, renameDialogBuilder,
-                        editTextNewName, R.string.rename_album, null);
+                        editTextNewName, R.string.rename_image, null);
                 renameDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
                 renameDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                     @Override
@@ -1152,11 +1152,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                             renameDialog.dismiss();
                             SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.rename_succes), navigationView
                                     .getHeight());
-                        } else {
-                            SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.insert_something),
-                                    navigationView.getHeight());
-                            editTextNewName.requestFocus();
-                        }
+                        } 
                     }
                 });
                 return true;

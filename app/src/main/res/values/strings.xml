@@ -602,6 +602,7 @@
     <string name="fix_date">Fix date</string>
     <string name="rename">Rename</string>
     <string name="rename_album">Rename album</string>
+    <string name="rename_image">Rename Image</string>
     <string name="album_not_found">Album not found</string>
     <string name="details">Details</string>
     <string name="more">More</string>
