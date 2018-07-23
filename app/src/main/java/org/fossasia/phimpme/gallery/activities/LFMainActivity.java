@@ -1980,6 +1980,11 @@ public class LFMainActivity extends SharedMediaActivity {
                             // if in selection mode, delete selected media
                             if (editMode) {
                                 if (!all_photos && !fav_photos) {
+                                    checkUploadHistory(getAlbum().getSelectedMedia());
+                                    succ = getAlbum().deleteSelectedMedia(getApplicationContext());
+                                } else if (all_photos && !fav_photos) {
+                                    checkUploadHistory(selectedMedias);
+                                    for (Media media : selectedMedias) {
                                     //clearSelectedPhotos();
                                     succ = addToTrash();
                                     if(succ){
@@ -2039,6 +2044,8 @@ public class LFMainActivity extends SharedMediaActivity {
                             }
                             // if not in selection mode, delete current album entirely
                             else if (!editMode) {
+                                checkUploadHistory(getAlbum().getMedia());
+                                succ = getAlbums().deleteAlbum(getAlbum(), getApplicationContext());
                                 if(!fav_photos){
                                     succ = getAlbums().deleteAlbum(getAlbum(), getApplicationContext());
                                     getAlbum().getMedia().clear();
@@ -2833,6 +2840,49 @@ public class LFMainActivity extends SharedMediaActivity {
                 // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void checkUploadHistory(ArrayList<Media> media){
+        for(Media m: media){
+            checkUploadHistory(m);
+        }
+    }
+
+    private void checkUploadHistory(Media m){
+        realm = Realm.getDefaultInstance();
+        RealmQuery<UploadHistoryRealmModel> uploadHistoryRealmModelRealmQuery = realm.where(UploadHistoryRealmModel
+                .class);
+        for(int i = 0; i < uploadHistoryRealmModelRealmQuery.count(); i++){
+            if(uploadHistoryRealmModelRealmQuery.findAll().get(i).getPathname().equals(m.getPath())){
+                performUploadHisaction(uploadHistoryRealmModelRealmQuery.findAll().get(i), realm);
+                break;
+            }
+        }
+    }
+
+    private void performUploadHisaction(final UploadHistoryRealmModel uploadHistoryRealmModel, Realm realm){
+        final String newpath = addToTrash(uploadHistoryRealmModel.getPathname());
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override public void execute(Realm realm) {
+                uploadHistoryRealmModel.setPathname(newpath);
+                realm.copyToRealmOrUpdate(uploadHistoryRealmModel);
+            }
+        });
+    }
+
+    private String addToTrash(String path){
+        String returnpath = null;
+        File f = new File(Environment.getExternalStorageDirectory() + "/" + ".nomedia");
+        if(f.exists() && f.isDirectory() && f.isHidden()){
+            returnpath = f.getPath() + "/" + path.substring(path.lastIndexOf("/") + 1);
+            getAlbum().moveMedia(getApplicationContext(), path, f.getPath());
+        }else{
+            if(f.mkdir()){
+                returnpath = f.getPath() + "/" + path.substring(path.lastIndexOf("/") + 1);
+                getAlbum().moveMedia(getApplicationContext(), path, f.getPath());
+            }
+        }
+        return path;
     }
 
     private void checkDescription(String newpath, ArrayList<Media> selecteditems){
