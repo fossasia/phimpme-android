@@ -688,8 +688,13 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     }
 
     private void deleteCurrentMedia() {
+        boolean success = false;
         if (!allPhotoMode && !favphotomode && !upoadhis) {
-            boolean success = addToTrash();
+            if(AlertDialogsHelper.check){
+                success = addToTrash();
+            }else{
+                success = getAlbum().deleteCurrentMedia(getApplicationContext());
+            }
             if (!success) {
                 final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
 
@@ -716,7 +721,12 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
         } else if (allPhotoMode && !favphotomode && !upoadhis) {
             int c = current_image_pos;
-            boolean success = addToTrash();
+            if(AlertDialogsHelper.check){
+                success = addToTrash();
+            }else{
+                deleteMedia(listAll.get(current_image_pos).getPath());
+                success = true;
+            }
             if (success) {
                 LFMainActivity.listAll.remove(current_image_pos);
                 size_all = LFMainActivity.listAll.size();
@@ -1529,9 +1539,13 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             AlertDialogsHelper.getTextDialog(SingleMediaActivity.this, deleteDialog,
                     R.string.remove_from_favourites, R.string.delete_from_favourites_message, null);
             ButtonDelete = this.getString(R.string.remove);
-        }else {
-            AlertDialogsHelper.getTextDialog(SingleMediaActivity.this, deleteDialog,
-                    R.string.delete, R.string.delete_photo_message, null);
+        }else if(!favphotomode && !upoadhis) {
+            AlertDialogsHelper.getTextCheckboxDialog(SingleMediaActivity.this, deleteDialog, R.string.delete, R
+                    .string.delete_photo_message, null, "Move to TrashBin", getAccentColor());
+            ButtonDelete = this.getString(R.string.delete);
+        }else if(upoadhis){
+            AlertDialogsHelper.getTextDialog(SingleMediaActivity.this, deleteDialog, R.string.delete, R
+                    .string.delete_photo_message, null);
             ButtonDelete = this.getString(R.string.delete);
         }
         deleteDialog.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);

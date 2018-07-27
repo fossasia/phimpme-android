@@ -551,6 +551,7 @@
     <string name="compress_by_size">Compress by size</string>
     <string name="description_hint">Write something!</string>
     <string name="save_action">Save</string>
+    <string name="move_to_trashbin">Move to Trashbin</string>
     <string name="restore_photo">Restore photo</string>
     <string name="delete_permanently">Delete Permanently</string>
     <string name="trashbin_move">images moved to the TrashBin</string>

@@ -1981,45 +1981,53 @@ public class LFMainActivity extends SharedMediaActivity {
                             if (editMode) {
                                 if (!all_photos && !fav_photos) {
                                     //clearSelectedPhotos();
-                                    succ = addToTrash();
-                                    if(succ){
-                                        addTrashObjectsToRealm(getAlbum().getSelectedMedia());
+                                    if (AlertDialogsHelper.check)  {
+                                        succ = addToTrash();
+                                        if (succ) {
+                                            addTrashObjectsToRealm(getAlbum().getSelectedMedia());
+                                        }
+                                        getAlbum().clearSelectedPhotos();
+                                    } else {
+                                        succ = getAlbum().deleteSelectedMedia(getApplicationContext());
                                     }
-                                    getAlbum().clearSelectedPhotos();
-                                   // succ = getAlbum().deleteSelectedMedia(getApplicationContext());
                                 } else if (all_photos && !fav_photos) {
                                    // addToTrash();
-                                    succ = addToTrash();
-                                    if(succ){
-                                        addTrashObjectsToRealm(selectedMedias);
-                                    }
-                                    Log.i("lalalalala", String.valueOf(selectedMedias.size()));
-                                    /*for (Media media : selectedMedias) {
-                                        String[] projection = {MediaStore.Images.Media._ID};
-
-                                        // Match on the file path
-                                        String selection = MediaStore.Images.Media.DATA + " = ?";
-                                        String[] selectionArgs = new String[]{media.getPath()};
-
-                                        // Query for the ID of the media matching the file path
-                                        Uri queryUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                                        ContentResolver contentResolver = getContentResolver();
-                                        Cursor c =
-                                                contentResolver
-                                                        .query(queryUri, projection, selection, selectionArgs, null);
-                                        if (c.moveToFirst()) {
-                                            // We found the ID. Deleting the item via the content provider will also remove the file
-                                            long id = c.getLong(c.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
-                                            Uri deleteUri = ContentUris
-                                                    .withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
-                                            contentResolver.delete(deleteUri, null, null);
-                                            succ = true;
-                                        } else {
-                                            succ = false;
-                                            // File not found in media store DB
+                                    if (AlertDialogsHelper.check) {
+                                        succ = addToTrash();
+                                        if (succ) {
+                                            addTrashObjectsToRealm(selectedMedias);
                                         }
-                                        c.close();
-                                    }*/
+                                    } else {
+                                        for (Media media : selectedMedias) {
+                                            String[] projection = {MediaStore.Images.Media._ID};
+
+                                            // Match on the file path
+                                            String selection = MediaStore.Images.Media.DATA + " = ?";
+                                            String[] selectionArgs = new String[]{media.getPath()};
+
+                                            // Query for the ID of the media matching the file path
+                                            Uri queryUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                                            ContentResolver contentResolver = getContentResolver();
+                                            Cursor c =
+                                                    contentResolver
+                                                            .query(queryUri, projection, selection, selectionArgs,
+                                                                    null);
+                                            if (c.moveToFirst()) {
+                                                // We found the ID. Deleting the item via the content provider will also remove the file
+                                                long id =
+                                                        c.getLong(c.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
+                                                Uri deleteUri = ContentUris
+                                                        .withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                                                id);
+                                                contentResolver.delete(deleteUri, null, null);
+                                                succ = true;
+                                            } else {
+                                                succ = false;
+                                                // File not found in media store DB
+                                            }
+                                            c.close();
+                                        }
+                                    }
                                 } else if (!all_photos && fav_photos) {
                                     realm = Realm.getDefaultInstance();
                                     realm.executeTransaction(new Realm.Transaction() {
@@ -2039,10 +2047,19 @@ public class LFMainActivity extends SharedMediaActivity {
                             }
                             // if not in selection mode, delete current album entirely
                             else if (!editMode) {
-                                if(!fav_photos){
-                                    succ = getAlbums().deleteAlbum(getAlbum(), getApplicationContext());
-                                    getAlbum().getMedia().clear();
-                                }else{
+                                if (!fav_photos) {
+                                    if (AlertDialogsHelper.check) {
+                                        succ = addToTrash();
+                                        if (succ) {
+                                            addTrashObjectsToRealm(getAlbum().getMedia());
+                                        }
+                                        //succ = getAlbums().deleteAlbum(getAlbum(), getApplicationContext());
+                                        getAlbum().getMedia().clear();
+                                    } else {
+                                        succ = getAlbums().deleteAlbum(getAlbum(), getApplicationContext());
+                                        getAlbum().getMedia().clear();
+                                    }
+                                } else {
                                     Realm realm = Realm.getDefaultInstance();
                                     realm.executeTransaction(new Realm.Transaction() {
                                         @Override public void execute(Realm realm) {
@@ -2053,12 +2070,6 @@ public class LFMainActivity extends SharedMediaActivity {
                                         }
                                     });
                                 }
-                                succ = addToTrash();
-                                if(succ){
-                                    addTrashObjectsToRealm(getAlbum().getMedia());
-                                }
-                                //succ = getAlbums().deleteAlbum(getAlbum(), getApplicationContext());
-                                getAlbum().getMedia().clear();
                             }
                         }
                         return succ;
@@ -2117,7 +2128,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 else
                     AlertDialogsHelper.getTextCheckboxDialog(this, deleteDialog, R.string.delete, albumsMode || !editMode ?
                     R.string.delete_album_message :
-                    R.string.delete_photos_message, null, "Move to Trashbin", getAccentColor());
+                    R.string.delete_photos_message, null, getResources().getString(R.string.move_to_trashbin), getAccentColor());
 
                 deleteDialog.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
                 deleteDialog.setPositiveButton(fav_photos && !all_photos ? getString(R.string.remove).toUpperCase() : getString(R.string.delete).toUpperCase(), new DialogInterface.OnClickListener() {
@@ -2178,11 +2189,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                 }
                             });
                         } else {
-                            if(AlertDialogsHelper.check){
-                                Log.i("lalalalala", "lkl");
-                            }else{
-                                new DeletePhotos().execute();
-                            }
+                            new DeletePhotos().execute();
                         }
                     }
                 });
@@ -2919,7 +2926,6 @@ public class LFMainActivity extends SharedMediaActivity {
             if(!all_photos && !fav_photos && editMode){
                 no = getAlbum().moveSelectedMedia(getApplicationContext(), file.getAbsolutePath());
             }else if(all_photos && !fav_photos && editMode){
-                Log.i("lalalalala", String.valueOf(selectedMedias.size()));
                 no = getAlbum().moveAllMedia(getApplicationContext(), file.getAbsolutePath(), selectedMedias);
             }else if(!editMode && !all_photos && !fav_photos){
                 no = getAlbum().moveAllMedia(getApplicationContext(), file.getAbsolutePath(), getAlbum().getMedia());
