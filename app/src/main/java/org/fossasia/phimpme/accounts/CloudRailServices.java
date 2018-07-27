@@ -55,10 +55,6 @@ public class CloudRailServices {
         dropbox.set(db);
     }
 
-   /* private void initOneDrive(){
-        oneDrive = new OneDrive(context,Constants.ONE_DRIVE_APP_ID,Constants.ONE_DRIVE_SECRET);
-    }*/
-
     public void prepare(Activity context) {
         this.context= context;
         CloudRail.setAppKey(CLOUDRAIL_LICENSE_KEY);
@@ -68,6 +64,9 @@ public class CloudRailServices {
     }
 
    /* private void initGoogleDrive(){
+    }
+
+    /*private void initGoogleDrive(){
       
         googleDrive = new GoogleDrive(context,Constants.GOOGLEDRIVE_APP_KEY,Constants.GOOGLEDRIVE_SECRET_KEY
         ,"org.fossasia.phimpme:/oauth2redirect","login-googledrive");
