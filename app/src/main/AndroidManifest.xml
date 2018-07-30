@@ -41,6 +41,7 @@
         <activity
             android:name=".opencamera.Camera.CameraActivity"
             android:screenOrientation="portrait"
+            android:parentActivityName=".gallery.activities.LFMainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.media.action.IMAGE_CAPTURE_SECURE" />
