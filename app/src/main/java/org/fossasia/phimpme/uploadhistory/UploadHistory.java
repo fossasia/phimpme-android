@@ -322,7 +322,7 @@ public class UploadHistory extends ThemedActivity {
                         public void onClick(View v) {
                             // if password is correct, call DeletePhotos and perform deletion
                             if (securityObj.checkPassword(editTextPassword.getText().toString())) {
-                               deleteAllFromRealm();
+                               new DeleteHistory().execute();
                             }
                             // if password is incorrect, don't delete and notify user of incorrect password
                             else {
@@ -335,7 +335,7 @@ public class UploadHistory extends ThemedActivity {
                             }
                         }
                     });
-                } else deleteAllFromRealm();
+                } else new DeleteHistory().execute();
             }
         });
         AlertDialog alertDialogDelete = deleteDialog.create();
@@ -343,18 +343,38 @@ public class UploadHistory extends ThemedActivity {
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialogDelete);
     }
 
-    private void deleteAllFromRealm(){
+    class DeleteHistory extends AsyncTask<Void, Void, Void>{
+
         final boolean[] result = {false};
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override public void execute(Realm realm) {
-                result[0] = uploadHistoryRealmModelRealmQuery.findAll().deleteAllFromRealm();
-            }
-        });
-        if(uploadHistoryRealmModelRealmQuery.count() == 0){
-            emptyLayout.setVisibility(View.VISIBLE);
-            uploadHistoryRecyclerView.setVisibility(View.GONE);
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            swipeRefreshLayout.setRefreshing(true);
         }
-        invalidateOptionsMenu();
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            Realm realm = Realm.getDefaultInstance();
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override public void execute(Realm realm) {
+                    RealmResults<UploadHistoryRealmModel> uploadHistoryRealmModels = realm.where(UploadHistoryRealmModel.class).findAll();
+                    result[0] = uploadHistoryRealmModels.deleteAllFromRealm();
+                }
+            });
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            swipeRefreshLayout.setRefreshing(false);
+            if(result[0] && uploadHistoryRealmModelRealmQuery.count() == 0){
+                emptyLayout.setVisibility(View.VISIBLE);
+                uploadHistoryRecyclerView.setVisibility(View.GONE);
+            }
+            invalidateOptionsMenu();
+        }
     }
 
     @Override
