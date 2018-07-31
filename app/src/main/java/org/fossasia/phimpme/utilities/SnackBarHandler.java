@@ -55,6 +55,25 @@ public class SnackBarHandler  {
         snackbar.show();
     }
 
+    public static Snackbar showWithBottomMargin2(View view, String text,int bottomMargin, int duration) {
+        ThemeHelper themeHelper=new ThemeHelper(ActivitySwitchHelper.getContext());
+        final Snackbar snackbar = Snackbar.make(view, text, duration);
+        View sbView = snackbar.getView();
+        final FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) sbView.getLayoutParams();
+        params.setMargins(params.leftMargin,
+                params.topMargin,
+                params.rightMargin,
+                params.bottomMargin + bottomMargin);
+        sbView.setLayoutParams(params);
+
+        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id
+                .snackbar_text);
+        textView.setTextColor(Color.WHITE);
+        textView.setTextSize(12);
+        snackbar.setActionTextColor(themeHelper.getAccentColor());
+        return snackbar;
+    }
+
     public static void show(View view, int res, int duration) {
         show(view, ActivitySwitchHelper.getContext().getResources().getString(res), duration);
     }
