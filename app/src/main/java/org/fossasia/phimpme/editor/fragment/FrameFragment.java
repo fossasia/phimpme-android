@@ -57,7 +57,7 @@ public class FrameFragment extends BaseEditFragment {
         frameRecycler = (android.support.v7.widget.RecyclerView) frameView.findViewById(R.id.frameRecyler);
         imgBtnDone = (ImageButton) frameView.findViewById(R.id.done);
         imgBtnCancel = (ImageButton) frameView.findViewById(R.id.cancel);
-        imgBtnCancel.setImageResource(R.drawable.ic_no);
+        imgBtnCancel.setImageResource(R.drawable.ic_close_black_24dp);
         imgBtnDone.setImageResource(R.drawable.ic_done_black_24dp);
         onShow();
         setUpLayoutManager();
