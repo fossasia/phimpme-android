@@ -1035,10 +1035,14 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
             case R.id.action_edit:
                 handler.removeCallbacks(slideShowRunnable);
-                if (!allPhotoMode)
+                if (!allPhotoMode && !favphotomode){
                     uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
-                else
+                } else if (allPhotoMode && !favphotomode){
                     uri = Uri.fromFile(new File(listAll.get(current_image_pos).getPath()));
+                } else if (!allPhotoMode && favphotomode){
+                    uri = Uri.fromFile(new File(favouriteslist.get(current_image_pos).getPath()));
+                }
+
                 final String extension = uri.getPath();
                 if (extension != null && !(extension.substring(extension.lastIndexOf(".")).equals(".gif"))) {
                     Intent editIntent = new Intent(SingleMediaActivity.this, EditImageActivity.class);
