@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -213,7 +214,7 @@ public class SecurityActivity extends ThemedActivity {
         final AlertDialog.Builder passwordDialog = new AlertDialog.Builder(SecurityActivity.this, getDialogStyle());
         final View PasswordDialogLayout = getLayoutInflater().inflate(R.layout.dialog_set_password, null);
         final TextView passwordDialogTitle = (TextView) PasswordDialogLayout.findViewById(R.id.password_dialog_title);
-        CheckBox checkBox = (CheckBox) PasswordDialogLayout.findViewById(R.id.set_password_checkbox);
+        final CheckBox checkBox = (CheckBox) PasswordDialogLayout.findViewById(R.id.set_password_checkbox);
         checkBox.setText(getResources().getString(R.string.show_password));
         checkBox.setTextColor(getTextColor());
         final CardView passwordDialogCard = (CardView) PasswordDialogLayout.findViewById(R.id.password_dialog_card);
@@ -221,12 +222,15 @@ public class SecurityActivity extends ThemedActivity {
         editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         final EditText editTextConfirmPassword = (EditText) PasswordDialogLayout.findViewById(R.id.confirm_password_edittxt);
         editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        checkBox.setButtonTintList(ColorStateList.valueOf(getAccentColor()));
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(!b){
+                    checkBox.setButtonTintList(ColorStateList.valueOf(getAccentColor()));
                     editTextPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     editTextConfirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 }else{
+                    checkBox.setButtonTintList(ColorStateList.valueOf(getAccentColor()));
                     editTextPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     editTextConfirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 }
