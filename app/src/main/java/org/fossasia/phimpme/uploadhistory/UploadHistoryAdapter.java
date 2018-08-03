@@ -1,8 +1,8 @@
 package org.fossasia.phimpme.uploadhistory;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +15,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.UploadHistoryRealmModel;
-import org.fossasia.phimpme.share.SharingActivity;
-import org.fossasia.phimpme.gallery.activities.SingleMediaActivity;
-import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 import java.io.File;
 import java.text.DateFormat;
@@ -25,6 +22,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -107,9 +105,12 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
         return realmResult.size();
     }
 
-    public void setResults(ArrayList<UploadHistoryRealmModel> results) {
-        realmResult = results;
-        notifyDataSetChanged();
+    public void updateUploadListItems(List<UploadHistoryRealmModel> uploadList) {
+        final UploadHisDiffCallback diffCallback = new UploadHisDiffCallback(this.realmResult, uploadList);
+        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
+        this.realmResult.clear();
+        this.realmResult.addAll(uploadList);
+        diffResult.dispatchUpdatesTo(this);
     }
 
     public void setOnClickListener(View.OnClickListener lis) {
