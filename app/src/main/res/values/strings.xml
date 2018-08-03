@@ -1318,8 +1318,8 @@
     <string name="move_all_photos">All the photos will be moved to the selected folder. Do you wish to continue?</string>
     <string name="moved_target_folder_success">Moved to target folder successfully.</string>
 
-    <string name="no_favourites_text">There are no favourites presently. To mark a picture as favourite, select the
-        picture and tap on \"Add to Favourites\" from the overflow menu.
+    <string name="no_favourites_text">There are no favourites presently. To mark a picture as favourite, long-select the
+        picture and tap on \"Add to Favourites\" from the overflow menu or click on the picture and tap the heart icon at the bottom.
     </string>
 
     <string name="make_copies">Make copies</string>
