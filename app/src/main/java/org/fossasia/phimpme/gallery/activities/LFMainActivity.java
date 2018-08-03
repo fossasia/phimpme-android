@@ -1990,45 +1990,53 @@ public class LFMainActivity extends SharedMediaActivity {
                             if (editMode) {
                                 if (!all_photos && !fav_photos) {
                                     //clearSelectedPhotos();
-                                    succ = addToTrash();
-                                    if(succ){
-                                        addTrashObjectsToRealm(getAlbum().getSelectedMedia());
+                                    if (AlertDialogsHelper.check)  {
+                                        succ = addToTrash();
+                                        if (succ) {
+                                            addTrashObjectsToRealm(getAlbum().getSelectedMedia());
+                                        }
+                                        getAlbum().clearSelectedPhotos();
+                                    } else {
+                                        succ = getAlbum().deleteSelectedMedia(getApplicationContext());
                                     }
-                                    getAlbum().clearSelectedPhotos();
-                                   // succ = getAlbum().deleteSelectedMedia(getApplicationContext());
                                 } else if (all_photos && !fav_photos) {
                                    // addToTrash();
-                                    succ = addToTrash();
-                                    if(succ){
-                                        addTrashObjectsToRealm(selectedMedias);
-                                    }
-                                    Log.i("lalalalala", String.valueOf(selectedMedias.size()));
-                                    /*for (Media media : selectedMedias) {
-                                        String[] projection = {MediaStore.Images.Media._ID};
-
-                                        // Match on the file path
-                                        String selection = MediaStore.Images.Media.DATA + " = ?";
-                                        String[] selectionArgs = new String[]{media.getPath()};
-
-                                        // Query for the ID of the media matching the file path
-                                        Uri queryUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                                        ContentResolver contentResolver = getContentResolver();
-                                        Cursor c =
-                                                contentResolver
-                                                        .query(queryUri, projection, selection, selectionArgs, null);
-                                        if (c.moveToFirst()) {
-                                            // We found the ID. Deleting the item via the content provider will also remove the file
-                                            long id = c.getLong(c.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
-                                            Uri deleteUri = ContentUris
-                                                    .withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
-                                            contentResolver.delete(deleteUri, null, null);
-                                            succ = true;
-                                        } else {
-                                            succ = false;
-                                            // File not found in media store DB
+                                    if (AlertDialogsHelper.check) {
+                                        succ = addToTrash();
+                                        if (succ) {
+                                            addTrashObjectsToRealm(selectedMedias);
                                         }
-                                        c.close();
-                                    }*/
+                                    } else {
+                                        for (Media media : selectedMedias) {
+                                            String[] projection = {MediaStore.Images.Media._ID};
+
+                                            // Match on the file path
+                                            String selection = MediaStore.Images.Media.DATA + " = ?";
+                                            String[] selectionArgs = new String[]{media.getPath()};
+
+                                            // Query for the ID of the media matching the file path
+                                            Uri queryUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                                            ContentResolver contentResolver = getContentResolver();
+                                            Cursor c =
+                                                    contentResolver
+                                                            .query(queryUri, projection, selection, selectionArgs,
+                                                                    null);
+                                            if (c.moveToFirst()) {
+                                                // We found the ID. Deleting the item via the content provider will also remove the file
+                                                long id =
+                                                        c.getLong(c.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
+                                                Uri deleteUri = ContentUris
+                                                        .withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                                                id);
+                                                contentResolver.delete(deleteUri, null, null);
+                                                succ = true;
+                                            } else {
+                                                succ = false;
+                                                // File not found in media store DB
+                                            }
+                                            c.close();
+                                        }
+                                    }
                                 } else if (!all_photos && fav_photos) {
                                     realm = Realm.getDefaultInstance();
                                     realm.executeTransaction(new Realm.Transaction() {
@@ -2048,10 +2056,19 @@ public class LFMainActivity extends SharedMediaActivity {
                             }
                             // if not in selection mode, delete current album entirely
                             else if (!editMode) {
-                                if(!fav_photos){
-                                    succ = getAlbums().deleteAlbum(getAlbum(), getApplicationContext());
-                                    getAlbum().getMedia().clear();
-                                }else{
+                                if (!fav_photos) {
+                                    if (AlertDialogsHelper.check) {
+                                        succ = addToTrash();
+                                        if (succ) {
+                                            addTrashObjectsToRealm(getAlbum().getMedia());
+                                        }
+                                        //succ = getAlbums().deleteAlbum(getAlbum(), getApplicationContext());
+                                        getAlbum().getMedia().clear();
+                                    } else {
+                                        succ = getAlbums().deleteAlbum(getAlbum(), getApplicationContext());
+                                        getAlbum().getMedia().clear();
+                                    }
+                                } else {
                                     Realm realm = Realm.getDefaultInstance();
                                     realm.executeTransaction(new Realm.Transaction() {
                                         @Override public void execute(Realm realm) {
@@ -2062,12 +2079,6 @@ public class LFMainActivity extends SharedMediaActivity {
                                         }
                                     });
                                 }
-                                succ = addToTrash();
-                                if(succ){
-                                    addTrashObjectsToRealm(getAlbum().getMedia());
-                                }
-                                //succ = getAlbums().deleteAlbum(getAlbum(), getApplicationContext());
-                                getAlbum().getMedia().clear();
                             }
                         }
                         return succ;
@@ -2126,7 +2137,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 else
                     AlertDialogsHelper.getTextCheckboxDialog(this, deleteDialog, R.string.delete, albumsMode || !editMode ?
                     R.string.delete_album_message :
-                    R.string.delete_photos_message, null, "Move to Trashbin", getAccentColor());
+                    R.string.delete_photos_message, null, getResources().getString(R.string.move_to_trashbin), getAccentColor());
 
                 deleteDialog.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
                 deleteDialog.setPositiveButton(fav_photos && !all_photos ? getString(R.string.remove).toUpperCase() : getString(R.string.delete).toUpperCase(), new DialogInterface.OnClickListener() {
@@ -2187,11 +2198,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                 }
                             });
                         } else {
-                            if(AlertDialogsHelper.check){
-                                Log.i("lalalalala", "lkl");
-                            }else{
-                                new DeletePhotos().execute();
-                            }
+                            new DeletePhotos().execute();
                         }
                     }
                 });
@@ -2586,6 +2593,7 @@ public class LFMainActivity extends SharedMediaActivity {
             //endregion
 
             case R.id.action_move:
+                final Snackbar[] snackbar = {null};
                 final ArrayList<Media> dr = getselecteditems();
                 final String[] pathofalbum = {null};
                 bottomSheetDialogFragment = new SelectAlbumBottomSheet();
@@ -2594,6 +2602,7 @@ public class LFMainActivity extends SharedMediaActivity {
                     bottomSheetDialogFragment.setSelectAlbumInterface(new SelectAlbumBottomSheet.SelectAlbumInterface() {
                         @Override
                         public void folderSelected(final String path) {
+                            final ArrayList<Media> stringio = storeTemporaryphotos(path);
                             pathofalbum[0] = path;
                             swipeRefreshLayout.setRefreshing(true);
                             int numberOfImagesMoved;
@@ -2610,11 +2619,28 @@ public class LFMainActivity extends SharedMediaActivity {
                                 invalidateOptionsMenu();
                                 checkForFavourites(path, dr);
                                 checkDescription(path, dr);
-                                if (numberOfImagesMoved > 1)
-                                    SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.photos_moved_successfully), navigationView.getHeight());
-                                else
+                                if (numberOfImagesMoved > 1){
+                                    snackbar[0] = SnackBarHandler.showWithBottomMargin2(mDrawerLayout, getString(R.string.photos_moved_successfully), navigationView.getHeight(), Snackbar.LENGTH_SHORT);
+                                    snackbar[0].setAction("UNDO", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            getAlbum().moveAllMedia(getApplicationContext(), getAlbum().getPath(), stringio);
+                                        }
+                                    });
+                                    snackbar[0].show();
+                                }
 
-                                    SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.photo_moved_successfully), navigationView.getHeight());
+                                else{
+                                    Snackbar snackbar1 = SnackBarHandler.showWithBottomMargin2(mDrawerLayout, getString(R.string.photo_moved_successfully), navigationView.getHeight(), Snackbar.LENGTH_SHORT);
+                                    snackbar1.setAction("UNDO", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            getAlbum().moveAllMedia(getApplicationContext(), getAlbum().getPath(), stringio);
+                                        }
+                                    });
+                                    snackbar1.show();
+
+                                }
 
                             } else if (numberOfImagesMoved == -1 && getAlbum().getPath().equals(path)) {
                                 //moving to the same folder
@@ -2844,6 +2870,17 @@ public class LFMainActivity extends SharedMediaActivity {
         }
     }
 
+    private ArrayList<Media> storeTemporaryphotos(String path){
+        ArrayList<Media> temp = new ArrayList<>();
+        if(!all_photos && !fav_photos && editMode){
+            for(Media m: getAlbum().getSelectedMedia()){
+                String name = m.getPath().substring(m.getPath().lastIndexOf("/") + 1);
+                temp.add(new Media(path + "/" + name));
+            }
+        }
+        return temp;
+    }
+
     private void checkDescription(String newpath, ArrayList<Media> selecteditems){
         for(int i = 0; i < selecteditems.size(); i++){
             getDescriptionPaths(selecteditems.get(i).getPath(), newpath);
@@ -2928,7 +2965,6 @@ public class LFMainActivity extends SharedMediaActivity {
             if(!all_photos && !fav_photos && editMode){
                 no = getAlbum().moveSelectedMedia(getApplicationContext(), file.getAbsolutePath());
             }else if(all_photos && !fav_photos && editMode){
-                Log.i("lalalalala", String.valueOf(selectedMedias.size()));
                 no = getAlbum().moveAllMedia(getApplicationContext(), file.getAbsolutePath(), selectedMedias);
             }else if(!editMode && !all_photos && !fav_photos){
                 no = getAlbum().moveAllMedia(getApplicationContext(), file.getAbsolutePath(), getAlbum().getMedia());
@@ -3697,10 +3733,12 @@ public class LFMainActivity extends SharedMediaActivity {
     /*
     Async Class for coping images
      */
-    private static class CopyPhotos extends AsyncTask<String, Integer, Boolean> {
+    private class CopyPhotos extends AsyncTask<String, Integer, Boolean> {
 
         private WeakReference<LFMainActivity> reference;
         private String path;
+        private Snackbar snackbar;
+        private ArrayList<Media> temp;
         private Boolean moveAction, copyAction, success;
 
         CopyPhotos(String path, Boolean moveAction, Boolean copyAction, LFMainActivity reference) {
@@ -3719,6 +3757,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
         @Override
         protected Boolean doInBackground(String... arg0) {
+            temp = storeTemporaryphotos(path);
             LFMainActivity asyncActivityRef = reference.get();
             if (!asyncActivityRef.all_photos) {
                 success = asyncActivityRef.getAlbum().copySelectedPhotos(asyncActivityRef, path);
@@ -3748,10 +3787,42 @@ public class LFMainActivity extends SharedMediaActivity {
                     SnackBarHandler.showWithBottomMargin(asyncActivityRef.mDrawerLayout,
                         asyncActivityRef.getString(R.string.photos_moved_successfully),
                         asyncActivityRef.navigationView.getHeight());
-                else if (copyAction)
-                    SnackBarHandler.showWithBottomMargin(asyncActivityRef.mDrawerLayout,
-                        asyncActivityRef.getString(R.string.copied_successfully),
-                        asyncActivityRef.navigationView.getHeight());
+                else if (copyAction){
+                    snackbar = SnackBarHandler.showWithBottomMargin2(asyncActivityRef.mDrawerLayout,
+                            asyncActivityRef.getString(R.string.copied_successfully),
+                            asyncActivityRef.navigationView.getHeight(), Snackbar.LENGTH_SHORT);
+                    snackbar.setAction("UNDO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            for (Media media : temp) {
+                                String[] projection = {MediaStore.Images.Media._ID};
+
+                                // Match on the file path
+                                String selection = MediaStore.Images.Media.DATA + " = ?";
+                                String[] selectionArgs = new String[]{media.getPath()};
+
+                                // Query for the ID of the media matching the file path
+                                Uri queryUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                                ContentResolver contentResolver = getContentResolver();
+                                Cursor c =
+                                        contentResolver
+                                                .query(queryUri, projection, selection, selectionArgs,
+                                                        null);
+                                if (c.moveToFirst()) {
+                                    // We found the ID. Deleting the item via the content provider will also remove the file
+                                    long id =
+                                            c.getLong(c.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
+                                    Uri deleteUri = ContentUris
+                                            .withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                                    id);
+                                    contentResolver.delete(deleteUri, null, null);
+                                }
+                                c.close();
+                            }
+                        }
+                    });
+                }
+
             } else
                 asyncActivityRef.requestSdCardPermissions();
         }
