@@ -7,7 +7,6 @@ import android.support.multidex.MultiDex;
 import android.util.Log;
 
 //import com.crashlytics.android.Crashlytics;
-import com.facebook.stetho.Stetho;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
@@ -92,11 +91,11 @@ public class MyApplication extends Application {
         /**
          * Stetho initialization
          */
-        Stetho.initialize(
+        /*Stetho.initialize(
                 Stetho.newInitializerBuilder(this)
                         .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
                         .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
-                        .build());
+                        .build());*/
     }
 
     public static RefWatcher getRefWatcher(Context context){
