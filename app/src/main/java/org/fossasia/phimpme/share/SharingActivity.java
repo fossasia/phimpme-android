@@ -54,11 +54,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
-import com.facebook.messenger.MessengerUtils;
-import com.facebook.messenger.ShareToMessengerParams;
-import com.facebook.share.model.SharePhoto;
-import com.facebook.share.model.SharePhotoContent;
-import com.facebook.share.widget.ShareDialog;
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 import com.owncloud.android.lib.common.OwnCloudClient;
@@ -214,7 +209,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     public boolean uploadFailedBox = false;
     public String uploadName;
-    ShareDialog shareDialog;
     private int positionShareOption;
     private boolean triedUploading = false;
 
@@ -242,7 +236,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         setStatusBarColor();
         checkNetwork(this, parent);
         configureBoxClient();
-        shareDialog = new ShareDialog(this);
     }
 
     private void configureBoxClient() {
@@ -374,10 +367,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                    /* case GOOGLEPLUS:
                         shareToGoogle();
                         break;*/
-
-                    case MESSENGER:
-                        shareToMessenger();
-                        break;
                     
                     case SNAPCHAT:
                         shareToSnapchat();
@@ -970,28 +959,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         });
     }
 
-    private void shareToFacebook() {
-        PackageManager packageManager = (ActivitySwitchHelper.context).getPackageManager();
-        if (isAppInstalled(PACKAGE_FACEBOOK, packageManager)) {
-            Bitmap image = getBitmapFromPath(saveFilePath);
-            SharePhoto photo = new SharePhoto.Builder()
-                    .setBitmap(image)
-                    .setCaption(caption)
-                    .build();
-
-            SharePhotoContent content = new SharePhotoContent.Builder()
-                    .addPhoto(photo)
-                    .build();
-
-            shareDialog.show(content);
-            sendResult(Constants.SUCCESS);
-        } else {
-            SnackBarHandler.show(parent, R.string.install_facebook);
-            sendResult(FAIL);
-        }
-    }
-
-
     private void shareToOthers() {
         Uri uri = Uri.fromFile(new File(saveFilePath));
         Intent shareIntent = new Intent();
@@ -1095,14 +1062,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         AlertDialog alertDialog = dialogBuilder.create();
         alertDialog.show();
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE, DialogInterface.BUTTON_NEUTRAL}, getAccentColor(), alertDialog);
-    }
-
-    private void shareToMessenger() {
-        String mimeType = URLConnection.guessContentTypeFromName(saveFilePath);
-        ShareToMessengerParams shareToMessengerParams =
-                ShareToMessengerParams.newBuilder(getImageUri(this, saveFilePath), mimeType).build();
-        MessengerUtils.shareToMessenger(this, REQUEST_CODE_SHARE_TO_MESSENGER, shareToMessengerParams);
-        sendResult(SUCCESS);
     }
 
     void uploadImgur() {

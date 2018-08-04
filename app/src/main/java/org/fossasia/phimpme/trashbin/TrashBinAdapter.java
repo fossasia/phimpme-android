@@ -1,7 +1,5 @@
 package org.fossasia.phimpme.trashbin;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
-
 import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -12,6 +10,7 @@ import java.util.List;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.TrashBinRealmModel;
+import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -62,12 +61,12 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
             }
             holder.deleteDate.setTag(trashBinRealmModel);
             Uri uri = Uri.fromFile(new File(trashBinRealmModel.getTrashbinpath()));
-            Glide.with(getApplicationContext()).load(uri)
+            Glide.with(context).load(uri)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.deletedImage);
             holder.popupMenuButton.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View view) {
-                    PopupMenu menu = new PopupMenu(getApplicationContext(), holder.popupMenuButton);
+                    PopupMenu menu = new PopupMenu(context, holder.popupMenuButton);
                     menu.inflate(R.menu.menu_popup_trashbin);
                     menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override public boolean onMenuItemClick(MenuItem menuItem) {
