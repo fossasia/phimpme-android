@@ -1,6 +1,8 @@
 package org.fossasia.phimpme.accounts;
 
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
@@ -22,6 +24,8 @@ import static org.fossasia.phimpme.data.local.AccountDatabase.HIDEINACCOUNTS;
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
 
+import java.util.ArrayList;
+
 /**
  * Created by pa1pal on 7/7/17.
  */
@@ -32,11 +36,18 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
     public int switchAccentColor;
     public int switchBackgroundColor;
     private ThemeHelper themeHelper;
+    private ArrayList<String> databaseoptions = new ArrayList<>();
 
-    public AccountAdapter(int switchColor, int switchBackgroundColor) {
-        this.switchAccentColor = switchColor;
-        this.switchBackgroundColor = switchBackgroundColor;
+    public AccountAdapter() {
         themeHelper = new ThemeHelper(getContext());
+        updateTheme();
+        getdatabaseAccounts();
+        this.switchAccentColor = themeHelper.getAccentColor();
+        this.switchBackgroundColor = themeHelper.getPrimaryColor();
+    }
+
+    public void updateTheme() {
+        themeHelper.updateTheme();
     }
 
     @Override
@@ -52,7 +63,7 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
         realmResult = realm.where(AccountDatabase.class);
        // themeHelper.updateSwitchColor(holder.signInSignOutSwitch, switchBackgroundColor);
-        String name = AccountDatabase.AccountName.values()[position].toString();
+        String name = databaseoptions.get(position);
         if (realmResult.equalTo("name", name).count() > 0){
             holder.accountName.setText(realmResult
                     .equalTo("name", name).findAll()
@@ -88,6 +99,8 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
             holder.accountName.setTextColor(ContextCompat.getColor(getContext(), id));
             holder.accountAvatar.setColorFilter(ContextCompat.getColor(getContext(), id));
         }
+
+        holder.cardView.setCardBackgroundColor(themeHelper.getCardBackgroundColor());
     }
 
     @Override
@@ -97,7 +110,20 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
          * whatsapp, Instagram , googleplus and others option is only required in the Sharing activity.
          */
         //return AccountDatabase.AccountName.values().length - HIDEINACCOUNTS;
-        return AccountDatabase.AccountName.values().length - HIDEINACCOUNTS;
+        return databaseoptions.size() - HIDEINACCOUNTS;
+    }
+
+    public void getdatabaseAccounts(){
+        for(int i = 0; i < AccountDatabase.AccountName.values().length; i++){
+            if(AccountDatabase.AccountName.values()[i].toString().equals("BOX")){
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+                    databaseoptions.add(AccountDatabase.AccountName.values()[i].toString());
+                }
+            }
+            else{
+                databaseoptions.add(AccountDatabase.AccountName.values()[i].toString());
+            }
+        }
     }
 
     public void setResults(RealmQuery<AccountDatabase> results) {
@@ -117,6 +143,9 @@ public class AccountAdapter extends RecyclerView.Adapter<AccountAdapter.ViewHold
 
         @BindView(R.id.sign_in_sign_out_switch)
         SwitchCompat signInSignOutSwitch;
+
+        @BindView(R.id.card_view)
+        CardView cardView;
 
         public ViewHolder(View itemView) {
             super(itemView);

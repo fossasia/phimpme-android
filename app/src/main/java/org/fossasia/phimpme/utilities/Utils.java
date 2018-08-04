@@ -34,6 +34,7 @@ import static android.content.Context.CLIPBOARD_SERVICE;
 import static org.fossasia.phimpme.utilities.Constants.PACKAGE_GOOGLEPLUS;
 import static org.fossasia.phimpme.utilities.Constants.PACKAGE_INSTAGRAM;
 import static org.fossasia.phimpme.utilities.Constants.PACKAGE_MESSENGER;
+import static org.fossasia.phimpme.utilities.Constants.PACKAGE_SNAPCHAT;
 import static org.fossasia.phimpme.utilities.Constants.PACKAGE_WHATSAPP;
 
 /**
@@ -131,11 +132,14 @@ public class Utils {
         if (isAppInstalled(PACKAGE_WHATSAPP,packageManager))
             list.add(AccountDatabase.AccountName.WHATSAPP);
 
-        if (isAppInstalled(PACKAGE_GOOGLEPLUS,packageManager))
-            list.add(AccountDatabase.AccountName.GOOGLEPLUS);
+        /*if (isAppInstalled(PACKAGE_GOOGLEPLUS,packageManager))
+            list.add(AccountDatabase.AccountName.GOOGLEPLUS);*/
 
         if (isAppInstalled(PACKAGE_MESSENGER,packageManager))
             list.add(AccountDatabase.AccountName.MESSENGER);
+
+        if (isAppInstalled(PACKAGE_SNAPCHAT,packageManager))
+            list.add(AccountDatabase.AccountName.SNAPCHAT);
 
         list.addAll(getLoggedInAccountsList());
         if (!list.contains(AccountDatabase.AccountName.IMGUR))

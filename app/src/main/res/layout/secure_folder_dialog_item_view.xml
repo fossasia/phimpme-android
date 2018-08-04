@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:textSize="18dp"
+            android:text="lalalalala"
+            android:layout_weight="0.9"
+            android:textColor="@color/md_blue_grey_500"
+            android:id="@+id/foldername" />
+
+        <CheckBox
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginEnd="2dp"
+            android:layout_weight="0.1"
+            android:buttonTint="@color/accent_black"
+            android:id="@+id/secure_folder_checkbox_black"/>
+
+        <CheckBox
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:visibility="gone"
+            android:layout_weight="0.1"
+            android:buttonTint="@color/accent_white"
+            android:id="@+id/secure_folder_checkbox_white"/>
+
+    </LinearLayout>
+</LinearLayout>

@@ -6,16 +6,12 @@ buildscript {
     repositories {
         jcenter()
         maven { url 'https://jitpack.io' }
-        maven { url 'https://maven.fabric.io/public' }
 
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.3'
-        classpath 'com.google.gms:google-services:3.0.0'
         classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
         classpath "io.realm:realm-gradle-plugin:$realm_version"
-        classpath 'io.fabric.tools:gradle:1.+'
-        classpath 'com.google.firebase:firebase-plugins:1.1.0'
 
 
     }
@@ -25,8 +21,9 @@ allprojects {
     repositories {
         jcenter()
         mavenCentral()
-        maven { url "http://repo1.maven.org/maven2" }
-        maven { url  "http://dl.bintray.com/dasar/maven" }
+        maven { url "https://repo1.maven.org/maven2" }
+        maven { url  "https://dl.bintray.com/dasar/maven" }
+        maven { url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo' }
     }
 }
 
@@ -38,6 +35,5 @@ ext {
     stethoVersion = "1.5.0"
     showcaseVersion = "5.4.3"
     nextCloudVersion = "1.0.21"
-    gmsVersion = "11.0.2"
 }
 

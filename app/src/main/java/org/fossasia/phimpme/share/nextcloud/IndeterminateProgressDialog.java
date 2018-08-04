@@ -58,6 +58,7 @@ public class IndeterminateProgressDialog extends DialogFragment {
     /**
      * {@inheritDoc}
      */
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         /// create indeterminate progress dialog

@@ -111,9 +111,12 @@ public class StorageProvider {
 
     public static ArrayList<Media> getMedia(String path, boolean includeVideo) {
         ArrayList<Media> list = new ArrayList<Media>();
-        File[] images = new File(path).listFiles(new ImageFileFilter(includeVideo));
-        for (File image : images)
-            list.add(new Media(image));
+        File[] images = null;
+        if (path != null)
+            images = new File(path).listFiles(new ImageFileFilter(includeVideo));
+        if (images != null)
+            for (File image : images)
+                list.add(new Media(image));
         return list;
     }
 

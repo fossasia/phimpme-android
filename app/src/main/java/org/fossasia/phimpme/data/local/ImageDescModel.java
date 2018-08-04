@@ -16,7 +16,6 @@ public class ImageDescModel extends RealmObject {
     public ImageDescModel() {
     }
 
-
     public ImageDescModel(String path, String title) {
         this.path = path;
         this.desc = title;

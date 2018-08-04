@@ -1,5 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/action_share"
@@ -16,16 +16,31 @@
         android:title="Edit"/>
 
     <item
-        android:id="@+id/action_details"
-        android:orderInCategory="2"
-        app:showAsAction="always"
-        android:icon="@drawable/ic_info_white"
-        android:title="Move"/>
+            android:id="@+id/action_compress"
+            android:orderInCategory="2"
+            app:showAsAction="always"
+            android:icon="@drawable/compressicn"
+            android:title="Compress"/>
 
     <item
         android:id="@+id/action_delete"
-        android:orderInCategory="1"
+        android:orderInCategory="3"
         android:icon="@drawable/ic_delete_white_24dp"
         android:title="@string/delete"
         app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_details"
+        android:orderInCategory="4"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_info_white"
+        android:title="@string/details"/>
+
+    <item
+        android:id="@+id/action_favourites"
+        android:orderInCategory="5"
+        android:icon="@drawable/ic_favourite_white_24dp"
+        android:title="@string/favourite"
+        app:showAsAction="always" />
+
 </menu>
