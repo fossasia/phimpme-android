@@ -103,7 +103,7 @@ public class TrashBinActivity extends ThemedActivity {
         setupToolbar();
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override public void onRefresh() {
-                trashBinAdapter.updateTrashListItems(getTrashObjectsLast());
+                trashBinAdapter.updateTrashListItems(getTrashObjects());
                 if(swipeRefreshLayout.isRefreshing()){
                     swipeRefreshLayout.setRefreshing(false);
                 }
