@@ -883,6 +883,10 @@
         section?</string>
     <string name="upload_view_choice">UploadViewDisplay</string>
 
+    <!-- TRASH BIN STRINGS-->
+    <string name="restore_all_success_mssg">images successfully restored</string>
+    <string name="restore_all_fail_mssg">images failed to be restored</string>
+
     <!--ALBUM DETAILS-->
     <string name="total_photos">Total photos:</string>
     <string name="hidden">Hidden:</string>

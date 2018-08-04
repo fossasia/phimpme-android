@@ -146,11 +146,6 @@ dependencies {
     compile files('libs/twitter4j-core-3.0.5.jar')
     compile files('libs/twitter4j-media-support-3.0.5.jar')
 
-    //facebook
-    compile "com.facebook.stetho:stetho-okhttp3:$rootProject.stethoVersion"
-    compile 'com.facebook.android:facebook-android-sdk:4.23.0'
-    compile 'com.facebook.stetho:stetho:1.5.0'
-
     //cloud rail
     compile 'com.cloudrail:cloudrail-si-android:2.20.1'
 
