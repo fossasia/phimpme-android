@@ -3,11 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="org.fossasia.phimpme.gallery.activities.LFMainActivity">
 
-    <item
-        android:id="@+id/all_photos"
-        android:title="@string/all_photos"
-        android:icon="@drawable/ic_photo_24dp"
-        app:showAsAction="always" />
+
 
     <group android:id="@+id/general_action">
 
@@ -62,9 +58,23 @@
             android:title="@string/move_to"
             app:showAsAction="never" />
 
+        <item
+            android:id="@+id/action_add_favourites"
+            android:title="@string/favourite"
+            app:showAsAction="never"/>
+
+        <item
+            android:id="@+id/create_gif"
+            android:title="Create GIF"
+            app:showAsAction="never"/>
+
     </group>
 
     <group android:id="@+id/album_options_menu">
+        <item
+            android:id="@+id/album_details"
+            android:title="@string/details"
+            app:showAsAction="never" />
         <item
             android:id="@+id/excludeAlbumButton"
             android:title="@string/exclude"
@@ -73,8 +83,12 @@
             android:id="@+id/hideAlbumButton"
             android:title="@string/hide"
             app:showAsAction="never" />
+        <item
+            android:id="@+id/zipAlbumButton"
+            android:title="@string/zip"
+            app:showAsAction="never" />
     </group>
-
+`
     <item
         android:id="@+id/renameAlbum"
         android:title="@string/rename"
@@ -115,4 +129,19 @@
         android:id="@+id/settings"
         android:title="@string/settings"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/search_action"
+        android:title="@string/search_menu"
+        android:visible="true"
+        android:icon="@drawable/ic_search_black_24dp"
+        android:tint="@color/white"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/all_photos"
+        android:title="@string/all_photos"
+        android:icon="@drawable/ic_photo_24dp"
+        app:showAsAction="always" />
+
 </menu>

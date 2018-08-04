@@ -45,7 +45,7 @@ public class WordpressLoginActivity extends ThemedActivity {
             public void onClick(View v) {
                 InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-                SnackBarHandler.show(parent, "Feature not present");
+                SnackBarHandler.show(parent, R.string.feature_not_present);
                 //Snackbar.make(parent,"Feature not present", BaseTransientBottomBar.LENGTH_LONG).show();
             }
         });

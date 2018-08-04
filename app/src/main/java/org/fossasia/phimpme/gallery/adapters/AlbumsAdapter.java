@@ -5,7 +5,10 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Environment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -26,12 +29,12 @@ import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.SharedMediaActivity;
 import org.fossasia.phimpme.gallery.data.Album;
 import org.fossasia.phimpme.gallery.data.Media;
+import org.fossasia.phimpme.gallery.util.ColorPalette;
 import org.fossasia.phimpme.gallery.util.PreferenceUtil;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
+import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 
 import java.util.ArrayList;
-
-import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Created by dnld on 1/7/16.
@@ -43,18 +46,20 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
     private View.OnClickListener mOnClickListener;
     private View.OnLongClickListener mOnLongClickListener;
     private ThemeHelper theme;
-
     private BitmapDrawable placeholder;
+    Context context;
 
     public AlbumsAdapter(ArrayList<Album> ph, Context context) {
         albums = ph;
         theme = new ThemeHelper(context);
+        this.context = context;
         updateTheme();
     }
 
     public void updateTheme() {
         theme.updateTheme();
-        placeholder = ((BitmapDrawable) theme.getPlaceHolder());
+        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.placeholder);
+        placeholder = (BitmapDrawable) drawable;
     }
 
     @Override
@@ -69,6 +74,24 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
     public void onBindViewHolder(final AlbumsAdapter.ViewHolder holder, int position) {
         Album a = SharedMediaActivity.getAlbums().dispAlbums.get(position);
         Media f = a.getCoverAlbum();
+      
+        if(a.getPath().contains(Environment.getExternalStorageDirectory().getPath())){
+            holder.storage.setVisibility(View.INVISIBLE);
+        } else {
+            holder.storage.setImageResource(theme.getBaseTheme() == ThemeHelper.LIGHT_THEME ? R.drawable.ic_sd_storage_black_24dp : R.drawable.ic_sd_storage_white_24dp);
+            holder.storage.setVisibility(View.VISIBLE);
+        }
+
+        if (a.isPinned() && (theme.getBaseTheme() == ThemeHelper.LIGHT_THEME)){
+            holder.pin.setVisibility(View.VISIBLE);
+            holder.pin.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.pin_black));
+        }
+        else if( a.isPinned() && (theme.getBaseTheme() == ThemeHelper.AMOLED_THEME || theme.getBaseTheme() == ThemeHelper.DARK_THEME)) {
+            holder.pin.setVisibility(View.VISIBLE);
+            holder.pin.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.pin_white));
+        }
+        else
+            holder.pin.setVisibility(View.INVISIBLE);
 
         Glide.with(holder.picture.getContext())
                 .load(f.getPath())
@@ -83,7 +106,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
                 .listener(new RequestListener<String, Bitmap>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<Bitmap> target, boolean isFirstResource) {
-                        PreferenceUtil SP = PreferenceUtil.getInstance(getApplicationContext());
+                        PreferenceUtil SP = PreferenceUtil.getInstance(context);
                         SP.putBoolean(holder.picture.getContext().getString(R.string.preference_use_alternative_provider), true);
                         return false;
                     }
@@ -106,7 +129,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
             Color.colorToHSV(color, hsv);
             hsv[2] *= 0.72f; // value component
             color = Color.HSVToColor(hsv);
-            hexAccentColor= String.format("#%06X", (0xFFFFFF & color));
+            hexAccentColor = String.format("#%06X", (0xFFFFFF & color));
         }
 
         String textColor = theme.getBaseTheme() != ThemeHelper.LIGHT_THEME ? "#FAFAFA" : "#2b2b2b";
@@ -117,11 +140,14 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
             holder.layout.setBackgroundColor(Color.parseColor(hexPrimaryColor));
             holder.picture.setColorFilter(0x77000000, PorterDuff.Mode.SRC_ATOP);
             holder.selectedIcon.setVisibility(View.VISIBLE);
-            if (theme.getBaseTheme() == ThemeHelper.LIGHT_THEME ) textColor = "#FAFAFA";
+            if (theme.getBaseTheme() == ThemeHelper.LIGHT_THEME) {
+                textColor = "#FAFAFA";
+                hexAccentColor = "#FAFAFA";
+            }
         } else {
             holder.picture.clearColorFilter();
             holder.selectedIcon.setVisibility(View.GONE);
-            holder.layout.setBackgroundColor(theme.getCardBackgroundColor());
+            holder.layout.setBackgroundColor(ColorPalette.getTransparentColor(theme.getBackgroundColor(), 200));
         }
 
         String albumNameHtml = "<i><font color='" + textColor + "'>" + a.getName() + "</font></i>";
@@ -160,10 +186,12 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView picture;
-        View  layout;
-        IconicsImageView selectedIcon;
-        TextView name, nPhotos;
+        private ImageView picture;
+        private View layout;
+        private IconicsImageView selectedIcon;
+        private TextView name, nPhotos;
+        private ImageView pin;
+        private ImageView storage;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -172,6 +200,8 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
             layout = itemView.findViewById(R.id.linear_card_text);
             name = (TextView) itemView.findViewById(R.id.album_name);
             nPhotos = (TextView) itemView.findViewById(R.id.album_photos_count);
+            pin = (ImageView) itemView.findViewById(R.id.icon_pinned);
+            storage = (ImageView) itemView.findViewById(R.id.storage_icon);
         }
     }
 }

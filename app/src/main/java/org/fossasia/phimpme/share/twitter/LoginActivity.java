@@ -13,6 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+
 package org.fossasia.phimpme.share.twitter;
 
 import android.content.Intent;
@@ -29,6 +30,7 @@ import android.webkit.WebViewClient;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
+import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 import org.fossasia.phimpme.utilities.BasicCallBack;
@@ -36,6 +38,7 @@ import org.fossasia.phimpme.utilities.Constants;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
@@ -44,6 +47,7 @@ import twitter4j.auth.RequestToken;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
+import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTER;
 import static org.fossasia.phimpme.utilities.Constants.TWITTER_CONSUMER_KEY;
 import static org.fossasia.phimpme.utilities.Constants.TWITTER_CONSUMER_SECRET;
 
@@ -66,11 +70,11 @@ public class LoginActivity extends ThemedActivity {
 	private AlertDialog.Builder progressDialog;
 	private static BasicCallBack twitterCallBack;
     private Uri uri;
+    private boolean mTwitterAuthDone = false;
 
 	public static void setBasicCallBack(BasicCallBack basicCallBack){
 		twitterCallBack = basicCallBack;
 	}
-
 
 
 	@Override
@@ -168,6 +172,7 @@ public class LoginActivity extends ThemedActivity {
 					bundle.putString(getString(R.string.auth_username),accessToken.getScreenName());
 					bundle.putString(getString(R.string.auth_secret),accessToken.getTokenSecret());
 				}
+				mTwitterAuthDone = true;
             } catch (TwitterException e) {
                 e.printStackTrace();
             }
@@ -176,11 +181,29 @@ public class LoginActivity extends ThemedActivity {
 
         @Override
         protected void onPostExecute(Void result) {
-            twitterCallBack.callBack(Constants.SUCCESS, bundle);
+            //twitterCallBack.callBack(Constants.SUCCESS, bundle);
+            if(mTwitterAuthDone){
+            	addToAccountsRealmDatabase(bundle);
+			}
             dialog.dismiss();
             finish();
         }
     }
+
+    private void addToAccountsRealmDatabase(Bundle bundle){
+		Realm realm = Realm.getDefaultInstance();
+		SnackBarHandler.show(parentView, getString(R.string.account_logged_twitter));
+		if (bundle instanceof Bundle) {
+			Bundle bundle2 = bundle;
+			realm.beginTransaction();
+			AccountDatabase account = realm.createObject(AccountDatabase.class, TWITTER.toString());
+			account.setAccountname(TWITTER);
+			account.setUsername(bundle2.getString(getString(R.string.auth_username)));
+			account.setToken(bundle2.getString(getString(R.string.auth_token)));
+			account.setSecret(bundle2.getString(getString(R.string.auth_secret)));
+			realm.commitTransaction();
+		}
+	}
 
 
 	private void askOAuth() {
@@ -218,4 +241,11 @@ public class LoginActivity extends ThemedActivity {
 		}).start();
 	}
 
+	@Override public void onBackPressed() {
+		super.onBackPressed();
+		if(dialog.isShowing()){
+			dialog.dismiss();
+		}
+		finish();
+	}
 }

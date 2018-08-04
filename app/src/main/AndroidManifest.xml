@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.fossasia.phimpme"
-    android:versionCode="6"
-    android:versionName="1.2.0">
+          package="org.fossasia.phimpme"
+          android:versionCode="6"
+          android:versionName="1.2.0">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -33,22 +33,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="demotwitterlogin"
-                    android:scheme="x-demo-twitter" />
-            </intent-filter>
-        </activity>
-
-        <activity
-            android:name="com.dropbox.client2.android.AuthActivity"
-            android:launchMode="singleTask"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:configChanges="orientation|keyboard">
-            <intent-filter>
-                <!-- Change this to be db- followed by your app key -->
-                <data android:scheme="db-7fhwc9meece1m9g" />
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <category android:name="android.intent.category.DEFAULT" />
+                    android:host="http"
+                    android:scheme="phimp.me" />
             </intent-filter>
         </activity>
 
@@ -58,25 +44,28 @@
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.media.action.IMAGE_CAPTURE_SECURE" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.media.action.STILL_IMAGE_CAMERA_SECURE" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.media.action.IMAGE_CAPTURE" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.VOICE" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.media.action.STILL_IMAGE_CAMERA" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.VOICE" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".opencamera.Camera.TakePhoto"
             android:configChanges="orientation|screenSize|keyboardHidden"
@@ -178,13 +167,16 @@
             <intent-filter>
                 <action android:name="vn.mbm.phimp.me.leafpic.OPEN_ALBUM" />
             </intent-filter>
-            <meta-data android:name="android.app.shortcuts"
+
+            <meta-data
+                android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
         </activity>
         <activity
             android:name=".gallery.activities.LFMainActivity"
             android:configChanges="orientation|screenSize"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.albumsAct" />
 
@@ -199,8 +191,10 @@
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="com.google.android.voicesearch.SELF_NOTE" />
             </intent-filter>
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.fossasia.phimpme.gallery.activities.LFMainActivity" />
@@ -224,6 +218,13 @@
 
                 <data android:mimeType="image/*" />
                 <data android:mimeType="video/*" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
         <activity
@@ -276,7 +277,6 @@
         </activity>
         <activity
             android:name=".editor.EditImageActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -287,10 +287,10 @@
             android:name=".opencamera.Camera.PhotoActivity"
             android:label="Preview"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".uploadhistory.UploadHistory"
-                  android:label="Upload History"
-                  android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".uploadhistory.UploadHistory"
+            android:label="Upload History"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="org.fossasia.phimpme.gallery.CustomGlideModule"
@@ -305,27 +305,17 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-        <provider
-            android:name="com.facebook.FacebookContentProvider"
-            android:authorities="com.facebook.app.FacebookContentProvider125766838062659"
-            android:exported="true" />
 
         <activity
             android:name=".share.SharingActivity"
+            android:largeHeap="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustNothing"
-            android:largeHeap="true"/>
-        <meta-data android:name="com.google.android.gms.version"
-                   android:value="@integer/google_play_services_version" />
-
-
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
+            android:windowSoftInputMode="adjustNothing" />
 
         <activity
             android:name=".accounts.AccountActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
@@ -334,7 +324,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:scheme="pdk4914573327424567067" />
+                <data android:scheme="org.fossasia.phimpme" />
+                <data android:scheme="pdk4910600717739247160" />
             </intent-filter>
         </activity>
         <activity
@@ -342,33 +333,39 @@
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".share.wordpress.WordpressLoginActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
-
-        <activity android:name=".share.nextcloud.NextCloudAuth"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".share.nextcloud.NextCloudAuth"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".share.flickr.FlickrActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:launchMode="singleTask" >
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="flickrj-android-sample-oauth" />
             </intent-filter>
         </activity>
-        <activity android:name=".share.imgur.ImgurAuthActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
+        <activity
+            android:name=".share.imgur.ImgurAuthActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".share.owncloud.OwnCloudActivity"
             android:label="@string/title_activity_own_cloud"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="78c6ec5c18fcd10ffbfd28ae038f3311f2763889" />
+
+        <activity android:name=".editor.CompressImageActivity"></activity>
+        <activity android:name=".trashbin.TrashBinActivity">
+        </activity>
     </application>
 
 </manifest>
