@@ -1,7 +1,5 @@
 package org.fossasia.phimpme.trashbin;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
-
 import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -12,11 +10,13 @@ import java.util.List;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.TrashBinRealmModel;
+import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import android.net.Uri;
+import android.os.Environment;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -28,6 +28,8 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHolder> {
 
@@ -46,9 +48,9 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
         return new TrashBinAdapter.ViewHolder(view);
     }
 
-    @Override public void onBindViewHolder(final TrashBinAdapter.ViewHolder holder, int position) {
+    @Override public void onBindViewHolder(final TrashBinAdapter.ViewHolder holder, final int position) {
         if(trashItemsList.size() != 0){
-            TrashBinRealmModel trashBinRealmModel = trashItemsList.get(position);
+            final TrashBinRealmModel trashBinRealmModel = trashItemsList.get(position);
             String date = trashBinRealmModel.getDatetime();
             try {
                 DateFormat format = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
@@ -62,12 +64,12 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
             }
             holder.deleteDate.setTag(trashBinRealmModel);
             Uri uri = Uri.fromFile(new File(trashBinRealmModel.getTrashbinpath()));
-            Glide.with(getApplicationContext()).load(uri)
+            Glide.with(context).load(uri)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.deletedImage);
             holder.popupMenuButton.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View view) {
-                    PopupMenu menu = new PopupMenu(getApplicationContext(), holder.popupMenuButton);
+                    PopupMenu menu = new PopupMenu(context, holder.popupMenuButton);
                     menu.inflate(R.menu.menu_popup_trashbin);
                     menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         @Override public boolean onMenuItemClick(MenuItem menuItem) {
@@ -77,6 +79,12 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
                                     return true;
 
                                 case R.id.delete_permanently:
+                                    if(deletePermanent(trashBinRealmModel)){
+                                        deleteFromRealm(trashItemsList.get(position).getTrashbinpath());
+                                        trashItemsList.remove(position);
+                                        notifyItemRemoved(position);
+                                        notifyItemRangeChanged(position, trashItemsList.size());
+                                    }
                                     return true;
 
                                 default:
@@ -89,6 +97,31 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
                 }
             });
         }
+    }
+
+    private void deleteFromRealm(final String path){
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override public void execute(Realm realm) {
+                RealmResults<TrashBinRealmModel> trashBinRealmModels = realm.where(TrashBinRealmModel.class).equalTo
+                        ("trashbinpath", path).findAll();
+                trashBinRealmModels.deleteAllFromRealm();
+            }
+        });
+    }
+
+    private boolean deletePermanent(TrashBinRealmModel trashBinRealmModel){
+        boolean succ = false;
+        String path = trashBinRealmModel.getTrashbinpath();
+        File file = new File(Environment.getExternalStorageDirectory() + "/" + ".nomedia");
+        //File file = new File(Environment.getExternalStorageDirectory() + "/" + "TrashBin");
+        if(file.exists()){
+            File file1 = new File(path);
+            if(file1.exists()){
+                succ = file1.delete();
+            }
+        }
+        return succ;
     }
 
     public void updateTrashListItems(List<TrashBinRealmModel> trashList) {

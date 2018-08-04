@@ -24,13 +24,6 @@ import com.box.androidsdk.content.models.BoxSession;
 import com.cloudrail.si.CloudRail;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.pinterest.android.pdk.PDKCallback;
 import com.pinterest.android.pdk.PDKClient;
@@ -123,8 +116,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private RealmQuery<AccountDatabase> realmResult;
     private PhimpmeProgressBarHandler phimpmeProgressBarHandler;
     private TwitterAuthClient client;
-    private CallbackManager callbackManager;
-    private LoginManager loginManager;
     private AccountDatabase account;
     private DatabaseHelper databaseHelper;
     private Context context;
@@ -149,9 +140,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         accountPresenter.attachView(this);
         databaseHelper = new DatabaseHelper(realm);
         client = new TwitterAuthClient();
-        callbackManager = CallbackManager.Factory.create();
         setSupportActionBar(toolbar);
-        loginManager = LoginManager.getInstance();
         ThemeHelper themeHelper = new ThemeHelper(getContext());
         toolbar.setPopupTheme(getPopupToolbarStyle());
         toolbar.setBackgroundColor(themeHelper.getPrimaryColor());
@@ -675,7 +664,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         client.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+       // callbackManager.onActivityResult(requestCode, resultCode, data);
         pdkClient.onOauthResponse(requestCode, resultCode, data);
 
         if ((requestCode == OWNCLOUD_REQUEST_CODE && resultCode == RESULT_OK) || (requestCode == NEXTCLOUD_REQUEST_CODE && resultCode == RESULT_OK)) {

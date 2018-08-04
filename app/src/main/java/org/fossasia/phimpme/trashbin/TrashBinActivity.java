@@ -8,6 +8,8 @@ import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.TrashBinRealmModel;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
 import org.fossasia.phimpme.gallery.util.SecurityHelper;
+import org.fossasia.phimpme.gallery.util.ContentHelper;
+import org.fossasia.phimpme.gallery.util.StringUtils;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
@@ -16,8 +18,10 @@ import com.mikepenz.iconics.IconicsDrawable;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Environment;
+import android.content.Context;
+import android.media.MediaScannerConnection;
+import android.os.AsyncTask;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.os.Bundle;
@@ -39,6 +43,8 @@ import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
+import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
+
 public class TrashBinActivity extends ThemedActivity {
 
     @BindView(R.id.trashbin_recycler_view)
@@ -59,6 +65,7 @@ public class TrashBinActivity extends ThemedActivity {
     private RealmQuery<TrashBinRealmModel> trashBinRealmModelRealmQuery;
     private TrashBinAdapter trashBinAdapter;
     private SecurityHelper securityObj;
+    private ArrayList<TrashBinRealmModel> deletedTrash;
 
     @Override public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,7 +114,7 @@ public class TrashBinActivity extends ThemedActivity {
         setupToolbar();
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override public void onRefresh() {
-                trashBinAdapter.updateTrashListItems(getTrashObjectsLast());
+                trashBinAdapter.updateTrashListItems(getTrashObjects());
                 if(swipeRefreshLayout.isRefreshing()){
                     swipeRefreshLayout.setRefreshing(false);
                 }
@@ -133,6 +140,7 @@ public class TrashBinActivity extends ThemedActivity {
         switch (item.getItemId()){
 
             case R.id.trashbin_restore:
+                new RestoreAll().execute();
                 return true;
 
             case R.id.delete_action:
@@ -143,8 +151,8 @@ public class TrashBinActivity extends ThemedActivity {
                     return super.onOptionsItemSelected(item);
         }
     }
-
-    class DeleteAll extends AsyncTask<Void, Void, Void>{
+  
+   class DeleteAll extends AsyncTask<Void, Void, Void>{
         private final Boolean[] deleted = {false};
 
         @Override
@@ -152,10 +160,10 @@ public class TrashBinActivity extends ThemedActivity {
             swipeRefreshLayout.setRefreshing(true);
             super.onPreExecute();
         }
-
-        @Override
+          
+           @Override
         protected Void doInBackground(Void... voids) {
-            Realm realm = Realm.getDefaultInstance();
+           Realm realm = Realm.getDefaultInstance();
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
                 public void execute(Realm realm) {
@@ -166,11 +174,11 @@ public class TrashBinActivity extends ThemedActivity {
             File binfolder = new File(Environment.getExternalStorageDirectory() + "/" + ".nomedia");
             if(binfolder.exists()){
                 binfolder.delete();
-            }
+               }
             return null;
         }
-
-        @Override
+          
+           @Override
         protected void onPostExecute(Void aVoid) {
             swipeRefreshLayout.setRefreshing(false);
             super.onPostExecute(aVoid);
@@ -178,6 +186,48 @@ public class TrashBinActivity extends ThemedActivity {
                 emptyView.setVisibility(View.VISIBLE);
                 trashBinAdapter.updateTrashListItems(getTrashObjects());
                 SnackBarHandler.showWithBottomMargin(parentView, getResources().getString(R.string.clear_all_success_mssg), 0, Snackbar.LENGTH_SHORT);
+            }
+        }
+    }
+
+    class RestoreAll extends AsyncTask<Void, Void, Void> {
+        private int count = 0, originalCount = 0;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            swipeRefreshLayout.setRefreshing(true);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            deletedTrash = new ArrayList<>();
+            Realm realm = Realm.getDefaultInstance();
+            RealmQuery<TrashBinRealmModel> trashBinRealmModelRealmQuery = realm.where(TrashBinRealmModel.class);
+            originalCount = (int)trashBinRealmModelRealmQuery.count();
+            for (int i = 0; i < originalCount; i++) {
+                if(restoreImage(trashBinRealmModelRealmQuery.findAll().get(i))){
+                    count ++;
+                }
+            }
+            for(int i = 0; i < deletedTrash.size(); i++){
+                removeFromRealm(deletedTrash.get(i).getTrashbinpath());
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            swipeRefreshLayout.setRefreshing(false);
+            trashBinAdapter.updateTrashListItems(getTrashObjects());
+            if (trashBinRealmModelRealmQuery.count() == 0) {
+                emptyView.setVisibility(View.VISIBLE);
+                SnackBarHandler.showWithBottomMargin(parentView, String.valueOf(count) + " " +
+                        getResources().getString(R.string.restore_all_success_mssg), 0, Snackbar.LENGTH_SHORT);
+            } else {
+                SnackBarHandler.showWithBottomMargin(parentView,  String.valueOf(count) + " " + getResources().getString(R.string.restore_all_success_mssg) +" but" +
+                        String.valueOf(originalCount - count) + " " + getResources().getString(R.string.restore_all_fail_mssg), 0, Snackbar.LENGTH_SHORT);
             }
         }
     }
@@ -255,6 +305,41 @@ public class TrashBinActivity extends ThemedActivity {
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialogDelete);
         return deleted;
     }
+
+    private boolean restoreImage(TrashBinRealmModel trashBinRealmModel){
+        boolean result = false;
+        String oldpath = trashBinRealmModel.getOldpath();
+        String oldFolder = oldpath.substring(0, oldpath.lastIndexOf("/"));
+        if(restoreMove(getApplicationContext(), trashBinRealmModel.getTrashbinpath(), oldFolder)){
+            result = true;
+            scanFile(context, new String[]{ trashBinRealmModel.getTrashbinpath(), StringUtils.getPhotoPathMoved
+                    (trashBinRealmModel.getTrashbinpath(),
+                            oldFolder) });
+            deletedTrash.add(trashBinRealmModel);
+        }
+        return result;
+    }
+
+    private boolean restoreMove(Context context, String source, String targetDir){
+        File from = new File(source);
+        File to = new File(targetDir);
+        return ContentHelper.moveFile(context, from, to);
+    }
+
+    private boolean removeFromRealm(final String path){
+        final boolean[] delete = {false};
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override public void execute(Realm realm) {
+                RealmResults<TrashBinRealmModel> result = realm.where(TrashBinRealmModel.class).equalTo
+                        ("trashbinpath", path).findAll();
+                delete[0] = result.deleteAllFromRealm();
+            }
+        });
+        return delete[0];
+    }
+
+    public void scanFile(Context context, String[] path) { MediaScannerConnection.scanFile(context, path, null, null); }
 
     private void setupToolbar(){
         setSupportActionBar(toolbar);

@@ -888,6 +888,8 @@
     <string name="delete_all_trash">Are you sure you want to empty the TrashBin</string>
     <string name="clear_trash_title">Clear all Trash</string>
     <string name="clear_all_success_mssg">All the images deleted permanently</string>
+    <string name="restore_all_success_mssg">images successfully restored</string>
+    <string name="restore_all_fail_mssg">images failed to be restored</string>
 
     <!--ALBUM DETAILS-->
     <string name="total_photos">Total photos:</string>
