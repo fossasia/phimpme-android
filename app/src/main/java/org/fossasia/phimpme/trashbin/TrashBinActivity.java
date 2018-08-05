@@ -8,6 +8,7 @@ import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.TrashBinRealmModel;
 import org.fossasia.phimpme.gallery.activities.SingleMediaActivity;
 import org.fossasia.phimpme.gallery.data.Media;
+import org.fossasia.phimpme.gallery.util.ThemeHelper;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
 import org.fossasia.phimpme.gallery.util.SecurityHelper;
 import org.fossasia.phimpme.gallery.util.ContentHelper;
@@ -40,9 +41,12 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
@@ -62,6 +66,15 @@ public class TrashBinActivity extends ThemedActivity {
 
     @BindView(R.id.empty_trash)
     public RelativeLayout emptyView;
+
+    @BindView(R.id.image_trash)
+    public ImageView emptyIcon;
+
+    @BindView(R.id.trash_text)
+    public TextView trashText;
+
+    @BindView(R.id.trash_message)
+    public TextView trashMessage;
 
     @BindView(R.id.swipeRefreshLayout_trashbin)
     protected SwipeRefreshLayout swipeRefreshLayout;
@@ -100,6 +113,7 @@ public class TrashBinActivity extends ThemedActivity {
         ArrayList<TrashBinRealmModel> trashlist = getTrashObjects();
         if (trashlist.size() == 0) {
             emptyView.setVisibility(View.VISIBLE);
+            trashEmptyViewSetup();
         } else {
             trashBinAdapter = new TrashBinAdapter(trashlist);
             trashBinAdapter.setOnClickListener(onClickListener);
@@ -109,6 +123,17 @@ public class TrashBinActivity extends ThemedActivity {
             trashBinRecyclerView.setAdapter(trashBinAdapter);
         }
         setUpUi();
+    }
+
+    private void trashEmptyViewSetup(){
+        if(ThemeHelper.getBaseTheme(getApplicationContext()) == ThemeHelper.DARK_THEME ||
+                ThemeHelper.getBaseTheme(getApplicationContext()) == ThemeHelper.AMOLED_THEME){
+            emptyIcon.setImageResource(R.drawable.ic_delete_sweep_white_24dp);
+        } else {
+            emptyIcon.setImageResource(R.drawable.ic_delete_sweep_black_24dp);
+        }
+        trashText.setTextColor(getTextColor());
+        trashMessage.setTextColor(getTextColor());
     }
 
     private ArrayList<TrashBinRealmModel> getTrashObjects(){

@@ -1,5 +1,7 @@
 package org.fossasia.phimpme.trashbin;
 
+import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
+
 import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -10,11 +12,15 @@ import java.util.List;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.TrashBinRealmModel;
+import org.fossasia.phimpme.gallery.util.ContentHelper;
+import org.fossasia.phimpme.gallery.util.StringUtils;
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import android.content.Context;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.util.DiffUtil;
@@ -77,6 +83,7 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
                             switch (menuItem.getItemId()){
 
                                 case R.id.restore_option:
+                                    restoreImage(trashBinRealmModel, position);
                                     return true;
 
                                 case R.id.delete_permanently:
@@ -99,6 +106,42 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
             });
         }
     }
+
+    private void restoreImage(TrashBinRealmModel trashBinRealmModel, int pos){
+        String oldpath = trashBinRealmModel.getOldpath();
+        String oldFolder = oldpath.substring(0, oldpath.lastIndexOf("/"));
+        if(restoreMove(context, trashBinRealmModel.getTrashbinpath(), oldFolder)){
+            scanFile(context, new String[]{ trashBinRealmModel.getTrashbinpath(), StringUtils.getPhotoPathMoved
+                    (trashBinRealmModel.getTrashbinpath(),
+                    oldFolder) });
+            if( removeFromRealm(trashBinRealmModel.getTrashbinpath())){
+                trashItemsList.remove(pos);
+                notifyItemRemoved(pos);
+                notifyItemRangeChanged(pos, trashItemsList.size());
+            }
+        }
+    }
+
+    private boolean restoreMove(Context context, String source, String targetDir){
+        File from = new File(source);
+        File to = new File(targetDir);
+        return ContentHelper.moveFile(context, from, to);
+    }
+
+    private boolean removeFromRealm(final String path){
+        final boolean[] delete = {false};
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override public void execute(Realm realm) {
+                RealmResults<TrashBinRealmModel> result = realm.where(TrashBinRealmModel.class).equalTo
+                        ("trashbinpath", path).findAll();
+                delete[0] = result.deleteAllFromRealm();
+            }
+        });
+        return delete[0];
+    }
+
+    public void scanFile(Context context, String[] path) { MediaScannerConnection.scanFile(context, path, null, null); }
 
     private void deleteFromRealm(final String path){
         Realm realm = Realm.getDefaultInstance();
@@ -124,7 +167,7 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
         }
         return succ;
     }
-
+  
     public void updateTrashListItems(List<TrashBinRealmModel> trashList) {
         final TrashDiffCallback diffCallback = new TrashDiffCallback(this.trashItemsList, trashList);
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
