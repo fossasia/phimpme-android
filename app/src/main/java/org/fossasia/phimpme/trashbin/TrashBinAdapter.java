@@ -103,7 +103,7 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
     private void restoreImage(TrashBinRealmModel trashBinRealmModel, int pos){
         String oldpath = trashBinRealmModel.getOldpath();
         String oldFolder = oldpath.substring(0, oldpath.lastIndexOf("/"));
-        if(restoreMove(getApplicationContext(), trashBinRealmModel.getTrashbinpath(), oldFolder)){
+        if(restoreMove(context, trashBinRealmModel.getTrashbinpath(), oldFolder)){
             scanFile(context, new String[]{ trashBinRealmModel.getTrashbinpath(), StringUtils.getPhotoPathMoved
                     (trashBinRealmModel.getTrashbinpath(),
                     oldFolder) });
