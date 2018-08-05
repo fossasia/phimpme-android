@@ -142,6 +142,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     public Boolean allPhotoMode;
     public Boolean favphotomode;
     public Boolean upoadhis;
+    private Boolean trashdis;
     public int all_photo_pos;
     public int size_all;
     public int current_image_pos;
@@ -157,6 +158,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     public static  Media mediacompress = null;
 
     private ArrayList<Media> uploadhistory;
+    private ArrayList<Media> trashbinlistd;
 
     ImageDescModel temp;
     private final int REQ_CODE_SPEECH_INPUT = 100;
@@ -240,6 +242,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         securityObj = new SecurityHelper(SingleMediaActivity.this);
         favphotomode = getIntent().getBooleanExtra("fav_photos", false);
         upoadhis = getIntent().getBooleanExtra("uploadhistory", false);
+        trashdis = getIntent().getBooleanExtra("trashbin", false);
         allPhotoMode = getIntent().getBooleanExtra(getString(R.string.all_photo_mode), false);
         all_photo_pos = getIntent().getIntExtra(getString(R.string.position), 0);
         size_all = getIntent().getIntExtra(getString(R.string.allMediaSize), getAlbum().getCount());
@@ -248,6 +251,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         }
         if(getIntent().hasExtra("datalist")){
             uploadhistory = getIntent().getParcelableArrayListExtra("datalist");
+        }
+        if(getIntent().hasExtra("trashdatalist")){
+            trashbinlistd = getIntent().getParcelableArrayListExtra("trashdatalist");
         }
 
         String path2 = getIntent().getStringExtra("path");
@@ -303,6 +309,15 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             bottomMenu.findItem(R.id.action_compress).setVisible(false);
         }
 
+        if(trashdis){
+            bottomMenu.findItem(R.id.action_favourites).setVisible(false);
+            bottomMenu.findItem(R.id.action_edit).setVisible(false);
+            bottomMenu.findItem(R.id.action_compress).setVisible(false);
+            bottomMenu.findItem(R.id.action_share).setVisible(false);
+            bottomMenu.findItem(R.id.action_details).setVisible(false);
+            bottomMenu.findItem(R.id.action_delete).setVisible(false);
+        }
+
         if(!allPhotoMode && favphotomode){
             bottomBar.getMenu().getItem(5).setVisible(false);
         }
@@ -348,7 +363,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             }
         };
 
-        if (!allPhotoMode && !favphotomode && !upoadhis) {
+        if (!allPhotoMode && !favphotomode && !upoadhis && !trashdis) {
             adapter = new ImageAdapter(getAlbum().getMedia(), basicCallBack, this, this);
             getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum()
                     .getMedia().size());
@@ -368,7 +383,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 }
             });
             mViewPager.scrollToPosition(getAlbum().getCurrentMediaIndex());
-        } else if(allPhotoMode && !favphotomode && !upoadhis){
+        } else if(allPhotoMode && !favphotomode && !upoadhis && !trashdis){
             adapter = new ImageAdapter(LFMainActivity.listAll, basicCallBack, this, this);
             getSupportActionBar().setTitle(all_photo_pos + 1 + " " + getString(R.string.of) + " " + size_all);
             current_image_pos = all_photo_pos;
@@ -388,7 +403,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 }
             });
             mViewPager.scrollToPosition(all_photo_pos);
-        } else if(!allPhotoMode && favphotomode && !upoadhis){
+        } else if(!allPhotoMode && favphotomode && !upoadhis && !trashdis){
             adapter = new ImageAdapter(favouriteslist, basicCallBack, this, this);
             getSupportActionBar().setTitle(all_photo_pos + 1 + " " + getString(R.string.of) + " " + size_all);
             current_image_pos = all_photo_pos;
@@ -403,7 +418,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 }
             });
             mViewPager.scrollToPosition(all_photo_pos);
-        }else if(!favphotomode && !allPhotoMode && upoadhis){
+        }else if(!favphotomode && !allPhotoMode && upoadhis && !trashdis){
             adapter = new ImageAdapter(uploadhistory, basicCallBack, this, this);
             getSupportActionBar().setTitle(all_photo_pos + 1 + " " + getString(R.string.of) + " " + size_all);
             current_image_pos = all_photo_pos;
@@ -415,6 +430,21 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
                     invalidateOptionsMenu();
                     pathForDescription = uploadhistory.get(position).getPath();
+                }
+            });
+            mViewPager.scrollToPosition(all_photo_pos);
+        } else if(trashdis && !upoadhis && !favphotomode && !allPhotoMode){
+            adapter = new ImageAdapter(trashbinlistd, basicCallBack, this, this);
+            getSupportActionBar().setTitle(all_photo_pos + 1 + " " + "of" + " " + size_all);
+            current_image_pos = all_photo_pos;
+            mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
+                @Override
+                public void onPageChanged(int oldPosition, int position) {
+                    current_image_pos = position;
+                    getAlbum().setCurrentPhotoIndex(getAlbum().getCurrentMediaIndex());
+                    toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
+                    invalidateOptionsMenu();
+                    pathForDescription = trashbinlistd.get(position).getPath();
                 }
             });
             mViewPager.scrollToPosition(all_photo_pos);
@@ -590,14 +620,14 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             menu.findItem(R.id.action_cover).setVisible(false);
             menu.findItem(R.id.action_move).setVisible(false);
         }
-        if (!allPhotoMode && !favphotomode && !upoadhis){
+        if (!allPhotoMode && !favphotomode && !upoadhis && !trashdis){
             menu.setGroupVisible(R.id.only_photos_options, true);
         }
-        else if(!allPhotoMode && favphotomode && !upoadhis){
+        else if(!allPhotoMode && favphotomode && !upoadhis && !trashdis){
             menu.findItem(R.id.action_copy).setVisible(false);
             menu.findItem(R.id.rename_photo).setVisible(false);
             menu.findItem(R.id.action_move).setVisible(false);
-        } else if(!allPhotoMode && !favphotomode && upoadhis){
+        } else if(!allPhotoMode && !favphotomode && (upoadhis || trashdis)){
             menu.findItem(R.id.action_copy).setVisible(false);
             menu.findItem(R.id.action_move).setVisible(false);
             menu.findItem(R.id.rename_photo).setVisible(false);

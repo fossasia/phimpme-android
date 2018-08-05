@@ -40,6 +40,7 @@ import io.realm.RealmResults;
 public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHolder> {
 
     private ArrayList<TrashBinRealmModel> trashItemsList = null;
+    private View.OnClickListener onClickListener;
 
     public TrashBinAdapter(ArrayList<TrashBinRealmModel> list) {
         trashItemsList = list;
@@ -50,7 +51,7 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
                 .inflate(R.layout.trashbin_item_view, null, false);
         view.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,
                 RecyclerView.LayoutParams.WRAP_CONTENT));
-        //view.setOnClickListener(onClickListener);
+        view.setOnClickListener(onClickListener);
         return new TrashBinAdapter.ViewHolder(view);
     }
 
@@ -173,6 +174,10 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
         this.trashItemsList.clear();
         this.trashItemsList.addAll(trashList);
         diffResult.dispatchUpdatesTo(this);
+    }
+
+    public void setOnClickListener(View.OnClickListener lis) {
+        onClickListener = lis;
     }
 
     @Override public int getItemCount() {
