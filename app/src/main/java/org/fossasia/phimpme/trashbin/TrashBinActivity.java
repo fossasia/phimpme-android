@@ -42,7 +42,6 @@ import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
-
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 
 public class TrashBinActivity extends ThemedActivity {
@@ -89,8 +88,26 @@ public class TrashBinActivity extends ThemedActivity {
 
     private ArrayList<TrashBinRealmModel> getTrashObjects(){
         ArrayList<TrashBinRealmModel> list = new ArrayList<>();
+        final ArrayList<TrashBinRealmModel> toDelete = new ArrayList<>();
         for(int i = 0; i < trashBinRealmModelRealmQuery.count(); i++){
-            list.add(trashBinRealmModelRealmQuery.findAll().get(i));
+            if(new File(trashBinRealmModelRealmQuery.findAll().get(i).getTrashbinpath()).exists()){
+                list.add(trashBinRealmModelRealmQuery.findAll().get(i));
+
+            }else{
+                toDelete.add(trashBinRealmModelRealmQuery.findAll().get(i));
+            }
+        }
+        for(int i = 0; i < toDelete.size(); i++){
+            final String path = toDelete.get(i).getTrashbinpath();
+            Realm realm = Realm.getDefaultInstance();
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    RealmResults<TrashBinRealmModel> realmResults = realm.where(TrashBinRealmModel.class).equalTo("trashbinpath",
+                            path).findAll();
+                    realmResults.deleteAllFromRealm();
+                }
+            });
         }
         return list;
     }
