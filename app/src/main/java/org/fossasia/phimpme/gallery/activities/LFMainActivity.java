@@ -150,6 +150,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
     private AlbumsAdapter albumsAdapter;
     private GridSpacingItemDecoration rvAlbumsDecoration;
+    private SwipeRefreshLayout.OnRefreshListener refreshListener;
 
     private MediaAdapter mediaAdapter;
     private GridSpacingItemDecoration rvMediaDecoration;
@@ -1084,7 +1085,7 @@ public class LFMainActivity extends SharedMediaActivity {
         /**** SWIPE TO REFRESH ****/
         swipeRefreshLayout.setColorSchemeColors(getAccentColor());
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getBackgroundColor());
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 getNavigationBar();
@@ -1105,7 +1106,8 @@ public class LFMainActivity extends SharedMediaActivity {
                     }
                 }
             }
-        });
+        };
+        swipeRefreshLayout.setOnRefreshListener(refreshListener);
 
         /**** DRAWER ****/
         mDrawerLayout.addDrawerListener(new ActionBarDrawerToggle(this,
@@ -2959,6 +2961,7 @@ public class LFMainActivity extends SharedMediaActivity {
     private boolean addToTrash(){
         int no = 0;
         boolean succ = false;
+        final ArrayList<Media> media1 = storeDeletedFilesTemporarily();
         File file = new File(Environment.getExternalStorageDirectory() + "/" + ".nomedia");
         if(file.exists() && file.isDirectory()){
             if(!all_photos && !fav_photos && editMode){
@@ -2971,15 +2974,30 @@ public class LFMainActivity extends SharedMediaActivity {
             if(no > 0){
                 succ = true;
                 if(no == 1){
-                    SnackBarHandler.showWithBottomMargin(mDrawerLayout, String.valueOf(no) + " " + getString(R.string
+                    Snackbar snackbar = SnackBarHandler.showWithBottomMargin2(mDrawerLayout, String.valueOf(no) + " " + getString(R.string
                                     .trashbin_move_onefile),
                             navigationView.getHeight
-                                    ());
+                                    (), Snackbar.LENGTH_SHORT);
+                    snackbar.setAction("UNDO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            getAlbum().moveAllMedia(getApplicationContext(), getAlbum().getPath(), media1);
+                            refreshListener.onRefresh();
+                        }
+                    });
                 }else{
-                    SnackBarHandler.showWithBottomMargin(mDrawerLayout, String.valueOf(no) + " " + getString(R.string
-                                    .trashbin_move),
+                    Snackbar snackbar = SnackBarHandler.showWithBottomMargin2(mDrawerLayout, String.valueOf(no) + " " + getString(R.string
+                                    .trashbin_move_onefile),
                             navigationView.getHeight
-                                    ());
+                                    (), Snackbar.LENGTH_SHORT);
+                    snackbar.setAction("UNDO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            getAlbum().moveAllMedia(getApplicationContext(), getAlbum().getPath(), media1);
+                            refreshListener.onRefresh();
+                        }
+                    });
+                    snackbar.show();
                 }
             }else{
                 SnackBarHandler.showWithBottomMargin(mDrawerLayout, String.valueOf(no) + " " + getString(R.string
@@ -3020,6 +3038,22 @@ public class LFMainActivity extends SharedMediaActivity {
         }
        // clearSelectedPhotos();
         return succ;
+    }
+
+    private ArrayList<Media> storeDeletedFilesTemporarily(){
+        ArrayList<Media> deletedImages = new ArrayList<>();
+        if(!all_photos && !fav_photos && editMode){
+            for(Media m: getAlbum().getSelectedMedia()){
+                String name = m.getPath().substring(m.getPath().lastIndexOf("/") + 1);
+                deletedImages.add(new Media(Environment.getExternalStorageDirectory() + "/" + ".nomedia" + "/" + name));
+            }
+        } else if(all_photos && !fav_photos && editMode){
+            for(Media m: selectedMedias){
+                String name = m.getPath().substring(m.getPath().lastIndexOf("/") + 1);
+                deletedImages.add(new Media(Environment.getExternalStorageDirectory() + "/" + ".nomedia" + "/" + name));
+            }
+        }
+        return deletedImages;
     }
 
     private void addTrashObjectsToRealm(ArrayList<Media> media){
