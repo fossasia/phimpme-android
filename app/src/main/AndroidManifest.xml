@@ -41,6 +41,7 @@
         <activity
             android:name=".opencamera.Camera.CameraActivity"
             android:screenOrientation="portrait"
+            android:parentActivityName=".gallery.activities.LFMainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.media.action.IMAGE_CAPTURE_SECURE" />
@@ -305,10 +306,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
-        <provider
-            android:name="com.facebook.FacebookContentProvider"
-            android:authorities="com.facebook.app.FacebookContentProvider125766838062659"
-            android:exported="true" />
 
         <activity
             android:name=".share.SharingActivity"
@@ -316,13 +313,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustNothing" />
-
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-        <meta-data
-            android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id" />
 
         <activity
             android:name=".accounts.AccountActivity"

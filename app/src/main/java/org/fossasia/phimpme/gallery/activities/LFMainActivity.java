@@ -70,6 +70,7 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.bumptech.glide.gifencoder.AnimatedGifEncoder;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 
@@ -109,6 +110,7 @@ import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -134,7 +136,6 @@ import static org.fossasia.phimpme.gallery.data.base.SortingMode.NAME;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.NUMERIC;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.SIZE;
 import static org.fossasia.phimpme.gallery.util.ThemeHelper.LIGHT_THEME;
-import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 
 public class LFMainActivity extends SharedMediaActivity {
 
@@ -149,6 +150,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
     private AlbumsAdapter albumsAdapter;
     private GridSpacingItemDecoration rvAlbumsDecoration;
+    private SwipeRefreshLayout.OnRefreshListener refreshListener;
 
     private MediaAdapter mediaAdapter;
     private GridSpacingItemDecoration rvMediaDecoration;
@@ -1083,7 +1085,7 @@ public class LFMainActivity extends SharedMediaActivity {
         /**** SWIPE TO REFRESH ****/
         swipeRefreshLayout.setColorSchemeColors(getAccentColor());
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getBackgroundColor());
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 getNavigationBar();
@@ -1104,7 +1106,8 @@ public class LFMainActivity extends SharedMediaActivity {
                     }
                 }
             }
-        });
+        };
+        swipeRefreshLayout.setOnRefreshListener(refreshListener);
 
         /**** DRAWER ****/
         mDrawerLayout.addDrawerListener(new ActionBarDrawerToggle(this,
@@ -1763,6 +1766,7 @@ public class LFMainActivity extends SharedMediaActivity {
             menu.setGroupVisible(R.id.photos_option_men, false);
             menu.findItem(R.id.all_photos).setVisible(!editMode && !hidden);
             menu.findItem(R.id.search_action).setVisible(!editMode);
+            menu.findItem(R.id.create_gif).setVisible(false);
             menu.findItem(R.id.select_all).setVisible(getAlbums().getSelectedCount() != albumsAdapter.getItemCount() ? true : false);
             menu.findItem(R.id.settings).setVisible(false);
 
@@ -1797,6 +1801,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 menu.setGroupVisible(R.id.photos_option_men, editMode);
                 menu.setGroupVisible(R.id.album_options_menu, !editMode);
                 menu.findItem(R.id.settings).setVisible(!editMode);
+                menu.findItem(R.id.create_gif).setVisible(false);
                 menu.findItem(R.id.album_details).setVisible(false);
                 menu.findItem(R.id.all_photos).setVisible(false);
             }
@@ -1901,6 +1906,11 @@ public class LFMainActivity extends SharedMediaActivity {
                 }
                 invalidateOptionsMenu();
                 return true;
+
+            case R.id.create_gif:
+                new CreateGIFTask().execute();
+                return true;
+
 
             case R.id.set_pin_album:
                 getAlbums().getSelectedAlbum(0).settings.togglePin(getApplicationContext());
@@ -2584,6 +2594,7 @@ public class LFMainActivity extends SharedMediaActivity {
             //endregion
 
             case R.id.action_move:
+                final Snackbar[] snackbar = {null};
                 final ArrayList<Media> dr = getselecteditems();
                 final String[] pathofalbum = {null};
                 bottomSheetDialogFragment = new SelectAlbumBottomSheet();
@@ -2592,6 +2603,7 @@ public class LFMainActivity extends SharedMediaActivity {
                     bottomSheetDialogFragment.setSelectAlbumInterface(new SelectAlbumBottomSheet.SelectAlbumInterface() {
                         @Override
                         public void folderSelected(final String path) {
+                            final ArrayList<Media> stringio = storeTemporaryphotos(path);
                             pathofalbum[0] = path;
                             swipeRefreshLayout.setRefreshing(true);
                             int numberOfImagesMoved;
@@ -2608,11 +2620,28 @@ public class LFMainActivity extends SharedMediaActivity {
                                 invalidateOptionsMenu();
                                 checkForFavourites(path, dr);
                                 checkDescription(path, dr);
-                                if (numberOfImagesMoved > 1)
-                                    SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.photos_moved_successfully), navigationView.getHeight());
-                                else
+                                if (numberOfImagesMoved > 1){
+                                    snackbar[0] = SnackBarHandler.showWithBottomMargin2(mDrawerLayout, getString(R.string.photos_moved_successfully), navigationView.getHeight(), Snackbar.LENGTH_SHORT);
+                                    snackbar[0].setAction("UNDO", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            getAlbum().moveAllMedia(getApplicationContext(), getAlbum().getPath(), stringio);
+                                        }
+                                    });
+                                    snackbar[0].show();
+                                }
 
-                                    SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.photo_moved_successfully), navigationView.getHeight());
+                                else{
+                                    Snackbar snackbar1 = SnackBarHandler.showWithBottomMargin2(mDrawerLayout, getString(R.string.photo_moved_successfully), navigationView.getHeight(), Snackbar.LENGTH_SHORT);
+                                    snackbar1.setAction("UNDO", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            getAlbum().moveAllMedia(getApplicationContext(), getAlbum().getPath(), stringio);
+                                        }
+                                    });
+                                    snackbar1.show();
+
+                                }
 
                             } else if (numberOfImagesMoved == -1 && getAlbum().getPath().equals(path)) {
                                 //moving to the same folder
@@ -2842,6 +2871,17 @@ public class LFMainActivity extends SharedMediaActivity {
         }
     }
 
+    private ArrayList<Media> storeTemporaryphotos(String path){
+        ArrayList<Media> temp = new ArrayList<>();
+        if(!all_photos && !fav_photos && editMode){
+            for(Media m: getAlbum().getSelectedMedia()){
+                String name = m.getPath().substring(m.getPath().lastIndexOf("/") + 1);
+                temp.add(new Media(path + "/" + name));
+            }
+        }
+        return temp;
+    }
+
     private void checkDescription(String newpath, ArrayList<Media> selecteditems){
         for(int i = 0; i < selecteditems.size(); i++){
             getDescriptionPaths(selecteditems.get(i).getPath(), newpath);
@@ -2921,6 +2961,7 @@ public class LFMainActivity extends SharedMediaActivity {
     private boolean addToTrash(){
         int no = 0;
         boolean succ = false;
+        final ArrayList<Media> media1 = storeDeletedFilesTemporarily();
         File file = new File(Environment.getExternalStorageDirectory() + "/" + ".nomedia");
         if(file.exists() && file.isDirectory()){
             if(!all_photos && !fav_photos && editMode){
@@ -2933,15 +2974,30 @@ public class LFMainActivity extends SharedMediaActivity {
             if(no > 0){
                 succ = true;
                 if(no == 1){
-                    SnackBarHandler.showWithBottomMargin(mDrawerLayout, String.valueOf(no) + " " + getString(R.string
+                    Snackbar snackbar = SnackBarHandler.showWithBottomMargin2(mDrawerLayout, String.valueOf(no) + " " + getString(R.string
                                     .trashbin_move_onefile),
                             navigationView.getHeight
-                                    ());
+                                    (), Snackbar.LENGTH_SHORT);
+                    snackbar.setAction("UNDO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            getAlbum().moveAllMedia(getApplicationContext(), getAlbum().getPath(), media1);
+                            refreshListener.onRefresh();
+                        }
+                    });
                 }else{
-                    SnackBarHandler.showWithBottomMargin(mDrawerLayout, String.valueOf(no) + " " + getString(R.string
-                                    .trashbin_move),
+                    Snackbar snackbar = SnackBarHandler.showWithBottomMargin2(mDrawerLayout, String.valueOf(no) + " " + getString(R.string
+                                    .trashbin_move_onefile),
                             navigationView.getHeight
-                                    ());
+                                    (), Snackbar.LENGTH_SHORT);
+                    snackbar.setAction("UNDO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            getAlbum().moveAllMedia(getApplicationContext(), getAlbum().getPath(), media1);
+                            refreshListener.onRefresh();
+                        }
+                    });
+                    snackbar.show();
                 }
             }else{
                 SnackBarHandler.showWithBottomMargin(mDrawerLayout, String.valueOf(no) + " " + getString(R.string
@@ -2982,6 +3038,22 @@ public class LFMainActivity extends SharedMediaActivity {
         }
        // clearSelectedPhotos();
         return succ;
+    }
+
+    private ArrayList<Media> storeDeletedFilesTemporarily(){
+        ArrayList<Media> deletedImages = new ArrayList<>();
+        if(!all_photos && !fav_photos && editMode){
+            for(Media m: getAlbum().getSelectedMedia()){
+                String name = m.getPath().substring(m.getPath().lastIndexOf("/") + 1);
+                deletedImages.add(new Media(Environment.getExternalStorageDirectory() + "/" + ".nomedia" + "/" + name));
+            }
+        } else if(all_photos && !fav_photos && editMode){
+            for(Media m: selectedMedias){
+                String name = m.getPath().substring(m.getPath().lastIndexOf("/") + 1);
+                deletedImages.add(new Media(Environment.getExternalStorageDirectory() + "/" + ".nomedia" + "/" + name));
+            }
+        }
+        return deletedImages;
     }
 
     private void addTrashObjectsToRealm(ArrayList<Media> media){
@@ -3189,6 +3261,73 @@ public class LFMainActivity extends SharedMediaActivity {
                 displayAlbums();
             }
         }
+    }
+
+    private class CreateGIFTask extends AsyncTask<Void, Void, Void>{
+        private ArrayList<Bitmap> bitmaps = new ArrayList<>();
+
+        @Override protected void onPreExecute() {
+            super.onPreExecute();
+            swipeRefreshLayout.setRefreshing(true);
+        }
+
+        @Override protected Void doInBackground(Void... voids) {
+
+            if(!albumsMode && !all_photos && !fav_photos){
+                for(Media m: getAlbum().getSelectedMedia()){
+                    bitmaps.add(getBitmap(m.getPath()));
+                }
+            }else if(!albumsMode && all_photos && !fav_photos){
+                for(Media m: selectedMedias){
+                    bitmaps.add(getBitmap(m.getPath()));
+                }
+            }
+            byte[] bytes = createGIFFromImages(bitmaps);
+            File file = new File(Environment.getExternalStorageDirectory() + "/" + "Phimpme_gifs");
+            if(file.exists() && file.isDirectory()){
+                FileOutputStream outStream = null;
+                try{
+                    outStream = new FileOutputStream(file.getPath() + "/" + "GIF.gif");
+                    outStream.write(bytes);
+                    outStream.close();
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }else {
+                if (file.mkdir()) {
+                    FileOutputStream outStream = null;
+                    try {
+                        outStream = new FileOutputStream(file.getPath() + "/" + "GIF.gif");
+                        outStream.write(bytes);
+                        outStream.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return null;
+        }
+
+        @Override protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if(!albumsMode && !all_photos && !fav_photos){
+                getAlbum().clearSelectedPhotos();
+            }else if(!albumsMode && all_photos && !fav_photos){
+                clearSelectedPhotos();
+            }
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    }
+
+    private byte[] createGIFFromImages(ArrayList<Bitmap> bitmaps){
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        AnimatedGifEncoder encoder = new AnimatedGifEncoder();
+        encoder.start(bos);
+        for (Bitmap bitmap : bitmaps) {
+            encoder.addFrame(bitmap);
+        }
+        encoder.finish();
+        return bos.toByteArray();
     }
 
     private class ZipAlbumTask extends AsyncTask<Void, Integer, Void> {
@@ -3627,10 +3766,12 @@ public class LFMainActivity extends SharedMediaActivity {
     /*
     Async Class for coping images
      */
-    private static class CopyPhotos extends AsyncTask<String, Integer, Boolean> {
+    private class CopyPhotos extends AsyncTask<String, Integer, Boolean> {
 
         private WeakReference<LFMainActivity> reference;
         private String path;
+        private Snackbar snackbar;
+        private ArrayList<Media> temp;
         private Boolean moveAction, copyAction, success;
 
         CopyPhotos(String path, Boolean moveAction, Boolean copyAction, LFMainActivity reference) {
@@ -3649,6 +3790,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
         @Override
         protected Boolean doInBackground(String... arg0) {
+            temp = storeTemporaryphotos(path);
             LFMainActivity asyncActivityRef = reference.get();
             if (!asyncActivityRef.all_photos) {
                 success = asyncActivityRef.getAlbum().copySelectedPhotos(asyncActivityRef, path);
@@ -3678,10 +3820,42 @@ public class LFMainActivity extends SharedMediaActivity {
                     SnackBarHandler.showWithBottomMargin(asyncActivityRef.mDrawerLayout,
                         asyncActivityRef.getString(R.string.photos_moved_successfully),
                         asyncActivityRef.navigationView.getHeight());
-                else if (copyAction)
-                    SnackBarHandler.showWithBottomMargin(asyncActivityRef.mDrawerLayout,
-                        asyncActivityRef.getString(R.string.copied_successfully),
-                        asyncActivityRef.navigationView.getHeight());
+                else if (copyAction){
+                    snackbar = SnackBarHandler.showWithBottomMargin2(asyncActivityRef.mDrawerLayout,
+                            asyncActivityRef.getString(R.string.copied_successfully),
+                            asyncActivityRef.navigationView.getHeight(), Snackbar.LENGTH_SHORT);
+                    snackbar.setAction("UNDO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            for (Media media : temp) {
+                                String[] projection = {MediaStore.Images.Media._ID};
+
+                                // Match on the file path
+                                String selection = MediaStore.Images.Media.DATA + " = ?";
+                                String[] selectionArgs = new String[]{media.getPath()};
+
+                                // Query for the ID of the media matching the file path
+                                Uri queryUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                                ContentResolver contentResolver = getContentResolver();
+                                Cursor c =
+                                        contentResolver
+                                                .query(queryUri, projection, selection, selectionArgs,
+                                                        null);
+                                if (c.moveToFirst()) {
+                                    // We found the ID. Deleting the item via the content provider will also remove the file
+                                    long id =
+                                            c.getLong(c.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
+                                    Uri deleteUri = ContentUris
+                                            .withAppendedId(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                                    id);
+                                    contentResolver.delete(deleteUri, null, null);
+                                }
+                                c.close();
+                            }
+                        }
+                    });
+                }
+
             } else
                 asyncActivityRef.requestSdCardPermissions();
         }

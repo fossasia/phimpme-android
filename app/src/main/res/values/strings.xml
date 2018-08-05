@@ -536,6 +536,7 @@
     <string name="cancel">Cancel</string>
     <string name="set">Set</string>
     <string name="delete">Delete</string>
+    <string name="clear">Clear</string>
     <string name="hide">Hide</string>
     <string name="unhide">Unhide</string>
     <string name="zip">Zip</string>
@@ -882,6 +883,13 @@
     <string name="delete_all_message">Are you sure you want to delete all the items from the upload history
         section?</string>
     <string name="upload_view_choice">UploadViewDisplay</string>
+
+    <!-- TRASHBIN STRINGS-->
+    <string name="delete_all_trash">Are you sure you want to empty the TrashBin</string>
+    <string name="clear_trash_title">Clear all Trash</string>
+    <string name="clear_all_success_mssg">All the images deleted permanently</string>
+    <string name="restore_all_success_mssg">images successfully restored</string>
+    <string name="restore_all_fail_mssg">images failed to be restored</string>
 
     <!--ALBUM DETAILS-->
     <string name="total_photos">Total photos:</string>
@@ -1318,8 +1326,8 @@
     <string name="move_all_photos">All the photos will be moved to the selected folder. Do you wish to continue?</string>
     <string name="moved_target_folder_success">Moved to target folder successfully.</string>
 
-    <string name="no_favourites_text">There are no favourites presently. To mark a picture as favourite, select the
-        picture and tap on \"Add to Favourites\" from the overflow menu.
+    <string name="no_favourites_text">There are no favourites presently. To mark a picture as favourite, long-select the
+        picture and tap on \"Add to Favourites\" from the overflow menu or click on the picture and tap the heart icon at the bottom.
     </string>
 
     <string name="make_copies">Make copies</string>

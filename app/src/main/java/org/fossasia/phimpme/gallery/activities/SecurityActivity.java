@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -42,6 +43,7 @@ import org.fossasia.phimpme.gallery.data.providers.MediaStoreProvider;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
 import org.fossasia.phimpme.gallery.util.PreferenceUtil;
 import org.fossasia.phimpme.gallery.util.SecurityHelper;
+import org.fossasia.phimpme.gallery.util.ThemeHelper;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 
@@ -127,6 +129,7 @@ public class SecurityActivity extends ThemedActivity {
                 if(isChecked) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SecurityActivity.this, getDialogStyle());
                     View view = getLayoutInflater().inflate(R.layout.dialog_security_folder, null);
+                    view.setBackgroundColor(getBackgroundColor());
                     TextView title = (TextView) view.findViewById(R.id.titlesecure);
                     LinearLayout linearLayout = (LinearLayout)view.findViewById(R.id.titlelayout);
                     linearLayout.setBackgroundColor(getAccentColor());
@@ -211,7 +214,7 @@ public class SecurityActivity extends ThemedActivity {
         final AlertDialog.Builder passwordDialog = new AlertDialog.Builder(SecurityActivity.this, getDialogStyle());
         final View PasswordDialogLayout = getLayoutInflater().inflate(R.layout.dialog_set_password, null);
         final TextView passwordDialogTitle = (TextView) PasswordDialogLayout.findViewById(R.id.password_dialog_title);
-        CheckBox checkBox = (CheckBox) PasswordDialogLayout.findViewById(R.id.set_password_checkbox);
+        final CheckBox checkBox = (CheckBox) PasswordDialogLayout.findViewById(R.id.set_password_checkbox);
         checkBox.setText(getResources().getString(R.string.show_password));
         checkBox.setTextColor(getTextColor());
         final CardView passwordDialogCard = (CardView) PasswordDialogLayout.findViewById(R.id.password_dialog_card);
@@ -219,12 +222,15 @@ public class SecurityActivity extends ThemedActivity {
         editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         final EditText editTextConfirmPassword = (EditText) PasswordDialogLayout.findViewById(R.id.confirm_password_edittxt);
         editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        checkBox.setButtonTintList(ColorStateList.valueOf(getAccentColor()));
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(!b){
+                    checkBox.setButtonTintList(ColorStateList.valueOf(getAccentColor()));
                     editTextPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     editTextConfirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                 }else{
+                    checkBox.setButtonTintList(ColorStateList.valueOf(getAccentColor()));
                     editTextPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     editTextConfirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 }
@@ -500,6 +506,7 @@ public class SecurityActivity extends ThemedActivity {
             holder.foldername.setTextColor(getTextColor());
             holder.foldercheckbox.setOnCheckedChangeListener(null);
             holder.foldercheckbox.setChecked(a.getsecured());
+            //holder.foldercheckbox.setButtonTintList();
             holder.foldercheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     if(b){
@@ -525,7 +532,15 @@ public class SecurityActivity extends ThemedActivity {
             public ViewHolder(View itemView) {
                 super(itemView);
                 foldername = (TextView) itemView.findViewById(R.id.foldername);
-                foldercheckbox = (CheckBox) itemView.findViewById(R.id.secure_folder_checkbox);
+                if (getBaseTheme() == ThemeHelper.LIGHT_THEME) {
+                    CheckBox checkBox = (CheckBox) itemView.findViewById(R.id.secure_folder_checkbox_black);
+                    checkBox.setVisibility(View.VISIBLE);
+                    foldercheckbox = (CheckBox) itemView.findViewById(R.id.secure_folder_checkbox_black);
+                } else if (getBaseTheme() == ThemeHelper.DARK_THEME || getBaseTheme() == ThemeHelper.AMOLED_THEME) {
+                    CheckBox checkBox = (CheckBox) itemView.findViewById(R.id.secure_folder_checkbox_white);
+                    checkBox.setVisibility(View.VISIBLE);
+                    foldercheckbox = (CheckBox) itemView.findViewById(R.id.secure_folder_checkbox_white);
+                }
             }
         }
     }

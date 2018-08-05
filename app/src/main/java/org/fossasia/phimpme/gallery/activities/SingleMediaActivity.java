@@ -25,6 +25,7 @@ import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.print.PrintHelper;
 import android.support.v7.app.AlertDialog;
@@ -814,8 +815,14 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
     private boolean addToTrash(){
         String pathOld = null;
+        String oldpath = null;
         int no = 0;
         boolean succ = false;
+        if(!allPhotoMode && !favphotomode && !upoadhis){
+            oldpath = getAlbum().getCurrentMedia().getPath();
+        } else if(allPhotoMode && !favphotomode && !upoadhis){
+            oldpath = listAll.get(current_image_pos).getPath();
+        }
         File file = new File(Environment.getExternalStorageDirectory() + "/" + ".nomedia");
         if (file.exists() && file.isDirectory()) {
             if (!allPhotoMode && !favphotomode) {
@@ -827,10 +834,18 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         (current_image_pos).getPath());
             }
             if (succ) {
-                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string
+                Snackbar snackbar = SnackBarHandler.showWithBottomMargin2(parentView, getString(R.string
                                 .trashbin_move_onefile),
                         navigationView.getHeight
-                                ());
+                                (), Snackbar.LENGTH_SHORT);
+                final String finalOldpath = oldpath;
+                snackbar.setAction("UNDO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        getAlbum().moveAnyMedia(getApplicationContext(), getAlbum().getPath(), finalOldpath);
+                    }
+                });
+                snackbar.show();
             } else {
                 SnackBarHandler.showWithBottomMargin(parentView, String.valueOf(no) + " " + getString(R.string
                                 .trashbin_move_error),
@@ -901,8 +916,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         AlertDialogsHelper.getTextDialog(SingleMediaActivity.this, deleteDialog,
                 R.string.remove_from_favourites, R.string.delete_from_favourites_message, null);
         ButtonDelete = this.getString(R.string.remove);
-        //SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.check_favourite), bottomBar
-        // .getHeight());
         deleteDialog.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
         deleteDialog.setPositiveButton(ButtonDelete.toUpperCase(), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
@@ -1035,10 +1048,14 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
             case R.id.action_edit:
                 handler.removeCallbacks(slideShowRunnable);
-                if (!allPhotoMode)
+                if (!allPhotoMode && !favphotomode){
                     uri = Uri.fromFile(new File(getAlbum().getCurrentMedia().getPath()));
-                else
+                } else if (allPhotoMode && !favphotomode){
                     uri = Uri.fromFile(new File(listAll.get(current_image_pos).getPath()));
+                } else if (!allPhotoMode && favphotomode){
+                    uri = Uri.fromFile(new File(favouriteslist.get(current_image_pos).getPath()));
+                }
+
                 final String extension = uri.getPath();
                 if (extension != null && !(extension.substring(extension.lastIndexOf(".")).equals(".gif"))) {
                     Intent editIntent = new Intent(SingleMediaActivity.this, EditImageActivity.class);
