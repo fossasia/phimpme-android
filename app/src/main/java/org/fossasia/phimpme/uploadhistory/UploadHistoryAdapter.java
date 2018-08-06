@@ -39,7 +39,7 @@ import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
 public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdapter.ViewHolder> {
 
     private Realm realm = Realm.getDefaultInstance();
-    private ArrayList<UploadHistoryRealmModel> realmResult = null;
+    private ArrayList<UploadHistoryRealmModel> realmResult = new ArrayList<>();
     private int color;
     private View.OnClickListener onClickListener;
     public String imagePath;
