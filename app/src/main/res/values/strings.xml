@@ -873,6 +873,7 @@
     <string name="orientation">Orientation</string>
     <string name="location">Location</string>
     <string name="no_description">No description added.</string>
+    <string name="deleted_share_image">Media deleted from local folders.</string>
     <string name="no_location">No location</string>
     <string name="no_exif_data">No data found.</string>
 
