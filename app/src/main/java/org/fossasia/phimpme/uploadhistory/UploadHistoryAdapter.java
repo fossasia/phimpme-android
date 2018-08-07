@@ -81,7 +81,7 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
             imagePath = uploadHistoryRealmModel.getPathname();
             holder.uploadTime.setTag(uploadHistoryRealmModel);
 
-            Glide.with(context).load(uri)
+            Glide.with(holder.uploadImage.getContext()).load(uri)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.uploadImage);
 

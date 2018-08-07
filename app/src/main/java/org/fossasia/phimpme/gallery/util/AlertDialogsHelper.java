@@ -107,7 +107,6 @@ public class AlertDialogsHelper {
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b){
-                    checkBox.setButtonTintList(ColorStateList.valueOf(colorId));
                     check=true;
 
                 }else{
@@ -124,6 +123,7 @@ public class AlertDialogsHelper {
         else dialogMessage.setText(Message);
         dialogMessage.setTextColor(activity.getTextColor());
         textDialogBuilder.setView(dialogLayout);
+        checkBox.setButtonTintList(ColorStateList.valueOf(colorId));
         return textDialogBuilder.create();
     }
 

@@ -71,7 +71,7 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
             }
             holder.deleteDate.setTag(trashBinRealmModel);
             Uri uri = Uri.fromFile(new File(trashBinRealmModel.getTrashbinpath()));
-            Glide.with(context).load(uri)
+            Glide.with(holder.deletedImage.getContext()).load(uri)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.deletedImage);
             holder.popupMenuButton.setOnClickListener(new View.OnClickListener() {
