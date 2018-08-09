@@ -43,4 +43,12 @@
         android:title="@string/favourite"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/restore_action"
+        android:orderInCategory="6"
+        android:icon="@drawable/ic_restore_black_24dp"
+        android:title="@string/restore_photo"
+        android:visible="false"
+        app:showAsAction="always"/>
+
 </menu>
