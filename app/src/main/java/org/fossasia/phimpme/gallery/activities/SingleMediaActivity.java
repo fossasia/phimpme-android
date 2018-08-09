@@ -791,6 +791,12 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         } else if (!favphotomode && !allPhotoMode && upoadhis) {
             int c = current_image_pos;
             //deleteMedia(favouriteslist.get(current_image_pos).getPath());
+            if(uploadhistory.get(current_image_pos).getPath().contains(".nomedia")){
+                File file = new File(uploadhistory.get(current_image_pos).getPath());
+                if(file.exists()){
+                    file.delete();
+                }
+            }
             realm = Realm.getDefaultInstance();
             realm.executeTransaction(new Realm.Transaction() {
                 @Override public void execute(Realm realm) {
@@ -1751,7 +1757,11 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             imgType.setText(mediaDetailsMap.get("Type").toUpperCase());
             imgSize.setText(StringUtils.humanReadableByteCount(media.getSize(), true));
             imgResolution.setText(mediaDetailsMap.get("Resolution"));
-            imgPath.setText(mediaDetailsMap.get("Path").toString());
+            if(mediaDetailsMap.get("Path").toString().contains(".nomedia")){
+                imgPath.setText(R.string.deleted_share_image);
+            } else {
+                imgPath.setText(mediaDetailsMap.get("Path").toString());
+            }
             imgOrientation.setText(mediaDetailsMap.get("Orientation"));
             if(mediaDetailsMap.get("Description") == null) {
                 imgDesc.setText(R.string.no_description);
