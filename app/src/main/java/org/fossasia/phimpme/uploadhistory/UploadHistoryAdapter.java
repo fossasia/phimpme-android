@@ -112,6 +112,11 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
         diffResult.dispatchUpdatesTo(this);
     }
 
+    public void setResults(ArrayList<UploadHistoryRealmModel> realmResult){
+        this.realmResult = realmResult;
+        notifyDataSetChanged();
+    }
+
     public void setOnClickListener(View.OnClickListener lis) {
         onClickListener = lis;
     }
