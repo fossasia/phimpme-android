@@ -23,8 +23,6 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
 import android.content.DialogInterface;
-import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Environment;
 import android.content.Context;
 import android.media.MediaScannerConnection;
@@ -52,7 +50,6 @@ import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
-import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 
@@ -193,7 +190,7 @@ public class TrashBinActivity extends ThemedActivity {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                trashBinAdapter.updateTrashListItems(getTrashObjects());
+                trashBinAdapter.setResults(getTrashObjects());
                 if (swipeRefreshLayout.isRefreshing()) {
                     swipeRefreshLayout.setRefreshing(false);
                 }
@@ -275,7 +272,7 @@ public class TrashBinActivity extends ThemedActivity {
             super.onPostExecute(aVoid);
             if(deleted[0] && trashBinRealmModelRealmQuery.count() == 0){
                 emptyView.setVisibility(View.VISIBLE);
-                trashBinAdapter.updateTrashListItems(getTrashObjects());
+                trashBinAdapter.setResults(getTrashObjects());
                 SnackBarHandler.showWithBottomMargin(parentView, getResources().getString(R.string.clear_all_success_mssg), 0, Snackbar.LENGTH_SHORT);
             }
         }
@@ -311,7 +308,7 @@ public class TrashBinActivity extends ThemedActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             swipeRefreshLayout.setRefreshing(false);
-            trashBinAdapter.updateTrashListItems(getTrashObjects());
+            trashBinAdapter.setResults(getTrashObjects());
             if (trashBinRealmModelRealmQuery.count() == 0) {
                 emptyView.setVisibility(View.VISIBLE);
                 SnackBarHandler.showWithBottomMargin(parentView, String.valueOf(count) + " " +
@@ -411,6 +408,8 @@ public class TrashBinActivity extends ThemedActivity {
         return result;
     }
 
+
+
     private boolean restoreMove(Context context, String source, String targetDir){
         File from = new File(source);
         File to = new File(targetDir);
@@ -450,5 +449,20 @@ public class TrashBinActivity extends ThemedActivity {
             }
         });
         //toolbar.setTitle("Trash Bin");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setUpUi();
+        Realm realm = Realm.getDefaultInstance();
+        trashBinRealmModelRealmQuery = realm.where(TrashBinRealmModel.class);
+        if(getTrashObjects().size() == 0){
+            //trashBinAdapter.updateTrashListItems(getTrashObjects());
+            trashBinRecyclerView.setVisibility(View.INVISIBLE);
+            emptyView.setVisibility(View.VISIBLE);
+        } else {
+            trashBinAdapter.setResults(getTrashObjects());
+        }
     }
 }

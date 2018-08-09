@@ -537,6 +537,7 @@
     <string name="set">Set</string>
     <string name="delete">Delete</string>
     <string name="clear">Clear</string>
+    <string name="restore">Restore</string>
     <string name="hide">Hide</string>
     <string name="unhide">Unhide</string>
     <string name="zip">Zip</string>
@@ -890,6 +891,8 @@
     <string name="clear_trash_title">Clear all Trash</string>
     <string name="clear_all_success_mssg">All the images deleted permanently</string>
     <string name="restore_all_success_mssg">images successfully restored</string>
+    <string name="delete_image_bin">Are you sure you want to delete this image permanently?</string>
+    <string name="restore_image">Are you sure you want to restore this image?</string>
     <string name="restore_all_fail_mssg">images failed to be restored</string>
 
     <!--ALBUM DETAILS-->

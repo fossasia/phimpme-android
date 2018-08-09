@@ -14,7 +14,6 @@ import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.TrashBinRealmModel;
 import org.fossasia.phimpme.gallery.util.ContentHelper;
 import org.fossasia.phimpme.gallery.util.StringUtils;
-import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -174,6 +173,11 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
         this.trashItemsList.clear();
         this.trashItemsList.addAll(trashList);
         diffResult.dispatchUpdatesTo(this);
+    }
+
+    public void setResults(ArrayList<TrashBinRealmModel> trashItemsList){
+        this.trashItemsList = trashItemsList;
+        notifyDataSetChanged();
     }
 
     public void setOnClickListener(View.OnClickListener lis) {
