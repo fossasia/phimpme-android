@@ -14,6 +14,7 @@ import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.TrashBinRealmModel;
 import org.fossasia.phimpme.gallery.util.ContentHelper;
 import org.fossasia.phimpme.gallery.util.StringUtils;
+import org.fossasia.phimpme.utilities.BasicCallBack;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -40,9 +41,11 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
 
     private ArrayList<TrashBinRealmModel> trashItemsList = null;
     private View.OnClickListener onClickListener;
+    private BasicCallBack basicCallBack;
 
-    public TrashBinAdapter(ArrayList<TrashBinRealmModel> list) {
+    public TrashBinAdapter(ArrayList<TrashBinRealmModel> list, BasicCallBack basicCallBack) {
         trashItemsList = list;
+        this.basicCallBack = basicCallBack;
     }
 
     @Override public TrashBinAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -83,6 +86,9 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
 
                                 case R.id.restore_option:
                                     restoreImage(trashBinRealmModel, position);
+                                    if(trashItemsList.size() == 0){
+                                        basicCallBack.callBack(2, null);
+                                    }
                                     return true;
 
                                 case R.id.delete_permanently:
@@ -91,6 +97,9 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
                                         trashItemsList.remove(position);
                                         notifyItemRemoved(position);
                                         notifyItemRangeChanged(position, trashItemsList.size());
+                                    }
+                                    if(trashItemsList.size() == 0){
+                                        basicCallBack.callBack(2, null);
                                     }
                                     return true;
 

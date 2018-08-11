@@ -13,6 +13,7 @@ import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
 import org.fossasia.phimpme.gallery.util.SecurityHelper;
 import org.fossasia.phimpme.gallery.util.ContentHelper;
 import org.fossasia.phimpme.gallery.util.StringUtils;
+import org.fossasia.phimpme.utilities.BasicCallBack;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
@@ -84,6 +85,17 @@ public class TrashBinActivity extends ThemedActivity {
     private SecurityHelper securityObj;
     private ArrayList<TrashBinRealmModel> deletedTrash;
 
+    private BasicCallBack basicCallBack = new BasicCallBack() {
+        @Override
+        public void callBack(int status, Object data) {
+            if(status == 2){
+                emptyView.setVisibility(View.VISIBLE);
+                trashEmptyViewSetup();
+                invalidateOptionsMenu();
+            }
+        }
+    };
+
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override public void onClick(View view) {
             TrashBinRealmModel trashBinRealmModel = (TrashBinRealmModel)  view.findViewById(R.id.delete_date).getTag();
@@ -108,11 +120,11 @@ public class TrashBinActivity extends ThemedActivity {
         securityObj = new SecurityHelper(TrashBinActivity.this);
         trashBinRealmModelRealmQuery = realm.where(TrashBinRealmModel.class);
         ArrayList<TrashBinRealmModel> trashlist = getTrashObjects();
+        trashBinAdapter = new TrashBinAdapter(trashlist, basicCallBack);
         if (trashlist.size() == 0) {
             emptyView.setVisibility(View.VISIBLE);
             trashEmptyViewSetup();
         } else {
-            trashBinAdapter = new TrashBinAdapter(trashlist);
             trashBinAdapter.setOnClickListener(onClickListener);
             GridLayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), columnsCount());
             layoutManager.setReverseLayout(false);
@@ -218,6 +230,11 @@ public class TrashBinActivity extends ThemedActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+
+        if(trashBinRealmModelRealmQuery.count() == 0){
+            menu.findItem(R.id.trashbin_restore).setVisible(false);
+            menu.findItem(R.id.delete_action).setVisible(false);
+        }
 
         return super.onPrepareOptionsMenu(menu);
     }
