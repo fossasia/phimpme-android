@@ -926,8 +926,18 @@ public class LFMainActivity extends SharedMediaActivity {
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
+        int photopos = 0;
+        int albumpos = 0;
         super.onConfigurationChanged(newConfig);
-        updateColumnsRvs();
+        if(albumsMode){
+            albumpos = ((GridLayoutManager) rvAlbums.getLayoutManager()).findFirstVisibleItemPosition();
+            updateColumnsRvs();
+            (rvAlbums.getLayoutManager()).scrollToPosition(albumpos);
+        } else {
+            photopos = ((GridLayoutManager) rvMedia.getLayoutManager()).findFirstVisibleItemPosition();
+            updateColumnsRvs();
+            (rvMedia.getLayoutManager()).scrollToPosition(photopos);
+        }
     }
 
     private boolean displayData(Bundle data) {
