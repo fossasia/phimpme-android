@@ -69,6 +69,7 @@ import com.mikepenz.iconics.view.IconicsImageView;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
+import org.fossasia.phimpme.gallery.activities.LFMainActivity;
 import org.fossasia.phimpme.gallery.activities.SingleMediaActivity;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
 import org.fossasia.phimpme.opencamera.CameraController.CameraController;
@@ -1344,9 +1345,15 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
                 return;
             }
         }
-        super.onBackPressed();
+        Intent intent = new Intent(this, LFMainActivity.class);
+        startActivity(intent);
+        finish();
+        overridePendingTransition(R.anim.left_to_right,
+                R.anim.right_to_left);
 
     }
+
+
 
     public boolean usingKitKatImmersiveMode() {
         // whether we are using a Kit Kat style immersive mode (either hiding GUI, or everything)
