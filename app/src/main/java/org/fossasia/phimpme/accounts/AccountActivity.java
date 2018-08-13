@@ -40,6 +40,7 @@ import org.fossasia.phimpme.base.RecyclerItemClickListner;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.AccountDatabase;
 import org.fossasia.phimpme.data.local.DatabaseHelper;
+import org.fossasia.phimpme.gallery.activities.LFMainActivity;
 import org.fossasia.phimpme.gallery.activities.SettingsActivity;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
@@ -582,6 +583,15 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         accountPresenter.loadFromDatabase();
         accountAdapter.updateTheme();
         accountAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, LFMainActivity.class);
+        startActivity(intent);
+        finish();
+        overridePendingTransition(R.anim.left_to_right,
+                R.anim.right_to_left);
     }
 
     private void boxAuthentication() {
