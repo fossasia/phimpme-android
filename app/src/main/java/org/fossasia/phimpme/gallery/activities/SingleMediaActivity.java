@@ -1659,10 +1659,12 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     protected void setStatusBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (isApplyThemeOnImgAct())
-                if (isTranslucentStatusBar() && isTransparencyZero())
-                    getWindow().setStatusBarColor(ColorPalette.getObscuredColor(getPrimaryColor()));
-                else
+                if (isTranslucentStatusBar() && isTransparencyZero()){
                     getWindow().setStatusBarColor(ColorPalette.getTransparentColor(getPrimaryColor(), getTransparency()));
+                }
+                else{
+                    getWindow().setStatusBarColor(ColorPalette.getObscuredColor(getPrimaryColor()));
+                }
             else
                 getWindow().setStatusBarColor(ColorPalette.getTransparentColor(
                         ContextCompat.getColor(getApplicationContext(), R.color.md_black_1000), 175));

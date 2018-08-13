@@ -156,6 +156,7 @@ public class LFMainActivity extends SharedMediaActivity {
     private GridSpacingItemDecoration rvMediaDecoration;
 
     private SelectAlbumBottomSheet bottomSheetDialogFragment;
+    private BottomNavigationView navigationView;
     private boolean hidden = false, pickMode = false, editMode = false, albumsMode = true, firstLaunch = true, localFolder = true, hidenav = false;
 
     //to handle pinch gesture
@@ -734,7 +735,7 @@ public class LFMainActivity extends SharedMediaActivity {
         Log.e("TAG", "lfmain");
         ButterKnife.bind(this);
 
-        BottomNavigationView navigationView = (BottomNavigationView) findViewById(R.id.bottombar);
+        navigationView = (BottomNavigationView) findViewById(R.id.bottombar);
         favicon = (IconicsImageView) findViewById(R.id.Drawer_favourite_Icon);
         
         rvAlbums = (CustomScrollBarRecyclerView) findViewById(R.id.grid_albums);
@@ -1279,6 +1280,7 @@ public class LFMainActivity extends SharedMediaActivity {
         } else {
             toolbar.setTitle(getString(R.string.hidden_folder));
         }
+        //navigationView.setVisibility(View.VISIBLE);
 
         /**** SWIPE TO REFRESH ****/
         swipeRefreshLayout.setColorSchemeColors(getAccentColor());
@@ -3473,6 +3475,9 @@ public class LFMainActivity extends SharedMediaActivity {
             LFMainActivity asyncActivityRef = reference.get();
             asyncActivityRef.swipeRefreshLayout.setRefreshing(true);
             asyncActivityRef.toggleRecyclersVisibility(true);
+            if(!asyncActivityRef.navigationView.isShown()){
+                asyncActivityRef.navigationView.setVisibility(View.VISIBLE);
+            }
             super.onPreExecute();
         }
 
@@ -3588,6 +3593,7 @@ public class LFMainActivity extends SharedMediaActivity {
             LFMainActivity asyncActivityRef = reference.get();
             asyncActivityRef.swipeRefreshLayout.setRefreshing(true);
             asyncActivityRef.toggleRecyclersVisibility(false);
+            asyncActivityRef.navigationView.setVisibility(View.INVISIBLE);
             super.onPreExecute();
         }
 
@@ -3610,6 +3616,7 @@ public class LFMainActivity extends SharedMediaActivity {
             asyncActivityRef.finishEditMode();
             asyncActivityRef.toolbar.setTitle(asyncActivityRef.getResources().getString(R.string.favourite_title));
             asyncActivityRef.clearSelectedPhotos();
+
         }
     }
 
