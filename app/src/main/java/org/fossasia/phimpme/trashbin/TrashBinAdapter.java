@@ -1,5 +1,7 @@
 package org.fossasia.phimpme.trashbin;
 
+import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
+
 import java.io.File;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -10,11 +12,15 @@ import java.util.List;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.TrashBinRealmModel;
-import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
+import org.fossasia.phimpme.gallery.util.ContentHelper;
+import org.fossasia.phimpme.gallery.util.StringUtils;
+import org.fossasia.phimpme.utilities.BasicCallBack;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import android.content.Context;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.util.DiffUtil;
@@ -34,9 +40,12 @@ import io.realm.RealmResults;
 public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHolder> {
 
     private ArrayList<TrashBinRealmModel> trashItemsList = null;
+    private View.OnClickListener onClickListener;
+    private BasicCallBack basicCallBack;
 
-    public TrashBinAdapter(ArrayList<TrashBinRealmModel> list) {
+    public TrashBinAdapter(ArrayList<TrashBinRealmModel> list, BasicCallBack basicCallBack) {
         trashItemsList = list;
+        this.basicCallBack = basicCallBack;
     }
 
     @Override public TrashBinAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -44,7 +53,7 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
                 .inflate(R.layout.trashbin_item_view, null, false);
         view.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT,
                 RecyclerView.LayoutParams.WRAP_CONTENT));
-        //view.setOnClickListener(onClickListener);
+        view.setOnClickListener(onClickListener);
         return new TrashBinAdapter.ViewHolder(view);
     }
 
@@ -64,7 +73,7 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
             }
             holder.deleteDate.setTag(trashBinRealmModel);
             Uri uri = Uri.fromFile(new File(trashBinRealmModel.getTrashbinpath()));
-            Glide.with(context).load(uri)
+            Glide.with(holder.deletedImage.getContext()).load(uri)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.deletedImage);
             holder.popupMenuButton.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +85,10 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
                             switch (menuItem.getItemId()){
 
                                 case R.id.restore_option:
+                                    restoreImage(trashBinRealmModel, position);
+                                    if(trashItemsList.size() == 0){
+                                        basicCallBack.callBack(2, null);
+                                    }
                                     return true;
 
                                 case R.id.delete_permanently:
@@ -84,6 +97,9 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
                                         trashItemsList.remove(position);
                                         notifyItemRemoved(position);
                                         notifyItemRangeChanged(position, trashItemsList.size());
+                                    }
+                                    if(trashItemsList.size() == 0){
+                                        basicCallBack.callBack(2, null);
                                     }
                                     return true;
 
@@ -98,6 +114,42 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
             });
         }
     }
+
+    private void restoreImage(TrashBinRealmModel trashBinRealmModel, int pos){
+        String oldpath = trashBinRealmModel.getOldpath();
+        String oldFolder = oldpath.substring(0, oldpath.lastIndexOf("/"));
+        if(restoreMove(context, trashBinRealmModel.getTrashbinpath(), oldFolder)){
+            scanFile(context, new String[]{ trashBinRealmModel.getTrashbinpath(), StringUtils.getPhotoPathMoved
+                    (trashBinRealmModel.getTrashbinpath(),
+                    oldFolder) });
+            if( removeFromRealm(trashBinRealmModel.getTrashbinpath())){
+                trashItemsList.remove(pos);
+                notifyItemRemoved(pos);
+                notifyItemRangeChanged(pos, trashItemsList.size());
+            }
+        }
+    }
+
+    private boolean restoreMove(Context context, String source, String targetDir){
+        File from = new File(source);
+        File to = new File(targetDir);
+        return ContentHelper.moveFile(context, from, to);
+    }
+
+    private boolean removeFromRealm(final String path){
+        final boolean[] delete = {false};
+        Realm realm = Realm.getDefaultInstance();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override public void execute(Realm realm) {
+                RealmResults<TrashBinRealmModel> result = realm.where(TrashBinRealmModel.class).equalTo
+                        ("trashbinpath", path).findAll();
+                delete[0] = result.deleteAllFromRealm();
+            }
+        });
+        return delete[0];
+    }
+
+    public void scanFile(Context context, String[] path) { MediaScannerConnection.scanFile(context, path, null, null); }
 
     private void deleteFromRealm(final String path){
         Realm realm = Realm.getDefaultInstance();
@@ -123,13 +175,22 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
         }
         return succ;
     }
-
+  
     public void updateTrashListItems(List<TrashBinRealmModel> trashList) {
         final TrashDiffCallback diffCallback = new TrashDiffCallback(this.trashItemsList, trashList);
         final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
         this.trashItemsList.clear();
         this.trashItemsList.addAll(trashList);
         diffResult.dispatchUpdatesTo(this);
+    }
+
+    public void setResults(ArrayList<TrashBinRealmModel> trashItemsList){
+        this.trashItemsList = trashItemsList;
+        notifyDataSetChanged();
+    }
+
+    public void setOnClickListener(View.OnClickListener lis) {
+        onClickListener = lis;
     }
 
     @Override public int getItemCount() {
