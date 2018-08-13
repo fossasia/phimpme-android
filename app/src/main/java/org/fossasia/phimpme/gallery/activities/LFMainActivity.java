@@ -150,6 +150,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
     private AlbumsAdapter albumsAdapter;
     private GridSpacingItemDecoration rvAlbumsDecoration;
+    private SwipeRefreshLayout.OnRefreshListener refreshListener;
 
     private MediaAdapter mediaAdapter;
     private GridSpacingItemDecoration rvMediaDecoration;
@@ -925,8 +926,18 @@ public class LFMainActivity extends SharedMediaActivity {
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
+        int photopos = 0;
+        int albumpos = 0;
         super.onConfigurationChanged(newConfig);
-        updateColumnsRvs();
+        if(albumsMode){
+            albumpos = ((GridLayoutManager) rvAlbums.getLayoutManager()).findFirstVisibleItemPosition();
+            updateColumnsRvs();
+            (rvAlbums.getLayoutManager()).scrollToPosition(albumpos);
+        } else {
+            photopos = ((GridLayoutManager) rvMedia.getLayoutManager()).findFirstVisibleItemPosition();
+            updateColumnsRvs();
+            (rvMedia.getLayoutManager()).scrollToPosition(photopos);
+        }
     }
 
     private boolean displayData(Bundle data) {
@@ -1084,7 +1095,7 @@ public class LFMainActivity extends SharedMediaActivity {
         /**** SWIPE TO REFRESH ****/
         swipeRefreshLayout.setColorSchemeColors(getAccentColor());
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getBackgroundColor());
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 getNavigationBar();
@@ -1105,7 +1116,8 @@ public class LFMainActivity extends SharedMediaActivity {
                     }
                 }
             }
-        });
+        };
+        swipeRefreshLayout.setOnRefreshListener(refreshListener);
 
         /**** DRAWER ****/
         mDrawerLayout.addDrawerListener(new ActionBarDrawerToggle(this,
@@ -1988,6 +2000,7 @@ public class LFMainActivity extends SharedMediaActivity {
                             // if in selection mode, delete selected media
                             if (editMode) {
                                 if (!all_photos && !fav_photos) {
+                                    checkForShare(getAlbum().getSelectedMedia());
                                     //clearSelectedPhotos();
                                     if (AlertDialogsHelper.check)  {
                                         succ = addToTrash();
@@ -1999,6 +2012,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                         succ = getAlbum().deleteSelectedMedia(getApplicationContext());
                                     }
                                 } else if (all_photos && !fav_photos) {
+                                    checkForShare(selectedMedias);
                                    // addToTrash();
                                     if (AlertDialogsHelper.check) {
                                         succ = addToTrash();
@@ -2037,6 +2051,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                         }
                                     }
                                 } else if (!all_photos && fav_photos) {
+                                    checkForShare(selectedMedias);
                                     realm = Realm.getDefaultInstance();
                                     realm.executeTransaction(new Realm.Transaction() {
                                         @Override
@@ -2056,6 +2071,7 @@ public class LFMainActivity extends SharedMediaActivity {
                             // if not in selection mode, delete current album entirely
                             else if (!editMode) {
                                 if (!fav_photos) {
+                                    checkForShare(getAlbum().getMedia());
                                     if (AlertDialogsHelper.check) {
                                         succ = addToTrash();
                                         if (succ) {
@@ -2068,6 +2084,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                         getAlbum().getMedia().clear();
                                     }
                                 } else {
+                                    checkForShare(favouriteslist);
                                     Realm realm = Realm.getDefaultInstance();
                                     realm.executeTransaction(new Realm.Transaction() {
                                         @Override public void execute(Realm realm) {
@@ -2869,6 +2886,56 @@ public class LFMainActivity extends SharedMediaActivity {
         }
     }
 
+    private void checkForShare(ArrayList<Media> media){
+        realm = Realm.getDefaultInstance();
+        RealmQuery<UploadHistoryRealmModel> uploadHistoryRealmModelRealmQuery = realm.where(UploadHistoryRealmModel.class);
+        for(Media m: media){
+            checkForUploadHistory(m.getPath(), uploadHistoryRealmModelRealmQuery);
+        }
+    }
+
+    private void checkForUploadHistory(String path, RealmQuery<UploadHistoryRealmModel> query){
+        for(int i = 0; i < query.count(); i++){
+            if(query.findAll().get(i).getPathname().equals(path) && backupHistory(path)){
+                uploadToRealm(path);
+            }
+        }
+    }
+
+    private boolean backupHistory(String path){
+        boolean succ = false;
+        File file = new File(Environment.getExternalStorageDirectory() + "/"  +".nomedia/" + "uploadHistory");
+        if(file.exists() && file.isDirectory()){
+            succ = ContentHelper.copyFile(getApplicationContext(), new File(path), file);
+            //succ = getAlbum().moveAnyMedia(getApplicationContext(), file.getAbsolutePath(), path);
+        } else {
+            if(file.mkdir()){
+                succ = ContentHelper.copyFile(getApplicationContext(), new File(path), file);
+            }
+        }
+        return succ;
+    }
+
+    private void uploadToRealm(String path){
+        RealmResults<UploadHistoryRealmModel> realmModels = realm.where(UploadHistoryRealmModel.class).equalTo("pathname", path).findAll();
+        //RealmResults<UploadHistoryRealmModel> realmModels = realm.where(UploadHistoryRealmModel.class).findAll();
+        String newpath = Environment.getExternalStorageDirectory() + "/" +  ".nomedia/" + "uploadHistory/" + path.substring(path.lastIndexOf("/") + 1);
+        realm.beginTransaction();
+        UploadHistoryRealmModel uploadHistoryRealmModel = realm.createObject(UploadHistoryRealmModel.class);
+        uploadHistoryRealmModel.setDatetime(realmModels.get(0).getDatetime());
+        uploadHistoryRealmModel.setName(realmModels.get(0).getName());
+        uploadHistoryRealmModel.setPathname(newpath);
+        uploadHistoryRealmModel.setStatus(realmModels.get(0).getStatus());
+        realm.commitTransaction();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<UploadHistoryRealmModel> realmModels = realm.where(UploadHistoryRealmModel.class).findAll();
+                realmModels.deleteAllFromRealm();
+            }
+        });
+    }
+
     private ArrayList<Media> storeTemporaryphotos(String path){
         ArrayList<Media> temp = new ArrayList<>();
         if(!all_photos && !fav_photos && editMode){
@@ -2959,6 +3026,7 @@ public class LFMainActivity extends SharedMediaActivity {
     private boolean addToTrash(){
         int no = 0;
         boolean succ = false;
+        final ArrayList<Media> media1 = storeDeletedFilesTemporarily();
         File file = new File(Environment.getExternalStorageDirectory() + "/" + ".nomedia");
         if(file.exists() && file.isDirectory()){
             if(!all_photos && !fav_photos && editMode){
@@ -2971,15 +3039,30 @@ public class LFMainActivity extends SharedMediaActivity {
             if(no > 0){
                 succ = true;
                 if(no == 1){
-                    SnackBarHandler.showWithBottomMargin(mDrawerLayout, String.valueOf(no) + " " + getString(R.string
+                    Snackbar snackbar = SnackBarHandler.showWithBottomMargin2(mDrawerLayout, String.valueOf(no) + " " + getString(R.string
                                     .trashbin_move_onefile),
                             navigationView.getHeight
-                                    ());
+                                    (), Snackbar.LENGTH_SHORT);
+                    snackbar.setAction("UNDO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            getAlbum().moveAllMedia(getApplicationContext(), getAlbum().getPath(), media1);
+                            refreshListener.onRefresh();
+                        }
+                    });
                 }else{
-                    SnackBarHandler.showWithBottomMargin(mDrawerLayout, String.valueOf(no) + " " + getString(R.string
-                                    .trashbin_move),
+                    Snackbar snackbar = SnackBarHandler.showWithBottomMargin2(mDrawerLayout, String.valueOf(no) + " " + getString(R.string
+                                    .trashbin_move_onefile),
                             navigationView.getHeight
-                                    ());
+                                    (), Snackbar.LENGTH_SHORT);
+                    snackbar.setAction("UNDO", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            getAlbum().moveAllMedia(getApplicationContext(), getAlbum().getPath(), media1);
+                            refreshListener.onRefresh();
+                        }
+                    });
+                    snackbar.show();
                 }
             }else{
                 SnackBarHandler.showWithBottomMargin(mDrawerLayout, String.valueOf(no) + " " + getString(R.string
@@ -3020,6 +3103,22 @@ public class LFMainActivity extends SharedMediaActivity {
         }
        // clearSelectedPhotos();
         return succ;
+    }
+
+    private ArrayList<Media> storeDeletedFilesTemporarily(){
+        ArrayList<Media> deletedImages = new ArrayList<>();
+        if(!all_photos && !fav_photos && editMode){
+            for(Media m: getAlbum().getSelectedMedia()){
+                String name = m.getPath().substring(m.getPath().lastIndexOf("/") + 1);
+                deletedImages.add(new Media(Environment.getExternalStorageDirectory() + "/" + ".nomedia" + "/" + name));
+            }
+        } else if(all_photos && !fav_photos && editMode){
+            for(Media m: selectedMedias){
+                String name = m.getPath().substring(m.getPath().lastIndexOf("/") + 1);
+                deletedImages.add(new Media(Environment.getExternalStorageDirectory() + "/" + ".nomedia" + "/" + name));
+            }
+        }
+        return deletedImages;
     }
 
     private void addTrashObjectsToRealm(ArrayList<Media> media){

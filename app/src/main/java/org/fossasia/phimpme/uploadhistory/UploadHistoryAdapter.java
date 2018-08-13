@@ -39,7 +39,7 @@ import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
 public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdapter.ViewHolder> {
 
     private Realm realm = Realm.getDefaultInstance();
-    private ArrayList<UploadHistoryRealmModel> realmResult = null;
+    private ArrayList<UploadHistoryRealmModel> realmResult = new ArrayList<>();
     private int color;
     private View.OnClickListener onClickListener;
     public String imagePath;
@@ -81,7 +81,7 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
             imagePath = uploadHistoryRealmModel.getPathname();
             holder.uploadTime.setTag(uploadHistoryRealmModel);
 
-            Glide.with(context).load(uri)
+            Glide.with(holder.uploadImage.getContext()).load(uri)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.uploadImage);
 
@@ -110,6 +110,11 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
         this.realmResult.clear();
         this.realmResult.addAll(uploadList);
         diffResult.dispatchUpdatesTo(this);
+    }
+
+    public void setResults(ArrayList<UploadHistoryRealmModel> realmResult){
+        this.realmResult = realmResult;
+        notifyDataSetChanged();
     }
 
     public void setOnClickListener(View.OnClickListener lis) {

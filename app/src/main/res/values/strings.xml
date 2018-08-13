@@ -536,6 +536,8 @@
     <string name="cancel">Cancel</string>
     <string name="set">Set</string>
     <string name="delete">Delete</string>
+    <string name="clear">Clear</string>
+    <string name="restore">Restore</string>
     <string name="hide">Hide</string>
     <string name="unhide">Unhide</string>
     <string name="zip">Zip</string>
@@ -872,6 +874,7 @@
     <string name="orientation">Orientation</string>
     <string name="location">Location</string>
     <string name="no_description">No description added.</string>
+    <string name="deleted_share_image">Media deleted from local folders.</string>
     <string name="no_location">No location</string>
     <string name="no_exif_data">No data found.</string>
 
@@ -883,8 +886,13 @@
         section?</string>
     <string name="upload_view_choice">UploadViewDisplay</string>
 
-    <!-- TRASH BIN STRINGS-->
+    <!-- TRASHBIN STRINGS-->
+    <string name="delete_all_trash">Are you sure you want to empty the TrashBin</string>
+    <string name="clear_trash_title">Clear all Trash</string>
+    <string name="clear_all_success_mssg">All the images deleted permanently</string>
     <string name="restore_all_success_mssg">images successfully restored</string>
+    <string name="delete_image_bin">Are you sure you want to delete this image permanently?</string>
+    <string name="restore_image">Are you sure you want to restore this image?</string>
     <string name="restore_all_fail_mssg">images failed to be restored</string>
 
     <!--ALBUM DETAILS-->
