@@ -159,6 +159,23 @@ public class SecurityActivity extends ThemedActivity {
                                 updateSwitchColor(swApplySecurityFolder, getAccentColor());
                             }
                         }});
+                    ad.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            if(securedfol.size()>0){
+                               for(Album a: albums){
+                                   if(a.getsecured()){
+                                       a.setsecured(false);
+                                   }
+                               }
+                            }
+                            dialogInterface.dismiss();
+                            SP.putBoolean(getString(R.string.preference_use_password_on_folder), false);
+                            securityObj.updateSecuritySetting();
+                            swApplySecurityFolder.setChecked(false);
+                            updateSwitchColor(swApplySecurityFolder, getAccentColor());
+                        }
+                    });
                     ad.setOnKeyListener(new DialogInterface.OnKeyListener() {
                         @Override
                         public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
@@ -173,6 +190,7 @@ public class SecurityActivity extends ThemedActivity {
                         }
                     });
                     ad.show();
+                    ad.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(getAccentColor());
                     ad.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getAccentColor());
                 }else{
                     SP.putBoolean(getString(R.string.preference_use_password_on_folder), false);
@@ -518,6 +536,7 @@ public class SecurityActivity extends ThemedActivity {
                     }
                 }
             });
+            holder.foldercheckbox.setButtonTintList(ColorStateList.valueOf(getAccentColor()));
         }
 
         @Override public int getItemCount() {
