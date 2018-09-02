@@ -2,8 +2,10 @@ package org.fossasia.phimpme.gallery.adapters;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.media.Image;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +26,7 @@ import org.fossasia.phimpme.gallery.data.Media;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import uk.co.senab.photoview.PhotoView;
@@ -37,29 +40,31 @@ import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
  */
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
-
     BasicCallBack basicCallBack;
     private ArrayList<Media> media;
     private OnSingleTap onSingleTap;
     private enterTransition mEnterTransitions;
-
+    
     public ImageAdapter(ArrayList<Media> media, BasicCallBack onItemClickListener, OnSingleTap singleTap,
                         enterTransition transition) {
         this.media = media;
         this.onSingleTap = singleTap;
         this.basicCallBack = onItemClickListener;
         mEnterTransitions = transition;
+
     }
 
     @Override
     public ImageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.unit_image_pager, null, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.unit_image_pager, parent, false);
 
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder,  int position) {
+
+
         holder.imageView.setTransitionName(context.getString(R.string.transition_photo));
         Glide.with(getContext())
                 .load(media.get(position).getUri())
@@ -80,11 +85,14 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
                 .into(holder.imageView);
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
+
                 basicCallBack.callBack(0, null);
             }
         });
     }
+
+
 
     public interface enterTransition{
         void startPostponedTransition();
@@ -108,6 +116,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         void singleTap();
     }
 
+
     @Override
     public int getItemCount() {
         return media.size();
@@ -120,9 +129,12 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         public ViewHolder(View itemView) {
             super(itemView);
             imageView = new PhotoView(ActivitySwitchHelper.context);
+
+
             imageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
                 @Override
                 public void onPhotoTap(View view, float x, float y) {
+
                     onSingleTap.singleTap();
                 }
 
@@ -146,6 +158,16 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             linearLayout.addView(imageView);
 
 
+
+
         }
+
+        public PhotoView getImageView() {
+            return this.imageView;
+        }
+
+
     }
+
+
 }

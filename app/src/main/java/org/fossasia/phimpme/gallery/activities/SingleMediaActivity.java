@@ -108,6 +108,7 @@ import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 import static org.fossasia.phimpme.gallery.activities.LFMainActivity.listAll;
 import static org.fossasia.phimpme.utilities.Utils.promptSpeechInput;
@@ -361,6 +362,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             }
         };
 
+
         if (!allPhotoMode && !favphotomode && !upoadhis && !trashdis) {
             adapter = new ImageAdapter(getAlbum().getMedia(), basicCallBack, this, this);
             getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum()
@@ -369,6 +371,22 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
                 @Override
                 public void onPageChanged(int oldPosition, int position) {
+                    Log.e("MY TAG", "PAGE CHANGED "+position);
+                    ImageAdapter.ViewHolder imageViewHolder = (ImageAdapter.ViewHolder) mViewPager.findViewHolderForAdapterPosition(position);
+                    imageViewHolder.getImageView().setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+                        @Override
+                        public void onPhotoTap(View view, float x, float y) {
+                            Log.e("MY TAG", "PHOTO TAPPING IS WORKING");
+                            singleTap();
+                        }
+
+                        @Override
+                        public void onOutsidePhotoTap() {
+                            Log.e("MY TAG", "PHOTO TAPPING IS WORKING");
+                            singleTap();
+                        }
+                    });
+
                     getAlbum().setCurrentPhotoIndex(position);
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
                     invalidateOptionsMenu();
@@ -388,6 +406,22 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
                 @Override
                 public void onPageChanged(int oldPosition, int position) {
+
+                    ImageAdapter.ViewHolder imageViewHolder = (ImageAdapter.ViewHolder) mViewPager.findViewHolderForAdapterPosition(position);
+                    imageViewHolder.getImageView().setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+                        @Override
+                        public void onPhotoTap(View view, float x, float y) {
+
+                            singleTap();
+                        }
+
+                        @Override
+                        public void onOutsidePhotoTap() {
+
+                            singleTap();
+                        }
+                    });
+
                     current_image_pos = position;
                     getAlbum().setCurrentPhotoIndex(getAlbum().getCurrentMediaIndex());
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
@@ -408,6 +442,22 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
                 @Override
                 public void onPageChanged(int oldPosition, int position) {
+
+                    ImageAdapter.ViewHolder imageViewHolder = (ImageAdapter.ViewHolder) mViewPager.findViewHolderForAdapterPosition(position);
+                    imageViewHolder.getImageView().setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+                        @Override
+                        public void onPhotoTap(View view, float x, float y) {
+                            Log.e("MY TAG", "PHOTO TAPPING IS WORKING");
+                            singleTap();
+                        }
+
+                        @Override
+                        public void onOutsidePhotoTap() {
+                            Log.e("MY TAG", "PHOTO TAPPING IS WORKING");
+                            singleTap();
+                        }
+                    });
+
                     current_image_pos = position;
                     getAlbum().setCurrentPhotoIndex(getAlbum().getCurrentMediaIndex());
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
@@ -423,6 +473,22 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
                 @Override
                 public void onPageChanged(int oldPosition, int position) {
+                    Log.e("MY TAG", "PAGE CHANGED "+position);
+                    ImageAdapter.ViewHolder imageViewHolder = (ImageAdapter.ViewHolder) mViewPager.findViewHolderForAdapterPosition(position);
+                    imageViewHolder.getImageView().setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+                        @Override
+                        public void onPhotoTap(View view, float x, float y) {
+                            Log.e("MY TAG", "PHOTO TAPPING IS WORKING");
+                            singleTap();
+                        }
+
+                        @Override
+                        public void onOutsidePhotoTap() {
+                            Log.e("MY TAG", "PHOTO TAPPING IS WORKING");
+                            singleTap();
+                        }
+                    });
+
                     current_image_pos = position;
                     getAlbum().setCurrentPhotoIndex(getAlbum().getCurrentMediaIndex());
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
@@ -431,6 +497,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 }
             });
             mViewPager.scrollToPosition(all_photo_pos);
+
         } else if (trashdis && !upoadhis && !favphotomode && !allPhotoMode) {
             adapter = new ImageAdapter(trashbinlistd, basicCallBack, this, this);
             getSupportActionBar().setTitle(all_photo_pos + 1 + " " + "of" + " " + size_all);
@@ -438,6 +505,22 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
                 @Override
                 public void onPageChanged(int oldPosition, int position) {
+                    Log.e("MY TAG", "PAGE CHANGED "+position);
+                    ImageAdapter.ViewHolder imageViewHolder = (ImageAdapter.ViewHolder) mViewPager.findViewHolderForAdapterPosition(position);
+                    imageViewHolder.getImageView().setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+                        @Override
+                        public void onPhotoTap(View view, float x, float y) {
+                            Log.e("MY TAG", "PHOTO TAPPING IS WORKING");
+                            singleTap();
+                        }
+
+                        @Override
+                        public void onOutsidePhotoTap() {
+                            Log.e("MY TAG", "PHOTO TAPPING IS WORKING");
+                            singleTap();
+                        }
+                    });
+
                     current_image_pos = position;
                     getAlbum().setCurrentPhotoIndex(getAlbum().getCurrentMediaIndex());
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
@@ -447,6 +530,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             });
             mViewPager.scrollToPosition(all_photo_pos);
         }
+
         Display aa = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
         mViewPager.setAdapter(adapter);
 
@@ -1719,6 +1803,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private void showSystemUI() {
         runOnUiThread(new Runnable() {
             public void run() {
+                Log.e("MY TAG", "CALL ME");
                 toolbar.animate().translationY(Measure.getStatusBarHeight(getResources())).setInterpolator(new DecelerateInterpolator())
                         .setDuration(240).start();
                 bottomBar.animate().translationY(0).setInterpolator(new DecelerateInterpolator()).start();
@@ -1992,6 +2077,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
     @Override
     public void singleTap() {
+        Log.e("MY TAG", "CALL ME SINGLE TAP");
         toggleSystemUI();
         if(slideshow)
         {
@@ -2104,6 +2190,11 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
                 @Override
                 public void onPageChanged(int oldPosition, int position) {
+
+                    if (mViewPager.findViewHolderForAdapterPosition(position) instanceof ImageAdapter.ViewHolder) {
+                        Log.e("MY TAG", "YES IT IS INSTANCE OF VIEWHOLER");
+                    }
+
                     getAlbum().setCurrentPhotoIndex(position);
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
                     invalidateOptionsMenu();
@@ -2117,6 +2208,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
                 @Override
                 public void onPageChanged(int oldPosition, int position) {
+                    if (mViewPager.findViewHolderForAdapterPosition(position) instanceof ImageAdapter.ViewHolder) {
+                        Log.e("MY TAG", "YES IT IS INSTANCE OF VIEWHOLER");
+                    }
                     current_image_pos = position;
                     getAlbum().setCurrentPhotoIndex(getAlbum().getCurrentMediaIndex());
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
@@ -2131,6 +2225,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
                 @Override
                 public void onPageChanged(int oldPosition, int position) {
+                    if (mViewPager.findViewHolderForAdapterPosition(position) instanceof ImageAdapter.ViewHolder) {
+                        Log.e("MY TAG", "YES IT IS INSTANCE OF VIEWHOLER");
+                    }
                     current_image_pos = position;
                     getAlbum().setCurrentPhotoIndex(getAlbum().getCurrentMediaIndex());
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
