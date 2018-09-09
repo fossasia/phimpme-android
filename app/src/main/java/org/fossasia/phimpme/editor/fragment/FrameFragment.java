@@ -128,6 +128,7 @@ public class FrameFragment extends BaseEditFragment {
         @Override
         public viewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = View.inflate(getContext(), R.layout.frames, null);
+
             return new viewHolder(view);
         }
         @Override
@@ -297,6 +298,11 @@ public class FrameFragment extends BaseEditFragment {
     }
     // Asynchronous loading of thumbnails
     private class asyncThumbs extends AsyncTask<Void, Void, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            arrayList=new ArrayList<>();
+        }
 
         @Override
         protected Void doInBackground(Void... params) {
