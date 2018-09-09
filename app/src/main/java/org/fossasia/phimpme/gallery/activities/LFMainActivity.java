@@ -2276,7 +2276,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 File folder = new File(getAlbums().getSelectedAlbum(0).getPath() + "/");
                 File[] fpath = folder.listFiles();
                 for (int i = 0; i < fpath.length; i++) {
-                    if (fpath[i].getPath().endsWith(".jpg")) {
+                    if (fpath[i].getPath().endsWith(".jpg")||fpath[i].getPath().endsWith(".jpeg")||fpath[i].getPath().endsWith(".png")) {
                         path.add(fpath[i].getPath());
                     }
 
