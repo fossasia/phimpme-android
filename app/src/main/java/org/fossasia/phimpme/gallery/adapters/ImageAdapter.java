@@ -12,23 +12,18 @@ import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.gallery.data.Media;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
-
 import java.util.ArrayList;
-
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
-
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
 
@@ -37,7 +32,6 @@ import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
  */
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> {
-
     BasicCallBack basicCallBack;
     private ArrayList<Media> media;
     private OnSingleTap onSingleTap;
@@ -49,6 +43,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
         this.onSingleTap = singleTap;
         this.basicCallBack = onItemClickListener;
         mEnterTransitions = transition;
+
     }
 
     @Override
@@ -59,7 +54,9 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder,  int position) {
+
+
         holder.imageView.setTransitionName(context.getString(R.string.transition_photo));
         Glide.with(getContext())
                 .load(media.get(position).getUri())
@@ -80,11 +77,14 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
                 .into(holder.imageView);
         holder.imageView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
+
                 basicCallBack.callBack(0, null);
             }
         });
     }
+
+
 
     public interface enterTransition{
         void startPostponedTransition();
@@ -119,10 +119,12 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
 
         public ViewHolder(View itemView) {
             super(itemView);
+
             imageView = new PhotoView(ActivitySwitchHelper.context);
             imageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
                 @Override
                 public void onPhotoTap(View view, float x, float y) {
+
                     onSingleTap.singleTap();
                 }
 
@@ -145,7 +147,12 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             linearLayout.addView(imageView);
 
-
         }
+
+        public PhotoView getImageView() {
+            return this.imageView;
+        }
+
     }
+
 }
