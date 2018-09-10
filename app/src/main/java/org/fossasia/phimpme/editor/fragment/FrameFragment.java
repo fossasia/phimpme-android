@@ -128,7 +128,6 @@ public class FrameFragment extends BaseEditFragment {
         @Override
         public viewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = View.inflate(getContext(), R.layout.frames, null);
-
             return new viewHolder(view);
         }
         @Override
