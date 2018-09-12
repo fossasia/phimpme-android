@@ -305,7 +305,6 @@ public class FrameFragment extends BaseEditFragment {
 
         @Override
         protected Void doInBackground(Void... params) {
-            arrayList = new ArrayList<>();
             InputStream is = null;
             Bitmap tempBitmap;
             String frameFolder = "frames";
