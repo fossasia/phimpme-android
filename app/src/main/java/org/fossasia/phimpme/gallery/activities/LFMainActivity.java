@@ -3353,7 +3353,7 @@ public class LFMainActivity extends SharedMediaActivity {
             }
             byte[] bytes = createGIFFromImages(bitmaps);
             File file = new File(Environment.getExternalStorageDirectory() + "/" + "Phimpme_gifs");
-            DateFormat dateFormat = new SimpleDateFormat("dMMyy_HHmm");
+            DateFormat dateFormat = new SimpleDateFormat("ddMMyy_HHmm");
             String date = dateFormat.format(Calendar.getInstance().getTime());
             if(file.exists() && file.isDirectory()){
                 FileOutputStream outStream = null;
