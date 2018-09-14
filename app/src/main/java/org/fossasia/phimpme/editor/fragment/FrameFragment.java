@@ -299,8 +299,12 @@ public class FrameFragment extends BaseEditFragment {
     private class asyncThumbs extends AsyncTask<Void, Void, Void> {
 
         @Override
+        protected void onPreExecute() {
+            arrayList=new ArrayList<>();
+        }
+
+        @Override
         protected Void doInBackground(Void... params) {
-            arrayList = new ArrayList<>();
             InputStream is = null;
             Bitmap tempBitmap;
             String frameFolder = "frames";
