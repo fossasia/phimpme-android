@@ -64,8 +64,20 @@ Do you have many different apps on your Android Phone for the purpose of clickin
 ## How to Contribute
 This is an Open Source project and we would be happy to see contributors who report bugs and file feature requests by submitting pull requests as well.This project adheres to the Contributor Covenant [code of conduct](https://github.com/fossasia/phimpme-android/blob/development/CONTRIBUTING.md). By participating, you are expected to uphold this code style. Please report issues here https://github.com/fossasia/phimpme-android/issues
 
+### PR Guidelines
+
+Please help us follow the best practice to make it easy for the reviewer as well as the contributor. We want to focus on the code quality more than on managing pull request ethics.
+
+ * Single commit per pull request
+ * For writing commit messages please read the [COMMITSTYLE](docs/commitStyle.md) carefully. Kindly adhere to the guidelines.
+ * Follow uniform design practices. The design language must be consistent throughout the app.
+ * The pull request will not get merged until and unless the commits are squashed. In case there are multiple commits on the PR, the commit author needs to squash them and not the maintainers cherrypicking and merging squashes.
+ * If the PR is related to any front end change, please attach relevant screenshots in the pull request description.
+
 
 ---
+
+
 
 ### Branch Policy
 We have the following branches
