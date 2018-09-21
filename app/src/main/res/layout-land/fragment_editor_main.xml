@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:app="http://schemas.android.com/apk/res-auto"
-             android:layout_width="wrap_content"
-              android:layout_height="match_parent"
-        android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
     >
 
     <LinearLayout
@@ -91,14 +91,14 @@
 
     </LinearLayout>
 
-     <LinearLayout
-         android:layout_weight="1"
-            android:orientation="vertical"
-            android:background="?android:attr/selectableItemBackground"
-            android:layout_width="@dimen/editor_bottom_row_size"
-            android:id="@+id/menu_sticker"
-            android:layout_column="3"
-            android:layout_height="@dimen/editor_bottom_row_size">
+    <LinearLayout
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="?android:attr/selectableItemBackground"
+        android:layout_width="@dimen/editor_bottom_row_size"
+        android:id="@+id/menu_sticker"
+        android:layout_column="3"
+        android:layout_height="@dimen/editor_bottom_row_size">
 
         <ImageView
             android:id="@+id/stickericonimage"
@@ -116,6 +116,34 @@
             android:textSize="@dimen/icon_item_title_size"
             android:textAlignment="center"
             android:text="@string/sticker"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:background="?android:attr/selectableItemBackground"
+        android:layout_width="@dimen/editor_bottom_row_size"
+        android:id="@+id/menu_frame"
+        android:layout_column="4"
+        android:layout_height="@dimen/editor_bottom_row_size">
+
+        <ImageView
+            android:id="@+id/frameiconimage"
+            android:layout_width="@dimen/icon_item_image_size_main"
+            android:layout_height="@dimen/icon_item_image_size_main"
+            android:scaleType="fitCenter"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/ic_frame"
+            android:layout_gravity="center_horizontal"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/icon_item_title_size"
+            android:textAlignment="center"
+            android:text="@string/frame"/>
 
     </LinearLayout>
 
