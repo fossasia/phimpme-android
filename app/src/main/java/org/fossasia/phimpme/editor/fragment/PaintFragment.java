@@ -78,7 +78,7 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
     }
 
     private void resetPaintView() {
-        if (null != mPaintView){
+        if (null != mPaintView && activity.mainBitmap != null){
             mPaintView.reset();
             mPaintView.setVisibility(View.GONE);
         }
@@ -147,6 +147,10 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
     }
 
     public void onShow() {
+        if (activity.mainBitmap == null) {
+            getActivity().getSupportFragmentManager().beginTransaction().remove(PaintFragment.this).commit();
+            return;
+        }
         activity.changeMode(EditImageActivity.MODE_PAINT);
         activity.mainImage.setImageBitmap(activity.mainBitmap);
         activity.mPaintView.mainBitmap=activity.mainBitmap;
