@@ -1,5 +1,6 @@
 package org.fossasia.phimpme.editor.fragment;
 import android.content.res.AssetManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -37,6 +38,8 @@ public class FrameFragment extends BaseEditFragment {
     private int lastFrame = 99;
     private View frameView;
     private ImageButton imgBtnDone, imgBtnCancel;
+    private boolean isOrientationChanged;
+
     public static FrameFragment newInstance(Bitmap bmp) {
         Bundle args = new Bundle();
         FrameFragment fragment = new FrameFragment();
@@ -61,13 +64,15 @@ public class FrameFragment extends BaseEditFragment {
         imgBtnDone.setImageResource(R.drawable.ic_done_black_24dp);
         onShow();
         setUpLayoutManager();
-        recyclerView rv = new recyclerView();
+       final recyclerView rv = new recyclerView();
         frameRecycler.setAdapter(rv);
         imgBtnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 activity.mainImage.setImageBitmap(original);
                 setVisibilty(false);
+                if (isOrientationChanged)
+                rv.notifyDataSetChanged();
             }
         });
         imgBtnDone.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +82,8 @@ public class FrameFragment extends BaseEditFragment {
                     activity.changeMainBitmap(lastBitmap);
                     backToMain();
                 }
+                if (isOrientationChanged)
+                rv.notifyDataSetChanged();
             }
         });
 
@@ -99,7 +106,13 @@ public class FrameFragment extends BaseEditFragment {
     //set linearLayoutManager
     private void setUpLayoutManager() {
         LinearLayoutManager linearLayoutManager;
-        linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+            isOrientationChanged = true;
+        }else {
+            linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+            isOrientationChanged = false;
+        }
         frameRecycler.setLayoutManager(linearLayoutManager);
     }
     //
