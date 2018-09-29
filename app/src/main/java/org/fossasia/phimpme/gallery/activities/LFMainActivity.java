@@ -120,8 +120,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
@@ -3445,10 +3447,13 @@ public class LFMainActivity extends SharedMediaActivity {
             }
             byte[] bytes = createGIFFromImages(bitmaps);
             File file = new File(Environment.getExternalStorageDirectory() + "/" + "Phimpme_gifs");
+            DateFormat dateFormat = new SimpleDateFormat("ddMMyy_HHmm");
+            String date = dateFormat.format(Calendar.getInstance().getTime());
             if(file.exists() && file.isDirectory()){
                 FileOutputStream outStream = null;
+
                 try{
-                    outStream = new FileOutputStream(file.getPath() + "/" + "GIF.gif");
+                    outStream = new FileOutputStream(file.getPath() + "/" + "GIF_"+date+".gif");
                     outStream.write(bytes);
                     outStream.close();
                 }catch(Exception e){
@@ -3458,7 +3463,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 if (file.mkdir()) {
                     FileOutputStream outStream = null;
                     try {
-                        outStream = new FileOutputStream(file.getPath() + "/" + "GIF.gif");
+                        outStream = new FileOutputStream(file.getPath() + "/" + "GIF_"+date+".gif");
                         outStream.write(bytes);
                         outStream.close();
                     } catch (Exception e) {
