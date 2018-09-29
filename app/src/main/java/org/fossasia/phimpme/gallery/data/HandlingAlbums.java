@@ -332,6 +332,10 @@ public class HandlingAlbums {
     return selectedAlbums.get(index);
   }
 
+  public ArrayList<Album> getSelectedAlbums() {
+      return selectedAlbums;
+  }
+
   public void loadAlbums(Context applicationContext) {
     loadAlbums(applicationContext, hidden);
   }

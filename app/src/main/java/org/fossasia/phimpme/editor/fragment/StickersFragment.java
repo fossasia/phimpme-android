@@ -104,6 +104,10 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
 
     @Override
     public void onShow() {
+        if (activity.mainBitmap == null) {
+            getActivity().getSupportFragmentManager().beginTransaction().remove(StickersFragment.this).commit();
+            return;
+        }
         activity.changeMode(EditImageActivity.MODE_STICKERS);
         activity.stickersFragment.getmStickerView().mainImage = activity.mainImage;
         activity.stickersFragment.getmStickerView().mainBitmap = activity.mainBitmap;

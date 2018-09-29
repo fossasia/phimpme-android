@@ -126,6 +126,10 @@ public class RotateFragment extends BaseEditFragment {
 
     @Override
     public void onShow() {
+        if (activity.mainBitmap == null) {
+            getActivity().getSupportFragmentManager().beginTransaction().remove(RotateFragment.this).commit();
+            return;
+        }
         activity.changeMode(EditImageActivity.MODE_ROTATE);
         activity.mainImage.setImageBitmap(activity.mainBitmap);
         activity.mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
