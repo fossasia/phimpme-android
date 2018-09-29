@@ -25,7 +25,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".share.twitter.LoginActivity"
-            android:screenOrientation="portrait">
+            android:configChanges="orientation|screenSize"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
