@@ -10,11 +10,16 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 
@@ -52,6 +57,8 @@ import javax.annotation.Nullable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.view.MotionEvent.INVALID_POINTER_ID;
 
 /**
  * Called from SingleMediaActivity when the user selects the 'edit' option in the toolbar overflow menu.
@@ -116,6 +123,10 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     ImageButton undo;
     @Nullable @BindView(R.id.edit_redo)
     ImageButton redo;
+    @Nullable @BindView(R.id.preview_container)
+    FrameLayout mLayout;
+    @Nullable @BindView(R.id.sliding_button)
+    ImageButton sliding_button;
     @Nullable @BindView(R.id.progress_bar_edit)
     ProgressBar progressBar;
 
@@ -148,6 +159,10 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     public RotateFragment rotateFragment;
     public FrameFragment frameFragment;
     private static String stickerType;
+    private float mLastTouchX;
+    private float mLastTouchY;
+    private float mPosX;
+    private float mPosY;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -214,6 +229,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         undo.setOnClickListener(this);
         redo.setOnClickListener(this);
         bef_aft.setOnTouchListener(this);
+        sliding_button.setOnTouchListener(this);
 
         mode = MODE_FILTERS;
 
@@ -583,6 +599,58 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                         mainImage.setImageBitmap(mainBitmap);
                 }
             }
+        }
+        if(R.id.sliding_button==v.getId())
+        {
+            // The ‘active pointer’ is the one currently moving our object.
+            int mActivePointerId = INVALID_POINTER_ID;
+            //@Override// Let the ScaleGestureDetector inspect all events.
+           // mScaleDetector.onTouchEvent(event);
+            final int action = MotionEventCompat.getActionMasked(event);
+
+            switch (action) {
+
+                case MotionEvent.ACTION_DOWN: {
+                    final float x = event.getRawX();
+                    final float y = event.getRawY();
+                    // Remember where we started (for dragging)
+                    mLastTouchX = x;
+                    mLastTouchY = y;
+                    break;
+                }
+                case MotionEvent.ACTION_MOVE: {
+                    final float x = event.getRawX();
+                    final float y = event.getRawY();
+                    // Calculate the distance moved
+                    final float dx = x - mLastTouchX;
+                    final float dy = y - mLastTouchY;
+                    mPosX += dx;
+                    mPosY += dy;
+                    Display display = getWindowManager().getDefaultDisplay();
+                    DisplayMetrics outMetrics = new DisplayMetrics ();
+                    display.getMetrics(outMetrics);
+                    float dpWidth  = outMetrics.widthPixels;
+                    ViewGroup.LayoutParams params=mLayout.getLayoutParams();
+                    params.width=(int)mPosX;
+                    //Set Sliding Bar limits from 19% of screen-size to 65% of screen size
+                    if(mPosX<(0.65*dpWidth) && mPosX>(0.19*dpWidth))
+                    mLayout.setLayoutParams(params);
+                    // Remember this touch position for the next move event
+                    mLastTouchX = x;
+                    mLastTouchY = y;
+                    break;
+                }
+                case MotionEvent.ACTION_POINTER_UP: {
+                    final int pointerIndex = MotionEventCompat.getActionIndex(event);
+                    final int pointerId = MotionEventCompat.getPointerId(event, pointerIndex);
+                    if (pointerId == mActivePointerId) {
+                        mLastTouchX = event.getRawX();
+                        mLastTouchY = event.getRawY();
+                    }
+                    break;
+                }
+            }
+            return true;
         }
         return true;
     }
