@@ -174,7 +174,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.preview_container, filterFragment)
+                .replace(R.id.preview_container, filterFragment)
                 .commit();
 
         setButtonsVisibility();
