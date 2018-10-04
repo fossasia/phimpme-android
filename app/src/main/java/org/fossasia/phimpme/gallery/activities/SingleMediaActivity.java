@@ -367,7 +367,15 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             adapter = new ImageAdapter(getAlbum().getMedia(), basicCallBack, this, this);
             getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum()
                     .getMedia().size());
+            current_image_pos = all_photo_pos;
 //            toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
+           if (bottomMenu.findItem(R.id.action_favourites).getIcon().getColorFilter() == null) {
+               if (!favsearch(getAlbum().getMedia(current_image_pos).getPath())) {
+                   bottomMenu.findItem(R.id.action_favourites).getIcon().clearColorFilter();
+               } else {
+                   bottomMenu.findItem(R.id.action_favourites).getIcon().setColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN);
+               }
+           }
             mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
                 @Override
                 public void onPageChanged(int oldPosition, int position) {
@@ -400,6 +408,13 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             adapter = new ImageAdapter(LFMainActivity.listAll, basicCallBack, this, this);
             getSupportActionBar().setTitle(all_photo_pos + 1 + " " + getString(R.string.of) + " " + size_all);
             current_image_pos = all_photo_pos;
+            if (bottomMenu.findItem(R.id.action_favourites).getIcon().getColorFilter() == null) {
+                if (!favsearch(listAll.get(current_image_pos).getPath())) {
+                    bottomMenu.findItem(R.id.action_favourites).getIcon().clearColorFilter();
+                } else {
+                    bottomMenu.findItem(R.id.action_favourites).getIcon().setColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN);
+                }
+            }
             mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
                 @Override
                 public void onPageChanged(int oldPosition, int position) {
