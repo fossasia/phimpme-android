@@ -164,6 +164,15 @@
 
     </FrameLayout>
 
+    <ImageButton
+        android:id="@+id/sliding_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="@null"
+        app:srcCompat="@drawable/ic_fiber_manual_record_black_24dp"
+        android:visibility="gone"/>
+
     <ProgressBar
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
