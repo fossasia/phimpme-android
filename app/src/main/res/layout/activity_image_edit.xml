@@ -161,7 +161,6 @@
             android:layout_gravity="center"
             android:visibility="gone" />
 
-
     </FrameLayout>
 
     <ProgressBar

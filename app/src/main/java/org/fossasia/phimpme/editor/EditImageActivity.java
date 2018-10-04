@@ -2,7 +2,6 @@ package org.fossasia.phimpme.editor;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -174,7 +173,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
 
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.preview_container, filterFragment)
+                .replace(R.id.preview_container, filterFragment)
                 .commit();
 
         setButtonsVisibility();
