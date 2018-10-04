@@ -1,8 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="@dimen/editor_bottom_row_size"
-              android:orientation="horizontal">
+              android:layout_height="match_parent"
+              android:layout_width="@dimen/editor_bottom_row_size"
+              android:orientation="vertical">
     <ImageButton
         android:id="@+id/text_cancel"
         android:layout_width="@dimen/icon_item_image_size_main"
