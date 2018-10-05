@@ -158,6 +158,9 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         setContentView(R.layout.activity_image_edit);
         ButterKnife.bind(this);
         initView();
+        if (savedInstanceState != null) {
+            mode =  savedInstanceState.getInt("PREVIOUS_FRAGMENT");
+        }
         getData();
     }
 
@@ -171,10 +174,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                 .add(R.id.controls_container, mainMenuFragment)
                 .commit();
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.preview_container, filterFragment)
-                .commit();
+        changeMiddleFragment(mode);
 
         setButtonsVisibility();
     }
@@ -653,6 +653,12 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                 SnackBarHandler.show(parentLayout,R.string.save_error);
             }
         }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("PREVIOUS_FRAGMENT", mode);
     }
 
     @Override
