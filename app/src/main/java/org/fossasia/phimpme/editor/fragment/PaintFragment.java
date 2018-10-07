@@ -1,6 +1,7 @@
 package org.fossasia.phimpme.editor.fragment;
 
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -116,8 +117,12 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
         mColorListView.setHasFixedSize(false);
 
         LinearLayoutManager stickerListLayoutManager = new LinearLayoutManager(activity);
-        stickerListLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            stickerListLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        }
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            stickerListLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        }
         mColorListView.setLayoutManager(stickerListLayoutManager);
         mColorAdapter = new ColorListAdapter(this, mPaintColors, this);
         mColorListView.setAdapter(mColorAdapter);
