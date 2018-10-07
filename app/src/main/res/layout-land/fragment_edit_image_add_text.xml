@@ -32,6 +32,15 @@
         android:text="@string/auto_newline"
         android:visibility="gone"/>
 
+    <ImageButton
+        android:id="@+id/text_font"
+        android:layout_width="@dimen/icon_item_image_size_main"
+        android:layout_height="@dimen/editor_bottom_row_size"
+        android:layout_gravity="center_vertical"
+        android:background="?android:attr/selectableItemBackground"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/ic_text_format_black_24dp" />
+
     <ImageView
         android:id="@+id/text_color"
         android:layout_width="@dimen/icon_item_image_size_main"
