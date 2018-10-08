@@ -1287,6 +1287,7 @@
     <string name="version_one">v1.0</string>
 
     <!-- Links -->
+    <string name="phimpme_website">http://phimp.me/</string>
     <string name="contributors_link">https://github.com/fossasia/phimpme-android/graphs/contributors</string>
     <string name="phimpme_github">https://github.com/fossasia/phimpme-android</string>
     <string name="phimpme_github_issues">https://github.com/fossasia/phimpme-android/issues</string>
