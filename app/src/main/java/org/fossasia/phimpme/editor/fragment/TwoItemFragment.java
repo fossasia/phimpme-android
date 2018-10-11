@@ -18,6 +18,7 @@ public class TwoItemFragment extends BaseEditFragment implements View.OnClickLis
     LinearLayout ll_item1, ll_item2;
     ImageView icon1,icon2;
     TextView text1,text2;
+    private boolean item1Clicked, item2Clicked;
     int mode;
     public TwoItemFragment() {
 
@@ -32,6 +33,11 @@ public class TwoItemFragment extends BaseEditFragment implements View.OnClickLis
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            item1Clicked = savedInstanceState.getBoolean("ITEM1", false);
+            item2Clicked = savedInstanceState.getBoolean("ITEM2", false);
+        }
+
     }
 
     @Override
@@ -66,6 +72,12 @@ public class TwoItemFragment extends BaseEditFragment implements View.OnClickLis
             text2.setText(getString(R.string.rotate));
         }
 
+        if (item1Clicked && !item2Clicked) {
+            ll_item1.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.md_grey_200));
+        }else if (item2Clicked && !item1Clicked){
+            ll_item2.setBackgroundColor(ContextCompat.getColor(view.getContext(), R.color.md_grey_200));
+        }
+
         return view;
     }
 
@@ -85,11 +97,15 @@ public class TwoItemFragment extends BaseEditFragment implements View.OnClickLis
         switch (v.getId()){
             case R.id.menu_item1:
                 clearSelection();
+                item1Clicked = true;
+                item2Clicked = false;
                 ll_item1.setBackgroundColor(ContextCompat.getColor(v.getContext(), R.color.md_grey_200));
                 firstItemClicked();
                 break;
             case R.id.menu_item2:
                 clearSelection();
+                item1Clicked = false;
+                item2Clicked = true;
                 ll_item2.setBackgroundColor(ContextCompat.getColor(v.getContext(), R.color.md_grey_200));
                 secondItemClicked();
                 break;
@@ -122,4 +138,10 @@ public class TwoItemFragment extends BaseEditFragment implements View.OnClickLis
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean("ITEM1", item1Clicked);
+        outState.putBoolean("ITEM2", item2Clicked);
+    }
 }

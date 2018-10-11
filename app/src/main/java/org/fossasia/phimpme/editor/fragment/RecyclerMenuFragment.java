@@ -78,8 +78,6 @@ public class RecyclerMenuFragment extends BaseEditFragment {
         } else if(orientation == Configuration.ORIENTATION_LANDSCAPE) {
             layoutManager = new LinearLayoutManager(getActivity());
         }
-        recyclerView = (RecyclerView) fragmentView.findViewById(R.id.editor_recyclerview);
-
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(new mRecyclerAdapter());
         this.mStickerView = activity.mStickerView;
@@ -90,6 +88,7 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         fragmentView = inflater.inflate(R.layout.fragment_editor_recycler, container, false);
+        recyclerView = (RecyclerView) fragmentView.findViewById(R.id.editor_recyclerview);
         return fragmentView;
     }
 
@@ -283,20 +282,17 @@ public class RecyclerMenuFragment extends BaseEditFragment {
             switch (MODE){
                 case EditImageActivity.MODE_FILTERS:
                     activity.setEffectType(pos,MODE);
-                    activity.changeMode(EditImageActivity.MODE_SLIDER);
                     activity.changeBottomFragment(EditImageActivity.MODE_SLIDER);
                     break;
 
                 case EditImageActivity.MODE_ENHANCE:
                     activity.setEffectType(pos,MODE);
-                    activity.changeMode(EditImageActivity.MODE_SLIDER);
                     activity.changeBottomFragment(EditImageActivity.MODE_SLIDER);
                     break;
 
                 case EditImageActivity.MODE_STICKER_TYPES:
                     String data = (String) view.getTag();
                     activity.setStickerType(data);
-                    activity.changeMode(EditImageActivity.MODE_STICKERS);
                     activity.changeBottomFragment(EditImageActivity.MODE_STICKERS);
                     break;
             }

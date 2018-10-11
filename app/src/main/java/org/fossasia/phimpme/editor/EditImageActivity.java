@@ -87,6 +87,9 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     public static int mode;
     public static int effectType;
 
+    public static int middleMode = MODE_FILTERS;
+    public static int bottomMode = MODE_MAIN;
+
     /**
      * Number of times image has been edited. Indicates whether image has been edited or not.
      */
@@ -160,6 +163,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         initView();
         if (savedInstanceState != null) {
             mode =  savedInstanceState.getInt("PREVIOUS_FRAGMENT");
+            middleMode = savedInstanceState.getInt("MIDDLE_FRAGMENT", MODE_FILTERS);
+            bottomMode = savedInstanceState.getInt("BOTTOM_FRAGMENT", MODE_MAIN);
         }
         getData();
     }
@@ -169,12 +174,16 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
      * Calleter onCreate() when the activity is first started. Loads the initial default fragments.
      */
     private void setInitialFragments() {
+
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.controls_container, mainMenuFragment)
+                .replace(R.id.controls_container, getFragment(bottomMode))
                 .commit();
 
-        changeMiddleFragment(mode);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.preview_container, getFragment(middleMode))
+                .commit();
 
         setButtonsVisibility();
     }
@@ -241,8 +250,19 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         return mode;
     }
 
+    public static int getMiddleMode() {
+        return middleMode;
+    }
+
+    public void changeBottomMode(int bottomMode) {
+        mode = bottomMode;
+        this.bottomMode = bottomMode;
+    }
+
+
     public void changeMode(int to_mode){
         EditImageActivity.mode = to_mode;
+        bottomMode = to_mode;
         highLightSelectedOption(to_mode);
     }
 
@@ -312,6 +332,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
      * @param index integer corresponding to the current editing mode.
      */
     public void changeBottomFragment(int index){
+        bottomMode = index;
+        mode = index;
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.controls_container, getFragment(index))
@@ -367,6 +389,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
      * @param index integer representing selected editing mode
      */
     public void changeMiddleFragment(int index){
+            EditImageActivity.middleMode = index;
+            EditImageActivity.mode = index;
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.preview_container, getFragment(index))
@@ -659,6 +683,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putInt("PREVIOUS_FRAGMENT", mode);
+        outState.putInt("MIDDLE_FRAGMENT", middleMode);
+        outState.putInt("BOTTOM_FRAGMENT", bottomMode);
     }
 
     @Override
@@ -684,7 +710,11 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                 showDiscardChangesDialog(MODE_PAINT,R.string.discard_paint_message);
             case MODE_FRAME:
                 if(canAutoExit())
-                {finish();}
+                {
+                    bottomMode = MODE_MAIN;
+                    middleMode = MODE_FILTERS;
+                    finish();
+                }
                 else{
                 showDiscardChangesDialog(MODE_FRAME,R.string.discard_frame_mode_message);}
                 return;
@@ -692,6 +722,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         }
         //if the image has not been edited or has been edited and saved.
         if (canAutoExit()) {
+            bottomMode = MODE_MAIN;
+            middleMode = MODE_FILTERS;
             finish();
         } else {
             final AlertDialog.Builder discardChangesDialogBuilder = new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
@@ -699,6 +731,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
             discardChangesDialogBuilder.setPositiveButton(getString(R.string.confirm).toUpperCase(), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    bottomMode = MODE_MAIN;
+                    middleMode = MODE_FILTERS;
                     finish();
                 }
             });

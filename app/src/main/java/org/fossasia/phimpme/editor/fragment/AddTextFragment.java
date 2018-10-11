@@ -204,7 +204,6 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher, Fo
 
     public void backToMain() {
         hideInput();
-        activity.changeMode(EditImageActivity.MODE_WRITE);
         activity.writeFragment.clearSelection();
         activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
         activity.mainImage.setVisibility(View.VISIBLE);
@@ -214,6 +213,8 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher, Fo
 
     @Override
     public void onShow() {
+        if (activity.mainBitmap == null)
+            return;
         activity.changeMode(EditImageActivity.MODE_TEXT);
         activity.mainImage.setImageBitmap(activity.mainBitmap);
         activity.addTextFragment.getmTextStickerView().mainImage = activity.mainImage;

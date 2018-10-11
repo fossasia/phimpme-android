@@ -41,7 +41,7 @@ public class MainMenuFragment extends BaseEditFragment implements View.OnClickLi
         menu_stickers.setOnClickListener(this);
         menu_write.setOnClickListener(this);
         menu_frame.setOnClickListener(this);
-        highLightSelectedOption(EditImageActivity.getMode());
+        highLightSelectedOption(EditImageActivity.middleMode);
         return view;
     }
     @Override
@@ -64,30 +64,30 @@ public class MainMenuFragment extends BaseEditFragment implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.menu_filter:
-                activity.changeMode(EditImageActivity.MODE_FILTERS);
                 activity.sliderFragment.resetBitmaps();
                 activity.changeMiddleFragment(EditImageActivity.MODE_FILTERS);
+                highLightSelectedOption(EditImageActivity.middleMode);
                 break;
             case R.id.menu_enhance:
-                activity.changeMode(EditImageActivity.MODE_ENHANCE);
                 activity.sliderFragment.resetBitmaps();
                 activity.changeMiddleFragment(EditImageActivity.MODE_ENHANCE);
+                highLightSelectedOption(EditImageActivity.middleMode);
                 break;
             case R.id.menu_adjust:
-                activity.changeMode(EditImageActivity.MODE_ADJUST);
                 activity.changeMiddleFragment(EditImageActivity.MODE_ADJUST);
+                highLightSelectedOption(EditImageActivity.middleMode);
                 break;
             case R.id.menu_sticker:
-                activity.changeMode(EditImageActivity.MODE_STICKER_TYPES);
                 activity.changeMiddleFragment(EditImageActivity.MODE_STICKER_TYPES);
+                highLightSelectedOption(EditImageActivity.middleMode);
                 break;
             case R.id.menu_write:
-                activity.changeMode(EditImageActivity.MODE_WRITE);
                 activity.changeMiddleFragment(EditImageActivity.MODE_WRITE);
+                highLightSelectedOption(EditImageActivity.middleMode);
                 break;
             case R.id.menu_frame:
-                activity.changeMode(EditImageActivity.MODE_FRAME);
                 activity.changeMiddleFragment(EditImageActivity.MODE_FRAME);
+                highLightSelectedOption(EditImageActivity.middleMode);
                 break;
 
         }
