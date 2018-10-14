@@ -18,12 +18,10 @@ Phimp.me is a Photo App for Android that aims to replace proprietary photo appli
      <td><img src="./docs/_static/screenshots/ss_1.png"></td>
      <td><img src="./docs/_static/screenshots/ss_2.png"></td>
      <td><img src="./docs/_static/screenshots/ss_3.png"></td>
-     <td><img src="./docs/_static/screenshots/ss_4.png"></td>
      <tr> 
+      <td><img src="./docs/_static/screenshots/ss_4.png"></td>
       <td><img src="./docs/_static/screenshots/ss_5.png"></td>
       <td><img src="./docs/_static/screenshots/ss_6.png"></td>
-      <td><img src="./docs/_static/screenshots/ss_7.png"></td>
-      <td><img src="./docs/_static/screenshots/ss_8.png"></td>
     </tr>
   </table>
   
