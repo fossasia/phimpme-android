@@ -24,7 +24,7 @@ import org.fossasia.phimpme.editor.view.imagezoom.utils.IDisposable;
  * @author alessandro
  * 
  */
-public abstract class ImageViewTouchBase extends ImageView implements
+public abstract class ImageViewTouchBase extends android.support.v7.widget.AppCompatImageView implements
         IDisposable {
 
 	public interface OnDrawableChangeListener {

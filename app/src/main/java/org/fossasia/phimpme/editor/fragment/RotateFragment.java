@@ -34,6 +34,7 @@ public class RotateFragment extends BaseEditFragment {
 
     private HorizontalWheelView horizontalWheelView;
     private TextView tvAngle;
+    private static double angle=Integer.MIN_VALUE;
 
     public static RotateFragment newInstance() {
         RotateFragment fragment = new RotateFragment();
@@ -58,12 +59,19 @@ public class RotateFragment extends BaseEditFragment {
         return mainView;
     }
 
+
     private void initViews() {
         cancel = mainView.findViewById(R.id.rotate_cancel);
         apply = mainView.findViewById(R.id.rotate_apply);
         horizontalWheelView = (HorizontalWheelView) mainView.findViewById(R.id.horizontalWheelView);
+        if (angle!=Integer.MIN_VALUE)
+        {
+            horizontalWheelView.setDegreesAngle(angle);
+        }
         tvAngle = (TextView) mainView.findViewById(R.id.tvAngle);
         this.mRotatePanel = ensureEditActivity().mRotatePanel;
+        if(angle!=Integer.MIN_VALUE)
+        mRotatePanel.rotateImage((int)angle,activity.mainImage.getBitmapRect());
     }
 
     private void setupListeners() {
@@ -95,12 +103,12 @@ public class RotateFragment extends BaseEditFragment {
     private void updateText() {
         String text = String.format(Locale.US, "%.0f°", horizontalWheelView.getDegreesAngle());
         tvAngle.setText(text);
+        angle=horizontalWheelView.getDegreesAngle();
     }
 
     private void updateImage() {
         int angle = (int) horizontalWheelView.getDegreesAngle();
-        mRotatePanel.rotateImage(angle);
-
+        mRotatePanel.rotateImage(angle,activity.mainImage.getBitmapRect());
     }
 
     @Override
@@ -112,12 +120,12 @@ public class RotateFragment extends BaseEditFragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        resetRotateView();
+        //resetRotateView();
     }
 
     private void resetRotateView() {
         if (null != activity && null != mRotatePanel) {
-            activity.mRotatePanel.rotateImage(0);
+            //activity.mRotatePanel.rotateImage(0);
             activity.mRotatePanel.reset();
             activity.mRotatePanel.setVisibility(View.GONE);
             activity.mainImage.setVisibility(View.VISIBLE);

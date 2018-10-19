@@ -8,16 +8,20 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
+import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.utils.PaintUtil;
 
 public class RotateImageView extends View {
+
 	private Rect srcRect;
-	private RectF dstRect;
+	private static RectF dstRect;
 	private Rect maxRect;// The maximum limit rectangle
 
 	private Bitmap bitmap;
+	private static RectF img;
 	private Matrix matrix = new Matrix();// Aiding rectangular
 
 	private float scale;//scaling ratio
@@ -54,13 +58,16 @@ public class RotateImageView extends View {
 		bitmap = bit;
 		srcRect.set(0, 0, bitmap.getWidth(), bitmap.getHeight());
 		dstRect = imageRect;
+		img=imageRect;
 
 		originImageRect.set(0, 0, bit.getWidth(), bit.getHeight());
 		this.invalidate();
 	}
 
-	public void rotateImage(int angle) {
+	public void rotateImage(int angle, RectF imgRect) {
 		rotateAngle = angle;
+		dstRect=imgRect;
+		img=imgRect;
 		this.invalidate();
 	}
 
@@ -94,6 +101,11 @@ public class RotateImageView extends View {
 	}
 
 	private void calculateWrapBox() {
+		if(dstRect==null)
+		{
+			Log.d("helaaa","img "+img);
+			dstRect=img;
+		}
 		wrapRect.set(dstRect);
 		matrix.reset();// Reset matrix is ​​a unit matrix
 		int centerX = getWidth() >> 1;

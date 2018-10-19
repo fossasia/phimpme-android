@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -38,7 +39,10 @@ public class StickerView extends View {
     public ImageViewTouch mainImage;
     private float leftX, rightX, topY, bottomY;
 
-    private LinkedHashMap<Integer, StickerItem> bank = new LinkedHashMap<Integer, StickerItem>();//Storing each data map
+
+    public static LinkedHashMap<Integer, StickerItem> bank;
+
+     //Storing each data map
 
     public StickerView(Context context) {
         super(context);
@@ -68,8 +72,11 @@ public class StickerView extends View {
 
     private void init(Context context) {
         this.mContext = context;
+        if(bank==null || bank.size()==0) {
+            bank = new LinkedHashMap<Integer, StickerItem>();
+            bank.put(++imageCount,new StickerItem(context));
+        }
         currentStatus = STATUS_IDLE;
-
         rectPaint.setColor(Color.RED);
         rectPaint.setAlpha(100);
 
@@ -81,6 +88,10 @@ public class StickerView extends View {
         if (currentItem != null) {
             currentItem.isDrawHelpTool = false;
         }
+        /*Need to put a sample item which is not a sticker in bank because whenever config is changed
+          bank is copied to a new address thus changing the address of the first element of bank
+          which should not be a sticker as stickers are drawn of basis of their addresses
+                 */
         bank.put(++imageCount, item);
         this.invalidate();// 重绘视图
     }
@@ -91,11 +102,18 @@ public class StickerView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        if(bank==null)
+        {
+            bank=new LinkedHashMap<>();
+        }
         // System.out.println("on draw!!~");
         for (Integer id : bank.keySet()) {
-            StickerItem item = bank.get(id);
-            canvas.clipRect(leftX, topY, rightX, bottomY);
-            item.draw(canvas);
+
+            if(id!=1) {
+                StickerItem item = bank.get(id);
+                canvas.clipRect(leftX, topY, rightX, bottomY);
+                item.draw(canvas);
+            }
         }// end for each
     }
 
@@ -116,7 +134,8 @@ public class StickerView extends View {
 
                 int deleteId = -1;
                 for (Integer id : bank.keySet()) {
-                    StickerItem item = bank.get(id);
+                    if (id != 1){
+                        StickerItem item = bank.get(id);
                     if (item.detectDeleteRect.contains(x, y)) {// Delete mode
                         // ret = true;
                         deleteId = id;
@@ -144,6 +163,7 @@ public class StickerView extends View {
                         oldy = y;
                     }
                 }
+        }
 
                 if (!ret && currentItem != null && currentStatus == STATUS_IDLE) {// No map is selected
                     currentItem.isDrawHelpTool = false;
@@ -188,6 +208,7 @@ public class StickerView extends View {
         }
         return ret;
     }
+
 
     public LinkedHashMap<Integer, StickerItem> getBank() {
         return bank;

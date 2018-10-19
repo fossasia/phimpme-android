@@ -17,7 +17,7 @@ public class PaintModeView extends View {
     private Paint mPaint;
 
     private int mStokeColor;
-    private float mStokeWidth = -1;
+    private  float mStokeWidth = -1;
 
     private float mRadius;
 

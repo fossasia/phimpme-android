@@ -21,10 +21,10 @@ import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouch;
 
 public class CustomPaintView extends View {
     private Paint mPaint;
-    private Bitmap mDrawBit;
+    public Bitmap mDrawBit;
     private Paint mEraserPaint;
 
-    private Canvas mPaintCanvas = null;
+    public static Canvas mPaintCanvas = null;
 
     private float last_x;
     private float last_y;
@@ -149,9 +149,6 @@ public class CustomPaintView extends View {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (mDrawBit != null && !mDrawBit.isRecycled()) {
-            mDrawBit.recycle();
-        }
     }
 
     public void setEraser(boolean eraser) {

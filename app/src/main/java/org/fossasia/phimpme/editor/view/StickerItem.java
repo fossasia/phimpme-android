@@ -83,11 +83,11 @@ public class StickerItem {
         this.srcRect = new Rect(0, 0, addBit.getWidth(), addBit.getHeight());
         int bitWidth = Math.min(addBit.getWidth(), parentView.getWidth() >> 1);
         int bitHeight = (int) bitWidth * addBit.getHeight() / addBit.getWidth();
-        int left = (random.nextInt(parentView.getWidth()-(int)(parentView.getWidth()*0.4f)));
-        int top =  (random.nextInt(parentView.getHeight()-(int)(parentView.getHeight()*0.4f)));
+        int left = (parentView.getWidth() >> 1) - (bitWidth >> 1);
+        int top = (parentView.getHeight() >> 1) - (bitHeight >> 1);
         this.dstRect = new RectF(left, top, left + bitWidth, top + bitHeight);
-        this.matrix = new Matrix();
-        this.matrix.postTranslate(left, top);
+        this.matrix = new Matrix();	        this.matrix = new Matrix();
+        this.matrix.postTranslate(this.dstRect.left, this.dstRect.top);
         this.matrix.postScale((float) bitWidth / addBit.getWidth(),
                 (float) bitHeight / addBit.getHeight(), this.dstRect.left,
                 this.dstRect.top);

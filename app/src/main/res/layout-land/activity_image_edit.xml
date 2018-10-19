@@ -11,12 +11,13 @@
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_marginTop="5dp" />
+
     <LinearLayout
         android:id="@+id/control_area"
         android:layout_width="match_parent"
         android:layout_toEndOf="@id/preview_container"
-        android:layout_marginRight="60dp"
         android:layout_height="wrap_content"
+        android:layout_marginRight="60dp"
         android:layout_alignParentBottom="true"
         android:background="@android:color/transparent"
         android:orientation="horizontal">
@@ -118,8 +119,8 @@
         android:id="@+id/work_space"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginRight="60dp"
         android:layout_toEndOf="@id/preview_container"
+        android:layout_marginRight="60dp"
         android:layout_above="@+id/control_area"
         android:layout_alignParentTop="true"
         android:background="#000000">

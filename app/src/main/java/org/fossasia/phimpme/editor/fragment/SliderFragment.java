@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +18,13 @@ import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.filter.PhotoProcessing;
 import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouchBase;
 
+import static com.android.volley.VolleyLog.TAG;
+
 public class SliderFragment extends BaseEditFragment implements View.OnClickListener,
                                                         SeekBar.OnSeekBarChangeListener {
 
     SeekBar seekBar;
+    static private int SeekBarProgress;
     ImageButton cancel,apply;
     public Bitmap filterBit;
     Bitmap currentBitmap;
@@ -52,20 +56,34 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
 
         cancel.setOnClickListener(this);
         apply.setOnClickListener(this);
-
         seekBar.setMax(100);
+        if(savedInstanceState!=null) {
+            SeekBarProgress = savedInstanceState.getInt("Seekbar Progress");
+        }
         setDefaultSeekBarProgress();
         seekBar.setOnSeekBarChangeListener(this);
-
         onShow();
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("Seekbar Progress",seekBar.getProgress());
+        outState.putParcelable("FilterBit",filterBit);
+    }
 
     private void setDefaultSeekBarProgress() {
         if (null != seekBar) {
             switch (EditImageActivity.effectType/100) {
                 case EditImageActivity.MODE_FILTERS:
-                    seekBar.setProgress(100);
+                    if(SeekBarProgress>0)
+                    {
+                        seekBar.setProgress(SeekBarProgress);
+                    }
+                    else {
+                        Log.d(TAG, "setDefaultSeekBarProgress:Setting to 100");
+                        seekBar.setProgress(100);
+                    }
                     break;
                 case EditImageActivity.MODE_ENHANCE:
                     switch (EditImageActivity.effectType % 300) {
@@ -73,14 +91,26 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
                         case 6:
                         case 7:
                         case 8:
-                            seekBar.setProgress(0);
+                            if(SeekBarProgress>0)
+                            {
+                                seekBar.setProgress(SeekBarProgress);
+                            }
+                            else {
+                                seekBar.setProgress(0);
+                            }
                             break;
                         case 0:
                         case 1:
                         case 3:
                         case 4:
                         case 5:
-                            seekBar.setProgress(50);
+                            if(SeekBarProgress>0)
+                            {
+                                seekBar.setProgress(SeekBarProgress);
+                            }
+                            else {
+                                seekBar.setProgress(50);
+                            }
                             break;
                     }
                     break;
@@ -123,7 +153,6 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
 
     @Override
     public void onShow() {
-
         if (activity!=null) {
             setDefaultSeekBarProgress();
             activity.changeMode(EditImageActivity.MODE_SLIDER);
@@ -157,6 +186,7 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
             case R.id.seekbar_cancel:
                 backToMain();
                 break;
+
             case R.id.seekbar_apply:
                 if (filterBit!=null) {
                     activity.changeMainBitmap(filterBit);
@@ -177,20 +207,6 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
             activity.changeMode(EditImageActivity.effectType / 100);
             activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
             activity.mainImage.setScaleEnabled(true);
-
-            switch (activity.mode)
-            {
-                case EditImageActivity.MODE_FILTERS:
-                    activity.filterFragment.clearCurrentSelection();
-                    break;
-
-                case EditImageActivity.MODE_ENHANCE:
-                    activity.enhanceFragment.clearCurrentSelection();
-                    break;
-
-                default:
-                    break;
-            }
         }
     }
 
@@ -225,7 +241,7 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
             val = params[0];
             if (srcBitmap != null && !srcBitmap.isRecycled()) {
                 srcBitmap.recycle();
-            }
+                            }
             if (currentBitmap != null) {
                 srcBitmap = Bitmap.createBitmap(currentBitmap.copy(
                         Bitmap.Config.RGB_565, true));

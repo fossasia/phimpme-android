@@ -41,6 +41,7 @@ import static android.graphics.Color.WHITE;
 public class AddTextFragment extends BaseEditFragment implements TextWatcher, FontPickerDialog.FontPickerDialogListener {
     public static final int INDEX = 5;
     private View mainView;
+    private static String text=null;
 
     private EditText mInputText;
     private ImageView mTextColorSelector;
@@ -83,6 +84,10 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher, Fo
         mTextColorSelector = (ImageView) mainView.findViewById(R.id.text_color);
         mTextColorSelector.setImageDrawable(new IconicsDrawable(activity).icon(GoogleMaterial.Icon.gmd_format_color_fill).sizeDp(24));
 
+        if(savedInstanceState!=null)
+        {
+            text=savedInstanceState.getString("Edit Text");
+        }
         cancel.setOnClickListener(new BackToMenuClick());
         apply.setOnClickListener(new OnClickListener() {
             @Override
@@ -92,6 +97,9 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher, Fo
         });
         mTextColorSelector.setOnClickListener(new SelectColorBtnClick());
         mInputText.addTextChangedListener(this);
+        if(text!=null) {
+            mInputText.setText(text);
+        }
         boolean focus = mInputText.requestFocus();
         if (focus) {
             imm.showSoftInput(mInputText, InputMethodManager.SHOW_IMPLICIT);
@@ -105,6 +113,12 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher, Fo
                 showFontChoiceBox();
             }
         });
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("Edit Text",mInputText.getText().toString());
     }
 
     private void showFontChoiceBox() {
@@ -216,8 +230,8 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher, Fo
     public void onShow() {
         activity.changeMode(EditImageActivity.MODE_TEXT);
         activity.mainImage.setImageBitmap(activity.mainBitmap);
-        activity.addTextFragment.getmTextStickerView().mainImage = activity.mainImage;
-        activity.addTextFragment.getmTextStickerView().mainBitmap = activity.mainBitmap;
+        getmTextStickerView().mainImage = activity.mainImage;
+        getmTextStickerView().mainBitmap = activity.mainBitmap;
         mTextStickerView.setVisibility(View.VISIBLE);
         mInputText.clearFocus();
     }
