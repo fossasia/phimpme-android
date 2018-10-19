@@ -35,7 +35,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import static com.mikepenz.iconics.Iconics.TAG;
-import static org.fossasia.phimpme.editor.EditImageActivity.mode;
 
 public class StickersFragment extends BaseEditFragment implements View.OnClickListener {
 

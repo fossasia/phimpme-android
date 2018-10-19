@@ -83,6 +83,10 @@ public class StickerItem {
         this.srcRect = new Rect(0, 0, addBit.getWidth(), addBit.getHeight());
         int bitWidth = Math.min(addBit.getWidth(), parentView.getWidth() >> 1);
         int bitHeight = (int) bitWidth * addBit.getHeight() / addBit.getWidth();
+        /*Adding stickers randomly works fine when stickers are added keeping
+        phone in a single orientation either portrait or landscape BUT if the orientation
+         is changed in between (without saving)it leads to many Exceptions and out of bound
+          errors. So its better to place a sticker in the centre only*/
         int left = (parentView.getWidth() >> 1) - (bitWidth >> 1);
         int top = (parentView.getHeight() >> 1) - (bitHeight >> 1);
         this.dstRect = new RectF(left, top, left + bitWidth, top + bitHeight);

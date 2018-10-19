@@ -9,7 +9,6 @@ import android.graphics.RectF;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -113,8 +112,7 @@ public class CropFragment extends BaseEditFragment {
 			ratioList.addView(text, params1);
             imageList.addView(image,params);
             text.setTag(i);
-			if (i == 0) {
-				if(selctedTextView==null)
+			if (i == 0 && selctedTextView==null) {
 				selctedTextView = text;
 			}
 			dataList.get(i).setIndex(i);

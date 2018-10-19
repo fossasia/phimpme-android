@@ -167,7 +167,6 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
     private void defaultApply() {
         ProcessImageTask processImageTask = new ProcessImageTask();
         processImageTask.execute(seekBar.getProgress());
-
     }
 
     public void doPendingApply() {
@@ -193,7 +192,18 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
                     filterBit = null;
                 }
                 if (EditImageActivity.effectType / 100 ==  EditImageActivity.MODE_FILTERS){
-                    activity.filterFragment.onShow();
+                    activity.filterFragment.getFilterThumbs();
+                }
+                switch (activity.mode)
+                {
+                    case EditImageActivity.MODE_FILTERS:
+                        activity.filterFragment.clearCurrentSelection();
+                        break;
+                    case EditImageActivity.MODE_ENHANCE:
+                        activity.enhanceFragment.clearCurrentSelection();
+                        break;
+                    default:
+                        break;
                 }
                 backToMain();
                 break;

@@ -1,6 +1,5 @@
 package org.fossasia.phimpme.editor.fragment;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
@@ -13,7 +12,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +34,6 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     int MODE;
     private static ArrayList<Bitmap> filterThumbs;
     View fragmentView;
-    private EditImageActivity mActivity=activity;
     private StickerView mStickerView;
     static final String[] stickerPath = {"stickers/type1", "stickers/type2", "stickers/type3", "stickers/type4", "stickers/type5", "stickers/type6", "stickers/type7"};
     Bitmap currentBitmap,tempBitmap;
@@ -58,7 +55,7 @@ public class RecyclerMenuFragment extends BaseEditFragment {
 
     public void clearCurrentSelection(){
         if(currentSelection != -1){
-
+            recyclerView = (RecyclerView) fragmentView.findViewById(R.id.editor_recyclerview);
             mRecyclerAdapter.mViewHolder holder = (mRecyclerAdapter.mViewHolder) recyclerView.findViewHolderForAdapterPosition(currentSelection);
             if(holder != null){
                 holder.wrapper.setBackgroundColor(Color.TRANSPARENT);
@@ -133,10 +130,6 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     @Override
     public void onShow() {
         if (MODE == EditImageActivity.MODE_FILTERS) {
-            if(activity==null)
-            {
-             activity=mActivity;
-            }
             if (this.currentBitmap != activity.mainBitmap) filterThumbs = null;
             this.currentBitmap = activity.mainBitmap;
             getFilterThumbs();
