@@ -2,7 +2,6 @@ package org.fossasia.phimpme.share;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -126,14 +125,11 @@ import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTE
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_SECRET;
 import static org.fossasia.phimpme.utilities.Constants.FAIL;
-import static org.fossasia.phimpme.utilities.Constants.PACKAGE_FACEBOOK;
 import static org.fossasia.phimpme.utilities.Constants.SUCCESS;
 import static org.fossasia.phimpme.utilities.Utils.checkNetwork;
 import static org.fossasia.phimpme.utilities.Utils.copyToClipBoard;
 import static org.fossasia.phimpme.utilities.Utils.getBitmapFromPath;
-import static org.fossasia.phimpme.utilities.Utils.getImageUri;
 import static org.fossasia.phimpme.utilities.Utils.getStringImage;
-import static org.fossasia.phimpme.utilities.Utils.isAppInstalled;
 import static org.fossasia.phimpme.utilities.Utils.promptSpeechInput;
 import static org.fossasia.phimpme.utilities.Utils.shareMsgOnIntent;
 
@@ -205,7 +201,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     private final int REQ_CODE_SPEECH_INPUT = 10;
     private static final int SHARE_WHATSAPP = 200;
 
-
     public boolean uploadFailedBox = false;
     public String uploadName;
     private int positionShareOption;
@@ -255,7 +250,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         text_caption.getBackground().mutate().setColorFilter(getTextColor(), PorterDuff.Mode.SRC_ATOP);
         text_caption.setTextColor(getTextColor());
         text_caption.setHintTextColor(getSubTextColor());
-
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -401,7 +395,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         share.putExtra(Intent.EXTRA_TEXT, caption);
         startActivity(Intent.createChooser(share, context.getString(R.string.snapchat)));
     }
-
 
     /**
      * Method to send the result of the share operation
@@ -558,7 +551,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 if (caption != null && !caption.isEmpty())
                     f.setDescription(caption);
                 f.uploadImage();
-
                 sendResult(SUCCESS);
             }
         }
