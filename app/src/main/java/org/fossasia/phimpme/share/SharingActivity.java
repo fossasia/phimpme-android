@@ -2,12 +2,12 @@ package org.fossasia.phimpme.share;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
@@ -102,7 +102,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -324,6 +323,10 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                         shareToPinterest();
                         break;
 
+                    case MESSENGER:
+                        shareToMessenger();
+                        break;
+
                     case FLICKR:
                         shareToFlickr();
                         break;
@@ -398,6 +401,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         share.putExtra(Intent.EXTRA_TEXT, caption);
         startActivity(Intent.createChooser(share, context.getString(R.string.snapchat)));
     }
+
 
     /**
      * Method to send the result of the share operation
@@ -1001,6 +1005,18 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
     }
 
+    private void shareToMessenger()
+    {
+        Uri uri = Uri.fromFile(new File(saveFilePath));
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setPackage("com.facebook.orca");
+        share.putExtra(Intent.EXTRA_STREAM, uri);
+        share.setType("image/*");
+        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivity(Intent.createChooser(share, caption));
+        triedUploading = true;
+        sendResult(SUCCESS);
+            }
 
     private void shareToInstagram(){
         Uri uri = Uri.fromFile(new File(saveFilePath));

@@ -21,6 +21,8 @@ import android.webkit.MimeTypeMap;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.AccountDatabase;
+import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
+import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
