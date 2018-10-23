@@ -997,8 +997,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
     }
 
-    private void shareToMessenger()
-    {
+    private void shareToMessenger() {
         Uri uri = Uri.fromFile(new File(saveFilePath));
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setPackage("com.facebook.orca");
@@ -1008,7 +1007,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         startActivity(Intent.createChooser(share, caption));
         triedUploading = true;
         sendResult(SUCCESS);
-            }
+    }
 
     private void shareToInstagram(){
         Uri uri = Uri.fromFile(new File(saveFilePath));
