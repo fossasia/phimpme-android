@@ -41,7 +41,6 @@ public class CropFragment extends BaseEditFragment {
 	private View cancel,apply;
 	public CropImageView mCropPanel;
 	private LinearLayout ratioList,imageList;
-	//private LinearLayout combinedList;
 	private LinearLayout combinedList;
 	private static List<RatioItem> dataList = new ArrayList<RatioItem>();
 	private List<TextView> textViewList = new ArrayList<TextView>();

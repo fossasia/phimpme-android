@@ -25,22 +25,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="1" >
 
-        <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="0dp"-->
-            <!--android:id="@+id/image_crop"-->
-            <!--android:layout_weight="1"-->
-            <!--android:orientation="vertical">-->
-        <!--</LinearLayout>-->
-        <!--<LinearLayout-->
-            <!--android:id="@+id/ratio_list_group"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="0dp"-->
-            <!--android:layout_weight="1"-->
-            <!--android:orientation="vertical" >-->
-
-        <!--</LinearLayout>-->
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
