@@ -2,6 +2,7 @@ package org.fossasia.phimpme.share;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -200,6 +201,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     private static final int REQUEST_CODE_SHARE_TO_MESSENGER = 2;
     private final int REQ_CODE_SPEECH_INPUT = 10;
     private static final int SHARE_WHATSAPP = 200;
+    private static final int SHARE_SNAPCHAT = 200;
 
     public boolean uploadFailedBox = false;
     public String uploadName;
@@ -389,11 +391,15 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         Uri uri = Uri.fromFile(new File(saveFilePath));
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        share.setPackage("com.snapchat.android");
-        share.putExtra(Intent.EXTRA_STREAM, uri);
+        share.putExtra(Intent.EXTRA_STREAM,uri);
         share.setType("image/*");
-        share.putExtra(Intent.EXTRA_TEXT, caption);
-        startActivity(Intent.createChooser(share, context.getString(R.string.snapchat)));
+        share.putExtra(Intent.EXTRA_TEXT,caption);
+        ComponentName intentComponent;
+        intentComponent = new ComponentName("com.snapchat.android", "com.snapchat.android.LandingPageActivity");
+        share.setComponent(intentComponent);
+        startActivityForResult(Intent.createChooser(share, context.getString(R.string.snapchat)),SHARE_SNAPCHAT);
+        triedUploading =true;
+        sendResult(SUCCESS);
     }
 
     /**
