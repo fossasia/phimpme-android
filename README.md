@@ -1,4 +1,4 @@
-<img src="./docs/logo.png" align="left" hspace="1" vspace="1">
+<img src="./docs/images/logo.png" align="left" hspace="1" vspace="1">
 
 <a href='https://play.google.com/store/apps/details?id=org.fossasia.phimpme' target='_blank' align="right"><img align="right" height='36' src='https://s20.postimg.org/muzx3w4jh/google_play_badge.png' /></a>
 # Phimp.me Android
@@ -15,13 +15,13 @@ Phimp.me is a Photo App for Android that aims to replace proprietary photo appli
 
   <table>
     <tr>
-     <td><img src="./docs/_static/screenshots/ss_1.png"></td>
-     <td><img src="./docs/_static/screenshots/ss_2.png"></td>
-     <td><img src="./docs/_static/screenshots/ss_3.png"></td>
+     <td><img src="./docs/images/ss_1.png"></td>
+     <td><img src="./docs/images/ss_2.png"></td>
+     <td><img src="./docs/images/ss_3.png"></td>
      <tr> 
-      <td><img src="./docs/_static/screenshots/ss_4.png"></td>
-      <td><img src="./docs/_static/screenshots/ss_5.png"></td>
-      <td><img src="./docs/_static/screenshots/ss_6.png"></td>
+      <td><img src="./docs/images/ss_4.png"></td>
+      <td><img src="./docs/images/ss_5.png"></td>
+      <td><img src="./docs/images/ss_6.png"></td>
     </tr>
   </table>
   
