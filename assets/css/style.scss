@@ -33,8 +33,15 @@ a {
 
 /* Layouts */
 
+main {
+  padding-top: 80px;
+}
+
 header {
   background: $primary-blue;
+  position: fixed;
+  width: 100%;
+  z-index: 9999;
 
   .container {
     display: flex;
@@ -248,4 +255,9 @@ section.socialmedia {
   a {
     margin: 0 10px;
   }
+}
+
+footer {
+  background: $gary;
+  padding: 15px 0;
 }
