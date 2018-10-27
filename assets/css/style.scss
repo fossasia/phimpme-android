@@ -48,6 +48,11 @@ header {
       opacity: 0.75;
     }
 
+    &.logo {
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
     &.btn {
       background: white;
       color: $primary-blue;
@@ -90,14 +95,15 @@ header {
   .container {
     display: flex;
     justify-content: space-between;
+    max-width: 950px;
   }
 
   .img {
     position: relative;
     background: url(../images/phone.png);
     background-size: cover;
-    height: 480px;
-    width: 325px;
+    height: 500px;
+    width: 360px;
     background-position: 50%;
   }
 
