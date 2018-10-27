@@ -3,6 +3,7 @@
 
 /* Variables */
 $primary-blue: #2A71E5;
+$gary: #F8F6F6;
 
 /* Basic Style */
 
@@ -162,6 +163,24 @@ section.features {
 
     p, h2 {
       margin-top: 15px;
+    }
+  }
+}
+
+
+section.screenshot {
+  background: $gary;
+  margin: 40px 0;
+  padding: 30px 0;
+
+  h1 {
+    margin-bottom: 25px;
+  }
+
+  .imgs {
+    text-align: center;
+    img {
+      margin: 0 15px;
     }
   }
 }
