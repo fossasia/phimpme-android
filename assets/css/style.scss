@@ -1,6 +1,63 @@
 ---
 ---
 
+/* Variables */
+$primary-blue: #2A71E5;
+
+/* Basic Style */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
-  background: red;
+  font-family: 'Karla', sans-serif;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+
+/* Layouts */
+
+header {
+  background: $primary-blue;
+
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+  }
+
+  a {
+    text-decoration: none;
+    color: white;
+    transition: all .3s;
+
+    &:hover {
+      opacity: 0.75;
+    }
+
+    &.btn {
+      background: white;
+      color: $primary-blue;
+      padding: 10px 20px;
+      border-radius: 30px;
+
+      &:hover {
+        opacity: 1;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
+      }
+    }
+  }
+
+  nav a {
+    display: inline-block;
+    margin-left: 15px;
+  }
 }
