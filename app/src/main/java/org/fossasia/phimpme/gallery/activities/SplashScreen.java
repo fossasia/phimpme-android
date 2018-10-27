@@ -1,6 +1,7 @@
 package org.fossasia.phimpme.gallery.activities;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
@@ -8,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -110,9 +112,13 @@ public class SplashScreen extends SharedMediaActivity {
             } else  // default intent
                 new PrefetchAlbumsData().execute();
         } else {
-            String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
-            PermissionUtils.requestPermissions(this, READ_EXTERNAL_STORAGE_ID, permissions);
+            askForPermission();
         }
+    }
+
+    private void askForPermission() {
+        String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
+        PermissionUtils.requestPermissions(this, READ_EXTERNAL_STORAGE_ID, permissions);
     }
 
     @Override
@@ -148,12 +154,30 @@ public class SplashScreen extends SharedMediaActivity {
                 boolean granted = grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
                 if (granted)
                     new PrefetchAlbumsData().execute(SP.getBoolean(getString(R.string.preference_auto_update_media), false));
-                else
-                    SnackBarHandler.show(parentView,R.string.storage_permission_denied);
+                else {
+                    SnackBarHandler.show(parentView, R.string.storage_permission_denied);
+                    showPermissionAlertDialog();
+                }
                 break;
             default:
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+    }
+
+    private void showPermissionAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setIcon(R.drawable.ic_caution);
+        builder.setTitle(R.string.permission_rationale_title);
+        builder.setMessage(R.string.permission_storage_alert);
+        builder.setCancelable(false);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                askForPermission();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private class PrefetchAlbumsData extends AsyncTask<Boolean, Boolean, Boolean> {
