@@ -42,6 +42,12 @@ header {
   position: fixed;
   width: 100%;
   z-index: 9999;
+  transition: top .15s ease-in-out;
+  top: 0;
+
+  &.nav-up {
+    top: -80px;
+  }
 
   .container {
     display: flex;
