@@ -14,6 +14,7 @@ $primary-blue: #2A71E5;
 
 body {
   font-family: 'Karla', sans-serif;
+  color: #27283c;
 }
 
 .container {
@@ -21,6 +22,9 @@ body {
   margin: 0 auto;
 }
 
+.center {
+  text-align: center;
+}
 
 /* Layouts */
 
@@ -65,8 +69,9 @@ header {
 
 .banner {
   position: relative;
-  padding-top: 25px;
+  padding: 25px 0;
   color: white;
+  margin-bottom: 20px;
 
   &::before {
     content: '';
@@ -123,5 +128,16 @@ header {
       }
     }
 
+  }
+}
+
+
+section.about {
+  line-height: 1.5;
+  margin: 60px 0;
+
+  p {
+    max-width: 800px;
+    margin: 10px auto 0 auto;
   }
 }
