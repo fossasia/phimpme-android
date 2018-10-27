@@ -39,3 +39,14 @@ function hasScrolled() {
 
   lastScrollTop = st;
 }
+
+$(".navbtn").click(function() {
+  $(".mobile-nav").toggleClass("visible");
+});
+
+$("body").click(function(e) {
+  if (e.target.className !== "navbtn") {
+    $(".mobile-nav").removeClass("visible");
+    console.log(e)
+  }
+});
