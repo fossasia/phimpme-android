@@ -31,6 +31,10 @@ a {
   color: $primary-blue;
 }
 
+img {
+  max-width: 100%;
+}
+
 /* Layouts */
 
 main {
@@ -47,6 +51,14 @@ header {
 
   &.nav-up {
     top: -80px;
+  }
+
+  .navbtn {
+    display: none;
+    appearance: none;
+    background: none;
+    border: none;
+    cursor: pointer;
   }
 
   .container {
@@ -122,6 +134,7 @@ header {
     height: 500px;
     width: 360px;
     background-position: 50%;
+    max-width: 100%;
   }
 
   .content {
@@ -266,4 +279,64 @@ section.socialmedia {
 footer {
   background: $gary;
   padding: 15px 0;
+}
+
+
+@media screen and (max-width: 800px) {
+
+  main {
+    padding-top: 69px;
+  }
+
+  .container {
+    padding-left: 4.5% !important;
+    padding-right: 4.5% !important;
+  }
+
+  header {
+    nav {
+      display: none;
+    }
+    .navbtn {
+      display: block;
+    }
+  }
+
+  section.features .container {
+    display: block;
+    .card {
+      width: 100%;
+      margin: 15px 0;
+    }
+  }
+
+  .banner {
+    background: $primary-blue;
+
+    .container {
+      flex-direction: column;
+    }
+
+    &::before {
+      display: none;
+    }
+
+    br {
+      content: " ";
+      display: none;
+    }
+
+    h1 {
+      text-align: center !important;
+      font-size: 1.3rem !important;
+    }
+
+    .app-links {
+      display: flex;
+    }
+
+    p {
+      text-align: center !important;
+    }
+  }
 }
