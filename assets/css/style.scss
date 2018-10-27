@@ -61,3 +61,67 @@ header {
     margin-left: 15px;
   }
 }
+
+
+.banner {
+  position: relative;
+  padding-top: 25px;
+  color: white;
+
+  &::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    top: -200px;
+    left: 0;
+    right: 0px;
+    bottom: 100px;
+    background: #2A71E5;
+    z-index: -1;
+    transform: skewY(11deg);
+  }
+
+  .container {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .img {
+    position: relative;
+    background: url(../images/phone.png);
+    background-size: cover;
+    height: 480px;
+    width: 325px;
+    background-position: 50%;
+  }
+
+  .content {
+    margin-top: 40px;
+    h1 {
+      text-align: right;
+      font-size: 2.8rem;
+    }
+
+    .app-links {
+      margin-top: 30px;
+      text-align: right;
+      a {
+        margin-left: 12px;
+         img {
+           width: 200px;
+         }
+      }
+    }
+
+    p {
+      text-align: right;
+      margin-top: 15px;
+      a {
+        text-decoration: none;
+        color: white;
+        font-weight: 700;
+      }
+    }
+
+  }
+}
