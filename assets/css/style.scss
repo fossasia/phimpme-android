@@ -194,3 +194,42 @@ section.screenshot {
     }
   }
 }
+
+section.developers {
+  background: linear-gradient(45deg, #4085f6, #1760D7);
+  padding: 40px 0;
+  color: white;
+
+  .cards {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 40px 0;
+  }
+
+  .card {
+    text-align: center;
+    margin: 0 20px;
+
+    img {
+      display: block;
+      margin-bottom: 15px;
+    }
+
+    a {
+      color: white;
+      text-decoration: none;
+    }
+  }
+
+  .imgs {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    a {
+      margin: 0 5px;
+    }
+  }
+}
