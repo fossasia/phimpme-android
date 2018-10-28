@@ -1,170 +1,134 @@
-<!DOCTYPE html>
-<html lang="en">
+---
+layout: default
+---
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Phimp.me Android</title>
-  <link href="https://fonts.googleapis.com/css?family=Karla:400,700" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css">
-</head>
-
-<body>
-  <header class="nav-down">
-    <div class="container">
-      <a href="./" class="logo">Phimp.me</a>
-      <nav>
-        <a href="./">About</a>
-        <a href="./#screenshot">Screenshot</a>
-        <a href="./">Docs</a>
-        <a href="./">Contact</a>
-        <a href="https://fossasia.org/donate/" target="_blank" rel="noopener" class="btn">Donate</a>
-      </nav>
-      <button class="navbtn"></button>
+<div class="banner">
+  <div class="container">
+    <div class="img">
     </div>
-  </header>
-
-  <div class="mobile-nav">
-    <a href="./">About</a>
-    <a href="./#screenshot">Screenshot</a>
-    <a href="./">Docs</a>
-    <a href="./">Contact</a>
-    <a href="https://fossasia.org/donate/" target="_blank" rel="noopener">Donate</a>
+    <div class="content">
+      <h1>Replacement for <br>proprietary<br> photo application</h1>
+      <div class="app-links">
+        <a href="https://play.google.com/store/apps/details?id=org.fossasia.phimpme" target="_blank" rel="noopener"><img
+            src="assets/images/play.png" alt="get it on play store"></a>
+        <a href="#" target="_blank" rel="noopener"><img src="assets/images/fdroid.png" alt="get it on fdroid"></a>
+      </div>
+      <p>Developed by <a href="#">FOSSASIA</a></p>
+    </div>
   </div>
+</div>
 
-  <main>
+<section class="about">
+  <div class="container">
+    <h1 class="center">About the app</h1>
+    <p class="center">Phimp.me is a Photo App for Android that aims to replace proprietary photo applications. It
+      offers features such as taking photos, adding filters, editing images and uploading them to social networks.</p>
+  </div>
+</section>
 
-    <div class="banner">
-      <div class="container">
-        <div class="img">
-        </div>
-        <div class="content">
-          <h1>Replacement for <br>proprietary<br> photo application</h1>
-          <div class="app-links">
-            <a href="https://play.google.com/store/apps/details?id=org.fossasia.phimpme" target="_blank" rel="noopener"><img src="assets/images/play.png" alt="get it on play store"></a>
-            <a href="#" target="_blank" rel="noopener"><img src="assets/images/fdroid.png" alt="get it on fdroid"></a>
-          </div>
-          <p>Developed by <a href="#">FOSSASIA</a></p>
-        </div>
+<section class="features">
+  <div class="container">
+    <div class="card">
+      <img src="assets/images/camera.png" alt="Capture">
+      <h2>Capture</h2>
+      <p>Click beautiful images using the Phimp.me app. Use various advanced scene modes and variety of balance
+        modes.</p>
+    </div>
+    <div class="card">
+      <img src="assets/images/edit.png" alt="Edit">
+      <h2>Edit</h2>
+      <p>Edit images with various cool filters with optimized performance, built using OpenCV library.</p>
+    </div>
+    <div class="card">
+      <img src="assets/images/share.png" alt="Share">
+      <h2>Share</h2>
+      <p>Facebook, Twitter, Imgur, Dropbox, Box, Flickr, Pinterest, Instagram, Whatsapp, and Tumblr - You name it
+        and we have it covered.</p>
+    </div>
+  </div>
+</section>
+
+<section class="screenshot" id="screenshot">
+  <div class="container">
+    <h1 class="center">Screenshots</h1>
+    <div class="imgs">
+      <img src="assets/images/s1.png" alt="">
+      <img src="assets/images/s2.png" alt="">
+      <img src="assets/images/s3.png" alt="">
+    </div>
+  </div>
+</section>
+
+<section class="contrib">
+  <div class="container">
+    <h1 class="center">Want to contribute</h1>
+    <p class="center">This is an Open Source project and we would be happy to see contributors who report bugs and
+      file feature
+      requests by submitting pull requests as well.This project adheres to the Contributor Covenant code of
+      conduct. By participating, you are expected to uphold this code style. Please report issues here <br> <a href="https://github.com/fossasia/phimpme-android/issues">https://github.com/fossasia/phimpme-android/issues</a>
+    </p>
+  </div>
+</section>
+
+<section class="licence">
+  <div class="container">
+    <h1 class="center">Licence</h1>
+    <p class="center">This project is currently licensed under the GNU General Public License v3. A copy of <a href="#">LICENSE</a>
+      is to be present along with the source code. To obtain the software under a different license, please contact
+      <a href="#">FOSSASIA</a>.</p>
+  </div>
+</section>
+
+<section class="developers">
+  <div class="container">
+    <h1 class="center">Maintained by</h1>
+    <div class="cards">
+      <div class="card">
+        <img src="assets/images/mario.png" alt="Mario Behling">
+        <a href="https://github.com/mariobehling" target="_blank" rel="noopener">Mario Behling</a>
+      </div>
+      <div class="card">
+        <img src="assets/images/nguyen.png" alt="Hon Nguyen">
+        <a href="https://github.com/vanhonit" target="_blank" rel="noopener">Hon Nguyen</a>
       </div>
     </div>
 
-    <section class="about">
-      <div class="container">
-        <h1 class="center">About the app</h1>
-        <p class="center">Phimp.me is a Photo App for Android that aims to replace proprietary photo applications. It
-          offers features such as taking photos, adding filters, editing images and uploading them to social networks.</p>
-      </div>
-    </section>
+    <h1 class="center">Developed by</h1>
+    <div class="imgs">
+      <a href="https://github.com/anantprsd5" target="_blank" rel="noopener"><img src="assets/images/developer_1.png"
+          alt="Anant Prasad"></a>
+      <a href="https://github.com/mohitmanuja" target="_blank" rel="noopener"><img src="assets/images/developer_2.png"
+          alt="Mohit Manuja"></a>
+      <a href="https://github.com/pa1pal" target="_blank" rel="noopener"><img src="assets/images/developer_3.png" alt="Pawan Pal"></a>
+      <a href="https://github.com/Subhankar29" target="_blank" rel="noopener"><img src="assets/images/developer_4.png"
+          alt="Subhankar Shah"></a>
+      <a href="https://github.com/vinaysajjanapu" target="_blank" rel="noopener"><img src="assets/images/developer_5.png"
+          alt="Vinay Sajjanapu"></a>
+      <a href="https://github.com/sauravvishal8797" target="_blank" rel="noopener"><img src="assets/images/developer_6.png"
+          alt="Saurav Vishal"></a>
+    </div>
+  </div>
+</section>
 
-    <section class="features">
-      <div class="container">
-        <div class="card">
-          <img src="assets/images/camera.png" alt="Capture">
-          <h2>Capture</h2>
-          <p>Click beautiful images using the Phimp.me app. Use various advanced scene modes and variety of balance
-            modes.</p>
-        </div>
-        <div class="card">
-          <img src="assets/images/edit.png" alt="Edit">
-          <h2>Edit</h2>
-          <p>Edit images with various cool filters with optimized performance, built using OpenCV library.</p>
-        </div>
-        <div class="card">
-          <img src="assets/images/share.png" alt="Share">
-          <h2>Share</h2>
-          <p>Facebook, Twitter, Imgur, Dropbox, Box, Flickr, Pinterest, Instagram, Whatsapp, and Tumblr - You name it
-            and we have it covered.</p>
-        </div>
-      </div>
-    </section>
+<section class="foss">
+  <div class="container">
+    <h1 class="center">About FOSSASIA</h1>
+    <p class="center">FOSSASIA is the premier Free and Open Source technology organization in Asia for developers,
+      designers, start-ups, and contributors. Projects at FOSSASIA range from open hardware, to design, graphics
+      and software. FOSSASIA was established in 2009. The annual FOSSASIA Summit took place in Cambodia, Vietnam
+      and Singapore. FOSSASIA meetup groups exist throughout Asia.</p>
+  </div>
+</section>
 
-    <section class="screenshot" id="screenshot">
-      <div class="container">
-        <h1 class="center">Screenshots</h1>
-        <div class="imgs">
-          <img src="assets/images/s1.png" alt="">
-          <img src="assets/images/s2.png" alt="">
-          <img src="assets/images/s3.png" alt="">
-        </div>
-      </div>
-    </section>
-
-    <section class="contrib">
-      <div class="container">
-        <h1 class="center">Want to contribute</h1>
-        <p class="center">This is an Open Source project and we would be happy to see contributors who report bugs and
-          file feature
-          requests by submitting pull requests as well.This project adheres to the Contributor Covenant code of
-          conduct. By participating, you are expected to uphold this code style. Please report issues here <br> <a href="https://github.com/fossasia/phimpme-android/issues">https://github.com/fossasia/phimpme-android/issues</a>
-        </p>
-      </div>
-    </section>
-
-    <section class="licence">
-      <div class="container">
-        <h1 class="center">Licence</h1>
-        <p class="center">This project is currently licensed under the GNU General Public License v3. A copy of <a href="#">LICENSE</a>
-          is to be present along with the source code. To obtain the software under a different license, please contact
-          <a href="#">FOSSASIA</a>.</p>
-      </div>
-    </section>
-
-    <section class="developers">
-      <div class="container">
-        <h1 class="center">Maintained by</h1>
-        <div class="cards">
-          <div class="card">
-            <img src="assets/images/mario.png" alt="Mario Behling">
-            <a href="https://github.com/mariobehling" target="_blank" rel="noopener">Mario Behling</a>
-          </div>
-          <div class="card">
-            <img src="assets/images/nguyen.png" alt="Hon Nguyen">
-            <a href="https://github.com/vanhonit" target="_blank" rel="noopener">Hon Nguyen</a>
-          </div>
-        </div>
-
-        <h1 class="center">Developed by</h1>
-        <div class="imgs">
-          <a href="https://github.com/anantprsd5" target="_blank" rel="noopener"><img src="assets/images/developer_1.png" alt="Anant Prasad"></a>
-          <a href="https://github.com/mohitmanuja" target="_blank" rel="noopener"><img src="assets/images/developer_2.png" alt="Mohit Manuja"></a>
-          <a href="https://github.com/pa1pal" target="_blank" rel="noopener"><img src="assets/images/developer_3.png" alt="Pawan Pal"></a>
-          <a href="https://github.com/Subhankar29" target="_blank" rel="noopener"><img src="assets/images/developer_4.png" alt="Subhankar Shah"></a>
-          <a href="https://github.com/vinaysajjanapu" target="_blank" rel="noopener"><img src="assets/images/developer_5.png" alt="Vinay Sajjanapu"></a>
-          <a href="https://github.com/sauravvishal8797" target="_blank" rel="noopener"><img src="assets/images/developer_6.png" alt="Saurav Vishal"></a>
-        </div>
-      </div>
-    </section>
-
-    <section class="foss">
-      <div class="container">
-        <h1 class="center">About FOSSASIA</h1>
-        <p class="center">FOSSASIA is the premier Free and Open Source technology organization in Asia for developers,
-          designers, start-ups, and contributors. Projects at FOSSASIA range from open hardware, to design, graphics
-          and software. FOSSASIA was established in 2009. The annual FOSSASIA Summit took place in Cambodia, Vietnam
-          and Singapore. FOSSASIA meetup groups exist throughout Asia.</p>
-      </div>
-    </section>
-
-    <section class="socialmedia">
-      <div class="container">
-        <a href="https://www.facebook.com/fossasia/" target="_blank" rel="noopener"><img src="assets/images/facebook.png" alt="facebook"></a>
-        <a href="https://twitter.com/fossasia" target="_blank" rel="noopener"><img src="assets/images/twitter.png" alt="twitter"></a>
-        <a href="https://in.linkedin.com/company/fossasia" target="_blank" rel="noopener"><img src="assets/images/linkedin.png" alt="linkedin"></a>
-        <a href="https://plus.google.com/+FOSSASIAorg" target="_blank" rel="noopener"><img src="assets/images/google+.png" alt="google+"></a>
-        <a href="https://www.instagram.com/fossasia/" target="_blank" rel="noopener"><img src="assets/images/insta.png" alt="instagram"></a>
-      </div>
-    </section>
-
-  </main>
-
-  <footer>
-    <p class="center">&copy; 2018, <a href="#">FOSSASIA</a>. All Rights Reserved</p>
-  </footer>
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-    crossorigin="anonymous"></script>
-  <script src="assets/js/script.js"></script>
-</body>
-
-</html>
+<section class="socialmedia">
+  <div class="container">
+    <a href="https://www.facebook.com/fossasia/" target="_blank" rel="noopener"><img src="assets/images/facebook.png"
+        alt="facebook"></a>
+    <a href="https://twitter.com/fossasia" target="_blank" rel="noopener"><img src="assets/images/twitter.png" alt="twitter"></a>
+    <a href="https://in.linkedin.com/company/fossasia" target="_blank" rel="noopener"><img src="assets/images/linkedin.png"
+        alt="linkedin"></a>
+    <a href="https://plus.google.com/+FOSSASIAorg" target="_blank" rel="noopener"><img src="assets/images/google+.png"
+        alt="google+"></a>
+    <a href="https://www.instagram.com/fossasia/" target="_blank" rel="noopener"><img src="assets/images/insta.png" alt="instagram"></a>
+  </div>
+</section>
