@@ -383,3 +383,28 @@ footer {
     }
   }
 }
+
+section.setup {
+  margin: 30px 0;
+  line-height: 1.4;
+
+  h1 {
+    margin-bottom: 10px;
+  }
+
+  ul, ol {
+    padding-left: 30px;
+  }
+
+  .pre {
+    font-family: monospace;
+    background: #eee;
+    padding: 5px 10px;
+    border-radius: 3px;
+  }
+
+  p {
+    line-height: 1.5;
+    margin: 5px 0;
+  }
+}
