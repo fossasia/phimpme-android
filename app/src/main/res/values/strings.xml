@@ -716,6 +716,7 @@
     <string name="general_setting">General Setting</string>
     <string name="folder">Folder</string>
     <string name="color_palette">Color Palette</string>
+    <string name="Images">Images</string>
     <string name="app_intro_skip">Introduction Skipped!</string>
     <string name="preference_BottomNavColor">Get Bottom Navigation Bar Color</string>
 
