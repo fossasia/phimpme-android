@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.box.androidsdk.content.BoxConfig;
 import com.box.androidsdk.content.auth.BoxAuthentication;
@@ -271,6 +272,11 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     break;
 
                 case DROPBOX:
+                    if(CLOUDRAIL_APP_KEY==null || CLOUDRAIL_APP_KEY=="")
+                    {
+                        Toast.makeText(getContext(),R.string.Cloudrail_License_key,Toast.LENGTH_SHORT).show();
+                    }
+                    else
                     signInDropbox();
                     break;
 
