@@ -74,7 +74,10 @@
             android:id="@+id/create_gif"
             android:title="Create GIF"
             app:showAsAction="never"/>
-
+        <item
+            android:id="@+id/create_zip"
+            android:title="Create Zip"
+            app:showAsAction="never"/>
     </group>
 
     <group android:id="@+id/album_options_menu">
