@@ -71,6 +71,7 @@ import io.realm.RealmQuery;
 
 import static com.pinterest.android.pdk.PDKClient.setDebugMode;
 import static org.fossasia.phimpme.R.string.no_account_signed_in;
+import static org.fossasia.phimpme.R.string.null_search_result;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
 //import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.GOOGLEDRIVE;
@@ -272,7 +273,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     break;
 
                 case DROPBOX:
-                    if(CLOUDRAIL_APP_KEY==null || CLOUDRAIL_APP_KEY=="")
+                    if(CLOUDRAIL_APP_KEY==null || CLOUDRAIL_APP_KEY.equals(""))
                     {
                         Toast.makeText(getContext(),R.string.Cloudrail_License_key,Toast.LENGTH_SHORT).show();
                     }
