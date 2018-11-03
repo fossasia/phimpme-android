@@ -1027,7 +1027,7 @@
     <string name="first_click">first click</string>
     <string name="account_logged_twitter">Twitter account logged in successfully.</string>
     <string name="twitter_uploading">Image uploading on Twitter</string>
-
+    <string name="Cloudrail_License_key">Cloudrail License key not found</string>
     <!--App shortcuts-->
     <string name="camera_short">Camera</string>
     <string name="camera_long">Opens Phimp.me Camera</string>

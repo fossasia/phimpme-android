@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AlertDialog;
@@ -17,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.box.androidsdk.content.BoxConfig;
 import com.box.androidsdk.content.auth.BoxAuthentication;
@@ -24,7 +24,6 @@ import com.box.androidsdk.content.models.BoxSession;
 import com.cloudrail.si.CloudRail;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
-import com.google.android.gms.common.ConnectionResult;
 import com.pinterest.android.pdk.PDKCallback;
 import com.pinterest.android.pdk.PDKClient;
 import com.pinterest.android.pdk.PDKException;
@@ -54,7 +53,6 @@ import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
 import org.fossasia.phimpme.utilities.Constants;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -271,6 +269,11 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     break;
 
                 case DROPBOX:
+                    if(CLOUDRAIL_APP_KEY==null || CLOUDRAIL_APP_KEY.equals(""))
+                    {
+                        Toast.makeText(getContext(),R.string.Cloudrail_License_key,Toast.LENGTH_SHORT).show();
+                    }
+                    else
                     signInDropbox();
                     break;
 
