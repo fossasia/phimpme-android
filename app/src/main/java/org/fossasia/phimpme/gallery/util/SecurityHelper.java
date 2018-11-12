@@ -1,6 +1,7 @@
 package org.fossasia.phimpme.gallery.util;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
@@ -75,6 +76,7 @@ public class SecurityHelper {
         passwordTextInputLayout.setError(context.getString(R.string.wrong_password));
         CheckBox checkBox = (CheckBox) PasswordDialogLayout.findViewById(R.id.show_password_checkbox);
         checkBox.setText(context.getResources().getString(R.string.show_password));
+        checkBox.setButtonTintList(ColorStateList.valueOf(activity.getAccentColor()));
         checkBox.setTextColor(activity.getTextColor());
         editxtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
