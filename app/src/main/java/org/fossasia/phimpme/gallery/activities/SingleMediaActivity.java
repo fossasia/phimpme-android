@@ -1122,7 +1122,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                             } else {
                                 passco[0] = true;
                                 securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
-                                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), bottomBar.getHeight());
+                                SnackBarHandler.showWithBottomMargin(parentView, "Image is successfully removed from favourites collection.", bottomBar.getHeight());
                                 editTextPassword.getText().clear();
                                 editTextPassword.requestFocus();
                             }
