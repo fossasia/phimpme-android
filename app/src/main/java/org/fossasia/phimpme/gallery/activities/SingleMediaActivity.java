@@ -1134,7 +1134,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     //deleteMedia(favouriteslist.get(current_image_pos).getPath());
                     deletefav(getAlbum().getCurrentMedia().getPath());
                 }
-        SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.rm_favourite), bottomBar.getHeight());
+        SnackBarHandler.showWithBottomMargin(parentView, "Image is successfully removed from favourites collection" , bottomBar.getHeight());
     }
 
 
