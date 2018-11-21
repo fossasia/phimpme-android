@@ -589,7 +589,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
      * and switch the activity to full screen, thus giving more better UX.
      */
     private void startHandler() {
-        handler.postDelayed(runnable, 5000);
+        handler.postDelayed(runnable, 1000);
     }
 
     private void stopHandler() {
@@ -600,7 +600,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     public void onUserInteraction() {
         super.onUserInteraction();
         stopHandler();
-        startHandler();
+      //startHandler();
     }
 
     @Override
