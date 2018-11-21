@@ -254,6 +254,7 @@ public class SecurityActivity extends ThemedActivity {
                 }
             }
         });
+
         editTextConfirmPassword.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 //empty method body
@@ -271,6 +272,7 @@ public class SecurityActivity extends ThemedActivity {
                             .show();
                 }
             }
+
         });
         editTextPassword.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -327,6 +329,8 @@ public class SecurityActivity extends ThemedActivity {
                         securityObj.updateSecuritySetting();
                         SnackBarHandler.show(llroot, R.string.remember_password_message);
                         changed = true;
+                        Toast.makeText(getApplicationContext(), "Password Set", Toast.LENGTH_SHORT)
+                                .show();
                     } else
                         SnackBarHandler.show(llroot, R.string.password_dont_match);
                 } else
@@ -360,9 +364,11 @@ public class SecurityActivity extends ThemedActivity {
                 if(!b){
                     editTextPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     editTextConfirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+
                 }else{
                     editTextPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     editTextConfirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+
                 }
             }
         });
@@ -427,6 +433,8 @@ public class SecurityActivity extends ThemedActivity {
                             SP.putString(getString(R.string.preference_password_value), editTextPassword.getText().toString());
                             securityObj.updateSecuritySetting();
                             SnackBarHandler.show(llroot, R.string.remember_password_message);
+                           Toast.makeText(getApplicationContext(), "Password Changed", Toast.LENGTH_SHORT)
+                                   .show();
                         } else
                            SnackBarHandler.show(llroot, R.string.error_password_match);
                     } else
