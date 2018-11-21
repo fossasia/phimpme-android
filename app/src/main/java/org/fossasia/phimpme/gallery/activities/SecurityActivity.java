@@ -254,7 +254,6 @@ public class SecurityActivity extends ThemedActivity {
                 }
             }
         });
-
         editTextConfirmPassword.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 //empty method body
@@ -272,7 +271,6 @@ public class SecurityActivity extends ThemedActivity {
                             .show();
                 }
             }
-
         });
         editTextPassword.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -364,11 +362,9 @@ public class SecurityActivity extends ThemedActivity {
                 if(!b){
                     editTextPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     editTextConfirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-
                 }else{
                     editTextPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     editTextConfirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-
                 }
             }
         });
