@@ -327,12 +327,8 @@ public class SecurityActivity extends ThemedActivity {
                         securityObj.updateSecuritySetting();
                         SnackBarHandler.show(llroot, R.string.remember_password_message);
                         changed = true;
-                        Toast toast=Toast.makeText(getApplicationContext(), "Password Set", Toast.LENGTH_SHORT);
-                        View view = toast.getView();
-                        view.setBackgroundResource(R.drawable.custom_background);
-                        TextView text = (TextView) view.findViewById(android.R.id.message);
-                        text.setTextColor(Color.parseColor("#ffffff"));
-                        toast.show();
+                        Toast.makeText(getApplicationContext(), "Password Set", Toast.LENGTH_SHORT)
+                                .show();
                     } else
                         SnackBarHandler.show(llroot, R.string.password_dont_match);
                 } else
@@ -433,12 +429,8 @@ public class SecurityActivity extends ThemedActivity {
                             SP.putString(getString(R.string.preference_password_value), editTextPassword.getText().toString());
                             securityObj.updateSecuritySetting();
                             SnackBarHandler.show(llroot, R.string.remember_password_message);
-                            Toast toast=Toast.makeText(getApplicationContext(), "Password Changed", Toast.LENGTH_SHORT);
-                            View view = toast.getView();
-                            view.setBackgroundResource(R.drawable.custom_background);
-                            TextView text = (TextView) view.findViewById(android.R.id.message);
-                            text.setTextColor(Color.parseColor("#ffffff"));
-                            toast.show();
+                           Toast.makeText(getApplicationContext(), "Password Changed", Toast.LENGTH_SHORT)
+                                   .show();
                         } else
                            SnackBarHandler.show(llroot, R.string.error_password_match);
                     } else
