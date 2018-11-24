@@ -100,6 +100,8 @@ public class SecurityActivity extends ThemedActivity {
                     editor.putBoolean(getString(R.string.preference_use_password), false);
                     editor.commit();
                     toggleEnabledChild(false);
+                    Toast.makeText(getApplicationContext(), "No Password Set", Toast.LENGTH_SHORT)
+                            .show();
                 }
             }
         });
