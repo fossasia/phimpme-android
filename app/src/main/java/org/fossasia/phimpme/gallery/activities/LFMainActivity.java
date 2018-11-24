@@ -3392,6 +3392,10 @@ public class LFMainActivity extends SharedMediaActivity {
      */
     @Override
     public void onBackPressed() {
+
+        Drawable drawable = getDrawable(R.drawable.shape);
+        GradientDrawable gradientDrawable = (GradientDrawable) drawable;
+        gradientDrawable.setColor(getPrimaryColor());
         checkForReveal = true;
         if ((editMode && all_photos) || (editMode && fav_photos))
             clearSelectedPhotos();
@@ -3406,25 +3410,17 @@ public class LFMainActivity extends SharedMediaActivity {
                         finish();
                     else if (isTaskRoot()) {
                         doubleBackToExitPressedOnce = true;
-                        View rootView = LFMainActivity.this.getWindow().getDecorView().findViewById(android.R.id.content);
-                        Snackbar snackbar = Snackbar
-                                .make(rootView, R.string.press_back_again_to_exit, Snackbar.LENGTH_LONG)
-                                .setAction(R.string.exit, new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        finishAffinity();
-                                    }
-                                })
-                                .setActionTextColor(getAccentColor());
-                        View sbView = snackbar.getView();
-                        final FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) sbView.getLayoutParams();
-                        params.setMargins(params.leftMargin,
-                                params.topMargin,
-                                params.rightMargin,
-                                params.bottomMargin + navigationView.getHeight());
-                        sbView.setLayoutParams(params);
-                        snackbar.show();
 
+                        final View layouttoast;
+                        LayoutInflater inflater = getLayoutInflater();
+                        layouttoast = inflater.inflate(R.layout.toast_custom, (ViewGroup) findViewById(R.id.toastcustom));
+                        ((TextView) layouttoast.findViewById(R.id.texttoast)).setText("Press back again to exit");
+
+                        Toast mytoast = new Toast(getBaseContext());
+                        mytoast.setView(layouttoast);
+                        mytoast.setDuration(Toast.LENGTH_SHORT);
+                        mytoast.show();
+                        
                         new Handler().postDelayed(new Runnable() {
                             @Override
                             public void run() {
