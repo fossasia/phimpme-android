@@ -6,6 +6,10 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 
+import android.graphics.drawable.GradientDrawable;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.widget.Toast;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
