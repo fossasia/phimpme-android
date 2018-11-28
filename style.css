@@ -3,7 +3,8 @@
 	color: white;
 	position: relative;
 	height: 60px;
-	margin: 0 auto;
+	padding-left: 55px;
+	padding-right: 20px;
 }
 .qr {
 	margin: 0 auto;
