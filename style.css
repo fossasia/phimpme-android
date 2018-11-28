@@ -3,8 +3,10 @@
 	color: white;
 	position: relative;
 	height: 60px;
-	padding-left: 55px;
-	padding-right: 20px;
+	margin: 0 auto;
+}
+.qr {
+	margin: 0 auto;
 }
 .btn-app-store i{
 	font-size: 40px;
