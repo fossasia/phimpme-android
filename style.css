@@ -7,7 +7,7 @@
 	padding-right: 20px;
 }
 .qr {
-	margin-left: 150px;
+	margin-left: 0 auto;
 }
 .btn-app-store i{
 	font-size: 40px;
@@ -20,7 +20,7 @@
 	line-height: 12px;
 	margin-bottom: 2px;
         margin-top: 5px;
-	margin-left: 150px;
+	
 }
 .btn-app-store .big{
 	display: block;
