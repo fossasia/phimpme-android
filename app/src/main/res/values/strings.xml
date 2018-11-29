@@ -1343,7 +1343,6 @@
     <string name="select_a_font">Select a Font</string>
 
     <!-- Photo deletion toast messages -->
-    <string name="rm_favourite">Image is successfully removed from favourites collection.</string>
     <string name="photo_deleted_msg">Photo deleted</string>
     <string name="photo_deleted_from_fav_msg">Photo deleted from favourites</string>
     <string name="photo_deletion_failed">Photo deletion failed</string>
