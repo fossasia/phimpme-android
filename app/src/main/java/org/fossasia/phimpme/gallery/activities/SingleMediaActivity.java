@@ -589,7 +589,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
      * and switch the activity to full screen, thus giving more better UX.
      */
     private void startHandler() {
-        handler.postDelayed(runnable, 1000);
+        handler.postDelayed(runnable, 5000);
     }
 
     private void stopHandler() {
@@ -600,7 +600,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     public void onUserInteraction() {
         super.onUserInteraction();
         stopHandler();
-      //startHandler();
+        startHandler();
     }
 
     @Override
@@ -1060,8 +1060,15 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     }
 
     private void deletefromfav(final MenuItem item){
-
-        if (securityObj.isActiveSecurity() && securityObj.isPasswordOnDelete()) {
+        String ButtonDelete = "";
+        final AlertDialog.Builder deleteDialog = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
+        AlertDialogsHelper.getTextDialog(SingleMediaActivity.this, deleteDialog,
+                R.string.remove_from_favourites, R.string.delete_from_favourites_message, null);
+        ButtonDelete = this.getString(R.string.remove);
+        deleteDialog.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
+        deleteDialog.setPositiveButton(ButtonDelete.toUpperCase(), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (securityObj.isActiveSecurity() && securityObj.isPasswordOnDelete()) {
                     final boolean passco[] = {false};
                     final AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
                     final EditText editTextPassword = securityObj.getInsertPasswordDialog
@@ -1130,11 +1137,17 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     });
                 } else{
                     item.getIcon().clearColorFilter();
-                    SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.rm_favourite), bottomBar.getHeight());
+                    SnackBarHandler.show(parentView, getApplicationContext().getString(R.string.photo_deleted_from_fav_msg));
                     //deleteMedia(favouriteslist.get(current_image_pos).getPath());
                     deletefav(getAlbum().getCurrentMedia().getPath());
                 }
-        SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.rm_favourite), bottomBar.getHeight());
+
+            }
+        });
+        AlertDialog alertDialog = deleteDialog.create();
+        alertDialog.show();
+        SnackBarHandler.show(parentView, getApplicationContext().getString(R.string.photo_deleted_from_fav_msg));
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
     }
 
 
