@@ -1350,4 +1350,5 @@
     <string name="remove_from_favourites">Remove From Favourites</string>
     <string name="remove_favourites_body">Are you sure you want to remove the selected media from the favourites folder?
     </string>
+    <string name="back_to_exit">"Press back again to exit"</string>
 </resources>
