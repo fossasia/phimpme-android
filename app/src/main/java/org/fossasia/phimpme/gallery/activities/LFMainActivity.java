@@ -3418,7 +3418,7 @@ public class LFMainActivity extends SharedMediaActivity {
                         final View layouttoast;
                         LayoutInflater inflater = getLayoutInflater();
                         layouttoast = inflater.inflate(R.layout.toast_custom, (ViewGroup) findViewById(R.id.toastcustom));
-                        ((TextView) layouttoast.findViewById(R.id.texttoast)).setText("Press back again to exit");
+                        ((TextView) layouttoast.findViewById(R.id.texttoast)).setText(R.string.back_to_exit);
 
                         Toast mytoast = new Toast(getBaseContext());
                         mytoast.setView(layouttoast);
