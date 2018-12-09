@@ -1,6 +1,6 @@
 <img src="./docs/images/logo.png" align="left" hspace="1" vspace="1">
 
-<a href='https://play.google.com/store/apps/details?id=org.fossasia.phimpme' target='_blank' align="right"><img align="right" height='36' src='.docs/images/google_play_badge.png' /></a>
+<a href='https://play.google.com/store/apps/details?id=org.fossasia.phimpme' align="right"><img align="right" height='36' src='./docs/images/google_play_badge.png'></a>
 # Phimp.me Android
 
 Phimp.me is a Photo App for Android that aims to replace proprietary photo applications. It offers features such as taking photos, adding filters, editing images and uploading them to social networks.
