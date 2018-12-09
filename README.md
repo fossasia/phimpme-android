@@ -1,11 +1,11 @@
 <img src="./docs/images/logo.png" align="left" hspace="1" vspace="1">
 
-<a href='https://play.google.com/store/apps/details?id=org.fossasia.phimpme' target='_blank' align="right"><img align="right" height='36' src='https://s20.postimg.org/muzx3w4jh/google_play_badge.png' /></a>
+<a href='https://play.google.com/store/apps/details?id=org.fossasia.phimpme' target='_blank' align="right"><img align="right" height='36' src='.docs/images/google_play_badge.png' /></a>
 # Phimp.me Android
 
 Phimp.me is a Photo App for Android that aims to replace proprietary photo applications. It offers features such as taking photos, adding filters, editing images and uploading them to social networks.
 
-| **Master** | **Development** | **Codecov** | **Code Quality** | **Gitter** |
+| **Master** | **Development** | **Codecov** | **Code Quality** | **Chat** |
 |------------|-----------------|-------------|-----------------|-----------------|
 | [![Build Status](https://travis-ci.org/fossasia/phimpme-android.svg?branch=master)](https://travis-ci.org/fossasia/phimpme-android) | [![Build Status](https://travis-ci.org/fossasia/phimpme-android.svg?branch=development)](https://travis-ci.org/fossasia/phimpme-android) | [![codecov](https://codecov.io/gh/fossasia/phimpme-android/branch/master/graph/badge.svg)](https://codecov.io/gh/fossasia/phimpme-android) | [![Codacy Badge](https://api.codacy.com/project/badge/Grade/4584003e734343b3b8ce94bcae6e9ca4)](https://www.codacy.com/app/harshithdwivedi/phimpme-android?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fossasia/phimpme-android&amp;utm_campaign=Badge_Grade) | [![Gitter Room](https://img.shields.io/badge/gitter-join%20chat%20%E2%86%92-blue.svg)](https://gitter.im/fossasia/phimpme) |
 
