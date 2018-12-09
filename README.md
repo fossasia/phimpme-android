@@ -4,7 +4,7 @@
 
 # Phimp.me Android
 
-<a href='https://phimp.me'>Phimp.me</a> is an Android image editor app that aims to replace proprietary photographing and image apps on smart phones. It offers features such as taking photos, adding filters, editing images and uploading them to social networks. Phimp.me stands for **Ph**otos - **Im**ages - **P**ictcures. It is developed at <a href='https://fossasia.org'>FOSSASIA</a> together with a global community.
+<a href='https://phimp.me'>Phimp.me</a> is an Android image editor app that aims to replace proprietary photographing and image apps on smart phones. It offers features such as taking photos, adding filters, editing images and uploading them to social networks. Phimp.me stands for **Ph**otos - **Im**ages - **P**ictures. It is developed at <a href='https://fossasia.org'>FOSSASIA</a> together with a global community.
 
 
 | Master | Development | Codecov | Code Quality | Chat |
