@@ -9,6 +9,10 @@ body {
 ul {
     padding-left: 20px;
 }
+.VerticalMargin{
+    margin-left: 100px;
+    margin-right: 100px;
+}
 
 .main {
     max-width: 1600px;
