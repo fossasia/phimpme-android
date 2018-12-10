@@ -169,3 +169,7 @@ table > thead > tr > th {
 table > tbody > tr:nth-of-type(2n+1) {
     background-color: #f9f9f9;
 }
+nav{
+  -webkit-transition: top 0.7s ease-in-out !important;
+  transition: top 0.7s ease-in-out !important;
+}
