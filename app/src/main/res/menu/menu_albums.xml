@@ -7,10 +7,10 @@
         android:id="@+id/search_action"
         android:title="@string/search_menu"
         android:visible="true"
-        android:icon="@drawable/ic_search_black_24dp"
+        android:icon="@drawable/ic_search_white_24dp"
         android:tint="@color/white"
         app:actionViewClass="android.support.v7.widget.SearchView"
-        app:showAsAction="always" />
+        app:showAsAction="always|collapseActionView" />
 
     <group android:id="@+id/general_action">
 
