@@ -241,6 +241,7 @@ public class SecurityActivity extends ThemedActivity {
         final EditText editTextPassword = (EditText) PasswordDialogLayout.findViewById(R.id.password_edittxt);
         editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         final EditText editTextConfirmPassword = (EditText) PasswordDialogLayout.findViewById(R.id.confirm_password_edittxt);
+        final EditText securityAnswer = (EditText) PasswordDialogLayout.findViewById(R.id.security_answer_edittext);
         editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         checkBox.setButtonTintList(ColorStateList.valueOf(getAccentColor()));
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -305,6 +306,10 @@ public class SecurityActivity extends ThemedActivity {
         editTextConfirmPassword.setTextColor(getTextColor());
         editTextConfirmPassword.setHintTextColor(getSubTextColor());
         setCursorDrawableColor(editTextConfirmPassword, getTextColor());
+        securityAnswer.getBackground().mutate().setColorFilter(getTextColor(), PorterDuff.Mode.SRC_ATOP);
+        securityAnswer.setTextColor(getTextColor());
+        securityAnswer.setHintTextColor(getSubTextColor());
+        setCursorDrawableColor(securityAnswer, getTextColor());
         passwordDialog.setView(PasswordDialogLayout);
 
         AlertDialog dialog = passwordDialog.create();
@@ -329,8 +334,15 @@ public class SecurityActivity extends ThemedActivity {
                         securityObj.updateSecuritySetting();
                         SnackBarHandler.show(llroot, R.string.remember_password_message);
                         changed = true;
-                        Toast.makeText(getApplicationContext(), "Password Set", Toast.LENGTH_SHORT)
-                                .show();
+                        if (securityAnswer.getText().length() == 0) {
+                            SnackBarHandler.show(llroot, "Security Answer Cannot Be Empty");
+                            changed=false;
+                        } else {
+                            SP.putString("What is the name of your favorite childhood friend?", securityAnswer.getText().toString());
+                            Toast.makeText(getApplicationContext(), "Password Set", Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+
                     } else
                         SnackBarHandler.show(llroot, R.string.password_dont_match);
                 } else
@@ -358,6 +370,7 @@ public class SecurityActivity extends ThemedActivity {
         final EditText editTextPassword = (EditText) PasswordDialogLayout.findViewById(R.id.password_edittxt);
         editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         final EditText editTextConfirmPassword = (EditText) PasswordDialogLayout.findViewById(R.id.confirm_password_edittxt);
+        final EditText securityAnswer = (EditText) PasswordDialogLayout.findViewById(R.id.security_answer_edittext);
         editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -413,6 +426,10 @@ public class SecurityActivity extends ThemedActivity {
         editTextConfirmPassword.setTextColor(getTextColor());
         editTextConfirmPassword.setHintTextColor(getSubTextColor());
         setCursorDrawableColor(editTextConfirmPassword, getTextColor());
+        securityAnswer.getBackground().mutate().setColorFilter(getTextColor(), PorterDuff.Mode.SRC_ATOP);
+        securityAnswer.setTextColor(getTextColor());
+        securityAnswer.setHintTextColor(getSubTextColor());
+        setCursorDrawableColor(securityAnswer, getTextColor());
         passwordDialog.setView(PasswordDialogLayout);
         AlertDialog dialog = passwordDialog.create();
         dialog.setCancelable(false);
@@ -428,12 +445,18 @@ public class SecurityActivity extends ThemedActivity {
                 if (editTextPassword.length() > 3) {
                    if (editTextPassword.getText().toString().equals(editTextConfirmPassword.getText().toString())) {
                        if (!editTextPassword.getText().toString().equals(SP.getString(getString(R.string.preference_password_value),"")))   {
-                            SP.putString(getString(R.string.preference_password_value), editTextPassword.getText().toString());
-                            securityObj.updateSecuritySetting();
-                            SnackBarHandler.show(llroot, R.string.remember_password_message);
-                           Toast.makeText(getApplicationContext(), "Password Changed", Toast.LENGTH_SHORT)
-                                   .show();
-                        } else
+                           if (securityAnswer.getText().length() == 0) {
+                               Toast.makeText(getApplicationContext(), "Security answer cannot be empty.", Toast.LENGTH_SHORT)
+                                       .show();
+                           } else {
+                               SP.putString(getString(R.string.preference_password_value), editTextPassword.getText().toString());
+                               SnackBarHandler.show(llroot, R.string.remember_password_message);
+                               securityObj.updateSecuritySetting();
+                               SP.putString("What is the name of your favorite childhood friend?", securityAnswer.getText().toString());
+                               Toast.makeText(getApplicationContext(), "Password Changed", Toast.LENGTH_SHORT)
+                                       .show();
+                                 }
+                       }else
                            SnackBarHandler.show(llroot, R.string.error_password_match);
                     } else
                        SnackBarHandler.show(llroot, R.string.password_dont_match);
