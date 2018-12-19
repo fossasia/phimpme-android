@@ -199,6 +199,8 @@ public class LFMainActivity extends SharedMediaActivity {
     private boolean fromOnClick = false;
     // Binding various views with Butterknife
 
+    private SearchView searchView;
+
     @BindView(R.id.toolbar)
     protected Toolbar toolbar;
     @BindView(R.id.swipeRefreshLayout)
@@ -1671,7 +1673,7 @@ public class LFMainActivity extends SharedMediaActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_albums, menu);
         MenuItem menuitem = menu.findItem(R.id.search_action);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuitem);
+        searchView = (SearchView) MenuItemCompat.getActionView(menuitem);
         searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override public void onFocusChange(final View view, boolean b) {
                 if (b) {
@@ -3385,6 +3387,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
     /**
      * handles back presses.
+     * If search view is open, back press will close it.
      * If we are currently in selection mode, back press will take us out of selection mode.
      * If we are not in selection mode but in albumsMode and the drawer is open, back press will close it.
      * If we are not in selection mode but in albumsMode and the drawer is closed, finish the activity.
@@ -3393,6 +3396,8 @@ public class LFMainActivity extends SharedMediaActivity {
     @Override
     public void onBackPressed() {
         checkForReveal = true;
+        if (!searchView.isIconified())
+            searchView.setIconified(true);
         if ((editMode && all_photos) || (editMode && fav_photos))
             clearSelectedPhotos();
         getNavigationBar();
