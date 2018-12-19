@@ -28,9 +28,9 @@ import com.pinterest.android.pdk.PDKCallback;
 import com.pinterest.android.pdk.PDKClient;
 import com.pinterest.android.pdk.PDKException;
 import com.pinterest.android.pdk.PDKResponse;
-import com.tumblr.loglr.Interfaces.ExceptionHandler;
-import com.tumblr.loglr.Interfaces.LoginListener;
-import com.tumblr.loglr.Loglr;
+//import com.tumblr.loglr.Interfaces.ExceptionHandler;
+//import com.tumblr.loglr.Interfaces.LoginListener;
+//import com.tumblr.loglr.Loglr;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 
 import org.fossasia.phimpme.R;
@@ -288,7 +288,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     break;
 
                 case TUMBLR:
-                    signInTumblr();
+                    //signInTumblr();
                     break;
 
                 /*case ONEDRIVE:
@@ -340,7 +340,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         startActivity(intent);
     }
 
-    private void signInTumblr() {
+   /* private void signInTumblr() {
         LoginListener loginListener = new LoginListener() {
             @Override
             public void onLoginSuccessful(com.tumblr.loglr.LoginResult loginResult) {
@@ -379,7 +379,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                 .enable2FA(true)
                 .setUrlCallBack(Constants.CALL_BACK_TUMBLR)
                 .initiateInActivity(AccountActivity.this);
-    }
+    }*/
 
     private void signInDropbox() {
         if (accountPresenter.checkAlreadyExist(DROPBOX))
