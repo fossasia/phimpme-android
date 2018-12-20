@@ -13,17 +13,14 @@
 
 ## Screenshots
 
-  <table>
-    <tr>
-     <td><img src="./docs/images/ss_1.png"></td>
-     <td><img src="./docs/images/ss_2.png"></td>
-     <td><img src="./docs/images/ss_3.png"></td>
-     <tr> 
-      <td><img src="./docs/images/ss_4.png"></td>
-      <td><img src="./docs/images/ss_5.png"></td>
-      <td><img src="./docs/images/ss_6.png"></td>
-    </tr>
-  </table>
+<p float="left">
+  <img src="./docs/images/ss_1.png" width="288" />
+  <img src="./docs/images/ss_2.png" width="288" /> 
+  <img src="./docs/images/ss_3.png" width="288" />
+   <img src="./docs/images/ss_4.png" width="288" />
+  <img src="./docs/images/ss_5.png" width="288" /> 
+  <img src="./docs/images/ss_6.png" width="288" />
+</p>
 
 
 Do you have many different apps on your Android Phone for the purpose of clicking, editing and sharing images? Hey, guess what, now you don't need all of those because `Phimp.me` is here, with all the features packaged into one. So go and clean your phone memory to save your space for other useful purposes.
