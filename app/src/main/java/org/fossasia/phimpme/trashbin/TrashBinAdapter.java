@@ -175,14 +175,6 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
         }
         return succ;
     }
-  
-    public void updateTrashListItems(List<TrashBinRealmModel> trashList) {
-        final TrashDiffCallback diffCallback = new TrashDiffCallback(this.trashItemsList, trashList);
-        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
-        this.trashItemsList.clear();
-        this.trashItemsList.addAll(trashList);
-        diffResult.dispatchUpdatesTo(this);
-    }
 
     public void setResults(ArrayList<TrashBinRealmModel> trashItemsList){
         this.trashItemsList = trashItemsList;

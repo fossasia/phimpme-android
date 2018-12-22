@@ -27,7 +27,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.realm.Realm;
-import io.realm.RealmQuery;
 
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
@@ -38,7 +37,6 @@ import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
 
 public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdapter.ViewHolder> {
 
-    private Realm realm = Realm.getDefaultInstance();
     private ArrayList<UploadHistoryRealmModel> realmResult = new ArrayList<>();
     private int color;
     private View.OnClickListener onClickListener;
@@ -102,14 +100,6 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
     @Override
     public int getItemCount() {
         return realmResult.size();
-    }
-
-    public void updateUploadListItems(List<UploadHistoryRealmModel> uploadList) {
-        final UploadHisDiffCallback diffCallback = new UploadHisDiffCallback(this.realmResult, uploadList);
-        final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
-        this.realmResult.clear();
-        this.realmResult.addAll(uploadList);
-        diffResult.dispatchUpdatesTo(this);
     }
 
     public void setResults(ArrayList<UploadHistoryRealmModel> realmResult){

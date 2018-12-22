@@ -18,15 +18,12 @@ import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 
 import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.data.local.FavouriteImagesModel;
-import org.fossasia.phimpme.gallery.activities.LFMainActivity;
 import org.fossasia.phimpme.gallery.data.Media;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.realm.Realm;
 
 
 /**

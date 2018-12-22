@@ -50,7 +50,7 @@ android {
 
     configurations {
         compile.exclude group: 'org.jetbrains', module: 'annotations'
-        all*.exclude group: 'com.android.volley'
+        //all*.exclude group: 'com.android.volley'
     }
 
     lintOptions {
@@ -125,7 +125,7 @@ dependencies {
     compile 'org.jetbrains:annotations-java5:15.0'
     compile 'com.android.support:multidex:1.0.1'
     compile group: 'com.box', name: 'box-android-sdk', version: '4.0.8'
-
+    compile 'com.android.volley:volley:1.1.1'
     //icons
     compile 'com.mikepenz:iconics-core:2.8.4@aar'
     compile 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'

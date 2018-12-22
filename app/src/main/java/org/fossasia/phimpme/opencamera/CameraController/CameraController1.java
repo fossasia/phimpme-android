@@ -4,7 +4,6 @@ import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.hardware.Camera.AutoFocusMoveCallback;
 import android.location.Location;
-import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
@@ -1030,19 +1029,6 @@ public class CameraController1 extends CameraController {
         }
 	}
 
-	public void setAutoExposureLock(boolean enabled) {
-		Camera.Parameters parameters = this.getParameters();
-		parameters.setAutoExposureLock(enabled);
-    	setCameraParameters(parameters);
-	}
-	
-	public boolean getAutoExposureLock() {
-		Camera.Parameters parameters = this.getParameters();
-		if( !parameters.isAutoExposureLockSupported() )
-			return false;
-		return parameters.getAutoExposureLock();
-	}
-
 	public void setRotation(int rotation) {
 		Camera.Parameters parameters = this.getParameters();
 		parameters.setRotation(rotation);
@@ -1130,30 +1116,6 @@ public class CameraController1 extends CameraController {
         }
 	}
 
-	public List<Area> getFocusAreas() {
-        Camera.Parameters parameters = this.getParameters();
-		List<Camera.Area> camera_areas = parameters.getFocusAreas();
-		if( camera_areas == null )
-			return null;
-		List<Area> areas = new ArrayList<>();
-		for(Camera.Area camera_area : camera_areas) {
-			areas.add(new CameraController.Area(camera_area.rect, camera_area.weight));
-		}
-		return areas;
-	}
-
-	public List<Area> getMeteringAreas() {
-        Camera.Parameters parameters = this.getParameters();
-		List<Camera.Area> camera_areas = parameters.getMeteringAreas();
-		if( camera_areas == null )
-			return null;
-		List<Area> areas = new ArrayList<>();
-		for(Camera.Area camera_area : camera_areas) {
-			areas.add(new CameraController.Area(camera_area.rect, camera_area.weight));
-		}
-		return areas;
-	}
-
 	@Override
 	public boolean supportsAutoFocus() {
         Camera.Parameters parameters = this.getParameters();
@@ -1177,19 +1139,7 @@ public class CameraController1 extends CameraController {
         }
         return false;
 	}
-	
-	public boolean focusIsVideo() {
-		Camera.Parameters parameters = this.getParameters();
-		String current_focus_mode = parameters.getFocusMode();
-		// getFocusMode() is documented as never returning null, however I've had null pointer exceptions reported in Google Play
-		boolean focus_is_video = current_focus_mode != null && current_focus_mode.equals(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
-		if( MyDebug.LOG ) {
-			Log.d(TAG, "current_focus_mode: " + current_focus_mode);
-			Log.d(TAG, "focus_is_video: " + focus_is_video);
-		}
-		return focus_is_video;
-	}
-	
+
 	@Override
 	public 
 	void reconnect() throws CameraControllerException {
@@ -1600,17 +1550,7 @@ public class CameraController1 extends CameraController {
 		this.stopPreview(); // although not documented, we need to stop preview to prevent device freeze or video errors shortly after video recording starts on some devices (e.g., device freeze on Samsung Galaxy S2 - I could reproduce this on Samsung RTL; also video recording fails and preview becomes corrupted on Galaxy S3 variant "SGH-I747-US2"); also see http://stackoverflow.com/questions/4244999/problem-with-video-recording-after-auto-focus-in-android
 		camera.unlock();
 	}
-	
-	@Override
-	public void initVideoRecorderPrePrepare(MediaRecorder video_recorder) {
-    	video_recorder.setCamera(camera);
-	}
-	
-	@Override
-	public void initVideoRecorderPostPrepare(MediaRecorder video_recorder) throws CameraControllerException {
-		// no further actions necessary
-	}
-	
+
 	@Override
 	public String getParametersString() {
 		String string = "";

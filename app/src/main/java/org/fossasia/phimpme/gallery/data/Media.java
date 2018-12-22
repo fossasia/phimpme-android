@@ -90,15 +90,6 @@ public class Media implements Parcelable, Serializable {
         this.orientation = cur.getInt(4);
     }
 
-    private static int findOrientation(int exifOrientation){
-        switch (exifOrientation) {
-            case ExifInterface.ORIENTATION_ROTATE_90: return 90;
-            case ExifInterface.ORIENTATION_ROTATE_180: return 180;
-            case ExifInterface.ORIENTATION_ROTATE_270: return 270;
-        }
-        return 0;
-    }
-
     public void setUri(String uriString) {
         this.uri = uriString;
     }
@@ -234,43 +225,6 @@ public class Media implements Parcelable, Serializable {
         return details;
     }
 
-    public boolean setOrientation(final int orientation) {
-        this.orientation = orientation;
-        // TODO: 28/08/16  find a better way
-        new Thread(new Runnable() {
-            public void run() {
-                int exifOrientation = -1;
-                try {
-                    ExifInterface  exif = new ExifInterface(path);
-                    switch (orientation) {
-                        case 90: exifOrientation = ExifInterface.ORIENTATION_ROTATE_90; break;
-                        case 180: exifOrientation = ExifInterface.ORIENTATION_ROTATE_180; break;
-                        case 270: exifOrientation = ExifInterface.ORIENTATION_ROTATE_270; break;
-                        case 0: exifOrientation = ExifInterface.ORIENTATION_NORMAL; break;
-                    }
-                    if (exifOrientation != -1) {
-                        exif.setAttribute(ExifInterface.TAG_ORIENTATION, String.valueOf(exifOrientation));
-                        exif.saveAttributes();
-                    }
-                }
-                catch (IOException ignored) {  }
-            }
-        }).start();
-        return true;
-    }
-
-    private long getDateTaken() {
-        // TODO: 16/08/16 improved
-        Date dateOriginal = metadata.getDateOriginal();
-        if (dateOriginal != null) return metadata.getDateOriginal().getTime();
-        return -1;
-    }
-
-    public File getFile() {
-        if (path != null) return new File(path);
-        return null;
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -330,16 +284,4 @@ public class Media implements Parcelable, Serializable {
                 return thumbnailDirectory.getThumbnailData();
         } catch (Exception e) { return null; }*/
     }
-
-    @TestOnly public String getThumbnail(Context context) {
-        /*Cursor cursor = MediaStore.Images.Thumbnails.queryMiniThumbnail(
-                context.getContentResolver(), id,
-                MediaStore.Images.Thumbnails.MINI_KIND,
-                new String[]{ MediaStore.Images.Thumbnails.DATA } );
-        if(cursor.moveToFirst())
-            return cursor.getString(cursor.getColumnIndex(MediaStore.Images.Thumbnails.DATA));
-        return null;*/
-        return null;
-    }
-    //</editor-fold>
 }

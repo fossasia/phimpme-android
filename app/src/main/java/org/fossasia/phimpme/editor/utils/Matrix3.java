@@ -74,13 +74,4 @@ public class Matrix3 {
 		m[8] = 1;
 		return new Matrix3(m);
 	}
-
-	public void println() {
-		System.out.println("data--->" + data[0] + "  " + data[1] + "  "
-				+ data[2]);
-		System.out.println("              " + data[3] + "  " + data[4] + "  "
-				+ data[5]);
-		System.out.println("              " + data[6] + "  " + data[7] + "  "
-				+ data[8]);
-	}
 }

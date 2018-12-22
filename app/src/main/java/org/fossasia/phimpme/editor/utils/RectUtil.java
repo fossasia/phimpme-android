@@ -50,31 +50,6 @@ public class RectUtil {
     }
 
     /**
-     * 矩形在Y轴方向上的加法操作
-     *
-     * @param srcRect
-     * @param addRect
-     * @param padding
-     */
-    public static void rectAddV(final RectF srcRect, final RectF addRect, int padding) {
-        if (srcRect == null || addRect == null)
-            return;
-
-        float left = srcRect.left;
-        float top = srcRect.top;
-        float right = srcRect.right;
-        float bottom = srcRect.bottom;
-
-        if (srcRect.width() <= addRect.width()) {
-            right = left + addRect.width();
-        }
-
-        bottom += padding + addRect.height();
-
-        srcRect.set(left, top, right, bottom);
-    }
-
-    /**
      * Rectangular addition operation in the Y-axis direction
      * @param srcRect
      * @param addRect

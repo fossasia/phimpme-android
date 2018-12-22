@@ -59,8 +59,8 @@ public class CloudRailServices {
         this.context= context;
         CloudRail.setAppKey(CLOUDRAIL_LICENSE_KEY);
         this.initDropbox();
-       // this.initOneDrive();
-       // this.initGoogleDrive();
+        // this.initOneDrive();
+        // this.initGoogleDrive();
     }
 
    /* private void initGoogleDrive(){
@@ -76,15 +76,6 @@ public class CloudRailServices {
         return dropbox.get().saveAsString();
     }
 
-    public String getOneDriveToken(){
-
-        return oneDrive.saveAsString();
-    }
-
-    public String getGoogleDriveToken(){
-        return googleDrive.saveAsString();
-    }
-
     public void login()
     {
         dropboxLogin = new DropboxLogin();
@@ -92,147 +83,68 @@ public class CloudRailServices {
 
     }
 
-    public void oneDriveLogin(){
-        OneDriveLoginTask  driveLoginTask = new OneDriveLoginTask();
-        driveLoginTask.execute();
-    }
-
-    public void googleDriveLogin(){
-            DriveLogin driveLogin = new DriveLogin();
-            driveLogin.execute();
-    }
-  
     public void upload(String path, InputStream inputStream, Long size , Boolean overwrite)
     {
         dropbox.get().upload(path,inputStream,size,overwrite);
     }
 
-   public class DropboxLogin extends AsyncTask<Void,Void,Void>{
+    public class DropboxLogin extends AsyncTask<Void,Void,Void>{
         private boolean isauthcancelled = false;
 
-       @Override
-       protected void onPostExecute(Void aVoid) {
-           Log.e(TAG, "Dropbox Login token "+db.saveAsString());
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            Log.e(TAG, "Dropbox Login token "+db.saveAsString());
 
-           if(isauthcancelled){
-               basicCallBack.callBack(0,db.saveAsString());
-           }else{
-               basicCallBack.callBack(1,db.saveAsString());
-           }
-       }
+            if(isauthcancelled){
+                basicCallBack.callBack(0,db.saveAsString());
+            }else{
+                basicCallBack.callBack(1,db.saveAsString());
+            }
+        }
 
-       @Override
-       protected Void doInBackground(Void... params) {
-           try{
-               db.login();
-               if(!(db.exists(FOLDER))) {
-                   db.createFolder(FOLDER);
-               }
-           }catch (AuthenticationException e){
-               isauthcancelled = true;
-           }
-           return null;
+        @Override
+        protected Void doInBackground(Void... params) {
+            try{
+                db.login();
+                if(!(db.exists(FOLDER))) {
+                    db.createFolder(FOLDER);
+                }
+            }catch (AuthenticationException e){
+                isauthcancelled = true;
+            }
+            return null;
 
-       }
-   }
+        }
+    }
 
-   public class OneDriveLoginTask extends AsyncTask<Void,Void,Void>{
+    public void loadAsString(String s){
+        try {
+            Log.e(TAG, "loadAsString:Dropbox Token "+s );
+            db.loadAsString(s);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public String getDropboxFolderPath(){
+        return (FOLDER);
+    }
 
-       @Override
-       protected Void doInBackground(Void... voids) {
-           oneDrive.login();
-           if (!oneDrive.exists(FOLDER)) {
-               oneDrive.createFolder(FOLDER);
-           }
-           return null;
-       }
+    public String getGoogleDriveFolderPath(){return ("/phimpme_uploads");}
 
-       @Override
-       protected void onPostExecute(Void aVoid) {
-           Log.e(TAG, "One Drive Login TOken "+oneDrive.saveAsString());
-           basicCallBack.callBack(3,oneDrive.saveAsString());
-       }
-   }
-     
-   public class DriveLogin extends AsyncTask<Void,Void,Void>{
+    public boolean checkDriveFolderExist(){ return googleDrive.exists(("/phimpme_uploads"));}
 
-       @Override
-       protected void onPostExecute(Void aVoid) {
-           Log.e(TAG, "GoogleDriveLogin "+googleDrive.saveAsString() );
-           basicCallBack.callBack(2,googleDrive.saveAsString());
-       }
+    public boolean checkFolderExist(){
+        return db.exists(FOLDER);
+    }
 
-       @Override
-       protected Void doInBackground(Void... voids) {
-           googleDrive.useAdvancedAuthentication();
-           googleDrive.login();
-           if(!(googleDrive.exists("/phimpme_uploads"))){
-               googleDrive.createFolder("/phimpme_uploads");
-           }
-           return null;
-       }
+    public boolean checkOneDriveFolderExist(){ return oneDrive.exists(FOLDER);}
 
-   }
+    public String getOneDriveFolderPath() { return (FOLDER);}
 
-   public int loadAsString(){
-       /*if the data is present for login then returns 1
-       else 0
-        */
-       try {
-           db.loadAsString(db.saveAsString().toString());
-           return 1;
-       } catch (ParseException e) {
-           e.printStackTrace();
-           return 0;
-       }
-   }
+    public OneDrive getOneDrive(){ return  oneDrive;}
 
-   public void driveLoadAsString(String s){
-       try{
-           Log.e(TAG,"GOOGLE DRIVE"+s);
-           googleDrive.loadAsString(s);
-       } catch (ParseException e) {
-           e.printStackTrace();
-       }
-   }
-   public void loadAsString(String s){
-       try {
-           Log.e(TAG, "loadAsString:Dropbox Token "+s );
-           db.loadAsString(s);
-       } catch (ParseException e) {
-           e.printStackTrace();
-       }
-   }
-
-   public void oneDriveLoadAsString(String s){
-       try{
-           Log.e(TAG, "oneDriveLoadAsString: "+s );
-           oneDrive.loadAsString(s);
-       } catch (ParseException e) {
-           e.printStackTrace();
-       }
-   }
-
-   public String getDropboxFolderPath(){
-       return (FOLDER);
-   }
-
-   public String getGoogleDriveFolderPath(){return ("/phimpme_uploads");}
-
-   public boolean checkDriveFolderExist(){ return googleDrive.exists(("/phimpme_uploads"));}
-
-   public boolean checkFolderExist(){
-       return db.exists(FOLDER);
-   }
-
-   public boolean checkOneDriveFolderExist(){ return oneDrive.exists(FOLDER);}
-
-   public String getOneDriveFolderPath() { return (FOLDER);}
-
-   public OneDrive getOneDrive(){ return  oneDrive;}
-     
-   public GoogleDrive getGoogleDrive(){
-       return googleDrive;
-   }
+    public GoogleDrive getGoogleDrive(){
+        return googleDrive;
+    }
 }

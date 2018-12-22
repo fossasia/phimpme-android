@@ -36,7 +36,7 @@ public class RecyclerMenuFragment extends BaseEditFragment {
     View fragmentView;
     private StickerView mStickerView;
     static final String[] stickerPath = {"stickers/type1", "stickers/type2", "stickers/type3", "stickers/type4", "stickers/type5", "stickers/type6", "stickers/type7"};
-    Bitmap currentBitmap,tempBitmap;
+    Bitmap currentBitmap;
     int bmWidth = -1,bmHeight = -1;
     int defaulticon;
     TypedArray iconlist,titlelist;

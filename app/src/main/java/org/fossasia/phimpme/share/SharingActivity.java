@@ -118,9 +118,6 @@ import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FLICKR;
 
-//import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.ONEDRIVE;
-//import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.GOOGLEDRIVE;
-
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.OTHERS;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTER;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
@@ -198,7 +195,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     String boardID, imgurAuth = null, imgurString = null;
     private  CloudRailServices cloudRailServices;
     private static final int REQ_SELECT_PHOTO = 1;
-    private static final int REQUEST_CODE_SHARE_TO_MESSENGER = 2;
     private final int REQ_CODE_SPEECH_INPUT = 10;
     private static final int SHARE_WHATSAPP = 200;
     private static final int SHARE_SNAPCHAT = 200;
@@ -652,92 +648,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         }
 
     }*/
-
-    private class UploadToGoogleDrive extends AsyncTask<Void,Void,Void>{
-        Boolean success;
-
-        @Override
-        protected void onPreExecute() {
-            NotificationHandler.make(R.string.googledrive_share,R.string.uploading,R.drawable.ic_cloud_upload_black_24dp);
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            File file = new File(saveFilePath);
-            FileInputStream inputStream = null;
-            try {
-                inputStream = new FileInputStream(file);
-                if(cloudRailServices.checkDriveFolderExist()) {
-                    cloudRailServices.getGoogleDrive().upload(cloudRailServices.getGoogleDriveFolderPath()+"/"+file.getName(), inputStream, file.length(), true);
-                    success = true;
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                success = false;
-            }
-            
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-      
-            if (success) {
-                NotificationHandler.actionPassed(R.string.upload_complete);
-                SnackBarHandler.show(parent, R.string.uploaded_googledrive);
-                sendResult(Constants.SUCCESS);
-            } else {
-                NotificationHandler.actionFailed();
-                SnackBarHandler.show(parent, R.string.upload_failed);
-                sendResult(FAIL);
-            }
-        }
-    }
-    
-    private class UploadToOneDrive extends AsyncTask<Void,Void,Void>{
-        Boolean success;
-
-        @Override
-        protected void onPreExecute() {
-            NotificationHandler.make(R.string.onedrive_share,R.string.uploading,R.drawable.ic_onedrive_black);
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            File file = new File(saveFilePath);
-            FileInputStream fileInputStream = null;
-            try{
-                fileInputStream = new FileInputStream(file);
-                if(cloudRailServices.checkOneDriveFolderExist()){
-                    cloudRailServices.getOneDrive().upload(cloudRailServices.getOneDriveFolderPath()+"/"+file.getName(),fileInputStream
-                    ,file.length(),true);
-                    success = true;
-                }
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                success = false;
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            if(success) {
-                NotificationHandler.actionPassed(R.string.upload_complete);
-                SnackBarHandler.show(parent, R.string.uploaded_onedrive);
-                sendResult(Constants.SUCCESS);
-            }
-            else{
-                NotificationHandler.actionFailed();
-                SnackBarHandler.show(parent,R.string.upload_failed);
-                sendResult(FAIL);
-            }
-
-        }
-    }
 
 
     @Override

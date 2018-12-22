@@ -162,22 +162,6 @@ public class CustomAlbumsHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public String getCoverPathAlbum(String path) {
-        String s = null;
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String[] selection = new  String[] {ALBUM_COVER_PATH};
-
-        Cursor cursor = db.query(TABLE_ALBUMS, selection, ALBUM_PATH+"=?",
-                new String[]{ path }, null, null, null);
-        if (cursor.moveToFirst())
-            s = cursor.getString(0);
-
-        cursor.close();
-        db.close();
-        return s;
-    }
-
     void setAlbumPhotoPreview(String path, String mediaPath) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();

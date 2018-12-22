@@ -117,17 +117,6 @@ public class ThemeHelper {
 	return color;
   }
 
-  public int getInvertedBackgroundColor(){
-	int color;
-	switch (baseTheme){
-	  case DARK_THEME:color = getColor(R.color.md_light_background);break;
-	  case AMOLED_THEME:color = getColor(R.color.md_light_background);break;
-	  case LIGHT_THEME:
-	  default:color = getColor(R.color.md_black_1000);
-	}
-	return color;
-  }
-
   public int getTextColor(){
 	int color;
 	switch (baseTheme){

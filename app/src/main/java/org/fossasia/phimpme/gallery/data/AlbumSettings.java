@@ -44,10 +44,6 @@ public class AlbumSettings implements Serializable {
         return filterMode;
     }
 
-    void setFilterMode(FilterMode filterMode) {
-        this.filterMode = filterMode;
-    }
-
     String getCoverPath() {
         return coverPath;
     }

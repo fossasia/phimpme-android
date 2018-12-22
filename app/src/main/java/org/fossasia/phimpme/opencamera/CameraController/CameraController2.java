@@ -2397,12 +2397,6 @@ public class CameraController2 extends CameraController {
 	}
 
 	@Override
-	// note, responsibility of callers to check that this is within the valid min/max range
-	public long getDefaultExposureTime() {
-		return 1000000000L/30;
-	}
-
-	@Override
 	public void setFocusValue(String focus_value) {
 		if( MyDebug.LOG )
 			Log.d(TAG, "setFocusValue: " + focus_value);
@@ -2591,30 +2585,6 @@ public class CameraController2 extends CameraController {
 	@Override
 	public void setRecordingHint(boolean hint) {
 		// not relevant for CameraController2
-	}
-
-	@Override
-	public void setAutoExposureLock(boolean enabled) {
-		camera_settings.ae_lock = enabled;
-		camera_settings.setAutoExposureLock(previewBuilder);
-		try {
-			setRepeatingRequest();
-		}
-		catch(CameraAccessException e) {
-			if( MyDebug.LOG ) {
-				Log.e(TAG, "failed to set auto exposure lock");
-				Log.e(TAG, "reason: " + e.getReason());
-				Log.e(TAG, "message: " + e.getMessage());
-			}
-			e.printStackTrace();
-		} 
-	}
-	
-	@Override
-	public boolean getAutoExposureLock() {
-		if( previewBuilder.get(CaptureRequest.CONTROL_AE_LOCK) == null )
-			return false;
-    	return previewBuilder.get(CaptureRequest.CONTROL_AE_LOCK);
 	}
 
 	@Override
@@ -2810,45 +2780,6 @@ public class CameraController2 extends CameraController {
 	}
 
 	@Override
-	public List<Area> getFocusAreas() {
-		if( characteristics.get(CameraCharacteristics.CONTROL_MAX_REGIONS_AF) == 0 )
-			return null;
-    	MeteringRectangle[] metering_rectangles = previewBuilder.get(CaptureRequest.CONTROL_AF_REGIONS);
-    	if( metering_rectangles == null )
-    		return null;
-		Rect sensor_rect = getViewableRect();
-		camera_settings.af_regions[0] = new MeteringRectangle(0, 0, sensor_rect.width()-1, sensor_rect.height()-1, 0);
-		if( metering_rectangles.length == 1 && metering_rectangles[0].getRect().left == 0 && metering_rectangles[0].getRect().top == 0 && metering_rectangles[0].getRect().right == sensor_rect.width()-1 && metering_rectangles[0].getRect().bottom == sensor_rect.height()-1 ) {
-			// for compatibility with CameraController1
-			return null;
-		}
-		List<Area> areas = new ArrayList<>();
-		for(MeteringRectangle metering_rectangle : metering_rectangles) {
-			areas.add(convertMeteringRectangleToArea(sensor_rect, metering_rectangle));
-		}
-		return areas;
-	}
-
-	@Override
-	public List<Area> getMeteringAreas() {
-		if( characteristics.get(CameraCharacteristics.CONTROL_MAX_REGIONS_AE) == 0 )
-			return null;
-    	MeteringRectangle[] metering_rectangles = previewBuilder.get(CaptureRequest.CONTROL_AE_REGIONS);
-    	if( metering_rectangles == null )
-    		return null;
-		Rect sensor_rect = getViewableRect();
-		if( metering_rectangles.length == 1 && metering_rectangles[0].getRect().left == 0 && metering_rectangles[0].getRect().top == 0 && metering_rectangles[0].getRect().right == sensor_rect.width()-1 && metering_rectangles[0].getRect().bottom == sensor_rect.height()-1 ) {
-			// for compatibility with CameraController1
-			return null;
-		}
-		List<Area> areas = new ArrayList<>();
-		for(MeteringRectangle metering_rectangle : metering_rectangles) {
-			areas.add(convertMeteringRectangleToArea(sensor_rect, metering_rectangle));
-		}
-		return areas;
-	}
-
-	@Override
 	public boolean supportsAutoFocus() {
 		if( previewBuilder.get(CaptureRequest.CONTROL_AF_MODE) == null )
 			return false;
@@ -2865,17 +2796,6 @@ public class CameraController2 extends CameraController {
 		int focus_mode = previewBuilder.get(CaptureRequest.CONTROL_AF_MODE);
 		if( focus_mode == CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE || focus_mode == CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO )
 			return true;
-		return false;
-	}
-
-	@Override
-	public boolean focusIsVideo() {
-		if( previewBuilder.get(CaptureRequest.CONTROL_AF_MODE) == null )
-			return false;
-		int focus_mode = previewBuilder.get(CaptureRequest.CONTROL_AF_MODE);
-		if( focus_mode == CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_VIDEO ) {
-			return true;
-		}
 		return false;
 	}
 
@@ -4084,38 +4004,6 @@ public class CameraController2 extends CameraController {
 	@Override
 	public void unlock() {
 		// do nothing at this stage
-	}
-
-	@Override
-	public void initVideoRecorderPrePrepare(MediaRecorder video_recorder) {
-		// if we change where we play the START_VIDEO_RECORDING sound, make sure it can't be heard in resultant video
-		if( sounds_enabled )
-			media_action_sound.play(MediaActionSound.START_VIDEO_RECORDING);
-	}
-
-	@Override
-	public void initVideoRecorderPostPrepare(MediaRecorder video_recorder) throws CameraControllerException {
-		if( MyDebug.LOG )
-			Log.d(TAG, "initVideoRecorderPostPrepare");
-		try {
-			if( MyDebug.LOG )
-				Log.d(TAG, "obtain video_recorder surface");
-			if( MyDebug.LOG )
-				Log.d(TAG, "done");
-			previewBuilder = camera.createCaptureRequest(CameraDevice.TEMPLATE_RECORD);
-			previewBuilder.set(CaptureRequest.CONTROL_CAPTURE_INTENT, CaptureRequest.CONTROL_CAPTURE_INTENT_VIDEO_RECORD);
-			camera_settings.setupBuilder(previewBuilder, false);
-			createCaptureSession(video_recorder);
-		}
-		catch(CameraAccessException e) {
-			if( MyDebug.LOG ) {
-				Log.e(TAG, "failed to create capture request for video");
-				Log.e(TAG, "reason: " + e.getReason());
-				Log.e(TAG, "message: " + e.getMessage());
-			}
-			e.printStackTrace();
-			throw new CameraControllerException();
-		}
 	}
 
 	@Override

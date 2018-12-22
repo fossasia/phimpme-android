@@ -275,7 +275,6 @@ public abstract class CameraController {
 	public String getDefaultISO() {
 		return "auto";
 	}
-	public abstract long getDefaultExposureTime();
 
 	public abstract void setFocusValue(String focus_value);
 	public abstract String getFocusValue();
@@ -284,19 +283,14 @@ public abstract class CameraController {
 	public abstract void setFlashValue(String flash_value);
 	public abstract String getFlashValue();
 	public abstract void setRecordingHint(boolean hint);
-	public abstract void setAutoExposureLock(boolean enabled);
-	public abstract boolean getAutoExposureLock();
 	public abstract void setRotation(int rotation);
 	public abstract void setLocationInfo(Location location);
 	public abstract void removeLocationInfo();
 	public abstract void enableShutterSound(boolean enabled);
 	public abstract boolean setFocusAndMeteringArea(List<Area> areas);
 	public abstract void clearFocusAndMetering();
-	public abstract List<Area> getFocusAreas();
-	public abstract List<Area> getMeteringAreas();
 	public abstract boolean supportsAutoFocus();
 	public abstract boolean focusIsContinuous();
-	public abstract boolean focusIsVideo();
 	public abstract void reconnect() throws CameraControllerException;
 	public abstract void setPreviewDisplay(SurfaceHolder holder) throws CameraControllerException;
 	public abstract void setPreviewTexture(SurfaceTexture texture) throws CameraControllerException;
@@ -326,8 +320,6 @@ public abstract class CameraController {
 	public abstract int getCameraOrientation();
 	public abstract boolean isFrontFacing();
 	public abstract void unlock();
-	public abstract void initVideoRecorderPrePrepare(MediaRecorder video_recorder);
-	public abstract void initVideoRecorderPostPrepare(MediaRecorder video_recorder) throws CameraControllerException;
 	public abstract String getParametersString();
 	public boolean captureResultIsAEScanning() {
 		return false;

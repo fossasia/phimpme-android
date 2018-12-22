@@ -122,7 +122,6 @@ import static org.fossasia.phimpme.utilities.Utils.promptSpeechInput;
 public class SingleMediaActivity extends SharedMediaActivity implements ImageAdapter.OnSingleTap, ImageAdapter.enterTransition {
 
     private static int SLIDE_SHOW_INTERVAL = 5000;
-    private static final String ISLOCKED_ARG = "isLocked";
     static final String ACTION_OPEN_ALBUM = "android.intent.action.pagerAlbumMedia";
     private static final String ACTION_REVIEW = "com.android.camera.action.REVIEW";
     private int REQUEST_CODE_SD_CARD_PERMISSIONS = 42;
@@ -132,13 +131,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private SelectAlbumBottomSheet bottomSheetDialogFragment;
     private SecurityHelper securityObj;
     private boolean fullScreenMode, customUri = false;
-    public static final int TAKE_PHOTO_CODE = 8;
     public static final int ACTION_REQUEST_EDITIMAGE = 9;
-    public static final int ACTION_REQUEST_COMPRESSIMAGE = 13;
-    public static final int ACTION_STICKERS_IMAGE = 10;
     private Bitmap mainBitmap;
     private int imageWidth, imageHeight;
-    private String path;
     private SingleMediaActivity context;
     public static final String EXTRA_OUTPUT = "extra_output";
     public static String pathForDescription;
@@ -1712,21 +1707,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         WindowManager.LayoutParams lp = getWindow().getAttributes();
         lp.screenBrightness = level;
         getWindow().setAttributes(lp);
-    }
-
-    @SuppressWarnings("ResourceAsColor")
-    private UCrop.Options getUcropOptions() {
-
-        UCrop.Options options = new UCrop.Options();
-        options.setCompressionFormat(Bitmap.CompressFormat.PNG);
-        options.setCompressionQuality(90);
-        options.setActiveWidgetColor(getAccentColor());
-        options.setToolbarColor(getPrimaryColor());
-        options.setStatusBarColor(isTranslucentStatusBar() ? ColorPalette.getObscuredColor(getPrimaryColor()) : getPrimaryColor());
-        options.setCropFrameColor(getAccentColor());
-        options.setFreeStyleCropEnabled(true);
-
-        return options;
     }
 
     @Override

@@ -32,7 +32,6 @@ public class StickerView extends View {
     private float oldx, oldy;
 
     private Paint rectPaint = new Paint();
-    private Paint boxPaint = new Paint();
 
     public Bitmap mainBitmap;
     public ImageViewTouch mainImage;

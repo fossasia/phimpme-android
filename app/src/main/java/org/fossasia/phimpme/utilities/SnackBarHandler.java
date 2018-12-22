@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
 
 /**
@@ -14,9 +13,7 @@ import org.fossasia.phimpme.gallery.util.ThemeHelper;
  */
 
 public class SnackBarHandler  {
-    public static final int INDEFINITE = Snackbar.LENGTH_INDEFINITE;
     public static final int LONG = Snackbar.LENGTH_LONG;
-    public static final int SHORT = Snackbar.LENGTH_SHORT;
 
     public static Snackbar show(View view, String text, int duration) {
         final Snackbar snackbar = Snackbar.make(view, text, duration);
@@ -81,15 +78,7 @@ public class SnackBarHandler  {
         show(view, ActivitySwitchHelper.getContext().getResources().getString(res));
     }
 
-    public static void showWithBottomMargin(View view, int res, int duration, int bottomMargin) {
-        showWithBottomMargin(view, ActivitySwitchHelper.getContext().getResources().getString(res), bottomMargin, duration);
-    }
-
     public static Snackbar showWithBottomMargin(View view, String text, int bottomMargin) {
         return showWithBottomMargin(view, text, bottomMargin, Snackbar.LENGTH_LONG);
-    }
-
-    public static void showWithBottomMargin(View view, int res, int bottomMargin) {
-        showWithBottomMargin(view, ActivitySwitchHelper.getContext().getResources().getString(res), bottomMargin);
     }
 }

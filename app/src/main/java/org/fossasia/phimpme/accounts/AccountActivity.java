@@ -120,7 +120,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private Context context;
     private CloudRailServices cloudRailServices;
     private PDKClient pdkClient;
-   // private GoogleApiClient mGoogleApiClient;
+    // private GoogleApiClient mGoogleApiClient;
     private DropboxAPI<AndroidAuthSession> mDBApi;
     private BoxSession sessionBox;
 
@@ -274,7 +274,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                         Toast.makeText(getContext(),R.string.Cloudrail_License_key,Toast.LENGTH_SHORT).show();
                     }
                     else
-                    signInDropbox();
+                        signInDropbox();
                     break;
 
                 case OWNCLOUD:
@@ -386,17 +386,17 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             SnackBarHandler.show(coordinatorLayout, R.string.already_signed_in);
         else
             cloudRailServices.prepare(this);
-            cloudRailServices.login();
-            BasicCallBack basicCallBack = new BasicCallBack() {
-                @Override
-                public void callBack(int status, Object data) {
-                    if(status == 1)
-                    {
-                        dropboxAuthentication(data.toString());
-                    }
+        cloudRailServices.login();
+        BasicCallBack basicCallBack = new BasicCallBack() {
+            @Override
+            public void callBack(int status, Object data) {
+                if(status == 1)
+                {
+                    dropboxAuthentication(data.toString());
                 }
-            };
-            CloudRailServices.setCallBack(basicCallBack);
+            }
+        };
+        CloudRailServices.setCallBack(basicCallBack);
 
     }
     /*
@@ -620,14 +620,14 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
     private void dropboxAuthentication(String tokens) {
         try{
-                String result = cloudRailServices.db.saveAsString();
-                Log.d("AccountsActivity", "dropboxAuthentication: "+tokens +" "+result);
-                String accessToken = cloudRailServices.getToken();
-                realm.beginTransaction();
-                account = realm.createObject(AccountDatabase.class, DROPBOX.toString());
-                account.setUsername(DROPBOX.toString());
-                account.setToken(String.valueOf(accessToken));
-                realm.commitTransaction();
+            String result = cloudRailServices.db.saveAsString();
+            Log.d("AccountsActivity", "dropboxAuthentication: "+tokens +" "+result);
+            String accessToken = cloudRailServices.getToken();
+            realm.beginTransaction();
+            account = realm.createObject(AccountDatabase.class, DROPBOX.toString());
+            account.setUsername(DROPBOX.toString());
+            account.setToken(String.valueOf(accessToken));
+            realm.commitTransaction();
 
 
 
@@ -677,7 +677,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         client.onActivityResult(requestCode, resultCode, data);
-       // callbackManager.onActivityResult(requestCode, resultCode, data);
+        // callbackManager.onActivityResult(requestCode, resultCode, data);
         pdkClient.onOauthResponse(requestCode, resultCode, data);
 
         if ((requestCode == OWNCLOUD_REQUEST_CODE && resultCode == RESULT_OK) || (requestCode == NEXTCLOUD_REQUEST_CODE && resultCode == RESULT_OK)) {

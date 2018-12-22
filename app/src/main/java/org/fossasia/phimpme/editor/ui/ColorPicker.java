@@ -107,29 +107,6 @@ public class ColorPicker extends Dialog implements SeekBar.OnSeekBarChangeListen
         codHex.setEnabled(false);
     }
 
-
-    /**
-     * Method that syncrhonize the color between the bars, the view and the HEC code text.
-     *
-     * @param s HEX Code of the color.
-     */
-    private void updateColorView(String s) {
-        if (s.matches("-?[0-9a-fA-F]+")) {
-            int color = (int) Long.parseLong(s, 16);
-            red = (color >> 16) & 0xFF;
-            green = (color >> 8) & 0xFF;
-            blue = (color >> 0) & 0xFF;
-
-            colorView.setBackgroundColor(Color.rgb(red, green, blue));
-            redSeekBar.setProgress(red);
-            greenSeekBar.setProgress(green);
-            blueSeekBar.setProgress(blue);
-        } else {
-            codHex.setError(c.getResources().getText(R.string.materialcolorpicker__errHex));
-        }
-    }
-
-
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
 

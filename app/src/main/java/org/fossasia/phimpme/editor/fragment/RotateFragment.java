@@ -20,9 +20,6 @@ import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.view.RotateImageView;
 import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouchBase;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Locale;
 
 
@@ -227,19 +224,4 @@ public class RotateFragment extends BaseEditFragment {
             backToMain();
         }
     }// end inner class
-
-    public static void saveBitmap(Bitmap bm, String filePath) {
-        File f = new File(filePath);
-        if (f.exists()) {
-            f.delete();
-        }
-        try {
-            FileOutputStream out = new FileOutputStream(f);
-            bm.compress(Bitmap.CompressFormat.PNG, 90, out);
-            out.flush();
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }// end class

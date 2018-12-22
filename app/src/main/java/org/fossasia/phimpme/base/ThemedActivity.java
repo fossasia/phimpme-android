@@ -168,14 +168,6 @@ public class ThemedActivity extends BaseActivity {
         return themeHelper.getBackgroundColor();
     }
 
-    protected Drawable getPlaceHolder() {
-        return themeHelper.getPlaceHolder();
-    }
-
-    protected int getInvertedBackgroundColor() {
-        return themeHelper.getInvertedBackgroundColor();
-    }
-
     public int getTextColor() {
         return themeHelper.getTextColor();
     }

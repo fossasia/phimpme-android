@@ -6,31 +6,17 @@ import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
-//import com.crashlytics.android.Crashlytics;
-import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
-import com.nostra13.universalimageloader.cache.disc.naming.HashCodeFileNameGenerator;
-import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
-import com.nostra13.universalimageloader.core.decode.BaseImageDecoder;
-import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.twitter.sdk.android.core.DefaultLogger;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.core.TwitterAuthConfig;
 import com.twitter.sdk.android.core.TwitterConfig;
-import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
-
-//import io.fabric.sdk.android.Fabric;
 
 import org.fossasia.phimpme.gallery.data.Album;
 import org.fossasia.phimpme.gallery.data.HandlingAlbums;
 import org.fossasia.phimpme.utilities.Constants;
-
-import java.io.File;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -43,7 +29,6 @@ public class MyApplication extends Application {
 
     private HandlingAlbums albums = null;
     public static Context applicationContext;
-    public ImageLoader imageLoader;
     private Boolean isPublished = false; // Set this to true at the time of release
     private RefWatcher refWatcher;
     public Album getAlbum() {
@@ -114,11 +99,4 @@ public class MyApplication extends Application {
     public void setAlbums(HandlingAlbums albums) {
         this.albums = albums;
     }
-
-    public void updateAlbums() {
-        albums.loadAlbums(getApplicationContext());
-    }
-
-
-
 }

@@ -37,7 +37,6 @@ import java.util.HashSet;
 public class ContentHelper {
 
 	private static final String TAG = "ContentHelper";
-	private static final String PRIMARY_VOLUME_NAME = "primary";
 
 	/**
 	 * Check is a file is writable. Detects write issues on external SD card.
@@ -106,10 +105,6 @@ public class ContentHelper {
 
 
 		return new File(targetDir, StringUtils.incrementFileNameSuffix(source.getName()));
-	}
-
-	public static Uri getUriForFile(Context context, File file) {
-		return FileProvider.getUriForFile(context, context.getPackageName() + ".provider", file);
 	}
 
 	public static boolean copyFile(Context context, @NonNull final File source, @NonNull final File targetDir) {
@@ -333,47 +328,6 @@ public class ContentHelper {
 			}
 		}
 		return null;
-	}
-
-	/**
-	 * Delete a folder.
-	 *
-	 * @param file The folder name.
-	 * @return true if successful.
-	 */
-	public static boolean rmdir(Context context, @NonNull final File file) {
-
-		if(!file.exists() && !file.isDirectory()) return false;
-
-		String[] fileList = file.list();
-
-		if(fileList != null && fileList.length > 0)
-			// Delete only empty folder.
-			return false;
-
-		// Try the normal way
-		if (file.delete()) return true;
-
-
-		// Try with Storage Access Framework.
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-			DocumentFile document = getDocumentFile(context, file, true, true);
-			return document != null && document.delete();
-		}
-
-		// Try the Kitkat workaround.
-		if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-			ContentResolver resolver = context.getContentResolver();
-			ContentValues values = new ContentValues();
-			values.put(MediaStore.MediaColumns.DATA, file.getAbsolutePath());
-			resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-
-			// Delete the created entry, such that content provider will delete the file.
-			resolver.delete(MediaStore.Files.getContentUri("external"), MediaStore.MediaColumns.DATA + "=?",
-							new String[] {file.getAbsolutePath()});
-		}
-
-		return !file.exists();
 	}
 
 	/**

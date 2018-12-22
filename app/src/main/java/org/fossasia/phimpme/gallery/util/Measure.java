@@ -28,10 +28,6 @@ public class Measure {
         return 0;
     }
 
-    public static int getNavBarHeight(Context ct){
-        return getNavigationBarSize(ct).y;
-    }
-
     public static Point getNavigationBarSize(Context context) {
         Point appUsableSize = getAppUsableScreenSize(context);
         Point realScreenSize = getRealScreenSize(context);
@@ -64,13 +60,5 @@ public class Measure {
         Point size = new Point();
         display.getRealSize(size);
         return size;
-    }
-
-    public static int rotateBy(int current, int degrees) {
-    // TODO: 21/08/16 a better way should exist
-    /*int rotation = current + degrees;
-    if (rotation > 359) rotation -=360;
-    if (rotation < 0) rotation +=360;*/
-        return (current + degrees) % 360;
     }
 }

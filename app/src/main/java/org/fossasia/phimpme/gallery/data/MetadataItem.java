@@ -137,10 +137,6 @@ class MetadataItem {
     }
   }
 
-  Date getDateOriginal() {
-    return dateOriginal;
-  }
-
   private void setDateOriginal(Date dateOriginal) {
     this.dateOriginal = dateOriginal;
   }

@@ -393,20 +393,4 @@ public class TextStickerView extends View {
         return mScale;
     }
 
-    public float getRotateAngle() {
-        return mRotateAngle;
-    }
-
-    public boolean isAutoNewLine() {
-        return mAutoNewLine;
-    }
-
-    public void setAutoNewline(boolean isAuto) {
-        if (mAutoNewLine != isAuto) {
-            mAutoNewLine = isAuto;
-            postInvalidate();
-        }
-    }
-
-
 }

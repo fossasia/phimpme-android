@@ -117,14 +117,6 @@ public abstract class ImageViewTouchBase extends ImageView implements
 		init();
 	}
 
-	public void setOnDrawableChangedListener(OnDrawableChangeListener listener) {
-		mDrawableChangeListener = listener;
-	}
-
-	public void setOnLayoutChangeListener(OnLayoutChangeListener listener) {
-		mOnLayoutChangeListener = listener;
-	}
-
 	protected void init() {
 		setScaleType(ScaleType.MATRIX);
 	}
@@ -158,25 +150,6 @@ public abstract class ImageViewTouchBase extends ImageView implements
 			mScaleTypeChanged = true;
 			requestLayout();
 		}
-	}
-
-	public DisplayType getDisplayType() {
-		return mScaleType;
-	}
-
-	protected void setMinScale(float value) {
-		if (LOG_ENABLED) {
-			Log.d(LOG_TAG, "setMinZoom: " + value);
-		}
-
-		mMinZoom = value;
-	}
-
-	protected void setMaxScale(float value) {
-		if (LOG_ENABLED) {
-			Log.d(LOG_TAG, "setMaxZoom: " + value);
-		}
-		mMaxZoom = value;
 	}
 
 	@Override
@@ -330,15 +303,6 @@ public abstract class ImageViewTouchBase extends ImageView implements
 				mScaleTypeChanged = false;
 
 		}
-	}
-
-	/**
-	 * Restore the original display
-	 * 
-	 */
-	public void resetDisplay() {
-		mBitmapChanged = true;
-		requestLayout();
 	}
 
 	protected float getDefaultScale(DisplayType type) {
@@ -629,24 +593,6 @@ public abstract class ImageViewTouchBase extends ImageView implements
 	}
 
 	/**
-	 * Returns the current image display matrix.<br />
-	 * This matrix can be used in the next call to the
-	 * {@link #setImageDrawable(Drawable, Matrix, float, float)} to restore the
-	 * same view state of the previous {@link Bitmap}.<br />
-	 * Example:
-	 * 
-	 * <pre>
-	 * Matrix currentMatrix = mImageView.getDisplayMatrix();
-	 * mImageView.setImageBitmap(newBitmap, currentMatrix, ZOOM_INVALID, ZOOM_INVALID);
-	 * </pre>
-	 * 
-	 * @return the current support matrix
-	 */
-	public Matrix getDisplayMatrix() {
-		return new Matrix(mSuppMatrix);
-	}
-
-	/**
 	 * Setup the base matrix so that the image is centered and scaled properly.
 	 * 
 	 * @param drawable
@@ -690,32 +636,6 @@ public abstract class ImageViewTouchBase extends ImageView implements
 		if (LOG_ENABLED) {
 			printMatrix(matrix);
 		}
-	}
-
-	/**
-	 * Setup the base matrix so that the image is centered and scaled properly.
-	 * 
-	 * @param bitmap
-	 * @param matrix
-	 */
-	protected void getProperBaseMatrix2(Drawable bitmap, Matrix matrix) {
-
-		float viewWidth = mThisWidth;
-		float viewHeight = mThisHeight;
-
-		float w = bitmap.getIntrinsicWidth();
-		float h = bitmap.getIntrinsicHeight();
-
-		matrix.reset();
-
-		float widthScale = viewWidth / w;
-		float heightScale = viewHeight / h;
-
-		float scale = Math.min(widthScale, heightScale);
-
-		matrix.postScale(scale, scale);
-		matrix.postTranslate((viewWidth - w * scale) / 2.0f, (viewHeight - h
-				* scale) / 2.0f);
 	}
 
 	protected float getValue(Matrix matrix, int whichValue) {

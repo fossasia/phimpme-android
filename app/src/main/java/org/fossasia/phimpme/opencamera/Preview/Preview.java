@@ -3,8 +3,6 @@ package org.fossasia.phimpme.opencamera.Preview;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -131,14 +129,8 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 	private TimerTask takePictureTimerTask;
 	private final Timer beepTimer = new Timer();
 	private TimerTask beepTimerTask;
-	private final Timer flashVideoTimer = new Timer();
-	private TimerTask flashVideoTimerTask;
-	private final IntentFilter battery_ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-	private final Timer batteryCheckVideoTimer = new Timer();
-	private TimerTask batteryCheckVideoTimerTask;
 	private long take_photo_time;
 	private int remaining_burst_photos;
-	private int remaining_restart_video;
 
 	private boolean is_preview_started;
 
@@ -204,7 +196,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 	private final ToastBoxer flash_toast = new ToastBoxer();
 	private final ToastBoxer focus_toast = new ToastBoxer();
 	private final ToastBoxer take_photo_toast = new ToastBoxer();
-	private final ToastBoxer pause_video_toast = new ToastBoxer();
 	private final ToastBoxer seekbar_toast = new ToastBoxer();
 
 	private int ui_rotation;
@@ -261,7 +252,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 	public volatile int count_cameraTakePicture;
 	public volatile int count_cameraContinuousFocusMoving;
 	public volatile boolean test_fail_open_camera;
-	public volatile boolean test_video_failure;
 	public volatile boolean test_ticker_called; // set from MySurfaceView or CanvasView
 
 	private boolean enable_sound;
@@ -754,39 +744,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 
 	private Context getContext() {
 		return applicationInterface.getContext();
-	}
-
-	private void reconnectCamera(boolean quiet) {
-		if( MyDebug.LOG )
-			Log.d(TAG, "reconnectCamera()");
-		if( camera_controller != null ) { // just to be safe
-			try {
-				camera_controller.reconnect();
-				this.setPreviewPaused(false);
-			}
-			catch(CameraControllerException e) {
-				if( MyDebug.LOG )
-					Log.e(TAG, "failed to reconnect to camera");
-				e.printStackTrace();
-				applicationInterface.onFailedReconnectError();
-				closeCamera();
-			}
-			try {
-				tryAutoFocus(false, false);
-			}
-			catch(RuntimeException e) {
-				if( MyDebug.LOG )
-					Log.e(TAG, "tryAutoFocus() threw exception: " + e.getMessage());
-				e.printStackTrace();
-				// this happens on Nexus 7 if trying to record video at bitrate 50Mbits or higher - it's fair enough that it fails, but we need to recover without a crash!
-				// not safe to call closeCamera, as any call to getParameters may cause a RuntimeException
-				// update: can no longer reproduce failures on Nexus 7?!
-				this.is_preview_started = false;
-				camera_controller.release();
-				camera_controller = null;
-				openCamera();
-			}
-		}
 	}
 
 	private void closeCamera() {
@@ -1910,49 +1867,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		return "(" + getAspectRatio(width, height) + ", " + getMPString(width, height) + ")";
 	}
 
-	public String getCamcorderProfileDescriptionShort(String quality) {
-		if( camera_controller == null )
-			return "";
-		CamcorderProfile profile = getCamcorderProfile(quality);
-		return profile.videoFrameWidth + "x" + profile.videoFrameHeight + " " + getMPString(profile.videoFrameWidth, profile.videoFrameHeight);
-	}
-
-	public String getCamcorderProfileDescription(String quality) {
-		if( camera_controller == null )
-			return "";
-		CamcorderProfile profile = getCamcorderProfile(quality);
-		String highest = "";
-		if( profile.quality == CamcorderProfile.QUALITY_HIGH ) {
-			highest = "Highest: ";
-		}
-		String type = "";
-		if( profile.videoFrameWidth == 3840 && profile.videoFrameHeight == 2160 ) {
-			type = "4K Ultra HD ";
-		}
-		else if( profile.videoFrameWidth == 1920 && profile.videoFrameHeight == 1080 ) {
-			type = "Full HD ";
-		}
-		else if( profile.videoFrameWidth == 1280 && profile.videoFrameHeight == 720 ) {
-			type = "HD ";
-		}
-		else if( profile.videoFrameWidth == 720 && profile.videoFrameHeight == 480 ) {
-			type = "SD ";
-		}
-		else if( profile.videoFrameWidth == 640 && profile.videoFrameHeight == 480 ) {
-			type = "VGA ";
-		}
-		else if( profile.videoFrameWidth == 352 && profile.videoFrameHeight == 288 ) {
-			type = "CIF ";
-		}
-		else if( profile.videoFrameWidth == 320 && profile.videoFrameHeight == 240 ) {
-			type = "QVGA ";
-		}
-		else if( profile.videoFrameWidth == 176 && profile.videoFrameHeight == 144 ) {
-			type = "QCIF ";
-		}
-		return highest + type + profile.videoFrameWidth + "x" + profile.videoFrameHeight + " " + getAspectRatioMPString(profile.videoFrameWidth, profile.videoFrameHeight);
-	}
-
 	public double getTargetRatio() {
 		return preview_targetRatio;
 	}
@@ -2525,111 +2439,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 			applicationInterface.setCameraIdPref(cameraId);
 			this.openCamera();
 		}
-	}
-
-	public static int [] matchPreviewFpsToVideo(List<int []> fps_ranges, int video_frame_rate) {
-		if( MyDebug.LOG )
-			Log.d(TAG, "matchPreviewFpsToVideo()");
-		int selected_min_fps = -1, selected_max_fps = -1, selected_diff = -1;
-		for(int [] fps_range : fps_ranges) {
-			if( MyDebug.LOG ) {
-				Log.d(TAG, "    supported fps range: " + fps_range[0] + " to " + fps_range[1]);
-			}
-			int min_fps = fps_range[0];
-			int max_fps = fps_range[1];
-			if( min_fps <= video_frame_rate && max_fps >= video_frame_rate ) {
-				int diff = max_fps - min_fps;
-				if( selected_diff == -1 || diff < selected_diff ) {
-					selected_min_fps = min_fps;
-					selected_max_fps = max_fps;
-					selected_diff = diff;
-				}
-			}
-		}
-		if( selected_min_fps != -1 ) {
-			if( MyDebug.LOG ) {
-				Log.d(TAG, "    chosen fps range: " + selected_min_fps + " to " + selected_max_fps);
-			}
-		}
-		else {
-			selected_diff = -1;
-			int selected_dist = -1;
-			for(int [] fps_range : fps_ranges) {
-				int min_fps = fps_range[0];
-				int max_fps = fps_range[1];
-				int diff = max_fps - min_fps;
-				int dist;
-				if( max_fps < video_frame_rate )
-					dist = video_frame_rate - max_fps;
-				else
-					dist = min_fps - video_frame_rate;
-				if( MyDebug.LOG ) {
-					Log.d(TAG, "    supported fps range: " + min_fps + " to " + max_fps + " has dist " + dist + " and diff " + diff);
-				}
-				if( selected_dist == -1 || dist < selected_dist || ( dist == selected_dist && diff < selected_diff ) ) {
-					selected_min_fps = min_fps;
-					selected_max_fps = max_fps;
-					selected_dist = dist;
-					selected_diff = diff;
-				}
-			}
-			if( MyDebug.LOG )
-				Log.d(TAG, "    can't find match for fps range, so choose closest: " + selected_min_fps + " to " + selected_max_fps);
-		}
-		return new int[]{selected_min_fps, selected_max_fps};
-	}
-
-	public static int [] chooseBestPreviewFps(List<int []> fps_ranges) {
-		if( MyDebug.LOG )
-			Log.d(TAG, "chooseBestPreviewFps()");
-
-		// find value with lowest min that has max >= 30; if more than one of these, pick the one with highest max
-		int selected_min_fps = -1, selected_max_fps = -1;
-		for(int [] fps_range : fps_ranges) {
-			if( MyDebug.LOG ) {
-				Log.d(TAG, "    supported fps range: " + fps_range[0] + " to " + fps_range[1]);
-			}
-			int min_fps = fps_range[0];
-			int max_fps = fps_range[1];
-			if( max_fps >= 30000 ) {
-				if( selected_min_fps == -1 || min_fps < selected_min_fps ) {
-					selected_min_fps = min_fps;
-					selected_max_fps = max_fps;
-				}
-				else if( min_fps == selected_min_fps && max_fps > selected_max_fps ) {
-					selected_min_fps = min_fps;
-					selected_max_fps = max_fps;
-				}
-			}
-		}
-
-		if( selected_min_fps != -1 ) {
-			if( MyDebug.LOG ) {
-				Log.d(TAG, "    chosen fps range: " + selected_min_fps + " to " + selected_max_fps);
-			}
-		}
-		else {
-			// just pick the widest range; if more than one, pick the one with highest max
-			int selected_diff = -1;
-			for(int [] fps_range : fps_ranges) {
-				int min_fps = fps_range[0];
-				int max_fps = fps_range[1];
-				int diff = max_fps - min_fps;
-				if( selected_diff == -1 || diff > selected_diff ) {
-					selected_min_fps = min_fps;
-					selected_max_fps = max_fps;
-					selected_diff = diff;
-				}
-				else if( diff == selected_diff && max_fps > selected_max_fps ) {
-					selected_min_fps = min_fps;
-					selected_max_fps = max_fps;
-					selected_diff = diff;
-				}
-			}
-			if( MyDebug.LOG )
-				Log.d(TAG, "    can't find fps range 30fps or better, so picked widest range: " + selected_min_fps + " to " + selected_max_fps);
-		}
-		return new int[]{selected_min_fps, selected_max_fps};
 	}
 
 	private void setFocusPref(boolean auto_focus) {
@@ -4426,10 +4235,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		return time_now - video_start_time + video_accumulated_time;
 	}
 
-	public long getVideoAccumulatedTime() {
-		return video_accumulated_time;
-	}
-
 	public boolean isTakingPhoto() {
 		return this.phase == PHASE_TAKING_PHOTO;
 	}
@@ -4446,28 +4251,12 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 		return this.camera_controller_manager;
 	}
 
-	public boolean supportsFocus() {
-		return this.supported_focus_values != null;
-	}
-
 	public boolean supportsFlash() {
 		return this.supported_flash_values != null;
 	}
 
-	public boolean supportsExposureLock() {
-		return this.is_exposure_lock_supported;
-	}
-
-	public boolean isExposureLocked() {
-		return this.is_exposure_locked;
-	}
-
 	public boolean supportsZoom() {
 		return this.has_zoom;
-	}
-
-	public int getMaxZoom() {
-		return this.max_zoom_factor;
 	}
 
 	public boolean hasFocusArea() {
@@ -4476,10 +4265,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 
 	public Pair<Integer, Integer> getFocusPos() {
 		return new Pair<>(focus_screen_x, focus_screen_y);
-	}
-
-	public int getMaxNumFocusAreas() {
-		return this.max_num_focus_areas;
 	}
 
 	public boolean isTakingPhotoOrOnTimer() {
@@ -4498,10 +4283,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 
 	public boolean isPreviewPaused() {
 		return this.phase == PHASE_PREVIEW_PAUSED;
-	}
-
-	public boolean isPreviewStarted() {
-		return this.is_preview_started;
 	}
 
 	public boolean isFocusWaiting() {

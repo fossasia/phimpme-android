@@ -95,10 +95,6 @@ public class Album implements Serializable {
 		return previewPath;
 	}
 
-	public boolean isPreviewSelected() {
-		return isPreviewSelected;
-	}
-
 	public void setsecured(boolean set){
 		this.issecured=set;
 	}
@@ -320,11 +316,6 @@ public class Album implements Serializable {
 					getPath(), SP.getBoolean("set_include_video", false)));
 		}
 		return mediaArrayList;
-	}
-
-	public void filterMedias(Context context, FilterMode filter) {
-		settings.setFilterMode(filter);
-		updatePhotos(context, filter);
 	}
 
 	public boolean addMedia(@Nullable Media media) {

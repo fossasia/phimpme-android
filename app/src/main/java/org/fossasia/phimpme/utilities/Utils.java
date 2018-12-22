@@ -31,7 +31,6 @@ import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
-import static org.fossasia.phimpme.utilities.Constants.PACKAGE_GOOGLEPLUS;
 import static org.fossasia.phimpme.utilities.Constants.PACKAGE_INSTAGRAM;
 import static org.fossasia.phimpme.utilities.Constants.PACKAGE_MESSENGER;
 import static org.fossasia.phimpme.utilities.Constants.PACKAGE_SNAPCHAT;
@@ -149,21 +148,6 @@ public class Utils {
         return list;
     }
 
-    public static Uri getImageUri(Context inContext, String imagePath) {
-        Bitmap inImage = getBitmapFromPath(imagePath);
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
-    public static String getMimeType(String url) {
-        String type = null;
-        String extension = MimeTypeMap.getFileExtensionFromUrl(url);
-        if (extension != null) {
-            type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
-        }
-        return type;
-    }
     public static boolean checkNetwork(Context context, @NonNull View view) {
         if (isInternetOn(context)) {
             return true;

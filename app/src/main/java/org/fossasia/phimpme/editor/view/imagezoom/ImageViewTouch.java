@@ -2,8 +2,6 @@ package org.fossasia.phimpme.editor.view.imagezoom;
 
 import android.content.Context;
 import android.graphics.Matrix;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -15,7 +13,6 @@ import android.view.ScaleGestureDetector.OnScaleGestureListener;
 import android.view.ViewConfiguration;
 
 public class ImageViewTouch extends ImageViewTouchBase {
-    static final float SCROLL_DELTA_THRESHOLD = 1.0f;
     protected ScaleGestureDetector mScaleDetector;
     protected GestureDetector mGestureDetector;
     protected int mTouchSlop;
@@ -47,18 +44,6 @@ public class ImageViewTouch extends ImageViewTouchBase {
         mDoubleTapDirection = 1;
     }
 
-    public void setDoubleTapListener(OnImageViewTouchDoubleTapListener listener) {
-        mDoubleTapListener = listener;
-    }
-
-    public void setSingleTapListener(OnImageViewTouchSingleTapListener listener) {
-        mSingleTapListener = listener;
-    }
-
-    public void setFlingListener(OnImageFlingListener listener) {
-        mFlingListener = listener;
-    }
-
     public void setDoubleTapEnabled(boolean value) {
         mDoubleTapEnabled = value;
     }
@@ -66,14 +51,6 @@ public class ImageViewTouch extends ImageViewTouchBase {
     public void setScaleEnabled(boolean value) {
         mScaleEnabled = value;
         setDoubleTapEnabled(value);
-    }
-
-    public void setScrollEnabled(boolean value) {
-        mScrollEnabled = value;
-    }
-
-    public boolean getDoubleTapEnabled() {
-        return mDoubleTapEnabled;
     }
 
     protected OnGestureListener getGestureListener() {
@@ -208,34 +185,6 @@ public class ImageViewTouch extends ImageViewTouchBase {
     }
 
     /**
-     * Determines whether this ImageViewTouch can be scrolled.
-     *
-     * @param direction - positive direction value means scroll from right to left,
-     *                  negative value means scroll from left to right
-     * @return true if there is some more place to scroll, false - otherwise.
-     */
-    public boolean canScroll(int direction) {
-        RectF bitmapRect = getBitmapRect();
-        updateRect(bitmapRect, mScrollRect);
-        Rect imageViewRect = new Rect();
-        getGlobalVisibleRect(imageViewRect);
-
-        if (null == bitmapRect) {
-            return false;
-        }
-
-        if (bitmapRect.right >= imageViewRect.right) {
-            if (direction < 0) {
-                return Math.abs(bitmapRect.right - imageViewRect.right) > SCROLL_DELTA_THRESHOLD;
-            }
-        }
-
-        double bitmapScrollRectDelta = Math.abs(bitmapRect.left
-                - mScrollRect.left);
-        return bitmapScrollRectDelta > SCROLL_DELTA_THRESHOLD;
-    }
-
-    /**
      * @author
      */
     public class GestureListener extends
@@ -326,15 +275,6 @@ public class ImageViewTouch extends ImageViewTouchBase {
             return true;
         }
     }// end inner class
-
-    public void resetImage() {
-        float scale = getScale();
-        float targetScale = scale;
-        targetScale = Math.min(getMaxScale(),
-                Math.max(targetScale, getMinScale()));
-        zoomTo(targetScale, 0, 0, DEFAULT_ANIMATION_DURATION);
-        invalidate();
-    }
 
     public interface OnImageViewTouchDoubleTapListener {
 

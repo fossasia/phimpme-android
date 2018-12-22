@@ -1,6 +1,5 @@
 package org.fossasia.phimpme.editor.fragment;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -141,11 +140,6 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
 
     }
 
-    public void doPendingApply() {
-        if (null != activity && null != filterBit)
-            activity.changeMainBitmap(filterBit);
-    }
-
     public void resetBitmaps(){
         if (null != filterBit) filterBit.recycle(); filterBit = null;
         if (null != currentBitmap) currentBitmap.recycle(); currentBitmap = null;
@@ -194,7 +188,6 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
         }
     }
 
-    int counter = 0;
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {/*
         if ((counter++) % 15 == 0) {
@@ -217,7 +210,6 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
 
     private final class ProcessImageTask extends AsyncTask<Integer, Void, Bitmap> {
         private Bitmap srcBitmap;
-        Dialog dialog;
         int val;
 
         @Override

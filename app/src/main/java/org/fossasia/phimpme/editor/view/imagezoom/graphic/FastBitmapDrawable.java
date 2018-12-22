@@ -1,15 +1,11 @@
 package org.fossasia.phimpme.editor.view.imagezoom.graphic;
 
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
-
-import java.io.InputStream;
 
 /**
  * Fast bitmap drawable. Does not support states. it only
@@ -27,10 +23,6 @@ public class FastBitmapDrawable extends Drawable implements IBitmapDrawable {
 		mPaint = new Paint();
 		mPaint.setDither( true );
 		mPaint.setFilterBitmap( true );
-	}
-	
-	public FastBitmapDrawable( Resources res, InputStream is ){
-		this(BitmapFactory.decodeStream(is));
 	}
 
 	@Override
@@ -71,11 +63,6 @@ public class FastBitmapDrawable extends Drawable implements IBitmapDrawable {
 	@Override
 	public int getMinimumHeight() {
 		return mBitmap.getHeight();
-	}
-	
-	public void setAntiAlias( boolean value ){
-		mPaint.setAntiAlias( value );
-		invalidateSelf();
 	}
 
 	@Override

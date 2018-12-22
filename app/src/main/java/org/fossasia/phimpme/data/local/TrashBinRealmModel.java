@@ -26,10 +26,6 @@ public class TrashBinRealmModel extends RealmObject {
         this.timeperiod = timeperiod;
     }
 
-    public void setTrashbinpath(String trashbinpath){
-        this.trashbinpath = trashbinpath;
-    }
-
     public String getTrashbinpath(){
         return trashbinpath;
     }
@@ -54,7 +50,4 @@ public class TrashBinRealmModel extends RealmObject {
         this.timeperiod = timeperiod;
     }
 
-    public String getTimeperiod(){
-        return timeperiod;
-    }
 }

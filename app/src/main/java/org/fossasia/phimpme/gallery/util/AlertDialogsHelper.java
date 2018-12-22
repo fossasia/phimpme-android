@@ -1,17 +1,13 @@
 package org.fossasia.phimpme.gallery.util;
 
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.Typeface;
-import android.net.Uri;
 import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -19,22 +15,16 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.drew.lang.GeoLocation;
-
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.gallery.data.Album;
-import org.fossasia.phimpme.gallery.data.Media;
 import org.fossasia.phimpme.gallery.data.base.MediaDetailsMap;
 
 import java.lang.reflect.Field;
-import java.util.Locale;
 
 /**
  * Created by dnld on 19/05/16.
@@ -146,53 +136,6 @@ public class AlertDialogsHelper {
         return progressDialog.create();
     }
 
-    public static AlertDialog getDetailsDialog(final ThemedActivity activity, AlertDialog.Builder detailsDialogBuilder, final Media f) {
-        MediaDetailsMap<String, String> mainDetails = f.getMainDetails(activity.getApplicationContext());
-        final View dialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_media_detail, null);
-        ImageView imgMap = (ImageView) dialogLayout.findViewById(R.id.photo_map);
-        dialogLayout.findViewById(R.id.details_title).setBackgroundColor(activity.getPrimaryColor());
-        ((CardView) dialogLayout.findViewById(R.id.photo_details_card)).setCardBackgroundColor(activity.getCardBackgroundColor());
-
-        final GeoLocation location;
-        if ((location = f.getGeoLocation()) != null) {
-            PreferenceUtil SP = PreferenceUtil.getInstance(activity.getApplicationContext());
-
-            StaticMapProvider staticMapProvider = StaticMapProvider.fromValue(
-                    SP.getInt(activity.getString(R.string.preference_map_provider), StaticMapProvider.GOOGLE_MAPS.getValue()));
-
-            Glide.with(activity.getApplicationContext())
-                    .load(staticMapProvider.getUrl(location))
-                    .asBitmap()
-                    .centerCrop()
-                    .animate(R.anim.fade_in)
-                    .into(imgMap);
-
-            imgMap.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    String uri = String.format(Locale.ENGLISH, "geo:%f,%f?z=%d", location.getLatitude(), location.getLongitude(), 17);
-                    activity.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(uri)));
-                }
-            });
-
-            imgMap.setVisibility(View.VISIBLE);
-            dialogLayout.findViewById(R.id.details_title).setVisibility(View.GONE);
-
-        }
-
-        final TextView showMoreText = (TextView) dialogLayout.findViewById(R.id.details_showmore);
-        showMoreText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showMoreDetails(dialogLayout, activity, f);
-                showMoreText.setVisibility(View.INVISIBLE);
-            }
-        });
-
-        detailsDialogBuilder.setView(dialogLayout);
-        loadDetails(dialogLayout,activity, mainDetails);
-        return detailsDialogBuilder.create();
-    }
-
     public static AlertDialog getAlbumDetailsDialog(final ThemedActivity activity, AlertDialog.Builder detailsDialogBuilder, final Album f) {
         MediaDetailsMap<String, String> mainDetails = f.getAlbumDetails(activity.getApplicationContext());
         final View dialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_album_detail, null);
@@ -247,12 +190,6 @@ public class AlertDialogsHelper {
         ((TextView)dialogLayout.findViewById(R.id.label_readable)).setTextColor(textColor);
         ((TextView)dialogLayout.findViewById(R.id.label_writable)).setTextColor(textColor);
         ((TextView)dialogLayout.findViewById(R.id.label_hidden)).setTextColor(textColor);
-    }
-
-    private static void showMoreDetails(View dialogLayout, ThemedActivity activity, Media media) {
-
-        MediaDetailsMap<String, String> metadata = media.getAllDetails();
-        loadDetails(dialogLayout ,activity , metadata);
     }
 
     public static void setButtonTextColor(int[] buttons, int color, AlertDialog alertDialog) {

@@ -149,11 +149,7 @@ public class DemoPlayer implements ExoPlayer.Listener, ChunkSampleSource.EventLi
   // Constants pulled into this class for convenience.
   public static final int STATE_IDLE = ExoPlayer.STATE_IDLE;
   public static final int STATE_PREPARING = ExoPlayer.STATE_PREPARING;
-  public static final int STATE_BUFFERING = ExoPlayer.STATE_BUFFERING;
-  public static final int STATE_READY = ExoPlayer.STATE_READY;
-  public static final int STATE_ENDED = ExoPlayer.STATE_ENDED;
   public static final int TRACK_DISABLED = ExoPlayer.TRACK_DISABLED;
-  public static final int TRACK_DEFAULT = ExoPlayer.TRACK_DEFAULT;
 
   public static final int RENDERER_COUNT = 4;
   public static final int TYPE_VIDEO = 0;
@@ -202,34 +198,6 @@ public class DemoPlayer implements ExoPlayer.Listener, ChunkSampleSource.EventLi
     player.setSelectedTrack(TYPE_TEXT, TRACK_DISABLED);
   }
 
-  public PlayerControl getPlayerControl() {
-    return playerControl;
-  }
-
-  public void addListener(Listener listener) {
-    listeners.add(listener);
-  }
-
-  public void removeListener(Listener listener) {
-    listeners.remove(listener);
-  }
-
-  public void setInternalErrorListener(InternalErrorListener listener) {
-    internalErrorListener = listener;
-  }
-
-  public void setInfoListener(InfoListener listener) {
-    infoListener = listener;
-  }
-
-  public void setCaptionListener(CaptionListener listener) {
-    captionListener = listener;
-  }
-
-  public void setMetadataListener(Id3MetadataListener listener) {
-    id3MetadataListener = listener;
-  }
-
   public void setSurface(Surface surface) {
     this.surface = surface;
     pushSurface(false);
@@ -244,14 +212,6 @@ public class DemoPlayer implements ExoPlayer.Listener, ChunkSampleSource.EventLi
     pushSurface(true);
   }
 
-  public int getTrackCount(int type) {
-    return player.getTrackCount(type);
-  }
-
-  public MediaFormat getTrackFormat(int type, int index) {
-    return player.getTrackFormat(type, index);
-  }
-
   public int getSelectedTrack(int type) {
     return player.getSelectedTrack(type);
   }
@@ -261,36 +221,6 @@ public class DemoPlayer implements ExoPlayer.Listener, ChunkSampleSource.EventLi
     if (type == TYPE_TEXT && index < 0 && captionListener != null) {
       captionListener.onCues(Collections.<Cue>emptyList());
     }
-  }
-
-  public boolean getBackgrounded() {
-    return backgrounded;
-  }
-
-  public void setBackgrounded(boolean backgrounded) {
-    if (this.backgrounded == backgrounded) {
-      return;
-    }
-    this.backgrounded = backgrounded;
-    if (backgrounded) {
-      videoTrackToRestore = getSelectedTrack(TYPE_VIDEO);
-      setSelectedTrack(TYPE_VIDEO, TRACK_DISABLED);
-      blockingClearSurface();
-    } else {
-      setSelectedTrack(TYPE_VIDEO, videoTrackToRestore);
-    }
-  }
-
-  public void prepare() {
-    if (rendererBuildingState == RENDERER_BUILDING_STATE_BUILT) {
-      player.stop();
-    }
-    rendererBuilder.cancel();
-    videoFormat = null;
-    videoRenderer = null;
-    rendererBuildingState = RENDERER_BUILDING_STATE_BUILDING;
-    maybeReportPlayerState();
-    rendererBuilder.buildRenderers(this);
   }
 
   /**
@@ -335,14 +265,6 @@ public class DemoPlayer implements ExoPlayer.Listener, ChunkSampleSource.EventLi
     maybeReportPlayerState();
   }
 
-  public void setPlayWhenReady(boolean playWhenReady) {
-    player.setPlayWhenReady(playWhenReady);
-  }
-
-  public void seekTo(long positionMs) {
-    player.seekTo(positionMs);
-  }
-
   public void release() {
     rendererBuilder.cancel();
     rendererBuildingState = RENDERER_BUILDING_STATE_IDLE;
@@ -385,14 +307,6 @@ public class DemoPlayer implements ExoPlayer.Listener, ChunkSampleSource.EventLi
 
   public long getDuration() {
     return player.getDuration();
-  }
-
-  public int getBufferedPercentage() {
-    return player.getBufferedPercentage();
-  }
-
-  public boolean getPlayWhenReady() {
-    return player.getPlayWhenReady();
   }
 
   /* package */ Looper getPlaybackLooper() {
