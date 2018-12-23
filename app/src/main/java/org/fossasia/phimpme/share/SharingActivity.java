@@ -118,9 +118,6 @@ import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FLICKR;
 
-//import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.ONEDRIVE;
-//import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.GOOGLEDRIVE;
-
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.OTHERS;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTER;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
