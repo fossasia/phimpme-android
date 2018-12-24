@@ -119,6 +119,7 @@ public class TrashBinActivity extends ThemedActivity {
         Realm realm = Realm.getDefaultInstance();
         securityObj = new SecurityHelper(TrashBinActivity.this);
         trashBinRealmModelRealmQuery = realm.where(TrashBinRealmModel.class);
+        emptyIcon.setColorFilter(getPrimaryColor());
         ArrayList<TrashBinRealmModel> trashlist = getTrashObjects();
         trashBinAdapter = new TrashBinAdapter(trashlist, basicCallBack);
         if (trashlist.size() == 0) {
