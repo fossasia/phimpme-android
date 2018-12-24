@@ -42,6 +42,7 @@
               android:layout_marginRight="20dp"
               android:gravity="center"
               android:textSize="20dp"
+              android:textStyle="bold"
               android:text="@string/empty_trashbin_mssg"/>
 
     <TextView android:layout_width="wrap_content"
@@ -50,6 +51,7 @@
               android:layout_marginLeft="20dp"
               android:layout_marginRight="20dp"
               android:layout_marginTop="10dp"
+              android:gravity="center"
               android:textSize="18dp"
               android:layout_below="@id/trash_text"
               android:text="@string/trashbin_mssg"/>
