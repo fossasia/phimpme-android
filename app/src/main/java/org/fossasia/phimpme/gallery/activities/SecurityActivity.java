@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -317,7 +318,7 @@ public class SecurityActivity extends ThemedActivity {
         setCursorDrawableColor(securityQuestion, getTextColor());
         passwordDialog.setView(PasswordDialogLayout);
 
-        AlertDialog dialog = passwordDialog.create();
+        final AlertDialog dialog = passwordDialog.create();
         dialog.setCancelable(false);
 
         dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
@@ -325,46 +326,60 @@ public class SecurityActivity extends ThemedActivity {
             public void onClick(DialogInterface dialog, int which) {
                 swActiveSecurity.setChecked(false);
                 SP.putBoolean(getString(R.string.preference_use_password), false);
+                dialog.dismiss();
             }
         });
 
-        dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                boolean changed = false;
-
-                if (editTextPassword.length() > 3) {
-                    if (editTextPassword.getText().toString().equals(editTextConfirmPassword.getText().toString())) {
-                        if(securityQuestion.getText().length() == 0){
-                            Toast.makeText(getApplicationContext(), "Please enter security question", Toast.LENGTH_SHORT)
-                                    .show();
-                        }
-                        if (securityAnswer1.getText().length() == 0) {
-                            Toast.makeText(getApplicationContext(), "Security question cannot be empty.", Toast.LENGTH_SHORT)
-                                    .show();
-                        } else {
-                            SP.putString(getString(R.string.preference_password_value), editTextPassword.getText().toString());
-                            SP.putString(getString(R.string.security_question), securityQuestion.getText().toString());
-                            SP.putString(getString(R.string.security_answer), securityAnswer1.getText().toString());
-                            securityObj.updateSecuritySetting();
-                            SnackBarHandler.show(llroot, R.string.remember_password_message);
-                            changed = true;
-                            Toast.makeText(getApplicationContext(), "Password Set", Toast.LENGTH_SHORT)
-                                    .show();
-                        }
-
-                    } else
-                        SnackBarHandler.show(llroot, R.string.password_dont_match);
-                } else
-                    SnackBarHandler.show(llroot, R.string.error_password_length);
-
-                swActiveSecurity.setChecked(changed);
-                SP.putBoolean(getString(R.string.preference_use_password), changed);
-                toggleEnabledChild(changed);
-            }
-        });
-
+        dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.ok_action).toUpperCase(), (DialogInterface.OnClickListener) null);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                Button b = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        boolean changed = false;
+
+                        if (editTextPassword.length() > 3) {
+                            if (editTextPassword.getText().toString().equals(editTextConfirmPassword.getText().toString())) {
+                                if (securityQuestion.getText().length() != 0) {
+                                    if (securityAnswer1.getText().length() != 0) {
+                                        SP.putString(getString(R.string.preference_password_value), editTextPassword.getText().toString());
+                                        SP.putString(getString(R.string.security_question), securityQuestion.getText().toString());
+                                        SP.putString(getString(R.string.security_answer), securityAnswer1.getText().toString());
+                                        securityObj.updateSecuritySetting();
+                                        SnackBarHandler.show(llroot, R.string.remember_password_message);
+                                        changed = true;
+                                        dialog.dismiss();
+                                        Toast.makeText(getApplicationContext(), "Password Set", Toast.LENGTH_SHORT)
+                                                .show();
+                                        swActiveSecurity.setChecked(changed);
+                                        SP.putBoolean(getString(R.string.preference_use_password), changed);
+                                        toggleEnabledChild(changed);
+                                    }else{
+                                        securityAnswer1.requestFocus();
+                                        securityAnswer1.setError(getString(R.string.security_ans_empty));
+                                    }
+                                }else{
+                                    securityQuestion.requestFocus();
+                                    securityQuestion.setError(getString(R.string.security_ques_empty));
+                                }
+                            } else{
+                                editTextConfirmPassword.requestFocus();
+                                editTextConfirmPassword.setError(getString(R.string.password_dont_match));
+                        }
+                    } else {
+                        editTextPassword.requestFocus();
+                        editTextPassword.setError(getString( R.string.error_password_length));
+                    }
+                    }
+                });
+            }
+
+            });
+
         dialog.show();
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), dialog);
     }
@@ -383,6 +398,7 @@ public class SecurityActivity extends ThemedActivity {
         final EditText securityAnswer1 = (EditText) PasswordDialogLayout.findViewById(R.id.security_answer_edittext);
         final EditText securityQuestion = (EditText) PasswordDialogLayout.findViewById(R.id.security_question_edittext);
         editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        checkBox.setButtonTintList(ColorStateList.valueOf(getAccentColor()));
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(!b){
@@ -447,45 +463,60 @@ public class SecurityActivity extends ThemedActivity {
         setCursorDrawableColor(securityQuestion, getTextColor());
         passwordDialog.setView(PasswordDialogLayout);
 
-        AlertDialog dialog = passwordDialog.create();
+        final AlertDialog dialog = passwordDialog.create();
         dialog.setCancelable(false);
         dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-             // nothing is done.
+                dialog.dismiss();
             }
         });
-        dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (editTextPassword.length() > 3) {
-                   if (editTextPassword.getText().toString().equals(editTextConfirmPassword.getText().toString())) {
-                       if (!editTextPassword.getText().toString().equals(SP.getString(getString(R.string.preference_password_value),"")))   {
-                           if(securityQuestion.getText().length() == 0){
-                               Toast.makeText(getApplicationContext(), "Security question cannot be empty.", Toast.LENGTH_SHORT)
-                                       .show();
-                           }
-                           if (securityAnswer1.getText().length() == 0) {
-                               Toast.makeText(getApplicationContext(), "Security answer cannot be empty.", Toast.LENGTH_SHORT)
-                                       .show();
-                           } else {
-                               SP.putString(getString(R.string.preference_password_value), editTextPassword.getText().toString());
-                               SP.putString(getString(R.string.security_question), securityQuestion.getText().toString());
-                               SP.putString(getString(R.string.security_answer), securityAnswer1.getText().toString());
-                               SnackBarHandler.show(llroot, R.string.remember_password_message);
-                               securityObj.updateSecuritySetting();
-                               Toast.makeText(getApplicationContext(), "Password Changed", Toast.LENGTH_SHORT)
-                                       .show();
+         dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.ok_action).toUpperCase(), (DialogInterface.OnClickListener) null);
+         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+             @Override
+             public void onShow(DialogInterface dialogInterface) {
+                 Button b = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                 b.setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View view) {
+
+                         if (editTextPassword.length() > 3) {
+                             if (editTextPassword.getText().toString().equals(editTextConfirmPassword.getText().toString())) {
+                                 if (securityQuestion.getText().length() != 0) {
+                                     if (securityAnswer1.getText().length() != 0) {
+                                         SP.putString(getString(R.string.preference_password_value), editTextPassword.getText().toString());
+                                         SP.putString(getString(R.string.security_question), securityQuestion.getText().toString());
+                                         SP.putString(getString(R.string.security_answer), securityAnswer1.getText().toString());
+                                         securityObj.updateSecuritySetting();
+                                         SnackBarHandler.show(llroot, R.string.remember_password_message);
+                                         dialog.dismiss();
+                                         Toast.makeText(getApplicationContext(), "Password Changed", Toast.LENGTH_SHORT)
+                                                 .show();
+
+                                         }else{
+                                         securityAnswer1.requestFocus();
+                                         securityAnswer1.setError(getString(R.string.security_ans_empty));
+                                     }
+                                 }else{
+                                     securityQuestion.requestFocus();
+                                     securityQuestion.setError(getString(R.string.security_ques_empty));
                                  }
-                       }else
-                           SnackBarHandler.show(llroot, R.string.error_password_match);
-                    } else
-                       SnackBarHandler.show(llroot, R.string.password_dont_match);
-                } else
-                    SnackBarHandler.show(llroot, R.string.error_password_length);
-            }
-        });
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+                             } else{
+                                 editTextConfirmPassword.requestFocus();
+                                 editTextConfirmPassword.setError(getString(R.string.password_dont_match));
+                             }
+                         } else {
+                             editTextPassword.requestFocus();
+                             editTextPassword.setError(getString( R.string.error_password_length));
+                         }
+                     }
+                 });
+             }
+
+         });
+
         dialog.show();
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), dialog);
     }
