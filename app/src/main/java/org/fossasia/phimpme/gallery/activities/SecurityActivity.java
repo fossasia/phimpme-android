@@ -234,6 +234,7 @@ public class SecurityActivity extends ThemedActivity {
         final AlertDialog.Builder passwordDialog = new AlertDialog.Builder(SecurityActivity.this, getDialogStyle());
         final View PasswordDialogLayout = getLayoutInflater().inflate(R.layout.dialog_set_password, null);
         final TextView passwordDialogTitle = (TextView) PasswordDialogLayout.findViewById(R.id.password_dialog_title);
+        final TextView security_title = (TextView) PasswordDialogLayout.findViewById(R.id.security_question_title);
         final CheckBox checkBox = (CheckBox) PasswordDialogLayout.findViewById(R.id.set_password_checkbox);
         checkBox.setText(getResources().getString(R.string.show_password));
         checkBox.setTextColor(getTextColor());
@@ -298,7 +299,6 @@ public class SecurityActivity extends ThemedActivity {
         passwordDialogTitle.setText(R.string.type_password);
         passwordDialogTitle.setBackgroundColor(getPrimaryColor());
         passwordDialogCard.setBackgroundColor(getCardBackgroundColor());
-
         editTextPassword.getBackground().mutate().setColorFilter(getTextColor(), PorterDuff.Mode.SRC_ATOP);
         editTextPassword.setTextColor(getTextColor());
         editTextPassword.setHintTextColor(getSubTextColor());
@@ -307,6 +307,7 @@ public class SecurityActivity extends ThemedActivity {
         editTextConfirmPassword.setTextColor(getTextColor());
         editTextConfirmPassword.setHintTextColor(getSubTextColor());
         setCursorDrawableColor(editTextConfirmPassword, getTextColor());
+        security_title.setTextColor(getTextColor());
         securityAnswer1.getBackground().mutate().setColorFilter(getTextColor(), PorterDuff.Mode.SRC_ATOP);
         securityAnswer1.setTextColor(getTextColor());
         securityAnswer1.setHintTextColor(getSubTextColor());
@@ -373,6 +374,7 @@ public class SecurityActivity extends ThemedActivity {
         final AlertDialog.Builder passwordDialog = new AlertDialog.Builder(SecurityActivity.this, getDialogStyle());
         final View PasswordDialogLayout = getLayoutInflater().inflate(R.layout.dialog_set_password, null);
         final TextView passwordDialogTitle = (TextView) PasswordDialogLayout.findViewById(R.id.password_dialog_title);
+        final TextView security_title = (TextView) PasswordDialogLayout.findViewById(R.id.security_question_title);
         CheckBox checkBox = (CheckBox) PasswordDialogLayout.findViewById(R.id.set_password_checkbox);
         checkBox.setText(getResources().getString(R.string.show_password));
         checkBox.setTextColor(getTextColor());
@@ -437,6 +439,7 @@ public class SecurityActivity extends ThemedActivity {
         editTextConfirmPassword.setTextColor(getTextColor());
         editTextConfirmPassword.setHintTextColor(getSubTextColor());
         setCursorDrawableColor(editTextConfirmPassword, getTextColor());
+        security_title.setTextColor(getTextColor());
         securityAnswer1.getBackground().mutate().setColorFilter(getTextColor(), PorterDuff.Mode.SRC_ATOP);
         securityAnswer1.setTextColor(getTextColor());
         securityAnswer1.setHintTextColor(getSubTextColor());
