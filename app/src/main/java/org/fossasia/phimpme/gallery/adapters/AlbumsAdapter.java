@@ -32,7 +32,6 @@ import org.fossasia.phimpme.gallery.data.Media;
 import org.fossasia.phimpme.gallery.util.ColorPalette;
 import org.fossasia.phimpme.gallery.util.PreferenceUtil;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
-import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 
 import java.util.ArrayList;
 

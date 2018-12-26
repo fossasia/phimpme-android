@@ -31,7 +31,6 @@ import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 import static android.content.Context.CLIPBOARD_SERVICE;
-import static org.fossasia.phimpme.utilities.Constants.PACKAGE_GOOGLEPLUS;
 import static org.fossasia.phimpme.utilities.Constants.PACKAGE_INSTAGRAM;
 import static org.fossasia.phimpme.utilities.Constants.PACKAGE_MESSENGER;
 import static org.fossasia.phimpme.utilities.Constants.PACKAGE_SNAPCHAT;
