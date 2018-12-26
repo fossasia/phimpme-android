@@ -28,7 +28,7 @@ public class FastBitmapDrawable extends Drawable implements IBitmapDrawable {
 		mPaint.setDither( true );
 		mPaint.setFilterBitmap( true );
 	}
-	
+
 	public FastBitmapDrawable( Resources res, InputStream is ){
 		this(BitmapFactory.decodeStream(is));
 	}
@@ -72,7 +72,7 @@ public class FastBitmapDrawable extends Drawable implements IBitmapDrawable {
 	public int getMinimumHeight() {
 		return mBitmap.getHeight();
 	}
-	
+
 	public void setAntiAlias( boolean value ){
 		mPaint.setAntiAlias( value );
 		invalidateSelf();
