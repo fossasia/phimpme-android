@@ -3,6 +3,8 @@ package org.fossasia.phimpme.accounts;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
@@ -214,6 +216,11 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
     @Override
     public void onItemClick(final View childView, final int position) {
+        ConnectivityManager cm=(ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        if (ni == null) {
+           Toast.makeText(AccountActivity.this,getString(R.string.internet_is_off),Toast.LENGTH_SHORT).show();
+        }
         final SwitchCompat signInSignOut = (SwitchCompat) childView.findViewById(R.id.sign_in_sign_out_switch);
         final String name = AccountDatabase.AccountName.values()[position].toString();
 
