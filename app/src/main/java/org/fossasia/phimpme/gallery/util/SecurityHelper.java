@@ -263,10 +263,12 @@ public class SecurityHelper {
         passwordDialogCard.setBackgroundColor(activity.getCardBackgroundColor());
         editTextPassword.getBackground().mutate().setColorFilter(activity.getTextColor(), PorterDuff.Mode.SRC_ATOP);
         editTextPassword.setTextColor(activity.getTextColor());
+        editTextPassword.setHint(R.string.new_password);
         editTextPassword.setHintTextColor(activity.getSubTextColor());
         activity.setCursorDrawableColor(editTextPassword, activity.getTextColor());
         editTextConfirmPassword.getBackground().mutate().setColorFilter(activity.getTextColor(), PorterDuff.Mode.SRC_ATOP);
         editTextConfirmPassword.setTextColor(activity.getTextColor());
+        editTextConfirmPassword.setHint(R.string.confirm_new_password);
         editTextConfirmPassword.setHintTextColor(activity.getSubTextColor());
         activity.setCursorDrawableColor(editTextConfirmPassword, activity.getTextColor());
         securityAnswer1.getBackground().mutate().setColorFilter(activity.getTextColor(), PorterDuff.Mode.SRC_ATOP);
