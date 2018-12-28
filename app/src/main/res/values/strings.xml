@@ -1018,6 +1018,7 @@
     <string name="share">share</string>
 
     <!--ACCOUNTS-->
+    <string name="internet_is_off">You are not connected to the internet</string>
     <!--TWITTER-->
     <string name="already_signed_in">Already signed In</string>
     <string name="drawable">drawable</string>
