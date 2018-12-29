@@ -619,6 +619,7 @@ public class LFMainActivity extends SharedMediaActivity {
         public void onClick(View v) {
             fromOnClick = true;
             final Album album = (Album) v.findViewById(R.id.album_name).getTag();
+            showAppBar();
             //int index = Integer.parseInt(v.findViewById(R.id.album_name).getTag().toString());
             if (editMode) {
                 albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(album));
@@ -715,6 +716,12 @@ public class LFMainActivity extends SharedMediaActivity {
         AppBarLayout.LayoutParams params = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
         params.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
                 | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
+    }
+
+    private void showAppBar() {
+        if (toolbar.getParent() instanceof AppBarLayout) {
+            ((AppBarLayout)toolbar.getParent()).setExpanded(true, true);
+        }
     }
 
     public int getImagePosition(String path) {
