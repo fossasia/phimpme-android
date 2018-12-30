@@ -100,6 +100,7 @@ public class SecurityHelper {
         checkBox.setText(context.getResources().getString(R.string.show_password));
         checkBox.setButtonTintList(ColorStateList.valueOf(activity.getAccentColor()));
         checkBox.setTextColor(activity.getTextColor());
+        forgot_password.setTextColor(activity.getTextColor());
         editxtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -150,6 +151,7 @@ public class SecurityHelper {
         passwordDialogTitle.setBackgroundColor(activity.getPrimaryColor());
         passwordDialogCard.setBackgroundColor(activity.getCardBackgroundColor());
         securityQuestion.setText(question);
+        securityQuestion.setTextColor(activity.getTextColor());
         securityAnswer1.getBackground().mutate().setColorFilter(activity.getTextColor(), PorterDuff.Mode.SRC_ATOP);
         securityAnswer1.setTextColor(activity.getTextColor());
         securityAnswer1.setHintTextColor(activity.getSubTextColor());
@@ -195,6 +197,7 @@ public class SecurityHelper {
         final PreferenceUtil SP = PreferenceUtil.getInstance(context);
         final View PasswordDialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_set_password, null);
         final TextView passwordDialogTitle = (TextView) PasswordDialogLayout.findViewById(R.id.password_dialog_title);
+        final TextView security_title = (TextView) PasswordDialogLayout.findViewById(R.id.security_question_title);
         CheckBox checkBox = (CheckBox) PasswordDialogLayout.findViewById(R.id.set_password_checkbox);
         checkBox.setText(activity.getResources().getString(R.string.show_password));
         checkBox.setTextColor(activity.getTextColor());
@@ -271,6 +274,7 @@ public class SecurityHelper {
         editTextConfirmPassword.setHint(R.string.confirm_new_password);
         editTextConfirmPassword.setHintTextColor(activity.getSubTextColor());
         activity.setCursorDrawableColor(editTextConfirmPassword, activity.getTextColor());
+        security_title.setTextColor(activity.getTextColor());
         securityAnswer1.getBackground().mutate().setColorFilter(activity.getTextColor(), PorterDuff.Mode.SRC_ATOP);
         securityAnswer1.setTextColor(activity.getTextColor());
         securityAnswer1.setHintTextColor(activity.getSubTextColor());
