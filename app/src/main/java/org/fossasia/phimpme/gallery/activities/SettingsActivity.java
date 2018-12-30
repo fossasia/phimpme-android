@@ -749,22 +749,15 @@ public class SettingsActivity extends ThemedActivity {
 
         final View dialogLayout = getLayoutInflater().inflate(R.layout.color_piker_accent, null);
         final LineColorPicker colorPicker = (LineColorPicker) dialogLayout.findViewById(R.id.color_picker_accent);
+        final LineColorPicker colorPicker2=(LineColorPicker)dialogLayout.findViewById(R.id.color_picker_accent_2);
         final TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.cp_accent_title);
         CardView cv = (CardView) dialogLayout.findViewById(R.id.cp_accent_card);
         cv.setCardBackgroundColor(getCardBackgroundColor());
 
-        colorPicker.setColors(ColorPalette.getAccentColors(getApplicationContext()));
-        colorPicker.setSelectedColor(getAccentColor());
+       setColor2(colorPicker,colorPicker2,dialogTitle);
         dialogTitle.setBackgroundColor(getAccentColor());
 
-        colorPicker.setOnColorChangedListener(new OnColorChangedListener() {
-            @Override
-            public void onColorChanged(int c) {
-                dialogTitle.setBackgroundColor(c);
-                updateViewswithAccentColor(colorPicker.getColor());
 
-            }
-        });
         dialogBuilder.setView(dialogLayout);
 
         dialogBuilder.setNeutralButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
@@ -776,7 +769,7 @@ public class SettingsActivity extends ThemedActivity {
         });
         dialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                SP.putInt(getString(R.string.preference_accent_color), colorPicker.getColor());
+                SP.putInt(getString(R.string.preference_accent_color), colorPicker2.getColor());
                 updateTheme();
                 updateViewswithAccentColor(getAccentColor());
             }
@@ -790,6 +783,35 @@ public class SettingsActivity extends ThemedActivity {
         AlertDialog alertDialog = dialogBuilder.create();
         alertDialog.show();
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE, DialogInterface.BUTTON_NEUTRAL}, getAccentColor(), alertDialog);
+    }
+    private void setColor2(final LineColorPicker colorPicker, final LineColorPicker colorPicker2, final TextView dialogTitle) {
+        colorPicker.setColors(ColorPalette.getBaseColors(getApplicationContext()));
+        for (int i : colorPicker.getColors())
+            for (int i2 : ColorPalette.getColors(getBaseContext(), i))
+                if (i2 == getAccentColor()) {
+                    colorPicker.setSelectedColor(i);
+                    colorPicker2.setColors(ColorPalette.getColors(getBaseContext(), i));
+                    colorPicker2.setSelectedColor(i2);
+                    break;}
+
+        dialogTitle.setBackgroundColor(getPrimaryColor());
+
+        colorPicker.setOnColorChangedListener(new OnColorChangedListener() {
+            @Override
+            public void onColorChanged(int c) {
+                dialogTitle.setBackgroundColor(c);
+                updateViewswithAccentColor(c);
+                colorPicker2.setColors(ColorPalette.getColors(getApplicationContext(), colorPicker.getColor()));
+                colorPicker2.setSelectedColor(colorPicker.getColor());
+            }
+        });
+        colorPicker2.setOnColorChangedListener(new OnColorChangedListener() {
+            @Override
+            public void onColorChanged(int c) {
+                dialogTitle.setBackgroundColor(c);
+                updateViewswithAccentColor(c);
+            }
+        });
     }
 
     private void customizePictureViewer(){
