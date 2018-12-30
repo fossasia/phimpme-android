@@ -724,11 +724,13 @@
     <string name="security">Security</string>
     <string name="active_security">Access by password</string>
     <string name="password">Password</string>
+    <string name="new_password">New Password</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="security_answer">Security Answer</string>
     <string name="security_question">Security Question</string>
     <string name="enter_password">Enter your password</string>
     <string name="confirm_password">Confirm password</string>
+    <string name="confirm_new_password">Confirm New password</string>
     <string name="wrong_password">Wrong password</string>
     <string name="show_password">Show Password</string>
 

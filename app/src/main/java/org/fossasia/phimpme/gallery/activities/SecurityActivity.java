@@ -301,10 +301,12 @@ public class SecurityActivity extends ThemedActivity {
 
         editTextPassword.getBackground().mutate().setColorFilter(getTextColor(), PorterDuff.Mode.SRC_ATOP);
         editTextPassword.setTextColor(getTextColor());
+        editTextPassword.setHint(R.string.password);
         editTextPassword.setHintTextColor(getSubTextColor());
         setCursorDrawableColor(editTextPassword, getTextColor());
         editTextConfirmPassword.getBackground().mutate().setColorFilter(getTextColor(), PorterDuff.Mode.SRC_ATOP);
         editTextConfirmPassword.setTextColor(getTextColor());
+        editTextConfirmPassword.setHint(R.string.confirm_password);
         editTextConfirmPassword.setHintTextColor(getSubTextColor());
         setCursorDrawableColor(editTextConfirmPassword, getTextColor());
         securityAnswer1.getBackground().mutate().setColorFilter(getTextColor(), PorterDuff.Mode.SRC_ATOP);
@@ -431,10 +433,12 @@ public class SecurityActivity extends ThemedActivity {
         passwordDialogCard.setBackgroundColor(getCardBackgroundColor());
         editTextPassword.getBackground().mutate().setColorFilter(getTextColor(), PorterDuff.Mode.SRC_ATOP);
         editTextPassword.setTextColor(getTextColor());
+        editTextPassword.setHint(R.string.new_password);
         editTextPassword.setHintTextColor(getSubTextColor());
         setCursorDrawableColor(editTextPassword, getTextColor());
         editTextConfirmPassword.getBackground().mutate().setColorFilter(getTextColor(), PorterDuff.Mode.SRC_ATOP);
         editTextConfirmPassword.setTextColor(getTextColor());
+        editTextConfirmPassword.setHint(R.string.confirm_new_password);
         editTextConfirmPassword.setHintTextColor(getSubTextColor());
         setCursorDrawableColor(editTextConfirmPassword, getTextColor());
         securityAnswer1.getBackground().mutate().setColorFilter(getTextColor(), PorterDuff.Mode.SRC_ATOP);
