@@ -2070,13 +2070,16 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     slideshow = true;
                     int intValue = Integer.parseInt(value);
                     SLIDE_SHOW_INTERVAL = intValue * 1000;
-                    if (SLIDE_SHOW_INTERVAL > 1000) {
+                    if (SLIDE_SHOW_INTERVAL > 1000 && SLIDE_SHOW_INTERVAL <= 10000) {
                         hideSystemUI();
                         Toast.makeText(SingleMediaActivity.this, getString(R.string.slide_start), Toast.LENGTH_SHORT).show();
 
                         handler.postDelayed(slideShowRunnable, SLIDE_SHOW_INTERVAL);
-                    } else
+                    } else if (SLIDE_SHOW_INTERVAL < 1000) {
                         Toast.makeText(SingleMediaActivity.this, getString(R.string.min_duration_slide), Toast.LENGTH_SHORT).show();
+                    } else if (SLIDE_SHOW_INTERVAL > 10000) {
+                        Toast.makeText(SingleMediaActivity.this, getString(R.string.slide_max_value), Toast.LENGTH_SHORT).show();
+                    }
                 }
 
             }
