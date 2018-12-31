@@ -719,6 +719,7 @@
     <string name="Images">Images</string>
     <string name="app_intro_skip">Introduction Skipped!</string>
     <string name="preference_BottomNavColor">Get Bottom Navigation Bar Color</string>
+    <string name="settings_reset">Settings Reset!</string>
 
     <!-- SECURITY-->
     <string name="security">Security</string>
