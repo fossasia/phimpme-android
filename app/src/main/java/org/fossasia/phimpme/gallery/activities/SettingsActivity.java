@@ -404,6 +404,7 @@ public class SettingsActivity extends ThemedActivity {
     }
 
     private void askPasswordDialog() {
+        final short max_password_length = 128;
         final boolean[] passco = {false};
         AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
         final EditText editTextPassword  = securityObj.getInsertPasswordDialog(SettingsActivity.this,passwordDialogBuilder);
@@ -427,9 +428,9 @@ public class SettingsActivity extends ThemedActivity {
                 else{
                     passco[0]=false;
                 }
-                if(editable.length() == 11) {
-                    editTextPassword.setText(editable.toString().substring(0, 10));
-                    editTextPassword.setSelection(10);
+                if(editable.length() == max_password_length) {
+                    editTextPassword.setText(editable.toString().substring(0, max_password_length-1));
+                    editTextPassword.setSelection(max_password_length-1);
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.max_password_length), Toast.LENGTH_SHORT)
                             .show();
                 }
@@ -1008,6 +1009,8 @@ public class SettingsActivity extends ThemedActivity {
 
     private void resetSettingsDialog() {
 
+        final short max_password_length = 128;
+
         final AlertDialog.Builder resetDialog = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
 
         AlertDialogsHelper.getTextDialog(SettingsActivity.this,resetDialog,
@@ -1040,9 +1043,9 @@ public class SettingsActivity extends ThemedActivity {
                             else{
                                 passco[0]=false;
                             }
-                            if(editable.length() == 11) {
-                                editTextPassword.setText(editable.toString().substring(0, 10));
-                                editTextPassword.setSelection(10);
+                            if(editable.length() == max_password_length) {
+                                editTextPassword.setText(editable.toString().substring(0, max_password_length-1));
+                                editTextPassword.setSelection(max_password_length-1);
                                 Toast.makeText(getApplicationContext(), getResources().getString(R.string.max_password_length), Toast.LENGTH_SHORT)
                                         .show();
                             }
