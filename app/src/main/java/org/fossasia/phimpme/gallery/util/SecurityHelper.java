@@ -196,6 +196,7 @@ public class SecurityHelper {
     }
 
     public void changePassword(final ThemedActivity activity, final AlertDialog.Builder passwordDialog) {
+        final short max_password_length = 128;
         final PreferenceUtil SP = PreferenceUtil.getInstance(context);
         final View PasswordDialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_set_password, null);
         final TextView passwordDialogTitle = (TextView) PasswordDialogLayout.findViewById(R.id.password_dialog_title);
@@ -235,9 +236,9 @@ public class SecurityHelper {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (editable.length() == 11) {
-                    editTextConfirmPassword.setText(editable.toString().substring(0, 10));
-                    editTextConfirmPassword.setSelection(10);
+                if (editable.length() == max_password_length) {
+                    editTextConfirmPassword.setText(editable.toString().substring(0, max_password_length-1));
+                    editTextConfirmPassword.setSelection(max_password_length-1);
                     Toast.makeText(activity.getApplicationContext(), activity.getResources().getString(R.string.max_password_length), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -255,9 +256,9 @@ public class SecurityHelper {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                if (editable.length() == 11) {
-                    editTextPassword.setText(editable.toString().substring(0, 10));
-                    editTextPassword.setSelection(10);
+                if (editable.length() == max_password_length) {
+                    editTextPassword.setText(editable.toString().substring(0, max_password_length-1));
+                    editTextPassword.setSelection(max_password_length-1);
                     Toast.makeText(activity.getApplicationContext(), activity.getResources().getString(R.string.max_password_length), Toast.LENGTH_SHORT)
                             .show();
                 }
