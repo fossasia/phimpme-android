@@ -7,6 +7,10 @@ buildscript {
         jcenter()
         maven { url 'https://jitpack.io' }
 
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.3'
@@ -24,11 +28,15 @@ allprojects {
         maven { url "https://repo1.maven.org/maven2" }
         maven { url  "https://dl.bintray.com/dasar/maven" }
         maven { url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo' }
+        maven {
+            url 'https://maven.google.com/'
+            name 'Google'
+        }
     }
 }
 
 ext {
-    supportLibraryVersion = '25.3.1'
+    supportLibraryVersion = '26.1.0'
     butterknifeVersion = '8.6.0'
     junitVersion = "4.12"
     twitterVersion = "3.0.0"
