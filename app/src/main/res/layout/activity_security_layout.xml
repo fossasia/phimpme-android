@@ -265,7 +265,7 @@
 
                 <!--FOLDER ACTION-->
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                              android:id="@+id/ll_security_body_apply_delete"
+                              android:id="@+id/ll_security_body_apply_folder"
                               android:layout_width="match_parent"
                               android:layout_height="wrap_content"
                               android:orientation="horizontal">
