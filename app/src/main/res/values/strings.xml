@@ -758,6 +758,9 @@
     <string name="error_password_match">New password matches to the previous password. Please set another password.</string>
     <string name="wrong_answer">Wrong Answer</string>
     <string name="max_password_length">The password length cannot be more than 10 characters</string>
+    <string name="error_password_match">New password matches to the previous password. Please set another password.
+    </string>
+    <string name="max_password_length">The password length cannot be more than 128 characters</string>
 
     <!-- SETTINGS -->
     <string name="settings">Settings</string>

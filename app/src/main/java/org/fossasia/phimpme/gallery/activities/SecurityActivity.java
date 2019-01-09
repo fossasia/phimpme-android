@@ -65,7 +65,6 @@ public class SecurityActivity extends ThemedActivity {
     public ArrayList<Album> albums;
     public ArrayList<String> securedfol = new ArrayList<>();
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -232,6 +231,7 @@ public class SecurityActivity extends ThemedActivity {
 
     private void setPasswordDialog() {
 
+        final short max_password_length = 128;
         final AlertDialog.Builder passwordDialog = new AlertDialog.Builder(SecurityActivity.this, getDialogStyle());
         final View PasswordDialogLayout = getLayoutInflater().inflate(R.layout.dialog_set_password, null);
         final TextView passwordDialogTitle = (TextView) PasswordDialogLayout.findViewById(R.id.password_dialog_title);
@@ -270,9 +270,9 @@ public class SecurityActivity extends ThemedActivity {
             }
 
             @Override public void afterTextChanged(Editable editable) {
-                if(editable.length() == 11) {
-                    editTextConfirmPassword.setText(editable.toString().substring(0, 10));
-                    editTextConfirmPassword.setSelection(10);
+                if(editable.length() == max_password_length) {
+                    editTextConfirmPassword.setText(editable.toString().substring(0, max_password_length-1));
+                    editTextConfirmPassword.setSelection(max_password_length-1);
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.max_password_length), Toast.LENGTH_SHORT)
                             .show();
                 }
@@ -288,9 +288,9 @@ public class SecurityActivity extends ThemedActivity {
             }
 
             @Override public void afterTextChanged(Editable editable) {
-                if(editable.length() == 11) {
-                    editTextPassword.setText(editable.toString().substring(0, 10));
-                    editTextPassword.setSelection(10);
+                if(editable.length() == max_password_length) {
+                    editTextPassword.setText(editable.toString().substring(0, max_password_length-1));
+                    editTextPassword.setSelection(max_password_length-1);
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.max_password_length), Toast.LENGTH_SHORT)
                             .show();
                 }
@@ -388,6 +388,8 @@ public class SecurityActivity extends ThemedActivity {
     }
 
      private void changePasswordDialog() {
+
+        final short max_password_length = 128;
         final AlertDialog.Builder passwordDialog = new AlertDialog.Builder(SecurityActivity.this, getDialogStyle());
         final View PasswordDialogLayout = getLayoutInflater().inflate(R.layout.dialog_set_password, null);
         final TextView passwordDialogTitle = (TextView) PasswordDialogLayout.findViewById(R.id.password_dialog_title);
@@ -422,9 +424,9 @@ public class SecurityActivity extends ThemedActivity {
                 editTextConfirmPassword.setSelection(editTextConfirmPassword.getText().toString().length());
             }
             @Override public void afterTextChanged(Editable editable) {
-                if(editable.length() == 11) {
-                    editTextConfirmPassword.setText(editable.toString().substring(0, 10));
-                    editTextConfirmPassword.setSelection(10);
+                if(editable.length() == max_password_length) {
+                    editTextConfirmPassword.setText(editable.toString().substring(0, max_password_length-1));
+                    editTextConfirmPassword.setSelection(max_password_length-1);
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.max_password_length), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -438,9 +440,9 @@ public class SecurityActivity extends ThemedActivity {
                 editTextPassword.setSelection(editTextPassword.getText().toString().length());
             }
             @Override public void afterTextChanged(Editable editable) {
-                if(editable.length() == 11) {
-                    editTextPassword.setText(editable.toString().substring(0, 10));
-                    editTextPassword.setSelection(10);
+                if(editable.length() == max_password_length) {
+                    editTextPassword.setText(editable.toString().substring(0, max_password_length-1));
+                    editTextPassword.setSelection(max_password_length-1);
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.max_password_length), Toast.LENGTH_SHORT)
                             .show();
                 }
