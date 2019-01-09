@@ -192,6 +192,7 @@ public class SecurityActivity extends ThemedActivity {
                         }
                     });
                     ad.show();
+                    ad.setCanceledOnTouchOutside(false);
                     ad.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(getAccentColor());
                     ad.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getAccentColor());
                 }else{
