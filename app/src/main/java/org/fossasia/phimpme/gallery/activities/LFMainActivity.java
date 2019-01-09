@@ -1890,8 +1890,61 @@ public class LFMainActivity extends SharedMediaActivity {
 
             case R.id.all_photos:
                 if (!all_photos) {
-                    all_photos = true;
-                    displayAllMedia(true);
+                    boolean check_security_on_local = true;
+                    check_security_on_local = SP.getBoolean(getString(R.string.preference_use_password_on_folder), check_security_on_local);
+                    if(securityObj.isActiveSecurity() && check_security_on_local){
+                            final boolean[] passco = {false};
+                            AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
+                            final EditText editTextPassword = securityObj.getInsertPasswordDialog(LFMainActivity.this, passwordDialogBuilder);
+                            editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
+                            passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                            passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+                            editTextPassword.addTextChangedListener(new TextWatcher() {
+                                @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                    //empty method body
+                                }
+
+                                @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                    //empty method body
+                                }
+
+                                @Override public void afterTextChanged(Editable editable) {
+                                    if(securityObj.getTextInputLayout().getVisibility() == View.VISIBLE && !passco[0]){
+                                        securityObj.getTextInputLayout().setVisibility(View.INVISIBLE);
+                                    }
+                                    else{
+                                        passco[0]=false;
+                                    }
+                                }
+                            });
+                            final AlertDialog passwordDialog = passwordDialogBuilder.create();
+                            passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+                            passwordDialog.show();
+                            AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
+                            passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View
+                                    .OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (securityObj.checkPassword(editTextPassword.getText().toString())) {
+                                        all_photos = true;
+                                        displayAllMedia(true);
+                                        passwordDialog.dismiss();
+                                    } else {
+                                        passco[0] = true;
+                                        securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
+                                        editTextPassword.getText().clear();
+                                        editTextPassword.requestFocus();
+                                    }
+                                }
+                            });
+
+                    } else{
+                        all_photos = true;
+                        displayAllMedia(true);
+                    }
                 } else {
                     displayAlbums();
                 }
