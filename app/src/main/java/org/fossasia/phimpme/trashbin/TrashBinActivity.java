@@ -119,7 +119,6 @@ public class TrashBinActivity extends ThemedActivity {
         Realm realm = Realm.getDefaultInstance();
         securityObj = new SecurityHelper(TrashBinActivity.this);
         trashBinRealmModelRealmQuery = realm.where(TrashBinRealmModel.class);
-        emptyIcon.setColorFilter(getPrimaryColor());
         ArrayList<TrashBinRealmModel> trashlist = getTrashObjects();
         trashBinAdapter = new TrashBinAdapter(trashlist, basicCallBack);
         if (trashlist.size() == 0) {
@@ -451,8 +450,7 @@ public class TrashBinActivity extends ThemedActivity {
 
     private void setupToolbar(){
         setSupportActionBar(toolbar);
-        //toolbar.setTitle("Trash Bin");
-        getSupportActionBar().setTitle("Trash Bin");
+        getSupportActionBar().setTitle(getString(R.string.trash_bin));
         toolbar.setPopupTheme(getPopupToolbarStyle());
         toolbar.setBackgroundColor(getPrimaryColor());
         toolbar.setNavigationIcon(

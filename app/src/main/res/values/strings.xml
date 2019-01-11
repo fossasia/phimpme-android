@@ -5,6 +5,7 @@
     <string name="title_camera">Camera</string>
     <string name="title_account">Accounts</string>
     <string name="action_settings">Settings</string>
+    <string name="camera_options">Open camera to support all options.</string>
     <string name="action_popup">Popup settings</string>
     <string name="intro_text">Touch to focus, and press the blue camera button to take photos. For more help, click Online
         help from Settings. Open Camera is completely free. If you like this app, please consider buying my donate app :)
@@ -719,23 +720,15 @@
     <string name="Images">Images</string>
     <string name="app_intro_skip">Introduction Skipped!</string>
     <string name="preference_BottomNavColor">Get Bottom Navigation Bar Color</string>
-    <string name="settings_reset">Settings Reset!</string>
 
     <!-- SECURITY-->
     <string name="security">Security</string>
     <string name="active_security">Access by password</string>
     <string name="password">Password</string>
-    <string name="new_password">New Password</string>
-    <string name="forgot_password">Forgot Password</string>
-    <string name="security_answer">Security Answer</string>
-    <string name="security_question">Security Question</string>
     <string name="enter_password">Enter your password</string>
     <string name="confirm_password">Confirm password</string>
-    <string name="confirm_new_password">Confirm New password</string>
     <string name="wrong_password">Wrong password</string>
     <string name="show_password">Show Password</string>
-    <string name="security_ans_empty">Security Answer cannot be empty</string>
-    <string name="security_ques_empty">Security Question cannot be empty</string>
 
     <string name="type_password">Insert password</string>
     <string name="change_password">Change password</string>
@@ -757,7 +750,7 @@
     <string name="error_password_length">The minimum password length is 4 character</string>
     <string name="error_password_match">New password matches to the previous password. Please set another password.
     </string>
-    <string name="max_password_length">The password length cannot be more than 128 characters</string>
+    <string name="max_password_length">The password length cannot be more than 10 characters</string>
 
     <!-- SETTINGS -->
     <string name="settings">Settings</string>
@@ -1023,7 +1016,6 @@
     <string name="share">share</string>
 
     <!--ACCOUNTS-->
-    <string name="internet_is_off">You are not connected to the internet</string>
     <!--TWITTER-->
     <string name="already_signed_in">Already signed In</string>
     <string name="drawable">drawable</string>
@@ -1350,9 +1342,6 @@
     <string name="replace">Replace</string>
 
     <string name="select_a_font">Select a Font</string>
-    <string name="min_duration_slide">Minimum duration is 2 sec</string>
-    <string name="slide_start">Slideshow Started!</string>
-    <string name="slide_max_value">Maximum duration is 10 sec</string>
 
     <!-- Photo deletion toast messages -->
     <string name="photo_deleted_msg">Photo deleted</string>
