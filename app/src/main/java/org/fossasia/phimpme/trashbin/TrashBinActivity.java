@@ -452,7 +452,7 @@ public class TrashBinActivity extends ThemedActivity {
     private void setupToolbar(){
         setSupportActionBar(toolbar);
         //toolbar.setTitle("Trash Bin");
-        getSupportActionBar().setTitle("Trash Bin");
+        getSupportActionBar().setTitle(getString(R.string.trash_bin));
         toolbar.setPopupTheme(getPopupToolbarStyle());
         toolbar.setBackgroundColor(getPrimaryColor());
         toolbar.setNavigationIcon(

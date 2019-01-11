@@ -1138,6 +1138,7 @@
     <string name="say_cheese">say cheese</string>
     <string name="camera_rear">Rear Camera</string>
     <string name="camera_front">Front Camera</string>
+    <string name="camera_support_options">Open camera to support all options.</string>
 
     <!--NEXTCLOUD-->
     <string name="auth_check_server">Check server</string>
