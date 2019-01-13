@@ -1001,9 +1001,9 @@ public class SettingsActivity extends ThemedActivity {
     private void setToolbarCamera(Boolean isCamera){
         getSupportActionBar();
         if (isCamera)
-            toolbar.setTitle("Camera Settings");
+            toolbar.setTitle(getString(R.string.camera_setting_title));
         else
-            toolbar.setTitle("Settings");
+            toolbar.setTitle(getString(R.string.settings));
 
     }
 
@@ -1124,7 +1124,7 @@ public class SettingsActivity extends ThemedActivity {
         });
         final AlertDialog passwordDialog = passwordDialogBuilder.create();
         passwordDialog.setTitle(R.string.camera_setting_title);
-        passwordDialog.setMessage("Open camera to support all options.");
+        passwordDialog.setMessage(getString(R.string.camera_support_options));
         passwordDialog.show();
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
 
