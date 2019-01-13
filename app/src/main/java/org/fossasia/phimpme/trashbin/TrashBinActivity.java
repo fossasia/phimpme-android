@@ -200,6 +200,14 @@ public class TrashBinActivity extends ThemedActivity {
         setupToolbar();
         swipeRefreshLayout.setColorSchemeColors(getAccentColor());
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getBackgroundColor());
+        Realm realm = Realm.getDefaultInstance();
+        trashBinRealmModelRealmQuery = realm.where(TrashBinRealmModel.class);
+        if(getTrashObjects().size() == 0)
+        {
+            swipeRefreshLayout.setEnabled(false);
+        }
+        else
+            {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -209,6 +217,7 @@ public class TrashBinActivity extends ThemedActivity {
                 }
             }
         });
+        }
     }
 
         private int checkpos(String path){
@@ -289,6 +298,7 @@ public class TrashBinActivity extends ThemedActivity {
             swipeRefreshLayout.setRefreshing(false);
             super.onPostExecute(aVoid);
             if(deleted[0] && trashBinRealmModelRealmQuery.count() == 0){
+                swipeRefreshLayout.setEnabled(false);
                 emptyView.setVisibility(View.VISIBLE);
                 trashBinAdapter.setResults(getTrashObjects());
                 SnackBarHandler.showWithBottomMargin(parentView, getResources().getString(R.string.clear_all_success_mssg), 0, Snackbar.LENGTH_SHORT);
