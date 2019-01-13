@@ -52,6 +52,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -2055,46 +2056,55 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         slideshowDialog.setView(SlideshowDialogLayout);
 
         final AlertDialog dialog = slideshowDialog.create();
+        dialog.setCancelable(false);
         dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //do nothing
+                dialog.dismiss();
             }
         });
 
-        dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.ok).toUpperCase(), new DialogInterface.OnClickListener() {
+        dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.ok_action).toUpperCase(), (DialogInterface.OnClickListener) null);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String value = editTextTimeInterval.getText().toString();
-                if (!"".equals(value)) {
-                    slideshow = true;
-                    int intValue = Integer.parseInt(value);
-                    SLIDE_SHOW_INTERVAL = intValue * 1000;
-                    if (SLIDE_SHOW_INTERVAL > 1000 && SLIDE_SHOW_INTERVAL <= 10000) {
-                        hideSystemUI();
-                        Toast.makeText(SingleMediaActivity.this, getString(R.string.slide_start), Toast.LENGTH_SHORT).show();
-
-                        handler.postDelayed(slideShowRunnable, SLIDE_SHOW_INTERVAL);
-                    } else if (SLIDE_SHOW_INTERVAL < 1000) {
-                        Toast.makeText(SingleMediaActivity.this, getString(R.string.min_duration_slide), Toast.LENGTH_SHORT).show();
-                    } else if (SLIDE_SHOW_INTERVAL > 10000) {
-                        Toast.makeText(SingleMediaActivity.this, getString(R.string.slide_max_value), Toast.LENGTH_SHORT).show();
+            public void onShow(DialogInterface dialogInterface) {
+                Button b = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String value = editTextTimeInterval.getText().toString();
+                        if (!"".equals(value)) {
+                            slideshow = true;
+                            int intValue = Integer.parseInt(value);
+                            SLIDE_SHOW_INTERVAL = intValue * 1000;
+                            if (SLIDE_SHOW_INTERVAL > 1000 && SLIDE_SHOW_INTERVAL <= 10000) {
+                                dialog.dismiss();
+                                hideSystemUI();
+                                Toast.makeText(SingleMediaActivity.this, getString(R.string.slide_start), Toast.LENGTH_SHORT).show();
+                                handler.postDelayed(slideShowRunnable, SLIDE_SHOW_INTERVAL);
+                            } else if (SLIDE_SHOW_INTERVAL < 2000) {
+                                editTextTimeInterval.requestFocus();
+                                editTextTimeInterval.setError(getString(R.string.min_duration_slide));
+                            } else if (SLIDE_SHOW_INTERVAL > 10000) {
+                                editTextTimeInterval.requestFocus();
+                                editTextTimeInterval.setError(getString(R.string.slide_max_value));
+                            }
+                        }
                     }
-                }
-
+                });
             }
-
-
         });
         editTextTimeInterval.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//empty method
+                //empty method
             }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-//empty method
+                //empty method
             }
 
             @Override
@@ -2102,14 +2112,18 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 if (editTextTimeInterval.getText().toString().equals("")) {
                     dialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
                     dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.accent_grey));
-
-                } else {
+                }
+                else if(Integer.parseInt(editTextTimeInterval.getText().toString())>10 || Integer.parseInt(editTextTimeInterval.getText().toString())<2){
+                    editTextTimeInterval.requestFocus();
+                    editTextTimeInterval.setError(getString(R.string.time_limit));
+                    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
+                    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.accent_grey));
+                } else{
                     dialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(true);
                     dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getAccentColor());
                 }
             }
         });
-        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         dialog.show();
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), dialog);
 
