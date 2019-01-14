@@ -95,6 +95,7 @@
                     android:paddingBottom="13dp"
                     android:paddingTop="8dp"
                     android:weightSum="5"
+                    android:visibility="gone"
                     >
 
                     <LinearLayout
@@ -131,6 +132,7 @@
                     android:orientation="vertical"
                     android:paddingLeft="15dp"
                     android:paddingRight="15dp"
+                    android:visibility="gone"
                     >
                     <uz.shift.colorpicker.LineColorPicker
                         xmlns:app="http://schemas.android.com/apk/res-auto"

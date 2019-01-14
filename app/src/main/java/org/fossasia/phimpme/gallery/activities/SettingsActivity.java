@@ -25,8 +25,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -821,6 +823,8 @@ public class SettingsActivity extends ThemedActivity {
 
         View dialogLayout = getLayoutInflater().inflate(R.layout.dialog_media_viewer_theme, null);
         final SwitchCompat swApplyTheme_Viewer = (SwitchCompat) dialogLayout.findViewById(R.id.apply_theme_3th_act_enabled);
+        final LinearLayout linearLayout = (LinearLayout) dialogLayout.findViewById(R.id.ll_seek_bar_alpha);
+        final RelativeLayout relativeLayout = (RelativeLayout) dialogLayout.findViewById(R.id.container_edit_text);
 
         ((CardView) dialogLayout.findViewById(R.id.third_act_theme_card)).setCardBackgroundColor(getCardBackgroundColor());
         dialogLayout.findViewById(R.id.third_act_theme_title).setBackgroundColor(getPrimaryColor());//or GetPrimary
@@ -829,13 +833,31 @@ public class SettingsActivity extends ThemedActivity {
         ((IconicsImageView) dialogLayout.findViewById(R.id.ll_apply_theme_3thAct_icon)).setColor(getIconColor());
 
         swApplyTheme_Viewer.setChecked(isApplyThemeOnImgAct());
+        if(isApplyThemeOnImgAct())
+        {
+            linearLayout.setVisibility(View.VISIBLE);
+            relativeLayout.setVisibility(View.VISIBLE);
+        }
         swApplyTheme_Viewer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                updateSwitchColor(swApplyTheme_Viewer, getAccentColor());
+                if(swApplyTheme_Viewer.isChecked())
+                {
+                    updateSwitchColor(swApplyTheme_Viewer, getAccentColor());
+                    linearLayout.setVisibility(View.VISIBLE);
+                    relativeLayout.setVisibility(View.VISIBLE);
+                    updateSwitchColor(swApplyTheme_Viewer, getAccentColor());
+                }
+                else
+                {
+                    linearLayout.setVisibility(View.GONE);
+                    relativeLayout.setVisibility(View.GONE);
+                    updateSwitchColor(swApplyTheme_Viewer, getIconColor());
+                }
             }
         });
         updateSwitchColor(swApplyTheme_Viewer, getAccentColor());
+
 
 
         final LineColorPicker transparencyColorPicker = (LineColorPicker) dialogLayout.findViewById(R.id.pickerTransparent);
