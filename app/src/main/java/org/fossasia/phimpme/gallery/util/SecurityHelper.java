@@ -203,6 +203,7 @@ public class SecurityHelper {
                         answer1 = SP.getString("Security Answer", answer1);
                         if (Objects.equals(answer1, securityAnswer1.getText().toString())) {
                             changePassword(activity, passwordDialog);
+                            dialog.dismiss();
                         } else {
                             securityAnswer1.getText().clear();
                             til.setError(activity.getString(R.string.wrong_answer));
