@@ -161,9 +161,9 @@ The project is maintained by
 </p>
 </td>
 
-<td>
-     <img src="https://avatars1.githubusercontent.com/u/6936968?v=4&s=150" />
-     
+<td >
+     <img src="https://avatars1.githubusercontent.com/u/6936968?v=4&s=150" width="115%" height="100%" />
+  
      Pawan Pal
 
 <p align="center">
