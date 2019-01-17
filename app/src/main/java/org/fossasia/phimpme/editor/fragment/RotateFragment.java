@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.github.shchurov.horizontalwheelview.HorizontalWheelView;
@@ -34,6 +35,9 @@ public class RotateFragment extends BaseEditFragment {
 
     private HorizontalWheelView horizontalWheelView;
     private TextView tvAngle;
+
+    //Discrete Seekbar
+    private SeekBar discreteRotator;
 
     public static RotateFragment newInstance() {
         RotateFragment fragment = new RotateFragment();
@@ -64,6 +68,8 @@ public class RotateFragment extends BaseEditFragment {
         horizontalWheelView = (HorizontalWheelView) mainView.findViewById(R.id.horizontalWheelView);
         tvAngle = (TextView) mainView.findViewById(R.id.tvAngle);
         this.mRotatePanel = ensureEditActivity().mRotatePanel;
+
+        discreteRotator=mainView.findViewById(R.id.discreteRotator);
     }
 
     private void setupListeners() {
@@ -78,6 +84,38 @@ public class RotateFragment extends BaseEditFragment {
             @Override
             public void onRotationChanged(double radians) {
                 updateUi();
+            }
+        });
+        discreteRotator.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                if(i>0&&i<=25){
+                    seekBar.setProgress(25);
+                    horizontalWheelView.setDegreesAngle(90);
+                }else if(i>25&&i<=50){
+                    seekBar.setProgress(50);
+                    horizontalWheelView.setDegreesAngle(180);
+                }else if(i>50&&i<=75) {
+                    seekBar.setProgress(75);
+                    horizontalWheelView.setDegreesAngle(270);
+                }else if(i>75&&i<=100) {
+                    seekBar.setProgress(100);
+                    horizontalWheelView.setDegreesAngle(360);
+                }else{
+                    seekBar.setProgress(0);
+                    horizontalWheelView.setDegreesAngle(0);
+                }
+                updateUi();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
     }

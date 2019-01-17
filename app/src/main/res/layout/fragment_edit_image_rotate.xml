@@ -30,13 +30,21 @@
         <TextView
             android:id="@+id/tvAngle"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
             android:hint="123"
             android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:textSize="10sp"
+            />
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/discreteRotator"
+            android:layout_toStartOf="@+id/rotate_apply"
+            android:thumbTint="@color/black"
+            />
 
         <FrameLayout
             android:layout_width="match_parent"
