@@ -284,6 +284,9 @@ public class LFMainActivity extends SharedMediaActivity {
                     mediaAdapter.notifyItemChanged(toggleSelectPhoto(m));
                     editMode = true;
                 }
+                else {
+                    selectAllPhotosUpTo(getImagePosition(m.getPath()),mediaAdapter);
+                }
             } else if (fav_photos && !all_photos) {
                 if (!editMode) {
                     mediaAdapter.notifyItemChanged(toggleSelectPhoto(m));
