@@ -72,16 +72,16 @@ public class SecurityActivity extends ThemedActivity {
         ActivitySwitchHelper.setContext(this);
         SP = PreferenceUtil.getInstance(getApplicationContext());
         securityObj = new SecurityHelper(SecurityActivity.this);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         albums = new ArrayList<>();
         albums = MediaStoreProvider.getAlbums(getApplicationContext());
-        llbody = (LinearLayout) findViewById(R.id.ll_security_dialog_body);
-        llroot = (LinearLayout) findViewById(R.id.root);
-        LinearLayout llchangepassword = (LinearLayout) findViewById(R.id.ll_change_password);
-        swApplySecurityDelete = (SwitchCompat) findViewById(R.id.security_body_apply_delete_switch);
-        swActiveSecurity = (SwitchCompat) findViewById(R.id.active_security_switch);
-        swApplySecurityHidden = (SwitchCompat) findViewById(R.id.security_body_apply_hidden_switch);
-        swApplySecurityFolder = (SwitchCompat) findViewById(R.id.security_body_apply_folder_switch);
+        llbody = findViewById(R.id.ll_security_dialog_body);
+        llroot = findViewById(R.id.root);
+        LinearLayout llchangepassword = findViewById(R.id.ll_change_password);
+        swApplySecurityDelete = findViewById(R.id.security_body_apply_delete_switch);
+        swActiveSecurity = findViewById(R.id.active_security_switch);
+        swApplySecurityHidden = findViewById(R.id.security_body_apply_hidden_switch);
+        swApplySecurityFolder = findViewById(R.id.security_body_apply_folder_switch);
 
         /** - SWITCHES - **/
         /** - ACTIVE SECURITY - **/
@@ -132,12 +132,12 @@ public class SecurityActivity extends ThemedActivity {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SecurityActivity.this, getDialogStyle());
                     View view = getLayoutInflater().inflate(R.layout.dialog_security_folder, null);
                     view.setBackgroundColor(getBackgroundColor());
-                    TextView title = (TextView) view.findViewById(R.id.titlesecure);
-                    LinearLayout linearLayout = (LinearLayout)view.findViewById(R.id.titlelayout);
+                    TextView title = view.findViewById(R.id.titlesecure);
+                    LinearLayout linearLayout = view.findViewById(R.id.titlelayout);
                     linearLayout.setBackgroundColor(getAccentColor());
                     title.setBackgroundColor(getAccentColor());
                     title.setText("Choose folders to secure");
-                    RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.secure_folder_recyclerview);
+                    RecyclerView recyclerView = view.findViewById(R.id.secure_folder_recyclerview);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                     final SecureDialogAdapter securedLocalFolders = new SecureDialogAdapter();
                     recyclerView.setAdapter(securedLocalFolders);
@@ -235,17 +235,17 @@ public class SecurityActivity extends ThemedActivity {
         final short max_password_length = 128;
         final AlertDialog.Builder passwordDialog = new AlertDialog.Builder(SecurityActivity.this, getDialogStyle());
         final View PasswordDialogLayout = getLayoutInflater().inflate(R.layout.dialog_set_password, null);
-        final TextView passwordDialogTitle = (TextView) PasswordDialogLayout.findViewById(R.id.password_dialog_title);
-        final TextView security_title = (TextView) PasswordDialogLayout.findViewById(R.id.security_question_title);
-        final CheckBox checkBox = (CheckBox) PasswordDialogLayout.findViewById(R.id.set_password_checkbox);
+        final TextView passwordDialogTitle = PasswordDialogLayout.findViewById(R.id.password_dialog_title);
+        final TextView security_title = PasswordDialogLayout.findViewById(R.id.security_question_title);
+        final CheckBox checkBox = PasswordDialogLayout.findViewById(R.id.set_password_checkbox);
         checkBox.setText(getResources().getString(R.string.show_password));
         checkBox.setTextColor(getTextColor());
-        final CardView passwordDialogCard = (CardView) PasswordDialogLayout.findViewById(R.id.password_dialog_card);
-        final EditText editTextPassword = (EditText) PasswordDialogLayout.findViewById(R.id.password_edittxt);
+        final CardView passwordDialogCard = PasswordDialogLayout.findViewById(R.id.password_dialog_card);
+        final EditText editTextPassword = PasswordDialogLayout.findViewById(R.id.password_edittxt);
         editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        final EditText editTextConfirmPassword = (EditText) PasswordDialogLayout.findViewById(R.id.confirm_password_edittxt);
-        final EditText securityAnswer1 = (EditText) PasswordDialogLayout.findViewById(R.id.security_answer_edittext);
-        final EditText securityQuestion = (EditText) PasswordDialogLayout.findViewById(R.id.security_question_edittext);
+        final EditText editTextConfirmPassword = PasswordDialogLayout.findViewById(R.id.confirm_password_edittxt);
+        final EditText securityAnswer1 = PasswordDialogLayout.findViewById(R.id.security_answer_edittext);
+        final EditText securityQuestion = PasswordDialogLayout.findViewById(R.id.security_question_edittext);
         editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         checkBox.setButtonTintList(ColorStateList.valueOf(getAccentColor()));
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -393,17 +393,17 @@ public class SecurityActivity extends ThemedActivity {
         final short max_password_length = 128;
         final AlertDialog.Builder passwordDialog = new AlertDialog.Builder(SecurityActivity.this, getDialogStyle());
         final View PasswordDialogLayout = getLayoutInflater().inflate(R.layout.dialog_set_password, null);
-        final TextView passwordDialogTitle = (TextView) PasswordDialogLayout.findViewById(R.id.password_dialog_title);
-        final TextView security_title = (TextView) PasswordDialogLayout.findViewById(R.id.security_question_title);
-        CheckBox checkBox = (CheckBox) PasswordDialogLayout.findViewById(R.id.set_password_checkbox);
+        final TextView passwordDialogTitle = PasswordDialogLayout.findViewById(R.id.password_dialog_title);
+        final TextView security_title = PasswordDialogLayout.findViewById(R.id.security_question_title);
+        CheckBox checkBox = PasswordDialogLayout.findViewById(R.id.set_password_checkbox);
         checkBox.setText(getResources().getString(R.string.show_password));
         checkBox.setTextColor(getTextColor());
-        final CardView passwordDialogCard = (CardView) PasswordDialogLayout.findViewById(R.id.password_dialog_card);
-        final EditText editTextPassword = (EditText) PasswordDialogLayout.findViewById(R.id.password_edittxt);
+        final CardView passwordDialogCard = PasswordDialogLayout.findViewById(R.id.password_dialog_card);
+        final EditText editTextPassword = PasswordDialogLayout.findViewById(R.id.password_edittxt);
         editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        final EditText editTextConfirmPassword = (EditText) PasswordDialogLayout.findViewById(R.id.confirm_password_edittxt);
-        final EditText securityAnswer1 = (EditText) PasswordDialogLayout.findViewById(R.id.security_answer_edittext);
-        final EditText securityQuestion = (EditText) PasswordDialogLayout.findViewById(R.id.security_question_edittext);
+        final EditText editTextConfirmPassword = PasswordDialogLayout.findViewById(R.id.confirm_password_edittxt);
+        final EditText securityAnswer1 = PasswordDialogLayout.findViewById(R.id.security_answer_edittext);
+        final EditText securityQuestion = PasswordDialogLayout.findViewById(R.id.security_question_edittext);
         editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         checkBox.setButtonTintList(ColorStateList.valueOf(getAccentColor()));
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -565,18 +565,18 @@ public class SecurityActivity extends ThemedActivity {
         });
         toolbar.setTitle(getString(R.string.about));
 
-        IconicsImageView imgActiveSecurity = (IconicsImageView) findViewById(R.id.active_security_icon);
-        TextView txtActiveSecurity = (TextView) findViewById(R.id.active_security_item_title);
-        IconicsImageView imgActiveSecurityChangePassword = (IconicsImageView) findViewById(R.id.security_change_password);
-        TextView txtChangePassword = (TextView) findViewById(R.id.active_security_change_password_title);
-        TextView txtApplySecurity = (TextView) findViewById(R.id.security_body_apply_on);
-        IconicsImageView imgApplySecurityHidden = (IconicsImageView) findViewById(R.id.security_body_apply_hidden_icon);
-        TextView txtApplySecurityHidden = (TextView) findViewById(R.id.security_body_apply_hidden_title);
-        IconicsImageView imgApplySecurityDelete = (IconicsImageView) findViewById(R.id.security_body_apply_delete_icon);
-        TextView txtApplySecurityDelete = (TextView) findViewById(R.id.security_body_apply_delete_title);
-        IconicsImageView folderActiveSecurity = (IconicsImageView) findViewById(R.id.security_body_apply_folder_icon);
-        TextView folActiveSecurity = (TextView) findViewById(R.id.security_body_apply_folders_title);
-        CardView securityDialogCard = (CardView) findViewById(R.id.security_dialog_card);
+        IconicsImageView imgActiveSecurity = findViewById(R.id.active_security_icon);
+        TextView txtActiveSecurity = findViewById(R.id.active_security_item_title);
+        IconicsImageView imgActiveSecurityChangePassword = findViewById(R.id.security_change_password);
+        TextView txtChangePassword = findViewById(R.id.active_security_change_password_title);
+        TextView txtApplySecurity = findViewById(R.id.security_body_apply_on);
+        IconicsImageView imgApplySecurityHidden = findViewById(R.id.security_body_apply_hidden_icon);
+        TextView txtApplySecurityHidden = findViewById(R.id.security_body_apply_hidden_title);
+        IconicsImageView imgApplySecurityDelete = findViewById(R.id.security_body_apply_delete_icon);
+        TextView txtApplySecurityDelete = findViewById(R.id.security_body_apply_delete_title);
+        IconicsImageView folderActiveSecurity = findViewById(R.id.security_body_apply_folder_icon);
+        TextView folActiveSecurity = findViewById(R.id.security_body_apply_folders_title);
+        CardView securityDialogCard = findViewById(R.id.security_dialog_card);
         llroot.setBackgroundColor(getBackgroundColor());
         securityDialogCard.setCardBackgroundColor(getCardBackgroundColor());
 
@@ -641,15 +641,15 @@ public class SecurityActivity extends ThemedActivity {
 
             public ViewHolder(View itemView) {
                 super(itemView);
-                foldername = (TextView) itemView.findViewById(R.id.foldername);
+                foldername = itemView.findViewById(R.id.foldername);
                 if (getBaseTheme() == ThemeHelper.LIGHT_THEME) {
-                    CheckBox checkBox = (CheckBox) itemView.findViewById(R.id.secure_folder_checkbox_black);
+                    CheckBox checkBox = itemView.findViewById(R.id.secure_folder_checkbox_black);
                     checkBox.setVisibility(View.VISIBLE);
-                    foldercheckbox = (CheckBox) itemView.findViewById(R.id.secure_folder_checkbox_black);
+                    foldercheckbox = itemView.findViewById(R.id.secure_folder_checkbox_black);
                 } else if (getBaseTheme() == ThemeHelper.DARK_THEME || getBaseTheme() == ThemeHelper.AMOLED_THEME) {
-                    CheckBox checkBox = (CheckBox) itemView.findViewById(R.id.secure_folder_checkbox_white);
+                    CheckBox checkBox = itemView.findViewById(R.id.secure_folder_checkbox_white);
                     checkBox.setVisibility(View.VISIBLE);
-                    foldercheckbox = (CheckBox) itemView.findViewById(R.id.secure_folder_checkbox_white);
+                    foldercheckbox = itemView.findViewById(R.id.secure_folder_checkbox_white);
                 }
             }
         }

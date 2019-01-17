@@ -34,12 +34,12 @@ public class WordpressLoginActivity extends ThemedActivity {
     }
 
     private void init() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.sharewordpress);
         toolbar.setBackgroundColor(themeHelper.getPrimaryColor());
         parent = findViewById(R.id.wordpress_login);
         setSupportActionBar(toolbar);
-        login_button = (Button) findViewById(R.id.login_button);
+        login_button = findViewById(R.id.login_button);
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

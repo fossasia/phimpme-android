@@ -61,8 +61,8 @@ public class RotateFragment extends BaseEditFragment {
     private void initViews() {
         cancel = mainView.findViewById(R.id.rotate_cancel);
         apply = mainView.findViewById(R.id.rotate_apply);
-        horizontalWheelView = (HorizontalWheelView) mainView.findViewById(R.id.horizontalWheelView);
-        tvAngle = (TextView) mainView.findViewById(R.id.tvAngle);
+        horizontalWheelView = mainView.findViewById(R.id.horizontalWheelView);
+        tvAngle = mainView.findViewById(R.id.tvAngle);
         this.mRotatePanel = ensureEditActivity().mRotatePanel;
     }
 

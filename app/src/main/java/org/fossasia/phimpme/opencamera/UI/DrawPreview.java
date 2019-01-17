@@ -785,7 +785,7 @@ public class DrawPreview {
 		}
 		else if( ui_rotation == 90 || ui_rotation == 270 ) {
 			//text_base_y = canvas.getHeight() + (int)(0.5*text_y);
-			ImageButton view = (ImageButton)main_activity.findViewById(R.id.take_photo);
+			ImageButton view = main_activity.findViewById(R.id.take_photo);
 			// align with "top" of the take_photo button, but remember to take the rotation into account!
 			view.getLocationOnScreen(gui_location);
 			int view_left = gui_location[0];

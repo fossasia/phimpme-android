@@ -221,7 +221,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         if (ni == null) {
            Toast.makeText(AccountActivity.this,getString(R.string.internet_is_off),Toast.LENGTH_SHORT).show();
         }
-        final SwitchCompat signInSignOut = (SwitchCompat) childView.findViewById(R.id.sign_in_sign_out_switch);
+        final SwitchCompat signInSignOut = childView.findViewById(R.id.sign_in_sign_out_switch);
         final String name = AccountDatabase.AccountName.values()[position].toString();
 
         if (!signInSignOut.isChecked()) {

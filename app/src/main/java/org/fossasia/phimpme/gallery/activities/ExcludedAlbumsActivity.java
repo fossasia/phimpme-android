@@ -44,7 +44,7 @@ public class ExcludedAlbumsActivity extends ThemedActivity {
     }
 
     private void checkNothing() {
-        TextView a = (TextView) findViewById(R.id.nothing_to_show);
+        TextView a = findViewById(R.id.nothing_to_show);
         a.setTextColor(getTextColor());
         a.setVisibility(excludedFolders.size() == 0 ? View.VISIBLE : View.GONE);
     }
@@ -55,12 +55,12 @@ public class ExcludedAlbumsActivity extends ThemedActivity {
         Toolbar toolbar;
 
         /** TOOLBAR **/
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
 
         /** RECYCLE VIEW**/
-        mRecyclerView = (RecyclerView) findViewById(R.id.excluded_albums);
+        mRecyclerView = findViewById(R.id.excluded_albums);
         mRecyclerView.setHasFixedSize(true);
 
         mRecyclerView.setAdapter(new ExcludedItemsAdapter());
@@ -153,11 +153,11 @@ public class ExcludedAlbumsActivity extends ThemedActivity {
 
             ViewHolder(View itemView) {
                 super(itemView);
-                card_layout = (LinearLayout) itemView.findViewById(R.id.linear_card_excluded);
-                imgUnExclude = (IconicsImageView) itemView.findViewById(R.id.UnExclude_icon);
-                imgFolder = (IconicsImageView) itemView.findViewById(R.id.folder_icon);
-                album_name = (TextView) itemView.findViewById(R.id.Excluded_Title_Item);
-                album_path = (TextView) itemView.findViewById(R.id.Excluded_Path_Item);
+                card_layout = itemView.findViewById(R.id.linear_card_excluded);
+                imgUnExclude = itemView.findViewById(R.id.UnExclude_icon);
+                imgFolder = itemView.findViewById(R.id.folder_icon);
+                album_name = itemView.findViewById(R.id.Excluded_Title_Item);
+                album_path = itemView.findViewById(R.id.Excluded_Path_Item);
             }
         }
     }

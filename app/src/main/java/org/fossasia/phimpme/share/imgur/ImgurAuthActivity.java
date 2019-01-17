@@ -49,7 +49,7 @@ public class ImgurAuthActivity extends ThemedActivity {
                 getString(R.string.authenticating_your_app_message), getString(R.string.please_wait));
         dialog.show();
 
-        WebView imgurWebView = (WebView) findViewById(R.id.twitterLoginWebView);
+        WebView imgurWebView = findViewById(R.id.twitterLoginWebView);
         imgurWebView.setBackgroundColor(Color.TRANSPARENT);
         imgurWebView.loadUrl(IMGUR_LOGIN_URL);
         imgurWebView.getSettings().setJavaScriptEnabled(true);

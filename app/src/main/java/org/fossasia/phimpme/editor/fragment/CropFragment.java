@@ -141,8 +141,8 @@ public class CropFragment extends BaseEditFragment {
         cancel = mainView.findViewById(R.id.crop_cancel);
 		apply = mainView.findViewById(R.id.crop_apply);
 
-        ratioList = (LinearLayout) mainView.findViewById(R.id.ratio_list_group);
-        imageList=(LinearLayout) mainView.findViewById(R.id.image_crop);
+        ratioList = mainView.findViewById(R.id.ratio_list_group);
+        imageList= mainView.findViewById(R.id.image_crop);
         setUpRatioList();
         this.mCropPanel = ensureEditActivity().mCropPanel;
 		cancel.setOnClickListener(new BackToMenuClick());
