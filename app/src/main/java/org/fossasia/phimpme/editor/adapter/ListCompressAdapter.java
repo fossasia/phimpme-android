@@ -59,7 +59,7 @@ public class ListCompressAdapter extends BaseAdapter  {
         {
             convertView1=inflater.inflate(R.layout.compress_item,null);
             holder=new ViewHolder();
-            holder.txtviewtitle=(TextView)convertView1.findViewById(R.id.compressoption);
+            holder.txtviewtitle=convertView1.findViewById(R.id.compressoption);
 
         }
         else{
