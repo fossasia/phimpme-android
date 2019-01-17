@@ -34,7 +34,6 @@ import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouchBase;
 
 
 public class CropFragment extends BaseEditFragment {
-    public static final int INDEX = 3;
 	public static final String TAG = CropFragment.class.getName();
 	private View mainView;
 	private View cancel,apply;
@@ -78,7 +77,7 @@ public class CropFragment extends BaseEditFragment {
 	}
 
 	private void resetCropView() {
-		if (null != activity && null != mCropPanel){
+		if (null != activity && null != mCropPanel && activity.mainBitmap != null){
 			mCropPanel.setVisibility(View.GONE);
 			RectF r = activity.mainImage.getBitmapRect();
 			activity.mCropPanel.setCropRect(r);
@@ -161,15 +160,19 @@ public class CropFragment extends BaseEditFragment {
 		}
 		onShow();
 	}
-
+  
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putParcelable("Rect",activity.mainImage.getBitmapRect());
 	}
-
-	@Override
+   
+    @Override
     public void onShow() {
+		if (activity.mainBitmap == null) {
+			getActivity().getSupportFragmentManager().beginTransaction().remove(CropFragment.this).commit();
+			return;
+		}
 		activity.changeMode(EditImageActivity.MODE_CROP);
         activity.mCropPanel.setVisibility(View.VISIBLE);
         activity.mainImage.setImageBitmap(activity.mainBitmap);

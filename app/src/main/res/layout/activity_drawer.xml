@@ -19,18 +19,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:id="@+id/Drawer_Header"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:elevation="@dimen/card_elevation"
-                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:srcCompat="@drawable/ic_launcher_splash"/>
-            </RelativeLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:paddingTop="16dp"
+                android:layout_height="160dp"
+                android:elevation="5dp"
+                android:id="@+id/Drawer_Header"
+                app:srcCompat="@drawable/ic_launcher_splash"
+                />
 
             <LinearLayout
                 android:id="@+id/Drawer_Body"

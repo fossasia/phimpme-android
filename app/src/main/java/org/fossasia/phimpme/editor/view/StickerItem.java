@@ -155,9 +155,6 @@ public class StickerItem {
         float x = this.detectRotateRect.centerX();
         float y = this.detectRotateRect.centerY();
 
-        // float x = oldx;
-        // float y = oldy;
-
         float n_x = x + dx;
         float n_y = y + dy;
 

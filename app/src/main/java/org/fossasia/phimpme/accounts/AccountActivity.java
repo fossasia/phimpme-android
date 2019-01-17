@@ -3,8 +3,9 @@ package org.fossasia.phimpme.accounts;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AlertDialog;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.box.androidsdk.content.BoxConfig;
 import com.box.androidsdk.content.auth.BoxAuthentication;
@@ -24,14 +26,10 @@ import com.box.androidsdk.content.models.BoxSession;
 import com.cloudrail.si.CloudRail;
 import com.dropbox.client2.DropboxAPI;
 import com.dropbox.client2.android.AndroidAuthSession;
-import com.google.android.gms.common.ConnectionResult;
 import com.pinterest.android.pdk.PDKCallback;
 import com.pinterest.android.pdk.PDKClient;
 import com.pinterest.android.pdk.PDKException;
 import com.pinterest.android.pdk.PDKResponse;
-import com.tumblr.loglr.Interfaces.ExceptionHandler;
-import com.tumblr.loglr.Interfaces.LoginListener;
-import com.tumblr.loglr.Loglr;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 
 import org.fossasia.phimpme.R;
@@ -48,20 +46,14 @@ import org.fossasia.phimpme.share.flickr.FlickrActivity;
 import org.fossasia.phimpme.share.imgur.ImgurAuthActivity;
 import org.fossasia.phimpme.share.nextcloud.NextCloudAuth;
 import org.fossasia.phimpme.share.owncloud.OwnCloudActivity;
-import org.fossasia.phimpme.share.tumblr.TumblrClient;
 import org.fossasia.phimpme.share.twitter.LoginActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
 import org.fossasia.phimpme.utilities.Constants;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,18 +64,12 @@ import static com.pinterest.android.pdk.PDKClient.setDebugMode;
 import static org.fossasia.phimpme.R.string.no_account_signed_in;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
-//import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.GOOGLEDRIVE;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.IMGUR;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.NEXTCLOUD;
-//import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.ONEDRIVE;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.OWNCLOUD;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.PINTEREST;
-import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TUMBLR;
-import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTER;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_SECRET;
-import static org.fossasia.phimpme.utilities.Constants.DROPBOX_APP_KEY;
-import static org.fossasia.phimpme.utilities.Constants.DROPBOX_APP_SECRET;
 import static org.fossasia.phimpme.utilities.Constants.PINTEREST_APP_ID;
 import static org.fossasia.phimpme.utilities.Constants.SUCCESS;
 import static org.fossasia.phimpme.utilities.Utils.checkNetwork;
@@ -230,6 +216,11 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
     @Override
     public void onItemClick(final View childView, final int position) {
+        ConnectivityManager cm=(ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo ni = cm.getActiveNetworkInfo();
+        if (ni == null) {
+           Toast.makeText(AccountActivity.this,getString(R.string.internet_is_off),Toast.LENGTH_SHORT).show();
+        }
         final SwitchCompat signInSignOut = (SwitchCompat) childView.findViewById(R.id.sign_in_sign_out_switch);
         final String name = AccountDatabase.AccountName.values()[position].toString();
 
@@ -271,6 +262,11 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     break;
 
                 case DROPBOX:
+                    if(CLOUDRAIL_APP_KEY==null || CLOUDRAIL_APP_KEY.equals(""))
+                    {
+                        Toast.makeText(getContext(),R.string.Cloudrail_License_key,Toast.LENGTH_SHORT).show();
+                    }
+                    else
                     signInDropbox();
                     break;
 
@@ -285,7 +281,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                     break;
 
                 case TUMBLR:
-                    signInTumblr();
+                    //signInTumblr();
                     break;
 
                 /*case ONEDRIVE:
@@ -337,7 +333,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         startActivity(intent);
     }
 
-    private void signInTumblr() {
+   /* private void signInTumblr() {
         LoginListener loginListener = new LoginListener() {
             @Override
             public void onLoginSuccessful(com.tumblr.loglr.LoginResult loginResult) {
@@ -376,7 +372,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                 .enable2FA(true)
                 .setUrlCallBack(Constants.CALL_BACK_TUMBLR)
                 .initiateInActivity(AccountActivity.this);
-    }
+    }*/
 
     private void signInDropbox() {
         if (accountPresenter.checkAlreadyExist(DROPBOX))

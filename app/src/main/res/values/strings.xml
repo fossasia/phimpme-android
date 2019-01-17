@@ -412,6 +412,7 @@
     <string name="permission_rationale_storage">Storage read/write permission is required to save photos</string>
     <string name="permission_rationale_record_audio">Microphone permission is required to record video with audio</string>
     <string name="permission_rationale_location">Location permission is required for geotagging</string>
+    <string name="permission_storage_alert">Please allow read storage permission to use Phimpme features</string>
 
     <string name="preference_category_photo_debugging">Debugging options</string>
     <string name="preference_category_video_debugging">Debugging options</string>
@@ -715,17 +716,27 @@
     <string name="general_setting">General Setting</string>
     <string name="folder">Folder</string>
     <string name="color_palette">Color Palette</string>
+    <string name="Images">Images</string>
     <string name="app_intro_skip">Introduction Skipped!</string>
     <string name="preference_BottomNavColor">Get Bottom Navigation Bar Color</string>
+    <string name="settings_reset">Settings Reset!</string>
 
     <!-- SECURITY-->
     <string name="security">Security</string>
     <string name="active_security">Access by password</string>
     <string name="password">Password</string>
+    <string name="new_password">New Password</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="security_answer">Security Answer</string>
+    <string name="security_question">Security Question</string>
     <string name="enter_password">Enter your password</string>
     <string name="confirm_password">Confirm password</string>
+    <string name="confirm_new_password">Confirm New password</string>
+    <string name="wrong_answer">Wrong Answer</string>
     <string name="wrong_password">Wrong password</string>
     <string name="show_password">Show Password</string>
+    <string name="security_ans_empty">Security Answer cannot be empty</string>
+    <string name="security_ques_empty">Security Question cannot be empty</string>
 
     <string name="type_password">Insert password</string>
     <string name="change_password">Change password</string>
@@ -747,7 +758,7 @@
     <string name="error_password_length">The minimum password length is 4 character</string>
     <string name="error_password_match">New password matches to the previous password. Please set another password.
     </string>
-    <string name="max_password_length">The password length cannot be more than 10 characters</string>
+    <string name="max_password_length">The password length cannot be more than 128 characters</string>
 
     <!-- SETTINGS -->
     <string name="settings">Settings</string>
@@ -938,10 +949,10 @@
     <string name="fab_options">Show FAB</string>
     <string name="fab_options_sub">Display the floating button.</string>
     <string name="map_provider">Map Provider</string>
-    <string name="map_provider_sub">Chose the source of maps</string>
+    <string name="map_provider_sub">Choose the source of maps</string>
     <string name="insert_something">Insert something!</string>
     <string name="password_dont_match">password doesn\'t match</string>
-    <string name="chose_the_map_provider">Choose the map provider</string>
+    <string name="choose_the_map_provider">Choose the map provider</string>
     <string name="use_google_static_maps_faster">Use Google static maps</string>
     <string name="use_openstreetmap_slower">Use OpenStreetMap</string>
     <string name="sd_card_write_permission_title">SD-Card write permission</string>
@@ -1013,6 +1024,7 @@
     <string name="share">share</string>
 
     <!--ACCOUNTS-->
+    <string name="internet_is_off">You are not connected to the internet</string>
     <!--TWITTER-->
     <string name="already_signed_in">Already signed In</string>
     <string name="drawable">drawable</string>
@@ -1025,7 +1037,7 @@
     <string name="first_click">first click</string>
     <string name="account_logged_twitter">Twitter account logged in successfully.</string>
     <string name="twitter_uploading">Image uploading on Twitter</string>
-
+    <string name="Cloudrail_License_key">Cloudrail License key not found</string>
     <!--App shortcuts-->
     <string name="camera_short">Camera</string>
     <string name="camera_long">Opens Phimp.me Camera</string>
@@ -1127,6 +1139,7 @@
     <string name="say_cheese">say cheese</string>
     <string name="camera_rear">Rear Camera</string>
     <string name="camera_front">Front Camera</string>
+    <string name="camera_support_options">Open camera to support all options.</string>
 
     <!--NEXTCLOUD-->
     <string name="auth_check_server">Check server</string>
@@ -1339,6 +1352,9 @@
     <string name="replace">Replace</string>
 
     <string name="select_a_font">Select a Font</string>
+    <string name="min_duration_slide">Minimum duration is 2 sec</string>
+    <string name="slide_start">Slideshow Started!</string>
+    <string name="slide_max_value">Maximum duration is 10 sec</string>
 
     <!-- Photo deletion toast messages -->
     <string name="photo_deleted_msg">Photo deleted</string>
