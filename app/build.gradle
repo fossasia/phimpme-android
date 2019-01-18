@@ -49,7 +49,7 @@ android {
     }
 
     configurations {
-        compile.exclude group: 'org.jetbrains', module: 'annotations'
+        implementation.exclude group: 'org.jetbrains', module: 'annotations'
         all*.exclude group: 'com.android.volley'
     }
 
@@ -93,98 +93,98 @@ repositories {
 
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
     //google and support
-    compile "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
-    compile "com.android.support:design:$rootProject.supportLibraryVersion"
-    compile "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
-    compile "com.android.support:palette-v7:$rootProject.supportLibraryVersion"
-    compile "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
-    compile "com.android.support:customtabs:$rootProject.supportLibraryVersion"
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:design:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:support-vector-drawable:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:palette-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
+    implementation "com.android.support:customtabs:$rootProject.supportLibraryVersion"
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
     //exoplayer
-    compile 'com.google.android.exoplayer:exoplayer:r1.5.7'
+    implementation 'com.google.android.exoplayer:exoplayer:r1.5.7'
 
     //utils
-    compile 'com.github.deano2390:MaterialShowcaseView:1.1.0'
-    compile "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
-    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
-    compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.yalantis:ucrop:1.5.0'
-    compile 'de.psdev.licensesdialog:licensesdialog:1.8.0'
-    /*compile('com.crashlytics.sdk.android:crashlytics:2.9.3@aar') {
+    implementation 'com.github.deano2390:MaterialShowcaseView:1.1.0'
+    implementation "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-implementationr:$rootProject.butterknifeVersion"
+    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.yalantis:ucrop:1.5.0'
+    implementation 'de.psdev.licensesdialog:licensesdialog:1.8.0'
+    /*implementation('com.crashlytics.sdk.android:crashlytics:2.9.3@aar') {
         transitive = true;
     }*/
 
-    compile 'com.koushikdutta.ion:ion:2.1.7'
-    compile 'org.jetbrains:annotations-java5:15.0'
-    compile 'com.android.support:multidex:1.0.1'
-    compile group: 'com.box', name: 'box-android-sdk', version: '4.0.8'
+    implementation 'com.koushikdutta.ion:ion:2.1.7'
+    implementation 'org.jetbrains:annotations-java5:15.0'
+    implementation 'com.android.support:multidex:1.0.1'
+    implementation group: 'com.box', name: 'box-android-sdk', version: '4.0.8'
 
     //icons
-    compile 'com.mikepenz:iconics-core:2.8.4@aar'
-    compile 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
-    compile 'com.mikepenz:community-material-typeface:1.5.54.2@aar'
-    compile 'com.mikepenz:fontawesome-typeface:4.6.0.1@aar'
-    compile 'com.mikepenz:ionicons-typeface:+@aar'
+    implementation 'com.mikepenz:iconics-core:2.8.4@aar'
+    implementation 'com.mikepenz:google-material-typeface:2.2.0.3.original@aar'
+    implementation 'com.mikepenz:community-material-typeface:1.5.54.2@aar'
+    implementation 'com.mikepenz:fontawesome-typeface:4.6.0.1@aar'
+    implementation 'com.mikepenz:ionicons-typeface:+@aar'
 
     //ui
-    compile 'de.hdodenhof:circleimageview:2.0.0'
-    compile 'uz.shift:colorpicker:0.5@aar'
-    compile 'com.turingtechnologies.materialscrollbar:lib:10.0.3'
-    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.7'
-    compile 'com.github.shchurov:horizontalwheelview:0.9.5'
-    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
+    implementation 'de.hdodenhof:circleimageview:2.0.0'
+    implementation 'uz.shift:colorpicker:0.5@aar'
+    implementation 'com.turingtechnologies.materialscrollbar:lib:10.0.3'
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.7'
+    implementation 'com.github.shchurov:horizontalwheelview:0.9.5'
+    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
 
     //twitter
-    compile "com.twitter.sdk.android:twitter:$rootProject.twitterVersion"
-    compile files('libs/twitter4j-core-3.0.5.jar')
-    compile files('libs/twitter4j-media-support-3.0.5.jar')
+    implementation "com.twitter.sdk.android:twitter:$rootProject.twitterVersion"
+    implementation files('libs/twitter4j-core-3.0.5.jar')
+    implementation files('libs/twitter4j-media-support-3.0.5.jar')
 
     //cloud rail
-    compile 'com.cloudrail:cloudrail-si-android:2.20.1'
+    implementation 'com.cloudrail:cloudrail-si-android:2.20.1'
 
     //next cloud
-    compile "com.github.nextcloud:android-library:$rootProject.nextCloudVersion"
+    implementation "com.github.nextcloud:android-library:$rootProject.nextCloudVersion"
 
     //leak canary
-    debugCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
 
     //flickr
-    compile files('libs/flickrj-android-2.1.0.jar')
+    implementation files('libs/flickrj-android-2.1.0.jar')
 
     //tumblr
-    compile('com.tumblr:jumblr:0.0.11') {
+    implementation('com.tumblr:jumblr:0.0.11') {
         exclude module: 'scribe'
     }
 
     //realm
-    compile 'com.uphyca:stetho_realm:2.0.0'
+    implementation 'com.uphyca:stetho_realm:2.0.0'
 
     //metadataextractor
-    compile 'com.drewnoakes:metadata-extractor:2.9.1'
+    implementation 'com.drewnoakes:metadata-extractor:2.9.1'
 
     //tests
-    testCompile "junit:junit:$rootProject.junitVersion"
-    androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
+    testImplementation "junit:junit:$rootProject.junitVersion"
+    androidTestImplementation 'com.google.code.findbugs:jsr305:3.0.0'
 
     //opencv
-    compile project(':openCVLibrary24133')
+    implementation project(':openCVLibrary24133')
 
     //pdk
-    compile project(':pdk')
+    implementation project(':pdk')
 
     //photoview
-    compile project(':photoview')
+    implementation project(':photoview')
 
     //compressor
-    compile 'id.zelory:compressor:2.1.0'
+    implementation 'id.zelory:compressor:2.1.0'
 
 }
 
