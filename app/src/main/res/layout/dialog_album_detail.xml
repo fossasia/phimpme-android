@@ -41,9 +41,9 @@
                         android:id="@+id/trcia"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
                         android:layout_marginStart="30dp"
                         android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
                         android:orientation="horizontal">
 
                         <ImageView
@@ -74,8 +74,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
                         android:layout_marginStart="30dp"
+                        android:layout_marginBottom="10dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -100,8 +100,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
                         android:layout_marginStart="30dp"
+                        android:layout_marginBottom="10dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -126,8 +126,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
                         android:layout_marginStart="30dp"
+                        android:layout_marginBottom="10dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -152,8 +152,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
                         android:layout_marginStart="30dp"
+                        android:layout_marginBottom="10dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -178,8 +178,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
                         android:layout_marginStart="30dp"
+                        android:layout_marginBottom="10dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -209,9 +209,9 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="17dp"
                         android:layout_marginStart="30dp"
                         android:layout_marginTop="17dp"
+                        android:layout_marginBottom="17dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -242,9 +242,9 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
                         android:layout_marginStart="30dp"
                         android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -269,8 +269,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
                         android:layout_marginStart="30dp"
+                        android:layout_marginBottom="10dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -295,8 +295,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
                         android:layout_marginStart="30dp"
+                        android:layout_marginBottom="10dp"
                         android:orientation="horizontal">
 
                         <TextView

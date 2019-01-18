@@ -90,7 +90,14 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
 
         sequence.setConfig(config);
 
-        sequence.addSequenceItem(nav_home, getResources().getString(R.string.home_button), getResources().getString(R.string.ok_button));
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(nav_home)
+                        .setDismissText(getResources().getString(R.string.ok_button))
+                        .setContentText(getResources().getString(R.string.home_button))
+                        .setDismissOnTouch(true)
+                        .build()
+        );
 
         sequence.addSequenceItem(
                 new MaterialShowcaseView.Builder(this)
