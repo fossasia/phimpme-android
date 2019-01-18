@@ -833,23 +833,20 @@ public class SettingsActivity extends ThemedActivity {
         ((IconicsImageView) dialogLayout.findViewById(R.id.ll_apply_theme_3thAct_icon)).setColor(getIconColor());
 
         swApplyTheme_Viewer.setChecked(isApplyThemeOnImgAct());
-        if(isApplyThemeOnImgAct())
-        {
+        if(isApplyThemeOnImgAct()) {
             linearLayout.setVisibility(View.VISIBLE);
             relativeLayout.setVisibility(View.VISIBLE);
         }
         swApplyTheme_Viewer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(swApplyTheme_Viewer.isChecked())
-                {
+                if(swApplyTheme_Viewer.isChecked()) {
                     updateSwitchColor(swApplyTheme_Viewer, getAccentColor());
                     linearLayout.setVisibility(View.VISIBLE);
                     relativeLayout.setVisibility(View.VISIBLE);
                     updateSwitchColor(swApplyTheme_Viewer, getAccentColor());
                 }
-                else
-                {
+                else {
                     linearLayout.setVisibility(View.GONE);
                     relativeLayout.setVisibility(View.GONE);
                     updateSwitchColor(swApplyTheme_Viewer, getIconColor());
