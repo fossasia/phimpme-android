@@ -110,12 +110,12 @@ public class RotateFragment extends BaseEditFragment {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
+                //interface methods
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                //interface methods
             }
         });
     }
