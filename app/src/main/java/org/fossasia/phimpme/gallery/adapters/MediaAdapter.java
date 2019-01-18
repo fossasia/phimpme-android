@@ -50,8 +50,7 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
         placeholder = (BitmapDrawable) drawable;
     }
 
-    public ArrayList<Media> getList()
-    {
+    public ArrayList<Media> getList() {
         return medias;
     }
 

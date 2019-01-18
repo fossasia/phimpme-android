@@ -289,8 +289,7 @@ public class LFMainActivity extends SharedMediaActivity {
                     mediaAdapter.notifyItemChanged(toggleSelectPhoto(m));
                     editMode = true;
                 }
-                else
-                {
+                else {
                     selectAllPhotosUpToFav(getImagePosition(m.getPath()));
                 }
             } else selectAllPhotosUpTo(getImagePosition(m.getPath()), mediaAdapter);
@@ -409,8 +408,7 @@ public class LFMainActivity extends SharedMediaActivity {
         toolbar.setTitle(selectedMedias.size() + "/" + size);
     }
 
-    public void selectAllPhotosUpToFav(int targetIndex)
-    {
+    public void selectAllPhotosUpToFav(int targetIndex) {
         int indexRightBeforeOrAfter = -1;
         int indexNow;
         for (Media sm : selectedMedias) {
