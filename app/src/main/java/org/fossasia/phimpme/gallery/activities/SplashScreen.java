@@ -176,6 +176,12 @@ public class SplashScreen extends SharedMediaActivity {
                 askForPermission();
             }
         });
+        builder.setNegativeButton("EXIT", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
