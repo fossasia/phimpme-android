@@ -845,8 +845,7 @@ public class SettingsActivity extends ThemedActivity {
                     linearLayout.setVisibility(View.VISIBLE);
                     relativeLayout.setVisibility(View.VISIBLE);
                     updateSwitchColor(swApplyTheme_Viewer, getAccentColor());
-                }
-                else {
+                } else {
                     linearLayout.setVisibility(View.GONE);
                     relativeLayout.setVisibility(View.GONE);
                     updateSwitchColor(swApplyTheme_Viewer, getIconColor());
@@ -854,8 +853,6 @@ public class SettingsActivity extends ThemedActivity {
             }
         });
         updateSwitchColor(swApplyTheme_Viewer, getAccentColor());
-
-
 
         final LineColorPicker transparencyColorPicker = (LineColorPicker) dialogLayout.findViewById(R.id.pickerTransparent);
         transparencyColorPicker.setColors(ColorPalette.getTransparencyShadows(getPrimaryColor()));
