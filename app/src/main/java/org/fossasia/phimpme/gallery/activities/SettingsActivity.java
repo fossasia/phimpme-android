@@ -118,7 +118,7 @@ public class SettingsActivity extends ThemedActivity {
                 baseThemeDialog();
             }
         });
-        
+
         /*** SECURITY ***/
         findViewById(R.id.ll_security).setOnClickListener(new View.OnClickListener() {
             @Override
