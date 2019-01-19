@@ -56,11 +56,11 @@ public class CompressImageActivity extends ThemedActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compress_image);
         initView();
-        Button size=(Button)findViewById(R.id.size);
+        Button size=findViewById(R.id.size);
         size.setBackgroundColor(getAccentColor());
-        Button dimension=(Button)findViewById(R.id.bypixel);
+        Button dimension=findViewById(R.id.bypixel);
         dimension.setBackgroundColor(getAccentColor());
-        ImageButton cancel=(ImageButton)findViewById(R.id.edit_cancel);
+        ImageButton cancel=findViewById(R.id.edit_cancel);
         size.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +83,7 @@ public class CompressImageActivity extends ThemedActivity {
 
     private void initView() {
 
-        ImageViewTouch imageViewToucher=(ImageViewTouch)findViewById(R.id.main_image);
+        ImageViewTouch imageViewToucher=findViewById(R.id.main_image);
         saveFilePath = getIntent().getStringExtra(EXTRA_OUTPUT);
         Uri uri = Uri.fromFile(new File(saveFilePath));
         Glide.with(this).load(uri).diskCacheStrategy(DiskCacheStrategy.SOURCE)
@@ -95,12 +95,12 @@ public class CompressImageActivity extends ThemedActivity {
 
         LayoutInflater inflater = getLayoutInflater();
         View dialogLayout = inflater.inflate(R.layout.dialog_compresssize, null);
-        TextView title = (TextView) dialogLayout.findViewById(R.id.compress_title);
+        TextView title = dialogLayout.findViewById(R.id.compress_title);
         title.setBackgroundColor(getPrimaryColor());
-        SeekBar percentsize = (SeekBar) dialogLayout.findViewById(R.id.seekBar);
+        SeekBar percentsize = dialogLayout.findViewById(R.id.seekBar);
         percentsize.getThumb().setColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN);
         percentsize.setProgress(0);
-        final TextView percent=(TextView)dialogLayout.findViewById(R.id.textview2);
+        final TextView percent=dialogLayout.findViewById(R.id.textview2);
         percentsize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -300,12 +300,12 @@ public class CompressImageActivity extends ThemedActivity {
         int height= Integer.parseInt(ht[0]);
         LayoutInflater inflater = getLayoutInflater();
         final View dialogLayout = inflater.inflate(R.layout.dialog_compresspixel, null);
-        TextView title = (TextView) dialogLayout.findViewById(R.id.compress_title);
+        TextView title = dialogLayout.findViewById(R.id.compress_title);
         title.setBackgroundColor(getPrimaryColor());
         //create options of compress in dimensions in multiple of 2
         int awidth=width;
         int aheight=height;
-        ListView listView = (ListView)dialogLayout.findViewById(R.id.listview);
+        ListView listView = dialogLayout.findViewById(R.id.listview);
         while ((width%2==0)&&(height%2==0)) {
             compress_option.add(width + " X " + height);
             width=width/2;
