@@ -43,7 +43,7 @@ public class AlertDialogsHelper {
     public static AlertDialog getInsertTextDialog(final ThemedActivity activity, AlertDialog.Builder dialogBuilder , EditText editText, @StringRes int title, String link) {
 
         View dialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_insert_text, null);
-        TextView textViewTitle = (TextView) dialogLayout.findViewById(R.id.rename_title);
+        TextView textViewTitle = dialogLayout.findViewById(R.id.rename_title);
 
         ((CardView) dialogLayout.findViewById(R.id.dialog_chose_provider_title)).setCardBackgroundColor(activity.getCardBackgroundColor());
         textViewTitle.setBackgroundColor(activity.getPrimaryColor());
@@ -77,8 +77,8 @@ public class AlertDialogsHelper {
     public static AlertDialog getTextDialog(final ThemedActivity activity, AlertDialog.Builder textDialogBuilder, @StringRes int title, @StringRes int Message, String msg){
         View dialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_text, null);
 
-        TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.text_dialog_title);
-        TextView dialogMessage = (TextView) dialogLayout.findViewById(R.id.text_dialog_message);
+        TextView dialogTitle = dialogLayout.findViewById(R.id.text_dialog_title);
+        TextView dialogMessage = dialogLayout.findViewById(R.id.text_dialog_message);
 
         ((CardView) dialogLayout.findViewById(R.id.message_card)).setCardBackgroundColor(activity.getCardBackgroundColor());
         dialogTitle.setBackgroundColor(activity.getPrimaryColor());
@@ -94,10 +94,10 @@ public class AlertDialogsHelper {
             textDialogBuilder, @StringRes int title, @StringRes int Message, String msg, String checkboxmessage,
                                                     final int colorId){
         View dialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_checkbox, null);
-        TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.text_dialog_title);
-        TextView dialogMessage = (TextView) dialogLayout.findViewById(R.id.text_dialog_message);
-        TextView checkboxmessg = (TextView) dialogLayout.findViewById(R.id.checkbox_text_dialog);
-        final CheckBox checkBox = (CheckBox) dialogLayout.findViewById(R.id.checkbox_text_dialog_cb);
+        TextView dialogTitle = dialogLayout.findViewById(R.id.text_dialog_title);
+        TextView dialogMessage = dialogLayout.findViewById(R.id.text_dialog_message);
+        TextView checkboxmessg = dialogLayout.findViewById(R.id.checkbox_text_dialog);
+        final CheckBox checkBox = dialogLayout.findViewById(R.id.checkbox_text_dialog_cb);
         if(checkBox.isChecked()){
            check = true;
         }
@@ -126,8 +126,8 @@ public class AlertDialogsHelper {
 
     public static AlertDialog getProgressDialog(final ThemedActivity activity, AlertDialog.Builder progressDialog, String title, String message){
         View dialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_progress, null);
-        TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.progress_dialog_title);
-        TextView dialogMessage = (TextView) dialogLayout.findViewById(R.id.progress_dialog_text);
+        TextView dialogTitle = dialogLayout.findViewById(R.id.progress_dialog_title);
+        TextView dialogMessage = dialogLayout.findViewById(R.id.progress_dialog_text);
 
         dialogTitle.setBackgroundColor(activity.getPrimaryColor());
         ((CardView) dialogLayout.findViewById(R.id.progress_dialog_card)).setCardBackgroundColor(activity.getCardBackgroundColor());
@@ -146,7 +146,7 @@ public class AlertDialogsHelper {
     public static AlertDialog getDetailsDialog(final ThemedActivity activity, AlertDialog.Builder detailsDialogBuilder, final Media f) {
         MediaDetailsMap<String, String> mainDetails = f.getMainDetails(activity.getApplicationContext());
         final View dialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_media_detail, null);
-        ImageView imgMap = (ImageView) dialogLayout.findViewById(R.id.photo_map);
+        ImageView imgMap = dialogLayout.findViewById(R.id.photo_map);
         dialogLayout.findViewById(R.id.details_title).setBackgroundColor(activity.getPrimaryColor());
         ((CardView) dialogLayout.findViewById(R.id.photo_details_card)).setCardBackgroundColor(activity.getCardBackgroundColor());
 
@@ -176,7 +176,7 @@ public class AlertDialogsHelper {
 
         }
 
-        final TextView showMoreText = (TextView) dialogLayout.findViewById(R.id.details_showmore);
+        final TextView showMoreText = dialogLayout.findViewById(R.id.details_showmore);
         showMoreText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -203,34 +203,34 @@ public class AlertDialogsHelper {
     private static void loadDetails(View dialogLayout, ThemedActivity activity, MediaDetailsMap<String, String> metadata) {
         int textColor = activity.getBaseTheme() != ThemeHelper.LIGHT_THEME ? Color.parseColor("#FAFAFA" ): Color.parseColor("#2b2b2b");
         ((ImageView)dialogLayout.findViewById(R.id.icon_folder)).setColorFilter(activity.getAccentColor());
-        TextView name = (TextView) dialogLayout.findViewById(R.id.album_details_name);
+        TextView name = dialogLayout.findViewById(R.id.album_details_name);
         name.setText(metadata.get(activity.getString(R.string.folder_name)));
         name.setTextColor(textColor);
-        TextView type = (TextView) dialogLayout.findViewById(R.id.album_details_type);
+        TextView type = dialogLayout.findViewById(R.id.album_details_type);
         type.setText(R.string.folder);
         type.setTextColor(textColor);
-        TextView path = (TextView) dialogLayout.findViewById(R.id.album_details_path);
+        TextView path = dialogLayout.findViewById(R.id.album_details_path);
         path.setText(metadata.get(activity.getString(R.string.folder_path)));
         path.setTextColor(textColor);
-        TextView parent = (TextView) dialogLayout.findViewById(R.id.album_details_parent);
+        TextView parent = dialogLayout.findViewById(R.id.album_details_parent);
         parent.setText(metadata.get(activity.getString(R.string.parent_path)));
         parent.setTextColor(textColor);
-        TextView total = (TextView) dialogLayout.findViewById(R.id.album_details_total);
+        TextView total = dialogLayout.findViewById(R.id.album_details_total);
         total.setText(metadata.get(activity.getString(R.string.total_photos)));
         total.setTextColor(textColor);
-        TextView size = (TextView) dialogLayout.findViewById(R.id.album_details_size);
+        TextView size = dialogLayout.findViewById(R.id.album_details_size);
         size.setText(metadata.get(activity.getString(R.string.size_folder)));
         size.setTextColor(textColor);
-        TextView modified = (TextView) dialogLayout.findViewById(R.id.album_details_last_modified);
+        TextView modified = dialogLayout.findViewById(R.id.album_details_last_modified);
         modified.setText(metadata.get(activity.getString(R.string.modified)));
         modified.setTextColor(textColor);
-        TextView readable = (TextView) dialogLayout.findViewById(R.id.album_details_readable);
+        TextView readable = dialogLayout.findViewById(R.id.album_details_readable);
         readable.setText(metadata.get(activity.getString(R.string.readable)));
         readable.setTextColor(textColor);
-        TextView writable = (TextView) dialogLayout.findViewById(R.id.album_details_writable);
+        TextView writable = dialogLayout.findViewById(R.id.album_details_writable);
         writable.setText(metadata.get(activity.getString(R.string.writable)));
         writable.setTextColor(textColor);
-        TextView hidden = (TextView) dialogLayout.findViewById(R.id.album_details_hidden);
+        TextView hidden = dialogLayout.findViewById(R.id.album_details_hidden);
         hidden.setText(metadata.get(activity.getString(R.string.hidden)));
         hidden.setTextColor(textColor);
 

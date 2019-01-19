@@ -78,7 +78,7 @@ public class RecyclerMenuFragment extends BaseEditFragment {
         } else if(orientation == Configuration.ORIENTATION_LANDSCAPE) {
             layoutManager = new LinearLayoutManager(getActivity());
         }
-        recyclerView = (RecyclerView) fragmentView.findViewById(R.id.editor_recyclerview);
+        recyclerView = fragmentView.findViewById(R.id.editor_recyclerview);
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(new mRecyclerAdapter());
@@ -176,9 +176,9 @@ public class RecyclerMenuFragment extends BaseEditFragment {
             mViewHolder(View itemView) {
                 super(itemView);
                 view = itemView;
-                icon = (ImageView)itemView.findViewById(R.id.editor_item_image);
-                title = (TextView)itemView.findViewById(R.id.editor_item_title);
-                wrapper = (LinearLayout)itemView.findViewById(R.id.ll_effect_wrapper);
+                icon = itemView.findViewById(R.id.editor_item_image);
+                title = itemView.findViewById(R.id.editor_item_title);
+                wrapper = itemView.findViewById(R.id.ll_effect_wrapper);
             }
         }
 
