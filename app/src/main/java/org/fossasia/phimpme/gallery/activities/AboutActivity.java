@@ -45,10 +45,10 @@ public class AboutActivity extends ThemedActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setNavBarColor();
         cts = new CustomTabService(AboutActivity.this, getPrimaryColor());
-        scr = (ScrollView) findViewById(R.id.aboutAct_scrollView);
+        scr = findViewById(R.id.aboutAct_scrollView);
     }
 
     @Override

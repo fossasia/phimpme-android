@@ -21,7 +21,7 @@ public class SnackBarHandler  {
         final Snackbar snackbar = Snackbar.make(view, text, duration);
         ThemeHelper themeHelper=new ThemeHelper(ActivitySwitchHelper.getContext());
         View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id
+        TextView textView = sbView.findViewById(android.support.design.R.id
                 .snackbar_text);
         textView.setTextColor(Color.WHITE);
         textView.setTextSize(12);
@@ -40,7 +40,7 @@ public class SnackBarHandler  {
                 params.bottomMargin + bottomMargin);
         sbView.setLayoutParams(params);
 
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id
+        TextView textView = sbView.findViewById(android.support.design.R.id
                 .snackbar_text);
         textView.setTextColor(Color.WHITE);
         textView.setTextSize(12);
@@ -60,7 +60,7 @@ public class SnackBarHandler  {
                 params.bottomMargin + bottomMargin);
         sbView.setLayoutParams(params);
 
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id
+        TextView textView = sbView.findViewById(android.support.design.R.id
                 .snackbar_text);
         textView.setTextColor(Color.WHITE);
         textView.setTextSize(12);

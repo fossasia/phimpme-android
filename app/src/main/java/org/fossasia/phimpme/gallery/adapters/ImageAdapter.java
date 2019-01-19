@@ -134,7 +134,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
                 }
             });
 
-            linearLayout = (LinearLayout) itemView.findViewById(R.id.layout);
+            linearLayout = itemView.findViewById(R.id.layout);
             WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
             Display display = wm.getDefaultDisplay();
             Point size = new Point();

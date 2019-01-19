@@ -66,7 +66,7 @@ public class MainUI {
 	private void setIcon(int id) {
 		if (MyDebug.LOG)
 			Log.d(TAG, "setIcon: " + id);
-		ImageButton button = (ImageButton) main_activity.findViewById(id);
+		ImageButton button = main_activity.findViewById(id);
 		button.setBackgroundColor(Color.argb(63, 63, 63, 63)); // n.b., rgb color seems to be ignored for Android 6 onwards, but still relevant for older versions
 	}
 
@@ -77,23 +77,23 @@ public class MainUI {
 			ColorStateList progress_color = ColorStateList.valueOf(Color.argb(255, 240, 240, 240));
 			ColorStateList thumb_color = ColorStateList.valueOf(Color.argb(255, 255, 255, 255));
 
-			SeekBar seekBar = (SeekBar) main_activity.findViewById(R.id.focus_seekbar);
+			SeekBar seekBar = main_activity.findViewById(R.id.focus_seekbar);
 			seekBar.setProgressTintList(progress_color);
 			seekBar.setThumbTintList(thumb_color);
 
-			seekBar = (SeekBar) main_activity.findViewById(R.id.exposure_seekbar);
+			seekBar = main_activity.findViewById(R.id.exposure_seekbar);
 			seekBar.setProgressTintList(progress_color);
 			seekBar.setThumbTintList(thumb_color);
 
-			seekBar = (SeekBar) main_activity.findViewById(R.id.iso_seekbar);
+			seekBar = main_activity.findViewById(R.id.iso_seekbar);
 			seekBar.setProgressTintList(progress_color);
 			seekBar.setThumbTintList(thumb_color);
 
-			seekBar = (SeekBar) main_activity.findViewById(R.id.exposure_time_seekbar);
+			seekBar = main_activity.findViewById(R.id.exposure_time_seekbar);
 			seekBar.setProgressTintList(progress_color);
 			seekBar.setThumbTintList(thumb_color);
 
-			seekBar = (SeekBar) main_activity.findViewById(R.id.white_balance_seekbar);
+			seekBar = main_activity.findViewById(R.id.white_balance_seekbar);
 			seekBar.setProgressTintList(progress_color);
 			seekBar.setThumbTintList(thumb_color);
 		}
@@ -370,7 +370,7 @@ public class MainUI {
 		if (MyDebug.LOG)
 			Log.d(TAG, "setSwitchCameraContentDescription()");
 		if (main_activity.getPreview() != null && main_activity.getPreview().canSwitchCamera()) {
-			ImageButton view = (ImageButton) main_activity.findViewById(R.id.switch_camera);
+			ImageButton view = main_activity.findViewById(R.id.switch_camera);
 			int content_description;
 			int cameraId = main_activity.getNextCameraId();
 			if (main_activity.getPreview().getCameraControllerManager().isFrontFacing(cameraId)) {
@@ -495,13 +495,13 @@ public class MainUI {
 	}
 
 	public void audioControlStarted() {
-		ImageButton view = (ImageButton) main_activity.findViewById(R.id.audio_control);
+		ImageButton view = main_activity.findViewById(R.id.audio_control);
 		view.setImageResource(R.drawable.ic_mic_red_48dp);
 		view.setContentDescription(main_activity.getResources().getString(R.string.audio_control_stop));
 	}
 
 	public void audioControlStopped() {
-		ImageButton view = (ImageButton) main_activity.findViewById(R.id.audio_control);
+		ImageButton view = main_activity.findViewById(R.id.audio_control);
 		view.setImageResource(R.drawable.ic_mic_white_48dp);
 		view.setContentDescription(main_activity.getResources().getString(R.string.audio_control_start));
 	}
@@ -523,7 +523,7 @@ public class MainUI {
 				// with Camera2 API, when using manual ISO we instead show sliders for ISO range and exposure time
 				if (main_activity.getPreview().supportsISORange()) {
 					manual_exposure_seek_bar.setVisibility(View.VISIBLE);
-					SeekBar exposure_time_seek_bar = ((SeekBar) main_activity.findViewById(R.id.exposure_time_seekbar));
+					SeekBar exposure_time_seek_bar = (main_activity.findViewById(R.id.exposure_time_seekbar));
 					if (main_activity.getPreview().supportsExposureTime()) {
 						exposure_time_seek_bar.setVisibility(View.VISIBLE);
 					} else {
@@ -533,7 +533,7 @@ public class MainUI {
 			} else {
 				if (main_activity.getPreview().supportsExposures()) {
 					exposure_seek_bar.setVisibility(View.VISIBLE);
-					LinearLayout seek_bar_zoom = (LinearLayout) main_activity.findViewById(R.id.exposure_seekbar_zoom);
+					LinearLayout seek_bar_zoom = main_activity.findViewById(R.id.exposure_seekbar_zoom);
 					seek_bar_zoom.setVisibility(View.VISIBLE);
 				}
 			}
@@ -554,7 +554,7 @@ public class MainUI {
 	public void changeSeekbar(int seekBarId, int change) {
 		if (MyDebug.LOG)
 			Log.d(TAG, "changeSeekbar: " + change);
-		SeekBar seekBar = (SeekBar) main_activity.findViewById(seekBarId);
+		SeekBar seekBar = main_activity.findViewById(seekBarId);
 		int value = seekBar.getProgress();
 		int new_value = value + change;
 		if (new_value < 0)
@@ -585,7 +585,7 @@ public class MainUI {
 	public void setPopupIcon() {
 		if (MyDebug.LOG)
 			Log.d(TAG, "setPopupIcon");
-		ImageButton popup = (ImageButton) main_activity.findViewById(R.id.popup);
+		ImageButton popup = main_activity.findViewById(R.id.popup);
 		String flash_value = main_activity.getPreview().getCurrentFlashValue();
 		if (MyDebug.LOG)
 			Log.d(TAG, "flash_value: " + flash_value);
@@ -608,7 +608,7 @@ public class MainUI {
 		if (MyDebug.LOG)
 			Log.d(TAG, "close popup");
 		if (popupIsOpen()) {
-			ViewGroup popup_container = (ViewGroup) main_activity.findViewById(R.id.popup_container);
+			ViewGroup popup_container = main_activity.findViewById(R.id.popup_container);
 			popup_container.removeAllViews();
 			popup_view_is_open = false;
 			/* Not destroying the popup doesn't really gain any performance.
@@ -637,7 +637,7 @@ public class MainUI {
 	}
 
 	public void togglePopupSettings() {
-		final ViewGroup popup_container = (ViewGroup) main_activity.findViewById(R.id.popup_container);
+		final ViewGroup popup_container = main_activity.findViewById(R.id.popup_container);
 		if (popupIsOpen()) {
 			closePopup();
 			return;
