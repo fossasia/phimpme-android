@@ -822,10 +822,9 @@ public class SettingsActivity extends ThemedActivity {
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
 
         View dialogLayout = getLayoutInflater().inflate(R.layout.dialog_media_viewer_theme, null);
-        final SwitchCompat swApplyTheme_Viewer = (SwitchCompat) dialogLayout.findViewById(R.id.apply_theme_3th_act_enabled);
-        final LinearLayout linearLayout = (LinearLayout) dialogLayout.findViewById(R.id.ll_seek_bar_alpha);
-        final RelativeLayout relativeLayout = (RelativeLayout) dialogLayout.findViewById(R.id.container_edit_text);
         final SwitchCompat swApplyTheme_Viewer = dialogLayout.findViewById(R.id.apply_theme_3th_act_enabled);
+        final LinearLayout linearLayout = dialogLayout.findViewById(R.id.ll_seek_bar_alpha);
+        final RelativeLayout relativeLayout = dialogLayout.findViewById(R.id.container_edit_text);
 
         ((CardView) dialogLayout.findViewById(R.id.third_act_theme_card)).setCardBackgroundColor(getCardBackgroundColor());
         dialogLayout.findViewById(R.id.third_act_theme_title).setBackgroundColor(getPrimaryColor());//or GetPrimary
@@ -854,8 +853,6 @@ public class SettingsActivity extends ThemedActivity {
             }
         });
         updateSwitchColor(swApplyTheme_Viewer, getAccentColor());
-
-        final LineColorPicker transparencyColorPicker = (LineColorPicker) dialogLayout.findViewById(R.id.pickerTransparent);
 
         final LineColorPicker transparencyColorPicker = dialogLayout.findViewById(R.id.pickerTransparent);
 
