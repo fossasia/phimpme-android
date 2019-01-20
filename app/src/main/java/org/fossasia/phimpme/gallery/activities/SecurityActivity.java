@@ -100,8 +100,7 @@ public class SecurityActivity extends ThemedActivity {
                     editor.putBoolean(getString(R.string.preference_use_password), false);
                     editor.commit();
                     toggleEnabledChild(false);
-                    Snackbar.make(findViewById(android.R.id.content), R.string.no_password, Snackbar.LENGTH_SHORT)
-                            .show();
+                    Snackbar.make(findViewById(android.R.id.content), R.string.no_password, Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -112,8 +111,7 @@ public class SecurityActivity extends ThemedActivity {
                 if (swActiveSecurity.isChecked()) {
                     llbody.setEnabled(true);
                 } else {
-                    Snackbar.make(findViewById(android.R.id.content), R.string.no_password, Snackbar.LENGTH_SHORT)
-                            .show();
+                    Snackbar.make(findViewById(android.R.id.content), R.string.no_password, Snackbar.LENGTH_SHORT).show();
                 }
             }
         });
@@ -221,8 +219,7 @@ public class SecurityActivity extends ThemedActivity {
                 if (swActiveSecurity.isChecked())
                     changePasswordDialog();
                 else
-                    Snackbar.make(findViewById(android.R.id.content), R.string.no_password, Snackbar.LENGTH_SHORT)
-                            .show();
+                    Snackbar.make(findViewById(android.R.id.content), R.string.no_password, Snackbar.LENGTH_SHORT).show();
             }
         });
 
@@ -343,7 +340,6 @@ public class SecurityActivity extends ThemedActivity {
 
         final AlertDialog dialog = passwordDialog.create();
         dialog.setCancelable(false);
-
         dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -355,7 +351,6 @@ public class SecurityActivity extends ThemedActivity {
 
         dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.ok_action).toUpperCase(), (DialogInterface.OnClickListener) null);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialogInterface) {
@@ -364,7 +359,6 @@ public class SecurityActivity extends ThemedActivity {
                     @Override
                     public void onClick(View view) {
                         boolean changed = false;
-
                         if (editTextPassword.length() > 3) {
                             if (editTextPassword.getText().toString().equals(editTextConfirmPassword.getText().toString())) {
                                 if (securityQuestion.getText().length() != 0) {
@@ -512,7 +506,6 @@ public class SecurityActivity extends ThemedActivity {
         });
         dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.ok_action).toUpperCase(), (DialogInterface.OnClickListener) null);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialogInterface) {
@@ -520,7 +513,6 @@ public class SecurityActivity extends ThemedActivity {
                 b.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-
                         if (editTextPassword.length() > 3) {
                             if (editTextPassword.getText().toString().equals(editTextConfirmPassword.getText().toString())) {
                                 if (securityQuestion.getText().length() != 0) {
@@ -531,10 +523,8 @@ public class SecurityActivity extends ThemedActivity {
                                         securityObj.updateSecuritySetting();
                                         SnackBarHandler.show(llroot, R.string.remember_password_message);
                                         dialog.dismiss();
-                                        Snackbar.make(findViewById(android.R.id.content), "Password Changed", Snackbar.LENGTH_SHORT)
-                                                .show();
-
-                                    } else {
+                                        Snackbar.make(findViewById(android.R.id.content), "Password Changed", Snackbar.LENGTH_SHORT).show();
+                                        } else {
                                         securityAnswer1.requestFocus();
                                         securityAnswer1.setError(getString(R.string.security_ans_empty));
                                     }
@@ -555,7 +545,6 @@ public class SecurityActivity extends ThemedActivity {
             }
 
         });
-
         dialog.show();
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), dialog);
     }
@@ -593,7 +582,6 @@ public class SecurityActivity extends ThemedActivity {
             }
         });
         toolbar.setTitle(getString(R.string.about));
-
         IconicsImageView imgActiveSecurity = findViewById(R.id.active_security_icon);
         TextView txtActiveSecurity = findViewById(R.id.active_security_item_title);
         IconicsImageView imgActiveSecurityChangePassword = findViewById(R.id.security_change_password);
@@ -666,12 +654,9 @@ public class SecurityActivity extends ThemedActivity {
         public int getItemCount() {
             return albums.size();
         }
-
         class ViewHolder extends RecyclerView.ViewHolder {
-
             private TextView foldername;
             private CheckBox foldercheckbox;
-
             public ViewHolder(View itemView) {
                 super(itemView);
                 foldername = itemView.findViewById(R.id.foldername);
