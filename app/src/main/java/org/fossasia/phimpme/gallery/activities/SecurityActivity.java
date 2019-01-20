@@ -93,7 +93,6 @@ public class SecurityActivity extends ThemedActivity {
                 SharedPreferences.Editor editor = SP.getEditor();
                 securityObj.updateSecuritySetting();
                 updateSwitchColor(swActiveSecurity, getAccentColor());
-                llbody.setEnabled(swActiveSecurity.isChecked());
                 if (isChecked)
                     setPasswordDialog();
                 else {
@@ -101,13 +100,25 @@ public class SecurityActivity extends ThemedActivity {
                     editor.putBoolean(getString(R.string.preference_use_password), false);
                     editor.commit();
                     toggleEnabledChild(false);
-                    Snackbar.make(findViewById(android.R.id.content), "No Password Set", Snackbar.LENGTH_SHORT)
+                    Snackbar.make(findViewById(android.R.id.content), R.string.no_password, Snackbar.LENGTH_SHORT)
                             .show();
                 }
             }
         });
         updateSwitchColor(swActiveSecurity, getAccentColor());
-        llbody.setEnabled(swActiveSecurity.isChecked());
+
+        llbody.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (swActiveSecurity.isChecked()) {
+                    llbody.setEnabled(true);
+                } else {
+                    Snackbar.make(findViewById(android.R.id.content), R.string.no_password, Snackbar.LENGTH_SHORT)
+                            .show();
+                }
+            }
+        });
+
 
         /** - ACTIVE SECURITY ON HIDDEN FOLDER - **/
         swApplySecurityHidden.setChecked(securityObj.isPasswordOnHidden());
@@ -129,7 +140,7 @@ public class SecurityActivity extends ThemedActivity {
                 SP.putBoolean(getString(R.string.preference_use_password_on_folder), isChecked);
                 securityObj.updateSecuritySetting();
                 updateSwitchColor(swApplySecurityFolder, getAccentColor());
-                if(isChecked) {
+                if (isChecked) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SecurityActivity.this, getDialogStyle());
                     View view = getLayoutInflater().inflate(R.layout.dialog_security_folder, null);
                     view.setBackgroundColor(getBackgroundColor());
@@ -149,28 +160,29 @@ public class SecurityActivity extends ThemedActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
-                            if(securedfol.size()>0){
+                            if (securedfol.size() > 0) {
                                 SharedPreferences.Editor editor = SP.getEditor();
                                 Gson gson = new Gson();
                                 String securedfolders = gson.toJson(securedfol);
                                 editor.putString(getString(R.string.preference_use_password_secured_local_folders), securedfolders);
                                 editor.commit();
-                            }else{
+                            } else {
                                 SP.putBoolean(getString(R.string.preference_use_password_on_folder), false);
                                 securityObj.updateSecuritySetting();
                                 swApplySecurityFolder.setChecked(false);
                                 updateSwitchColor(swApplySecurityFolder, getAccentColor());
                             }
-                        }});
+                        }
+                    });
                     ad.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            if(securedfol.size()>0){
-                               for(Album a: albums){
-                                   if(a.getsecured()){
-                                       a.setsecured(false);
-                                   }
-                               }
+                            if (securedfol.size() > 0) {
+                                for (Album a : albums) {
+                                    if (a.getsecured()) {
+                                        a.setsecured(false);
+                                    }
+                                }
                             }
                             dialogInterface.dismiss();
                             SP.putBoolean(getString(R.string.preference_use_password_on_folder), false);
@@ -182,7 +194,7 @@ public class SecurityActivity extends ThemedActivity {
                     ad.setOnKeyListener(new DialogInterface.OnKeyListener() {
                         @Override
                         public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                            if(keyCode ==  KeyEvent.KEYCODE_BACK){
+                            if (keyCode == KeyEvent.KEYCODE_BACK) {
                                 dialog.dismiss();
                                 SP.putBoolean(getString(R.string.preference_use_password_on_folder), false);
                                 securityObj.updateSecuritySetting();
@@ -196,7 +208,7 @@ public class SecurityActivity extends ThemedActivity {
                     ad.setCanceledOnTouchOutside(false);
                     ad.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(getAccentColor());
                     ad.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getAccentColor());
-                }else{
+                } else {
                     SP.putBoolean(getString(R.string.preference_use_password_on_folder), false);
                     securityObj.updateSecuritySetting();
                     updateSwitchColor(swApplySecurityFolder, getAccentColor());
@@ -208,10 +220,11 @@ public class SecurityActivity extends ThemedActivity {
         llchangepassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(swActiveSecurity.isChecked())
+                if (swActiveSecurity.isChecked())
                     changePasswordDialog();
                 else
-                    SnackBarHandler.show(llroot, R.string.set_passowrd);
+                    Snackbar.make(findViewById(android.R.id.content), R.string.no_password, Snackbar.LENGTH_SHORT)
+                            .show();
             }
         });
 
@@ -250,12 +263,13 @@ public class SecurityActivity extends ThemedActivity {
         editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         checkBox.setButtonTintList(ColorStateList.valueOf(getAccentColor()));
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(!b){
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (!b) {
                     checkBox.setButtonTintList(ColorStateList.valueOf(getAccentColor()));
                     editTextPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     editTextConfirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                }else{
+                } else {
                     checkBox.setButtonTintList(ColorStateList.valueOf(getAccentColor()));
                     editTextPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     editTextConfirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
@@ -263,36 +277,42 @@ public class SecurityActivity extends ThemedActivity {
             }
         });
         editTextConfirmPassword.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 //empty method body
             }
 
-            @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 editTextConfirmPassword.setSelection(editTextConfirmPassword.getText().toString().length());
             }
 
-            @Override public void afterTextChanged(Editable editable) {
-                if(editable.length() == max_password_length) {
-                    editTextConfirmPassword.setText(editable.toString().substring(0, max_password_length-1));
-                    editTextConfirmPassword.setSelection(max_password_length-1);
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.length() == max_password_length) {
+                    editTextConfirmPassword.setText(editable.toString().substring(0, max_password_length - 1));
+                    editTextConfirmPassword.setSelection(max_password_length - 1);
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.max_password_length), Toast.LENGTH_SHORT)
                             .show();
                 }
             }
         });
         editTextPassword.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 //empty method body
             }
 
-            @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 editTextPassword.setSelection(editTextPassword.getText().toString().length());
             }
 
-            @Override public void afterTextChanged(Editable editable) {
-                if(editable.length() == max_password_length) {
-                    editTextPassword.setText(editable.toString().substring(0, max_password_length-1));
-                    editTextPassword.setSelection(max_password_length-1);
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.length() == max_password_length) {
+                    editTextPassword.setText(editable.toString().substring(0, max_password_length - 1));
+                    editTextPassword.setSelection(max_password_length - 1);
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.max_password_length), Toast.LENGTH_SHORT)
                             .show();
                 }
@@ -363,33 +383,33 @@ public class SecurityActivity extends ThemedActivity {
                                         swActiveSecurity.setChecked(changed);
                                         SP.putBoolean(getString(R.string.preference_use_password), changed);
                                         toggleEnabledChild(changed);
-                                    }else{
+                                    } else {
                                         securityAnswer1.requestFocus();
                                         securityAnswer1.setError(getString(R.string.security_ans_empty));
                                     }
-                                }else{
+                                } else {
                                     securityQuestion.requestFocus();
                                     securityQuestion.setError(getString(R.string.security_ques_empty));
                                 }
-                            } else{
+                            } else {
                                 editTextConfirmPassword.requestFocus();
                                 editTextConfirmPassword.setError(getString(R.string.password_dont_match));
+                            }
+                        } else {
+                            editTextPassword.requestFocus();
+                            editTextPassword.setError(getString(R.string.error_password_length));
                         }
-                    } else {
-                        editTextPassword.requestFocus();
-                        editTextPassword.setError(getString( R.string.error_password_length));
-                    }
                     }
                 });
             }
 
-            });
+        });
 
         dialog.show();
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), dialog);
     }
 
-     private void changePasswordDialog() {
+    private void changePasswordDialog() {
 
         final short max_password_length = 128;
         final AlertDialog.Builder passwordDialog = new AlertDialog.Builder(SecurityActivity.this, getDialogStyle());
@@ -408,43 +428,53 @@ public class SecurityActivity extends ThemedActivity {
         editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         checkBox.setButtonTintList(ColorStateList.valueOf(getAccentColor()));
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(!b){
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (!b) {
                     editTextPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     editTextConfirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                }else{
+                } else {
                     editTextPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     editTextConfirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 }
             }
         });
         editTextConfirmPassword.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 //empty method body
             }
-            @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 editTextConfirmPassword.setSelection(editTextConfirmPassword.getText().toString().length());
             }
-            @Override public void afterTextChanged(Editable editable) {
-                if(editable.length() == max_password_length) {
-                    editTextConfirmPassword.setText(editable.toString().substring(0, max_password_length-1));
-                    editTextConfirmPassword.setSelection(max_password_length-1);
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.length() == max_password_length) {
+                    editTextConfirmPassword.setText(editable.toString().substring(0, max_password_length - 1));
+                    editTextConfirmPassword.setSelection(max_password_length - 1);
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.max_password_length), Toast.LENGTH_SHORT).show();
                 }
             }
         });
         editTextPassword.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 //empty method body
             }
 
-            @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 editTextPassword.setSelection(editTextPassword.getText().toString().length());
             }
-            @Override public void afterTextChanged(Editable editable) {
-                if(editable.length() == max_password_length) {
-                    editTextPassword.setText(editable.toString().substring(0, max_password_length-1));
-                    editTextPassword.setSelection(max_password_length-1);
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.length() == max_password_length) {
+                    editTextPassword.setText(editable.toString().substring(0, max_password_length - 1));
+                    editTextPassword.setSelection(max_password_length - 1);
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.max_password_length), Toast.LENGTH_SHORT)
                             .show();
                 }
@@ -482,56 +512,56 @@ public class SecurityActivity extends ThemedActivity {
                 dialog.dismiss();
             }
         });
-         dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.ok_action).toUpperCase(), (DialogInterface.OnClickListener) null);
-         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.ok_action).toUpperCase(), (DialogInterface.OnClickListener) null);
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
-         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-             @Override
-             public void onShow(DialogInterface dialogInterface) {
-                 Button b = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
-                 b.setOnClickListener(new View.OnClickListener() {
-                     @Override
-                     public void onClick(View view) {
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                Button b = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                b.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
 
-                         if (editTextPassword.length() > 3) {
-                             if (editTextPassword.getText().toString().equals(editTextConfirmPassword.getText().toString())) {
-                                 if (securityQuestion.getText().length() != 0) {
-                                     if (securityAnswer1.getText().length() != 0) {
-                                         SP.putString(getString(R.string.preference_password_value), editTextPassword.getText().toString());
-                                         SP.putString(getString(R.string.security_question), securityQuestion.getText().toString());
-                                         SP.putString(getString(R.string.security_answer), securityAnswer1.getText().toString());
-                                         securityObj.updateSecuritySetting();
-                                         SnackBarHandler.show(llroot, R.string.remember_password_message);
-                                         dialog.dismiss();
-                                         Snackbar.make(findViewById(android.R.id.content), "Password Changed", Snackbar.LENGTH_SHORT)
-                                                 .show();
+                        if (editTextPassword.length() > 3) {
+                            if (editTextPassword.getText().toString().equals(editTextConfirmPassword.getText().toString())) {
+                                if (securityQuestion.getText().length() != 0) {
+                                    if (securityAnswer1.getText().length() != 0) {
+                                        SP.putString(getString(R.string.preference_password_value), editTextPassword.getText().toString());
+                                        SP.putString(getString(R.string.security_question), securityQuestion.getText().toString());
+                                        SP.putString(getString(R.string.security_answer), securityAnswer1.getText().toString());
+                                        securityObj.updateSecuritySetting();
+                                        SnackBarHandler.show(llroot, R.string.remember_password_message);
+                                        dialog.dismiss();
+                                        Snackbar.make(findViewById(android.R.id.content), "Password Changed", Snackbar.LENGTH_SHORT)
+                                                .show();
 
-                                         }else{
-                                         securityAnswer1.requestFocus();
-                                         securityAnswer1.setError(getString(R.string.security_ans_empty));
-                                     }
-                                 }else{
-                                     securityQuestion.requestFocus();
-                                     securityQuestion.setError(getString(R.string.security_ques_empty));
-                                 }
-                             } else{
-                                 editTextConfirmPassword.requestFocus();
-                                 editTextConfirmPassword.setError(getString(R.string.password_dont_match));
-                             }
-                         } else {
-                             editTextPassword.requestFocus();
-                             editTextPassword.setError(getString( R.string.error_password_length));
-                         }
-                     }
-                 });
-             }
+                                    } else {
+                                        securityAnswer1.requestFocus();
+                                        securityAnswer1.setError(getString(R.string.security_ans_empty));
+                                    }
+                                } else {
+                                    securityQuestion.requestFocus();
+                                    securityQuestion.setError(getString(R.string.security_ques_empty));
+                                }
+                            } else {
+                                editTextConfirmPassword.requestFocus();
+                                editTextConfirmPassword.setError(getString(R.string.password_dont_match));
+                            }
+                        } else {
+                            editTextPassword.requestFocus();
+                            editTextPassword.setError(getString(R.string.error_password_length));
+                        }
+                    }
+                });
+            }
 
-         });
+        });
 
         dialog.show();
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), dialog);
     }
-    
+
     private void toggleEnabledChild(boolean enable) {
         if (!enable) {
             swApplySecurityDelete.setChecked(enable);
@@ -599,9 +629,10 @@ public class SecurityActivity extends ThemedActivity {
         folActiveSecurity.setTextColor(color);
     }
 
-    private class SecureDialogAdapter extends RecyclerView.Adapter<SecureDialogAdapter.ViewHolder>{
+    private class SecureDialogAdapter extends RecyclerView.Adapter<SecureDialogAdapter.ViewHolder> {
 
-        SecureDialogAdapter(){}
+        SecureDialogAdapter() {
+        }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -610,7 +641,8 @@ public class SecurityActivity extends ThemedActivity {
             return new ViewHolder(v);
         }
 
-        @Override public void onBindViewHolder(ViewHolder holder, int position) {
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
             final Album a = albums.get(position);
             holder.foldername.setText(a.getName());
             holder.foldername.setTextColor(getTextColor());
@@ -618,11 +650,12 @@ public class SecurityActivity extends ThemedActivity {
             holder.foldercheckbox.setChecked(a.getsecured());
             //holder.foldercheckbox.setButtonTintList();
             holder.foldercheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    if(b){
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if (b) {
                         securedfol.add(a.getPath());
                         a.setsecured(true);
-                    }else{
+                    } else {
                         securedfol.remove(a.getPath());
                         a.setsecured(false);
                     }
@@ -631,11 +664,12 @@ public class SecurityActivity extends ThemedActivity {
             holder.foldercheckbox.setButtonTintList(ColorStateList.valueOf(getAccentColor()));
         }
 
-        @Override public int getItemCount() {
+        @Override
+        public int getItemCount() {
             return albums.size();
         }
 
-        class ViewHolder extends RecyclerView.ViewHolder{
+        class ViewHolder extends RecyclerView.ViewHolder {
 
             private TextView foldername;
             private CheckBox foldercheckbox;
