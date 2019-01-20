@@ -116,6 +116,7 @@ public class PhotoView extends android.support.v7.widget.AppCompatImageView impl
 
     @Override
     public Matrix getImageMatrix() {
+         mAttacher.update();
         return mAttacher.getImageMatrix();
     }
 
@@ -172,7 +173,7 @@ public class PhotoView extends android.support.v7.widget.AppCompatImageView impl
     @Override
     protected boolean setFrame(int l, int t, int r, int b) {
         boolean changed = super.setFrame(l, t, r, b);
-        if (null != mAttacher) {
+        if (changed && null != mAttacher) {
             mAttacher.update();
         }
         return changed;

@@ -61,8 +61,8 @@ public class RotateFragment extends BaseEditFragment {
     private void initViews() {
         cancel = mainView.findViewById(R.id.rotate_cancel);
         apply = mainView.findViewById(R.id.rotate_apply);
-        horizontalWheelView = (HorizontalWheelView) mainView.findViewById(R.id.horizontalWheelView);
-        tvAngle = (TextView) mainView.findViewById(R.id.tvAngle);
+        horizontalWheelView = mainView.findViewById(R.id.horizontalWheelView);
+        tvAngle = mainView.findViewById(R.id.tvAngle);
         this.mRotatePanel = ensureEditActivity().mRotatePanel;
     }
 
@@ -126,6 +126,10 @@ public class RotateFragment extends BaseEditFragment {
 
     @Override
     public void onShow() {
+        if (activity.mainBitmap == null) {
+            getActivity().getSupportFragmentManager().beginTransaction().remove(RotateFragment.this).commit();
+            return;
+        }
         activity.changeMode(EditImageActivity.MODE_ROTATE);
         activity.mainImage.setImageBitmap(activity.mainBitmap);
         activity.mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);

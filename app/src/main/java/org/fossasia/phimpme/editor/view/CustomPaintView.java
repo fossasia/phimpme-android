@@ -12,6 +12,7 @@ import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouch;
 
 /**
@@ -58,6 +59,12 @@ public class CustomPaintView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        if (mainBitmap == null) {
+            if (this.getParent() != null) {
+                ((ViewGroup) this.getParent()).removeView(this);
+            }
+            return;
+        }
         int displayW=mainBitmap.getWidth()*getMeasuredHeight()/mainBitmap.getHeight();
         int displayH=mainBitmap.getHeight()*getMeasuredWidth()/mainBitmap.getWidth();
         leftX=(mainImage.getMeasuredWidth()-displayW)>>1;

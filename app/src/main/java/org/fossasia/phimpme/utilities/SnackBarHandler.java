@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
 
 /**
@@ -22,7 +21,7 @@ public class SnackBarHandler  {
         final Snackbar snackbar = Snackbar.make(view, text, duration);
         ThemeHelper themeHelper=new ThemeHelper(ActivitySwitchHelper.getContext());
         View sbView = snackbar.getView();
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id
+        TextView textView = sbView.findViewById(android.support.design.R.id
                 .snackbar_text);
         textView.setTextColor(Color.WHITE);
         textView.setTextSize(12);
@@ -30,7 +29,7 @@ public class SnackBarHandler  {
         return snackbar;
     }
 
-    public static void showWithBottomMargin(View view, String text,int bottomMargin, int duration) {
+    public static Snackbar showWithBottomMargin(View view, String text,int bottomMargin, int duration) {
         ThemeHelper themeHelper=new ThemeHelper(ActivitySwitchHelper.getContext());
         final Snackbar snackbar = Snackbar.make(view, text, duration);
         View sbView = snackbar.getView();
@@ -41,18 +40,13 @@ public class SnackBarHandler  {
                 params.bottomMargin + bottomMargin);
         sbView.setLayoutParams(params);
 
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id
+        TextView textView = sbView.findViewById(android.support.design.R.id
                 .snackbar_text);
         textView.setTextColor(Color.WHITE);
         textView.setTextSize(12);
-        snackbar.setAction(R.string.ok_action, new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                snackbar.dismiss();
-            }
-        });
         snackbar.setActionTextColor(themeHelper.getAccentColor());
         snackbar.show();
+        return snackbar;
     }
 
     public static Snackbar showWithBottomMargin2(View view, String text,int bottomMargin, int duration) {
@@ -66,7 +60,7 @@ public class SnackBarHandler  {
                 params.bottomMargin + bottomMargin);
         sbView.setLayoutParams(params);
 
-        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id
+        TextView textView = sbView.findViewById(android.support.design.R.id
                 .snackbar_text);
         textView.setTextColor(Color.WHITE);
         textView.setTextSize(12);
@@ -90,8 +84,8 @@ public class SnackBarHandler  {
         showWithBottomMargin(view, ActivitySwitchHelper.getContext().getResources().getString(res), bottomMargin, duration);
     }
 
-    public static void showWithBottomMargin(View view, String text, int bottomMargin) {
-        showWithBottomMargin(view, text, bottomMargin, Snackbar.LENGTH_LONG);
+    public static Snackbar showWithBottomMargin(View view, String text, int bottomMargin) {
+        return showWithBottomMargin(view, text, bottomMargin, Snackbar.LENGTH_LONG);
     }
 
     public static void showWithBottomMargin(View view, int res, int bottomMargin) {

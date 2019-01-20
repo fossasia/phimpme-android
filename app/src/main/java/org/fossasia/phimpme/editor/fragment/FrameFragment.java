@@ -1,5 +1,6 @@
 package org.fossasia.phimpme.editor.fragment;
 import android.content.res.AssetManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -37,6 +38,8 @@ public class FrameFragment extends BaseEditFragment {
     private int lastFrame = 99;
     private View frameView;
     private ImageButton imgBtnDone, imgBtnCancel;
+    private boolean isOrientationChanged;
+
     public static FrameFragment newInstance(Bitmap bmp) {
         Bundle args = new Bundle();
         FrameFragment fragment = new FrameFragment();
@@ -54,20 +57,22 @@ public class FrameFragment extends BaseEditFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        frameRecycler = (android.support.v7.widget.RecyclerView) frameView.findViewById(R.id.frameRecyler);
-        imgBtnDone = (ImageButton) frameView.findViewById(R.id.done);
-        imgBtnCancel = (ImageButton) frameView.findViewById(R.id.cancel);
+        frameRecycler = frameView.findViewById(R.id.frameRecyler);
+        imgBtnDone = frameView.findViewById(R.id.done);
+        imgBtnCancel = frameView.findViewById(R.id.cancel);
         imgBtnCancel.setImageResource(R.drawable.ic_close_black_24dp);
         imgBtnDone.setImageResource(R.drawable.ic_done_black_24dp);
         onShow();
         setUpLayoutManager();
-        recyclerView rv = new recyclerView();
+       final recyclerView rv = new recyclerView();
         frameRecycler.setAdapter(rv);
         imgBtnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 activity.mainImage.setImageBitmap(original);
                 setVisibilty(false);
+                if (isOrientationChanged)
+                rv.notifyDataSetChanged();
             }
         });
         imgBtnDone.setOnClickListener(new View.OnClickListener() {
@@ -77,6 +82,8 @@ public class FrameFragment extends BaseEditFragment {
                     activity.changeMainBitmap(lastBitmap);
                     backToMain();
                 }
+                if (isOrientationChanged)
+                rv.notifyDataSetChanged();
             }
         });
 
@@ -99,7 +106,13 @@ public class FrameFragment extends BaseEditFragment {
     //set linearLayoutManager
     private void setUpLayoutManager() {
         LinearLayoutManager linearLayoutManager;
-        linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+            isOrientationChanged = true;
+        }else {
+            linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
+            isOrientationChanged = false;
+        }
         frameRecycler.setLayoutManager(linearLayoutManager);
     }
     //
@@ -154,7 +167,7 @@ public class FrameFragment extends BaseEditFragment {
             private ImageView imageView;
             public viewHolder(View itemView) {
                 super(itemView);
-                imageView = (ImageView) itemView.findViewById(R.id.frames);
+                imageView = itemView.findViewById(R.id.frames);
             }
         }
     }
@@ -299,8 +312,12 @@ public class FrameFragment extends BaseEditFragment {
     private class asyncThumbs extends AsyncTask<Void, Void, Void> {
 
         @Override
+        protected void onPreExecute() {
+            arrayList=new ArrayList<>();
+        }
+
+        @Override
         protected Void doInBackground(Void... params) {
-            arrayList = new ArrayList<>();
             InputStream is = null;
             Bitmap tempBitmap;
             String frameFolder = "frames";

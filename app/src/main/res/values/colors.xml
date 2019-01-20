@@ -397,7 +397,7 @@
     <color name="tumblr_color">#32506d</color>
     <color name="instagram_color">#125688</color>
     <color name="whatsapp_color">#34af23</color>
-    <color name="snapchat_color">#fffc00</color>
+    <color name="snapchat_color">#F6D800</color>
     <color name="others_color">@color/md_indigo_900</color>
     <color name="facebook_color_darktheme">#28acff</color>
     <color name="messenger_color_darktheme">#778bca</color>

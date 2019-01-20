@@ -5,7 +5,6 @@ package org.fossasia.phimpme.gallery;
  */
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -25,7 +24,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -93,14 +91,14 @@ public class SelectAlbumBottomSheet extends BottomSheetDialogFragment {
 	View contentView = View.inflate(getContext(), R.layout.select_folder_bottom_sheet, null);
 	theme = new ThemeHelper(getContext());
 
-	RecyclerView mRecyclerView = (RecyclerView) contentView.findViewById(R.id.folders);
+	RecyclerView mRecyclerView = contentView.findViewById(R.id.folders);
 	mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1));
 	adapter = new BottomSheetAlbumsAdapter();
 	mRecyclerView.setAdapter(adapter);
 
-	exploreModePanel = (LinearLayout) contentView.findViewById(R.id.explore_mode_panel);
-	currentFolderPath = (TextView) contentView.findViewById(R.id.bottom_sheet_sub_title);
-	imgExploreMode = (IconicsImageView) contentView.findViewById(R.id.toggle_hidden_icon);
+	exploreModePanel = contentView.findViewById(R.id.explore_mode_panel);
+	currentFolderPath = contentView.findViewById(R.id.bottom_sheet_sub_title);
+	imgExploreMode = contentView.findViewById(R.id.toggle_hidden_icon);
 	imgExploreMode.setOnClickListener(new View.OnClickListener() {
 	  @Override
 	  public void onClick(View v) {
@@ -332,11 +330,11 @@ public class SelectAlbumBottomSheet extends BottomSheetDialogFragment {
 	  private IconicsImageView imgFolder;
 	  private ViewHolder(View itemView) {
 		super(itemView);
-		folderName = (TextView) itemView.findViewById(R.id.name_folder);
-		sdfolder = (ImageView) itemView.findViewById(R.id.sd_card_folder);
-		folderCount = (TextView) itemView.findViewById(R.id.count_folder);
-		imgFolder = (IconicsImageView) itemView.findViewById(R.id.folder_icon_bottom_sheet_item);
-		cardViewParent = (CardView) itemView.findViewById(R.id.card_view);
+		folderName = itemView.findViewById(R.id.name_folder);
+		sdfolder = itemView.findViewById(R.id.sd_card_folder);
+		folderCount = itemView.findViewById(R.id.count_folder);
+		imgFolder = itemView.findViewById(R.id.folder_icon_bottom_sheet_item);
+		cardViewParent = itemView.findViewById(R.id.card_view);
 	  }
 	}
   }

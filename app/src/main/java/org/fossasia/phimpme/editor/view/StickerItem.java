@@ -15,6 +15,7 @@ import android.view.View;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.utils.RectUtil;
 
+import java.util.Random;
 
 /**
  * @author panyi
@@ -44,6 +45,7 @@ public class StickerItem {
 
     private static Bitmap deleteBit;
     private static Bitmap rotateBit;
+    private Random random = new Random();
 
     private Paint greenPaint = new Paint();
     public RectF detectRotateRect;
@@ -80,12 +82,12 @@ public class StickerItem {
         this.bitmap = addBit;
         this.srcRect = new Rect(0, 0, addBit.getWidth(), addBit.getHeight());
         int bitWidth = Math.min(addBit.getWidth(), parentView.getWidth() >> 1);
-        int bitHeight = (int) bitWidth * addBit.getHeight() / addBit.getWidth();
-        int left = (parentView.getWidth() >> 1) - (bitWidth >> 1);
-        int top = (parentView.getHeight() >> 1) - (bitHeight >> 1);
+        int bitHeight = bitWidth * addBit.getHeight() / addBit.getWidth();
+        int left = (random.nextInt(parentView.getWidth()-(int)(parentView.getWidth()*0.4f)));
+        int top =  (random.nextInt(parentView.getHeight()-(int)(parentView.getHeight()*0.4f)));
         this.dstRect = new RectF(left, top, left + bitWidth, top + bitHeight);
         this.matrix = new Matrix();
-        this.matrix.postTranslate(this.dstRect.left, this.dstRect.top);
+        this.matrix.postTranslate(left, top);
         this.matrix.postScale((float) bitWidth / addBit.getWidth(),
                 (float) bitHeight / addBit.getHeight(), this.dstRect.left,
                 this.dstRect.top);
@@ -148,9 +150,6 @@ public class StickerItem {
 
         float x = this.detectRotateRect.centerX();
         float y = this.detectRotateRect.centerY();
-
-        // float x = oldx;
-        // float y = oldy;
 
         float n_x = x + dx;
         float n_y = y + dy;

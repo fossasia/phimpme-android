@@ -119,6 +119,7 @@ public class TrashBinActivity extends ThemedActivity {
         Realm realm = Realm.getDefaultInstance();
         securityObj = new SecurityHelper(TrashBinActivity.this);
         trashBinRealmModelRealmQuery = realm.where(TrashBinRealmModel.class);
+        emptyIcon.setColorFilter(getPrimaryColor());
         ArrayList<TrashBinRealmModel> trashlist = getTrashObjects();
         trashBinAdapter = new TrashBinAdapter(trashlist, basicCallBack);
         if (trashlist.size() == 0) {
@@ -199,6 +200,14 @@ public class TrashBinActivity extends ThemedActivity {
         setupToolbar();
         swipeRefreshLayout.setColorSchemeColors(getAccentColor());
         swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getBackgroundColor());
+        Realm realm = Realm.getDefaultInstance();
+        trashBinRealmModelRealmQuery = realm.where(TrashBinRealmModel.class);
+        if(getTrashObjects().size() == 0)
+        {
+            swipeRefreshLayout.setEnabled(false);
+        }
+        else
+            {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -208,6 +217,7 @@ public class TrashBinActivity extends ThemedActivity {
                 }
             }
         });
+        }
     }
 
         private int checkpos(String path){
@@ -288,6 +298,7 @@ public class TrashBinActivity extends ThemedActivity {
             swipeRefreshLayout.setRefreshing(false);
             super.onPostExecute(aVoid);
             if(deleted[0] && trashBinRealmModelRealmQuery.count() == 0){
+                swipeRefreshLayout.setEnabled(false);
                 emptyView.setVisibility(View.VISIBLE);
                 trashBinAdapter.setResults(getTrashObjects());
                 SnackBarHandler.showWithBottomMargin(parentView, getResources().getString(R.string.clear_all_success_mssg), 0, Snackbar.LENGTH_SHORT);
@@ -451,7 +462,7 @@ public class TrashBinActivity extends ThemedActivity {
     private void setupToolbar(){
         setSupportActionBar(toolbar);
         //toolbar.setTitle("Trash Bin");
-        getSupportActionBar().setTitle("Trash Bin");
+        getSupportActionBar().setTitle(getString(R.string.trash_bin));
         toolbar.setPopupTheme(getPopupToolbarStyle());
         toolbar.setBackgroundColor(getPrimaryColor());
         toolbar.setNavigationIcon(

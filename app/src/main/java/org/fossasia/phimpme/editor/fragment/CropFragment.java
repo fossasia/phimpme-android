@@ -34,7 +34,6 @@ import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouchBase;
 
 
 public class CropFragment extends BaseEditFragment {
-    public static final int INDEX = 3;
 	public static final String TAG = CropFragment.class.getName();
 	private View mainView;
 	private View cancel,apply;
@@ -77,7 +76,7 @@ public class CropFragment extends BaseEditFragment {
 	}
 
 	private void resetCropView() {
-		if (null != activity && null != mCropPanel){
+		if (null != activity && null != mCropPanel && activity.mainBitmap != null){
 			mCropPanel.setVisibility(View.GONE);
 			RectF r = activity.mainImage.getBitmapRect();
 			activity.mCropPanel.setCropRect(r);
@@ -142,8 +141,8 @@ public class CropFragment extends BaseEditFragment {
         cancel = mainView.findViewById(R.id.crop_cancel);
 		apply = mainView.findViewById(R.id.crop_apply);
 
-        ratioList = (LinearLayout) mainView.findViewById(R.id.ratio_list_group);
-        imageList=(LinearLayout) mainView.findViewById(R.id.image_crop);
+        ratioList = mainView.findViewById(R.id.ratio_list_group);
+        imageList= mainView.findViewById(R.id.image_crop);
         setUpRatioList();
         this.mCropPanel = ensureEditActivity().mCropPanel;
 		cancel.setOnClickListener(new BackToMenuClick());
@@ -158,7 +157,10 @@ public class CropFragment extends BaseEditFragment {
 
     @Override
     public void onShow() {
-
+		if (activity.mainBitmap == null) {
+			getActivity().getSupportFragmentManager().beginTransaction().remove(CropFragment.this).commit();
+			return;
+		}
 		activity.changeMode(EditImageActivity.MODE_CROP);
         activity.mCropPanel.setVisibility(View.VISIBLE);
         activity.mainImage.setImageBitmap(activity.mainBitmap);
