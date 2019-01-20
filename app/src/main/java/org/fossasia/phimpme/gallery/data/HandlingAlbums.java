@@ -318,7 +318,7 @@ public class HandlingAlbums {
       }
 
       if (indexRightBeforeOrAfter != -1) {
-          for (int index = Math.min(targetIndex, indexRightBeforeOrAfter); index < Math.max(targetIndex, indexRightBeforeOrAfter); index++) {
+          for (int index = Math.min(targetIndex, indexRightBeforeOrAfter); index <= Math.max(targetIndex, indexRightBeforeOrAfter); index++) {
               if (dispAlbums.get(index) != null && !dispAlbums.get(index).isSelected()) {
                   dispAlbums.get(index).setSelected(true);
                   selectedAlbums.add(dispAlbums.get(index));
