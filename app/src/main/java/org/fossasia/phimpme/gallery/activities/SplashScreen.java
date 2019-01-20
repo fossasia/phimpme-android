@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.SharedMediaActivity;
@@ -172,16 +173,18 @@ public class SplashScreen extends SharedMediaActivity {
         builder.setTitle(R.string.permission_rationale_title);
         builder.setMessage(R.string.permission_storage_alert);
         builder.setCancelable(false);
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.exit, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                askForPermission();
+                finish();
             }
         });
 
-        builder.setNeutralButton("GRANT PERMISSIONS", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.grant_permission, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(), R.string.permissions_restart, Toast.LENGTH_LONG)
+                        .show();
                 Intent intent = new Intent();
                 intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                 Uri uri = Uri.fromParts("package", getPackageName(), null);
