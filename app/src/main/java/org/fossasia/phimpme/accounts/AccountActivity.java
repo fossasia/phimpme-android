@@ -8,6 +8,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.box.androidsdk.content.BoxConfig;
 import com.box.androidsdk.content.auth.BoxAuthentication;
@@ -219,7 +219,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         ConnectivityManager cm=(ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getActiveNetworkInfo();
         if (ni == null) {
-           Toast.makeText(AccountActivity.this,getString(R.string.internet_is_off),Toast.LENGTH_SHORT).show();
+           Snackbar.make(findViewById(android.R.id.content),getString(R.string.internet_is_off),Snackbar.LENGTH_SHORT).show();
         }
         final SwitchCompat signInSignOut = childView.findViewById(R.id.sign_in_sign_out_switch);
         final String name = AccountDatabase.AccountName.values()[position].toString();
@@ -264,7 +264,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                 case DROPBOX:
                     if(CLOUDRAIL_APP_KEY==null || CLOUDRAIL_APP_KEY.equals(""))
                     {
-                        Toast.makeText(getContext(),R.string.Cloudrail_License_key,Toast.LENGTH_SHORT).show();
+                        Snackbar.make(findViewById(android.R.id.content),R.string.Cloudrail_License_key,Snackbar.LENGTH_SHORT).show();
                     }
                     else
                     signInDropbox();

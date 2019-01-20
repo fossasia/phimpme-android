@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
@@ -257,7 +258,7 @@ public class SettingsActivity extends ThemedActivity {
                 SP.putBoolean(getString(R.string.preference_translucent_status_bar), isChecked);
                 updateTheme();
                 setStatusBarColor();
-                Toast.makeText(SettingsActivity.this, getString(R.string.restart_app), Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), getString(R.string.restart_app), Snackbar.LENGTH_SHORT).show();
                 updateSwitchColor(swStatusBar, getAccentColor());
             }
         });
@@ -1072,7 +1073,7 @@ public class SettingsActivity extends ThemedActivity {
                                 passwordDialog.dismiss();
                                 SP.clearPreferences();
                                 recreate();
-                                Toast.makeText(SettingsActivity.this,R.string.settings_reset,Toast.LENGTH_SHORT).show();
+                                Snackbar.make(findViewById(android.R.id.content),R.string.settings_reset,Snackbar.LENGTH_SHORT).show();
                             } else {
                                 passco[0] = true;
                                 securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
@@ -1093,7 +1094,7 @@ public class SettingsActivity extends ThemedActivity {
 
                     SP.clearPreferences();
                     recreate();
-                    Toast.makeText(SettingsActivity.this,R.string.settings_reset,Toast.LENGTH_SHORT).show();
+                    Snackbar.make(findViewById(android.R.id.content), R.string.settings_reset,Snackbar.LENGTH_SHORT).show();
 
                     SP.putString(getString(R.string.preference_password_value),password);
                     SP.putString(getString(R.string.preference_use_password_secured_local_folders),securedLocalFolders);
