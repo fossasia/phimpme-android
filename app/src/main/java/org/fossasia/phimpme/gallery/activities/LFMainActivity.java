@@ -288,6 +288,8 @@ public class LFMainActivity extends SharedMediaActivity {
                 if (!editMode) {
                     mediaAdapter.notifyItemChanged(toggleSelectPhoto(m));
                     editMode = true;
+                } else {
+                    selectAllPhotosUpToFav(getImagePosition(m.getPath()));
                 }
             } else selectAllPhotosUpTo(getImagePosition(m.getPath()), mediaAdapter);
             return true;
@@ -403,6 +405,31 @@ public class LFMainActivity extends SharedMediaActivity {
             }
         }
         toolbar.setTitle(selectedMedias.size() + "/" + size);
+    }
+
+    public void selectAllPhotosUpToFav(int targetIndex) {
+        int indexRightBeforeOrAfter = -1;
+        int indexNow;
+        for (Media sm : selectedMedias) {
+            indexNow = getImagePosition(sm.getPath());
+            if (indexRightBeforeOrAfter == -1) indexRightBeforeOrAfter = indexNow;
+
+            if (indexNow > targetIndex) break;
+            indexRightBeforeOrAfter = indexNow;
+        }
+
+        ArrayList<Media> favlist = mediaAdapter.getList();
+
+        if (indexRightBeforeOrAfter != -1) {
+            for (int index = Math.min(targetIndex, indexRightBeforeOrAfter); index <= Math.max(targetIndex, indexRightBeforeOrAfter); index++) {
+                if (favlist.get(index) != null && !favlist.get(index).isSelected()) {
+                    favlist.get(index).setSelected(true);
+                    selectedMedias.add(favlist.get(index));
+                    mediaAdapter.notifyItemChanged(index);
+                }
+            }
+        }
+        toolbar.setTitle(selectedMedias.size() + "/" + favlist.size());
     }
 
     public void populateAlbum() {
