@@ -1,3 +1,16 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
+    }
+}
+
+plugins {
+    id "com.diffplug.gradle.spotless" version "3.16.0"
+}
+
 apply plugin: 'com.android.application'
 apply plugin: 'jacoco-android'
 apply plugin: 'realm-android'
@@ -91,6 +104,12 @@ repositories {
     maven { url "https://mvnrepository.com/artifact/com.box/box-android-sdk" }
 }
 
+spotless {
+    java {
+        googleJavaFormat()
+        target '**/*.java'
+    }
+}
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -186,15 +205,6 @@ dependencies {
     //compressor
     compile 'id.zelory:compressor:2.1.0'
 
-}
-
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
-    }
 }
 
 apply plugin: 'com.android.application'

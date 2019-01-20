@@ -1,5 +1,7 @@
 package org.fossasia.phimpme.editor.fragment;
 
+import static android.graphics.Color.WHITE;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -21,10 +23,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
-
 import org.fossasia.phimpme.MyApplication;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.EditImageActivity;
@@ -32,257 +32,265 @@ import org.fossasia.phimpme.editor.font.FontPickerDialog;
 import org.fossasia.phimpme.editor.task.StickerTask;
 import org.fossasia.phimpme.editor.view.TextStickerView;
 import org.fossasia.phimpme.gallery.util.ColorPalette;
-
 import uz.shift.colorpicker.LineColorPicker;
 import uz.shift.colorpicker.OnColorChangedListener;
 
-import static android.graphics.Color.WHITE;
+public class AddTextFragment extends BaseEditFragment
+    implements TextWatcher, FontPickerDialog.FontPickerDialogListener {
+  public static final int INDEX = 5;
+  private View mainView;
 
-public class AddTextFragment extends BaseEditFragment implements TextWatcher, FontPickerDialog.FontPickerDialogListener {
-    public static final int INDEX = 5;
-    private View mainView;
+  private EditText mInputText;
+  private ImageView mTextColorSelector;
+  private TextStickerView mTextStickerView;
 
-    private EditText mInputText;
-    private ImageView mTextColorSelector;
-    private TextStickerView mTextStickerView;
+  private InputMethodManager imm;
+  private SaveTextStickerTask mSaveTask;
 
-    private InputMethodManager imm;
-    private SaveTextStickerTask mSaveTask;
+  public static AddTextFragment newInstance() {
+    return new AddTextFragment();
+  }
 
-    public static AddTextFragment newInstance() {
-        return new AddTextFragment();
-    }
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+  }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+  @Override
+  public View onCreateView(
+      LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+    mainView = inflater.inflate(R.layout.fragment_edit_image_add_text, null);
+    return mainView;
+  }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        mainView = inflater.inflate(R.layout.fragment_edit_image_add_text, null);
-        return mainView;
-    }
+  @Override
+  public void onActivityCreated(Bundle savedInstanceState) {
+    super.onActivityCreated(savedInstanceState);
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    mTextStickerView = getActivity().findViewById(R.id.text_sticker_panel);
 
-        mTextStickerView = getActivity().findViewById(R.id.text_sticker_panel);
+    View cancel = mainView.findViewById(R.id.text_cancel);
+    View apply = mainView.findViewById(R.id.text_apply);
+    ImageButton ibFontChoice = mainView.findViewById(R.id.text_font);
 
-        View cancel = mainView.findViewById(R.id.text_cancel);
-        View apply = mainView.findViewById(R.id.text_apply);
-        ImageButton ibFontChoice = mainView.findViewById(R.id.text_font);
+    ((ImageButton) cancel).setColorFilter(Color.BLACK);
+    ((ImageButton) apply).setColorFilter(Color.BLACK);
 
-        ((ImageButton) cancel).setColorFilter(Color.BLACK);
-        ((ImageButton) apply).setColorFilter(Color.BLACK);
+    mInputText = mainView.findViewById(R.id.text_input);
+    mTextColorSelector = mainView.findViewById(R.id.text_color);
+    mTextColorSelector.setImageDrawable(
+        new IconicsDrawable(activity).icon(GoogleMaterial.Icon.gmd_format_color_fill).sizeDp(24));
 
-        mInputText = mainView.findViewById(R.id.text_input);
-        mTextColorSelector =  mainView.findViewById(R.id.text_color);
-        mTextColorSelector.setImageDrawable(new IconicsDrawable(activity).icon(GoogleMaterial.Icon.gmd_format_color_fill).sizeDp(24));
-
-        cancel.setOnClickListener(new BackToMenuClick());
-        apply.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                applyTextImage();
-            }
+    cancel.setOnClickListener(new BackToMenuClick());
+    apply.setOnClickListener(
+        new OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            applyTextImage();
+          }
         });
-        mTextColorSelector.setOnClickListener(new SelectColorBtnClick());
-        mInputText.addTextChangedListener(this);
-        boolean focus = mInputText.requestFocus();
-        if (focus) {
-            imm.showSoftInput(mInputText, InputMethodManager.SHOW_IMPLICIT);
-        }
-        mTextStickerView.setEditText(mInputText);
-        onShow();
+    mTextColorSelector.setOnClickListener(new SelectColorBtnClick());
+    mInputText.addTextChangedListener(this);
+    boolean focus = mInputText.requestFocus();
+    if (focus) {
+      imm.showSoftInput(mInputText, InputMethodManager.SHOW_IMPLICIT);
+    }
+    mTextStickerView.setEditText(mInputText);
+    onShow();
 
-        ibFontChoice.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showFontChoiceBox();
-            }
+    ibFontChoice.setOnClickListener(
+        new OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            showFontChoiceBox();
+          }
         });
-    }
+  }
 
-    private void showFontChoiceBox() {
-        DialogFragment dialogFragment = FontPickerDialog.newInstance(this);
-        dialogFragment.show(getFragmentManager(), "fontPicker");
-    }
+  private void showFontChoiceBox() {
+    DialogFragment dialogFragment = FontPickerDialog.newInstance(this);
+    dialogFragment.show(getFragmentManager(), "fontPicker");
+  }
 
+  @Override
+  public void afterTextChanged(Editable s) {
+    String text = s.toString().trim();
+    mTextStickerView.setText(text);
+  }
+
+  @Override
+  public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+  @Override
+  public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+  @Override
+  public void onFontSelected(FontPickerDialog dialog) {
+    mTextStickerView.setTextTypeFace(Typeface.createFromFile(dialog.getSelectedFont()));
+  }
+
+  private final class SelectColorBtnClick implements OnClickListener {
     @Override
-    public void afterTextChanged(Editable s) {
-        String text = s.toString().trim();
-        mTextStickerView.setText(text);
+    public void onClick(View v) {
+      textColorDialog();
     }
+  }
 
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-    }
-
-    @Override
-    public void onFontSelected(FontPickerDialog dialog) {
-        mTextStickerView.setTextTypeFace(Typeface.createFromFile(dialog.getSelectedFont()));
-    }
-
-    private final class SelectColorBtnClick implements OnClickListener {
-        @Override
-        public void onClick(View v) {
-            textColorDialog();
-        }
-
-    }
-
-    private void textColorDialog() {
-        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
-        final View dialogLayout = getActivity().getLayoutInflater().inflate(R.layout.color_piker_accent, null);
-        final LineColorPicker colorPicker = dialogLayout.findViewById(R.id.color_picker_accent);
-        final TextView dialogTitle = dialogLayout.findViewById(R.id.cp_accent_title);
-        dialogTitle.setText(R.string.text_color_title);
-        colorPicker.setColors(ColorPalette.getAccentColors(activity.getApplicationContext()));
-        changeTextColor(WHITE);
-        colorPicker.setOnColorChangedListener(new OnColorChangedListener() {
-            @Override
-            public void onColorChanged(int c) {
-                mTextColorSelector.setColorFilter(c);
-                dialogTitle.setBackgroundColor(c);
-                changeTextColor(colorPicker.getColor());
-
-            }
+  private void textColorDialog() {
+    final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
+    final View dialogLayout =
+        getActivity().getLayoutInflater().inflate(R.layout.color_piker_accent, null);
+    final LineColorPicker colorPicker = dialogLayout.findViewById(R.id.color_picker_accent);
+    final TextView dialogTitle = dialogLayout.findViewById(R.id.cp_accent_title);
+    dialogTitle.setText(R.string.text_color_title);
+    colorPicker.setColors(ColorPalette.getAccentColors(activity.getApplicationContext()));
+    changeTextColor(WHITE);
+    colorPicker.setOnColorChangedListener(
+        new OnColorChangedListener() {
+          @Override
+          public void onColorChanged(int c) {
+            mTextColorSelector.setColorFilter(c);
+            dialogTitle.setBackgroundColor(c);
+            changeTextColor(colorPicker.getColor());
+          }
         });
-        dialogBuilder.setView(dialogLayout);
-        dialogBuilder.setNeutralButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                changeTextColor(WHITE);
-                dialog.cancel();
-            }
+    dialogBuilder.setView(dialogLayout);
+    dialogBuilder.setNeutralButton(
+        getString(R.string.cancel).toUpperCase(),
+        new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialog, int which) {
+            changeTextColor(WHITE);
+            dialog.cancel();
+          }
         });
-        dialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                changeTextColor(colorPicker.getColor());
-            }
+    dialogBuilder.setPositiveButton(
+        getString(R.string.ok_action).toUpperCase(),
+        new DialogInterface.OnClickListener() {
+          public void onClick(DialogInterface dialog, int which) {
+            changeTextColor(colorPicker.getColor());
+          }
         });
-        dialogBuilder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                dialog.dismiss();
-            }
+    dialogBuilder.setOnDismissListener(
+        new DialogInterface.OnDismissListener() {
+          @Override
+          public void onDismiss(DialogInterface dialog) {
+            dialog.dismiss();
+          }
         });
-        dialogBuilder.show();
+    dialogBuilder.show();
+  }
+
+  private void changeTextColor(int newColor) {
+    mTextStickerView.setTextColor(newColor);
+  }
+
+  public void hideInput() {
+    if (getActivity() != null && getActivity().getCurrentFocus() != null && isInputMethodShow()) {
+      imm.hideSoftInputFromWindow(
+          getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+  }
+
+  public boolean isInputMethodShow() {
+    return imm.isActive();
+  }
+
+  private final class BackToMenuClick implements OnClickListener {
+    @Override
+    public void onClick(View v) {
+      backToMain();
+    }
+  }
+
+  public void backToMain() {
+    hideInput();
+    activity.changeMode(EditImageActivity.MODE_WRITE);
+    activity.writeFragment.clearSelection();
+    activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
+    activity.mainImage.setVisibility(View.VISIBLE);
+    mTextStickerView.clearTextContent();
+    mTextStickerView.setVisibility(View.GONE);
+  }
+
+  @Override
+  public void onShow() {
+    activity.changeMode(EditImageActivity.MODE_TEXT);
+    activity.mainImage.setImageBitmap(activity.mainBitmap);
+    activity.addTextFragment.getmTextStickerView().mainImage = activity.mainImage;
+    activity.addTextFragment.getmTextStickerView().mainBitmap = activity.mainBitmap;
+    mTextStickerView.setVisibility(View.VISIBLE);
+    mInputText.clearFocus();
+  }
+
+  public TextStickerView getmTextStickerView() {
+    return mTextStickerView;
+  }
+
+  public void applyTextImage() {
+    if (mSaveTask != null) {
+      mSaveTask.cancel(true);
     }
 
-    private void changeTextColor(int newColor) {
-        mTextStickerView.setTextColor(newColor);
-    }
+    mSaveTask = new SaveTextStickerTask(activity, activity.mainImage.getImageViewMatrix());
+    mSaveTask.execute(activity.mainBitmap);
+  }
 
-    public void hideInput() {
-        if (getActivity() != null && getActivity().getCurrentFocus() != null && isInputMethodShow()) {
-            imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                    InputMethodManager.HIDE_NOT_ALWAYS);
-        }
-    }
+  private final class SaveTextStickerTask extends StickerTask {
 
-    public boolean isInputMethodShow() {
-        return imm.isActive();
-    }
-
-    private final class BackToMenuClick implements OnClickListener {
-        @Override
-        public void onClick(View v) {
-            backToMain();
-        }
-    }
-
-    public void backToMain() {
-        hideInput();
-        activity.changeMode(EditImageActivity.MODE_WRITE);
-        activity.writeFragment.clearSelection();
-        activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
-        activity.mainImage.setVisibility(View.VISIBLE);
-        mTextStickerView.clearTextContent();
-        mTextStickerView.setVisibility(View.GONE);
+    public SaveTextStickerTask(EditImageActivity activity, Matrix imageViewMatrix) {
+      super(activity, imageViewMatrix);
     }
 
     @Override
-    public void onShow() {
-        activity.changeMode(EditImageActivity.MODE_TEXT);
-        activity.mainImage.setImageBitmap(activity.mainBitmap);
-        activity.addTextFragment.getmTextStickerView().mainImage = activity.mainImage;
-        activity.addTextFragment.getmTextStickerView().mainBitmap = activity.mainBitmap;
-        mTextStickerView.setVisibility(View.VISIBLE);
-        mInputText.clearFocus();
-    }
-
-    public TextStickerView getmTextStickerView(){return mTextStickerView;}
-
-    public void applyTextImage() {
-        if (mSaveTask != null) {
-            mSaveTask.cancel(true);
-        }
-
-        mSaveTask = new SaveTextStickerTask(activity, activity.mainImage.getImageViewMatrix());
-        mSaveTask.execute(activity.mainBitmap);
-    }
-
-    private final class SaveTextStickerTask extends StickerTask {
-
-        public SaveTextStickerTask(EditImageActivity activity, Matrix imageViewMatrix) {
-            super(activity, imageViewMatrix);
-        }
-
-        @Override
-        public void handleImage(Canvas canvas, Matrix m) {
-            float[] f = new float[9];
-            m.getValues(f);
-            int dx = (int) f[Matrix.MTRANS_X];
-            int dy = (int) f[Matrix.MTRANS_Y];
-            float scale_x = f[Matrix.MSCALE_X];
-            float scale_y = f[Matrix.MSCALE_Y];
-            canvas.save();
-            canvas.translate(dx, dy);
-            canvas.scale(scale_x, scale_y);
-            mTextStickerView.drawText(canvas, mTextStickerView.layout_x,
-                    mTextStickerView.layout_y, mTextStickerView.mScale, mTextStickerView.mRotateAngle);
-            canvas.restore();
-        }
-
-        @Override
-        public void onPostResult(Bitmap result) {
-            mTextStickerView.clearTextContent();
-            mTextStickerView.resetView();
-            activity.changeMainBitmap(result);
-            backToMain();
-        }
+    public void handleImage(Canvas canvas, Matrix m) {
+      float[] f = new float[9];
+      m.getValues(f);
+      int dx = (int) f[Matrix.MTRANS_X];
+      int dy = (int) f[Matrix.MTRANS_Y];
+      float scale_x = f[Matrix.MSCALE_X];
+      float scale_y = f[Matrix.MSCALE_Y];
+      canvas.save();
+      canvas.translate(dx, dy);
+      canvas.scale(scale_x, scale_y);
+      mTextStickerView.drawText(
+          canvas,
+          mTextStickerView.layout_x,
+          mTextStickerView.layout_y,
+          mTextStickerView.mScale,
+          mTextStickerView.mRotateAngle);
+      canvas.restore();
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        resetTextStickerView();
+    public void onPostResult(Bitmap result) {
+      mTextStickerView.clearTextContent();
+      mTextStickerView.resetView();
+      activity.changeMainBitmap(result);
+      backToMain();
     }
+  }
 
-    private void resetTextStickerView() {
-        if (null != mTextStickerView) {
-            mTextStickerView.clearTextContent();
-            mTextStickerView.setVisibility(View.GONE);
-        }
-    }
+  @Override
+  public void onDetach() {
+    super.onDetach();
+    resetTextStickerView();
+  }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mSaveTask != null && !mSaveTask.isCancelled()) {
-            mSaveTask.cancel(true);
-        }
-        MyApplication.getRefWatcher(getActivity()).watch(this);
+  private void resetTextStickerView() {
+    if (null != mTextStickerView) {
+      mTextStickerView.clearTextContent();
+      mTextStickerView.setVisibility(View.GONE);
     }
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    if (mSaveTask != null && !mSaveTask.isCancelled()) {
+      mSaveTask.cancel(true);
+    }
+    MyApplication.getRefWatcher(getActivity()).watch(this);
+  }
 }
