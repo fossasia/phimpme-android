@@ -8,6 +8,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -100,7 +101,7 @@ public class SecurityActivity extends ThemedActivity {
                     editor.putBoolean(getString(R.string.preference_use_password), false);
                     editor.commit();
                     toggleEnabledChild(false);
-                    Toast.makeText(getApplicationContext(), "No Password Set", Toast.LENGTH_SHORT)
+                    Snackbar.make(findViewById(android.R.id.content), "No Password Set", Snackbar.LENGTH_SHORT)
                             .show();
                 }
             }
@@ -357,7 +358,7 @@ public class SecurityActivity extends ThemedActivity {
                                         SnackBarHandler.show(llroot, R.string.remember_password_message);
                                         changed = true;
                                         dialog.dismiss();
-                                        Toast.makeText(getApplicationContext(), "Password Set", Toast.LENGTH_SHORT)
+                                        Snackbar.make(findViewById(android.R.id.content), "Password Set", Snackbar.LENGTH_SHORT)
                                                 .show();
                                         swActiveSecurity.setChecked(changed);
                                         SP.putBoolean(getString(R.string.preference_use_password), changed);
@@ -502,7 +503,7 @@ public class SecurityActivity extends ThemedActivity {
                                          securityObj.updateSecuritySetting();
                                          SnackBarHandler.show(llroot, R.string.remember_password_message);
                                          dialog.dismiss();
-                                         Toast.makeText(getApplicationContext(), "Password Changed", Toast.LENGTH_SHORT)
+                                         Snackbar.make(findViewById(android.R.id.content), "Password Changed", Snackbar.LENGTH_SHORT)
                                                  .show();
 
                                          }else{

@@ -47,6 +47,7 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.util.SparseIntArray;
@@ -2760,8 +2761,8 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
             try {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
             } catch (SecurityException e){
-                Toast.makeText(this, "Please open camera in app once to allow permissions"
-                        , Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), "Please open camera in app once to allow permissions"
+                        , Snackbar.LENGTH_SHORT).show();
             }
         }
     }

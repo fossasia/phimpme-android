@@ -2072,8 +2072,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     SLIDE_SHOW_INTERVAL = intValue * 1000;
                     if (SLIDE_SHOW_INTERVAL > 1000 && SLIDE_SHOW_INTERVAL <= 10000) {
                         hideSystemUI();
-                        Toast.makeText(SingleMediaActivity.this, getString(R.string.slide_start), Toast.LENGTH_SHORT).show();
-
+                        Snackbar.make(findViewById(android.R.id.content), getString(R.string.slide_start), Snackbar.LENGTH_SHORT).show();
                         handler.postDelayed(slideShowRunnable, SLIDE_SHOW_INTERVAL);
                     } else if (SLIDE_SHOW_INTERVAL < 1000) {
                         Toast.makeText(SingleMediaActivity.this, getString(R.string.min_duration_slide), Toast.LENGTH_SHORT).show();
