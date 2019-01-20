@@ -737,7 +737,7 @@
     <string name="show_password">Show Password</string>
     <string name="security_ans_empty">Security Answer cannot be empty</string>
     <string name="security_ques_empty">Security Question cannot be empty</string>
-
+    <string name="no_password">No password set</string>
     <string name="type_password">Insert password</string>
     <string name="change_password">Change password</string>
     <string name="set_passowrd">There is no password set. Please set a password first.</string>
