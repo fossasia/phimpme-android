@@ -43,9 +43,9 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        cancel = (ImageButton) fragmentView.findViewById(R.id.seekbar_cancel);
-        apply = (ImageButton) fragmentView.findViewById(R.id.seekbar_apply);
-        seekBar = (SeekBar) fragmentView.findViewById(R.id.slider);
+        cancel = fragmentView.findViewById(R.id.seekbar_cancel);
+        apply = fragmentView.findViewById(R.id.seekbar_apply);
+        seekBar = fragmentView.findViewById(R.id.slider);
 
         cancel.setImageResource(R.drawable.ic_close_black_24dp);
         apply.setImageResource(R.drawable.ic_done_black_24dp);
@@ -123,6 +123,7 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
 
     @Override
     public void onShow() {
+
         if (activity!=null) {
             setDefaultSeekBarProgress();
             activity.changeMode(EditImageActivity.MODE_SLIDER);
@@ -137,6 +138,7 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
     private void defaultApply() {
         ProcessImageTask processImageTask = new ProcessImageTask();
         processImageTask.execute(seekBar.getProgress());
+
     }
 
     public void doPendingApply() {
@@ -224,18 +226,22 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
             if (srcBitmap != null && !srcBitmap.isRecycled()) {
                 srcBitmap.recycle();
             }
-
-            srcBitmap = Bitmap.createBitmap(currentBitmap.copy(
-                    Bitmap.Config.RGB_565, true));
-            return PhotoProcessing.processImage(srcBitmap, EditImageActivity.effectType, val);
+            if (currentBitmap != null) {
+                srcBitmap = Bitmap.createBitmap(currentBitmap.copy(
+                        Bitmap.Config.RGB_565, true));
+                return PhotoProcessing.processImage(srcBitmap, EditImageActivity.effectType, val);
+            }
+            return null;
         }
 
         @Override
         protected void onPostExecute(Bitmap result) {
             super.onPostExecute(result);
             activity.hideProgressBar();
-            if (result == null)
+            if (result == null) {
+                getActivity().getSupportFragmentManager().beginTransaction().remove(SliderFragment.this).commit();
                 return;
+            }
             filterBit = result;
             activity.mainImage.setImageBitmap(filterBit);
         }

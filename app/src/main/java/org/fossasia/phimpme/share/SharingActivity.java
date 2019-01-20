@@ -2,12 +2,12 @@ package org.fossasia.phimpme.share;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
@@ -102,7 +102,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -119,22 +118,16 @@ import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.BOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.DROPBOX;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.FLICKR;
 
-//import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.ONEDRIVE;
-//import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.GOOGLEDRIVE;
-
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.OTHERS;
 import static org.fossasia.phimpme.data.local.AccountDatabase.AccountName.TWITTER;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_ID;
 import static org.fossasia.phimpme.utilities.Constants.BOX_CLIENT_SECRET;
 import static org.fossasia.phimpme.utilities.Constants.FAIL;
-import static org.fossasia.phimpme.utilities.Constants.PACKAGE_FACEBOOK;
 import static org.fossasia.phimpme.utilities.Constants.SUCCESS;
 import static org.fossasia.phimpme.utilities.Utils.checkNetwork;
 import static org.fossasia.phimpme.utilities.Utils.copyToClipBoard;
 import static org.fossasia.phimpme.utilities.Utils.getBitmapFromPath;
-import static org.fossasia.phimpme.utilities.Utils.getImageUri;
 import static org.fossasia.phimpme.utilities.Utils.getStringImage;
-import static org.fossasia.phimpme.utilities.Utils.isAppInstalled;
 import static org.fossasia.phimpme.utilities.Utils.promptSpeechInput;
 import static org.fossasia.phimpme.utilities.Utils.shareMsgOnIntent;
 
@@ -205,7 +198,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     private static final int REQUEST_CODE_SHARE_TO_MESSENGER = 2;
     private final int REQ_CODE_SPEECH_INPUT = 10;
     private static final int SHARE_WHATSAPP = 200;
-
+    private static final int SHARE_SNAPCHAT = 200;
 
     public boolean uploadFailedBox = false;
     public String uploadName;
@@ -256,7 +249,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         text_caption.getBackground().mutate().setColorFilter(getTextColor(), PorterDuff.Mode.SRC_ATOP);
         text_caption.setTextColor(getTextColor());
         text_caption.setHintTextColor(getSubTextColor());
-
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -322,6 +314,10 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
                     case PINTEREST:
                         shareToPinterest();
+                        break;
+
+                    case MESSENGER:
+                        shareToMessenger();
                         break;
 
                     case FLICKR:
@@ -392,11 +388,15 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         Uri uri = Uri.fromFile(new File(saveFilePath));
         Intent share = new Intent(Intent.ACTION_SEND);
         share.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        share.setPackage("com.snapchat.android");
-        share.putExtra(Intent.EXTRA_STREAM, uri);
+        share.putExtra(Intent.EXTRA_STREAM,uri);
         share.setType("image/*");
-        share.putExtra(Intent.EXTRA_TEXT, caption);
-        startActivity(Intent.createChooser(share, context.getString(R.string.snapchat)));
+        share.putExtra(Intent.EXTRA_TEXT,caption);
+        ComponentName intentComponent;
+        intentComponent = new ComponentName("com.snapchat.android", "com.snapchat.android.LandingPageActivity");
+        share.setComponent(intentComponent);
+        startActivityForResult(Intent.createChooser(share, context.getString(R.string.snapchat)),SHARE_SNAPCHAT);
+        triedUploading =true;
+        sendResult(SUCCESS);
     }
 
     /**
@@ -554,7 +554,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 if (caption != null && !caption.isEmpty())
                     f.setDescription(caption);
                 f.uploadImage();
-
                 sendResult(SUCCESS);
             }
         }
@@ -1001,6 +1000,17 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
     }
 
+    private void shareToMessenger() {
+        Uri uri = Uri.fromFile(new File(saveFilePath));
+        Intent share = new Intent(Intent.ACTION_SEND);
+        share.setPackage("com.facebook.orca");
+        share.putExtra(Intent.EXTRA_STREAM, uri);
+        share.setType("image/*");
+        share.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        startActivity(Intent.createChooser(share, caption));
+        triedUploading = true;
+        sendResult(SUCCESS);
+    }
 
     private void shareToInstagram(){
         Uri uri = Uri.fromFile(new File(saveFilePath));

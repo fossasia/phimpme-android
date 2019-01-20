@@ -32,7 +32,6 @@ import org.fossasia.phimpme.gallery.data.Media;
 import org.fossasia.phimpme.gallery.util.ColorPalette;
 import org.fossasia.phimpme.gallery.util.PreferenceUtil;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
-import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 
 import java.util.ArrayList;
 
@@ -195,13 +194,13 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
 
         ViewHolder(View itemView) {
             super(itemView);
-            picture = (ImageView) itemView.findViewById(R.id.album_preview);
-            selectedIcon = (IconicsImageView) itemView.findViewById(R.id.selected_icon);
+            picture = itemView.findViewById(R.id.album_preview);
+            selectedIcon = itemView.findViewById(R.id.selected_icon);
             layout = itemView.findViewById(R.id.linear_card_text);
-            name = (TextView) itemView.findViewById(R.id.album_name);
-            nPhotos = (TextView) itemView.findViewById(R.id.album_photos_count);
-            pin = (ImageView) itemView.findViewById(R.id.icon_pinned);
-            storage = (ImageView) itemView.findViewById(R.id.storage_icon);
+            name = itemView.findViewById(R.id.album_name);
+            nPhotos = itemView.findViewById(R.id.album_photos_count);
+            pin = itemView.findViewById(R.id.icon_pinned);
+            storage = itemView.findViewById(R.id.storage_icon);
         }
     }
 }

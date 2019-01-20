@@ -1,6 +1,7 @@
 package org.fossasia.phimpme.editor.fragment;
 
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -78,7 +79,7 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
     }
 
     private void resetPaintView() {
-        if (null != mPaintView){
+        if (null != mPaintView && activity.mainBitmap != null){
             mPaintView.reset();
             mPaintView.setVisibility(View.GONE);
         }
@@ -88,14 +89,14 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mPaintView = (CustomPaintView)getActivity().findViewById(R.id.custom_paint_view);
+        mPaintView = getActivity().findViewById(R.id.custom_paint_view);
 
         cancel = mainView.findViewById(R.id.paint_cancel);
         apply = mainView.findViewById(R.id.paint_apply);
 
-        mPaintModeView = (PaintModeView) mainView.findViewById(R.id.paint_thumb);
-        mColorListView = (RecyclerView) mainView.findViewById(R.id.paint_color_list);
-        mEraserView = (ImageView) mainView.findViewById(R.id.paint_eraser);
+        mPaintModeView = mainView.findViewById(R.id.paint_thumb);
+        mColorListView = mainView.findViewById(R.id.paint_color_list);
+        mEraserView = mainView.findViewById(R.id.paint_eraser);
 
         cancel.setOnClickListener(this);
         apply.setOnClickListener(this);
@@ -116,8 +117,12 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
         mColorListView.setHasFixedSize(false);
 
         LinearLayoutManager stickerListLayoutManager = new LinearLayoutManager(activity);
-        stickerListLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            stickerListLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        }
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            stickerListLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        }
         mColorListView.setLayoutManager(stickerListLayoutManager);
         mColorAdapter = new ColorListAdapter(this, mPaintColors, this);
         mColorListView.setAdapter(mColorAdapter);
@@ -147,6 +152,10 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
     }
 
     public void onShow() {
+        if (activity.mainBitmap == null) {
+            getActivity().getSupportFragmentManager().beginTransaction().remove(PaintFragment.this).commit();
+            return;
+        }
         activity.changeMode(EditImageActivity.MODE_PAINT);
         activity.mainImage.setImageBitmap(activity.mainBitmap);
         activity.mPaintView.mainBitmap=activity.mainBitmap;
@@ -167,8 +176,8 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
     private void selectPaintColor() {
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
         final View dialogLayout = getActivity().getLayoutInflater().inflate(R.layout.color_piker_accent, null);
-        final LineColorPicker colorPicker = (LineColorPicker) dialogLayout.findViewById(R.id.color_picker_accent);
-        final TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.cp_accent_title);
+        final LineColorPicker colorPicker = dialogLayout.findViewById(R.id.color_picker_accent);
+        final TextView dialogTitle = dialogLayout.findViewById(R.id.cp_accent_title);
         dialogTitle.setText(R.string.paint_color_title);
         colorPicker.setColors(ColorPalette.getAccentColors(activity.getApplicationContext()));
         colorPicker.setOnColorChangedListener(new OnColorChangedListener() {
@@ -250,7 +259,7 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
         setStokenWidthWindow = new PopupWindow(popView, ViewGroup.LayoutParams.MATCH_PARENT
                 , ViewGroup.LayoutParams.WRAP_CONTENT);
 
-        mStokenWidthSeekBar = (SeekBar) popView.findViewById(R.id.stoke_width_seekbar);
+        mStokenWidthSeekBar = popView.findViewById(R.id.stoke_width_seekbar);
 
         setStokenWidthWindow.setFocusable(true);
         setStokenWidthWindow.setOutsideTouchable(true);

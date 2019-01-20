@@ -32,7 +32,7 @@
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
-                <RelativeLayout
+                <LinearLayout
                     android:id="@+id/container_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -46,8 +46,17 @@
                         android:layout_height="60dp"
                         app:orientation="horizontal"
                         app:selectedColorIndex="0" />
+                    <uz.shift.colorpicker.LineColorPicker
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/color_picker_accent_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        app:orientation="horizontal"
+                        app:selectedColorIndex="0"
+                        android:layout_marginTop="10dp"
+                        />
 
-                </RelativeLayout>
+                </LinearLayout>
 
             </LinearLayout>
         </ScrollView>

@@ -9,13 +9,13 @@ def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.3"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.3"
 
     defaultConfig {
         applicationId "org.fossasia.phimpme"
         minSdkVersion 17
-        targetSdkVersion 25
+        targetSdkVersion 26
         multiDexEnabled true
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
         vectorDrawables.useSupportLibrary = true
@@ -120,7 +120,7 @@ dependencies {
     /*compile('com.crashlytics.sdk.android:crashlytics:2.9.3@aar') {
         transitive = true;
     }*/
-    compile 'com.daksh:loglr:1.2.1'
+
     compile 'com.koushikdutta.ion:ion:2.1.7'
     compile 'org.jetbrains:annotations-java5:15.0'
     compile 'com.android.support:multidex:1.0.1'

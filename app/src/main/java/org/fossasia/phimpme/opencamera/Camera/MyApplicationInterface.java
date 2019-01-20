@@ -29,6 +29,7 @@ import org.fossasia.phimpme.opencamera.Preview.Preview;
 import org.fossasia.phimpme.opencamera.UI.DrawPreview;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -1332,18 +1333,22 @@ public class MyApplicationInterface implements ApplicationInterface {
 			if( MyDebug.LOG )
 				Log.d(TAG, "Delete: " + image_uri);
     	    File file = storageUtils.getFileFromDocumentUriSAF(image_uri, false); // need to get file before deleting it, as fileFromDocumentUriSAF may depend on the file still existing
-			if( !DocumentsContract.deleteDocument(main_activity.getContentResolver(), image_uri) ) {
-				if( MyDebug.LOG )
-					Log.e(TAG, "failed to delete " + image_uri);
-			}
-			else {
-				if( MyDebug.LOG )
-					Log.d(TAG, "successfully deleted " + image_uri);
-	    	    preview.showToast(null, R.string.photo_deleted);
-                if( file != null ) {
-                	// SAF doesn't broadcast when deleting them
-	            	storageUtils.broadcastFile(file, false, true);
+			try {
+				if( !DocumentsContract.deleteDocument(main_activity.getContentResolver(), image_uri) ) {
+                    if( MyDebug.LOG )
+                        Log.e(TAG, "failed to delete " + image_uri);
                 }
+                else {
+                    if( MyDebug.LOG )
+                        Log.d(TAG, "successfully deleted " + image_uri);
+                    preview.showToast(null, R.string.photo_deleted);
+                    if( file != null ) {
+                        // SAF doesn't broadcast when deleting them
+                        storageUtils.broadcastFile(file, false, true);
+                    }
+                }
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
 			}
 		}
 		else if( image_name != null ) {

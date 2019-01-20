@@ -18,16 +18,12 @@ import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 
 import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.data.local.FavouriteImagesModel;
-import org.fossasia.phimpme.gallery.activities.LFMainActivity;
 import org.fossasia.phimpme.gallery.data.Media;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.realm.Realm;
-
 
 /**
  * Created by dnld on 1/7/16.
@@ -52,6 +48,10 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
     public void updatePlaceholder(Context context) {
         Drawable drawable = ContextCompat.getDrawable(context, R.drawable.placeholder);
         placeholder = (BitmapDrawable) drawable;
+    }
+
+    public ArrayList<Media> getList() {
+        return medias;
     }
 
     @Override

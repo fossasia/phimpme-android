@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
@@ -101,13 +102,13 @@ public class SettingsActivity extends ThemedActivity {
         super.onPostCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         ButterKnife.bind(this);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         SP = PreferenceUtil.getInstance(getApplicationContext());
 
         securityObj = new SecurityHelper(SettingsActivity.this);
 
 
-        scr = (ScrollView)findViewById(R.id.settingAct_scrollView);
+        scr = findViewById(R.id.settingAct_scrollView);
 
         /*** BASIC THEME ***/
         findViewById(R.id.ll_basic_theme).setOnClickListener(new View.OnClickListener() {
@@ -193,7 +194,7 @@ public class SettingsActivity extends ThemedActivity {
         });
 
         /*** SW SWIPE DIRECTION ***/
-        swSwipeDirection = (SwitchCompat) findViewById(R.id.Set_media_viewer_swipe_direction);
+        swSwipeDirection = findViewById(R.id.Set_media_viewer_swipe_direction);
         swSwipeDirection.setChecked(SP.getBoolean(getString(R.string.preference_swipe_direction_inverted), false));
         swSwipeDirection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -204,7 +205,7 @@ public class SettingsActivity extends ThemedActivity {
         });
 
         /*** SW AUTO UPDATE MEDIA ***/
-        swAutoUpdate = (SwitchCompat) findViewById(R.id.SetAutoUpdateMedia);
+        swAutoUpdate = findViewById(R.id.SetAutoUpdateMedia);
         swAutoUpdate.setChecked(SP.getBoolean(getString(R.string.preference_auto_update_media), false));
         swAutoUpdate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -215,7 +216,7 @@ public class SettingsActivity extends ThemedActivity {
         });
 
         /*** SW DELAY FULL-SIZE IMAGE ***/
-        swDelayFullImage = (SwitchCompat) findViewById(R.id.set_full_resolution);
+        swDelayFullImage = findViewById(R.id.set_full_resolution);
         swDelayFullImage.setChecked(SP.getBoolean(getString(R.string.preference_delay_full_image), true));
         swDelayFullImage.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -226,7 +227,7 @@ public class SettingsActivity extends ThemedActivity {
         });
 
         /*** SW PICTURE ORIENTATION ***/
-        swPictureOrientation = (SwitchCompat) findViewById(R.id.set_picture_orientation);
+        swPictureOrientation = findViewById(R.id.set_picture_orientation);
         swPictureOrientation.setChecked(SP.getBoolean(getString(R.string.preference_auto_rotate), false));
         swPictureOrientation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -237,7 +238,7 @@ public class SettingsActivity extends ThemedActivity {
         });
 
         /*** SW MAX LUMINOSITY ***/
-        swMaxLuminosity = (SwitchCompat) findViewById(R.id.set_max_luminosity);
+        swMaxLuminosity = findViewById(R.id.set_max_luminosity);
         swMaxLuminosity.setChecked(SP.getBoolean(getString(R.string.preference_max_brightness), false));
         swMaxLuminosity.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -249,7 +250,7 @@ public class SettingsActivity extends ThemedActivity {
 
 
         /*** SW TRANSLUCENT STATUS BAR ***/
-        swStatusBar = (SwitchCompat) findViewById(R.id.SetTraslucentStatusBar);
+        swStatusBar = findViewById(R.id.SetTraslucentStatusBar);
         swStatusBar.setChecked(SP.getBoolean(getString(R.string.preference_translucent_status_bar), true));
         swStatusBar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -257,13 +258,13 @@ public class SettingsActivity extends ThemedActivity {
                 SP.putBoolean(getString(R.string.preference_translucent_status_bar), isChecked);
                 updateTheme();
                 setStatusBarColor();
-                Toast.makeText(SettingsActivity.this, getString(R.string.restart_app), Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), getString(R.string.restart_app), Snackbar.LENGTH_SHORT).show();
                 updateSwitchColor(swStatusBar, getAccentColor());
             }
         });
 
         /*** SW COLORED NAV BAR ***/
-        swNavBar = (SwitchCompat) findViewById(R.id.SetColoredNavBar);
+        swNavBar = findViewById(R.id.SetColoredNavBar);
         swNavBar.setChecked(SP.getBoolean(getString(R.string.preference_colored_nav_bar), true));
         swNavBar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -291,20 +292,20 @@ public class SettingsActivity extends ThemedActivity {
         ((CardView) dialogLayout.findViewById(R.id.multi_column_card)).setCardBackgroundColor(getCardBackgroundColor());
 
         dialogLayout.findViewById(R.id.multi_column_title).setBackgroundColor(getPrimaryColor());
-        final TextView nColFolders = (TextView) dialogLayout.findViewById(R.id.n_columns_folders);
-        final TextView nColMedia = (TextView) dialogLayout.findViewById(R.id.n_columns_media);
-        final TextView nColFoldersL = (TextView) dialogLayout.findViewById(R.id.n_columns_folders_landscape);
-        final TextView nColMediaL = (TextView) dialogLayout.findViewById(R.id.n_columns_media_landscape);
+        final TextView nColFolders = dialogLayout.findViewById(R.id.n_columns_folders);
+        final TextView nColMedia = dialogLayout.findViewById(R.id.n_columns_media);
+        final TextView nColFoldersL = dialogLayout.findViewById(R.id.n_columns_folders_landscape);
+        final TextView nColMediaL = dialogLayout.findViewById(R.id.n_columns_media_landscape);
 
         nColFolders.setTextColor(getSubTextColor());
         nColMedia.setTextColor(getSubTextColor());
         nColFoldersL.setTextColor(getSubTextColor());
         nColMediaL.setTextColor(getSubTextColor());
 
-        SeekBar barFolders = (SeekBar) dialogLayout.findViewById(R.id.seek_bar_n_columns_folders);
-        SeekBar barMedia = (SeekBar) dialogLayout.findViewById(R.id.seek_bar_n_columns_media);
-        SeekBar barFoldersL = (SeekBar) dialogLayout.findViewById(R.id.seek_bar_n_columns_folders_landscape);
-        SeekBar barMediaL = (SeekBar) dialogLayout.findViewById(R.id.seek_bar_n_columns_media_landscape);
+        SeekBar barFolders = dialogLayout.findViewById(R.id.seek_bar_n_columns_folders);
+        SeekBar barMedia = dialogLayout.findViewById(R.id.seek_bar_n_columns_media);
+        SeekBar barFoldersL = dialogLayout.findViewById(R.id.seek_bar_n_columns_folders_landscape);
+        SeekBar barMediaL = dialogLayout.findViewById(R.id.seek_bar_n_columns_media_landscape);
 
         themeSeekBar(barFolders); themeSeekBar(barMedia);
         themeSeekBar(barFoldersL); themeSeekBar(barMediaL);
@@ -404,6 +405,7 @@ public class SettingsActivity extends ThemedActivity {
     }
 
     private void askPasswordDialog() {
+        final short max_password_length = 128;
         final boolean[] passco = {false};
         AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
         final EditText editTextPassword  = securityObj.getInsertPasswordDialog(SettingsActivity.this,passwordDialogBuilder);
@@ -427,9 +429,9 @@ public class SettingsActivity extends ThemedActivity {
                 else{
                     passco[0]=false;
                 }
-                if(editable.length() == 11) {
-                    editTextPassword.setText(editable.toString().substring(0, 10));
-                    editTextPassword.setSelection(10);
+                if(editable.length() == max_password_length) {
+                    editTextPassword.setText(editable.toString().substring(0, max_password_length-1));
+                    editTextPassword.setSelection(max_password_length-1);
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.max_password_length), Toast.LENGTH_SHORT)
                             .show();
                 }
@@ -470,16 +472,16 @@ public class SettingsActivity extends ThemedActivity {
 
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
         View dialogLayout = getLayoutInflater().inflate(R.layout.dialog_map_provider, null);
-        TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.title);
+        TextView dialogTitle = dialogLayout.findViewById(R.id.title);
         ((CardView) dialogLayout.findViewById(R.id.dialog_chose_provider_title)).setCardBackgroundColor(getCardBackgroundColor());
         dialogTitle.setBackgroundColor(getPrimaryColor());
 
-        final RadioGroup mapProvider = (RadioGroup) dialogLayout.findViewById(R.id.radio_group_maps_provider);
-        RadioButton radioGoogleMaps = (RadioButton) dialogLayout.findViewById(R.id.radio_google_maps);
-        RadioButton radioMapBoxStreets = (RadioButton) dialogLayout.findViewById(R.id.radio_mapb_streets);
-        RadioButton radioMapBoxDark = (RadioButton) dialogLayout.findViewById(R.id.radio_mapb_dark);
-        RadioButton radioMapBoxLight = (RadioButton) dialogLayout.findViewById(R.id.radio_mapb_light);
-        RadioButton radioTyler = (RadioButton) dialogLayout.findViewById(R.id.radio_osm_tyler);
+        final RadioGroup mapProvider = dialogLayout.findViewById(R.id.radio_group_maps_provider);
+        RadioButton radioGoogleMaps = dialogLayout.findViewById(R.id.radio_google_maps);
+        RadioButton radioMapBoxStreets = dialogLayout.findViewById(R.id.radio_mapb_streets);
+        RadioButton radioMapBoxDark = dialogLayout.findViewById(R.id.radio_mapb_dark);
+        RadioButton radioMapBoxLight = dialogLayout.findViewById(R.id.radio_mapb_light);
+        RadioButton radioTyler = dialogLayout.findViewById(R.id.radio_osm_tyler);
         setRadioTextButtonColor(radioGoogleMaps, getSubTextColor());
         setRadioTextButtonColor(radioMapBoxStreets, getSubTextColor());
         setRadioTextButtonColor(radioMapBoxDark, getSubTextColor());
@@ -522,15 +524,15 @@ public class SettingsActivity extends ThemedActivity {
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
 
         final View dialogLayout = getLayoutInflater().inflate(R.layout.dialog_basic_theme, null);
-        final TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.basic_theme_title);
-        final CardView dialogCardView = (CardView) dialogLayout.findViewById(R.id.basic_theme_card);
+        final TextView dialogTitle = dialogLayout.findViewById(R.id.basic_theme_title);
+        final CardView dialogCardView = dialogLayout.findViewById(R.id.basic_theme_card);
 
-        final IconicsImageView themeIconWhite = (IconicsImageView) dialogLayout.findViewById(R.id.white_basic_theme_icon);
-        final IconicsImageView themeIconDark = (IconicsImageView) dialogLayout.findViewById(R.id.dark_basic_theme_icon);
-        final IconicsImageView themeIconDarkAmoled = (IconicsImageView) dialogLayout.findViewById(R.id.dark_amoled_basic_theme_icon);
-        final IconicsImageView whiteSelect = (IconicsImageView) dialogLayout.findViewById(R.id.white_basic_theme_select);
-        final IconicsImageView darkSelect = (IconicsImageView) dialogLayout.findViewById(R.id.dark_basic_theme_select);
-        final IconicsImageView darkAmoledSelect = (IconicsImageView) dialogLayout.findViewById(R.id.dark_amoled_basic_theme_select);
+        final IconicsImageView themeIconWhite = dialogLayout.findViewById(R.id.white_basic_theme_icon);
+        final IconicsImageView themeIconDark = dialogLayout.findViewById(R.id.dark_basic_theme_icon);
+        final IconicsImageView themeIconDarkAmoled = dialogLayout.findViewById(R.id.dark_amoled_basic_theme_icon);
+        final IconicsImageView whiteSelect = dialogLayout.findViewById(R.id.white_basic_theme_select);
+        final IconicsImageView darkSelect = dialogLayout.findViewById(R.id.dark_basic_theme_select);
+        final IconicsImageView darkAmoledSelect = dialogLayout.findViewById(R.id.dark_amoled_basic_theme_select);
 
         themeIconWhite.setIcon("gmd-invert-colors");
         themeIconDark.setIcon("gmd-invert-colors");
@@ -620,10 +622,10 @@ public class SettingsActivity extends ThemedActivity {
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
 
         final View dialogLayout = getLayoutInflater().inflate(R.layout.color_piker_primary, null);
-        final LineColorPicker colorPicker = (LineColorPicker) dialogLayout.findViewById(R.id.color_picker_primary);
-        final LineColorPicker colorPicker2 = (LineColorPicker) dialogLayout.findViewById(R.id.color_picker_primary_2);
-        final TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.cp_primary_title);
-        CardView dialogCardView = (CardView) dialogLayout.findViewById(R.id.cp_primary_card);
+        final LineColorPicker colorPicker = dialogLayout.findViewById(R.id.color_picker_primary);
+        final LineColorPicker colorPicker2 = dialogLayout.findViewById(R.id.color_picker_primary_2);
+        final TextView dialogTitle = dialogLayout.findViewById(R.id.cp_primary_title);
+        CardView dialogCardView = dialogLayout.findViewById(R.id.cp_primary_card);
         dialogCardView.setCardBackgroundColor(getCardBackgroundColor());
 
         setColor(colorPicker, colorPicker2, dialogTitle);
@@ -748,23 +750,16 @@ public class SettingsActivity extends ThemedActivity {
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
 
         final View dialogLayout = getLayoutInflater().inflate(R.layout.color_piker_accent, null);
-        final LineColorPicker colorPicker = (LineColorPicker) dialogLayout.findViewById(R.id.color_picker_accent);
-        final TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.cp_accent_title);
-        CardView cv = (CardView) dialogLayout.findViewById(R.id.cp_accent_card);
+        final LineColorPicker colorPicker = dialogLayout.findViewById(R.id.color_picker_accent);
+        final LineColorPicker colorPicker2 = dialogLayout.findViewById(R.id.color_picker_accent_2);
+        final TextView dialogTitle = dialogLayout.findViewById(R.id.cp_accent_title);
+        CardView cv = dialogLayout.findViewById(R.id.cp_accent_card);
         cv.setCardBackgroundColor(getCardBackgroundColor());
 
-        colorPicker.setColors(ColorPalette.getAccentColors(getApplicationContext()));
-        colorPicker.setSelectedColor(getAccentColor());
+       setColor2(colorPicker,colorPicker2,dialogTitle);
         dialogTitle.setBackgroundColor(getAccentColor());
 
-        colorPicker.setOnColorChangedListener(new OnColorChangedListener() {
-            @Override
-            public void onColorChanged(int c) {
-                dialogTitle.setBackgroundColor(c);
-                updateViewswithAccentColor(colorPicker.getColor());
 
-            }
-        });
         dialogBuilder.setView(dialogLayout);
 
         dialogBuilder.setNeutralButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
@@ -776,7 +771,7 @@ public class SettingsActivity extends ThemedActivity {
         });
         dialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                SP.putInt(getString(R.string.preference_accent_color), colorPicker.getColor());
+                SP.putInt(getString(R.string.preference_accent_color), colorPicker2.getColor());
                 updateTheme();
                 updateViewswithAccentColor(getAccentColor());
             }
@@ -791,13 +786,42 @@ public class SettingsActivity extends ThemedActivity {
         alertDialog.show();
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE, DialogInterface.BUTTON_NEUTRAL}, getAccentColor(), alertDialog);
     }
+    private void setColor2(final LineColorPicker colorPicker, final LineColorPicker colorPicker2, final TextView dialogTitle) {
+        colorPicker.setColors(ColorPalette.getBaseColors(getApplicationContext()));
+        for (int i : colorPicker.getColors())
+            for (int i2 : ColorPalette.getColors(getBaseContext(), i))
+                if (i2 == getAccentColor()) {
+                    colorPicker.setSelectedColor(i);
+                    colorPicker2.setColors(ColorPalette.getColors(getBaseContext(), i));
+                    colorPicker2.setSelectedColor(i2);
+                    break;}
+
+        dialogTitle.setBackgroundColor(getPrimaryColor());
+
+        colorPicker.setOnColorChangedListener(new OnColorChangedListener() {
+            @Override
+            public void onColorChanged(int c) {
+                dialogTitle.setBackgroundColor(c);
+                updateViewswithAccentColor(c);
+                colorPicker2.setColors(ColorPalette.getColors(getApplicationContext(), colorPicker.getColor()));
+                colorPicker2.setSelectedColor(colorPicker.getColor());
+            }
+        });
+        colorPicker2.setOnColorChangedListener(new OnColorChangedListener() {
+            @Override
+            public void onColorChanged(int c) {
+                dialogTitle.setBackgroundColor(c);
+                updateViewswithAccentColor(c);
+            }
+        });
+    }
 
     private void customizePictureViewer(){
 
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
 
         View dialogLayout = getLayoutInflater().inflate(R.layout.dialog_media_viewer_theme, null);
-        final SwitchCompat swApplyTheme_Viewer = (SwitchCompat) dialogLayout.findViewById(R.id.apply_theme_3th_act_enabled);
+        final SwitchCompat swApplyTheme_Viewer = dialogLayout.findViewById(R.id.apply_theme_3th_act_enabled);
 
         ((CardView) dialogLayout.findViewById(R.id.third_act_theme_card)).setCardBackgroundColor(getCardBackgroundColor());
         dialogLayout.findViewById(R.id.third_act_theme_title).setBackgroundColor(getPrimaryColor());//or GetPrimary
@@ -815,7 +839,7 @@ public class SettingsActivity extends ThemedActivity {
         updateSwitchColor(swApplyTheme_Viewer, getAccentColor());
 
 
-        final LineColorPicker transparencyColorPicker = (LineColorPicker) dialogLayout.findViewById(R.id.pickerTransparent);
+        final LineColorPicker transparencyColorPicker = dialogLayout.findViewById(R.id.pickerTransparent);
         transparencyColorPicker.setColors(ColorPalette.getTransparencyShadows(getPrimaryColor()));
         transparencyColorPicker.setSelectedColor(ColorPalette.getTransparentColor(getPrimaryColor(), getTransparency()));
 
@@ -978,13 +1002,15 @@ public class SettingsActivity extends ThemedActivity {
     private void setToolbarCamera(Boolean isCamera){
         getSupportActionBar();
         if (isCamera)
-            toolbar.setTitle("Camera Settings");
+            toolbar.setTitle(getString(R.string.camera_setting_title));
         else
-            toolbar.setTitle("Settings");
+            toolbar.setTitle(getString(R.string.settings));
 
     }
 
     private void resetSettingsDialog() {
+
+        final short max_password_length = 128;
 
         final AlertDialog.Builder resetDialog = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
 
@@ -994,9 +1020,70 @@ public class SettingsActivity extends ThemedActivity {
         resetDialog.setNegativeButton(this.getString(R.string.no_action).toUpperCase(), null);
         resetDialog.setPositiveButton(this.getString(R.string.yes_action).toUpperCase(), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                if(!securityObj.isActiveSecurity()) {
-                    SP.clearPreferences();
-                    recreate();
+                if(securityObj.isActiveSecurity()) {
+                    final boolean[] passco = {false};
+                    AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
+                    final EditText editTextPassword  = securityObj.getInsertPasswordDialog(SettingsActivity.this,passwordDialogBuilder);
+                    passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+                    editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    editTextPassword.setHint(getResources().getString(R.string.enter_password));
+                    editTextPassword.setHintTextColor(getSubTextColor());
+                    editTextPassword.addTextChangedListener(new TextWatcher() {
+                        @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                            //empty method
+                        }
+
+                        @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                            editTextPassword.setSelection(editTextPassword.getText().toString().length());
+                        }
+
+                        @Override public void afterTextChanged(Editable editable) {
+                            if(securityObj.getTextInputLayout().getVisibility() == View.VISIBLE && !passco[0]){
+                                securityObj.getTextInputLayout().setVisibility(View.INVISIBLE);
+                            }
+                            else{
+                                passco[0]=false;
+                            }
+                            if(editable.length() == max_password_length) {
+                                editTextPassword.setText(editable.toString().substring(0, max_password_length-1));
+                                editTextPassword.setSelection(max_password_length-1);
+                                Toast.makeText(getApplicationContext(), getResources().getString(R.string.max_password_length), Toast.LENGTH_SHORT)
+                                        .show();
+                            }
+                        }
+                    });
+                    passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //This should br empty it will be overwrite later
+                            //to avoid dismiss of the dialog on wrong password
+                        }
+                    });
+
+                    final AlertDialog passwordDialog = passwordDialogBuilder.create();
+                    passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+                    passwordDialog.show();
+                    AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
+                    passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+
+                            if (securityObj.checkPassword(editTextPassword.getText().toString())) {
+                                passwordDialog.dismiss();
+                                SP.clearPreferences();
+                                recreate();
+                                Snackbar.make(findViewById(android.R.id.content),R.string.settings_reset,Snackbar.LENGTH_SHORT).show();
+                            } else {
+                                passco[0] = true;
+                                securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
+                                SnackBarHandler.show(parent,R.string.wrong_password);
+                                editTextPassword.getText().clear();
+                                editTextPassword.requestFocus();
+                            }
+                        }
+                    });
+
                 } else {
                     String password =  SP.getString(getString(R.string.preference_password_value),"");
                     String securedLocalFolders = SP.getString(getString(R.string.preference_use_password_secured_local_folders),"");
@@ -1007,6 +1094,7 @@ public class SettingsActivity extends ThemedActivity {
 
                     SP.clearPreferences();
                     recreate();
+                    Snackbar.make(findViewById(android.R.id.content), R.string.settings_reset,Snackbar.LENGTH_SHORT).show();
 
                     SP.putString(getString(R.string.preference_password_value),password);
                     SP.putString(getString(R.string.preference_use_password_secured_local_folders),securedLocalFolders);
@@ -1037,7 +1125,7 @@ public class SettingsActivity extends ThemedActivity {
         });
         final AlertDialog passwordDialog = passwordDialogBuilder.create();
         passwordDialog.setTitle(R.string.camera_setting_title);
-        passwordDialog.setMessage("Open camera to support all options.");
+        passwordDialog.setMessage(getString(R.string.camera_support_options));
         passwordDialog.show();
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
 

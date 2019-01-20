@@ -108,10 +108,10 @@ import butterknife.ButterKnife;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 import static org.fossasia.phimpme.gallery.activities.LFMainActivity.listAll;
 import static org.fossasia.phimpme.utilities.Utils.promptSpeechInput;
-
 
 
 /**
@@ -224,7 +224,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         context = this;
         setContentView(R.layout.activity_pager);
         ButterKnife.bind(this);
-        relativeLayout = (RelativeLayout) findViewById(R.id.PhotoPager_Layout);
+        relativeLayout = findViewById(R.id.PhotoPager_Layout);
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         imageWidth = metrics.widthPixels;
         imageHeight = metrics.heightPixels;
@@ -361,14 +361,36 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             }
         };
 
+
         if (!allPhotoMode && !favphotomode && !upoadhis && !trashdis) {
             adapter = new ImageAdapter(getAlbum().getMedia(), basicCallBack, this, this);
             getSupportActionBar().setTitle((getAlbum().getCurrentMediaIndex() + 1) + " " + getString(R.string.of) + " " + getAlbum()
                     .getMedia().size());
+            current_image_pos = all_photo_pos;
 //            toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
+            if (bottomMenu.findItem(R.id.action_favourites).getIcon().getColorFilter() == null) {
+                if (!favsearch(getAlbum().getMedia(current_image_pos).getPath())) {
+                    bottomMenu.findItem(R.id.action_favourites).getIcon().clearColorFilter();
+                } else {
+                    bottomMenu.findItem(R.id.action_favourites).getIcon().setColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN);
+                }
+            }
             mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
                 @Override
                 public void onPageChanged(int oldPosition, int position) {
+
+                    ImageAdapter.ViewHolder imageViewHolder = (ImageAdapter.ViewHolder) mViewPager.findViewHolderForAdapterPosition(position);
+                    imageViewHolder.getImageView().setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+                        @Override
+                        public void onPhotoTap(View view, float x, float y) {
+                            singleTap();
+                        }
+
+                        @Override
+                        public void onOutsidePhotoTap() {
+                            singleTap();
+                        }
+                    });
                     getAlbum().setCurrentPhotoIndex(position);
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + getAlbum().getMedia().size());
                     invalidateOptionsMenu();
@@ -385,9 +407,31 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             adapter = new ImageAdapter(LFMainActivity.listAll, basicCallBack, this, this);
             getSupportActionBar().setTitle(all_photo_pos + 1 + " " + getString(R.string.of) + " " + size_all);
             current_image_pos = all_photo_pos;
+            if (bottomMenu.findItem(R.id.action_favourites).getIcon().getColorFilter() == null) {
+                if (!favsearch(listAll.get(current_image_pos).getPath())) {
+                    bottomMenu.findItem(R.id.action_favourites).getIcon().clearColorFilter();
+                } else {
+                    bottomMenu.findItem(R.id.action_favourites).getIcon().setColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN);
+                }
+            }
             mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
                 @Override
                 public void onPageChanged(int oldPosition, int position) {
+
+                    ImageAdapter.ViewHolder imageViewHolder = (ImageAdapter.ViewHolder) mViewPager.findViewHolderForAdapterPosition(position);
+                    imageViewHolder.getImageView().setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+                        @Override
+                        public void onPhotoTap(View view, float x, float y) {
+
+                            singleTap();
+                        }
+
+                        @Override
+                        public void onOutsidePhotoTap() {
+
+                            singleTap();
+                        }
+                    });
                     current_image_pos = position;
                     getAlbum().setCurrentPhotoIndex(getAlbum().getCurrentMediaIndex());
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
@@ -408,6 +452,19 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
                 @Override
                 public void onPageChanged(int oldPosition, int position) {
+
+                    ImageAdapter.ViewHolder imageViewHolder = (ImageAdapter.ViewHolder) mViewPager.findViewHolderForAdapterPosition(position);
+                    imageViewHolder.getImageView().setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+                        @Override
+                        public void onPhotoTap(View view, float x, float y) {
+                            singleTap();
+                        }
+
+                        @Override
+                        public void onOutsidePhotoTap() {
+                            singleTap();
+                        }
+                    });
                     current_image_pos = position;
                     getAlbum().setCurrentPhotoIndex(getAlbum().getCurrentMediaIndex());
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
@@ -423,6 +480,21 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
                 @Override
                 public void onPageChanged(int oldPosition, int position) {
+                    ImageAdapter.ViewHolder imageViewHolder = (ImageAdapter.ViewHolder) mViewPager.findViewHolderForAdapterPosition(position);
+                    imageViewHolder.getImageView().setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+                        @Override
+                        public void onPhotoTap(View view, float x, float y) {
+
+                            singleTap();
+                        }
+
+                        @Override
+                        public void onOutsidePhotoTap() {
+
+                            singleTap();
+                        }
+                    });
+
                     current_image_pos = position;
                     getAlbum().setCurrentPhotoIndex(getAlbum().getCurrentMediaIndex());
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
@@ -438,6 +510,19 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
                 @Override
                 public void onPageChanged(int oldPosition, int position) {
+                    ImageAdapter.ViewHolder imageViewHolder = (ImageAdapter.ViewHolder) mViewPager.findViewHolderForAdapterPosition(position);
+                    imageViewHolder.getImageView().setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+                        @Override
+                        public void onPhotoTap(View view, float x, float y) {
+                            singleTap();
+                        }
+
+                        @Override
+                        public void onOutsidePhotoTap() {
+                            singleTap();
+                        }
+                    });
+
                     current_image_pos = position;
                     getAlbum().setCurrentPhotoIndex(getAlbum().getCurrentMediaIndex());
                     toolbar.setTitle((position + 1) + " " + getString(R.string.of) + " " + size_all);
@@ -447,6 +532,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             });
             mViewPager.scrollToPosition(all_photo_pos);
         }
+
         Display aa = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
         mViewPager.setAdapter(adapter);
 
@@ -460,7 +546,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private void setupUI() {
 
         /**** Theme ****/
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(
                 isApplyThemeOnImgAct()
                         ? ColorPalette.getTransparentColor(getPrimaryColor(), getTransparency())
@@ -468,7 +554,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
         toolbar.setPopupTheme(getPopupToolbarStyle());
 
-        ActivityBackground = (RelativeLayout) findViewById(R.id.PhotoPager_Layout);
+        ActivityBackground = findViewById(R.id.PhotoPager_Layout);
         ActivityBackground.setBackgroundColor(getBackgroundColor());
 
         setStatusBarColor();
@@ -789,9 +875,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         } else if (!favphotomode && !allPhotoMode && upoadhis && !trashdis) {
             int c = current_image_pos;
             //deleteMedia(favouriteslist.get(current_image_pos).getPath());
-            if(uploadhistory.get(current_image_pos).getPath().contains(".nomedia")){
+            if (uploadhistory.get(current_image_pos).getPath().contains(".nomedia")) {
                 File file = new File(uploadhistory.get(current_image_pos).getPath());
-                if(file.exists()){
+                if (file.exists()) {
                     file.delete();
                 }
             }
@@ -837,7 +923,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     }
 
 
-    private void addTrashObjectsToRealm(String mediaPath){
+    private void addTrashObjectsToRealm(String mediaPath) {
         String trashbinpath = Environment.getExternalStorageDirectory() + "/" + ".nomedia";
         realm = Realm.getDefaultInstance();
         realm.beginTransaction();
@@ -850,24 +936,24 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         realm.commitTransaction();
     }
 
-    private void deleteFromList(String path){
-        if(favphotomode){
-            for (int i = 0; i < favouriteslist.size(); i++){
-                if(favouriteslist.get(i).getPath().equals(path)){
+    private void deleteFromList(String path) {
+        if (favphotomode) {
+            for (int i = 0; i < favouriteslist.size(); i++) {
+                if (favouriteslist.get(i).getPath().equals(path)) {
                     favouriteslist.remove(i);
                     break;
                 }
             }
-        } else if(upoadhis){
-            for (int i = 0; i < uploadhistory.size(); i++){
-                if(uploadhistory.get(i).getPath().equals(path)){
+        } else if (upoadhis) {
+            for (int i = 0; i < uploadhistory.size(); i++) {
+                if (uploadhistory.get(i).getPath().equals(path)) {
                     uploadhistory.remove(i);
                     break;
                 }
             }
-        } else if(trashdis){
-            for (int i = 0; i < trashbinlistd.size(); i++){
-                if(trashbinlistd.get(i).getPath().equals(path)){
+        } else if (trashdis) {
+            for (int i = 0; i < trashbinlistd.size(); i++) {
+                if (trashbinlistd.get(i).getPath().equals(path)) {
                     trashbinlistd.remove(i);
                     break;
                 }
@@ -875,14 +961,14 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         }
     }
 
-    private boolean addToTrash(){
+    private boolean addToTrash() {
         String pathOld = null;
         String oldpath = null;
         int no = 0;
         boolean succ = false;
-        if(!allPhotoMode && !favphotomode && !upoadhis){
+        if (!allPhotoMode && !favphotomode && !upoadhis) {
             oldpath = getAlbum().getCurrentMedia().getPath();
-        } else if(allPhotoMode && !favphotomode && !upoadhis){
+        } else if (allPhotoMode && !favphotomode && !upoadhis) {
             oldpath = listAll.get(current_image_pos).getPath();
         }
         File file = new File(Environment.getExternalStorageDirectory() + "/" + ".nomedia");
@@ -890,7 +976,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             if (!allPhotoMode && !favphotomode) {
                 pathOld = getAlbum().getCurrentMedia().getPath();
                 succ = getAlbum().moveCurrentMedia(getApplicationContext(), file.getAbsolutePath());
-            } else if (allPhotoMode && !favphotomode){
+            } else if (allPhotoMode && !favphotomode) {
                 pathOld = listAll.get(current_image_pos).getPath();
                 succ = getAlbum().moveAnyMedia(getApplicationContext(), file.getAbsolutePath(), listAll.get
                         (current_image_pos).getPath());
@@ -961,10 +1047,11 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         c.close();
     }
 
-    private void deletefav(final String path){
+    private void deletefav(final String path) {
         realm = Realm.getDefaultInstance();
         realm.executeTransaction(new Realm.Transaction() {
-            @Override public void execute(Realm realm) {
+            @Override
+            public void execute(Realm realm) {
                 RealmResults<FavouriteImagesModel> favouriteImagesModels = realm.where(FavouriteImagesModel
                         .class).equalTo("path", path).findAll();
                 favouriteImagesModels.deleteAllFromRealm();
@@ -972,7 +1059,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         });
     }
 
-    private void deletefromfav(final MenuItem item){
+    private void deletefromfav(final MenuItem item) {
         String ButtonDelete = "";
         final AlertDialog.Builder deleteDialog = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
         AlertDialogsHelper.getTextDialog(SingleMediaActivity.this, deleteDialog,
@@ -1005,23 +1092,24 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                             //empty method body
                         }
 
-                        @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        @Override
+                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                             //empty method body
                         }
 
-                        @Override public void afterTextChanged(Editable editable) {
-                            if(securityObj.getTextInputLayout().getVisibility() == View.VISIBLE && !passco[0]){
+                        @Override
+                        public void afterTextChanged(Editable editable) {
+                            if (securityObj.getTextInputLayout().getVisibility() == View.VISIBLE && !passco[0]) {
                                 securityObj.getTextInputLayout().setVisibility(View.INVISIBLE);
-                            }
-                            else{
-                                passco[0]=false;
+                            } else {
+                                passco[0] = false;
                             }
                         }
                     });
                     passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
                     final AlertDialog passwordDialog = passwordDialogBuilder.create();
                     passwordDialog.show();
-                    passwordDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager
+                    passwordDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager
                             .LayoutParams.FLAG_ALT_FOCUSABLE_IM);
                     passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams
                             .SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -1048,7 +1136,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                             }
                         }
                     });
-                } else{
+                } else {
                     item.getIcon().clearColorFilter();
                     SnackBarHandler.show(parentView, getApplicationContext().getString(R.string.photo_deleted_from_fav_msg));
                     //deleteMedia(favouriteslist.get(current_image_pos).getPath());
@@ -1062,7 +1150,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         SnackBarHandler.show(parentView, getApplicationContext().getString(R.string.photo_deleted_from_fav_msg));
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
     }
-
 
 
     @Override
@@ -1365,70 +1452,12 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 button = this.getString(R.string.restore);
                 deleteDialog.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
                 deleteDialog.setPositiveButton(button.toUpperCase(), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        if (securityObj.isActiveSecurity() && securityObj.isPasswordOnDelete()) {
-                            final boolean passco[] = {false};
-                            final AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
-                            final EditText editTextPassword = securityObj.getInsertPasswordDialog
-                                    (SingleMediaActivity.this, passwordDialogBuilder);
-                            editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
-                            passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if (securityObj.checkPassword(editTextPassword.getText().toString())) {
-                                        restoreImage(trashbinlistd.get(current_image_pos).getPath());
-                                    } else
-                                        SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), bottomBar.getHeight());
-
-                                }
-                            });
-                            editTextPassword.addTextChangedListener(new TextWatcher() {
-                                @Override
-                                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                                    //empty method body
-                                }
-
-                                @Override
-                                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                                    //empty method body
-                                }
-
-                                @Override
-                                public void afterTextChanged(Editable editable) {
-                                    if (securityObj.getTextInputLayout().getVisibility() == View.VISIBLE && !passco[0]) {
-                                        securityObj.getTextInputLayout().setVisibility(View.INVISIBLE);
-                                    } else {
-                                        passco[0] = false;
-                                    }
-                                }
-                            });
-                            passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-                            final AlertDialog passwordDialog = passwordDialogBuilder.create();
-                            passwordDialog.show();
-                            passwordDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager
-                                    .LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-                            passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams
-                                    .SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                            AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
-                            passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View
-                                    .OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if (securityObj.checkPassword(editTextPassword.getText().toString())) {
-                                        restoreImage(trashbinlistd.get(current_image_pos).getPath());
-                                        passwordDialog.dismiss();
-                                    } else {
-                                        passco[0] = true;
-                                        securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
-                                        SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), bottomBar.getHeight());
-                                        editTextPassword.getText().clear();
-                                        editTextPassword.requestFocus();
-                                    }
-                                }
-                            });
-                        } else
-                            restoreImage(trashbinlistd.get(current_image_pos).getPath());
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        restoreImage(trashbinlistd.get(current_image_pos).getPath());
                     }
                 });
+
                 AlertDialog alertDialog = deleteDialog.create();
                 alertDialog.show();
                 AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
@@ -1463,30 +1492,32 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 descriptionDialog.show();
                 AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface
                         .BUTTON_NEGATIVE}, getAccentColor(), descriptionDialog);
-                descriptionDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager
+                descriptionDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager
                         .LayoutParams.FLAG_ALT_FOCUSABLE_IM);
                 descriptionDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
                 descriptionDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
                 AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE},
                         getColor(R.color.grey), descriptionDialog);
-                if(temp == null){
+                if (temp == null) {
                     descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(getColor(R.color.grey));
                     descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setEnabled(false);
-                }
-                else {
+                } else {
                     descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setTextColor(getAccentColor());
                     descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setEnabled(true);
                 }
                 editTextDescription.addTextChangedListener(new TextWatcher() {
-                    @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    @Override
+                    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         //empty method body
                     }
 
-                    @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    @Override
+                    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                         //empty method body
                     }
 
-                    @Override public void afterTextChanged(Editable editable) {
+                    @Override
+                    public void afterTextChanged(Editable editable) {
                         if (TextUtils.isEmpty(editable)) {
                             // Disable ok button
                             descriptionDialog.getButton(
@@ -1522,10 +1553,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (temp == null){
+                        if (temp == null) {
                             descriptionDialog.getButton(DialogInterface.BUTTON_NEUTRAL).setEnabled(false);
-                        }
-                        else{
+                        } else {
                             descriptionDialog.dismiss();
                             databaseHelper.delete(temp);
                             SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.description_deleted), bottomBar.getHeight());
@@ -1542,17 +1572,17 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         return super.onOptionsItemSelected(item);
     }
 
-    private void restoreImage(String path){
+    private void restoreImage(String path) {
         realm = Realm.getDefaultInstance();
         RealmResults<TrashBinRealmModel> trashBinRealmModels = realm.where(TrashBinRealmModel.class).
                 equalTo("trashbinpath", path).findAll();
         String oldpath = trashBinRealmModels.get(0).getOldpath();
         String oldFolder = oldpath.substring(0, oldpath.lastIndexOf("/"));
-        if(restoreMove(context, trashBinRealmModels.get(0).getTrashbinpath(), oldFolder)){
-            scanFile(context, new String[]{ trashBinRealmModels.get(0).getTrashbinpath(), StringUtils.getPhotoPathMoved
+        if (restoreMove(context, trashBinRealmModels.get(0).getTrashbinpath(), oldFolder)) {
+            scanFile(context, new String[]{trashBinRealmModels.get(0).getTrashbinpath(), StringUtils.getPhotoPathMoved
                     (trashBinRealmModels.get(0).getTrashbinpath(),
-                            oldFolder) });
-            if( removeFromRealm(trashBinRealmModels.get(0).getTrashbinpath())){
+                            oldFolder)});
+            if (removeFromRealm(trashBinRealmModels.get(0).getTrashbinpath())) {
                 deleteFromList(trashbinlistd.get(current_image_pos).getPath());
                 size_all = trashbinlistd.size();
                 if (size_all > 0) {
@@ -1566,20 +1596,23 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         }
     }
 
-    public void scanFile(Context context, String[] path) { MediaScannerConnection.scanFile(context, path, null, null); }
+    public void scanFile(Context context, String[] path) {
+        MediaScannerConnection.scanFile(context, path, null, null);
+    }
 
 
-    private boolean restoreMove(Context context, String source, String targetDir){
+    private boolean restoreMove(Context context, String source, String targetDir) {
         File from = new File(source);
         File to = new File(targetDir);
         return ContentHelper.moveFile(context, from, to);
     }
 
-    private boolean removeFromRealm(final String path){
+    private boolean removeFromRealm(final String path) {
         final boolean[] delete = {false};
         Realm realm = Realm.getDefaultInstance();
         realm.executeTransaction(new Realm.Transaction() {
-            @Override public void execute(Realm realm) {
+            @Override
+            public void execute(Realm realm) {
                 RealmResults<TrashBinRealmModel> result = realm.where(TrashBinRealmModel.class).equalTo
                         ("trashbinpath", path).findAll();
                 delete[0] = result.deleteAllFromRealm();
@@ -1591,10 +1624,10 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     public EditText getDescriptionDialog(final ThemedActivity activity, AlertDialog.Builder descriptionDialog) {
 
         final View DescriptiondDialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_description, null);
-        final TextView DescriptionDialogTitle = (TextView) DescriptiondDialogLayout.findViewById(R.id.description_dialog_title);
-        final CardView DescriptionDialogCard = (CardView) DescriptiondDialogLayout.findViewById(R.id.description_dialog_card);
-        EditText editxtDescription = (EditText) DescriptiondDialogLayout.findViewById(R.id.description_edittxt);
-        ImageButton VoiceRecognition = (ImageButton) DescriptiondDialogLayout.findViewById(R.id.voice_input);
+        final TextView DescriptionDialogTitle = DescriptiondDialogLayout.findViewById(R.id.description_dialog_title);
+        final CardView DescriptionDialogCard = DescriptiondDialogLayout.findViewById(R.id.description_dialog_card);
+        EditText editxtDescription = DescriptiondDialogLayout.findViewById(R.id.description_edittxt);
+        ImageButton VoiceRecognition = DescriptiondDialogLayout.findViewById(R.id.voice_input);
         VoiceRecognition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1659,10 +1692,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     protected void setStatusBarColor() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (isApplyThemeOnImgAct())
-                if (isTranslucentStatusBar() && isTransparencyZero()){
+                if (isTranslucentStatusBar() && isTransparencyZero()) {
                     getWindow().setStatusBarColor(ColorPalette.getTransparentColor(getPrimaryColor(), getTransparency()));
-                }
-                else{
+                } else {
                     getWindow().setStatusBarColor(ColorPalette.getObscuredColor(getPrimaryColor()));
                 }
             else
@@ -1733,21 +1765,21 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         });
     }
 
-    private void deleteaction(String ButtonDelete){
+    private void deleteaction(String ButtonDelete) {
         final AlertDialog.Builder deleteDialog = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
-        if(favphotomode){
+        if (favphotomode) {
             AlertDialogsHelper.getTextDialog(SingleMediaActivity.this, deleteDialog,
                     R.string.remove_from_favourites, R.string.delete_from_favourites_message, null);
             ButtonDelete = this.getString(R.string.remove);
-        }else if(!favphotomode && !upoadhis && !trashdis) {
+        } else if (!favphotomode && !upoadhis && !trashdis) {
             AlertDialogsHelper.getTextCheckboxDialog(SingleMediaActivity.this, deleteDialog, R.string.delete, R
                     .string.delete_photo_message, null, "Move to TrashBin", getAccentColor());
             ButtonDelete = this.getString(R.string.delete);
-        }else if(upoadhis && !favphotomode && !trashdis){
+        } else if (upoadhis && !favphotomode && !trashdis) {
             AlertDialogsHelper.getTextDialog(SingleMediaActivity.this, deleteDialog, R.string.delete, R
                     .string.delete_photo_message, null);
             ButtonDelete = this.getString(R.string.delete);
-        }else if(trashdis && !upoadhis && !favphotomode){
+        } else if (trashdis && !upoadhis && !favphotomode) {
             AlertDialogsHelper.getTextDialog(SingleMediaActivity.this, deleteDialog, R.string.delete, R
                     .string.delete_image_bin, null);
             ButtonDelete = this.getString(R.string.delete);
@@ -1776,23 +1808,24 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                             //empty method body
                         }
 
-                        @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        @Override
+                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                             //empty method body
                         }
 
-                        @Override public void afterTextChanged(Editable editable) {
-                            if(securityObj.getTextInputLayout().getVisibility() == View.VISIBLE && !passco[0]){
+                        @Override
+                        public void afterTextChanged(Editable editable) {
+                            if (securityObj.getTextInputLayout().getVisibility() == View.VISIBLE && !passco[0]) {
                                 securityObj.getTextInputLayout().setVisibility(View.INVISIBLE);
-                            }
-                            else{
-                                passco[0]=false;
+                            } else {
+                                passco[0] = false;
                             }
                         }
                     });
                     passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
                     final AlertDialog passwordDialog = passwordDialogBuilder.create();
                     passwordDialog.show();
-                    passwordDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE|WindowManager
+                    passwordDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager
                             .LayoutParams.FLAG_ALT_FOCUSABLE_IM);
                     passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams
                             .SOFT_INPUT_STATE_ALWAYS_VISIBLE);
@@ -1822,54 +1855,54 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
     }
 
-    private void displaydetails(Media media){
+    private void displaydetails(Media media) {
         final View v = findViewById(R.id.layout_image_description);
-        LinearLayout linearLayout = (LinearLayout)v;
-        if(!allPhotoMode && !favphotomode && !upoadhis){
+        LinearLayout linearLayout = (LinearLayout) v;
+        if (!allPhotoMode && !favphotomode && !upoadhis) {
             media = getAlbum().getCurrentMedia();
-        }else if(allPhotoMode && !favphotomode && !upoadhis){
+        } else if (allPhotoMode && !favphotomode && !upoadhis) {
             media = new Media(new File(listAll.get(current_image_pos).getPath()));
-        }else if(!allPhotoMode && favphotomode && !upoadhis){
+        } else if (!allPhotoMode && favphotomode && !upoadhis) {
             media = new Media(new File(favouriteslist.get(current_image_pos).getPath()));
-        }else if(!favphotomode && !allPhotoMode && upoadhis){
+        } else if (!favphotomode && !allPhotoMode && upoadhis) {
             media = new Media(new File(uploadhistory.get(current_image_pos).getPath()));
         }
-        final MediaDetailsMap<String,String> mediaDetailsMap = media.getMainDetails(this);
-        LinearLayout linearLayout1 = (LinearLayout) findViewById(R.id.image_desc_top);
+        final MediaDetailsMap<String, String> mediaDetailsMap = media.getMainDetails(this);
+        LinearLayout linearLayout1 = findViewById(R.id.image_desc_top);
         linearLayout1.setBackgroundColor(getPrimaryColor());
         v.setBackgroundColor(getBackgroundColor());
-        int textColor = getBaseTheme() != ThemeHelper.LIGHT_THEME ? Color.parseColor("#FAFAFA" ): Color
+        int textColor = getBaseTheme() != ThemeHelper.LIGHT_THEME ? Color.parseColor("#FAFAFA") : Color
                 .parseColor("#455A64");
 
-                /* Getting all the viewgroups and views of the image description layout */
+        /* Getting all the viewgroups and views of the image description layout */
 
-        TextView  imgDate = (TextView) linearLayout.findViewById(R.id.image_desc_date);
+        TextView imgDate = linearLayout.findViewById(R.id.image_desc_date);
         imgDate.setTextColor(textColor);
-        TextView  imgLocation = (TextView) linearLayout.findViewById(R.id.image_desc_loc);
+        TextView imgLocation = linearLayout.findViewById(R.id.image_desc_loc);
         imgLocation.setTextColor(textColor);
-        TextView  imgTitle = (TextView) linearLayout.findViewById(R.id.image_desc_title);
+        TextView imgTitle = linearLayout.findViewById(R.id.image_desc_title);
         imgTitle.setTextColor(textColor);
-        TextView  imgType = (TextView) linearLayout.findViewById(R.id.image_desc_type);
+        TextView imgType = linearLayout.findViewById(R.id.image_desc_type);
         imgType.setTextColor(textColor);
-        TextView  imgSize = (TextView) linearLayout.findViewById(R.id.image_desc_size);
+        TextView imgSize = linearLayout.findViewById(R.id.image_desc_size);
         imgSize.setTextColor(textColor);
-        TextView  imgResolution = (TextView) linearLayout.findViewById(R.id.image_desc_res);
+        TextView imgResolution = linearLayout.findViewById(R.id.image_desc_res);
         imgResolution.setTextColor(textColor);
-        TextView  imgPath = (TextView) linearLayout.findViewById(R.id.image_desc_path);
+        TextView imgPath = linearLayout.findViewById(R.id.image_desc_path);
         imgPath.setTextColor(textColor);
-        TextView  imgOrientation = (TextView) linearLayout.findViewById(R.id.image_desc_orientation);
+        TextView imgOrientation = linearLayout.findViewById(R.id.image_desc_orientation);
         imgOrientation.setTextColor(textColor);
-        TextView  imgExif = (TextView) linearLayout.findViewById(R.id.image_desc_exif);
+        TextView imgExif = linearLayout.findViewById(R.id.image_desc_exif);
         imgExif.setTextColor(textColor);
-        TextView  imgDesc = (TextView) linearLayout.findViewById(R.id.image_desc);
+        TextView imgDesc = linearLayout.findViewById(R.id.image_desc);
         imgDesc.setTextColor(textColor);
-        IconicsImageView iconicsImageView = (IconicsImageView) linearLayout.findViewById(R.id.date_icon);
+        IconicsImageView iconicsImageView = linearLayout.findViewById(R.id.date_icon);
         iconicsImageView.setColor(textColor);
-        IconicsImageView locationicon = (IconicsImageView) linearLayout.findViewById(R.id.loca_icon);
+        IconicsImageView locationicon = linearLayout.findViewById(R.id.loca_icon);
         locationicon.setColor(textColor);
-        IconicsImageView detailsicon = (IconicsImageView) linearLayout.findViewById(R.id.detail_icon);
+        IconicsImageView detailsicon = linearLayout.findViewById(R.id.detail_icon);
         detailsicon.setColor(textColor);
-        ImageButton imgBack = (ImageButton) linearLayout.findViewById(R.id.img_desc_back_arrow);
+        ImageButton imgBack = linearLayout.findViewById(R.id.img_desc_back_arrow);
 
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1880,31 +1913,31 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             }
         });
 
-                /*Setting the label text colours*/
-        TextView datelabel = (TextView) linearLayout.findViewById(R.id.date_label);
+        /*Setting the label text colours*/
+        TextView datelabel = linearLayout.findViewById(R.id.date_label);
         datelabel.setTextColor(textColor);
-        TextView locationlabel = (TextView) linearLayout.findViewById(R.id.location_label);
+        TextView locationlabel = linearLayout.findViewById(R.id.location_label);
         locationlabel.setTextColor(textColor);
-        TextView detaillabel = (TextView) linearLayout.findViewById(R.id.details_label);
+        TextView detaillabel = linearLayout.findViewById(R.id.details_label);
         detaillabel.setTextColor(textColor);
-        TextView titlelabel = (TextView) linearLayout.findViewById(R.id.title_label);
+        TextView titlelabel = linearLayout.findViewById(R.id.title_label);
         titlelabel.setTextColor(textColor);
-        TextView typelabel = (TextView) linearLayout.findViewById(R.id.type_label);
+        TextView typelabel = linearLayout.findViewById(R.id.type_label);
         typelabel.setTextColor(textColor);
-        TextView sizelabel = (TextView) linearLayout.findViewById(R.id.size_label);
+        TextView sizelabel = linearLayout.findViewById(R.id.size_label);
         sizelabel.setTextColor(textColor);
-        TextView reslabel = (TextView) linearLayout.findViewById(R.id.resolution_label);
+        TextView reslabel = linearLayout.findViewById(R.id.resolution_label);
         reslabel.setTextColor(textColor);
-        TextView pathlabel = (TextView) linearLayout.findViewById(R.id.path_label);
+        TextView pathlabel = linearLayout.findViewById(R.id.path_label);
         pathlabel.setTextColor(textColor);
-        TextView orientationlabel = (TextView) linearLayout.findViewById(R.id.orientation_label);
+        TextView orientationlabel = linearLayout.findViewById(R.id.orientation_label);
         orientationlabel.setTextColor(textColor);
-        TextView exiflabel = (TextView) linearLayout.findViewById(R.id.exif_label);
+        TextView exiflabel = linearLayout.findViewById(R.id.exif_label);
         exiflabel.setTextColor(textColor);
-        TextView desclabel = (TextView) linearLayout.findViewById(R.id.description_label);
+        TextView desclabel = linearLayout.findViewById(R.id.description_label);
         desclabel.setTextColor(textColor);
 
-                /*Setting the values to all the textViews*/
+        /*Setting the values to all the textViews*/
 
         try {
             imgDate.setText(mediaDetailsMap.get("Date").toString());
@@ -1912,36 +1945,36 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             imgType.setText(mediaDetailsMap.get("Type").toUpperCase());
             imgSize.setText(StringUtils.humanReadableByteCount(media.getSize(), true));
             imgResolution.setText(mediaDetailsMap.get("Resolution"));
-            if(mediaDetailsMap.get("Path").toString().contains(".nomedia")){
+            if (mediaDetailsMap.get("Path").toString().contains(".nomedia")) {
                 imgPath.setText(R.string.deleted_share_image);
             } else {
                 imgPath.setText(mediaDetailsMap.get("Path").toString());
             }
             imgOrientation.setText(mediaDetailsMap.get("Orientation"));
-            if(mediaDetailsMap.get("Description") == null) {
+            if (mediaDetailsMap.get("Description") == null) {
                 imgDesc.setText(R.string.no_description);
-            } else{
+            } else {
                 imgDesc.setText(mediaDetailsMap.get("Description"));
             }
-            if(mediaDetailsMap.get("EXIF") == null){
+            if (mediaDetailsMap.get("EXIF") == null) {
                 imgExif.setText(R.string.no_exif_data);
             } else {
                 imgExif.setText(mediaDetailsMap.get("EXIF"));
             }
-            if(mediaDetailsMap.get("Location") == null){
+            if (mediaDetailsMap.get("Location") == null) {
                 imgLocation.setText(R.string.no_location);
-            } else{
+            } else {
                 imgLocation.setText(mediaDetailsMap.get("Location").toString());
                 imgLocation.setTextColor(getResources().getColor(R.color.accent_orange, null));
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             //Raised if null values is found, no need to handle
         }
         imgLocation.setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View view) {
-                if(mediaDetailsMap.get("Location")!=null){
-                    Uri gmmIntentUri = Uri.parse("geo:0,0?q="+ mediaDetailsMap.get("Location"));
+            @Override
+            public void onClick(View view) {
+                if (mediaDetailsMap.get("Location") != null) {
+                    Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + mediaDetailsMap.get("Location"));
                     Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                     mapIntent.setPackage("com.google.android.apps.maps");
                     startActivity(mapIntent);
@@ -1984,7 +2017,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     @Override
     public void onPause() {
         super.onPause();
-        if (isFinishing()){
+        if (isFinishing()) {
             overridePendingTransition(0, R.anim.media_zoom_out);
         }
 
@@ -1993,10 +2026,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     @Override
     public void singleTap() {
         toggleSystemUI();
-        if(slideshow)
-        {
+        if (slideshow) {
             handler.removeCallbacks(slideShowRunnable);
-            slideshow=false;
+            slideshow = false;
         }
     }
 
@@ -2010,9 +2042,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
         final AlertDialog.Builder slideshowDialog = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
         final View SlideshowDialogLayout = getLayoutInflater().inflate(R.layout.dialog_slideshow, null);
-        final TextView slideshowDialogTitle = (TextView) SlideshowDialogLayout.findViewById(R.id.slideshow_dialog_title);
-        final CardView slideshowDialogCard = (CardView) SlideshowDialogLayout.findViewById(R.id.slideshow_dialog_card);
-        final EditText editTextTimeInterval = (EditText) SlideshowDialogLayout.findViewById(R.id.slideshow_edittext);
+        final TextView slideshowDialogTitle = SlideshowDialogLayout.findViewById(R.id.slideshow_dialog_title);
+        final CardView slideshowDialogCard = SlideshowDialogLayout.findViewById(R.id.slideshow_dialog_card);
+        final EditText editTextTimeInterval = SlideshowDialogLayout.findViewById(R.id.slideshow_edittext);
 
         slideshowDialogTitle.setBackgroundColor(getPrimaryColor());
         slideshowDialogCard.setBackgroundColor(getCardBackgroundColor());
@@ -2022,32 +2054,67 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         setCursorDrawableColor(editTextTimeInterval, getTextColor());
         slideshowDialog.setView(SlideshowDialogLayout);
 
-        AlertDialog dialog = slideshowDialog.create();
+        final AlertDialog dialog = slideshowDialog.create();
+        dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                //do nothing
+            }
+        });
 
         dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.ok).toUpperCase(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String value= editTextTimeInterval.getText().toString();
-                if(!"".equals(value))
-                {
-                    slideshow=true;
+                String value = editTextTimeInterval.getText().toString();
+                if (!"".equals(value)) {
+                    slideshow = true;
                     int intValue = Integer.parseInt(value);
                     SLIDE_SHOW_INTERVAL = intValue * 1000;
-                    if(SLIDE_SHOW_INTERVAL > 1000) {
+                    if (SLIDE_SHOW_INTERVAL > 1000 && SLIDE_SHOW_INTERVAL <= 10000) {
                         hideSystemUI();
+                        Snackbar.make(findViewById(android.R.id.content), getString(R.string.slide_start), Snackbar.LENGTH_SHORT).show();
                         handler.postDelayed(slideShowRunnable, SLIDE_SHOW_INTERVAL);
+                    } else if (SLIDE_SHOW_INTERVAL < 1000) {
+                        Toast.makeText(SingleMediaActivity.this, getString(R.string.min_duration_slide), Toast.LENGTH_SHORT).show();
+                    } else if (SLIDE_SHOW_INTERVAL > 10000) {
+                        Toast.makeText(SingleMediaActivity.this, getString(R.string.slide_max_value), Toast.LENGTH_SHORT).show();
                     }
-                    else
-                        Toast.makeText(SingleMediaActivity.this, "Minimum duration is 2 sec", Toast.LENGTH_SHORT).show();
+                }
 
+            }
+
+
+        });
+        editTextTimeInterval.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//empty method
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+//empty method
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editTextTimeInterval.getText().toString().equals("")) {
+                    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
+                    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.accent_grey));
+
+                } else {
+                    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(true);
+                    dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getAccentColor());
                 }
             }
         });
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         dialog.show();
-        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE}, getAccentColor(), dialog);
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), dialog);
+
 
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -2089,8 +2156,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         }
     }
 
-    private void setUpViewPager()
-    {
+    private void setUpViewPager() {
 
         BasicCallBack basicCallBack = new BasicCallBack() {
             @Override
@@ -2111,7 +2177,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 }
             });
             mViewPager.scrollToPosition(getAlbum().getCurrentMediaIndex());
-        } else if(allPhotoMode && !favphotomode){
+        } else if (allPhotoMode && !favphotomode) {
             adapter = new ImageAdapter(LFMainActivity.listAll, basicCallBack, this, this);
             getSupportActionBar().setTitle(current_image_pos + 1 + " " + getString(R.string.of) + " " + size_all);
             mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {
@@ -2125,7 +2191,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 }
             });
             mViewPager.scrollToPosition(current_image_pos);
-        } else if(!allPhotoMode && favphotomode){
+        } else if (!allPhotoMode && favphotomode) {
             adapter = new ImageAdapter(favouriteslist, basicCallBack, this, this);
             getSupportActionBar().setTitle(current_image_pos + 1 + " " + getString(R.string.of) + " " + size_all);
             mViewPager.setOnPageChangeListener(new PagerRecyclerView.OnPageChangeListener() {

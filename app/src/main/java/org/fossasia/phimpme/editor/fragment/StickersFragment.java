@@ -70,11 +70,11 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
         } else if(orientation == Configuration.ORIENTATION_LANDSCAPE) {
             manager = new LinearLayoutManager(getActivity());
         }
-        recyclerView = (RecyclerView) fragmentView.findViewById(R.id.editor_recyclerview);
+        recyclerView = fragmentView.findViewById(R.id.editor_recyclerview);
         recyclerView.setLayoutManager(manager);
 
-        cancel = (ImageButton)fragmentView.findViewById(R.id.sticker_cancel);
-        apply = (ImageButton)fragmentView.findViewById(R.id.sticker_apply);
+        cancel = fragmentView.findViewById(R.id.sticker_cancel);
+        apply = fragmentView.findViewById(R.id.sticker_apply);
 
         cancel.setImageResource(R.drawable.ic_close_black_24dp);
         apply.setImageResource(R.drawable.ic_done_black_24dp);
@@ -104,6 +104,10 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
 
     @Override
     public void onShow() {
+        if (activity.mainBitmap == null) {
+            getActivity().getSupportFragmentManager().beginTransaction().remove(StickersFragment.this).commit();
+            return;
+        }
         activity.changeMode(EditImageActivity.MODE_STICKERS);
         activity.stickersFragment.getmStickerView().mainImage = activity.mainImage;
         activity.stickersFragment.getmStickerView().mainBitmap = activity.mainBitmap;
@@ -200,8 +204,8 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
             mViewHolder(View itemView) {
                 super(itemView);
                 view = itemView;
-                icon = (ImageView)itemView.findViewById(R.id.editor_item_image);
-                title = (TextView)itemView.findViewById(R.id.editor_item_title);
+                icon = itemView.findViewById(R.id.editor_item_image);
+                title = itemView.findViewById(R.id.editor_item_title);
             }
         }
 

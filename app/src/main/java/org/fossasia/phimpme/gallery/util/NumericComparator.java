@@ -151,7 +151,7 @@ public class NumericComparator {
     else if (c == '~')
       return -1;
     else
-      return (int) c + UNICODE_MAX + 1;
+      return c + UNICODE_MAX + 1;
   }
 
   /* Match a file suffix defined by this regular expression:

@@ -34,7 +34,7 @@ import de.psdev.licensesdialog.model.Notices;
 public class AboutActivity extends ThemedActivity {
 
     private Toolbar toolbar;
-    
+
     /**** CustomTabService*/
     private CustomTabService cts;
 
@@ -45,10 +45,10 @@ public class AboutActivity extends ThemedActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setNavBarColor();
-        cts = new CustomTabService(AboutActivity.this,getPrimaryColor());
-        scr = (ScrollView)findViewById(R.id.aboutAct_scrollView);
+        cts = new CustomTabService(AboutActivity.this, getPrimaryColor());
+        scr = findViewById(R.id.aboutAct_scrollView);
     }
 
     @Override
@@ -58,7 +58,7 @@ public class AboutActivity extends ThemedActivity {
         setTheme();
     }
 
-    private void setTheme(){
+    private void setTheme() {
         /**** ToolBar *****/
         toolbar.setBackgroundColor(getPrimaryColor());
         setSupportActionBar(toolbar);
@@ -85,7 +85,7 @@ public class AboutActivity extends ThemedActivity {
         setRecentApp(getString(R.string.about));
 
         /**** Title Cards ***/
-        int color=getAccentColor();
+        int color = getAccentColor();
         ((TextView) findViewById(R.id.about_app_title)).setTextColor(color);
         ((TextView) findViewById(R.id.about_special_thanks_title)).setTextColor(color);
         ((TextView) findViewById(R.id.about_support_title)).setTextColor(color);
@@ -117,7 +117,7 @@ public class AboutActivity extends ThemedActivity {
         setUpActions();
     }
 
-    private void setUpActions(){
+    private void setUpActions() {
 
         //Fossasia contributors
         findViewById(R.id.about_fossasia).setOnClickListener(new View.OnClickListener() {
@@ -140,7 +140,7 @@ public class AboutActivity extends ThemedActivity {
                 cts.launchUrl(getApplicationContext().getString(R.string.phimpme_github_issues));
             }
         });
-         //openCamera
+        //openCamera
         findViewById(R.id.about_patryk_goworowski_item_sub).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -154,7 +154,7 @@ public class AboutActivity extends ThemedActivity {
                 cts.launchUrl(getApplicationContext().getString(R.string.leafpic_github));
             }
         });
-        
+
         //License
         findViewById(R.id.ll_about_license).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,24 +164,24 @@ public class AboutActivity extends ThemedActivity {
         });
 
         //Libs
-        findViewById(R.id.ll_about_libs).setOnClickListener(new View.OnClickListener(){
+        findViewById(R.id.ll_about_libs).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {licenseDialog();}
+            public void onClick(View v) {
+                licenseDialog();
+            }
         });
 
         //Website
         findViewById(R.id.ll_about_website).setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("http://phimp.me/"));
-                startActivity(intent);
+                cts.launchUrl(getApplicationContext().getString(R.string.phimpme_website));
             }
         });
 
         //Facebook page
         findViewById(R.id.ll_about_Facebook).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View view) {
+            @Override
+            public void onClick(View view) {
                 Intent facebookIntent = new Intent(Intent.ACTION_VIEW);
                 String facebookUrl = getFacebookPageURL(getApplicationContext());
                 facebookIntent.setData(Uri.parse(facebookUrl));
@@ -191,14 +191,15 @@ public class AboutActivity extends ThemedActivity {
 
         //Twitter page
         findViewById(R.id.ll_about_twitter_connect).setOnClickListener(new View.OnClickListener() {
-            @Override public void onClick(View view) {
+            @Override
+            public void onClick(View view) {
                 try {
                     Intent intent = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("twitter://user?screen_name=[phimpme]"));
+                            Uri.parse("twitter://user?screen_name=phimpme"));
                     startActivity(intent);
                 } catch (Exception e) {
                     startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("https://twitter.com/#!/[phimpme]")));
+                            Uri.parse("https://twitter.com/#!/phimpme")));
                 }
             }
         });
@@ -220,7 +221,7 @@ public class AboutActivity extends ThemedActivity {
         }
     }
 
-    private void setThemeOnChangeListener(){
+    private void setThemeOnChangeListener() {
 
         /** BackGround **/
         findViewById(R.id.about_background).setBackgroundColor(getBackgroundColor());
@@ -265,7 +266,7 @@ public class AboutActivity extends ThemedActivity {
         /** Sub Text Views**/
         color = getSubTextColor();
         ((TextView) findViewById(R.id.about_version_item_sub)).setTextColor(color);
-        ((TextView) findViewById(R.id.about_version_item_sub)).setText(getApplicationContext().getString(R.string.version_title)+" "+BuildConfig.VERSION_NAME);
+        ((TextView) findViewById(R.id.about_version_item_sub)).setText(getApplicationContext().getString(R.string.version_title) + " " + BuildConfig.VERSION_NAME);
         ((TextView) findViewById(R.id.about_libs_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.about_patryk_goworowski_item_sub)).setTextColor(color);
         ((TextView) findViewById(R.id.about_community_members_sub)).setTextColor(color);

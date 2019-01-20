@@ -318,7 +318,7 @@ public class HandlingAlbums {
       }
 
       if (indexRightBeforeOrAfter != -1) {
-          for (int index = Math.min(targetIndex, indexRightBeforeOrAfter); index < Math.max(targetIndex, indexRightBeforeOrAfter); index++) {
+          for (int index = Math.min(targetIndex, indexRightBeforeOrAfter); index <= Math.max(targetIndex, indexRightBeforeOrAfter); index++) {
               if (dispAlbums.get(index) != null && !dispAlbums.get(index).isSelected()) {
                   dispAlbums.get(index).setSelected(true);
                   selectedAlbums.add(dispAlbums.get(index));
@@ -330,6 +330,10 @@ public class HandlingAlbums {
 
   public Album getSelectedAlbum(int index) {
     return selectedAlbums.get(index);
+  }
+
+  public ArrayList<Album> getSelectedAlbums() {
+      return selectedAlbums;
   }
 
   public void loadAlbums(Context applicationContext) {

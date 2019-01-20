@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -70,6 +71,7 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+
 import com.bumptech.glide.gifencoder.AnimatedGifEncoder;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
@@ -87,6 +89,7 @@ import org.fossasia.phimpme.gallery.data.Album;
 import org.fossasia.phimpme.gallery.data.CustomAlbumsHelper;
 import org.fossasia.phimpme.gallery.data.HandlingAlbums;
 import org.fossasia.phimpme.gallery.data.Media;
+import org.fossasia.phimpme.gallery.data.base.ImageFileFilter;
 import org.fossasia.phimpme.gallery.data.base.MediaComparators;
 import org.fossasia.phimpme.gallery.data.base.SortingMode;
 import org.fossasia.phimpme.gallery.data.base.SortingOrder;
@@ -117,8 +120,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
@@ -136,6 +141,7 @@ import static org.fossasia.phimpme.gallery.data.base.SortingMode.NAME;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.NUMERIC;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.SIZE;
 import static org.fossasia.phimpme.gallery.util.ThemeHelper.LIGHT_THEME;
+import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 
 public class LFMainActivity extends SharedMediaActivity {
 
@@ -172,8 +178,10 @@ public class LFMainActivity extends SharedMediaActivity {
     ArrayList<String> path;
     private ArrayList<Media> media;
     private ArrayList<Media> selectedMedias = new ArrayList<>();
+    private ArrayList<Media> selectedAlbumMedia = new ArrayList<>();
     public boolean visible;
     private ArrayList<Album> albList;
+
 
 
     //To handle favourite collection
@@ -181,7 +189,7 @@ public class LFMainActivity extends SharedMediaActivity {
     private ArrayList<Media> favouriteslist;
     public boolean fav_photos = false;
     private IconicsImageView favicon;
-    
+
     private CustomScrollBarRecyclerView rvAlbums;
     private CustomScrollBarRecyclerView rvMedia;
 
@@ -190,6 +198,8 @@ public class LFMainActivity extends SharedMediaActivity {
 
     private boolean fromOnClick = false;
     // Binding various views with Butterknife
+
+    private SearchView searchView;
 
     @BindView(R.id.toolbar)
     protected Toolbar toolbar;
@@ -278,6 +288,8 @@ public class LFMainActivity extends SharedMediaActivity {
                 if (!editMode) {
                     mediaAdapter.notifyItemChanged(toggleSelectPhoto(m));
                     editMode = true;
+                } else {
+                    selectAllPhotosUpToFav(getImagePosition(m.getPath()));
                 }
             } else selectAllPhotosUpTo(getImagePosition(m.getPath()), mediaAdapter);
             return true;
@@ -393,6 +405,31 @@ public class LFMainActivity extends SharedMediaActivity {
             }
         }
         toolbar.setTitle(selectedMedias.size() + "/" + size);
+    }
+
+    public void selectAllPhotosUpToFav(int targetIndex) {
+        int indexRightBeforeOrAfter = -1;
+        int indexNow;
+        for (Media sm : selectedMedias) {
+            indexNow = getImagePosition(sm.getPath());
+            if (indexRightBeforeOrAfter == -1) indexRightBeforeOrAfter = indexNow;
+
+            if (indexNow > targetIndex) break;
+            indexRightBeforeOrAfter = indexNow;
+        }
+
+        ArrayList<Media> favlist = mediaAdapter.getList();
+
+        if (indexRightBeforeOrAfter != -1) {
+            for (int index = Math.min(targetIndex, indexRightBeforeOrAfter); index <= Math.max(targetIndex, indexRightBeforeOrAfter); index++) {
+                if (favlist.get(index) != null && !favlist.get(index).isSelected()) {
+                    favlist.get(index).setSelected(true);
+                    selectedMedias.add(favlist.get(index));
+                    mediaAdapter.notifyItemChanged(index);
+                }
+            }
+        }
+        toolbar.setTitle(selectedMedias.size() + "/" + favlist.size());
     }
 
     public void populateAlbum() {
@@ -578,8 +615,9 @@ public class LFMainActivity extends SharedMediaActivity {
                 if(editMode) {
                     int currentAlbum = getAlbums().getCurrentAlbumIndex(album);
                     getAlbums().selectAllPhotosUpToAlbums(currentAlbum, albumsAdapter);
+                } else {
+                    albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(album));
                 }
-                albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(album));
                 editMode = true;
                 invalidateOptionsMenu();
                 if (getAlbums().getSelectedCount() == 0)
@@ -609,6 +647,7 @@ public class LFMainActivity extends SharedMediaActivity {
         public void onClick(View v) {
             fromOnClick = true;
             final Album album = (Album) v.findViewById(R.id.album_name).getTag();
+            showAppBar();
             //int index = Integer.parseInt(v.findViewById(R.id.album_name).getTag().toString());
             if (editMode) {
                 albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(album));
@@ -707,6 +746,12 @@ public class LFMainActivity extends SharedMediaActivity {
                 | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
     }
 
+    private void showAppBar() {
+        if (toolbar.getParent() instanceof AppBarLayout) {
+            ((AppBarLayout)toolbar.getParent()).setExpanded(true, true);
+        }
+    }
+
     public int getImagePosition(String path) {
         int pos = 0;
         if (all_photos) {
@@ -734,12 +779,12 @@ public class LFMainActivity extends SharedMediaActivity {
         super.onCreate(savedInstanceState);
         Log.e("TAG", "lfmain");
         ButterKnife.bind(this);
+      
+        navigationView = findViewById(R.id.bottombar);
+        favicon = findViewById(R.id.Drawer_favourite_Icon);
 
-        navigationView = (BottomNavigationView) findViewById(R.id.bottombar);
-        favicon = (IconicsImageView) findViewById(R.id.Drawer_favourite_Icon);
-        
-        rvAlbums = (CustomScrollBarRecyclerView) findViewById(R.id.grid_albums);
-        rvMedia  = (CustomScrollBarRecyclerView) findViewById(R.id.grid_photos);
+        rvAlbums = findViewById(R.id.grid_albums);
+        rvMedia  = findViewById(R.id.grid_photos);
 
         overridePendingTransition(R.anim.right_to_left,
                 R.anim.left_to_right);
@@ -1615,7 +1660,7 @@ public class LFMainActivity extends SharedMediaActivity {
         nothingToShow.setText(getString(R.string.there_is_nothing_to_show));
         nothingToShow.setVisibility((albumsMode && getAlbums().dispAlbums.size() == 0) ||
                 (!albumsMode && getAlbum().getMedia().size() == 0) ? View.VISIBLE : View.GONE);
-        TextView a = (TextView) findViewById(R.id.nothing_to_show);
+        TextView a = findViewById(R.id.nothing_to_show);
         a.setTextColor(getTextColor());
         a.setVisibility((albumsMode && getAlbums().dispAlbums.size() == 0 && !fav_photos) || (!albumsMode && getAlbum
                 ().getMedia().size() == 0 && !fav_photos) || (fav_photos && favouriteslist.size() == 0) ? View
@@ -1663,7 +1708,7 @@ public class LFMainActivity extends SharedMediaActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_albums, menu);
         MenuItem menuitem = menu.findItem(R.id.search_action);
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuitem);
+        searchView = (SearchView) MenuItemCompat.getActionView(menuitem);
         searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
             @Override public void onFocusChange(final View view, boolean b) {
                 if (b) {
@@ -1779,6 +1824,7 @@ public class LFMainActivity extends SharedMediaActivity {
             menu.findItem(R.id.all_photos).setVisible(!editMode && !hidden);
             menu.findItem(R.id.search_action).setVisible(!editMode);
             menu.findItem(R.id.create_gif).setVisible(false);
+            menu.findItem(R.id.create_zip).setVisible(false);
             menu.findItem(R.id.select_all).setVisible(getAlbums().getSelectedCount() != albumsAdapter.getItemCount() ? true : false);
             menu.findItem(R.id.settings).setVisible(false);
 
@@ -1814,6 +1860,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 menu.setGroupVisible(R.id.album_options_menu, !editMode);
                 menu.findItem(R.id.settings).setVisible(!editMode);
                 menu.findItem(R.id.create_gif).setVisible(false);
+                menu.findItem(R.id.create_zip).setVisible(false);
                 menu.findItem(R.id.album_details).setVisible(false);
                 menu.findItem(R.id.all_photos).setVisible(false);
             }
@@ -1871,8 +1918,61 @@ public class LFMainActivity extends SharedMediaActivity {
 
             case R.id.all_photos:
                 if (!all_photos) {
-                    all_photos = true;
-                    displayAllMedia(true);
+                    boolean check_security_on_local = true;
+                    check_security_on_local = SP.getBoolean(getString(R.string.preference_use_password_on_folder), check_security_on_local);
+                    if(securityObj.isActiveSecurity() && check_security_on_local){
+                            final boolean[] passco = {false};
+                            AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
+                            final EditText editTextPassword = securityObj.getInsertPasswordDialog(LFMainActivity.this, passwordDialogBuilder);
+                            editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
+                            passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            });
+                            passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+                            editTextPassword.addTextChangedListener(new TextWatcher() {
+                                @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                    //empty method body
+                                }
+
+                                @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                    //empty method body
+                                }
+
+                                @Override public void afterTextChanged(Editable editable) {
+                                    if(securityObj.getTextInputLayout().getVisibility() == View.VISIBLE && !passco[0]){
+                                        securityObj.getTextInputLayout().setVisibility(View.INVISIBLE);
+                                    }
+                                    else{
+                                        passco[0]=false;
+                                    }
+                                }
+                            });
+                            final AlertDialog passwordDialog = passwordDialogBuilder.create();
+                            passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+                            passwordDialog.show();
+                            AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
+                            passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View
+                                    .OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    if (securityObj.checkPassword(editTextPassword.getText().toString())) {
+                                        all_photos = true;
+                                        displayAllMedia(true);
+                                        passwordDialog.dismiss();
+                                    } else {
+                                        passco[0] = true;
+                                        securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
+                                        editTextPassword.getText().clear();
+                                        editTextPassword.requestFocus();
+                                    }
+                                }
+                            });
+
+                    } else{
+                        all_photos = true;
+                        displayAllMedia(true);
+                    }
                 } else {
                     displayAlbums();
                 }
@@ -1904,13 +2004,13 @@ public class LFMainActivity extends SharedMediaActivity {
                         getAlbum().selectAllPhotos();
                         mediaAdapter.notifyDataSetChanged();
                     } else if(all_photos && !fav_photos){
-                            clearSelectedPhotos();
-                            selectAllPhotos();
+                        clearSelectedPhotos();
+                        selectAllPhotos();
                         mediaAdapter.notifyDataSetChanged();
                     }
                     else if(fav_photos && !all_photos){
-                            clearSelectedPhotos();
-                            selectAllPhotos();
+                        clearSelectedPhotos();
+                        selectAllPhotos();
                         Collections.sort(favouriteslist, MediaComparators.getComparator(getAlbum().settings.getSortingMode(),
                                 getAlbum().settings.getSortingOrder()));
                         mediaAdapter.swapDataSet(favouriteslist, true);
@@ -1922,7 +2022,19 @@ public class LFMainActivity extends SharedMediaActivity {
             case R.id.create_gif:
                 new CreateGIFTask().execute();
                 return true;
-
+            case R.id.create_zip:
+                path = new ArrayList<>();
+                if(!albumsMode && !all_photos && !fav_photos){
+                    for(Media m: getAlbum().getSelectedMedia()){
+                        path.add(m.getPath());
+                    }
+                }else if(!albumsMode && all_photos && !fav_photos){
+                    for(Media m: selectedMedias){
+                        path.add(m.getPath());
+                    }
+                }
+                new CreateZipTask().execute();
+                return true;
 
             case R.id.set_pin_album:
                 getAlbums().getSelectedAlbum(0).settings.togglePin(getApplicationContext());
@@ -1979,7 +2091,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 alertDialog.show();
                 AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE, DialogInterface.BUTTON_NEUTRAL}, getAccentColor(), alertDialog);
                 return true;
-            
+
             case R.id.delete_action:
                 getNavigationBar();
                 class DeletePhotos extends AsyncTask<String, Integer, Boolean> {
@@ -1996,8 +2108,17 @@ public class LFMainActivity extends SharedMediaActivity {
                     @Override
                     protected Boolean doInBackground(String... arg0) {
                         //if in album mode, delete selected albums
-                        if (albumsMode)
-                            succ = getAlbums().deleteSelectedAlbums(LFMainActivity.this);
+                        if (albumsMode) {
+                            if (AlertDialogsHelper.check)  {
+                                succ = addToTrash();
+                                if (succ) {
+                                    addTrashObjectsToRealm(selectedAlbumMedia);
+                                    succ = getAlbums().deleteSelectedAlbums(LFMainActivity.this);
+                                }
+                            } else {
+                                succ = getAlbums().deleteSelectedAlbums(LFMainActivity.this);
+                            }
+                        }
                         else {
                             // if in selection mode, delete selected media
                             if (editMode) {
@@ -2015,7 +2136,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                     }
                                 } else if (all_photos && !fav_photos) {
                                     checkForShare(selectedMedias);
-                                   // addToTrash();
+                                    // addToTrash();
                                     if (AlertDialogsHelper.check) {
                                         succ = addToTrash();
                                         if (succ) {
@@ -2154,8 +2275,8 @@ public class LFMainActivity extends SharedMediaActivity {
                     AlertDialogsHelper.getTextDialog(this, deleteDialog, R.string.remove_from_favourites, R.string.remove_favourites_body, null);
                 else
                     AlertDialogsHelper.getTextCheckboxDialog(this, deleteDialog, R.string.delete, albumsMode || !editMode ?
-                    R.string.delete_album_message :
-                    R.string.delete_photos_message, null, getResources().getString(R.string.move_to_trashbin), getAccentColor());
+                            R.string.delete_album_message :
+                            R.string.delete_photos_message, null, getResources().getString(R.string.move_to_trashbin), getAccentColor());
 
                 deleteDialog.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
                 deleteDialog.setPositiveButton(fav_photos && !all_photos ? getString(R.string.remove).toUpperCase() : getString(R.string.delete).toUpperCase(), new DialogInterface.OnClickListener() {
@@ -2229,9 +2350,9 @@ public class LFMainActivity extends SharedMediaActivity {
                 final AlertDialog.Builder excludeDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
 
                 final View excludeDialogLayout = getLayoutInflater().inflate(R.layout.dialog_exclude, null);
-                TextView textViewExcludeTitle = (TextView) excludeDialogLayout.findViewById(R.id.text_dialog_title);
-                TextView textViewExcludeMessage = (TextView) excludeDialogLayout.findViewById(R.id.text_dialog_message);
-                final Spinner spinnerParents = (Spinner) excludeDialogLayout.findViewById(R.id.parents_folder);
+                TextView textViewExcludeTitle = excludeDialogLayout.findViewById(R.id.text_dialog_title);
+                TextView textViewExcludeMessage = excludeDialogLayout.findViewById(R.id.text_dialog_message);
+                final Spinner spinnerParents = excludeDialogLayout.findViewById(R.id.parents_folder);
 
                 spinnerParents.getBackground().setColorFilter(getIconColor(), PorterDuff.Mode.SRC_ATOP);
 
@@ -2276,7 +2397,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 File folder = new File(getAlbums().getSelectedAlbum(0).getPath() + "/");
                 File[] fpath = folder.listFiles();
                 for (int i = 0; i < fpath.length; i++) {
-                    if (fpath[i].getPath().endsWith(".jpg")) {
+                    if (fpath[i].getPath().endsWith(".jpg")||fpath[i].getPath().endsWith(".jpeg")||fpath[i].getPath().endsWith(".png")) {
                         path.add(fpath[i].getPath());
                     }
 
@@ -2501,13 +2622,13 @@ public class LFMainActivity extends SharedMediaActivity {
                 ((CardView) dialogLayout.findViewById(R.id.affix_card)).setCardBackgroundColor(getCardBackgroundColor());
 
                 //ITEMS
-                final SwitchCompat swVertical = (SwitchCompat) dialogLayout.findViewById(R.id.affix_vertical_switch);
-                final SwitchCompat swSaveHere = (SwitchCompat) dialogLayout.findViewById(R.id.save_here_switch);
+                final SwitchCompat swVertical = dialogLayout.findViewById(R.id.affix_vertical_switch);
+                final SwitchCompat swSaveHere = dialogLayout.findViewById(R.id.save_here_switch);
 
-                final RadioGroup radioFormatGroup = (RadioGroup) dialogLayout.findViewById(R.id.radio_format);
+                final RadioGroup radioFormatGroup = dialogLayout.findViewById(R.id.radio_format);
 
-                final TextView txtQuality = (TextView) dialogLayout.findViewById(R.id.affix_quality_title);
-                final SeekBar seekQuality = (SeekBar) dialogLayout.findViewById(R.id.seek_bar_quality);
+                final TextView txtQuality = dialogLayout.findViewById(R.id.affix_quality_title);
+                final SeekBar seekQuality = dialogLayout.findViewById(R.id.seek_bar_quality);
 
                 //region THEME STUFF
                 setScrollViewColor((ScrollView) dialogLayout.findViewById(R.id.affix_scrollView));
@@ -3031,7 +3152,10 @@ public class LFMainActivity extends SharedMediaActivity {
         final ArrayList<Media> media1 = storeDeletedFilesTemporarily();
         File file = new File(Environment.getExternalStorageDirectory() + "/" + ".nomedia");
         if(file.exists() && file.isDirectory()){
-            if(!all_photos && !fav_photos && editMode){
+            if (albumsMode) {
+                no = getAlbum().moveAllMedia(getApplicationContext(), file.getAbsolutePath(), selectedAlbumMedia);
+            }
+            else if(!all_photos && !fav_photos && editMode){
                 no = getAlbum().moveSelectedMedia(getApplicationContext(), file.getAbsolutePath());
             }else if(all_photos && !fav_photos && editMode){
                 no = getAlbum().moveAllMedia(getApplicationContext(), file.getAbsolutePath(), selectedMedias);
@@ -3048,10 +3172,14 @@ public class LFMainActivity extends SharedMediaActivity {
                     snackbar.setAction("UNDO", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            getAlbum().moveAllMedia(getApplicationContext(), getAlbum().getPath(), media1);
+                            if (albumsMode) {
+                                undoAlbumDeletion(media1);
+                            }else
+                                getAlbum().moveAllMedia(getApplicationContext(), getAlbum().getPath(), media1);
                             refreshListener.onRefresh();
                         }
                     });
+                    snackbar.show();
                 }else{
                     Snackbar snackbar = SnackBarHandler.showWithBottomMargin2(mDrawerLayout, String.valueOf(no) + " " + getString(R.string
                                     .trashbin_move_onefile),
@@ -3060,7 +3188,10 @@ public class LFMainActivity extends SharedMediaActivity {
                     snackbar.setAction("UNDO", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            getAlbum().moveAllMedia(getApplicationContext(), getAlbum().getPath(), media1);
+                            if (albumsMode) {
+                                undoAlbumDeletion(media1);
+                            }else
+                                getAlbum().moveAllMedia(getApplicationContext(), getAlbum().getPath(), media1);
                             refreshListener.onRefresh();
                         }
                     });
@@ -3074,26 +3205,46 @@ public class LFMainActivity extends SharedMediaActivity {
             }
         }else{
             if(file.mkdir()){
-                if(!all_photos && !fav_photos && editMode){
+                if (albumsMode) {
+                    no = getAlbum().moveAllMedia(getApplicationContext(), file.getAbsolutePath(), selectedAlbumMedia);
+                }else if(!all_photos && !fav_photos && editMode){
                     no = getAlbum().moveSelectedMedia(getApplicationContext(), file.getAbsolutePath());
                 }else if(all_photos && !fav_photos && editMode){
                     no = getAlbum().moveAllMedia(getApplicationContext(), file.getAbsolutePath(), selectedMedias);
                 }else if(!editMode && !all_photos && !fav_photos){
                     no = getAlbum().moveAllMedia(getApplicationContext(), file.getAbsolutePath(), getAlbum().getMedia());
                 }
-               // no = getAlbum().moveSelectedMedia(getApplicationContext(), file.getAbsolutePath());
+                // no = getAlbum().moveSelectedMedia(getApplicationContext(), file.getAbsolutePath());
                 if(no > 0){
                     succ = true;
                     if(no == 1){
-                        SnackBarHandler.showWithBottomMargin(mDrawerLayout, String.valueOf(no) + " " + getString(R.string
+                        Snackbar snackbar =  SnackBarHandler.showWithBottomMargin(mDrawerLayout, String.valueOf(no) + " " + getString(R.string
                                         .trashbin_move_onefile),
                                 navigationView.getHeight
                                         ());
+                        snackbar.setAction(R.string.ok_action, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (albumsMode) {
+                                    undoAlbumDeletion(media1);
+                                }
+                                refreshListener.onRefresh();
+                            }
+                        });
                     }else{
-                        SnackBarHandler.showWithBottomMargin(mDrawerLayout, String.valueOf(no) + " " + getString(R.string
+                        Snackbar snackbar = SnackBarHandler.showWithBottomMargin(mDrawerLayout, String.valueOf(no) + " " + getString(R.string
                                         .trashbin_move),
                                 navigationView.getHeight
                                         ());
+                        snackbar.setAction(R.string.ok_action, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (albumsMode) {
+                                    undoAlbumDeletion(media1);
+                                }
+                                refreshListener.onRefresh();
+                            }
+                        });
                     }
                 }else{
                     SnackBarHandler.showWithBottomMargin(mDrawerLayout, String.valueOf(no) + " " + getString(R.string
@@ -3103,13 +3254,18 @@ public class LFMainActivity extends SharedMediaActivity {
                 }
             }
         }
-       // clearSelectedPhotos();
+        // clearSelectedPhotos();
         return succ;
     }
 
     private ArrayList<Media> storeDeletedFilesTemporarily(){
         ArrayList<Media> deletedImages = new ArrayList<>();
-        if(!all_photos && !fav_photos && editMode){
+        if(albumsMode) {
+            selectedAlbumMedia.clear();
+            for (Album selectedAlbum : getAlbums().getSelectedAlbums()) {
+                checkAndAddFolder(new File(selectedAlbum.getPath()), deletedImages);
+            }
+        }else if(!all_photos && !fav_photos && editMode){
             for(Media m: getAlbum().getSelectedMedia()){
                 String name = m.getPath().substring(m.getPath().lastIndexOf("/") + 1);
                 deletedImages.add(new Media(Environment.getExternalStorageDirectory() + "/" + ".nomedia" + "/" + name));
@@ -3137,6 +3293,50 @@ public class LFMainActivity extends SharedMediaActivity {
             trashBinRealmModel.setTimeperiod("null");
             realm.commitTransaction();
         }
+    }
+
+    private void checkAndAddFolder(File dir, ArrayList<Media> deletedImages) {
+        File[] files = dir.listFiles(new ImageFileFilter(false));
+        if (files != null && files.length > 0) {
+            for (File file : files) {
+                selectedAlbumMedia.add(new Media(file.getAbsolutePath()));
+                String name = file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf("/") + 1);
+                Media media = new Media(Environment.getExternalStorageDirectory() + "/" + ".nomedia" + "/" +name );
+                deletedImages.add(media);
+
+            }
+        }
+    }
+
+    private void undoAlbumDeletion(ArrayList<Media> deleteImages) {
+        for (int i = 0; i < deleteImages.size(); i++) {
+            String oldPath = selectedAlbumMedia.get(i).getPath();
+            String oldFolder = oldPath.substring(0, oldPath.lastIndexOf("/"));
+            if (restoreMove(LFMainActivity.this, deleteImages.get(i).getPath(), oldFolder)) {
+                String datafrom = deleteImages.get(i).getPath();
+                scanFile(context, new String[]{ datafrom, StringUtils.getPhotoPathMoved
+                        (datafrom,oldFolder) });
+            }
+        }
+        for (int i = 0; i < deleteImages.size(); i++) {
+            removeFromRealm(deleteImages.get(i).getPath());
+        }
+        refreshListener.onRefresh();
+    }
+
+    private boolean restoreMove(Context context, String source, String targetDir){
+        File from = new File(source);
+        File to = new File(targetDir);
+        return ContentHelper.moveFile(context, from, to);
+    }
+
+    private void removeFromRealm(String path){
+        Realm realm = Realm.getDefaultInstance();
+        RealmResults<TrashBinRealmModel> result = realm.where(TrashBinRealmModel.class).equalTo
+                ("trashbinpath", path).findAll();
+        realm.beginTransaction();
+        result.deleteAllFromRealm();
+        realm.commitTransaction();
     }
 
     private static class SortModeSet extends AsyncTask<SortingMode, Void, Void> {
@@ -3275,6 +3475,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
     /**
      * handles back presses.
+     * If search view is open, back press will close it.
      * If we are currently in selection mode, back press will take us out of selection mode.
      * If we are not in selection mode but in albumsMode and the drawer is open, back press will close it.
      * If we are not in selection mode but in albumsMode and the drawer is closed, finish the activity.
@@ -3283,6 +3484,8 @@ public class LFMainActivity extends SharedMediaActivity {
     @Override
     public void onBackPressed() {
         checkForReveal = true;
+        if (!searchView.isIconified())
+            searchView.setIconified(true);
         if ((editMode && all_photos) || (editMode && fav_photos))
             clearSelectedPhotos();
         getNavigationBar();
@@ -3351,10 +3554,13 @@ public class LFMainActivity extends SharedMediaActivity {
             }
             byte[] bytes = createGIFFromImages(bitmaps);
             File file = new File(Environment.getExternalStorageDirectory() + "/" + "Phimpme_gifs");
+            DateFormat dateFormat = new SimpleDateFormat("ddMMyy_HHmm");
+            String date = dateFormat.format(Calendar.getInstance().getTime());
             if(file.exists() && file.isDirectory()){
                 FileOutputStream outStream = null;
+
                 try{
-                    outStream = new FileOutputStream(file.getPath() + "/" + "GIF.gif");
+                    outStream = new FileOutputStream(file.getPath() + "/" + "GIF_"+date+".gif");
                     outStream.write(bytes);
                     outStream.close();
                 }catch(Exception e){
@@ -3364,7 +3570,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 if (file.mkdir()) {
                     FileOutputStream outStream = null;
                     try {
-                        outStream = new FileOutputStream(file.getPath() + "/" + "GIF.gif");
+                        outStream = new FileOutputStream(file.getPath() + "/" + "GIF_"+date+".gif");
                         outStream.write(bytes);
                         outStream.close();
                     } catch (Exception e) {
@@ -3395,6 +3601,85 @@ public class LFMainActivity extends SharedMediaActivity {
         }
         encoder.finish();
         return bos.toByteArray();
+    }
+
+    private class CreateZipTask extends AsyncTask<Void, Integer, String> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            swipeRefreshLayout.setRefreshing(true);
+            NotificationHandler.make(R.string.Images, R.string.zip_fol, R.drawable.ic_archive_black_24dp);
+        }
+        @Override
+        protected String doInBackground(Void... voids) {
+            DateFormat dateFormat = new SimpleDateFormat("ddMMyy_HHmm");
+            String dateAndTime = dateFormat.format(Calendar.getInstance().getTime());
+            try {
+                double c = 0.0;
+                File file = new File(Environment.getExternalStorageDirectory() + "/" + "Phimpme_ImageZip");
+                FileOutputStream dest = null;
+                if(file.exists() && file.isDirectory()){
+                    try{
+                        dest = new FileOutputStream(file.getPath() + "/" + "ZIP_"+dateAndTime+".zip");
+                    }catch(Exception e){
+                        e.printStackTrace();
+                    }
+                }else {
+                    if (file.mkdir()) {
+                        dest = null;
+                        try {
+                            dest = new FileOutputStream(file.getPath() + "/" + "ZIP_"+dateAndTime+".zip");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                BufferedInputStream origin = null;
+                ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(
+                        dest));
+                byte data[] = new byte[BUFFER];
+                for (int i = 0; i < path.size(); i++) {
+                    FileInputStream fi = new FileInputStream(path.get(i));
+                    origin = new BufferedInputStream(fi, BUFFER);
+                    ZipEntry entry = new ZipEntry(path.get(i).substring(path.get(i).lastIndexOf("/") + 1));
+                    out.putNextEntry(entry);
+                    c++;
+                    if ((int) ((c / size) * 100) > 100) {
+                        NotificationHandler.actionProgress((int) c, path.size(), 100, R.string.zip_operation);
+                    } else {
+                        NotificationHandler.actionProgress((int) c, path.size(), (int) ((c / path.size()) * 100), R.string
+                                .zip_operation);
+                    }
+                    int count;
+                    while ((count = origin.read(data, 0, BUFFER)) != -1) {
+                        out.write(data, 0, count);
+                    }
+                    origin.close();
+                }
+                out.close();
+                if (isCancelled()) {
+                    return null;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return dateAndTime;
+        }
+        @Override
+        protected void onPostExecute(String dateAndTime) {
+            super.onPostExecute(dateAndTime);
+            NotificationHandler.actionPassed(R.string.zip_completion);
+            String path = "ZIP: "+dateAndTime+".zip";
+            SnackBarHandler.show(mDrawerLayout, getResources().getString(R.string.zip_location) +
+                    path);
+            if(!albumsMode && !all_photos && !fav_photos){
+                getAlbum().clearSelectedPhotos();
+            }
+            else if(!albumsMode && all_photos && !fav_photos){
+                clearSelectedPhotos();
+            }
+            swipeRefreshLayout.setRefreshing(false);
+        }
     }
 
     private class ZipAlbumTask extends AsyncTask<Void, Integer, Void> {
@@ -3567,7 +3852,7 @@ public class LFMainActivity extends SharedMediaActivity {
             listAll = StorageProvider.getAllShownImages(asyncActivityRef);
             asyncActivityRef.size = listAll.size();
             Collections.sort(listAll, MediaComparators.getComparator(asyncActivityRef.getAlbum().settings.getSortingMode(),
-                asyncActivityRef.getAlbum().settings.getSortingOrder()));
+                    asyncActivityRef.getAlbum().settings.getSortingOrder()));
             asyncActivityRef.mediaAdapter.swapDataSet(listAll, false);
             if (!asyncActivityRef.hidden)
                 HandlingAlbums.addAlbumToBackup(asyncActivityRef, asyncActivityRef.getAlbum());
@@ -3608,7 +3893,7 @@ public class LFMainActivity extends SharedMediaActivity {
         protected void onPostExecute(Void result) {
             LFMainActivity asyncActivityRef = reference.get();
             Collections.sort(asyncActivityRef.favouriteslist, MediaComparators.getComparator(asyncActivityRef.getAlbum().settings.getSortingMode(),
-                asyncActivityRef.getAlbum().settings.getSortingOrder()));
+                    asyncActivityRef.getAlbum().settings.getSortingOrder()));
             asyncActivityRef.mediaAdapter.swapDataSet(asyncActivityRef.favouriteslist, true);
             asyncActivityRef.checkNothingFavourites();
             asyncActivityRef.swipeRefreshLayout.setRefreshing(false);
@@ -3752,7 +4037,7 @@ public class LFMainActivity extends SharedMediaActivity {
         protected Void doInBackground(Void... aVoid) {
             LFMainActivity asyncActivityRef = reference.get();
             Collections.sort(listAll, MediaComparators.getComparator(asyncActivityRef.getAlbum().settings.getSortingMode(),
-                asyncActivityRef.getAlbum().settings.getSortingOrder()));
+                    asyncActivityRef.getAlbum().settings.getSortingOrder()));
             return null;
         }
 
@@ -3788,7 +4073,7 @@ public class LFMainActivity extends SharedMediaActivity {
         protected Void doInBackground(Void... aVoid) {
             LFMainActivity asyncActivityRef = reference.get();
             Collections.sort(asyncActivityRef.favouriteslist, MediaComparators.getComparator(asyncActivityRef.getAlbum().settings.getSortingMode(),
-                asyncActivityRef.getAlbum().settings.getSortingOrder()));
+                    asyncActivityRef.getAlbum().settings.getSortingOrder()));
             return null;
         }
 
@@ -3890,8 +4175,8 @@ public class LFMainActivity extends SharedMediaActivity {
                 asyncActivityRef.finishEditMode();
                 if (moveAction)
                     SnackBarHandler.showWithBottomMargin(asyncActivityRef.mDrawerLayout,
-                        asyncActivityRef.getString(R.string.photos_moved_successfully),
-                        asyncActivityRef.navigationView.getHeight());
+                            asyncActivityRef.getString(R.string.photos_moved_successfully),
+                            asyncActivityRef.navigationView.getHeight());
                 else if (copyAction){
                     snackbar = SnackBarHandler.showWithBottomMargin2(asyncActivityRef.mDrawerLayout,
                             asyncActivityRef.getString(R.string.copied_successfully),
