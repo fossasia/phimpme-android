@@ -588,8 +588,9 @@ public class LFMainActivity extends SharedMediaActivity {
                 if(editMode) {
                     int currentAlbum = getAlbums().getCurrentAlbumIndex(album);
                     getAlbums().selectAllPhotosUpToAlbums(currentAlbum, albumsAdapter);
+                } else {
+                    albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(album));
                 }
-                albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(album));
                 editMode = true;
                 invalidateOptionsMenu();
                 if (getAlbums().getSelectedCount() == 0)
