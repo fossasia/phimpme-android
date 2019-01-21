@@ -48,7 +48,7 @@ Do you have many different apps on your Android Phone for the purpose of clickin
 
 * Finally, after all this editing you can easily share the image to your favourite social media sites with our easy-to-use sharing feature.
 
-* Facebook, Twitter, NextCloud, OwnCloud, Imgur, Dropbox, Box, Flickr, Pinterest, Instagram, Whatsapp, and Tumblr - You name it and we have it covered.
+* Messenger, Twitter, NextCloud, OwnCloud, Imgur, Dropbox, Box, Flickr, Pinterest, Instagram, Whatsapp, and Tumblr - You name it and we have it covered.
 
 ## How to Contribute
 This is an Open Source project and we would be happy to see contributors who report bugs and file feature requests by submitting pull requests as well.This project adheres to the [Contributor Covenant](https://github.com/fossasia/phimpme-android/blob/development/CONTRIBUTING.md). By participating, you are expected to uphold this code style. Please report issues here https://github.com/fossasia/phimpme-android/issues
@@ -116,12 +116,12 @@ Before you begin, you should have already downloaded the Android Studio SDK and 
 9. If the app was built successfully, you can test it by running it on either a real device or an emulated one by going to *Run > Run 'app'* or pressing the Run icon in the toolbar.
 
 10. **To enable the sharing features to a different account, add API_KEY/ APP_ID associated with accounts**. Add the Keys in `constant.java` and `strings.xml`. Following are the links to developer pages of account. Go there to create apps and get keys.
-    * Facebook: https://developers.facebook.com
+    * Nextcloud: https://docs.nextcloud.com/server/stable/developer_manual/
     * Twitter: https://dev.twitter.com
     * Flickr: https://www.flickr.com/services/developer
     * Pinterest: https://developers.pinterest.com
-    * Tumblr: https://www.tumblr.com/developers
-    * Imgur: https://api.imgur.com
+    * Owncloud: https://doc.owncloud.org/server/10.0/developer_manual/
+    * Imgur: https://apidocs.imgur.com/
     * Box: https://developer.box.com
     * Dropbox: https://www.dropbox.com/developers
 
