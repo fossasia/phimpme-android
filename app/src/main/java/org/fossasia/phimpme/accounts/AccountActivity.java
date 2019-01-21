@@ -1,5 +1,6 @@
 package org.fossasia.phimpme.accounts;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,6 +19,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
 import com.box.androidsdk.content.BoxConfig;
@@ -219,7 +221,26 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         ConnectivityManager cm=(ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo ni = cm.getActiveNetworkInfo();
         if (ni == null) {
-           Snackbar.make(findViewById(android.R.id.content),getString(R.string.internet_is_off),Snackbar.LENGTH_SHORT).show();
+            View rootView = AccountActivity.this.getWindow().getDecorView().findViewById(android.R.id.content);
+            Snackbar snackbar = Snackbar
+                    .make(rootView, R.string.internet_is_off, Snackbar.LENGTH_SHORT)
+                    .setAction("Settings", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent();
+                            intent.setComponent(new ComponentName("com.android.settings","com.android.settings.Settings$DataUsageSummaryActivity"));
+                            startActivity(intent);
+                        }
+                    })
+                    .setActionTextColor(getAccentColor());
+            View sbView = snackbar.getView();
+            final FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) sbView.getLayoutParams();
+            params.setMargins(params.leftMargin,
+                    params.topMargin,
+                    params.rightMargin,
+                    params.bottomMargin + navigationView.getHeight());
+            sbView.setLayoutParams(params);
+            snackbar.show();
         }
         final SwitchCompat signInSignOut = childView.findViewById(R.id.sign_in_sign_out_switch);
         final String name = AccountDatabase.AccountName.values()[position].toString();
