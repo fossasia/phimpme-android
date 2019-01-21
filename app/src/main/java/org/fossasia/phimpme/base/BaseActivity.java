@@ -52,14 +52,14 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
         setContentView(getContentViewId());
         colors[1]  = ContextCompat.getColor(this, R.color.bottom_navigation_tabs);
         ColorStateList myList = new ColorStateList(states, colors);
-        navigationView = (BottomNavigationView) findViewById(R.id.bottombar);
+        navigationView = findViewById(R.id.bottombar);
         navigationView.setItemIconTintList(myList);
         navigationView.setItemTextColor(myList);
         navigationView.setOnNavigationItemSelectedListener(this);
 
-         nav_home = (BottomNavigationItemView) findViewById(R.id.navigation_home);
-         nav_cam = (BottomNavigationItemView) findViewById(R.id.navigation_camera);
-         nav_acc = (BottomNavigationItemView) findViewById(R.id.navigation_accounts);
+         nav_home = findViewById(R.id.navigation_home);
+         nav_cam = findViewById(R.id.navigation_camera);
+         nav_acc = findViewById(R.id.navigation_accounts);
 
         int checkStoragePermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if(checkStoragePermission  == PackageManager.PERMISSION_GRANTED)
