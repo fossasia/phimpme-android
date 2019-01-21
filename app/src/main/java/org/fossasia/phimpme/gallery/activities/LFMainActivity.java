@@ -1878,7 +1878,7 @@ public class LFMainActivity extends SharedMediaActivity {
         getfavouriteslist();
         menu.findItem(R.id.action_copy).setVisible(visible);
         menu.findItem(R.id.action_move).setVisible((visible || editMode) && !fav_photos);
-        menu.findItem(R.id.action_add_favourites).setVisible((visible || editMode) && (!albumsMode && !fav_photos));
+        menu.findItem(R.id.action_add_favourites).setVisible((visible || editMode) && (!albumsMode && !fav_photos && !checkfav(favouriteslist,getAlbum().getSelectedMedia())));
         menu.findItem(R.id.action_remove_favourites).setVisible((visible || editMode) && (!albumsMode && !fav_photos && favouriteslist.size()>0));
         menu.findItem(R.id.excludeAlbumButton).setVisible(editMode && !all_photos && albumsMode && !fav_photos);
         menu.findItem(R.id.zipAlbumButton).setVisible(editMode && !all_photos && albumsMode && !fav_photos && !hidden &&
@@ -1899,8 +1899,7 @@ public class LFMainActivity extends SharedMediaActivity {
         menu.findItem(R.id.set_pin_album).setVisible(albumsMode && getAlbums().getSelectedCount() == 1);
         menu.findItem(R.id.setAsAlbumPreview).setVisible(!albumsMode && !all_photos && getAlbum()
                 .getSelectedCount() == 1);
-        menu.findItem(R.id.affixPhoto).setVisible((!albumsMode && (getAlbum().getSelectedCount() > 1) ||
-                selectedMedias.size() > 1) && !fav_photos);
+        menu.findItem(R.id.affixPhoto).setVisible((!albumsMode && (getAlbum().getSelectedCount() > 1)) && !fav_photos);
         if (albumsMode)
             menu.findItem(R.id.action_move).setVisible(getAlbums().getSelectedCount() == 1);
         return super.onPrepareOptionsMenu(menu);
@@ -1908,7 +1907,23 @@ public class LFMainActivity extends SharedMediaActivity {
 
     private void togglePrimaryToolbarOptions(final Menu menu) {
         menu.setGroupVisible(R.id.general_action, !editMode);
+    }
 
+    private boolean checkfav(ArrayList<Media> favlist,ArrayList<Media> selected) {
+        int check=0;
+        for(Media sm:selected) {
+            check=0;
+            for(Media fm:favlist){
+                if(sm.getPath().equals(fm.getPath())){
+                    check=1;
+                }
+            }if(check==0){
+                return false;
+            }
+        }
+        if(selected.size()==0){
+            return false;
+        } else return true;
     }
 
     //endregion
