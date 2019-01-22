@@ -404,8 +404,8 @@ public class TrashBinActivity extends ThemedActivity {
                             else {
                                 passco[0] = true;
                                 securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
-                                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password),
-                                        navigationView.getHeight());
+//                                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password),
+//                                        navigationView.getHeight());
                                 editTextPassword.getText().clear();
                                 editTextPassword.requestFocus();
                             }
