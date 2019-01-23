@@ -28,6 +28,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.util.Pair;
@@ -1417,7 +1418,7 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
                             }
                         }catch (Exception e)
                         {
-                            Toast.makeText(activity, "Your device does not support any filters", Toast.LENGTH_SHORT).show();
+                            Snackbar.make(activity.findViewById(android.R.id.content), "Your device does not support any filters", Snackbar.LENGTH_SHORT).show();
                             Log.e(TAG, "ColorEffect List Size Is Null " );
                         }
                     }

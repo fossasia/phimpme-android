@@ -47,6 +47,7 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.util.SparseIntArray;
@@ -453,7 +454,7 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
             };
             ImageSaver.setBasicCallBack(basicCallBack);
         }
-        toggle = (IconicsImageView) findViewById(R.id.toggle_button);
+        toggle = findViewById(R.id.toggle_button);
         increaseZoom.setOnClickListener(this);
         decreaseZoom.setOnClickListener(this);
     }
@@ -1497,7 +1498,7 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
     public void showPreview(boolean show) {
         if (MyDebug.LOG)
             Log.d(TAG, "showPreview: " + show);
-        final ViewGroup container = (ViewGroup) findViewById(R.id.hide_container);
+        final ViewGroup container = findViewById(R.id.hide_container);
         container.setBackgroundColor(Color.BLACK);
         container.setAlpha(show ? 0.0f : 1.0f);
     }
@@ -2092,7 +2093,7 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
         {
             if (MyDebug.LOG)
                 Log.d(TAG, "set up manual focus");
-            SeekBar focusSeekBar = (SeekBar) findViewById(R.id.focus_seekbar);
+            SeekBar focusSeekBar = findViewById(R.id.focus_seekbar);
             focusSeekBar.setOnSeekBarChangeListener(null); // clear an existing listener - don't want to call the listener when setting up the progress bar to match the existing state
             setProgressSeekbarScaled(focusSeekBar, 0.0, preview.getMinimumFocusDistance(), preview.getCameraController().getFocusDistance());
             focusSeekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
@@ -2121,7 +2122,7 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
             if (preview.supportsISORange()) {
                 if (MyDebug.LOG)
                     Log.d(TAG, "set up iso");
-                SeekBar iso_seek_bar = ((SeekBar) findViewById(R.id.iso_seekbar));
+                SeekBar iso_seek_bar = (findViewById(R.id.iso_seekbar));
                 iso_seek_bar.setOnSeekBarChangeListener(null); // clear an existing listener - don't want to call the listener when setting up the progress bar to match the existing state
                 setProgressSeekbarExponential(iso_seek_bar, preview.getMinimumISO(), preview.getMaximumISO(), preview.getCameraController().getISO());
                 iso_seek_bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
@@ -2155,7 +2156,7 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
                 if (preview.supportsExposureTime()) {
                     if (MyDebug.LOG)
                         Log.d(TAG, "set up exposure time");
-                    SeekBar exposure_time_seek_bar = ((SeekBar) findViewById(R.id.exposure_time_seekbar));
+                    SeekBar exposure_time_seek_bar = (findViewById(R.id.exposure_time_seekbar));
                     exposure_time_seek_bar.setOnSeekBarChangeListener(null); // clear an existing listener - don't want to call the listener when setting up the progress bar to match the existing state
                     setProgressSeekbarExponential(exposure_time_seek_bar, preview.getMinimumExposureTime(), preview.getMaximumExposureTime(), preview.getCameraController().getExposureTime());
                     exposure_time_seek_bar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
@@ -2196,7 +2197,7 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
         if (preview.getSupportedWhiteBalances() != null && preview.supportsWhiteBalanceTemperature()) {
             if (MyDebug.LOG)
                 Log.d(TAG, "set up manual white balance");
-            SeekBar white_balance_seek_bar = ((SeekBar) findViewById(R.id.white_balance_seekbar));
+            SeekBar white_balance_seek_bar = (findViewById(R.id.white_balance_seekbar));
             white_balance_seek_bar.setOnSeekBarChangeListener(null); // clear an existing listener - don't want to call the listener when setting up the progress bar to match the existing state
             final int minimum_temperature = preview.getMinimumWhiteBalanceTemperature();
             final int maximum_temperature = preview.getMaximumWhiteBalanceTemperature();
@@ -2228,7 +2229,7 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
                 if (MyDebug.LOG)
                     Log.d(TAG, "set up exposure compensation");
                 final int min_exposure = preview.getMinimumExposure();
-                SeekBar exposure_seek_bar = ((SeekBar) findViewById(R.id.exposure_seekbar));
+                SeekBar exposure_seek_bar = (findViewById(R.id.exposure_seekbar));
                 exposure_seek_bar.setOnSeekBarChangeListener(null); // clear an existing listener - don't want to call the listener when setting up the progress bar to match the existing state
                 exposure_seek_bar.setMax(preview.getMaximumExposure() - min_exposure);
                 exposure_seek_bar.setProgress(preview.getCurrentExposure() - min_exposure);
@@ -2760,8 +2761,8 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
             try {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
             } catch (SecurityException e){
-                Toast.makeText(this, "Please open camera in app once to allow permissions"
-                        , Toast.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), "Please open camera in app once to allow permissions"
+                        , Snackbar.LENGTH_SHORT).show();
             }
         }
     }

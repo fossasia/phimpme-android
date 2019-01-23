@@ -49,10 +49,10 @@ public class MatOfRect extends Mat {
         int buff[] = new int[num * _channels];
         for(int i=0; i<num; i++) {
             Rect r = a[i];
-            buff[_channels*i+0] = (int) r.x;
-            buff[_channels*i+1] = (int) r.y;
-            buff[_channels*i+2] = (int) r.width;
-            buff[_channels*i+3] = (int) r.height;
+            buff[_channels*i+0] = r.x;
+            buff[_channels*i+1] = r.y;
+            buff[_channels*i+2] = r.width;
+            buff[_channels*i+3] = r.height;
         }
         put(0, 0, buff); //TODO: check ret val!
     }

@@ -135,77 +135,82 @@ The project is maintained by
 - Mario Behling ([@mariobehling](http://github.com/mariobehling))
 
 ## Developers
-<table>
+<table border="0">
 <tr>
-<td>
+<td width="240">
      <img src="https://avatars2.githubusercontent.com/u/20367966?v=4&s=150" />
-     
+     <div align="center">
      Anant Prasad
-
+</div>
 <p align="center">
-<a href = "https://github.com/anantprsd5"><img src = "http://www.iconninja.com/files/241/825/211/round-collaboration-social-github-code-circle-network-icon.svg" width="36" height = "36"/></a>
-<a href = "https://twitter.com/Anantprasad3"><img src = "https://www.shareicon.net/download/2016/07/06/107115_media.svg" width="36" height="36"/></a>
-<a href = "https://www.linkedin.com/in/anant-prasad-82b7a2119/"><img src = "http://www.iconninja.com/files/863/607/751/network-linkedin-social-connection-circular-circle-media-icon.svg" width="36" height="36"/></a>
+<a href = "https://github.com/anantprsd5"><img src = "./docs/images/round-collaboration-social-github-code-circle-network-icon.svg" width="36" height = "36"/></a>
+<a href = "https://twitter.com/Anantprasad3"><img src = "./docs/images/media.svg" width="36" height="36"/></a>
+<a href = "https://www.linkedin.com/in/anant-prasad-82b7a2119/"><img src = "./docs/images/network-linkedin-social-connection-circular-circle-media-icon.svg" width="36" height="36"/></a>
 </p>
 </td>
 
-<td>
+<td width="240">
      <img src="https://avatars0.githubusercontent.com/u/9361754?v=4&s=150"/>
-     
-     Mohit Manuja
-
+        <div align="center">
+    Mohit Manuja
+</div>
 <p align="center">
-<a href = "https://github.com/mohitmanuja"><img src = "http://www.iconninja.com/files/241/825/211/round-collaboration-social-github-code-circle-network-icon.svg" width="36" height = "36"/></a>
-<a href = "https://twitter.com/manuja_mohit"><img src = "https://www.shareicon.net/download/2016/07/06/107115_media.svg" width="36" height="36"/></a>
-<a href = "https://www.linkedin.com/in/mohitmanuja/"><img src = "http://www.iconninja.com/files/863/607/751/network-linkedin-social-connection-circular-circle-media-icon.svg" width="36" height="36"/></a>
+<a href = "https://github.com/mohitmanuja"><img src = "./docs/images/round-collaboration-social-github-code-circle-network-icon.svg" width="36" height = "36"/></a>
+<a href = "https://twitter.com/manuja_mohit"><img src = "./docs/images/media.svg" width="36" height="36"/></a>
+<a href = "https://www.linkedin.com/in/mohitmanuja/"><img src = "./docs/images/network-linkedin-social-connection-circular-circle-media-icon.svg" width="36" height="36"/></a>
 </p>
 </td>
 
-<td>
+<td width="240">
      <img src="https://avatars1.githubusercontent.com/u/6936968?v=4&s=150" />
-     
+     <div align="center">
      Pawan Pal
-
+</div>
 <p align="center">
-<a href = "https://github.com/pa1pal"><img src = "http://www.iconninja.com/files/241/825/211/round-collaboration-social-github-code-circle-network-icon.svg" width="36" height = "36"/></a>
-<a href = "https://twitter.com/pa1pal"><img src = "https://www.shareicon.net/download/2016/07/06/107115_media.svg" width="36" height="36"/></a>
-<a href = "https://www.linkedin.com/in/pa1pal/"><img src = "http://www.iconninja.com/files/863/607/751/network-linkedin-social-connection-circular-circle-media-icon.svg" width="36" height="36"/></a>
+<a href = "https://github.com/pa1pal"><img src = "./docs/images/round-collaboration-social-github-code-circle-network-icon.svg" width="36" height = "36"/></a>
+<a href = "https://twitter.com/pa1pal"><img src = "./docs/images/media.svg" width="36" height="36"/></a>
+<a href = "https://www.linkedin.com/in/pa1pal/"><img src = "./docs/images/network-linkedin-social-connection-circular-circle-media-icon.svg" width="36" height="36"/></a>
 </p>
 </td>
 
-<td>
+<td width="240">
      <img src="https://avatars0.githubusercontent.com/u/17337006?v=4&s=150"/>
-     
-     Subhankar Shah
+     <div align="center">
+    Subhankar Shah
+</div>
 
 <p align="center">
-<a href = "https://github.com/Subhankar29"><img src = "http://www.iconninja.com/files/241/825/211/round-collaboration-social-github-code-circle-network-icon.svg" width="36" height = "36"/></a>
-<a href = "https://twitter.com/sole_subhankar"><img src = "https://www.shareicon.net/download/2016/07/06/107115_media.svg" width="36" height="36"/></a>
-<a href = "https://www.linkedin.com/in/subhankar-shah-12245b130/"><img src = "http://www.iconninja.com/files/863/607/751/network-linkedin-social-connection-circular-circle-media-icon.svg" width="36" height="36"/></a>
+<a href = "https://github.com/Subhankar29"><img src = "./docs/images/round-collaboration-social-github-code-circle-network-icon.svg" width="36" height = "36"/></a>
+<a href = "https://twitter.com/sole_subhankar"><img src = "./docs/images/media.svg" width="36" height="36"/></a>
+<a href = "https://www.linkedin.com/in/subhankar-shah-12245b130/"><img src = "./docs/images/network-linkedin-social-connection-circular-circle-media-icon.svg" width="36" height="36"/></a>
 </p>
 </td>
+</tr>
 
-<td>
+<tr>
+<td width="240">
      <img src="https://avatars2.githubusercontent.com/u/15368561?v=4&s=150"/>
-     
-     Vinay Sajjanapu
+     <div align="center">
+    Vinay Sajjanapu
+</div>
 <p align="center">
-<a href = "https://github.com/vinaysajjanapu"><img src = "http://www.iconninja.com/files/241/825/211/round-collaboration-social-github-code-circle-network-icon.svg" width="36" height = "36"/></a>
-<a href = "https://twitter.com/sajjanapu_vinay"><img src = "https://www.shareicon.net/download/2016/07/06/107115_media.svg" width="36" height="36"/></a>
-<a href = "https://www.linkedin.com/in/vinay-sajjanapu-a315ab21/"><img src = "http://www.iconninja.com/files/863/607/751/network-linkedin-social-connection-circular-circle-media-icon.svg" width="36" height="36"/></a>
+<a href = "https://github.com/vinaysajjanapu"><img src = "./docs/images/round-collaboration-social-github-code-circle-network-icon.svg" width="36" height = "36"/></a>
+<a href = "https://twitter.com/sajjanapu_vinay"><img src = "./docs/images/media.svg" width="36" height="36"/></a>
+<a href = "https://www.linkedin.com/in/vinay-sajjanapu-a315ab21/"><img src = "./docs/images/network-linkedin-social-connection-circular-circle-media-icon.svg" width="36" height="36"/></a>
 </p>
 </td>
 
-<td>
-     <img src="https://avatars1.githubusercontent.com/u/20841578?s=400&u=ccf2c85bac58c92f69c4c69ce2c46dcee4564e23&v=4"/>
-     
-     Saurav Vishal
+<td width="240">
+     <img src="https://avatars1.githubusercontent.com/u/20841578?s=150&u=ccf2c85bac58c92f69c4c69ce2c46dcee4564e23&v=4"/>
+     <div align="center">
+    Saurav Vishal
+</div>
 
 <p align="center">
-<a href = "https://github.com/sauravvishal8797"><img src = "http://www.iconninja.com/files/241/825/211/round-collaboration-social-github-code-circle-network-icon.svg" width="36" height = "36"/></a>
-<a href = "https://twitter.com/vishal_saurav99"><img src = "https://www.shareicon.net/download/2016/07/06/107115_media.svg" width="36" height="36"/></a>
-<a href = "https://www.linkedin.com/in/saurav-vishal-517aab144/"><img src = "http://www.iconninja.com/files/863/607/751/network-linkedin-social-connection-circular-circle-media-icon.svg" width="36" height="36"/></a>
+<a href = "https://github.com/sauravvishal8797"><img src = "./docs/images/round-collaboration-social-github-code-circle-network-icon.svg" width="36" height = "36"/></a>
+<a href = "https://twitter.com/vishal_saurav99"><img src = "./docs/images/media.svg" width="36" height="36"/></a>
+<a href = "https://www.linkedin.com/in/saurav-vishal-517aab144/"><img src = "./docs/images/network-linkedin-social-connection-circular-circle-media-icon.svg" width="36" height="36"/></a>
 </p>
 </td>
-</tr> 
-  </table>
+</tr>
+</table>

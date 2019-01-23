@@ -172,7 +172,7 @@ public class FaceRecognizer extends Algorithm {
         double[] confidence_out = new double[1];
         predict_0(nativeObj, src.nativeObj, label_out, confidence_out);
         if(label!=null) label[0] = (int)label_out[0];
-        if(confidence!=null) confidence[0] = (double)confidence_out[0];
+        if(confidence!=null) confidence[0] = confidence_out[0];
         return;
     }
 

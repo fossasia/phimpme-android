@@ -50,6 +50,10 @@ public class MediaAdapter extends RecyclerView.Adapter<MediaAdapter.ViewHolder> 
         placeholder = (BitmapDrawable) drawable;
     }
 
+    public ArrayList<Media> getList() {
+        return medias;
+    }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_photo, parent, false);
