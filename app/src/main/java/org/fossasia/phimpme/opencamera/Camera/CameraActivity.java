@@ -94,7 +94,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
 import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 /**
@@ -174,8 +173,9 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
             debug_time = System.currentTimeMillis();
         }
         super.onCreate(savedInstanceState);
+        hideNavigationBar();
         ButterKnife.bind(this);
-        overridePendingTransition(R.anim.right_to_left,
+        overridePendingTransition(R.anim.left_to_right,
                 R.anim.left_to_right);ButterKnife.bind(this);
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false); // initialise any unset preferences to their default values
         if (MyDebug.LOG)

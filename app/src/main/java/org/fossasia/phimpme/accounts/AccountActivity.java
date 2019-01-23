@@ -32,6 +32,7 @@ import com.pinterest.android.pdk.PDKException;
 import com.pinterest.android.pdk.PDKResponse;
 import com.twitter.sdk.android.core.identity.TwitterAuthClient;
 
+import org.fossasia.phimpme.OnSwipeTouchListener;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.PhimpmeProgressBarHandler;
 import org.fossasia.phimpme.base.RecyclerItemClickListner;
@@ -142,6 +143,15 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         setDebugMode(true);
         //  googleApiClient();
         configureBoxClient();
+
+        accountsRecyclerView.setOnTouchListener(new OnSwipeTouchListener(this){
+            @Override
+            public void onSwipeRight() {
+                Log.i("tag","Opening Main");
+                startActivity(new Intent(AccountActivity.this,LFMainActivity.class));
+                finish();
+            }
+        });
     }
 
 
@@ -587,7 +597,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         startActivity(intent);
         finish();
         overridePendingTransition(R.anim.left_to_right,
-                R.anim.right_to_left);
+                R.anim.left_to_right);
     }
 
     private void boxAuthentication() {

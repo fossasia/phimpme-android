@@ -47,6 +47,7 @@ import android.widget.Toast;
 
 
 import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.gallery.activities.LFMainActivity;
 import org.fossasia.phimpme.opencamera.Camera.CameraActivity;
 import org.fossasia.phimpme.opencamera.Camera.MyDebug;
 import org.fossasia.phimpme.opencamera.Camera.TakePhoto;
@@ -500,6 +501,16 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 				Log.d(TAG, "tol: " + tol);
 			}
 			if( dist2 > tol*tol ) {
+
+			    if(x>touch_orig_x){
+                    Log.d(TAG, "left");
+
+                }else{
+                    Log.d(TAG, "right");
+                    ((Activity)this.getContext()).startActivity(new Intent(((Activity)this.getContext()),LFMainActivity.class));
+                    ((Activity) this.getContext()).finish();
+
+                }
 				if( MyDebug.LOG )
 					Log.d(TAG, "touch was a swipe");
 				return true;

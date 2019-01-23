@@ -28,6 +28,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -57,6 +58,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
@@ -66,17 +68,21 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.bumptech.glide.gifencoder.AnimatedGifEncoder;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 
+import org.fossasia.phimpme.OnSwipeTouchListener;
 import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.accounts.AccountActivity;
 import org.fossasia.phimpme.base.SharedMediaActivity;
 import org.fossasia.phimpme.data.local.FavouriteImagesModel;
 import org.fossasia.phimpme.data.local.ImageDescModel;
@@ -104,6 +110,7 @@ import org.fossasia.phimpme.gallery.util.SecurityHelper;
 import org.fossasia.phimpme.gallery.util.StringUtils;
 import org.fossasia.phimpme.gallery.views.CustomScrollBarRecyclerView;
 import org.fossasia.phimpme.gallery.views.GridSpacingItemDecoration;
+import org.fossasia.phimpme.opencamera.Camera.CameraActivity;
 import org.fossasia.phimpme.trashbin.TrashBinActivity;
 import org.fossasia.phimpme.uploadhistory.UploadHistory;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
@@ -251,7 +258,8 @@ public class LFMainActivity extends SharedMediaActivity {
     protected TextView hiddenText;
     @BindView(R.id.star_image_view)
     protected ImageView starImageView;
-
+    @BindView(R.id.rlayout)
+    protected RelativeLayout rlayout;
     /*
     editMode-  When true, user can select items by clicking on them one by one
      */
@@ -751,12 +759,13 @@ public class LFMainActivity extends SharedMediaActivity {
         super.onCreate(savedInstanceState);
         Log.e("TAG", "lfmain");
         ButterKnife.bind(this);
-
         navigationView = (BottomNavigationView) findViewById(R.id.bottombar);
         favicon = (IconicsImageView) findViewById(R.id.Drawer_favourite_Icon);
 
         rvAlbums = (CustomScrollBarRecyclerView) findViewById(R.id.grid_albums);
         rvMedia  = (CustomScrollBarRecyclerView) findViewById(R.id.grid_photos);
+
+
 
         overridePendingTransition(R.anim.right_to_left,
                 R.anim.left_to_right);
@@ -1077,10 +1086,12 @@ public class LFMainActivity extends SharedMediaActivity {
         });
 
         //set touch listener on recycler view
-        rvAlbums.setOnTouchListener(new View.OnTouchListener() {
+       rvAlbums.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 mScaleGestureDetector.onTouchEvent(event);
+                //rlayout.dispatchTouchEvent(event);
+                //swipeRefreshLayout.dispatchTouchEvent(event);
                 return false;
             }
         });
@@ -1089,9 +1100,38 @@ public class LFMainActivity extends SharedMediaActivity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 mScaleGestureDetector.onTouchEvent(event);
+                //swipeRefreshLayout.dispatchTouchEvent(event);
+               //rlayout.dispatchTouchEvent(event);
                 return false;
             }
         });
+
+        rlayout.setOnTouchListener(new OnSwipeTouchListener(this){
+
+            @Override
+            public void onSwipeRight() {
+                //Toast.makeText(LFMainActivity.this,"Camera Opening",Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(LFMainActivity.this, CameraActivity.class));
+                finish();
+
+            }
+
+            @Override
+            public void onSwipeLeft() {
+                //Toast.makeText(LFMainActivity.this,"Accounts",Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(LFMainActivity.this, AccountActivity.class));
+                finish();
+            }
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                swipeRefreshLayout.dispatchTouchEvent(event);
+
+
+                return super.onTouch(v, event);
+            }
+        });
+
 
         mediaAdapter = new MediaAdapter(getAlbum().getMedia(), LFMainActivity.this);
 
@@ -4136,4 +4176,5 @@ public class LFMainActivity extends SharedMediaActivity {
                 asyncActivityRef.requestSdCardPermissions();
         }
     }
+
 }

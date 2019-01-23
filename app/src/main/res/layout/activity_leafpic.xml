@@ -96,6 +96,12 @@
 
                     </RelativeLayout>
                 </android.support.v4.widget.SwipeRefreshLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/rlayout">
+
+                </RelativeLayout>
             </FrameLayout>
         </android.support.v4.widget.NestedScrollView>
 
