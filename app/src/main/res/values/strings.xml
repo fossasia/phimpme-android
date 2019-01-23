@@ -752,9 +752,9 @@
     <string name="remember_password_message">Note: password changed, if you forget it you will have to clear application
         data.
     </string>
-<string name="password_changed">Password changed</string>
+    <string name="password_changed">Password changed</string>
     <string name="apply_password_on">Use password for</string>
-<string name="password_set">Password set</string>
+    <string name="password_set">Password set</string>
     <string name="choose_folders">Choose folders to secure</string>
     <string name="no_password_set">No password set</string>
     <string name="fingerprint">Fingerprint</string>
@@ -766,7 +766,7 @@
 
     <!-- SETTINGS -->
     <string name="settings">Settings</string>
-<string name="undo">Undo</string>
+    <string name="undo">Undo</string>
     <string name="general">General</string>
     <string name="auto_update_media">Auto update media</string>
     <string name="auto_update_media_sub">You should disable if there are a large number of images.</string>

@@ -1081,9 +1081,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                                 //deleteMedia(favouriteslist.get(current_image_pos).getPath());
                                 item.getIcon().clearColorFilter();
                                 deletefav(getAlbum().getCurrentMedia().getPath());
-                            } else{}
-//                                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), bottomBar.getHeight());
-
+                            }else{
+                                //do nothing
+                            }
                         }
                     });
                     editTextPassword.addTextChangedListener(new TextWatcher() {
@@ -1130,7 +1130,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                             } else {
                                 passco[0] = true;
                                 securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
-//                                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), bottomBar.getHeight());
                                 editTextPassword.getText().clear();
                                 editTextPassword.requestFocus();
                             }
@@ -1797,9 +1796,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         public void onClick(DialogInterface dialog, int which) {
                             if (securityObj.checkPassword(editTextPassword.getText().toString())) {
                                 deleteCurrentMedia();
-                            } else{}
-//                                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), bottomBar.getHeight());
-
+                            } else{
+                                //do nothing
+                            }
                         }
                     });
                     editTextPassword.addTextChangedListener(new TextWatcher() {

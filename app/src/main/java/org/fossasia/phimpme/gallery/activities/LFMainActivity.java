@@ -583,9 +583,6 @@ public class LFMainActivity extends SharedMediaActivity {
                                     else {
                                         passco[0] = true;
                                         securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
-//                                        SnackBarHandler
-//                                                .showWithBottomMargin(mDrawerLayout, getString(R.string.wrong_password),
-//                                                        navigationView.getHeight());
                                         editTextPassword.getText().clear();
                                         editTextPassword.requestFocus();
                                     }
@@ -709,9 +706,6 @@ public class LFMainActivity extends SharedMediaActivity {
                                     else {
                                         passco[0] =true;
                                         securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
-//                                        SnackBarHandler
-//                                                .showWithBottomMargin(mDrawerLayout, getString(R.string.wrong_password),
-//                                                        navigationView.getHeight());
                                         editTextPassword.getText().clear();
                                         editTextPassword.requestFocus();
                                     }
@@ -1504,7 +1498,6 @@ public class LFMainActivity extends SharedMediaActivity {
                             } else {
                                 passco[0] = true;
                                 securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
-//                                SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.wrong_password), 0);
                                 editTextPassword.getText().clear();
                                 editTextPassword.requestFocus();
                             }
@@ -2330,7 +2323,6 @@ public class LFMainActivity extends SharedMediaActivity {
                                     else {
                                         passco[0] = true;
                                         securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
-//                                        SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.wrong_password), navigationView.getHeight());
                                         editTextPassword.getText().clear();
                                         editTextPassword.requestFocus();
                                     }
