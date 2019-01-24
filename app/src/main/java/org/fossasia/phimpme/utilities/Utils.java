@@ -18,6 +18,8 @@ import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.AccountDatabase;
@@ -167,7 +169,7 @@ public class Utils {
         if (isInternetOn(context)) {
             return true;
         } else
-            SnackBarHandler.show(view,context.getString(R.string.not_connected));
+            Toast.makeText(context,R.string.not_connected,Toast.LENGTH_SHORT).show();
         return false;
     }
     public static void promptSpeechInput(Activity activity, int requestCode, View parentView, String promtMsg) {
