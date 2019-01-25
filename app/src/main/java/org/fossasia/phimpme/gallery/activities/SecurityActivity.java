@@ -110,6 +110,18 @@ public class SecurityActivity extends ThemedActivity {
         llbody.setEnabled(swActiveSecurity.isChecked());
 
         /** - ACTIVE SECURITY ON HIDDEN FOLDER - **/
+        LinearLayout swHiddenFolder = findViewById(R.id.ll_security_body_apply_hidden);
+        swHiddenFolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean no = swApplySecurityHidden.isChecked();
+                if(no && swActiveSecurity.isChecked()){
+                    swApplySecurityHidden.setChecked(false);
+                }else if(swActiveSecurity.isChecked()) {
+                    swApplySecurityHidden.setChecked(true);
+                }
+            }
+        });
         swApplySecurityHidden.setChecked(securityObj.isPasswordOnHidden());
         swApplySecurityHidden.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -122,6 +134,18 @@ public class SecurityActivity extends ThemedActivity {
         updateSwitchColor(swApplySecurityHidden, getAccentColor());
 
         /**ACTIVE SECURITY ON LOCAL FOLDERS**/
+        LinearLayout swLocalFolders = findViewById(R.id.ll_security_body_apply_security_local_folders);
+        swLocalFolders.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean no = swApplySecurityFolder.isChecked();
+                if(no && swActiveSecurity.isChecked()){
+                    swApplySecurityFolder.setChecked(false);
+                }else if(swActiveSecurity.isChecked()){
+                    swApplySecurityFolder.setChecked(true);
+                }
+            }
+        });
         swApplySecurityFolder.setChecked(securityObj.isPasswordOnfolder());
         swApplySecurityFolder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -216,6 +240,18 @@ public class SecurityActivity extends ThemedActivity {
         });
 
         /**ACTIVE SECURITY ON DELETE ACTION**/
+        LinearLayout swDeleteAction = findViewById(R.id.ll_security_body_apply_delete);
+        swDeleteAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean no = swApplySecurityDelete.isChecked();
+                if(no && swActiveSecurity.isChecked()){
+                    swApplySecurityDelete.setChecked(false);
+                }else if (swActiveSecurity.isChecked()){
+                    swApplySecurityDelete.setChecked(true);
+                }
+            }
+        });
         swApplySecurityDelete.setChecked(securityObj.isPasswordOnDelete());
         swApplySecurityDelete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

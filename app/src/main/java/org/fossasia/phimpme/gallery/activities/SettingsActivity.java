@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
@@ -206,6 +207,18 @@ public class SettingsActivity extends ThemedActivity {
 
         /*** SW AUTO UPDATE MEDIA ***/
         swAutoUpdate = findViewById(R.id.SetAutoUpdateMedia);
+        LinearLayout autoUpdateMedia = findViewById(R.id.ll_auto_update_media);
+        autoUpdateMedia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean on = swAutoUpdate.isChecked();
+                if(on){
+                    swAutoUpdate.setChecked(false);
+                }else {
+                    swAutoUpdate.setChecked(true);
+                }
+            }
+        });
         swAutoUpdate.setChecked(SP.getBoolean(getString(R.string.preference_auto_update_media), false));
         swAutoUpdate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -228,6 +241,18 @@ public class SettingsActivity extends ThemedActivity {
 
         /*** SW PICTURE ORIENTATION ***/
         swPictureOrientation = findViewById(R.id.set_picture_orientation);
+        LinearLayout pictureOrientation = findViewById(R.id.ll_switch_picture_orientation);
+        pictureOrientation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean no = swPictureOrientation.isChecked();
+                if(no){
+                    swPictureOrientation.setChecked(false);
+                }else {
+                    swPictureOrientation.setChecked(true);
+                }
+            }
+        });
         swPictureOrientation.setChecked(SP.getBoolean(getString(R.string.preference_auto_rotate), false));
         swPictureOrientation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -239,6 +264,18 @@ public class SettingsActivity extends ThemedActivity {
 
         /*** SW MAX LUMINOSITY ***/
         swMaxLuminosity = findViewById(R.id.set_max_luminosity);
+        LinearLayout maxLuminosity = findViewById(R.id.ll_switch_max_luminosity);
+        maxLuminosity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean no = swMaxLuminosity.isChecked();
+                if(no){
+                    swMaxLuminosity.setChecked(false);
+                }else{
+                    swMaxLuminosity.setChecked(true);
+                }
+            }
+        });
         swMaxLuminosity.setChecked(SP.getBoolean(getString(R.string.preference_max_brightness), false));
         swMaxLuminosity.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -251,6 +288,18 @@ public class SettingsActivity extends ThemedActivity {
 
         /*** SW TRANSLUCENT STATUS BAR ***/
         swStatusBar = findViewById(R.id.SetTraslucentStatusBar);
+        LinearLayout statusBar = findViewById(R.id.ll_switch_TraslucentStatusBar);
+        statusBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean no = swStatusBar.isChecked();
+                if(no){
+                    swStatusBar.setChecked(false);
+                }else{
+                    swStatusBar.setChecked(true);
+                }
+            }
+        });
         swStatusBar.setChecked(SP.getBoolean(getString(R.string.preference_translucent_status_bar), true));
         swStatusBar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -265,6 +314,18 @@ public class SettingsActivity extends ThemedActivity {
 
         /*** SW COLORED NAV BAR ***/
         swNavBar = findViewById(R.id.SetColoredNavBar);
+        LinearLayout colornavBar = findViewById(R.id.ll_switch_ColoredNavBar);
+        colornavBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean no = swNavBar.isChecked();
+                if(no){
+                    swNavBar.setChecked(false);
+                }else {
+                    swNavBar.setChecked(true);
+                }
+            }
+        });
         swNavBar.setChecked(SP.getBoolean(getString(R.string.preference_colored_nav_bar), true));
         swNavBar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
