@@ -225,7 +225,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         context = this;
         setContentView(R.layout.activity_pager);
         ButterKnife.bind(this);
-        relativeLayout = (RelativeLayout) findViewById(R.id.PhotoPager_Layout);
+        relativeLayout = findViewById(R.id.PhotoPager_Layout);
         DisplayMetrics metrics = getResources().getDisplayMetrics();
         imageWidth = metrics.widthPixels;
         imageHeight = metrics.heightPixels;
@@ -547,7 +547,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private void setupUI() {
 
         /**** Theme ****/
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         toolbar.setBackgroundColor(
                 isApplyThemeOnImgAct()
                         ? ColorPalette.getTransparentColor(getPrimaryColor(), getTransparency())
@@ -555,7 +555,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
         toolbar.setPopupTheme(getPopupToolbarStyle());
 
-        ActivityBackground = (RelativeLayout) findViewById(R.id.PhotoPager_Layout);
+        ActivityBackground = findViewById(R.id.PhotoPager_Layout);
         ActivityBackground.setBackgroundColor(getBackgroundColor());
 
         setStatusBarColor();
@@ -1625,10 +1625,10 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     public EditText getDescriptionDialog(final ThemedActivity activity, AlertDialog.Builder descriptionDialog) {
 
         final View DescriptiondDialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_description, null);
-        final TextView DescriptionDialogTitle = (TextView) DescriptiondDialogLayout.findViewById(R.id.description_dialog_title);
-        final CardView DescriptionDialogCard = (CardView) DescriptiondDialogLayout.findViewById(R.id.description_dialog_card);
-        EditText editxtDescription = (EditText) DescriptiondDialogLayout.findViewById(R.id.description_edittxt);
-        ImageButton VoiceRecognition = (ImageButton) DescriptiondDialogLayout.findViewById(R.id.voice_input);
+        final TextView DescriptionDialogTitle = DescriptiondDialogLayout.findViewById(R.id.description_dialog_title);
+        final CardView DescriptionDialogCard = DescriptiondDialogLayout.findViewById(R.id.description_dialog_card);
+        EditText editxtDescription = DescriptiondDialogLayout.findViewById(R.id.description_edittxt);
+        ImageButton VoiceRecognition = DescriptiondDialogLayout.findViewById(R.id.voice_input);
         VoiceRecognition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1869,7 +1869,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             media = new Media(new File(uploadhistory.get(current_image_pos).getPath()));
         }
         final MediaDetailsMap<String, String> mediaDetailsMap = media.getMainDetails(this);
-        LinearLayout linearLayout1 = (LinearLayout) findViewById(R.id.image_desc_top);
+        LinearLayout linearLayout1 = findViewById(R.id.image_desc_top);
         linearLayout1.setBackgroundColor(getPrimaryColor());
         v.setBackgroundColor(getBackgroundColor());
         int textColor = getBaseTheme() != ThemeHelper.LIGHT_THEME ? Color.parseColor("#FAFAFA") : Color
@@ -1877,33 +1877,33 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
         /* Getting all the viewgroups and views of the image description layout */
 
-        TextView imgDate = (TextView) linearLayout.findViewById(R.id.image_desc_date);
+        TextView imgDate = linearLayout.findViewById(R.id.image_desc_date);
         imgDate.setTextColor(textColor);
-        TextView imgLocation = (TextView) linearLayout.findViewById(R.id.image_desc_loc);
+        TextView imgLocation = linearLayout.findViewById(R.id.image_desc_loc);
         imgLocation.setTextColor(textColor);
-        TextView imgTitle = (TextView) linearLayout.findViewById(R.id.image_desc_title);
+        TextView imgTitle = linearLayout.findViewById(R.id.image_desc_title);
         imgTitle.setTextColor(textColor);
-        TextView imgType = (TextView) linearLayout.findViewById(R.id.image_desc_type);
+        TextView imgType = linearLayout.findViewById(R.id.image_desc_type);
         imgType.setTextColor(textColor);
-        TextView imgSize = (TextView) linearLayout.findViewById(R.id.image_desc_size);
+        TextView imgSize = linearLayout.findViewById(R.id.image_desc_size);
         imgSize.setTextColor(textColor);
-        TextView imgResolution = (TextView) linearLayout.findViewById(R.id.image_desc_res);
+        TextView imgResolution = linearLayout.findViewById(R.id.image_desc_res);
         imgResolution.setTextColor(textColor);
-        TextView imgPath = (TextView) linearLayout.findViewById(R.id.image_desc_path);
+        TextView imgPath = linearLayout.findViewById(R.id.image_desc_path);
         imgPath.setTextColor(textColor);
-        TextView imgOrientation = (TextView) linearLayout.findViewById(R.id.image_desc_orientation);
+        TextView imgOrientation = linearLayout.findViewById(R.id.image_desc_orientation);
         imgOrientation.setTextColor(textColor);
-        TextView imgExif = (TextView) linearLayout.findViewById(R.id.image_desc_exif);
+        TextView imgExif = linearLayout.findViewById(R.id.image_desc_exif);
         imgExif.setTextColor(textColor);
-        TextView imgDesc = (TextView) linearLayout.findViewById(R.id.image_desc);
+        TextView imgDesc = linearLayout.findViewById(R.id.image_desc);
         imgDesc.setTextColor(textColor);
-        IconicsImageView iconicsImageView = (IconicsImageView) linearLayout.findViewById(R.id.date_icon);
+        IconicsImageView iconicsImageView = linearLayout.findViewById(R.id.date_icon);
         iconicsImageView.setColor(textColor);
-        IconicsImageView locationicon = (IconicsImageView) linearLayout.findViewById(R.id.loca_icon);
+        IconicsImageView locationicon = linearLayout.findViewById(R.id.loca_icon);
         locationicon.setColor(textColor);
-        IconicsImageView detailsicon = (IconicsImageView) linearLayout.findViewById(R.id.detail_icon);
+        IconicsImageView detailsicon = linearLayout.findViewById(R.id.detail_icon);
         detailsicon.setColor(textColor);
-        ImageButton imgBack = (ImageButton) linearLayout.findViewById(R.id.img_desc_back_arrow);
+        ImageButton imgBack = linearLayout.findViewById(R.id.img_desc_back_arrow);
 
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1915,27 +1915,27 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         });
 
         /*Setting the label text colours*/
-        TextView datelabel = (TextView) linearLayout.findViewById(R.id.date_label);
+        TextView datelabel = linearLayout.findViewById(R.id.date_label);
         datelabel.setTextColor(textColor);
-        TextView locationlabel = (TextView) linearLayout.findViewById(R.id.location_label);
+        TextView locationlabel = linearLayout.findViewById(R.id.location_label);
         locationlabel.setTextColor(textColor);
-        TextView detaillabel = (TextView) linearLayout.findViewById(R.id.details_label);
+        TextView detaillabel = linearLayout.findViewById(R.id.details_label);
         detaillabel.setTextColor(textColor);
-        TextView titlelabel = (TextView) linearLayout.findViewById(R.id.title_label);
+        TextView titlelabel = linearLayout.findViewById(R.id.title_label);
         titlelabel.setTextColor(textColor);
-        TextView typelabel = (TextView) linearLayout.findViewById(R.id.type_label);
+        TextView typelabel = linearLayout.findViewById(R.id.type_label);
         typelabel.setTextColor(textColor);
-        TextView sizelabel = (TextView) linearLayout.findViewById(R.id.size_label);
+        TextView sizelabel = linearLayout.findViewById(R.id.size_label);
         sizelabel.setTextColor(textColor);
-        TextView reslabel = (TextView) linearLayout.findViewById(R.id.resolution_label);
+        TextView reslabel = linearLayout.findViewById(R.id.resolution_label);
         reslabel.setTextColor(textColor);
-        TextView pathlabel = (TextView) linearLayout.findViewById(R.id.path_label);
+        TextView pathlabel = linearLayout.findViewById(R.id.path_label);
         pathlabel.setTextColor(textColor);
-        TextView orientationlabel = (TextView) linearLayout.findViewById(R.id.orientation_label);
+        TextView orientationlabel = linearLayout.findViewById(R.id.orientation_label);
         orientationlabel.setTextColor(textColor);
-        TextView exiflabel = (TextView) linearLayout.findViewById(R.id.exif_label);
+        TextView exiflabel = linearLayout.findViewById(R.id.exif_label);
         exiflabel.setTextColor(textColor);
-        TextView desclabel = (TextView) linearLayout.findViewById(R.id.description_label);
+        TextView desclabel = linearLayout.findViewById(R.id.description_label);
         desclabel.setTextColor(textColor);
 
         /*Setting the values to all the textViews*/
@@ -2043,9 +2043,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
         final AlertDialog.Builder slideshowDialog = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
         final View SlideshowDialogLayout = getLayoutInflater().inflate(R.layout.dialog_slideshow, null);
-        final TextView slideshowDialogTitle = (TextView) SlideshowDialogLayout.findViewById(R.id.slideshow_dialog_title);
-        final CardView slideshowDialogCard = (CardView) SlideshowDialogLayout.findViewById(R.id.slideshow_dialog_card);
-        final EditText editTextTimeInterval = (EditText) SlideshowDialogLayout.findViewById(R.id.slideshow_edittext);
+        final TextView slideshowDialogTitle = SlideshowDialogLayout.findViewById(R.id.slideshow_dialog_title);
+        final CardView slideshowDialogCard = SlideshowDialogLayout.findViewById(R.id.slideshow_dialog_card);
+        final EditText editTextTimeInterval = SlideshowDialogLayout.findViewById(R.id.slideshow_edittext);
 
         slideshowDialogTitle.setBackgroundColor(getPrimaryColor());
         slideshowDialogCard.setBackgroundColor(getCardBackgroundColor());
@@ -2092,6 +2092,20 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                                 editTextTimeInterval.setError(getString(R.string.slide_max_value));
                             }
                         }
+            public void onClick(DialogInterface dialog, int which) {
+                String value = editTextTimeInterval.getText().toString();
+                if (!"".equals(value)) {
+                    slideshow = true;
+                    int intValue = Integer.parseInt(value);
+                    SLIDE_SHOW_INTERVAL = intValue * 1000;
+                    if (SLIDE_SHOW_INTERVAL > 1000 && SLIDE_SHOW_INTERVAL <= 10000) {
+                        hideSystemUI();
+                        Snackbar.make(findViewById(android.R.id.content), getString(R.string.slide_start), Snackbar.LENGTH_SHORT).show();
+                        handler.postDelayed(slideShowRunnable, SLIDE_SHOW_INTERVAL);
+                    } else if (SLIDE_SHOW_INTERVAL < 1000) {
+                        Toast.makeText(SingleMediaActivity.this, getString(R.string.min_duration_slide), Toast.LENGTH_SHORT).show();
+                    } else if (SLIDE_SHOW_INTERVAL > 10000) {
+                        Toast.makeText(SingleMediaActivity.this, getString(R.string.slide_max_value), Toast.LENGTH_SHORT).show();
                     }
                 });
             }

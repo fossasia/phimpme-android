@@ -288,6 +288,8 @@ public class LFMainActivity extends SharedMediaActivity {
                 if (!editMode) {
                     mediaAdapter.notifyItemChanged(toggleSelectPhoto(m));
                     editMode = true;
+                } else {
+                    selectAllPhotosUpToFav(getImagePosition(m.getPath()));
                 }
             } else selectAllPhotosUpTo(getImagePosition(m.getPath()), mediaAdapter);
             return true;
@@ -403,6 +405,31 @@ public class LFMainActivity extends SharedMediaActivity {
             }
         }
         toolbar.setTitle(selectedMedias.size() + "/" + size);
+    }
+
+    public void selectAllPhotosUpToFav(int targetIndex) {
+        int indexRightBeforeOrAfter = -1;
+        int indexNow;
+        for (Media sm : selectedMedias) {
+            indexNow = getImagePosition(sm.getPath());
+            if (indexRightBeforeOrAfter == -1) indexRightBeforeOrAfter = indexNow;
+
+            if (indexNow > targetIndex) break;
+            indexRightBeforeOrAfter = indexNow;
+        }
+
+        ArrayList<Media> favlist = mediaAdapter.getList();
+
+        if (indexRightBeforeOrAfter != -1) {
+            for (int index = Math.min(targetIndex, indexRightBeforeOrAfter); index <= Math.max(targetIndex, indexRightBeforeOrAfter); index++) {
+                if (favlist.get(index) != null && !favlist.get(index).isSelected()) {
+                    favlist.get(index).setSelected(true);
+                    selectedMedias.add(favlist.get(index));
+                    mediaAdapter.notifyItemChanged(index);
+                }
+            }
+        }
+        toolbar.setTitle(selectedMedias.size() + "/" + favlist.size());
     }
 
     public void populateAlbum() {
@@ -588,8 +615,9 @@ public class LFMainActivity extends SharedMediaActivity {
                 if(editMode) {
                     int currentAlbum = getAlbums().getCurrentAlbumIndex(album);
                     getAlbums().selectAllPhotosUpToAlbums(currentAlbum, albumsAdapter);
+                } else {
+                    albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(album));
                 }
-                albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(album));
                 editMode = true;
                 invalidateOptionsMenu();
                 if (getAlbums().getSelectedCount() == 0)
@@ -751,12 +779,12 @@ public class LFMainActivity extends SharedMediaActivity {
         super.onCreate(savedInstanceState);
         Log.e("TAG", "lfmain");
         ButterKnife.bind(this);
+      
+        navigationView = findViewById(R.id.bottombar);
+        favicon = findViewById(R.id.Drawer_favourite_Icon);
 
-        navigationView = (BottomNavigationView) findViewById(R.id.bottombar);
-        favicon = (IconicsImageView) findViewById(R.id.Drawer_favourite_Icon);
-
-        rvAlbums = (CustomScrollBarRecyclerView) findViewById(R.id.grid_albums);
-        rvMedia  = (CustomScrollBarRecyclerView) findViewById(R.id.grid_photos);
+        rvAlbums = findViewById(R.id.grid_albums);
+        rvMedia  = findViewById(R.id.grid_photos);
 
         overridePendingTransition(R.anim.right_to_left,
                 R.anim.left_to_right);
@@ -1632,7 +1660,7 @@ public class LFMainActivity extends SharedMediaActivity {
         nothingToShow.setText(getString(R.string.there_is_nothing_to_show));
         nothingToShow.setVisibility((albumsMode && getAlbums().dispAlbums.size() == 0) ||
                 (!albumsMode && getAlbum().getMedia().size() == 0) ? View.VISIBLE : View.GONE);
-        TextView a = (TextView) findViewById(R.id.nothing_to_show);
+        TextView a = findViewById(R.id.nothing_to_show);
         a.setTextColor(getTextColor());
         a.setVisibility((albumsMode && getAlbums().dispAlbums.size() == 0 && !fav_photos) || (!albumsMode && getAlbum
                 ().getMedia().size() == 0 && !fav_photos) || (fav_photos && favouriteslist.size() == 0) ? View
@@ -2322,9 +2350,9 @@ public class LFMainActivity extends SharedMediaActivity {
                 final AlertDialog.Builder excludeDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
 
                 final View excludeDialogLayout = getLayoutInflater().inflate(R.layout.dialog_exclude, null);
-                TextView textViewExcludeTitle = (TextView) excludeDialogLayout.findViewById(R.id.text_dialog_title);
-                TextView textViewExcludeMessage = (TextView) excludeDialogLayout.findViewById(R.id.text_dialog_message);
-                final Spinner spinnerParents = (Spinner) excludeDialogLayout.findViewById(R.id.parents_folder);
+                TextView textViewExcludeTitle = excludeDialogLayout.findViewById(R.id.text_dialog_title);
+                TextView textViewExcludeMessage = excludeDialogLayout.findViewById(R.id.text_dialog_message);
+                final Spinner spinnerParents = excludeDialogLayout.findViewById(R.id.parents_folder);
 
                 spinnerParents.getBackground().setColorFilter(getIconColor(), PorterDuff.Mode.SRC_ATOP);
 
@@ -2594,13 +2622,13 @@ public class LFMainActivity extends SharedMediaActivity {
                 ((CardView) dialogLayout.findViewById(R.id.affix_card)).setCardBackgroundColor(getCardBackgroundColor());
 
                 //ITEMS
-                final SwitchCompat swVertical = (SwitchCompat) dialogLayout.findViewById(R.id.affix_vertical_switch);
-                final SwitchCompat swSaveHere = (SwitchCompat) dialogLayout.findViewById(R.id.save_here_switch);
+                final SwitchCompat swVertical = dialogLayout.findViewById(R.id.affix_vertical_switch);
+                final SwitchCompat swSaveHere = dialogLayout.findViewById(R.id.save_here_switch);
 
-                final RadioGroup radioFormatGroup = (RadioGroup) dialogLayout.findViewById(R.id.radio_format);
+                final RadioGroup radioFormatGroup = dialogLayout.findViewById(R.id.radio_format);
 
-                final TextView txtQuality = (TextView) dialogLayout.findViewById(R.id.affix_quality_title);
-                final SeekBar seekQuality = (SeekBar) dialogLayout.findViewById(R.id.seek_bar_quality);
+                final TextView txtQuality = dialogLayout.findViewById(R.id.affix_quality_title);
+                final SeekBar seekQuality = dialogLayout.findViewById(R.id.seek_bar_quality);
 
                 //region THEME STUFF
                 setScrollViewColor((ScrollView) dialogLayout.findViewById(R.id.affix_scrollView));

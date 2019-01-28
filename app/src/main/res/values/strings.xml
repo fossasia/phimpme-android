@@ -17,6 +17,8 @@
     <string name="answer_yes">Yes</string>
     <string name="answer_no">No</string>
 
+    <string name="permissions_restart">Please restart app after giving permissions</string>
+    <string name="grant_permission">Grant Permissions</string>
     <string name="on">On</string> <!-- whether a setting is turned on, e.g., "Auto-level: On" -->
     <string name="off">Off</string> <!-- whether a setting is turned off, e.g., "Auto-level: Off" -->
 
@@ -732,6 +734,7 @@
     <string name="enter_password">Enter your password</string>
     <string name="confirm_password">Confirm password</string>
     <string name="confirm_new_password">Confirm New password</string>
+    <string name="wrong_answer">Wrong Answer</string>
     <string name="wrong_password">Wrong password</string>
     <string name="show_password">Show Password</string>
     <string name="security_ans_empty">Security Answer cannot be empty</string>
@@ -758,6 +761,7 @@
     <string name="error_password_match">New password matches to the previous password. Please set another password.
     </string>
     <string name="max_password_length">The password length cannot be more than 128 characters</string>
+    <string name="password_reset">Password reset</string>
 
     <!-- SETTINGS -->
     <string name="settings">Settings</string>
@@ -948,10 +952,10 @@
     <string name="fab_options">Show FAB</string>
     <string name="fab_options_sub">Display the floating button.</string>
     <string name="map_provider">Map Provider</string>
-    <string name="map_provider_sub">Chose the source of maps</string>
+    <string name="map_provider_sub">Choose the source of maps</string>
     <string name="insert_something">Insert something!</string>
     <string name="password_dont_match">password doesn\'t match</string>
-    <string name="chose_the_map_provider">Choose the map provider</string>
+    <string name="choose_the_map_provider">Choose the map provider</string>
     <string name="use_google_static_maps_faster">Use Google static maps</string>
     <string name="use_openstreetmap_slower">Use OpenStreetMap</string>
     <string name="sd_card_write_permission_title">SD-Card write permission</string>
@@ -1138,6 +1142,7 @@
     <string name="say_cheese">say cheese</string>
     <string name="camera_rear">Rear Camera</string>
     <string name="camera_front">Front Camera</string>
+    <string name="camera_support_options">Open camera to support all options.</string>
 
     <!--NEXTCLOUD-->
     <string name="auth_check_server">Check server</string>

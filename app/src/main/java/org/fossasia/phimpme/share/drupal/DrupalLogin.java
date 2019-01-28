@@ -32,12 +32,12 @@ public class DrupalLogin extends ThemedActivity implements View.OnClickListener 
     }
 
     private void init() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.sharedrupal);
         toolbar.setBackgroundColor(themeHelper.getPrimaryColor());
         setSupportActionBar(toolbar);
         parent = findViewById(R.id.drupal_login);
-        login_button = (Button) findViewById(R.id.login_button);
+        login_button = findViewById(R.id.login_button);
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
