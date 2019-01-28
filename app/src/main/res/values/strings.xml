@@ -761,6 +761,7 @@
     <string name="error_password_match">New password matches to the previous password. Please set another password.
     </string>
     <string name="max_password_length">The password length cannot be more than 128 characters</string>
+    <string name="password_reset">Password reset</string>
 
     <!-- SETTINGS -->
     <string name="settings">Settings</string>

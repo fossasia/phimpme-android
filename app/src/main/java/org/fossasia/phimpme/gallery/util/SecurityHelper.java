@@ -212,6 +212,7 @@ public class SecurityHelper {
             }
         });
         dialog.show();
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, activity.getAccentColor(), dialog);
     }
 
     public void changePassword(final ThemedActivity activity, final AlertDialog.Builder passwordDialog) {
@@ -336,7 +337,7 @@ public class SecurityHelper {
                                         SnackBarHandler.show(activity.findViewById(android.R.id.content), R.string.remember_password_message);
                                         updateSecuritySetting();
                                         dialog.dismiss();
-                                        Toast.makeText(activity.getApplicationContext(), "Password Reset", Toast.LENGTH_SHORT)
+                                        Toast.makeText(activity.getApplicationContext(),R.string.password_reset, Toast.LENGTH_SHORT)
                                                 .show();
                                     } else {
                                         securityAnswer1.requestFocus();
