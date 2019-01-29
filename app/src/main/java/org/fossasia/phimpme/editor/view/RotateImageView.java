@@ -8,10 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
-
-import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.utils.PaintUtil;
 
 public class RotateImageView extends View {
