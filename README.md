@@ -162,7 +162,7 @@ The project is maintained by
 </td>
 
 <td width="240">
-     <img src="https://avatars1.githubusercontent.com/u/6936968?v=4&s=150" />
+     <img src="https://avatars1.githubusercontent.com/u/6936968?v=4&s=150" width="115%" height="100%"/>
      <div align="center">
      Pawan Pal
 </div>
