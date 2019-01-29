@@ -71,17 +71,17 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher, Fo
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mTextStickerView = (TextStickerView) getActivity().findViewById(R.id.text_sticker_panel);
+        mTextStickerView = getActivity().findViewById(R.id.text_sticker_panel);
 
         View cancel = mainView.findViewById(R.id.text_cancel);
         View apply = mainView.findViewById(R.id.text_apply);
-        ImageButton ibFontChoice = (ImageButton) mainView.findViewById(R.id.text_font);
+        ImageButton ibFontChoice = mainView.findViewById(R.id.text_font);
 
         ((ImageButton) cancel).setColorFilter(Color.BLACK);
         ((ImageButton) apply).setColorFilter(Color.BLACK);
 
-        mInputText = (EditText) mainView.findViewById(R.id.text_input);
-        mTextColorSelector = (ImageView) mainView.findViewById(R.id.text_color);
+        mInputText = mainView.findViewById(R.id.text_input);
+        mTextColorSelector =  mainView.findViewById(R.id.text_color);
         mTextColorSelector.setImageDrawable(new IconicsDrawable(activity).icon(GoogleMaterial.Icon.gmd_format_color_fill).sizeDp(24));
 
         if(savedInstanceState!=null)
@@ -158,8 +158,8 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher, Fo
     private void textColorDialog() {
         final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getActivity());
         final View dialogLayout = getActivity().getLayoutInflater().inflate(R.layout.color_piker_accent, null);
-        final LineColorPicker colorPicker = (LineColorPicker) dialogLayout.findViewById(R.id.color_picker_accent);
-        final TextView dialogTitle = (TextView) dialogLayout.findViewById(R.id.cp_accent_title);
+        final LineColorPicker colorPicker = dialogLayout.findViewById(R.id.color_picker_accent);
+        final TextView dialogTitle = dialogLayout.findViewById(R.id.cp_accent_title);
         dialogTitle.setText(R.string.text_color_title);
         colorPicker.setColors(ColorPalette.getAccentColors(activity.getApplicationContext()));
         changeTextColor(WHITE);

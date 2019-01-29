@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.text.InputFilter;
 import android.text.Spanned;
 import android.util.Log;
@@ -252,7 +253,7 @@ public class FolderChooserDialog extends DialogFragment {
 			return true;
 		}
 		else {
-			Toast.makeText(getActivity(), R.string.cant_write_folder, Toast.LENGTH_SHORT).show();
+			Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.cant_write_folder, Snackbar.LENGTH_SHORT).show();
 		}
 		return false;
     }
@@ -308,7 +309,7 @@ public class FolderChooserDialog extends DialogFragment {
 								if( new_folder.exists() ) {
 									if( MyDebug.LOG )
 										Log.d(TAG, "folder already exists");
-									Toast.makeText(getActivity(), R.string.folder_exists, Toast.LENGTH_SHORT).show();
+									Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.folder_exists, Snackbar.LENGTH_SHORT).show();
 								}
 								else if( new_folder.mkdirs() ) {
 									if( MyDebug.LOG )
@@ -318,14 +319,14 @@ public class FolderChooserDialog extends DialogFragment {
 								else {
 									if( MyDebug.LOG )
 										Log.d(TAG, "failed to create new folder");
-									Toast.makeText(getActivity(), R.string.failed_create_folder, Toast.LENGTH_SHORT).show();
+									Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.failed_create_folder, Snackbar.LENGTH_SHORT).show();
 								}
 							}
 							catch(Exception e) {
 								if( MyDebug.LOG )
 									Log.d(TAG, "exception trying to create new folder");
 								e.printStackTrace();
-								Toast.makeText(getActivity(), R.string.failed_create_folder, Toast.LENGTH_SHORT).show();
+								Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.failed_create_folder, Snackbar.LENGTH_SHORT).show();
 							}
 						}
 					}
@@ -335,7 +336,7 @@ public class FolderChooserDialog extends DialogFragment {
 			dialog.show();
 		}
 		else {
-			Toast.makeText(getActivity(), R.string.cant_write_folder, Toast.LENGTH_SHORT).show();
+			Snackbar.make(getActivity().findViewById(android.R.id.content), R.string.cant_write_folder, Snackbar.LENGTH_SHORT).show();
 		}
 	}
 

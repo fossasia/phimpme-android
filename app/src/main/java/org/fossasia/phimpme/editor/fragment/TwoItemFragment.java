@@ -40,14 +40,14 @@ public class TwoItemFragment extends BaseEditFragment implements View.OnClickLis
         View view = inflater.inflate(R.layout.fragment_editor_twoitem, container, false);
 
 
-        ll_item1 = (LinearLayout)view.findViewById(R.id.menu_item1);
-        ll_item2 = (LinearLayout)view.findViewById(R.id.menu_item2);
+        ll_item1 = view.findViewById(R.id.menu_item1);
+        ll_item2 = view.findViewById(R.id.menu_item2);
 
-        icon1 = (ImageView) view.findViewById(R.id.item1iconimage);
-        icon2 = (ImageView) view.findViewById(R.id.item2iconimage);
+        icon1 = view.findViewById(R.id.item1iconimage);
+        icon2 = view.findViewById(R.id.item2iconimage);
 
-        text1 = (TextView) view.findViewById(R.id.item1text);
-        text2 = (TextView) view.findViewById(R.id.item2text);
+        text1 = view.findViewById(R.id.item1text);
+        text2 = view.findViewById(R.id.item2text);
 
         ll_item1.setOnClickListener(this);
         ll_item2.setOnClickListener(this);

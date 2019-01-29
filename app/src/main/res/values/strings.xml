@@ -17,6 +17,8 @@
     <string name="answer_yes">Yes</string>
     <string name="answer_no">No</string>
 
+    <string name="permissions_restart">Please restart app after giving permissions</string>
+    <string name="grant_permission">Grant Permissions</string>
     <string name="on">On</string> <!-- whether a setting is turned on, e.g., "Auto-level: On" -->
     <string name="off">Off</string> <!-- whether a setting is turned off, e.g., "Auto-level: Off" -->
 
@@ -759,6 +761,7 @@
     <string name="error_password_match">New password matches to the previous password. Please set another password.
     </string>
     <string name="max_password_length">The password length cannot be more than 128 characters</string>
+    <string name="password_reset">Password reset</string>
 
     <!-- SETTINGS -->
     <string name="settings">Settings</string>

@@ -8287,7 +8287,7 @@ public class Imgproc {
     {
         double[] response_out = new double[1];
         Point retVal = new Point(phaseCorrelateRes_0(src1.nativeObj, src2.nativeObj, window.nativeObj, response_out));
-        if(response!=null) response[0] = (double)response_out[0];
+        if(response!=null) response[0] = response_out[0];
         return retVal;
     }
 

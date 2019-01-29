@@ -91,13 +91,13 @@ public class SecurityHelper {
     public EditText getInsertPasswordDialog(final ThemedActivity activity, final AlertDialog.Builder passwordDialog) {
 
         final View PasswordDialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_password, null);
-        final TextView passwordDialogTitle = (TextView) PasswordDialogLayout.findViewById(R.id.password_dialog_title);
-        final CardView passwordDialogCard = (CardView) PasswordDialogLayout.findViewById(R.id.password_dialog_card);
-        final EditText editxtPassword = (EditText) PasswordDialogLayout.findViewById(R.id.password_edittxt);
-        final TextView forgot_password = (TextView) PasswordDialogLayout.findViewById(R.id.forgot_password_button);
-        passwordTextInputLayout = (TextInputLayout) PasswordDialogLayout.findViewById(R.id.password_text_input_layout);
+        final TextView passwordDialogTitle = PasswordDialogLayout.findViewById(R.id.password_dialog_title);
+        final CardView passwordDialogCard = PasswordDialogLayout.findViewById(R.id.password_dialog_card);
+        final EditText editxtPassword = PasswordDialogLayout.findViewById(R.id.password_edittxt);
+        final TextView forgot_password = PasswordDialogLayout.findViewById(R.id.forgot_password_button);
+        passwordTextInputLayout = PasswordDialogLayout.findViewById(R.id.password_text_input_layout);
         passwordTextInputLayout.setError(context.getString(R.string.wrong_password));
-        CheckBox checkBox = (CheckBox) PasswordDialogLayout.findViewById(R.id.show_password_checkbox);
+        CheckBox checkBox = PasswordDialogLayout.findViewById(R.id.show_password_checkbox);
         checkBox.setText(context.getResources().getString(R.string.show_password));
         checkBox.setButtonTintList(ColorStateList.valueOf(activity.getAccentColor()));
         checkBox.setTextColor(activity.getTextColor());
@@ -140,12 +140,12 @@ public class SecurityHelper {
     public void forgotPassword(final ThemedActivity activity, final AlertDialog.Builder passwordDialog) {
         final PreferenceUtil SP = PreferenceUtil.getInstance(context);
         final View PasswordDialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_forgot_password, null);
-        final TextView passwordDialogTitle = (TextView) PasswordDialogLayout.findViewById(R.id.forgot_password_dialog_title);
-        final TextView securityQuestion = (TextView) PasswordDialogLayout.findViewById(R.id.security_question);
+        final TextView passwordDialogTitle = PasswordDialogLayout.findViewById(R.id.forgot_password_dialog_title);
+        final TextView securityQuestion = PasswordDialogLayout.findViewById(R.id.security_question);
         securityQuestion.setTextColor(activity.getTextColor());
-        final CardView passwordDialogCard = (CardView) PasswordDialogLayout.findViewById(R.id.forgot_password_dialog_card);
-        final TextInputLayout til = (TextInputLayout) PasswordDialogLayout.findViewById(R.id.text_input_layout);
-        final EditText securityAnswer1 = (EditText) PasswordDialogLayout.findViewById(R.id.password_edittxt);
+        final CardView passwordDialogCard = PasswordDialogLayout.findViewById(R.id.forgot_password_dialog_card);
+        final TextInputLayout til = PasswordDialogLayout.findViewById(R.id.text_input_layout);
+        final EditText securityAnswer1 = PasswordDialogLayout.findViewById(R.id.password_edittxt);
         securityAnswer1.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
 
         securityAnswer1.addTextChangedListener(new TextWatcher() {
@@ -212,23 +212,24 @@ public class SecurityHelper {
             }
         });
         dialog.show();
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, activity.getAccentColor(), dialog);
     }
 
     public void changePassword(final ThemedActivity activity, final AlertDialog.Builder passwordDialog) {
         final short max_password_length = 128;
         final PreferenceUtil SP = PreferenceUtil.getInstance(context);
         final View PasswordDialogLayout = activity.getLayoutInflater().inflate(R.layout.dialog_set_password, null);
-        final TextView passwordDialogTitle = (TextView) PasswordDialogLayout.findViewById(R.id.password_dialog_title);
-        final TextView security_title = (TextView) PasswordDialogLayout.findViewById(R.id.security_question_title);
-        CheckBox checkBox = (CheckBox) PasswordDialogLayout.findViewById(R.id.set_password_checkbox);
+        final TextView passwordDialogTitle = PasswordDialogLayout.findViewById(R.id.password_dialog_title);
+        final TextView security_title = PasswordDialogLayout.findViewById(R.id.security_question_title);
+        CheckBox checkBox = PasswordDialogLayout.findViewById(R.id.set_password_checkbox);
         checkBox.setText(activity.getResources().getString(R.string.show_password));
         checkBox.setTextColor(activity.getTextColor());
-        final CardView passwordDialogCard = (CardView) PasswordDialogLayout.findViewById(R.id.password_dialog_card);
-        final EditText editTextPassword = (EditText) PasswordDialogLayout.findViewById(R.id.password_edittxt);
+        final CardView passwordDialogCard = PasswordDialogLayout.findViewById(R.id.password_dialog_card);
+        final EditText editTextPassword = PasswordDialogLayout.findViewById(R.id.password_edittxt);
         editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        final EditText editTextConfirmPassword = (EditText) PasswordDialogLayout.findViewById(R.id.confirm_password_edittxt);
-        final EditText securityAnswer1 = (EditText) PasswordDialogLayout.findViewById(R.id.security_answer_edittext);
-        final EditText securityQuestion = (EditText) PasswordDialogLayout.findViewById(R.id.security_question_edittext);
+        final EditText editTextConfirmPassword = PasswordDialogLayout.findViewById(R.id.confirm_password_edittxt);
+        final EditText securityAnswer1 = PasswordDialogLayout.findViewById(R.id.security_answer_edittext);
+        final EditText securityQuestion = PasswordDialogLayout.findViewById(R.id.security_question_edittext);
         editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -336,7 +337,7 @@ public class SecurityHelper {
                                         SnackBarHandler.show(activity.findViewById(android.R.id.content), R.string.remember_password_message);
                                         updateSecuritySetting();
                                         dialog.dismiss();
-                                        Toast.makeText(activity.getApplicationContext(), "Password Reset", Toast.LENGTH_SHORT)
+                                        Toast.makeText(activity.getApplicationContext(),R.string.password_reset, Toast.LENGTH_SHORT)
                                                 .show();
                                     } else {
                                         securityAnswer1.requestFocus();

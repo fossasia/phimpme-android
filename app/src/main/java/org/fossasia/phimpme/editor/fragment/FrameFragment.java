@@ -57,9 +57,9 @@ public class FrameFragment extends BaseEditFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        frameRecycler = (android.support.v7.widget.RecyclerView) frameView.findViewById(R.id.frameRecyler);
-        imgBtnDone = (ImageButton) frameView.findViewById(R.id.done);
-        imgBtnCancel = (ImageButton) frameView.findViewById(R.id.cancel);
+        frameRecycler = frameView.findViewById(R.id.frameRecyler);
+        imgBtnDone = frameView.findViewById(R.id.done);
+        imgBtnCancel = frameView.findViewById(R.id.cancel);
         imgBtnCancel.setImageResource(R.drawable.ic_close_black_24dp);
         imgBtnDone.setImageResource(R.drawable.ic_done_black_24dp);
         onShow();
@@ -167,7 +167,7 @@ public class FrameFragment extends BaseEditFragment {
             private ImageView imageView;
             public viewHolder(View itemView) {
                 super(itemView);
-                imageView = (ImageView) itemView.findViewById(R.id.frames);
+                imageView = itemView.findViewById(R.id.frames);
             }
         }
     }
