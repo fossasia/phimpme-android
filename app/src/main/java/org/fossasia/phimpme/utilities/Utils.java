@@ -19,10 +19,9 @@ import android.support.design.widget.Snackbar;
 import android.util.Base64;
 import android.view.View;
 import android.webkit.MimeTypeMap;
-import android.widget.Toast;
+
 
 import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.accounts.AccountActivity;
 import org.fossasia.phimpme.data.local.AccountDatabase;
 
 import java.io.ByteArrayOutputStream;
