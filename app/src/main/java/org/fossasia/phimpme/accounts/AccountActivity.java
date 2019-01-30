@@ -308,6 +308,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                 /*case ONEDRIVE:
                     signInOneDrive();
                     break;*/
+                default://do nothing
             }
         } else {
             AlertDialog alertDialog = new AlertDialog.Builder(this)
