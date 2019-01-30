@@ -18,7 +18,6 @@ import android.support.annotation.NonNull;
 import android.util.Base64;
 import android.view.View;
 import android.webkit.MimeTypeMap;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.fossasia.phimpme.R;
