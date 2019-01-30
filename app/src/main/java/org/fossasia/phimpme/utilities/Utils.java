@@ -15,10 +15,10 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.util.Base64;
 import android.view.View;
 import android.webkit.MimeTypeMap;
-import android.widget.Toast;
 
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.AccountDatabase;
@@ -168,7 +168,7 @@ public class Utils {
         if (isInternetOn(context)) {
             return true;
         } else
-            Toast.makeText(context,R.string.not_connected,Toast.LENGTH_SHORT).show();
+            Snackbar.make(view,R.string.internet_is_off,Snackbar.LENGTH_SHORT).show();
         return false;
     }
     public static void promptSpeechInput(Activity activity, int requestCode, View parentView, String promtMsg) {
