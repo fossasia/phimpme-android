@@ -2092,20 +2092,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                                 editTextTimeInterval.setError(getString(R.string.slide_max_value));
                             }
                         }
-            public void onClick(DialogInterface dialog, int which) {
-                String value = editTextTimeInterval.getText().toString();
-                if (!"".equals(value)) {
-                    slideshow = true;
-                    int intValue = Integer.parseInt(value);
-                    SLIDE_SHOW_INTERVAL = intValue * 1000;
-                    if (SLIDE_SHOW_INTERVAL > 1000 && SLIDE_SHOW_INTERVAL <= 10000) {
-                        hideSystemUI();
-                        Snackbar.make(findViewById(android.R.id.content), getString(R.string.slide_start), Snackbar.LENGTH_SHORT).show();
-                        handler.postDelayed(slideShowRunnable, SLIDE_SHOW_INTERVAL);
-                    } else if (SLIDE_SHOW_INTERVAL < 1000) {
-                        Toast.makeText(SingleMediaActivity.this, getString(R.string.min_duration_slide), Toast.LENGTH_SHORT).show();
-                    } else if (SLIDE_SHOW_INTERVAL > 10000) {
-                        Toast.makeText(SingleMediaActivity.this, getString(R.string.slide_max_value), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -2126,13 +2112,12 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 if (editTextTimeInterval.getText().toString().equals("")) {
                     dialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
                     dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.accent_grey));
-                }
-                else if(Integer.parseInt(editTextTimeInterval.getText().toString())>10 || Integer.parseInt(editTextTimeInterval.getText().toString())<2){
+                } else if (Integer.parseInt(editTextTimeInterval.getText().toString()) > 10 || Integer.parseInt(editTextTimeInterval.getText().toString()) < 2) {
                     editTextTimeInterval.requestFocus();
                     editTextTimeInterval.setError(getString(R.string.time_limit));
                     dialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
                     dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getResources().getColor(R.color.accent_grey));
-                } else{
+                } else {
                     dialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(true);
                     dialog.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getAccentColor());
                 }
@@ -2140,8 +2125,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         });
         dialog.show();
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), dialog);
-
-
     }
 
     @Override
