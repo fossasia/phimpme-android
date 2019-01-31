@@ -1073,7 +1073,7 @@ public class SettingsActivity extends ThemedActivity {
                                 passwordDialog.dismiss();
                                 SP.clearPreferences();
                                 recreate();
-                                Snackbar.make(findViewById(android.R.id.content),R.string.settings_reset,Snackbar.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), R.string.settings_reset, Toast.LENGTH_SHORT).show();
                             } else {
                                 passco[0] = true;
                                 securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
@@ -1094,7 +1094,7 @@ public class SettingsActivity extends ThemedActivity {
 
                     SP.clearPreferences();
                     recreate();
-                    Snackbar.make(findViewById(android.R.id.content), R.string.settings_reset,Snackbar.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.settings_reset, Toast.LENGTH_SHORT).show();
 
                     SP.putString(getString(R.string.preference_password_value),password);
                     SP.putString(getString(R.string.preference_use_password_secured_local_folders),securedLocalFolders);
