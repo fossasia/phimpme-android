@@ -40,7 +40,7 @@
         android:title="@string/Rename"/>
     <item
         android:id="@+id/action_description"
-        android:title="Description"
+        android:title="@string/description"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_settings"
