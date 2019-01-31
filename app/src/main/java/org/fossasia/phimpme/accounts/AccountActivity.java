@@ -308,9 +308,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                 /*case ONEDRIVE:
                     signInOneDrive();
                     break;*/
-
-                default:
-                    SnackBarHandler.show(coordinatorLayout, R.string.feature_not_present);
             }
         } else {
             AlertDialog alertDialog = new AlertDialog.Builder(this)

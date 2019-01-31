@@ -623,6 +623,7 @@
     <string name="create_new_folder">Create new folder</string>
     <string name="slideshow">Slideshow</string>
     <string name="print">Print</string>
+    <string name="description">Description</string>
 
     <!--Notification Uploads-->
     <string name="upload_progress">Uploading to</string>
