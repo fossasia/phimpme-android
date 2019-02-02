@@ -833,11 +833,11 @@ public class LFMainActivity extends SharedMediaActivity {
         setupUI();
         if (all_photos && !fav_photos) {
             new PrepareAllPhotos(activityContext).execute();
-        }
-        if (!all_photos && fav_photos) {
+            getNavigationBar();
+        } else if (!all_photos && fav_photos) {
             new FavouritePhotos(activityContext).execute();
-        }
-        if (!all_photos && !fav_photos) {
+        } else {
+            getNavigationBar();
             if (SP.getBoolean("auto_update_media", false)) {
                 if (albumsMode) {
                     if (!firstLaunch) new PrepareAlbumTask(activityContext).execute();
