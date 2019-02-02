@@ -162,6 +162,7 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher, Fo
         dialogBuilder.setNeutralButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                mTextColorSelector.setColorFilter(WHITE);
                 changeTextColor(WHITE);
                 dialog.cancel();
             }
