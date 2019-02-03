@@ -251,6 +251,8 @@ public class LFMainActivity extends SharedMediaActivity {
     protected TextView hiddenText;
     @BindView(R.id.star_image_view)
     protected ImageView starImageView;
+    @BindView(R.id.no_fav_msg)
+    protected TextView noFavMsg;
 
     /*
     editMode-  When true, user can select items by clicking on them one by one
@@ -1676,14 +1678,17 @@ public class LFMainActivity extends SharedMediaActivity {
                 ().getMedia().size() == 0 && !fav_photos) || (fav_photos && favouriteslist.size() == 0) ? View
                 .VISIBLE : View
                 .GONE);
+        noFavMsg.setVisibility((albumsMode && getAlbums().dispAlbums.size() == 0 && !fav_photos) || (!albumsMode && getAlbum
+                ().getMedia().size() == 0 && !fav_photos) || (fav_photos && favouriteslist.size() == 0) ? View
+                .VISIBLE : View
+                .GONE);
+        noFavMsg.setText(R.string.no_favourites_message);
+        noFavMsg.setTextColor(getTextColor());
         starImageView.setVisibility((albumsMode && getAlbums().dispAlbums.size() == 0 && !fav_photos) || (!albumsMode && getAlbum
                 ().getMedia().size() == 0 && !fav_photos) || (fav_photos && favouriteslist.size() == 0) ? View
                 .VISIBLE : View
                 .GONE);
-        if (getBaseTheme() != LIGHT_THEME)
-            starImageView.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_ATOP);
-        else
-            starImageView.setColorFilter(ContextCompat.getColor(this, R.color.accent_grey), PorterDuff.Mode.SRC_ATOP);
+        starImageView.setColorFilter(getPrimaryColor());
     }
 
 
@@ -3453,6 +3458,7 @@ public class LFMainActivity extends SharedMediaActivity {
         rvMedia.setVisibility(albumsMode ? View.GONE : View.VISIBLE);
         nothingToShow.setVisibility(View.GONE);
         starImageView.setVisibility(View.GONE);
+        noFavMsg.setVisibility(View.GONE);
         if (albumsMode)
             fabScrollUp.hide();
         //touchScrollBar.setScrollBarHidden(albumsMode);
