@@ -688,8 +688,8 @@ public class SettingsActivity extends ThemedActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
         AlertDialogsHelper.getTextDialog(SettingsActivity.this, builder,
                 R.string.accent_color, R.string.accent_primary_same_mssg, null);
-        builder.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
-        builder.setPositiveButton(this.getString(R.string.ok).toUpperCase(), new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(this.getString(R.string.no_action).toUpperCase(), null);
+        builder.setPositiveButton(this.getString(R.string.yes_action).toUpperCase(), new DialogInterface.OnClickListener() {
             @Override public void onClick(DialogInterface dialogInterface, int i) {
                 SP.putInt(getString(R.string.preference_accent_color), color);
                 updateTheme();
