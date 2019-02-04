@@ -778,10 +778,10 @@ void applyOilPaintingEffect(cv::Mat &src,cv::Mat &dst, int val){
 
         }
     }
-    delete (redAverage);
-    delete (blueAverage);
-    delete (greenAverage);
-    delete (countIntensity);
+    delete[] (redAverage);
+    delete[] (blueAverage);
+    delete[] (greenAverage);
+    delete[] (countIntensity);
 }
 
 }
