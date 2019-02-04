@@ -775,8 +775,13 @@ void applyOilPaintingEffect(cv::Mat &src,cv::Mat &dst, int val){
             double tmpR = redAverage[maxIndex] / curMax;
             Vec3b pixelColor(tmpB,tmpG,tmpR);
             dst.at<Vec3b>(y,x) = pixelColor;
+
         }
     }
+    delete (redAverage);
+    delete (blueAverage);
+    delete (greenAverage);
+    delete (countIntensity);
 }
 
 }
