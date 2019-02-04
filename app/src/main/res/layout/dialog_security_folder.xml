@@ -21,7 +21,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/accent_white"
                 android:background="@color/accent_blue"
-                android:text="Select folders to secure"
+                android:text="@string/secure_folders"
                 android:layout_margin="20dp"/>
 
     </LinearLayout>
