@@ -324,10 +324,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         setButtonsVisibility();
     }
 
-    private int getInitalBottomFragment() {
-        return initalBottomFragment;
-    }
-
     /**
      * Handles the visibility of the 'save' button.
      */
@@ -382,9 +378,6 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                     .commit();
     }
 
-    private int getMiddleFragment() {
-        return initalMiddleFragment;
-    }
 
     public void changeMainBitmap(Bitmap newBit) {
         if (mainBitmap != null) {
