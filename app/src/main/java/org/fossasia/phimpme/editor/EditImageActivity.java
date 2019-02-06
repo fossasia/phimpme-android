@@ -377,8 +377,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                     .replace(R.id.preview_container, getFragment(index))
                     .commit();
     }
-
-
+    
     public void changeMainBitmap(Bitmap newBit) {
         if (mainBitmap != null) {
             if (!mainBitmap.isRecycled()) {
