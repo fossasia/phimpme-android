@@ -303,7 +303,6 @@
             android:name=".editor.EditImageActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan"
-            android:configChanges="orientation|screenSize"
             />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
