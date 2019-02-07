@@ -86,7 +86,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
 
     public static int mode;
     public static int effectType;
-
+    private int initalBottomFragment = 0;
+    private int initalMiddleFragment = 2;
     /**
      * Number of times image has been edited. Indicates whether image has been edited or not.
      */
@@ -160,6 +161,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         initView();
         if (savedInstanceState != null) {
             mode =  savedInstanceState.getInt("PREVIOUS_FRAGMENT");
+            initalMiddleFragment = savedInstanceState.getInt("PREVIOUS_MIDDLE_FRAGMENT");
+            initalBottomFragment = savedInstanceState.getInt("PREVIOUS_BOTTOM_FRAGMENT");
         }
         getData();
     }
@@ -171,11 +174,11 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     private void setInitialFragments() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.controls_container, mainMenuFragment)
+                .add(R.id.controls_container, getFragment(initalBottomFragment))
                 .commit();
 
-        changeMiddleFragment(mode);
-
+        changeMiddleFragment(initalMiddleFragment);
+        mode = initalMiddleFragment;
         setButtonsVisibility();
     }
 
@@ -312,6 +315,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
      * @param index integer corresponding to the current editing mode.
      */
     public void changeBottomFragment(int index){
+        initalBottomFragment = index;
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.controls_container, getFragment(index))
@@ -367,12 +371,13 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
      * @param index integer representing selected editing mode
      */
     public void changeMiddleFragment(int index){
+            initalMiddleFragment = index;
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.preview_container, getFragment(index))
                     .commit();
     }
-
+    
     public void changeMainBitmap(Bitmap newBit) {
         if (mainBitmap != null) {
             if (!mainBitmap.isRecycled()) {
@@ -658,6 +663,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putInt("PREVIOUS_MIDDLE_FRAGMENT", initalMiddleFragment);
+        outState.putInt("PREVIOUS_BOTTOM_FRAGMENT", initalBottomFragment);
         outState.putInt("PREVIOUS_FRAGMENT", mode);
     }
 
