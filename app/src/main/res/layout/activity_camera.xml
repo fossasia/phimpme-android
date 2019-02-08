@@ -62,43 +62,43 @@
 
         <ImageButton
             android:id="@+id/popup"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/size_50dp"
+            android:layout_height="@dimen/size_50dp"
             android:contentDescription="@string/action_popup"
             android:onClick="clickedPopupSettings"
-            android:padding="10dp"
+            android:padding="@dimen/alternate_padding"
             android:scaleType="fitCenter"
             android:src="@drawable/popup"/>
 
         <ImageButton
             android:id="@+id/exposure"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/size_50dp"
+            android:layout_height="@dimen/size_50dp"
             android:contentDescription="@string/exposure"
             android:onClick="clickedExposure"
-            android:padding="10dp"
+            android:padding="@dimen/alternate_padding"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_exposure_white_48dp"/>
 
 
         <ImageButton
             android:id="@+id/switch_camera"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/size_50dp"
+            android:layout_height="@dimen/size_50dp"
             android:contentDescription="@string/switch_to_front_camera"
             android:onClick="clickedSwitchCamera"
-            android:padding="10dp"
+            android:padding="@dimen/alternate_padding"
             android:scaleType="fitCenter"
             android:background="@color/black"
             app:srcCompat="@drawable/ic_switch_camera_white_48dp"/>
 
         <ImageButton
             android:id="@+id/audio_control"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/size_50dp"
+            android:layout_height="@dimen/size_50dp"
             android:contentDescription="@string/audio_control_start"
             android:onClick="clickedAudioControl"
-            android:padding="10dp"
+            android:padding="@dimen/alternate_padding"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_mic_white_48dp"/>
 
@@ -270,5 +270,5 @@
         layout="@layout/element_bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp" />
+        android:layout_marginBottom="@dimen/zero" />
 </LinearLayout>

@@ -10,8 +10,8 @@
         android:layout_width="@dimen/icon_item_image_size_main"
         android:layout_height="@dimen/editor_bottom_row_size"
         android:scaleType="fitCenter"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginRight="@dimen/alternate_half_margin"
+        android:layout_marginLeft="@dimen/alternate_half_margin"
         android:layout_alignBottom="@+id/crop_hsv"
         android:layout_alignParentLeft="true"
         android:background="?android:attr/selectableItemBackground"
@@ -27,7 +27,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/zero"
             android:id="@+id/image_crop"
             android:layout_weight="1"
             android:orientation="horizontal">
@@ -35,7 +35,7 @@
         <LinearLayout
             android:id="@+id/ratio_list_group"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/zero"
             android:layout_weight="1"
             android:orientation="horizontal" >
         </LinearLayout>
@@ -48,8 +48,8 @@
         android:layout_height="@dimen/editor_bottom_row_size"
         android:foregroundGravity="center_vertical"
         android:scaleType="fitCenter"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginRight="@dimen/alternate_half_margin"
+        android:layout_marginLeft="@dimen/alternate_half_margin"
         android:background="?android:attr/selectableItemBackground"
         app:srcCompat="@drawable/ic_done_black_24dp" />
 </LinearLayout>

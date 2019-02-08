@@ -21,10 +21,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/md_dark_appbar"
-                    android:padding="24dp"
+                    android:padding="@dimen/big_spacing"
                     android:text="@string/media_viewer_theme"
                     android:textColor="@color/md_dark_primary_text"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/sub_big_text"
                     android:textStyle="bold" />
 
                     <LinearLayout
@@ -37,20 +37,20 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                            android:paddingBottom="8dp"
-                            android:paddingTop="15dp"
+                            android:paddingBottom="@dimen/small_spacing"
+                            android:paddingTop="@dimen/large_padding"
                             android:weightSum="10"
                     >
 
                     <com.mikepenz.iconics.view.IconicsImageView
                         android:id="@+id/ll_apply_theme_3thAct_icon"
-                        android:layout_width="0dp"
-                        android:layout_height="20dp"
+                        android:layout_width="@dimen/zero"
+                        android:layout_height="@dimen/size_20dp"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="2"
                         app:iiv_icon="gmd-brush" />
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/zero"
                         android:layout_height="wrap_content"
                         android:layout_weight="6"
                         android:orientation="vertical"
@@ -61,7 +61,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/apply_theme"
                             android:textColor="@color/md_dark_background"
-                            android:textSize="16sp"
+                            android:textSize="@dimen/medium_text"
                             />
                         <TextView
                             android:id="@+id/apply_theme_3thAct_title_Sub"
@@ -69,12 +69,12 @@
                             android:layout_height="wrap_content"
                             android:text="@string/use_primary_color"
                             android:textColor="@color/md_grey_400"
-                            android:textSize="14sp"
+                            android:textSize="@dimen/sub_medium_text"
                             />
                     </LinearLayout>
                     <android.support.v7.widget.SwitchCompat
                         android:id="@+id/apply_theme_3th_act_enabled"
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/zero"
                         android:layout_height="match_parent"
                         android:layout_weight="2"
 
@@ -82,7 +82,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:hapticFeedbackEnabled="true"
-                        android:paddingRight="5dp"
+                        android:paddingRight="@dimen/alternate_half_padding"
                         />
                 </LinearLayout>
 
@@ -92,13 +92,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingBottom="13dp"
-                    android:paddingTop="8dp"
+                    android:paddingBottom="@dimen/sub_large_padding"
+                    android:paddingTop="@dimen/small_spacing"
                     android:weightSum="5"
                     >
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/zero"
                         android:layout_height="wrap_content"
                         android:layout_weight="5"
                         android:orientation="vertical"
@@ -107,19 +107,19 @@
                             android:id="@+id/seek_bar_alpha_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingLeft="20dp"
+                            android:paddingLeft="@dimen/sub_big_spacing"
                             android:text="@string/transparency"
                             android:textColor="@color/md_dark_background"
-                            android:textSize="16sp"
+                            android:textSize="@dimen/medium_text"
                             />
                         <TextView
                             android:id="@+id/seek_bar_alpha_title_Sub"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingLeft="20dp"
+                            android:paddingLeft="@dimen/sub_big_spacing"
                             android:text="@string/transparency_sub"
                             android:textColor="@color/md_grey_400"
-                            android:textSize="14sp"
+                            android:textSize="@dimen/sub_medium_text"
                             />
                     </LinearLayout>
 
@@ -129,14 +129,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
+                    android:paddingLeft="@dimen/large_padding"
+                    android:paddingRight="@dimen/large_padding"
                     >
                     <uz.shift.colorpicker.LineColorPicker
                         xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/pickerTransparent"
                         android:layout_width="match_parent"
-                        android:layout_height="60dp"
+                        android:layout_height="@dimen/size_60"
                         app:orientation="horizontal"
                         app:selectedColorIndex="0" />
                 </RelativeLayout>
