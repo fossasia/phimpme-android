@@ -34,8 +34,10 @@ import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.iconics.view.IconicsImageView;
 
 import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.accounts.AccountActivity;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.UploadHistoryRealmModel;
+import org.fossasia.phimpme.gallery.activities.SettingsActivity;
 import org.fossasia.phimpme.gallery.activities.SingleMediaActivity;
 import org.fossasia.phimpme.gallery.data.Media;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
@@ -264,6 +266,9 @@ public class UploadHistory extends ThemedActivity {
 
             case R.id.delete_action:
                 deleteAllMedia();
+                return true;
+            case R.id.up_settings:
+                startActivity(new Intent(UploadHistory.this, SettingsActivity.class));
                 return true;
 
             default:
