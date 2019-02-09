@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -20,6 +22,7 @@ import org.fossasia.phimpme.BuildConfig;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.gallery.util.CustomTabService;
+import org.fossasia.phimpme.trashbin.TrashBinActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 
 import de.psdev.licensesdialog.LicensesDialog;
@@ -115,6 +118,31 @@ public class AboutActivity extends ThemedActivity {
 
         setThemeOnChangeListener();
         setUpActions();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_about, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+
+            case R.id.up_settings:
+                startActivity(new Intent(AboutActivity.this, SettingsActivity.class));
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void setUpActions() {
