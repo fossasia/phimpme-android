@@ -132,4 +132,5 @@ void applyPencilSketch(cv::Mat &src, cv::Mat &dst, int val);
 void applyRedBlueEffect(cv::Mat &src, cv::Mat &dst, int val);
 void applyRedGreenFilter(cv::Mat &src, cv::Mat &dst, int val);
 void applyWhiteYellowTint(cv::Mat &src, cv::Mat &dst, int val);
+void applyOilPaintingEffect(cv::Mat &src, cv::Mat &dst, int val);
 }

@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:textSize="18dp"
-            android:text="lalalalala"
+            android:text="@string/la"
             android:layout_weight="0.9"
             android:textColor="@color/md_blue_grey_500"
             android:id="@+id/foldername" />

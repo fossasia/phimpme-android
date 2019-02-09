@@ -103,7 +103,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/folder_name_edit_text"
-                android:text="folder_name"
+                android:text="@string/folder_name"
                 android:layout_marginRight="@dimen/big_spacing"
                 android:layout_marginTop="@dimen/small_spacing"
                 android:layout_marginBottom="@dimen/small_spacing"
