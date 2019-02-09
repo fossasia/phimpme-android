@@ -324,6 +324,7 @@ public class UploadHistory extends ThemedActivity {
                         public void onClick(View v) {
                             // if password is correct, call DeletePhotos and perform deletion
                             if (securityObj.checkPassword(editTextPassword.getText().toString())) {
+                                passwordDialog.dismiss();
                                new DeleteHistory().execute();
                             }
                             // if password is incorrect, don't delete and notify user of incorrect password
