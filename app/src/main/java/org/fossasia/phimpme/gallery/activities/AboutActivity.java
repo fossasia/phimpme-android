@@ -22,7 +22,6 @@ import org.fossasia.phimpme.BuildConfig;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.gallery.util.CustomTabService;
-import org.fossasia.phimpme.trashbin.TrashBinActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 
 import de.psdev.licensesdialog.LicensesDialog;
