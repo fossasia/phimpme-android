@@ -1375,6 +1375,7 @@
     <string name="replace">Replace</string>
 
     <string name="select_a_font">Select a Font</string>
+    <string name="time_limit">Time limit must be between 2 and 10 seconds</string>
     <string name="min_duration_slide">Minimum duration is 2 sec</string>
     <string name="slide_start">Slideshow Started!</string>
     <string name="slide_max_value">Maximum duration is 10 sec</string>
