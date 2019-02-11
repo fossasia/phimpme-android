@@ -717,10 +717,11 @@ public class SettingsActivity extends ThemedActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
         AlertDialogsHelper.getTextDialog(SettingsActivity.this, builder,
                 R.string.accent_color, R.string.accent_primary_same_mssg, null);
-        builder.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
-        builder.setPositiveButton(this.getString(R.string.ok).toUpperCase(), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+
+        builder.setNegativeButton(this.getString(R.string.no_action).toUpperCase(), null);
+        builder.setPositiveButton(this.getString(R.string.yes_action).toUpperCase(), new DialogInterface.OnClickListener() {
+            @Override public void onClick(DialogInterface dialogInterface, int i) {
+
                 SP.putInt(getString(R.string.preference_accent_color), color);
                 updateTheme();
                 updateViewswithAccentColor(getAccentColor());
@@ -1107,7 +1108,9 @@ public class SettingsActivity extends ThemedActivity {
                                 passwordDialog.dismiss();
                                 SP.clearPreferences();
                                 recreate();
-                                Snackbar.make(findViewById(android.R.id.content), R.string.settings_reset, Snackbar.LENGTH_SHORT).show();
+
+                                Toast.makeText(getApplicationContext(), R.string.settings_reset, Toast.LENGTH_SHORT).show();
+
                             } else {
                                 passco[0] = true;
                                 securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
@@ -1128,7 +1131,8 @@ public class SettingsActivity extends ThemedActivity {
 
                     SP.clearPreferences();
                     recreate();
-                    Snackbar.make(findViewById(android.R.id.content), R.string.settings_reset, Snackbar.LENGTH_SHORT).show();
+
+                    Toast.makeText(getApplicationContext(), R.string.settings_reset, Toast.LENGTH_SHORT).show();
 
                     SP.putString(getString(R.string.preference_password_value), password);
                     SP.putString(getString(R.string.preference_use_password_secured_local_folders), securedLocalFolders);
