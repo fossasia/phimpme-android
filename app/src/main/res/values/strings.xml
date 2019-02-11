@@ -17,6 +17,8 @@
     <string name="answer_yes">Yes</string>
     <string name="answer_no">No</string>
 
+    <string name="permissions_restart">Please restart app after giving permissions</string>
+    <string name="grant_permission">Grant Permissions</string>
     <string name="on">On</string> <!-- whether a setting is turned on, e.g., "Auto-level: On" -->
     <string name="off">Off</string> <!-- whether a setting is turned off, e.g., "Auto-level: Off" -->
 
@@ -227,6 +229,9 @@
         default
     </string>
 
+    <string name="jpeg">JPEG</string>
+    <string name="png">PNG</string>
+    <string name="webp">WebP</string>
     <string name="preference_category_camera_quality">Photo Settings</string>
     <string name="preference_screen_photo_settings">Photo settings…</string>
     <string name="preference_screen_location_settings">Location settings…</string>
@@ -621,6 +626,7 @@
     <string name="create_new_folder">Create new folder</string>
     <string name="slideshow">Slideshow</string>
     <string name="print">Print</string>
+    <string name="description">Description</string>
 
     <!--Notification Uploads-->
     <string name="upload_progress">Uploading to</string>
@@ -696,6 +702,7 @@
     <string name="affix_text">Affixing your media, please wait&#8230;</string>
     <string name="affix_error">Can\'t affix video, you must select at least 2 images.</string>
     <string name="quality">Quality</string>
+    <string name="qual90">Quality 90</string>
 
 
     <!-- MULTI COLUMN -->
@@ -705,7 +712,10 @@
     <string name="media_column">Media columns</string>
 
     <!-- RANDOM -->
+    <string name="progress_dialog">Progress Dialog</string>
+    <string name="doing_something">Doing Something</string>
     <string name="done">Done!</string>
+    <string name="la">lalalalala</string>
     <string name="there_is_nothing_to_show">There\'s nothing to show!</string>
     <string name="null_search_result">No search result found for</string>
     <string name="insert_a_name">Insert something</string>
@@ -733,8 +743,11 @@
     <string name="confirm_password">Confirm password</string>
     <string name="confirm_new_password">Confirm New password</string>
     <string name="wrong_answer">Wrong Answer</string>
+    <string name="secure_folders">Select folders to secure</string>
     <string name="wrong_password">Wrong password</string>
     <string name="show_password">Show Password</string>
+    <string name="security_ques">Security Question : </string>
+    <string name="security_ques_reason">(Please enter a question to which only you know the answer.This question will be asked if you forget your password.)</string>
     <string name="security_ans_empty">Security Answer cannot be empty</string>
     <string name="security_ques_empty">Security Question cannot be empty</string>
 
@@ -759,6 +772,7 @@
     <string name="error_password_match">New password matches to the previous password. Please set another password.
     </string>
     <string name="max_password_length">The password length cannot be more than 128 characters</string>
+    <string name="password_reset">Password reset</string>
 
     <!-- SETTINGS -->
     <string name="settings">Settings</string>
@@ -774,6 +788,7 @@
 
     <string name="media_viewer">Media Viewer</string>
     <string name="media_viewer_theme">Media Viewer Theme</string>
+    <string name="use_primary_color">Use primary color in the viewer</string>
     <string name="custom_3thAct">Customize Viewer</string>
     <string name="custom_3thAct_sub">Apply theme on pictures viewer.</string>
 
@@ -950,6 +965,11 @@
     <string name="fab_options_sub">Display the floating button.</string>
     <string name="map_provider">Map Provider</string>
     <string name="map_provider_sub">Choose the source of maps</string>
+    <string name="google_maps">maps.google.com</string>
+    <string name="mapbox_streets">mapbox.com (streets)</string>
+    <string name="mapbox_dark">mapbox.com (dark)</string>
+    <string name="mapbox_light">mapbox.com (light)</string>
+    <string name="herokuapp">herokuapp.com (watercolor)</string>
     <string name="insert_something">Insert something!</string>
     <string name="password_dont_match">password doesn\'t match</string>
     <string name="choose_the_map_provider">Choose the map provider</string>
@@ -1163,6 +1183,8 @@
 
     <!--Wordpress-->
     <string name="sharewordpress">Wordpress Account</string>
+    <string name="login">Account Login</string>
+    <string name="sign_in">Sign In</string>
 
     <!--Pinterest-->
     <string name="success">Success</string>
@@ -1344,7 +1366,8 @@
     <string name="move_all_photos">All the photos will be moved to the selected folder. Do you wish to continue?</string>
     <string name="moved_target_folder_success">Moved to target folder successfully.</string>
 
-    <string name="no_favourites_text">There are no favourites presently. To mark a picture as favourite, long-select the
+    <string name="no_favourites_text">There are no favourites presently.</string>
+    <string name="no_favourites_message">To mark a picture as favourite, long-select the
         picture and tap on \"Add to Favourites\" from the overflow menu or click on the picture and tap the heart icon at the bottom.
     </string>
 
@@ -1352,6 +1375,7 @@
     <string name="replace">Replace</string>
 
     <string name="select_a_font">Select a Font</string>
+    <string name="time_limit">Time limit must be between 2 and 10 seconds</string>
     <string name="min_duration_slide">Minimum duration is 2 sec</string>
     <string name="slide_start">Slideshow Started!</string>
     <string name="slide_max_value">Maximum duration is 10 sec</string>

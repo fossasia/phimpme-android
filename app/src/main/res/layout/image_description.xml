@@ -118,7 +118,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="No Location"
+                        android:text="@string/no_location"
                         android:id="@+id/image_desc_loc"
                         android:textColor="@color/md_grey_400"
                         android:textSize="@dimen/medium_text"/>
@@ -152,7 +152,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Details"
+                        android:text="@string/details"
                         android:id="@+id/details_label"
                         android:textStyle="bold"
                         android:textColor="@color/md_grey_200"
