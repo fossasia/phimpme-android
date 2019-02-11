@@ -381,7 +381,6 @@ public class SettingsActivity extends ThemedActivity {
             }
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
             }
         });
 
