@@ -285,7 +285,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 if (!editMode) {
                     mediaAdapter.notifyItemChanged(toggleSelectPhoto(m));
                     editMode = true;
-                }
+                } else selectAllPhotosUpTo(getImagePosition(m.getPath()),mediaAdapter);
             } else if (fav_photos && !all_photos) {
                 if (!editMode) {
                     mediaAdapter.notifyItemChanged(toggleSelectPhoto(m));
@@ -781,7 +781,7 @@ public class LFMainActivity extends SharedMediaActivity {
         super.onCreate(savedInstanceState);
         Log.e("TAG", "lfmain");
         ButterKnife.bind(this);
-      
+
         navigationView = findViewById(R.id.bottombar);
         favicon = findViewById(R.id.Drawer_favourite_Icon);
 
