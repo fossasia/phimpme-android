@@ -781,7 +781,7 @@ public class LFMainActivity extends SharedMediaActivity {
         super.onCreate(savedInstanceState);
         Log.e("TAG", "lfmain");
         ButterKnife.bind(this);
-      
+
         navigationView = findViewById(R.id.bottombar);
         favicon = findViewById(R.id.Drawer_favourite_Icon);
 
@@ -1883,8 +1883,8 @@ public class LFMainActivity extends SharedMediaActivity {
         getfavouriteslist();
         menu.findItem(R.id.action_copy).setVisible(visible);
         menu.findItem(R.id.action_move).setVisible((visible || editMode) && !fav_photos);
-        menu.findItem(R.id.action_add_favourites).setVisible((visible || editMode) && (!albumsMode && !fav_photos));
         menu.findItem(R.id.action_add_favourites).setVisible((visible || editMode) && (!albumsMode && !fav_photos && !checkfav(favouriteslist,getAlbum().getSelectedMedia())));
+        menu.findItem(R.id.action_remove_favourites).setVisible((visible || editMode) && (!albumsMode && !fav_photos  && checkfav(favouriteslist,getAlbum().getSelectedMedia())));
         menu.findItem(R.id.excludeAlbumButton).setVisible(editMode && !all_photos && albumsMode && !fav_photos);
         menu.findItem(R.id.zipAlbumButton).setVisible(editMode && !all_photos && albumsMode && !fav_photos && !hidden &&
                 getAlbums().getSelectedCount() == 1);
@@ -1918,21 +1918,17 @@ public class LFMainActivity extends SharedMediaActivity {
     }
 
     private boolean checkfav(ArrayList<Media> favlist,ArrayList<Media> selected) {
-        int check = 0;
-        for (Media sm : selected) {
-            check = 0;
-            for (Media fm : favlist) {
-                if (sm.getPath().equals(fm.getPath())) {
-                    check = 1;
-                }
+        if (selected.size() <= favlist.size()) {
+            Boolean found;
+            for (Media sm : selected) {
+                found = false;
+                for (Media fm : favlist) {
+                    if (sm.getPath().equals(fm.getPath()))
+                        found = true;
+                } if (!found) return false;
             }
-            if (check == 0) {
-                return false;
-            }
-        }
-        if (selected.size() == 0) {
-            return false;
-        } else return true;
+            return true;
+        } else return false;
     }
 
     //endregion
