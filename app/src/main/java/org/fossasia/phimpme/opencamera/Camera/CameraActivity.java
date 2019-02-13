@@ -2863,7 +2863,6 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
                     if (ActivityCompat.shouldShowRequestPermissionRationale(CameraActivity.this,
                             Manifest.permission.CAMERA)) {
                         // now, user has denied permission (but not permanently!)
-
                     } else {
                         permanentDenyPermission = true;
                     }
