@@ -611,7 +611,6 @@ public class SettingsActivity extends ThemedActivity {
                             public void onClick(View view) {
                                 Intent restartIntent = getBaseContext().getPackageManager()
                                         .getLaunchIntentForPackage(getBaseContext().getPackageName());
-                                assert restartIntent != null;
                                 restartIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(restartIntent);
                             }
