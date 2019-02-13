@@ -254,6 +254,7 @@
         <activity
             android:name=".gallery.activities.SettingsActivity"
             android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustNothing"
             android:label="@string/settings"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
