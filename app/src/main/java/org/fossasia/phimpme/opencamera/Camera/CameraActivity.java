@@ -2860,12 +2860,10 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
                         Log.d(TAG, "camera permission granted");
                     preview.retryOpenCamera();
                 } else {
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(CameraActivity.this,
-                            Manifest.permission.CAMERA)) {
-                        // now, user has denied permission (but not permanently!)
-                    } else {
+                    if (!ActivityCompat.shouldShowRequestPermissionRationale(CameraActivity.this,
+                            Manifest.permission.CAMERA))
                         permanentDenyPermission = true;
-                    }
+
                     if (MyDebug.LOG)
                         Log.d(TAG, "camera permission denied");
                     // permission denied, boo! Disable the
