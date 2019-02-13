@@ -1253,7 +1253,10 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 editTextNewName.setSelectAllOnFocus(true);
                 editTextNewName.setHint(R.string.description_hint);
                 editTextNewName.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.grey));
-                editTextNewName.setHighlightColor(ContextCompat.getColor(getApplicationContext(), R.color.cardview_shadow_start_color));
+                if(getBaseTheme() == ThemeHelper.DARK_THEME || getBaseTheme() == ThemeHelper.AMOLED_THEME){
+                    editTextNewName.setTextColor(R.color.black);
+                    editTextNewName.setHighlightColor(ContextCompat.getColor(getApplicationContext(), R.color.accent_grey));
+                } else editTextNewName.setHighlightColor(ContextCompat.getColor(getApplicationContext(), R.color.cardview_shadow_start_color));
                 editTextNewName.selectAll();
                 editTextNewName.setSingleLine(false);
                 AlertDialogsHelper.getInsertTextDialog(SingleMediaActivity.this, renameDialogBuilder,
