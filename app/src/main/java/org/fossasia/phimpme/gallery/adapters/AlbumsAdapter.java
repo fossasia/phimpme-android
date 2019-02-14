@@ -49,7 +49,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
     private BitmapDrawable placeholder;
     Context context;
     private SecurityHelper securityObj;
-    private String[] securedFolders;
 
     public AlbumsAdapter(ArrayList<Album> ph, Context context) {
         albums = ph;
@@ -61,7 +60,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
 
     public void updateTheme() {
         theme.updateTheme();
-        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.placeholder);
+        Drawable drawable = ContextCompat.getDrawable(context, R.drawable.ic_error);
         placeholder = (BitmapDrawable) drawable;
     }
 
@@ -78,8 +77,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
         Album a = SharedMediaActivity.getAlbums().dispAlbums.get(position);
         Media f = a.getCoverAlbum();
         securityObj.updateSecuritySetting();
-        securedFolders=securityObj.getSecuredfolders();
-      
+
         if(a.getPath().contains(Environment.getExternalStorageDirectory().getPath())){
             holder.storage.setVisibility(View.INVISIBLE);
         } else {
@@ -97,9 +95,11 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
         }
         else
             holder.pin.setVisibility(View.INVISIBLE);
-        if (!filterCheck(a.getPath(),securedFolders)) {
+        String path="";
+        if (!filterCheck(a.getPath(),securityObj.getSecuredfolders()))
+            path=f.getPath();
             Glide.with(holder.picture.getContext())
-                    .load(f.getPath())
+                    .load(path)
                     .asBitmap()
                     .diskCacheStrategy(DiskCacheStrategy.RESULT)
                     .priority(Priority.HIGH)
@@ -122,13 +122,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
                         }
                     })
                     .into(holder.picture);
-        }
-        else{
-            Glide.with(holder.picture.getContext())
-                    .load(R.drawable.ic_error)
-                    .into(holder.picture);
-        }
-
 
         holder.name.setTag(a);
 
