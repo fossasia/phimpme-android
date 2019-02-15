@@ -1700,10 +1700,14 @@ public class LFMainActivity extends SharedMediaActivity {
         }
     }
 
-    private void checkNoSearchResults(String result){
-        textView.setText(getString(R.string.null_search_result) + " " + '"' + result + '"' );
-        textView.setTextColor(getTextColor());
-        textView.setVisibility(View.VISIBLE);
+    private void checkNoSearchResults(String result,int length){
+        if (length>0) {
+            textView.setText(getString(R.string.null_search_result) + " " + '"' + result + '"');
+            textView.setTextColor(getTextColor());
+            textView.setVisibility(View.VISIBLE);
+        }
+        else
+            textView.setVisibility(View.INVISIBLE);
     }
 
     //region MENU
@@ -1806,7 +1810,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 }
             }
             if(newList.isEmpty()){
-                checkNoSearchResults(newText);
+                checkNoSearchResults(newText,queryText.length());
             }
             else{
                 if(textView.getVisibility() == View.VISIBLE){
