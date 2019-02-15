@@ -51,8 +51,8 @@
                         android:layout_width="@dimen/icon_width_height"
                         android:layout_height="@dimen/icon_width_height"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/big_spacing"
-                        android:layout_marginRight="@dimen/big_spacing"
+                        android:layout_marginStart="@dimen/big_spacing"
+                        android:layout_marginEnd="@dimen/big_spacing"
                         app:iiv_icon="gmd-folder"/>
 
                     <TextView
@@ -80,8 +80,8 @@
                         android:layout_width="@dimen/icon_width_height"
                         android:layout_height="@dimen/icon_width_height"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/big_spacing"
-                        android:layout_marginRight="@dimen/big_spacing"
+                        android:layout_marginStart="@dimen/big_spacing"
+                        android:layout_marginEnd="@dimen/big_spacing"
                         app:iiv_icon="faw-low-vision"/>
 
                     <TextView
@@ -109,8 +109,8 @@
                         android:layout_width="@dimen/icon_width_height"
                         android:layout_height="@dimen/icon_width_height"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/big_spacing"
-                        android:layout_marginRight="@dimen/big_spacing"
+                        android:layout_marginStart="@dimen/big_spacing"
+                        android:layout_marginEnd="@dimen/big_spacing"
                         app:iiv_icon="gmd_grade"/>
 
                     <TextView
@@ -137,8 +137,8 @@
                         android:layout_width="@dimen/icon_width_height"
                         android:layout_height="@dimen/icon_width_height"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/big_spacing"
-                        android:layout_marginRight="@dimen/big_spacing"
+                        android:layout_marginStart="@dimen/big_spacing"
+                        android:layout_marginEnd="@dimen/big_spacing"
                         app:iiv_icon="gmd-file-upload"/>
 
                     <TextView
@@ -166,8 +166,8 @@
                         android:layout_width="@dimen/icon_width_height"
                         android:layout_height="@dimen/icon_width_height"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/big_spacing"
-                        android:layout_marginRight="@dimen/big_spacing"
+                        android:layout_marginStart="@dimen/big_spacing"
+                        android:layout_marginEnd="@dimen/big_spacing"
                         app:iiv_icon="faw_trash_o"/>
 
                     <TextView
@@ -269,8 +269,8 @@
                         android:layout_width="@dimen/icon_width_height"
                         android:layout_height="@dimen/icon_width_height"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/big_spacing"
-                        android:layout_marginRight="@dimen/big_spacing"
+                        android:layout_marginStart="@dimen/big_spacing"
+                        android:layout_marginEnd="@dimen/big_spacing"
                         app:iiv_icon="gmd-settings"/>
 
                     <TextView
@@ -299,8 +299,8 @@
                         android:layout_width="@dimen/icon_width_height"
                         android:layout_height="@dimen/icon_width_height"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/big_spacing"
-                        android:layout_marginRight="@dimen/big_spacing"
+                        android:layout_marginStart="@dimen/big_spacing"
+                        android:layout_marginEnd="@dimen/big_spacing"
                         app:iiv_icon="gmd-star"/>
 
                     <TextView
@@ -328,8 +328,8 @@
                         android:layout_width="@dimen/icon_width_height"
                         android:layout_height="@dimen/icon_width_height"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/big_spacing"
-                        android:layout_marginRight="@dimen/big_spacing"
+                        android:layout_marginStart="@dimen/big_spacing"
+                        android:layout_marginEnd="@dimen/big_spacing"
                         app:iiv_icon="gmd-share"/>
 
                     <TextView
@@ -357,8 +357,8 @@
                         android:layout_width="@dimen/icon_width_height"
                         android:layout_height="@dimen/icon_width_height"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="@dimen/big_spacing"
-                        android:layout_marginRight="@dimen/big_spacing"
+                        android:layout_marginStart="@dimen/big_spacing"
+                        android:layout_marginEnd="@dimen/big_spacing"
                         app:iiv_icon="gmd-info-outline"/>
 
                     <TextView

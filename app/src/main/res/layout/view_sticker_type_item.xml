@@ -2,8 +2,8 @@
               android:layout_width="wrap_content"
               android:layout_height="@dimen/bottom_banner_height"
               android:orientation="vertical"
-              android:paddingLeft="18dp"
-              android:paddingRight="18dp">
+              android:paddingStart="18dp"
+              android:paddingEnd="18dp">
 
     <ImageView
         android:id="@+id/icon"

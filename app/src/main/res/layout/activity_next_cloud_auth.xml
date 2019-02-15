@@ -86,7 +86,7 @@
                     android:contentDescription="@string/auth_host_address"
                     android:hint="@string/auth_host_address"
                     android:inputType="textUri"
-                    android:paddingRight="@dimen/activity_horizontal_margin"
+                    android:paddingEnd="@dimen/activity_horizontal_margin"
                     android:textColor="@color/login_text_hint_color"
                     android:textColorHint="@color/login_text_hint_color">
 
@@ -100,7 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|right"
-                android:layout_marginRight="@dimen/alternate_half_padding"
+                android:layout_marginEnd="@dimen/alternate_half_padding"
                 android:background="@android:color/transparent"
                 android:contentDescription="@string/auth_refresh_button"
                 android:padding="@dimen/zero"

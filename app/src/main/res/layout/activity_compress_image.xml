@@ -26,7 +26,7 @@
                 android:layout_height="50dp"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:background="?android:attr/selectableItemBackground"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/ic_cancel2" />
@@ -59,7 +59,7 @@
                     android:id="@+id/bypixel"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"
-                    android:layout_marginLeft="15dp"
+                    android:layout_marginStart="15dp"
                     android:background="@color/colorPrimary"
                     android:padding="5dp"
                     android:text="@string/by_dimensions"

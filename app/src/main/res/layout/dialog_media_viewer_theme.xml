@@ -82,7 +82,7 @@
                         android:button="@null"
                         android:gravity="center"
                         android:hapticFeedbackEnabled="true"
-                        android:paddingRight="5dp"
+                        android:paddingEnd="5dp"
                         />
                 </LinearLayout>
 
@@ -107,7 +107,7 @@
                             android:id="@+id/seek_bar_alpha_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingLeft="20dp"
+                            android:paddingStart="20dp"
                             android:text="@string/transparency"
                             android:textColor="@color/md_dark_background"
                             android:textSize="16sp"
@@ -116,7 +116,7 @@
                             android:id="@+id/seek_bar_alpha_title_Sub"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingLeft="20dp"
+                            android:paddingStart="20dp"
                             android:text="@string/transparency_sub"
                             android:textColor="@color/md_grey_400"
                             android:textSize="14sp"
@@ -129,8 +129,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="15dp"
                     >
                     <uz.shift.colorpicker.LineColorPicker
                         xmlns:app="http://schemas.android.com/apk/res-auto"

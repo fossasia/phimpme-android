@@ -59,7 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginLeft="10dp">
+                    android:layout_marginStart="10dp">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginLeft="10dp">
+                    android:layout_marginStart="10dp">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -147,7 +147,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginLeft="10dp">
+                    android:layout_marginStart="10dp">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -176,7 +176,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginStart="5dp"
                             android:id="@+id/image_desc_title"
                             android:textSize="@dimen/medium_text"
                             android:layout_marginBottom="2dp"/>
@@ -202,7 +202,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/image_desc_type"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginStart="5dp"
                             android:textSize="@dimen/medium_text"
                             android:layout_marginBottom="2dp"/>
 
@@ -227,7 +227,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/image_desc_size"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginStart="5dp"
                             android:textSize="@dimen/medium_text"
                             android:layout_marginBottom="2dp"/>
 
@@ -252,7 +252,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/image_desc_res"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginStart="5dp"
                             android:textSize="@dimen/medium_text"
                             android:layout_marginBottom="2dp"/>
 
@@ -277,7 +277,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/image_desc_path"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginStart="5dp"
                             android:layout_marginBottom="2dp"
                             android:textSize="@dimen/medium_text"/>
 
@@ -302,7 +302,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/image_desc_orientation"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginStart="5dp"
                             android:textSize="@dimen/medium_text"
                             android:layout_marginBottom="2dp"/>
 
@@ -329,7 +329,7 @@
                             android:textSize="@dimen/medium_text"
                             android:textColor="@color/md_grey_400"
                             android:id="@+id/image_desc_exif"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginStart="5dp"
                             android:layout_marginBottom="2dp"/>
 
                     </LinearLayout>
@@ -355,7 +355,7 @@
                             android:id="@+id/image_desc"
                             android:textSize="@dimen/medium_text"
                             android:textColor="@color/md_grey_400"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginStart="5dp"
                             android:layout_marginBottom="2dp"/>
                     </LinearLayout>
                 </LinearLayout>

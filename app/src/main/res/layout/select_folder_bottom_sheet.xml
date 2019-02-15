@@ -78,8 +78,8 @@
                 android:layout_width="@dimen/icon_width_height"
                 android:id="@+id/create_new_folder"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/big_spacing"
-                android:layout_marginRight="@dimen/big_spacing"
+                android:layout_marginStart="@dimen/big_spacing"
+                android:layout_marginEnd="@dimen/big_spacing"
                 app:iiv_icon="gmd-create-new-folder"
             />
             <TextView

@@ -17,8 +17,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginEnd="6dp"
         app:cardBackgroundColor="@color/white"
         android:theme="@style/CardView.Light"
         android:layout_marginTop="3dp"
@@ -40,8 +40,8 @@
                 android:layout_width="@dimen/folder_icon"
                 android:layout_gravity="center_vertical"
                 app:iiv_icon="gmd-folder"
-                android:layout_marginLeft="@dimen/big_spacing"
-                android:layout_marginRight="@dimen/big_spacing"
+                android:layout_marginStart="@dimen/big_spacing"
+                android:layout_marginEnd="@dimen/big_spacing"
             />
 
             <LinearLayout
@@ -50,7 +50,7 @@
                 android:orientation="vertical"
                 android:layout_marginTop="@dimen/small_spacing"
                 android:layout_marginBottom="@dimen/small_spacing"
-                android:layout_marginRight="@dimen/big_spacing"
+                android:layout_marginEnd="@dimen/big_spacing"
             >
                 <TextView
                     android:id="@+id/name_folder"

@@ -95,7 +95,7 @@
                         android:hint="Server address"
                         android:ems="10"
                         android:inputType="textUri"
-                        android:paddingRight="@dimen/activity_horizontal_margin"
+                        android:paddingEnd="@dimen/activity_horizontal_margin"
                         android:textColor="@color/login_text_hint_color"
                         android:textColorHint="@color/login_text_hint_color">
                         <requestFocus/>
@@ -108,7 +108,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|right"
-                    android:layout_marginRight="@dimen/alternate_half_padding"
+                    android:layout_marginEnd="@dimen/alternate_half_padding"
                     android:padding="@dimen/zero"
                     android:scaleType="fitCenter"
                     app:srcCompat="@drawable/ic_refresh_black_24dp"

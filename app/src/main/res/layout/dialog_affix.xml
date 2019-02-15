@@ -86,7 +86,7 @@
                                 android:gravity="center"
                                 android:checked="false"
                                 android:hapticFeedbackEnabled="true"
-                                android:paddingRight="5dp"
+                                android:paddingEnd="5dp"
                                 />
                         </LinearLayout>
 
@@ -138,7 +138,7 @@
                                 android:gravity="center"
                                 android:hapticFeedbackEnabled="true"
                                 android:checked="false"
-                                android:paddingRight="5dp"
+                                android:paddingEnd="5dp"
                                 />
                         </LinearLayout>
 
@@ -225,7 +225,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="8"
-                                android:paddingRight="15dp"
+                                android:paddingEnd="15dp"
                                 android:orientation="vertical">
                                 <TextView
                                     android:id="@+id/affix_quality_title"

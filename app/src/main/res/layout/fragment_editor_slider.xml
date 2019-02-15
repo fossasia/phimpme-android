@@ -12,8 +12,8 @@
         android:background="?android:attr/selectableItemBackground"
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         android:layout_alignParentLeft="true"/>
 
     <SeekBar
@@ -31,8 +31,8 @@
         android:layout_width="@dimen/icon_item_image_size"
         android:layout_height="@dimen/editor_bottom_row_size"
         android:scaleType="fitCenter"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         android:layout_centerVertical="true"
         android:background="?android:attr/selectableItemBackground"
         android:layout_alignParentEnd="true"

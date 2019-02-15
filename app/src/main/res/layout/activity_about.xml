@@ -80,8 +80,8 @@
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:padding="@dimen/sub_small_spacing"
-                        android:layout_marginLeft="@dimen/medium_spacing"
-                        android:layout_marginRight="@dimen/medium_spacing"
+                        android:layout_marginStart="@dimen/medium_spacing"
+                        android:layout_marginEnd="@dimen/medium_spacing"
                         android:text="@string/app_light_description"
                         android:textColor="@color/md_dark_primary_text"
                         android:textSize="@dimen/medium_text"/>
@@ -128,7 +128,7 @@
                         android:id="@+id/about_special_thanks_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="@dimen/medium_spacing"
+                        android:paddingStart="@dimen/medium_spacing"
                         android:paddingTop="@dimen/medium_spacing"
                         android:text="@string/about_special_thanks"
                         android:textColor="@color/md_dark_background"
@@ -194,7 +194,7 @@
                         android:id="@+id/about_support_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="@dimen/medium_spacing"
+                        android:paddingStart="@dimen/medium_spacing"
                         android:paddingTop="@dimen/medium_spacing"
                         android:text="@string/about_support"
                         android:textColor="@color/md_dark_background"
@@ -214,8 +214,8 @@
                             android:layout_width="@dimen/icon_width_height"
                             android:layout_height="@dimen/icon_width_height"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/big_spacing"
-                            android:layout_marginRight="@dimen/big_spacing"
+                            android:layout_marginStart="@dimen/big_spacing"
+                            android:layout_marginEnd="@dimen/big_spacing"
                             app:iiv_icon="gmd-bug-report" />
 
                         <LinearLayout
@@ -223,7 +223,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:paddingBottom="@dimen/small_spacing"
-                            android:paddingRight="@dimen/medium_spacing"
+                            android:paddingEnd="@dimen/medium_spacing"
                             android:paddingTop="@dimen/medium_spacing">
 
                             <TextView
@@ -258,8 +258,8 @@
                             android:layout_width="@dimen/icon_width_height"
                             android:layout_height="@dimen/icon_width_height"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/big_spacing"
-                            android:layout_marginRight="@dimen/big_spacing"
+                            android:layout_marginStart="@dimen/big_spacing"
+                            android:layout_marginEnd="@dimen/big_spacing"
                             app:iiv_icon="faw-github" />
 
                         <LinearLayout
@@ -267,7 +267,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:paddingBottom="@dimen/small_spacing"
-                            android:paddingRight="@dimen/medium_spacing"
+                            android:paddingEnd="@dimen/medium_spacing"
                             android:paddingTop="@dimen/small_spacing">
 
                             <TextView
@@ -311,7 +311,7 @@
                         android:id="@+id/about_license_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="@dimen/medium_spacing"
+                        android:paddingStart="@dimen/medium_spacing"
                         android:paddingTop="@dimen/medium_spacing"
                         android:text="@string/about_license"
                         android:textColor="@color/md_dark_background"
@@ -331,8 +331,8 @@
                             android:layout_width="@dimen/icon_width_height"
                             android:layout_height="@dimen/icon_width_height"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/big_spacing"
-                            android:layout_marginRight="@dimen/big_spacing"
+                            android:layout_marginStart="@dimen/big_spacing"
+                            android:layout_marginEnd="@dimen/big_spacing"
                             app:iiv_icon="gmd-insert-drive-file" />
 
                         <LinearLayout
@@ -340,7 +340,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:paddingBottom="@dimen/small_spacing"
-                            android:paddingRight="@dimen/medium_spacing"
+                            android:paddingEnd="@dimen/medium_spacing"
                             android:paddingTop="@dimen/medium_spacing">
 
                             <TextView
@@ -374,8 +374,8 @@
                             android:layout_width="@dimen/icon_width_height"
                             android:layout_height="@dimen/icon_width_height"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/big_spacing"
-                            android:layout_marginRight="@dimen/big_spacing"
+                            android:layout_marginStart="@dimen/big_spacing"
+                            android:layout_marginEnd="@dimen/big_spacing"
                             app:iiv_icon="gmd-insert-drive-file" />
 
                         <LinearLayout
@@ -383,7 +383,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:paddingBottom="@dimen/medium_spacing"
-                            android:paddingRight="@dimen/medium_spacing"
+                            android:paddingEnd="@dimen/medium_spacing"
                             android:paddingTop="@dimen/small_spacing">
 
                             <TextView
@@ -426,7 +426,7 @@
                         android:id="@+id/connect_to_us_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="@dimen/medium_spacing"
+                        android:paddingStart="@dimen/medium_spacing"
                         android:paddingTop="@dimen/medium_spacing"
                         android:text="@string/connect_to_us"
                         android:textColor="@color/md_dark_background"
@@ -446,8 +446,8 @@
                             android:layout_width="@dimen/icon_width_height"
                             android:layout_height="@dimen/icon_width_height"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/big_spacing"
-                            android:layout_marginRight="@dimen/big_spacing"
+                            android:layout_marginStart="@dimen/big_spacing"
+                            android:layout_marginEnd="@dimen/big_spacing"
                             app:iiv_icon="ion_android_globe" />
 
                         <LinearLayout
@@ -455,7 +455,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:paddingBottom="@dimen/small_spacing"
-                            android:paddingRight="@dimen/medium_spacing"
+                            android:paddingEnd="@dimen/medium_spacing"
                             android:paddingTop="@dimen/medium_spacing">
 
                             <TextView
@@ -489,8 +489,8 @@
                             android:layout_width="@dimen/icon_width_height"
                             android:layout_height="@dimen/icon_width_height"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/big_spacing"
-                            android:layout_marginRight="@dimen/big_spacing"
+                            android:layout_marginStart="@dimen/big_spacing"
+                            android:layout_marginEnd="@dimen/big_spacing"
                             app:iiv_icon="faw_facebook_square" />
 
                         <LinearLayout
@@ -498,7 +498,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:paddingBottom="@dimen/medium_spacing"
-                            android:paddingRight="@dimen/medium_spacing"
+                            android:paddingEnd="@dimen/medium_spacing"
                             android:paddingTop="@dimen/small_spacing">
 
                             <TextView
@@ -532,8 +532,8 @@
                             android:layout_width="@dimen/icon_width_height"
                             android:layout_height="@dimen/icon_width_height"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/big_spacing"
-                            android:layout_marginRight="@dimen/big_spacing"
+                            android:layout_marginStart="@dimen/big_spacing"
+                            android:layout_marginEnd="@dimen/big_spacing"
                             app:iiv_icon="faw_twitter"/>
 
                         <LinearLayout
@@ -541,7 +541,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:paddingBottom="@dimen/medium_spacing"
-                            android:paddingRight="@dimen/medium_spacing"
+                            android:paddingEnd="@dimen/medium_spacing"
                             android:paddingTop="@dimen/small_spacing">
 
                             <TextView

@@ -60,10 +60,8 @@
                     android:layout_alignParentLeft="true"
                     android:layout_toLeftOf="@+id/icon_pinned"
                     android:maxLines="1"
-                    android:paddingEnd="20dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="20dp"
                     android:paddingStart="10dp"
+                    android:paddingEnd="20dp"
                     android:paddingTop="10dp"
                     android:textColor="@android:color/white"
                     android:textSize="16sp" />
@@ -74,7 +72,6 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:paddingLeft="10dp"
                     android:paddingStart="10dp"
                     android:paddingTop="10dp"
                     android:visibility="invisible"
@@ -103,9 +100,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
                     android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
                     android:paddingTop="10dp" />
 
             </RelativeLayout>
