@@ -94,10 +94,16 @@ public class SecurityActivity extends ThemedActivity {
                 securityObj.updateSecuritySetting();
                 updateSwitchColor(swActiveSecurity, getAccentColor());
                 llbody.setEnabled(swActiveSecurity.isChecked());
-                if (isChecked)
+                String password = SP.getString(getString(R.string.preference_password_value),"");
+                if (password.isEmpty() && isChecked)
                     setPasswordDialog();
+                else if (isChecked) {
+                    swActiveSecurity.setChecked(true);
+                    editor.putBoolean(getString(R.string.preference_use_password), true);
+                    editor.commit();
+                    toggleEnabledChild(true);
+                }
                 else {
-                    editor.putString(getString(R.string.preference_password_value), "");
                     editor.putBoolean(getString(R.string.preference_use_password), false);
                     editor.commit();
                     toggleEnabledChild(false);
