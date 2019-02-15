@@ -96,7 +96,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
         else
             holder.pin.setVisibility(View.INVISIBLE);
         String path="";
-        if (!filterCheck(a.getPath(),securityObj.getSecuredfolders()))
+        if (!securityObj.isPasswordOnfolder()||!filterCheck(a.getPath(),securityObj.getSecuredfolders()))
             path=f.getPath();
             Glide.with(holder.picture.getContext())
                     .load(path)
