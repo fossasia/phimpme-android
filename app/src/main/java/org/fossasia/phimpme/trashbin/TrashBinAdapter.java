@@ -42,7 +42,7 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
     private ArrayList<TrashBinRealmModel> trashItemsList = null;
     private View.OnClickListener onClickListener;
     private BasicCallBack basicCallBack;
-    OnDeleteClickListener onDeleteClickListener;
+    private OnDeleteClickListener onDeleteClickListener;
 
     public TrashBinAdapter(ArrayList<TrashBinRealmModel> list, BasicCallBack basicCallBack) {
         trashItemsList = list;
