@@ -1707,7 +1707,7 @@ public class LFMainActivity extends SharedMediaActivity {
             textView.setVisibility(View.VISIBLE);
         }
         else
-            textView.setVisibility(View.INVISIBLE);
+            textView.setVisibility(View.GONE);
     }
 
     //region MENU
