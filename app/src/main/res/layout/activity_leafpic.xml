@@ -77,11 +77,27 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
+                            android:layout_marginTop="@dimen/sub_small_spacing"
                             android:elevation="12dp"
                             android:gravity="center"
                             android:text="@string/there_is_nothing_to_show"
                             android:textColor="@color/md_white_1000"
-                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/sub_big_text"
+                            android:visibility="invisible"
+                            tools:targetApi="lollipop" />
+                        <TextView
+                            android:layout_below="@+id/nothing_to_show"
+                            android:layout_marginTop="@dimen/sub_medium_spacing"
+                            android:id="@+id/no_fav_msg"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:elevation="12dp"
+                            android:gravity="center"
+                            android:layout_centerInParent="true"
+                            android:text="@string/no_favourites_message"
+                            android:textColor="@color/md_white_1000"
+                            android:textSize="@dimen/medium_text"
                             android:visibility="invisible"
                             tools:targetApi="lollipop" />
 

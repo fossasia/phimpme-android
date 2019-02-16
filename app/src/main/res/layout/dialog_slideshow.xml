@@ -35,12 +35,18 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="15dp">
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/time_text_input_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:errorEnabled="true"/>
                     <EditText
                         android:id="@+id/slideshow_edittext"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginEnd="10dp"
+                        android:maxLength="9"
                         android:hint="@string/time_interval"
                         android:inputType="number" />
 

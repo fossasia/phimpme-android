@@ -1051,7 +1051,7 @@
                                     android:id="@+id/reset_settings_Item_sub"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="Reset all settings to default"
+                                    android:text="@string/reset_sub_text"
                                     android:textColor="@color/md_grey_400"
                                     android:textSize="@dimen/sub_medium_text" />
                             </LinearLayout>

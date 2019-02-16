@@ -10,6 +10,24 @@
         tools:node="remove"/>
     <uses-permission android:name="android.permission.RECEIVE_SMS"
         tools:node="remove"/>
+    <uses-permission android:name="android.permission.SEND_SMS"
+        tools:node="remove"/>
+    <uses-permission android:name="android.permission.WRITE_SMS"
+        tools:node="remove"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"
+        tools:node="remove"/>
+    <uses-permission android:name="android.permission.WRITE_CALL_LOG"
+        tools:node="remove"/>
+    <uses-permission android:name="android.permission.READ_CALL_LOG"
+        tools:node="remove"/>
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"
+        tools:node="remove"/>
+    <uses-permission android:name="android.permission.MANAGE_OWN_CALLS"
+        tools:node="remove"/>
+    <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS"
+        tools:node="remove"/>
+    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS"
+        tools:node="remove"/>
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -285,7 +303,6 @@
             android:name=".editor.EditImageActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan"
-            android:configChanges="orientation|screenSize"
             />
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
