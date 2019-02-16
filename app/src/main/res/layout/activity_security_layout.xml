@@ -160,7 +160,6 @@
                 android:id="@+id/ll_security_dialog_body"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/big_spacing"
                 android:orientation="vertical">
 
                 <TextView
@@ -170,6 +169,7 @@
                     android:text="@string/apply_password_on"
                     android:textColor="@color/md_dark_primary_text"
                     android:textSize="@dimen/medium_text"
+                    android:layout_marginStart="@dimen/big_spacing"
                     android:textStyle="bold" />
                 <!--HIDDEN FOLDER-->
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
