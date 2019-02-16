@@ -111,11 +111,13 @@ public class SecurityHelper {
                     int position = editxtPassword.getText().length();
                     Editable editObj = editxtPassword.getText();
                     Selection.setSelection(editObj, position);
+                    editxtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 } else {
                     editxtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     int position = editxtPassword.getText().length();
                     Editable editObj = editxtPassword.getText();
                     Selection.setSelection(editObj, position);
+                    editxtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 }
             }
         });
