@@ -1308,6 +1308,7 @@
     <string name="empty_trashbin_mssg">No Items present currently</string>
     <string name="trashbin_mssg">Only images deleted in the Phimpme Android app are present here.</string>
     <string name="install_facebook">Facebook not installed</string>
+    <string name="restart">Restart</string>
     <string name="restart_app">Please restart the app for better results!</string>
     <string name="press_back_again_to_exit">Press back again to exit</string>
     <string name="photos_moved_successfully">Photos moved successfully</string>
