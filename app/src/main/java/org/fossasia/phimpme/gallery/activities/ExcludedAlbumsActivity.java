@@ -6,10 +6,13 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
@@ -47,6 +50,30 @@ public class ExcludedAlbumsActivity extends ThemedActivity {
         TextView a = findViewById(R.id.nothing_to_show);
         a.setTextColor(getTextColor());
         a.setVisibility(excludedFolders.size() == 0 ? View.VISIBLE : View.GONE);
+    }
+
+    public void restoreAll(int itemcount){
+        if (excludedFolders.size()!=0){
+            for (int i=0;i<itemcount;i++){
+                h.clearAlbumExclude(excludedFolders.remove(0).getAbsolutePath());
+            }
+            Toast.makeText(ExcludedAlbumsActivity.this,"All folders are restored!",Toast.LENGTH_SHORT).show();
+            finish();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_excluded_items,menu);
+       menu.findItem(R.id.restore_all).setVisible(excludedFolders.size()!=0);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId()==R.id.restore_all){
+            restoreAll(excludedFolders.size());
+        }
+        return true;
     }
 
     private void initUI() {
