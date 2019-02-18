@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
@@ -28,7 +27,6 @@ import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.TimerTask;
 
 /**
  * Created by Jibo on 04/04/2016.
