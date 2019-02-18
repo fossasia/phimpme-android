@@ -1,6 +1,8 @@
 package org.fossasia.phimpme.gallery.activities;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,9 +24,11 @@ import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.gallery.data.CustomAlbumsHelper;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
+import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.TimerTask;
 
 /**
  * Created by Jibo on 04/04/2016.
@@ -57,8 +61,13 @@ public class ExcludedAlbumsActivity extends ThemedActivity {
             for (int i=0;i<itemcount;i++){
                 h.clearAlbumExclude(excludedFolders.remove(0).getAbsolutePath());
             }
-            Toast.makeText(ExcludedAlbumsActivity.this,"All folders are restored!",Toast.LENGTH_SHORT).show();
-            finish();
+            SnackBarHandler.show(findViewById(R.id.rl_ea), "All folders are restored", Snackbar.LENGTH_SHORT).show();
+            new Handler().postDelayed(new Runnable() {
+               @Override
+               public void run() {
+                   finish();
+               }
+            },1000);
         }
     }
 
