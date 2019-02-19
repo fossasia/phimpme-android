@@ -760,14 +760,14 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                             handleEditorImage(data);
                             if (ContentHelper.copyFile(getApplicationContext(), new File(imageUri.getPath()), new File(getAlbum().getPath()))) {
                                 //((ImageFragment) adapter.getRegisteredFragment(getAlbum().getCurrentMediaIndex())).displayMedia(true);
-                                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.new_file_created), bottomBar.getHeight());
+                                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.new_file_created), (bottomBar.getHeight()*2)-22);
                             }
                             //adapter.notifyDataSetChanged();
                         } catch (Exception e) {
                             Log.e("ERROS - uCrop", imageUri.toString(), e);
                         }
                     } else
-                        SnackBarHandler.showWithBottomMargin(parentView, "errori random", bottomBar.getHeight());
+                        SnackBarHandler.showWithBottomMargin(parentView, "errori random", (bottomBar.getHeight()*2)-22);
                     break;
                 default:
                     break;
@@ -1072,7 +1072,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             public void onClick(DialogInterface dialog, int id) {
                 item.getIcon().clearColorFilter();
                 deletefav(getAlbum().getCurrentMedia().getPath());
-                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.photo_deleted_from_fav_msg), bottomBar.getHeight());
+                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.photo_deleted_from_fav_msg), (bottomBar.getHeight()*2)-22);
                 }
         });
         AlertDialog alertDialog = deleteDialog.create();
@@ -1106,7 +1106,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         } else {
                             getAlbum().copyPhoto(getApplicationContext(), getAlbum().getCurrentMedia().getPath(), path);
                             bottomSheetDialogFragment.dismiss();
-                            SnackBarHandler.showWithBottomMargin(relativeLayout, getString(R.string.copied_successfully) + " to " + path, bottomBar.getHeight());
+                            SnackBarHandler.showWithBottomMargin(relativeLayout, getString(R.string.copied_successfully) + " to " + path, (bottomBar.getHeight()*2)-22);
                         }
                     }
                 });
@@ -1141,7 +1141,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     editIntent.putExtra("requestCode", ACTION_REQUEST_EDITIMAGE);
                     startActivity(editIntent);
                 } else
-                    SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.image_invalid), bottomBar.getHeight());
+                    SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.image_invalid), (bottomBar.getHeight()*2)-22);
                 break;
 
             case R.id.action_use_as:
@@ -1281,7 +1281,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     }
                     item.getIcon().setColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN);
                     realm.commitTransaction();
-                    SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.add_favourite), bottomBar.getHeight());
+                    SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.add_favourite), (bottomBar.getHeight()*2)-22);
                 } else {
                     deletefromfav(item);
                 }
@@ -1349,7 +1349,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         getdescriptionpaths(pathcurrent, path);
 //                        toolbar.setTitle((mViewPager.getCurrentItem() + 1) + " " + getString(R.string.of) + " " + getAlbum().getCount());
                         bottomSheetDialogFragment.dismiss();
-                        SnackBarHandler.showWithBottomMargin(relativeLayout, getString(R.string.photo_moved_successfully) + " to " + path, bottomBar.getHeight());
+                        SnackBarHandler.showWithBottomMargin(relativeLayout, getString(R.string.photo_moved_successfully) + " to " + path, (bottomBar.getHeight()*2)-22);
                     }
                 });
                 bottomSheetDialogFragment.show(getSupportFragmentManager(), bottomSheetDialogFragment.getTag());
@@ -1359,7 +1359,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             case R.id.action_cover:
                 AlbumSettings albumSettings = AlbumSettings.getSettings(getApplicationContext(), getAlbum());
                 albumSettings.changeCoverPath(getApplicationContext(), getAlbum().getCurrentMedia().getPath());
-                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.change_cover), bottomBar.getHeight());
+                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.change_cover), (bottomBar.getHeight()*2)-22);
                 return true;
 
             case R.id.action_details:
@@ -1473,12 +1473,11 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         voiceInput = editTextDescription.getText().toString();
                         if (temp == null) {
                             databaseHelper.addImageDesc(new ImageDescModel(pathForDescription, editTextDescription.getText().toString()));
-                            SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.description_saved), bottomBar.getHeight());
+                            SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.description_saved), (bottomBar.getHeight()*2)-22);
                         } else {
                             databaseHelper.update(new ImageDescModel(pathForDescription, editTextDescription.getText().toString()));
-                            SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.description_updated), bottomBar.getHeight());
+                            SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.description_updated), (bottomBar.getHeight()*2)-22);
                         }
-
                     }
                 });
 
@@ -1490,7 +1489,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         } else {
                             descriptionDialog.dismiss();
                             databaseHelper.delete(temp);
-                            SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.description_deleted), bottomBar.getHeight());
+                            SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.description_deleted), (bottomBar.getHeight()*2)-22);
                         }
                     }
                 });
@@ -1730,7 +1729,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                             if (securityObj.checkPassword(editTextPassword.getText().toString())) {
                                 deleteCurrentMedia();
                             } else
-                                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), bottomBar.getHeight());
+                                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), (bottomBar.getHeight()*2)-22);
 
                         }
                     });
@@ -1772,7 +1771,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                             } else {
                                 passco[0] = true;
                                 securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
-                                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), bottomBar.getHeight());
+                                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), (bottomBar.getHeight()*2)-22);
                                 editTextPassword.getText().clear();
                                 editTextPassword.requestFocus();
                             }
