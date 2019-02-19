@@ -1308,6 +1308,7 @@
     <string name="empty_trashbin_mssg">No Items present currently</string>
     <string name="trashbin_mssg">Only images deleted in the Phimpme Android app are present here.</string>
     <string name="install_facebook">Facebook not installed</string>
+    <string name="restart">Restart</string>
     <string name="restart_app">Please restart the app for better results!</string>
     <string name="press_back_again_to_exit">Press back again to exit</string>
     <string name="photos_moved_successfully">Photos moved successfully</string>
@@ -1375,6 +1376,7 @@
     <string name="replace">Replace</string>
 
     <string name="select_a_font">Select a Font</string>
+    <string name="time_limit">Time limit must be between 2 and 10 seconds</string>
     <string name="min_duration_slide">Minimum duration is 2 sec</string>
     <string name="slide_start">Slideshow Started!</string>
     <string name="slide_max_value">Maximum duration is 10 sec</string>

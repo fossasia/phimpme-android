@@ -42,10 +42,15 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
     private ArrayList<TrashBinRealmModel> trashItemsList = null;
     private View.OnClickListener onClickListener;
     private BasicCallBack basicCallBack;
+    private OnDeleteClickListener onDeleteClickListener;
 
     public TrashBinAdapter(ArrayList<TrashBinRealmModel> list, BasicCallBack basicCallBack) {
         trashItemsList = list;
         this.basicCallBack = basicCallBack;
+    }
+
+    public interface OnDeleteClickListener {
+        void onDelete(int position);
     }
 
     @Override public TrashBinAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -92,15 +97,8 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
                                     return true;
 
                                 case R.id.delete_permanently:
-                                    if(deletePermanent(trashBinRealmModel)){
-                                        deleteFromRealm(trashItemsList.get(position).getTrashbinpath());
-                                        trashItemsList.remove(position);
-                                        notifyItemRemoved(position);
-                                        notifyItemRangeChanged(position, trashItemsList.size());
-                                    }
-                                    if(trashItemsList.size() == 0){
-                                        basicCallBack.callBack(2, null);
-                                    }
+                                    if (onDeleteClickListener != null)
+                                        onDeleteClickListener.onDelete(position);
                                     return true;
 
                                 default:
@@ -112,6 +110,19 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
                     menu.show();
                 }
             });
+        }
+    }
+
+    public void updateDeleteContent (int position) {
+        final TrashBinRealmModel trashBinRealmModel = trashItemsList.get(position);
+        if(deletePermanent(trashBinRealmModel)){
+            deleteFromRealm(trashItemsList.get(position).getTrashbinpath());
+            trashItemsList.remove(position);
+            notifyItemRemoved(position);
+            notifyItemRangeChanged(position, trashItemsList.size());
+        }
+        if(trashItemsList.size() == 0){
+            basicCallBack.callBack(2, null);
         }
     }
 
@@ -160,6 +171,10 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
                 trashBinRealmModels.deleteAllFromRealm();
             }
         });
+    }
+
+    public void setOnDeleteClickListener (OnDeleteClickListener onDeleteClickListener){
+        this.onDeleteClickListener = onDeleteClickListener;
     }
 
     private boolean deletePermanent(TrashBinRealmModel trashBinRealmModel){

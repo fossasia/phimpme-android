@@ -1887,6 +1887,9 @@ public class LFMainActivity extends SharedMediaActivity {
         menu.findItem(R.id.zipAlbumButton).setVisible(editMode && !all_photos && albumsMode && !fav_photos && !hidden &&
                 getAlbums().getSelectedCount() == 1);
         menu.findItem(R.id.delete_action).setVisible((!albumsMode || editMode) && (!all_photos || editMode));
+        if (fav_photos){
+            menu.findItem(R.id.delete_action).setVisible(editMode);
+        }
         if(fav_photos && favouriteslist.size() == 0 ){
             menu.findItem(R.id.delete_action).setVisible(false);
             menu.findItem(R.id.sort_action).setVisible(false);
@@ -2276,15 +2279,26 @@ public class LFMainActivity extends SharedMediaActivity {
 
                 AlertDialog.Builder deleteDialog = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
 
-                if(fav_photos && !all_photos)
+                if(fav_photos && !all_photos){
                     AlertDialogsHelper.getTextDialog(this, deleteDialog, R.string.remove_from_favourites, R.string.remove_favourites_body, null);
-                else
+                    deleteDialog.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+                    deleteDialog.setPositiveButton(getString(R.string.remove).toUpperCase(), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            new DeletePhotos().execute();
+                        }
+                    });
+                    AlertDialog alertDialog1=deleteDialog.create();
+                    alertDialog1.show();
+                    AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog1);
+                    return true;
+                }else
                     AlertDialogsHelper.getTextCheckboxDialog(this, deleteDialog, R.string.delete, albumsMode || !editMode ?
                             R.string.delete_album_message :
                             R.string.delete_photos_message, null, getResources().getString(R.string.move_to_trashbin), getAccentColor());
 
                 deleteDialog.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-                deleteDialog.setPositiveButton(fav_photos && !all_photos ? getString(R.string.remove).toUpperCase() : getString(R.string.delete).toUpperCase(), new DialogInterface.OnClickListener() {
+                deleteDialog.setPositiveButton(getString(R.string.delete).toUpperCase(), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (securityObj.isActiveSecurity() && securityObj.isPasswordOnDelete()) {
                             final boolean passco[] = {false};
