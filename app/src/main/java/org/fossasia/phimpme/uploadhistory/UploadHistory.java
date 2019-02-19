@@ -36,6 +36,7 @@ import com.mikepenz.iconics.view.IconicsImageView;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.UploadHistoryRealmModel;
+import org.fossasia.phimpme.gallery.activities.SettingsActivity;
 import org.fossasia.phimpme.gallery.activities.SingleMediaActivity;
 import org.fossasia.phimpme.gallery.data.Media;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
@@ -265,6 +266,9 @@ public class UploadHistory extends ThemedActivity {
             case R.id.delete_action:
                 deleteAllMedia();
                 return true;
+            case R.id.up_settings:
+                startActivity(new Intent(UploadHistory.this, SettingsActivity.class));
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -320,6 +324,7 @@ public class UploadHistory extends ThemedActivity {
                         public void onClick(View v) {
                             // if password is correct, call DeletePhotos and perform deletion
                             if (securityObj.checkPassword(editTextPassword.getText().toString())) {
+                                passwordDialog.dismiss();
                                new DeleteHistory().execute();
                             }
                             // if password is incorrect, don't delete and notify user of incorrect password

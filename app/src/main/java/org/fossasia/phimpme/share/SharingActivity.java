@@ -1052,7 +1052,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (!isPersonal) {
-                    SnackBarHandler.show(parent, R.string.sign_from_account);
+                    Snackbar.make(parent,R.string.sign_from_account,Snackbar.LENGTH_SHORT).show();
                     return;
                 } else {
                     isPersonal = true;

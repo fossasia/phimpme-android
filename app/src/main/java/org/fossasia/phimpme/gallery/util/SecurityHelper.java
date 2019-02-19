@@ -203,6 +203,7 @@ public class SecurityHelper {
                         answer1 = SP.getString("Security Answer", answer1);
                         if (Objects.equals(answer1, securityAnswer1.getText().toString())) {
                             changePassword(activity, passwordDialog);
+                            dialog.dismiss();
                         } else {
                             securityAnswer1.getText().clear();
                             til.setError(activity.getString(R.string.wrong_answer));
@@ -212,6 +213,7 @@ public class SecurityHelper {
             }
         });
         dialog.show();
+        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, activity.getAccentColor(), dialog);
     }
 
     public void changePassword(final ThemedActivity activity, final AlertDialog.Builder passwordDialog) {
@@ -336,7 +338,7 @@ public class SecurityHelper {
                                         SnackBarHandler.show(activity.findViewById(android.R.id.content), R.string.remember_password_message);
                                         updateSecuritySetting();
                                         dialog.dismiss();
-                                        Toast.makeText(activity.getApplicationContext(), "Password Reset", Toast.LENGTH_SHORT)
+                                        Toast.makeText(activity.getApplicationContext(),R.string.password_reset, Toast.LENGTH_SHORT)
                                                 .show();
                                     } else {
                                         securityAnswer1.requestFocus();
