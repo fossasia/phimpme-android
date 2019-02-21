@@ -44,6 +44,7 @@ import android.transition.ChangeBounds;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Surface;
@@ -1998,6 +1999,33 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
         dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.ok_action).toUpperCase(), (DialogInterface.OnClickListener) null);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
+                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER){
+                    String value = editTextTimeInterval.getText().toString();
+                    if (!"".equals(value)) {
+                        slideshow = true;
+                        int intValue = Integer.parseInt(value);
+                        SLIDE_SHOW_INTERVAL = intValue * 1000;
+                        if (SLIDE_SHOW_INTERVAL > 1000 && SLIDE_SHOW_INTERVAL <= 10000) {
+                            dialog.dismiss();
+                            hideSystemUI();
+                            Toast.makeText(SingleMediaActivity.this, getString(R.string.slide_start), Toast.LENGTH_SHORT).show();
+                            handler.postDelayed(slideShowRunnable, SLIDE_SHOW_INTERVAL);
+                        } else if (SLIDE_SHOW_INTERVAL < 2000) {
+                            editTextTimeInterval.requestFocus();
+                            til.setError(getString(R.string.min_duration_slide));
+                        } else if (SLIDE_SHOW_INTERVAL > 10000) {
+                            editTextTimeInterval.requestFocus();
+                            til.setError(getString(R.string.slide_max_value));
+                        }
+                    }
+                }
+                return false;
+            }
+        });
 
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
