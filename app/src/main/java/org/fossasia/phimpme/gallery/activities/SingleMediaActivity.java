@@ -2012,7 +2012,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         if (SLIDE_SHOW_INTERVAL > 1000 && SLIDE_SHOW_INTERVAL <= 10000) {
                             dialog.dismiss();
                             hideSystemUI();
-                            Toast.makeText(SingleMediaActivity.this, getString(R.string.slide_start), Toast.LENGTH_SHORT).show();
+                            SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.slide_start), 0);
                             handler.postDelayed(slideShowRunnable, SLIDE_SHOW_INTERVAL);
                         } else if (SLIDE_SHOW_INTERVAL < 2000) {
                             editTextTimeInterval.requestFocus();
@@ -2042,7 +2042,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                             if (SLIDE_SHOW_INTERVAL > 1000 && SLIDE_SHOW_INTERVAL <= 10000) {
                                 dialog.dismiss();
                                 hideSystemUI();
-                                Toast.makeText(SingleMediaActivity.this, getString(R.string.slide_start), Toast.LENGTH_SHORT).show();
+                                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.slide_start), 0);
                                 handler.postDelayed(slideShowRunnable, SLIDE_SHOW_INTERVAL);
                             } else if (SLIDE_SHOW_INTERVAL < 2000) {
                                 editTextTimeInterval.requestFocus();
