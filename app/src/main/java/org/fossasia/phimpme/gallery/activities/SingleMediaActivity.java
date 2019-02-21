@@ -1897,7 +1897,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 imgLocation.setText(R.string.no_location);
             } else {
                 imgLocation.setText(mediaDetailsMap.get("Location").toString());
-                imgLocation.setTextColor(getResources().getColor(R.color.accent_orange, null));
+                imgLocation.setTextColor(getAccentColor());
             }
         } catch (Exception e) {
             //Raised if null values is found, no need to handle
