@@ -102,11 +102,10 @@ public class SecurityActivity extends ThemedActivity {
                         swActiveSecurity.setChecked(true);
                         SP.putBoolean(getString(R.string.preference_use_password), true);
                         toggleEnabledChild(true);
-                    }
-                    else
-                    setPasswordDialog();
-                }
-                else {
+                        Snackbar.make(findViewById(android.R.id.content), "Password Set", Snackbar.LENGTH_SHORT)
+                                .show();
+                    } else setPasswordDialog();
+                } else {
                     editor.putBoolean(getString(R.string.preference_use_password), false);
                     editor.commit();
                     toggleEnabledChild(false);
