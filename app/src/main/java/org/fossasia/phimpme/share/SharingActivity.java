@@ -772,7 +772,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         captionEditText.setHint(R.string.description_hint);
         captionEditText.setHintTextColor(ContextCompat.getColor(this,R.color.grey));
         captionEditText.setSelectAllOnFocus(true);
-        captionEditText.setHighlightColor(ContextCompat.getColor(getApplicationContext(), R.color.cardview_shadow_start_color));
+        if(getBaseTheme() == ThemeHelper.DARK_THEME || getBaseTheme() == ThemeHelper.AMOLED_THEME){
+            captionEditText.setHighlightColor(ContextCompat.getColor(getApplicationContext(), R.color.accent_grey));
+        } else captionEditText.setHighlightColor(ContextCompat.getColor(getApplicationContext(), R.color.cardview_shadow_start_color));
         captionEditText.selectAll();
         captionEditText.setSingleLine(false);
         captionDialogBuilder.setPositiveButton(getString(R.string.add_action).toUpperCase(), new DialogInterface.OnClickListener() {
