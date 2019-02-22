@@ -54,6 +54,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -61,7 +62,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.bumptech.glide.Glide;
@@ -2000,10 +2000,10 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.ok_action).toUpperCase(), (DialogInterface.OnClickListener) null);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
-        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+        editTextTimeInterval.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
-                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER){
+            public boolean onEditorAction(TextView textView, int keyCode, KeyEvent keyEvent) {
+                if ( keyCode == EditorInfo.IME_ACTION_DONE || keyCode == EditorInfo.IME_ACTION_NEXT) {
                     String value = editTextTimeInterval.getText().toString();
                     if (!"".equals(value)) {
                         slideshow = true;
@@ -2022,11 +2022,11 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                             til.setError(getString(R.string.slide_max_value));
                         }
                     }
+                    return true;
                 }
                 return false;
             }
         });
-
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialogInterface) {
