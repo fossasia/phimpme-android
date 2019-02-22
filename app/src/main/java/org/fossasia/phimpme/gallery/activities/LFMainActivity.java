@@ -140,7 +140,6 @@ import static org.fossasia.phimpme.gallery.data.base.SortingMode.DATE;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.NAME;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.NUMERIC;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.SIZE;
-import static org.fossasia.phimpme.gallery.util.ThemeHelper.LIGHT_THEME;
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 
 public class LFMainActivity extends SharedMediaActivity {
@@ -171,6 +170,7 @@ public class LFMainActivity extends SharedMediaActivity {
     //To handle all photos/Album conditions
     public boolean all_photos = false;
     private boolean checkForReveal = true;
+    private boolean albumsFab = false;
     final String REVIEW_ACTION = "com.android.camera.action.REVIEW";
     public static ArrayList<Media> listAll;
     public int size;
@@ -1223,7 +1223,13 @@ public class LFMainActivity extends SharedMediaActivity {
         fabScrollUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                rvMedia.smoothScrollToPosition(0);
+                if (albumsFab){
+                    rvAlbums.smoothScrollToPosition(0);
+                    albumsFab = false;
+                }
+                else {
+                    rvMedia.smoothScrollToPosition(0);
+                }
                 fabScrollUp.hide();
             }
         });
@@ -1236,6 +1242,22 @@ public class LFMainActivity extends SharedMediaActivity {
                     fabScrollUp.show();
                 else if (linearLayoutManager.findFirstVisibleItemPosition() < 30 && fabScrollUp.isShown())
                     fabScrollUp.hide();
+                fabScrollUp.setAlpha(0.7f);
+                albumsFab = false;
+            }
+        });
+        rvAlbums.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                if (linearLayoutManager.findFirstVisibleItemPosition() > 15 && !fabScrollUp.isShown()) {
+                    fabScrollUp.show();
+                    albumsFab = true;
+                }
+                else if (linearLayoutManager.findFirstVisibleItemPosition() < 15 && fabScrollUp.isShown()) {
+                    fabScrollUp.hide();
+                    albumsFab = false;
+                }
                 fabScrollUp.setAlpha(0.7f);
             }
         });
