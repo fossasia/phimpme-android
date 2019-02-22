@@ -163,7 +163,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
     private SelectAlbumBottomSheet bottomSheetDialogFragment;
     private BottomNavigationView navigationView;
-    private boolean hidden = false, pickMode = false, editMode = false, albumsMode = true, firstLaunch = true, localFolder = true, hidenav = false;
+    private boolean hidden = false, pickMode = false, editMode = false, albumsMode = true, firstLaunch = true, localFolder = true, hidenav = false, singItemAlbum = false;
 
     //to handle pinch gesture
     private ScaleGestureDetector mScaleGestureDetector;
@@ -781,7 +781,6 @@ public class LFMainActivity extends SharedMediaActivity {
         super.onCreate(savedInstanceState);
         Log.e("TAG", "lfmain");
         ButterKnife.bind(this);
-      
         navigationView = findViewById(R.id.bottombar);
         favicon = findViewById(R.id.Drawer_favourite_Icon);
 
@@ -1844,6 +1843,7 @@ public class LFMainActivity extends SharedMediaActivity {
             }
         } else {
             menu.findItem(R.id.search_action).setVisible(false);
+            singItemAlbum = getAlbum().getCount() < 2;
             if (!all_photos && !fav_photos) {
                 editMode = getAlbum().areMediaSelected();
                 menu.setGroupVisible(R.id.photos_option_men, editMode);
@@ -1913,7 +1913,7 @@ public class LFMainActivity extends SharedMediaActivity {
     }
 
     private void togglePrimaryToolbarOptions(final Menu menu) {
-        menu.setGroupVisible(R.id.general_action, !editMode);
+        menu.setGroupVisible(R.id.general_action, !editMode && !singItemAlbum);
 
     }
 
