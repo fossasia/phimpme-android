@@ -37,9 +37,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -325,6 +327,26 @@ public class TrashBinActivity extends ThemedActivity implements TrashBinAdapter.
                     }
                 }
             });
+            editTextPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView textView, int keyCode, KeyEvent keyEvent) {
+                    if (keyCode == EditorInfo.IME_ACTION_DONE || keyCode == EditorInfo.IME_ACTION_NEXT) {
+                        // if password is correct, call DeletePhotos and perform deletion
+                        if (securityObj.checkPassword(editTextPassword.getText().toString())) {
+                            trashBinAdapter.updateDeleteContent(position);
+                            passwordDialog.dismiss();
+                        }
+                        // if password is incorrect, don't delete and notify user of incorrect password
+                        else {
+                            passco[0] = true;
+                            securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
+                            editTextPassword.getText().clear();
+                            editTextPassword.requestFocus();
+                        }
+                    }
+                    return true;
+                }
+            });
         } else {
             trashBinAdapter.updateDeleteContent(position);
         }
@@ -472,6 +494,27 @@ public class TrashBinActivity extends ThemedActivity implements TrashBinAdapter.
                                 editTextPassword.getText().clear();
                                 editTextPassword.requestFocus();
                             }
+                        }
+                    });
+                    editTextPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                        @Override
+                        public boolean onEditorAction(TextView textView, int keyCode, KeyEvent keyEvent) {
+                            if (keyCode == EditorInfo.IME_ACTION_DONE || keyCode == EditorInfo.IME_ACTION_NEXT) {
+                                // if password is correct, call DeletePhotos and perform deletion
+                                if (securityObj.checkPassword(editTextPassword.getText().toString())) {
+                                    new DeleteAll().execute();
+                                }
+                                // if password is incorrect, don't delete and notify user of incorrect password
+                                else {
+                                    passco[0] = true;
+                                    securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
+                                    SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password),
+                                            navigationView.getHeight());
+                                    editTextPassword.getText().clear();
+                                    editTextPassword.requestFocus();
+                                }
+                            }
+                            return true;
                         }
                     });
                 } else {

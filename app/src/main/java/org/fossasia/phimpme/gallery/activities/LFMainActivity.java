@@ -51,6 +51,7 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -58,6 +59,7 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.CompoundButton;
@@ -70,7 +72,6 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 
 import com.bumptech.glide.gifencoder.AnimatedGifEncoder;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
@@ -140,7 +141,6 @@ import static org.fossasia.phimpme.gallery.data.base.SortingMode.DATE;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.NAME;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.NUMERIC;
 import static org.fossasia.phimpme.gallery.data.base.SortingMode.SIZE;
-import static org.fossasia.phimpme.gallery.util.ThemeHelper.LIGHT_THEME;
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 
 public class LFMainActivity extends SharedMediaActivity {
@@ -593,6 +593,40 @@ public class LFMainActivity extends SharedMediaActivity {
                                     }
                                 }
                             });
+                    editTextPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                        @Override
+                        public boolean onEditorAction(TextView textView, int keyCode, KeyEvent keyEvent) {
+                            if (keyCode == EditorInfo.IME_ACTION_DONE || keyCode == EditorInfo.IME_ACTION_NEXT) {
+                                if (securityObj.checkPassword(editTextPassword.getText().toString())) {
+                                    passwordDialog.dismiss();
+                                    if (checkForReveal) {
+                                        enterReveal();
+                                        checkForReveal = false;
+                                    }
+                                    albumsAdapter.notifyItemChanged(getAlbums().toggleSelectAlbum(album));
+                                    editMode = true;
+                                    invalidateOptionsMenu();
+                                    if (getAlbums().getSelectedCount() == 0)
+                                        getNavigationBar();
+                                    else {
+                                        hideNavigationBar();
+                                        hidenav = true;
+                                    }
+                                }
+                                // if password is incorrect, notify user of incorrect password
+                                else {
+                                    passco[0] = true;
+                                    securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
+                                    SnackBarHandler
+                                            .showWithBottomMargin(mDrawerLayout, getString(R.string.wrong_password),
+                                                    navigationView.getHeight());
+                                    editTextPassword.getText().clear();
+                                    editTextPassword.requestFocus();
+                                }
+                            }
+                            return true;
+                        }
+                    });
                 } else {
                     if (checkForReveal) {
                         enterReveal();
@@ -719,6 +753,29 @@ public class LFMainActivity extends SharedMediaActivity {
                                     }
                                 }
                             });
+                    editTextPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                        @Override
+                        public boolean onEditorAction(TextView textView, int keyCode, KeyEvent keyEvent) {
+                            if (keyCode == EditorInfo.IME_ACTION_DONE || keyCode == EditorInfo.IME_ACTION_NEXT) {
+                                if (securityObj.checkPassword(editTextPassword.getText().toString())) {
+                                    passwordDialog.dismiss();
+                                    getAlbums().setCurrentAlbum(album);
+                                    displayCurrentAlbumMedia(true);
+                                }
+                                // if password is incorrect, notify user of incorrect password
+                                else {
+                                    passco[0] =true;
+                                    securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
+                                    SnackBarHandler
+                                            .showWithBottomMargin(mDrawerLayout, getString(R.string.wrong_password),
+                                                    navigationView.getHeight());
+                                    editTextPassword.getText().clear();
+                                    editTextPassword.requestFocus();
+                                }
+                            }
+                            return true;
+                        }
+                    });
                 } else {
                     getAlbums().setCurrentAlbum(album);
                     displayCurrentAlbumMedia(true);
@@ -1512,6 +1569,26 @@ public class LFMainActivity extends SharedMediaActivity {
                             }
                         }
                     });
+                    editTextPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                        @Override
+                        public boolean onEditorAction(TextView textView, int keyCode, KeyEvent keyEvent) {
+                            if (keyCode == EditorInfo.IME_ACTION_DONE || keyCode == EditorInfo.IME_ACTION_NEXT) {
+                                if (securityObj.checkPassword(editTextPassword.getText().toString())) {
+                                    hidden = true;
+                                    mDrawerLayout.closeDrawer(GravityCompat.START);
+                                    new PrepareAlbumTask(activityContext).execute();
+                                    passwordDialog.dismiss();
+                                } else {
+                                    passco[0] = true;
+                                    securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
+                                    SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.wrong_password), 0);
+                                    editTextPassword.getText().clear();
+                                    editTextPassword.requestFocus();
+                                }
+                            }
+                            return true;
+                        }
+                    });
                 } else {
                     hidden = true;
                     mDrawerLayout.closeDrawer(GravityCompat.START);
@@ -1976,7 +2053,24 @@ public class LFMainActivity extends SharedMediaActivity {
                                     }
                                 }
                             });
-
+                        editTextPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                            @Override
+                            public boolean onEditorAction(TextView textView, int keyCode, KeyEvent keyEvent) {
+                                if (keyCode == EditorInfo.IME_ACTION_DONE || keyCode == EditorInfo.IME_ACTION_NEXT) {
+                                    if (securityObj.checkPassword(editTextPassword.getText().toString())) {
+                                        all_photos = true;
+                                        displayAllMedia(true);
+                                        passwordDialog.dismiss();
+                                    } else {
+                                        passco[0] = true;
+                                        securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
+                                        editTextPassword.getText().clear();
+                                        editTextPassword.requestFocus();
+                                    }
+                                }
+                                return true;
+                            }
+                        });
                     } else{
                         all_photos = true;
                         displayAllMedia(true);
@@ -2353,6 +2447,27 @@ public class LFMainActivity extends SharedMediaActivity {
                                         editTextPassword.getText().clear();
                                         editTextPassword.requestFocus();
                                     }
+                                }
+                            });
+                            editTextPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                                @Override
+                                public boolean onEditorAction(TextView textView, int keyCode, KeyEvent keyEvent) {
+                                    if (keyCode == EditorInfo.IME_ACTION_DONE || keyCode == EditorInfo.IME_ACTION_NEXT) {
+                                        // if password is correct, call DeletePhotos and perform deletion
+                                        if (securityObj.checkPassword(editTextPassword.getText().toString())) {
+                                            passwordDialog.dismiss();
+                                            new DeletePhotos().execute();
+                                        }
+                                        // if password is incorrect, don't delete and notify user of incorrect password
+                                        else {
+                                            passco[0] = true;
+                                            securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
+                                            SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.wrong_password), navigationView.getHeight());
+                                            editTextPassword.getText().clear();
+                                            editTextPassword.requestFocus();
+                                        }
+                                    }
+                                    return true;
                                 }
                             });
                         } else {
@@ -3004,6 +3119,53 @@ public class LFMainActivity extends SharedMediaActivity {
                             SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.insert_something), navigationView.getHeight());
                             editTextNewName.requestFocus();
                         }
+                    }
+                });
+                renameDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                    @Override
+                    public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
+                        if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER){
+                            boolean rename = false;
+                            if (editTextNewName.length() != 0) {
+                                swipeRefreshLayout.setRefreshing(true);
+                                boolean success = false;
+                                if (albumsMode) {
+                                    if (!editTextNewName.getText().toString().equals(albumName)) {
+                                        int index = getAlbums().dispAlbums.indexOf(getAlbums().getSelectedAlbum(0));
+                                        getAlbums().getAlbum(index).updatePhotos(getApplicationContext());
+                                        success = getAlbums().getAlbum(index).renameAlbum(getApplicationContext(),
+                                                editTextNewName.getText().toString());
+                                        albumsAdapter.notifyItemChanged(index);
+                                    } else {
+                                        SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.rename_no_change), navigationView.getHeight());
+                                        rename = true;
+                                    }
+                                } else {
+                                    if (!editTextNewName.getText().toString().equals(albumName)) {
+                                        success = getAlbum().renameAlbum(getApplicationContext(), editTextNewName.getText().toString());
+                                        toolbar.setTitle(getAlbum().getName());
+                                        mediaAdapter.notifyDataSetChanged();
+                                    } else {
+                                        SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.rename_no_change), navigationView.getHeight());
+                                        rename = true;
+                                    }
+                                }
+                                renameDialog.dismiss();
+                                if (success) {
+                                    SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.rename_succes), navigationView.getHeight());
+                                    getAlbums().clearSelectedAlbums();
+                                    invalidateOptionsMenu();
+                                } else if (!rename) {
+                                    SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.rename_error), navigationView.getHeight());
+                                    requestSdCardPermissions();
+                                }
+                                swipeRefreshLayout.setRefreshing(false);
+                            } else {
+                                SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.insert_something), navigationView.getHeight());
+                                editTextNewName.requestFocus();
+                            }
+                        }
+                        return false;
                     }
                 });
                 return true;

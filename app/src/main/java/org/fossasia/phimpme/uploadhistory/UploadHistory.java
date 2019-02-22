@@ -21,10 +21,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -336,6 +338,28 @@ public class UploadHistory extends ThemedActivity {
                                 editTextPassword.getText().clear();
                                 editTextPassword.requestFocus();
                             }
+                        }
+                    });
+                    editTextPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                        @Override
+                        public boolean onEditorAction(TextView textView, int keyCode, KeyEvent keyEvent) {
+                            if (keyCode == EditorInfo.IME_ACTION_DONE || keyCode == EditorInfo.IME_ACTION_NEXT) {
+                                // if password is correct, call DeletePhotos and perform deletion
+                                if (securityObj.checkPassword(editTextPassword.getText().toString())) {
+                                    passwordDialog.dismiss();
+                                    new DeleteHistory().execute();
+                                }
+                                // if password is incorrect, don't delete and notify user of incorrect password
+                                else {
+                                    passco[0] = true;
+                                    securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
+                                    SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password),
+                                            navigationView.getHeight());
+                                    editTextPassword.getText().clear();
+                                    editTextPassword.requestFocus();
+                                }
+                            }
+                            return true;
                         }
                     });
                 } else new DeleteHistory().execute();

@@ -12,8 +12,10 @@ import android.text.InputType;
 import android.text.Selection;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -31,6 +33,7 @@ import android.text.TextWatcher;
 import com.google.gson.Gson;
 
 import org.fossasia.phimpme.utilities.SnackBarHandler;
+
 
 /**
  * Created by Jibo on 06/05/2016.
@@ -212,6 +215,26 @@ public class SecurityHelper {
                 });
             }
         });
+
+        securityAnswer1.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int keyCode, KeyEvent keyEvent) {
+                if (keyCode == EditorInfo.IME_ACTION_DONE || keyCode == EditorInfo.IME_ACTION_NEXT) {
+                    String answer1 = "";
+                    answer1 = SP.getString("Security Answer", answer1);
+                    if (Objects.equals(answer1, securityAnswer1.getText().toString())) {
+                        changePassword(activity, passwordDialog);
+                        dialog.dismiss();
+                    } else {
+                        securityAnswer1.requestFocus();
+                        securityAnswer1.getText().clear();
+                        til.setError(activity.getString(R.string.wrong_answer));
+                    }
+                }
+                return true;
+            }
+        });
+
         dialog.show();
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, activity.getAccentColor(), dialog);
     }
@@ -360,6 +383,42 @@ public class SecurityHelper {
                 });
             }
 
+        });
+        securityAnswer1.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int keyCode, KeyEvent keyEvent) {
+                if (keyCode == EditorInfo.IME_ACTION_DONE || keyCode == EditorInfo.IME_ACTION_NEXT) {
+                    if (editTextPassword.length() > 3) {
+                        if (editTextPassword.getText().toString().equals(editTextConfirmPassword.getText().toString())) {
+                            if (securityQuestion.getText().length() != 0) {
+                                if (securityAnswer1.getText().length() != 0) {
+                                    SP.putString(activity.getString(R.string.preference_password_value), editTextPassword.getText().toString());
+                                    SP.putString(activity.getString(R.string.security_question), securityQuestion.getText().toString());
+                                    SP.putString(activity.getString(R.string.security_answer), securityAnswer1.getText().toString());
+                                    SnackBarHandler.show(activity.findViewById(android.R.id.content), R.string.remember_password_message);
+                                    updateSecuritySetting();
+                                    dialog.dismiss();
+                                    Toast.makeText(activity.getApplicationContext(),R.string.password_reset, Toast.LENGTH_SHORT)
+                                            .show();
+                                } else {
+                                    securityAnswer1.requestFocus();
+                                    securityAnswer1.setError(activity.getString(R.string.security_ans_empty));
+                                }
+                            } else {
+                                securityQuestion.requestFocus();
+                                securityQuestion.setError(activity.getString(R.string.security_ques_empty));
+                            }
+                        } else {
+                            editTextConfirmPassword.requestFocus();
+                            editTextConfirmPassword.setError(activity.getString(R.string.password_dont_match));
+                        }
+                    } else {
+                        editTextPassword.requestFocus();
+                        editTextPassword.setError(activity.getString(R.string.error_password_length));
+                    }
+                }
+                return true;
+            }
         });
 
         dialog.show();

@@ -22,8 +22,10 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -465,6 +467,24 @@ public class SettingsActivity extends ThemedActivity {
                     editTextPassword.getText().clear();
                     editTextPassword.requestFocus();
                 }
+            }
+        });
+        editTextPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int keyCode, KeyEvent keyEvent) {
+                if (keyCode == EditorInfo.IME_ACTION_DONE || keyCode == EditorInfo.IME_ACTION_NEXT) {
+                    if (securityObj.checkPassword(editTextPassword.getText().toString())) {
+                        passwordDialog.dismiss();
+                        startActivity(new Intent(getApplicationContext(), SecurityActivity.class));
+                    } else {
+                        passco[0] = true;
+                        securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
+                        SnackBarHandler.show(parent,R.string.wrong_password);
+                        editTextPassword.getText().clear();
+                        editTextPassword.requestFocus();
+                    }
+                }
+                return true;
             }
         });
     }
@@ -1102,6 +1122,27 @@ public class SettingsActivity extends ThemedActivity {
                                 editTextPassword.getText().clear();
                                 editTextPassword.requestFocus();
                             }
+                        }
+                    });
+
+                    editTextPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                        @Override
+                        public boolean onEditorAction(TextView textView, int keyCode, KeyEvent keyEvent) {
+                            if (keyCode == EditorInfo.IME_ACTION_DONE || keyCode == EditorInfo.IME_ACTION_NEXT) {
+                                if (securityObj.checkPassword(editTextPassword.getText().toString())) {
+                                    passwordDialog.dismiss();
+                                    SP.clearPreferences();
+                                    recreate();
+                                    Toast.makeText(getApplicationContext(), R.string.settings_reset, Toast.LENGTH_SHORT).show();
+                                } else {
+                                    passco[0] = true;
+                                    securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
+                                    SnackBarHandler.show(parent,R.string.wrong_password);
+                                    editTextPassword.getText().clear();
+                                    editTextPassword.requestFocus();
+                                }
+                            }
+                            return true;
                         }
                     });
 

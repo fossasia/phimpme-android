@@ -54,6 +54,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -1173,7 +1174,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 final File file = new File(currentpath);
                 int indexofdot = file.getPath().lastIndexOf(".");
                 int indert = file.getPath().lastIndexOf("/");
-                String namefile = file.getPath().substring(indert + 1, indexofdot);
+                final String namefile = file.getPath().substring(indert + 1, indexofdot);
                 final String imageextension = file.getPath().substring(indexofdot + 1);
                 AlertDialog.Builder renameDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
                 final EditText editTextNewName = new EditText(getApplicationContext());
@@ -1263,6 +1264,44 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         }
                     }
                 });
+                renameDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                    @Override
+                    public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
+                        if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER){
+                            if (editTextNewName.length() != 0) {
+                                if(!editTextNewName.getText().toString().equals(namefile)) {
+                                    int index = file.getPath().lastIndexOf("/");
+                                    String path = file.getPath().substring(0, index);
+                                    File newname = new File(path + "/" + editTextNewName.getText().toString() + "." +
+                                            imageextension);
+                                    if (file.renameTo(newname)) {
+                                        ContentResolver resolver = getApplicationContext().getContentResolver();
+                                        resolver.delete(
+                                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, MediaStore.Images.Media.DATA +
+                                                        "=?", new String[]{file.getAbsolutePath()});
+                                        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                                        intent.setData(Uri.fromFile(newname));
+                                        getApplicationContext().sendBroadcast(intent);
+                                    }
+                                    if (!allPhotoMode) {
+                                        int a = getAlbum().getCurrentMediaIndex();
+                                        getAlbum().getMedia(a).setPath(newname.getPath());
+                                    } else {
+                                        listAll.get(current_image_pos).setPath(newname.getPath());
+                                    }
+                                    renameDialog.dismiss();
+                                    SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.rename_succes), navigationView
+                                            .getHeight());
+                                } else {
+                                    dialogInterface.dismiss();
+                                    SnackBarHandler.showWithBottomMargin(parentView, "No change in file name", (bottomBar.getHeight()*2) - 22);
+                                }
+                            }
+                        }
+                        return false;
+                    }
+                });
+
                 return true;
 
             case R.id.action_favourites:
@@ -1777,6 +1816,24 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                                 editTextPassword.getText().clear();
                                 editTextPassword.requestFocus();
                             }
+                        }
+                    });
+                    editTextPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                        @Override
+                        public boolean onEditorAction(TextView textView, int keyCode, KeyEvent keyEvent) {
+                            if (keyCode == EditorInfo.IME_ACTION_DONE || keyCode == EditorInfo.IME_ACTION_NEXT) {
+                                if (securityObj.checkPassword(editTextPassword.getText().toString())) {
+                                    deleteCurrentMedia();
+                                    passwordDialog.dismiss();
+                                } else {
+                                    passco[0] = true;
+                                    securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
+                                    SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), bottomBar.getHeight());
+                                    editTextPassword.getText().clear();
+                                    editTextPassword.requestFocus();
+                                }
+                            }
+                            return true;
                         }
                     });
                 } else
