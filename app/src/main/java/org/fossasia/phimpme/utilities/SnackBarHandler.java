@@ -26,6 +26,7 @@ public class SnackBarHandler  {
         textView.setTextColor(Color.WHITE);
         textView.setTextSize(12);
         snackbar.setActionTextColor(themeHelper.getAccentColor());
+        snackbar.show();
         return snackbar;
     }
 
