@@ -1,4 +1,4 @@
- package org.fossasia.phimpme.gallery.activities;
+package org.fossasia.phimpme.gallery.activities;
 
 import java.util.ArrayList;
 
