@@ -727,6 +727,10 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             menu.setGroupVisible(R.id.only_photos_options, false);
             menu.findItem(R.id.sort_action).setVisible(false);
         }
+        if(getAlbum().getCount() == 1){
+            menu.findItem(R.id.action_cover).setVisible(false);
+            menu.findItem(R.id.slide_show).setVisible(false);
+        }
         return true;
     }
 
