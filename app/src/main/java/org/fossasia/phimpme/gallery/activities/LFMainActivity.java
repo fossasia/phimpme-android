@@ -1309,6 +1309,7 @@ public class LFMainActivity extends SharedMediaActivity {
                     startActivityForResult(new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE), REQUEST_CODE_SD_CARD_PERMISSIONS);
             }
         });
+        dialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(),null);
         AlertDialog alertDialog = dialogBuilder.create();
         alertDialog.show();
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
