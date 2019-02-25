@@ -1281,7 +1281,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     }
                     item.getIcon().setColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN);
                     realm.commitTransaction();
-//                    SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.add_favourite), bottomBar.getHeight());
                     final Snackbar snackbar = SnackBarHandler.showWithBottomMargin(parentView,
                             getResources().getString(R.string.add_favourite),bottomBar.getHeight());
                     snackbar.setAction(R.string.openfav, new View.OnClickListener() {
