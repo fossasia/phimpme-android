@@ -1,10 +1,13 @@
 package org.fossasia.phimpme.gallery.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +22,7 @@ import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.gallery.data.CustomAlbumsHelper;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
+import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -99,6 +103,8 @@ public class ExcludedAlbumsActivity extends ThemedActivity {
                 int pos;
                 if ((pos = getIndex(path)) != -1) {
                     h.clearAlbumExclude(excludedFolders.remove(pos).getAbsolutePath());
+                    SnackBarHandler.showWithBottomMargin(getCurrentFocus(),
+                            getResources().getString(R.string.unExclude_album_snackbar_message), 0);
                     new Thread(new Runnable() {
                         @Override
                         public void run() {

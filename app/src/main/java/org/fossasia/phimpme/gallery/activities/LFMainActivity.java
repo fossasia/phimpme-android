@@ -170,6 +170,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
     //To handle all photos/Album conditions
     public boolean all_photos = false;
+    private static boolean albumsExcluded = false;
     private boolean checkForReveal = true;
     final String REVIEW_ACTION = "com.android.camera.action.REVIEW";
     public static ArrayList<Media> listAll;
@@ -2402,6 +2403,7 @@ public class LFMainActivity extends SharedMediaActivity {
                             finishEditMode();
                             displayAlbums(true);
                         }
+                        albumsExcluded = true;
                     }
                 });
                 excludeDialogBuilder.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
@@ -3765,8 +3767,6 @@ public class LFMainActivity extends SharedMediaActivity {
             invalidateOptionsMenu();
         }
     }
-
-
     private static class PrepareAlbumTask extends AsyncTask<Void, Integer, Void> {
 
         private WeakReference<LFMainActivity> reference;
@@ -3795,7 +3795,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
         @Override
         protected void onPostExecute(Void result) {
-            LFMainActivity asyncActivityRef = reference.get();
+            final LFMainActivity asyncActivityRef = reference.get();
             asyncActivityRef.albumsAdapter.swapDataSet(getAlbums().dispAlbums);
             asyncActivityRef.albList = new ArrayList<>();
             asyncActivityRef.populateAlbum();
@@ -3804,6 +3804,17 @@ public class LFMainActivity extends SharedMediaActivity {
             getAlbums().saveBackup(asyncActivityRef);
             asyncActivityRef.invalidateOptionsMenu();
             asyncActivityRef.finishEditMode();
+            if (albumsExcluded) {
+                albumsExcluded = false;
+                final Snackbar snackbar = SnackBarHandler.showWithBottomMargin(asyncActivityRef.mDrawerLayout,
+                        asyncActivityRef.getResources().getString(R.string.exclude_album_snackbar_message),asyncActivityRef.navigationView.getHeight());
+                snackbar.setAction(R.string.openfav, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        asyncActivityRef.startActivity(new Intent(asyncActivityRef,ExcludedAlbumsActivity.class));
+                    }
+                });
+            }
         }
     }
 
