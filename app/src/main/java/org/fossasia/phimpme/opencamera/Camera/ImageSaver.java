@@ -50,7 +50,6 @@ import static android.preference.PreferenceManager.getDefaultSharedPreferences;
  */
 public class ImageSaver extends Thread {
 	private static final String TAG = "ImageSaver";
-	public static String file_path;
 
 	// note that ExifInterface now has fields for these types, but that requires Android 6 or 7
 	private static final String TAG_GPS_IMG_DIRECTION = "GPSImgDirection";
