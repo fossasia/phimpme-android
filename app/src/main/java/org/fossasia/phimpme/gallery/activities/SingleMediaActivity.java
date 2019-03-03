@@ -124,7 +124,6 @@ import static org.fossasia.phimpme.utilities.Utils.promptSpeechInput;
 public class SingleMediaActivity extends SharedMediaActivity implements ImageAdapter.OnSingleTap, ImageAdapter.enterTransition {
 
     private static int SLIDE_SHOW_INTERVAL = 5000;
-//    private static final String ISLOCKED_ARG = "isLocked";
     static final String ACTION_OPEN_ALBUM = "android.intent.action.pagerAlbumMedia";
     private static final String ACTION_REVIEW = "com.android.camera.action.REVIEW";
     private int REQUEST_CODE_SD_CARD_PERMISSIONS = 42;
