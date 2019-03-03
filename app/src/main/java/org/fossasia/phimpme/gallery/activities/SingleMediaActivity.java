@@ -136,7 +136,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     public static final int ACTION_REQUEST_EDITIMAGE = 9;
     private Bitmap mainBitmap;
     private int imageWidth, imageHeight;
-    private String path;
     private SingleMediaActivity context;
     public static final String EXTRA_OUTPUT = "extra_output";
     public static String pathForDescription;
