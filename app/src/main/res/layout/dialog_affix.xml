@@ -189,18 +189,18 @@
                                         android:id="@+id/radio_jpeg"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="JPEG"
+                                        android:text="@string/jpeg"
                                         android:checked="true" />
                                     <android.support.v7.widget.AppCompatRadioButton
                                         android:id="@+id/radio_png"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="PNG" />
+                                        android:text="@string/png" />
                                     <android.support.v7.widget.AppCompatRadioButton
                                         android:id="@+id/radio_webp"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="WebP" />
+                                        android:text="@string/webp" />
                                 </RadioGroup>
                             </LinearLayout>
                         </LinearLayout>
@@ -231,7 +231,7 @@
                                     android:id="@+id/affix_quality_title"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="Quality 90"
+                                    android:text="@string/qual90"
                                     android:textColor="@color/md_grey_400"
                                     android:paddingBottom="3dp"
                                     android:textSize="14sp"

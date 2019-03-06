@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
@@ -603,6 +604,26 @@ public class SettingsActivity extends ThemedActivity {
             public void onClick(DialogInterface dialog, int which) {
                 SP.putInt(getString(R.string.preference_base_theme), getBaseTheme());
                 setTheme();
+                Snackbar snackbar = Snackbar
+                        .make(parent, R.string.restart_app, Snackbar.LENGTH_SHORT)
+                        .setAction(getString(R.string.restart).toUpperCase(), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent restartIntent = getBaseContext().getPackageManager()
+                                        .getLaunchIntentForPackage(getBaseContext().getPackageName());
+                                restartIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(restartIntent);
+                            }
+                        })
+                        .setActionTextColor(getAccentColor());
+                View sbView = snackbar.getView();
+                final FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) sbView.getLayoutParams();
+                params.setMargins(params.leftMargin,
+                        params.topMargin,
+                        params.rightMargin,
+                        params.bottomMargin);
+                sbView.setLayoutParams(params);
+                snackbar.show();
             }
         });
         dialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
@@ -688,8 +709,8 @@ public class SettingsActivity extends ThemedActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
         AlertDialogsHelper.getTextDialog(SettingsActivity.this, builder,
                 R.string.accent_color, R.string.accent_primary_same_mssg, null);
-        builder.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
-        builder.setPositiveButton(this.getString(R.string.ok).toUpperCase(), new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(this.getString(R.string.no_action).toUpperCase(), null);
+        builder.setPositiveButton(this.getString(R.string.yes_action).toUpperCase(), new DialogInterface.OnClickListener() {
             @Override public void onClick(DialogInterface dialogInterface, int i) {
                 SP.putInt(getString(R.string.preference_accent_color), color);
                 updateTheme();
@@ -827,7 +848,6 @@ public class SettingsActivity extends ThemedActivity {
         dialogLayout.findViewById(R.id.third_act_theme_title).setBackgroundColor(getPrimaryColor());//or GetPrimary
         ((TextView) dialogLayout.findViewById(R.id.apply_theme_3thAct_title)).setTextColor(getTextColor());
         ((TextView) dialogLayout.findViewById(R.id.apply_theme_3thAct_title_Sub)).setTextColor(getSubTextColor());
-        ((IconicsImageView) dialogLayout.findViewById(R.id.ll_apply_theme_3thAct_icon)).setColor(getIconColor());
 
         swApplyTheme_Viewer.setChecked(isApplyThemeOnImgAct());
         swApplyTheme_Viewer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -1073,7 +1093,7 @@ public class SettingsActivity extends ThemedActivity {
                                 passwordDialog.dismiss();
                                 SP.clearPreferences();
                                 recreate();
-                                Snackbar.make(findViewById(android.R.id.content),R.string.settings_reset,Snackbar.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), R.string.settings_reset, Toast.LENGTH_SHORT).show();
                             } else {
                                 passco[0] = true;
                                 securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
@@ -1094,7 +1114,7 @@ public class SettingsActivity extends ThemedActivity {
 
                     SP.clearPreferences();
                     recreate();
-                    Snackbar.make(findViewById(android.R.id.content), R.string.settings_reset,Snackbar.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.settings_reset, Toast.LENGTH_SHORT).show();
 
                     SP.putString(getString(R.string.preference_password_value),password);
                     SP.putString(getString(R.string.preference_use_password_secured_local_folders),securedLocalFolders);

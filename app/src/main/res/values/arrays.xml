@@ -689,6 +689,7 @@
         <item>Violet Tone</item>
         <item>Yellow Enhance</item>
         <item>Navajo Enhance</item>
+        <item>Oil Painting</item>
     </string-array>
 
     <integer-array name="enhance_icons">

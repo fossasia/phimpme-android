@@ -18,7 +18,7 @@
         android:layout_marginBottom="@dimen/medium_spacing"
         android:layout_marginTop="@dimen/margin_spacing_top"
         android:gravity="center_horizontal"
-        android:text="Account Login"
+        android:text="@string/login"
         android:textColor="@color/white"
         android:textSize="@dimen/wordpress_account"
         android:layout_below="@+id/toolbar"
@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/button_spacing"
                 android:background="@color/button_background"
-                android:text="Sign in"
+                android:text="@string/sign_in"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sub_big_text" />
