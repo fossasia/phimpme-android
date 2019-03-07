@@ -699,6 +699,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     @Override
     public boolean onPrepareOptionsMenu(final Menu menu) {
 
+        if(getAlbum().getCurrentMedia().getPath().equals(getAlbum().getCoverPath()))
+            menu.findItem(R.id.action_cover).setTitle("Remove cover image");
+
         if (allPhotoMode || favphotomode) {
             menu.findItem(R.id.action_cover).setVisible(false);
         }
@@ -1354,9 +1357,16 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 return true;
 
             case R.id.action_cover:
-                AlbumSettings albumSettings = AlbumSettings.getSettings(getApplicationContext(), getAlbum());
-                albumSettings.changeCoverPath(getApplicationContext(), getAlbum().getCurrentMedia().getPath());
-                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.change_cover), (bottomBar.getHeight()*2)-22);
+                if(getAlbum().getCurrentMedia().getPath().equals(getAlbum().getCoverPath())){
+                    AlbumSettings albumSettings = AlbumSettings.getSettings(getApplicationContext(), getAlbum());
+                    albumSettings.changeCoverPath(getApplicationContext(), getAlbum().getMedia(0).getPath());
+                    SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.cover_removed), (bottomBar.getHeight()*2) - 22);
+                } else {
+                    AlbumSettings albumSettings = AlbumSettings.getSettings(getApplicationContext(), getAlbum());
+                    albumSettings.changeCoverPath(getApplicationContext(), getAlbum().getCurrentMedia().getPath());
+                    SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.change_cover), bottomBar.getHeight());
+                }
+
                 return true;
 
             case R.id.action_details:
