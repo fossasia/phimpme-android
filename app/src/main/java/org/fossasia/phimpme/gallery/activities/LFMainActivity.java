@@ -3210,7 +3210,7 @@ public class LFMainActivity extends SharedMediaActivity {
                     snackbar.show();
                 }else{
                     Snackbar snackbar = SnackBarHandler.showWithBottomMargin2(mDrawerLayout, String.valueOf(no) + " " + getString(R.string
-                                    .trashbin_move_onefile),
+                                    .trashbin_move_files),
                             navigationView.getHeight
                                     (), Snackbar.LENGTH_SHORT);
                     snackbar.setAction(R.string.undo, new View.OnClickListener() {
