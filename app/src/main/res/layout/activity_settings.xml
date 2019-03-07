@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_below="@+id/toolbar"
         android:layout_height="match_parent"
-        android:scrollbarSize="4dip">
+        android:scrollbarSize="@dimen/scroll_bar_size">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -483,7 +483,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
-                                android:layout_marginEnd="45dp"
+                                android:layout_marginEnd="@dimen/margin_settings_large"
                                 android:orientation="vertical">
 
                                 <TextView
@@ -547,7 +547,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
-                                android:layout_marginEnd="45dp"
+                                android:layout_marginEnd="@dimen/margin_settings_large"
                                 android:orientation="vertical">
 
                                 <TextView
@@ -641,7 +641,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
-                                android:layout_marginEnd="45dp"
+                                android:layout_marginEnd="@dimen/margin_settings_large"
                                 android:orientation="vertical">
 
                                 <TextView
@@ -704,7 +704,7 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginEnd="45dp"
+                                android:layout_marginEnd="@dimen/margin_settings_large"
                                 android:orientation="vertical">
 
                                 <TextView
@@ -768,7 +768,7 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginEnd="45dp"
+                                android:layout_marginEnd="@dimen/margin_settings_large"
                                 android:orientation="vertical">
 
                                 <TextView
@@ -834,7 +834,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
-                                android:layout_marginEnd="44dp"
+                                android:layout_marginEnd="@dimen/margin_settings"
                                 android:orientation="vertical">
 
                                 <TextView
@@ -973,7 +973,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
-                                android:layout_marginEnd="44dp"
+                                android:layout_marginEnd="@dimen/margin_settings"
                                 android:orientation="vertical">
 
                                 <TextView

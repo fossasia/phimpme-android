@@ -38,7 +38,7 @@
         <ImageView
             android:id="@+id/thumbnail"
             android:layout_width="match_parent"
-            android:layout_height="117dp"
+            android:layout_height="@dimen/size_117"
             android:layout_marginBottom="@dimen/activity_horizontal_margin"
             android:src="@drawable/owncloud_logo"
             android:contentDescription="@string/app_name"/>

@@ -14,7 +14,7 @@
         app:cardMaxElevation="3dp"
         android:layout_gravity="center"
         android:foreground="@drawable/ripple"
-        android:layout_margin="3dp">
+        android:layout_margin="@dimen/very_small_margin">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -24,7 +24,7 @@
             <ImageView
                 android:id="@+id/upload_image"
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
+                android:layout_height="@dimen/size_160"
                 android:layout_gravity="center"
                 android:scaleType="centerCrop"/>
 
@@ -35,9 +35,9 @@
                 android:orientation="vertical">
 
                 <LinearLayout android:layout_width="wrap_content"
-                              android:layout_marginTop="5dp"
-                              android:layout_marginRight="5dp"
-                              android:layout_marginLeft="5dp"
+                              android:layout_marginTop="@dimen/alternate_half_margin"
+                              android:layout_marginRight="@dimen/alternate_half_margin"
+                              android:layout_marginLeft="@dimen/alternate_half_margin"
                               android:orientation="horizontal"
                               android:layout_height="wrap_content">
 
@@ -45,22 +45,22 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/date_text"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/sub_medium_text"
                         android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/upload_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="14sp"/>
+                        android:textSize="@dimen/sub_medium_text"/>
 
                 </LinearLayout>
 
                 <LinearLayout android:layout_width="wrap_content"
-                              android:layout_marginTop="5dp"
-                              android:layout_marginLeft="5dp"
-                              android:layout_marginRight="5dp"
-                              android:layout_marginBottom="5dp"
+                              android:layout_marginTop="@dimen/alternate_half_margin"
+                              android:layout_marginLeft="@dimen/alternate_half_margin"
+                              android:layout_marginRight="@dimen/alternate_half_margin"
+                              android:layout_marginBottom="@dimen/alternate_half_margin"
                               android:orientation="horizontal"
                               android:layout_height="wrap_content">
 
@@ -68,14 +68,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/time_text"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/sub_medium_text"
                         android:textStyle="bold"/>
 
                     <TextView
                         android:id="@+id/upload_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="14sp"/>
+                        android:textSize="@dimen/sub_medium_text"/>
 
                 </LinearLayout>
 
@@ -83,14 +83,14 @@
 
             <ImageView
                 android:id="@+id/account_image_share"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/size_30dp"
+                android:layout_height="@dimen/size_30dp"
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/ic_launcher_vector"
                 android:layout_below="@+id/upload_image"
                 android:layout_alignParentEnd="true"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="14dp"/>
+                android:layout_marginEnd="@dimen/alternate_margin"
+                android:layout_marginTop="@dimen/margin_14dp"/>
 
         </RelativeLayout>
 
