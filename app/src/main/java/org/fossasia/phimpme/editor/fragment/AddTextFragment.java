@@ -39,7 +39,6 @@ import uz.shift.colorpicker.OnColorChangedListener;
 import static android.graphics.Color.WHITE;
 
 public class AddTextFragment extends BaseEditFragment implements TextWatcher, FontPickerDialog.FontPickerDialogListener {
-    public static final int INDEX = 5;
     private View mainView;
 
     private EditText mInputText;

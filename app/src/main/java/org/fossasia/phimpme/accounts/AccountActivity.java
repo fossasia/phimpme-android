@@ -86,7 +86,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private static final int NEXTCLOUD_REQUEST_CODE = 3;
     private static final int OWNCLOUD_REQUEST_CODE = 9;
     private static final int RESULT_OK = 1;
-    private static final int RC_SIGN_IN = 9001;
     public static final String BROWSABLE = "android.intent.category.BROWSABLE";
     public final static String CLOUDRAIL_APP_KEY = Constants.CLOUDRAIL_LICENSE_KEY;//CloudRail_App-Key
     @BindView(R.id.accounts_parent)
@@ -111,7 +110,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private CloudRailServices cloudRailServices;
     private PDKClient pdkClient;
    // private GoogleApiClient mGoogleApiClient;
-    private DropboxAPI<AndroidAuthSession> mDBApi;
     private BoxSession sessionBox;
 
     @Override
