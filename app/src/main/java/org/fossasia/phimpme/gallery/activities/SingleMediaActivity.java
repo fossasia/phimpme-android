@@ -1068,6 +1068,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             public void onClick(DialogInterface dialog, int id) {
                 item.getIcon().clearColorFilter();
                 deletefav(getAlbum().getCurrentMedia().getPath());
+
                 SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.photo_deleted_from_fav_msg), (bottomBar.getHeight()*2)-22);
                 }
         });
@@ -1724,9 +1725,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         public void onClick(DialogInterface dialog, int which) {
                             if (securityObj.checkPassword(editTextPassword.getText().toString())) {
                                 deleteCurrentMedia();
+
                             } else
                                 SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), (bottomBar.getHeight()*2)-22);
-
                         }
                     });
                     editTextPassword.addTextChangedListener(new TextWatcher() {

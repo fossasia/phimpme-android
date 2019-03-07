@@ -110,7 +110,7 @@ public class SecurityActivity extends ThemedActivity {
                     editor.putBoolean(getString(R.string.preference_use_password), false);
                     editor.commit();
                     toggleEnabledChild(false);
-                    Snackbar.make(findViewById(android.R.id.content), "No Password Set", Snackbar.LENGTH_SHORT)
+                    Snackbar.make(findViewById(android.R.id.content), R.string.no_password_set, Snackbar.LENGTH_SHORT)
                             .show();
                 }
             }
@@ -146,7 +146,7 @@ public class SecurityActivity extends ThemedActivity {
                     LinearLayout linearLayout = view.findViewById(R.id.titlelayout);
                     linearLayout.setBackgroundColor(getAccentColor());
                     title.setBackgroundColor(getAccentColor());
-                    title.setText("Choose folders to secure");
+                    title.setText(R.string.choose_folders);
                     RecyclerView recyclerView = view.findViewById(R.id.secure_folder_recyclerview);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                     final SecureDialogAdapter securedLocalFolders = new SecureDialogAdapter();
@@ -367,7 +367,7 @@ public class SecurityActivity extends ThemedActivity {
                                         SnackBarHandler.show(llroot, R.string.remember_password_message);
                                         changed = true;
                                         dialog.dismiss();
-                                        Snackbar.make(findViewById(android.R.id.content), "Password Set", Snackbar.LENGTH_SHORT)
+                                        Snackbar.make(findViewById(android.R.id.content), R.string.password_set, Snackbar.LENGTH_SHORT)
                                                 .show();
                                         swActiveSecurity.setChecked(changed);
                                         SP.putBoolean(getString(R.string.preference_use_password), changed);
@@ -512,7 +512,7 @@ public class SecurityActivity extends ThemedActivity {
                                          securityObj.updateSecuritySetting();
                                          SnackBarHandler.show(llroot, R.string.remember_password_message);
                                          dialog.dismiss();
-                                         Snackbar.make(findViewById(android.R.id.content), "Password Changed", Snackbar.LENGTH_SHORT)
+                                         Snackbar.make(findViewById(android.R.id.content), R.string.password_changed, Snackbar.LENGTH_SHORT)
                                                  .show();
 
                                          }else{
