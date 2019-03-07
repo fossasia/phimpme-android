@@ -18,7 +18,7 @@
             android:background="@color/md_dark_appbar"
             android:padding="@dimen/big_spacing"
             android:text="@string/choose_the_map_provider"
-            android:textSize="18sp"
+            android:textSize="@dimen/sub_big_text"
             android:textStyle="bold" />
         <ScrollView android:layout_width="match_parent"
                     android:layout_height="wrap_content">
