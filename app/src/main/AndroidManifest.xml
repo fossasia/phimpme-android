@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-          package="org.fossasia.phimpme"
-          android:versionCode="8"
-          android:versionName="1.6.0">
+    package="org.fossasia.phimpme"
+    android:versionCode="8"
+    android:versionName="1.6.0">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <uses-permission android:name="android.permission.READ_SMS"
         tools:node="remove"/>
     <uses-permission android:name="android.permission.RECEIVE_SMS"
@@ -28,6 +29,7 @@
         tools:node="remove"/>
     <uses-permission android:name="android.permission.READ_PHONE_NUMBERS"
         tools:node="remove"/>
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -63,8 +65,8 @@
 
         <activity
             android:name=".opencamera.Camera.CameraActivity"
-            android:screenOrientation="portrait"
             android:parentActivityName=".gallery.activities.LFMainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.media.action.IMAGE_CAPTURE_SECURE" />
@@ -228,7 +230,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            <intent-filter>
+            <intent-filter tools:ignore="AppLinkUrlError">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -302,8 +304,10 @@
         <activity
             android:name=".editor.EditImageActivity"
             android:theme="@style/AppTheme.NoActionBar"
+
             android:windowSoftInputMode="adjustPan"
             />
+
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
@@ -388,8 +392,7 @@
             android:value="78c6ec5c18fcd10ffbfd28ae038f3311f2763889" />
 
         <activity android:name=".editor.CompressImageActivity"></activity>
-        <activity android:name=".trashbin.TrashBinActivity">
-        </activity>
+        <activity android:name=".trashbin.TrashBinActivity"></activity>
     </application>
 
 </manifest>
