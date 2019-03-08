@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.gallery.util.ThemeHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +35,7 @@ public class FontPickerDialog extends DialogFragment {
     private List<String> mFontNames; // font names of the available fonts
     private String mSelectedFont;
     private FontPickerDialogListener mListener;
+    private ThemeHelper themeHelper;
 
     public static FontPickerDialog newInstance(FontPickerDialogListener fontPickerDialogListener) {
         FontPickerDialog fontPickerDialog = new FontPickerDialog();
@@ -66,13 +68,12 @@ public class FontPickerDialog extends DialogFragment {
             mFontPaths.add(path);
             mFontNames.add(fonts.get(path));
         }
-
+        themeHelper = new ThemeHelper(getActivity());
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
-        builder.setView(inflater.inflate(R.layout.dialog_font_picker, null));
-
+        View view = inflater.inflate(R.layout.dialog_font_picker, null);
+        view.setBackgroundColor(themeHelper.getBackgroundColor());
         FontAdapter adapter = new FontAdapter(mContext);
         builder.setAdapter(adapter, new OnClickListener() {
 
@@ -91,8 +92,9 @@ public class FontPickerDialog extends DialogFragment {
         TextView title = new TextView(mContext);
         title.setText(R.string.select_a_font);
         title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
+        title.setTypeface(null, Typeface.BOLD);
         title.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-        title.setPadding(16, 16, 16, 16);
+        title.setPadding(40, 40, 40, 40);
 
         titleLinearLayout.setBackgroundColor(ContextCompat.getColor(mContext, R.color.accent_cyan));
         titleLinearLayout.addView(title);
@@ -152,7 +154,7 @@ public class FontPickerDialog extends DialogFragment {
                 view = (TextView) convertView;
             }
 
-            view.setPadding(8, 8, 8, 8);
+            view.setPadding(40, 8, 40, 8);
             Typeface tface = Typeface.createFromFile(mFontPaths.get(position));
             view.setTypeface(tface);
             view.setText(mFontNames.get(position));
