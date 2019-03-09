@@ -35,7 +35,6 @@ public class FontPickerDialog extends DialogFragment {
     private List<String> mFontNames; // font names of the available fonts
     private String mSelectedFont;
     private FontPickerDialogListener mListener;
-    private ThemeHelper themeHelper;
 
     public static FontPickerDialog newInstance(FontPickerDialogListener fontPickerDialogListener) {
         FontPickerDialog fontPickerDialog = new FontPickerDialog();
@@ -68,7 +67,7 @@ public class FontPickerDialog extends DialogFragment {
             mFontPaths.add(path);
             mFontNames.add(fonts.get(path));
         }
-        themeHelper = new ThemeHelper(getActivity());
+        ThemeHelper themeHelper = new ThemeHelper(getActivity());
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
