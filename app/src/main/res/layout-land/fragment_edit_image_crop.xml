@@ -28,16 +28,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/zero"
-            android:id="@+id/image_crop"
+            android:id="@+id/combinedList"
             android:layout_weight="1"
-            android:orientation="horizontal">
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/ratio_list_group"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/zero"
-            android:layout_weight="1"
-            android:orientation="horizontal" >
+            android:orientation="vertical">
         </LinearLayout>
     </LinearLayout>
 

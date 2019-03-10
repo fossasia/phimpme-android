@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.content.res.Configuration;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -38,7 +39,7 @@ public class CropFragment extends BaseEditFragment {
 	private View mainView;
 	private View cancel,apply;
 	public CropImageView mCropPanel;
-	private LinearLayout ratioList,imageList;
+	private LinearLayout ratioList,imageList,combinedList;
 	private static List<RatioItem> dataList = new ArrayList<RatioItem>();
 	private List<TextView> textViewList = new ArrayList<TextView>();
 
@@ -83,7 +84,7 @@ public class CropFragment extends BaseEditFragment {
 		}
 	}
 
-	private void setUpRatioList() {
+	private void setUpRatioListPortriat() {
 		ratioList.removeAllViews();
         imageList.removeAllViews();
 
@@ -120,6 +121,41 @@ public class CropFragment extends BaseEditFragment {
 		selctedTextView.setTextColor(SELECTED_COLOR);
 	}
 
+	private void setUpRatioListLandscape() {
+		combinedList.removeAllViews();
+
+		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.WRAP_CONTENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT);
+
+		LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(
+				LinearLayout.LayoutParams.WRAP_CONTENT,
+				LinearLayout.LayoutParams.WRAP_CONTENT);
+		params.gravity= Gravity.CENTER_HORIZONTAL;
+		params1.leftMargin = 50;
+		params.weight= (float) 0.2;
+		params1.weight= (float) 0.2;
+		for (int i = 0, len = 5; i < len; i++) {
+			ImageView image = new ImageView(activity);
+			TextView text = new TextView(activity);
+			image.setImageDrawable(dataList.get(i).getImage());
+			text.setTextColor(UNSELECTED_COLOR);
+			text.setTextSize(18);
+			text.setText(dataList.get(i).getText());
+			textViewList.add(text);
+			combinedList.addView(image,params1);
+			combinedList.addView(text,params);
+			text.setTag(i);
+			if (i == 0) {
+				selctedTextView = text;
+			}
+			dataList.get(i).setIndex(i);
+			text.setTag(dataList.get(i));
+			text.setOnClickListener(mCropRationClick);
+		}
+		selctedTextView.setTextColor(SELECTED_COLOR);
+	}
+
 	private final class CropRationClick implements OnClickListener {
 		@Override
 		public void onClick(View v) {
@@ -140,19 +176,23 @@ public class CropFragment extends BaseEditFragment {
 
         cancel = mainView.findViewById(R.id.crop_cancel);
 		apply = mainView.findViewById(R.id.crop_apply);
-
-        ratioList = mainView.findViewById(R.id.ratio_list_group);
-        imageList= mainView.findViewById(R.id.image_crop);
-        setUpRatioList();
-        this.mCropPanel = ensureEditActivity().mCropPanel;
-		cancel.setOnClickListener(new BackToMenuClick());
-		apply.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				applyCropImage();
-			}
-		});
-		onShow();
+		if(getResources().getConfiguration().orientation== Configuration.ORIENTATION_LANDSCAPE)	{
+			combinedList = mainView.findViewById(R.id.combinedList);
+			setUpRatioListLandscape();
+		} else if (getResources().getConfiguration().orientation== Configuration.ORIENTATION_PORTRAIT) {
+			ratioList = mainView.findViewById(R.id.ratio_list_group);
+			imageList = mainView.findViewById(R.id.image_crop);
+			setUpRatioListPortriat();
+			this.mCropPanel = ensureEditActivity().mCropPanel;
+			cancel.setOnClickListener(new BackToMenuClick());
+			apply.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					applyCropImage();
+				}
+			});
+			onShow();
+		}
 	}
 
     @Override

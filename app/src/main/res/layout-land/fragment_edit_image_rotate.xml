@@ -22,7 +22,7 @@
 
     <LinearLayout
         android:layout_width="@dimen/size_60"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/zero"
         android:layout_toRightOf="@id/rotate_cancel"
         android:layout_weight="8"
         android:orientation="vertical">
@@ -40,7 +40,7 @@
 
             <com.github.shchurov.horizontalwheelview.HorizontalWheelView
                 android:id="@+id/horizontalWheelView"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/size_500"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/alternate_half_padding"
                 android:layout_gravity="center"
