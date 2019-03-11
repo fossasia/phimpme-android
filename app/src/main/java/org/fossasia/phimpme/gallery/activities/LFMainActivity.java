@@ -470,7 +470,7 @@ public class LFMainActivity extends SharedMediaActivity {
                         v.setTransitionName(getString(R.string.transition_photo));
                         getAlbum().setCurrentPhotoIndex(m);
                         Intent intent = new Intent(LFMainActivity.this, SingleMediaActivity.class);
-                        intent.putExtra("path", Uri.fromFile(new File(m.getPath())).toString());
+                        intent.putExtra(getString(R.string.path), Uri.fromFile(new File(m.getPath())).toString());
                         ActivityOptionsCompat options = ActivityOptionsCompat.
                                 makeSceneTransitionAnimation(LFMainActivity.this, v, v.getTransitionName());
                         intent.setAction(SingleMediaActivity.ACTION_OPEN_ALBUM);
@@ -497,9 +497,9 @@ public class LFMainActivity extends SharedMediaActivity {
             } else if (!all_photos && fav_photos) {
                 if (!editMode) {
                     Intent intent = new Intent(REVIEW_ACTION, Uri.fromFile(new File(m.getPath())));
-                    intent.putExtra("fav_photos", true);
+                    intent.putExtra(getString(R.string.fav_photos), true);
                     intent.putExtra(getString(R.string.position), pos);
-                    intent.putParcelableArrayListExtra("favouriteslist", favouriteslist);
+                    intent.putParcelableArrayListExtra(getString(R.string.favouriteslist), favouriteslist);
                     intent.putExtra(getString(R.string.allMediaSize), favouriteslist.size());
                     v.setTransitionName(getString(R.string.transition_photo));
                     ActivityOptionsCompat options = ActivityOptionsCompat.
@@ -773,7 +773,7 @@ public class LFMainActivity extends SharedMediaActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e("TAG", "lfmain");
+        Log.e(getString(R.string.TAG), getString(R.string.lfmain));
         ButterKnife.bind(this);
         navigationView = findViewById(R.id.bottombar);
         favicon = findViewById(R.id.Drawer_favourite_Icon);
@@ -833,7 +833,7 @@ public class LFMainActivity extends SharedMediaActivity {
             new FavouritePhotos(activityContext).execute();
         } else {
             getNavigationBar();
-            if (SP.getBoolean("auto_update_media", false)) {
+            if (SP.getBoolean(getString(R.string.preference_auto_update_media), false)) {
                 if (albumsMode) {
                     if (!firstLaunch) new PrepareAlbumTask(activityContext).execute();
                 } else new PreparePhotosTask(activityContext).execute();
@@ -900,7 +900,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 @Override
                 public void execute(Realm realm) {
                     RealmResults<FavouriteImagesModel> result = realm.where(FavouriteImagesModel.class).equalTo
-                            ("path", path).findAll();
+                            (getString(R.string.path), path).findAll();
                     result.deleteAllFromRealm();
                 }
             });
@@ -1059,14 +1059,14 @@ public class LFMainActivity extends SharedMediaActivity {
                     if ((detector.getCurrentSpan() - detector.getPreviousSpan() < -300) && spanCount < 6) {
                         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                             if (albumsMode)
-                                SP.putInt("n_columns_folders", spanCount + 1);
+                                SP.putInt(getString(R.string.preference_n_columns_folders), spanCount + 1);
                             else
-                                SP.putInt("n_columns_media", spanCount + 1);
+                                SP.putInt(getString(R.string.preference_n_columns_media), spanCount + 1);
                         } else {
                             if (albumsMode)
-                                SP.putInt("n_columns_folders_landscape", spanCount + 1);
+                                SP.putInt(getString(R.string.preference_n_columns_folders_landscape), spanCount + 1);
                             else
-                                SP.putInt("n_columns_media_landscape", spanCount + 1);
+                                SP.putInt(getString(R.string.preference_n_columns_media_landscape), spanCount + 1);
                         }
 
                         if (albumsMode)
@@ -1078,14 +1078,14 @@ public class LFMainActivity extends SharedMediaActivity {
                     else if ((detector.getCurrentSpan() - detector.getPreviousSpan() > 300) && spanCount > 1) {
                         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
                             if (albumsMode)
-                                SP.putInt("n_columns_folders", spanCount - 1);
+                                SP.putInt(getString(R.string.preference_n_columns_folders), spanCount - 1);
                             else
-                                SP.putInt("n_columns_media", spanCount - 1);
+                                SP.putInt(getString(R.string.preference_n_columns_media), spanCount - 1);
                         } else {
                             if (albumsMode)
-                                SP.putInt("n_columns_folders_landscape", spanCount - 1);
+                                SP.putInt(getString(R.string.preference_n_columns_folders_landscape), spanCount - 1);
                             else
-                                SP.putInt("n_columns_media_landscape", spanCount - 1);
+                                SP.putInt(getString(R.string.preference_n_columns_media_landscape), spanCount - 1);
                         }
 
                         if (albumsMode)
@@ -1236,14 +1236,14 @@ public class LFMainActivity extends SharedMediaActivity {
 
     public int columnsCount() {
         return getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT
-                ? SP.getInt("n_columns_folders", 2)
-                : SP.getInt("n_columns_folders_landscape", 3);
+                ? SP.getInt(getString(R.string.preference_n_columns_folders), 2)
+                : SP.getInt(getString(R.string.preference_n_columns_folders_landscape), 3);
     }
 
     public int mediaCount() {
         return getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT
-                ? SP.getInt("n_columns_media", 3)
-                : SP.getInt("n_columns_media_landscape", 4);
+                ? SP.getInt(getString(R.string.preference_n_columns_media), 3)
+                : SP.getInt(getString(R.string.preference_n_columns_media_landscape), 4);
     }
 
     private void updateColumnsRvs() {
@@ -1525,9 +1525,9 @@ public class LFMainActivity extends SharedMediaActivity {
             public void onClick(View v) {
                 final String appPackageName = getPackageName();
                 try {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.market) + appPackageName)));
                 } catch (android.content.ActivityNotFoundException anfe) {
-                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.playstore) + appPackageName)));
                 }
                 mDrawerLayout.closeDrawer(GravityCompat.START);
             }
@@ -1538,7 +1538,7 @@ public class LFMainActivity extends SharedMediaActivity {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.install_phimpme) + "\n " + getString(R.string.invitation_deep_link));
-        sendIntent.setType("text/plain");
+        sendIntent.setType(getString(R.string.text_plain));
         startActivity(sendIntent);
     }
     //endregion
@@ -2196,7 +2196,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                             for (int i = 0; i < selectedMedias.size(); i++) {
                                                 RealmResults<FavouriteImagesModel> favouriteImagesModels = realm.where
                                                         (FavouriteImagesModel.class)
-                                                        .equalTo("path", selectedMedias.get(i).getPath()).findAll();
+                                                        .equalTo(getString(R.string.path), selectedMedias.get(i).getPath()).findAll();
                                                 imagesUnfav++;
                                                 favouriteImagesModels.deleteAllFromRealm();
                                             }
@@ -2421,7 +2421,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 File folder = new File(getAlbums().getSelectedAlbum(0).getPath() + "/");
                 File[] fpath = folder.listFiles();
                 for (int i = 0; i < fpath.length; i++) {
-                    if (fpath[i].getPath().endsWith(".jpg")||fpath[i].getPath().endsWith(".jpeg")||fpath[i].getPath().endsWith(".png")) {
+                    if (fpath[i].getPath().endsWith(getString(R.string.jpg))||fpath[i].getPath().endsWith(getString(R.string.Jpeg_))||fpath[i].getPath().endsWith(getString(R.string.png_))) {
                         path.add(fpath[i].getPath());
                     }
 
@@ -2454,7 +2454,7 @@ public class LFMainActivity extends SharedMediaActivity {
                         realm.beginTransaction();
                         UploadHistoryRealmModel uploadHistory;
                         uploadHistory = realm.createObject(UploadHistoryRealmModel.class);
-                        uploadHistory.setName("OTHERS");
+                        uploadHistory.setName(getString(R.string.OTHERS));
                         uploadHistory.setPathname(f.getPath());
                         uploadHistory.setDatetime(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
                         uploadHistory.setStatus(getString(R.string.upload_done));
@@ -2469,7 +2469,7 @@ public class LFMainActivity extends SharedMediaActivity {
                         realm.beginTransaction();
                         UploadHistoryRealmModel uploadHistory;
                         uploadHistory = realm.createObject(UploadHistoryRealmModel.class);
-                        uploadHistory.setName("OTHERS");
+                        uploadHistory.setName(getString(R.string.OTHERS));
                         uploadHistory.setPathname(m.getPath());
                         uploadHistory.setDatetime(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date()));
                         uploadHistory.setStatus(getString(R.string.upload_done));
@@ -2784,7 +2784,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                 checkDescription(path, dr);
                                 if (numberOfImagesMoved > 1){
                                     snackbar[0] = SnackBarHandler.showWithBottomMargin2(mDrawerLayout, getString(R.string.photos_moved_successfully), navigationView.getHeight(), Snackbar.LENGTH_SHORT);
-                                    snackbar[0].setAction("UNDO", new View.OnClickListener() {
+                                    snackbar[0].setAction(getString(R.string.UNDO).toUpperCase(), new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
                                             getAlbum().moveAllMedia(getApplicationContext(), getAlbum().getPath(), stringio);
@@ -2795,7 +2795,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
                                 else{
                                     Snackbar snackbar1 = SnackBarHandler.showWithBottomMargin2(mDrawerLayout, getString(R.string.photo_moved_successfully), navigationView.getHeight(), Snackbar.LENGTH_SHORT);
-                                    snackbar1.setAction("UNDO", new View.OnClickListener() {
+                                    snackbar1.setAction(getString(R.string.UNDO).toUpperCase(), new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
                                             getAlbum().moveAllMedia(getApplicationContext(), getAlbum().getPath(), stringio);
@@ -3055,7 +3055,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
     private boolean backupHistory(String path){
         boolean succ = false;
-        File file = new File(Environment.getExternalStorageDirectory() + "/"  +".nomedia/" + "uploadHistory");
+        File file = new File(Environment.getExternalStorageDirectory() + "/"  +getString(R.string.nomedia) + getString(R.string.uploadHistory));
         if(file.exists() && file.isDirectory()){
             succ = ContentHelper.copyFile(getApplicationContext(), new File(path), file);
             //succ = getAlbum().moveAnyMedia(getApplicationContext(), file.getAbsolutePath(), path);
@@ -3068,9 +3068,9 @@ public class LFMainActivity extends SharedMediaActivity {
     }
 
     private void uploadToRealm(String path){
-        RealmResults<UploadHistoryRealmModel> realmModels = realm.where(UploadHistoryRealmModel.class).equalTo("pathname", path).findAll();
+        RealmResults<UploadHistoryRealmModel> realmModels = realm.where(UploadHistoryRealmModel.class).equalTo(getString(R.string.pathname), path).findAll();
         //RealmResults<UploadHistoryRealmModel> realmModels = realm.where(UploadHistoryRealmModel.class).findAll();
-        String newpath = Environment.getExternalStorageDirectory() + "/" +  ".nomedia/" + "uploadHistory/" + path.substring(path.lastIndexOf("/") + 1);
+        String newpath = Environment.getExternalStorageDirectory() + "/" + getString(R.string.nomedia)+ getString(R.string.uploadHistory_) + path.substring(path.lastIndexOf("/") + 1);
         realm.beginTransaction();
         UploadHistoryRealmModel uploadHistoryRealmModel = realm.createObject(UploadHistoryRealmModel.class);
         uploadHistoryRealmModel.setDatetime(realmModels.get(0).getDatetime());
@@ -3116,7 +3116,7 @@ public class LFMainActivity extends SharedMediaActivity {
         realm.executeTransaction(new Realm.Transaction() {
             @Override public void execute(Realm realm) {
                 RealmResults<ImageDescModel> result = realm.where(ImageDescModel.class).equalTo
-                        ("path", descModel.getId()).findAll();
+                        (getString(R.string.path), descModel.getId()).findAll();
                 result.deleteAllFromRealm();
             }
         });
@@ -3168,7 +3168,7 @@ public class LFMainActivity extends SharedMediaActivity {
         realm.executeTransaction(new Realm.Transaction() {
             @Override public void execute(Realm realm) {
                 RealmResults<FavouriteImagesModel> result = realm.where(FavouriteImagesModel.class).equalTo
-                        ("path", favouriteImagesModel.getPath()).findAll();
+                        (getString(R.string.path), favouriteImagesModel.getPath()).findAll();
                 result.deleteAllFromRealm();
             }
         });
@@ -3178,7 +3178,7 @@ public class LFMainActivity extends SharedMediaActivity {
         int no = 0;
         boolean succ = false;
         final ArrayList<Media> media1 = storeDeletedFilesTemporarily();
-        File file = new File(Environment.getExternalStorageDirectory() + "/" + ".nomedia");
+        File file = new File(Environment.getExternalStorageDirectory() + "/" + getString(R.string._nomedia));
         if(file.exists() && file.isDirectory()){
             if (albumsMode) {
                 no = getAlbum().moveAllMedia(getApplicationContext(), file.getAbsolutePath(), selectedAlbumMedia);
@@ -3296,19 +3296,19 @@ public class LFMainActivity extends SharedMediaActivity {
         }else if(!all_photos && !fav_photos && editMode){
             for(Media m: getAlbum().getSelectedMedia()){
                 String name = m.getPath().substring(m.getPath().lastIndexOf("/") + 1);
-                deletedImages.add(new Media(Environment.getExternalStorageDirectory() + "/" + ".nomedia" + "/" + name));
+                deletedImages.add(new Media(Environment.getExternalStorageDirectory() + "/" + getString(R.string._nomedia) + "/" + name));
             }
         } else if(all_photos && !fav_photos && editMode){
             for(Media m: selectedMedias){
                 String name = m.getPath().substring(m.getPath().lastIndexOf("/") + 1);
-                deletedImages.add(new Media(Environment.getExternalStorageDirectory() + "/" + ".nomedia" + "/" + name));
+                deletedImages.add(new Media(Environment.getExternalStorageDirectory() + "/" + getString(R.string._nomedia) + "/" + name));
             }
         }
         return deletedImages;
     }
 
     private void addTrashObjectsToRealm(ArrayList<Media> media){
-        String trashbinpath = Environment.getExternalStorageDirectory() + "/" + ".nomedia";
+        String trashbinpath = Environment.getExternalStorageDirectory() + "/" + getString(R.string._nomedia);
         realm = Realm.getDefaultInstance();
         for(int i = 0; i < media.size(); i++){
             int index = media.get(i).getPath().lastIndexOf("/");
@@ -3329,7 +3329,7 @@ public class LFMainActivity extends SharedMediaActivity {
             for (File file : files) {
                 selectedAlbumMedia.add(new Media(file.getAbsolutePath()));
                 String name = file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf("/") + 1);
-                Media media = new Media(Environment.getExternalStorageDirectory() + "/" + ".nomedia" + "/" +name );
+                Media media = new Media(Environment.getExternalStorageDirectory() + "/" + getString(R.string._nomedia) + "/" +name );
                 deletedImages.add(media);
 
             }
@@ -3361,7 +3361,7 @@ public class LFMainActivity extends SharedMediaActivity {
     private void removeFromRealm(String path){
         Realm realm = Realm.getDefaultInstance();
         RealmResults<TrashBinRealmModel> result = realm.where(TrashBinRealmModel.class).equalTo
-                ("trashbinpath", path).findAll();
+                (getString(R.string.trashbin_path), path).findAll();
         realm.beginTransaction();
         result.deleteAllFromRealm();
         realm.commitTransaction();
@@ -3435,7 +3435,7 @@ public class LFMainActivity extends SharedMediaActivity {
             }
             in.close();
 
-            Log.d(TAG, "bitmap size - width: " + bitmap.getWidth() + ", height: " +
+            Log.d(TAG, getString(R.string.bit_width)+ bitmap.getWidth() + getString(R.string.height) +
                     bitmap.getHeight());
             return bitmap;
         } catch (IOException e) {
@@ -3582,14 +3582,14 @@ public class LFMainActivity extends SharedMediaActivity {
                 }
             }
             byte[] bytes = createGIFFromImages(bitmaps);
-            File file = new File(Environment.getExternalStorageDirectory() + "/" + "Phimpme_gifs");
+            File file = new File(Environment.getExternalStorageDirectory() + "/" + getString(R.string.Phimpme_gifs));
             DateFormat dateFormat = new SimpleDateFormat("ddMMyy_HHmm");
             String date = dateFormat.format(Calendar.getInstance().getTime());
             if(file.exists() && file.isDirectory()){
                 FileOutputStream outStream = null;
 
                 try{
-                    outStream = new FileOutputStream(file.getPath() + "/" + "GIF_"+date+".gif");
+                    outStream = new FileOutputStream(file.getPath() + "/" + getString(R.string.GIF_)+date+getString(R.string._gif));
                     outStream.write(bytes);
                     outStream.close();
                 }catch(Exception e){
@@ -3599,7 +3599,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 if (file.mkdir()) {
                     FileOutputStream outStream = null;
                     try {
-                        outStream = new FileOutputStream(file.getPath() + "/" + "GIF_"+date+".gif");
+                        outStream = new FileOutputStream(file.getPath() + "/" + getString(R.string.GIF_)+date+getString(R.string._gif));
                         outStream.write(bytes);
                         outStream.close();
                     } catch (Exception e) {
@@ -3645,11 +3645,11 @@ public class LFMainActivity extends SharedMediaActivity {
             String dateAndTime = dateFormat.format(Calendar.getInstance().getTime());
             try {
                 double c = 0.0;
-                File file = new File(Environment.getExternalStorageDirectory() + "/" + "Phimpme_ImageZip");
+                File file = new File(Environment.getExternalStorageDirectory() + "/" + getString(R.string.Phimpme_ImageZip));
                 FileOutputStream dest = null;
                 if(file.exists() && file.isDirectory()){
                     try{
-                        dest = new FileOutputStream(file.getPath() + "/" + "ZIP_"+dateAndTime+".zip");
+                        dest = new FileOutputStream(file.getPath() + "/" + getString(R.string.ZIP_)+dateAndTime+getString(R.string._zip));
                     }catch(Exception e){
                         e.printStackTrace();
                     }
@@ -3657,7 +3657,7 @@ public class LFMainActivity extends SharedMediaActivity {
                     if (file.mkdir()) {
                         dest = null;
                         try {
-                            dest = new FileOutputStream(file.getPath() + "/" + "ZIP_"+dateAndTime+".zip");
+                            dest = new FileOutputStream(file.getPath() + "/" + getString(R.string.ZIP_)+dateAndTime+getString(R.string._zip));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -3726,7 +3726,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 BufferedInputStream origin = null;
                 FileOutputStream dest = new FileOutputStream(getAlbums().getSelectedAlbum(0).getParentsFolders().get
                         (1) + "/" + getAlbums().getSelectedAlbum(0).getName() +
-                        ".zip");
+                        getString(R.string._zip));
                 ZipOutputStream out = new ZipOutputStream(new BufferedOutputStream(
                         dest));
                 byte data[] = new byte[BUFFER];
@@ -3766,7 +3766,7 @@ public class LFMainActivity extends SharedMediaActivity {
             super.onPostExecute(aVoid);
             NotificationHandler.actionPassed(R.string.zip_completion);
             String path = getAlbums().getSelectedAlbum(0).getParentsFolders().get(1) + getAlbums().getSelectedAlbum
-                    (0).getName() + ".zip";
+                    (0).getName() + getString(R.string._zip);
             SnackBarHandler.show(mDrawerLayout, getResources().getString(R.string.zip_location) +
                     path);
             getAlbums().clearSelectedAlbums();
@@ -3956,14 +3956,14 @@ public class LFMainActivity extends SharedMediaActivity {
 
             for (int i = 0; i < favadd.size(); i++) {
                 String realpath = favadd.get(i).getPath();
-                RealmQuery<FavouriteImagesModel> query = realm.where(FavouriteImagesModel.class).equalTo("path",
+                RealmQuery<FavouriteImagesModel> query = realm.where(FavouriteImagesModel.class).equalTo(getString(R.string.path),
                         realpath);
                 if (query.count() == 0) {
                     count++;
                     realm.beginTransaction();
                     FavouriteImagesModel fav = realm.createObject(FavouriteImagesModel.class,
                             realpath);
-                    ImageDescModel q = realm.where(ImageDescModel.class).equalTo("path", realpath).findFirst();
+                    ImageDescModel q = realm.where(ImageDescModel.class).equalTo(getString(R.string.path), realpath).findFirst();
                     if (q != null) {
                         fav.setDescription(q.getTitle());
                     } else {
@@ -4033,7 +4033,7 @@ public class LFMainActivity extends SharedMediaActivity {
             for (int i = 0; i < favrmv.size(); i++) {
                 String realpath = favrmv.get(i).getPath();
                 realm.beginTransaction();
-                FavouriteImagesModel fav = realm.where(FavouriteImagesModel.class).equalTo("path",realpath).findFirst();
+                FavouriteImagesModel fav = realm.where(FavouriteImagesModel.class).equalTo(getString(R.string.path),realpath).findFirst();
                 if(fav!=null){
                     fav.deleteFromRealm();
                     count++;

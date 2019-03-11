@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="blue_light">#FF33B5E5</color>
+    <color name="g">#66ff0000</color>
     <color name="seekbar_background">#40000000</color>
     <color name="blue_dark">#FF0099CC</color>
     <color name="black_trans">#77000000</color>

@@ -104,7 +104,7 @@ public class TextStickerView extends View {
     }
 
     private void initView(Context context) {
-        debugPaint.setColor(Color.parseColor("#66ff0000"));
+        debugPaint.setColor(R.color.g);
 
         mDeleteBitmap = BitmapFactory.decodeResource(context.getResources(),
                 R.drawable.sticker_delete);

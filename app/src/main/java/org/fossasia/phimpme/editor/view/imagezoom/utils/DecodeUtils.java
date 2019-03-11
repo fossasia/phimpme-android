@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 
+import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.editor.utils.BitmapUtils;
 
 public class DecodeUtils {
@@ -217,7 +218,7 @@ public class DecodeUtils {
 		// permanent redirection
 		if ( code == HttpURLConnection.HTTP_MOVED_PERM || code == HttpURLConnection.HTTP_MOVED_TEMP
 				|| code == HttpURLConnection.HTTP_SEE_OTHER ) {
-			String newLocation = connection.getHeaderField( "Location" );
+			String newLocation = connection.getHeaderField( R.string.location );
 			return openRemoteInputStream( Uri.parse( newLocation ) );
 		}
 

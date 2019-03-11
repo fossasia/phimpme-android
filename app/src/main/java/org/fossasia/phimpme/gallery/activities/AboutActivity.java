@@ -195,11 +195,11 @@ public class AboutActivity extends ThemedActivity {
             public void onClick(View view) {
                 try {
                     Intent intent = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("twitter://user?screen_name=phimpme"));
+                            Uri.parse(getApplicationContext().getString(R.string.twitter_phimpme)));
                     startActivity(intent);
                 } catch (Exception e) {
                     startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("https://twitter.com/#!/phimpme")));
+                            Uri.parse(getApplicationContext().getString(R.string.twitter_phimpme_))));
                 }
             }
         });
@@ -210,14 +210,14 @@ public class AboutActivity extends ThemedActivity {
 
         PackageManager packageManager = context.getPackageManager();
         try {
-            int versionCode = packageManager.getPackageInfo("com.facebook.katana", 0).versionCode;
+            int versionCode = packageManager.getPackageInfo(getApplicationContext().getString(R.string.fb_1), 0).versionCode;
             if (versionCode >= 3002850) { //newer versions of fb app
-                return "fb://facewebmodal/f?href=" + "https://www.facebook.com/phimpmeapp";
+                return getString(R.string.fb_2) + getString(R.string.fb_3);
             } else { //older versions of fb app
-                return "fb://page/" + "phimpmeapp";
+                return getString(R.string.fb_4) + getString(R.string.phimpmeapp);
             }
         } catch (PackageManager.NameNotFoundException e) {
-            return "https://www.facebook.com/phimpmeapp"; //normal web url
+            return getString(R.string.fb_); //normal web url
         }
     }
 

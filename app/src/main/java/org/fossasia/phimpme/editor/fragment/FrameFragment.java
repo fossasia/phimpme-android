@@ -196,7 +196,7 @@ public class FrameFragment extends BaseEditFragment {
             InputStream is;
             try {
                 if (original != null && pos < 11) {
-                    is = getResources().getAssets().open("frames" + File.separator + pos + ".png");
+                    is = getResources().getAssets().open(getString(R.string.frames) + File.separator + pos + getString(R.string.png_));
                     Offset of;
                     of = offset(pos);
                     int width = of.getWidth();
@@ -225,7 +225,7 @@ public class FrameFragment extends BaseEditFragment {
                 } else {
                     Bitmap temp = original.copy(Bitmap.Config.ARGB_8888, true);
                     Canvas can = new Canvas(temp);
-                    is = getResources().getAssets().open("frames" + File.separator + pos + ".png");
+                    is = getResources().getAssets().open(getString(R.string.frames) + File.separator + pos + getString(R.string.png_));
                     Bitmap frame = BitmapFactory.decodeStream(is);
                     is.close();
                     Bitmap frameNew = Bitmap.createScaledBitmap(frame, temp.getWidth(), temp.getHeight(), false);
@@ -251,7 +251,7 @@ public class FrameFragment extends BaseEditFragment {
             int height_off = 0;
             Bitmap temp = null;
             try {
-                temp = BitmapFactory.decodeStream(getResources().getAssets().open("frames" + File.separator + pos + ".png"));
+                temp = BitmapFactory.decodeStream(getResources().getAssets().open(getString(R.string.frames) + File.separator + pos + getString(R.string.png_)));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -320,13 +320,12 @@ public class FrameFragment extends BaseEditFragment {
         protected Void doInBackground(Void... params) {
             InputStream is = null;
             Bitmap tempBitmap;
-            String frameFolder = "frames";
             AssetManager assetmanager = getResources().getAssets();
             try {
-                String str[] = assetmanager.list("frames");
+                String str[] = assetmanager.list(getString(R.string.frames));
                 for (int file = 0; file < str.length; file++) {
                     //sort according to name
-                    is = assetmanager.open(frameFolder + File.separator + file + ".png");
+                    is = assetmanager.open(getString(R.string.frames) + File.separator + file + getString(R.string.png_));
                     tempBitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeStream(is), 140, 160, false);
                     tempBitmap.compress(Bitmap.CompressFormat.JPEG, 100, new ByteArrayOutputStream());
                     arrayList.add(tempBitmap);
@@ -334,7 +333,7 @@ public class FrameFragment extends BaseEditFragment {
                 is.close();
 
             } catch (IOException IOE) {
-                Log.i(TAG, "getAssets: " + IOE.getMessage());
+                Log.i(TAG, getString(R.string.getassets) + IOE.getMessage());
             }
             return null;
         }

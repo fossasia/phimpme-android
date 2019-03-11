@@ -228,7 +228,7 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
         public void onBindViewHolder(mRecyclerAdapter.mViewHolder holder, final int position) {
 
             String path = pathList.get(position);
-                ImageLoader.getInstance().displayImage("assets://" + path,holder.icon, imageOption);
+                ImageLoader.getInstance().displayImage(getString(R.string.assets) + path,holder.icon, imageOption);
                 holder.itemView.setTag(path);
                 holder.title.setText("");
 

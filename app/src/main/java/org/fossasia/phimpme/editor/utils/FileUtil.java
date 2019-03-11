@@ -5,6 +5,8 @@ import android.content.Context;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
+import org.fossasia.phimpme.R;
+
 import java.io.File;
 
 /**
@@ -41,7 +43,7 @@ public class FileUtil {
 
         ContentValues values = new ContentValues(2);
         String extensionName = getExtensionName(dstPath);
-        values.put(MediaStore.Images.Media.MIME_TYPE, "image/" + (TextUtils.isEmpty(extensionName) ? "jpeg" : extensionName));
+        values.put(MediaStore.Images.Media.MIME_TYPE, R.string.image + (TextUtils.isEmpty(extensionName) ? "jpeg" : extensionName));
         values.put(MediaStore.Images.Media.DATA, dstPath);
         context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
     }

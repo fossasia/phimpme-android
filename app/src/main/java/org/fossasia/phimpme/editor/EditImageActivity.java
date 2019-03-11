@@ -160,9 +160,9 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
         ButterKnife.bind(this);
         initView();
         if (savedInstanceState != null) {
-            mode =  savedInstanceState.getInt("PREVIOUS_FRAGMENT");
-            initalMiddleFragment = savedInstanceState.getInt("PREVIOUS_MIDDLE_FRAGMENT");
-            initalBottomFragment = savedInstanceState.getInt("PREVIOUS_BOTTOM_FRAGMENT");
+            mode =  savedInstanceState.getInt(getString(R.string.PREVIOUS_FRAGMENT));
+            initalMiddleFragment = savedInstanceState.getInt(getString(R.string.PREVIOUS_MIDDLE_FRAGMENT));
+            initalBottomFragment = savedInstanceState.getInt(getString(R.string.PREVIOUS_BOTTOM_FRAGMENT));
         }
         getData();
     }
@@ -190,7 +190,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
             Bundle bundle = getIntent().getExtras();
             filePath = bundle.getString(FILE_PATH);
             saveFilePath = bundle.getString(EXTRA_OUTPUT);
-            requestCode = bundle.getInt("requestCode", 1);
+            requestCode = bundle.getInt(getString(R.string.request_code), 1);
             loadImage(filePath);
             return;
         }
@@ -663,9 +663,9 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("PREVIOUS_MIDDLE_FRAGMENT", initalMiddleFragment);
-        outState.putInt("PREVIOUS_BOTTOM_FRAGMENT", initalBottomFragment);
-        outState.putInt("PREVIOUS_FRAGMENT", mode);
+        outState.putInt(getString(R.string.PREVIOUS_MIDDLE_FRAGMENT), initalMiddleFragment);
+        outState.putInt(getString(R.string.PREVIOUS_BOTTOM_FRAGMENT), initalBottomFragment);
+        outState.putInt(getString(R.string.PREVIOUS_FRAGMENT), mode);
     }
 
     @Override

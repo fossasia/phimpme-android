@@ -588,6 +588,8 @@
     <string name="videos">Video</string>
     <string name="images">Images</string>
     <string name="gifs">Gifs</string>
+    <string name="GIF_">GIF_</string>
+    <string name="_gif">.gif</string>
 
     <string name="sort_menu_title">Sort</string>
     <string name="name">Name</string>
@@ -640,6 +642,9 @@
     <string name="try_again">Please try again</string>
 
     <!--Notification Zip-->
+    <string name="Phimpme_ImageZip">Phimpme_ImageZip</string>
+    <string name="ZIP_">ZIP_</string>
+    <string name="_zip">.zip</string>
     <string name="zip_operation">Zipping the Folder.</string>
     <string name="zip_fol">Zipping the</string>
     <string name="zip_completion">Zipped It!</string>
@@ -728,6 +733,8 @@
     <string name="install_shortcut">Install shortcut</string>
 
     <!--SETTINGS PREFERENCES-->
+    <string name="gmd_invert_colors">gmd-invert-colors</string>
+    <string name="gmd_done">gmd-done</string>
     <string name="general_setting">General Setting</string>
     <string name="folder">Folder</string>
     <string name="color_palette">Color Palette</string>
@@ -898,7 +905,9 @@
     <string name="about_support_github_sub">Fork the repo and push changes or submit new issues.</string>
 
     <!--PHOTO DETAILS-->
-    <string name="path">Path</string>
+    <string name="Path">Path</string>
+    <string name="path">path</string>
+    <string name="saved_image">/saved_images</string>
     <string name="details_title">Title</string>
     <string name="type">Type</string>
     <string name="resolution">Resolution</string>
@@ -910,8 +919,16 @@
     <string name="deleted_share_image">Media deleted from local folders.</string>
     <string name="no_location">No location</string>
     <string name="no_exif_data">No data found.</string>
+    <string name="bit_width">bitmap size - width: </string>
+    <string name="height">, height:</string>
+    <string name="Phimpme_gifs">Phimpme_gifs</string>
 
     <!-- UPLOAD HISTORY STRINGS-->
+    <string name="nomedia">.nomedia/</string>
+    <string name="_nomedia">.nomedia</string>
+    <string name="pathname">pathname</string>
+    <string name="uploadHistory">uploadHistory</string>
+    <string name="uploadHistory_">uploadHistory/</string>
     <string name="last_first">Last first</string>
     <string name="latest_first">Latest first</string>
     <string name="delete_all_title">Clear Upload History</string>
@@ -920,6 +937,7 @@
     <string name="upload_view_choice">UploadViewDisplay</string>
 
     <!-- TRASHBIN STRINGS-->
+    <string name="trashbin_path">trashbinpath</string>
     <string name="delete_all_trash">Are you sure you want to empty the TrashBin</string>
     <string name="clear_trash_title">Clear all Trash</string>
     <string name="clear_all_success_mssg">All the images deleted permanently</string>
@@ -1011,7 +1029,26 @@
     <string name="title_activity_accounts">AccountsActivity</string>
 
     <!--EDITING IMAGE-->
+    <string name="crop_1_1">1:1</string>
+    <string name="crop_3_2">3:2</string>
+    <string name="crop_free">Free</string>
+    <string name="crop_7_5">7:5</string>
+    <string name="crop_16_9">16:9</string>
+    <string name="frames">frames</string>
+    <string name="png_">.png</string>
+    <string name="jpg">.jpg</string>
+    <string name="getassets">getAssets: </string>
+    <string name="assets">assets://</string>
+    <string name="image">image/</string>
+    <string name="Jpeg_">.jpeg</string>
+    <string name="Jpeg">jpeg</string>
+    <string name="PREVIOUS_FRAGMENT">PREVIOUS_FRAGMENT</string>
+    <string name="PREVIOUS_MIDDLE_FRAGMENT">PREVIOUS_MIDDLE_FRAGMENT</string>
+    <string name="PREVIOUS_BOTTOM_FRAGMENT">PREVIOUS_BOTTOM_FRAGMENT</string>
+    <string name="request_code">requestCode</string>
     <string name="no_images">no found the image</string>
+    <string name="OTHERS">OTHERS</string>
+    <string name="UNDO">UNDO</string>
     <string name="save">save</string>
     <string name="apply">apply</string>
 
@@ -1074,9 +1111,13 @@
     <string name="account_long">Opens Phimp.me Account</string>
 
     <!--All photos-->
+    <string name="TAG">TAG</string>
+    <string name="lfmain">lfmain</string>
     <string name="all_photos">All_photos</string>
     <string name="all_photo_mode">photo mode</string>
     <string name="position">position</string>
+    <string name="fav_photos">fav_photos</string>
+    <string name="favouriteslist">favouriteslist</string>
     <string name="allMediaSize">size</string>
     <string name="all_media">All</string>
     <string name="albums_mode">Switch to albums mode</string>
@@ -1230,6 +1271,8 @@
     <string name="description_image">Description</string>
 
     <!--Dropbox-->
+    <string name="AccountsActivity">AccountsActivity</string>
+    <string name="dropboxAuthentication">dropboxAuthentication: </string>
     <string name="posting_on_dropbox">Posting on Dropbox</string>
     <string name="uploaded_dropbox">Uploaded to Dropbox</string>
     <string name="login_dropbox_account">Login to Dropbox from Account manager</string>
@@ -1328,9 +1371,20 @@
     <string name="time_text">Time: " "</string>
     <string name="text_view">TextView</string>
     <string name="version_one">v1.0</string>
+    <string name="text_plain">text/plain</string>
 
     <!-- Links -->
+    <string name="market">market://details?id=</string>
+    <string name="playstore">https://play.google.com/store/apps/details?id=</string>
     <string name="phimpme_website">http://phimp.me/</string>
+    <string name="twitter_phimpme">twitter://user?screen_name=phimpme</string>
+    <string name="twitter_phimpme_">https://twitter.com/#!/phimpme</string>
+    <string name="fb_1">com.facebook.katana</string>
+    <string name="fb_2">fb://facewebmodal/f?href=</string>
+    <string name="fb_3">https://www.facebook.com/phimpmeapp</string>
+    <string name="fb_4">fb://page/</string>
+    <string name="phimpmeapp">phimpmeapp</string>
+    <string name="fb_">https://www.facebook.com/phimpmeapp</string>
     <string name="contributors_link">https://github.com/fossasia/phimpme-android/graphs/contributors</string>
     <string name="phimpme_github">https://github.com/fossasia/phimpme-android</string>
     <string name="phimpme_github_issues">https://github.com/fossasia/phimpme-android/issues</string>

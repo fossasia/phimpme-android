@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="preference_n_columns_folders">n_columns_folders</string>
+    <string name="preference_n_columns_media">n_columns_media</string>
+    <string name="preference_n_columns_folders_landscape">n_columns_folders_landscape</string>
+    <string name="preference_n_columns_media_landscape">n_columns_media_landscape</string>
     <string name="preference_internal_player">set_internal_player</string>
     <string name="preference_include_video">set_include_video</string>
     <string name="preference_swipe_direction_inverted">swipe_opposite</string>
@@ -18,6 +22,8 @@
     <string name="preference_map_provider">map_provider</string>
 
     <string name="preference_password_value">password_value</string>
+    <string name="preference_resolution_widths">resolution_widths</string>
+    <string name="preference_PREFERENCE_FRAGMENT">PREFERENCE_FRAGMENT</string>
     <string name="preference_use_password">active_security</string>
     <string name="preference_use_password_on_hidden">password_on_hidden</string>
     <string name="preference_use_password_on_delete">password_on_delete</string>

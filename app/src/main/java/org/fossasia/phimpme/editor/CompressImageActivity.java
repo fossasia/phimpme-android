@@ -135,7 +135,7 @@ public class CompressImageActivity extends ThemedActivity {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                new SaveCompressedImage().execute("Size");
+                new SaveCompressedImage().execute(getString(R.string.size));
                 finish();
             }
         });
@@ -150,12 +150,12 @@ public class CompressImageActivity extends ThemedActivity {
             super.onPreExecute();
             dialog1 = new ProgressDialog(context);
             dialog1.setCancelable(false);
-            dialog1.setMessage("Saving");
+            dialog1.setMessage(getString(R.string.saving_image));
             dialog1.show();
         }
 
         @Override protected Void doInBackground(String... strings) {
-            if(strings[0].equals("Size")){
+            if(strings[0].equals(getString(R.string.size))){
                 String path = null;
                 if(checkCompressFolder(saveFilePath)){
                     Bitmap bitmap = getBitmap(saveFilePath);
@@ -170,7 +170,7 @@ public class CompressImageActivity extends ThemedActivity {
                             .compressToFile(new File(saveFilePath));
                 } catch (IOException e) {
                     e.printStackTrace();}
-            }else if(strings[0].equals("Resolution")){
+            }else if(strings[0].equals(getString(R.string.resolution))){
                 try {
                     new Compressor(getApplicationContext())
                             .setMaxWidth(cwidth[0])
@@ -201,7 +201,7 @@ public class CompressImageActivity extends ThemedActivity {
 
     private String checkforanao(Bitmap bitmap){
         String root = Environment.getExternalStorageDirectory().toString();
-        File myDir = new File(root + "/saved_images");
+        File myDir = new File(root + getString(R.string.saved_image));
         myDir.mkdirs();
         Random generator = new Random();
         int n = 10000;
@@ -294,7 +294,7 @@ public class CompressImageActivity extends ThemedActivity {
         ArrayList<String> compress_option= new ArrayList<String>();
         MediaDetailsMap<String,String> mediaDetailsMap = SingleMediaActivity.mediacompress.getMainDetails(this);
         //gives in the form like 1632x1224 (2.0 MP) , getting width and height of it
-        String dim[]=mediaDetailsMap.get("Resolution").split("x");
+        String dim[]=mediaDetailsMap.get(getString(R.string.resolution)).split("x");
         int  width= Integer.parseInt(dim[0].replaceAll(" ",""));
         String ht[]=dim[1].split(" ");
         int height= Integer.parseInt(ht[0]);
@@ -326,7 +326,7 @@ public class CompressImageActivity extends ThemedActivity {
                     cwidth[0] = finalWidth /(position*2);
                     cheight[0] = finalHeight /(position*2);}
                 view.setBackgroundColor(R.color.md_light_blue_A400);
-                new SaveCompressedImage().execute("Resolution");
+                new SaveCompressedImage().execute(getString(R.string.resolution));
                 finish();
             }
         });

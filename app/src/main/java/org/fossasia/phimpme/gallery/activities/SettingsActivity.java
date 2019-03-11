@@ -372,10 +372,10 @@ public class SettingsActivity extends ThemedActivity {
         themeSeekBar(barFolders); themeSeekBar(barMedia);
         themeSeekBar(barFoldersL); themeSeekBar(barMediaL);
 
-        nColFolders.setText(String.valueOf(SP.getInt("n_columns_folders", 2)));
-        nColMedia.setText(String.valueOf(SP.getInt("n_columns_media", 3)));
-        barFolders.setProgress(SP.getInt("n_columns_folders", 2) -1);
-        barMedia.setProgress(SP.getInt("n_columns_media", 3) -1);
+        nColFolders.setText(String.valueOf(SP.getInt(getString(R.string.preference_n_columns_folders), 2)));
+        nColMedia.setText(String.valueOf(SP.getInt(getString(R.string.preference_n_columns_media), 3)));
+        barFolders.setProgress(SP.getInt(getString(R.string.preference_n_columns_folders), 2) -1);
+        barMedia.setProgress(SP.getInt(getString(R.string.preference_n_columns_media), 3) -1);
         barFolders.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -411,10 +411,10 @@ public class SettingsActivity extends ThemedActivity {
         });
 
         ///LANDSCAPE
-        nColFoldersL.setText(String.valueOf(SP.getInt("n_columns_folders_landscape", 3)));
-        nColMediaL.setText(String.valueOf(SP.getInt("n_columns_media_landscape", 4)));
-        barFoldersL.setProgress(SP.getInt("n_columns_folders_landscape", 3) - 2);
-        barMediaL.setProgress(SP.getInt("n_columns_media_landscape", 4) - 3);
+        nColFoldersL.setText(String.valueOf(SP.getInt(getString(R.string.preference_n_columns_folders_landscape), 3)));
+        nColMediaL.setText(String.valueOf(SP.getInt(getString(R.string.preference_n_columns_media_landscape), 4)));
+        barFoldersL.setProgress(SP.getInt(getString(R.string.preference_n_columns_folders_landscape), 3) - 2);
+        barMediaL.setProgress(SP.getInt(getString(R.string.preference_n_columns_media_landscape), 4) - 3);
         barFoldersL.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -453,10 +453,10 @@ public class SettingsActivity extends ThemedActivity {
                 int nFoldersL = Integer.parseInt(nColFoldersL.getText().toString());
                 int nMediaL = Integer.parseInt(nColMediaL.getText().toString());
 
-                SP.putInt("n_columns_folders", nFolders);
-                SP.putInt("n_columns_media", nMedia);
-                SP.putInt("n_columns_folders_landscape", nFoldersL);
-                SP.putInt("n_columns_media_landscape", nMediaL);
+                SP.putInt(getString(R.string.preference_n_columns_folders), nFolders);
+                SP.putInt(getString(R.string.preference_n_columns_media), nMedia);
+                SP.putInt(getString(R.string.preference_n_columns_folders_landscape), nFoldersL);
+                SP.putInt(getString(R.string.preference_n_columns_media_landscape), nMediaL);
             }
         });
         multiColumnDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
@@ -596,12 +596,12 @@ public class SettingsActivity extends ThemedActivity {
         final IconicsImageView darkSelect = dialogLayout.findViewById(R.id.dark_basic_theme_select);
         final IconicsImageView darkAmoledSelect = dialogLayout.findViewById(R.id.dark_amoled_basic_theme_select);
 
-        themeIconWhite.setIcon("gmd-invert-colors");
-        themeIconDark.setIcon("gmd-invert-colors");
-        themeIconDarkAmoled.setIcon("gmd-invert-colors");
-        whiteSelect.setIcon("gmd-done");
-        darkSelect.setIcon("gmd-done");
-        darkAmoledSelect.setIcon("gmd-done");
+        themeIconWhite.setIcon(getString(R.string.gmd_invert_colors));
+        themeIconDark.setIcon(getString(R.string.gmd_invert_colors));
+        themeIconDarkAmoled.setIcon(getString(R.string.gmd_invert_colors));
+        whiteSelect.setIcon(getString(R.string.gmd_done));
+        darkSelect.setIcon(getString(R.string.gmd_done));
+        darkAmoledSelect.setIcon(getString(R.string.gmd_done));
 
         switch (getBaseTheme()){
             case ThemeHelper.LIGHT_THEME:
@@ -1221,10 +1221,10 @@ public class SettingsActivity extends ThemedActivity {
     }
     private void openCameraSetting(final Context context){
         TinyDB tinyDB = new TinyDB(context);
-        if (tinyDB.getListInt("resolution_widths").size()!=0){
+        if (tinyDB.getListInt(getString(R.string.preference_resolution_widths)).size()!=0){
             setToolbarCamera(true);
             MyPreferenceFragment fragment = new MyPreferenceFragment();
-            getFragmentManager().beginTransaction().add(R.id.pref_container, fragment, "PREFERENCE_FRAGMENT").addToBackStack(null).commitAllowingStateLoss();
+            getFragmentManager().beginTransaction().add(R.id.pref_container, fragment, getString(R.string.preference_PREFERENCE_FRAGMENT)).addToBackStack(null).commitAllowingStateLoss();
             findViewById(R.id.settingAct_scrollView).setVisibility(View.GONE);
         }else {
            openDialog(context);
