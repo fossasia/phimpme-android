@@ -86,6 +86,18 @@ public class SecurityActivity extends ThemedActivity {
 
         /** - SWITCHES - **/
         /** - ACTIVE SECURITY - **/
+        LinearLayout linearLayout=findViewById(R.id.ll_active_security);
+        linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean no = swActiveSecurity.isChecked();
+                if(no){
+                    swActiveSecurity.setChecked(false);
+                }else {
+                    swActiveSecurity.setChecked(true);
+                }
+            }
+        });
         swActiveSecurity.setChecked(securityObj.isActiveSecurity());
         swActiveSecurity.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

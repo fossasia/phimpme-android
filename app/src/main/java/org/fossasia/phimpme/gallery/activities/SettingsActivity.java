@@ -904,6 +904,18 @@ public class SettingsActivity extends ThemedActivity {
 
         View dialogLayout = getLayoutInflater().inflate(R.layout.dialog_media_viewer_theme, null);
         final SwitchCompat swApplyTheme_Viewer = dialogLayout.findViewById(R.id.apply_theme_3th_act_enabled);
+        LinearLayout linearLayout=dialogLayout.findViewById(R.id.ll_apply_theme_3thAct);
+        linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean no=swApplyTheme_Viewer.isChecked();
+                if (no){
+                    swApplyTheme_Viewer.setChecked(false);
+                }else {
+                    swApplyTheme_Viewer.setChecked(true);
+                }
+            }
+        });
 
         ((CardView) dialogLayout.findViewById(R.id.third_act_theme_card)).setCardBackgroundColor(getCardBackgroundColor());
         dialogLayout.findViewById(R.id.third_act_theme_title).setBackgroundColor(getPrimaryColor());//or GetPrimary
