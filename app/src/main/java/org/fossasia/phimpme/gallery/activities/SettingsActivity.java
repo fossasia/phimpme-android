@@ -834,6 +834,7 @@ public class SettingsActivity extends ThemedActivity {
         final View dialogLayout = getLayoutInflater().inflate(R.layout.color_piker_accent, null);
         final LineColorPicker colorPicker = dialogLayout.findViewById(R.id.color_picker_accent);
         final LineColorPicker colorPicker2 = dialogLayout.findViewById(R.id.color_picker_accent_2);
+        colorPicker2.setVisibility(View.VISIBLE);
         final TextView dialogTitle = dialogLayout.findViewById(R.id.cp_accent_title);
         CardView cv = dialogLayout.findViewById(R.id.cp_accent_card);
         cv.setCardBackgroundColor(getCardBackgroundColor());
