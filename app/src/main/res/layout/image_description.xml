@@ -12,11 +12,11 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:id="@+id/image_desc_top"
-        android:padding="13dp">
+        android:padding="@dimen/sub_large_padding">
 
         <ImageButton
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/size_48"
+            android:layout_height="@dimen/size_48"
             android:layout_gravity="center"
             android:id="@+id/img_desc_back_arrow"
             android:background="@drawable/back_arrow"/>
@@ -36,7 +36,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbarSize="4dp">
+        android:scrollbarSize="@dimen/scroll_bar_size">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -49,8 +49,8 @@
                 android:orientation="horizontal">
 
                 <com.mikepenz.iconics.view.IconicsImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="@dimen/size_30dp"
+                    android:layout_height="@dimen/size_30dp"
                     android:id="@+id/date_icon"
                     app2:iiv_icon="gmd-access-time"
                     android:layout_gravity="center"/>
@@ -59,7 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginLeft="10dp">
+                    android:layout_marginLeft="@dimen/alternate_margin">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -70,7 +70,7 @@
                         android:textSize="@dimen/sub_big_text" />
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"/>
+                        android:layout_height="@dimen/size_1"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -85,7 +85,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="20dp"/>
+                android:layout_height="@dimen/size_20dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -93,8 +93,8 @@
                 android:orientation="horizontal">
 
                 <com.mikepenz.iconics.view.IconicsImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="@dimen/size_30dp"
+                    android:layout_height="@dimen/size_30dp"
                     android:id="@+id/loca_icon"
                     android:layout_gravity="center"
                     app2:iiv_icon="gmd-location-on"/>
@@ -103,7 +103,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginLeft="10dp">
+                    android:layout_marginLeft="@dimen/alternate_margin">
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -114,7 +114,7 @@
                         android:textSize="@dimen/sub_big_text" />
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"/>
+                        android:layout_height="@dimen/size_1"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -129,7 +129,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="20dp"/>
+                android:layout_height="@dimen/size_20dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -137,8 +137,8 @@
                 android:orientation="horizontal">
 
                 <com.mikepenz.iconics.view.IconicsImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="@dimen/size_30dp"
+                    android:layout_height="@dimen/size_30dp"
                     android:id="@+id/detail_icon"
                     android:layout_gravity="fill"
                     app2:iiv_icon="gmd-camera-roll"/>
@@ -147,7 +147,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:layout_marginLeft="10dp">
+                    android:layout_marginLeft="@dimen/alternate_margin">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -165,7 +165,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginBottom="2dp">
+                        android:layout_marginBottom="@dimen/extremely_small_padding">
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -176,16 +176,16 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="@dimen/alternate_half_margin"
                             android:id="@+id/image_desc_title"
                             android:textSize="@dimen/medium_text"
-                            android:layout_marginBottom="2dp"/>
+                            android:layout_marginBottom="@dimen/extremely_small_padding"/>
 
                     </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="8dp" />
+                        android:layout_height="@dimen/small_spacing" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -202,15 +202,15 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/image_desc_type"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="@dimen/alternate_half_margin"
                             android:textSize="@dimen/medium_text"
-                            android:layout_marginBottom="2dp"/>
+                            android:layout_marginBottom="@dimen/extremely_small_padding"/>
 
                     </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="8dp"/>
+                        android:layout_height="@dimen/small_spacing"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -227,15 +227,15 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/image_desc_size"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="@dimen/alternate_half_margin"
                             android:textSize="@dimen/medium_text"
-                            android:layout_marginBottom="2dp"/>
+                            android:layout_marginBottom="@dimen/extremely_small_padding"/>
 
                     </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="8dp"/>
+                        android:layout_height="@dimen/small_spacing"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -252,15 +252,15 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/image_desc_res"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="@dimen/alternate_half_margin"
                             android:textSize="@dimen/medium_text"
-                            android:layout_marginBottom="2dp"/>
+                            android:layout_marginBottom="@dimen/extremely_small_padding"/>
 
                     </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="8dp"/>
+                        android:layout_height="@dimen/small_spacing"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -277,15 +277,15 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/image_desc_path"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginBottom="2dp"
+                            android:layout_marginLeft="@dimen/alternate_half_margin"
+                            android:layout_marginBottom="@dimen/extremely_small_padding"
                             android:textSize="@dimen/medium_text"/>
 
                     </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="8dp"/>
+                        android:layout_height="@dimen/small_spacing"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -302,15 +302,15 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:id="@+id/image_desc_orientation"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="@dimen/alternate_half_margin"
                             android:textSize="@dimen/medium_text"
-                            android:layout_marginBottom="2dp"/>
+                            android:layout_marginBottom="@dimen/extremely_small_padding"/>
 
                     </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="8dp"/>
+                        android:layout_height="@dimen/small_spacing"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -329,14 +329,14 @@
                             android:textSize="@dimen/medium_text"
                             android:textColor="@color/md_grey_400"
                             android:id="@+id/image_desc_exif"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginBottom="2dp"/>
+                            android:layout_marginLeft="@dimen/alternate_half_margin"
+                            android:layout_marginBottom="@dimen/extremely_small_padding"/>
 
                     </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="8dp"/>
+                        android:layout_height="@dimen/small_spacing"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -355,8 +355,8 @@
                             android:id="@+id/image_desc"
                             android:textSize="@dimen/medium_text"
                             android:textColor="@color/md_grey_400"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginBottom="2dp"/>
+                            android:layout_marginLeft="@dimen/alternate_half_margin"
+                            android:layout_marginBottom="@dimen/extremely_small_padding"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

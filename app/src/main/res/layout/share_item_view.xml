@@ -6,15 +6,15 @@
     android:gravity="center"
     android:orientation="horizontal"
     android:paddingBottom="@dimen/share_item_padding"
-    android:paddingLeft="20dp"
+    android:paddingLeft="@dimen/sub_big_spacing"
     android:paddingRight="@dimen/share_item_padding"
     android:paddingTop="@dimen/share_item_padding">
 
     <ImageView
         android:id="@+id/account_image"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginRight="20dp"
+        android:layout_width="@dimen/size_30dp"
+        android:layout_height="@dimen/size_30dp"
+        android:layout_marginRight="@dimen/account_margin"
         app:srcCompat="@drawable/ic_launcher_vector"/>
 
     <TextView
@@ -22,5 +22,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/text_view"
-        android:textSize="16sp" />
+        android:textSize="@dimen/medium_text" />
 </LinearLayout>

@@ -9,10 +9,10 @@
 
     <SeekBar
         android:id="@+id/stoke_width_seekbar"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_margin="4dp"
+        android:layout_margin="@dimen/very_small_spacing"
         android:layout_weight="1"
         android:max="100" />
 

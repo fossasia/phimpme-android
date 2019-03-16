@@ -96,6 +96,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/password_spacing"
         android:background="@drawable/ic_wordpress_icon"
-        android:elevation="4dp"/>
+        android:elevation="@dimen/wordpress_elevation"/>
 
 </RelativeLayout>

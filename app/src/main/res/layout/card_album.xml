@@ -7,7 +7,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:foreground="@drawable/ripple"
-    app:cardCornerRadius="0dp"
+    app:cardCornerRadius="@dimen/zero"
     app:cardElevation="@dimen/card_elevation">
 
     <RelativeLayout
@@ -21,12 +21,12 @@
 
             <com.mikepenz.iconics.view.IconicsImageView
                 android:id="@+id/selected_icon"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/size_40dp"
+                android:layout_height="@dimen/size_40dp"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
-                android:elevation="10dp"
+                android:elevation="@dimen/alternate_margin"
                 android:visibility="gone"
                 app:iiv_color="@color/md_white_1000"
                 app:iiv_icon="gmd-check"
@@ -60,13 +60,13 @@
                     android:layout_alignParentLeft="true"
                     android:layout_toLeftOf="@+id/icon_pinned"
                     android:maxLines="1"
-                    android:paddingEnd="20dp"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="20dp"
-                    android:paddingStart="10dp"
-                    android:paddingTop="10dp"
+                    android:paddingEnd="@dimen/sub_big_spacing"
+                    android:paddingLeft="@dimen/alternate_margin"
+                    android:paddingRight="@dimen/sub_big_spacing"
+                    android:paddingStart="@dimen/alternate_margin"
+                    android:paddingTop="@dimen/alternate_margin"
                     android:textColor="@android:color/white"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/medium_text" />
 
                 <ImageView
                     android:id="@+id/icon_pinned"
@@ -74,9 +74,9 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:paddingLeft="10dp"
-                    android:paddingStart="10dp"
-                    android:paddingTop="10dp"
+                    android:paddingLeft="@dimen/alternate_padding"
+                    android:paddingStart="@dimen/alternate_padding"
+                    android:paddingTop="@dimen/alternate_padding"
                     android:visibility="invisible"
                     app2:srcCompat="@drawable/pin_black" />
 
@@ -91,11 +91,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
-                    android:paddingBottom="10dp"
-                    android:paddingEnd="10dp"
-                    android:paddingStart="10dp"
+                    android:paddingBottom="@dimen/alternate_padding"
+                    android:paddingEnd="@dimen/alternate_padding"
+                    android:paddingStart="@dimen/alternate_padding"
                     android:textColor="@android:color/white"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/sub_medium_text" />
 
                 <ImageView
                     android:id="@+id/storage_icon"
@@ -103,10 +103,10 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingStart="10dp"
-                    android:paddingTop="10dp" />
+                    android:paddingLeft="@dimen/alternate_padding"
+                    android:paddingRight="@dimen/alternate_padding"
+                    android:paddingStart="@dimen/alternate_padding"
+                    android:paddingTop="@dimen/alternate_padding" />
 
             </RelativeLayout>
         </LinearLayout>

@@ -71,6 +71,11 @@
             app:showAsAction="never"/>
 
         <item
+            android:id="@+id/action_remove_favourites"
+            android:title="@string/remove_favourite_menu"
+            app:showAsAction="never"/>
+
+        <item
             android:id="@+id/create_gif"
             android:title="Create GIF"
             app:showAsAction="never"/>

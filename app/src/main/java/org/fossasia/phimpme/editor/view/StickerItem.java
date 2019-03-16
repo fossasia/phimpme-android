@@ -37,8 +37,7 @@ public class StickerItem {
     public Matrix matrix;// Change matrix
     private float roatetAngle = 0;
     boolean isDrawHelpTool = false;
-    private Paint dstPaint = new Paint();
-    private Paint paint = new Paint();
+    private Paint dstPaint;
     private Paint helpBoxPaint = new Paint();
 
     private float initWidth;// When added to the original width of the screen

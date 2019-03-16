@@ -118,6 +118,7 @@ public class UploadHistory extends ThemedActivity {
         uploadHistoryRealmModelRealmQuery = realm.where(UploadHistoryRealmModel.class);
         if(uploadHistoryRealmModelRealmQuery.count() == 0){
             emptyLayout.setVisibility(View.VISIBLE);
+            swipeRefreshLayout.setEnabled(false);
         } else {
             String choiceofdisply = preferenceUtil.getString(getString(R.string.upload_view_choice), getString(R.string
                     .last_first));
@@ -324,6 +325,7 @@ public class UploadHistory extends ThemedActivity {
                         public void onClick(View v) {
                             // if password is correct, call DeletePhotos and perform deletion
                             if (securityObj.checkPassword(editTextPassword.getText().toString())) {
+                                passwordDialog.dismiss();
                                new DeleteHistory().execute();
                             }
                             // if password is incorrect, don't delete and notify user of incorrect password
@@ -374,6 +376,7 @@ public class UploadHistory extends ThemedActivity {
             if(result[0] && uploadHistoryRealmModelRealmQuery.count() == 0){
                 emptyLayout.setVisibility(View.VISIBLE);
                 uploadHistoryRecyclerView.setVisibility(View.GONE);
+                swipeRefreshLayout.setEnabled(false);
             }
             invalidateOptionsMenu();
         }
