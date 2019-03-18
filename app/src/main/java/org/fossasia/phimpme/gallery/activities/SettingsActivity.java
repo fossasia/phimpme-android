@@ -904,9 +904,9 @@ public class SettingsActivity extends ThemedActivity {
 
         View dialogLayout = getLayoutInflater().inflate(R.layout.dialog_media_viewer_theme, null);
         final SwitchCompat swApplyTheme_Viewer = dialogLayout.findViewById(R.id.apply_theme_3th_act_enabled);
-        final LinearLayout linearLayout = dialogLayout.findViewById(R.id.ll_seek_bar_alpha);
+        final LinearLayout linearLayoutSeek = dialogLayout.findViewById(R.id.ll_seek_bar_alpha);
         final RelativeLayout relativeLayout = dialogLayout.findViewById(R.id.container_edit_text);
-        LinearLayout linearLayout=dialogLayout.findViewById(R.id.ll_apply_theme_3thAct);
+        LinearLayout linearLayout = dialogLayout.findViewById(R.id.ll_apply_theme_3thAct);
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -926,7 +926,7 @@ public class SettingsActivity extends ThemedActivity {
 
         swApplyTheme_Viewer.setChecked(isApplyThemeOnImgAct());
         if(isApplyThemeOnImgAct()) {
-            linearLayout.setVisibility(View.VISIBLE);
+            linearLayoutSeek.setVisibility(View.VISIBLE);
             relativeLayout.setVisibility(View.VISIBLE);
         }
         swApplyTheme_Viewer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -934,11 +934,11 @@ public class SettingsActivity extends ThemedActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(swApplyTheme_Viewer.isChecked()) {
                     updateSwitchColor(swApplyTheme_Viewer, getAccentColor());
-                    linearLayout.setVisibility(View.VISIBLE);
+                    linearLayoutSeek.setVisibility(View.VISIBLE);
                     relativeLayout.setVisibility(View.VISIBLE);
                     updateSwitchColor(swApplyTheme_Viewer, getAccentColor());
                 } else {
-                    linearLayout.setVisibility(View.GONE);
+                    linearLayoutSeek.setVisibility(View.GONE);
                     relativeLayout.setVisibility(View.GONE);
                     updateSwitchColor(swApplyTheme_Viewer, getIconColor());
                 }
