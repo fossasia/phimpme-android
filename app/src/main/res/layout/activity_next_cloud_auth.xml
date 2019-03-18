@@ -28,7 +28,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="5dp"
+        android:padding="@dimen/alternate_half_padding"
         android:text="@string/nextcloud"
         android:textColor="@color/nextcloud_color"
         android:textSize="@dimen/sub_big_text"

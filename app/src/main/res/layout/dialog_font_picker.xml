@@ -7,9 +7,9 @@
         android:id="@+id/lv_font_choice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/small_spacing"
         android:divider="@color/transparent"
-        android:dividerHeight="10dp"
-        android:padding="8dp" />
+        android:dividerHeight="@dimen/alternate_padding"
+        android:padding="@dimen/small_spacing" />
 
 </LinearLayout>

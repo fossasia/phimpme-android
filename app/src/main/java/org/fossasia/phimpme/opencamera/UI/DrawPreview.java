@@ -56,14 +56,8 @@ public class DrawPreview {
 	private float free_memory_gb = -1.0f;
 	private long last_free_memory_time;
 
-	private final IntentFilter battery_ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-	private boolean has_battery_frac;
-	private float battery_frac;
-	private long last_battery_time;
-
 	private Bitmap location_bitmap;
 	private Bitmap location_off_bitmap;
-	private final Rect location_dest = new Rect();
 
 	private Bitmap raw_bitmap;
 	private Bitmap auto_stabilise_bitmap;
@@ -76,9 +70,6 @@ public class DrawPreview {
 	private Bitmap last_thumbnail; // thumbnail of last picture taken
 	private volatile boolean thumbnail_anim; // whether we are displaying the thumbnail animation; must be volatile for test project reading the state
 	private long thumbnail_anim_start_ms = -1; // time that the thumbnail animation started
-	private final RectF thumbnail_anim_src_rect = new RectF();
-	private final RectF thumbnail_anim_dst_rect = new RectF();
-	private final Matrix thumbnail_anim_matrix = new Matrix();
 
 	private boolean show_last_image;
 	private final RectF last_image_src_rect = new RectF();

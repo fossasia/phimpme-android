@@ -25,24 +25,24 @@
                     android:textColor="@color/md_dark_primary_text"
                     android:layout_height="wrap_content"
                     android:background="@color/md_dark_appbar"
-                    android:padding="24dp"
+                    android:padding="@dimen/big_spacing"
                     android:text="@string/type_description"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/sub_big_text"
                     android:textStyle="bold" />
                 <LinearLayout
                     android:id="@+id/rl_description_dialog"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:padding="15dp">
+                    android:padding="@dimen/large_padding">
                     <EditText
                         android:id="@+id/description_edittxt"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:padding="15dp"
+                        android:padding="@dimen/large_padding"
                         android:hint="@string/description_hint"
                         android:textColorHint="@color/grey"
-                        android:layout_margin="20dp"
+                        android:layout_margin="@dimen/sub_big_spacing"
                         android:gravity="top|left"
                         android:inputType="textCapSentences|textMultiLine"
                         android:maxLength="2000"
@@ -55,8 +55,8 @@
                         app2:srcCompat="@drawable/ic_mic_black"
                         android:layout_gravity="center"
                         android:background="@color/transparent"
-                        android:paddingEnd="10dp"
-                        android:paddingTop="12dp"
+                        android:paddingEnd="@dimen/alternate_padding"
+                        android:paddingTop="@dimen/medium_small_spacing"
                         android:id="@+id/voice_input"/>
                 </LinearLayout>
             </LinearLayout>
