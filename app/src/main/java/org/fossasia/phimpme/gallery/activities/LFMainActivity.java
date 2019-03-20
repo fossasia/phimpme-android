@@ -585,9 +585,6 @@ public class LFMainActivity extends SharedMediaActivity {
                                     else {
                                         passco[0] = true;
                                         securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
-                                        SnackBarHandler
-                                                .showWithBottomMargin(mDrawerLayout, getString(R.string.wrong_password),
-                                                        navigationView.getHeight());
                                         editTextPassword.getText().clear();
                                         editTextPassword.requestFocus();
                                     }
@@ -711,9 +708,6 @@ public class LFMainActivity extends SharedMediaActivity {
                                     else {
                                         passco[0] =true;
                                         securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
-                                        SnackBarHandler
-                                                .showWithBottomMargin(mDrawerLayout, getString(R.string.wrong_password),
-                                                        navigationView.getHeight());
                                         editTextPassword.getText().clear();
                                         editTextPassword.requestFocus();
                                     }
@@ -1505,7 +1499,6 @@ public class LFMainActivity extends SharedMediaActivity {
                             } else {
                                 passco[0] = true;
                                 securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
-                                SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.wrong_password), 0);
                                 editTextPassword.getText().clear();
                                 editTextPassword.requestFocus();
                             }
@@ -2362,7 +2355,6 @@ public class LFMainActivity extends SharedMediaActivity {
                                     else {
                                         passco[0] = true;
                                         securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
-                                        SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.wrong_password), navigationView.getHeight());
                                         editTextPassword.getText().clear();
                                         editTextPassword.requestFocus();
                                     }
@@ -3205,7 +3197,7 @@ public class LFMainActivity extends SharedMediaActivity {
                                     .trashbin_move_onefile),
                             navigationView.getHeight
                                     (), Snackbar.LENGTH_SHORT);
-                    snackbar.setAction("UNDO", new View.OnClickListener() {
+                    snackbar.setAction(R.string.undo, new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             if (albumsMode) {
@@ -3218,10 +3210,10 @@ public class LFMainActivity extends SharedMediaActivity {
                     snackbar.show();
                 }else{
                     Snackbar snackbar = SnackBarHandler.showWithBottomMargin2(mDrawerLayout, String.valueOf(no) + " " + getString(R.string
-                                    .trashbin_move_onefile),
+                                    .trashbin_move_files),
                             navigationView.getHeight
                                     (), Snackbar.LENGTH_SHORT);
-                    snackbar.setAction("UNDO", new View.OnClickListener() {
+                    snackbar.setAction(R.string.undo, new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             if (albumsMode) {
@@ -4271,7 +4263,7 @@ public class LFMainActivity extends SharedMediaActivity {
                     snackbar = SnackBarHandler.showWithBottomMargin2(asyncActivityRef.mDrawerLayout,
                             asyncActivityRef.getString(R.string.copied_successfully),
                             asyncActivityRef.navigationView.getHeight(), Snackbar.LENGTH_SHORT);
-                    snackbar.setAction("UNDO", new View.OnClickListener() {
+                    snackbar.setAction(R.string.undo, new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             for (Media media : temp) {

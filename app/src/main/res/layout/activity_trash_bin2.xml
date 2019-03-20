@@ -38,21 +38,21 @@
               android:layout_height="wrap_content"
               android:id="@+id/trash_text"
               android:layout_below="@id/image_trash"
-              android:layout_marginLeft="20dp"
-              android:layout_marginRight="20dp"
+              android:layout_marginLeft="@dimen/sub_big_spacing"
+              android:layout_marginRight="@dimen/sub_big_spacing"
               android:gravity="center"
-              android:textSize="20dp"
+              android:textSize="@dimen/text_medium_dp"
               android:textStyle="bold"
               android:text="@string/empty_trashbin_mssg"/>
 
     <TextView android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:id="@+id/trash_message"
-              android:layout_marginLeft="20dp"
-              android:layout_marginRight="20dp"
-              android:layout_marginTop="10dp"
+              android:layout_marginLeft="@dimen/sub_big_spacing"
+              android:layout_marginRight="@dimen/sub_big_spacing"
+              android:layout_marginTop="@dimen/alternate_margin"
               android:gravity="center"
-              android:textSize="18dp"
+              android:textSize="@dimen/text_medium_small_dp"
               android:layout_below="@id/trash_text"
               android:text="@string/trashbin_mssg"/>
 

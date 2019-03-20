@@ -18,7 +18,7 @@
         android:id="@+id/aboutAct_scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbarSize="4dip">
+        android:scrollbarSize="@dimen/scroll_bar_size">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,12 +49,12 @@
                         <ImageView
                             android:id="@+id/leafpic_header"
                             android:layout_width="match_parent"
-                            android:layout_height="150dp"
+                            android:layout_height="@dimen/size_150"
                             android:scaleType="centerCrop"/>
 
                         <ImageView
-                            android:layout_width="200dp"
-                            android:layout_height="200dp"
+                            android:layout_width="@dimen/size_200dp"
+                            android:layout_height="@dimen/size_200dp"
                             android:layout_alignParentTop="true"
                             android:layout_centerHorizontal="true"
                             android:padding="@dimen/sub_medium_spacing"

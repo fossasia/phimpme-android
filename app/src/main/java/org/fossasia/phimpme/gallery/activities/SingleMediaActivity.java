@@ -124,7 +124,6 @@ import static org.fossasia.phimpme.utilities.Utils.promptSpeechInput;
 public class SingleMediaActivity extends SharedMediaActivity implements ImageAdapter.OnSingleTap, ImageAdapter.enterTransition {
 
     private static int SLIDE_SHOW_INTERVAL = 5000;
-    private static final String ISLOCKED_ARG = "isLocked";
     static final String ACTION_OPEN_ALBUM = "android.intent.action.pagerAlbumMedia";
     private static final String ACTION_REVIEW = "com.android.camera.action.REVIEW";
     private int REQUEST_CODE_SD_CARD_PERMISSIONS = 42;
@@ -134,13 +133,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private SelectAlbumBottomSheet bottomSheetDialogFragment;
     private SecurityHelper securityObj;
     private boolean fullScreenMode, customUri = false;
-    public static final int TAKE_PHOTO_CODE = 8;
     public static final int ACTION_REQUEST_EDITIMAGE = 9;
-    public static final int ACTION_REQUEST_COMPRESSIMAGE = 13;
-    public static final int ACTION_STICKERS_IMAGE = 10;
     private Bitmap mainBitmap;
     private int imageWidth, imageHeight;
-    private String path;
     private SingleMediaActivity context;
     public static final String EXTRA_OUTPUT = "extra_output";
     public static String pathForDescription;
@@ -704,6 +699,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     @Override
     public boolean onPrepareOptionsMenu(final Menu menu) {
 
+        if(getAlbum().getCurrentMedia().getPath().equals(getAlbum().getCoverPath()))
+            menu.findItem(R.id.action_cover).setTitle("Remove cover image");
+
         if (allPhotoMode || favphotomode) {
             menu.findItem(R.id.action_cover).setVisible(false);
         }
@@ -1073,6 +1071,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             public void onClick(DialogInterface dialog, int id) {
                 item.getIcon().clearColorFilter();
                 deletefav(getAlbum().getCurrentMedia().getPath());
+
                 SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.photo_deleted_from_fav_msg), (bottomBar.getHeight()*2)-22);
                 }
         });
@@ -1358,9 +1357,16 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 return true;
 
             case R.id.action_cover:
-                AlbumSettings albumSettings = AlbumSettings.getSettings(getApplicationContext(), getAlbum());
-                albumSettings.changeCoverPath(getApplicationContext(), getAlbum().getCurrentMedia().getPath());
-                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.change_cover), (bottomBar.getHeight()*2)-22);
+                if(getAlbum().getCurrentMedia().getPath().equals(getAlbum().getCoverPath())){
+                    AlbumSettings albumSettings = AlbumSettings.getSettings(getApplicationContext(), getAlbum());
+                    albumSettings.changeCoverPath(getApplicationContext(), getAlbum().getMedia(0).getPath());
+                    SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.cover_removed), (bottomBar.getHeight()*2) - 22);
+                } else {
+                    AlbumSettings albumSettings = AlbumSettings.getSettings(getApplicationContext(), getAlbum());
+                    albumSettings.changeCoverPath(getApplicationContext(), getAlbum().getCurrentMedia().getPath());
+                    SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.change_cover), bottomBar.getHeight());
+                }
+
                 return true;
 
             case R.id.action_details:
@@ -1729,9 +1735,9 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         public void onClick(DialogInterface dialog, int which) {
                             if (securityObj.checkPassword(editTextPassword.getText().toString())) {
                                 deleteCurrentMedia();
+
                             } else
                                 SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), (bottomBar.getHeight()*2)-22);
-
                         }
                     });
                     editTextPassword.addTextChangedListener(new TextWatcher() {

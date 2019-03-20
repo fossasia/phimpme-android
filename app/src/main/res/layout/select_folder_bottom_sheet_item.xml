@@ -17,20 +17,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
+        android:layout_marginLeft="@dimen/small_margin"
+        android:layout_marginRight="@dimen/small_margin"
         app:cardBackgroundColor="@color/white"
         android:theme="@style/CardView.Light"
-        android:layout_marginTop="3dp"
-        android:elevation="3dp"
+        android:layout_marginTop="@dimen/very_small_margin"
+        android:elevation="@dimen/folder_bottom_sheet_small"
         card_view:cardCornerRadius="5dp">
 
         <LinearLayout android:layout_width="match_parent"
                       android:layout_height="match_parent"
-                      android:layout_marginBottom="8dp"
-                      android:layout_marginEnd="8dp"
-                      android:layout_marginStart="8dp"
-                      android:layout_marginTop="8dp"
+                      android:layout_marginBottom="@dimen/medium_margin"
+                      android:layout_marginEnd="@dimen/medium_margin"
+                      android:layout_marginStart="@dimen/medium_margin"
+                      android:layout_marginTop="@dimen/medium_margin"
                       android:orientation="horizontal"
                       app:srcCompat="@drawable/ic_launcher_vector">
 
@@ -58,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:text="WhatsApp"
                     android:textColor="@color/md_dark_background"
-                    android:textSize="16sp"
+                    android:textSize="@dimen/medium_text"
                 />
                 <TextView
                     android:id="@+id/count_folder"
@@ -66,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:text="fgfgfgfgfgfgf"
                     android:textColor="@color/md_grey_400"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/sub_medium_text"
                 />
             </LinearLayout>
 
@@ -76,10 +76,10 @@
                           android:layout_weight="2"
                           android:layout_gravity="center_vertical">
 
-                <ImageView android:layout_width="15dp"
-                           android:layout_height="15dp"
+                <ImageView android:layout_width="@dimen/share_margin"
+                           android:layout_height="@dimen/share_margin"
                            android:id="@+id/sd_card_folder"
-                           android:layout_margin="10dp"
+                           android:layout_margin="@dimen/alternate_margin"
                            app:srcCompat="@drawable/ic_sd_storage_icon_color_24dp"
                            android:visibility="visible"/>
             </LinearLayout>
