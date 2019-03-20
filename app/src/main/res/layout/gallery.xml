@@ -3,12 +3,12 @@
     android:id="@+id/grid"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:columnWidth="150dp"
+    android:columnWidth="@dimen/size_150"
     android:gravity="center"
-    android:horizontalSpacing="5dp"
+    android:horizontalSpacing="@dimen/gallery_spacing"
     android:numColumns="3"
     android:stretchMode="columnWidth"
     android:background="#000"
-    android:verticalSpacing="5dp" >
+    android:verticalSpacing="@dimen/gallery_spacing" >
 
 </GridView>

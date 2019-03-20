@@ -21,16 +21,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/md_dark_appbar"
-                    android:padding="24dp"
+                    android:padding="@dimen/big_spacing"
                     android:text="@string/affix"
                     android:textColor="@color/md_dark_primary_text"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/sub_big_text"
                     android:textStyle="bold" />
                 <ScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/affix_scrollView"
-                    android:scrollbarSize="4dip"
+                    android:scrollbarSize="@dimen/scroll_bar_size"
                     >
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -44,18 +44,18 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:paddingBottom="8dp"
-                            android:paddingTop="15dp"
+                            android:paddingBottom="@dimen/small_spacing"
+                            android:paddingTop="@dimen/large_padding"
                             android:weightSum="10">
                             <com.mikepenz.iconics.view.IconicsImageView
                                 android:id="@+id/affix_vertical_icon"
-                                android:layout_width="0dp"
-                                android:layout_height="24dp"
+                                android:layout_width="@dimen/zero"
+                                android:layout_height="@dimen/size_24"
                                 android:layout_gravity="center_vertical"
                                 android:layout_weight="2"
                                 app:iiv_icon="gmd-compare" />
                             <LinearLayout
-                                android:layout_width="0dp"
+                                android:layout_width="@dimen/zero"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="6"
                                 android:orientation="vertical">
@@ -65,7 +65,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="@string/affix_vertical"
                                     android:textColor="@color/md_dark_background"
-                                    android:textSize="16sp"
+                                    android:textSize="@dimen/medium_text"
                                     />
                                 <TextView
                                     android:id="@+id/affix_vertical_sub"
@@ -73,12 +73,12 @@
                                     android:layout_height="wrap_content"
                                     android:text="@string/affix_vertical_sub"
                                     android:textColor="@color/md_grey_400"
-                                    android:textSize="14sp"
+                                    android:textSize="@dimen/sub_medium_text"
                                     />
                             </LinearLayout>
                             <android.support.v7.widget.SwitchCompat
                                 android:id="@+id/affix_vertical_switch"
-                                android:layout_width="0dp"
+                                android:layout_width="@dimen/zero"
                                 android:layout_height="match_parent"
                                 android:layout_weight="2"
                                 android:background="?android:selectableItemBackground"
@@ -86,7 +86,7 @@
                                 android:gravity="center"
                                 android:checked="false"
                                 android:hapticFeedbackEnabled="true"
-                                android:paddingRight="5dp"
+                                android:paddingRight="@dimen/alternate_half_padding"
                                 />
                         </LinearLayout>
 
@@ -96,13 +96,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:paddingBottom="8dp"
-                            android:paddingTop="15dp"
+                            android:paddingBottom="@dimen/small_spacing"
+                            android:paddingTop="@dimen/large_padding"
                             android:weightSum="10">
                             <com.mikepenz.iconics.view.IconicsImageView
                                 android:id="@+id/save_here_icon"
                                 android:layout_width="0dp"
-                                android:layout_height="20dp"
+                                android:layout_height="@dimen/size_20dp"
                                 android:layout_gravity="center_vertical"
                                 android:layout_weight="2"
                                 app:iiv_icon="gmd-photo-library" />
@@ -117,7 +117,7 @@
                                     android:layout_height="wrap_content"
                                     android:text="@string/affix_save_here"
                                     android:textColor="@color/md_dark_background"
-                                    android:textSize="16sp"
+                                    android:textSize="@dimen/medium_text"
                                     />
                                 <TextView
                                     android:id="@+id/save_here_sub"
@@ -125,12 +125,12 @@
                                     android:layout_height="wrap_content"
                                     android:text="@string/affix_save_here_sub"
                                     android:textColor="@color/md_grey_400"
-                                    android:textSize="14sp"
+                                    android:textSize="@dimen/sub_medium_text"
                                     />
                             </LinearLayout>
                             <android.support.v7.widget.SwitchCompat
                                 android:id="@+id/save_here_switch"
-                                android:layout_width="0dp"
+                                android:layout_width="@dimen/zero"
                                 android:layout_height="match_parent"
                                 android:layout_weight="2"
                                 android:background="?android:selectableItemBackground"
@@ -138,7 +138,7 @@
                                 android:gravity="center"
                                 android:hapticFeedbackEnabled="true"
                                 android:checked="false"
-                                android:paddingRight="5dp"
+                                android:paddingRight="@dimen/alternate_half_padding"
                                 />
                         </LinearLayout>
 
@@ -148,20 +148,20 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:paddingBottom="8dp"
-                            android:paddingTop="15dp"
+                            android:paddingBottom="@dimen/small_spacing"
+                            android:paddingTop="@dimen/large_padding"
                             android:weightSum="10">
                             <com.mikepenz.iconics.view.IconicsImageView
                                 android:id="@+id/affix_format_icon"
-                                android:layout_width="0dp"
-                                android:layout_height="20dp"
+                                android:layout_width="@dimen/zero"
+                                android:layout_height="@dimen/size_20dp"
                                 android:layout_gravity="top|center_horizontal"
                                 android:layout_weight="2"
                                 app:iiv_icon="gmd-dns" />
                             <LinearLayout
                                 android:layout_height="wrap_content"
                                 android:layout_weight="8"
-                                android:layout_width="0dp"
+                                android:layout_width="@dimen/zero"
                                 android:orientation="vertical">
                                 <TextView
                                     android:id="@+id/compression_settings_title"
@@ -170,37 +170,37 @@
                                     android:text="@string/compression_settings"
                                     android:layout_gravity="center_vertical"
                                     android:textColor="@color/md_dark_background"
-                                    android:textSize="16sp"/>
+                                    android:textSize="@dimen/medium_text"/>
                                 <TextView
                                     android:id="@+id/affix_format_sub"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:text="@string/affix_format_sub"
                                     android:textColor="@color/md_grey_400"
-                                    android:textSize="14sp"
+                                    android:textSize="@dimen/sub_medium_text"
                                     />
                                 <RadioGroup
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:paddingTop="4dp"
+                                    android:paddingTop="@dimen/very_small_spacing"
                                     android:orientation="horizontal"
                                     android:id="@+id/radio_format">
                                     <android.support.v7.widget.AppCompatRadioButton
                                         android:id="@+id/radio_jpeg"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="JPEG"
+                                        android:text="@string/jpeg"
                                         android:checked="true" />
                                     <android.support.v7.widget.AppCompatRadioButton
                                         android:id="@+id/radio_png"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="PNG" />
+                                        android:text="@string/png" />
                                     <android.support.v7.widget.AppCompatRadioButton
                                         android:id="@+id/radio_webp"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:text="WebP" />
+                                        android:text="@string/webp" />
                                 </RadioGroup>
                             </LinearLayout>
                         </LinearLayout>
@@ -211,30 +211,30 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:paddingBottom="15dp"
-                            android:paddingTop="4dp"
+                            android:paddingBottom="@dimen/large_padding"
+                            android:paddingTop="@dimen/very_small_spacing"
                             android:weightSum="10">
                             <com.mikepenz.iconics.view.IconicsImageView
                                 android:id="@+id/affix_quality_icon"
-                                android:layout_width="0dp"
-                                android:layout_height="20dp"
+                                android:layout_width="@dimen/zero"
+                                android:layout_height="@dimen/size_20dp"
                                 android:layout_gravity="center_vertical"
                                 android:layout_weight="2"
                                 app:iiv_icon="gmd-high-quality" />
                             <LinearLayout
-                                android:layout_width="0dp"
+                                android:layout_width="@dimen/zero"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="8"
-                                android:paddingRight="15dp"
+                                android:paddingRight="@dimen/large_padding"
                                 android:orientation="vertical">
                                 <TextView
                                     android:id="@+id/affix_quality_title"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:text="Quality 90"
+                                    android:text="@string/qual90"
                                     android:textColor="@color/md_grey_400"
-                                    android:paddingBottom="3dp"
-                                    android:textSize="14sp"
+                                    android:paddingBottom="@dimen/very_small_margin"
+                                    android:textSize="@dimen/sub_medium_text"
                                     />
                                 <SeekBar
                                     android:layout_width="match_parent"

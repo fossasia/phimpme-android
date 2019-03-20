@@ -203,6 +203,7 @@ public class SecurityHelper {
                         answer1 = SP.getString("Security Answer", answer1);
                         if (Objects.equals(answer1, securityAnswer1.getText().toString())) {
                             changePassword(activity, passwordDialog);
+                            dialog.dismiss();
                         } else {
                             securityAnswer1.getText().clear();
                             til.setError(activity.getString(R.string.wrong_answer));
@@ -231,6 +232,7 @@ public class SecurityHelper {
         final EditText securityAnswer1 = PasswordDialogLayout.findViewById(R.id.security_answer_edittext);
         final EditText securityQuestion = PasswordDialogLayout.findViewById(R.id.security_question_edittext);
         editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        checkBox.setButtonTintList(ColorStateList.valueOf(activity.getAccentColor()));
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

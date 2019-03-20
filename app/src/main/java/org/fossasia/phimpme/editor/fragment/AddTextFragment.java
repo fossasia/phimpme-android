@@ -39,7 +39,6 @@ import uz.shift.colorpicker.OnColorChangedListener;
 import static android.graphics.Color.WHITE;
 
 public class AddTextFragment extends BaseEditFragment implements TextWatcher, FontPickerDialog.FontPickerDialogListener {
-    public static final int INDEX = 5;
     private View mainView;
 
     private EditText mInputText;
@@ -162,6 +161,7 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher, Fo
         dialogBuilder.setNeutralButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                mTextColorSelector.setColorFilter(WHITE);
                 changeTextColor(WHITE);
                 dialog.cancel();
             }

@@ -7,7 +7,7 @@
         android:id="@+id/compressoption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/size_8"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="17sp" />
+        android:textSize="@dimen/big_medium_text" />
 </LinearLayout>

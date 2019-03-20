@@ -118,10 +118,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 	private long video_start_time; // when the video recording was started, or last resumed if it's was paused
 	private long video_accumulated_time; // this time should be added to (System.currentTimeMillis() - video_start_time) to find the true video duration, that takes into account pausing/resuming, as well as any auto-restarts from max filesize
 	private boolean video_recorder_is_paused; // whether video_recorder is running but has paused
-	private boolean video_restart_on_max_filesize;
-	private static final long min_safe_restart_video_time = 1000; // if the remaining max time after restart is less than this, don't restart
-	private Uri video_uri; // for VIDEOMETHOD_SAF or VIDEOMETHOD_URI
-	private String video_filename; // for VIDEOMETHOD_FILE
 
 	private static final int PHASE_NORMAL = 0;
 	private static final int PHASE_TIMER = 1;
@@ -132,14 +128,8 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 	private TimerTask takePictureTimerTask;
 	private final Timer beepTimer = new Timer();
 	private TimerTask beepTimerTask;
-	private final Timer flashVideoTimer = new Timer();
-	private TimerTask flashVideoTimerTask;
-	private final IntentFilter battery_ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-	private final Timer batteryCheckVideoTimer = new Timer();
-	private TimerTask batteryCheckVideoTimerTask;
 	private long take_photo_time;
 	private int remaining_burst_photos;
-	private int remaining_restart_video;
 
 	private boolean is_preview_started;
 
@@ -205,7 +195,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 	private final ToastBoxer flash_toast = new ToastBoxer();
 	private final ToastBoxer focus_toast = new ToastBoxer();
 	private final ToastBoxer take_photo_toast = new ToastBoxer();
-	private final ToastBoxer pause_video_toast = new ToastBoxer();
 	private final ToastBoxer seekbar_toast = new ToastBoxer();
 
 	private int ui_rotation;
@@ -262,7 +251,6 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
 	public volatile int count_cameraTakePicture;
 	public volatile int count_cameraContinuousFocusMoving;
 	public volatile boolean test_fail_open_camera;
-	public volatile boolean test_video_failure;
 	public volatile boolean test_ticker_called; // set from MySurfaceView or CanvasView
 
 	private boolean enable_sound;
