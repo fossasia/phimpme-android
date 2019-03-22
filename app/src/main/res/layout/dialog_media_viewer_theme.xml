@@ -88,6 +88,11 @@
                 <LinearLayout
                     android:layout_width="@dimen/zero"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="8dp"
+                    android:weightSum="5"
+                    android:visibility="gone"
+                    android:paddingBottom="13dp">
                     android:layout_weight="5"
                     android:orientation="vertical">
 
@@ -110,6 +115,23 @@
                         android:textSize="@dimen/sub_medium_text" />
                 </LinearLayout>
 
+                <RelativeLayout
+                    android:id="@+id/container_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingLeft="15dp"
+                    android:paddingRight="15dp"
+                    android:visibility="gone">
+
+                    <uz.shift.colorpicker.LineColorPicker 
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/pickerTransparent"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        app:orientation="horizontal"
+                        app:selectedColorIndex="0" />
+                </RelativeLayout>
             </LinearLayout>
 
             <RelativeLayout

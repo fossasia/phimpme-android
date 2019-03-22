@@ -30,6 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -441,7 +442,6 @@ public class SettingsActivity extends ThemedActivity {
             }
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                
             }
         });
 
@@ -904,7 +904,9 @@ public class SettingsActivity extends ThemedActivity {
 
         View dialogLayout = getLayoutInflater().inflate(R.layout.dialog_media_viewer_theme, null);
         final SwitchCompat swApplyTheme_Viewer = dialogLayout.findViewById(R.id.apply_theme_3th_act_enabled);
-        LinearLayout linearLayout=dialogLayout.findViewById(R.id.ll_apply_theme_3thAct);
+        final LinearLayout linearLayoutSeek = dialogLayout.findViewById(R.id.ll_seek_bar_alpha);
+        final RelativeLayout relativeLayout = dialogLayout.findViewById(R.id.container_edit_text);
+        LinearLayout linearLayout = dialogLayout.findViewById(R.id.ll_apply_theme_3thAct);
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -923,10 +925,23 @@ public class SettingsActivity extends ThemedActivity {
         ((TextView) dialogLayout.findViewById(R.id.apply_theme_3thAct_title_Sub)).setTextColor(getSubTextColor());
 
         swApplyTheme_Viewer.setChecked(isApplyThemeOnImgAct());
+        if(isApplyThemeOnImgAct()) {
+            linearLayoutSeek.setVisibility(View.VISIBLE);
+            relativeLayout.setVisibility(View.VISIBLE);
+        }
         swApplyTheme_Viewer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                updateSwitchColor(swApplyTheme_Viewer, getAccentColor());
+                if(swApplyTheme_Viewer.isChecked()) {
+                    updateSwitchColor(swApplyTheme_Viewer, getAccentColor());
+                    linearLayoutSeek.setVisibility(View.VISIBLE);
+                    relativeLayout.setVisibility(View.VISIBLE);
+                    updateSwitchColor(swApplyTheme_Viewer, getAccentColor());
+                } else {
+                    linearLayoutSeek.setVisibility(View.GONE);
+                    relativeLayout.setVisibility(View.GONE);
+                    updateSwitchColor(swApplyTheme_Viewer, getIconColor());
+                }
             }
         });
         updateSwitchColor(swApplyTheme_Viewer, getAccentColor());
