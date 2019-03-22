@@ -775,6 +775,7 @@ public class LFMainActivity extends SharedMediaActivity {
         super.onCreate(savedInstanceState);
         Log.e("TAG", "lfmain");
         ButterKnife.bind(this);
+
         navigationView = findViewById(R.id.bottombar);
         favicon = findViewById(R.id.Drawer_favourite_Icon);
 
@@ -818,6 +819,10 @@ public class LFMainActivity extends SharedMediaActivity {
                 return LFMainActivity.super.onNavigationItemSelected(item);
             }
         });
+        if (getIntent().getBooleanExtra("openFav", false)) {
+            displayfavourites();
+            favourites = false;
+        }
     }
 
     @Override
