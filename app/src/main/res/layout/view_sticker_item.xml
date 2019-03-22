@@ -3,8 +3,8 @@
     android:id="@+id/img"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:maxHeight="50dp"
-    android:maxWidth="50dp"
-    android:paddingLeft="5dp"
-    android:paddingRight="5dp"
+    android:maxHeight="@dimen/size_50dp"
+    android:maxWidth="@dimen/size_50dp"
+    android:paddingLeft="@dimen/alternate_half_padding"
+    android:paddingRight="@dimen/alternate_half_padding"
     android:scaleType="centerInside" />

@@ -13,16 +13,16 @@
         android:layout_alignBottom="@+id/rotate_bar"
         android:layout_alignParentLeft="true"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginLeft="@dimen/alternate_half_margin"
+        android:layout_marginRight="@dimen/alternate_half_margin"
         android:layout_weight="1"
         android:background="?android:attr/selectableItemBackground"
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/ic_close_black_24dp" />
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_width="@dimen/zero"
+        android:layout_height="@dimen/size_60"
         android:layout_toRightOf="@id/rotate_cancel"
         android:layout_weight="8"
         android:orientation="vertical">
@@ -30,17 +30,17 @@
         <TextView
             android:id="@+id/tvAngle"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/zero"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:gravity="center"
             android:hint="123"
             android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:textSize="@dimen/sub_medium_text" />
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/zero"
             android:layout_weight="2">
 
             <com.github.shchurov.horizontalwheelview.HorizontalWheelView
@@ -48,7 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_toStartOf="@+id/rotate_apply"
-                android:padding="5dp"
+                android:padding="@dimen/alternate_half_padding"
                 app:activeColor="@color/accent_green"
                 app:normalColor="@color/black" />
         </FrameLayout>
@@ -57,13 +57,13 @@
 
     <ImageButton
         android:id="@+id/rotate_apply"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero"
         android:layout_height="@dimen/editor_bottom_row_size"
         android:layout_alignBottom="@+id/rotate_bar"
         android:layout_alignParentRight="true"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginLeft="@dimen/alternate_half_margin"
+        android:layout_marginRight="@dimen/alternate_half_margin"
         android:layout_weight="1"
         android:background="?android:attr/selectableItemBackground"
         android:scaleType="fitCenter"

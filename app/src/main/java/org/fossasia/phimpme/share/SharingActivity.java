@@ -195,7 +195,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     String boardID, imgurAuth = null, imgurString = null;
     private  CloudRailServices cloudRailServices;
     private static final int REQ_SELECT_PHOTO = 1;
-    private static final int REQUEST_CODE_SHARE_TO_MESSENGER = 2;
     private final int REQ_CODE_SPEECH_INPUT = 10;
     private static final int SHARE_WHATSAPP = 200;
     private static final int SHARE_SNAPCHAT = 200;
