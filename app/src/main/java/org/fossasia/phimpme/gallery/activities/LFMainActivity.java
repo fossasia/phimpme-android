@@ -954,6 +954,7 @@ public class LFMainActivity extends SharedMediaActivity {
         } else {
             toolbar.setTitle(getString(R.string.hidden_folder));
         }
+        showNavigationBar();
         toolbar.setNavigationIcon(getToolbarIcon(GoogleMaterial.Icon.gmd_menu));
         mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
         albumsAdapter.swapDataSet(getAlbums().dispAlbums);
@@ -2312,6 +2313,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 AlertDialog.Builder deleteDialog = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
 
                 if(fav_photos && !all_photos){
+                    hideNavigationBar();
                     AlertDialogsHelper.getTextDialog(this, deleteDialog, R.string.remove_from_favourites, R.string.remove_favourites_body, null);
                     deleteDialog.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
                     deleteDialog.setPositiveButton(getString(R.string.remove).toUpperCase(), new DialogInterface.OnClickListener() {
