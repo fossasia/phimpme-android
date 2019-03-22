@@ -143,7 +143,7 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
     }
 
     public void backToMain() {
-        activity.changeMode(EditImageActivity.MODE_WRITE);
+        EditImageActivity.mode = EditImageActivity.MODE_WRITE;
         activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
         activity.writeFragment.clearSelection();
         activity.mainImage.setVisibility(View.VISIBLE);
@@ -303,7 +303,7 @@ public class PaintFragment extends BaseEditFragment implements View.OnClickListe
 
     private final class SaveCustomPaintTask extends StickerTask {
 
-        public SaveCustomPaintTask(EditImageActivity activity,Matrix imageViewMatrix) {
+        public SaveCustomPaintTask(EditImageActivity activity, Matrix imageViewMatrix) {
             super(activity,imageViewMatrix);
         }
 
