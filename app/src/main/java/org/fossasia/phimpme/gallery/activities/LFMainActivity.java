@@ -1554,7 +1554,7 @@ public class LFMainActivity extends SharedMediaActivity {
     private void onInviteClicked() {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.install_phimpme) + "\n " + getString(R.string.invitation_deep_link));
+        sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.install_phimpme) + "\n" + getString(R.string.invitation_deep_link));
         sendIntent.setType("text/plain");
         startActivity(sendIntent);
     }
