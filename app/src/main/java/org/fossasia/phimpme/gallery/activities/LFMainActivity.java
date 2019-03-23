@@ -102,6 +102,7 @@ import org.fossasia.phimpme.gallery.util.Measure;
 import org.fossasia.phimpme.gallery.util.PreferenceUtil;
 import org.fossasia.phimpme.gallery.util.SecurityHelper;
 import org.fossasia.phimpme.gallery.util.StringUtils;
+import org.fossasia.phimpme.gallery.util.ThemeHelper;
 import org.fossasia.phimpme.gallery.views.CustomScrollBarRecyclerView;
 import org.fossasia.phimpme.gallery.views.GridSpacingItemDecoration;
 import org.fossasia.phimpme.trashbin.TrashBinActivity;
@@ -2945,7 +2946,10 @@ public class LFMainActivity extends SharedMediaActivity {
                 editTextNewName.setSelectAllOnFocus(true);
                 editTextNewName.setHint(R.string.description_hint);
                 editTextNewName.setHintTextColor(ContextCompat.getColor(getApplicationContext(), R.color.grey));
-                editTextNewName.setHighlightColor(ContextCompat.getColor(getApplicationContext(), R.color.cardview_shadow_start_color));
+                if(getBaseTheme() == ThemeHelper.DARK_THEME || getBaseTheme() == ThemeHelper.AMOLED_THEME){
+                    editTextNewName.setTextColor(R.color.black);
+                    editTextNewName.setHighlightColor(ContextCompat.getColor(getApplicationContext(), R.color.accent_grey));
+                } else editTextNewName.setHighlightColor(ContextCompat.getColor(getApplicationContext(), R.color.cardview_shadow_start_color));
                 editTextNewName.selectAll();
                 editTextNewName.setSingleLine(false);
                 final String albumName = albumsMode ? getAlbums().getSelectedAlbum(0).getName() : getAlbum().getName();
