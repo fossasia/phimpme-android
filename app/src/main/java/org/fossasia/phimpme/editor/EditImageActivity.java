@@ -174,7 +174,7 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
     private void setInitialFragments() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.controls_container, getFragment(initalBottomFragment))
+                .replace(R.id.controls_container, getFragment(initalBottomFragment))
                 .commit();
 
         changeMiddleFragment(initalMiddleFragment);

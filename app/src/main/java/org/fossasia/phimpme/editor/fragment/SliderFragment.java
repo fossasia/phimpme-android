@@ -174,7 +174,7 @@ public class SliderFragment extends BaseEditFragment implements View.OnClickList
         if (null != activity) {
             currentBitmap = null;
             activity.mainImage.setImageBitmap(activity.mainBitmap);
-            activity.changeMode(EditImageActivity.effectType / 100);
+            EditImageActivity.mode = EditImageActivity.effectType / 100;
             activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
             activity.mainImage.setScaleEnabled(true);
 

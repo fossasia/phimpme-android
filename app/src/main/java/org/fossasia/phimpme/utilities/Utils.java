@@ -169,7 +169,9 @@ public class Utils {
         if (isInternetOn(context)) {
             return true;
         } else
+
             Snackbar.make(view,R.string.internet_is_off,Snackbar.LENGTH_SHORT).show();
+
         return false;
     }
     public static void promptSpeechInput(Activity activity, int requestCode, View parentView, String promtMsg) {

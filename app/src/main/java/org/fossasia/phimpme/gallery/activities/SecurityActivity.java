@@ -185,11 +185,10 @@ public class SecurityActivity extends ThemedActivity {
                         swActiveSecurity.setChecked(true);
                         SP.putBoolean(getString(R.string.preference_use_password), true);
                         toggleEnabledChild(true);
-                    }
-                    else
-                    setPasswordDialog();
-                }
-                else {
+                        Snackbar.make(findViewById(android.R.id.content), "Password Set", Snackbar.LENGTH_SHORT)
+                                .show();
+                    } else setPasswordDialog();
+                } else {
                     editor.putBoolean(getString(R.string.preference_use_password), false);
                     editor.commit();
                     toggleEnabledChild(false);
@@ -474,11 +473,15 @@ public class SecurityActivity extends ThemedActivity {
                 if (!b) {
                     checkBox.setButtonTintList(ColorStateList.valueOf(getAccentColor()));
                     editTextPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     editTextConfirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                } else {
+                    editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }else{
                     checkBox.setButtonTintList(ColorStateList.valueOf(getAccentColor()));
                     editTextPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                     editTextConfirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 }
             }
         });
@@ -638,10 +641,14 @@ public class SecurityActivity extends ThemedActivity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (!b) {
                     editTextPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     editTextConfirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                } else {
+                    editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }else{
                     editTextPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                     editTextConfirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 }
             }
         });
@@ -858,13 +865,23 @@ public class SecurityActivity extends ThemedActivity {
             return new ViewHolder(v);
         }
 
-        @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        @Override public void onBindViewHolder(final ViewHolder holder, int position) {
             final Album a = albums.get(position);
             holder.foldername.setText(a.getName());
             holder.foldername.setTextColor(getTextColor());
             holder.foldercheckbox.setOnCheckedChangeListener(null);
             holder.foldercheckbox.setChecked(a.getsecured());
+            //name of the folder can be clicked to check the box instead of the checkbox itself
+            TextView folderName = holder.foldername;
+            folderName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    boolean no = holder.foldercheckbox.isChecked();
+                    if (no) {
+                        holder.foldercheckbox.setChecked(false);
+                    } else holder.foldercheckbox.setChecked(true);
+                }
+            });
             //holder.foldercheckbox.setButtonTintList();
             holder.foldercheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
