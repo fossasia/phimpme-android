@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.data.local.TrashBinRealmModel;
+import org.fossasia.phimpme.gallery.activities.SettingsActivity;
 import org.fossasia.phimpme.gallery.activities.SingleMediaActivity;
 import org.fossasia.phimpme.gallery.data.Media;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
@@ -261,6 +262,10 @@ public class TrashBinActivity extends ThemedActivity implements TrashBinAdapter.
 
             case R.id.delete_action:
                 deleteAllMedia();
+                return true;
+
+            case R.id.up_settings:
+                startActivity(new Intent(TrashBinActivity.this, SettingsActivity.class));
                 return true;
 
                 default:
