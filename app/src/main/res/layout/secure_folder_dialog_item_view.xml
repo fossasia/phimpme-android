@@ -12,17 +12,17 @@
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="@dimen/zero"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:textSize="18dp"
+            android:layout_margin="@dimen/alternate_half_margin"
+            android:textSize="@dimen/text_medium_small_dp"
             android:text="@string/la"
             android:layout_weight="0.9"
             android:textColor="@color/md_blue_grey_500"
             android:id="@+id/foldername" />
 
         <CheckBox
-            android:layout_width="0dp"
+            android:layout_width="@dimen/zero"
             android:layout_height="wrap_content"
             android:visibility="gone"
             android:layout_marginEnd="2dp"
@@ -31,9 +31,9 @@
             android:id="@+id/secure_folder_checkbox_black"/>
 
         <CheckBox
-            android:layout_width="0dp"
+            android:layout_width="@dimen/zero"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="2dp"
+            android:layout_marginEnd="@dimen/extremely_small_padding"
             android:visibility="gone"
             android:layout_weight="0.1"
             android:buttonTint="@color/accent_white"

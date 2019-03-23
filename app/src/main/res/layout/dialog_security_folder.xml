@@ -16,13 +16,13 @@
 
       <TextView android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="18dp"
+                android:textSize="@dimen/text_medium_small_dp"
                 android:id="@+id/titlesecure"
                 android:textStyle="bold"
                 android:textColor="@color/accent_white"
                 android:background="@color/accent_blue"
                 android:text="@string/secure_folders"
-                android:layout_margin="20dp"/>
+                android:layout_margin="@dimen/account_margin"/>
 
     </LinearLayout>
 

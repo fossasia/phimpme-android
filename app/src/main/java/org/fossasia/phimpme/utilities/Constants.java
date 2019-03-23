@@ -34,22 +34,14 @@ public class Constants {
 
     public final static String TUMBLR_CONSUMER_KEY = "gOrriv5kT1wOSnZg0u66vXwmo9phPgeXqBlFKOgVQshS4Xe9qh";
     public final static String TUMBLR_CONSUMER_SECRET = "kQFgrWbIsJK3WEabkUPBOR9zZwSZuM3ikOgCpAk4bYs8HqsBTQ";
-    public final static String CALL_BACK_TUMBLR = "http://phimp.me";
 
     public static final String MY_IMGUR_CLIENT_ID = "ed4cad8c0ad3739";
     public static final String IMGUR_LOGIN_URL = "https://api.imgur.com/oauth2/authorize?client_id=" + MY_IMGUR_CLIENT_ID + "&response_type=token";
 
     public static final String PINTEREST_APP_ID = "4914573327424567067";
 
-    public final static String PACKAGE_FACEBOOK = "com.facebook.katana";
     public final static String PACKAGE_INSTAGRAM = "com.instagram.android";
     public final static String PACKAGE_WHATSAPP = "com.whatsapp";
-    public final static String PACKAGE_GOOGLEPLUS = "com.google.android.apps.plus";
-    public final static String PACKAGE_HIKE = "com.bsb.hike";
     public final static String PACKAGE_MESSENGER = "com.facebook.orca";
     public final static String PACKAGE_SNAPCHAT = "com.snapchat.android";
-    public final static String PACKAGE_TWITTER = "com.twitter.android";
-    public final static String PACKAGE_PLAYSTORE = "com.android.vending";
-    public final static String PACKAGE_TELEGRAM = "org.telegram.messenger";
-
 }

@@ -14,10 +14,10 @@
         />
     <com.mikepenz.iconics.view.IconicsImageView
         android:id="@+id/icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/size_50dp"
+        android:layout_height="@dimen/size_50dp"
         android:layout_gravity="center_vertical|center_horizontal"
-        android:elevation="10dp"
+        android:elevation="@dimen/video_fragment_elevation"
         android:visibility="visible"
         app:iiv_color="@color/md_white_1000"
         app:iiv_icon="gmd-play-circle-outline" />

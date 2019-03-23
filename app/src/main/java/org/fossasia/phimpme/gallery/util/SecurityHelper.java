@@ -114,11 +114,13 @@ public class SecurityHelper {
                     int position = editxtPassword.getText().length();
                     Editable editObj = editxtPassword.getText();
                     Selection.setSelection(editObj, position);
+                    editxtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 } else {
                     editxtPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     int position = editxtPassword.getText().length();
                     Editable editObj = editxtPassword.getText();
                     Selection.setSelection(editObj, position);
+                    editxtPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 }
             }
         });
@@ -255,6 +257,7 @@ public class SecurityHelper {
         final EditText securityAnswer1 = PasswordDialogLayout.findViewById(R.id.security_answer_edittext);
         final EditText securityQuestion = PasswordDialogLayout.findViewById(R.id.security_question_edittext);
         editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        checkBox.setButtonTintList(ColorStateList.valueOf(activity.getAccentColor()));
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {

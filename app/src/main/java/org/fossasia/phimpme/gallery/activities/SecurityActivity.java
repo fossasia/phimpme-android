@@ -87,6 +87,18 @@ public class SecurityActivity extends ThemedActivity {
 
         /** - SWITCHES - **/
         /** - ACTIVE SECURITY - **/
+        LinearLayout linearLayout=findViewById(R.id.ll_active_security);
+        linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean no = swActiveSecurity.isChecked();
+                if(no){
+                    swActiveSecurity.setChecked(false);
+                }else {
+                    swActiveSecurity.setChecked(true);
+                }
+            }
+        });
         swActiveSecurity.setChecked(securityObj.isActiveSecurity());
         swActiveSecurity.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -103,13 +115,14 @@ public class SecurityActivity extends ThemedActivity {
                         swActiveSecurity.setChecked(true);
                         SP.putBoolean(getString(R.string.preference_use_password), true);
                         toggleEnabledChild(true);
-                    } else
-                        setPasswordDialog();
+                        Snackbar.make(findViewById(android.R.id.content), "Password Set", Snackbar.LENGTH_SHORT)
+                                .show();
+                    } else setPasswordDialog();
                 } else {
                     editor.putBoolean(getString(R.string.preference_use_password), false);
                     editor.commit();
                     toggleEnabledChild(false);
-                    Snackbar.make(findViewById(android.R.id.content), "No Password Set", Snackbar.LENGTH_SHORT)
+                    Snackbar.make(findViewById(android.R.id.content), R.string.no_password_set, Snackbar.LENGTH_SHORT)
                             .show();
                 }
             }
@@ -118,6 +131,18 @@ public class SecurityActivity extends ThemedActivity {
         llbody.setEnabled(swActiveSecurity.isChecked());
 
         /** - ACTIVE SECURITY ON HIDDEN FOLDER - **/
+        LinearLayout swHiddenFolder = findViewById(R.id.ll_security_body_apply_hidden);
+        swHiddenFolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean no = swApplySecurityHidden.isChecked();
+                if(no && swActiveSecurity.isChecked()){
+                    swApplySecurityHidden.setChecked(false);
+                }else if(swActiveSecurity.isChecked()) {
+                    swApplySecurityHidden.setChecked(true);
+                }
+            }
+        });
         swApplySecurityHidden.setChecked(securityObj.isPasswordOnHidden());
         swApplySecurityHidden.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -130,6 +155,18 @@ public class SecurityActivity extends ThemedActivity {
         updateSwitchColor(swApplySecurityHidden, getAccentColor());
 
         /**ACTIVE SECURITY ON LOCAL FOLDERS**/
+        LinearLayout swLocalFolders = findViewById(R.id.ll_security_body_apply_security_local_folders);
+        swLocalFolders.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean no = swApplySecurityFolder.isChecked();
+                if(no && swActiveSecurity.isChecked()){
+                    swApplySecurityFolder.setChecked(false);
+                }else if(swActiveSecurity.isChecked()){
+                    swApplySecurityFolder.setChecked(true);
+                }
+            }
+        });
         swApplySecurityFolder.setChecked(securityObj.isPasswordOnfolder());
         swApplySecurityFolder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -145,7 +182,7 @@ public class SecurityActivity extends ThemedActivity {
                     LinearLayout linearLayout = view.findViewById(R.id.titlelayout);
                     linearLayout.setBackgroundColor(getAccentColor());
                     title.setBackgroundColor(getAccentColor());
-                    title.setText("Choose folders to secure");
+                    title.setText(R.string.choose_folders);
                     RecyclerView recyclerView = view.findViewById(R.id.secure_folder_recyclerview);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                     final SecureDialogAdapter securedLocalFolders = new SecureDialogAdapter();
@@ -225,6 +262,18 @@ public class SecurityActivity extends ThemedActivity {
         });
 
         /**ACTIVE SECURITY ON DELETE ACTION**/
+        LinearLayout swDeleteAction = findViewById(R.id.ll_security_body_apply_delete);
+        swDeleteAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean no = swApplySecurityDelete.isChecked();
+                if(no && swActiveSecurity.isChecked()){
+                    swApplySecurityDelete.setChecked(false);
+                }else if (swActiveSecurity.isChecked()){
+                    swApplySecurityDelete.setChecked(true);
+                }
+            }
+        });
         swApplySecurityDelete.setChecked(securityObj.isPasswordOnDelete());
         swApplySecurityDelete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -264,11 +313,15 @@ public class SecurityActivity extends ThemedActivity {
                 if (!b) {
                     checkBox.setButtonTintList(ColorStateList.valueOf(getAccentColor()));
                     editTextPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     editTextConfirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                } else {
+                    editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }else{
                     checkBox.setButtonTintList(ColorStateList.valueOf(getAccentColor()));
                     editTextPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                     editTextConfirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 }
             }
         });
@@ -374,7 +427,7 @@ public class SecurityActivity extends ThemedActivity {
                                         SnackBarHandler.show(llroot, R.string.remember_password_message);
                                         changed = true;
                                         dialog.dismiss();
-                                        Snackbar.make(findViewById(android.R.id.content), "Password Set", Snackbar.LENGTH_SHORT)
+                                        Snackbar.make(findViewById(android.R.id.content), R.string.password_set, Snackbar.LENGTH_SHORT)
                                                 .show();
                                         swActiveSecurity.setChecked(changed);
                                         SP.putBoolean(getString(R.string.preference_use_password), changed);
@@ -469,10 +522,14 @@ public class SecurityActivity extends ThemedActivity {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (!b) {
                     editTextPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     editTextConfirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                } else {
+                    editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }else{
                     editTextPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                     editTextConfirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 }
             }
         });
@@ -721,13 +778,23 @@ public class SecurityActivity extends ThemedActivity {
             return new ViewHolder(v);
         }
 
-        @Override
-        public void onBindViewHolder(ViewHolder holder, int position) {
+        @Override public void onBindViewHolder(final ViewHolder holder, int position) {
             final Album a = albums.get(position);
             holder.foldername.setText(a.getName());
             holder.foldername.setTextColor(getTextColor());
             holder.foldercheckbox.setOnCheckedChangeListener(null);
             holder.foldercheckbox.setChecked(a.getsecured());
+            //name of the folder can be clicked to check the box instead of the checkbox itself
+            TextView folderName = holder.foldername;
+            folderName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    boolean no = holder.foldercheckbox.isChecked();
+                    if (no) {
+                        holder.foldercheckbox.setChecked(false);
+                    } else holder.foldercheckbox.setChecked(true);
+                }
+            });
             //holder.foldercheckbox.setButtonTintList();
             holder.foldercheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override

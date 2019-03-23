@@ -23,10 +23,10 @@
             <ImageButton
                 android:id="@+id/edit_cancel"
                 android:layout_width="@dimen/icon_item_image_size_top"
-                android:layout_height="50dp"
+                android:layout_height="@dimen/size_50dp"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="@dimen/alternate_half_margin"
                 android:background="?android:attr/selectableItemBackground"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/ic_cancel2" />
@@ -34,11 +34,11 @@
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="@dimen/size_50dp"
                 android:layout_alignParentEnd="false"
                 android:layout_alignParentRight="false"
                 android:layout_centerVertical="true"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/alternate_margin"
                 android:layout_toEndOf="@+id/edit_cancel"
                 android:layout_toStartOf="@+id/edit_save"
                 android:contextClickable="false"
@@ -49,19 +49,19 @@
                 <Button
                     android:id="@+id/size"
                     android:layout_width="wrap_content"
-                    android:layout_height="35dp"
+                    android:layout_height="@dimen/size_35"
                     android:background="@color/colorPrimary"
-                    android:padding="5dp"
+                    android:padding="@dimen/alternate_half_padding"
                     android:text="@string/by_size"
                     android:textColor="@color/accent_white" />
 
                 <Button
                     android:id="@+id/bypixel"
                     android:layout_width="wrap_content"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="15dp"
+                    android:layout_height="@dimen/size_35"
+                    android:layout_marginLeft="@dimen/large_margin"
                     android:background="@color/colorPrimary"
-                    android:padding="5dp"
+                    android:padding="@dimen/alternate_half_padding"
                     android:text="@string/by_dimensions"
                     android:textColor="@color/accent_white" />
 
