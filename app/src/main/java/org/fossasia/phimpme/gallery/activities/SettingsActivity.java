@@ -309,7 +309,25 @@ public class SettingsActivity extends ThemedActivity {
                 SP.putBoolean(getString(R.string.preference_translucent_status_bar), isChecked);
                 updateTheme();
                 setStatusBarColor();
-                Snackbar.make(findViewById(android.R.id.content), getString(R.string.restart_app), Snackbar.LENGTH_SHORT).show();
+                Snackbar snack=Snackbar.make(parent, getString(R.string.restart_app), Snackbar.LENGTH_SHORT)
+                        .setAction(getString(R.string.restart).toUpperCase(), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = getBaseContext().getPackageManager()
+                                        .getLaunchIntentForPackage(getBaseContext().getPackageName());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                            }
+                        })
+                        .setActionTextColor(getAccentColor());
+                View view = snack.getView();
+                final FrameLayout.LayoutParams param = (FrameLayout.LayoutParams) view.getLayoutParams();
+                param.setMargins(param.leftMargin,
+                        param.topMargin,
+                        param.rightMargin,
+                        param.bottomMargin);
+                view.setLayoutParams(param);
+                snack.show();
                 updateSwitchColor(swStatusBar, getAccentColor());
             }
         });
