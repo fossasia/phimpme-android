@@ -675,12 +675,23 @@ public class SecurityActivity extends ThemedActivity {
             return new ViewHolder(v);
         }
 
-        @Override public void onBindViewHolder(ViewHolder holder, int position) {
+        @Override public void onBindViewHolder(final ViewHolder holder, int position) {
             final Album a = albums.get(position);
             holder.foldername.setText(a.getName());
             holder.foldername.setTextColor(getTextColor());
             holder.foldercheckbox.setOnCheckedChangeListener(null);
             holder.foldercheckbox.setChecked(a.getsecured());
+            //name of the folder can be clicked to check the box instead of the checkbox itself
+            TextView folderName = holder.foldername;
+            folderName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    boolean no = holder.foldercheckbox.isChecked();
+                    if (no) {
+                        holder.foldercheckbox.setChecked(false);
+                    } else holder.foldercheckbox.setChecked(true);
+                }
+            });
             //holder.foldercheckbox.setButtonTintList();
             holder.foldercheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
