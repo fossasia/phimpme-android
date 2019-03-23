@@ -49,6 +49,7 @@ import android.speech.tts.TextToSpeech;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.view.GestureDetectorCompat;
 import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.GestureDetector;
@@ -126,6 +127,7 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
 
     private SoundPool sound_pool;
     private SparseIntArray sound_ids;
+    private GestureDetectorCompat gestureDetectorCompat;
 
     private TextToSpeech textToSpeech;
     private boolean textToSpeechSuccess;
@@ -452,9 +454,46 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
             };
             ImageSaver.setBasicCallBack(basicCallBack);
         }
+        /*
+         To enable swiping on the screen
+        */
+        gestureDetectorCompat = new GestureDetectorCompat(this, new GestureDetector.SimpleOnGestureListener() {
+            private MotionEvent mLastOnDownEvent = null;
+            private static final int SWIPE_MIN_DISTANCE = 120;
+            private static final int SWIPE_MAX_OFF_PATH = 250;
+            private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+
+            @Override
+            public boolean onDown(MotionEvent event){
+                mLastOnDownEvent = event;
+                return true;
+            }
+
+            @Override
+            public boolean onFling(MotionEvent event1, MotionEvent event2,
+                                   float velocityX, float velocityY) {
+                if (event1 == null)
+                    event1 = mLastOnDownEvent;
+                if (event1.getX() - event2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)
+                {
+                    Intent homeIntent = new Intent(CameraActivity.this, LFMainActivity.class);
+                    startActivity(homeIntent);
+                    return true;
+                }
+                return true;
+            }
+        });
         toggle = findViewById(R.id.toggle_button);
         increaseZoom.setOnClickListener(this);
         decreaseZoom.setOnClickListener(this);
+
+        findViewById(R.id.locker).setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                gestureDetectorCompat.onTouchEvent(event);
+                return true;
+            }
+        });
     }
 
     /* This method sets the preference defaults which are set specific for a particular device.

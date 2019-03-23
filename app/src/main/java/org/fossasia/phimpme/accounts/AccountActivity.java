@@ -7,14 +7,17 @@ import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 
@@ -105,7 +108,8 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private Context context;
     private CloudRailServices cloudRailServices;
     private PDKClient pdkClient;
-   // private GoogleApiClient mGoogleApiClient;
+    private GestureDetectorCompat gestureDetectorCompat;
+    // private GoogleApiClient mGoogleApiClient;
     private BoxSession sessionBox;
 
     @Override
@@ -136,8 +140,44 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         pdkClient = PDKClient.configureInstance(this, PINTEREST_APP_ID);
         pdkClient.onConnect(this);
         setDebugMode(true);
+          /*
+         To enable swiping on the screen
+        */
+        gestureDetectorCompat = new GestureDetectorCompat(this, new GestureDetector.SimpleOnGestureListener() {
+
+            private MotionEvent mLastOnDownEvent = null;
+            private static final int SWIPE_MIN_DISTANCE = 120;
+            private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+
+            @Override
+            public boolean onDown(MotionEvent event){
+                mLastOnDownEvent = event;
+                return true;
+            }
+
+            @Override
+            public boolean onFling(MotionEvent event1, MotionEvent event2,
+                                   float velocityX, float velocityY) {
+                if (event1 == null)
+                    event1 = mLastOnDownEvent;
+                if (event2.getX() - event1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY)
+                {
+                    Intent homeIntent = new Intent(AccountActivity.this, LFMainActivity.class);
+                    startActivity(homeIntent);
+                    return true;
+                }
+                return true;
+            }
+        });
         //  googleApiClient();
         configureBoxClient();
+        accountsRecyclerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                gestureDetectorCompat.onTouchEvent(event);
+                return true;
+            }
+        });
     }
 
 
@@ -183,6 +223,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         accountsRecyclerView.setAdapter(accountAdapter);
         accountsRecyclerView.addOnItemTouchListener(new RecyclerItemClickListner(this, this));
     }
+
 
     @Override
     public void setUpAdapter(@NotNull RealmQuery<AccountDatabase> accountDetails) {

@@ -32,6 +32,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -51,6 +52,7 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -77,6 +79,7 @@ import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.view.IconicsImageView;
 
 import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.accounts.AccountActivity;
 import org.fossasia.phimpme.base.SharedMediaActivity;
 import org.fossasia.phimpme.data.local.FavouriteImagesModel;
 import org.fossasia.phimpme.data.local.ImageDescModel;
@@ -105,6 +108,7 @@ import org.fossasia.phimpme.gallery.util.StringUtils;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
 import org.fossasia.phimpme.gallery.views.CustomScrollBarRecyclerView;
 import org.fossasia.phimpme.gallery.views.GridSpacingItemDecoration;
+import org.fossasia.phimpme.opencamera.Camera.CameraActivity;
 import org.fossasia.phimpme.trashbin.TrashBinActivity;
 import org.fossasia.phimpme.uploadhistory.UploadHistory;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
@@ -834,6 +838,27 @@ public class LFMainActivity extends SharedMediaActivity {
             displayfavourites();
             favourites = false;
         }
+
+        //to enable left and right swipe on the screen
+        rvAlbums.addOnItemTouchListener(new MyTouchListener(LFMainActivity.this,
+                rvAlbums,
+                new MyTouchListener.OnTouchActionListener() {
+                    @Override
+                    public void onLeftSwipe(View view, int position) {
+                        Intent accountIntent = new Intent(LFMainActivity.this, AccountActivity.class);
+                        startActivity(accountIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    }
+
+                    @Override
+                    public void onRightSwipe(View view, int position) {
+                        Intent cameraIntent = new Intent(LFMainActivity.this, CameraActivity.class);
+                        startActivity(cameraIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                    }
+
+                    @Override
+                    public void onClick(View view, int position) {
+                    }
+        }));
     }
 
     @Override
@@ -3595,6 +3620,89 @@ public class LFMainActivity extends SharedMediaActivity {
             }
         }
     }
+    /*
+    Touch listener on the screen to enable left and right swipe
+     */
+
+    public static class MyTouchListener implements RecyclerView.OnItemTouchListener {
+
+        private static final int SWIPE_MIN_DISTANCE = 120;
+        private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+        private static final int SWIPE_MAX_OFF_PATH = 250;
+
+        private OnTouchActionListener mOnTouchActionListener;
+        private GestureDetectorCompat mGestureDetector;
+
+        public interface OnTouchActionListener {
+            void onLeftSwipe(View view, int position);
+            void onRightSwipe(View view, int position);
+            void onClick(View view, int position);
+        }
+
+        private MyTouchListener(Context context, final RecyclerView recyclerView,
+                                OnTouchActionListener onTouchActionListener){
+
+            mOnTouchActionListener = onTouchActionListener;
+            mGestureDetector = new GestureDetectorCompat(context,new GestureDetector.SimpleOnGestureListener(){
+
+                @Override
+                public boolean onSingleTapConfirmed(MotionEvent e) {
+                    // Find the item view that was swiped based on the coordinates
+                    View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+                    int childPosition = recyclerView.getChildAdapterPosition(child);
+                    mOnTouchActionListener.onClick(child, childPosition);
+                    return false;
+                }
+
+                @Override
+                public boolean onFling(MotionEvent e1, MotionEvent e2,
+                                       float velocityX, float velocityY) {
+
+                    try {
+                        if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH) {
+                            return false;
+                        }
+
+                        View child = recyclerView.findChildViewUnder(e1.getX(), e1.getY());
+                        int childPosition = recyclerView.getChildAdapterPosition(child);
+
+                        if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+
+                            if (mOnTouchActionListener != null && child != null) {
+                                mOnTouchActionListener.onLeftSwipe(child, childPosition);
+                            }
+
+                        } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                            if (mOnTouchActionListener != null && child != null) {
+                                mOnTouchActionListener.onRightSwipe(child, childPosition);
+                            }
+                        }
+                    } catch (Exception e) {
+
+                    }
+
+                    return false;
+                }
+            });
+        }
+
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+            mGestureDetector.onTouchEvent(e);
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+        }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+        }
+
+    }
+
 
     private class CreateGIFTask extends AsyncTask<Void, Void, Void>{
         private ArrayList<Bitmap> bitmaps = new ArrayList<>();
