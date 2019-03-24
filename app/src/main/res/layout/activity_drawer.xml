@@ -117,8 +117,8 @@
                         android:id="@+id/Drawer_favourite_Item"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="16dp"
-                        android:paddingTop="16dp"
+                        android:paddingBottom="@dimen/medium_spacing"
+                        android:paddingTop="@dimen/medium_spacing"
                         android:text="@string/favourite_folder"
                         android:textColor="@color/md_dark_background"
                         android:textSize="@dimen/medium_text"/>

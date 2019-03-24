@@ -10,7 +10,7 @@
         android:id="@+id/album_details_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="2dp">
+        app:cardCornerRadius="@dimen/size_2">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -170,7 +170,7 @@
                             android:id="@+id/album_details_total"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="14dp"
+                            android:layout_marginStart="@dimen/margin_14dp"
                             android:textColor="@color/icongrey"
                             android:textSize="@dimen/big_medium_text" />
                     </LinearLayout>
@@ -313,7 +313,7 @@
                             android:id="@+id/album_details_hidden"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="55dp"
+                            android:layout_marginStart="@dimen/margin_55dp"
                             android:textColor="@color/icongrey"
                             android:textSize="@dimen/big_medium_text" />
                     </LinearLayout>

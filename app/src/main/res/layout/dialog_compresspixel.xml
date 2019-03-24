@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/vn.mbm.phimp.me"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="2dp"
+    app:cardCornerRadius="@dimen/size_2"
     android:id="@+id/dialog_chose_provider_title">
     <LinearLayout
         android:layout_width="match_parent"

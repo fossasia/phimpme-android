@@ -10,7 +10,7 @@
         android:id="@+id/affix_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="2dp"
+        app:cardCornerRadius="@dimen/size_2"
         >
             <LinearLayout
                 android:layout_width="match_parent"
@@ -101,13 +101,13 @@
                             android:weightSum="10">
                             <com.mikepenz.iconics.view.IconicsImageView
                                 android:id="@+id/save_here_icon"
-                                android:layout_width="0dp"
+                                android:layout_width="@dimen/zero"
                                 android:layout_height="@dimen/size_20dp"
                                 android:layout_gravity="center_vertical"
                                 android:layout_weight="2"
                                 app:iiv_icon="gmd-photo-library" />
                             <LinearLayout
-                                android:layout_width="0dp"
+                                android:layout_width="@dimen/zero"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="6"
                                 android:orientation="vertical">
