@@ -137,10 +137,8 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
     public static IconicsImageView toggle;
     //private boolean ui_placement_right = true;
 
-    private final ToastBoxer switch_video_toast = new ToastBoxer();
     private final ToastBoxer screen_locked_toast = new ToastBoxer();
     private final ToastBoxer changed_auto_stabilise_toast = new ToastBoxer();
-    private final ToastBoxer exposure_lock_toast = new ToastBoxer();
     private final ToastBoxer audio_control_toast = new ToastBoxer();
     private boolean block_startup_toast = false; // used when returning from Settings/Popup - if we're displaying a toast anyway, don't want to display the info toast too
 

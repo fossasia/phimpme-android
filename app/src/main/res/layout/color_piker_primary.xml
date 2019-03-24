@@ -29,7 +29,7 @@
                         android:background="@color/md_red_500"
                         android:padding="@dimen/big_spacing"
                         android:text="@string/primary_color"
-                        android:textSize="18sp"
+                        android:textSize="@dimen/sub_big_text"
                         android:textStyle="bold" />
 
                     <LinearLayout
@@ -43,7 +43,7 @@
                             xmlns:app="http://schemas.android.com/apk/res-auto"
                             android:id="@+id/color_picker_primary"
                             android:layout_width="match_parent"
-                            android:layout_height="60dp"
+                            android:layout_height="@dimen/size_60"
                             app:orientation="horizontal"
                             app:selectedColorIndex="0" />
 
@@ -51,10 +51,10 @@
                             xmlns:app="http://schemas.android.com/apk/res-auto"
                             android:id="@+id/color_picker_primary_2"
                             android:layout_width="match_parent"
-                            android:layout_height="40dp"
+                            android:layout_height="@dimen/size_40"
                             app:orientation="horizontal"
                             app:selectedColorIndex="0"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="@dimen/alternate_margin"
                             />
 
                     </LinearLayout>

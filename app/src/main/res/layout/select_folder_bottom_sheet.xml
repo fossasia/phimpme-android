@@ -12,14 +12,14 @@
                   android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                   android:orientation="horizontal"
-                  android:paddingStart="24dp"
-                  android:paddingEnd="24dp"
-                  android:paddingTop="16dp"
-                  android:paddingBottom="16dp"
+                  android:paddingStart="@dimen/big_spacing"
+                  android:paddingEnd="@dimen/big_spacing"
+                  android:paddingTop="@dimen/medium_spacing"
+                  android:paddingBottom="@dimen/medium_spacing"
                   android:weightSum="10"
     >
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="@dimen/zero"
             android:layout_height="wrap_content"
             android:layout_weight="9"
             android:orientation="vertical">
@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/md_dark_primary_text"
-                android:textSize="18sp"
+                android:textSize="@dimen/sub_big_text"
                 android:textStyle="bold"
             />
             <TextView
@@ -36,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/md_dark_primary_text"
-                android:textSize="14sp"
+                android:textSize="@dimen/sub_medium_text"
                 android:text="@string/local_folder"
                 android:ellipsize="start"
                 android:textStyle="italic"
@@ -46,8 +46,8 @@
 
         <com.mikepenz.iconics.view.IconicsImageView
             android:id="@+id/toggle_hidden_icon"
-            android:layout_height="20dp"
-            android:layout_width="0dp"
+            android:layout_height="@dimen/size_20dp"
+            android:layout_width="@dimen/zero"
             android:layout_gravity="center_vertical|end"
             android:clickable="true"
             android:background="@drawable/ripple"
@@ -64,11 +64,11 @@
         android:gravity="center_vertical"
         android:paddingTop="@dimen/medium_spacing"
         android:paddingBottom="@dimen/small_spacing"
-        android:elevation="30dp"
+        android:elevation="@dimen/folder_bottom_sheet_large"
         tools:targetApi="lollipop"
         android:weightSum="10">
 
-        <LinearLayout android:layout_width="0dp"
+        <LinearLayout android:layout_width="@dimen/zero"
                       android:layout_weight="9"
                       android:orientation="horizontal"
                       android:id="@+id/ll_create_new_folder"
@@ -87,13 +87,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/create_new_folder"
-                android:textSize="16sp"
+                android:textSize="@dimen/medium_text"
             />
         </LinearLayout>
         <com.mikepenz.iconics.view.IconicsImageView
             android:id="@+id/done"
             android:layout_height="@dimen/icon_width_height"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/zero"
             android:layout_marginEnd="@dimen/big_spacing"
             android:layout_gravity="center_vertical"
             android:clickable="true"

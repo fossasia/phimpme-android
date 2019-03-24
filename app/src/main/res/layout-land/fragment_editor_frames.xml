@@ -13,11 +13,11 @@
         >
         <ImageButton
             android:id="@+id/cancel"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/size_30dp"
+            android:layout_height="@dimen/size_30dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginLeft="@dimen/alternate_half_margin"
+            android:layout_marginRight="@dimen/alternate_half_margin"
             android:background="@color/white"
             android:scaleType="fitCenter"
             android:visibility="gone" />
@@ -35,11 +35,11 @@
 
         <ImageButton
             android:id="@+id/done"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/size_30dp"
+            android:layout_height="@dimen/size_30dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginLeft="@dimen/alternate_half_margin"
+            android:layout_marginRight="@dimen/alternate_half_margin"
             android:background="@color/white"
             android:scaleType="fitCenter"
             android:visibility="gone" />
