@@ -9,7 +9,7 @@
         android:id="@+id/third_act_theme_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="2dp">
+        app:cardCornerRadius="@dimen/size_2">
 
 
         <LinearLayout
@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
                     android:orientation="vertical"
-                    android:paddingLeft="20dp">
+                    android:paddingLeft="@dimen/sub_big_spacing">
 
                     <TextView
                         android:id="@+id/apply_theme_3thAct_title"
@@ -89,10 +89,10 @@
                     android:layout_width="@dimen/zero"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingTop="8dp"
+                    android:paddingTop="@dimen/medium_margin"
                     android:weightSum="5"
                     android:visibility="gone"
-                    android:paddingBottom="13dp">
+                    android:paddingBottom="@dimen/sub_large_padding">
                     android:layout_weight="5"
                     android:orientation="vertical">
 
@@ -120,15 +120,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
+                    android:paddingLeft="@dimen/large_padding"
+                    android:paddingRight="@dimen/large_padding"
                     android:visibility="gone">
 
                     <uz.shift.colorpicker.LineColorPicker 
                         xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/pickerTransparent"
                         android:layout_width="match_parent"
-                        android:layout_height="60dp"
+                        android:layout_height="@dimen/size_60"
                         app:orientation="horizontal"
                         app:selectedColorIndex="0" />
                 </RelativeLayout>
