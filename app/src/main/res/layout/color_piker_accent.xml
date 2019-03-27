@@ -50,6 +50,7 @@
                         xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/color_picker_accent_2"
                         android:layout_width="match_parent"
+                        android:visibility="gone"
                         android:layout_height="@dimen/size_40"
                         app:orientation="horizontal"
                         app:selectedColorIndex="0"
