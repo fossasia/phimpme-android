@@ -9,9 +9,9 @@
   <android.support.v7.widget.CardView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      app:cardCornerRadius="7dp"
-      app:cardElevation="3dp"
-      app:cardMaxElevation="3dp"
+      app:cardCornerRadius="@dimen/size_7"
+      app:cardElevation="@dimen/size_3"
+      app:cardMaxElevation="@dimen/size_3"
       android:layout_gravity="center"
       android:foreground="@drawable/ripple"
       android:layout_margin="@dimen/very_small_margin">
