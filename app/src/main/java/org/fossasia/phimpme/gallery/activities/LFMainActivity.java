@@ -1494,7 +1494,6 @@ public class LFMainActivity extends SharedMediaActivity {
                 findViewById(R.id.ll_drawer_Default).setBackgroundColor(Color.TRANSPARENT);
                 findViewById(R.id.ll_drawer_hidden).setBackgroundColor(getHighlightedItemColor());
                 tint();
-                toolbar.setTitle(getString(R.string.hidden_folder));
                 if (securityObj.isActiveSecurity() && securityObj.isPasswordOnHidden()) {
                     final boolean[] passco = {false};
                     AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
@@ -1543,6 +1542,13 @@ public class LFMainActivity extends SharedMediaActivity {
                                 editTextPassword.getText().clear();
                                 editTextPassword.requestFocus();
                             }
+                        }
+                    });
+                    passwordDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            findViewById(R.id.ll_drawer_Default).performClick();
+                            passwordDialog.dismiss();
                         }
                     });
                 } else {
