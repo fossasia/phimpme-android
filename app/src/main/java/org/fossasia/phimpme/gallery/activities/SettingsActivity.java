@@ -489,7 +489,7 @@ public class SettingsActivity extends ThemedActivity {
         final boolean[] passco = {false};
         AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
         final EditText editTextPassword  = securityObj.getInsertPasswordDialog(SettingsActivity.this,passwordDialogBuilder);
-        passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+        passwordDialogBuilder.setPositiveButton(getString(R.string.cancel).toUpperCase(), null);
         editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         editTextPassword.setHint(getResources().getString(R.string.enter_password));
         editTextPassword.setHintTextColor(getSubTextColor());
@@ -517,7 +517,7 @@ public class SettingsActivity extends ThemedActivity {
                 }
             }
         });
-        passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+        passwordDialogBuilder.setNegativeButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //This should br empty it will be overwrite later
@@ -529,7 +529,7 @@ public class SettingsActivity extends ThemedActivity {
         passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         passwordDialog.show();
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
-        passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+        passwordDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -788,8 +788,8 @@ public class SettingsActivity extends ThemedActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
         AlertDialogsHelper.getTextDialog(SettingsActivity.this, builder,
                 R.string.accent_color, R.string.accent_primary_same_mssg, null);
-        builder.setNegativeButton(this.getString(R.string.no_action).toUpperCase(), null);
-        builder.setPositiveButton(this.getString(R.string.yes_action).toUpperCase(), new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(this.getString(R.string.no_action).toUpperCase(), null);
+        builder.setNegativeButton(this.getString(R.string.yes_action).toUpperCase(), new DialogInterface.OnClickListener() {
             @Override public void onClick(DialogInterface dialogInterface, int i) {
                 SP.putInt(getString(R.string.preference_accent_color), color);
                 updateTheme();
