@@ -8,7 +8,7 @@
 
     <ImageButton
         android:id="@+id/rotate_cancel"
-        android:layout_width="0dp"
+        android:layout_width="@dimen/zero"
         android:layout_height="@dimen/editor_bottom_row_size"
         android:layout_alignBottom="@+id/rotate_bar"
         android:layout_alignParentLeft="true"

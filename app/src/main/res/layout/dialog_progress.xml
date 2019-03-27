@@ -8,7 +8,7 @@
         android:id="@+id/progress_dialog_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="2dp"
+        app:cardCornerRadius="@dimen/size_2"
         >
         <LinearLayout
             android:layout_width="match_parent"

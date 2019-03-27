@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     style="@style/card"
-    android:layout_margin="8dp">
+    android:layout_margin="@dimen/medium_margin">
     <LinearLayout
         android:id="@+id/linear_card_excluded"
         android:layout_width="match_parent"

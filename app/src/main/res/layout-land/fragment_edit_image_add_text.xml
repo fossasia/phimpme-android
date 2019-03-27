@@ -28,7 +28,7 @@
         android:layout_width="@dimen/icon_item_image_size_main"
         android:layout_height="@dimen/editor_bottom_row_size"
         android:layout_gravity="center_vertical"
-        android:layout_margin="3dp"
+        android:layout_margin="@dimen/very_small_margin"
         android:text="@string/auto_newline"
         android:visibility="gone"/>
 

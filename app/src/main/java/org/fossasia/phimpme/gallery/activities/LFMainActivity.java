@@ -725,8 +725,8 @@ public class LFMainActivity extends SharedMediaActivity {
                             }
                         }
                     });
-                    passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-                    passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(),
+                    passwordDialogBuilder.setPositiveButton(getString(R.string.cancel).toUpperCase(), null);
+                    passwordDialogBuilder.setNegativeButton(getString(R.string.ok_action).toUpperCase(),
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
@@ -741,7 +741,7 @@ public class LFMainActivity extends SharedMediaActivity {
                     AlertDialogsHelper.setButtonTextColor(
                             new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE},
                             getAccentColor(), passwordDialog);
-                    passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                    passwordDialog.getButton(AlertDialog.BUTTON_NEGATIVE)
                             .setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
@@ -1552,17 +1552,16 @@ public class LFMainActivity extends SharedMediaActivity {
                 findViewById(R.id.ll_drawer_Default).setBackgroundColor(Color.TRANSPARENT);
                 findViewById(R.id.ll_drawer_hidden).setBackgroundColor(getHighlightedItemColor());
                 tint();
-                toolbar.setTitle(getString(R.string.hidden_folder));
                 if (securityObj.isActiveSecurity() && securityObj.isPasswordOnHidden()) {
                     final boolean[] passco = {false};
                     AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
                     final EditText editTextPassword = securityObj.getInsertPasswordDialog(LFMainActivity.this, passwordDialogBuilder);
                     editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
-                    passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+                    passwordDialogBuilder.setNegativeButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                         }
                     });
-                    passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+                    passwordDialogBuilder.setPositiveButton(getString(R.string.cancel).toUpperCase(), null);
                     editTextPassword.addTextChangedListener(new TextWatcher() {
                         @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                             //empty method body
@@ -1586,7 +1585,7 @@ public class LFMainActivity extends SharedMediaActivity {
                     passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
                     passwordDialog.show();
                     AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
-                    passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View
+                    passwordDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View
                             .OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -1603,7 +1602,8 @@ public class LFMainActivity extends SharedMediaActivity {
                             }
                         }
                     });
-                    editTextPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+                  editTextPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
                         @Override
                         public boolean onEditorAction(TextView textView, int keyCode, KeyEvent keyEvent) {
                             if (keyCode == EditorInfo.IME_ACTION_DONE || keyCode == EditorInfo.IME_ACTION_NEXT) {
@@ -1621,6 +1621,14 @@ public class LFMainActivity extends SharedMediaActivity {
                                 }
                             }
                             return true;
+                        }
+                    });
+                  
+                    passwordDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            findViewById(R.id.ll_drawer_Default).performClick();
+                            passwordDialog.dismiss();
                         }
                     });
                 } else {
@@ -2450,16 +2458,16 @@ public class LFMainActivity extends SharedMediaActivity {
                             R.string.delete_album_message :
                             R.string.delete_photos_message, null, getResources().getString(R.string.move_to_trashbin), getAccentColor());
 
-                deleteDialog.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-                deleteDialog.setPositiveButton(getString(R.string.delete).toUpperCase(), new DialogInterface.OnClickListener() {
+                deleteDialog.setPositiveButton(getString(R.string.cancel).toUpperCase(), null);
+                deleteDialog.setNegativeButton(getString(R.string.delete).toUpperCase(), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         if (securityObj.isActiveSecurity() && securityObj.isPasswordOnDelete()) {
                             final boolean passco[] = {false};
                             AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
                             final EditText editTextPassword = securityObj.getInsertPasswordDialog(LFMainActivity.this, passwordDialogBuilder);
                             editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
-                            passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-                            passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+                            passwordDialogBuilder.setPositiveButton(getString(R.string.cancel).toUpperCase(), null);
+                            passwordDialogBuilder.setNegativeButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     //This should be empty. It will be overwritten later
@@ -2490,7 +2498,7 @@ public class LFMainActivity extends SharedMediaActivity {
                             passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
                             passwordDialog.show();
                             AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
-                            passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                            passwordDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     // if password is correct, call DeletePhotos and perform deletion
@@ -2563,7 +2571,7 @@ public class LFMainActivity extends SharedMediaActivity {
                 textViewExcludeMessage.setTextColor(getTextColor());
                 excludeDialogBuilder.setView(excludeDialogLayout);
 
-                excludeDialogBuilder.setPositiveButton(this.getString(R.string.exclude).toUpperCase(), new DialogInterface.OnClickListener() {
+                excludeDialogBuilder.setNegativeButton(this.getString(R.string.exclude).toUpperCase(), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
                         if ((albumsMode && getAlbums().getSelectedCount() > 1)) {
@@ -2577,7 +2585,7 @@ public class LFMainActivity extends SharedMediaActivity {
                         }
                     }
                 });
-                excludeDialogBuilder.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
+                excludeDialogBuilder.setPositiveButton(this.getString(R.string.cancel).toUpperCase(), null);
                 AlertDialog alertDialogExclude = excludeDialogBuilder.create();
                 alertDialogExclude.show();
                 AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialogExclude);
@@ -3777,6 +3785,7 @@ public class LFMainActivity extends SharedMediaActivity {
                         super.onBackPressed();
                 }
             } else {
+                showAppBar();
                 displayAlbums();
             }
         }
