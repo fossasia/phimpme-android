@@ -3614,6 +3614,7 @@ public class LFMainActivity extends SharedMediaActivity {
                         super.onBackPressed();
                 }
             } else {
+                showAppBar();
                 displayAlbums();
             }
         }
