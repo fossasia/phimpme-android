@@ -9,7 +9,7 @@
         android:id="@+id/third_act_theme_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="2dp">
+        app:cardCornerRadius="@dimen/size_2">
 
 
         <LinearLayout
@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
                     android:orientation="vertical"
-                    android:paddingLeft="20dp">
+                    android:paddingLeft="@dimen/sub_big_spacing">
 
                     <TextView
                         android:id="@+id/apply_theme_3thAct_title"
@@ -85,6 +85,7 @@
                 android:paddingTop="@dimen/small_spacing"
                 android:paddingBottom="@dimen/sub_large_padding">
 
+
                     <TextView
                         android:id="@+id/seek_bar_alpha_title"
                         android:layout_width="wrap_content"
@@ -108,15 +109,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
+                    android:paddingLeft="@dimen/large_padding"
+                    android:paddingRight="@dimen/large_padding"
                     android:visibility="gone">
 
                     <uz.shift.colorpicker.LineColorPicker 
                         xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/pickerTransparent"
                         android:layout_width="match_parent"
-                        android:layout_height="60dp"
+                        android:layout_height="@dimen/size_60"
                         app:orientation="horizontal"
                         app:selectedColorIndex="0" />
                 </RelativeLayout>

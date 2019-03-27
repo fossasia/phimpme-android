@@ -62,7 +62,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/size_1"
         android:layout_above="@+id/bottom_view"
         android:id="@+id/divider1"
         android:layout_marginLeft="@dimen/share_cell_margin_h"

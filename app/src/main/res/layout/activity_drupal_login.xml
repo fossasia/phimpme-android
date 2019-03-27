@@ -91,5 +91,5 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/password_spacing"
         android:background="@drawable/ic_drupal_login"
-        android:elevation="4dp"/>
+        android:elevation="@dimen/drupal_elevation"/>
 </RelativeLayout>
