@@ -80,21 +80,11 @@
                 android:id="@+id/ll_seek_bar_alpha"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:visibility="gone"
+                android:orientation="vertical"
                 android:paddingTop="@dimen/small_spacing"
-                android:paddingBottom="@dimen/sub_large_padding"
-                android:weightSum="5">
+                android:paddingBottom="@dimen/sub_large_padding">
 
-                <LinearLayout
-                    android:layout_width="@dimen/zero"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingTop="@dimen/medium_margin"
-                    android:weightSum="5"
-                    android:visibility="gone"
-                    android:paddingBottom="@dimen/sub_large_padding">
-                    android:layout_weight="5"
-                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/seek_bar_alpha_title"
@@ -113,7 +103,6 @@
                         android:text="@string/transparency_sub"
                         android:textColor="@color/md_grey_400"
                         android:textSize="@dimen/sub_medium_text" />
-                </LinearLayout>
 
                 <RelativeLayout
                     android:id="@+id/container_edit_text"
@@ -138,6 +127,7 @@
                 android:id="@+id/container_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:visibility="gone"
                 android:orientation="vertical"
                 android:paddingLeft="@dimen/large_padding"
                 android:paddingRight="@dimen/large_padding">
