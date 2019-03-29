@@ -310,6 +310,17 @@
                             android:hapticFeedbackEnabled="true" />
                     </RelativeLayout>
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/choose_folders_again"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Choose Folders"
+                    android:paddingStart="67dp"
+                    android:clickable="true"
+                    android:textSize="@dimen/sub_medium_text"
+                    android:paddingBottom="@dimen/alternate_padding"/>
+
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
