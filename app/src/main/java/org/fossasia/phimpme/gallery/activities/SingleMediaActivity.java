@@ -2132,12 +2132,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                             hideSystemUI();
                             SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.slide_start), 0);
                             handler.postDelayed(slideShowRunnable, SLIDE_SHOW_INTERVAL);
-                        } else if (SLIDE_SHOW_INTERVAL < 2000) {
-                            editTextTimeInterval.requestFocus();
-                            til.setError(getString(R.string.min_duration_slide));
-                        } else if (SLIDE_SHOW_INTERVAL > 10000) {
-                            editTextTimeInterval.requestFocus();
-                            til.setError(getString(R.string.slide_max_value));
                         }
                     }
                     return true;
@@ -2162,12 +2156,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                                 hideSystemUI();
                                 SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.slide_start), 0);
                                 handler.postDelayed(slideShowRunnable, SLIDE_SHOW_INTERVAL);
-                            } else if (SLIDE_SHOW_INTERVAL < 2000) {
-                                editTextTimeInterval.requestFocus();
-                                til.setError(getString(R.string.min_duration_slide));
-                            } else if (SLIDE_SHOW_INTERVAL > 10000) {
-                                editTextTimeInterval.requestFocus();
-                                til.setError(getString(R.string.slide_max_value));
                             }
                         }
                     }
