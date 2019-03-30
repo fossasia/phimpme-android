@@ -102,8 +102,7 @@ public class SecurityActivity extends ThemedActivity {
                     editor.putBoolean(getString(R.string.preference_use_password), true);
                     editor.commit();
                     toggleEnabledChild(true);
-                }
-                else {
+                } else {
                     editor.putBoolean(getString(R.string.preference_use_password), false);
                     editor.commit();
                     toggleEnabledChild(false);
