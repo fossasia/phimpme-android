@@ -158,6 +158,7 @@
     <!-- View sizes-->
     <dimen name="size_1">1dp</dimen>
     <dimen name="size_2">2dp</dimen>
+    <dimen name="size_7">7dp</dimen>
     <dimen name="size_8">8dp</dimen>
     <dimen name="size_10">10dp</dimen>
     <dimen name="size_16">16dp</dimen>
