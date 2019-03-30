@@ -153,6 +153,7 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
 
     public ProgressDialog progressDialog;
     public boolean isFromOutside = false;
+    private boolean permanentDenyPermission;
 
     @BindView(R.id.increase_zoom)
     ImageButton increaseZoom;
@@ -2747,6 +2748,10 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
             return;
         }
 
+        if (permanentDenyPermission) {
+            return;
+        }
+
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
             // Show an explanation to the user *asynchronously* -- don't block
             // this thread waiting for the user's response! After the user
@@ -2853,6 +2858,10 @@ public class CameraActivity extends ThemedActivity implements AudioListener.Audi
                         Log.d(TAG, "camera permission granted");
                     preview.retryOpenCamera();
                 } else {
+                    if (!ActivityCompat.shouldShowRequestPermissionRationale(CameraActivity.this,
+                            Manifest.permission.CAMERA))
+                        permanentDenyPermission = true;
+
                     if (MyDebug.LOG)
                         Log.d(TAG, "camera permission denied");
                     // permission denied, boo! Disable the

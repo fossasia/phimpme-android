@@ -54,6 +54,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -61,7 +62,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.bumptech.glide.Glide;
@@ -725,6 +725,10 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             menu.setGroupVisible(R.id.only_photos_options, false);
             menu.findItem(R.id.sort_action).setVisible(false);
         }
+        if(getAlbum().getCount() == 1){
+            menu.findItem(R.id.action_cover).setVisible(false);
+            menu.findItem(R.id.slide_show).setVisible(false);
+        }
         return true;
     }
 
@@ -1237,28 +1241,69 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     @Override
                     public void onClick(View dialog) {
                         if (editTextNewName.length() != 0) {
-                            int index = file.getPath().lastIndexOf("/");
-                            String path = file.getPath().substring(0, index);
-                            File newname = new File(path + "/" + editTextNewName.getText().toString() + "." +
-                                    imageextension);
-                            if (file.renameTo(newname)) {
-                                ContentResolver resolver = getApplicationContext().getContentResolver();
-                                resolver.delete(
-                                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, MediaStore.Images.Media.DATA +
-                                                "=?", new String[]{file.getAbsolutePath()});
-                                Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                                intent.setData(Uri.fromFile(newname));
-                                getApplicationContext().sendBroadcast(intent);
-                            }
-                            if (!allPhotoMode) {
-                                int a = getAlbum().getCurrentMediaIndex();
-                                getAlbum().getMedia(a).setPath(newname.getPath());
+                            if (editTextNewName.getText().toString().indexOf('.') != -1) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
+                                AlertDialogsHelper.getTextDialog(SingleMediaActivity.this, builder, R.string.alert_title, R.string.naming_alert, null);
+                                builder.setNegativeButton(getString(R.string.no_action).toUpperCase(), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        editTextNewName.getText().clear();
+                                    }
+                                });
+                                builder.setPositiveButton(getString(R.string.yes_action).toUpperCase(), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        int index = file.getPath().lastIndexOf("/");
+                                        String path = file.getPath().substring(0, index);
+                                        File newname = new File(path + "/" + editTextNewName.getText().toString() + "." +
+                                                imageextension);
+                                        if (file.renameTo(newname)) {
+                                            ContentResolver resolver = getApplicationContext().getContentResolver();
+                                            resolver.delete(
+                                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, MediaStore.Images.Media.DATA +
+                                                            "=?", new String[]{file.getAbsolutePath()});
+                                            Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                                            intent.setData(Uri.fromFile(newname));
+                                            getApplicationContext().sendBroadcast(intent);
+                                        }
+                                        if (!allPhotoMode) {
+                                            int a = getAlbum().getCurrentMediaIndex();
+                                            getAlbum().getMedia(a).setPath(newname.getPath());
+                                        } else {
+                                            listAll.get(current_image_pos).setPath(newname.getPath());
+                                        }
+                                        renameDialog.dismiss();
+                                        SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.rename_succes), navigationView
+                                                .getHeight());
+                                    }
+                                });
+                                AlertDialog alertDialog = builder.create();
+                                alertDialog.show();
+                                AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE, DialogInterface.BUTTON_NEUTRAL}, getAccentColor(), alertDialog);
                             } else {
-                                listAll.get(current_image_pos).setPath(newname.getPath());
+                                int index = file.getPath().lastIndexOf("/");
+                                String path = file.getPath().substring(0, index);
+                                File newname = new File(path + "/" + editTextNewName.getText().toString() + "." +
+                                        imageextension);
+                                if (file.renameTo(newname)) {
+                                    ContentResolver resolver = getApplicationContext().getContentResolver();
+                                    resolver.delete(
+                                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, MediaStore.Images.Media.DATA +
+                                                    "=?", new String[]{file.getAbsolutePath()});
+                                    Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                                    intent.setData(Uri.fromFile(newname));
+                                    getApplicationContext().sendBroadcast(intent);
+                                }
+                                if (!allPhotoMode) {
+                                    int a = getAlbum().getCurrentMediaIndex();
+                                    getAlbum().getMedia(a).setPath(newname.getPath());
+                                } else {
+                                    listAll.get(current_image_pos).setPath(newname.getPath());
+                                }
+                                renameDialog.dismiss();
+                                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.rename_succes), navigationView
+                                        .getHeight());
                             }
-                            renameDialog.dismiss();
-                            SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.rename_succes), navigationView
-                                    .getHeight());
                         }
                     }
                 });
@@ -1281,7 +1326,17 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     }
                     item.getIcon().setColorFilter(getAccentColor(), PorterDuff.Mode.SRC_IN);
                     realm.commitTransaction();
-                    SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.add_favourite), (bottomBar.getHeight()*2)-22);
+                    final Snackbar snackbar = SnackBarHandler.showWithBottomMargin(parentView,
+                            getResources().getString(R.string.add_favourite),bottomBar.getHeight());
+                    snackbar.setAction(R.string.openfav, new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(SingleMediaActivity.this, LFMainActivity.class);
+                            intent.putExtra("openFav", true);
+                            startActivity(intent);
+                        }
+                    });
+                    snackbar.show();
                 } else {
                     deletefromfav(item);
                 }
@@ -1407,8 +1462,10 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 AlertDialog.Builder descriptionDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
                 editTextDescription = getDescriptionDialog(SingleMediaActivity.this, descriptionDialogBuilder);
                 editTextDescription.setSelectAllOnFocus(true);
-                editTextDescription.setHighlightColor(ContextCompat.getColor(getApplicationContext(), R.color
-                        .cardview_shadow_start_color));
+                if(getBaseTheme() == ThemeHelper.DARK_THEME || getBaseTheme() == ThemeHelper.AMOLED_THEME){
+                    editTextDescription.setTextColor(R.color.black);
+                    editTextDescription.setHighlightColor(ContextCompat.getColor(getApplicationContext(), R.color.accent_grey));
+                } else editTextDescription.setHighlightColor(ContextCompat.getColor(getApplicationContext(), R.color.cardview_shadow_start_color));
                 editTextDescription.selectAll();
                 editTextDescription.setSingleLine(false);
                 editTextDescription.setHintTextColor(getResources().getColor(R.color.grey, null));
@@ -1903,7 +1960,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 imgLocation.setText(R.string.no_location);
             } else {
                 imgLocation.setText(mediaDetailsMap.get("Location").toString());
-                imgLocation.setTextColor(getResources().getColor(R.color.accent_orange, null));
+                imgLocation.setTextColor(getAccentColor());
             }
         } catch (Exception e) {
             //Raised if null values is found, no need to handle
@@ -2005,10 +2062,10 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         dialog.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string.ok_action).toUpperCase(), (DialogInterface.OnClickListener) null);
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
-        dialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+        editTextTimeInterval.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
-                if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER){
+            public boolean onEditorAction(TextView textView, int keyCode, KeyEvent keyEvent) {
+                if ( keyCode == EditorInfo.IME_ACTION_DONE || keyCode == EditorInfo.IME_ACTION_NEXT) {
                     String value = editTextTimeInterval.getText().toString();
                     if (!"".equals(value)) {
                         slideshow = true;
@@ -2017,21 +2074,15 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                         if (SLIDE_SHOW_INTERVAL > 1000 && SLIDE_SHOW_INTERVAL <= 10000) {
                             dialog.dismiss();
                             hideSystemUI();
-                            Toast.makeText(SingleMediaActivity.this, getString(R.string.slide_start), Toast.LENGTH_SHORT).show();
+                            SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.slide_start), 0);
                             handler.postDelayed(slideShowRunnable, SLIDE_SHOW_INTERVAL);
-                        } else if (SLIDE_SHOW_INTERVAL < 2000) {
-                            editTextTimeInterval.requestFocus();
-                            til.setError(getString(R.string.min_duration_slide));
-                        } else if (SLIDE_SHOW_INTERVAL > 10000) {
-                            editTextTimeInterval.requestFocus();
-                            til.setError(getString(R.string.slide_max_value));
                         }
                     }
+                    return true;
                 }
                 return false;
             }
         });
-
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialogInterface) {
@@ -2047,14 +2098,8 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                             if (SLIDE_SHOW_INTERVAL > 1000 && SLIDE_SHOW_INTERVAL <= 10000) {
                                 dialog.dismiss();
                                 hideSystemUI();
-                                Toast.makeText(SingleMediaActivity.this, getString(R.string.slide_start), Toast.LENGTH_SHORT).show();
+                                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.slide_start), 0);
                                 handler.postDelayed(slideShowRunnable, SLIDE_SHOW_INTERVAL);
-                            } else if (SLIDE_SHOW_INTERVAL < 2000) {
-                                editTextTimeInterval.requestFocus();
-                                til.setError(getString(R.string.min_duration_slide));
-                            } else if (SLIDE_SHOW_INTERVAL > 10000) {
-                                editTextTimeInterval.requestFocus();
-                                til.setError(getString(R.string.slide_max_value));
                             }
                         }
                     }

@@ -239,4 +239,9 @@
         <item name="android:colorForeground">@color/accent_grey</item>
     </style>
 
+    <style name="ThemeOverlay.excludedMenuPopup"
+        parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:colorBackground">@color/accent_white</item>
+    </style>
+
 </resources>

@@ -61,7 +61,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BottomNa
          nav_cam = findViewById(R.id.navigation_camera);
          nav_acc = findViewById(R.id.navigation_accounts);
 
-        int checkStoragePermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int checkStoragePermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.READ_EXTERNAL_STORAGE);
         if(checkStoragePermission  == PackageManager.PERMISSION_GRANTED)
             presentShowcaseSequence(); // one second delay
 

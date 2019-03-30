@@ -21,8 +21,6 @@ import android.content.res.Configuration;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.fossasia.phimpme.MyApplication;
 import org.fossasia.phimpme.R;
@@ -32,6 +30,9 @@ import org.fossasia.phimpme.editor.model.RatioItem;
 import org.fossasia.phimpme.editor.utils.Matrix3;
 import org.fossasia.phimpme.editor.view.CropImageView;
 import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouchBase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class CropFragment extends BaseEditFragment {
@@ -218,7 +219,7 @@ public class CropFragment extends BaseEditFragment {
 	}
 
 	public void backToMain() {
-		activity.changeMode(EditImageActivity.MODE_ADJUST);
+		EditImageActivity.mode = EditImageActivity.MODE_ADJUST;
 		activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
 		activity.adjustFragment.clearSelection();
 		mCropPanel.setVisibility(View.GONE);
