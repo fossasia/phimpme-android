@@ -1494,6 +1494,10 @@ public class LFMainActivity extends SharedMediaActivity {
                 findViewById(R.id.ll_drawer_Default).setBackgroundColor(Color.TRANSPARENT);
                 findViewById(R.id.ll_drawer_hidden).setBackgroundColor(getHighlightedItemColor());
                 tint();
+                if (hidden) {
+                    mDrawerLayout.closeDrawer(GravityCompat.START);
+                    return;
+                }
                 if (securityObj.isActiveSecurity() && securityObj.isPasswordOnHidden()) {
                     final boolean[] passco = {false};
                     AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
