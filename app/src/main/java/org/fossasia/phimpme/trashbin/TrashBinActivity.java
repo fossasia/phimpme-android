@@ -466,7 +466,10 @@ public class TrashBinActivity extends ThemedActivity implements TrashBinAdapter.
                         public void onClick(View v) {
                             // if password is correct, call DeletePhotos and perform deletion
                             if (securityObj.checkPassword(editTextPassword.getText().toString())) {
+                                passwordDialog.dismiss();
                                 new DeleteAll().execute();
+                                emptyView.setVisibility(View.VISIBLE);
+                                trashEmptyViewSetup();
                             }
                             // if password is incorrect, don't delete and notify user of incorrect password
                             else {
