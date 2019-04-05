@@ -1328,6 +1328,7 @@
     <string name="time_text">Time: " "</string>
     <string name="text_view">TextView</string>
     <string name="version_one">v1.0</string>
+    <string name="pdf">PDF</string>
 
     <!-- Links -->
     <string name="phimpme_website">http://phimp.me/</string>
