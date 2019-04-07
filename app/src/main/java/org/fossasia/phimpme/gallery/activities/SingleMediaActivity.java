@@ -1166,6 +1166,13 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 photoPrinter.printBitmap(getString(R.string.print), bitmap);
                 return true;
 
+            case R.id.pdf:
+                PrintHelper photopdf = new PrintHelper(this);
+                photopdf.setScaleMode(PrintHelper.SCALE_MODE_FIT);
+                Bitmap bitmappdf = BitmapFactory.decodeFile(getAlbum().getCurrentMedia().getPath(), new BitmapFactory.Options());
+                photopdf.printBitmap(getString(R.string.pdf), bitmappdf);
+                return true;
+
             case R.id.rename_photo:
                 String currentpath = null;
                 if (!allPhotoMode) {
