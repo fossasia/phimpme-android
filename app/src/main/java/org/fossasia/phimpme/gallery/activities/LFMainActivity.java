@@ -1499,11 +1499,8 @@ public class LFMainActivity extends SharedMediaActivity {
                     AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(LFMainActivity.this, getDialogStyle());
                     final EditText editTextPassword = securityObj.getInsertPasswordDialog(LFMainActivity.this, passwordDialogBuilder);
                     editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
-                    passwordDialogBuilder.setNegativeButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
-                    });
-                    passwordDialogBuilder.setPositiveButton(getString(R.string.cancel).toUpperCase(), null);
+                    passwordDialogBuilder.setPositiveButton(getString(R.string.cancel).toUpperCase(),null);
+                    passwordDialogBuilder.setNegativeButton(getString(R.string.ok_action).toUpperCase(), null);
                     editTextPassword.addTextChangedListener(new TextWatcher() {
                         @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                             //empty method body
@@ -1544,7 +1541,7 @@ public class LFMainActivity extends SharedMediaActivity {
                             }
                         }
                     });
-                    passwordDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
+                    passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             findViewById(R.id.ll_drawer_Default).performClick();
