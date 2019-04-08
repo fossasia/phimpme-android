@@ -1183,7 +1183,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 final File file = new File(currentpath);
                 int indexofdot = file.getPath().lastIndexOf(".");
                 int indert = file.getPath().lastIndexOf("/");
-                String namefile = file.getPath().substring(indert + 1, indexofdot);
+                final String namefile = file.getPath().substring(indert + 1, indexofdot);
                 final String imageextension = file.getPath().substring(indexofdot + 1);
                 AlertDialog.Builder renameDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
                 final EditText editTextNewName = new EditText(getApplicationContext());
@@ -1288,28 +1288,33 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                                 alertDialog.show();
                                 AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE, DialogInterface.BUTTON_NEUTRAL}, getAccentColor(), alertDialog);
                             } else {
-                                int index = file.getPath().lastIndexOf("/");
-                                String path = file.getPath().substring(0, index);
-                                File newname = new File(path + "/" + editTextNewName.getText().toString() + "." +
-                                        imageextension);
-                                if (file.renameTo(newname)) {
-                                    ContentResolver resolver = getApplicationContext().getContentResolver();
-                                    resolver.delete(
-                                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, MediaStore.Images.Media.DATA +
-                                                    "=?", new String[]{file.getAbsolutePath()});
-                                    Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                                    intent.setData(Uri.fromFile(newname));
-                                    getApplicationContext().sendBroadcast(intent);
-                                }
-                                if (!allPhotoMode) {
-                                    int a = getAlbum().getCurrentMediaIndex();
-                                    getAlbum().getMedia(a).setPath(newname.getPath());
+                                if (editTextNewName.getText().toString().equals(namefile)) {
+                                    SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.rename_no_change), (bottomBar.getHeight()*2)-22);
+                                    renameDialog.dismiss();
                                 } else {
-                                    listAll.get(current_image_pos).setPath(newname.getPath());
+                                    int index = file.getPath().lastIndexOf("/");
+                                    String path = file.getPath().substring(0, index);
+                                    File newname = new File(path + "/" + editTextNewName.getText().toString() + "." +
+                                            imageextension);
+                                    if (file.renameTo(newname)) {
+                                        ContentResolver resolver = getApplicationContext().getContentResolver();
+                                        resolver.delete(
+                                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, MediaStore.Images.Media.DATA +
+                                                        "=?", new String[]{file.getAbsolutePath()});
+                                        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                                        intent.setData(Uri.fromFile(newname));
+                                        getApplicationContext().sendBroadcast(intent);
+                                    }
+                                    if (!allPhotoMode) {
+                                        int a = getAlbum().getCurrentMediaIndex();
+                                        getAlbum().getMedia(a).setPath(newname.getPath());
+                                    } else {
+                                        listAll.get(current_image_pos).setPath(newname.getPath());
+                                    }
+                                    renameDialog.dismiss();
+                                    SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.rename_succes), navigationView
+                                            .getHeight());
                                 }
-                                renameDialog.dismiss();
-                                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.rename_succes), navigationView
-                                        .getHeight());
                             }
                         }
                     }
