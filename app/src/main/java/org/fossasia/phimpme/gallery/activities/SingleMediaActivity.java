@@ -1469,8 +1469,8 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                 AlertDialog.Builder descriptionDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
                 editTextDescription = getDescriptionDialog(SingleMediaActivity.this, descriptionDialogBuilder);
                 editTextDescription.setSelectAllOnFocus(true);
+                editTextDescription.setTextColor(getTextColor());
                 if(getBaseTheme() == ThemeHelper.DARK_THEME || getBaseTheme() == ThemeHelper.AMOLED_THEME){
-                    editTextDescription.setTextColor(R.color.black);
                     editTextDescription.setHighlightColor(ContextCompat.getColor(getApplicationContext(), R.color.accent_grey));
                 } else editTextDescription.setHighlightColor(ContextCompat.getColor(getApplicationContext(), R.color.cardview_shadow_start_color));
                 editTextDescription.selectAll();
