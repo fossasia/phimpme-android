@@ -1612,26 +1612,25 @@ public class LFMainActivity extends SharedMediaActivity {
                 });
             }
         } else {
-
-            if (!all_photos) {
-                if (getAlbum().getSelectedCount() == 0) {
-                    clearOverlay();
-                    checkForReveal = true;
-                    swipeRefreshLayout.setEnabled(true);
-                } else {
-                    appBarOverlay();
-                    swipeRefreshLayout.setEnabled(false);
-                }
-
-            } else {
-                if (selectedMedias.size() == 0) {
-                    clearOverlay();
-                    swipeRefreshLayout.setEnabled(true);
-                } else {
-                    appBarOverlay();
-                    swipeRefreshLayout.setEnabled(false);
-                }
-            }
+               if (all_photos || !fav_photos) {
+                   if (selectedMedias.size() == 0) {
+                       clearOverlay();
+                       swipeRefreshLayout.setEnabled(true);
+                       swipeRefreshLayout.setRefreshing(false);
+                   } else {
+                       appBarOverlay();
+                       swipeRefreshLayout.setEnabled(false);
+                       swipeRefreshLayout.setRefreshing(false);
+                   }
+               } else {
+                   if (favouriteslist.size() == 0) {
+                       clearOverlay();
+                       swipeRefreshLayout.setEnabled(true);
+                   } else {
+                       appBarOverlay();
+                       swipeRefreshLayout.setEnabled(false);
+                   }
+               }
 
             if (editMode) {
                 if (!all_photos && !fav_photos)
