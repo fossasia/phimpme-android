@@ -153,7 +153,6 @@ public class LFMainActivity extends SharedMediaActivity {
     private CustomAlbumsHelper customAlbumsHelper = CustomAlbumsHelper.getInstance(LFMainActivity.this);
     private PreferenceUtil SP;
     private SecurityHelper securityObj;
-
     private AlbumsAdapter albumsAdapter;
     private GridSpacingItemDecoration rvAlbumsDecoration;
     private SwipeRefreshLayout.OnRefreshListener refreshListener;
@@ -3858,6 +3857,7 @@ public class LFMainActivity extends SharedMediaActivity {
     private static class PrepareAlbumTask extends AsyncTask<Void, Integer, Void> {
 
         private WeakReference<LFMainActivity> reference;
+        private int startPosition = 0;
 
         PrepareAlbumTask(LFMainActivity reference) {
             this.reference = new WeakReference<>(reference);
@@ -3892,6 +3892,8 @@ public class LFMainActivity extends SharedMediaActivity {
             getAlbums().saveBackup(asyncActivityRef);
             asyncActivityRef.invalidateOptionsMenu();
             asyncActivityRef.finishEditMode();
+            asyncActivityRef.showAppBar();
+            asyncActivityRef.rvAlbums.getLayoutManager().scrollToPosition(startPosition);
         }
     }
 
