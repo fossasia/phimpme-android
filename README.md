@@ -109,7 +109,7 @@ Before you begin, you should have already downloaded the Android Studio SDK and 
      - Copy all the files from *"OpenCV-android-sdk/sdk/native/libs"* to *"phimpme-android/app/src/main/jniLibs"* (create directory if it doesn't exist)
      - Now build your project. If your build fails then try deleting these build directories *"phimpme-android/app/.externalNativeBuild"* and *"phimpme-android/app/build"*, if they exist and run the build again.
 
-7. Once all build errors have been resolved, you should be all set to build the app and test it.
+7. If build error still persist, try replacing ndk with ndk version 16b from [ndk-archives](https://developer.android.com/ndk/downloads/older_releases) .  Once all build errors have been resolved, you should be all set to build the app and test it.
 
 8. To Build the app, go to *Build > Make Project* (or alternatively press the Make Project icon in the toolbar).
 
