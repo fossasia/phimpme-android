@@ -35,12 +35,16 @@
         app:showAsAction="never"
         android:title="@string/print"/>
     <item
+        android:id="@+id/pdf"
+        app:showAsAction="never"
+        android:title="Convert to PDF"/>
+    <item
         android:id="@+id/rename_photo"
         app:showAsAction="never"
         android:title="@string/Rename"/>
     <item
         android:id="@+id/action_description"
-        android:title="Description"
+        android:title="@string/description"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_settings"

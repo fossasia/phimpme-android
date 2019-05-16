@@ -10,7 +10,7 @@
         android:id="@+id/multi_column_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="2dp"
+        app:cardCornerRadius="@dimen/size_2"
     >
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,15 +21,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/md_dark_appbar"
-                android:padding="24dp"
+                android:padding="@dimen/big_spacing"
                 android:text="@string/multi_column"
                 android:textColor="@color/md_dark_primary_text"
-                android:textSize="18sp"
+                android:textSize="@dimen/sub_big_text"
                 android:textStyle="bold" />
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbarSize="4dip"
+                android:scrollbarSize="@dimen/scroll_bar_size"
             >
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -39,7 +39,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
+                    android:padding="@dimen/margin_16dp"
                     android:orientation="vertical">
                     <TextView
                         android:id="@+id/text_view_portrait"
@@ -63,19 +63,19 @@
                             android:layout_height="wrap_content"
                             android:text="@string/folder_column"
                             android:textColor="@color/md_grey_400"
-                            android:paddingBottom="3dp"
-                            android:textSize="16sp"
+                            android:paddingBottom="@dimen/very_small_margin"
+                            android:textSize="@dimen/medium_text"
                         />
                         <TextView
                             android:id="@+id/n_columns_folders"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
+                            android:layout_marginStart="@dimen/very_small_spacing"
                             android:text="2"
                             android:textColor="@color/md_grey_400"
-                            android:paddingBottom="3dp"
+                            android:paddingBottom="@dimen/very_small_margin"
                             android:textStyle="italic|bold"
-                            android:textSize="15sp"
+                            android:textSize="@dimen/marginally_medium_text"
                         />
                     </LinearLayout>
                     <SeekBar
@@ -83,8 +83,8 @@
                         android:layout_height="wrap_content"
                         android:max="5"
                         android:id="@+id/seek_bar_n_columns_folders"
-                        android:layout_marginTop="8dp"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="@dimen/small_spacing"
+                        android:layout_marginBottom="@dimen/small_spacing"
                     />
 
                     <!-- FOLDERS -->
@@ -97,26 +97,26 @@
                             android:layout_height="wrap_content"
                             android:text="@string/media_column"
                             android:textColor="@color/md_grey_400"
-                            android:paddingBottom="3dp"
-                            android:textSize="16sp"
+                            android:paddingBottom="@dimen/very_small_margin"
+                            android:textSize="@dimen/medium_text"
                         />
                         <TextView
                             android:id="@+id/n_columns_media"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
+                            android:layout_marginStart="@dimen/very_small_spacing"
                             android:text="3"
                             android:textColor="@color/md_grey_400"
                             android:textStyle="italic|bold"
-                            android:paddingBottom="3dp"
-                            android:textSize="15sp"
+                            android:paddingBottom="@dimen/very_small_margin"
+                            android:textSize="@dimen/marginally_medium_text"
                         />
                     </LinearLayout>
                     <SeekBar
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:max="7"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="@dimen/small_spacing"
                         android:id="@+id/seek_bar_n_columns_media"
                     />
 

@@ -3,6 +3,7 @@ package org.fossasia.phimpme.gallery.activities;
 import java.util.ArrayList;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -63,6 +64,7 @@ public class SecurityActivity extends ThemedActivity {
     private SwitchCompat swApplySecurityDelete;
     private SwitchCompat swApplySecurityHidden;
     private SwitchCompat swApplySecurityFolder;
+    private TextView chooseFolders;
     public ArrayList<Album> albums;
     public ArrayList<String> securedfol = new ArrayList<>();
 
@@ -83,9 +85,90 @@ public class SecurityActivity extends ThemedActivity {
         swActiveSecurity = findViewById(R.id.active_security_switch);
         swApplySecurityHidden = findViewById(R.id.security_body_apply_hidden_switch);
         swApplySecurityFolder = findViewById(R.id.security_body_apply_folder_switch);
-
+        chooseFolders = findViewById(R.id.choose_folders_again);
+        chooseFolders.setTextColor(getTextColor());
+        if (SP.getBoolean(getString(R.string.preference_use_password_on_folder), false)) {
+            chooseFolders.setVisibility(View.VISIBLE);
+            chooseFolders.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SecurityActivity.this, getDialogStyle());
+                    final View view = getLayoutInflater().inflate(R.layout.dialog_security_folder, null);
+                    view.setBackgroundColor(getBackgroundColor());
+                    TextView title = view.findViewById(R.id.titlesecure);
+                    LinearLayout linearLayout = view.findViewById(R.id.titlelayout);
+                    linearLayout.setBackgroundColor(getAccentColor());
+                    title.setBackgroundColor(getAccentColor());
+                    title.setText("Choose folders to secure");
+                    int position = 0;
+                    while (position < albums.size()) {
+                        if (checkAlreadySecuredFolder(albums.get(position).getPath(), securityObj.getSecuredfolders())) {
+                            securedfol.add(albums.get(position).getPath());
+                            albums.get(position).setsecured(true);
+                        }
+                        ++position;
+                    }
+                    RecyclerView recyclerView = view.findViewById(R.id.secure_folder_recyclerview);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                    final SecureDialogAdapter securedLocalFolders = new SecureDialogAdapter();
+                    recyclerView.setAdapter(securedLocalFolders);
+                    builder.setView(view);
+                    AlertDialog ad = builder.create();
+                    ad.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string
+                            .ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            if (securedfol.size() > 0) {
+                                SharedPreferences.Editor editor = SP.getEditor();
+                                Gson gson = new Gson();
+                                String securedfolders = gson.toJson(securedfol);
+                                editor.putString(getString(R.string.preference_use_password_secured_local_folders), securedfolders);
+                                editor.commit();
+                            } else {
+                                SP.putBoolean(getString(R.string.preference_use_password_on_folder), false);
+                                securityObj.updateSecuritySetting();
+                                swApplySecurityFolder.setChecked(false);
+                                updateSwitchColor(swApplySecurityFolder, getAccentColor());
+                            }
+                        }
+                    });
+                    ad.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    ad.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                        @Override
+                        public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                                dialog.dismiss();
+                            }
+                            return true;
+                        }
+                    });
+                    ad.show();
+                    ad.setCanceledOnTouchOutside(false);
+                    ad.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(getAccentColor());
+                    ad.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getAccentColor());
+                }
+            });
+        } else chooseFolders.setVisibility(View.GONE);
         /** - SWITCHES - **/
         /** - ACTIVE SECURITY - **/
+        LinearLayout linearLayout=findViewById(R.id.ll_active_security);
+        linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean no = swActiveSecurity.isChecked();
+                if(no){
+                    swActiveSecurity.setChecked(false);
+                }else {
+                    swActiveSecurity.setChecked(true);
+                }
+            }
+        });
         swActiveSecurity.setChecked(securityObj.isActiveSecurity());
         swActiveSecurity.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -94,14 +177,22 @@ public class SecurityActivity extends ThemedActivity {
                 securityObj.updateSecuritySetting();
                 updateSwitchColor(swActiveSecurity, getAccentColor());
                 llbody.setEnabled(swActiveSecurity.isChecked());
-                if (isChecked)
-                    setPasswordDialog();
-                else {
-                    editor.putString(getString(R.string.preference_password_value), "");
+                if (isChecked) {
+                    String mpassword = SP.getString(getString(R.string.preference_password_value),null);
+                    if (mpassword != null) {
+                        securityObj.updateSecuritySetting();
+                        SnackBarHandler.show(llroot, R.string.remember_password_message);
+                        swActiveSecurity.setChecked(true);
+                        SP.putBoolean(getString(R.string.preference_use_password), true);
+                        toggleEnabledChild(true);
+                        Snackbar.make(findViewById(android.R.id.content), "Password Set", Snackbar.LENGTH_SHORT)
+                                .show();
+                    } else setPasswordDialog();
+                } else {
                     editor.putBoolean(getString(R.string.preference_use_password), false);
                     editor.commit();
                     toggleEnabledChild(false);
-                    Snackbar.make(findViewById(android.R.id.content), "No Password Set", Snackbar.LENGTH_SHORT)
+                    Snackbar.make(findViewById(android.R.id.content), R.string.no_password_set, Snackbar.LENGTH_SHORT)
                             .show();
                 }
             }
@@ -110,6 +201,18 @@ public class SecurityActivity extends ThemedActivity {
         llbody.setEnabled(swActiveSecurity.isChecked());
 
         /** - ACTIVE SECURITY ON HIDDEN FOLDER - **/
+        LinearLayout swHiddenFolder = findViewById(R.id.ll_security_body_apply_hidden);
+        swHiddenFolder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean no = swApplySecurityHidden.isChecked();
+                if(no && swActiveSecurity.isChecked()){
+                    swApplySecurityHidden.setChecked(false);
+                }else if(swActiveSecurity.isChecked()) {
+                    swApplySecurityHidden.setChecked(true);
+                }
+            }
+        });
         swApplySecurityHidden.setChecked(securityObj.isPasswordOnHidden());
         swApplySecurityHidden.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -122,6 +225,18 @@ public class SecurityActivity extends ThemedActivity {
         updateSwitchColor(swApplySecurityHidden, getAccentColor());
 
         /**ACTIVE SECURITY ON LOCAL FOLDERS**/
+        LinearLayout swLocalFolders = findViewById(R.id.ll_security_body_apply_security_local_folders);
+        swLocalFolders.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean no = swApplySecurityFolder.isChecked();
+                if(no && swActiveSecurity.isChecked()){
+                    swApplySecurityFolder.setChecked(false);
+                }else if(swActiveSecurity.isChecked()){
+                    swApplySecurityFolder.setChecked(true);
+                }
+            }
+        });
         swApplySecurityFolder.setChecked(securityObj.isPasswordOnfolder());
         swApplySecurityFolder.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -129,15 +244,24 @@ public class SecurityActivity extends ThemedActivity {
                 SP.putBoolean(getString(R.string.preference_use_password_on_folder), isChecked);
                 securityObj.updateSecuritySetting();
                 updateSwitchColor(swApplySecurityFolder, getAccentColor());
-                if(isChecked) {
+                if (isChecked) {
+                    chooseFolders.setVisibility(View.VISIBLE);
                     AlertDialog.Builder builder = new AlertDialog.Builder(SecurityActivity.this, getDialogStyle());
-                    View view = getLayoutInflater().inflate(R.layout.dialog_security_folder, null);
+                    final View view = getLayoutInflater().inflate(R.layout.dialog_security_folder, null);
                     view.setBackgroundColor(getBackgroundColor());
                     TextView title = view.findViewById(R.id.titlesecure);
                     LinearLayout linearLayout = view.findViewById(R.id.titlelayout);
                     linearLayout.setBackgroundColor(getAccentColor());
                     title.setBackgroundColor(getAccentColor());
-                    title.setText("Choose folders to secure");
+                    int position = 0;
+                    while (position < albums.size()) {
+                        if (checkAlreadySecuredFolder(albums.get(position).getPath(), securityObj.getSecuredfolders())) {
+                            securedfol.add(albums.get(position).getPath());
+                            albums.get(position).setsecured(true);
+                        }
+                        ++position;
+                    }
+                    title.setText(R.string.choose_folders);
                     RecyclerView recyclerView = view.findViewById(R.id.secure_folder_recyclerview);
                     recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                     final SecureDialogAdapter securedLocalFolders = new SecureDialogAdapter();
@@ -149,28 +273,37 @@ public class SecurityActivity extends ThemedActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
-                            if(securedfol.size()>0){
+                            if (securedfol.size() > 0) {
                                 SharedPreferences.Editor editor = SP.getEditor();
                                 Gson gson = new Gson();
                                 String securedfolders = gson.toJson(securedfol);
                                 editor.putString(getString(R.string.preference_use_password_secured_local_folders), securedfolders);
                                 editor.commit();
-                            }else{
+                                //restarting activity so that recylcer view is refreshed and only presently checked items show up as checked if choose folders is clicked immediately afterwards.
+                                Intent intent = getIntent();
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                                finish();
+                                overridePendingTransition(0, 0);
+
+                                startActivity(intent);
+                                overridePendingTransition(0, 0);
+                            } else {
                                 SP.putBoolean(getString(R.string.preference_use_password_on_folder), false);
                                 securityObj.updateSecuritySetting();
                                 swApplySecurityFolder.setChecked(false);
                                 updateSwitchColor(swApplySecurityFolder, getAccentColor());
                             }
-                        }});
+                        }
+                    });
                     ad.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            if(securedfol.size()>0){
-                               for(Album a: albums){
-                                   if(a.getsecured()){
-                                       a.setsecured(false);
-                                   }
-                               }
+                            if (securedfol.size() > 0) {
+                                for (Album a : albums) {
+                                    if (a.getsecured()) {
+                                        a.setsecured(false);
+                                    }
+                                }
                             }
                             dialogInterface.dismiss();
                             SP.putBoolean(getString(R.string.preference_use_password_on_folder), false);
@@ -182,7 +315,7 @@ public class SecurityActivity extends ThemedActivity {
                     ad.setOnKeyListener(new DialogInterface.OnKeyListener() {
                         @Override
                         public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                            if(keyCode ==  KeyEvent.KEYCODE_BACK){
+                            if (keyCode == KeyEvent.KEYCODE_BACK) {
                                 dialog.dismiss();
                                 SP.putBoolean(getString(R.string.preference_use_password_on_folder), false);
                                 securityObj.updateSecuritySetting();
@@ -196,19 +329,90 @@ public class SecurityActivity extends ThemedActivity {
                     ad.setCanceledOnTouchOutside(false);
                     ad.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(getAccentColor());
                     ad.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getAccentColor());
-                }else{
+
+                    //when security is on, enabling "choose folders" textview
+                    chooseFolders.setVisibility(View.VISIBLE);
+                    chooseFolders.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(SecurityActivity.this, getDialogStyle());
+                            final View view = getLayoutInflater().inflate(R.layout.dialog_security_folder, null);
+                            view.setBackgroundColor(getBackgroundColor());
+                            TextView title = view.findViewById(R.id.titlesecure);
+                            LinearLayout linearLayout = view.findViewById(R.id.titlelayout);
+                            linearLayout.setBackgroundColor(getAccentColor());
+                            title.setBackgroundColor(getAccentColor());
+                            title.setText("Choose folders to secure");
+                            int position = 0;
+                            while (position < albums.size()) {
+                                if (checkAlreadySecuredFolder(albums.get(position).getPath(), securityObj.getSecuredfolders())) {
+                                    securedfol.add(albums.get(position).getPath());
+                                    albums.get(position).setsecured(true);
+                                }
+                                ++position;
+                            }
+                            RecyclerView recyclerView = view.findViewById(R.id.secure_folder_recyclerview);
+                            recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                            final SecureDialogAdapter securedLocalFolders = new SecureDialogAdapter();
+                            recyclerView.setAdapter(securedLocalFolders);
+                            builder.setView(view);
+                            AlertDialog ad = builder.create();
+                            ad.setButton(DialogInterface.BUTTON_POSITIVE, getString(R.string
+                                    .ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    if (securedfol.size() > 0) {
+                                        SharedPreferences.Editor editor = SP.getEditor();
+                                        Gson gson = new Gson();
+                                        String securedfolders = gson.toJson(securedfol);
+                                        editor.putString(getString(R.string.preference_use_password_secured_local_folders), securedfolders);
+                                        editor.commit();
+                                    } else {
+                                        SP.putBoolean(getString(R.string.preference_use_password_on_folder), false);
+                                        securityObj.updateSecuritySetting();
+                                        swApplySecurityFolder.setChecked(false);
+                                        updateSwitchColor(swApplySecurityFolder, getAccentColor());
+                                    }
+                                }
+                            });
+                            ad.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            });
+                            ad.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                                @Override
+                                public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                                        dialog.dismiss();
+                                    }
+                                    return true;
+                                }
+                            });
+                            ad.show();
+                            ad.setCanceledOnTouchOutside(false);
+                            ad.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(getAccentColor());
+                            ad.getButton(DialogInterface.BUTTON_POSITIVE).setTextColor(getAccentColor());
+                        }
+                    });
+                } else {
+                    chooseFolders.setVisibility(View.GONE);
                     SP.putBoolean(getString(R.string.preference_use_password_on_folder), false);
                     securityObj.updateSecuritySetting();
                     updateSwitchColor(swApplySecurityFolder, getAccentColor());
                 }
             }
         });
+
         updateSwitchColor(swApplySecurityFolder, getAccentColor());
 
         llchangepassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(swActiveSecurity.isChecked())
+                if (swActiveSecurity.isChecked())
                     changePasswordDialog();
                 else
                     SnackBarHandler.show(llroot, R.string.set_passowrd);
@@ -216,6 +420,18 @@ public class SecurityActivity extends ThemedActivity {
         });
 
         /**ACTIVE SECURITY ON DELETE ACTION**/
+        LinearLayout swDeleteAction = findViewById(R.id.ll_security_body_apply_delete);
+        swDeleteAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean no = swApplySecurityDelete.isChecked();
+                if(no && swActiveSecurity.isChecked()){
+                    swApplySecurityDelete.setChecked(false);
+                }else if (swActiveSecurity.isChecked()){
+                    swApplySecurityDelete.setChecked(true);
+                }
+            }
+        });
         swApplySecurityDelete.setChecked(securityObj.isPasswordOnDelete());
         swApplySecurityDelete.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -227,7 +443,9 @@ public class SecurityActivity extends ThemedActivity {
         });
 
         updateSwitchColor(swApplySecurityDelete, getAccentColor());
+
         setupUI();
+
         toggleEnabledChild(swActiveSecurity.isChecked());
     }
 
@@ -250,49 +468,60 @@ public class SecurityActivity extends ThemedActivity {
         editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         checkBox.setButtonTintList(ColorStateList.valueOf(getAccentColor()));
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(!b){
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (!b) {
                     checkBox.setButtonTintList(ColorStateList.valueOf(getAccentColor()));
                     editTextPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     editTextConfirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }else{
                     checkBox.setButtonTintList(ColorStateList.valueOf(getAccentColor()));
                     editTextPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                     editTextConfirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 }
             }
         });
         editTextConfirmPassword.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 //empty method body
             }
 
-            @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 editTextConfirmPassword.setSelection(editTextConfirmPassword.getText().toString().length());
             }
 
-            @Override public void afterTextChanged(Editable editable) {
-                if(editable.length() == max_password_length) {
-                    editTextConfirmPassword.setText(editable.toString().substring(0, max_password_length-1));
-                    editTextConfirmPassword.setSelection(max_password_length-1);
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.length() == max_password_length) {
+                    editTextConfirmPassword.setText(editable.toString().substring(0, max_password_length - 1));
+                    editTextConfirmPassword.setSelection(max_password_length - 1);
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.max_password_length), Toast.LENGTH_SHORT)
                             .show();
                 }
             }
         });
         editTextPassword.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 //empty method body
             }
 
-            @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 editTextPassword.setSelection(editTextPassword.getText().toString().length());
             }
 
-            @Override public void afterTextChanged(Editable editable) {
-                if(editable.length() == max_password_length) {
-                    editTextPassword.setText(editable.toString().substring(0, max_password_length-1));
-                    editTextPassword.setSelection(max_password_length-1);
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.length() == max_password_length) {
+                    editTextPassword.setText(editable.toString().substring(0, max_password_length - 1));
+                    editTextPassword.setSelection(max_password_length - 1);
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.max_password_length), Toast.LENGTH_SHORT)
                             .show();
                 }
@@ -358,38 +587,38 @@ public class SecurityActivity extends ThemedActivity {
                                         SnackBarHandler.show(llroot, R.string.remember_password_message);
                                         changed = true;
                                         dialog.dismiss();
-                                        Snackbar.make(findViewById(android.R.id.content), "Password Set", Snackbar.LENGTH_SHORT)
+                                        Snackbar.make(findViewById(android.R.id.content), R.string.password_set, Snackbar.LENGTH_SHORT)
                                                 .show();
                                         swActiveSecurity.setChecked(changed);
                                         SP.putBoolean(getString(R.string.preference_use_password), changed);
                                         toggleEnabledChild(changed);
-                                    }else{
+                                    } else {
                                         securityAnswer1.requestFocus();
                                         securityAnswer1.setError(getString(R.string.security_ans_empty));
                                     }
-                                }else{
+                                } else {
                                     securityQuestion.requestFocus();
                                     securityQuestion.setError(getString(R.string.security_ques_empty));
                                 }
-                            } else{
+                            } else {
                                 editTextConfirmPassword.requestFocus();
                                 editTextConfirmPassword.setError(getString(R.string.password_dont_match));
+                            }
+                        } else {
+                            editTextPassword.requestFocus();
+                            editTextPassword.setError(getString(R.string.error_password_length));
                         }
-                    } else {
-                        editTextPassword.requestFocus();
-                        editTextPassword.setError(getString( R.string.error_password_length));
-                    }
                     }
                 });
             }
 
-            });
+        });
 
         dialog.show();
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), dialog);
     }
 
-     private void changePasswordDialog() {
+    private void changePasswordDialog() {
 
         final short max_password_length = 128;
         final AlertDialog.Builder passwordDialog = new AlertDialog.Builder(SecurityActivity.this, getDialogStyle());
@@ -408,43 +637,57 @@ public class SecurityActivity extends ThemedActivity {
         editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         checkBox.setButtonTintList(ColorStateList.valueOf(getAccentColor()));
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(!b){
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (!b) {
                     editTextPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     editTextConfirmPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                    editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }else{
                     editTextPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                     editTextConfirmPassword.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                    editTextConfirmPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 }
             }
         });
         editTextConfirmPassword.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 //empty method body
             }
-            @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 editTextConfirmPassword.setSelection(editTextConfirmPassword.getText().toString().length());
             }
-            @Override public void afterTextChanged(Editable editable) {
-                if(editable.length() == max_password_length) {
-                    editTextConfirmPassword.setText(editable.toString().substring(0, max_password_length-1));
-                    editTextConfirmPassword.setSelection(max_password_length-1);
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.length() == max_password_length) {
+                    editTextConfirmPassword.setText(editable.toString().substring(0, max_password_length - 1));
+                    editTextConfirmPassword.setSelection(max_password_length - 1);
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.max_password_length), Toast.LENGTH_SHORT).show();
                 }
             }
         });
         editTextPassword.addTextChangedListener(new TextWatcher() {
-            @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 //empty method body
             }
 
-            @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 editTextPassword.setSelection(editTextPassword.getText().toString().length());
             }
-            @Override public void afterTextChanged(Editable editable) {
-                if(editable.length() == max_password_length) {
-                    editTextPassword.setText(editable.toString().substring(0, max_password_length-1));
-                    editTextPassword.setSelection(max_password_length-1);
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.length() == max_password_length) {
+                    editTextPassword.setText(editable.toString().substring(0, max_password_length - 1));
+                    editTextPassword.setSelection(max_password_length - 1);
                     Toast.makeText(getApplicationContext(), getResources().getString(R.string.max_password_length), Toast.LENGTH_SHORT)
                             .show();
                 }
@@ -482,6 +725,7 @@ public class SecurityActivity extends ThemedActivity {
                 dialog.dismiss();
             }
         });
+
          dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.ok_action).toUpperCase(), (DialogInterface.OnClickListener) null);
          dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
 
@@ -503,7 +747,7 @@ public class SecurityActivity extends ThemedActivity {
                                          securityObj.updateSecuritySetting();
                                          SnackBarHandler.show(llroot, R.string.remember_password_message);
                                          dialog.dismiss();
-                                         Snackbar.make(findViewById(android.R.id.content), "Password Changed", Snackbar.LENGTH_SHORT)
+                                         Snackbar.make(findViewById(android.R.id.content), R.string.password_changed, Snackbar.LENGTH_SHORT)
                                                  .show();
 
                                          }else{
@@ -531,7 +775,17 @@ public class SecurityActivity extends ThemedActivity {
         dialog.show();
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), dialog);
     }
-    
+
+    private boolean checkAlreadySecuredFolder(String foldername, String[] securedFolders) {
+        if (securedFolders != null) {
+            for (String folder : securedFolders) {
+                if (folder.equals(foldername))
+                    return true;
+            }
+        }
+        return false;
+    }
+
     private void toggleEnabledChild(boolean enable) {
         if (!enable) {
             swApplySecurityDelete.setChecked(enable);
@@ -599,9 +853,10 @@ public class SecurityActivity extends ThemedActivity {
         folActiveSecurity.setTextColor(color);
     }
 
-    private class SecureDialogAdapter extends RecyclerView.Adapter<SecureDialogAdapter.ViewHolder>{
+    private class SecureDialogAdapter extends RecyclerView.Adapter<SecureDialogAdapter.ViewHolder> {
 
-        SecureDialogAdapter(){}
+        SecureDialogAdapter() {
+        }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -610,19 +865,31 @@ public class SecurityActivity extends ThemedActivity {
             return new ViewHolder(v);
         }
 
-        @Override public void onBindViewHolder(ViewHolder holder, int position) {
+        @Override public void onBindViewHolder(final ViewHolder holder, int position) {
             final Album a = albums.get(position);
             holder.foldername.setText(a.getName());
             holder.foldername.setTextColor(getTextColor());
             holder.foldercheckbox.setOnCheckedChangeListener(null);
             holder.foldercheckbox.setChecked(a.getsecured());
+            //name of the folder can be clicked to check the box instead of the checkbox itself
+            TextView folderName = holder.foldername;
+            folderName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    boolean no = holder.foldercheckbox.isChecked();
+                    if (no) {
+                        holder.foldercheckbox.setChecked(false);
+                    } else holder.foldercheckbox.setChecked(true);
+                }
+            });
             //holder.foldercheckbox.setButtonTintList();
             holder.foldercheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    if(b){
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if (b) {
                         securedfol.add(a.getPath());
                         a.setsecured(true);
-                    }else{
+                    } else {
                         securedfol.remove(a.getPath());
                         a.setsecured(false);
                     }
@@ -631,11 +898,12 @@ public class SecurityActivity extends ThemedActivity {
             holder.foldercheckbox.setButtonTintList(ColorStateList.valueOf(getAccentColor()));
         }
 
-        @Override public int getItemCount() {
+        @Override
+        public int getItemCount() {
             return albums.size();
         }
 
-        class ViewHolder extends RecyclerView.ViewHolder{
+        class ViewHolder extends RecyclerView.ViewHolder {
 
             private TextView foldername;
             private CheckBox foldercheckbox;

@@ -1,15 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-          package="org.fossasia.phimpme"
-          android:versionCode="8"
-          android:versionName="1.6.0">
+    package="org.fossasia.phimpme"
+    android:versionCode="9"
+    android:versionName="1.7.0">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <uses-permission android:name="android.permission.READ_SMS"
         tools:node="remove"/>
     <uses-permission android:name="android.permission.RECEIVE_SMS"
         tools:node="remove"/>
+    <uses-permission android:name="android.permission.SEND_SMS"
+        tools:node="remove"/>
+    <uses-permission android:name="android.permission.WRITE_SMS"
+        tools:node="remove"/>
+    <uses-permission android:name="android.permission.CALL_PHONE"
+        tools:node="remove"/>
+    <uses-permission android:name="android.permission.WRITE_CALL_LOG"
+        tools:node="remove"/>
+    <uses-permission android:name="android.permission.READ_CALL_LOG"
+        tools:node="remove"/>
+    <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"
+        tools:node="remove"/>
+    <uses-permission android:name="android.permission.MANAGE_OWN_CALLS"
+        tools:node="remove"/>
+    <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS"
+        tools:node="remove"/>
+    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS"
+        tools:node="remove"/>
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -45,8 +65,8 @@
 
         <activity
             android:name=".opencamera.Camera.CameraActivity"
-            android:screenOrientation="portrait"
             android:parentActivityName=".gallery.activities.LFMainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.media.action.IMAGE_CAPTURE_SECURE" />
@@ -193,6 +213,7 @@
             android:name=".gallery.activities.SingleMediaActivity"
             android:configChanges="orientation|screenSize|uiMode|touchscreen|screenLayout"
             android:label="@string/app_name"
+            android:windowSoftInputMode="adjustPan"
             android:parentActivityName=".gallery.activities.LFMainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
@@ -210,7 +231,7 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            <intent-filter>
+            <intent-filter tools:ignore="AppLinkUrlError">
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -236,6 +257,7 @@
         <activity
             android:name=".gallery.activities.SettingsActivity"
             android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="adjustNothing"
             android:label="@string/settings"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
@@ -284,9 +306,10 @@
         <activity
             android:name=".editor.EditImageActivity"
             android:theme="@style/AppTheme.NoActionBar"
+
             android:windowSoftInputMode="adjustPan"
-            android:configChanges="orientation|screenSize"
             />
+
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
@@ -371,8 +394,7 @@
             android:value="78c6ec5c18fcd10ffbfd28ae038f3311f2763889" />
 
         <activity android:name=".editor.CompressImageActivity"></activity>
-        <activity android:name=".trashbin.TrashBinActivity">
-        </activity>
+        <activity android:name=".trashbin.TrashBinActivity"></activity>
     </application>
 
 </manifest>

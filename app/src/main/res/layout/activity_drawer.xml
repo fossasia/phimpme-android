@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:id="@+id/DrawerMain"
-              android:layout_width="300dp"
+              android:layout_width="@dimen/size_300"
               android:layout_height="match_parent"
               android:layout_gravity="start"
               android:clickable="true"
@@ -12,7 +12,7 @@
         android:id="@+id/drawer_scrollbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbarSize="4dip">
+        android:scrollbarSize="@dimen/scroll_bar_size">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,9 +22,9 @@
 
             <ImageView
                 android:layout_width="match_parent"
-                android:paddingTop="16dp"
-                android:layout_height="160dp"
-                android:elevation="5dp"
+                android:paddingTop="@dimen/password_spacing"
+                android:layout_height="@dimen/size_160"
+                android:elevation="@dimen/alternate_half_padding"
                 android:id="@+id/Drawer_Header"
                 app:srcCompat="@drawable/ic_launcher_splash"
                 />
@@ -59,11 +59,11 @@
                         android:id="@+id/Drawer_Default_Item"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="16dp"
-                        android:paddingTop="16dp"
+                        android:paddingBottom="@dimen/medium_spacing"
+                        android:paddingTop="@dimen/medium_spacing"
                         android:text="@string/local_folder"
                         android:textColor="@color/md_dark_background"
-                        android:textSize="16sp"/>
+                        android:textSize="@dimen/medium_text"/>
                 </LinearLayout>
 
                 <!-- HIDDEN ALBUMS -->
@@ -88,11 +88,11 @@
                         android:id="@+id/Drawer_hidden_Item"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="16dp"
-                        android:paddingTop="16dp"
+                        android:paddingBottom="@dimen/medium_spacing"
+                        android:paddingTop="@dimen/medium_spacing"
                         android:text="@string/hidden_folder"
                         android:textColor="@color/md_dark_background"
-                        android:textSize="16sp"/>
+                        android:textSize="@dimen/medium_text"/>
                 </LinearLayout>
 
                 <!--Favourites Folder-->
@@ -117,11 +117,11 @@
                         android:id="@+id/Drawer_favourite_Item"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="16dp"
-                        android:paddingTop="16dp"
+                        android:paddingBottom="@dimen/medium_spacing"
+                        android:paddingTop="@dimen/medium_spacing"
                         android:text="@string/favourite_folder"
                         android:textColor="@color/md_dark_background"
-                        android:textSize="16sp"/>
+                        android:textSize="@dimen/medium_text"/>
                 </LinearLayout>
 
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -145,11 +145,11 @@
                         android:id="@+id/Drawer_Upload_Item"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="16dp"
-                        android:paddingTop="16dp"
+                        android:paddingBottom="@dimen/medium_spacing"
+                        android:paddingTop="@dimen/medium_spacing"
                         android:text="@string/upload_history"
                         android:textColor="@color/md_dark_background"
-                        android:textSize="16sp"/>
+                        android:textSize="@dimen/medium_text"/>
                 </LinearLayout>
 
                 <!-- Trash Bin -->
@@ -174,11 +174,11 @@
                         android:id="@+id/Drawer_TrashBin_Item"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="16dp"
-                        android:paddingTop="16dp"
+                        android:paddingBottom="@dimen/medium_spacing"
+                        android:paddingTop="@dimen/medium_spacing"
                         android:text="@string/trash_bin"
                         android:textColor="@color/md_dark_background"
-                        android:textSize="16sp"/>
+                        android:textSize="@dimen/medium_text"/>
                 </LinearLayout>
 
 
@@ -250,10 +250,10 @@
                 <View
                     android:id="@+id/Drawer_Body_Divider"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginTop="0dp"
-                    android:padding="0dp"/>
+                    android:layout_height="@dimen/zero"
+                    android:layout_marginBottom="@dimen/zero"
+                    android:layout_marginTop="@dimen/zero"
+                    android:padding="@dimen/zero"/>
 
                 <!-- SETTING -->
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -277,11 +277,11 @@
                         android:id="@+id/Drawer_Setting_Item"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="16dp"
-                        android:paddingTop="16dp"
+                        android:paddingBottom="@dimen/medium_spacing"
+                        android:paddingTop="@dimen/medium_spacing"
                         android:text="@string/settings"
                         android:textColor="@color/md_dark_background"
-                        android:textSize="16sp"/>
+                        android:textSize="@dimen/medium_text"/>
                 </LinearLayout>
 
 
@@ -307,11 +307,11 @@
                         android:id="@+id/Drawer_rate_Item"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="16dp"
-                        android:paddingTop="16dp"
+                        android:paddingBottom="@dimen/medium_spacing"
+                        android:paddingTop="@dimen/medium_spacing"
                         android:text="@string/about_support_rate"
                         android:textColor="@color/md_dark_background"
-                        android:textSize="16sp"/>
+                        android:textSize="@dimen/medium_text"/>
                 </LinearLayout>
 
                 <!-- SHARE APP -->
@@ -336,11 +336,11 @@
                         android:id="@+id/Drawer_share_Item"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="16dp"
-                        android:paddingTop="16dp"
+                        android:paddingBottom="@dimen/medium_spacing"
+                        android:paddingTop="@dimen/medium_spacing"
                         android:text="@string/share_phimpme"
                         android:textColor="@color/md_dark_background"
-                        android:textSize="16sp"/>
+                        android:textSize="@dimen/medium_text"/>
                 </LinearLayout>
 
                 <!-- ABOUT -->
@@ -365,11 +365,11 @@
                         android:id="@+id/Drawer_About_Item"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="16dp"
-                        android:paddingTop="16dp"
+                        android:paddingBottom="@dimen/medium_spacing"
+                        android:paddingTop="@dimen/medium_spacing"
                         android:text="@string/about"
                         android:textColor="@color/md_dark_background"
-                        android:textSize="16sp"/>
+                        android:textSize="@dimen/medium_text"/>
                 </LinearLayout>
 
             </LinearLayout>

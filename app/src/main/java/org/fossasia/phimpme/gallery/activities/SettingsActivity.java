@@ -26,8 +26,11 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -206,6 +209,18 @@ public class SettingsActivity extends ThemedActivity {
 
         /*** SW AUTO UPDATE MEDIA ***/
         swAutoUpdate = findViewById(R.id.SetAutoUpdateMedia);
+        LinearLayout autoUpdateMedia = findViewById(R.id.ll_auto_update_media);
+        autoUpdateMedia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean on = swAutoUpdate.isChecked();
+                if(on){
+                    swAutoUpdate.setChecked(false);
+                }else {
+                    swAutoUpdate.setChecked(true);
+                }
+            }
+        });
         swAutoUpdate.setChecked(SP.getBoolean(getString(R.string.preference_auto_update_media), false));
         swAutoUpdate.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -228,6 +243,18 @@ public class SettingsActivity extends ThemedActivity {
 
         /*** SW PICTURE ORIENTATION ***/
         swPictureOrientation = findViewById(R.id.set_picture_orientation);
+        LinearLayout pictureOrientation = findViewById(R.id.ll_switch_picture_orientation);
+        pictureOrientation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean no = swPictureOrientation.isChecked();
+                if(no){
+                    swPictureOrientation.setChecked(false);
+                }else {
+                    swPictureOrientation.setChecked(true);
+                }
+            }
+        });
         swPictureOrientation.setChecked(SP.getBoolean(getString(R.string.preference_auto_rotate), false));
         swPictureOrientation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -239,6 +266,18 @@ public class SettingsActivity extends ThemedActivity {
 
         /*** SW MAX LUMINOSITY ***/
         swMaxLuminosity = findViewById(R.id.set_max_luminosity);
+        LinearLayout maxLuminosity = findViewById(R.id.ll_switch_max_luminosity);
+        maxLuminosity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean no = swMaxLuminosity.isChecked();
+                if(no){
+                    swMaxLuminosity.setChecked(false);
+                }else{
+                    swMaxLuminosity.setChecked(true);
+                }
+            }
+        });
         swMaxLuminosity.setChecked(SP.getBoolean(getString(R.string.preference_max_brightness), false));
         swMaxLuminosity.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -251,6 +290,18 @@ public class SettingsActivity extends ThemedActivity {
 
         /*** SW TRANSLUCENT STATUS BAR ***/
         swStatusBar = findViewById(R.id.SetTraslucentStatusBar);
+        LinearLayout statusBar = findViewById(R.id.ll_switch_TraslucentStatusBar);
+        statusBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean no = swStatusBar.isChecked();
+                if(no){
+                    swStatusBar.setChecked(false);
+                }else{
+                    swStatusBar.setChecked(true);
+                }
+            }
+        });
         swStatusBar.setChecked(SP.getBoolean(getString(R.string.preference_translucent_status_bar), true));
         swStatusBar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -258,13 +309,43 @@ public class SettingsActivity extends ThemedActivity {
                 SP.putBoolean(getString(R.string.preference_translucent_status_bar), isChecked);
                 updateTheme();
                 setStatusBarColor();
-                Snackbar.make(findViewById(android.R.id.content), getString(R.string.restart_app), Snackbar.LENGTH_SHORT).show();
+                Snackbar snack=Snackbar.make(parent, getString(R.string.restart_app), Snackbar.LENGTH_SHORT)
+                        .setAction(getString(R.string.restart).toUpperCase(), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = getBaseContext().getPackageManager()
+                                        .getLaunchIntentForPackage(getBaseContext().getPackageName());
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                            }
+                        })
+                        .setActionTextColor(getAccentColor());
+                View view = snack.getView();
+                final FrameLayout.LayoutParams param = (FrameLayout.LayoutParams) view.getLayoutParams();
+                param.setMargins(param.leftMargin,
+                        param.topMargin,
+                        param.rightMargin,
+                        param.bottomMargin);
+                view.setLayoutParams(param);
+                snack.show();
                 updateSwitchColor(swStatusBar, getAccentColor());
             }
         });
 
         /*** SW COLORED NAV BAR ***/
         swNavBar = findViewById(R.id.SetColoredNavBar);
+        LinearLayout colornavBar = findViewById(R.id.ll_switch_ColoredNavBar);
+        colornavBar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                boolean no = swNavBar.isChecked();
+                if(no){
+                    swNavBar.setChecked(false);
+                }else {
+                    swNavBar.setChecked(true);
+                }
+            }
+        });
         swNavBar.setChecked(SP.getBoolean(getString(R.string.preference_colored_nav_bar), true));
         swNavBar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -379,7 +460,6 @@ public class SettingsActivity extends ThemedActivity {
             }
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                
             }
         });
 
@@ -409,7 +489,7 @@ public class SettingsActivity extends ThemedActivity {
         final boolean[] passco = {false};
         AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
         final EditText editTextPassword  = securityObj.getInsertPasswordDialog(SettingsActivity.this,passwordDialogBuilder);
-        passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
+        passwordDialogBuilder.setPositiveButton(getString(R.string.cancel).toUpperCase(), null);
         editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
         editTextPassword.setHint(getResources().getString(R.string.enter_password));
         editTextPassword.setHintTextColor(getSubTextColor());
@@ -437,7 +517,7 @@ public class SettingsActivity extends ThemedActivity {
                 }
             }
         });
-        passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
+        passwordDialogBuilder.setNegativeButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 //This should br empty it will be overwrite later
@@ -449,7 +529,7 @@ public class SettingsActivity extends ThemedActivity {
         passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
         passwordDialog.show();
         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
-        passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+        passwordDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -603,6 +683,26 @@ public class SettingsActivity extends ThemedActivity {
             public void onClick(DialogInterface dialog, int which) {
                 SP.putInt(getString(R.string.preference_base_theme), getBaseTheme());
                 setTheme();
+                Snackbar snackbar = Snackbar
+                        .make(parent, R.string.restart_app, Snackbar.LENGTH_SHORT)
+                        .setAction(getString(R.string.restart).toUpperCase(), new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent restartIntent = getBaseContext().getPackageManager()
+                                        .getLaunchIntentForPackage(getBaseContext().getPackageName());
+                                restartIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(restartIntent);
+                            }
+                        })
+                        .setActionTextColor(getAccentColor());
+                View sbView = snackbar.getView();
+                final FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) sbView.getLayoutParams();
+                params.setMargins(params.leftMargin,
+                        params.topMargin,
+                        params.rightMargin,
+                        params.bottomMargin);
+                sbView.setLayoutParams(params);
+                snackbar.show();
             }
         });
         dialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), new DialogInterface.OnClickListener() {
@@ -688,8 +788,8 @@ public class SettingsActivity extends ThemedActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
         AlertDialogsHelper.getTextDialog(SettingsActivity.this, builder,
                 R.string.accent_color, R.string.accent_primary_same_mssg, null);
-        builder.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
-        builder.setPositiveButton(this.getString(R.string.ok).toUpperCase(), new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(this.getString(R.string.no_action).toUpperCase(), null);
+        builder.setNegativeButton(this.getString(R.string.yes_action).toUpperCase(), new DialogInterface.OnClickListener() {
             @Override public void onClick(DialogInterface dialogInterface, int i) {
                 SP.putInt(getString(R.string.preference_accent_color), color);
                 updateTheme();
@@ -752,6 +852,7 @@ public class SettingsActivity extends ThemedActivity {
         final View dialogLayout = getLayoutInflater().inflate(R.layout.color_piker_accent, null);
         final LineColorPicker colorPicker = dialogLayout.findViewById(R.id.color_picker_accent);
         final LineColorPicker colorPicker2 = dialogLayout.findViewById(R.id.color_picker_accent_2);
+        colorPicker2.setVisibility(View.VISIBLE);
         final TextView dialogTitle = dialogLayout.findViewById(R.id.cp_accent_title);
         CardView cv = dialogLayout.findViewById(R.id.cp_accent_card);
         cv.setCardBackgroundColor(getCardBackgroundColor());
@@ -822,18 +923,44 @@ public class SettingsActivity extends ThemedActivity {
 
         View dialogLayout = getLayoutInflater().inflate(R.layout.dialog_media_viewer_theme, null);
         final SwitchCompat swApplyTheme_Viewer = dialogLayout.findViewById(R.id.apply_theme_3th_act_enabled);
+        final LinearLayout linearLayoutSeek = dialogLayout.findViewById(R.id.ll_seek_bar_alpha);
+        final RelativeLayout relativeLayout = dialogLayout.findViewById(R.id.container_edit_text);
+        LinearLayout linearLayout = dialogLayout.findViewById(R.id.ll_apply_theme_3thAct);
+        linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean no=swApplyTheme_Viewer.isChecked();
+                if (no){
+                    swApplyTheme_Viewer.setChecked(false);
+                }else {
+                    swApplyTheme_Viewer.setChecked(true);
+                }
+            }
+        });
 
         ((CardView) dialogLayout.findViewById(R.id.third_act_theme_card)).setCardBackgroundColor(getCardBackgroundColor());
         dialogLayout.findViewById(R.id.third_act_theme_title).setBackgroundColor(getPrimaryColor());//or GetPrimary
         ((TextView) dialogLayout.findViewById(R.id.apply_theme_3thAct_title)).setTextColor(getTextColor());
         ((TextView) dialogLayout.findViewById(R.id.apply_theme_3thAct_title_Sub)).setTextColor(getSubTextColor());
-        ((IconicsImageView) dialogLayout.findViewById(R.id.ll_apply_theme_3thAct_icon)).setColor(getIconColor());
 
         swApplyTheme_Viewer.setChecked(isApplyThemeOnImgAct());
+        if(isApplyThemeOnImgAct()) {
+            linearLayoutSeek.setVisibility(View.VISIBLE);
+            relativeLayout.setVisibility(View.VISIBLE);
+        }
         swApplyTheme_Viewer.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                updateSwitchColor(swApplyTheme_Viewer, getAccentColor());
+                if(swApplyTheme_Viewer.isChecked()) {
+                    updateSwitchColor(swApplyTheme_Viewer, getAccentColor());
+                    linearLayoutSeek.setVisibility(View.VISIBLE);
+                    relativeLayout.setVisibility(View.VISIBLE);
+                    updateSwitchColor(swApplyTheme_Viewer, getAccentColor());
+                } else {
+                    linearLayoutSeek.setVisibility(View.GONE);
+                    relativeLayout.setVisibility(View.GONE);
+                    updateSwitchColor(swApplyTheme_Viewer, getIconColor());
+                }
             }
         });
         updateSwitchColor(swApplyTheme_Viewer, getAccentColor());
@@ -1073,7 +1200,7 @@ public class SettingsActivity extends ThemedActivity {
                                 passwordDialog.dismiss();
                                 SP.clearPreferences();
                                 recreate();
-                                Snackbar.make(findViewById(android.R.id.content),R.string.settings_reset,Snackbar.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), R.string.settings_reset, Toast.LENGTH_SHORT).show();
                             } else {
                                 passco[0] = true;
                                 securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
@@ -1094,7 +1221,7 @@ public class SettingsActivity extends ThemedActivity {
 
                     SP.clearPreferences();
                     recreate();
-                    Snackbar.make(findViewById(android.R.id.content), R.string.settings_reset,Snackbar.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), R.string.settings_reset, Toast.LENGTH_SHORT).show();
 
                     SP.putString(getString(R.string.preference_password_value),password);
                     SP.putString(getString(R.string.preference_use_password_secured_local_folders),securedLocalFolders);

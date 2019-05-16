@@ -12,4 +12,9 @@
         android:icon="@drawable/ic_delete_white_24dp"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/up_settings"
+        android:title="@string/settings"
+        app:showAsAction="never"/>
+
 </menu>

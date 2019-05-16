@@ -15,7 +15,6 @@ import android.util.AttributeSet;
 
 public class CustomScrollBarRecyclerView extends RecyclerView {
     private int scrollBarColor = Color.RED;
-
     public CustomScrollBarRecyclerView(Context context) {
         super(context);
     }
@@ -49,4 +48,15 @@ public class CustomScrollBarRecyclerView extends RecyclerView {
         scrollBar.setBounds(l, t, r, b);
         scrollBar.draw(canvas);
     }
+
+    @Override
+    public boolean dispatchNestedPreScroll(int dx, int dy, int[] consumed, int[] offsetInWindow) {
+        boolean returnValue;
+        returnValue = super.dispatchNestedPreScroll(dx, dy, consumed, offsetInWindow);
+        if (offsetInWindow[1] != 0) {
+            offsetInWindow[1] = 0;
+        }
+        return returnValue;
+    }
+
 }

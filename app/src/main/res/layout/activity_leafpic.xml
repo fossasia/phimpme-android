@@ -22,9 +22,10 @@
                 layout="@layout/toolbar" />
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.v4.widget.NestedScrollView
+        <org.fossasia.phimpme.gallery.util.CustomNestedView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:id="@+id/nestedView"
             android:fillViewport="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -68,8 +69,8 @@
                                   android:layout_height="wrap_content"
                                   android:id="@+id/no_search_results"
                                   android:gravity="center_horizontal"
-                                  android:textSize="18sp"
-                                  android:layout_marginTop="150dp"
+                                  android:textSize="@dimen/sub_big_text"
+                                  android:layout_marginTop="@dimen/very_big_margin"
                                   android:visibility="invisible"/>
 
                         <TextView
@@ -77,18 +78,34 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_centerInParent="true"
-                            android:elevation="12dp"
+                            android:layout_marginTop="@dimen/sub_small_spacing"
+                            android:elevation="@dimen/medium_small_spacing"
                             android:gravity="center"
                             android:text="@string/there_is_nothing_to_show"
                             android:textColor="@color/md_white_1000"
-                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textSize="@dimen/sub_big_text"
+                            android:visibility="invisible"
+                            tools:targetApi="lollipop" />
+                        <TextView
+                            android:layout_below="@+id/nothing_to_show"
+                            android:layout_marginTop="@dimen/sub_medium_spacing"
+                            android:id="@+id/no_fav_msg"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:elevation="@dimen/medium_small_spacing"
+                            android:gravity="center"
+                            android:layout_centerInParent="true"
+                            android:text="@string/no_favourites_message"
+                            android:textColor="@color/md_white_1000"
+                            android:textSize="@dimen/medium_text"
                             android:visibility="invisible"
                             tools:targetApi="lollipop" />
 
                         <ImageView
                             android:id="@+id/star_image_view"
-                            android:layout_width="90dp"
-                            android:layout_height="90dp"
+                            android:layout_width="@dimen/size_90"
+                            android:layout_height="@dimen/size_90"
                             android:layout_above="@id/nothing_to_show"
                             android:layout_centerInParent="true"
                             android:visibility="gone"
@@ -97,7 +114,7 @@
                     </RelativeLayout>
                 </android.support.v4.widget.SwipeRefreshLayout>
             </FrameLayout>
-        </android.support.v4.widget.NestedScrollView>
+        </org.fossasia.phimpme.gallery.util.CustomNestedView>
 
         <include
             android:id="@+id/bottombar"
@@ -105,13 +122,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            app:elevation="4dp" />
+            app:elevation="@dimen/very_small_spacing" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_scroll_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="70dp"
+            android:layout_margin="@dimen/inside_spacing_top"
             app:layout_anchor="@id/bottombar"
             app:layout_anchorGravity="top|center"
             app:srcCompat="@drawable/ic_keyboard_arrow_up_black_24dp" />
