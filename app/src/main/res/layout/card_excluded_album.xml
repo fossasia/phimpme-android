@@ -4,22 +4,22 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     style="@style/card"
-    android:layout_margin="8dp">
+    android:layout_margin="@dimen/medium_margin">
     <LinearLayout
         android:id="@+id/linear_card_excluded"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:weightSum="10"
-        android:paddingTop="5dp"
+        android:paddingTop="@dimen/alternate_half_padding"
         android:foreground="@drawable/ripple"
         android:clickable="true"
-        android:paddingBottom="5dp"
+        android:paddingBottom="@dimen/alternate_half_padding"
         >
         <com.mikepenz.iconics.view.IconicsImageView
             android:id="@+id/folder_icon"
-            android:layout_height="25dp"
-            android:layout_width="0dp"
+            android:layout_height="@dimen/size_25dp"
+            android:layout_width="@dimen/zero"
             android:layout_gravity="center_vertical"
             android:layout_weight="2"
             app:iiv_icon="gmd-folder"
@@ -27,7 +27,7 @@
 
         <LinearLayout
             android:layout_height="wrap_content"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/zero"
             android:orientation="vertical"
             android:layout_weight="6"
             >
@@ -36,21 +36,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/md_dark_background"
-                android:textSize="16sp"
+                android:textSize="@dimen/medium_text"
                 />
             <TextView
                 android:id="@+id/Excluded_Path_Item"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/md_grey_400"
-                android:textSize="14sp"
+                android:textSize="@dimen/sub_medium_text"
                 />
         </LinearLayout>
 
         <com.mikepenz.iconics.view.IconicsImageView
             android:id="@+id/UnExclude_icon"
-            android:layout_height="16dp"
-            android:layout_width="0dp"
+            android:layout_height="@dimen/size_16dp"
+            android:layout_width="@dimen/zero"
             android:layout_gravity="center_vertical"
             android:layout_weight="2"
             app:iiv_icon="gmd-close"

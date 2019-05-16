@@ -56,6 +56,6 @@ public class AccountPresenter extends BasePresenter<AccountContract.View>
         RealmResults<AccountDatabase> result1 = query.findAll();
 
         // Here checking if count of that values is greater than zero
-        return (result1.size() > 0) ? true : false;
+        return result1.size() > 0;
     }
 }

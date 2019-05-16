@@ -36,7 +36,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:layout_alignParentBottom="true"
                 android:background="#99000000"
-                android:elevation="4dp" />
+                android:elevation="@dimen/very_small_spacing" />
         </RelativeLayout>
     </RelativeLayout>
 

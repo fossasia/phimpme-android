@@ -15,6 +15,6 @@
         android:layout_alignBottom="@+id/icon"
         android:background="#66000000"
         android:textColor="#fff"
-        android:padding="5dp" />
+        android:padding="@dimen/alternate_half_padding" />
 
 </RelativeLayout>

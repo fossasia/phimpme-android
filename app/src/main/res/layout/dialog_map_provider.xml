@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/vn.mbm.phimp.me"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="2dp"
+    app:cardCornerRadius="@dimen/size_2"
     android:id="@+id/dialog_chose_provider_title">
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
             android:background="@color/md_dark_appbar"
             android:padding="@dimen/big_spacing"
             android:text="@string/choose_the_map_provider"
-            android:textSize="18sp"
+            android:textSize="@dimen/sub_big_text"
             android:textStyle="bold" />
         <ScrollView android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -40,7 +40,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/sub_medium_text"
                     android:id="@+id/radio_google_maps"
-                    android:text="maps.google.com"
+                    android:text="@string/google_maps"
                 />
                 <TextView
                     android:layout_width="match_parent"
@@ -53,28 +53,28 @@
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/sub_medium_text"
                     android:id="@+id/radio_mapb_streets"
-                    android:text="mapbox.com (streets)"
+                    android:text="@string/mapbox_streets"
                 />
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/sub_medium_text"
                     android:id="@+id/radio_mapb_dark"
-                    android:text="mapbox.com (dark)"
+                    android:text="@string/mapbox_dark"
                 />
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/sub_medium_text"
                     android:id="@+id/radio_mapb_light"
-                    android:text="mapbox.com (light)"
+                    android:text="@string/mapbox_light"
                 />
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/radio_osm_tyler"
                     android:textSize="@dimen/sub_medium_text"
-                    android:text="herokuapp.com (watercolor)"
+                    android:text="@string/herokuapp"
                 />
             </RadioGroup>
         </ScrollView>

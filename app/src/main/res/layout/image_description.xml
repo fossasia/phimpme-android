@@ -2,82 +2,86 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app2="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/image_desc_top"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:id="@+id/image_desc_top"
-        android:padding="13dp">
+        android:padding="@dimen/sub_large_padding">
 
         <ImageButton
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_gravity="center"
             android:id="@+id/img_desc_back_arrow"
-            android:background="@drawable/back_arrow"/>
+            android:layout_width="@dimen/size_48"
+            android:layout_height="@dimen/size_48"
+            android:layout_gravity="center"
+            android:background="@drawable/back_arrow" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_gravity="center"
-            android:textSize="@dimen/sub_big_text"
+            android:gravity="center"
+            android:text="@string/details"
             android:textColor="@color/white"
-            android:textStyle="bold"
-            android:text="@string/details"/>
+            android:textSize="@dimen/sub_big_text"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbarSize="4dp">
+        android:scrollbarSize="@dimen/scroll_bar_size">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_margin="@dimen/medium_spacing">
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/medium_spacing"
                 android:orientation="horizontal">
 
                 <com.mikepenz.iconics.view.IconicsImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
                     android:id="@+id/date_icon"
-                    app2:iiv_icon="gmd-access-time"
-                    android:layout_gravity="center"/>
+                    android:layout_width="@dimen/size_30dp"
+                    android:layout_height="@dimen/size_30dp"
+                    android:layout_gravity="center"
+                    app2:iiv_icon="gmd-access-time" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="10dp">
+                    android:layout_marginLeft="@dimen/alternate_margin"
+                    android:orientation="vertical">
+
                     <TextView
+                        android:id="@+id/date_label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/date"
-                        android:id="@+id/date_label"
-                        android:textStyle="bold"
                         android:textColor="@color/md_grey_200"
-                        android:textSize="@dimen/sub_big_text" />
+                        android:textSize="@dimen/sub_big_text"
+                        android:textStyle="bold" />
+
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"/>
+                        android:layout_height="@dimen/size_1" />
+
                     <TextView
+                        android:id="@+id/image_desc_date"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/image_desc_date"
-                        tools:text="28/September/2018"
                         android:textColor="@color/md_grey_400"
-                        android:textSize="@dimen/medium_text"/>
+                        android:textSize="@dimen/medium_text"
+                        tools:text="28/September/2018" />
 
                 </LinearLayout>
 
@@ -85,43 +89,47 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="20dp"/>
+                android:layout_height="@dimen/size_20dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/medium_spacing"
                 android:orientation="horizontal">
 
                 <com.mikepenz.iconics.view.IconicsImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
                     android:id="@+id/loca_icon"
+                    android:layout_width="@dimen/size_30dp"
+                    android:layout_height="@dimen/size_30dp"
                     android:layout_gravity="center"
-                    app2:iiv_icon="gmd-location-on"/>
+                    app2:iiv_icon="gmd-location-on" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="10dp">
+                    android:layout_marginLeft="@dimen/alternate_margin"
+                    android:orientation="vertical">
+
                     <TextView
+                        android:id="@+id/location_label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/location"
-                        android:id="@+id/location_label"
-                        android:textStyle="bold"
                         android:textColor="@color/md_grey_200"
-                        android:textSize="@dimen/sub_big_text" />
+                        android:textSize="@dimen/sub_big_text"
+                        android:textStyle="bold" />
+
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"/>
+                        android:layout_height="@dimen/size_1" />
+
                     <TextView
+                        android:id="@+id/image_desc_loc"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="No Location"
-                        android:id="@+id/image_desc_loc"
+                        android:text="@string/no_location"
                         android:textColor="@color/md_grey_400"
-                        android:textSize="@dimen/medium_text"/>
+                        android:textSize="@dimen/medium_text" />
 
                 </LinearLayout>
 
@@ -129,234 +137,253 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="20dp"/>
+                android:layout_height="@dimen/size_20dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/medium_spacing"
                 android:orientation="horizontal">
 
                 <com.mikepenz.iconics.view.IconicsImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
                     android:id="@+id/detail_icon"
+                    android:layout_width="@dimen/size_30dp"
+                    android:layout_height="@dimen/size_30dp"
                     android:layout_gravity="fill"
-                    app2:iiv_icon="gmd-camera-roll"/>
+                    app2:iiv_icon="gmd-camera-roll" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="10dp">
+                    android:layout_marginLeft="@dimen/alternate_margin"
+                    android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/details_label"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Details"
-                        android:id="@+id/details_label"
-                        android:textStyle="bold"
+                        android:text="@string/details"
                         android:textColor="@color/md_grey_200"
-                        android:textSize="@dimen/sub_big_text" />
+                        android:textSize="@dimen/sub_big_text"
+                        android:textStyle="bold" />
+
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/fab_margin"/>
+                        android:layout_height="@dimen/fab_margin" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/extremely_small_padding"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/title_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/details_title"
+                            android:textSize="@dimen/sub_big_text"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/image_desc_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/alternate_half_margin"
+                            android:layout_marginBottom="@dimen/extremely_small_padding"
+                            android:textSize="@dimen/medium_text" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/small_spacing" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/type_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/type"
+                            android:textSize="@dimen/sub_big_text"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/image_desc_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/alternate_half_margin"
+                            android:layout_marginBottom="@dimen/extremely_small_padding"
+                            android:textSize="@dimen/medium_text" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/small_spacing" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/size_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/size"
+                            android:textSize="@dimen/sub_big_text"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/image_desc_size"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/alternate_half_margin"
+                            android:layout_marginBottom="@dimen/extremely_small_padding"
+                            android:textSize="@dimen/medium_text" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/small_spacing" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/resolution_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/resolution"
+                            android:textSize="@dimen/sub_big_text"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/image_desc_res"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/alternate_half_margin"
+                            android:layout_marginBottom="@dimen/extremely_small_padding"
+                            android:textSize="@dimen/medium_text" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/small_spacing" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/path_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/path"
+                            android:textSize="@dimen/sub_big_text"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/image_desc_path"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/alternate_half_margin"
+                            android:layout_marginBottom="@dimen/extremely_small_padding"
+                            android:textSize="@dimen/medium_text" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/small_spacing" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/orientation_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/orientation"
+                            android:textSize="@dimen/sub_big_text"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/image_desc_orientation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/alternate_half_margin"
+                            android:layout_marginBottom="@dimen/extremely_small_padding"
+                            android:textSize="@dimen/medium_text" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/small_spacing" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/exif_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/exif"
+                            android:textSize="@dimen/sub_big_text"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/image_desc_exif"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/alternate_half_margin"
+                            android:layout_marginBottom="@dimen/extremely_small_padding"
+                            android:textColor="@color/md_grey_400"
+                            android:textSize="@dimen/medium_text" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/small_spacing" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginBottom="2dp">
+                        android:layout_marginBottom="@dimen/size_16">
+
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/details_title"
-                            android:id="@+id/title_label"
-                            android:textStyle="bold"
-                            android:textSize="@dimen/sub_big_text"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:id="@+id/image_desc_title"
-                            android:textSize="@dimen/medium_text"
-                            android:layout_marginBottom="2dp"/>
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="8dp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/type"
-                            android:id="@+id/type_label"
-                            android:textStyle="bold"
-                            android:textSize="@dimen/sub_big_text"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/image_desc_type"
-                            android:layout_marginLeft="5dp"
-                            android:textSize="@dimen/medium_text"
-                            android:layout_marginBottom="2dp"/>
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="8dp"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/size"
-                            android:id="@+id/size_label"
-                            android:textStyle="bold"
-                            android:textSize="@dimen/sub_big_text"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/image_desc_size"
-                            android:layout_marginLeft="5dp"
-                            android:textSize="@dimen/medium_text"
-                            android:layout_marginBottom="2dp"/>
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="8dp"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/resolution"
-                            android:id="@+id/resolution_label"
-                            android:textStyle="bold"
-                            android:textSize="@dimen/sub_big_text"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/image_desc_res"
-                            android:layout_marginLeft="5dp"
-                            android:textSize="@dimen/medium_text"
-                            android:layout_marginBottom="2dp"/>
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="8dp"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/path"
-                            android:id="@+id/path_label"
-                            android:textStyle="bold"
-                            android:textSize="@dimen/sub_big_text"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/image_desc_path"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginBottom="2dp"
-                            android:textSize="@dimen/medium_text"/>
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="8dp"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/orientation"
-                            android:id="@+id/orientation_label"
-                            android:textStyle="bold"
-                            android:textSize="@dimen/sub_big_text"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:id="@+id/image_desc_orientation"
-                            android:layout_marginLeft="5dp"
-                            android:textSize="@dimen/medium_text"
-                            android:layout_marginBottom="2dp"/>
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="8dp"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/exif"
-                            android:id="@+id/exif_label"
-                            android:textStyle="bold"
-                            android:textSize="@dimen/sub_big_text"/>
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/medium_text"
-                            android:textColor="@color/md_grey_400"
-                            android:id="@+id/image_desc_exif"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginBottom="2dp"/>
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="8dp"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
+                            android:id="@+id/description_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/type_description"
-                            android:id="@+id/description_label"
-                            android:textStyle="bold"
-                            android:textSize="@dimen/sub_big_text"/>
+                            android:textSize="@dimen/sub_big_text"
+                            android:textStyle="bold" />
+
                         <TextView
+                            android:id="@+id/image_desc"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/image_desc"
-                            android:textSize="@dimen/medium_text"
+                            android:layout_marginLeft="@dimen/alternate_half_margin"
+                            android:layout_marginBottom="@dimen/extremely_small_padding"
                             android:textColor="@color/md_grey_400"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginBottom="2dp"/>
+                            android:textSize="@dimen/medium_text" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

@@ -5,9 +5,9 @@
     android:layout_height="match_parent"
     android:background="?attr/selectableItemBackgroundBorderless"
     android:clickable="true"
-    android:maxHeight="160dp"
-    android:maxWidth="70dp"
-    android:padding="3dp"
+    android:maxHeight="@dimen/size_160"
+    android:maxWidth="@dimen/size_70"
+    android:padding="@dimen/very_small_margin"
     android:scaleType="centerCrop">
 
 </ImageView>

@@ -6,7 +6,7 @@
 
     <ImageView
         android:id="@+id/back_to_main"
-        android:layout_width="40dp"
+        android:layout_width="@dimen/size_40"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:src="@drawable/image_edit_back" />

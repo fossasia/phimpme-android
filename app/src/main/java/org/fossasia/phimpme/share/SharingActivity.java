@@ -195,7 +195,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     String boardID, imgurAuth = null, imgurString = null;
     private  CloudRailServices cloudRailServices;
     private static final int REQ_SELECT_PHOTO = 1;
-    private static final int REQUEST_CODE_SHARE_TO_MESSENGER = 2;
     private final int REQ_CODE_SPEECH_INPUT = 10;
     private static final int SHARE_WHATSAPP = 200;
     private static final int SHARE_SNAPCHAT = 200;
@@ -227,7 +226,6 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         initView();
         setUpRecyclerView();
         setStatusBarColor();
-        checkNetwork(this, parent);
         configureBoxClient();
     }
 
@@ -281,107 +279,108 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     @Override
     public void onItemClick(View childView, final int position) {
-        if (!checkNetwork(this, parent)) return;
-
         positionShareOption = position;
         if (sharableAccountsList.get(position) == OTHERS) {
             triedUploading = true;
             shareToOthers();
             return;
-        }
+        } else if (sharableAccountsList.get(position) != OTHERS) {
+            if (!checkNetwork(this, parent)) return;
 
-        final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
-        String msg = getString(R.string.are_you_sure) + " " + sharableAccountsList.get(position) + "?";
-        AlertDialogsHelper.getTextDialog(SharingActivity.this, dialogBuilder, R.string.upload, 0, msg);
-        dialogBuilder.setPositiveButton(R.string.ok_action, new DialogInterface.OnClickListener() {
 
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+            final AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(SharingActivity.this, getDialogStyle());
+            String msg = getString(R.string.are_you_sure) + " " + sharableAccountsList.get(position) + "?";
+            AlertDialogsHelper.getTextDialog(SharingActivity.this, dialogBuilder, R.string.upload, 0, msg);
+            dialogBuilder.setPositiveButton(R.string.ok_action, new DialogInterface.OnClickListener() {
 
-                triedUploading = true;
-                switch (sharableAccountsList.get(position)) {
-                    case TWITTER:
-                        shareToTwitter();
-                        break;
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
 
-                    case INSTAGRAM:
-                        copyCaption();
-                        break;
+                    triedUploading = true;
+                    switch (sharableAccountsList.get(position)) {
+                        case TWITTER:
+                            shareToTwitter();
+                            break;
 
-                    case NEXTCLOUD:
-                        shareToNextCloudAndOwnCloud(getString(R.string.nextcloud));
-                        break;
+                        case INSTAGRAM:
+                            copyCaption();
+                            break;
 
-                    case PINTEREST:
-                        shareToPinterest();
-                        break;
+                        case NEXTCLOUD:
+                            shareToNextCloudAndOwnCloud(getString(R.string.nextcloud));
+                            break;
 
-                    case MESSENGER:
-                        shareToMessenger();
-                        break;
+                        case PINTEREST:
+                            shareToPinterest();
+                            break;
 
-                    case FLICKR:
-                        shareToFlickr();
-                        break;
+                        case MESSENGER:
+                            shareToMessenger();
+                            break;
 
-                    case IMGUR:
-                        shareToImgur();
-                        break;
+                        case FLICKR:
+                            shareToFlickr();
+                            break;
 
-                    case DROPBOX:
-                        shareToDropBox();
-                        break;
+                        case IMGUR:
+                            shareToImgur();
+                            break;
+
+                        case DROPBOX:
+                            shareToDropBox();
+                            break;
 
                    /* case GOOGLEDRIVE:
                         shareToGoogleDrive();
                         break;*/
 
-                    case OWNCLOUD:
-                        shareToNextCloudAndOwnCloud(getString(R.string.owncloud));
-                        break;
+                        case OWNCLOUD:
+                            shareToNextCloudAndOwnCloud(getString(R.string.owncloud));
+                            break;
 
-                    case BOX:
-                        shareToBox();
-                        break;
+                        case BOX:
+                            shareToBox();
+                            break;
 
-                    case TUMBLR:
-                        shareToTumblr();
-                        break;
+                        case TUMBLR:
+                            shareToTumblr();
+                            break;
 
                    /* case ONEDRIVE:
                         shareToOneDrive();
                         break;*/
 
-                    case OTHERS:
-                        shareToOthers();
-                        break;
+                        case OTHERS:
+                            shareToOthers();
+                            break;
 
-                    case WHATSAPP:
-                        shareToWhatsapp();
-                        break;
+                        case WHATSAPP:
+                            shareToWhatsapp();
+                            break;
 
                    /* case GOOGLEPLUS:
                         shareToGoogle();
                         break;*/
-                    
-                    case SNAPCHAT:
-                        shareToSnapchat();
-                        break;
 
-                    default:
-                        SnackBarHandler.show(parent, R.string.feature_not_present);
+                        case SNAPCHAT:
+                            shareToSnapchat();
+                            break;
+
+                        default:
+                            SnackBarHandler.show(parent, R.string.feature_not_present);
+                    }
                 }
-            }
-        });
-        dialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                //Do nothing
-            }
-        });
-        AlertDialog alertDialog = dialogBuilder.create();
-        alertDialog.show();
-        AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
+            });
+            dialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    //Do nothing
+                }
+            });
+            AlertDialog alertDialog = dialogBuilder.create();
+            alertDialog.show();
+            AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), alertDialog);
+        }
     }
 
     private void shareToSnapchat() {
@@ -772,7 +771,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         captionEditText.setHint(R.string.description_hint);
         captionEditText.setHintTextColor(ContextCompat.getColor(this,R.color.grey));
         captionEditText.setSelectAllOnFocus(true);
-        captionEditText.setHighlightColor(ContextCompat.getColor(getApplicationContext(), R.color.cardview_shadow_start_color));
+        if(getBaseTheme() == ThemeHelper.DARK_THEME || getBaseTheme() == ThemeHelper.AMOLED_THEME){
+            captionEditText.setHighlightColor(ContextCompat.getColor(getApplicationContext(), R.color.accent_grey));
+        } else captionEditText.setHighlightColor(ContextCompat.getColor(getApplicationContext(), R.color.cardview_shadow_start_color));
         captionEditText.selectAll();
         captionEditText.setSingleLine(false);
         captionDialogBuilder.setPositiveButton(getString(R.string.add_action).toUpperCase(), new DialogInterface.OnClickListener() {
@@ -1052,7 +1053,7 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (!isPersonal) {
-                    SnackBarHandler.show(parent, R.string.sign_from_account);
+                    Snackbar.make(parent,R.string.sign_from_account,Snackbar.LENGTH_SHORT).show();
                     return;
                 } else {
                     isPersonal = true;

@@ -3,8 +3,6 @@ package org.fossasia.phimpme.accounts;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
@@ -84,7 +82,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private static final int NEXTCLOUD_REQUEST_CODE = 3;
     private static final int OWNCLOUD_REQUEST_CODE = 9;
     private static final int RESULT_OK = 1;
-    private static final int RC_SIGN_IN = 9001;
     public static final String BROWSABLE = "android.intent.category.BROWSABLE";
     public final static String CLOUDRAIL_APP_KEY = Constants.CLOUDRAIL_LICENSE_KEY;//CloudRail_App-Key
     @BindView(R.id.accounts_parent)
@@ -109,7 +106,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     private CloudRailServices cloudRailServices;
     private PDKClient pdkClient;
    // private GoogleApiClient mGoogleApiClient;
-    private DropboxAPI<AndroidAuthSession> mDBApi;
     private BoxSession sessionBox;
 
     @Override
@@ -216,11 +212,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
     @Override
     public void onItemClick(final View childView, final int position) {
-        ConnectivityManager cm=(ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo ni = cm.getActiveNetworkInfo();
-        if (ni == null) {
-           Snackbar.make(findViewById(android.R.id.content),getString(R.string.internet_is_off),Snackbar.LENGTH_SHORT).show();
-        }
+        if (!checkNetwork(this,parentLayout)) return;
         final SwitchCompat signInSignOut = childView.findViewById(R.id.sign_in_sign_out_switch);
         final String name = AccountDatabase.AccountName.values()[position].toString();
 
@@ -287,9 +279,6 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                 /*case ONEDRIVE:
                     signInOneDrive();
                     break;*/
-
-                default:
-                    SnackBarHandler.show(coordinatorLayout, R.string.feature_not_present);
             }
         } else {
             AlertDialog alertDialog = new AlertDialog.Builder(this)
@@ -468,7 +457,7 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     }
 
     private void signInPinterest() {
-        ArrayList<String> scopes = new ArrayList<String>();
+        ArrayList<String> scopes = new ArrayList<>();
         scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_PUBLIC);
         scopes.add(PDKClient.PDKCLIENT_PERMISSION_WRITE_PUBLIC);
         scopes.add(PDKClient.PDKCLIENT_PERMISSION_READ_RELATIONSHIPS);
