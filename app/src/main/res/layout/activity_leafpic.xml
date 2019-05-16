@@ -22,9 +22,10 @@
                 layout="@layout/toolbar" />
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.v4.widget.NestedScrollView
+        <org.fossasia.phimpme.gallery.util.CustomNestedView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:id="@+id/nestedView"
             android:fillViewport="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -113,7 +114,7 @@
                     </RelativeLayout>
                 </android.support.v4.widget.SwipeRefreshLayout>
             </FrameLayout>
-        </android.support.v4.widget.NestedScrollView>
+        </org.fossasia.phimpme.gallery.util.CustomNestedView>
 
         <include
             android:id="@+id/bottombar"

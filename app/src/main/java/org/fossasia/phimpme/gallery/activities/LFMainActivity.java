@@ -97,6 +97,7 @@ import org.fossasia.phimpme.gallery.data.providers.MediaStoreProvider;
 import org.fossasia.phimpme.gallery.data.providers.StorageProvider;
 import org.fossasia.phimpme.gallery.util.Affix;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
+import org.fossasia.phimpme.gallery.util.CustomNestedView;
 import org.fossasia.phimpme.gallery.util.ContentHelper;
 import org.fossasia.phimpme.gallery.util.Measure;
 import org.fossasia.phimpme.gallery.util.PreferenceUtil;
@@ -201,6 +202,8 @@ public class LFMainActivity extends SharedMediaActivity {
 
     private SearchView searchView;
 
+    @BindView(R.id.nestedView)
+    protected CustomNestedView nestedView;
     @BindView(R.id.toolbar)
     protected Toolbar toolbar;
     @BindView(R.id.swipeRefreshLayout)
@@ -1713,21 +1716,23 @@ public class LFMainActivity extends SharedMediaActivity {
     private void checkNothingFavourites() {
         nothingToShow.setTextColor(getTextColor());
         nothingToShow.setText(R.string.no_favourites_text);
-        nothingToShow.setVisibility((albumsMode && getAlbums().dispAlbums.size() == 0 && !fav_photos) || (!albumsMode && getAlbum
+        int shouldShow = (albumsMode && getAlbums().dispAlbums.size() == 0 && !fav_photos) || (!albumsMode && getAlbum
                 ().getMedia().size() == 0 && !fav_photos) || (fav_photos && favouriteslist.size() == 0) ? View
                 .VISIBLE : View
-                .GONE);
-        noFavMsg.setVisibility((albumsMode && getAlbums().dispAlbums.size() == 0 && !fav_photos) || (!albumsMode && getAlbum
-                ().getMedia().size() == 0 && !fav_photos) || (fav_photos && favouriteslist.size() == 0) ? View
-                .VISIBLE : View
-                .GONE);
+                .GONE;
+        nothingToShow.setVisibility(shouldShow);
+        noFavMsg.setVisibility(shouldShow);
         noFavMsg.setText(R.string.no_favourites_message);
         noFavMsg.setTextColor(getTextColor());
-        starImageView.setVisibility((albumsMode && getAlbums().dispAlbums.size() == 0 && !fav_photos) || (!albumsMode && getAlbum
-                ().getMedia().size() == 0 && !fav_photos) || (fav_photos && favouriteslist.size() == 0) ? View
-                .VISIBLE : View
-                .GONE);
+        starImageView.setVisibility(shouldShow);
         starImageView.setColorFilter(getPrimaryColor());
+        if (shouldShow == View.VISIBLE) {
+            showAppBar();
+            nestedView.setScrolling(false);
+            rvMedia.setNestedScrollingEnabled(false);
+
+        }
+
     }
 
 
