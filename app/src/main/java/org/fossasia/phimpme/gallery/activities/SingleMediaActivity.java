@@ -92,7 +92,6 @@ import org.fossasia.phimpme.gallery.util.ColorPalette;
 import org.fossasia.phimpme.gallery.util.ContentHelper;
 import org.fossasia.phimpme.gallery.util.Measure;
 import org.fossasia.phimpme.gallery.util.PreferenceUtil;
-import org.fossasia.phimpme.gallery.util.SecurityHelper;
 import org.fossasia.phimpme.gallery.util.StringUtils;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
 import org.fossasia.phimpme.gallery.views.PagerRecyclerView;
@@ -131,7 +130,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
     private PreferenceUtil SP;
     private RelativeLayout ActivityBackground;
     private SelectAlbumBottomSheet bottomSheetDialogFragment;
-    private SecurityHelper securityObj;
     private boolean fullScreenMode, customUri = false;
     public static final int ACTION_REQUEST_EDITIMAGE = 9;
     private Bitmap mainBitmap;
@@ -236,7 +234,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         startHandler();
         overridePendingTransition(R.anim.media_zoom_in, 0);
         SP = PreferenceUtil.getInstance(getApplicationContext());
-        securityObj = new SecurityHelper(SingleMediaActivity.this);
         favphotomode = getIntent().getBooleanExtra("fav_photos", false);
         upoadhis = getIntent().getBooleanExtra("uploadhistory", false);
         trashdis = getIntent().getBooleanExtra("trashbin", false);
@@ -557,9 +554,6 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
 
         setStatusBarColor();
         setNavBarColor();
-
-
-        securityObj.updateSecuritySetting();
 
         /**** SETTINGS ****/
 
@@ -1794,67 +1788,7 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
         deleteDialog.setNegativeButton(this.getString(R.string.cancel).toUpperCase(), null);
         deleteDialog.setPositiveButton(ButtonDelete.toUpperCase(), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                if (securityObj.isActiveSecurity() && securityObj.isPasswordOnDelete()) {
-                    final boolean passco[] = {false};
-                    final AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(SingleMediaActivity.this, getDialogStyle());
-                    final EditText editTextPassword = securityObj.getInsertPasswordDialog
-                            (SingleMediaActivity.this, passwordDialogBuilder);
-                    editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
-                    passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (securityObj.checkPassword(editTextPassword.getText().toString())) {
-                                deleteCurrentMedia();
-
-                            } else
-                                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), (bottomBar.getHeight()*2)-22);
-                        }
-                    });
-                    editTextPassword.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                            //empty method body
-                        }
-
-                        @Override
-                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                            //empty method body
-                        }
-
-                        @Override
-                        public void afterTextChanged(Editable editable) {
-                            if (securityObj.getTextInputLayout().getVisibility() == View.VISIBLE && !passco[0]) {
-                                securityObj.getTextInputLayout().setVisibility(View.INVISIBLE);
-                            } else {
-                                passco[0] = false;
-                            }
-                        }
-                    });
-                    passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-                    final AlertDialog passwordDialog = passwordDialogBuilder.create();
-                    passwordDialog.show();
-                    passwordDialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager
-                            .LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-                    passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams
-                            .SOFT_INPUT_STATE_ALWAYS_VISIBLE);
-                    AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
-                    passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View
-                            .OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (securityObj.checkPassword(editTextPassword.getText().toString())) {
-                                deleteCurrentMedia();
-                                passwordDialog.dismiss();
-                            } else {
-                                passco[0] = true;
-                                securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
-                                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password), (bottomBar.getHeight()*2)-22);
-                                editTextPassword.getText().clear();
-                                editTextPassword.requestFocus();
-                            }
-                        }
-                    });
-                } else
-                    deleteCurrentMedia();
+            deleteCurrentMedia();
             }
         });
         AlertDialog alertDialog = deleteDialog.create();
