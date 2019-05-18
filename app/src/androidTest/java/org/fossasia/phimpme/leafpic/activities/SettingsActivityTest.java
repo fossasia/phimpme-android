@@ -71,11 +71,6 @@ public class SettingsActivityTest {
         linearLayout1.perform(scrollTo());
         linearLayout1.check(matches(isDisplayed()));
 
-        ViewInteraction linearLayout2 = onView(
-                withId(R.id.ll_security));
-        linearLayout2.perform(scrollTo());
-        linearLayout2.check(matches(isDisplayed()));
-
         ViewInteraction linearLayout3 = onView(
                 withId(R.id.ll_n_columns));
         linearLayout3.perform(scrollTo());
