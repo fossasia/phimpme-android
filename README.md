@@ -109,7 +109,7 @@ Before you begin, you should have already downloaded the Android Studio SDK and 
      - Copy all the files from *"OpenCV-android-sdk/sdk/native/libs"* to *"phimpme-android/app/src/main/jniLibs"* (create directory if it doesn't exist)
      - Now build your project. If your build fails then try deleting these build directories *"phimpme-android/app/.externalNativeBuild"* and *"phimpme-android/app/build"*, if they exist and run the build again.
 
-7. Once all build errors have been resolved, you should be all set to build the app and test it.
+7. If build error still persist, try replacing ndk with ndk version 16b from [ndk-archives](https://developer.android.com/ndk/downloads/older_releases) .  Once all build errors have been resolved, you should be all set to build the app and test it.
 
 8. To Build the app, go to *Build > Make Project* (or alternatively press the Make Project icon in the toolbar).
 
@@ -138,7 +138,9 @@ The project is maintained by
 <table border="0">
 <tr>
 <td width="240">
+     <p align="center">
      <img src="https://avatars2.githubusercontent.com/u/20367966?v=4&s=150" />
+     </p>
      <div align="center">
      Anant Prasad
 </div>
@@ -150,8 +152,10 @@ The project is maintained by
 </td>
 
 <td width="240">
+     <p align="center">
      <img src="https://avatars0.githubusercontent.com/u/9361754?v=4&s=150"/>
-        <div align="center">
+     </p>
+     <div align="center">
     Mohit Manuja
 </div>
 <p align="center">
@@ -162,7 +166,9 @@ The project is maintained by
 </td>
 
 <td width="240">
+     <p align="center">
      <img src="https://avatars1.githubusercontent.com/u/6936968?v=4&s=150" />
+     </p>
      <div align="center">
      Pawan Pal
 </div>
@@ -174,7 +180,9 @@ The project is maintained by
 </td>
 
 <td width="240">
-     <img src="https://avatars0.githubusercontent.com/u/17337006?v=4&s=150"/>
+     <p align="center">
+     <img src="https://avatars0.githubusercontent.com/u/17337006?v=4&s=150" />
+     </p>
      <div align="center">
     Subhankar Shah
 </div>
@@ -189,8 +197,10 @@ The project is maintained by
 
 <tr>
 <td width="240">
-     <img src="https://avatars2.githubusercontent.com/u/15368561?v=4&s=150"/>
-     <div align="center">
+    <p align="center">
+    <img src="https://avatars2.githubusercontent.com/u/15368561?v=4&s=150" />
+    </p>
+    <div align="center">
     Vinay Sajjanapu
 </div>
 <p align="center">
@@ -201,8 +211,10 @@ The project is maintained by
 </td>
 
 <td width="240">
-     <img src="https://avatars1.githubusercontent.com/u/20841578?s=150&u=ccf2c85bac58c92f69c4c69ce2c46dcee4564e23&v=4"/>
-     <div align="center">
+    <p align="center">
+    <img src="https://avatars1.githubusercontent.com/u/20841578?s=150&u=ccf2c85bac58c92f69c4c69ce2c46dcee4564e23&v=4" />
+    </p>
+    <div align="center">
     Saurav Vishal
 </div>
 

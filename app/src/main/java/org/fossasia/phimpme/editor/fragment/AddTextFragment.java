@@ -39,7 +39,6 @@ import uz.shift.colorpicker.OnColorChangedListener;
 import static android.graphics.Color.WHITE;
 
 public class AddTextFragment extends BaseEditFragment implements TextWatcher, FontPickerDialog.FontPickerDialogListener {
-    public static final int INDEX = 5;
     private View mainView;
 
     private EditText mInputText;
@@ -70,6 +69,9 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher, Fo
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
+        if (activity.mainBitmap == null) {
+            return;
+        }
         mTextStickerView = getActivity().findViewById(R.id.text_sticker_panel);
 
         View cancel = mainView.findViewById(R.id.text_cancel);
@@ -205,7 +207,7 @@ public class AddTextFragment extends BaseEditFragment implements TextWatcher, Fo
 
     public void backToMain() {
         hideInput();
-        activity.changeMode(EditImageActivity.MODE_WRITE);
+        EditImageActivity.mode = EditImageActivity.MODE_WRITE;
         activity.writeFragment.clearSelection();
         activity.changeBottomFragment(EditImageActivity.MODE_MAIN);
         activity.mainImage.setVisibility(View.VISIBLE);

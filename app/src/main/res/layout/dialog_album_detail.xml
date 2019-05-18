@@ -10,7 +10,7 @@
         android:id="@+id/album_details_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="2dp">
+        app:cardCornerRadius="@dimen/size_2">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -22,10 +22,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/md_red_500"
-                android:padding="24dp"
+                android:padding="@dimen/big_spacing"
                 android:text="@string/details"
                 android:textColor="@color/md_dark_primary_text"
-                android:textSize="18sp"
+                android:textSize="@dimen/sub_big_text"
                 android:textStyle="bold" />
 
             <ScrollView
@@ -41,41 +41,41 @@
                         android:id="@+id/trcia"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginStart="30dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="@dimen/alternate_margin"
+                        android:layout_marginStart="@dimen/inside_spacing"
+                        android:layout_marginTop="@dimen/alternate_margin"
                         android:orientation="horizontal">
 
                         <ImageView
                             android:id="@+id/icon_folder"
-                            android:layout_width="55dp"
-                            android:layout_height="55dp"
+                            android:layout_width="@dimen/size_55"
+                            android:layout_height="@dimen/size_55"
                             app2:srcCompat="@drawable/ic_folder_white_24dp" />
 
                         <TextView
                             android:id="@+id/album_details_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginStart="@dimen/alternate_margin"
+                            android:layout_marginTop="@dimen/account_margin"
                             android:textColor="@color/icongrey"
-                            android:textSize="17sp" />
+                            android:textSize="@dimen/big_medium_text" />
                     </LinearLayout>
 
                     <View
                         android:layout_width="wrap_content"
-                        android:layout_height="1dp"
+                        android:layout_height="@dimen/size_1"
                         android:background="@color/md_grey_300" />
 
                     <View
                         android:layout_width="wrap_content"
-                        android:layout_height="10dp" />
+                        android:layout_height="@dimen/size_10" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginStart="30dp"
+                        android:layout_marginBottom="@dimen/alternate_margin"
+                        android:layout_marginStart="@dimen/inside_spacing"
                         android:orientation="horizontal">
 
                         <TextView
@@ -85,23 +85,23 @@
                             android:text="@string/type_content"
                             android:textAlignment="center"
                             android:textColor="@color/icongrey"
-                            android:textSize="17sp"
+                            android:textSize="@dimen/big_medium_text"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/album_details_type"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="72dp"
+                            android:layout_marginStart="@dimen/sub_very_big_margin"
                             android:textColor="@color/icongrey"
-                            android:textSize="17sp" />
+                            android:textSize="@dimen/big_medium_text" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginStart="30dp"
+                        android:layout_marginBottom="@dimen/alternate_margin"
+                        android:layout_marginStart="@dimen/inside_spacing"
                         android:orientation="horizontal">
 
                         <TextView
@@ -111,23 +111,23 @@
                             android:text="@string/folder_path"
                             android:textAlignment="center"
                             android:textColor="@color/icongrey"
-                            android:textSize="17sp"
+                            android:textSize="@dimen/big_medium_text"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/album_details_path"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="75dp"
+                            android:layout_marginStart="@dimen/half_very_big_margin"
                             android:textColor="@color/icongrey"
-                            android:textSize="17sp" />
+                            android:textSize="@dimen/big_medium_text" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginStart="30dp"
+                        android:layout_marginBottom="@dimen/alternate_margin"
+                        android:layout_marginStart="@dimen/inside_spacing"
                         android:orientation="horizontal">
 
                         <TextView
@@ -137,23 +137,23 @@
                             android:text="@string/parent_path"
                             android:textAlignment="center"
                             android:textColor="@color/icongrey"
-                            android:textSize="17sp"
+                            android:textSize="@dimen/big_medium_text"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/album_details_parent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="60dp"
+                            android:layout_marginStart="@dimen/big_margin"
                             android:textColor="@color/icongrey"
-                            android:textSize="17sp" />
+                            android:textSize="@dimen/big_medium_text" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginStart="30dp"
+                        android:layout_marginBottom="@dimen/alternate_margin"
+                        android:layout_marginStart="@dimen/inside_spacing"
                         android:orientation="horizontal">
 
                         <TextView
@@ -163,23 +163,23 @@
                             android:text="@string/total_photos"
                             android:textAlignment="center"
                             android:textColor="@color/icongrey"
-                            android:textSize="17sp"
+                            android:textSize="@dimen/big_medium_text"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/album_details_total"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="14dp"
+                            android:layout_marginStart="@dimen/margin_14dp"
                             android:textColor="@color/icongrey"
-                            android:textSize="17sp" />
+                            android:textSize="@dimen/big_medium_text" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginStart="30dp"
+                        android:layout_marginBottom="@dimen/alternate_margin"
+                        android:layout_marginStart="@dimen/inside_spacing"
                         android:orientation="horizontal">
 
                         <TextView
@@ -189,29 +189,29 @@
                             android:text="@string/size_folder"
                             android:textAlignment="center"
                             android:textColor="@color/icongrey"
-                            android:textSize="17sp"
+                            android:textSize="@dimen/big_medium_text"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/album_details_size"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="77dp"
+                            android:layout_marginStart="@dimen/larger_margin"
                             android:textColor="@color/icongrey"
-                            android:textSize="17sp" />
+                            android:textSize="@dimen/big_medium_text" />
                     </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="@dimen/size_1"
                         android:background="@color/md_grey_300" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="17dp"
-                        android:layout_marginStart="30dp"
-                        android:layout_marginTop="17dp"
+                        android:layout_marginBottom="@dimen/margin_17dp"
+                        android:layout_marginStart="@dimen/inside_spacing"
+                        android:layout_marginTop="@dimen/margin_17dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -221,30 +221,30 @@
                             android:text="@string/modified"
                             android:textAlignment="center"
                             android:textColor="@color/icongrey"
-                            android:textSize="17sp"
+                            android:textSize="@dimen/big_medium_text"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/album_details_last_modified"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
+                            android:layout_marginStart="@dimen/alternate_half_margin"
                             android:maxLines="2"
                             android:textColor="@color/icongrey"
-                            android:textSize="17sp" />
+                            android:textSize="@dimen/big_medium_text" />
                     </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="@dimen/size_1"
                         android:background="@color/md_grey_300" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginStart="30dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="@dimen/alternate_margin"
+                        android:layout_marginStart="@dimen/inside_spacing"
+                        android:layout_marginTop="@dimen/alternate_margin"
                         android:orientation="horizontal">
 
                         <TextView
@@ -254,23 +254,23 @@
                             android:text="@string/readable"
                             android:textAlignment="center"
                             android:textColor="@color/icongrey"
-                            android:textSize="17sp"
+                            android:textSize="@dimen/big_medium_text"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/album_details_readable"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="38dp"
+                            android:layout_marginStart="@dimen/margin_38dp"
                             android:textColor="@color/icongrey"
-                            android:textSize="17sp" />
+                            android:textSize="@dimen/big_medium_text" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginStart="30dp"
+                        android:layout_marginBottom="@dimen/alternate_margin"
+                        android:layout_marginStart="@dimen/inside_spacing"
                         android:orientation="horizontal">
 
                         <TextView
@@ -280,23 +280,23 @@
                             android:text="@string/writable"
                             android:textAlignment="center"
                             android:textColor="@color/icongrey"
-                            android:textSize="17sp"
+                            android:textSize="@dimen/big_medium_text"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/album_details_writable"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="45dp"
+                            android:layout_marginStart="@dimen/margin_settings_large"
                             android:textColor="@color/icongrey"
-                            android:textSize="17sp" />
+                            android:textSize="@dimen/big_medium_text" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
-                        android:layout_marginStart="30dp"
+                        android:layout_marginBottom="@dimen/alternate_margin"
+                        android:layout_marginStart="@dimen/inside_spacing"
                         android:orientation="horizontal">
 
                         <TextView
@@ -306,21 +306,21 @@
                             android:text="@string/hidden"
                             android:textAlignment="center"
                             android:textColor="@color/icongrey"
-                            android:textSize="17sp"
+                            android:textSize="@dimen/big_medium_text"
                             android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/album_details_hidden"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="55dp"
+                            android:layout_marginStart="@dimen/margin_55dp"
                             android:textColor="@color/icongrey"
-                            android:textSize="17sp" />
+                            android:textSize="@dimen/big_medium_text" />
                     </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="@dimen/size_1"
                         android:background="@color/md_grey_300" />
                 </LinearLayout>
             </ScrollView>

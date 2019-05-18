@@ -12,22 +12,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
+        android:layout_marginLeft="@dimen/small_margin"
+        android:layout_marginRight="@dimen/small_margin"
         card_view:cardBackgroundColor="@color/white"
         android:theme="@style/CardView.Light"
-        android:layout_marginTop="3dp"
-        android:layout_marginBottom="5dp"
-        android:elevation="3dp"
-        card_view:cardCornerRadius="5dp">
+        android:layout_marginTop="@dimen/very_small_margin"
+        android:layout_marginBottom="@dimen/alternate_half_padding"
+        android:elevation="@dimen/very_small_margin"
+        card_view:cardCornerRadius="@dimen/alternate_half_padding">
 
 
         <LinearLayout android:layout_width="match_parent"
                       android:layout_height="match_parent"
-                      android:layout_marginBottom="8dp"
-                      android:layout_marginEnd="8dp"
-                      android:layout_marginStart="8dp"
-                      android:layout_marginTop="8dp"
+                      android:layout_marginBottom="@dimen/medium_margin"
+                      android:layout_marginEnd="@dimen/medium_margin"
+                      android:layout_marginStart="@dimen/medium_margin"
+                      android:layout_marginTop="@dimen/medium_margin"
                       android:orientation="horizontal"
                       app:srcCompat="@drawable/ic_launcher_vector">
 
@@ -37,18 +37,18 @@
 
                 <ImageView
                     android:id="@+id/account_avatar"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_width="@dimen/size_40"
+                    android:layout_height="@dimen/size_40"
+                    android:layout_marginBottom="@dimen/medium_margin"
+                    android:layout_marginEnd="@dimen/medium_margin"
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:layout_marginTop="@dimen/medium_margin"
                     app:srcCompat="@drawable/ic_launcher_vector"/>
 
                 <ImageView
                     android:id="@+id/account_logo_indicator"
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
+                    android:layout_width="@dimen/size_16"
+                    android:layout_height="@dimen/size_16"
                     android:layout_alignBottom="@+id/account_avatar"
                     android:layout_alignEnd="@+id/account_avatar"
                     android:layout_alignRight="@+id/account_avatar"
@@ -60,19 +60,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="20dp"
-                android:layout_marginStart="20dp"
+                android:layout_marginLeft="@dimen/account_margin"
+                android:layout_marginStart="@dimen/account_margin"
                 android:layout_weight="5"
                 android:text="@string/text_view"
                 android:textColor="@color/black"
-                android:textSize="18sp"/>
+                android:textSize="@dimen/sub_big_text"/>
 
             <ImageView
                 android:id="@+id/sign_out_button"
-                android:layout_width="41dp"
-                android:layout_height="41dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_width="@dimen/size_41"
+                android:layout_height="@dimen/size_41"
+                android:layout_marginBottom="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/medium_margin"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -84,7 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="0dp"
+                android:layout_marginLeft="@dimen/zero"
                 android:layout_weight="1"
                 app:theme="@style/CustomSwitch"/>
 

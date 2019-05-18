@@ -9,7 +9,7 @@
         android:id="@+id/colorView"
         android:layout_width="fill_parent"
         android:layout_height="150dp"
-        android:elevation="2dp"/>
+        android:elevation="@dimen/material_color_picker"/>
 
     <RelativeLayout
         android:layout_width="fill_parent"
@@ -27,7 +27,7 @@
             android:fontFamily="sans-serif-medium"
             android:singleLine="true"
             android:textColor="@android:color/holo_red_light"
-            android:textSize="18sp"/>
+            android:textSize="@dimen/sub_big_text"/>
 
         <SeekBar
             android:id="@+id/redSeekBar"
@@ -35,8 +35,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/redToolTip"
             android:max="255"
-            android:maxHeight="3dip"
-            android:minHeight="3dip"
+            android:maxHeight="@dimen/seekbar_size"
+            android:minHeight="@dimen/seekbar_size"
             android:progressDrawable="@drawable/red_progress"
             android:thumbTint="@android:color/holo_red_light"/>
 
@@ -48,7 +48,7 @@
             android:fontFamily="sans-serif-medium"
             android:singleLine="true"
             android:textColor="@android:color/holo_green_light"
-            android:textSize="18sp"/>
+            android:textSize="@dimen/sub_big_text"/>
 
         <SeekBar
             android:id="@+id/greenSeekBar"
@@ -56,8 +56,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/greenToolTip"
             android:max="255"
-            android:maxHeight="3dip"
-            android:minHeight="3dip"
+            android:maxHeight="@dimen/seekbar_size"
+            android:minHeight="@dimen/seekbar_size"
             android:progressDrawable="@drawable/materialcolorpicker__green_progress"
             android:thumbTint="@android:color/holo_green_light"/>
 
@@ -69,7 +69,7 @@
             android:fontFamily="sans-serif-medium"
             android:singleLine="true"
             android:textColor="@android:color/holo_blue_light"
-            android:textSize="18sp"/>
+            android:textSize="@dimen/sub_big_text"/>
 
         <SeekBar
             android:id="@+id/blueSeekBar"
@@ -77,21 +77,21 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/blueToolTip"
             android:max="255"
-            android:maxHeight="3dip"
-            android:minHeight="3dip"
+            android:maxHeight="@dimen/seekbar_size"
+            android:minHeight="@dimen/seekbar_size"
             android:progressDrawable="@drawable/materialcolorpicker__blue_progress"
             android:thumbTint="@android:color/holo_blue_light"/>
 
         <EditText
             android:id="@+id/codHex"
-            android:layout_width="70dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/size_70"
+            android:layout_height="@dimen/size_40"
             android:layout_alignParentBottom="false"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="false"
             android:layout_below="@+id/blueSeekBar"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginLeft="@dimen/alternate_margin"
+            android:layout_marginTop="@dimen/share_margin"
             android:hint="2c45ff"
             android:imeOptions="actionDone|actionGo|actionSend"
             android:maxLines="1"
@@ -101,7 +101,7 @@
             android:textAllCaps="false"
             android:textColor="@color/primary_text_default_material_light"
             android:textColorHint="@color/hint_foreground_material_light"
-            android:textSize="18sp"/>
+            android:textSize="@dimen/sub_big_text"/>
 
         <Button
             android:id="@+id/okColorButton"

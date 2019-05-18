@@ -21,32 +21,32 @@
 
         <ImageButton
             android:id="@+id/take_photo"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="@dimen/size_80"
+            android:layout_height="@dimen/size_80"
             android:layout_centerHorizontal="true"
             android:contentDescription="@string/take_photo"
             android:onClick="clickedTakePhoto"
-            android:padding="10dp"
+            android:padding="@dimen/alternate_padding"
             android:scaleType="fitCenter"/>
 
         <com.mikepenz.iconics.view.IconicsImageView
             android:id="@+id/toggle_button"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/size_40"
+            android:layout_height="@dimen/size_40"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="15dp"
-            android:padding="10dp"
+            android:layout_marginTop="@dimen/large_padding"
+            android:padding="@dimen/alternate_padding"
             app:iiv_icon="gmd_photo_filter"/>
 
 
         <SeekBar
             android:id="@+id/focus_seekbar"
-            android:layout_width="150dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="0dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="0dp"
+            android:layout_width="@dimen/size_150"
+            android:layout_height="@dimen/size_50"
+            android:layout_marginBottom="@dimen/zero"
+            android:layout_marginLeft="@dimen/landscape_edit_image"
+            android:layout_marginRight="@dimen/alternate_margin"
+            android:layout_marginTop="@dimen/zero"
             android:background="@color/seekbar_background"
             android:contentDescription="@string/focus_distance"
             android:rotation="90"
@@ -54,51 +54,51 @@
 
         <Button
             android:id="@+id/gui_anchor"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:padding="1dp"
+            android:layout_width="@dimen/zero"
+            android:layout_height="@dimen/zero"
+            android:padding="@dimen/size_1"
             android:scaleType="fitCenter"/>
 
 
         <ImageButton
             android:id="@+id/popup"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/size_50dp"
+            android:layout_height="@dimen/size_50dp"
             android:contentDescription="@string/action_popup"
             android:onClick="clickedPopupSettings"
-            android:padding="10dp"
+            android:padding="@dimen/alternate_padding"
             android:scaleType="fitCenter"
             android:src="@drawable/popup"/>
 
         <ImageButton
             android:id="@+id/exposure"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/size_50dp"
+            android:layout_height="@dimen/size_50dp"
             android:contentDescription="@string/exposure"
             android:onClick="clickedExposure"
-            android:padding="10dp"
+            android:padding="@dimen/alternate_padding"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_exposure_white_48dp"/>
 
 
         <ImageButton
             android:id="@+id/switch_camera"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/size_50dp"
+            android:layout_height="@dimen/size_50dp"
             android:contentDescription="@string/switch_to_front_camera"
             android:onClick="clickedSwitchCamera"
-            android:padding="10dp"
+            android:padding="@dimen/alternate_padding"
             android:scaleType="fitCenter"
             android:background="@color/black"
             app:srcCompat="@drawable/ic_switch_camera_white_48dp"/>
 
         <ImageButton
             android:id="@+id/audio_control"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="@dimen/size_50dp"
+            android:layout_height="@dimen/size_50dp"
             android:contentDescription="@string/audio_control_start"
             android:onClick="clickedAudioControl"
-            android:padding="10dp"
+            android:padding="@dimen/alternate_padding"
             android:scaleType="fitCenter"
             android:src="@drawable/ic_mic_white_48dp"/>
 
@@ -270,5 +270,5 @@
         layout="@layout/element_bottom_navigation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="0dp" />
+        android:layout_marginBottom="@dimen/zero" />
 </LinearLayout>

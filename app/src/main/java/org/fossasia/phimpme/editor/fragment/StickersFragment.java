@@ -151,7 +151,7 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
 
     public void backToMain(){
         activity.mainImage.setImageBitmap(activity.mainBitmap);
-        activity.changeMode(EditImageActivity.MODE_STICKER_TYPES);
+        EditImageActivity.mode = EditImageActivity.MODE_STICKER_TYPES;
         activity.stickerTypesFragment.clearCurrentSelection();
         activity.stickersFragment.getmStickerView().clear();
         activity.stickersFragment.getmStickerView().setVisibility(View.GONE);
@@ -167,6 +167,10 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
         @Override
         public void handleImage(Canvas canvas, Matrix m) {
             LinkedHashMap<Integer, StickerItem> addItems = mStickerView.getBank();
+            if (addItems.size() == 0) {
+                this.cancel(true);
+                return;
+            }
             for (Integer id : addItems.keySet()) {
                 StickerItem item = addItems.get(id);
                 item.matrix.postConcat(m);
@@ -183,6 +187,9 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
     }
 
     public void applyStickers() {
+        if (mStickerView.getBank().size() == 0){
+            backToMain();
+        }
         if (mSaveTask != null) {
             mSaveTask.cancel(true);
         }

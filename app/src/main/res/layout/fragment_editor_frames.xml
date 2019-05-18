@@ -2,21 +2,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="70dp"
+    android:layout_height="@dimen/size_70"
     android:layout_gravity="center_vertical"
     android:background="@color/white"
     android:gravity="center_vertical">
 
     <ImageButton
         android:id="@+id/cancel"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="@dimen/size_30dp"
+        android:layout_height="@dimen/size_30dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginLeft="@dimen/alternate_half_margin"
+        android:layout_marginRight="@dimen/alternate_half_margin"
         android:background="@color/white"
         android:scaleType="fitCenter"
         android:visibility="gone" />
@@ -35,14 +35,14 @@
 
     <ImageButton
         android:id="@+id/done"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="@dimen/size_30dp"
+        android:layout_height="@dimen/size_30dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_gravity="end|center_vertical"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginLeft="@dimen/alternate_half_margin"
+        android:layout_marginRight="@dimen/alternate_half_margin"
         android:background="@color/white"
         android:scaleType="fitCenter"
         android:visibility="gone" />

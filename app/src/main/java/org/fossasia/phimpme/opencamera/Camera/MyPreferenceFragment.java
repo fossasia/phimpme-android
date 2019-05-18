@@ -266,20 +266,37 @@ public class MyPreferenceFragment extends PreferenceFragment implements OnShared
             pref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(Preference arg0) {
-                	if( pref.getKey().equals("preference_use_camera2") ) {
-                		if( MyDebug.LOG )
-                			Log.d(TAG, "user clicked camera2 API - need to restart");
-                		// see http://stackoverflow.com/questions/2470870/force-application-to-restart-on-first-activity
-                		Intent i = getActivity().getBaseContext().getPackageManager().getLaunchIntentForPackage( getActivity().getBaseContext().getPackageName() );
-	                	i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	                	startActivity(i);
-	                	return false;
-                	}
+					AlertDialog.Builder builder;
+					if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+						builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Dialog_Alert);
+					} else {
+						builder = new AlertDialog.Builder(getContext());
+					}
+					builder.setTitle("Alert")
+							.setMessage("Changes will take place after the app is restarted. Restart now?")
+							.setPositiveButton("Restart now", new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int which) {
+									if( pref.getKey().equals("preference_use_camera2") ) {
+										if( MyDebug.LOG )
+											Log.d(TAG, "user clicked camera2 API - need to restart");
+										// see http://stackoverflow.com/questions/2470870/force-application-to-restart-on-first-activity
+										Intent i = getActivity().getBaseContext().getPackageManager().getLaunchIntentForPackage( getActivity().getBaseContext().getPackageName() );
+										i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+										startActivity(i);
+									}
+								}
+							})
+							.setNegativeButton("Restart Later", new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int which) {
+									// do nothing
+								}
+							})
+							.setIcon(android.R.drawable.ic_dialog_alert)
+							.show();
                 	return false;
                 }
             });
         }
-        
 
         {
         	Preference pref = findPreference("preference_save_location");

@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/vn.mbm.phimp.me"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="2dp"
+    app:cardCornerRadius="@dimen/size_2"
     android:id="@+id/dialog_chose_provider_title">
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,16 +15,16 @@
             android:id="@+id/compress_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="24dp"
+            android:padding="@dimen/big_spacing"
             android:text="@string/compress_by_dimension"
             android:textColor="@color/md_dark_primary_text"
-            android:textSize="18sp"
+            android:textSize="@dimen/sub_big_text"
             android:textStyle="bold" />
 
         <ListView
             android:id="@+id/listview"
             android:layout_width="match_parent"
-            android:layout_height="321dp"
+            android:layout_height="@dimen/size_321"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"/>
 

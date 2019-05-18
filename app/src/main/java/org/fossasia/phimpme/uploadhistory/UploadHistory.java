@@ -41,7 +41,6 @@ import org.fossasia.phimpme.gallery.activities.SingleMediaActivity;
 import org.fossasia.phimpme.gallery.data.Media;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
 import org.fossasia.phimpme.gallery.util.PreferenceUtil;
-import org.fossasia.phimpme.gallery.util.SecurityHelper;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 import butterknife.BindView;
@@ -85,7 +84,6 @@ public class UploadHistory extends ThemedActivity {
     private RealmQuery<UploadHistoryRealmModel> uploadHistoryRealmModelRealmQuery;
     private UploadHistoryAdapter uploadHistoryAdapter;
     private PreferenceUtil preferenceUtil;
-    private SecurityHelper securityObj;
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override public void onClick(View view) {
@@ -113,11 +111,11 @@ public class UploadHistory extends ThemedActivity {
         uploadHistoryAdapter = new UploadHistoryAdapter(getPrimaryColor());
         uploadHistoryAdapter.setOnClickListener(onClickListener);
         realm = Realm.getDefaultInstance();
-        securityObj = new SecurityHelper(UploadHistory.this);
         removedeletedphotos();
         uploadHistoryRealmModelRealmQuery = realm.where(UploadHistoryRealmModel.class);
         if(uploadHistoryRealmModelRealmQuery.count() == 0){
             emptyLayout.setVisibility(View.VISIBLE);
+            swipeRefreshLayout.setEnabled(false);
         } else {
             String choiceofdisply = preferenceUtil.getString(getString(R.string.upload_view_choice), getString(R.string
                     .last_first));
@@ -281,64 +279,7 @@ public class UploadHistory extends ThemedActivity {
         deleteDialog.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
         deleteDialog.setPositiveButton(getString(R.string.delete).toUpperCase(), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                if (securityObj.isActiveSecurity() && securityObj.isPasswordOnDelete()) {
-                    final boolean passco[] = {false};
-                    AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(UploadHistory.this, getDialogStyle());
-                    final EditText editTextPassword = securityObj.getInsertPasswordDialog(UploadHistory.this,
-                            passwordDialogBuilder);
-                    editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
-                    passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-                    passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            //This should be empty. It will be overwritten later
-                            //to avoid dismiss of the dialog on wrong password
-                        }
-                    });
-                    editTextPassword.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                            //empty method body
-                        }
-
-                        @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                            //empty method body
-                        }
-
-                        @Override public void afterTextChanged(Editable editable) {
-                            if(securityObj.getTextInputLayout().getVisibility() == View.VISIBLE && !passco[0]){
-                                securityObj.getTextInputLayout().setVisibility(View.INVISIBLE);
-                            }
-                            else{
-                                passco[0]=false;
-                            }
-                        }
-                    });
-
-                    final AlertDialog passwordDialog = passwordDialogBuilder.create();
-                    passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-                    passwordDialog.show();
-                    AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
-                    passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            // if password is correct, call DeletePhotos and perform deletion
-                            if (securityObj.checkPassword(editTextPassword.getText().toString())) {
-                                passwordDialog.dismiss();
-                               new DeleteHistory().execute();
-                            }
-                            // if password is incorrect, don't delete and notify user of incorrect password
-                            else {
-                                passco[0] = true;
-                                securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
-                                SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.wrong_password),
-                                        navigationView.getHeight());
-                                editTextPassword.getText().clear();
-                                editTextPassword.requestFocus();
-                            }
-                        }
-                    });
-                } else new DeleteHistory().execute();
+            new DeleteHistory().execute();
             }
         });
         AlertDialog alertDialogDelete = deleteDialog.create();
@@ -375,6 +316,7 @@ public class UploadHistory extends ThemedActivity {
             if(result[0] && uploadHistoryRealmModelRealmQuery.count() == 0){
                 emptyLayout.setVisibility(View.VISIBLE);
                 uploadHistoryRecyclerView.setVisibility(View.GONE);
+                swipeRefreshLayout.setEnabled(false);
             }
             invalidateOptionsMenu();
         }

@@ -7,14 +7,17 @@
 
     <ImageButton
         android:id="@+id/crop_cancel"
-        android:layout_width="@dimen/icon_item_image_size_main"
-        android:layout_height="@dimen/editor_bottom_row_size"
-        android:scaleType="fitCenter"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
+        android:layout_width="@dimen/editor_bottom_row_size"
+        android:layout_height="0dp"
         android:layout_alignBottom="@+id/crop_hsv"
         android:layout_alignParentLeft="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/alternate_half_margin"
+        android:layout_marginRight="@dimen/alternate_half_margin"
+        android:paddingRight="@dimen/size_10"
+        android:layout_weight="2"
         android:background="?android:attr/selectableItemBackground"
+        android:scaleType="fitCenter"
         app:srcCompat="@drawable/ic_close_black_24dp" />
 
     <LinearLayout
@@ -27,29 +30,25 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:id="@+id/image_crop"
+            android:layout_height="@dimen/zero"
+            android:id="@+id/combinedList"
             android:layout_weight="1"
-            android:orientation="horizontal">
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/ratio_list_group"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="horizontal" >
+            android:orientation="vertical">
         </LinearLayout>
     </LinearLayout>
 
-
     <ImageButton
         android:id="@+id/crop_apply"
-        android:layout_width="@dimen/icon_item_image_size_main"
-        android:layout_height="@dimen/editor_bottom_row_size"
-        android:foregroundGravity="center_vertical"
-        android:scaleType="fitCenter"
-        android:layout_marginRight="5dp"
-        android:layout_marginLeft="5dp"
+        android:layout_width="@dimen/size_60"
+        android:layout_height="@dimen/zero"
+        android:layout_alignBottom="@+id/crop_hsv"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/alternate_half_margin"
+        android:layout_marginRight="@dimen/alternate_half_margin"
+        android:paddingRight="@dimen/size_8"
+        android:layout_weight="2"
         android:background="?android:attr/selectableItemBackground"
+        android:scaleType="fitCenter"
         app:srcCompat="@drawable/ic_done_black_24dp" />
 </LinearLayout>

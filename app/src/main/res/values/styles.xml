@@ -192,7 +192,7 @@
         <item name="cardElevation">@dimen/card_elevation</item>
     </style>
 
-    <style name="Theme.ownCloud.Dialog.ButtonBar" parent="style/Widget.AppCompat.Button.ButtonBar.AlertDialog">
+    <style name="Theme.ownCloud.Dialog.ButtonBar" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
         <!-- Making sure, the button bar uses parent width and is not restricted in height -->
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -237,6 +237,11 @@
         <item name="colorControlActivated">@color/green</item>
         <item name="colorSwitchThumbNormal">@color/grey</item>
         <item name="android:colorForeground">@color/accent_grey</item>
+    </style>
+
+    <style name="ThemeOverlay.excludedMenuPopup"
+        parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:colorBackground">@color/accent_white</item>
     </style>
 
 </resources>

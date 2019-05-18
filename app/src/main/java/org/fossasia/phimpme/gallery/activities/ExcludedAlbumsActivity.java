@@ -1,11 +1,15 @@
 package org.fossasia.phimpme.gallery.activities;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -48,6 +52,35 @@ public class ExcludedAlbumsActivity extends ThemedActivity {
         TextView a = findViewById(R.id.nothing_to_show);
         a.setTextColor(getTextColor());
         a.setVisibility(excludedFolders.size() == 0 ? View.VISIBLE : View.GONE);
+    }
+
+    public void restoreAll(int itemcount){
+        if (excludedFolders.size()!=0){
+            for (int i=0;i<itemcount;i++){
+                h.clearAlbumExclude(excludedFolders.remove(0).getAbsolutePath());
+            }
+            SnackBarHandler.show(findViewById(R.id.rl_ea), "All folders are restored", Snackbar.LENGTH_SHORT).show();
+            new Handler().postDelayed(new Runnable() {
+               @Override
+               public void run() {
+                   finish();
+               }
+            },1000);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_excluded_items,menu);
+       menu.findItem(R.id.restore_all).setVisible(excludedFolders.size()!=0);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId()==R.id.restore_all){
+            restoreAll(excludedFolders.size());
+        }
+        return true;
     }
 
     private void initUI() {
