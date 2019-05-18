@@ -31,7 +31,6 @@ import org.fossasia.phimpme.gallery.data.Album;
 import org.fossasia.phimpme.gallery.data.Media;
 import org.fossasia.phimpme.gallery.util.ColorPalette;
 import org.fossasia.phimpme.gallery.util.PreferenceUtil;
-import org.fossasia.phimpme.gallery.util.SecurityHelper;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
 
 import java.util.ArrayList;
@@ -48,14 +47,12 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
     private ThemeHelper theme;
     private BitmapDrawable placeholder;
     Context context;
-    private SecurityHelper securityObj;
 
     public AlbumsAdapter(ArrayList<Album> ph, Context context) {
         albums = ph;
         theme = new ThemeHelper(context);
         this.context = context;
         updateTheme();
-        securityObj=new SecurityHelper(context);
     }
 
     public void updateTheme() {
@@ -76,52 +73,48 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
     public void onBindViewHolder(final AlbumsAdapter.ViewHolder holder, int position) {
         Album a = SharedMediaActivity.getAlbums().dispAlbums.get(position);
         Media f = a.getCoverAlbum();
-        securityObj.updateSecuritySetting();
 
-        if(a.getPath().contains(Environment.getExternalStorageDirectory().getPath())){
+        if (a.getPath().contains(Environment.getExternalStorageDirectory().getPath())) {
             holder.storage.setVisibility(View.INVISIBLE);
         } else {
             holder.storage.setImageResource(theme.getBaseTheme() == ThemeHelper.LIGHT_THEME ? R.drawable.ic_sd_storage_black_24dp : R.drawable.ic_sd_storage_white_24dp);
             holder.storage.setVisibility(View.VISIBLE);
         }
 
-        if (a.isPinned() && (theme.getBaseTheme() == ThemeHelper.LIGHT_THEME)){
+        if (a.isPinned() && (theme.getBaseTheme() == ThemeHelper.LIGHT_THEME)) {
             holder.pin.setVisibility(View.VISIBLE);
-            holder.pin.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.pin_black));
-        }
-        else if( a.isPinned() && (theme.getBaseTheme() == ThemeHelper.AMOLED_THEME || theme.getBaseTheme() == ThemeHelper.DARK_THEME)) {
+            holder.pin.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.pin_black));
+        } else if (a.isPinned() && (theme.getBaseTheme() == ThemeHelper.AMOLED_THEME || theme.getBaseTheme() == ThemeHelper.DARK_THEME)) {
             holder.pin.setVisibility(View.VISIBLE);
-            holder.pin.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.pin_white));
-        }
-        else
+            holder.pin.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.pin_white));
+        } else
             holder.pin.setVisibility(View.INVISIBLE);
-        String path="";
-        if (!securityObj.isPasswordOnfolder()||!filterCheck(a.getPath(),securityObj.getSecuredfolders()))
-            path=f.getPath();
-            Glide.with(holder.picture.getContext())
-                    .load(path)
-                    .asBitmap()
-                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
-                    .priority(Priority.HIGH)
-                    .signature(f.getSignature())
-                    .centerCrop()
-                    .error(R.drawable.ic_error)
-                    .placeholder(placeholder)
-                    .animate(R.anim.fade_in)
-                    .listener(new RequestListener<String, Bitmap>() {
-                        @Override
-                        public boolean onException(Exception e, String model, Target<Bitmap> target, boolean isFirstResource) {
-                            PreferenceUtil SP = PreferenceUtil.getInstance(context);
-                            SP.putBoolean(holder.picture.getContext().getString(R.string.preference_use_alternative_provider), true);
-                            return false;
-                        }
+        String path = "";
+        path = f.getPath();
+        Glide.with(holder.picture.getContext())
+                .load(path)
+                .asBitmap()
+                .diskCacheStrategy(DiskCacheStrategy.RESULT)
+                .priority(Priority.HIGH)
+                .signature(f.getSignature())
+                .centerCrop()
+                .error(R.drawable.ic_error)
+                .placeholder(placeholder)
+                .animate(R.anim.fade_in)
+                .listener(new RequestListener<String, Bitmap>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<Bitmap> target, boolean isFirstResource) {
+                        PreferenceUtil SP = PreferenceUtil.getInstance(context);
+                        SP.putBoolean(holder.picture.getContext().getString(R.string.preference_use_alternative_provider), true);
+                        return false;
+                    }
 
-                        @Override
-                        public boolean onResourceReady(Bitmap resource, String model, Target<Bitmap> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                            return false;
-                        }
-                    })
-                    .into(holder.picture);
+                    @Override
+                    public boolean onResourceReady(Bitmap resource, String model, Target<Bitmap> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        return false;
+                    }
+                })
+                .into(holder.picture);
 
         holder.name.setTag(a);
 
@@ -189,9 +182,10 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.ViewHolder
     public int getItemCount() {
         return SharedMediaActivity.getAlbums().dispAlbums.size();
     }
-    public boolean filterCheck(String foldername,String[] securedFolders){
-        if (securedFolders!=null){
-            for (String s:securedFolders){
+
+    public boolean filterCheck(String foldername, String[] securedFolders) {
+        if (securedFolders != null) {
+            for (String s : securedFolders) {
                 if (s.equals(foldername))
                     return true;
             }

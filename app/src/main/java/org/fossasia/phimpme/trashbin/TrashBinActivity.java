@@ -11,7 +11,6 @@ import org.fossasia.phimpme.gallery.activities.SingleMediaActivity;
 import org.fossasia.phimpme.gallery.data.Media;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
 import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
-import org.fossasia.phimpme.gallery.util.SecurityHelper;
 import org.fossasia.phimpme.gallery.util.ContentHelper;
 import org.fossasia.phimpme.gallery.util.StringUtils;
 import org.fossasia.phimpme.utilities.BasicCallBack;
@@ -83,7 +82,6 @@ public class TrashBinActivity extends ThemedActivity implements TrashBinAdapter.
 
     private RealmQuery<TrashBinRealmModel> trashBinRealmModelRealmQuery;
     private TrashBinAdapter trashBinAdapter;
-    private SecurityHelper securityObj;
     private ArrayList<TrashBinRealmModel> deletedTrash;
 
     private BasicCallBack basicCallBack = new BasicCallBack() {
@@ -118,7 +116,6 @@ public class TrashBinActivity extends ThemedActivity implements TrashBinAdapter.
         setContentView(R.layout.activity_trash_bin2);
         ButterKnife.bind(this);
         Realm realm = Realm.getDefaultInstance();
-        securityObj = new SecurityHelper(TrashBinActivity.this);
         trashBinRealmModelRealmQuery = realm.where(TrashBinRealmModel.class);
         emptyIcon.setColorFilter(getPrimaryColor());
         ArrayList<TrashBinRealmModel> trashlist = getTrashObjects();
@@ -275,64 +272,7 @@ public class TrashBinActivity extends ThemedActivity implements TrashBinAdapter.
 
     @Override
     public void onDelete(final int position) {
-        if (securityObj.isActiveSecurity() && securityObj.isPasswordOnDelete()) {
-            final boolean passco[] = {false};
-            AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(TrashBinActivity.this, getDialogStyle());
-            final EditText editTextPassword = securityObj.getInsertPasswordDialog(TrashBinActivity.this,
-                    passwordDialogBuilder);
-            editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
-            passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-            passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //This should be empty. It will be overwritten later
-                    //to avoid dismiss of the dialog on wrong password
-                }
-            });
-            editTextPassword.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    //empty method body
-                }
-
-                @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                    //empty method body
-                }
-
-                @Override public void afterTextChanged(Editable editable) {
-                    if(securityObj.getTextInputLayout().getVisibility() == View.VISIBLE && !passco[0]){
-                        securityObj.getTextInputLayout().setVisibility(View.INVISIBLE);
-                    }
-                    else{
-                        passco[0]=false;
-                    }
-                }
-            });
-
-            final AlertDialog passwordDialog = passwordDialogBuilder.create();
-            passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-            passwordDialog.show();
-            AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
-            passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // if password is correct, call DeletePhotos and perform deletion
-                    if (securityObj.checkPassword(editTextPassword.getText().toString())) {
-                        trashBinAdapter.updateDeleteContent(position);
-                        passwordDialog.dismiss();
-                    }
-                    // if password is incorrect, don't delete and notify user of incorrect password
-                    else {
-                        passco[0] = true;
-                        securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
-                        editTextPassword.getText().clear();
-                        editTextPassword.requestFocus();
-                    }
-                }
-            });
-        } else {
-            trashBinAdapter.updateDeleteContent(position);
-        }
+        trashBinAdapter.updateDeleteContent(position);
     }
 
     class DeleteAll extends AsyncTask<Void, Void, Void>{
@@ -423,63 +363,7 @@ public class TrashBinActivity extends ThemedActivity implements TrashBinAdapter.
         deleteDialog.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
         deleteDialog.setPositiveButton(getString(R.string.clear).toUpperCase(), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                if (securityObj.isActiveSecurity() && securityObj.isPasswordOnDelete()) {
-                    final boolean passco[] = {false};
-                    AlertDialog.Builder passwordDialogBuilder = new AlertDialog.Builder(TrashBinActivity.this, getDialogStyle());
-                    final EditText editTextPassword = securityObj.getInsertPasswordDialog(TrashBinActivity.this,
-                            passwordDialogBuilder);
-                    editTextPassword.setHintTextColor(getResources().getColor(R.color.grey, null));
-                    passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-                    passwordDialogBuilder.setPositiveButton(getString(R.string.ok_action).toUpperCase(), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            //This should be empty. It will be overwritten later
-                            //to avoid dismiss of the dialog on wrong password
-                        }
-                    });
-                    editTextPassword.addTextChangedListener(new TextWatcher() {
-                        @Override
-                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                            //empty method body
-                        }
-
-                        @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                            //empty method body
-                        }
-
-                        @Override public void afterTextChanged(Editable editable) {
-                            if(securityObj.getTextInputLayout().getVisibility() == View.VISIBLE && !passco[0]){
-                                securityObj.getTextInputLayout().setVisibility(View.INVISIBLE);
-                            }
-                            else{
-                                passco[0]=false;
-                            }
-                        }
-                    });
-
-                    final AlertDialog passwordDialog = passwordDialogBuilder.create();
-                    passwordDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-                    passwordDialog.show();
-                    AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE}, getAccentColor(), passwordDialog);
-                    passwordDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            // if password is correct, call DeletePhotos and perform deletion
-                            if (securityObj.checkPassword(editTextPassword.getText().toString())) {
-                                new DeleteAll().execute();
-                            }
-                            // if password is incorrect, don't delete and notify user of incorrect password
-                            else {
-                                passco[0] = true;
-                                securityObj.getTextInputLayout().setVisibility(View.VISIBLE);
-                                editTextPassword.getText().clear();
-                                editTextPassword.requestFocus();
-                            }
-                        }
-                    });
-                } else {
-                    new DeleteAll().execute();
-                }
+                new DeleteAll().execute();
             }
         });
         AlertDialog alertDialogDelete = deleteDialog.create();

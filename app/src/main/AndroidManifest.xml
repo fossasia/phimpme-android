@@ -283,17 +283,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".gallery.activities.SecurityActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/security"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.SECURITY" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
             android:name=".gallery.activities.ExcludedAlbumsActivity"
             android:label="@string/excluded_albums"
             android:theme="@style/Theme.AppCompat.NoActionBar">
