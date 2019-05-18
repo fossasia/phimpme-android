@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId "org.fossasia.phimpme"
-        minSdkVersion 17
+        minSdkVersion 21
         targetSdkVersion 26
         multiDexEnabled true
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
