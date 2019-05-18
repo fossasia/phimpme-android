@@ -15,6 +15,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="@dimen/alternate_half_margin"
         android:layout_marginRight="@dimen/alternate_half_margin"
+        android:paddingRight="@dimen/size_7"
         android:layout_weight="1"
         android:background="?android:attr/selectableItemBackground"
         android:scaleType="fitCenter"
@@ -22,7 +23,7 @@
 
     <LinearLayout
         android:layout_width="@dimen/size_60"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/zero"
         android:layout_toRightOf="@id/rotate_cancel"
         android:layout_weight="8"
         android:orientation="vertical">
@@ -40,7 +41,7 @@
 
             <com.github.shchurov.horizontalwheelview.HorizontalWheelView
                 android:id="@+id/horizontalWheelView"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/size_500"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/alternate_half_padding"
                 android:layout_gravity="center"
@@ -60,6 +61,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="@dimen/alternate_half_margin"
         android:layout_marginRight="@dimen/alternate_half_margin"
+        android:paddingRight="@dimen/size_7"
         android:layout_weight="1"
         android:background="?android:attr/selectableItemBackground"
         android:scaleType="fitCenter"
