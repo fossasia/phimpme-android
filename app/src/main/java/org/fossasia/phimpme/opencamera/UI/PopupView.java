@@ -252,6 +252,15 @@ public class PopupView extends LinearLayout {
     							toast_message = getResources().getString(R.string.photo_mode_expo_bracketing_full);
     	    				final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(main_activity);
     						SharedPreferences.Editor editor = sharedPreferences.edit();
+							final String HDRMessage = "preference_photo_mode_hdr";
+							boolean done_dialog = false;
+							if( new_photo_mode == MyApplicationInterface.PhotoMode.HDR && !HDRMessage.equals(sharedPreferences.getString(PreferenceKeys.getPhotoModePreferenceKey(), " "))) {
+								boolean done_hdr_info = sharedPreferences.contains(PreferenceKeys.getHDRInfoPreferenceKey());
+								if( !done_hdr_info ) {
+									showInfoDialog(R.string.photo_mode_hdr, R.string.hdr_info, PreferenceKeys.getHDRInfoPreferenceKey());
+									done_dialog = true;
+								}
+							} else done_dialog = true;
     						if( new_photo_mode == MyApplicationInterface.PhotoMode.Standard ) {
         						editor.putString(PreferenceKeys.getPhotoModePreferenceKey(), "preference_photo_mode_std");
     						}
@@ -259,7 +268,7 @@ public class PopupView extends LinearLayout {
 								editor.putString(PreferenceKeys.getPhotoModePreferenceKey(), "preference_photo_mode_dro");
 							}
 							else if( new_photo_mode == MyApplicationInterface.PhotoMode.HDR ) {
-								editor.putString(PreferenceKeys.getPhotoModePreferenceKey(), "preference_photo_mode_hdr");
+								editor.putString(PreferenceKeys.getPhotoModePreferenceKey(), HDRMessage);
 							}
     						else if( new_photo_mode == MyApplicationInterface.PhotoMode.ExpoBracketing ) {
         						editor.putString(PreferenceKeys.getPhotoModePreferenceKey(), "preference_photo_mode_expo_bracketing");
@@ -269,16 +278,6 @@ public class PopupView extends LinearLayout {
                 					Log.e(TAG, "unknown new_photo_mode: " + new_photo_mode);
     						}
     						editor.apply();
-
-    						boolean done_dialog = false;
-    						if( new_photo_mode == MyApplicationInterface.PhotoMode.HDR ) {
-    	            			boolean done_hdr_info = sharedPreferences.contains(PreferenceKeys.getHDRInfoPreferenceKey());
-    	            			if( !done_hdr_info ) {
-    	            				showInfoDialog(R.string.photo_mode_hdr, R.string.hdr_info, PreferenceKeys.getHDRInfoPreferenceKey());
-    		        	    		done_dialog = true;
-    	            			}
-    	                    }
-
     	            		if( done_dialog ) {
     	            			// no need to show toast
     	            			toast_message = null;
