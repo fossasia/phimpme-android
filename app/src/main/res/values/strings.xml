@@ -667,7 +667,7 @@
         that allows you to choose a parent, if you have to exclude more folders which are on the same level.
     </string>
     <string name="exclude_album_snackbar_message">Selected item(s) excluded</string>
-    <string name="unExclude_album_snackbar_message">Selected item(s) removed from excluded</string>
+    <string name="unExclude_album_snackbar_message">Selected item(s) are no longer excluded</string>
     <string name="new_folder_message">The new folder will be created in the current path, and
         then the media will be copied or moved in the new folder.
     </string>
