@@ -22,6 +22,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
@@ -192,7 +193,8 @@ public class LoginActivity extends ThemedActivity {
 
     private void addToAccountsRealmDatabase(Bundle bundle){
 		Realm realm = Realm.getDefaultInstance();
-		SnackBarHandler.show(parentView, getString(R.string.account_logged_twitter));
+		Snackbar snackbar = SnackBarHandler.show(parentView, getString(R.string.account_logged_twitter));
+		snackbar.show();
 		if (bundle instanceof Bundle) {
 			Bundle bundle2 = bundle;
 			realm.beginTransaction();
@@ -224,7 +226,8 @@ public class LoginActivity extends ThemedActivity {
 						@Override
 						public void run() {
                             dialog.dismiss();
-							SnackBarHandler.show(parentView,errorString);
+							Snackbar snackbar = SnackBarHandler.show(parentView,errorString);
+							snackbar.show();
 							finish();
 						}
 					});

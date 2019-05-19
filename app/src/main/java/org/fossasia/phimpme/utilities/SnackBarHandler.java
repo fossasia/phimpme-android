@@ -76,8 +76,8 @@ public class SnackBarHandler  {
         return show(view, text, Snackbar.LENGTH_LONG);
     }
 
-    public static void show(View view, int res) {
-        show(view, ActivitySwitchHelper.getContext().getResources().getString(res));
+    public static Snackbar show(View view, int res) {
+        return show(view, ActivitySwitchHelper.getContext().getResources().getString(res));
     }
 
     public static void showWithBottomMargin(View view, int res, int duration, int bottomMargin) {

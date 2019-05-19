@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 
@@ -97,14 +98,16 @@ public class FlickrActivity extends ThemedActivity {
 
     public void onOAuthDone(OAuth result) {
         if (result == null) {
-           SnackBarHandler.show(parent, getString(R.string.auth_failed));
+            Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.auth_failed));
+            snackbar.show();
         } else {
             User user = result.getUser();
             OAuthToken token = result.getToken();
             if (user == null || user.getId() == null || token == null
                     || token.getOauthToken() == null
                     || token.getOauthTokenSecret() == null) {
-                SnackBarHandler.show(parent, getString(R.string.auth_failed));
+                Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.auth_failed));
+                snackbar.show();
                 return;
             }
             basicCallBack.callBack(Constants.SUCCESS, null);
@@ -193,8 +196,8 @@ public class FlickrActivity extends ThemedActivity {
                 mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri
                         .parse(result)));
             } else {
-               SnackBarHandler.show(parent, result);
-            }
+                Snackbar snackbar = SnackBarHandler.show(parent, result);
+                snackbar.show();            }
         }
     }
 }
