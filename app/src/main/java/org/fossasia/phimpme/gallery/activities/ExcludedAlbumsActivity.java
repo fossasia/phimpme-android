@@ -133,6 +133,8 @@ public class ExcludedAlbumsActivity extends ThemedActivity {
                 int pos;
                 if ((pos = getIndex(path)) != -1) {
                     h.clearAlbumExclude(excludedFolders.remove(pos).getAbsolutePath());
+                    SnackBarHandler.showWithBottomMargin(getCurrentFocus(),
+                            getResources().getString(R.string.unExclude_album_snackbar_message), 0);
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
