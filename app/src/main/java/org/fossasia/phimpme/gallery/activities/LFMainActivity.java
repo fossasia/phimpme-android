@@ -50,6 +50,7 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -2746,6 +2747,54 @@ public class LFMainActivity extends SharedMediaActivity {
                             SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.insert_something), navigationView.getHeight());
                             editTextNewName.requestFocus();
                         }
+                    }
+                });
+
+                renameDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                    @Override
+                    public boolean onKey(DialogInterface dialogInterface, int keyCode, KeyEvent keyEvent) {
+                        if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER){
+                            boolean rename = false;
+                            if (editTextNewName.length() != 0) {
+                                swipeRefreshLayout.setRefreshing(true);
+                                boolean success = false;
+                                if (albumsMode) {
+                                    if (!editTextNewName.getText().toString().equals(albumName)) {
+                                        int index = getAlbums().dispAlbums.indexOf(getAlbums().getSelectedAlbum(0));
+                                        getAlbums().getAlbum(index).updatePhotos(getApplicationContext());
+                                        success = getAlbums().getAlbum(index).renameAlbum(getApplicationContext(),
+                                                editTextNewName.getText().toString());
+                                        albumsAdapter.notifyItemChanged(index);
+                                    } else {
+                                        SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.rename_no_change), navigationView.getHeight());
+                                        rename = true;
+                                    }
+                                } else {
+                                    if (!editTextNewName.getText().toString().equals(albumName)) {
+                                        success = getAlbum().renameAlbum(getApplicationContext(), editTextNewName.getText().toString());
+                                        toolbar.setTitle(getAlbum().getName());
+                                        mediaAdapter.notifyDataSetChanged();
+                                    } else {
+                                        SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.rename_no_change), navigationView.getHeight());
+                                        rename = true;
+                                    }
+                                }
+                                renameDialog.dismiss();
+                                if (success) {
+                                    SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.rename_succes), navigationView.getHeight());
+                                    getAlbums().clearSelectedAlbums();
+                                    invalidateOptionsMenu();
+                                } else if (!rename) {
+                                    SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.rename_error), navigationView.getHeight());
+                                    requestSdCardPermissions();
+                                }
+                                swipeRefreshLayout.setRefreshing(false);
+                            } else {
+                                SnackBarHandler.showWithBottomMargin(mDrawerLayout, getString(R.string.insert_something), navigationView.getHeight());
+                                editTextNewName.requestFocus();
+                            }
+                        }
+                        return false;
                     }
                 });
                 return true;
