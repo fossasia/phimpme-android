@@ -8,6 +8,7 @@ import android.graphics.PorterDuff;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -194,7 +195,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
             loadImage(filePath);
             return;
         }
-        SnackBarHandler.show(parentLayout,R.string.image_invalid);
+        Snackbar snackbar = SnackBarHandler.show(parentLayout, getString(R.string.image_invalid));
+        snackbar.show();
     }
 
     /**
@@ -655,7 +657,8 @@ public class EditImageActivity extends EditBaseActivity implements View.OnClickL
                 resetOpTimes();
                 onSaveTaskDone();
             } else {
-                SnackBarHandler.show(parentLayout,R.string.save_error);
+                Snackbar snackbar = SnackBarHandler.show(parentLayout, getString(R.string.save_error));
+                snackbar.show();
             }
         }
     }

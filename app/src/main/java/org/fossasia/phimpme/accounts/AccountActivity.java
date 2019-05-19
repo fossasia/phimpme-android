@@ -192,7 +192,8 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
 
     @Override
     public void showError() {
-        SnackBarHandler.show(coordinatorLayout, getString(no_account_signed_in));
+        Snackbar snackbar = SnackBarHandler.show(coordinatorLayout, getString(no_account_signed_in));
+        snackbar.show();
     }
 
     @Override
@@ -313,8 +314,10 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
         BasicCallBack basicCallBack = new BasicCallBack() {
             @Override
             public void callBack(int status, Object data) {
-                if (status == SUCCESS)
-                    SnackBarHandler.show(coordinatorLayout, getString(R.string.logged_in_flickr));
+                if (status == SUCCESS) {
+                    Snackbar snackbar = SnackBarHandler.show(coordinatorLayout, getString(R.string.logged_in_flickr));
+                    snackbar.show();
+                }
             }
         };
         Intent intent = new Intent(this, FlickrActivity.class);
@@ -364,8 +367,10 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
     }*/
 
     private void signInDropbox() {
-        if (accountPresenter.checkAlreadyExist(DROPBOX))
-            SnackBarHandler.show(coordinatorLayout, R.string.already_signed_in);
+        if (accountPresenter.checkAlreadyExist(DROPBOX)) {
+            Snackbar snackbar = SnackBarHandler.show(coordinatorLayout, getString(R.string.already_signed_in));
+            snackbar.show();
+        }
         else
             cloudRailServices.prepare(this);
             cloudRailServices.login();
@@ -439,7 +444,8 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
             @Override
             public void callBack(int status, Object data) {
                 if (status == SUCCESS) {
-                    SnackBarHandler.show(coordinatorLayout, R.string.account_logged);
+                    Snackbar snackbar = SnackBarHandler.show(coordinatorLayout, getString(R.string.account_logged));
+                    snackbar.show();
                     if (data instanceof Bundle) {
                         Bundle bundle = (Bundle) data;
                         realm.beginTransaction();
@@ -474,13 +480,15 @@ public class AccountActivity extends ThemedActivity implements AccountContract.V
                 realm.commitTransaction();
                 finish();
                 startActivity(getIntent());
-                SnackBarHandler.show(coordinatorLayout, getString(R.string.account_logged_pinterest));
+                Snackbar snackbar = SnackBarHandler.show(coordinatorLayout, getString(R.string.account_logged_pinterest));
+                snackbar.show();
             }
 
             @Override
             public void onFailure(PDKException exception) {
                 Log.e(getClass().getName(), exception.getDetailMessage());
-                SnackBarHandler.show(coordinatorLayout, R.string.pinterest_signIn_fail);
+                Snackbar snackbar = SnackBarHandler.show(coordinatorLayout, getString(R.string.pinterest_signIn_fail));
+                snackbar.show();
             }
         });
     }
