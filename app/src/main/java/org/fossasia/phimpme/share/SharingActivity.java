@@ -367,8 +367,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                             break;
 
                         default:
-                            SnackBarHandler.show(parent, R.string.feature_not_present);
-                    }
+                            Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.feature_not_present));
+                            snackbar.show();                    }
                 }
             });
             dialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -445,7 +445,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             sessionBox = new BoxSession(this);
             new UploadToBox().execute();
         } else {
-            SnackBarHandler.show(parent, R.string.login_box);
+            Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.login_box));
+            snackbar.show();
         }
     }
 
@@ -498,7 +499,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         protected void onPostExecute(Void result) {
             if (success) {
                 NotificationHandler.actionPassed(R.string.upload_complete);
-                SnackBarHandler.show(parent, R.string.uploaded_box);
+                Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.uploaded_box));
+                snackbar.show();
                 sendResult(Constants.SUCCESS);
             } else {
                 NotificationHandler.actionFailed();
@@ -536,7 +538,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
 
     private void shareToFlickr() {
         if (Utils.checkAlreadyExist(FLICKR)) {
-            SnackBarHandler.show(parent, getString(R.string.uploading));
+            Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.uploading));
+            snackbar.show();
             InputStream is = null;
             File file = new File(saveFilePath);
             try {
@@ -570,8 +573,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             new UploadToDropbox().execute();
 
         } catch (ArrayIndexOutOfBoundsException e) {
-            SnackBarHandler.show(parent, R.string.login_dropbox_account);
-        }
+            Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.login_dropbox_account));
+            snackbar.show();        }
     }
 
 
@@ -606,11 +609,13 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         protected void onPostExecute(Void result) {
             if (success) {
                 NotificationHandler.actionPassed(R.string.upload_complete);
-                SnackBarHandler.show(parent, R.string.uploaded_dropbox);
+                Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.uploaded_dropbox));
+                snackbar.show();
                 sendResult(Constants.SUCCESS);
             } else {
                 NotificationHandler.actionFailed();
-                SnackBarHandler.show(parent, R.string.upload_failed);
+                Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.upload_failed));
+                snackbar.show();
                 sendResult(FAIL);
             }
         }
@@ -682,11 +687,13 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
       
             if (success) {
                 NotificationHandler.actionPassed(R.string.upload_complete);
-                SnackBarHandler.show(parent, R.string.uploaded_googledrive);
+                Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.uploaded_googledrive));
+                snackbar.show();
                 sendResult(Constants.SUCCESS);
             } else {
                 NotificationHandler.actionFailed();
-                SnackBarHandler.show(parent, R.string.upload_failed);
+                Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.upload_failed));
+                snackbar.show();
                 sendResult(FAIL);
             }
         }
@@ -723,12 +730,14 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             super.onPostExecute(aVoid);
             if(success) {
                 NotificationHandler.actionPassed(R.string.upload_complete);
-                SnackBarHandler.show(parent, R.string.uploaded_onedrive);
+                Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.uploaded_onedrive));
+                snackbar.show();
                 sendResult(Constants.SUCCESS);
             }
             else{
                 NotificationHandler.actionFailed();
-                SnackBarHandler.show(parent,R.string.upload_failed);
+                Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.upload_failed));
+                snackbar.show();
                 sendResult(FAIL);
             }
 
@@ -894,7 +903,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
     }
 
     private void postToPinterest(final String boardID) {
-        SnackBarHandler.show(parent, R.string.pinterest_image_uploading);
+        Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.pinterest_image_uploading));
+        snackbar.show();
         NotificationHandler.make(R.string.pinterest, R.string.upload_progress, R.drawable.ic_cloud_upload_black_24dp);
         Bitmap image = getBitmapFromPath(saveFilePath);
         PDKClient
@@ -903,7 +913,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             public void onSuccess(PDKResponse response) {
                 NotificationHandler.actionPassed(R.string.upload_complete);
                 Log.d(getClass().getName(), response.getData().toString());
-                SnackBarHandler.show(parent, R.string.pinterest_post);
+                Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.pinterest_post));
+                snackbar.show();
                 sendResult(Constants.SUCCESS);
             }
 
@@ -911,7 +922,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             public void onFailure(PDKException exception) {
                 NotificationHandler.actionFailed();
                 Log.e(getClass().getName(), exception.getDetailMessage());
-                SnackBarHandler.show(parent, R.string.Pinterest_fail);
+                Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.Pinterest_fail));
+                snackbar.show();
                 sendResult(FAIL);
             }
         });
@@ -931,12 +943,14 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                         }
                     });
         } else {
-            SnackBarHandler.show(parent, getString(R.string.sign_from_account));
+            Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.sign_from_account));
+            snackbar.show();
         }
     }
 
     private void uploadOnTwitter(String token, String secret) {
-        SnackBarHandler.show(parent, getString(R.string.twitter_uploading));
+        Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.twitter_uploading));
+        snackbar.show();
         final File f3 = new File(Environment.getExternalStorageDirectory() + "/twitter_upload/");
         final File file = new File(Environment.getExternalStorageDirectory() + "/twitter_upload/" + "temp" + ".png");
         if (!f3.exists())
@@ -1126,7 +1140,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                         alertDialog.show();
                         AlertDialogsHelper.setButtonTextColor(new int[]{DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE, DialogInterface.BUTTON_NEUTRAL}, getAccentColor(), alertDialog);
                     } else {
-                        SnackBarHandler.show(parent, R.string.error_on_imgur);
+                        Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.error_on_imgur));
+                        snackbar.show();
                         sendResult(FAIL);
                     }
                 } catch (JSONException e) {
@@ -1137,7 +1152,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 dialog.dismiss();
-                SnackBarHandler.show(parent, R.string.error_volly);// add volleyError to check error
+                Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.error_volly));// add volleyError to check error
+                snackbar.show();
             }
         }) {
             @Override
@@ -1206,7 +1222,8 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
                 is.close();
                 fos.close();
             } catch (IOException e) {
-                SnackBarHandler.show(parent, R.string.error_copying_sample_file);
+                Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.error_copying_sample_file));
+                snackbar.show();
                 Log.e(LOG_TAG, getString(R.string.error_copying_sample_file), e);
             }
 
@@ -1228,8 +1245,9 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
             phimpmeProgressBarHandler.show();
 
         } else {
-            SnackBarHandler.show(parent, context.getString(R.string.please_sign_into)
+            Snackbar snackbar = SnackBarHandler.show(parent, context.getString(R.string.please_sign_into)
                     + str + context.getString(R.string.from_account_manager));
+            snackbar.show();
         }
     }
 
@@ -1344,11 +1362,13 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         protected void onPostExecute(Void result) {
             if (isPostedOnTwitter) {
                 NotificationHandler.actionPassed(R.string.upload_complete);
-                SnackBarHandler.show(parent, R.string.tweet_posted_on_twitter);
+                Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.tweet_posted_on_twitter)    );
+                snackbar.show();
                 sendResult(SUCCESS);
             } else {
                 NotificationHandler.actionFailed();
-                SnackBarHandler.show(parent, R.string.error_on_posting_twitter);
+                Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.error_on_posting_twitter));
+                snackbar.show();
                 sendResult(FAIL);
             }
         }
@@ -1397,11 +1417,13 @@ public class SharingActivity extends ThemedActivity implements View.OnClickListe
         protected void onPostExecute(Void result) {
             dialog.dismiss();
             if (success) {
-                SnackBarHandler.show(parent, getString(R.string.posted_on_tumblr));
+                Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.posted_on_tumblr));
+                snackbar.show();
                 sendResult(Constants.SUCCESS);
             }
             else {
-                SnackBarHandler.show(parent, getString(R.string.error_on_tumblr));
+                Snackbar snackbar = SnackBarHandler.show(parent, getString(R.string.error_on_tumblr));
+                snackbar.show();
                 sendResult(FAIL);
             }
         }

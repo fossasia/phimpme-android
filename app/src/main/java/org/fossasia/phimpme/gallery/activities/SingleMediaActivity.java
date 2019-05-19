@@ -867,7 +867,8 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             if (size_all > 0) {
                 adapter.notifyDataSetChanged();
                 getSupportActionBar().setTitle((c + 1) + " " + getString(R.string.of) + " " + size_all);
-                SnackBarHandler.show(parentView, getApplicationContext().getString(R.string.photo_deleted_from_fav_msg));
+                Snackbar snackbar = SnackBarHandler.show(parentView, getApplicationContext().getString(R.string.photo_deleted_from_fav_msg));
+                snackbar.show();
             } else {
                 onBackPressed();
             }
@@ -894,7 +895,8 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
             if (size_all > 0) {
                 adapter.notifyDataSetChanged();
                 getSupportActionBar().setTitle((c + 1) + " " + getString(R.string.of) + " " + size_all);
-                SnackBarHandler.show(parentView, getApplicationContext().getString(R.string.photo_deleted_from_fav_msg));
+                Snackbar snackbar = SnackBarHandler.show(parentView, getApplicationContext().getString(R.string.photo_deleted_from_fav_msg));
+                snackbar.show();
             } else {
                 onBackPressed();
             }
@@ -1138,8 +1140,10 @@ public class SingleMediaActivity extends SharedMediaActivity implements ImageAda
                     editIntent.putExtra("extra_output", FileUtils.genEditFile(FileUtils.getExtension(extension)).getAbsolutePath());
                     editIntent.putExtra("requestCode", ACTION_REQUEST_EDITIMAGE);
                     startActivity(editIntent);
-                } else
-                    SnackBarHandler.showWithBottomMargin(parentView, getString(R.string.image_invalid), (bottomBar.getHeight()*2)-22);
+                } else{
+                    Snackbar snackbar = SnackBarHandler.show(parentView, getString(R.string.image_invalid));
+                    snackbar.show();
+                }
                 break;
 
             case R.id.action_use_as:
