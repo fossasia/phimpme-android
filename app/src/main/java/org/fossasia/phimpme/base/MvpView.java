@@ -22,5 +22,5 @@ package org.fossasia.phimpme.base;
  */
 public interface MvpView {
 
-    void showComplete();
+  void showComplete();
 }

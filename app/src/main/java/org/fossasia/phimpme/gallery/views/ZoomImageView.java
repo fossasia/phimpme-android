@@ -6,10 +6,7 @@ import android.view.VelocityTracker;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Scroller;
 
-/**
- * Created by dnld on 20/09/16.
- */
-
+/** Created by dnld on 20/09/16. */
 public class ZoomImageView {
   private boolean draggingDown = false;
   private float dragY;
@@ -50,6 +47,4 @@ public class ZoomImageView {
   private int switchImageAfterAnimation = 0;
   private VelocityTracker velocityTracker = null;
   private Scroller scroller = null;
-
-  
 }
