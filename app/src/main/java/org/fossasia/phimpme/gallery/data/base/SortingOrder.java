@@ -1,11 +1,9 @@
 package org.fossasia.phimpme.gallery.data.base;
 
-/**
- * Created by dnld on 18/08/16.
- */
-
+/** Created by dnld on 18/08/16. */
 public enum SortingOrder {
-  ASCENDING (0), DESCENDING (1);
+  ASCENDING(0),
+  DESCENDING(1);
 
   int value;
 
@@ -19,8 +17,11 @@ public enum SortingOrder {
 
   public static SortingOrder fromValue(int value) {
     switch (value) {
-      case 0: return ASCENDING;
-      case 1: default: return DESCENDING;
+      case 0:
+        return ASCENDING;
+      case 1:
+      default:
+        return DESCENDING;
     }
   }
 }

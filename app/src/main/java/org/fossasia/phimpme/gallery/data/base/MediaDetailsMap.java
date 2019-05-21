@@ -3,12 +3,9 @@ package org.fossasia.phimpme.gallery.data.base;
 import java.util.HashMap;
 import java.util.TreeMap;
 
-/**
- * Created by dnld on 16/08/16.
- */
-
+/** Created by dnld on 16/08/16. */
 public class MediaDetailsMap<K, V> extends HashMap<String, String> {
-private TreeMap<Integer, String> keys;
+  private TreeMap<Integer, String> keys;
 
   public MediaDetailsMap() {
     super();
@@ -32,8 +29,7 @@ private TreeMap<Integer, String> keys;
 
   public int[] getKeySet() {
     int[] array = new int[keys.size()];
-    for(int i = 0; i < keys.size(); i++) array[i]=i;
+    for (int i = 0; i < keys.size(); i++) array[i] = i;
     return array;
   }
-
 }

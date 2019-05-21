@@ -3,14 +3,10 @@ package org.fossasia.phimpme.gallery.views;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
-
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 
-/**
- * Created by dnld on 21/08/16.
- */
-
+/** Created by dnld on 21/08/16. */
 public class RotateTransformation extends BitmapTransformation {
 
   private float rotateRotationAngle = 0f;
@@ -29,12 +25,12 @@ public class RotateTransformation extends BitmapTransformation {
     if (increment) {
       if (rotateRotationAngle > 0) matrix.postRotate(rotateRotationAngle);
       else matrix.preRotate(rotateRotationAngle * -1);
-    } else
-      matrix.setRotate(rotateRotationAngle);
+    } else matrix.setRotate(rotateRotationAngle);
     /*if (rotateRotationAngle > 0) matrix.postRotate(rotateRotationAngle);
     else matrix.preRotate(rotateRotationAngle * -1);*/
 
-    return Bitmap.createBitmap(toTransform, 0, 0, toTransform.getWidth(), toTransform.getHeight(), matrix, true);
+    return Bitmap.createBitmap(
+        toTransform, 0, 0, toTransform.getWidth(), toTransform.getHeight(), matrix, true);
   }
 
   @Override
