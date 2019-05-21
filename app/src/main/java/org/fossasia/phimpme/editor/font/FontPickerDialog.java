@@ -17,149 +17,148 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.gallery.util.ThemeHelper;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.gallery.util.ThemeHelper;
 
-
-/**
- * This class gives a dialog for selecting a font
- */
+/** This class gives a dialog for selecting a font */
 public class FontPickerDialog extends DialogFragment {
 
-    private List<String> mFontPaths; // list of file paths for the available fonts
-    private List<String> mFontNames; // font names of the available fonts
-    private String mSelectedFont;
-    private FontPickerDialogListener mListener;
+  private List<String> mFontPaths; // list of file paths for the available fonts
+  private List<String> mFontNames; // font names of the available fonts
+  private String mSelectedFont;
+  private FontPickerDialogListener mListener;
 
-    public static FontPickerDialog newInstance(FontPickerDialogListener fontPickerDialogListener) {
-        FontPickerDialog fontPickerDialog = new FontPickerDialog();
-        fontPickerDialog.mListener = fontPickerDialogListener;
-        return fontPickerDialog;
-    }
+  public static FontPickerDialog newInstance(FontPickerDialogListener fontPickerDialogListener) {
+    FontPickerDialog fontPickerDialog = new FontPickerDialog();
+    fontPickerDialog.mListener = fontPickerDialogListener;
+    return fontPickerDialog;
+  }
 
-    // create callback method to pass back the selected font
-    public interface FontPickerDialogListener {
-        /**
-         * This method is called when a font is selected
-         * in the FontPickerDialog
-         *
-         * @param dialog The dialog used to pick the font. Use dialog.getSelectedFont() to access the pathname of the chosen font
-         */
-        void onFontSelected(FontPickerDialog dialog);
-    }
-
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-        Context mContext = getActivity();
-
-        HashMap<String, String> fonts = FontManager.getFontsMap();
-        mFontPaths = new ArrayList<>();
-        mFontNames = new ArrayList<>();
-
-        for (String path : fonts.keySet()) {
-            mFontPaths.add(path);
-            mFontNames.add(fonts.get(path));
-        }
-        ThemeHelper themeHelper = new ThemeHelper(getActivity());
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-
-        View view = inflater.inflate(R.layout.dialog_font_picker, null);
-        view.setBackgroundColor(themeHelper.getBackgroundColor());
-        FontAdapter adapter = new FontAdapter(mContext);
-        builder.setAdapter(adapter, new OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface arg0, int arg1) {
-                mSelectedFont = mFontPaths.get(arg1);
-                mListener.onFontSelected(FontPickerDialog.this);
-            }
-        });
-
-        LinearLayout titleLinearLayout = new LinearLayout(mContext);
-
-        titleLinearLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        titleLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
-
-        TextView title = new TextView(mContext);
-        title.setText(R.string.select_a_font);
-        title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
-        title.setTypeface(null, Typeface.BOLD);
-        title.setTextColor(ContextCompat.getColor(mContext, R.color.white));
-        title.setPadding(40, 40, 40, 40);
-
-        titleLinearLayout.setBackgroundColor(ContextCompat.getColor(mContext, R.color.accent_cyan));
-        titleLinearLayout.addView(title);
-
-        builder.setCustomTitle(titleLinearLayout);
-
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // don't have to do anything on cancel
-            }
-        });
-
-        return builder.create();
-    }
-
-
+  // create callback method to pass back the selected font
+  public interface FontPickerDialogListener {
     /**
-     * Callback method that is called once a font has been
-     * selected and the fontpickerdialog closes.
+     * This method is called when a font is selected in the FontPickerDialog
      *
-     * @return The pathname of the font that was selected
+     * @param dialog The dialog used to pick the font. Use dialog.getSelectedFont() to access the
+     *     pathname of the chosen font
      */
-    public String getSelectedFont() {
-        return mSelectedFont;
+    void onFontSelected(FontPickerDialog dialog);
+  }
+
+  @NonNull
+  @Override
+  public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+    Context mContext = getActivity();
+
+    HashMap<String, String> fonts = FontManager.getFontsMap();
+    mFontPaths = new ArrayList<>();
+    mFontNames = new ArrayList<>();
+
+    for (String path : fonts.keySet()) {
+      mFontPaths.add(path);
+      mFontNames.add(fonts.get(path));
+    }
+    ThemeHelper themeHelper = new ThemeHelper(getActivity());
+    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+    LayoutInflater inflater = getActivity().getLayoutInflater();
+
+    View view = inflater.inflate(R.layout.dialog_font_picker, null);
+    view.setBackgroundColor(themeHelper.getBackgroundColor());
+    FontAdapter adapter = new FontAdapter(mContext);
+    builder.setAdapter(
+        adapter,
+        new OnClickListener() {
+
+          @Override
+          public void onClick(DialogInterface arg0, int arg1) {
+            mSelectedFont = mFontPaths.get(arg1);
+            mListener.onFontSelected(FontPickerDialog.this);
+          }
+        });
+
+    LinearLayout titleLinearLayout = new LinearLayout(mContext);
+
+    titleLinearLayout.setLayoutParams(
+        new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+    titleLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+    TextView title = new TextView(mContext);
+    title.setText(R.string.select_a_font);
+    title.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
+    title.setTypeface(null, Typeface.BOLD);
+    title.setTextColor(ContextCompat.getColor(mContext, R.color.white));
+    title.setPadding(40, 40, 40, 40);
+
+    titleLinearLayout.setBackgroundColor(ContextCompat.getColor(mContext, R.color.accent_cyan));
+    titleLinearLayout.addView(title);
+
+    builder.setCustomTitle(titleLinearLayout);
+
+    builder.setNegativeButton(
+        R.string.cancel,
+        new DialogInterface.OnClickListener() {
+          public void onClick(DialogInterface dialog, int id) {
+            // don't have to do anything on cancel
+          }
+        });
+
+    return builder.create();
+  }
+
+  /**
+   * Callback method that is called once a font has been selected and the fontpickerdialog closes.
+   *
+   * @return The pathname of the font that was selected
+   */
+  public String getSelectedFont() {
+    return mSelectedFont;
+  }
+
+  private class FontAdapter extends BaseAdapter {
+    private Context mContext;
+
+    public FontAdapter(Context c) {
+      mContext = c;
     }
 
-    private class FontAdapter extends BaseAdapter {
-        private Context mContext;
-
-        public FontAdapter(Context c) {
-            mContext = c;
-        }
-
-        @Override
-        public int getCount() {
-            return mFontNames.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mFontNames.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            TextView view = (TextView) convertView;
-
-            if (view == null) {
-                view = new TextView(mContext);
-
-            } else {
-                view = (TextView) convertView;
-            }
-
-            view.setPadding(40, 8, 40, 8);
-            Typeface tface = Typeface.createFromFile(mFontPaths.get(position));
-            view.setTypeface(tface);
-            view.setText(mFontNames.get(position));
-            view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-
-            return view;
-        }
+    @Override
+    public int getCount() {
+      return mFontNames.size();
     }
+
+    @Override
+    public Object getItem(int position) {
+      return mFontNames.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+      return position;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+      TextView view = (TextView) convertView;
+
+      if (view == null) {
+        view = new TextView(mContext);
+
+      } else {
+        view = (TextView) convertView;
+      }
+
+      view.setPadding(40, 8, 40, 8);
+      Typeface tface = Typeface.createFromFile(mFontPaths.get(position));
+      view.setTypeface(tface);
+      view.setText(mFontNames.get(position));
+      view.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+
+      return view;
+    }
+  }
 }

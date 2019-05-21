@@ -9,41 +9,38 @@ import android.support.v8.renderscript.RenderScript;
 import android.support.v8.renderscript.ScriptIntrinsicBlur;
 import android.view.View;
 
-/**
- * Created by mayank on 3/11/17.
- */
-
+/** Created by mayank on 3/11/17. */
 public class BlurImageUtil {
-    private static final float BITMAP_SCALE = 0.1f;
-    private static final float BLUR_RADIUS = 7.5f;
+  private static final float BITMAP_SCALE = 0.1f;
+  private static final float BLUR_RADIUS = 7.5f;
 
-    public static Bitmap blur(View v) {
-        return blur(v.getContext(), getScreenshot(v));
-    }
+  public static Bitmap blur(View v) {
+    return blur(v.getContext(), getScreenshot(v));
+  }
 
-    public static Bitmap blur(Context ctx, Bitmap image) {
-        int width = Math.round(image.getWidth() * BITMAP_SCALE);
-        int height = Math.round(image.getHeight() * BITMAP_SCALE);
+  public static Bitmap blur(Context ctx, Bitmap image) {
+    int width = Math.round(image.getWidth() * BITMAP_SCALE);
+    int height = Math.round(image.getHeight() * BITMAP_SCALE);
 
-        Bitmap inputBitmap = Bitmap.createScaledBitmap(image, width, height, false);
-        Bitmap outputBitmap = Bitmap.createBitmap(inputBitmap);
+    Bitmap inputBitmap = Bitmap.createScaledBitmap(image, width, height, false);
+    Bitmap outputBitmap = Bitmap.createBitmap(inputBitmap);
 
-        RenderScript rs = RenderScript.create(ctx);
-        ScriptIntrinsicBlur theIntrinsic = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
-        Allocation tmpIn = Allocation.createFromBitmap(rs, inputBitmap);
-        Allocation tmpOut = Allocation.createFromBitmap(rs, outputBitmap);
-        theIntrinsic.setRadius(BLUR_RADIUS);
-        theIntrinsic.setInput(tmpIn);
-        theIntrinsic.forEach(tmpOut);
-        tmpOut.copyTo(outputBitmap);
+    RenderScript rs = RenderScript.create(ctx);
+    ScriptIntrinsicBlur theIntrinsic = ScriptIntrinsicBlur.create(rs, Element.U8_4(rs));
+    Allocation tmpIn = Allocation.createFromBitmap(rs, inputBitmap);
+    Allocation tmpOut = Allocation.createFromBitmap(rs, outputBitmap);
+    theIntrinsic.setRadius(BLUR_RADIUS);
+    theIntrinsic.setInput(tmpIn);
+    theIntrinsic.forEach(tmpOut);
+    tmpOut.copyTo(outputBitmap);
 
-        return outputBitmap;
-    }
+    return outputBitmap;
+  }
 
-    private static Bitmap getScreenshot(View v) {
-        Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas c = new Canvas(b);
-        v.draw(c);
-        return b;
-    }
+  private static Bitmap getScreenshot(View v) {
+    Bitmap b = Bitmap.createBitmap(v.getWidth(), v.getHeight(), Bitmap.Config.ARGB_8888);
+    Canvas c = new Canvas(b);
+    v.draw(c);
+    return b;
+  }
 }
