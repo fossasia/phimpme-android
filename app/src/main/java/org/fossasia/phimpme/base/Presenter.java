@@ -21,7 +21,7 @@ package org.fossasia.phimpme.base;
  */
 public interface Presenter<V extends MvpView> {
 
-    void attachView(V mvpView);
+  void attachView(V mvpView);
 
-    void detachView();
+  void detachView();
 }

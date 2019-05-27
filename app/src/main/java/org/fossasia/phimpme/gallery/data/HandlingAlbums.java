@@ -2,17 +2,6 @@ package org.fossasia.phimpme.gallery.data;
 
 import android.content.Context;
 import android.media.MediaScannerConnection;
-
-import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.gallery.adapters.AlbumsAdapter;
-import org.fossasia.phimpme.gallery.data.providers.StorageProvider;
-import org.fossasia.phimpme.gallery.data.base.AlbumsComparators;
-import org.fossasia.phimpme.gallery.data.base.SortingMode;
-import org.fossasia.phimpme.gallery.data.base.SortingOrder;
-import org.fossasia.phimpme.gallery.data.providers.MediaStoreProvider;
-import org.fossasia.phimpme.gallery.util.ContentHelper;
-import org.fossasia.phimpme.gallery.util.PreferenceUtil;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -24,13 +13,20 @@ import java.io.OptionalDataException;
 import java.io.StreamCorruptedException;
 import java.util.ArrayList;
 import java.util.Collections;
+import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.gallery.adapters.AlbumsAdapter;
+import org.fossasia.phimpme.gallery.data.base.AlbumsComparators;
+import org.fossasia.phimpme.gallery.data.base.SortingMode;
+import org.fossasia.phimpme.gallery.data.base.SortingOrder;
+import org.fossasia.phimpme.gallery.data.providers.MediaStoreProvider;
+import org.fossasia.phimpme.gallery.data.providers.StorageProvider;
+import org.fossasia.phimpme.gallery.util.ContentHelper;
+import org.fossasia.phimpme.gallery.util.PreferenceUtil;
 
-/**
- * Created by dnld on 27/04/16.
- */
+/** Created by dnld on 27/04/16. */
 public class HandlingAlbums {
 
-  public final static String TAG = "HandlingAlbums";
+  public static final String TAG = "HandlingAlbums";
   private static String backupFile = "albums.dat";
 
   public ArrayList<Album> dispAlbums;
@@ -46,7 +42,6 @@ public class HandlingAlbums {
     dispAlbums = new ArrayList<Album>();
     selectedAlbums = new ArrayList<Album>();
   }
-
 
   public void loadAlbums(Context context, boolean hidden) {
     this.hidden = hidden;
@@ -65,79 +60,82 @@ public class HandlingAlbums {
   public void addAlbum(int position, Album album) {
     dispAlbums.add(position, album);
     setCurrentAlbum(album);
-
   }
 
   public void setCurrentAlbum(Album album) {
     current = dispAlbums.indexOf(album);
   }
 
-
   public Album getCurrentAlbum() {
     return dispAlbums.get(current);
   }
 
-    public int getCurrentAlbumIndex(Album album) {
-        return dispAlbums.indexOf(album);
-    }
+  public int getCurrentAlbumIndex(Album album) {
+    return dispAlbums.indexOf(album);
+  }
 
   public void saveBackup(final Context context) {
     if (!hidden) {
-      new Thread(new Runnable() {
-        public void run() {
-          FileOutputStream outStream;
-          try {
-            File f = new File(context.getCacheDir(), backupFile);
-            outStream = new FileOutputStream(f);
-            ObjectOutputStream objectOutStream = new ObjectOutputStream(outStream);
-            objectOutStream.writeObject(dispAlbums);
-            objectOutStream.close();
-          } catch (FileNotFoundException e1) {
-            e1.printStackTrace();
-          } catch (IOException e1) {
-            e1.printStackTrace();
-          }
-        }
-      }).start();
+      new Thread(
+              new Runnable() {
+                public void run() {
+                  FileOutputStream outStream;
+                  try {
+                    File f = new File(context.getCacheDir(), backupFile);
+                    outStream = new FileOutputStream(f);
+                    ObjectOutputStream objectOutStream = new ObjectOutputStream(outStream);
+                    objectOutStream.writeObject(dispAlbums);
+                    objectOutStream.close();
+                  } catch (FileNotFoundException e1) {
+                    e1.printStackTrace();
+                  } catch (IOException e1) {
+                    e1.printStackTrace();
+                  }
+                }
+              })
+          .start();
     }
   }
 
   @SuppressWarnings("unchecked")
   public static void addAlbumToBackup(final Context context, final Album album) {
-    new Thread(new Runnable() {
-      public void run() {
-        try {
-          boolean success = false;
-          File f = new File(context.getCacheDir(), backupFile);
-          ObjectInputStream reader = new ObjectInputStream(new FileInputStream(f));
-          Object o = reader.readObject();
-          ArrayList<Album> list = null;
-          if (o != null) {
-            list = (ArrayList<Album>) o;
-            for(int i = 0; i < list.size(); i++) {
-              if (list.get(i).equals(album)) {
-                list.remove(i);
-                list.add(i, album);
-                success = true;
+    new Thread(
+            new Runnable() {
+              public void run() {
+                try {
+                  boolean success = false;
+                  File f = new File(context.getCacheDir(), backupFile);
+                  ObjectInputStream reader = new ObjectInputStream(new FileInputStream(f));
+                  Object o = reader.readObject();
+                  ArrayList<Album> list = null;
+                  if (o != null) {
+                    list = (ArrayList<Album>) o;
+                    for (int i = 0; i < list.size(); i++) {
+                      if (list.get(i).equals(album)) {
+                        list.remove(i);
+                        list.add(i, album);
+                        success = true;
+                      }
+                    }
+                  }
+
+                  if (success) {
+                    ObjectOutputStream objectOutStream =
+                        new ObjectOutputStream(new FileOutputStream(f));
+                    objectOutStream.writeObject(list);
+                    objectOutStream.close();
+                  }
+
+                } catch (FileNotFoundException e1) {
+                  e1.printStackTrace();
+                } catch (IOException e1) {
+                  e1.printStackTrace();
+                } catch (ClassNotFoundException e) {
+                  e.printStackTrace();
+                }
               }
-            }
-          }
-
-          if (success) {
-            ObjectOutputStream objectOutStream = new ObjectOutputStream(new FileOutputStream(f));
-            objectOutStream.writeObject(list);
-            objectOutStream.close();
-          }
-
-        } catch (FileNotFoundException e1) {
-          e1.printStackTrace();
-        } catch (IOException e1) {
-          e1.printStackTrace();
-        } catch (ClassNotFoundException e) {
-          e.printStackTrace();
-        }
-      }
-    }).start();
+            })
+        .start();
   }
 
   @SuppressWarnings("unchecked")
@@ -177,7 +175,9 @@ public class HandlingAlbums {
     return toggleSelectAlbum(dispAlbums.indexOf(album));
   }
 
-  public Album getAlbum(int index){ return dispAlbums.get(index); }
+  public Album getAlbum(int index) {
+    return dispAlbums.get(index);
+  }
 
   public void selectAllAlbums() {
     for (Album dispAlbum : dispAlbums)
@@ -187,20 +187,23 @@ public class HandlingAlbums {
       }
   }
 
-  public void removeCurrentAlbum(){ dispAlbums.remove(current); }
+  public void removeCurrentAlbum() {
+    dispAlbums.remove(current);
+  }
 
   public int getSelectedCount() {
     return selectedAlbums.size();
   }
 
   public void clearSelectedAlbums() {
-    for (Album dispAlbum : dispAlbums)
-      dispAlbum.setSelected(false);
+    for (Album dispAlbum : dispAlbums) dispAlbum.setSelected(false);
 
     selectedAlbums.clear();
   }
 
-  private void scanFile(Context context, String[] path) {   MediaScannerConnection.scanFile(context, path, null, null); }
+  private void scanFile(Context context, String[] path) {
+    MediaScannerConnection.scanFile(context, path, null, null);
+  }
 
   public void hideAlbum(String path, Context context) {
     File dirName = new File(path);
@@ -210,15 +213,15 @@ public class HandlingAlbums {
         FileOutputStream out = new FileOutputStream(file);
         out.flush();
         out.close();
-        scanFile(context, new String[]{ file.getAbsolutePath() });
+        scanFile(context, new String[] {file.getAbsolutePath()});
       } catch (Exception e) {
         e.printStackTrace();
       }
     }
   }
+
   public void hideSelectedAlbums(Context context) {
-    for (Album selectedAlbum : selectedAlbums)
-      hideAlbum(selectedAlbum, context);
+    for (Album selectedAlbum : selectedAlbums) hideAlbum(selectedAlbum, context);
     clearSelectedAlbums();
   }
 
@@ -231,13 +234,12 @@ public class HandlingAlbums {
     File dirName = new File(path);
     File file = new File(dirName, ".nomedia");
     if (file.exists()) {
-      if (file.delete())
-        scanFile(context, new String[]{ file.getAbsolutePath() });
+      if (file.delete()) scanFile(context, new String[] {file.getAbsolutePath()});
     }
   }
+
   public void unHideSelectedAlbums(Context context) {
-    for (Album selectedAlbum : selectedAlbums)
-      unHideAlbum(selectedAlbum, context);
+    for (Album selectedAlbum : selectedAlbums) unHideAlbum(selectedAlbum, context);
     clearSelectedAlbums();
   }
 
@@ -251,8 +253,7 @@ public class HandlingAlbums {
 
     for (Album selectedAlbum : selectedAlbums) {
       int index = dispAlbums.indexOf(selectedAlbum);
-      if(deleteAlbum(selectedAlbum, context))
-        dispAlbums.remove(index);
+      if (deleteAlbum(selectedAlbum, context)) dispAlbums.remove(index);
       else success = false;
     }
     return success;
@@ -271,8 +272,7 @@ public class HandlingAlbums {
   }
 
   public void excludeSelectedAlbums(Context context) {
-    for (Album selectedAlbum : selectedAlbums)
-      excludeAlbum(context, selectedAlbum);
+    for (Album selectedAlbum : selectedAlbums) excludeAlbum(context, selectedAlbum);
 
     clearSelectedAlbums();
   }
@@ -288,7 +288,8 @@ public class HandlingAlbums {
   }
 
   public SortingOrder getSortingOrder() {
-    return SortingOrder.fromValue(SP.getInt("albums_sorting_order", SortingOrder.DESCENDING.getValue()));
+    return SortingOrder.fromValue(
+        SP.getInt("albums_sorting_order", SortingOrder.DESCENDING.getValue()));
   }
 
   public void setDefaultSortingMode(SortingMode sortingMode) {
@@ -300,32 +301,33 @@ public class HandlingAlbums {
   }
 
   public void sortAlbums() {
-    Collections.sort(dispAlbums, AlbumsComparators.getComparator(getSortingMode(), getSortingOrder()));
+    Collections.sort(
+        dispAlbums, AlbumsComparators.getComparator(getSortingMode(), getSortingOrder()));
   }
 
   public void selectAllPhotosUpToAlbums(int targetIndex, AlbumsAdapter adapter) {
-      int indexRightBeforeOrAfter = -1;
-      int indexNow;
-      for (Album selectedAlbum : selectedAlbums) {
-          indexNow = dispAlbums.indexOf(selectedAlbum);
+    int indexRightBeforeOrAfter = -1;
+    int indexNow;
+    for (Album selectedAlbum : selectedAlbums) {
+      indexNow = dispAlbums.indexOf(selectedAlbum);
 
-          if (indexRightBeforeOrAfter == -1)
-              indexRightBeforeOrAfter = indexNow;
+      if (indexRightBeforeOrAfter == -1) indexRightBeforeOrAfter = indexNow;
 
-          if (indexNow > targetIndex)
-              break;
-          indexRightBeforeOrAfter = indexNow;
+      if (indexNow > targetIndex) break;
+      indexRightBeforeOrAfter = indexNow;
+    }
+
+    if (indexRightBeforeOrAfter != -1) {
+      for (int index = Math.min(targetIndex, indexRightBeforeOrAfter);
+          index <= Math.max(targetIndex, indexRightBeforeOrAfter);
+          index++) {
+        if (dispAlbums.get(index) != null && !dispAlbums.get(index).isSelected()) {
+          dispAlbums.get(index).setSelected(true);
+          selectedAlbums.add(dispAlbums.get(index));
+          adapter.notifyItemChanged(index);
+        }
       }
-
-      if (indexRightBeforeOrAfter != -1) {
-          for (int index = Math.min(targetIndex, indexRightBeforeOrAfter); index <= Math.max(targetIndex, indexRightBeforeOrAfter); index++) {
-              if (dispAlbums.get(index) != null && !dispAlbums.get(index).isSelected()) {
-                  dispAlbums.get(index).setSelected(true);
-                  selectedAlbums.add(dispAlbums.get(index));
-                  adapter.notifyItemChanged(index);
-              }
-          }
-      }
+    }
   }
 
   public Album getSelectedAlbum(int index) {
@@ -333,7 +335,7 @@ public class HandlingAlbums {
   }
 
   public ArrayList<Album> getSelectedAlbums() {
-      return selectedAlbums;
+    return selectedAlbums;
   }
 
   public void loadAlbums(Context applicationContext) {

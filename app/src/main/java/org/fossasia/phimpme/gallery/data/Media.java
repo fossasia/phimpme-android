@@ -10,7 +10,7 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
-
+import android.text.TextUtils;
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;
 import com.drew.lang.GeoLocation;
@@ -18,16 +18,7 @@ import com.drew.lang.annotations.NotNull;
 import com.drew.metadata.Directory;
 import com.drew.metadata.Metadata;
 import com.drew.metadata.Tag;
-
-import org.fossasia.phimpme.R;
-import org.fossasia.phimpme.data.local.DatabaseHelper;
-import org.fossasia.phimpme.data.local.ImageDescModel;
-import org.fossasia.phimpme.gallery.activities.SingleMediaActivity;
-import org.fossasia.phimpme.gallery.util.MediaSignature;
-import org.fossasia.phimpme.gallery.util.StringUtils;
-import org.fossasia.phimpme.gallery.data.base.MediaDetailsMap;
-import org.jetbrains.annotations.TestOnly;
-
+import io.realm.Realm;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -36,310 +27,332 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import org.fossasia.phimpme.R;
+import org.fossasia.phimpme.data.local.DatabaseHelper;
+import org.fossasia.phimpme.data.local.ImageDescModel;
+import org.fossasia.phimpme.gallery.activities.SingleMediaActivity;
+import org.fossasia.phimpme.gallery.data.base.MediaDetailsMap;
+import org.fossasia.phimpme.gallery.util.MediaSignature;
+import org.fossasia.phimpme.gallery.util.StringUtils;
+import org.jetbrains.annotations.TestOnly;
 
-import android.text.TextUtils;
-
-import io.realm.Realm;
-
-/**
- * Created by dnld on 26/04/16.
- */
-
+/** Created by dnld on 26/04/16. */
 public class Media implements Parcelable, Serializable {
 
-    private String path = null;
-    private long dateModified = -1;
-    private String mimeType = null;
-    private int orientation = 0;
+  private String path = null;
+  private long dateModified = -1;
+  private String mimeType = null;
+  private int orientation = 0;
 
-    private String uri = null;
+  private String uri = null;
 
-    private long size = 0;
-    private boolean selected = false;
-    private MetadataItem metadata;
+  private long size = 0;
+  private boolean selected = false;
+  private MetadataItem metadata;
 
-    public Media() { }
+  public Media() {}
 
-    public Media(String path, long dateModified) {
-        this.path = path;
-        this.dateModified = dateModified;
-        this.mimeType = StringUtils.getMimeType(path);
+  public Media(String path, long dateModified) {
+    this.path = path;
+    this.dateModified = dateModified;
+    this.mimeType = StringUtils.getMimeType(path);
+  }
+
+  public Media(File file) {
+    this(file.getPath(), file.lastModified());
+    this.size = file.length();
+    this.mimeType = StringUtils.getMimeType(path);
+  }
+
+  public Media(String path) {
+    this(path, -1);
+  }
+
+  public Media(Context context, Uri mediaUri) {
+    this.uri = mediaUri.toString();
+    this.path = null;
+    this.mimeType = context.getContentResolver().getType(getUri());
+  }
+
+  public Media(@NotNull Cursor cur) {
+    this.path = cur.getString(0);
+    this.dateModified = cur.getLong(1);
+    this.mimeType = cur.getString(2);
+    this.size = cur.getLong(3);
+    this.orientation = cur.getInt(4);
+  }
+
+  private static int findOrientation(int exifOrientation) {
+    switch (exifOrientation) {
+      case ExifInterface.ORIENTATION_ROTATE_90:
+        return 90;
+      case ExifInterface.ORIENTATION_ROTATE_180:
+        return 180;
+      case ExifInterface.ORIENTATION_ROTATE_270:
+        return 270;
     }
+    return 0;
+  }
 
-    public Media(File file) {
-        this(file.getPath(), file.lastModified());
-        this.size = file.length();
-        this.mimeType = StringUtils.getMimeType(path);
-    }
+  public void setUri(String uriString) {
+    this.uri = uriString;
+  }
 
-    public Media(String path) {
-        this(path, -1);
-    }
+  public void setPath(String path) {
+    this.path = path;
+  }
 
-    public Media(Context context, Uri mediaUri) {
-        this.uri = mediaUri.toString();
-        this.path = null;
-        this.mimeType = context.getContentResolver().getType(getUri());
-    }
+  public String getMimeType() {
+    return mimeType;
+  }
 
-    public Media(@NotNull Cursor cur) {
-        this.path = cur.getString(0);
-        this.dateModified = cur.getLong(1);
-        this.mimeType = cur.getString(2);
-        this.size = cur.getLong(3);
-        this.orientation = cur.getInt(4);
-    }
+  public boolean isSelected() {
+    return selected;
+  }
 
-    private static int findOrientation(int exifOrientation){
-        switch (exifOrientation) {
-            case ExifInterface.ORIENTATION_ROTATE_90: return 90;
-            case ExifInterface.ORIENTATION_ROTATE_180: return 180;
-            case ExifInterface.ORIENTATION_ROTATE_270: return 270;
+  public void setSelected(boolean selected) {
+    this.selected = selected;
+  }
+
+  public boolean isGif() {
+    return mimeType.endsWith("gif");
+  }
+
+  public boolean isImage() {
+    return mimeType.startsWith("image");
+  }
+
+  public boolean isVideo() {
+    return mimeType.startsWith("video");
+  }
+
+  public Uri getUri() {
+    return uri != null ? Uri.parse(uri) : Uri.fromFile(new File(path));
+  }
+
+  public String getName() {
+    return StringUtils.getPhotoNameByPath(path);
+  }
+
+  public long getSize() {
+    return size;
+  }
+
+  public String getPath() {
+    return path;
+  }
+
+  public Long getDateModified() {
+    return dateModified;
+  }
+
+  public Bitmap getBitmap() {
+    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+    Bitmap bitmap = BitmapFactory.decodeFile(path, bmOptions);
+    bitmap = Bitmap.createScaledBitmap(bitmap, bitmap.getWidth(), bitmap.getHeight(), true);
+    return bitmap;
+  }
+
+  public MediaSignature getSignature() {
+    return new MediaSignature(this);
+  }
+
+  // <editor-fold desc="Exif & More">
+  public GeoLocation getGeoLocation() {
+    return metadata.getLocation();
+  }
+
+  public MediaDetailsMap<String, String> getAllDetails() {
+    MediaDetailsMap<String, String> data = new MediaDetailsMap<String, String>();
+    try {
+      Metadata metadata = ImageMetadataReader.readMetadata(new File(path));
+      for (Directory directory : metadata.getDirectories()) {
+
+        for (Tag tag : directory.getTags()) {
+          data.put(tag.getTagName(), directory.getObject(tag.getTagType()) + "");
         }
-        return 0;
+      }
+    } catch (ImageProcessingException e) {
+      e.printStackTrace();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
+    return data;
+  }
 
-    public void setUri(String uriString) {
-        this.uri = uriString;
-    }
+  public MediaDetailsMap<String, String> getMainDetails(Context context) {
+    metadata = new MetadataItem(new File(path));
+    MediaDetailsMap<String, String> details = new MediaDetailsMap<String, String>();
+    details.put(context.getString(R.string.name), getName());
+    details.put(context.getString(R.string.path), path != null ? path : getUri().getEncodedPath());
+    details.put(context.getString(R.string.type), getMimeType());
+    String tmp;
+    if ((tmp = metadata.getResolution()) != null)
+      details.put(context.getString(R.string.resolution), tmp);
 
-    public void setPath(String path) {
-        this.path = path;
-    }
+    details.put(context.getString(R.string.size), StringUtils.humanReadableByteCount(size, true));
+    details.put(
+        context.getString(R.string.date),
+        SimpleDateFormat.getDateTimeInstance().format(new Date(getDateModified())));
+    details.put(context.getString(R.string.orientation), getOrientation() + "" + (char) 0x00B0);
 
-    public String getMimeType() {
-        return mimeType;
-    }
-
-    public boolean isSelected() {
-        return selected;
-    }
-
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-    }
-
-    public boolean isGif() { return mimeType.endsWith("gif"); }
-
-    public boolean isImage() { return mimeType.startsWith("image"); }
-
-    public boolean isVideo() { return mimeType.startsWith("video"); }
-
-    public Uri getUri() {
-        return uri != null ? Uri.parse(uri) : Uri.fromFile(new File(path));
-    }
-
-    public String getName() {
-        return StringUtils.getPhotoNameByPath(path);
-    }
-
-    public long getSize() {
-        return size;
-    }
-
-    public String getPath() {
-        return path;
-    }
-
-    public Long getDateModified() {
-        return dateModified;
-    }
-
-
-    public Bitmap getBitmap(){
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        Bitmap bitmap = BitmapFactory.decodeFile(path,bmOptions);
-        bitmap = Bitmap.createScaledBitmap(bitmap,bitmap.getWidth(),bitmap.getHeight(),true);
-        return bitmap;
-    }
-
-    public MediaSignature getSignature() {
-        return new MediaSignature(this);
-    }
-
-    //<editor-fold desc="Exif & More">
-    public GeoLocation getGeoLocation()  {
-        return metadata.getLocation();
-    }
-
-    public MediaDetailsMap<String, String> getAllDetails() {
-        MediaDetailsMap<String, String> data = new MediaDetailsMap<String, String>();
-        try {
-            Metadata metadata = ImageMetadataReader.readMetadata(new File(path));
-            for(Directory directory : metadata.getDirectories()) {
-
-                for(Tag tag : directory.getTags()) {
-                    data.put(tag.getTagName(), directory.getObject(tag.getTagType())+"");
-                }
-            }
-        } catch (ImageProcessingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+    if ((tmp = metadata.getCameraInfo()) != null)
+      details.put(context.getString(R.string.camera), tmp);
+    if ((tmp = metadata.getExifInfo()) != null) details.put(context.getString(R.string.exif), tmp);
+    GeoLocation location;
+    List<Address> addressList = null;
+    Geocoder geocoder;
+    if ((location = metadata.getLocation()) != null) {
+      geocoder = new Geocoder(context, Locale.getDefault());
+      try {
+        addressList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      ArrayList<String> addresslines = new ArrayList<String>();
+      if (addressList != null) {
+        Address address = addressList.get(0);
+        for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
+          addresslines.add(address.getAddressLine(i));
         }
-        return data;
+        details.put(
+            context.getString(R.string.location),
+            TextUtils.join(System.getProperty("line.separator"), addresslines));
+      }
     }
 
-    public MediaDetailsMap<String, String> getMainDetails(Context context){
-        metadata = new MetadataItem(new File(path));
-        MediaDetailsMap<String, String> details = new MediaDetailsMap<String, String>();
-        details.put(context.getString(R.string.name), getName());
-        details.put(context.getString(R.string.path), path != null ? path : getUri().getEncodedPath());
-        details.put(context.getString(R.string.type), getMimeType());
-        String tmp;
-        if ((tmp = metadata.getResolution()) != null)
-            details.put(context.getString(R.string.resolution), tmp);
-
-        details.put(context.getString(R.string.size), StringUtils.humanReadableByteCount(size, true));
-        details.put(context.getString(R.string.date), SimpleDateFormat.getDateTimeInstance().format(new Date(getDateModified())));
-        details.put(context.getString(R.string.orientation), getOrientation()+""+(char) 0x00B0);
-
-        if ((tmp = metadata.getCameraInfo()) != null)
-            details.put(context.getString(R.string.camera), tmp);
-        if ((tmp = metadata.getExifInfo()) != null)
-            details.put(context.getString(R.string.exif), tmp);
-        GeoLocation location;
-        List<Address> addressList = null;
-        Geocoder geocoder;
-        if ((location = metadata.getLocation()) != null){
-            geocoder = new Geocoder(context, Locale.getDefault());
-            try {
-                addressList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            ArrayList<String> addresslines = new ArrayList<String>();
-            if(addressList!=null)
-            {
-                Address address = addressList.get(0);
-                for(int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
-                    addresslines.add(address.getAddressLine(i));
-                }
-                details.put(context.getString(R.string.location), TextUtils.join(System.getProperty("line.separator"),
-                        addresslines));
-            }
-
-        }
-
-        Realm realm;
-        DatabaseHelper databaseHelper;
-        ImageDescModel temp;
-        realm = Realm.getDefaultInstance();
-        databaseHelper =new DatabaseHelper(realm);
-        temp= databaseHelper.getImageDesc(SingleMediaActivity.pathForDescription);
-        if(temp!=null && temp.getTitle().length()>0){
-            details.put(context.getString(R.string.description_image),temp.getTitle());
-        }
-
-        return details;
+    Realm realm;
+    DatabaseHelper databaseHelper;
+    ImageDescModel temp;
+    realm = Realm.getDefaultInstance();
+    databaseHelper = new DatabaseHelper(realm);
+    temp = databaseHelper.getImageDesc(SingleMediaActivity.pathForDescription);
+    if (temp != null && temp.getTitle().length() > 0) {
+      details.put(context.getString(R.string.description_image), temp.getTitle());
     }
 
-    public boolean setOrientation(final int orientation) {
-        this.orientation = orientation;
-        // TODO: 28/08/16  find a better way
-        new Thread(new Runnable() {
-            public void run() {
+    return details;
+  }
+
+  public boolean setOrientation(final int orientation) {
+    this.orientation = orientation;
+    // TODO: 28/08/16  find a better way
+    new Thread(
+            new Runnable() {
+              public void run() {
                 int exifOrientation = -1;
                 try {
-                    ExifInterface  exif = new ExifInterface(path);
-                    switch (orientation) {
-                        case 90: exifOrientation = ExifInterface.ORIENTATION_ROTATE_90; break;
-                        case 180: exifOrientation = ExifInterface.ORIENTATION_ROTATE_180; break;
-                        case 270: exifOrientation = ExifInterface.ORIENTATION_ROTATE_270; break;
-                        case 0: exifOrientation = ExifInterface.ORIENTATION_NORMAL; break;
-                    }
-                    if (exifOrientation != -1) {
-                        exif.setAttribute(ExifInterface.TAG_ORIENTATION, String.valueOf(exifOrientation));
-                        exif.saveAttributes();
-                    }
+                  ExifInterface exif = new ExifInterface(path);
+                  switch (orientation) {
+                    case 90:
+                      exifOrientation = ExifInterface.ORIENTATION_ROTATE_90;
+                      break;
+                    case 180:
+                      exifOrientation = ExifInterface.ORIENTATION_ROTATE_180;
+                      break;
+                    case 270:
+                      exifOrientation = ExifInterface.ORIENTATION_ROTATE_270;
+                      break;
+                    case 0:
+                      exifOrientation = ExifInterface.ORIENTATION_NORMAL;
+                      break;
+                  }
+                  if (exifOrientation != -1) {
+                    exif.setAttribute(
+                        ExifInterface.TAG_ORIENTATION, String.valueOf(exifOrientation));
+                    exif.saveAttributes();
+                  }
+                } catch (IOException ignored) {
                 }
-                catch (IOException ignored) {  }
-            }
-        }).start();
-        return true;
-    }
+              }
+            })
+        .start();
+    return true;
+  }
 
-    private long getDateTaken() {
-        // TODO: 16/08/16 improved
-        Date dateOriginal = metadata.getDateOriginal();
-        if (dateOriginal != null) return metadata.getDateOriginal().getTime();
-        return -1;
-    }
+  private long getDateTaken() {
+    // TODO: 16/08/16 improved
+    Date dateOriginal = metadata.getDateOriginal();
+    if (dateOriginal != null) return metadata.getDateOriginal().getTime();
+    return -1;
+  }
 
-    public File getFile() {
-        if (path != null) return new File(path);
-        return null;
-    }
+  public File getFile() {
+    if (path != null) return new File(path);
+    return null;
+  }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
+  @Override
+  public int describeContents() {
+    return 0;
+  }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.path);
-        dest.writeLong(this.dateModified);
-        dest.writeString(this.mimeType);
-        dest.writeLong(this.size);
-        dest.writeByte(this.selected ? (byte) 1 : (byte) 0);
-    }
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(this.path);
+    dest.writeLong(this.dateModified);
+    dest.writeString(this.mimeType);
+    dest.writeLong(this.size);
+    dest.writeByte(this.selected ? (byte) 1 : (byte) 0);
+  }
 
-    protected Media(Parcel in) {
-        this.path = in.readString();
-        this.dateModified = in.readLong();
-        this.mimeType = in.readString();
-        this.size = in.readLong();
-        this.selected = in.readByte() != 0;
-    }
+  protected Media(Parcel in) {
+    this.path = in.readString();
+    this.dateModified = in.readLong();
+    this.mimeType = in.readString();
+    this.size = in.readLong();
+    this.selected = in.readByte() != 0;
+  }
 
-    public static final Creator<Media> CREATOR = new Creator<Media>() {
+  public static final Creator<Media> CREATOR =
+      new Creator<Media>() {
         @Override
         public Media createFromParcel(Parcel source) {
-            return new Media(source);
+          return new Media(source);
         }
 
         @Override
         public Media[] newArray(int size) {
-            return new Media[size];
+          return new Media[size];
         }
-    };
+      };
 
-    public int getOrientation() {
-        return orientation;
+  public int getOrientation() {
+    return orientation;
+  }
+
+  // <editor-fold desc="Thumbnail Tests">
+  @TestOnly
+  public byte[] getThumbnail() {
+
+    ExifInterface exif;
+    try {
+      exif = new ExifInterface(path);
+    } catch (IOException e) {
+      return null;
     }
+    if (exif.hasThumbnail()) return exif.getThumbnail();
+    return null;
 
-    //<editor-fold desc="Thumbnail Tests">
-    @TestOnly public byte[] getThumbnail() {
+    // NOTE: ExifInterface is faster than metadata-extractor to getValue the thumbnail data
+    /*try {
+        Metadata metadata = ImageMetadataReader.readMetadata(new File(getMediaPath()));
+        ExifThumbnailDirectory thumbnailDirectory = metadata.getFirstDirectoryOfType(ExifThumbnailDirectory.class);
+        if (thumbnailDirectory.hasThumbnailData())
+            return thumbnailDirectory.getThumbnailData();
+    } catch (Exception e) { return null; }*/
+  }
 
-        ExifInterface exif;
-        try {
-            exif = new ExifInterface(path);
-        } catch (IOException e) {
-            return null;
-        }
-        if (exif.hasThumbnail())
-            return exif.getThumbnail();
-        return null;
-
-        // NOTE: ExifInterface is faster than metadata-extractor to getValue the thumbnail data
-        /*try {
-            Metadata metadata = ImageMetadataReader.readMetadata(new File(getMediaPath()));
-            ExifThumbnailDirectory thumbnailDirectory = metadata.getFirstDirectoryOfType(ExifThumbnailDirectory.class);
-            if (thumbnailDirectory.hasThumbnailData())
-                return thumbnailDirectory.getThumbnailData();
-        } catch (Exception e) { return null; }*/
-    }
-
-    @TestOnly public String getThumbnail(Context context) {
-        /*Cursor cursor = MediaStore.Images.Thumbnails.queryMiniThumbnail(
-                context.getContentResolver(), id,
-                MediaStore.Images.Thumbnails.MINI_KIND,
-                new String[]{ MediaStore.Images.Thumbnails.DATA } );
-        if(cursor.moveToFirst())
-            return cursor.getString(cursor.getColumnIndex(MediaStore.Images.Thumbnails.DATA));
-        return null;*/
-        return null;
-    }
-    //</editor-fold>
+  @TestOnly
+  public String getThumbnail(Context context) {
+    /*Cursor cursor = MediaStore.Images.Thumbnails.queryMiniThumbnail(
+            context.getContentResolver(), id,
+            MediaStore.Images.Thumbnails.MINI_KIND,
+            new String[]{ MediaStore.Images.Thumbnails.DATA } );
+    if(cursor.moveToFirst())
+        return cursor.getString(cursor.getColumnIndex(MediaStore.Images.Thumbnails.DATA));
+    return null;*/
+    return null;
+  }
+  // </editor-fold>
 }
