@@ -184,6 +184,7 @@
     <dimen name="size_250">250dp</dimen>
     <dimen name="size_300">300dp</dimen>
     <dimen name="size_321">321dp</dimen>
+    <dimen name="size_500">500dp</dimen>
     <dimen name="gallery_spacing">5dp</dimen>
 
 </resources>

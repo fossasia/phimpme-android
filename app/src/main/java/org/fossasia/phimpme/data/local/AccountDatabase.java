@@ -6,104 +6,114 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Created by pa1pal on 08/06/17.
  *
- * Model class for accounts. Where we store relevant details related to accounts, which we required
- * to access their SDKs and APIs
+ * <p>Model class for accounts. Where we store relevant details related to accounts, which we
+ * required to access their SDKs and APIs
  */
+public class AccountDatabase extends RealmObject {
 
-public class AccountDatabase extends RealmObject{
+  /*Add hidden account option in last and increase the count option in hideInAccount variable*/
 
-    /*Add hidden account option in last and increase the count option in hideInAccount variable*/
+  public enum AccountName {
+    TWITTER,
+    NEXTCLOUD
+    // , DRUPAL, WORDPRESS
+    ,
+    PINTEREST,
+    FLICKR,
+    IMGUR,
+    DROPBOX,
+    OWNCLOUD,
+    BOX,
+    TUMBLR,
+    INSTAGRAM,
+    WHATSAPP,
+    MESSENGER,
+    SNAPCHAT,
+    OTHERS
+  }
 
+  public static int HIDEINACCOUNTS = 6;
 
-    public enum AccountName {
-        TWITTER, NEXTCLOUD
-        //, DRUPAL, WORDPRESS
-        , PINTEREST, FLICKR, IMGUR, DROPBOX, OWNCLOUD, BOX, TUMBLR, INSTAGRAM, WHATSAPP, MESSENGER , SNAPCHAT, OTHERS
-    }
-    public static int HIDEINACCOUNTS = 6;
+  @PrimaryKey String name;
+  String username;
+  String userId;
+  String token;
+  String tokenSecret;
+  String password;
+  String serverUrl;
 
-    @PrimaryKey
-    String name;
-    String username;
-    String userId;
-    String token;
-    String tokenSecret;
-    String password;
-    String serverUrl;
+  public String accountname;
+  public String secret;
 
-    public String accountname;
-    public String secret;
+  public String getSecret() {
+    return secret;
+  }
 
-    public String getSecret() {
-        return secret;
-    }
+  public void setSecret(String secret) {
+    this.secret = secret;
+  }
 
-    public void setSecret(String secret) {
-        this.secret = secret;
-    }
+  public String getName() {
+    return name;
+  }
 
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    public String getName() {
-        return name;
-    }
+  public String getUsername() {
+    return username;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setUsername(String username) {
+    this.username = username;
+  }
 
-    public String getUsername() {
-        return username;
-    }
+  public String getUserId() {
+    return userId;
+  }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+  public void setUserId(String userId) {
+    this.userId = userId;
+  }
 
-    public String getUserId() {
-        return userId;
-    }
+  public String getToken() {
+    return token;
+  }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+  public void setToken(String token) {
+    this.token = token;
+  }
 
-    public String getToken() {
-        return token;
-    }
+  public String getTokenSecret() {
+    return tokenSecret;
+  }
 
-    public void setToken(String token) {
-        this.token = token;
-    }
+  public void setTokenSecret(String tokenSecret) {
+    this.tokenSecret = tokenSecret;
+  }
 
-    public String getTokenSecret() {
-        return tokenSecret;
-    }
+  public String getPassword() {
+    return password;
+  }
 
-    public void setTokenSecret(String tokenSecret) {
-        this.tokenSecret = tokenSecret;
-    }
+  public void setPassword(String password) {
+    this.password = password;
+  }
 
-    public String getPassword() {
-        return password;
-    }
+  public String getServerUrl() {
+    return serverUrl;
+  }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+  public void setServerUrl(String serverUrl) {
+    this.serverUrl = serverUrl;
+  }
 
-    public String getServerUrl() {
-        return serverUrl;
-    }
+  public AccountName getAccountname() {
+    return AccountName.valueOf(accountname);
+  }
 
-    public void setServerUrl(String serverUrl) {
-        this.serverUrl = serverUrl;
-    }
-
-    public AccountName getAccountname() {
-        return AccountName.valueOf(accountname);
-    }
-
-    public void setAccountname(AccountName accountname) {
-        this.accountname = accountname.toString();
-    }
+  public void setAccountname(AccountName accountname) {
+    this.accountname = accountname.toString();
+  }
 }

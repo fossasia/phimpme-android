@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="org.fossasia.phimpme"
-    android:versionCode="9"
-    android:versionName="1.7.0">
+    android:versionCode="10"
+    android:versionName="1.7.1">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
@@ -278,17 +278,6 @@
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.ABOUT" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".gallery.activities.SecurityActivity"
-            android:configChanges="orientation|screenSize"
-            android:label="@string/security"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.SECURITY" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

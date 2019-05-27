@@ -75,13 +75,14 @@ before_script:
   - ./scripts/prepare_avd.sh
 
 script:
+  - ./gradlew spotlessCheck
   - ./scripts/copy_opencv.sh
   - ./scripts/main_script.sh
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
   - bash scripts/prep-key.sh
-  - 'if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./scripts/uploadapk_updated_script.sh; fi'
+  - bash scripts/update-apk.sh
 
 notifications:
   slack: fossasia:JgzycrBUs0nKnmJhsAxCB4bL
