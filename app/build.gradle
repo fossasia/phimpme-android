@@ -29,6 +29,8 @@ android {
         applicationId "org.fossasia.phimpme"
         minSdkVersion 21
         targetSdkVersion 26
+        versionCode 10
+        versionName '1.7.1'
         multiDexEnabled true
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
         vectorDrawables.useSupportLibrary = true
