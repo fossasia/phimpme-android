@@ -1,6 +1,6 @@
 language: android
 jdk: oraclejdk8
-
+sudo: false
 env:
   global:
     - ANDROID_API_LEVEL=22
@@ -9,10 +9,6 @@ env:
     - ANDROID_TAG=google_apis
     - ANDROID_TARGET=android-25
     - ADB_INSTALL_TIMEOUT=20 # minutes (2 minutes by default)
-  matrix:
-    - COMPONENT=BUILD
-    - COMPONENT=CONNECTED_TEST
-    - COMPONENT=ASSEMBLE_RELEASE
 
 android:
   components:
@@ -72,12 +68,17 @@ licenses:
 
 before_script:
   - ./scripts/download_open_cv.sh
-  - ./scripts/prepare_avd.sh
+  - echo "Starting AVD"
+  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
+  - emulator -avd test -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
 
 script:
   - ./gradlew spotlessCheck
   - ./scripts/copy_opencv.sh
-  - ./scripts/main_script.sh
+  - ./gradlew build
+  - ./gradlew build connectedAndroidTest jacocoTestReport --stacktrace
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
