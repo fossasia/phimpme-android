@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
+        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.4'
     }
 }
 
@@ -22,13 +22,13 @@ def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.3"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
         applicationId "org.fossasia.phimpme"
         minSdkVersion 21
-        targetSdkVersion 26
+        targetSdkVersion 28
         versionCode 10
         versionName '1.7.1'
         multiDexEnabled true

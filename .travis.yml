@@ -30,7 +30,7 @@ android:
     - '.+'
     # Specify at least one system image
     - sys-img-armeabi-v7a-android-$ANDROID_API_LEVEL
-    
+
 # prevents reuploading of Cache
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -62,9 +62,9 @@ install:
   - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
 
 licenses:
-    - 'android-sdk-preview-license-.+'
-    - 'android-sdk-license-.+'
-    - 'google-gdk-license-.+'
+   - 'android-sdk-preview-license-.+'
+   - 'android-sdk-license-.+'
+   - 'google-gdk-license-.+'
 
 before_script:
   - ./scripts/download_open_cv.sh
@@ -87,3 +87,4 @@ after_success:
 
 notifications:
   slack: fossasia:JgzycrBUs0nKnmJhsAxCB4bL
+  
