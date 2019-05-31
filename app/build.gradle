@@ -3,7 +3,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
+        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.4'
     }
 }
 
@@ -22,13 +22,13 @@ def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.3"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.3"
 
     defaultConfig {
         applicationId "org.fossasia.phimpme"
         minSdkVersion 21
-        targetSdkVersion 26
+        targetSdkVersion 28
         versionCode 10
         versionName '1.7.1'
         multiDexEnabled true
@@ -36,7 +36,7 @@ android {
         vectorDrawables.useSupportLibrary = true
         resConfigs "en"
         ndk {
-            abiFilters 'armeabi-v7a', 'x86'
+            abiFilters 'armeabi-v7a','arm64-v8a','x86','x86_64'
         }
         renderscriptTargetApi 19
         renderscriptSupportModeEnabled true
@@ -196,7 +196,7 @@ dependencies {
     androidTestCompile 'com.google.code.findbugs:jsr305:3.0.0'
 
     //opencv
-    compile project(':openCVLibrary24133')
+    compile project(':openCV')
 
     //pdk
     compile project(':pdk')
