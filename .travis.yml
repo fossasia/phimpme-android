@@ -47,13 +47,11 @@ before_install:
   - mkdir "$ANDROID_HOME/licenses" || true
   - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
   - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
-  - export NDK_VERSION=r16b
-  - curl -L https://dl.google.com/android/repository/android-ndk-${NDK_VERSION}-linux-x86_64.zip -O
-  - chmod u+x android-ndk-${NDK_VERSION}-linux-x86_64.bin
-  - ./android-ndk-${NDK_VERSION}-linux-x86_64.bin > /dev/null
-  - rm android-ndk-${NDK_VERSION}-linux-x86_64.bin
-  - export ANDROID_NDK_HOME=`pwd`/android-ndk-${NDK_VERSION}
-  - export PATH=${ANDROID_NDK_HOME}:${PATH}
+  - curl https://dl.google.com/android/repository/android-ndk-r16b-linux-x86_64.zip -o android-ndk-r16b.zip
+  - unzip -q android-ndk-r16b.zip && rm android-ndk-r16b.zip
+  - mv android-ndk-r16b $HOME
+  - export ANDROID_NDK=$HOME/android-ndk-r16b
+
 
 install:
   - sdkmanager --list || true
