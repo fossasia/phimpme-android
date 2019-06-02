@@ -51,8 +51,7 @@ before_install:
   - unzip -q android-ndk-r16b.zip && rm android-ndk-r16b.zip
   - mv android-ndk-r16b $HOME
   - export ANDROID_NDK=$HOME/android-ndk-r16b
-  - export ANDROID_NDK_HOME=`pwd`/android-ndk-r16b
-  - export PATH=${ANDROID_NDK_HOME}:${PATH}
+
 
 install:
   - sdkmanager --list || true
@@ -61,9 +60,9 @@ install:
   - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
 
 licenses:
-   - 'android-sdk-preview-license-.+'
-   - 'android-sdk-license-.+'
-   - 'google-gdk-license-.+'
+  - 'android-sdk-preview-license-.+'
+  - 'android-sdk-license-.+'
+  - 'google-gdk-license-.+'
 
 before_script:
   - ./scripts/download_open_cv.sh
@@ -86,4 +85,3 @@ after_success:
 
 notifications:
   slack: fossasia:JgzycrBUs0nKnmJhsAxCB4bL
-  
