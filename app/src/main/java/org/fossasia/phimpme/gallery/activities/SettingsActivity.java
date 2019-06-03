@@ -4,7 +4,6 @@ import static android.preference.PreferenceManager.getDefaultSharedPreferences;
 
 import android.annotation.TargetApi;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -41,10 +40,8 @@ import org.fossasia.phimpme.gallery.util.ColorPalette;
 import org.fossasia.phimpme.gallery.util.PreferenceUtil;
 import org.fossasia.phimpme.gallery.util.StaticMapProvider;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
-import org.fossasia.phimpme.opencamera.Camera.CameraActivity;
 import org.fossasia.phimpme.opencamera.Camera.MyPreferenceFragment;
 import org.fossasia.phimpme.opencamera.Camera.PreferenceKeys;
-import org.fossasia.phimpme.opencamera.Camera.TinyDB;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import uz.shift.colorpicker.LineColorPicker;
 import uz.shift.colorpicker.OnColorChangedListener;
@@ -112,7 +109,7 @@ public class SettingsActivity extends ThemedActivity {
             new View.OnClickListener() {
               @Override
               public void onClick(View v) {
-                openCameraSetting(SettingsActivity.this);
+                openCameraSetting();
               }
             });
 
@@ -1241,55 +1238,15 @@ public class SettingsActivity extends ThemedActivity {
         alertDialog);
   }
 
-  private void openDialog(final Context context) {
-    AlertDialog.Builder passwordDialogBuilder =
-        new AlertDialog.Builder(SettingsActivity.this, getDialogStyle());
-    passwordDialogBuilder.setNegativeButton(getString(R.string.cancel).toUpperCase(), null);
-
-    passwordDialogBuilder.setPositiveButton(
-        getString(R.string.ok_action).toUpperCase(),
-        new DialogInterface.OnClickListener() {
-          @Override
-          public void onClick(DialogInterface dialog, int which) {
-            // This should br empty it will be overwrite later
-            // to avoid dismiss of the dialog on wrong password
-          }
-        });
-    final AlertDialog passwordDialog = passwordDialogBuilder.create();
-    passwordDialog.setTitle(R.string.camera_setting_title);
-    passwordDialog.setMessage(getString(R.string.camera_support_options));
-    passwordDialog.show();
-    AlertDialogsHelper.setButtonTextColor(
-        new int[] {DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE},
-        getAccentColor(),
-        passwordDialog);
-
-    passwordDialog
-        .getButton(AlertDialog.BUTTON_POSITIVE)
-        .setOnClickListener(
-            new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                startActivity(new Intent(context, CameraActivity.class));
-                finish();
-              }
-            });
-  }
-
-  private void openCameraSetting(final Context context) {
-    TinyDB tinyDB = new TinyDB(context);
-    if (tinyDB.getListInt("resolution_widths").size() != 0) {
-      setToolbarCamera(true);
-      MyPreferenceFragment fragment = new MyPreferenceFragment();
-      getFragmentManager()
-          .beginTransaction()
-          .add(R.id.pref_container, fragment, "PREFERENCE_FRAGMENT")
-          .addToBackStack(null)
-          .commitAllowingStateLoss();
-      findViewById(R.id.settingAct_scrollView).setVisibility(View.GONE);
-    } else {
-      openDialog(context);
-    }
+  private void openCameraSetting() {
+    setToolbarCamera(true);
+    MyPreferenceFragment fragment = new MyPreferenceFragment();
+    getFragmentManager()
+        .beginTransaction()
+        .add(R.id.pref_container, fragment, "PREFERENCE_FRAGMENT")
+        .addToBackStack(null)
+        .commitAllowingStateLoss();
+    findViewById(R.id.settingAct_scrollView).setVisibility(View.GONE);
   }
 
   public boolean isUsingSAF() {
