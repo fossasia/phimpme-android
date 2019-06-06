@@ -3,6 +3,7 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <enhance.h>
 #include <filters.h>
+#include <opencv2/imgproc/types_c.h>
 
 using namespace std;
 using namespace cv;
