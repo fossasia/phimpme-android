@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 mkdir app/src/main/3rdparty
-rm -rf app/src/main/jni/include
 mkdir app/src/main/jniLibs
 mkdir app/src/main/staticlibs
 mkdir app/src/main/jni/include
