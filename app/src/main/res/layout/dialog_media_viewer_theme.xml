@@ -42,7 +42,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="6"
                     android:orientation="vertical"
-                    android:paddingLeft="@dimen/sub_big_spacing">
+                    android:paddingStart="@dimen/sub_big_spacing">
 
                     <TextView
                         android:id="@+id/apply_theme_3thAct_title"
@@ -72,7 +72,7 @@
                     android:button="@null"
                     android:gravity="center"
                     android:hapticFeedbackEnabled="true"
-                    android:paddingRight="@dimen/alternate_half_padding" />
+                    android:paddingEnd="@dimen/alternate_half_padding" />
             </LinearLayout>
 
             <!-- TRANSPARENCY -->
@@ -90,7 +90,7 @@
                         android:id="@+id/seek_bar_alpha_title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="@dimen/sub_big_spacing"
+                        android:paddingStart="@dimen/sub_big_spacing"
                         android:text="@string/transparency"
                         android:textColor="@color/md_dark_background"
                         android:textSize="@dimen/medium_text" />
@@ -99,7 +99,7 @@
                         android:id="@+id/seek_bar_alpha_title_Sub"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="@dimen/sub_big_spacing"
+                        android:paddingStart="@dimen/sub_big_spacing"
                         android:text="@string/transparency_sub"
                         android:textColor="@color/md_grey_400"
                         android:textSize="@dimen/sub_medium_text" />
@@ -109,8 +109,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingLeft="@dimen/large_padding"
-                    android:paddingRight="@dimen/large_padding"
+                    android:paddingStart="@dimen/large_padding"
+                    android:paddingEnd="@dimen/large_padding"
                     android:visibility="gone">
 
                     <uz.shift.colorpicker.LineColorPicker 
@@ -129,8 +129,8 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:orientation="vertical"
-                android:paddingLeft="@dimen/large_padding"
-                android:paddingRight="@dimen/large_padding">
+                android:paddingStart="@dimen/large_padding"
+                android:paddingEnd="@dimen/large_padding">
 
                 <uz.shift.colorpicker.LineColorPicker xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/pickerTransparent"

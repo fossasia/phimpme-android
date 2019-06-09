@@ -12,8 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/small_margin"
-        android:layout_marginRight="@dimen/small_margin"
+        android:layout_marginStart="@dimen/small_margin"
+        android:layout_marginEnd="@dimen/small_margin"
         card_view:cardBackgroundColor="@color/white"
         android:theme="@style/CardView.Light"
         android:layout_marginTop="@dimen/very_small_margin"
@@ -84,7 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="@dimen/zero"
+                android:layout_marginStart="@dimen/zero"
                 android:layout_weight="1"
                 app:theme="@style/CustomSwitch"/>
 
