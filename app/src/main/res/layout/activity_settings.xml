@@ -55,7 +55,7 @@
                         android:id="@+id/general_setting_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="@dimen/medium_spacing"
+                        android:paddingStart="@dimen/medium_spacing"
                         android:paddingTop="@dimen/medium_spacing"
                         android:text="@string/general"
                         android:textColor="@color/md_dark_background"
@@ -77,8 +77,8 @@
                             android:layout_width="@dimen/icon_width_height"
                             android:layout_height="@dimen/icon_width_height"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/big_spacing"
-                            android:layout_marginRight="@dimen/big_spacing"
+                            android:layout_marginStart="@dimen/big_spacing"
+                            android:layout_marginEnd="@dimen/big_spacing"
                             app:iiv_icon="faw-camera" />
 
                         <LinearLayout
@@ -86,7 +86,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:paddingBottom="@dimen/small_spacing"
-                            android:paddingRight="@dimen/medium_spacing"
+                            android:paddingEnd="@dimen/medium_spacing"
                             android:paddingTop="@dimen/medium_spacing">
 
                             <TextView
@@ -122,8 +122,8 @@
                             android:layout_width="@dimen/icon_width_height"
                             android:layout_height="@dimen/icon_width_height"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/big_spacing"
-                            android:layout_marginRight="@dimen/big_spacing"
+                            android:layout_marginStart="@dimen/big_spacing"
+                            android:layout_marginEnd="@dimen/big_spacing"
                             app:iiv_icon="gmd-view-column" />
 
                         <LinearLayout
@@ -131,7 +131,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:paddingBottom="@dimen/small_spacing"
-                            android:paddingRight="@dimen/medium_spacing"
+                            android:paddingEnd="@dimen/medium_spacing"
                             android:paddingTop="@dimen/sub_small_spacing">
 
                             <TextView
@@ -167,8 +167,8 @@
                             android:layout_width="@dimen/icon_width_height"
                             android:layout_height="@dimen/icon_width_height"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/big_spacing"
-                            android:layout_marginRight="@dimen/big_spacing"
+                            android:layout_marginStart="@dimen/big_spacing"
+                            android:layout_marginEnd="@dimen/big_spacing"
                             app:iiv_icon="gmd-folder" />
 
                         <LinearLayout
@@ -176,7 +176,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:paddingBottom="@dimen/small_spacing"
-                            android:paddingRight="@dimen/medium_spacing"
+                            android:paddingEnd="@dimen/medium_spacing"
                             android:paddingTop="@dimen/small_spacing">
 
                             <TextView
@@ -220,7 +220,7 @@
                         android:id="@+id/theme_setting_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="@dimen/medium_spacing"
+                        android:paddingStart="@dimen/medium_spacing"
                         android:paddingTop="@dimen/medium_spacing"
                         android:text="@string/theme"
                         android:textColor="@color/md_dark_background"
@@ -242,8 +242,8 @@
                             android:layout_width="@dimen/icon_width_height"
                             android:layout_height="@dimen/icon_width_height"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/big_spacing"
-                            android:layout_marginRight="@dimen/big_spacing"
+                            android:layout_marginStart="@dimen/big_spacing"
+                            android:layout_marginEnd="@dimen/big_spacing"
                             app:iiv_icon="gmd-invert-colors" />
 
                         <LinearLayout
@@ -251,7 +251,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:paddingBottom="@dimen/small_spacing"
-                            android:paddingRight="@dimen/medium_spacing"
+                            android:paddingEnd="@dimen/medium_spacing"
                             android:paddingTop="@dimen/medium_spacing">
 
                             <TextView
@@ -287,8 +287,8 @@
                             android:layout_width="@dimen/icon_width_height"
                             android:layout_height="@dimen/icon_width_height"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/big_spacing"
-                            android:layout_marginRight="@dimen/big_spacing"
+                            android:layout_marginStart="@dimen/big_spacing"
+                            android:layout_marginEnd="@dimen/big_spacing"
                             app:iiv_icon="gmd-color-lens" />
 
                         <LinearLayout
@@ -296,7 +296,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:paddingBottom="@dimen/small_spacing"
-                            android:paddingRight="@dimen/medium_spacing"
+                            android:paddingEnd="@dimen/medium_spacing"
                             android:paddingTop="@dimen/small_spacing">
 
                             <TextView
@@ -332,8 +332,8 @@
                             android:layout_width="@dimen/icon_width_height"
                             android:layout_height="@dimen/icon_width_height"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/big_spacing"
-                            android:layout_marginRight="@dimen/big_spacing"
+                            android:layout_marginStart="@dimen/big_spacing"
+                            android:layout_marginEnd="@dimen/big_spacing"
                             app:iiv_icon="gmd-format-color-fill" />
 
                         <LinearLayout
@@ -341,7 +341,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:paddingBottom="@dimen/small_spacing"
-                            android:paddingRight="@dimen/medium_spacing"
+                            android:paddingEnd="@dimen/medium_spacing"
                             android:paddingTop="@dimen/small_spacing">
 
                             <TextView
@@ -377,8 +377,8 @@
                             android:layout_width="@dimen/icon_width_height"
                             android:layout_height="@dimen/icon_width_height"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/big_spacing"
-                            android:layout_marginRight="@dimen/big_spacing"
+                            android:layout_marginStart="@dimen/big_spacing"
+                            android:layout_marginEnd="@dimen/big_spacing"
                             app:iiv_icon="faw-paint-brush" />
 
                         <LinearLayout
@@ -386,7 +386,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:paddingBottom="@dimen/small_spacing"
-                            android:paddingRight="@dimen/medium_spacing"
+                            android:paddingEnd="@dimen/medium_spacing"
                             android:paddingTop="@dimen/small_spacing">
 
                             <TextView
@@ -422,8 +422,8 @@
                             android:layout_width="@dimen/icon_width_height"
                             android:layout_height="@dimen/icon_width_height"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/big_spacing"
-                            android:layout_marginRight="@dimen/big_spacing"
+                            android:layout_marginStart="@dimen/big_spacing"
+                            android:layout_marginEnd="@dimen/big_spacing"
                             app:iiv_icon="gmd-web-asset" />
 
                         <RelativeLayout
@@ -432,7 +432,7 @@
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
                             android:paddingBottom="@dimen/small_spacing"
-                            android:paddingRight="@dimen/medium_spacing"
+                            android:paddingEnd="@dimen/medium_spacing"
                             android:paddingTop="@dimen/small_spacing">
 
                             <LinearLayout
@@ -486,8 +486,8 @@
                             android:layout_width="@dimen/icon_width_height"
                             android:layout_height="@dimen/icon_width_height"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/big_spacing"
-                            android:layout_marginRight="@dimen/big_spacing"
+                            android:layout_marginStart="@dimen/big_spacing"
+                            android:layout_marginEnd="@dimen/big_spacing"
                             app:iiv_icon="gmd-video-label" />
 
                         <RelativeLayout
@@ -496,7 +496,7 @@
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
                             android:layout_marginBottom="@dimen/medium_spacing"
-                            android:paddingRight="@dimen/medium_spacing"
+                            android:paddingEnd="@dimen/medium_spacing"
                             android:paddingTop="@dimen/small_spacing">
 
                             <LinearLayout
@@ -558,7 +558,7 @@
                         android:id="@+id/picture_setting_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="@dimen/medium_spacing"
+                        android:paddingStart="@dimen/medium_spacing"
                         android:paddingTop="@dimen/medium_spacing"
                         android:text="@string/media_viewer"
                         android:textColor="@color/md_dark_background"
@@ -580,8 +580,8 @@
                             android:layout_width="@dimen/icon_width_height"
                             android:layout_height="@dimen/icon_width_height"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/big_spacing"
-                            android:layout_marginRight="@dimen/big_spacing"
+                            android:layout_marginStart="@dimen/big_spacing"
+                            android:layout_marginEnd="@dimen/big_spacing"
                             app:iiv_icon="gmd-settings-brightness" />
 
                         <RelativeLayout
@@ -590,7 +590,7 @@
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
                             android:paddingBottom="@dimen/small_spacing"
-                            android:paddingRight="@dimen/medium_spacing"
+                            android:paddingEnd="@dimen/medium_spacing"
                             android:paddingTop="@dimen/medium_spacing">
 
                             <LinearLayout
@@ -644,8 +644,8 @@
                             android:layout_width="@dimen/icon_width_height"
                             android:layout_height="@dimen/icon_width_height"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/big_spacing"
-                            android:layout_marginRight="@dimen/big_spacing"
+                            android:layout_marginStart="@dimen/big_spacing"
+                            android:layout_marginEnd="@dimen/big_spacing"
                             app:iiv_icon="gmd-screen-rotation" />
 
                         <RelativeLayout
@@ -654,7 +654,7 @@
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
                             android:paddingBottom="@dimen/medium_spacing"
-                            android:paddingRight="@dimen/medium_spacing"
+                            android:paddingEnd="@dimen/medium_spacing"
                             android:paddingTop="@dimen/small_spacing">
 
                             <LinearLayout
@@ -708,8 +708,8 @@
                             android:layout_width="@dimen/icon_width_height"
                             android:layout_height="@dimen/icon_width_height"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/big_spacing"
-                            android:layout_marginRight="@dimen/big_spacing"
+                            android:layout_marginStart="@dimen/big_spacing"
+                            android:layout_marginEnd="@dimen/big_spacing"
                             app:iiv_icon="gmd-image" />
 
                         <RelativeLayout
@@ -718,7 +718,7 @@
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
                             android:paddingBottom="@dimen/medium_spacing"
-                            android:paddingRight="@dimen/medium_spacing"
+                            android:paddingEnd="@dimen/medium_spacing"
                             android:paddingTop="@dimen/small_spacing">
 
                             <LinearLayout
@@ -773,8 +773,8 @@
                             android:layout_width="@dimen/icon_width_height"
                             android:layout_height="@dimen/icon_width_height"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/big_spacing"
-                            android:layout_marginRight="@dimen/big_spacing"
+                            android:layout_marginStart="@dimen/big_spacing"
+                            android:layout_marginEnd="@dimen/big_spacing"
                             app:iiv_icon="gmd-compare-arrows" />
 
                         <RelativeLayout
@@ -783,7 +783,7 @@
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
                             android:paddingBottom="@dimen/small_spacing"
-                            android:paddingRight="@dimen/medium_spacing"
+                            android:paddingEnd="@dimen/medium_spacing"
                             android:paddingTop="@dimen/medium_spacing">
 
                             <LinearLayout
@@ -845,7 +845,7 @@
                         android:id="@+id/advanced_setting_title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="@dimen/medium_spacing"
+                        android:paddingStart="@dimen/medium_spacing"
                         android:paddingTop="@dimen/medium_spacing"
                         android:text="@string/advanced"
                         android:textColor="@color/md_dark_background"
@@ -867,8 +867,8 @@
                             android:layout_width="@dimen/icon_width_height"
                             android:layout_height="@dimen/icon_width_height"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/big_spacing"
-                            android:layout_marginRight="@dimen/big_spacing"
+                            android:layout_marginStart="@dimen/big_spacing"
+                            android:layout_marginEnd="@dimen/big_spacing"
                             app:iiv_icon="faw-map-signs" />
 
                         <LinearLayout
@@ -876,7 +876,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:paddingBottom="@dimen/small_spacing"
-                            android:paddingRight="@dimen/medium_text"
+                            android:paddingEnd="@dimen/medium_text"
                             android:paddingTop="@dimen/small_spacing">
 
                             <TextView
@@ -912,8 +912,8 @@
                             android:layout_width="@dimen/icon_width_height"
                             android:layout_height="@dimen/icon_width_height"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/big_spacing"
-                            android:layout_marginRight="@dimen/big_spacing"
+                            android:layout_marginStart="@dimen/big_spacing"
+                            android:layout_marginEnd="@dimen/big_spacing"
                             app:iiv_icon="gmd-update" />
 
                         <RelativeLayout
@@ -922,7 +922,7 @@
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
                             android:paddingBottom="@dimen/small_spacing"
-                            android:paddingRight="@dimen/medium_spacing"
+                            android:paddingEnd="@dimen/medium_spacing"
                             android:paddingTop="@dimen/medium_spacing">
 
                             <LinearLayout
@@ -975,8 +975,8 @@
                             android:layout_width="@dimen/icon_width_height"
                             android:layout_height="@dimen/icon_width_height"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/big_spacing"
-                            android:layout_marginRight="@dimen/big_spacing"
+                            android:layout_marginStart="@dimen/big_spacing"
+                            android:layout_marginEnd="@dimen/big_spacing"
                             app:iiv_icon="gmd-power_settings_new" />
 
                         <RelativeLayout
@@ -985,7 +985,7 @@
                             android:gravity="center_vertical"
                             android:orientation="horizontal"
                             android:paddingBottom="@dimen/small_spacing"
-                            android:paddingRight="@dimen/medium_spacing"
+                            android:paddingEnd="@dimen/medium_spacing"
                             android:paddingTop="@dimen/medium_spacing">
 
                             <LinearLayout

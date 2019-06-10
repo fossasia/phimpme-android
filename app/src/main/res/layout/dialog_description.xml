@@ -43,7 +43,7 @@
                         android:hint="@string/description_hint"
                         android:textColorHint="@color/grey"
                         android:layout_margin="@dimen/sub_big_spacing"
-                        android:gravity="top|left"
+                        android:gravity="top|start"
                         android:inputType="textCapSentences|textMultiLine"
                         android:maxLength="2000"
                         android:maxLines="4"
@@ -51,7 +51,7 @@
                     <ImageButton
                         android:layout_width="@dimen/mic_image"
                         android:layout_height="@dimen/mic_image"
-                        android:layout_alignRight="@+id/description_edittxt"
+                        android:layout_alignEnd="@+id/description_edittxt"
                         app2:srcCompat="@drawable/ic_mic_black"
                         android:layout_gravity="center"
                         android:background="@color/transparent"

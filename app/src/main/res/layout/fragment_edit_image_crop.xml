@@ -9,10 +9,10 @@
         android:layout_width="@dimen/icon_item_image_size_main"
         android:layout_height="@dimen/editor_bottom_row_size"
         android:scaleType="fitCenter"
-        android:layout_marginRight="@dimen/alternate_half_margin"
-        android:layout_marginLeft="@dimen/alternate_half_margin"
+        android:layout_marginEnd="@dimen/alternate_half_margin"
+        android:layout_marginStart="@dimen/alternate_half_margin"
         android:layout_alignBottom="@+id/crop_hsv"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:background="?android:attr/selectableItemBackground"
         app:srcCompat="@drawable/ic_close_black_24dp" />
 
@@ -22,8 +22,8 @@
         android:orientation="vertical"
         android:id="@+id/crop_hsv"
         android:layout_height="@dimen/editor_bottom_row_size"
-        android:layout_toRightOf="@+id/crop_cancel"
-        android:layout_toLeftOf="@+id/crop_apply"
+        android:layout_toEndOf="@+id/crop_cancel"
+        android:layout_toStartOf="@+id/crop_apply"
         android:layout_weight="1" >
 
         <LinearLayout
@@ -47,11 +47,11 @@
         android:id="@+id/crop_apply"
         android:layout_width="@dimen/icon_item_image_size_main"
         android:layout_height="@dimen/editor_bottom_row_size"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:foregroundGravity="center_vertical"
         android:scaleType="fitCenter"
-        android:layout_marginRight="@dimen/alternate_half_margin"
-        android:layout_marginLeft="@dimen/alternate_half_margin"
+        android:layout_marginEnd="@dimen/alternate_half_margin"
+        android:layout_marginStart="@dimen/alternate_half_margin"
         android:background="?android:attr/selectableItemBackground"
         app:srcCompat="@drawable/ic_done_black_24dp" />
 </RelativeLayout>

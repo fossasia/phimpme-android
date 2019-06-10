@@ -31,8 +31,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:paddingTop="@dimen/medium_spacing"
-                android:paddingLeft="@dimen/medium_spacing"
-                android:paddingRight="@dimen/medium_spacing"
+                android:paddingStart="@dimen/medium_spacing"
+                android:paddingEnd="@dimen/medium_spacing"
                 >
                 <!--WHITE THEME-->
                 <LinearLayout
