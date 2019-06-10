@@ -1600,24 +1600,6 @@ public class LFMainActivity extends SharedMediaActivity {
     }
   }
 
-  private void showsnackbar(Boolean result) {
-    if (result) {
-      Snackbar snackbar =
-          SnackBarHandler.show(
-              mDrawerLayout,
-              getApplicationContext().getString(R.string.photo_deleted_msg),
-              navigationView.getHeight());
-      snackbar.show();
-    } else {
-      Snackbar snackbar =
-          SnackBarHandler.show(
-              mDrawerLayout,
-              getApplicationContext().getString(R.string.photo_deletion_failed),
-              navigationView.getHeight());
-      snackbar.show();
-    }
-  }
-
   private void checkNoSearchResults(String result, int length) {
     if (length > 0) {
       textView.setText(getString(R.string.null_search_result) + " " + '"' + result + '"');
@@ -2088,6 +2070,12 @@ public class LFMainActivity extends SharedMediaActivity {
                     getAlbum().clearSelectedPhotos();
                   } else {
                     succ = getAlbum().deleteSelectedMedia(getApplicationContext());
+                    Snackbar snackbar =
+                        SnackBarHandler.show(
+                            mDrawerLayout,
+                            getApplicationContext().getString(R.string.photo_deleted_msg),
+                            navigationView.getHeight());
+                    snackbar.show();
                   }
                 } else if (all_photos && !fav_photos) {
                   checkForShare(selectedMedias);
@@ -2120,6 +2108,12 @@ public class LFMainActivity extends SharedMediaActivity {
                                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
                         contentResolver.delete(deleteUri, null, null);
                         succ = true;
+                        Snackbar snackbar =
+                            SnackBarHandler.show(
+                                mDrawerLayout,
+                                getApplicationContext().getString(R.string.photo_deleted_msg),
+                                navigationView.getHeight());
+                        snackbar.show();
                       } else {
                         succ = false;
                         // File not found in media store DB
@@ -2162,6 +2156,12 @@ public class LFMainActivity extends SharedMediaActivity {
                   } else {
                     succ = getAlbums().deleteAlbum(getAlbum(), getApplicationContext());
                     getAlbum().getMedia().clear();
+                    Snackbar snackbar =
+                        SnackBarHandler.show(
+                            mDrawerLayout,
+                            getApplicationContext().getString(R.string.photo_deleted_msg),
+                            navigationView.getHeight());
+                    snackbar.show();
                   }
                 } else {
                   checkForShare(favouriteslist);
@@ -2190,6 +2190,12 @@ public class LFMainActivity extends SharedMediaActivity {
                 getAlbums().clearSelectedAlbums();
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                 albumsAdapter.notifyDataSetChanged();
+                Snackbar snackbar =
+                    SnackBarHandler.show(
+                        mDrawerLayout,
+                        getApplicationContext().getString(R.string.album_deleted),
+                        navigationView.getHeight());
+                snackbar.show();
               } else {
                 if (!all_photos && !fav_photos) {
                   // if all media in current album have been deleted, delete current album too.
@@ -2197,7 +2203,6 @@ public class LFMainActivity extends SharedMediaActivity {
                     getAlbums().removeCurrentAlbum();
                     albumsAdapter.notifyDataSetChanged();
                     displayAlbums();
-                    showsnackbar(succ);
                     swipeRefreshLayout.setRefreshing(true);
                   } else mediaAdapter.swapDataSet(getAlbum().getMedia(), false);
                 } else if (all_photos && !fav_photos) {
@@ -2205,7 +2210,6 @@ public class LFMainActivity extends SharedMediaActivity {
                   listAll = StorageProvider.getAllShownImages(LFMainActivity.this);
                   media = listAll;
                   size = listAll.size();
-                  showsnackbar(succ);
                   Collections.sort(
                       listAll,
                       MediaComparators.getComparator(
