@@ -21,8 +21,8 @@
         android:layout_weight="10"
         android:layout_marginBottom="@dimen/alternate_margin"
         android:layout_marginTop="@dimen/alternate_margin"
-        android:layout_marginLeft="@dimen/alternate_margin"
-        android:layout_marginRight="@dimen/alternate_margin"
+        android:layout_marginStart="@dimen/alternate_margin"
+        android:layout_marginEnd="@dimen/alternate_margin"
         android:layout_alignParentStart="true"
         android:scaleType="centerCrop"/>
 
@@ -38,12 +38,12 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:hint="Write Something"
-            android:layout_marginLeft="@dimen/share_margin"
+            android:layout_marginStart="@dimen/share_margin"
             android:id="@+id/edittext_share_caption"
             android:singleLine="true"
             android:maxLines="1"
-            android:layout_marginRight="@dimen/share_elevation"
-            android:layout_toLeftOf="@+id/button_mic"
+            android:layout_marginEnd="@dimen/share_elevation"
+            android:layout_toStartOf="@+id/button_mic"
             android:background="@android:color/transparent"
             android:textColorHint="@color/md_grey_600"/>
         <com.mikepenz.iconics.view.IconicsImageView
@@ -53,7 +53,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/alternate_margin"
+            android:layout_marginEnd="@dimen/alternate_margin"
             android:layout_alignParentEnd="true"
             android:scaleType="fitCenter"
             app:iiv_icon="faw-microphone"/>
@@ -65,8 +65,8 @@
         android:layout_height="@dimen/size_1"
         android:layout_above="@+id/bottom_view"
         android:id="@+id/divider1"
-        android:layout_marginLeft="@dimen/share_cell_margin_h"
-        android:layout_marginRight="@dimen/share_cell_margin_h"
+        android:layout_marginStart="@dimen/share_cell_margin_h"
+        android:layout_marginEnd="@dimen/share_cell_margin_h"
         android:background="@color/md_grey_400"/>
 
     <ScrollView

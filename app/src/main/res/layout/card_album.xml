@@ -57,8 +57,8 @@
                     android:id="@+id/album_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_toLeftOf="@+id/icon_pinned"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@+id/icon_pinned"
                     android:maxLines="1"
                     android:paddingEnd="@dimen/sub_big_spacing"
                     android:paddingLeft="@dimen/alternate_margin"
@@ -72,7 +72,7 @@
                     android:id="@+id/icon_pinned"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:paddingLeft="@dimen/alternate_padding"
                     android:paddingStart="@dimen/alternate_padding"
@@ -104,7 +104,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:paddingLeft="@dimen/alternate_padding"
-                    android:paddingRight="@dimen/alternate_padding"
+                    android:paddingEnd="@dimen/alternate_padding"
                     android:paddingStart="@dimen/alternate_padding"
                     android:paddingTop="@dimen/alternate_padding" />
 

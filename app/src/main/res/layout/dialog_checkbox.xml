@@ -38,8 +38,8 @@
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:paddingTop="@dimen/sub_big_spacing"
-              android:paddingRight="@dimen/sub_big_spacing"
-              android:paddingLeft="@dimen/sub_big_spacing"
+              android:paddingEnd="@dimen/sub_big_spacing"
+              android:paddingStart="@dimen/sub_big_spacing"
               android:singleLine="false"
               android:textSize="@dimen/medium_text"
           />
@@ -50,8 +50,8 @@
                       android:layout_height="wrap_content"
                       android:orientation="horizontal"
                       android:paddingTop="@dimen/alternate_half_padding"
-                      android:paddingLeft="@dimen/sub_big_spacing"
-                      android:paddingRight="@dimen/sub_big_spacing"
+                      android:paddingStart="@dimen/sub_big_spacing"
+                      android:paddingEnd="@dimen/sub_big_spacing"
                       android:weightSum="10">
           <CheckBox
               android:id="@+id/checkbox_text_dialog_cb"

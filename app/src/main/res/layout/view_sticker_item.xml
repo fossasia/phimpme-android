@@ -5,6 +5,6 @@
     android:layout_height="match_parent"
     android:maxHeight="@dimen/size_50dp"
     android:maxWidth="@dimen/size_50dp"
-    android:paddingLeft="@dimen/alternate_half_padding"
-    android:paddingRight="@dimen/alternate_half_padding"
+    android:paddingStart="@dimen/alternate_half_padding"
+    android:paddingEnd="@dimen/alternate_half_padding"
     android:scaleType="centerInside" />

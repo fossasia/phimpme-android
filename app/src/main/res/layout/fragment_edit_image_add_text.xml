@@ -9,8 +9,8 @@
         android:layout_width="@dimen/icon_item_image_size_main"
         android:layout_height="@dimen/editor_bottom_row_size"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="@dimen/alternate_half_margin"
-        android:layout_marginRight="@dimen/alternate_half_margin"
+        android:layout_marginStart="@dimen/alternate_half_margin"
+        android:layout_marginEnd="@dimen/alternate_half_margin"
         android:background="?android:attr/selectableItemBackground"
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/ic_close_black_24dp" />
@@ -22,7 +22,7 @@
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
         android:hint="@string/input_hint"
-        android:paddingLeft="@dimen/small_spacing" />
+        android:paddingStart="@dimen/small_spacing" />
 
     <CheckBox
         android:id="@+id/check_auto_newline"
@@ -54,8 +54,8 @@
         android:layout_width="@dimen/icon_item_image_size_main"
         android:layout_height="@dimen/editor_bottom_row_size"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="@dimen/alternate_half_margin"
-        android:layout_marginRight="@dimen/alternate_half_margin"
+        android:layout_marginStart="@dimen/alternate_half_margin"
+        android:layout_marginEnd="@dimen/alternate_half_margin"
         android:background="?android:attr/selectableItemBackground"
         android:scaleType="fitCenter"
         app:srcCompat="@drawable/ic_done_black_24dp" />

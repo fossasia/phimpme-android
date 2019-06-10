@@ -86,7 +86,7 @@
                                 android:gravity="center"
                                 android:checked="false"
                                 android:hapticFeedbackEnabled="true"
-                                android:paddingRight="@dimen/alternate_half_padding"
+                                android:paddingEnd="@dimen/alternate_half_padding"
                                 />
                         </LinearLayout>
 
@@ -138,7 +138,7 @@
                                 android:gravity="center"
                                 android:hapticFeedbackEnabled="true"
                                 android:checked="false"
-                                android:paddingRight="@dimen/alternate_half_padding"
+                                android:paddingEnd="@dimen/alternate_half_padding"
                                 />
                         </LinearLayout>
 
@@ -225,7 +225,7 @@
                                 android:layout_width="@dimen/zero"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="8"
-                                android:paddingRight="@dimen/large_padding"
+                                android:paddingEnd="@dimen/large_padding"
                                 android:orientation="vertical">
                                 <TextView
                                     android:id="@+id/affix_quality_title"
