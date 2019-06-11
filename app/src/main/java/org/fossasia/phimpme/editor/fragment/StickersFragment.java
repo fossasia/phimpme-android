@@ -1,5 +1,6 @@
 package org.fossasia.phimpme.editor.fragment;
 
+import android.content.DialogInterface;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -7,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,6 +31,7 @@ import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.task.StickerTask;
 import org.fossasia.phimpme.editor.view.StickerItem;
 import org.fossasia.phimpme.editor.view.StickerView;
+import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
 
 public class StickersFragment extends BaseEditFragment implements View.OnClickListener {
 
@@ -137,7 +140,30 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
   public void onClick(View v) {
     switch (v.getId()) {
       case R.id.sticker_apply:
-        applyStickers();
+        if (!mStickerView.getBank().isEmpty()) {
+          applyStickers();
+        } else {
+          new AlertDialog.Builder(getContext())
+              .setTitle(R.string.no_stickers)
+              .setMessage(R.string.exit_no_stickers)
+              .setPositiveButton(
+                  android.R.string.yes,
+                  new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                      dialog.dismiss();
+                      backToMain();
+                    }
+                  })
+              .setNegativeButton(
+                  android.R.string.cancel,
+                  new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                      dialog.dismiss();
+                    }
+                  })
+              .setIcon(R.drawable.ic_red_dialog_alert)
+              .show();
+        }
         break;
       case R.id.sticker_cancel:
         backToMain();
