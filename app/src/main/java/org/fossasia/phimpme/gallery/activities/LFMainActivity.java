@@ -686,7 +686,9 @@ public class LFMainActivity extends SharedMediaActivity {
                 findViewById(R.id.ll_drawer_Default).setBackgroundColor(getHighlightedItemColor());
                 tint();
               }
-              displayAlbums();
+              if (!albumsMode) {
+                displayAlbums();
+              }
               return true;
             }
             return LFMainActivity.super.onNavigationItemSelected(item);
