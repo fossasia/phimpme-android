@@ -1011,6 +1011,7 @@
     <string name="frame">Frame</string>
     <string name="write">Write</string>
     <string name="share">share</string>
+    <string name="compress">The image has been compressed successfully.</string>
 
     <!--ACCOUNTS-->
     <string name="internet_is_off">You are not connected to the internet</string>
