@@ -225,7 +225,7 @@
         android:title="@string/preference_category_camera_quality">
 
         <PreferenceScreen
-            android:icon="@drawable/take_photo_pref"
+            android:icon="@drawable/ic_photo_camera_white_48dp"
             android:key="preference_screen_photo_settings"
             android:persistent="false"
             android:title="@string/preference_screen_photo_settings">
@@ -388,14 +388,14 @@
         </PreferenceScreen>
 
         <PreferenceScreen
-            android:icon="@drawable/earth"
+            android:icon="@drawable/ic_location_on_black_48dp"
             android:key="preference_screen_location_settings"
             android:persistent="false"
             android:title="@string/preference_screen_location_settings">
 
             <CheckBoxPreference
                 android:defaultValue="false"
-                android:icon="@drawable/earth"
+                android:icon="@drawable/ic_location_on_black_48dp"
                 android:key="preference_location"
                 android:summary="@string/preference_location_summary"
                 android:title="@string/preference_location" />
