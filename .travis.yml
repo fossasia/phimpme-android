@@ -29,7 +29,7 @@ android:
     - android-sdk-license-.+
     - '.+'
     # Specify at least one system image
-    - sys-img-armeabi-v7a-android-$ANDROID_API_LEVEL
+    - sys-img-armeabi-v7a-android-22
 
 # prevents reuploading of Cache
 before_cache:
@@ -60,7 +60,7 @@ licenses:
 before_script:
   - ./scripts/download_open_cv.sh
   - echo "Starting AVD"
-  - echo no | android create avd --force -n test -t android-28 --abi x86
+  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
   - emulator -avd test -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
