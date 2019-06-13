@@ -29,7 +29,7 @@ android:
     - android-sdk-license-.+
     - '.+'
     # Specify at least one system image
-    - sys-img-armeabi-v7a-android-22
+    - sys-img-arm64-v8a-android-26
 
 # prevents reuploading of Cache
 before_cache:
@@ -44,9 +44,6 @@ cache:
     - "$HOME/.android/build-cache"
 
 before_install:
-  - mkdir "$ANDROID_HOME/licenses" || true
-  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
-  - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
   - curl https://dl.google.com/android/repository/android-ndk-r18b-linux-x86_64.zip -o android-ndk-r18b.zip
   - unzip -q android-ndk-r18b.zip && rm android-ndk-r18b.zip
   - mv android-ndk-r18b $HOME
@@ -57,10 +54,11 @@ licenses:
   - 'android-sdk-license-.+'
   - 'google-gdk-license-.+'
 
-before_script:
+install:
   - ./scripts/download_open_cv.sh
   - echo "Starting AVD"
-  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
+  - echo y | sdkmanager "platforms;android-26" >/dev/null # We need the API of the emulator we will run
+  - echo no | android create avd --force -n test -t android-28 --abi arm64-v8a
   - emulator -avd test -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
