@@ -52,7 +52,7 @@ licenses:
 install:
   - echo "Starting AVD"
   - echo no | android create avd --force -n test -t android-24 --abi armeabi-v7a
-  - emulator -avd test -no-audio -no-window &
+  - emulator -verbose -avd test -no-accel -no-snapshot -no-window -no-audio -camera-back none -camera-front none -selinux permissive -qemu -m 2048 &
   - curl https://dl.google.com/android/repository/android-ndk-r18b-linux-x86_64.zip -o android-ndk-r18b.zip
   - unzip -q android-ndk-r18b.zip && rm android-ndk-r18b.zip
   - mv android-ndk-r18b $HOME
