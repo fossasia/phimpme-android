@@ -100,7 +100,7 @@ public class FontPickerDialog extends DialogFragment {
     builder.setCustomTitle(titleLinearLayout);
 
     builder.setNegativeButton(
-        R.string.cancel,
+        getString(R.string.cancel).toUpperCase(),
         new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialog, int id) {
             // don't have to do anything on cancel

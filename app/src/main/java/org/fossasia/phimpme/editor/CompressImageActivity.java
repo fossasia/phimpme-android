@@ -126,7 +126,7 @@ public class CompressImageActivity extends ThemedActivity {
     // this is set the view from XML inside AlertDialog
     alert.setView(dialogLayout);
     alert.setNegativeButton(
-        getResources().getString(R.string.cancel),
+        getResources().getString(R.string.cancel).toUpperCase(),
         new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialog, int which) {
@@ -343,7 +343,7 @@ public class CompressImageActivity extends ThemedActivity {
     AlertDialog.Builder alert = new AlertDialog.Builder(this);
     alert.setView(dialogLayout);
     alert.setNegativeButton(
-        getResources().getString(R.string.cancel),
+        getResources().getString(R.string.cancel).toUpperCase(),
         new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialog, int which) {
