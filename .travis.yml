@@ -3,11 +3,11 @@ jdk: oraclejdk8
 sudo: false
 env:
   global:
-    - ANDROID_API_LEVEL=22
-    - ANDROID_BUILD_TOOLS_VERSION=25.0.3
+    - ANDROID_API_LEVEL=28
+    - ANDROID_BUILD_TOOLS_VERSION=28.0.3
     - ANDROID_ABI=armeabi-v7a arm64-v8a x86 x86_64
     - ANDROID_TAG=google_apis
-    - ANDROID_TARGET=android-25
+    - ANDROID_TARGET=android-28
     - ADB_INSTALL_TIMEOUT=20 # minutes (2 minutes by default)
 
 android:
@@ -51,13 +51,6 @@ before_install:
   - unzip -q android-ndk-r18b.zip && rm android-ndk-r18b.zip
   - mv android-ndk-r18b $HOME
   - export ANDROID_NDK=$HOME/android-ndk-r18b
-
-
-install:
-  - sdkmanager --list || true
-  - echo yes | ${ANDROID_HOME}/tools/bin/sdkmanager "platforms;android-26"
-  - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2"
-  - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
 
 licenses:
   - 'android-sdk-preview-license-.+'
