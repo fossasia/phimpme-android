@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import id.zelory.compressor.Compressor;
@@ -203,6 +204,7 @@ public class CompressImageActivity extends ThemedActivity {
       String name = saveFilePath.substring(saveFilePath.lastIndexOf("/") + 1);
       FileUtil.albumUpdate(context, FileUtilsCompress.createFolders().getPath() + "/" + name);
       dialog1.dismiss();
+      Toast.makeText(context, R.string.compress, Toast.LENGTH_SHORT).show();
     }
   }
 

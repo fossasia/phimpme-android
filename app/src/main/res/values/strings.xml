@@ -1013,6 +1013,7 @@
     <string name="share">share</string>
     <string name="no_stickers">No stickers applied !</string>
     <string name="exit_no_stickers">Are you sure you want to exit without adding any stickers?</string>
+    <string name="compress">The image has been compressed successfully.</string>
 
     <!--ACCOUNTS-->
     <string name="internet_is_off">You are not connected to the internet</string>
