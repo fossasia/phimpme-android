@@ -47,10 +47,16 @@ public class CompressImageActivity extends ThemedActivity {
   public int percentagecompress = 0;
   public final int[] cwidth = new int[1];
   public final int[] cheight = new int[1];
+  private boolean compressSize = false;
+  private boolean compressDim = false;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    if (savedInstanceState != null) {
+      compressSize = savedInstanceState.getBoolean("CompressSize", false);
+      compressDim = savedInstanceState.getBoolean("CompressDimension", false);
+    }
     setContentView(R.layout.activity_compress_image);
     initView();
     Button size = findViewById(R.id.size);
@@ -79,6 +85,18 @@ public class CompressImageActivity extends ThemedActivity {
             finish();
           }
         });
+    if (compressDim) {
+      compressDim();
+    } else if (compressSize) {
+      compressSize();
+    }
+  }
+
+  @Override
+  protected void onSaveInstanceState(Bundle savedInstanceState) {
+    super.onSaveInstanceState(savedInstanceState);
+    savedInstanceState.putBoolean("CompressSize", compressSize);
+    savedInstanceState.putBoolean("CompressDimension", compressDim);
   }
 
   private void initView() {
@@ -92,6 +110,7 @@ public class CompressImageActivity extends ThemedActivity {
 
   private void compressSize() {
 
+    compressSize = true;
     LayoutInflater inflater = getLayoutInflater();
     View dialogLayout = inflater.inflate(R.layout.dialog_compresssize, null);
     TextView title = dialogLayout.findViewById(R.id.compress_title);
@@ -130,6 +149,7 @@ public class CompressImageActivity extends ThemedActivity {
         new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialog, int which) {
+            compressSize = false;
             dialog.cancel();
           }
         });
@@ -296,6 +316,8 @@ public class CompressImageActivity extends ThemedActivity {
 
   // compress  image by dimensions
   private void compressDim() {
+
+    compressDim = true;
     ListCompressAdapter lviewAdapter;
     ArrayList<String> compress_option = new ArrayList<String>();
     MediaDetailsMap<String, String> mediaDetailsMap =
@@ -347,6 +369,7 @@ public class CompressImageActivity extends ThemedActivity {
         new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialog, int which) {
+            compressDim = false;
             dialog.cancel();
           }
         });
