@@ -29,8 +29,8 @@ android:
     - android-sdk-license-.+
     - '.+'
     # Specify at least one system image
-    - android-26
-    - sys-img-arm64-v8a-android-26
+    - android-24
+    - sys-img-armeabi-v7a-android-24
 
 # prevents reuploading of Cache
 before_cache:
@@ -58,7 +58,7 @@ licenses:
 install:
   - ./scripts/download_open_cv.sh
   - echo "Starting AVD"
-  - echo no | android create avd --force -n test -t android-26 --abi arm64-v8a
+  - echo no | android create avd --force -n test -t android-24 --abi arm64-v8a
   - emulator -avd test -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
