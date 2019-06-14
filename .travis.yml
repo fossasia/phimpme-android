@@ -29,8 +29,8 @@ android:
     - android-sdk-license-.+
     - '.+'
     # Specify at least one system image
-    - android-24
-    - sys-img-armeabi-v7a-android-24
+    - android-22
+    - sys-img-armeabi-v7a-android-22
 
 # prevents reuploading of Cache
 before_cache:
@@ -51,7 +51,7 @@ licenses:
 
 install:
   - echo "Starting AVD"
-  - echo no | android create avd --force -n test -t android-24 --abi armeabi-v7a
+  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
   - emulator -verbose -avd test -no-accel -no-snapshot -no-window -no-audio -camera-back none -camera-front none -selinux permissive -qemu -m 2048 &
   - curl https://dl.google.com/android/repository/android-ndk-r18b-linux-x86_64.zip -o android-ndk-r18b.zip
   - unzip -q android-ndk-r18b.zip && rm android-ndk-r18b.zip
