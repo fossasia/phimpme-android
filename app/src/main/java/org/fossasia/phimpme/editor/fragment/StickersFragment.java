@@ -31,7 +31,6 @@ import org.fossasia.phimpme.editor.EditImageActivity;
 import org.fossasia.phimpme.editor.task.StickerTask;
 import org.fossasia.phimpme.editor.view.StickerItem;
 import org.fossasia.phimpme.editor.view.StickerView;
-import org.fossasia.phimpme.gallery.util.AlertDialogsHelper;
 
 public class StickersFragment extends BaseEditFragment implements View.OnClickListener {
 
