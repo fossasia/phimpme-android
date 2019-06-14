@@ -148,6 +148,7 @@ public class SingleMediaActivity extends SharedMediaActivity
   private boolean details = false;
   private ArrayList<Media> favouriteslist;
   public static Media mediacompress = null;
+  private Menu menu;
 
   private ArrayList<Media> uploadhistory;
   private ArrayList<Media> trashbinlistd;
@@ -679,6 +680,7 @@ public class SingleMediaActivity extends SharedMediaActivity
   public boolean onCreateOptionsMenu(Menu menu) {
     // Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.menu_view_pager, menu);
+    this.menu = menu;
     return true;
   }
 
@@ -1756,6 +1758,8 @@ public class SingleMediaActivity extends SharedMediaActivity
               getApplicationContext(), getAlbum().getCurrentMedia().getPath());
           SnackBarHandler.showWithBottomMargin(
               parentView, getString(R.string.change_cover), bottomBar.getHeight());
+          MenuItem cover = menu.findItem(R.id.action_cover);
+          cover.setTitle("Remove cover image");
         }
 
         return true;
