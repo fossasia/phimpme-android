@@ -106,6 +106,7 @@ import org.fossasia.phimpme.gallery.util.StringUtils;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
 import org.fossasia.phimpme.gallery.views.PagerRecyclerView;
 import org.fossasia.phimpme.share.SharingActivity;
+import org.fossasia.phimpme.trashbin.TrashBinActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
@@ -866,8 +867,29 @@ public class SingleMediaActivity extends SharedMediaActivity
     if (!allPhotoMode && !favphotomode && !upoadhis && !trashdis) {
       if (AlertDialogsHelper.check) {
         success = addToTrash();
+        Snackbar snackbar =
+            SnackBarHandler.showWithBottomMargin(
+                parentView,
+                getString(R.string.trashbin_move_onefile),
+                bottomBar.getHeight() + navigationView.getHeight(),
+                Snackbar.LENGTH_SHORT);
+        snackbar.setAction(
+            R.string.open,
+            new View.OnClickListener() {
+              @Override
+              public void onClick(View view) {
+                startActivity(new Intent(SingleMediaActivity.this, TrashBinActivity.class));
+              }
+            });
+        snackbar.show();
       } else {
         success = getAlbum().deleteCurrentMedia(getApplicationContext());
+        Snackbar snackbar =
+            SnackBarHandler.showWithBottomMargin(
+                parentView,
+                getApplicationContext().getString(R.string.photo_deleted_msg),
+                bottomBar.getHeight() + navigationView.getHeight());
+        snackbar.show();
       }
       if (!success) {
         final AlertDialog.Builder dialogBuilder =

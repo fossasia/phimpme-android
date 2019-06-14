@@ -671,6 +671,7 @@
     <string name="new_folder_message">The new folder will be created in the current path, and
         then the media will be copied or moved in the new folder.
     </string>
+    <string name="album_deleted">Selected album(s) deleted</string>
     <string name="enter_time">Enter time interval</string>
     <string name="time_interval">Time interval (seconds) (>1sec)</string>
     <string name="discard_changes_message">Are you sure you want to discard all changes?</string>
@@ -728,6 +729,7 @@
     <string name="insert_a_name">Insert something</string>
     <string name="nothing_changed">Nothing changed!</string>
     <string name="install_shortcut">Install shortcut</string>
+    <string name="open">OPEN</string>
 
     <!--SETTINGS PREFERENCES-->
     <string name="general_setting">General Setting</string>
@@ -1353,7 +1355,7 @@
     <string name="slide_start">Slideshow Started!</string>
 
     <!-- Photo deletion toast messages -->
-    <string name="photo_deleted_msg">Photo deleted</string>
+    <string name="photo_deleted_msg">Photo(s) deleted</string>
     <string name="photo_deleted_from_fav_msg">Photo deleted from favourites</string>
     <string name="photo_deletion_failed">Photo deletion failed</string>
     <string name="remove">Remove</string>
