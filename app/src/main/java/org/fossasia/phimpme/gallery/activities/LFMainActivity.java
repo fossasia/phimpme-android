@@ -956,11 +956,13 @@ public class LFMainActivity extends SharedMediaActivity {
                       && spanCount < 6) {
                     if (getResources().getConfiguration().orientation
                         == Configuration.ORIENTATION_PORTRAIT) {
-                      if (albumsMode) SP.putInt("n_columns_folders", spanCount + 1);
-                      else SP.putInt("n_columns_media", spanCount + 1);
+                      if (albumsMode)
+                        SP.putInt(getString(R.string.n_columns_folders), spanCount + 1);
+                      else SP.putInt(getString(R.string.n_columns_media), spanCount + 1);
                     } else {
-                      if (albumsMode) SP.putInt("n_columns_folders_landscape", spanCount + 1);
-                      else SP.putInt("n_columns_media_landscape", spanCount + 1);
+                      if (albumsMode)
+                        SP.putInt(getString(R.string.n_columns_folders_landscape), spanCount + 1);
+                      else SP.putInt(getString(R.string.n_columns_media_landscape), spanCount + 1);
                     }
 
                     if (albumsMode) updateColumnsRvAlbums();
@@ -971,11 +973,13 @@ public class LFMainActivity extends SharedMediaActivity {
                       && spanCount > 1) {
                     if (getResources().getConfiguration().orientation
                         == Configuration.ORIENTATION_PORTRAIT) {
-                      if (albumsMode) SP.putInt("n_columns_folders", spanCount - 1);
-                      else SP.putInt("n_columns_media", spanCount - 1);
+                      if (albumsMode)
+                        SP.putInt(getString(R.string.n_columns_folders), spanCount - 1);
+                      else SP.putInt(getString(R.string.n_columns_media), spanCount - 1);
                     } else {
-                      if (albumsMode) SP.putInt("n_columns_folders_landscape", spanCount - 1);
-                      else SP.putInt("n_columns_media_landscape", spanCount - 1);
+                      if (albumsMode)
+                        SP.putInt(getString(R.string.n_columns_folders_landscape), spanCount - 1);
+                      else SP.putInt(getString(R.string.n_columns_media_landscape), spanCount - 1);
                     }
 
                     if (albumsMode) updateColumnsRvAlbums();
@@ -1150,14 +1154,14 @@ public class LFMainActivity extends SharedMediaActivity {
 
   public int columnsCount() {
     return getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT
-        ? SP.getInt("n_columns_folders", 2)
-        : SP.getInt("n_columns_folders_landscape", 3);
+        ? SP.getInt(getString(R.string.n_columns_folders), 2)
+        : SP.getInt(getString(R.string.n_columns_folders_landscape), 3);
   }
 
   public int mediaCount() {
     return getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT
-        ? SP.getInt("n_columns_media", 3)
-        : SP.getInt("n_columns_media_landscape", 4);
+        ? SP.getInt(getString(R.string.n_columns_media), 3)
+        : SP.getInt(getString(R.string.n_columns_media_landscape), 4);
   }
 
   private void updateColumnsRvs() {
