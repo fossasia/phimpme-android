@@ -55,7 +55,7 @@ public class ExcludedAlbumsActivity extends ThemedActivity {
         h.clearAlbumExclude(excludedFolders.remove(0).getAbsolutePath());
       }
       SnackBarHandler.show(
-              findViewById(R.id.rl_ea), "All folders are restored", Snackbar.LENGTH_SHORT)
+              findViewById(R.id.rl_ea), getString(R.string.folders_restored), Snackbar.LENGTH_SHORT)
           .show();
       new Handler()
           .postDelayed(

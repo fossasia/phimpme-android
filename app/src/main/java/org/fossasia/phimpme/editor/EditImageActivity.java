@@ -176,9 +176,9 @@ public class EditImageActivity extends EditBaseActivity
     ButterKnife.bind(this);
     initView();
     if (savedInstanceState != null) {
-      mode = savedInstanceState.getInt("PREVIOUS_FRAGMENT");
-      initalMiddleFragment = savedInstanceState.getInt("PREVIOUS_MIDDLE_FRAGMENT");
-      initalBottomFragment = savedInstanceState.getInt("PREVIOUS_BOTTOM_FRAGMENT");
+      mode = savedInstanceState.getInt(getString(R.string.frag_prev));
+      initalMiddleFragment = savedInstanceState.getInt(getString(R.string.frag_prev_mid));
+      initalBottomFragment = savedInstanceState.getInt(getString(R.string.frag_prev_bottom));
     }
     getData();
   }
@@ -203,7 +203,7 @@ public class EditImageActivity extends EditBaseActivity
       Bundle bundle = getIntent().getExtras();
       filePath = bundle.getString(FILE_PATH);
       saveFilePath = bundle.getString(EXTRA_OUTPUT);
-      requestCode = bundle.getInt("requestCode", 1);
+      requestCode = bundle.getInt(getString(R.string.request_code), 1);
       loadImage(filePath);
       return;
     }
@@ -677,9 +677,9 @@ public class EditImageActivity extends EditBaseActivity
   @Override
   protected void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
-    outState.putInt("PREVIOUS_MIDDLE_FRAGMENT", initalMiddleFragment);
-    outState.putInt("PREVIOUS_BOTTOM_FRAGMENT", initalBottomFragment);
-    outState.putInt("PREVIOUS_FRAGMENT", mode);
+    outState.putInt(getString(R.string.frag_prev_mid), initalMiddleFragment);
+    outState.putInt(getString(R.string.frag_prev_bottom), initalBottomFragment);
+    outState.putInt(getString(R.string.frag_prev), mode);
   }
 
   @Override

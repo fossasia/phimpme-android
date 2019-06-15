@@ -85,7 +85,7 @@ public class OwnCloudActivity extends AppCompatActivity implements Button.OnClic
       hostUrlLayout.setError(getString(R.string.err_msg_host));
       return false;
     } else if (!(hosturl.contains("http://") || hosturl.contains("https://"))) {
-      hostUrlLayout.setError("Please add the protocol http/ https");
+      hostUrlLayout.setError(getString(R.string.add_protocol));
       return false;
     } else {
       hostUrlLayout.setErrorEnabled(false);

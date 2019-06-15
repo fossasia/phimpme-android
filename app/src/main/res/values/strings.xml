@@ -1365,4 +1365,74 @@
     <string name="remove_favourite_menu">Remove from favourites</string>
     <string name="remove_favourites_body">Are you sure you want to remove the selected media from the favourites folder?
     </string>
+    <string name="saving">Saving</string>
+    <string name="frag_prev">PREVIOUS_FRAGMENT</string>
+    <string name="frag_prev_mid">PREVIOUS_MIDDLE_FRAGMENT</string>
+    <string name="frag_prev_bottom">PREVIOUS_BOTTOM_FRAGMENT</string>
+    <string name="folders_restored">All folders are restored</string>
+    <string name="n_columns_folders">n_columns_folders</string>
+    <string name="n_columns_media">n_columns_media</string>
+    <string name="n_columns_folders_landscape">n_columns_folders_landscape</string>
+    <string name="n_columns_media_landscape">n_columns_media_landscape</string>
+    <string name="website">https://org.fossasia.phimpme</string>
+    <string name="add_protocol">Please add the protocol http/ https</string>
+    <string name="two">2</string>
+    <string name="three">3</string>
+    <string name="four">4</string>
+    <string name="preference_resolution_widths">resolution_widths</string>
+    <string name="preference_PREFERENCE_FRAGMENT">PREFERENCE_FRAGMENT</string>
+    <string name="GIF_">GIF_</string>
+    <string name="_gif">.gif</string>
+    <string name="Phimpme_ImageZip">Phimpme_ImageZip</string>
+    <string name="ZIP_">ZIP_</string>
+    <string name="_zip">.zip</string>
+    <string name="gmd_invert_colors">gmd-invert-colors</string>
+    <string name="gmd_done">gmd-done</string>
+    <string name="Path">Path</string>
+    <string name="saved_image">/saved_images</string>
+    <string name="bit_width">bitmap size - width: </string>
+    <string name="height">, height:</string>
+    <string name="Phimpme_gifs">Phimpme_gifs</string>
+    <string name="nomedia">.nomedia/</string>
+    <string name="_nomedia">.nomedia</string>
+    <string name="pathname">pathname</string>
+    <string name="uploadHistory">uploadHistory</string>
+    <string name="uploadHistory_">uploadHistory/</string>
+    <string name="trashbin_path">trashbinpath</string>
+    <string name="crop_1_1">1:1</string>
+    <string name="crop_3_2">3:2</string>
+    <string name="crop_free">Free</string>
+    <string name="crop_7_5">7:5</string>
+    <string name="crop_16_9">16:9</string>
+    <string name="frames">frames</string>
+    <string name="png_">.png</string>
+    <string name="jpg">.jpg</string>
+    <string name="getassets">getAssets: </string>
+    <string name="assets">assets://</string>
+    <string name="image">image/</string>
+    <string name="Jpeg_">.jpeg</string>
+    <string name="Jpeg">jpeg</string>
+    <string name="PREVIOUS_FRAGMENT">PREVIOUS_FRAGMENT</string>
+    <string name="PREVIOUS_MIDDLE_FRAGMENT">PREVIOUS_MIDDLE_FRAGMENT</string>
+    <string name="PREVIOUS_BOTTOM_FRAGMENT">PREVIOUS_BOTTOM_FRAGMENT</string>
+    <string name="request_code">requestCode</string>
+    <string name="OTHERS">OTHERS</string>
+    <string name="UNDO">UNDO</string>
+    <string name="TAG">TAG</string>
+    <string name="lfmain">lfmain</string>
+    <string name="fav_photos">fav_photos</string>
+    <string name="favouriteslist">favouriteslist</string>
+    <string name="AccountsActivity">AccountsActivity</string>
+    <string name="dropboxAuthentication">dropboxAuthentication: </string>
+    <string name="text_plain">text/plain</string>
+    <string name="market">market://details?id=</string>
+    <string name="playstore">https://play.google.com/store/apps/details?id=</string>
+    <string name="twitter_phimpme">twitter://user?screen_name=phimpme</string>
+    <string name="twitter_phimpme_">https://twitter.com/#!/phimpme</string>
+    <string name="fb_1">com.facebook.katana</string>
+    <string name="fb_2">fb://facewebmodal/f?href=</string>
+    <string name="fb_3">https://www.facebook.com/phimpmeapp</string>
+    <string name="fb_4">fb://page/</string>
+    <string name="phimpmeapp">phimpmeapp</string>
+    <string name="fb_">https://www.facebook.com/phimpmeapp</string>
 </resources>
