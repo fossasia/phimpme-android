@@ -55,35 +55,35 @@ public class CropFragment extends BaseEditFragment {
     super.onCreate(savedInstanceState);
     dataList.add(
         new RatioItem(
-            "1:1",
+            getString(R.string.crop_1_1),
             1f,
             new IconicsDrawable(this.getContext())
                 .icon(GoogleMaterial.Icon.gmd_crop_square)
                 .sizeDp(18)));
     dataList.add(
         new RatioItem(
-            "3:2",
+            getString(R.string.crop_3_2),
             3 / 2f,
             new IconicsDrawable(this.getContext())
                 .icon(GoogleMaterial.Icon.gmd_crop_3_2)
                 .sizeDp(18)));
     dataList.add(
         new RatioItem(
-            "Free",
+            getString(R.string.crop_free),
             -1f,
             new IconicsDrawable(this.getContext())
                 .icon(GoogleMaterial.Icon.gmd_crop_free)
                 .sizeDp(18)));
     dataList.add(
         new RatioItem(
-            "7:5",
+            getString(R.string.crop_7_5),
             7 / 5f,
             new IconicsDrawable(this.getContext())
                 .icon(GoogleMaterial.Icon.gmd_crop_7_5)
                 .sizeDp(18)));
     dataList.add(
         new RatioItem(
-            "16:9",
+            getString(R.string.crop_16_9),
             16 / 9f,
             new IconicsDrawable(this.getContext())
                 .icon(GoogleMaterial.Icon.gmd_crop_16_9)

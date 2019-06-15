@@ -613,7 +613,9 @@ public class AccountActivity extends ThemedActivity
   private void dropboxAuthentication(String tokens) {
     try {
       String result = cloudRailServices.db.saveAsString();
-      Log.d("AccountsActivity", "dropboxAuthentication: " + tokens + " " + result);
+      Log.d(
+          getString(R.string.AccountsActivity),
+          getString(R.string.dropboxAuthentication) + tokens + " " + result);
       String accessToken = cloudRailServices.getToken();
       realm.beginTransaction();
       account = realm.createObject(AccountDatabase.class, DROPBOX.toString());
