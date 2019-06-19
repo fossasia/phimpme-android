@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -18,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import java.io.File;
@@ -668,8 +671,42 @@ public class EditImageActivity extends EditBaseActivity
         resetOpTimes();
         onSaveTaskDone();
       } else {
-        Snackbar snackbar = SnackBarHandler.show(parentLayout, getString(R.string.save_error));
-        snackbar.show();
+        final AlertDialog.Builder discardChangesDialogBuilder =
+            new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
+        AlertDialogsHelper.getTextDialog(
+            EditImageActivity.this,
+            discardChangesDialogBuilder,
+            R.string.save_error,
+            R.string.permissions_error,
+            null);
+        discardChangesDialogBuilder.setPositiveButton(
+            getString(R.string.ok).toUpperCase(),
+            new DialogInterface.OnClickListener() {
+              @Override
+              public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);
+              }
+            });
+        discardChangesDialogBuilder.setNegativeButton(
+            getString(R.string.cancel).toUpperCase(),
+            new DialogInterface.OnClickListener() {
+              @Override
+              public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                Toast.makeText(getBaseContext(), R.string.no_save, Toast.LENGTH_LONG).show();
+              }
+            });
+
+        AlertDialog alertDialog = discardChangesDialogBuilder.create();
+        alertDialog.show();
+        AlertDialogsHelper.setButtonTextColor(
+            new int[] {DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE},
+            getAccentColor(),
+            alertDialog);
       }
     }
   }

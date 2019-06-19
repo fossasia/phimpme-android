@@ -995,7 +995,9 @@
 
     <string name="no_choose">please choose a image for edit</string>
     <string name="auto_newline">AutoNewline</string>
-    <string name="save_error">Save error!</string>
+    <string name="save_error">Save Error</string>
+    <string name="no_save">Images will not be saved successfully until proper permissions are granted</string>
+    <string name="permissions_error">The app has not been granted proper permissions. Please click OK to give permissions. In the permission settings, toggle the storage permission off and on.\n(This has to be done even if storage permission is already toggled on.)</string>
 
     <string name="tune">Tune</string>
     <string name="exit_without_save">The edited image is not saved. Do you want to exit?</string>
