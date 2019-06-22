@@ -168,6 +168,11 @@ public class EditImageActivity extends EditBaseActivity
   public RotateFragment rotateFragment;
   public FrameFragment frameFragment;
   private static String stickerType;
+  private boolean exitDialog = false;
+  private boolean exitWithoutChanges = false;
+  private boolean modeChangesExit = false;
+  private int modeCheck = -1;
+  private int messageCheck = -1;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -182,6 +187,18 @@ public class EditImageActivity extends EditBaseActivity
       mode = savedInstanceState.getInt(getString(R.string.frag_prev));
       initalMiddleFragment = savedInstanceState.getInt(getString(R.string.frag_prev_mid));
       initalBottomFragment = savedInstanceState.getInt(getString(R.string.frag_prev_bottom));
+      exitDialog = savedInstanceState.getBoolean("Dialogshown", false);
+      exitWithoutChanges = savedInstanceState.getBoolean("exitWithoutChanges", false);
+      modeChangesExit = savedInstanceState.getBoolean("modeChanges", false);
+      modeCheck = savedInstanceState.getInt("checkMode", -1);
+      messageCheck = savedInstanceState.getInt("checkString", -1);
+    }
+    if (exitDialog) {
+      onSaveTaskDone();
+    } else if (exitWithoutChanges) {
+      noChangesExitDialog();
+    } else if (modeChangesExit) {
+      showDiscardChangesDialog(modeCheck, messageCheck);
     }
     getData();
   }
@@ -525,6 +542,7 @@ public class EditImageActivity extends EditBaseActivity
     } else if (mOpTimes <= 0 && requestCode == 1) {
       imageSavedDialog(filePath);
     } else {
+      exitDialog = true;
       final AlertDialog.Builder discardChangesDialogBuilder =
           new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
       AlertDialogsHelper.getTextDialog(
@@ -546,7 +564,10 @@ public class EditImageActivity extends EditBaseActivity
           new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-              if (dialog != null) dialog.dismiss();
+              if (dialog != null) {
+                exitDialog = false;
+                dialog.dismiss();
+              }
             }
           });
 
@@ -717,6 +738,11 @@ public class EditImageActivity extends EditBaseActivity
     outState.putInt(getString(R.string.frag_prev_mid), initalMiddleFragment);
     outState.putInt(getString(R.string.frag_prev_bottom), initalBottomFragment);
     outState.putInt(getString(R.string.frag_prev), mode);
+    outState.putBoolean("Dialogshown", exitDialog);
+    outState.putBoolean("exitWithoutChanges", exitWithoutChanges);
+    outState.putBoolean("modeChanges", modeChangesExit);
+    outState.putInt("checkMode", modeCheck);
+    outState.putInt("checkString", messageCheck);
   }
 
   @Override
@@ -752,6 +778,7 @@ public class EditImageActivity extends EditBaseActivity
     if (canAutoExit()) {
       finish();
     } else {
+      exitWithoutChanges = true;
       final AlertDialog.Builder discardChangesDialogBuilder =
           new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
       AlertDialogsHelper.getTextDialog(
@@ -773,7 +800,10 @@ public class EditImageActivity extends EditBaseActivity
           new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-              if (dialog != null) dialog.dismiss();
+              if (dialog != null) {
+                exitWithoutChanges = false;
+                dialog.dismiss();
+              }
             }
           });
       discardChangesDialogBuilder.setNeutralButton(
@@ -798,7 +828,59 @@ public class EditImageActivity extends EditBaseActivity
     }
   }
 
+  private void noChangesExitDialog() {
+    final AlertDialog.Builder discardChangesDialogBuilder =
+        new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
+    AlertDialogsHelper.getTextDialog(
+        EditImageActivity.this,
+        discardChangesDialogBuilder,
+        R.string.discard_changes_header,
+        R.string.exit_without_save,
+        null);
+    discardChangesDialogBuilder.setPositiveButton(
+        getString(R.string.confirm).toUpperCase(),
+        new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialog, int which) {
+            finish();
+          }
+        });
+    discardChangesDialogBuilder.setNegativeButton(
+        getString(R.string.cancel).toUpperCase(),
+        new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialog, int which) {
+            if (dialog != null) {
+              exitWithoutChanges = false;
+              dialog.dismiss();
+            }
+          }
+        });
+    discardChangesDialogBuilder.setNeutralButton(
+        getString(R.string.save_action).toUpperCase(),
+        new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialog, int which) {
+            doSaveImage();
+          }
+        });
+
+    AlertDialog alertDialog = discardChangesDialogBuilder.create();
+    alertDialog.show();
+    AlertDialogsHelper.setButtonTextColor(
+        new int[] {
+          DialogInterface.BUTTON_POSITIVE,
+          DialogInterface.BUTTON_NEGATIVE,
+          DialogInterface.BUTTON_NEUTRAL
+        },
+        getAccentColor(),
+        alertDialog);
+  }
+
   private void showDiscardChangesDialog(final int editMode, @StringRes int message) {
+    modeChangesExit = true;
+    modeCheck = editMode;
+    messageCheck = message;
     AlertDialog.Builder discardChangesDialogBuilder =
         new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
     AlertDialogsHelper.getTextDialog(
@@ -812,7 +894,10 @@ public class EditImageActivity extends EditBaseActivity
         new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialog, int which) {
-            if (dialog != null) dialog.dismiss();
+            if (dialog != null) {
+              modeChangesExit = false;
+              dialog.dismiss();
+            }
           }
         });
     discardChangesDialogBuilder.setPositiveButton(
