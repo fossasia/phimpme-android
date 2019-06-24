@@ -45,6 +45,7 @@ public class AddTextFragment extends BaseEditFragment
 
   private InputMethodManager imm;
   private SaveTextStickerTask mSaveTask;
+  private String text = null;
 
   public static AddTextFragment newInstance() {
     return new AddTextFragment();
@@ -79,6 +80,10 @@ public class AddTextFragment extends BaseEditFragment
     ((ImageButton) cancel).setColorFilter(Color.BLACK);
     ((ImageButton) apply).setColorFilter(Color.BLACK);
 
+    if (savedInstanceState != null) {
+      text = savedInstanceState.getString("Edit Text");
+    }
+
     mInputText = mainView.findViewById(R.id.text_input);
     mTextColorSelector = mainView.findViewById(R.id.text_color);
     mTextColorSelector.setImageDrawable(
@@ -94,6 +99,9 @@ public class AddTextFragment extends BaseEditFragment
         });
     mTextColorSelector.setOnClickListener(new SelectColorBtnClick());
     mInputText.addTextChangedListener(this);
+    if (text != null) {
+      mInputText.setText(text);
+    }
     boolean focus = mInputText.requestFocus();
     if (focus) {
       imm.showSoftInput(mInputText, InputMethodManager.SHOW_IMPLICIT);
@@ -108,6 +116,13 @@ public class AddTextFragment extends BaseEditFragment
             showFontChoiceBox();
           }
         });
+  }
+
+  @Override
+  public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putString("Edit Text", mInputText.getText().toString());
+    // outState.putString("text", text);
   }
 
   private void showFontChoiceBox() {
@@ -221,8 +236,8 @@ public class AddTextFragment extends BaseEditFragment
   public void onShow() {
     activity.changeMode(EditImageActivity.MODE_TEXT);
     activity.mainImage.setImageBitmap(activity.mainBitmap);
-    activity.addTextFragment.getmTextStickerView().mainImage = activity.mainImage;
-    activity.addTextFragment.getmTextStickerView().mainBitmap = activity.mainBitmap;
+    getmTextStickerView().mainImage = activity.mainImage;
+    getmTextStickerView().mainBitmap = activity.mainBitmap;
     mTextStickerView.setVisibility(View.VISIBLE);
     mInputText.clearFocus();
   }

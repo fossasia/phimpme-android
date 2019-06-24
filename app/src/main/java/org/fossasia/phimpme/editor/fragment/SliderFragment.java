@@ -1,10 +1,13 @@
 package org.fossasia.phimpme.editor.fragment;
 
+import static com.mikepenz.iconics.Iconics.TAG;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +25,7 @@ public class SliderFragment extends BaseEditFragment
   SeekBar seekBar;
   ImageButton cancel, apply;
   public Bitmap filterBit;
+  private int SeekBarProgress;
   Bitmap currentBitmap;
   View fragmentView;
 
@@ -52,17 +56,32 @@ public class SliderFragment extends BaseEditFragment
     apply.setOnClickListener(this);
 
     seekBar.setMax(100);
+    if (savedInstanceState != null) {
+      SeekBarProgress = savedInstanceState.getInt("Seekbar Progress");
+    }
     setDefaultSeekBarProgress();
     seekBar.setOnSeekBarChangeListener(this);
 
     onShow();
   }
 
+  @Override
+  public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putInt("Seekbar Progress", seekBar.getProgress());
+    outState.putParcelable("FilterBit", filterBit);
+  }
+
   private void setDefaultSeekBarProgress() {
     if (null != seekBar) {
       switch (EditImageActivity.effectType / 100) {
         case EditImageActivity.MODE_FILTERS:
-          seekBar.setProgress(100);
+          if (SeekBarProgress > 0) {
+            seekBar.setProgress(SeekBarProgress);
+          } else {
+            Log.d(TAG, "setDefaultSeekBarProgress:Setting to 100");
+            seekBar.setProgress(100);
+          }
           break;
         case EditImageActivity.MODE_ENHANCE:
           switch (EditImageActivity.effectType % 300) {
@@ -70,14 +89,22 @@ public class SliderFragment extends BaseEditFragment
             case 6:
             case 7:
             case 8:
-              seekBar.setProgress(0);
+              if (SeekBarProgress > 0) {
+                seekBar.setProgress(SeekBarProgress);
+              } else {
+                seekBar.setProgress(0);
+              }
               break;
             case 0:
             case 1:
             case 3:
             case 4:
             case 5:
-              seekBar.setProgress(50);
+              if (SeekBarProgress > 0) {
+                seekBar.setProgress(SeekBarProgress);
+              } else {
+                seekBar.setProgress(50);
+              }
               break;
           }
           break;
@@ -160,7 +187,17 @@ public class SliderFragment extends BaseEditFragment
           filterBit = null;
         }
         if (EditImageActivity.effectType / 100 == EditImageActivity.MODE_FILTERS) {
-          activity.filterFragment.onShow();
+          activity.filterFragment.getFilterThumbs();
+        }
+        switch (activity.mode) {
+          case EditImageActivity.MODE_FILTERS:
+            activity.filterFragment.clearCurrentSelection();
+            break;
+          case EditImageActivity.MODE_ENHANCE:
+            activity.enhanceFragment.clearCurrentSelection();
+            break;
+          default:
+            break;
         }
         backToMain();
         break;

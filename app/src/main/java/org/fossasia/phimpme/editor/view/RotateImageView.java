@@ -25,6 +25,7 @@ public class RotateImageView extends View {
   private RectF wrapRect = new RectF(); // Picture surrounded by rectangles
   private Paint bottomPaint;
   private RectF originImageRect;
+  private RectF img;
 
   public RotateImageView(Context context) {
     super(context);
@@ -53,13 +54,16 @@ public class RotateImageView extends View {
     bitmap = bit;
     srcRect.set(0, 0, bitmap.getWidth(), bitmap.getHeight());
     dstRect = imageRect;
+    img = imageRect;
 
     originImageRect.set(0, 0, bit.getWidth(), bit.getHeight());
     this.invalidate();
   }
 
-  public void rotateImage(int angle) {
+  public void rotateImage(int angle, RectF imgRect) {
     rotateAngle = angle;
+    dstRect = imgRect;
+    img = imgRect;
     this.invalidate();
   }
 
@@ -90,6 +94,10 @@ public class RotateImageView extends View {
   }
 
   private void calculateWrapBox() {
+
+    if (dstRect == null) {
+      dstRect = img;
+    }
     wrapRect.set(dstRect);
     matrix.reset(); // Reset matrix is ​​a unit matrix
     int centerX = getWidth() >> 1;
