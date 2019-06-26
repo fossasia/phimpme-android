@@ -157,7 +157,7 @@ public class EditImageActivity extends EditBaseActivity
   private int currentShowingIndex = -1;
 
   public ArrayList<Bitmap> bitmapsForUndo;
-  public MainMenuFragment mainMenuFragment;
+  public MainMenuFragment mainMenuFragment = new MainMenuFragment();
   public RecyclerMenuFragment filterFragment, enhanceFragment, stickerTypesFragment;
   public StickersFragment stickersFragment;
   public SliderFragment sliderFragment;
@@ -173,11 +173,18 @@ public class EditImageActivity extends EditBaseActivity
   private boolean modeChangesExit = false;
   private int modeCheck = -1;
   private int messageCheck = -1;
+  private boolean check = false;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     if (getSupportActionBar() != null) getSupportActionBar().hide();
+
+    if (mainBitmap != null) {
+      mainBitmap.recycle();
+      mainBitmap = null;
+      System.gc();
+    }
 
     checkInitImageLoader();
     setContentView(R.layout.activity_image_edit);
@@ -192,6 +199,9 @@ public class EditImageActivity extends EditBaseActivity
       modeChangesExit = savedInstanceState.getBoolean("modeChanges", false);
       modeCheck = savedInstanceState.getInt("checkMode", -1);
       messageCheck = savedInstanceState.getInt("checkString", -1);
+      check = true;
+      mainBitmap = savedInstanceState.getParcelable("Edited Bitmap");
+      mOpTimes = savedInstanceState.getInt("numberOfEdits");
     }
     if (exitDialog) {
       onSaveTaskDone();
@@ -495,8 +505,17 @@ public class EditImageActivity extends EditBaseActivity
     if (mLoadImageTask != null) {
       mLoadImageTask.cancel(true);
     }
-    mLoadImageTask = new LoadImageTask();
-    mLoadImageTask.execute(filepath);
+    if (check && mOpTimes > 0) {
+      check = false;
+      mainImage.setImageBitmap(mainBitmap);
+      mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
+      originalBitmap = mainBitmap.copy(mainBitmap.getConfig(), true);
+      addToUndoList();
+      setInitialFragments();
+    } else {
+      mLoadImageTask = new LoadImageTask();
+      mLoadImageTask.execute(filepath);
+    }
   }
 
   protected void doSaveImage() {
@@ -640,11 +659,6 @@ public class EditImageActivity extends EditBaseActivity
     @Override
     protected void onPostExecute(Bitmap result) {
       super.onPostExecute(result);
-      if (mainBitmap != null) {
-        mainBitmap.recycle();
-        mainBitmap = null;
-        System.gc();
-      }
       mainBitmap = result;
       mainImage.setImageBitmap(result);
       mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
@@ -743,6 +757,8 @@ public class EditImageActivity extends EditBaseActivity
     outState.putBoolean("modeChanges", modeChangesExit);
     outState.putInt("checkMode", modeCheck);
     outState.putInt("checkString", messageCheck);
+    outState.putParcelable("Edited Bitmap", mainBitmap);
+    outState.putInt("numberOfEdits", mOpTimes);
   }
 
   @Override
