@@ -28,7 +28,7 @@ import org.fossasia.phimpme.editor.view.StickerView;
 
 public class RecyclerMenuFragment extends BaseEditFragment {
 
-  RecyclerView recyclerView;
+  private RecyclerView recyclerView;
   int MODE;
   private static ArrayList<Bitmap> filterThumbs;
   View fragmentView;
@@ -58,6 +58,7 @@ public class RecyclerMenuFragment extends BaseEditFragment {
 
   public void clearCurrentSelection() {
     if (currentSelection != -1) {
+      recyclerView = fragmentView.findViewById(R.id.editor_recyclerview);
       mRecyclerAdapter.mViewHolder holder =
           (mRecyclerAdapter.mViewHolder)
               recyclerView.findViewHolderForAdapterPosition(currentSelection);
@@ -95,8 +96,16 @@ public class RecyclerMenuFragment extends BaseEditFragment {
   @Override
   public View onCreateView(
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    fragmentView = null;
+    container.removeAllViews();
     fragmentView = inflater.inflate(R.layout.fragment_editor_recycler, container, false);
     return fragmentView;
+  }
+
+  @Override
+  public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putInt("sample element", 5);
   }
 
   @Override
@@ -117,7 +126,7 @@ public class RecyclerMenuFragment extends BaseEditFragment {
   @Override
   public void onDestroy() {
     super.onDestroy();
-    //    if (filterThumbs != null)filterThumbs=null;
+    if (filterThumbs != null) filterThumbs = null;
     MyApplication.getRefWatcher(getActivity()).watch(this);
   }
 
@@ -156,11 +165,12 @@ public class RecyclerMenuFragment extends BaseEditFragment {
         bmHeight = currentBitmap.getHeight();
         int leng = (titlelist != null) ? titlelist.length() : 0;
         for (int i = 0; i < leng; i++) {
-          filterThumbs.add(
-              PhotoProcessing.processImage(
-                  getResizedBitmap(currentBitmap, 5),
-                  (i + 100 * EditImageActivity.MODE_FILTERS),
-                  100));
+          if (filterThumbs != null)
+            filterThumbs.add(
+                PhotoProcessing.processImage(
+                    getResizedBitmap(currentBitmap, 5),
+                    (i + 100 * EditImageActivity.MODE_FILTERS),
+                    100));
         }
       }
       return null;

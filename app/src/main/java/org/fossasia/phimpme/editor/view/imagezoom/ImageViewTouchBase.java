@@ -10,7 +10,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.widget.ImageView;
 import org.fossasia.phimpme.editor.view.imagezoom.easing.Cubic;
 import org.fossasia.phimpme.editor.view.imagezoom.easing.Easing;
 import org.fossasia.phimpme.editor.view.imagezoom.graphic.FastBitmapDrawable;
@@ -21,7 +20,8 @@ import org.fossasia.phimpme.editor.view.imagezoom.utils.IDisposable;
  *
  * @author alessandro
  */
-public abstract class ImageViewTouchBase extends ImageView implements IDisposable {
+public abstract class ImageViewTouchBase extends android.support.v7.widget.AppCompatImageView
+    implements IDisposable {
 
   public interface OnDrawableChangeListener {
 
