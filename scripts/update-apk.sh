@@ -22,8 +22,7 @@ else
 	/bin/rm -f phimpme-dev-*.apk
 fi
 
-\cp -r ../app/build/outputs/apk/app-debug.apk app-debug.apk
-\cp -r ../app/build/outputs/apk/app-release-unsigned.apk app-release-unsigned.apk
+\cp -r ../app/build/outputs/apk/*/**.apk .
 
 # Signing Apps
 
