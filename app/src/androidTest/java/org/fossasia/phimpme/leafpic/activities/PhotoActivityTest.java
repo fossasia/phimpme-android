@@ -7,9 +7,9 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
 
 import android.support.test.espresso.ViewInteraction;
+import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.test.suitebuilder.annotation.LargeTest;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.opencamera.Camera.PhotoActivity;
 import org.junit.Ignore;

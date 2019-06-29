@@ -54,6 +54,9 @@ public class PaintFragment extends BaseEditFragment
 
   private SaveCustomPaintTask mSavePaintImageTask;
 
+  private static int mStokeColor = Integer.MIN_VALUE;
+  private static float mStokeWidth = Integer.MIN_VALUE;
+
   public int[] mPaintColors = {
     Color.BLACK,
     Color.DKGRAY,
@@ -115,9 +118,30 @@ public class PaintFragment extends BaseEditFragment
 
     initStokeWidthPopWindow();
 
+    if (savedInstanceState != null) {
+      mPaintView.mDrawBit = savedInstanceState.getParcelable("Draw Bit");
+      CustomPaintView.mPaintCanvas = new Canvas(mPaintView.mDrawBit);
+      mStokeColor = savedInstanceState.getInt("Stoke Color");
+      mStokeWidth = savedInstanceState.getFloat("Stoke Width");
+    }
+    if (mStokeColor != Integer.MIN_VALUE && mStokeWidth != Integer.MIN_VALUE) {
+      mPaintModeView.setPaintStrokeColor(mStokeColor);
+      mPaintModeView.setPaintStrokeWidth(mStokeWidth);
+      setPaintColor(mStokeColor);
+      mPaintModeView.setPaintStrokeWidth(mStokeWidth);
+    }
+
     mEraserView.setOnClickListener(this);
     updateEraserView();
     onShow();
+  }
+
+  @Override
+  public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putFloat("Stoke Width", mPaintModeView.getStokenWidth());
+    outState.putInt("Stoke Color", mPaintModeView.getStokenColor());
+    outState.putParcelable("Draw Bit", mPaintView.mDrawBit);
   }
 
   private void initColorListView() {

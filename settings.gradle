@@ -1,2 +1,1 @@
-include ':app', ':photoview', ':pdk'
-include ':openCVLibrary24133'
+include ':app', ':photoview', ':pdk', ':openCV'

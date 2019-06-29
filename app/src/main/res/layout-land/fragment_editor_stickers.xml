@@ -24,8 +24,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_weight="1"
-        android:layout_toRightOf="@+id/sticker_cancel"
-        android:layout_toLeftOf="@+id/sticker_apply"
+        android:layout_toEndOf="@+id/sticker_cancel"
+        android:layout_toStartOf="@+id/sticker_apply"
         android:id="@+id/editor_recyclerview"/>
 
 

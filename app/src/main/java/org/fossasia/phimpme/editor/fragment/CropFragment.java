@@ -39,11 +39,13 @@ public class CropFragment extends BaseEditFragment {
   private LinearLayout ratioList, imageList, combinedList;
   private static List<RatioItem> dataList = new ArrayList<RatioItem>();
   private List<TextView> textViewList = new ArrayList<TextView>();
+  private RectF rec;
 
   public static int SELECTED_COLOR = Color.BLUE;
   public static int UNSELECTED_COLOR = Color.BLACK;
   private CropRationClick mCropRationClick = new CropRationClick();
   public TextView selctedTextView;
+  private TextView sView;
 
   public static CropFragment newInstance() {
     CropFragment fragment = new CropFragment();
@@ -55,35 +57,35 @@ public class CropFragment extends BaseEditFragment {
     super.onCreate(savedInstanceState);
     dataList.add(
         new RatioItem(
-            "1:1",
+            getString(R.string.crop_1_1),
             1f,
             new IconicsDrawable(this.getContext())
                 .icon(GoogleMaterial.Icon.gmd_crop_square)
                 .sizeDp(18)));
     dataList.add(
         new RatioItem(
-            "3:2",
+            getString(R.string.crop_3_2),
             3 / 2f,
             new IconicsDrawable(this.getContext())
                 .icon(GoogleMaterial.Icon.gmd_crop_3_2)
                 .sizeDp(18)));
     dataList.add(
         new RatioItem(
-            "Free",
+            getString(R.string.crop_free),
             -1f,
             new IconicsDrawable(this.getContext())
                 .icon(GoogleMaterial.Icon.gmd_crop_free)
                 .sizeDp(18)));
     dataList.add(
         new RatioItem(
-            "7:5",
+            getString(R.string.crop_7_5),
             7 / 5f,
             new IconicsDrawable(this.getContext())
                 .icon(GoogleMaterial.Icon.gmd_crop_7_5)
                 .sizeDp(18)));
     dataList.add(
         new RatioItem(
-            "16:9",
+            getString(R.string.crop_16_9),
             16 / 9f,
             new IconicsDrawable(this.getContext())
                 .icon(GoogleMaterial.Icon.gmd_crop_16_9)
@@ -138,7 +140,7 @@ public class CropFragment extends BaseEditFragment {
       ratioList.addView(text, params1);
       imageList.addView(image, params);
       text.setTag(i);
-      if (i == 0) {
+      if (i == 0 && selctedTextView == null) {
         selctedTextView = text;
       }
       dataList.get(i).setIndex(i);
@@ -191,7 +193,8 @@ public class CropFragment extends BaseEditFragment {
       RatioItem dataItem = (RatioItem) v.getTag();
       selctedTextView = curTextView;
       selctedTextView.setTextColor(SELECTED_COLOR);
-
+      sView = selctedTextView;
+      sView.setTag(v.getTag());
       mCropPanel.setRatioCropRect(activity.mainImage.getBitmapRect(), dataItem.getRatio());
     }
   }
@@ -219,8 +222,19 @@ public class CropFragment extends BaseEditFragment {
               applyCropImage();
             }
           });
+      if (savedInstanceState != null) {
+        rec = savedInstanceState.getParcelable("Rect");
+        sView.setText(savedInstanceState.getString("text"));
+      }
       onShow();
     }
+  }
+
+  @Override
+  public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putParcelable("Rect", activity.mainImage.getBitmapRect());
+    outState.putString("text", sView.getText().toString());
   }
 
   @Override
@@ -239,7 +253,20 @@ public class CropFragment extends BaseEditFragment {
     activity.mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
     activity.mainImage.setScaleEnabled(false);
     RectF r = activity.mainImage.getBitmapRect();
-    activity.mCropPanel.setCropRect(r);
+    if (rec != null) {
+      activity.mCropPanel.setCropRect(rec);
+    } else {
+      activity.mCropPanel.setCropRect(r);
+    }
+
+    if (sView != null) {
+      selctedTextView.setTextColor(UNSELECTED_COLOR);
+      RatioItem dataItem = (RatioItem) sView.getTag();
+      selctedTextView = sView;
+      sView.setTextColor(SELECTED_COLOR);
+      selctedTextView.setTextColor(SELECTED_COLOR);
+      if (rec != null) mCropPanel.setRatioCropRect(rec, dataItem.getRatio());
+    }
   }
 
   private final class BackToMenuClick implements OnClickListener {

@@ -11,7 +11,7 @@
             android:layout_width="wrap_content"
             android:id="@+id/menu_item1"
             android:layout_column="0"
-            android:paddingLeft="@dimen/medium_spacing"
+            android:paddingStart="@dimen/medium_spacing"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
             android:layout_height="@dimen/editor_mid_row_size">
@@ -42,7 +42,7 @@
             android:layout_width="wrap_content"
             android:id="@+id/menu_item2"
             android:layout_column="1"
-            android:paddingLeft="@dimen/medium_spacing"
+            android:paddingStart="@dimen/medium_spacing"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
             android:layout_height="@dimen/editor_mid_row_size">

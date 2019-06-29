@@ -106,6 +106,7 @@ import org.fossasia.phimpme.gallery.util.StringUtils;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
 import org.fossasia.phimpme.gallery.views.PagerRecyclerView;
 import org.fossasia.phimpme.share.SharingActivity;
+import org.fossasia.phimpme.trashbin.TrashBinActivity;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
 import org.fossasia.phimpme.utilities.SnackBarHandler;
@@ -148,6 +149,7 @@ public class SingleMediaActivity extends SharedMediaActivity
   private boolean details = false;
   private ArrayList<Media> favouriteslist;
   public static Media mediacompress = null;
+  private Menu menu;
 
   private ArrayList<Media> uploadhistory;
   private ArrayList<Media> trashbinlistd;
@@ -679,6 +681,7 @@ public class SingleMediaActivity extends SharedMediaActivity
   public boolean onCreateOptionsMenu(Menu menu) {
     // Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.menu_view_pager, menu);
+    this.menu = menu;
     return true;
   }
 
@@ -864,8 +867,29 @@ public class SingleMediaActivity extends SharedMediaActivity
     if (!allPhotoMode && !favphotomode && !upoadhis && !trashdis) {
       if (AlertDialogsHelper.check) {
         success = addToTrash();
+        Snackbar snackbar =
+            SnackBarHandler.showWithBottomMargin(
+                parentView,
+                getString(R.string.trashbin_move_onefile),
+                bottomBar.getHeight() + navigationView.getHeight(),
+                Snackbar.LENGTH_SHORT);
+        snackbar.setAction(
+            R.string.open,
+            new View.OnClickListener() {
+              @Override
+              public void onClick(View view) {
+                startActivity(new Intent(SingleMediaActivity.this, TrashBinActivity.class));
+              }
+            });
+        snackbar.show();
       } else {
         success = getAlbum().deleteCurrentMedia(getApplicationContext());
+        Snackbar snackbar =
+            SnackBarHandler.showWithBottomMargin(
+                parentView,
+                getApplicationContext().getString(R.string.photo_deleted_msg),
+                bottomBar.getHeight() + navigationView.getHeight());
+        snackbar.show();
       }
       if (!success) {
         final AlertDialog.Builder dialogBuilder =
@@ -1756,6 +1780,8 @@ public class SingleMediaActivity extends SharedMediaActivity
               getApplicationContext(), getAlbum().getCurrentMedia().getPath());
           SnackBarHandler.showWithBottomMargin(
               parentView, getString(R.string.change_cover), bottomBar.getHeight());
+          MenuItem cover = menu.findItem(R.id.action_cover);
+          cover.setTitle("Remove cover image");
         }
 
         return true;

@@ -1,18 +1,16 @@
 language: android
 jdk: oraclejdk8
+sudo: false
+dist: trusty
 
 env:
   global:
     - ANDROID_API_LEVEL=22
     - ANDROID_BUILD_TOOLS_VERSION=25.0.3
-    - ANDROID_ABI=armeabi-v7a
+    - ANDROID_ABI=armeabi-v7a arm64-v8a x86 x86_64
     - ANDROID_TAG=google_apis
     - ANDROID_TARGET=android-25
     - ADB_INSTALL_TIMEOUT=20 # minutes (2 minutes by default)
-  matrix:
-    - COMPONENT=BUILD
-    - COMPONENT=CONNECTED_TEST
-    - COMPONENT=ASSEMBLE_RELEASE
 
 android:
   components:
@@ -34,7 +32,7 @@ android:
     - '.+'
     # Specify at least one system image
     - sys-img-armeabi-v7a-android-$ANDROID_API_LEVEL
-    
+
 # prevents reuploading of Cache
 before_cache:
   - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -51,13 +49,11 @@ before_install:
   - mkdir "$ANDROID_HOME/licenses" || true
   - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
   - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
-  - export NDK_VERSION=r10e
-  - curl -L http://dl.google.com/android/ndk/android-ndk-${NDK_VERSION}-linux-x86_64.bin -O
-  - chmod u+x android-ndk-${NDK_VERSION}-linux-x86_64.bin
-  - ./android-ndk-${NDK_VERSION}-linux-x86_64.bin > /dev/null
-  - rm android-ndk-${NDK_VERSION}-linux-x86_64.bin
-  - export ANDROID_NDK_HOME=`pwd`/android-ndk-${NDK_VERSION}
-  - export PATH=${ANDROID_NDK_HOME}:${PATH}
+  - curl https://dl.google.com/android/repository/android-ndk-r18b-linux-x86_64.zip -o android-ndk-r18b.zip
+  - unzip -q android-ndk-r18b.zip && rm android-ndk-r18b.zip
+  - mv android-ndk-r18b $HOME
+  - export ANDROID_NDK=$HOME/android-ndk-r18b
+
 
 install:
   - sdkmanager --list || true
@@ -66,18 +62,23 @@ install:
   - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
 
 licenses:
-    - 'android-sdk-preview-license-.+'
-    - 'android-sdk-license-.+'
-    - 'google-gdk-license-.+'
+  - 'android-sdk-preview-license-.+'
+  - 'android-sdk-license-.+'
+  - 'google-gdk-license-.+'
 
 before_script:
   - ./scripts/download_open_cv.sh
-  - ./scripts/prepare_avd.sh
+  - echo "Starting AVD"
+  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
+  - emulator -avd test -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
 
 script:
   - ./gradlew spotlessCheck
   - ./scripts/copy_opencv.sh
-  - ./scripts/main_script.sh
+  - ./gradlew build
+  - ./gradlew build connectedAndroidTest jacocoTestReport --stacktrace
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)

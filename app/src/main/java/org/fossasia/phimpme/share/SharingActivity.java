@@ -377,7 +377,7 @@ public class SharingActivity extends ThemedActivity
             }
           });
       dialogBuilder.setNegativeButton(
-          R.string.cancel,
+          getString(R.string.cancel).toUpperCase(),
           new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

@@ -20,9 +20,9 @@
         android:layout_width="@dimen/icon_item_image_size_main"
         android:layout_height="@dimen/editor_bottom_row_size"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/very_small_margin"
+        android:layout_marginStart="@dimen/very_small_margin"
         android:layout_gravity="center"
-        android:layout_marginRight="@dimen/very_small_margin"
+        android:layout_marginEnd="@dimen/very_small_margin"
         android:layout_toEndOf="@+id/paint_cancel"/>
 
     <android.support.v7.widget.RecyclerView
@@ -41,9 +41,9 @@
         android:layout_centerVertical="true"
         android:layout_width="@dimen/icon_item_image_size_main"
         android:layout_height="@dimen/editor_bottom_row_size"
-        android:layout_marginLeft="@dimen/alternate_half_margin"
+        android:layout_marginStart="@dimen/alternate_half_margin"
         android:layout_gravity="center"
-        android:layout_marginRight="@dimen/alternate_half_margin"
+        android:layout_marginEnd="@dimen/alternate_half_margin"
         android:scaleType="fitCenter"
         android:src="@drawable/eraser_normal"/>
 
@@ -54,8 +54,8 @@
         android:layout_centerVertical="true"
         android:scaleType="fitCenter"
         android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/alternate_half_margin"
-        android:layout_marginRight="@dimen/alternate_half_margin"
+        android:layout_marginStart="@dimen/alternate_half_margin"
+        android:layout_marginEnd="@dimen/alternate_half_margin"
         android:background="?android:attr/selectableItemBackground"
         app:srcCompat="@drawable/ic_done_black_24dp"/>
 
