@@ -1,5 +1,8 @@
 package org.fossasia.phimpme.editor.fragment;
 
+import static com.mikepenz.iconics.Iconics.TAG;
+
+import android.content.DialogInterface;
 import android.content.res.AssetManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -7,8 +10,10 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +44,7 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
   List<String> pathList = new ArrayList<>();
   mRecyclerAdapter adapter;
   ImageButton cancel, apply;
+  String mData;
 
   public StickersFragment() {}
 
@@ -79,6 +85,13 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
     adapter = new mRecyclerAdapter();
     recyclerView.setAdapter(adapter);
 
+    if (savedInstanceState != null) {
+      mData = savedInstanceState.getString("Sticker position");
+      if (mData != null) {
+        selectedStickerItem(mData);
+      }
+    }
+
     this.mStickerView = activity.mStickerView;
     onShow();
   }
@@ -92,6 +105,12 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
   @Override
   public View onCreateView(
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    container.removeAllViews();
+    if (fragmentView != null) {
+      fragmentView.findViewById(R.id.sticker_cancel).setVisibility(View.GONE);
+      fragmentView.findViewById(R.id.sticker_apply).setVisibility(View.GONE);
+      fragmentView = null;
+    }
     fragmentView = inflater.inflate(R.layout.fragment_editor_stickers, container, false);
     return fragmentView;
   }
@@ -107,9 +126,19 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
       return;
     }
     activity.changeMode(EditImageActivity.MODE_STICKERS);
-    activity.stickersFragment.getmStickerView().mainImage = activity.mainImage;
-    activity.stickersFragment.getmStickerView().mainBitmap = activity.mainBitmap;
-    activity.stickersFragment.getmStickerView().setVisibility(View.VISIBLE);
+    if (this.mStickerView == null) Log.d(TAG, "onShow:this.mstickerview is null ");
+
+    getmStickerView().mainImage = activity.mainImage;
+    getmStickerView().mainBitmap = activity.mainBitmap;
+    getmStickerView().setVisibility(View.VISIBLE);
+  }
+
+  @Override
+  public void onSaveInstanceState(Bundle outState) {
+    super.onSaveInstanceState(outState);
+    if (mData != null) {
+      outState.putString("Sticker position", mData);
+    }
   }
 
   private Bitmap getImageFromAssetsFile(String fileName) {
@@ -137,7 +166,30 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
   public void onClick(View v) {
     switch (v.getId()) {
       case R.id.sticker_apply:
-        applyStickers();
+        if (!mStickerView.getBank().isEmpty()) {
+          applyStickers();
+        } else {
+          new AlertDialog.Builder(getContext())
+              .setTitle(R.string.no_stickers)
+              .setMessage(R.string.exit_no_stickers)
+              .setPositiveButton(
+                  android.R.string.yes,
+                  new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                      dialog.dismiss();
+                      backToMain();
+                    }
+                  })
+              .setNegativeButton(
+                  android.R.string.cancel,
+                  new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                      dialog.dismiss();
+                    }
+                  })
+              .setIcon(R.drawable.ic_red_dialog_alert)
+              .show();
+        }
         break;
       case R.id.sticker_cancel:
         backToMain();
@@ -168,9 +220,11 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
         return;
       }
       for (Integer id : addItems.keySet()) {
-        StickerItem item = addItems.get(id);
-        item.matrix.postConcat(m);
-        canvas.drawBitmap(item.bitmap, item.matrix, null);
+        if (id != 1) {
+          StickerItem item = addItems.get(id);
+          item.matrix.postConcat(m);
+          canvas.drawBitmap(item.bitmap, item.matrix, null);
+        }
       }
     }
 
@@ -246,6 +300,7 @@ public class StickersFragment extends BaseEditFragment implements View.OnClickLi
             @Override
             public void onClick(View v) {
               String data = (String) v.getTag();
+              mData = data;
               selectedStickerItem(data);
             }
           });

@@ -18,10 +18,10 @@ import org.fossasia.phimpme.editor.view.imagezoom.ImageViewTouch;
 /** Created by panyi on 17/2/11. */
 public class CustomPaintView extends View {
   private Paint mPaint;
-  private Bitmap mDrawBit;
+  public Bitmap mDrawBit;
   private Paint mEraserPaint;
 
-  private Canvas mPaintCanvas = null;
+  public static Canvas mPaintCanvas = null;
 
   private float last_x;
   private float last_y;

@@ -20,6 +20,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import id.zelory.compressor.Compressor;
@@ -46,10 +47,16 @@ public class CompressImageActivity extends ThemedActivity {
   public int percentagecompress = 0;
   public final int[] cwidth = new int[1];
   public final int[] cheight = new int[1];
+  private boolean compressSize = false;
+  private boolean compressDim = false;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    if (savedInstanceState != null) {
+      compressSize = savedInstanceState.getBoolean("CompressSize", false);
+      compressDim = savedInstanceState.getBoolean("CompressDimension", false);
+    }
     setContentView(R.layout.activity_compress_image);
     initView();
     Button size = findViewById(R.id.size);
@@ -78,6 +85,18 @@ public class CompressImageActivity extends ThemedActivity {
             finish();
           }
         });
+    if (compressDim) {
+      compressDim();
+    } else if (compressSize) {
+      compressSize();
+    }
+  }
+
+  @Override
+  protected void onSaveInstanceState(Bundle savedInstanceState) {
+    super.onSaveInstanceState(savedInstanceState);
+    savedInstanceState.putBoolean("CompressSize", compressSize);
+    savedInstanceState.putBoolean("CompressDimension", compressDim);
   }
 
   private void initView() {
@@ -91,6 +110,7 @@ public class CompressImageActivity extends ThemedActivity {
 
   private void compressSize() {
 
+    compressSize = true;
     LayoutInflater inflater = getLayoutInflater();
     View dialogLayout = inflater.inflate(R.layout.dialog_compresssize, null);
     TextView title = dialogLayout.findViewById(R.id.compress_title);
@@ -125,10 +145,11 @@ public class CompressImageActivity extends ThemedActivity {
     // this is set the view from XML inside AlertDialog
     alert.setView(dialogLayout);
     alert.setNegativeButton(
-        getResources().getString(R.string.cancel),
+        getResources().getString(R.string.cancel).toUpperCase(),
         new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialog, int which) {
+            compressSize = false;
             dialog.cancel();
           }
         });
@@ -138,7 +159,7 @@ public class CompressImageActivity extends ThemedActivity {
 
           @Override
           public void onClick(DialogInterface dialog, int which) {
-            new SaveCompressedImage().execute("Size");
+            new SaveCompressedImage().execute(getString(R.string.size));
             finish();
           }
         });
@@ -154,13 +175,13 @@ public class CompressImageActivity extends ThemedActivity {
       super.onPreExecute();
       dialog1 = new ProgressDialog(context);
       dialog1.setCancelable(false);
-      dialog1.setMessage("Saving");
+      dialog1.setMessage(getString(R.string.saving));
       dialog1.show();
     }
 
     @Override
     protected Void doInBackground(String... strings) {
-      if (strings[0].equals("Size")) {
+      if (strings[0].equals(getString(R.string.size))) {
         String path = null;
         if (checkCompressFolder(saveFilePath)) {
           Bitmap bitmap = getBitmap(saveFilePath);
@@ -176,7 +197,7 @@ public class CompressImageActivity extends ThemedActivity {
         } catch (IOException e) {
           e.printStackTrace();
         }
-      } else if (strings[0].equals("Resolution")) {
+      } else if (strings[0].equals(getString(R.string.resolution))) {
         try {
           new Compressor(getApplicationContext())
               .setMaxWidth(cwidth[0])
@@ -203,12 +224,13 @@ public class CompressImageActivity extends ThemedActivity {
       String name = saveFilePath.substring(saveFilePath.lastIndexOf("/") + 1);
       FileUtil.albumUpdate(context, FileUtilsCompress.createFolders().getPath() + "/" + name);
       dialog1.dismiss();
+      Toast.makeText(context, R.string.compress, Toast.LENGTH_SHORT).show();
     }
   }
 
   private String checkforanao(Bitmap bitmap) {
     String root = Environment.getExternalStorageDirectory().toString();
-    File myDir = new File(root + "/saved_images");
+    File myDir = new File(root + getString(R.string.saved_image));
     myDir.mkdirs();
     Random generator = new Random();
     int n = 10000;
@@ -294,12 +316,14 @@ public class CompressImageActivity extends ThemedActivity {
 
   // compress  image by dimensions
   private void compressDim() {
+
+    compressDim = true;
     ListCompressAdapter lviewAdapter;
     ArrayList<String> compress_option = new ArrayList<String>();
     MediaDetailsMap<String, String> mediaDetailsMap =
         SingleMediaActivity.mediacompress.getMainDetails(this);
     // gives in the form like 1632x1224 (2.0 MP) , getting width and height of it
-    String dim[] = mediaDetailsMap.get("Resolution").split("x");
+    String dim[] = mediaDetailsMap.get(getString(R.string.resolution)).split("x");
     int width = Integer.parseInt(dim[0].replaceAll(" ", ""));
     String ht[] = dim[1].split(" ");
     int height = Integer.parseInt(ht[0]);
@@ -333,7 +357,7 @@ public class CompressImageActivity extends ThemedActivity {
               cheight[0] = finalHeight / (position * 2);
             }
             view.setBackgroundColor(R.color.md_light_blue_A400);
-            new SaveCompressedImage().execute("Resolution");
+            new SaveCompressedImage().execute(getString(R.string.resolution));
             finish();
           }
         });
@@ -341,10 +365,11 @@ public class CompressImageActivity extends ThemedActivity {
     AlertDialog.Builder alert = new AlertDialog.Builder(this);
     alert.setView(dialogLayout);
     alert.setNegativeButton(
-        getResources().getString(R.string.cancel),
+        getResources().getString(R.string.cancel).toUpperCase(),
         new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialog, int which) {
+            compressDim = false;
             dialog.cancel();
           }
         });

@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -18,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import java.io.File;
@@ -154,7 +157,7 @@ public class EditImageActivity extends EditBaseActivity
   private int currentShowingIndex = -1;
 
   public ArrayList<Bitmap> bitmapsForUndo;
-  public MainMenuFragment mainMenuFragment;
+  public MainMenuFragment mainMenuFragment = new MainMenuFragment();
   public RecyclerMenuFragment filterFragment, enhanceFragment, stickerTypesFragment;
   public StickersFragment stickersFragment;
   public SliderFragment sliderFragment;
@@ -165,20 +168,47 @@ public class EditImageActivity extends EditBaseActivity
   public RotateFragment rotateFragment;
   public FrameFragment frameFragment;
   private static String stickerType;
+  private boolean exitDialog = false;
+  private boolean exitWithoutChanges = false;
+  private boolean modeChangesExit = false;
+  private int modeCheck = -1;
+  private int messageCheck = -1;
+  private boolean check = false;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     if (getSupportActionBar() != null) getSupportActionBar().hide();
 
+    if (mainBitmap != null) {
+      mainBitmap.recycle();
+      mainBitmap = null;
+      System.gc();
+    }
+
     checkInitImageLoader();
     setContentView(R.layout.activity_image_edit);
     ButterKnife.bind(this);
     initView();
     if (savedInstanceState != null) {
-      mode = savedInstanceState.getInt("PREVIOUS_FRAGMENT");
-      initalMiddleFragment = savedInstanceState.getInt("PREVIOUS_MIDDLE_FRAGMENT");
-      initalBottomFragment = savedInstanceState.getInt("PREVIOUS_BOTTOM_FRAGMENT");
+      mode = savedInstanceState.getInt(getString(R.string.frag_prev));
+      initalMiddleFragment = savedInstanceState.getInt(getString(R.string.frag_prev_mid));
+      initalBottomFragment = savedInstanceState.getInt(getString(R.string.frag_prev_bottom));
+      exitDialog = savedInstanceState.getBoolean("Dialogshown", false);
+      exitWithoutChanges = savedInstanceState.getBoolean("exitWithoutChanges", false);
+      modeChangesExit = savedInstanceState.getBoolean("modeChanges", false);
+      modeCheck = savedInstanceState.getInt("checkMode", -1);
+      messageCheck = savedInstanceState.getInt("checkString", -1);
+      check = true;
+      mainBitmap = savedInstanceState.getParcelable("Edited Bitmap");
+      mOpTimes = savedInstanceState.getInt("numberOfEdits");
+    }
+    if (exitDialog) {
+      onSaveTaskDone();
+    } else if (exitWithoutChanges) {
+      noChangesExitDialog();
+    } else if (modeChangesExit) {
+      showDiscardChangesDialog(modeCheck, messageCheck);
     }
     getData();
   }
@@ -203,7 +233,7 @@ public class EditImageActivity extends EditBaseActivity
       Bundle bundle = getIntent().getExtras();
       filePath = bundle.getString(FILE_PATH);
       saveFilePath = bundle.getString(EXTRA_OUTPUT);
-      requestCode = bundle.getInt("requestCode", 1);
+      requestCode = bundle.getInt(getString(R.string.request_code), 1);
       loadImage(filePath);
       return;
     }
@@ -475,8 +505,17 @@ public class EditImageActivity extends EditBaseActivity
     if (mLoadImageTask != null) {
       mLoadImageTask.cancel(true);
     }
-    mLoadImageTask = new LoadImageTask();
-    mLoadImageTask.execute(filepath);
+    if (check && mOpTimes > 0) {
+      check = false;
+      mainImage.setImageBitmap(mainBitmap);
+      mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
+      originalBitmap = mainBitmap.copy(mainBitmap.getConfig(), true);
+      addToUndoList();
+      setInitialFragments();
+    } else {
+      mLoadImageTask = new LoadImageTask();
+      mLoadImageTask.execute(filepath);
+    }
   }
 
   protected void doSaveImage() {
@@ -522,6 +561,7 @@ public class EditImageActivity extends EditBaseActivity
     } else if (mOpTimes <= 0 && requestCode == 1) {
       imageSavedDialog(filePath);
     } else {
+      exitDialog = true;
       final AlertDialog.Builder discardChangesDialogBuilder =
           new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
       AlertDialogsHelper.getTextDialog(
@@ -543,7 +583,10 @@ public class EditImageActivity extends EditBaseActivity
           new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-              if (dialog != null) dialog.dismiss();
+              if (dialog != null) {
+                exitDialog = false;
+                dialog.dismiss();
+              }
             }
           });
 
@@ -616,11 +659,6 @@ public class EditImageActivity extends EditBaseActivity
     @Override
     protected void onPostExecute(Bitmap result) {
       super.onPostExecute(result);
-      if (mainBitmap != null) {
-        mainBitmap.recycle();
-        mainBitmap = null;
-        System.gc();
-      }
       mainBitmap = result;
       mainImage.setImageBitmap(result);
       mainImage.setDisplayType(ImageViewTouchBase.DisplayType.FIT_TO_SCREEN);
@@ -668,8 +706,42 @@ public class EditImageActivity extends EditBaseActivity
         resetOpTimes();
         onSaveTaskDone();
       } else {
-        Snackbar snackbar = SnackBarHandler.show(parentLayout, getString(R.string.save_error));
-        snackbar.show();
+        final AlertDialog.Builder discardChangesDialogBuilder =
+            new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
+        AlertDialogsHelper.getTextDialog(
+            EditImageActivity.this,
+            discardChangesDialogBuilder,
+            R.string.save_error,
+            R.string.permissions_error,
+            null);
+        discardChangesDialogBuilder.setPositiveButton(
+            getString(R.string.ok).toUpperCase(),
+            new DialogInterface.OnClickListener() {
+              @Override
+              public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent();
+                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                startActivity(intent);
+              }
+            });
+        discardChangesDialogBuilder.setNegativeButton(
+            getString(R.string.cancel).toUpperCase(),
+            new DialogInterface.OnClickListener() {
+              @Override
+              public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                Toast.makeText(getBaseContext(), R.string.no_save, Toast.LENGTH_LONG).show();
+              }
+            });
+
+        AlertDialog alertDialog = discardChangesDialogBuilder.create();
+        alertDialog.show();
+        AlertDialogsHelper.setButtonTextColor(
+            new int[] {DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE},
+            getAccentColor(),
+            alertDialog);
       }
     }
   }
@@ -677,9 +749,16 @@ public class EditImageActivity extends EditBaseActivity
   @Override
   protected void onSaveInstanceState(Bundle outState) {
     super.onSaveInstanceState(outState);
-    outState.putInt("PREVIOUS_MIDDLE_FRAGMENT", initalMiddleFragment);
-    outState.putInt("PREVIOUS_BOTTOM_FRAGMENT", initalBottomFragment);
-    outState.putInt("PREVIOUS_FRAGMENT", mode);
+    outState.putInt(getString(R.string.frag_prev_mid), initalMiddleFragment);
+    outState.putInt(getString(R.string.frag_prev_bottom), initalBottomFragment);
+    outState.putInt(getString(R.string.frag_prev), mode);
+    outState.putBoolean("Dialogshown", exitDialog);
+    outState.putBoolean("exitWithoutChanges", exitWithoutChanges);
+    outState.putBoolean("modeChanges", modeChangesExit);
+    outState.putInt("checkMode", modeCheck);
+    outState.putInt("checkString", messageCheck);
+    outState.putParcelable("Edited Bitmap", mainBitmap);
+    outState.putInt("numberOfEdits", mOpTimes);
   }
 
   @Override
@@ -715,6 +794,7 @@ public class EditImageActivity extends EditBaseActivity
     if (canAutoExit()) {
       finish();
     } else {
+      exitWithoutChanges = true;
       final AlertDialog.Builder discardChangesDialogBuilder =
           new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
       AlertDialogsHelper.getTextDialog(
@@ -736,7 +816,10 @@ public class EditImageActivity extends EditBaseActivity
           new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-              if (dialog != null) dialog.dismiss();
+              if (dialog != null) {
+                exitWithoutChanges = false;
+                dialog.dismiss();
+              }
             }
           });
       discardChangesDialogBuilder.setNeutralButton(
@@ -761,7 +844,59 @@ public class EditImageActivity extends EditBaseActivity
     }
   }
 
+  private void noChangesExitDialog() {
+    final AlertDialog.Builder discardChangesDialogBuilder =
+        new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
+    AlertDialogsHelper.getTextDialog(
+        EditImageActivity.this,
+        discardChangesDialogBuilder,
+        R.string.discard_changes_header,
+        R.string.exit_without_save,
+        null);
+    discardChangesDialogBuilder.setPositiveButton(
+        getString(R.string.confirm).toUpperCase(),
+        new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialog, int which) {
+            finish();
+          }
+        });
+    discardChangesDialogBuilder.setNegativeButton(
+        getString(R.string.cancel).toUpperCase(),
+        new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialog, int which) {
+            if (dialog != null) {
+              exitWithoutChanges = false;
+              dialog.dismiss();
+            }
+          }
+        });
+    discardChangesDialogBuilder.setNeutralButton(
+        getString(R.string.save_action).toUpperCase(),
+        new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialog, int which) {
+            doSaveImage();
+          }
+        });
+
+    AlertDialog alertDialog = discardChangesDialogBuilder.create();
+    alertDialog.show();
+    AlertDialogsHelper.setButtonTextColor(
+        new int[] {
+          DialogInterface.BUTTON_POSITIVE,
+          DialogInterface.BUTTON_NEGATIVE,
+          DialogInterface.BUTTON_NEUTRAL
+        },
+        getAccentColor(),
+        alertDialog);
+  }
+
   private void showDiscardChangesDialog(final int editMode, @StringRes int message) {
+    modeChangesExit = true;
+    modeCheck = editMode;
+    messageCheck = message;
     AlertDialog.Builder discardChangesDialogBuilder =
         new AlertDialog.Builder(EditImageActivity.this, getDialogStyle());
     AlertDialogsHelper.getTextDialog(
@@ -775,7 +910,10 @@ public class EditImageActivity extends EditBaseActivity
         new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialog, int which) {
-            if (dialog != null) dialog.dismiss();
+            if (dialog != null) {
+              modeChangesExit = false;
+              dialog.dismiss();
+            }
           }
         });
     discardChangesDialogBuilder.setPositiveButton(

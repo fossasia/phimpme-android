@@ -9,6 +9,7 @@ build
 /docs/keystore
 /app/src/main/3rdparty/
 /app/src/main/jniLibs/
+/app/src/main/jni/include
 libopencv_*
 viewflow/
 keystore.properties

@@ -7,9 +7,9 @@
 <a href='https://phimp.me'>Phimp.me</a> is an Android image editor app that aims to replace proprietary photographing and image apps on smart phones. It offers features such as taking photos, adding filters, editing images and uploading them to social networks. Phimp.me stands for **Ph**otos - **Im**ages - **P**ictures. It is developed at <a href='https://fossasia.org'>FOSSASIA</a> together with a global community.
 
 
-| Master | Development | Codecov | Code Quality | Chat |
-|------------|-----------------|-------------|-----------------|-----------------|
-| [![Build Status](https://travis-ci.org/fossasia/phimpme-android.svg?branch=master)](https://travis-ci.org/fossasia/phimpme-android) | [![Build Status](https://travis-ci.org/fossasia/phimpme-android.svg?branch=development)](https://travis-ci.org/fossasia/phimpme-android) | [![codecov](https://codecov.io/gh/fossasia/phimpme-android/branch/master/graph/badge.svg)](https://codecov.io/gh/fossasia/phimpme-android) | [![Codacy Badge](https://api.codacy.com/project/badge/Grade/4584003e734343b3b8ce94bcae6e9ca4)](https://www.codacy.com/app/harshithdwivedi/phimpme-android?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fossasia/phimpme-android&amp;utm_campaign=Badge_Grade) | [![Gitter Room](https://img.shields.io/badge/gitter-join%20chat%20%E2%86%92-blue.svg)](https://gitter.im/fossasia/phimpme) |
+| Master | Development | Codecov | Code Quality | Chat | Twitter |
+|------------|-----------------|-------------|-----------------|-----------------|-----------------|
+| [![Build Status](https://travis-ci.org/fossasia/phimpme-android.svg?branch=master)](https://travis-ci.org/fossasia/phimpme-android) | [![Build Status](https://travis-ci.org/fossasia/phimpme-android.svg?branch=development)](https://travis-ci.org/fossasia/phimpme-android) | [![codecov](https://codecov.io/gh/fossasia/phimpme-android/branch/master/graph/badge.svg)](https://codecov.io/gh/fossasia/phimpme-android) | [![Codacy Badge](https://api.codacy.com/project/badge/Grade/4584003e734343b3b8ce94bcae6e9ca4)](https://www.codacy.com/app/harshithdwivedi/phimpme-android?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=fossasia/phimpme-android&amp;utm_campaign=Badge_Grade) | [![Gitter Room](https://img.shields.io/badge/gitter-join%20chat%20%E2%86%92-blue.svg)](https://gitter.im/fossasia/phimpme) | [![Twitter Follow](https://img.shields.io/twitter/follow/phimpme.svg?style=social&label=Follow&maxAge=2592000?style=flat-square)](https://twitter.com/phimpme) |
 
 ## Screenshots
 
@@ -103,13 +103,14 @@ Before you begin, you should have already downloaded the Android Studio SDK and 
 
     - *Note:* If you receive a Gradle sync error titled, "failed to find ...", you should click on the link below the error message (if available) that says *Install missing platform(s) and sync project* and allow Android studio to fetch you what is missing.
 
-6. Download this [OpenCV-android-sdk](https://github.com/opencv/opencv/releases/download/2.4.13.3/opencv-2.4.13.3-android-sdk.zip) zip file and extract it.
+6. Download this [OpenCV-android-sdk](https://github.com/opencv/opencv/releases/download/4.0.1/opencv-4.0.1-android-sdk.zip) zip file and extract it.
 
      - Copy all the files from *"OpenCV-android-sdk/sdk/native/3rdparty"* to *"phimpme-android/app/src/main/3rdparty"* (create directory if it doesn't exist)
      - Copy all the files from *"OpenCV-android-sdk/sdk/native/libs"* to *"phimpme-android/app/src/main/jniLibs"* (create directory if it doesn't exist)
+     - Copy all the files from *"OpenCV-android-sdk/sdk/native/jni/include"* to *"phimpme-android/app/src/main/jni/include"* (create directory if it doesn't exist)
      - Now build your project. If your build fails then try deleting these build directories *"phimpme-android/app/.externalNativeBuild"* and *"phimpme-android/app/build"*, if they exist and run the build again.
 
-7. If build error still persist, try replacing ndk with ndk version 16b from [ndk-archives](https://developer.android.com/ndk/downloads/older_releases) .  Once all build errors have been resolved, you should be all set to build the app and test it.
+7. If build error still persist, try replacing ndk with ndk version 18b from [ndk-archives](https://developer.android.com/ndk/downloads/older_releases) .  Once all build errors have been resolved, you should be all set to build the app and test it.
 
 8. To Build the app, go to *Build > Make Project* (or alternatively press the Make Project icon in the toolbar).
 

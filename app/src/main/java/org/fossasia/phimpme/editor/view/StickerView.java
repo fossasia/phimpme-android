@@ -35,8 +35,7 @@ public class StickerView extends View {
   public ImageViewTouch mainImage;
   private float leftX, rightX, topY, bottomY;
 
-  private LinkedHashMap<Integer, StickerItem> bank =
-      new LinkedHashMap<Integer, StickerItem>(); // Storing each data map
+  public LinkedHashMap<Integer, StickerItem> bank;
 
   public StickerView(Context context) {
     super(context);
@@ -66,6 +65,10 @@ public class StickerView extends View {
 
   private void init(Context context) {
     this.mContext = context;
+    if (bank == null || bank.size() == 0) {
+      bank = new LinkedHashMap<Integer, StickerItem>();
+      bank.put(++imageCount, new StickerItem(context));
+    }
     currentStatus = STATUS_IDLE;
 
     rectPaint.setColor(Color.RED);
@@ -86,11 +89,16 @@ public class StickerView extends View {
   @Override
   protected void onDraw(Canvas canvas) {
     super.onDraw(canvas);
+    if (bank == null) {
+      bank = new LinkedHashMap<>();
+    }
     // System.out.println("on draw!!~");
     for (Integer id : bank.keySet()) {
-      StickerItem item = bank.get(id);
-      canvas.clipRect(leftX, topY, rightX, bottomY);
-      item.draw(canvas);
+      if (id != 1) {
+        StickerItem item = bank.get(id);
+        canvas.clipRect(leftX, topY, rightX, bottomY);
+        item.draw(canvas);
+      }
     } // end for each
   }
 
@@ -110,32 +118,34 @@ public class StickerView extends View {
       case MotionEvent.ACTION_DOWN:
         int deleteId = -1;
         for (Integer id : bank.keySet()) {
-          StickerItem item = bank.get(id);
-          if (item.detectDeleteRect.contains(x, y)) { // Delete mode
-            // ret = true;
-            deleteId = id;
-            currentStatus = STATUS_DELETE;
-          } else if (item.detectRotateRect.contains(x, y)) { // Click the Rotate button
-            ret = true;
-            if (currentItem != null) {
-              currentItem.isDrawHelpTool = false;
+          if (id != 1) {
+            StickerItem item = bank.get(id);
+            if (item.detectDeleteRect.contains(x, y)) { // Delete mode
+              // ret = true;
+              deleteId = id;
+              currentStatus = STATUS_DELETE;
+            } else if (item.detectRotateRect.contains(x, y)) { // Click the Rotate button
+              ret = true;
+              if (currentItem != null) {
+                currentItem.isDrawHelpTool = false;
+              }
+              currentItem = item;
+              currentItem.isDrawHelpTool = true;
+              currentStatus = STATUS_ROTATE;
+              oldx = x;
+              oldy = y;
+            } else if (item.dstRect.contains(x, y)) { // Mobile mode
+              // Selected one map
+              ret = true;
+              if (currentItem != null) {
+                currentItem.isDrawHelpTool = false;
+              }
+              currentItem = item;
+              currentItem.isDrawHelpTool = true;
+              currentStatus = STATUS_MOVE;
+              oldx = x;
+              oldy = y;
             }
-            currentItem = item;
-            currentItem.isDrawHelpTool = true;
-            currentStatus = STATUS_ROTATE;
-            oldx = x;
-            oldy = y;
-          } else if (item.dstRect.contains(x, y)) { // Mobile mode
-            // Selected one map
-            ret = true;
-            if (currentItem != null) {
-              currentItem.isDrawHelpTool = false;
-            }
-            currentItem = item;
-            currentItem.isDrawHelpTool = true;
-            currentStatus = STATUS_MOVE;
-            oldx = x;
-            oldy = y;
           }
         }
 

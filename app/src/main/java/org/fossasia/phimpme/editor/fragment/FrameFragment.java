@@ -207,7 +207,11 @@ public class FrameFragment extends BaseEditFragment {
       InputStream is;
       try {
         if (original != null && pos < 11) {
-          is = getResources().getAssets().open("frames" + File.separator + pos + ".png");
+          is =
+              getResources()
+                  .getAssets()
+                  .open(
+                      getString(R.string.frames) + File.separator + pos + getString(R.string.png_));
           Offset of;
           of = offset(pos);
           int width = of.getWidth();
@@ -247,7 +251,11 @@ public class FrameFragment extends BaseEditFragment {
         } else {
           Bitmap temp = original.copy(Bitmap.Config.ARGB_8888, true);
           Canvas can = new Canvas(temp);
-          is = getResources().getAssets().open("frames" + File.separator + pos + ".png");
+          is =
+              getResources()
+                  .getAssets()
+                  .open(
+                      getString(R.string.frames) + File.separator + pos + getString(R.string.png_));
           Bitmap frame = BitmapFactory.decodeStream(is);
           is.close();
           Bitmap frameNew =

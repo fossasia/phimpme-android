@@ -16,7 +16,6 @@ import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -43,6 +42,7 @@ import android.os.ParcelFileDescriptor;
 import android.os.StatFs;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.renderscript.RenderScript;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
@@ -2787,15 +2787,27 @@ public class CameraActivity extends ThemedActivity
           .setTitle(R.string.permission_rationale_title)
           .setMessage(message_id)
           .setIcon(android.R.drawable.ic_dialog_alert)
-          .setPositiveButton(android.R.string.ok, null)
-          .setOnDismissListener(
-              new OnDismissListener() {
-                public void onDismiss(DialogInterface dialog) {
+          .setPositiveButton(
+              android.R.string.ok,
+              new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                  Intent intent = new Intent();
+                  intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                  Uri uri = Uri.fromParts("package", getPackageName(), null);
+                  intent.setData(uri);
+                  startActivity(intent);
+                }
+              })
+          .setNegativeButton(
+              android.R.string.cancel,
+              new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
                   if (MyDebug.LOG) Log.d(TAG, "requesting permission...");
                   ActivityCompat.requestPermissions(
                       CameraActivity.this, permissions_f, permission_code);
                 }
               })
+          .setCancelable(false)
           .show();
     }
   }

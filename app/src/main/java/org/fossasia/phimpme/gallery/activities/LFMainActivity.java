@@ -686,7 +686,9 @@ public class LFMainActivity extends SharedMediaActivity {
                 findViewById(R.id.ll_drawer_Default).setBackgroundColor(getHighlightedItemColor());
                 tint();
               }
-              displayAlbums();
+              if (!albumsMode) {
+                displayAlbums();
+              }
               return true;
             }
             return LFMainActivity.super.onNavigationItemSelected(item);
@@ -954,11 +956,13 @@ public class LFMainActivity extends SharedMediaActivity {
                       && spanCount < 6) {
                     if (getResources().getConfiguration().orientation
                         == Configuration.ORIENTATION_PORTRAIT) {
-                      if (albumsMode) SP.putInt("n_columns_folders", spanCount + 1);
-                      else SP.putInt("n_columns_media", spanCount + 1);
+                      if (albumsMode)
+                        SP.putInt(getString(R.string.n_columns_folders), spanCount + 1);
+                      else SP.putInt(getString(R.string.n_columns_media), spanCount + 1);
                     } else {
-                      if (albumsMode) SP.putInt("n_columns_folders_landscape", spanCount + 1);
-                      else SP.putInt("n_columns_media_landscape", spanCount + 1);
+                      if (albumsMode)
+                        SP.putInt(getString(R.string.n_columns_folders_landscape), spanCount + 1);
+                      else SP.putInt(getString(R.string.n_columns_media_landscape), spanCount + 1);
                     }
 
                     if (albumsMode) updateColumnsRvAlbums();
@@ -969,11 +973,13 @@ public class LFMainActivity extends SharedMediaActivity {
                       && spanCount > 1) {
                     if (getResources().getConfiguration().orientation
                         == Configuration.ORIENTATION_PORTRAIT) {
-                      if (albumsMode) SP.putInt("n_columns_folders", spanCount - 1);
-                      else SP.putInt("n_columns_media", spanCount - 1);
+                      if (albumsMode)
+                        SP.putInt(getString(R.string.n_columns_folders), spanCount - 1);
+                      else SP.putInt(getString(R.string.n_columns_media), spanCount - 1);
                     } else {
-                      if (albumsMode) SP.putInt("n_columns_folders_landscape", spanCount - 1);
-                      else SP.putInt("n_columns_media_landscape", spanCount - 1);
+                      if (albumsMode)
+                        SP.putInt(getString(R.string.n_columns_folders_landscape), spanCount - 1);
+                      else SP.putInt(getString(R.string.n_columns_media_landscape), spanCount - 1);
                     }
 
                     if (albumsMode) updateColumnsRvAlbums();
@@ -1148,14 +1154,14 @@ public class LFMainActivity extends SharedMediaActivity {
 
   public int columnsCount() {
     return getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT
-        ? SP.getInt("n_columns_folders", 2)
-        : SP.getInt("n_columns_folders_landscape", 3);
+        ? SP.getInt(getString(R.string.n_columns_folders), 2)
+        : SP.getInt(getString(R.string.n_columns_folders_landscape), 3);
   }
 
   public int mediaCount() {
     return getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT
-        ? SP.getInt("n_columns_media", 3)
-        : SP.getInt("n_columns_media_landscape", 4);
+        ? SP.getInt(getString(R.string.n_columns_media), 3)
+        : SP.getInt(getString(R.string.n_columns_media_landscape), 4);
   }
 
   private void updateColumnsRvs() {
@@ -1597,24 +1603,6 @@ public class LFMainActivity extends SharedMediaActivity {
       showAppBar();
       nestedView.setScrolling(false);
       rvMedia.setNestedScrollingEnabled(false);
-    }
-  }
-
-  private void showsnackbar(Boolean result) {
-    if (result) {
-      Snackbar snackbar =
-          SnackBarHandler.show(
-              mDrawerLayout,
-              getApplicationContext().getString(R.string.photo_deleted_msg),
-              navigationView.getHeight());
-      snackbar.show();
-    } else {
-      Snackbar snackbar =
-          SnackBarHandler.show(
-              mDrawerLayout,
-              getApplicationContext().getString(R.string.photo_deletion_failed),
-              navigationView.getHeight());
-      snackbar.show();
     }
   }
 
@@ -2088,6 +2076,12 @@ public class LFMainActivity extends SharedMediaActivity {
                     getAlbum().clearSelectedPhotos();
                   } else {
                     succ = getAlbum().deleteSelectedMedia(getApplicationContext());
+                    Snackbar snackbar =
+                        SnackBarHandler.show(
+                            mDrawerLayout,
+                            getApplicationContext().getString(R.string.photo_deleted_msg),
+                            navigationView.getHeight());
+                    snackbar.show();
                   }
                 } else if (all_photos && !fav_photos) {
                   checkForShare(selectedMedias);
@@ -2120,6 +2114,12 @@ public class LFMainActivity extends SharedMediaActivity {
                                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id);
                         contentResolver.delete(deleteUri, null, null);
                         succ = true;
+                        Snackbar snackbar =
+                            SnackBarHandler.show(
+                                mDrawerLayout,
+                                getApplicationContext().getString(R.string.photo_deleted_msg),
+                                navigationView.getHeight());
+                        snackbar.show();
                       } else {
                         succ = false;
                         // File not found in media store DB
@@ -2162,6 +2162,12 @@ public class LFMainActivity extends SharedMediaActivity {
                   } else {
                     succ = getAlbums().deleteAlbum(getAlbum(), getApplicationContext());
                     getAlbum().getMedia().clear();
+                    Snackbar snackbar =
+                        SnackBarHandler.show(
+                            mDrawerLayout,
+                            getApplicationContext().getString(R.string.photo_deleted_msg),
+                            navigationView.getHeight());
+                    snackbar.show();
                   }
                 } else {
                   checkForShare(favouriteslist);
@@ -2190,6 +2196,12 @@ public class LFMainActivity extends SharedMediaActivity {
                 getAlbums().clearSelectedAlbums();
                 mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
                 albumsAdapter.notifyDataSetChanged();
+                Snackbar snackbar =
+                    SnackBarHandler.show(
+                        mDrawerLayout,
+                        getApplicationContext().getString(R.string.album_deleted),
+                        navigationView.getHeight());
+                snackbar.show();
               } else {
                 if (!all_photos && !fav_photos) {
                   // if all media in current album have been deleted, delete current album too.
@@ -2197,7 +2209,6 @@ public class LFMainActivity extends SharedMediaActivity {
                     getAlbums().removeCurrentAlbum();
                     albumsAdapter.notifyDataSetChanged();
                     displayAlbums();
-                    showsnackbar(succ);
                     swipeRefreshLayout.setRefreshing(true);
                   } else mediaAdapter.swapDataSet(getAlbum().getMedia(), false);
                 } else if (all_photos && !fav_photos) {
@@ -2205,7 +2216,6 @@ public class LFMainActivity extends SharedMediaActivity {
                   listAll = StorageProvider.getAllShownImages(LFMainActivity.this);
                   media = listAll;
                   size = listAll.size();
-                  showsnackbar(succ);
                   Collections.sort(
                       listAll,
                       MediaComparators.getComparator(
