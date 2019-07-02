@@ -2,6 +2,8 @@ package org.fossasia.phimpme.trashbin;
 
 import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -280,11 +282,21 @@ public class TrashBinActivity extends ThemedActivity
 
   class DeleteAll extends AsyncTask<Void, Void, Void> {
     private final Boolean[] deleted = {false};
+    private Dialog dialog;
 
     @Override
     protected void onPreExecute() {
+      dialog = getLoadingDialog(context, "Deleting all photos", false);
+      dialog.show();
       swipeRefreshLayout.setRefreshing(true);
       super.onPreExecute();
+    }
+
+    private Dialog getLoadingDialog(Context context, String title, boolean canCancel) {
+      ProgressDialog dialog = new ProgressDialog(context);
+      dialog.setCancelable(canCancel);
+      dialog.setMessage(title);
+      return dialog;
     }
 
     @Override
@@ -310,6 +322,7 @@ public class TrashBinActivity extends ThemedActivity
     protected void onPostExecute(Void aVoid) {
       swipeRefreshLayout.setRefreshing(false);
       super.onPostExecute(aVoid);
+      dialog.dismiss();
       if (deleted[0] && trashBinRealmModelRealmQuery.count() == 0) {
         swipeRefreshLayout.setEnabled(false);
         emptyView.setVisibility(View.VISIBLE);
@@ -325,10 +338,13 @@ public class TrashBinActivity extends ThemedActivity
 
   class RestoreAll extends AsyncTask<Void, Void, Void> {
     private int count = 0, originalCount = 0;
+    private Dialog dialog;
 
     @Override
     protected void onPreExecute() {
       super.onPreExecute();
+      dialog = getLoadingDialog(context, "Restoring", false);
+      dialog.show();
       swipeRefreshLayout.setRefreshing(true);
     }
 
@@ -350,9 +366,17 @@ public class TrashBinActivity extends ThemedActivity
       return null;
     }
 
+    private Dialog getLoadingDialog(Context context, String title, boolean canCancel) {
+      ProgressDialog dialog = new ProgressDialog(context);
+      dialog.setCancelable(canCancel);
+      dialog.setMessage(title);
+      return dialog;
+    }
+
     @Override
     protected void onPostExecute(Void aVoid) {
       super.onPostExecute(aVoid);
+      dialog.dismiss();
       swipeRefreshLayout.setRefreshing(false);
       trashBinAdapter.setResults(getTrashObjects());
       if (trashBinRealmModelRealmQuery.count() == 0) {
