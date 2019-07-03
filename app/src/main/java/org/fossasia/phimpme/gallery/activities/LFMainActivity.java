@@ -8,6 +8,8 @@ import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.context;
 
 import android.animation.Animator;
 import android.annotation.TargetApi;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
@@ -2042,11 +2044,21 @@ public class LFMainActivity extends SharedMediaActivity {
 
           private boolean succ = false;
           private int imagesUnfav = 0;
+          private Dialog dialog;
 
           @Override
           protected void onPreExecute() {
+            dialog = getLoadingDialog(context, "Deleting", false);
+            dialog.show();
             swipeRefreshLayout.setRefreshing(true);
             super.onPreExecute();
+          }
+
+          private Dialog getLoadingDialog(Context context, String title, boolean canCancel) {
+            ProgressDialog dialog = new ProgressDialog(context);
+            dialog.setCancelable(canCancel);
+            dialog.setMessage(title);
+            return dialog;
           }
 
           @Override
@@ -2190,6 +2202,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
           @Override
           protected void onPostExecute(Boolean result) {
+            dialog.dismiss();
             if (result) {
               // in albumsMode, the selected albums have been deleted.
               if (albumsMode) {
@@ -4503,6 +4516,7 @@ public class LFMainActivity extends SharedMediaActivity {
     // private Snackbar snackbar;
     private ArrayList<Media> temp;
     private Boolean moveAction, copyAction, success;
+    private Dialog dialog;
 
     CopyPhotos(String path, Boolean moveAction, Boolean copyAction, LFMainActivity reference) {
       this.path = path;
@@ -4513,9 +4527,18 @@ public class LFMainActivity extends SharedMediaActivity {
 
     @Override
     protected void onPreExecute() {
+      dialog = getLoadingDialog(context, "Copying photos", false);
+      dialog.show();
       LFMainActivity asyncActivityRef = reference.get();
       asyncActivityRef.swipeRefreshLayout.setRefreshing(true);
       super.onPreExecute();
+    }
+
+    private Dialog getLoadingDialog(Context context, String title, boolean canCancel) {
+      ProgressDialog dialog = new ProgressDialog(context);
+      dialog.setCancelable(canCancel);
+      dialog.setMessage(title);
+      return dialog;
     }
 
     @Override
@@ -4535,6 +4558,7 @@ public class LFMainActivity extends SharedMediaActivity {
 
     @Override
     protected void onPostExecute(Boolean result) {
+      dialog.dismiss();
       LFMainActivity asyncActivityRef = reference.get();
       if (result) {
         if (!asyncActivityRef.all_photos) {
