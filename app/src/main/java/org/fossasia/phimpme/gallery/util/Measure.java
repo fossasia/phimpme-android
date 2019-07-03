@@ -24,10 +24,6 @@ public class Measure {
     return 0;
   }
 
-  public static int getNavBarHeight(Context ct) {
-    return getNavigationBarSize(ct).y;
-  }
-
   public static Point getNavigationBarSize(Context context) {
     Point appUsableSize = getAppUsableScreenSize(context);
     Point realScreenSize = getRealScreenSize(context);

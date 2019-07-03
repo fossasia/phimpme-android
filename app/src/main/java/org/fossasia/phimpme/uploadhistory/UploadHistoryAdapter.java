@@ -5,7 +5,6 @@ import static org.fossasia.phimpme.utilities.ActivitySwitchHelper.getContext;
 
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +21,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.UploadHistoryRealmModel;
 
@@ -102,15 +100,6 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
   @Override
   public int getItemCount() {
     return realmResult.size();
-  }
-
-  public void updateUploadListItems(List<UploadHistoryRealmModel> uploadList) {
-    final UploadHisDiffCallback diffCallback =
-        new UploadHisDiffCallback(this.realmResult, uploadList);
-    final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
-    this.realmResult.clear();
-    this.realmResult.addAll(uploadList);
-    diffResult.dispatchUpdatesTo(this);
   }
 
   public void setResults(ArrayList<UploadHistoryRealmModel> realmResult) {

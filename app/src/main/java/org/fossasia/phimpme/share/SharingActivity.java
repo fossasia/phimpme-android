@@ -736,7 +736,7 @@ public class SharingActivity extends ThemedActivity
     }
   }
 
-  private class UploadToOneDrive extends AsyncTask<Void, Void, Void> {
+  /*private class UploadToOneDrive extends AsyncTask<Void, Void, Void> {
     Boolean success;
 
     @Override
@@ -783,7 +783,7 @@ public class SharingActivity extends ThemedActivity
         sendResult(FAIL);
       }
     }
-  }
+  }*/
 
   @Override
   public void onBackPressed() {

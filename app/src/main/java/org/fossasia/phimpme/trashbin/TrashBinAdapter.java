@@ -6,7 +6,6 @@ import android.content.Context;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -27,7 +26,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.TrashBinRealmModel;
 import org.fossasia.phimpme.gallery.util.ContentHelper;
@@ -201,14 +199,6 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
       }
     }
     return succ;
-  }
-
-  public void updateTrashListItems(List<TrashBinRealmModel> trashList) {
-    final TrashDiffCallback diffCallback = new TrashDiffCallback(this.trashItemsList, trashList);
-    final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
-    this.trashItemsList.clear();
-    this.trashItemsList.addAll(trashList);
-    diffResult.dispatchUpdatesTo(this);
   }
 
   public void setResults(ArrayList<TrashBinRealmModel> trashItemsList) {

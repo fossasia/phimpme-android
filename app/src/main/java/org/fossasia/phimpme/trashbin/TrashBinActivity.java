@@ -174,17 +174,6 @@ public class TrashBinActivity extends ThemedActivity
     return list;
   }
 
-  private ArrayList<TrashBinRealmModel> getTrashObjectsLast() {
-    ArrayList<TrashBinRealmModel> list = new ArrayList<>();
-    for (int i = 0; i < trashBinRealmModelRealmQuery.count(); i++) {
-      list.add(
-          trashBinRealmModelRealmQuery
-              .findAll()
-              .get((int) (trashBinRealmModelRealmQuery.count() - i - 1)));
-    }
-    return list;
-  }
-
   private ArrayList<Media> loaduploaddata() {
     ArrayList<Media> data = new ArrayList<>();
     ArrayList<TrashBinRealmModel> binRealmModelArrayList = getTrashObjects();
