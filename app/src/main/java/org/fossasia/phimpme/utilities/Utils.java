@@ -17,14 +17,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
-import android.provider.MediaStore;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.util.Base64;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import io.realm.Realm;
 import io.realm.RealmQuery;
 import io.realm.RealmResults;
@@ -139,24 +136,6 @@ public class Utils {
 
     list.add(AccountDatabase.AccountName.OTHERS);
     return list;
-  }
-
-  public static Uri getImageUri(Context inContext, String imagePath) {
-    Bitmap inImage = getBitmapFromPath(imagePath);
-    ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-    inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-    String path =
-        MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-    return Uri.parse(path);
-  }
-
-  public static String getMimeType(String url) {
-    String type = null;
-    String extension = MimeTypeMap.getFileExtensionFromUrl(url);
-    if (extension != null) {
-      type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
-    }
-    return type;
   }
 
   public static boolean checkNetwork(Context context, @NonNull View view) {

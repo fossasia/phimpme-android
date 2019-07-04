@@ -243,18 +243,6 @@ public class ThemeHelper {
     return null;
   }
 
-  public static Drawable getPlaceHolder(Context context) {
-    switch (getBaseTheme(context)) {
-      case DARK_THEME:
-        return ContextCompat.getDrawable(context, R.drawable.ic_empty);
-      case AMOLED_THEME:
-        return ContextCompat.getDrawable(context, R.drawable.ic_empty_amoled);
-      case LIGHT_THEME:
-        return ContextCompat.getDrawable(context, R.drawable.ic_empty_white);
-    }
-    return null;
-  }
-
   public int getDialogStyle() {
     int style;
     switch (getBaseTheme()) {
