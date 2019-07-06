@@ -1,103 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:card_view="http://schemas.android.com/apk/res-auto"
-              xmlns:app="http://schemas.android.com/tools"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+    xmlns:app="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-  <android.support.v7.widget.CardView
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      app:cardCornerRadius="@dimen/size_7"
-      app:cardElevation="@dimen/size_3"
-      app:cardMaxElevation="@dimen/size_3"
-      android:layout_gravity="center"
-      android:foreground="@drawable/ripple"
-      android:layout_margin="@dimen/very_small_margin">
-
-    <RelativeLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/md_grey_300">
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/very_small_margin"
+        android:foreground="@drawable/ripple"
+        app:cardCornerRadius="@dimen/size_7"
+        app:cardElevation="@dimen/size_3"
+        app:cardMaxElevation="@dimen/size_3">
 
-      <ImageView
-          android:id="@+id/trashbin_image"
-          android:layout_width="match_parent"
-          android:layout_height="@dimen/size_160"
-          android:layout_gravity="center"
-          android:scaleType="centerCrop"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/md_grey_300">
 
-      <LinearLayout
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_below="@+id/trashbin_image"
-          android:orientation="vertical">
+            <ImageView
+                android:id="@+id/trashbin_image"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_160"
+                android:layout_gravity="center"
+                android:scaleType="centerCrop" />
 
-        <LinearLayout android:layout_width="wrap_content"
-                      android:layout_marginTop="@dimen/alternate_half_margin"
-                      android:layout_marginEnd="@dimen/alternate_half_margin"
-                      android:layout_marginStart="@dimen/alternate_half_margin"
-                      android:orientation="horizontal"
-                      android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/delete_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/trashbin_image"
+                android:orientation="vertical">
 
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="@string/date_text"
-              android:textSize="@dimen/sub_medium_text"
-              android:textStyle="bold"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/alternate_half_margin"
+                    android:layout_marginTop="@dimen/alternate_half_margin"
+                    android:layout_marginEnd="@dimen/alternate_half_margin"
+                    android:orientation="horizontal">
 
-          <TextView
-              android:id="@+id/delete_date"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:textSize="@dimen/sub_medium_text"/>
+                    <TextView
+                        android:id="@+id/date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/date_text"
+                        android:textSize="@dimen/sub_medium_text"
+                        android:textStyle="bold" />
 
-        </LinearLayout>
+                    <TextView
+                        android:id="@+id/delete_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/sub_medium_text" />
 
-        <LinearLayout android:layout_width="wrap_content"
-                      android:layout_marginTop="@dimen/alternate_half_margin"
-                      android:layout_marginStart="@dimen/alternate_half_margin"
-                      android:layout_marginEnd="@dimen/alternate_half_margin"
-                      android:layout_marginBottom="@dimen/alternate_half_margin"
-                      android:orientation="horizontal"
-                      android:layout_height="wrap_content">
+                </LinearLayout>
 
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="@string/time_text"
-              android:textSize="@dimen/sub_medium_text"
-              android:textStyle="bold"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/alternate_half_margin"
+                    android:layout_marginTop="@dimen/alternate_half_margin"
+                    android:layout_marginEnd="@dimen/alternate_half_margin"
+                    android:layout_marginBottom="@dimen/alternate_half_margin"
+                    android:orientation="horizontal">
 
-          <TextView
-              android:id="@+id/delete_time"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:textSize="@dimen/sub_medium_text"/>
+                    <TextView
+                        android:id="@+id/time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/time_text"
+                        android:textSize="@dimen/sub_medium_text"
+                        android:textStyle="bold" />
 
-        </LinearLayout>
+                    <TextView
+                        android:id="@+id/delete_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/sub_medium_text" />
 
-      </LinearLayout>
+                </LinearLayout>
 
-      <TextView
-          android:id="@+id/textViewOptions"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_alignParentRight="true"
-          android:layout_gravity="center"
-          android:layout_marginTop="@dimen/alternate_margin"
-          android:layout_marginEnd="@dimen/alternate_margin"
-          android:layout_below="@+id/trashbin_image"
-          android:paddingStart="@dimen/activity_horizontal_margin"
-          android:text="&#8942;"
-          android:layout_alignParentEnd="true"
-          android:textAppearance="?android:textAppearanceLarge" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textViewOptions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/trashbin_image"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/alternate_margin"
+                android:layout_marginEnd="@dimen/alternate_margin"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:text="&#8942;"
+                android:textAppearance="?android:textAppearanceLarge" />
 
 
-    </RelativeLayout>
+        </RelativeLayout>
 
-  </android.support.v7.widget.CardView>
+    </android.support.v7.widget.CardView>
 
 </LinearLayout>

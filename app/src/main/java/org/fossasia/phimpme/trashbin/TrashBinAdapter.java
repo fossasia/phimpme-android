@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import butterknife.BindView;
@@ -30,6 +31,7 @@ import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.TrashBinRealmModel;
 import org.fossasia.phimpme.gallery.util.ContentHelper;
 import org.fossasia.phimpme.gallery.util.StringUtils;
+import org.fossasia.phimpme.gallery.util.ThemeHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
 
 public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHolder> {
@@ -38,10 +40,12 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
   private View.OnClickListener onClickListener;
   private BasicCallBack basicCallBack;
   private OnDeleteClickListener onDeleteClickListener;
+  private ThemeHelper theme;
 
   public TrashBinAdapter(ArrayList<TrashBinRealmModel> list, BasicCallBack basicCallBack) {
     trashItemsList = list;
     this.basicCallBack = basicCallBack;
+    theme = new ThemeHelper(context);
   }
 
   public interface OnDeleteClickListener {
@@ -111,6 +115,12 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
               menu.show();
             }
           });
+      holder.popupMenuButton.setTextColor(theme.getTextColor());
+      holder.date.setTextColor(theme.getTextColor());
+      holder.deleteDate.setTextColor(theme.getTextColor());
+      holder.deleteTime.setTextColor(theme.getTextColor());
+      holder.time.setTextColor(theme.getTextColor());
+      holder.deleteDetails.setBackgroundColor(theme.getBackgroundColor());
     }
   }
 
@@ -228,6 +238,15 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
 
     @BindView(R.id.textViewOptions)
     public TextView popupMenuButton;
+
+    @BindView(R.id.date)
+    public TextView date;
+
+    @BindView(R.id.time)
+    public TextView time;
+
+    @BindView(R.id.delete_details)
+    public LinearLayout deleteDetails;
 
     public ViewHolder(View itemView) {
       super(itemView);
