@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.UploadHistoryRealmModel;
+import org.fossasia.phimpme.gallery.util.ThemeHelper;
 
 /** Created by pa1pal on 17/08/17. */
 public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdapter.ViewHolder> {
@@ -31,9 +33,11 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
   private int color;
   private View.OnClickListener onClickListener;
   public String imagePath;
+  private ThemeHelper theme;
 
   public UploadHistoryAdapter(int color) {
     this.color = color;
+    theme = new ThemeHelper(context);
   }
 
   @Override
@@ -66,6 +70,10 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
         e.printStackTrace();
       }
 
+      holder.uploadData.setBackgroundColor(theme.getBackgroundColor());
+      holder.date.setTextColor(theme.getTextColor());
+      holder.time.setTextColor(theme.getTextColor());
+
       Uri uri = Uri.fromFile(new File(uploadHistoryRealmModel.getPathname()));
       imagePath = uploadHistoryRealmModel.getPathname();
       holder.uploadTime.setTag(uploadHistoryRealmModel);
@@ -92,6 +100,9 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
                   (name.toLowerCase()) + "_color",
                   context.getString(R.string.color),
                   getContext().getPackageName());
+
+      holder.uploadDate.setTextColor(theme.getTextColor());
+      holder.uploadTime.setTextColor(theme.getTextColor());
 
       holder.accountImageShare.setColorFilter(ContextCompat.getColor(getContext(), id));
     }
@@ -124,6 +135,15 @@ public class UploadHistoryAdapter extends RecyclerView.Adapter<UploadHistoryAdap
 
     @BindView(R.id.account_image_share)
     ImageView accountImageShare;
+
+    @BindView(R.id.upload_data)
+    LinearLayout uploadData;
+
+    @BindView(R.id.time)
+    TextView time;
+
+    @BindView(R.id.date)
+    TextView date;
 
     public ViewHolder(View itemView) {
       super(itemView);
