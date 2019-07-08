@@ -45,6 +45,24 @@ android {
         renderscriptSupportModeEnabled true
     }
 
+    signingConfigs {
+        if (TRAVIS_BUILD) {
+            release {
+                storeFile KEYSTORE_FILE
+                storePassword System.getenv("STORE_PASS")
+                keyAlias System.getenv("ALIAS")
+                keyPassword System.getenv("KEY_PASS")
+            }
+        } else if (LOCAL_KEY_PRESENT) {
+            release {
+                storeFile rootProject.file(SIGNING_KEY_FILE)
+                storePassword STORE_PASS
+                keyAlias ALIAS
+                keyPassword KEY_PASS
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
@@ -75,24 +93,6 @@ android {
     lintOptions {
         abortOnError false
         disable "Instantiatable"
-    }
-
-    signingConfigs {
-        if (TRAVIS_BUILD) {
-            release {
-                storeFile KEYSTORE_FILE
-                storePassword System.getenv("STORE_PASS")
-                keyAlias System.getenv("ALIAS")
-                keyPassword System.getenv("KEY_PASS")
-            }
-        } else if (LOCAL_KEY_PRESENT) {
-            release {
-                storeFile rootProject.file(SIGNING_KEY_FILE)
-                storePassword STORE_PASS
-                keyAlias ALIAS
-                keyPassword KEY_PASS
-            }
-        }
     }
 
     tasks.withType(JavaCompile) {
