@@ -12,6 +12,7 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_REPO_SLUG" != "fossasia/phimp
 	exit 0
 fi
 
+./gradlew bundlePlayStoreRelease
 
 git clone --quiet --branch=apk https://fossasia:$GITHUB_API_KEY@github.com/fossasia/phimpme-android apk > /dev/null
 cd apk
@@ -19,37 +20,29 @@ cd apk
 if [[ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]]; then
 	/bin/rm -f *
 else
-	/bin/rm -f phimpme-dev-*.apk
+	/bin/rm -f phimpme-dev-*
 fi
 
-\cp -r ../app/build/outputs/apk/*/**.apk .
+find ../app/build/outputs -type f -name '*.apk' -exec cp -v {} . \;
+find ../app/build/outputs -type f -name '*.aab' -exec cp -v {} . \;
 
-# Signing Apps
+for file in app*; do
+    if [ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
+        if [[ ${file} =~ ".aab" ]]; then
+            mv $file phimpme-master-${file}
+        else
+            mv $file phimpme-master-${file:4}
+        fi
 
-if [ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
-    echo "Push to master branch detected, signing the app..."
-    cp app-release-unsigned.apk app-release-unaligned.apk
-    jarsigner -tsa http://timestamp.comodoca.com/rfc3161 -sigalg SHA1withRSA -digestalg SHA1 -keystore ../scripts/key.jks -storepass $STORE_PASS -keypass $KEY_PASS app-release-unaligned.apk $ALIAS
-	${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS_VERSION}/zipalign -p 4 app-release-unaligned.apk app-release.apk
-fi
+    elif [ "$TRAVIS_BRANCH" == "$DEPLOY_BRANCH" ]; then
+        if [[ ${file} =~ ".aab" ]]; then
+                mv $file phimpme-dev-${file}
+        else
+                mv $file phimpme-dev-${file:4}
+        fi
 
-if [ "$TRAVIS_BRANCH" == "$PUBLISH_BRANCH" ]; then
-	for file in app*; do
-		if [[ $file = "phimpme"* ]]; then
-			continue
-		fi
-		mv $file phimpme-master-${file%%}
-	done
-fi
-
-if [ "$TRAVIS_BRANCH" == "$DEPLOY_BRANCH" ]; then
-	for file in app*; do
-		if [[ $file = "phimpme"* ]]; then
-			continue
-		fi
-		mv $file phimpme-dev-${file%%}
-	done
-fi
+    fi
+done
 
 # Create a new branch that will contain only latest apk
 git checkout --orphan temporary
@@ -73,4 +66,4 @@ if [ "$TRAVIS_BRANCH" != "$PUBLISH_BRANCH" ]; then
 fi
 
 gem install fastlane
-fastlane supply --apk phimpme-master-app-release.apk --track alpha --json_key ../scripts/fastlane.json --package_name $PACKAGE_NAME
+fastlane supply --aab phimpme-master-app.aab --skip_upload_apk true --track alpha --json_key ../scripts/fastlane.json --package_name $PACKAGE_NAME
