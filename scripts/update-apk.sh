@@ -12,7 +12,7 @@ if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_REPO_SLUG" != "fossasia/phimp
 	exit 0
 fi
 
-./gradlew bundlePlayStoreRelease
+./gradlew bundleRelease
 
 git clone --quiet --branch=apk https://fossasia:$GITHUB_API_KEY@github.com/fossasia/phimpme-android apk > /dev/null
 cd apk
