@@ -1,0 +1,5 @@
+Bug fixes and improvements.
+Feature to maintain a favorite collection of images.
+Option to print photos.
+Playing a slideshow of images.
+New features in the Edit image functionality.
