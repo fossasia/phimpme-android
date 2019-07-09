@@ -1,0 +1,2 @@
+Fast loading of images in Share Activity
+Upload history feature added
