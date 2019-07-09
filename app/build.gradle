@@ -14,10 +14,13 @@ plugins {
 apply plugin: 'com.android.application'
 apply plugin: 'jacoco-android'
 apply plugin: 'realm-android'
+apply plugin: "com.github.b3er.local.properties"
 
 def keystorePropertiesFile = rootProject.file("sample_keystore.properties")
 
 def keystoreProperties = new Properties()
+
+def LOCAL_KEY_PRESENT = project.hasProperty('SIGNING_KEY_FILE') && rootProject.file(SIGNING_KEY_FILE).exists()
 
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
@@ -42,12 +45,31 @@ android {
         renderscriptSupportModeEnabled true
     }
 
+    signingConfigs {
+        if (TRAVIS_BUILD) {
+            release {
+                storeFile KEYSTORE_FILE
+                storePassword System.getenv("STORE_PASS")
+                keyAlias System.getenv("ALIAS")
+                keyPassword System.getenv("KEY_PASS")
+            }
+        } else if (LOCAL_KEY_PRESENT) {
+            release {
+                storeFile rootProject.file(SIGNING_KEY_FILE)
+                storePassword STORE_PASS
+                keyAlias ALIAS
+                keyPassword KEY_PASS
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-
+            if (LOCAL_KEY_PRESENT || TRAVIS_BUILD)
+                signingConfig signingConfigs.release
         }
         debug {
             testCoverageEnabled false

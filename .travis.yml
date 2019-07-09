@@ -73,6 +73,7 @@ before_script:
   - emulator -avd test -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
+  - bash scripts/prep-key.sh
 
 script:
   - ./gradlew spotlessCheck
@@ -82,7 +83,6 @@ script:
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-  - bash scripts/prep-key.sh
   - bash scripts/update-apk.sh
 
 notifications:
