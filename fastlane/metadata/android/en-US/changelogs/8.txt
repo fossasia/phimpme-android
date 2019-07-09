@@ -1,0 +1,5 @@
+- Bug Fixes and improvements.
+- Feature to compress pictures in size and dimensions.
+- Trash Bin to keep track of the deleted items.
+- Option to restore deleted images.
+- Option to add a security question of choice to be used for the case of forgot password.
