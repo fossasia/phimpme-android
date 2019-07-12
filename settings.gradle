@@ -1,1 +1,1 @@
-include ':app', ':pdk', ':openCV'
+include ':app', ':openCV'

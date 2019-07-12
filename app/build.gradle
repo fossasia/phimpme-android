@@ -188,12 +188,13 @@ dependencies {
     implementation 'com.github.shchurov:horizontalwheelview:0.9.5'
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
 
+    //photoview
     implementation 'com.github.chrisbanes:PhotoView:1.2.6'
 
     //twitter
     implementation "com.twitter.sdk.android:twitter:$rootProject.twitterVersion"
-    implementation files('libs/twitter4j-core-3.0.5.jar')
-    implementation files('libs/twitter4j-media-support-3.0.5.jar')
+    implementation "org.twitter4j:twitter4j-core:3.0.5"
+    implementation "org.twitter4j:twitter4j-media-support:3.0.5"
 
     //cloud rail
     implementation 'com.cloudrail:cloudrail-si-android:2.20.1'
@@ -205,13 +206,13 @@ dependencies {
     debugImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
 
-    //flickr
-    implementation files('libs/flickrj-android-2.1.0.jar')
-
     //tumblr
     implementation('com.tumblr:jumblr:0.0.11') {
         exclude module: 'scribe'
     }
+
+    //flickr
+    implementation "com.googlecode.flickrj-android:flickrj-android:2.1.0"
 
     //realm
     implementation 'com.uphyca:stetho_realm:2.0.0'
@@ -227,10 +228,7 @@ dependencies {
     implementation project(':openCV')
 
     //pdk
-    implementation project(':pdk')
-
-    //photoview
-    //implementation project(':photoview')
+    implementation 'com.github.forkerknights:android-pdk:1.2b'
 
     //compressor
     implementation 'id.zelory:compressor:2.1.0'
