@@ -188,6 +188,8 @@ dependencies {
     implementation 'com.github.shchurov:horizontalwheelview:0.9.5'
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.4'
 
+    implementation 'com.github.chrisbanes:PhotoView:1.2.6'
+
     //twitter
     implementation "com.twitter.sdk.android:twitter:$rootProject.twitterVersion"
     implementation files('libs/twitter4j-core-3.0.5.jar')
@@ -228,7 +230,7 @@ dependencies {
     implementation project(':pdk')
 
     //photoview
-    implementation project(':photoview')
+    //implementation project(':photoview')
 
     //compressor
     implementation 'id.zelory:compressor:2.1.0'
