@@ -1,1 +1,1 @@
-include ':app', ':photoview', ':pdk', ':openCV'
+include ':app', ':pdk', ':openCV'
