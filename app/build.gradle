@@ -77,6 +77,18 @@ android {
         }
     }
 
+    flavorDimensions "default"
+
+    productFlavors {
+        fdroid {
+            dimension "default"
+        }
+
+        playStore {
+            dimension "default"
+        }
+    }
+
     packagingOptions {
         exclude 'META-INF/maven/org.apache.maven/maven-artifact/pom.xml'
         exclude 'licenses/javolution.license.TXT'
