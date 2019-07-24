@@ -225,7 +225,7 @@ dependencies {
     androidTestImplementation 'com.google.code.findbugs:jsr305:3.0.0'
 
     //opencv
-    implementation project(':openCV')
+    implementation 'com.github.iamareebjamal:opencv-android:4.1.0'
 
     //pdk
     implementation 'com.github.forkerknights:android-pdk:1.2b'
