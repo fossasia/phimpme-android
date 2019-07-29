@@ -82,6 +82,3 @@ script:
 after_success:
   - bash <(curl -s https://codecov.io/bash)
   - bash scripts/update-apk.sh
-
-notifications:
-  slack: fossasia:JgzycrBUs0nKnmJhsAxCB4bL
