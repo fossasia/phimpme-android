@@ -1,101 +1,20 @@
-language: android
-jdk: oraclejdk8
-sudo: false
-dist: trusty
+mkdir $HOME/openCV/
+cd $HOME/openCV
+wget https://github.com/opencv/opencv/releases/download/4.0.1/opencv-4.0.1-android-sdk.zip
 
-env:
-  global:
-    - ANDROID_API_LEVEL=22
-    - ANDROID_BUILD_TOOLS_VERSION=28.0.3
-    - ANDROID_ABI=armeabi-v7a arm64-v8a x86 x86_64
-    - ANDROID_TAG=google_apis
-    - ANDROID_TARGET=android-25
-    - ADB_INSTALL_TIMEOUT=20 # minutes (2 minutes by default)
+unzip opencv-4.0.1-android-sdk.zip
+rm -rf opencv-4.0.1-android-sdk.zip
+# Rename folder name to opencv
+mv OpenCV-android-sdk opencv
 
-android:
-  components:
-    - tools
-    - platform-tools
-    - android-$ANDROID_API_LEVEL
-    - build-tools-$ANDROID_BUILD_TOOLS_VERSION
-    - android-$ANDROID_API_LEVEL
-    # For Google APIs
-    - addon-google_apis-google-$ANDROID_API_LEVEL
-    # Google Play Services
-    - extra-google-google_play_services
-    # Support library
-    - extra-android-support
-    # Latest artifacts in local repository
-    - extra-google-m2repository
-    - extra-android-m2repository
-    - android-sdk-license-.+
-    - '.+'
-    # Specify at least one system image
-    - sys-img-armeabi-v7a-android-$ANDROID_API_LEVEL
+cd $TRAVIS_BUILD_DIR
 
-# prevents reuploading of Cache
-before_cache:
-  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+mkdir app/src/main/3rdparty
+mkdir app/src/main/jniLibs
+mkdir app/src/main/staticlibs
+mkdir app/src/main/jni/include
 
-cache:
-  directories:
-    - "${TRAVIS_BUILD_DIR}/android/gradle/caches/"
-    - "${TRAVIS_BUILD_DIR}/android/gradle/wrapper/dists/"
-    - "$HOME/android/.gradle/caches/"
-    - "$HOME/android/.gradle/wrapper/"
-    - "$HOME/.android/build-cache"
-
-before_install:
-  - mkdir "$ANDROID_HOME/licenses" || true
-  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
-  - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
-  - curl https://dl.google.com/android/repository/android-ndk-r18b-linux-x86_64.zip -o android-ndk-r18b.zip
-  - unzip -q android-ndk-r18b.zip && rm android-ndk-r18b.zip
-  - mv android-ndk-r18b $HOME
-  - export ANDROID_NDK=$HOME/android-ndk-r18b
-
-
-install:
-  - sdkmanager --list || true
-  - echo yes | ${ANDROID_HOME}/tools/bin/sdkmanager "platforms;android-26"
-  - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2"
-  - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
-
-licenses:
-  - 'android-sdk-preview-license-.+'
-  - 'android-sdk-license-.+'
-  - 'google-gdk-license-.+'
-
-before_script:
-  - echo "Starting AVD"
-  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
-  - emulator -avd test -no-audio -no-window &
-  - android-wait-for-emulator
-  - adb shell input keyevent 82 &
-  - bash scripts/prep-key.sh
-  - mkdir $HOME/openCV/
-  - cd $HOME/openCV
-  - wget https://github.com/opencv/opencv/releases/download/4.0.1/opencv-4.0.1-android-sdk.zip
-  - unzip opencv-4.0.1-android-sdk.zip
-  - mv OpenCV-android-sdk opencv
-  - cd $TRAVIS_BUILD_DIR
-
-script:
-  - ./gradlew spotlessCheck
-  - mkdir app/src/main/3rdparty
-  - mkdir app/src/main/jniLibs
-  - mkdir app/src/main/staticlibs
-  - mkdir app/src/main/jni/include
-  - mv $HOME/openCV/opencv/sdk/native/3rdparty/* app/src/main/3rdparty
-  - mv $HOME/openCV/opencv/sdk/native/libs/* app/src/main/jniLibs
-  - mv $HOME/openCV/opencv/sdk/native/staticlibs/* app/src/main/staticlibs
-  - mv $HOME/openCV/opencv/sdk/native/jni/include/* app/src/main/jni/include
-  - ./gradlew build
-  - ./gradlew build connectedAndroidTest jacocoTestReport --stacktrace
-
-after_success:
-  - bash <(curl -s https://codecov.io/bash)
-  - bash scripts/update-apk.sh
-
-notifications:
-  slack: fossasia:JgzycrBUs0nKnmJhsAxCB4bL
+mv $HOME/openCV/opencv/sdk/native/3rdparty/* app/src/main/3rdparty
+mv $HOME/openCV/opencv/sdk/native/libs/* app/src/main/jniLibs
+mv $HOME/openCV/opencv/sdk/native/staticlibs/* app/src/main/staticlibs
+mv $HOME/openCV/opencv/sdk/native/jni/include/* app/src/main/jni/include
