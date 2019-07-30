@@ -1,4 +1,5 @@
 opencv_version="4.0.1"
+opencv_sdk_zip="cache/opencv-android-sdk.zip"
 download_url="https://github.com/opencv/opencv/releases/download/${opencv_version}/opencv-${opencv_version}-android-sdk.zip"
 mkdir cache/
 wget ${download_url} -O cache/opencv-android-sdk.zip
