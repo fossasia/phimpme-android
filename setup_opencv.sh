@@ -5,6 +5,7 @@ mkdir cache/
 wget ${download_url} -O cache/opencv-android-sdk.zip
 
 unzip -qqo ${opencv_sdk_zip} -d opencv_sdk
+mkdir opencv/
 cp -r opencv_sdk/OpenCV-android-sdk/sdk/* opencv/
 rm -rf opencv_sdk
 
