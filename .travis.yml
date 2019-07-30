@@ -67,7 +67,7 @@ licenses:
   - 'google-gdk-license-.+'
 
 before_script:
-  - ./phimpme.sh
+  - ./setup_opencv.sh
   - echo "Starting AVD"
   - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
   - emulator -avd test -no-audio -no-window &
