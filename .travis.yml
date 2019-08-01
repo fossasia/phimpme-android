@@ -44,6 +44,7 @@ cache:
     - "$HOME/android/.gradle/caches/"
     - "$HOME/android/.gradle/wrapper/"
     - "$HOME/.android/build-cache"
+    - "${TRAVIS_BUILD_DIR}/cache"
 
 before_install:
   - mkdir "$ANDROID_HOME/licenses" || true
@@ -67,22 +68,21 @@ licenses:
   - 'google-gdk-license-.+'
 
 before_script:
-  - ./scripts/download_open_cv.sh
+  - ./scripts/setup_opencv.sh
   - echo "Starting AVD"
   - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
   - emulator -avd test -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
+  - bash scripts/prep-key.sh
 
 script:
   - ./gradlew spotlessCheck
-  - ./scripts/copy_opencv.sh
   - ./gradlew build
   - ./gradlew build connectedAndroidTest jacocoTestReport --stacktrace
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
-  - bash scripts/prep-key.sh
   - bash scripts/update-apk.sh
 
 notifications:

@@ -11,13 +11,16 @@ buildscript {
             url 'https://maven.google.com/'
             name 'Google'
         }
+
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.1'
+        classpath 'com.android.tools.build:gradle:3.4.2'
         classpath 'com.dicedmelon.gradle:jacoco-android:0.1.4'
         classpath "io.realm:realm-gradle-plugin:$realm_version"
-
-
+        classpath "gradle.plugin.com.github.b3er.local.properties:local-properties-plugin:1.1"
     }
 }
 
@@ -32,6 +35,11 @@ allprojects {
             url 'https://maven.google.com/'
             name 'Google'
         }
+    }
+
+    ext {
+        KEYSTORE_FILE = rootProject.file('scripts/key.jks')
+        TRAVIS_BUILD = System.getenv("TRAVIS") == "true" && KEYSTORE_FILE.exists()
     }
 }
 

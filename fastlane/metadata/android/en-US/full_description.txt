@@ -1,0 +1,32 @@
+Do you have many different apps in your Android Phone for clicking images, editing and sharing, that don't respect your privacy? Now clean your phone. Phimpme is here with all the features efficiently packaged into a single Free and Open Source application.
+
+Capture your moments with the app camera using all kinds of advanced functionalities, auto, and manual camera controls to click your perfect shot in one go and share it with the world.
+
+Phimp.me comes with tons of features while it respects your privacy. We don't store any of your data. Experts are able to evaluate the Open Source code of the application independently.
+
+Features:
+
+★Click images ★ Edit images ★ Share ★
+
+1. You can use your voice actions to invoke Camera, Just say "Ok Google click a picture". You can also select front and rear camera based on voice.
+
+2. Browse the local gallery inside the app with folder and all photos mode. Copy, move to images, add description the images.
+
+3. Edit images with various advanced filters, optimized performance using OpenCV library.
+
+4. Enhance contrast, hue, saturation, temperature, tint, and sharpness of the image.
+
+5. Crop and rotate feature from Transform section.
+
+6. Apply different stickers of facial, express, objects, comments, wishes, emojis, hashtag
+
+7. You can also write anything on images in your handwriting.
+
+8. To fast the process, the user can use the undo and redo features present in the editor.
+
+9. Finally, you can share the image to the world using many connected social accounts and cloud storage services.
+
+Website: http://Phimp.me
+Want to contribute: https://github.com/fossasia/phimpme-android/
+
+Please write us your suggestions and feedback to make this app wonderful. We appreciate your suggestions & feedbacks and will surely consider them for the future updates.

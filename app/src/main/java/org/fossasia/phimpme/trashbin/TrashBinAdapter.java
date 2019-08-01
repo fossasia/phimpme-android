@@ -6,13 +6,13 @@ import android.content.Context;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import butterknife.BindView;
@@ -27,11 +27,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.data.local.TrashBinRealmModel;
 import org.fossasia.phimpme.gallery.util.ContentHelper;
 import org.fossasia.phimpme.gallery.util.StringUtils;
+import org.fossasia.phimpme.gallery.util.ThemeHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
 
 public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHolder> {
@@ -40,10 +40,12 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
   private View.OnClickListener onClickListener;
   private BasicCallBack basicCallBack;
   private OnDeleteClickListener onDeleteClickListener;
+  private ThemeHelper theme;
 
   public TrashBinAdapter(ArrayList<TrashBinRealmModel> list, BasicCallBack basicCallBack) {
     trashItemsList = list;
     this.basicCallBack = basicCallBack;
+    theme = new ThemeHelper(context);
   }
 
   public interface OnDeleteClickListener {
@@ -113,6 +115,12 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
               menu.show();
             }
           });
+      holder.popupMenuButton.setTextColor(theme.getTextColor());
+      holder.date.setTextColor(theme.getTextColor());
+      holder.deleteDate.setTextColor(theme.getTextColor());
+      holder.deleteTime.setTextColor(theme.getTextColor());
+      holder.time.setTextColor(theme.getTextColor());
+      holder.deleteDetails.setBackgroundColor(theme.getBackgroundColor());
     }
   }
 
@@ -203,14 +211,6 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
     return succ;
   }
 
-  public void updateTrashListItems(List<TrashBinRealmModel> trashList) {
-    final TrashDiffCallback diffCallback = new TrashDiffCallback(this.trashItemsList, trashList);
-    final DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffCallback);
-    this.trashItemsList.clear();
-    this.trashItemsList.addAll(trashList);
-    diffResult.dispatchUpdatesTo(this);
-  }
-
   public void setResults(ArrayList<TrashBinRealmModel> trashItemsList) {
     this.trashItemsList = trashItemsList;
     notifyDataSetChanged();
@@ -238,6 +238,15 @@ public class TrashBinAdapter extends RecyclerView.Adapter<TrashBinAdapter.ViewHo
 
     @BindView(R.id.textViewOptions)
     public TextView popupMenuButton;
+
+    @BindView(R.id.date)
+    public TextView date;
+
+    @BindView(R.id.time)
+    public TextView time;
+
+    @BindView(R.id.delete_details)
+    public LinearLayout deleteDetails;
 
     public ViewHolder(View itemView) {
       super(itemView);

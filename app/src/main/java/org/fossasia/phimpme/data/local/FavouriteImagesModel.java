@@ -11,11 +11,6 @@ public class FavouriteImagesModel extends RealmObject {
 
   public FavouriteImagesModel() {}
 
-  public FavouriteImagesModel(String path, String description) {
-    this.path = path;
-    this.description = description;
-  }
-
   public void setPath(String path) {
     this.path = path;
   }

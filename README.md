@@ -14,12 +14,12 @@
 ## Screenshots
 
 <p float="left">
-  <img src="./docs/images/ss_1.png" width="288" />
-  <img src="./docs/images/ss_2.png" width="288" /> 
-  <img src="./docs/images/ss_3.png" width="288" />
-   <img src="./docs/images/ss_4.png" width="288" />
-  <img src="./docs/images/ss_5.png" width="288" /> 
-  <img src="./docs/images/ss_6.png" width="288" />
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss_1.png" width="288" />
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss_2.png" width="288" /> 
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss_3.png" width="288" />
+   <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss_4.png" width="288" />
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss_5.png" width="288" /> 
+  <img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss_6.png" width="288" />
 </p>
 
 
@@ -108,6 +108,7 @@ Before you begin, you should have already downloaded the Android Studio SDK and 
      - Copy all the files from *"OpenCV-android-sdk/sdk/native/3rdparty"* to *"phimpme-android/app/src/main/3rdparty"* (create directory if it doesn't exist)
      - Copy all the files from *"OpenCV-android-sdk/sdk/native/libs"* to *"phimpme-android/app/src/main/jniLibs"* (create directory if it doesn't exist)
      - Copy all the files from *"OpenCV-android-sdk/sdk/native/jni/include"* to *"phimpme-android/app/src/main/jni/include"* (create directory if it doesn't exist)
+     - Copy all the files from *"OpenCV-android-sdk/sdk/native/jni/staticlibs"* to *"phimpme-android/app/src/main/staticlibs"* (create directory if it doesn't exist)
      - Now build your project. If your build fails then try deleting these build directories *"phimpme-android/app/.externalNativeBuild"* and *"phimpme-android/app/build"*, if they exist and run the build again.
 
 7. If build error still persist, try replacing ndk with ndk version 18b from [ndk-archives](https://developer.android.com/ndk/downloads/older_releases) .  Once all build errors have been resolved, you should be all set to build the app and test it.
@@ -128,102 +129,5 @@ Before you begin, you should have already downloaded the Android Studio SDK and 
 
 ## License
 
-This project is currently licensed under the GNU General Public License v3. A copy of [LICENSE](LICENSE.md) is to be present along with the source code. To obtain the software under a different license, please contact [FOSSASIA](http://fossasia.org/).
+This project is currently licensed under the GNU General Public License v3. A copy of [LICENSE](LICENSE.md) is to be present along with the source code. To obtain the software under a different license, please contact [FOSSASIA](https://fossasia.org/).
 
-## Maintainers
-The project is maintained by
-- Hon Nguyen ([@vanhonit](https://github.com/vanhonit))
-- Mario Behling ([@mariobehling](http://github.com/mariobehling))
-
-## Developers
-<table border="0">
-<tr>
-<td width="240">
-     <p align="center">
-     <img src="https://avatars2.githubusercontent.com/u/20367966?v=4&s=150" />
-     </p>
-     <div align="center">
-     Anant Prasad
-</div>
-<p align="center">
-<a href = "https://github.com/anantprsd5"><img src = "./docs/images/round-collaboration-social-github-code-circle-network-icon.svg" width="36" height = "36"/></a>
-<a href = "https://twitter.com/Anantprasad3"><img src = "./docs/images/media.svg" width="36" height="36"/></a>
-<a href = "https://www.linkedin.com/in/anant-prasad-82b7a2119/"><img src = "./docs/images/network-linkedin-social-connection-circular-circle-media-icon.svg" width="36" height="36"/></a>
-</p>
-</td>
-
-<td width="240">
-     <p align="center">
-     <img src="https://avatars0.githubusercontent.com/u/9361754?v=4&s=150"/>
-     </p>
-     <div align="center">
-    Mohit Manuja
-</div>
-<p align="center">
-<a href = "https://github.com/mohitmanuja"><img src = "./docs/images/round-collaboration-social-github-code-circle-network-icon.svg" width="36" height = "36"/></a>
-<a href = "https://twitter.com/manuja_mohit"><img src = "./docs/images/media.svg" width="36" height="36"/></a>
-<a href = "https://www.linkedin.com/in/mohitmanuja/"><img src = "./docs/images/network-linkedin-social-connection-circular-circle-media-icon.svg" width="36" height="36"/></a>
-</p>
-</td>
-
-<td width="240">
-     <p align="center">
-     <img src="https://avatars1.githubusercontent.com/u/6936968?v=4&s=150" />
-     </p>
-     <div align="center">
-     Pawan Pal
-</div>
-<p align="center">
-<a href = "https://github.com/pa1pal"><img src = "./docs/images/round-collaboration-social-github-code-circle-network-icon.svg" width="36" height = "36"/></a>
-<a href = "https://twitter.com/pa1pal"><img src = "./docs/images/media.svg" width="36" height="36"/></a>
-<a href = "https://www.linkedin.com/in/pa1pal/"><img src = "./docs/images/network-linkedin-social-connection-circular-circle-media-icon.svg" width="36" height="36"/></a>
-</p>
-</td>
-
-<td width="240">
-     <p align="center">
-     <img src="https://avatars0.githubusercontent.com/u/17337006?v=4&s=150" />
-     </p>
-     <div align="center">
-    Subhankar Shah
-</div>
-
-<p align="center">
-<a href = "https://github.com/Subhankar29"><img src = "./docs/images/round-collaboration-social-github-code-circle-network-icon.svg" width="36" height = "36"/></a>
-<a href = "https://twitter.com/sole_subhankar"><img src = "./docs/images/media.svg" width="36" height="36"/></a>
-<a href = "https://www.linkedin.com/in/subhankar-shah-12245b130/"><img src = "./docs/images/network-linkedin-social-connection-circular-circle-media-icon.svg" width="36" height="36"/></a>
-</p>
-</td>
-</tr>
-
-<tr>
-<td width="240">
-    <p align="center">
-    <img src="https://avatars2.githubusercontent.com/u/15368561?v=4&s=150" />
-    </p>
-    <div align="center">
-    Vinay Sajjanapu
-</div>
-<p align="center">
-<a href = "https://github.com/vinaysajjanapu"><img src = "./docs/images/round-collaboration-social-github-code-circle-network-icon.svg" width="36" height = "36"/></a>
-<a href = "https://twitter.com/sajjanapu_vinay"><img src = "./docs/images/media.svg" width="36" height="36"/></a>
-<a href = "https://www.linkedin.com/in/vinay-sajjanapu-a315ab21/"><img src = "./docs/images/network-linkedin-social-connection-circular-circle-media-icon.svg" width="36" height="36"/></a>
-</p>
-</td>
-
-<td width="240">
-    <p align="center">
-    <img src="https://avatars1.githubusercontent.com/u/20841578?s=150&u=ccf2c85bac58c92f69c4c69ce2c46dcee4564e23&v=4" />
-    </p>
-    <div align="center">
-    Saurav Vishal
-</div>
-
-<p align="center">
-<a href = "https://github.com/sauravvishal8797"><img src = "./docs/images/round-collaboration-social-github-code-circle-network-icon.svg" width="36" height = "36"/></a>
-<a href = "https://twitter.com/vishal_saurav99"><img src = "./docs/images/media.svg" width="36" height="36"/></a>
-<a href = "https://www.linkedin.com/in/saurav-vishal-517aab144/"><img src = "./docs/images/network-linkedin-social-connection-circular-circle-media-icon.svg" width="36" height="36"/></a>
-</p>
-</td>
-</tr>
-</table>

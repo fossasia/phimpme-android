@@ -95,9 +95,6 @@ extern "C" {
             case 24:
                 applyWhiteYellowTint(src, dst, val);
                 break;
-            case 25:
-                applyOilPaintingEffect(src, dst, val);
-                break;
             default:
 
                 int lowThreshold = val;

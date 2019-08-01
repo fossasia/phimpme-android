@@ -89,12 +89,4 @@ public class MyApplication extends Application {
   public HandlingAlbums getAlbums() {
     return albums;
   }
-
-  public void setAlbums(HandlingAlbums albums) {
-    this.albums = albums;
-  }
-
-  public void updateAlbums() {
-    albums.loadAlbums(getApplicationContext());
-  }
 }
