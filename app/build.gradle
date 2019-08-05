@@ -114,18 +114,11 @@ android {
 }
 
 repositories {
-    maven {
-        url "https://dl.bintray.com/dasar/maven"
-    }
     mavenCentral()
     maven {
         url 'https://github.com/uPhyca/stetho-realm/raw/master/maven-repo'
     }
     maven { url "https://jitpack.io" }
-
-    maven { url 'https://maven.fabric.io/public' }
-
-    maven { url "https://mvnrepository.com/artifact/com.box/box-android-sdk" }
 }
 
 spotless {
