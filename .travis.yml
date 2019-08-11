@@ -1,6 +1,6 @@
 language: android
 jdk: oraclejdk8
-sudo: false
+sudo: true
 dist: trusty
 
 env:
@@ -84,6 +84,13 @@ script:
 after_success:
   - bash <(curl -s https://codecov.io/bash)
   - bash scripts/update-apk.sh
+
+deploy:
+  - provider: script
+      skip_cleanup: true
+      script: bash scripts/upload-gh-pages.sh
+      on:
+        all_branches: true
 
 notifications:
   slack: fossasia:JgzycrBUs0nKnmJhsAxCB4bL
