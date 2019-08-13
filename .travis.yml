@@ -91,6 +91,3 @@ deploy:
       script: bash scripts/upload-gh-pages.sh
       on:
         all_branches: true
-
-notifications:
-  slack: fossasia:JgzycrBUs0nKnmJhsAxCB4bL
