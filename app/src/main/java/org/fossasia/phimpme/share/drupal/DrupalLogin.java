@@ -10,6 +10,7 @@ import butterknife.BindView;
 import org.fossasia.phimpme.R;
 import org.fossasia.phimpme.base.ThemedActivity;
 import org.fossasia.phimpme.gallery.util.ThemeHelper;
+import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 public class DrupalLogin extends ThemedActivity implements View.OnClickListener {
 
@@ -50,7 +51,7 @@ public class DrupalLogin extends ThemedActivity implements View.OnClickListener 
   }
 
   private void loginAuth() {
-    Snackbar.make(parent, R.string.drupal_link, Snackbar.LENGTH_LONG).show();
+    SnackBarHandler.create(parent, getString(R.string.drupal_link), Snackbar.LENGTH_LONG).show();
   }
 
   @Override

@@ -68,6 +68,7 @@ import org.fossasia.phimpme.opencamera.Preview.CameraSurface.CameraSurface;
 import org.fossasia.phimpme.opencamera.Preview.CameraSurface.MySurfaceView;
 import org.fossasia.phimpme.opencamera.Preview.CameraSurface.MyTextureView;
 import org.fossasia.phimpme.opencamera.UI.PopupView;
+import org.fossasia.phimpme.utilities.SnackBarHandler;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 
 /**
@@ -1450,7 +1451,7 @@ public class Preview implements SurfaceHolder.Callback, TextureView.SurfaceTextu
                     applicationInterface.clearColorEffectPref();
                   }
                 } catch (Exception e) {
-                  Snackbar.make(
+                  SnackBarHandler.create(
                           activity.findViewById(android.R.id.content),
                           "Your device does not support any filters",
                           Snackbar.LENGTH_SHORT)

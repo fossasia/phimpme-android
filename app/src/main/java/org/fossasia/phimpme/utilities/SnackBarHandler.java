@@ -13,7 +13,7 @@ public class SnackBarHandler {
   public static final int LONG = Snackbar.LENGTH_LONG;
   public static final int SHORT = Snackbar.LENGTH_SHORT;
 
-  public static Snackbar show(View view, String text, int duration) {
+  public static Snackbar create(View view, String text, int duration) {
     final Snackbar snackbar = Snackbar.make(view, text, duration);
     ThemeHelper themeHelper = new ThemeHelper(ActivitySwitchHelper.getContext());
     View sbView = snackbar.getView();
@@ -65,16 +65,16 @@ public class SnackBarHandler {
     return snackbar;
   }
 
-  public static void show(View view, int res, int duration) {
-    show(view, ActivitySwitchHelper.getContext().getResources().getString(res), duration);
+  public static void create(View view, int res, int duration) {
+    create(view, ActivitySwitchHelper.getContext().getResources().getString(res), duration);
   }
 
-  public static Snackbar show(View view, String text) {
-    return show(view, text, Snackbar.LENGTH_LONG);
+  public static Snackbar create(View view, String text) {
+    return create(view, text, Snackbar.LENGTH_LONG);
   }
 
-  public static Snackbar show(View view, int res) {
-    return show(view, ActivitySwitchHelper.getContext().getResources().getString(res));
+  public static Snackbar create(View view, int res) {
+    return create(view, ActivitySwitchHelper.getContext().getResources().getString(res));
   }
 
   public static Snackbar showWithBottomMargin(View view, String text, int bottomMargin) {

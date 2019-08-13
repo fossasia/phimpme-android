@@ -92,6 +92,7 @@ import org.fossasia.phimpme.opencamera.UI.PopupView;
 import org.fossasia.phimpme.utilities.ActivitySwitchHelper;
 import org.fossasia.phimpme.utilities.BasicCallBack;
 import org.fossasia.phimpme.utilities.Constants;
+import org.fossasia.phimpme.utilities.SnackBarHandler;
 
 /** The main Activity for Open Camera. */
 public class CameraActivity extends ThemedActivity
@@ -2835,7 +2836,7 @@ public class CameraActivity extends ThemedActivity
         ActivityCompat.requestPermissions(
             this, new String[] {Manifest.permission.CAMERA}, MY_PERMISSIONS_REQUEST_CAMERA);
       } catch (SecurityException e) {
-        Snackbar.make(
+        SnackBarHandler.create(
                 findViewById(android.R.id.content),
                 "Please open camera in app once to allow permissions",
                 Snackbar.LENGTH_SHORT)
