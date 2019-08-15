@@ -106,7 +106,6 @@ public class UploadHistory extends ThemedActivity {
     uploadHistoryRealmModelRealmQuery = realm.where(UploadHistoryRealmModel.class);
     if (uploadHistoryRealmModelRealmQuery.count() == 0) {
       emptyLayout.setVisibility(View.VISIBLE);
-      swipeRefreshLayout.setEnabled(false);
     } else {
       String choiceofdisply =
           preferenceUtil.getString(
@@ -330,7 +329,6 @@ public class UploadHistory extends ThemedActivity {
       if (result[0] && uploadHistoryRealmModelRealmQuery.count() == 0) {
         emptyLayout.setVisibility(View.VISIBLE);
         uploadHistoryRecyclerView.setVisibility(View.GONE);
-        swipeRefreshLayout.setEnabled(false);
       }
       invalidateOptionsMenu();
     }

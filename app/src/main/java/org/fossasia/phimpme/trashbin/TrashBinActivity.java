@@ -197,21 +197,17 @@ public class TrashBinActivity extends ThemedActivity
     swipeRefreshLayout.setColorSchemeColors(getAccentColor());
     swipeRefreshLayout.setProgressBackgroundColorSchemeColor(getBackgroundColor());
     Realm realm = Realm.getDefaultInstance();
-    trashBinRealmModelRealmQuery = realm.where(TrashBinRealmModel.class);
-    if (getTrashObjects().size() == 0) {
-      swipeRefreshLayout.setEnabled(false);
-    } else {
-      swipeRefreshLayout.setOnRefreshListener(
-          new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-              trashBinAdapter.setResults(getTrashObjects());
-              if (swipeRefreshLayout.isRefreshing()) {
-                swipeRefreshLayout.setRefreshing(false);
-              }
+
+    swipeRefreshLayout.setOnRefreshListener(
+        new SwipeRefreshLayout.OnRefreshListener() {
+          @Override
+          public void onRefresh() {
+            trashBinAdapter.setResults(getTrashObjects());
+            if (swipeRefreshLayout.isRefreshing()) {
+              swipeRefreshLayout.setRefreshing(false);
             }
-          });
-    }
+          }
+        });
   }
 
   private int checkpos(String path) {
